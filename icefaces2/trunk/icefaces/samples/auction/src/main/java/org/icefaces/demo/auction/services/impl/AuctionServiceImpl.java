@@ -66,8 +66,8 @@ public class AuctionServiceImpl implements AuctionService {
                 "ICEsoft Technologies, Inc.",
                 new GregorianCalendar(),
                 5.0, 0, "icebreaker.jpg"));
-//        auctionItems.get(0).getExpiryDate().add(GregorianCalendar.DAY_OF_YEAR, 1);
-//        auctionItems.get(0).getExpiryDate().add(GregorianCalendar.HOUR_OF_DAY, 24);
+        auctionItems.get(0).getExpiryDate().add(GregorianCalendar.DAY_OF_YEAR, 2);
+        auctionItems.get(0).getExpiryDate().add(GregorianCalendar.HOUR_OF_DAY, 8);
         auctionItems.get(0).getExpiryDate().add(GregorianCalendar.SECOND, 60);
         // ICE Skate
         auctionItems.add(new AuctionItem(2,
@@ -78,7 +78,7 @@ public class AuctionServiceImpl implements AuctionService {
                 new GregorianCalendar(),
                 100.0, 0, "iceskate.jpg"));
 //        auctionItems.get(1).getExpiryDate().add(GregorianCalendar.DAY_OF_YEAR, 5);
-        auctionItems.get(1).getExpiryDate().add(GregorianCalendar.HOUR_OF_DAY, 5);
+        auctionItems.get(1).getExpiryDate().add(GregorianCalendar.HOUR_OF_DAY, 8);
         auctionItems.get(1).getExpiryDate().add(GregorianCalendar.SECOND, 15);
         // ICE Car
         auctionItems.add(new AuctionItem(3,

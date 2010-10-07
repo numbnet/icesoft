@@ -47,7 +47,7 @@ import java.util.PropertyResourceBundle;
 public class BidValidator implements Validator {
 
     // cap the size of a bid that can be made over the the original bid value.
-    public static final int MAX_BID_INCREASE = 1000000;
+    public static final int MAX_BID_INCREASE = 10000;
     // max bid that can be mad, period.
     public static final long MAX_BID = 1000000;
 
@@ -88,8 +88,8 @@ public class BidValidator implements Validator {
             message.setDetail(msgs.getString("auction.validator.bidLow"));
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
-        } else if (newBid >= MAX_BID &&
-                newBid - originalBid >= MAX_BID_INCREASE) {
+        } else if (newBid > MAX_BID ||
+                newBid - originalBid > MAX_BID_INCREASE) {
             // set the bean message holder.
             FacesMessage message = new FacesMessage();
             message.setDetail(msgs.getString("auction.validator.bidHigh"));
