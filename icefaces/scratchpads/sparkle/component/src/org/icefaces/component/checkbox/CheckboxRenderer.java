@@ -37,7 +37,6 @@ public class CheckboxRenderer extends Renderer {
 	           	//update with hidden field
 				String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
 				System.out.println("\t\tRenderer:-  HIDDEN value ONLY="+hiddenValue);				
-		//		Boolean submittedValue= Boolean.valueOf(hiddenValue);
 				boolean submittedValue = isChecked(hiddenValue);
 				checkbox.setSubmittedValue(submittedValue);           	
 	        }
@@ -67,12 +66,11 @@ public class CheckboxRenderer extends Renderer {
 	 	writer.writeAttribute(HTML.ID_ATTR, clientId+"_s2", null);
 	 	//labelling  should be either a label or an image
 
-		String image=this.findCheckboxImage(checkbox);
 		String label=this.findCheckboxLabel(checkbox);
 		String labelPosition = this.findCheckboxLabelPosition(checkbox);
 			
 			// should be either a label or an image as a minimum
-		if (labelPosition.equals("left")&& image.equals("")){
+		if (labelPosition.equals("left")){
 			writer.startElement(HTML.LABEL_ELEM, uiComponent);
     		writer.writeAttribute(HTML.FOR_ATTR, clientId+"_button", null );	    		writer.write(label);
 	   		writer.endElement("label");		
@@ -86,14 +84,6 @@ public class CheckboxRenderer extends Renderer {
 		writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
 		writer.writeAttribute(HTML.ID_ATTR, clientId+"_button", null);
 
-		if (!image.equals("")){
-			writer.startElement(HTML.SPAN_ELEM, uiComponent);
-			writer.write(checkbox.getLabel());
-			writer.endElement(HTML.SPAN_ELEM);		
-			writer.startElement(HTML.IMG_ELEM, uiComponent);
-			writer.writeAttribute(HTML.SRC_ATTR, image, null);
-			writer.endElement(HTML.IMG_ELEM);
-		}
       }
     }
     
@@ -103,7 +93,6 @@ public class CheckboxRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = uiComponent.getClientId(facesContext);
 		Checkbox checkbox = (Checkbox) uiComponent;
-		String image=this.findCheckboxImage(checkbox);
 		String label=this.findCheckboxLabel(checkbox);
 		String labelPosition = this.findCheckboxLabelPosition(checkbox);
         writer.endElement(HTML.BUTTON_ELEM);
@@ -173,13 +162,7 @@ public class CheckboxRenderer extends Renderer {
 		}
 		return labelPosition;
     }
-    private String findCheckboxImage(Checkbox checkbox){
-    	String image="";
-		if (null!=checkbox.getImage() && !checkbox.getImage().equals("")){
-			image=checkbox.getImage();
-		}
-		return image;
-    }
+ 
     /**
      * support similar return values as jsf component
      * so can use strings true/false, on/off, yes/no

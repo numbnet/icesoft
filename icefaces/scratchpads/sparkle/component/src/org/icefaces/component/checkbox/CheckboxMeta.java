@@ -42,9 +42,6 @@ public class CheckboxMeta extends UISelectBooleanMeta {
     @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
     private String id;
 	
-	@Property
-    private String image;
-	
 	@Property(defaultValue="false",
 			tlddoc="Default is false, means uses full submit")
     private Boolean singleSubmit;
