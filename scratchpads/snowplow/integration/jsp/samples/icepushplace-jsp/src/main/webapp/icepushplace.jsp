@@ -42,17 +42,23 @@
 </jsp:useBean>
 
 <%
-if (person.getName() == null){
-    person.setName("");
-}
-if (person.getComment() == null){
-    person.setComment("");
-}
-if (person.getTechnology() == null){
-    person.setTechnology("JSP");
-}
-if (person.getKey() == 0) {
-   person = world.loginPerson(person.getRegion(), person);
+if (person != null) {
+    // Store the person and world objects in the session
+    request.getSession().setAttribute("person", person);
+    request.getSession().setAttribute("world", world);
+
+    if (person.getName() == null){
+        person.setName("");
+    }
+    if (person.getComment() == null){
+        person.setComment("");
+    }
+    if (person.getTechnology() == null){
+        person.setTechnology("JSP");
+    }
+    if (person.getKey() == 0) {
+       person = world.loginPerson(person.getRegion(), person);
+    }
 }
 %>
 <html>
