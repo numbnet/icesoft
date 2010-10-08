@@ -10,7 +10,7 @@ version: 2.7.0
 
 /* .yui-navset defaults to .yui-navset-top */
 
-.yui-navset button {
+.yui-navset .yui-nav button {
     position:absolute;
     top:0;
     right:0;
