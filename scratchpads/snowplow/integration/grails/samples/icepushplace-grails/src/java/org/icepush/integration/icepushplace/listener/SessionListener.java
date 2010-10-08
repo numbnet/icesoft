@@ -13,17 +13,12 @@ public class SessionListener implements javax.servlet.http.HttpSessionListener
     public static final String WORLD_KEY = "world";
     
     public void sessionCreated(HttpSessionEvent event) {
-        System.out.println("\n****\nSESSION CREATED for Grails!");
     }
     
     public void sessionDestroyed(HttpSessionEvent event) {
-        System.out.println("\n****\nSESSION DESTROYED for Grails!");
-        
         if (event.getSession() != null) {
             Object personBase = event.getSession().getAttribute(PERSON_KEY);
             Object worldBase = event.getSession().getAttribute(WORLD_KEY);
-            
-            System.out.println("PERSON: " + personBase + " AND WORLD: " + worldBase);
             
             if ((personBase != null) && (worldBase != null)) {
                 PersonType person = (PersonType)personBase;
