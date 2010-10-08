@@ -338,7 +338,6 @@ public class TreeRenderer extends DomBasicRenderer {
 
         treeNode.setMutable(currentNode);
         treeNode.setId(Tree.ID_PREFIX + pathToCurrentRoot);
-        treeNode.setParent(treeComponent);
         treeComponent.setNodePath(pathToCurrentNode);
 
         // efficiency and simplicity
