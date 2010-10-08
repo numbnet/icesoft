@@ -1,3 +1,35 @@
+/*
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
+ */
+
 package com.icesoft.faces.application;
 
 import org.apache.commons.logging.Log;
@@ -15,6 +47,7 @@ import javax.faces.FacesException;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
 import com.icesoft.faces.application.state.Util;
+import com.icesoft.faces.renderkit.ViewNumberRenderer;
 
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
@@ -53,6 +86,7 @@ public class SingleCopyStateManagerImpl extends StateManager {
     protected boolean pureDelegation;
     protected Method v2DelegateSaveViewMethod;
 
+    private String SINGLE_STRATEGY = SingleCopyStateManagerImpl.class.getName();
 
     /**
      * Public one argument constructor for setting up the delegation model
@@ -119,8 +153,10 @@ public class SingleCopyStateManagerImpl extends StateManager {
                                   String renderKitId) {
         initializeParameters( context );
 
-        if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
-            return delegate.restoreView(context, viewId, renderKitId);
+        if (!isSingleStrategy(context)) {
+            if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
+                return delegate.restoreView(context, viewId, renderKitId);
+            }
         }
 
         UIViewRoot viewRoot;
@@ -134,11 +170,7 @@ public class SingleCopyStateManagerImpl extends StateManager {
             sessionMap.put( View.ICEFACES_STATE_MAPS, viewMap );
         }
 
-        BridgeFacesContext bfc = (BridgeFacesContext) context;
-        String viewNumber = bfc.getViewNumber();
-        if (log.isDebugEnabled()) {
-            log.debug("RestoreView called for View: " + bfc.getIceFacesId() + ", viewNumber: " + viewNumber );
-        }
+        String viewNumber = getViewNumber(context);
         
         stateArray = (Object[]) viewMap.get(viewNumber);
         if (stateArray == null) {
@@ -159,16 +191,18 @@ public class SingleCopyStateManagerImpl extends StateManager {
      */
     public Object saveView(FacesContext context) {
 
-        if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
-            if (v2DelegateSaveViewMethod != null) {
-                // this bit because ICEfaces compiles against 1.1 and saveView is a 1.2 construct
-                try {
-                    return v2DelegateSaveViewMethod.invoke( delegate, new Object[] { context } );
-                } catch (Exception e)  {
-                    log.error("Exception in saveView" , e);
+        if (!isSingleStrategy(context)) {
+            if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
+                if (v2DelegateSaveViewMethod != null) {
+                    // this bit because ICEfaces compiles against 1.1 and saveView is a 1.2 construct
+                    try {
+                        return v2DelegateSaveViewMethod.invoke( delegate, new Object[] { context } );
+                    } catch (Exception e)  {
+                        log.error("Exception in saveView" , e);
+                    }
+                } else {
+                    return delegate.saveSerializedView(context);
                 }
-            } else {
-                return delegate.saveSerializedView(context);
             }
         }
 
@@ -195,10 +229,9 @@ public class SingleCopyStateManagerImpl extends StateManager {
             log.debug("End creating serialized view " + viewRoot.getViewId());
         }
 
-        BridgeFacesContext bfc = (BridgeFacesContext) context;
-        String viewNumber = bfc.getViewNumber();
+        String viewNumber = getViewNumber(context);
 
-        Map sessionMap = bfc.getExternalContext().getSessionMap();
+        Map sessionMap = context.getExternalContext().getSessionMap();
 
         Map stateMap = (Map) sessionMap.get( View.ICEFACES_STATE_MAPS );
         if (stateMap == null) {
@@ -215,8 +248,10 @@ public class SingleCopyStateManagerImpl extends StateManager {
 
     public SerializedView saveSerializedView(FacesContext context) {
         initializeParameters( context );
-        if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
-            return delegate.saveSerializedView(context);
+        if (!isSingleStrategy(context)) {
+            if (pureDelegation || !(context instanceof BridgeFacesContext) ) {
+                return delegate.saveSerializedView(context);
+            }
         }
         return (SerializedView) saveView(context);
     }
@@ -353,6 +388,26 @@ public class SingleCopyStateManagerImpl extends StateManager {
             return baos.toByteArray();
         } else {
             return state;
+        }
+    }
+
+    private boolean isSingleStrategy(FacesContext facesContext)  {
+        Object stateStrategy = facesContext.getExternalContext().getRequestMap()
+                .get(ViewRootStateManagerImpl.STATE_STRATEGY);
+        return SINGLE_STRATEGY.equals(stateStrategy);
+    }
+
+    private String getViewNumber(FacesContext facesContext)  {
+        if (facesContext instanceof BridgeFacesContext)  {
+            BridgeFacesContext bfc = (BridgeFacesContext) facesContext;
+            return(bfc.getViewNumber());
+        } else {
+            String viewNumber = (String) facesContext.getExternalContext()
+                .getRequestParameterMap().get(ViewNumberRenderer.VIEW_NUMBER);
+            if (null != viewNumber) {
+                return viewNumber;
+            }
+            return ViewNumberRenderer.getViewNumber(facesContext);
         }
     }
 

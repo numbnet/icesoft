@@ -35,7 +35,7 @@ package com.icesoft.applications.faces.auctionMonitor.beans;
 
 import com.icesoft.applications.faces.auctionMonitor.AuctionState;
 import com.icesoft.applications.faces.auctionMonitor.stubs.ItemType;
-import com.icesoft.faces.async.render.SessionRenderer;
+//import com.icesoft.faces.async.render.SessionRenderer;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
 
@@ -182,7 +182,7 @@ public class AuctionMonitorItemBean extends ItemType {
                     Integer.parseInt(auctionMap.get(getItemID() +".bidCount")
                         .toString()) + 1 ) );
             getCurrentPrice();
-            SessionRenderer.render("auction");
+//            SessionRenderer.render("auction");
         }
         else if (tempLocalBid <= localHighBid){
             bidMessage = false;
