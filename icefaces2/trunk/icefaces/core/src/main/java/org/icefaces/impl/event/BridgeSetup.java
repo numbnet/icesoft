@@ -109,7 +109,7 @@ public class BridgeSetup implements SystemEventListener {
                     insertHere = (value != null && value.equalsIgnoreCase("true"));
                 }
                 if (insertHere) {
-                    root.addComponentResource(context,new GenericScriptWriter( es.scriptURL() ), "head");
+                    root.addComponentResource(context, new GenericScriptWriter( es.scriptURL() ), "head");
                 }
             }
         }
@@ -258,17 +258,16 @@ public class BridgeSetup implements SystemEventListener {
         public GenericScriptWriter (String script) {
             super(); 
             this.script = script;
+            this.setTransient(true);
         }
         public void encode(ResponseWriter writer, FacesContext context) throws IOException {
             String clientID = getClientId(context);
-            writer.startElement("span", this);
             writer.writeAttribute("id", clientID, null);
             writer.startElement("script", this);
             //define potential script entries
             writer.writeAttribute("src", script, null);
             writer.writeAttribute("type", "text/javascript" , null);
             writer.endElement("script");
-            writer.endElement("span");
         }
     }
 }
