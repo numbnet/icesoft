@@ -31,10 +31,8 @@ public class ICEpushPlaceWsClient extends WebServiceGatewaySupport {
 	System.out.println("Register App request: URL = " + request.getURL() +
 			   " Size = " + request.getWorld().size() +
 			   " First = " + request.getWorld().get(0));
-        getWebServiceTemplate().marshalSendAndReceive(registerAppRequest);
-        JAXBElement<BigInteger> startingSequenceNo  = 
-	    (JAXBElement<BigInteger>) getWebServiceTemplate().
-	    marshalSendAndReceive(registerAppRequest);
+        JAXBElement<BigInteger> startingSequenceNo =
+            (JAXBElement<BigInteger>) getWebServiceTemplate().marshalSendAndReceive(registerAppRequest);
 	return startingSequenceNo.getValue().longValue();
     }
     public PersonType loginPerson(String world, PersonType person) throws SoapFaultClientException, BadWorldException {
