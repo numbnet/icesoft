@@ -5,36 +5,36 @@ public class ProductInfo {
     /**
      * The company that owns this product.
      */
-    public static String COMPANY = "@company@";
+    public static String COMPANY = "ICEsoft Technologies, Inc.";
 
     /**
      * The name of the product.
      */
-    public static String PRODUCT = "@product@";
+    public static String PRODUCT = "ICEfaces";
 
     /**
      * The 3 levels of version identification, e.g. 1.0.0.
      */
-    public static String PRIMARY = "@version.primary@";
-    public static String SECONDARY = "@version.secondary@";
-    public static String TERTIARY = "@version.tertiary@";
+    public static String PRIMARY = "1";
+    public static String SECONDARY = "8";
+    public static String TERTIARY = "0";
 
     /**
      * The release type of the product (alpha, beta, production).
      */
-    public static String RELEASE_TYPE = "@release.type@";
+    public static String RELEASE_TYPE = "Patch-ICE-6098";
 
     /**
      * The build number.  Typically this would be tracked and maintained
      * by the build system (i.e. Ant).
      */
-    public static String BUILD_NO = "@build.number@";
+    public static String BUILD_NO = "x";
 
     /**
      * The revision number retrieved from the repository for this build.
      * This is substitued automatically by subversion.
      */
-    public static String REVISION = "@revision@";
+    public static String REVISION = "";
 
     /**
      * Convenience method to get all the relevant product information.
