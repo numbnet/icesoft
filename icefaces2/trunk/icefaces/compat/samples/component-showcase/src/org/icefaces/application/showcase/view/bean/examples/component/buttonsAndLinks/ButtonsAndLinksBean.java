@@ -77,7 +77,6 @@ public class ButtonsAndLinksBean extends BaseBean {
      * @param e click action event.
      */
     public void submitButtonListener(ActionEvent e) {
-    	System.out.println("in ActionListener for ButtonsAndLinks submit buttonslistener");
         clicked = "bean.buttonsAndLinks.submitButton";
         valueChangeEffect.setFired(false);
     }
