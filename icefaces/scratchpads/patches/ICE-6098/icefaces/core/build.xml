@@ -242,6 +242,7 @@
         <build.jar jar.file.name="just-ice.jar">
             <add.metainfs>
                 <metainf file="conf/META-INF/include.tld"/>
+                <metainf file="conf/META-INF/core.taglib.xml"/>
                 <metainf dir="conf/just-ice"/>
             </add.metainfs>
         </build.jar>

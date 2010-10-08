@@ -160,6 +160,20 @@
 	<listener>
 		<listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
 	</listener>
+
+  <filter>
+    <filter-name>StateManagementStrategyFilter</filter-name>
+    <filter-class>com.icesoft.applications.faces.auctionMonitor.StateManagerFilter</filter-class>
+    <init-param>
+      <param-name>com.icesoft.faces.stateManagerStrategy</param-name>
+      <param-value>com.icesoft.faces.application.ViewRootStateManagerImpl</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>StateManagementStrategyFilter</filter-name>
+    <url-pattern>*.faces</url-pattern>
+  </filter-mapping>
   
     <!-- Faces Servlet -->
     <servlet>

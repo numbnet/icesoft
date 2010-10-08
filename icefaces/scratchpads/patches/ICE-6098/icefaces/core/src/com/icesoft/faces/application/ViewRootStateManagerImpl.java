@@ -1,3 +1,35 @@
+/*
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
+ */
+
 package com.icesoft.faces.application;
 
 import org.apache.commons.logging.Log;
@@ -11,6 +43,7 @@ import javax.faces.render.RenderKitFactory;
 
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
+import com.icesoft.faces.renderkit.ViewNumberRenderer;
 
 import java.io.IOException;
 import java.util.Map;
@@ -31,6 +64,9 @@ public class ViewRootStateManagerImpl extends StateManager {
     protected boolean pureDelegation;
     protected Method v2DelegateSaveViewMethod;
 
+    public static String STATE_STRATEGY = "com.icesoft.faces.stateManagerStrategy";
+    private String VIEW_STRATEGY = ViewRootStateManagerImpl.class.getName();
+
 
     public ViewRootStateManagerImpl(StateManager delegate) {
         if (log.isInfoEnabled()) {
@@ -50,17 +86,15 @@ public class ViewRootStateManagerImpl extends StateManager {
     public UIViewRoot restoreView(FacesContext context, String viewId, String renderKitId) {
 
         initializeParameters( context );
-        if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
-            return delegate.restoreView(context, viewId, renderKitId);
+        if (!isViewStrategy(context)) {
+            if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
+                return delegate.restoreView(context, viewId, renderKitId);
+            }
         }
 
-        BridgeFacesContext bfc = (BridgeFacesContext) context;
-        String viewNumber = bfc.getViewNumber();
-        if (log.isDebugEnabled()) {
-            log.debug("RestoreView called for View: " + bfc.getIceFacesId() + ", viewNumber: " + viewNumber );
-        } 
+        String viewNumber = getViewNumber(context);
 
-        Map sessionMap = bfc.getExternalContext().getSessionMap();
+        Map sessionMap = context.getExternalContext().getSessionMap();
         Map stateMap = (Map) sessionMap.get(  View.ICEFACES_STATE_MAPS );
         if (stateMap == null) {
             stateMap  = new HashMap();
@@ -70,10 +104,7 @@ public class ViewRootStateManagerImpl extends StateManager {
         UIViewRoot root;
 
         root = (UIViewRoot) stateMap.get( viewNumber );
-        if (root == null) {
-            log.error("Missing ViewRoot in restoreState, ice.session: " + bfc.getIceFacesId() + ", viewNumber: " + viewNumber );
-            return null;
-        }
+
         return root;
     }
 
@@ -106,11 +137,11 @@ public class ViewRootStateManagerImpl extends StateManager {
                 external = true;
             } 
         }
-         try {
-             v2DelegateSaveViewMethod = delegate.getClass().getMethod("saveView", new Class[] { FacesContext.class} );
-         } catch (Exception e) {
-             log.error("Exception finding JSF1.2 saveView method on delegate", e);
-         }
+        try {
+            v2DelegateSaveViewMethod = delegate.getClass().getMethod("saveView", new Class[] { FacesContext.class} );
+        } catch (Exception e) {
+            log.error("Exception finding JSF1.2 saveView method on delegate", e);
+        }
         parametersInitialized = true;
      }
 
@@ -122,25 +153,26 @@ public class ViewRootStateManagerImpl extends StateManager {
     public Object saveView(FacesContext context ) {
 
         initializeParameters(context);
-          if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
-            // this bit because ICEfaces compiles against 1.1 and saveView is a 1.2 construct
-            if (v2DelegateSaveViewMethod != null) {
-                try {
-                    return v2DelegateSaveViewMethod.invoke( delegate, new Object[] { context } );
-                } catch (Exception e)  {
-                    log.error("Exception in saveView" , e);
+        if (!isViewStrategy(context)) {
+            if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
+                // this bit because ICEfaces compiles against 1.1 and saveView is a 1.2 construct
+                if (v2DelegateSaveViewMethod != null) {
+                    try {
+                        return v2DelegateSaveViewMethod.invoke( delegate, new Object[] { context } );
+                    } catch (Exception e)  {
+                        log.error("Exception in saveView" , e);
+                    }
+                } else {
+                    return delegate.saveSerializedView(context);
                 }
-            } else {
-                return delegate.saveSerializedView(context);
             }
-        } 
+        }
 
         UIViewRoot root = context.getViewRoot();
 
-        BridgeFacesContext bfc = (BridgeFacesContext) context;
-        String viewNumber = bfc.getViewNumber();
+        String viewNumber = getViewNumber(context);
 
-        Map sessionMap = bfc.getExternalContext().getSessionMap();
+        Map sessionMap = context.getExternalContext().getSessionMap();
         Map stateMap = (Map) sessionMap.get(  View.ICEFACES_STATE_MAPS );
         if (stateMap == null) {
             stateMap  = new HashMap();
@@ -149,15 +181,20 @@ public class ViewRootStateManagerImpl extends StateManager {
         stateMap.put( viewNumber, root );
 
         StateManager sm = context.getApplication().getStateManager();
-        return sm.new SerializedView( viewNumber, null);
+        SerializedView serializedView = new StateManager.SerializedView(viewNumber, viewNumber);
+        return serializedView;
     }
 
 
     public SerializedView saveSerializedView(FacesContext context) {
-        if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
-            return delegate.saveSerializedView(context);
+        if (!isViewStrategy(context)) {
+            if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
+                SerializedView serializedView = delegate.saveSerializedView(context);
+                return serializedView;
+            }
         }
-        return (SerializedView) saveView(context);
+        SerializedView serializedView = (SerializedView) saveView(context);
+        return serializedView;
     }
 
 
@@ -189,9 +226,12 @@ public class ViewRootStateManagerImpl extends StateManager {
     public void writeState(FacesContext context, SerializedView view)
     throws IOException {
         initializeParameters(context);
-        if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
-            delegate.writeState(context, view);
-        } 
+        if (!isViewStrategy(context)) {
+            if ((pureDelegation) || !(context instanceof BridgeFacesContext) ) {
+                delegate.writeState(context, view);
+                return;
+            } 
+        }
 
         ResponseWriter writer = context.getResponseWriter();
         writer.write(STATE_FIELD_START);
@@ -223,6 +263,26 @@ public class ViewRootStateManagerImpl extends StateManager {
                                   result,
                                   "value");
             writer.endElement("input");
+        }
+    }
+
+    private boolean isViewStrategy(FacesContext facesContext)  {
+        Object stateStrategy = facesContext.getExternalContext().getRequestMap()
+                .get(STATE_STRATEGY);
+        return VIEW_STRATEGY.equals(stateStrategy);
+    }
+
+    private String getViewNumber(FacesContext facesContext)  {
+        if (facesContext instanceof BridgeFacesContext)  {
+            BridgeFacesContext bfc = (BridgeFacesContext) facesContext;
+            return(bfc.getViewNumber());
+        } else {
+            String viewNumber = (String) facesContext.getExternalContext()
+                .getRequestParameterMap().get(ViewNumberRenderer.VIEW_NUMBER);
+            if (null != viewNumber) {
+                return viewNumber;
+            }
+            return ViewNumberRenderer.getViewNumber(facesContext);
         }
     }
 
