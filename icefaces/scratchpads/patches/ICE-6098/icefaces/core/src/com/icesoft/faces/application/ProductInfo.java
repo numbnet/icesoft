@@ -15,14 +15,14 @@ public class ProductInfo {
     /**
      * The 3 levels of version identification, e.g. 1.0.0.
      */
-    public static String PRIMARY = "x";
-    public static String SECONDARY = "x";
-    public static String TERTIARY = "x";
+    public static String PRIMARY = "1";
+    public static String SECONDARY = "8";
+    public static String TERTIARY = "0";
 
     /**
      * The release type of the product (alpha, beta, production).
      */
-    public static String RELEASE_TYPE = "x";
+    public static String RELEASE_TYPE = "Patch-ICE-6098";
 
     /**
      * The build number.  Typically this would be tracked and maintained
@@ -34,7 +34,7 @@ public class ProductInfo {
      * The revision number retrieved from the repository for this build.
      * This is substitued automatically by subversion.
      */
-    public static String REVISION = "x";
+    public static String REVISION = "";
 
     /**
      * Convenience method to get all the relevant product information.
