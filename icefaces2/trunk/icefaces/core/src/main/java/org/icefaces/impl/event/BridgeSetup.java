@@ -106,7 +106,7 @@ public class BridgeSetup implements SystemEventListener {
                 // but if not present, always insert the script. Annotation default is "Null"
                 if (!contextParamName.equals("Null") )  {
                     value = externalContext.getInitParameter( contextParamName );
-                    insertHere = (value != null && value.equalsIgnoreCase("true"));
+                    insertHere = (value != null && !value.equalsIgnoreCase(""));
                 }
                 if (insertHere) {
                     root.addComponentResource(context, new GenericScriptWriter( es.scriptURL() ), "head");
