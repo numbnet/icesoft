@@ -965,7 +965,6 @@ public class Tree extends UICommand implements NamingContainer {
                                                                         .getRoot());
         treeNodeTemplate.setMutable(currentNode);
         treeNodeTemplate.setId(ID_PREFIX + pathToCurrentNode);
-        treeNodeTemplate.setParent(this);
 
         this.setNodePath(pathToCurrentNode);
 
@@ -1465,7 +1464,6 @@ public class Tree extends UICommand implements NamingContainer {
                                                                         .getRoot());
         treeNodeTemplate.setMutable(currentNode);
         treeNodeTemplate.setId(ID_PREFIX + pathToCurrentNode);
-        treeNodeTemplate.setParent(this);
 
         this.setNodePath(pathToCurrentNode);
 
