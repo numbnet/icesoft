@@ -37,7 +37,7 @@ version: 2.6.0
 	border-color:#808080;
 	background-image: url(background.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;
-	margin:auto .25em;}
+	margin:auto .25em;
 	}
 	
 .rime .yui-button a{
