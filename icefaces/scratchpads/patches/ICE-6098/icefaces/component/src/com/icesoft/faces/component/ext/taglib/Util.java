@@ -88,6 +88,8 @@ public class Util extends Object {
      *         in one of these roles, false otherwise
      */
     public static boolean isRenderedOnUserRole(UIComponent component) {
+        //accelerate this code path not used by the application
+        if (true)  { return true;}
         String userRole;
         if (component instanceof IceExtended) {
             userRole = ((IceExtended) component).getRenderedOnUserRole();
