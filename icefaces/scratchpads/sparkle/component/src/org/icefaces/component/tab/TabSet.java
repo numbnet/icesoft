@@ -24,7 +24,7 @@ public class TabSet extends TabSetBase {
     throws AbortProcessingException {
         super.broadcast(event);
         if (event != null) {
-            ValueExpression ve = getValueExpression("index");
+            ValueExpression ve = getValueExpression("selectedIndex");
             if(isCancelOnInvalid()) {
                 getFacesContext().renderResponse();
             }

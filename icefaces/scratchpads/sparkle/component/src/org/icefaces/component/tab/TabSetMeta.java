@@ -49,26 +49,23 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 @ClientBehaviorHolder 
 public class TabSetMeta extends UIComponentBaseMeta {
     
-    @Property(defaultValue="false")    
+    @Property(defaultValue="false", tlddoc="The default value of this attribute is fals. If true then tab change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")    
     private Boolean immediate; 
     
-    @Property(defaultValue="0", tlddoc="index of the tabset")
+    @Property(defaultValue="0", tlddoc="This attribute represents index of the current selected tab")
     private Integer selectedIndex;
     
-    @Property(defaultValue="top", tlddoc="valid values are bottom, top, left and right")   
+    @Property(defaultValue="top", tlddoc="This attribute represents orientation of tabs. Valid values are bottom, top, left and right")   
     private String orientation;
     
-    @Property(defaultValue="false", tlddoc="default value is false, if true, all tabs and its contents will be render on client as well as tab change will happen on clinet. There will be no communication with server")       
+    @Property(defaultValue="false", tlddoc="This component supports both client and server side tab change modal. When this attribute is set to true, then contents of all tabs gets rendered on client and tabchange would also occur on client. If this attribute is set to false which is default then only current selected tab will get rendered to the client and tab change request will goto server to render requested tab, which allows to send dynamic contents back.")       
     private Boolean clientSide; 
    
-    @Property(defaultValue="false", tlddoc="default value is false, so in the case full submit will be use, where all component will be executed and rendered if true, then only this component will be executed and entire view will get rendered")
+    @Property(defaultValue="false", tlddoc="The default value of this attribute is false, so in this case full submit is being used, where all component gets rendered and executed. If this attribute is set to true, then only this component gets executed and entire view gets rendered")
     private Boolean singleSubmit;
     
-    @Property(defaultValue="true") 
+    @Property(defaultValue="true", tlddoc="This attribute comes into effect when there is a validation error. By default it is set to true, which means that if on a tab change there is a validation error, that error will be ignored and tab will be changed successfully and if this attribute is set to false then on a validation error tab will not be changed untill validation error gone.") 
     private Boolean cancelOnInvalid;    
-    
-    @Property (tlddoc="Allows to register client side callback that will be executed on every render cycle")   
-    private String onupdate;
     
     @Property (tlddoc="style class will be rendered on a root element of this component")
     private String styleClass;
@@ -79,9 +76,6 @@ public class TabSetMeta extends UIComponentBaseMeta {
     @Property(expression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
             tlddoc="on tabchange value change event can be captured using this listener")
     private MethodExpression tabChangeListener;
-    
-    @Property(defaultValue="false") 
-    private Boolean effectOnHover;  
     
     @Facets
     class FacetsMeta{

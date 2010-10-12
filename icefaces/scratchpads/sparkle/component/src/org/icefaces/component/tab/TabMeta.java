@@ -17,13 +17,9 @@ import org.icefaces.component.baseMeta.UICommandMeta;
         componentFamily="com.icesoft.faces.TabSet"
         )
 public class TabMeta extends UICommandMeta {
-    @Property   
+    @Property (tlddoc="This attribute represents Label of the tab")  
     private String label;
-    @Property   
-    private String dataSrc;
-    @Property   
-    private Boolean cacheData;
-    @Property   
+    @Property (tlddoc="If true then this tab will be disabled and can not be selected") 
     private Boolean disabled;    
     @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS)   
     private String id;    

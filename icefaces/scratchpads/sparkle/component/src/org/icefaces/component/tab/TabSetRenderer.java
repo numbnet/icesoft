@@ -125,8 +125,7 @@ public class TabSetRenderer extends Renderer{
         boolean isClientSide = tabSet.isClientSide();
         boolean singleSubmit = tabSet.isSingleSubmit();        
         int selectedIndex = tabSet.getSelectedIndex();
-        String onupdate = tabSet.getOnupdate();
-        boolean effectOnHover = tabSet.isEffectOnHover();
+
         
         StringBuilder call = new StringBuilder();
         call.append("ice.component.tabset.updateProperties('")
@@ -142,8 +141,6 @@ public class TabSetRenderer extends Renderer{
 	        .entry("isSingleSubmit", singleSubmit)
 	        .entry("isClientSide", isClientSide)
 	        .entry("aria", EnvUtils.isAriaEnabled(facesContext))
-	        .entry("hover", effectOnHover)
-	        .entry("effect", "")
 	        .entry("selectedIndex", selectedIndex).endMap().toString())
         .append(");");
        
