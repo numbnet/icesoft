@@ -1,3 +1,6 @@
+
+@import url('#{resource['org.icefaces.component.skins/sam_original/calendar-skin.css']}');
+
 /**
  * NOTE:
  * If this file defines a completely new skin, then uncomment the core styles
@@ -136,213 +139,213 @@ p#clear
 /* ----- BEGIN YUI SAM SKIN STYLING ----- */
 
 /* -- Calendar bounding box -- */
-.yui-skin-sam .yui-calcontainer
+.ice-skin-sam .yui-calcontainer
 {
 
 }
 
 /* -- Calendargroup bounding box -- */
-.yui-skin-sam .yui-calcontainer.multi
+.ice-skin-sam .yui-calcontainer.multi
 {
 
 }
 
 /* -- Bounding box for each calendar group page -- */
-.yui-skin-sam .yui-calcontainer.multi .groupcal
+.ice-skin-sam .yui-calcontainer.multi .groupcal
 {
 
 }
 
 /* -- Title bar -- */
-.yui-skin-sam .yui-calcontainer .title
+.ice-skin-sam .yui-calcontainer .title
 {
 	background-image: url(background.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;
 }
 
-.yui-skin-sam .yui-calcontainer.multi .title
+.ice-skin-sam .yui-calcontainer.multi .title
 {
 
 }
 
-.yui-skin-sam .yui-calcontainer.withtitle
+.ice-skin-sam .yui-calcontainer.withtitle
 {
 
 }
 
 /* -- Close button -- */
-.yui-skin-sam .yui-calcontainer .calclose
+.ice-skin-sam .yui-calcontainer .calclose
 {
 	background-image: url(close-button.png); /** sprite-ref: sprite; */
 	background-repeat: no-repeat;
 }
 
 /* -- Calendar table -- */
-.yui-skin-sam .yui-calendar
+.ice-skin-sam .yui-calendar
 {
 
 }
 
 /* -- Navbar bounding box -- */
-.yui-skin-sam .yui-calendar .calhead
+.ice-skin-sam .yui-calendar .calhead
 {
 
 }
 
 /* -- Navbar text container -- */
-.yui-skin-sam .yui-calendar .calheader
+.ice-skin-sam .yui-calendar .calheader
 {
 
 }
 
-.yui-skin-sam .yui-calendar .calheader img
+.ice-skin-sam .yui-calendar .calheader img
 {
 
 }
 
 /* -- Navbar left arrow -- */
-.yui-skin-sam .yui-calendar .calnavleft
+.ice-skin-sam .yui-calendar .calnavleft
 {
 	background-image: url(left-arrow.png); /** sprite-ref: sprite; */
 	background-repeat: no-repeat;
 }
 
 /* -- Navbar right arrow -- */
-.yui-skin-sam .yui-calendar .calnavright
+.ice-skin-sam .yui-calendar .calnavright
 {
 	background-image: url(right-arrow.png); /** sprite-ref: sprite; */
 	background-repeat: no-repeat;
 }
 
 /* -- Weekday header row -- */
-.yui-skin-sam .yui-calendar .calweekdayrow
+.ice-skin-sam .yui-calendar .calweekdayrow
 {
 
 }
 
-.yui-skin-sam .yui-calendar .calweekdayrow th
+.ice-skin-sam .yui-calendar .calweekdayrow th
 {
 
 }
 
 /* -- Weekday header cells -- */
-.yui-skin-sam .yui-calendar .calweekdaycell
+.ice-skin-sam .yui-calendar .calweekdaycell
 {
 
 }
 
 /* -- Calendar footer -- */
-.yui-skin-sam .yui-calendar .calfoot
+.ice-skin-sam .yui-calendar .calfoot
 {
 
 }
 
 /* -- Week numbers (row headers and footers) -- */
-.yui-skin-sam .yui-calendar .calrowhead,.yui-skin-sam .yui-calendar .calrowfoot
+.ice-skin-sam .yui-calendar .calrowhead,.ice-skin-sam .yui-calendar .calrowfoot
 {
 
 }
 
-.yui-skin-sam .yui-calendar .calrowhead
+.ice-skin-sam .yui-calendar .calrowhead
 {
 
 }
 
-.yui-skin-sam .yui-calendar .calrowfoot
+.ice-skin-sam .yui-calendar .calrowfoot
 {
 
 }
 
 /* -- Normal cells -- */
-.yui-skin-sam .yui-calendar td.calcell
+.ice-skin-sam .yui-calendar td.calcell
 {
 
 }
 
 /* -- Link inside normal cells -- */
-.yui-skin-sam .yui-calendar td.calcell a
+.ice-skin-sam .yui-calendar td.calcell a
 {
 
 }
 
 /* -- Today's date -- */
-.yui-skin-sam .yui-calendar td.calcell.today
+.ice-skin-sam .yui-calendar td.calcell.today
 {
 
 }
 
-.yui-skin-sam .yui-calendar td.calcell.today a
+.ice-skin-sam .yui-calendar td.calcell.today a
 {
 
 }
 
 /* -- OOM dates -- */
-.yui-skin-sam .yui-calendar td.calcell.oom
+.ice-skin-sam .yui-calendar td.calcell.oom
 {
 
 }
 
 /* -- Selected date -- */
-.yui-skin-sam .yui-calendar td.calcell.selected
+.ice-skin-sam .yui-calendar td.calcell.selected
 {
 
 }
 
-.yui-skin-sam .yui-calendar td.calcell.selected a
+.ice-skin-sam .yui-calendar td.calcell.selected a
 {
 
 }
 
 /* -- Hover date -- */
-.yui-skin-sam .yui-calendar td.calcell.calcellhover
+.ice-skin-sam .yui-calendar td.calcell.calcellhover
 {
 
 }
 
-.yui-skin-sam .yui-calendar td.calcell.calcellhover a
+.ice-skin-sam .yui-calendar td.calcell.calcellhover a
 {
 
 }
 
 /* -- Default OOB dates -- */
-.yui-skin-sam .yui-calendar td.calcell.previous
+.ice-skin-sam .yui-calendar td.calcell.previous
 {
 
 }
 
 /* -- Custom renderers -- */
-.yui-skin-sam .yui-calendar td.calcell.restricted
+.ice-skin-sam .yui-calendar td.calcell.restricted
 {
 
 }
 
-.yui-skin-sam .yui-calendar td.calcell.highlight1
+.ice-skin-sam .yui-calendar td.calcell.highlight1
 {
 
 }
 
-.yui-skin-sam .yui-calendar td.calcell.highlight2
+.ice-skin-sam .yui-calendar td.calcell.highlight2
 {
 
 }
 
-.yui-skin-sam .yui-calendar td.calcell.highlight3
+.ice-skin-sam .yui-calendar td.calcell.highlight3
 {
 
 }
 
-.yui-skin-sam .yui-calendar td.calcell.highlight4
+.ice-skin-sam .yui-calendar td.calcell.highlight4
 {
 
 }
 
 /* -- Month/year label -- */
-.yui-skin-sam .yui-calendar a.calnav
+.ice-skin-sam .yui-calendar a.calnav
 {
 
 }
 
-.yui-skin-sam .yui-calendar a.calnav:hover
+.ice-skin-sam .yui-calendar a.calnav:hover
 {
 	/* TODO: although the same image is used as the background image in the SAM skin, 
 	   their purposes are different. There should be another image called 
@@ -353,88 +356,88 @@ p#clear
 }
 
 /* -- Navigator mask -- */
-.yui-skin-sam .yui-calcontainer .yui-cal-nav-mask
+.ice-skin-sam .yui-calcontainer .yui-cal-nav-mask
 {
 
 }
 
 /* -- Navigator bounding box -- */
-.yui-skin-sam .yui-calcontainer .yui-cal-nav
+.ice-skin-sam .yui-calcontainer .yui-cal-nav
 {
 
 }
 
-.yui-skin-sam .yui-calcontainer.withtitle .yui-cal-nav
+.ice-skin-sam .yui-calcontainer.withtitle .yui-cal-nav
 {
 
 }
 
-.yui-skin-sam .yui-calcontainer.multi .yui-cal-nav
+.ice-skin-sam .yui-calcontainer.multi .yui-cal-nav
 {
 
 }
 
 /* -- Navigator year/month/button/error bounding blocks -- */
-.yui-skin-sam .yui-calcontainer .yui-cal-nav-y,.yui-skin-sam .yui-calcontainer .yui-cal-nav-m,.yui-skin-sam .yui-calcontainer .yui-cal-nav-b
+.ice-skin-sam .yui-calcontainer .yui-cal-nav-y,.ice-skin-sam .yui-calcontainer .yui-cal-nav-m,.ice-skin-sam .yui-calcontainer .yui-cal-nav-b
 {
 
 }
 
-.yui-skin-sam .yui-calcontainer .yui-cal-nav-b
+.ice-skin-sam .yui-calcontainer .yui-cal-nav-b
 {
 
 }
 
-.yui-skin-sam .yui-calcontainer .yui-cal-nav-e
+.ice-skin-sam .yui-calcontainer .yui-cal-nav-e
 {
 
 }
 
 /* -- Navigator labels -- */
-.yui-skin-sam .yui-calcontainer .yui-cal-nav label
+.ice-skin-sam .yui-calcontainer .yui-cal-nav label
 {
 
 }
 
 /* -- Navigator month control -- */
-.yui-skin-sam .yui-calcontainer .yui-cal-nav-mc
+.ice-skin-sam .yui-calcontainer .yui-cal-nav-mc
 {
 
 }
 
 /* -- Navigator month control, validation error -- */
-.yui-skin-sam .yui-calcontainer .yui-cal-nav-y input.yui-invalid
+.ice-skin-sam .yui-calcontainer .yui-cal-nav-y input.yui-invalid
 {
 
 }
 
 /* -- Navigator year control -- */
-.yui-skin-sam .yui-calcontainer .yui-cal-nav-yc
+.ice-skin-sam .yui-calcontainer .yui-cal-nav-yc
 {
 
 }
 
 /* -- Navigator button wrapper -- */
-.yui-skin-sam .yui-calcontainer .yui-cal-nav .yui-cal-nav-btn
+.ice-skin-sam .yui-calcontainer .yui-cal-nav .yui-cal-nav-btn
 {
 	background-image: url(background.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;
 }
 
 /* -- Button -- */
-.yui-skin-sam .yui-calcontainer .yui-cal-nav .yui-cal-nav-btn button
+.ice-skin-sam .yui-calcontainer .yui-cal-nav .yui-cal-nav-btn button
 {
 
 }
 
 /* -- Default buttons -- */
-.yui-skin-sam .yui-calcontainer .yui-cal-nav .yui-cal-nav-btn.yui-default
+.ice-skin-sam .yui-calcontainer .yui-cal-nav .yui-cal-nav-btn.yui-default
 {
 	background-image: url(background-highlight.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;
 }
 
-.yui-skin-sam .yui-calcontainer .yui-cal-nav .yui-cal-nav-btn.yui-default button
+.ice-skin-sam .yui-calcontainer .yui-cal-nav .yui-cal-nav-btn.yui-default button
 {
 
 }

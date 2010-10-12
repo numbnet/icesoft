@@ -206,7 +206,7 @@
 			<fileset dir="${resources}/${sprites.lib}" includes="**" />
 		</delete>
 		<delete includeemptydirs="true">
-			<fileset dir="${resources}/${skins.lib}" includes="**" />
+			<fileset dir="${resources}/${skins.lib}" includes="**" excludes="sam_original/**" />
 		</delete>
 		<delete file="cache.properties" />
 		
@@ -351,10 +351,11 @@
 		<!-- concatenate yui files in a temporary file -->
 		<concat destfile="${resources}/${skins.lib}/temp.css" append="true">
 			<filelist dir="${resources}">
-				<file name="yui/2_8_1/tabview/assets/skins/sam/tabview-skin.css" />
-				<file name="yui/2_8_1/button/assets/skins/sam/button-skin.css" />
-				<file name="yui/2_8_1/menu/assets/skins/sam/menu-skin.css" />
-				<file name="yui/3_1_1/slider/assets/skins/sam/slider-skin.css" />
+				<file name="org.icefaces.component.skins/sam_original/button-skin.css" />
+				<file name="org.icefaces.component.skins/sam_original/calendar-skin.css" />
+				<file name="org.icefaces.component.skins/sam_original/menu-skin.css" />
+				<file name="org.icefaces.component.skins/sam_original/slider-skin.css" />
+				<file name="org.icefaces.component.skins/sam_original/tabview-skin.css" />
 			</filelist>
 		</concat>
 		
