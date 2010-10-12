@@ -14,7 +14,7 @@ import org.icefaces.component.baseMeta.UIPanelMeta;
         componentFamily="com.icesoft.faces.TabSet"
         )
 public class TabSetControllerMeta extends UIPanelMeta {
-    @Property  
+    @Property (tlddoc="id of the tabset component") 
     private String For;
     
 }
