@@ -25,8 +25,8 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
 
     <portlet>
-        <portlet-name>ice2-chat</portlet-name>
-        <display-name>ICEfaces 2 Chat Portlet</display-name>
+        <portlet-name>chat-ice2-portlet</portlet-name>
+        <display-name>Chat</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
@@ -37,9 +37,9 @@
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>ICEfaces 2 Chat Portlet</title>
-            <short-title>ICEfaces 2 Chat Portlet</short-title>
-            <keywords>icefaces portlet chat</keywords>
+            <title>ICEfaces 2 Chat</title>
+            <short-title>ICEfaces 2 Chat</short-title>
+            <keywords>icefaces portlet chat icepush</keywords>
         </portlet-info>
     </portlet>
 

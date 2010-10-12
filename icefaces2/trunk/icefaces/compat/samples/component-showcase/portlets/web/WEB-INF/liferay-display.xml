@@ -24,7 +24,7 @@
 
 <display>
 
-    <category name="ICEfaces 2">
+    <category name="ICEfaces2">
     
         <category name="Input">
             <portlet id="buttonsAndLinks"/>
