@@ -51,7 +51,7 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
     private static Logger log = Logger.getLogger("org.icefaces.resourcedispatcher");
     private static final Pattern ICEfacesBridgeRequestPattern = Pattern.compile(".*\\.icefaces\\.jsf$");
     private static final Pattern ICEfacesResourceRequestPattern = Pattern.compile(".*/icefaces/.*");
-    private static final String RESOURCE_PREFIX = "icefaces/resource";
+    private static final String RESOURCE_PREFIX = "/icefaces/resource";
     private static final DynamicResourceLinker.Handler NOOPHandler = new DynamicResourceLinker.Handler() {
         public void linkWith(DynamicResourceLinker linker) {
             //do nothing!
