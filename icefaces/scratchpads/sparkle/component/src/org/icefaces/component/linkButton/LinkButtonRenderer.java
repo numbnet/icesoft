@@ -48,7 +48,13 @@ public class LinkButtonRenderer extends Renderer {
         //writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);
-        writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-link-button", null);
+        String styleClass = "yui-button yui-link-button";
+        String temp;
+        if ((temp = linkButton.getStyleClass()) != null) {
+            styleClass += " " + temp;
+        } 
+        writer.writeAttribute(HTML.STYLE_CLASS_ATTR, styleClass, null);
+
         String style = linkButton.getStyle();
         if (style != null && style.trim().length() > 0) {
             writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
@@ -60,7 +66,6 @@ public class LinkButtonRenderer extends Renderer {
         writer.writeAttribute(HTML.ID_ATTR, "first-child", null);
 
         // button element
-        String temp;
         writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
 
         // Uncomment this for the so - called inline model onclick handler 
@@ -73,9 +78,7 @@ public class LinkButtonRenderer extends Renderer {
         if ((temp = linkButton.getHrefLang()) != null) {
             writer.writeAttribute(HTML.HREFLANG_ATTR, temp, null );  
         }
-        if ((temp = linkButton.getStyleClass()) != null) {
-            writer.writeAttribute(HTML.STYLE_CLASS_ATTR, temp, null);
-        } 
+
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
