@@ -259,7 +259,7 @@ if (!window.ice.icefaces) {
             });
         };
 
-        namespace.enablePartialSubmit = function(id) {
+        namespace.enableSingleSubmit = function(id) {
             var f = document.getElementById(id);
             var doSubmit = function(ev)  {
                 var e = $event(ev, f);

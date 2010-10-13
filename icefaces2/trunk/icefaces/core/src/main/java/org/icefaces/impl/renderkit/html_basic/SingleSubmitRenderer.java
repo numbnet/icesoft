@@ -6,7 +6,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 
-public class PartialSubmitRenderer extends Renderer {
+public class SingleSubmitRenderer extends Renderer {
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component)
@@ -17,7 +17,7 @@ public class PartialSubmitRenderer extends Renderer {
         writer.writeAttribute("id", component.getClientId(), "id");
         writer.startElement("script", component);
         writer.writeAttribute("type", "text/javascript", "type");
-        writer.writeText("ice.enablePartialSubmit('" + parentId + "');", component, null);
+        writer.writeText("ice.enableSingleSubmit('" + parentId + "');", component, null);
         writer.endElement("script");
         writer.endElement("div");
     }
