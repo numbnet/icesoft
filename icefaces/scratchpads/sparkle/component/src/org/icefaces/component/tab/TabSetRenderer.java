@@ -60,6 +60,10 @@ public class TabSetRenderer extends Renderer{
         String clientId = uiComponent.getClientId(facesContext);
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+        String style = tabSet.getStyle();
+        if(style != null){
+        	writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+        }        
     }
     
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent)
