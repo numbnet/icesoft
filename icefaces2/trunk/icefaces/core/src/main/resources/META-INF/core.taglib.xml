@@ -56,10 +56,10 @@
             <type>java.lang.Boolean</type>
         </attribute>        
     <tag>
-        <tag-name>partialSubmit</tag-name>
+        <tag-name>singleSubmit</tag-name>
         <component>
             <component-type>javax.faces.Output</component-type>
-            <renderer-type>org.icefaces.partialSubmit</renderer-type>
+            <renderer-type>org.icefaces.singleSubmit</renderer-type>
         </component>
     </tag>
     </tag>

@@ -79,8 +79,8 @@
     <render-kit>
         <renderer>
             <component-family>javax.faces.Output</component-family>
-            <renderer-type>org.icefaces.partialSubmit</renderer-type>
-            <renderer-class>org.icefaces.impl.renderkit.html_basic.PartialSubmitRenderer</renderer-class>
+            <renderer-type>org.icefaces.singleSubmit</renderer-type>
+            <renderer-class>org.icefaces.impl.renderkit.html_basic.SingleSubmitRenderer</renderer-class>
         </renderer>
     </render-kit>
 </faces-config>
