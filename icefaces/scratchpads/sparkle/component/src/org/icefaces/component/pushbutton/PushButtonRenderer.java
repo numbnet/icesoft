@@ -19,9 +19,7 @@ import org.icefaces.util.EnvUtils;
 public class PushButtonRenderer extends Renderer {
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
-      if (uiComponent.isRendered()){ 
     	Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
-        if (requestParameterMap.containsKey("ice.event.captured")) {
             PushButton pushButton = (PushButton) uiComponent;
             String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
             String clientId = pushButton.getClientId();
@@ -34,13 +32,10 @@ public class PushButtonRenderer extends Renderer {
              	   }
                 } catch (Exception e) {}
              }
-        }
-      }
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
-      if (uiComponent.isRendered()){	
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         PushButton pushButton = (PushButton) uiComponent;
@@ -65,13 +60,11 @@ public class PushButtonRenderer extends Renderer {
 		writer.writeAttribute(HTML.ID_ATTR, clientId+"_button", null);		
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
 		writer.write(pushButton.getLabel());
-		writer.endElement(HTML.SPAN_ELEM);		
-      }
+		writer.endElement(HTML.SPAN_ELEM);
     }
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
-      if (uiComponent.isRendered()){
         ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = uiComponent.getClientId(facesContext);
 		PushButton pushButton = (PushButton) uiComponent;
@@ -89,6 +82,8 @@ public class PushButtonRenderer extends Renderer {
 	   // need to worry if label isn't set?
 	    builder = JSONBuilder.create().beginMap().
 	    entry("type", "button").
+        entry("disabled", pushButton.isDisabled()).
+        entry("tabindex", pushButton.getTabindex()).
 	    entry("label", label).endMap().toString();
 
 	    String params = "'" + clientId + "'," +
@@ -96,17 +91,14 @@ public class PushButtonRenderer extends Renderer {
            + "," +
            JSONBuilder.create().
            beginMap().
-               entry("disabled", pushButton.isDisabled()).
-               entry("tabindex", pushButton.getTabindex()).
                entry("singleSubmit", pushButton.isSingleSubmit()).
                entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext)).
            endMap().toString();
-          System.out.println("params = " + params);	    
+ //         System.out.println("params = " + params);	    
 
         String finalScript = "ice.component.pushbutton.updateProperties(" + params + ");";
         ScriptWriter.insertScript(facesContext, uiComponent,finalScript);
             
         writer.endElement(HTML.DIV_ELEM);
     }
-  }
 }
