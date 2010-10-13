@@ -1,5 +1,5 @@
 
-.yui-skin-sam .iceInpFile {
+.ice-skin-sam .iceInpFile {
     border: 1px solid #ABABAB;
     background-color: #FFFFFF;
     margin: 2px;
@@ -10,7 +10,7 @@
 	overflow: hidden;
 }
 
-.yui-skin-sam .iceInpFile-dis {
+.ice-skin-sam .iceInpFile-dis {
     border: 1px solid #CCCCCC;
     background-color: #FFFFFF;
     margin: 2px;
