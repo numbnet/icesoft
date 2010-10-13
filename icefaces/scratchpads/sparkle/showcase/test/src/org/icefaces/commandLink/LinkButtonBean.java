@@ -1,16 +1,11 @@
 package org.icefaces.commandLink;
 
-import org.icefaces.component.commandlink.CommandLink;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 
 import javax.faces.bean.ViewScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
-import javax.faces.component.UIComponent;
 
 
 @ManagedBean (name="linkBean")
