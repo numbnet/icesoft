@@ -60,7 +60,7 @@
                 <tr>
                     <th class="spacerColumn"></th>
                     <!-- Item Name column, sortable  -->
-                    <util:columnSorter
+                    <util:columnSorter id="nameHdr"
                             ascending="#{auctionBean.ascending}"
                             sortColumn="#{auctionBean.sortColumn}"
                             columnName="#{auctionBean.itemNameColumn}"
@@ -70,7 +70,7 @@
                                           type="org.icefaces.demo.auction.view.components.ColumnSorter.ColumnSortCommand"/>
                     </util:columnSorter>
                     <!-- Price column, sortable  -->
-                    <util:columnSorter
+                    <util:columnSorter id="pricHdr"
                             ascending="#{auctionBean.ascending}"
                             sortColumn="#{auctionBean.sortColumn}"
                             columnName="#{auctionBean.priceColumn}"
@@ -80,7 +80,7 @@
                                           type="org.icefaces.demo.auction.view.components.ColumnSorter.ColumnSortCommand"/>
                     </util:columnSorter>
                     <!-- Bids column, sortable  -->
-                    <util:columnSorter
+                    <util:columnSorter id="bidHdr"
                             ascending="#{auctionBean.ascending}"
                             sortColumn="#{auctionBean.sortColumn}"
                             columnName="#{auctionBean.bidsColumn}"
@@ -90,7 +90,7 @@
                                           type="org.icefaces.demo.auction.view.components.ColumnSorter.ColumnSortCommand"/>
                     </util:columnSorter>
                     <!-- Time Left, sortable  -->
-                    <util:columnSorter
+                    <util:columnSorter id="timeHdr"
                             ascending="#{auctionBean.ascending}"
                             sortColumn="#{auctionBean.sortColumn}"
                             columnName="#{auctionBean.timeLeftColumn}"
