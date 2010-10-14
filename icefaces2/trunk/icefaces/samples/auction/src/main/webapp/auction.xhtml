@@ -113,7 +113,7 @@
                            var="auctionItem">
                     <tr class="#{status.even?'even':'odd'} #{auctionItem.showExtendedDescription?'expanded':''}">
                         <!-- contract/expand arrow graphic, toggles extend auction item decription visiblity -->
-                        <td id="td1" valign="top">
+                        <td id="row_#{status.index}_td1" valign="top">
                             <h:commandLink
                                     actionListener="#{auctionController.toggleExtendedDescription}"
                                     immediate="true">
@@ -125,9 +125,9 @@
                             </h:commandLink>
                         </td>
                         <!-- name of the auction item. -->
-                        <td id="td2" valign="top">#{auctionItem.auctionItem.name}</td>
+                        <td id="row_#{status.index}_td2" valign="top">#{auctionItem.auctionItem.name}</td>
                         <!-- current price of the auction item. -->
-                        <td id="td3" align="right" valign="top">
+                        <td id="row_#{status.index}_td3" align="right" valign="top">
                             <h:outputText id="iprice"
                                     value="#{auctionItem.auctionItem.price}"
                                     styleClass="#{auctionItem.newBidPrice?'newBid':''}">
@@ -136,10 +136,10 @@
                             </h:outputText>
                         </td>
                         <!-- number of bids made on this item.-->
-                        <td id="td4" align="center"
+                        <td id="row_#{status.index}_td4" align="center"
                             valign="top">#{auctionItem.auctionItem.bids}</td>
                         <!-- expires column value,-->
-                        <td id="td5" valign="top">
+                        <td id="row_#{status.index}_td5" valign="top">
                             <h:graphicImage id="ltime" style="margin-right:5px;"
                                             width="15" height="15"
                                             library="css/images"
@@ -152,7 +152,7 @@
                             </h:outputText>
                         </td>
                         <!-- bid column. -->
-                        <td id="td6" valign="top">
+                        <td id="row_#{status.index}_td6" valign="top">
                             <!-- command button to enable a auction bid-->
                             <h:commandLink id="bidlnk"
                                     rendered="#{not auctionItem.showBidInput}"
