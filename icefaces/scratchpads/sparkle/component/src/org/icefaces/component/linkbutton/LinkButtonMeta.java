@@ -1,4 +1,4 @@
-package org.icefaces.component.linkButton;
+package org.icefaces.component.linkbutton;
 
 import javax.faces.component.UIComponent;
 import javax.el.MethodExpression;
@@ -12,12 +12,12 @@ import org.icefaces.component.baseMeta.UICommandMeta;
 
 @Component(
         tagName ="linkButton",
-        componentClass ="org.icefaces.component.linkButton.LinkButton",
-        rendererClass ="org.icefaces.component.linkButton.LinkButtonRenderer",
+        componentClass ="org.icefaces.component.linkbutton.LinkButton",
+        rendererClass ="org.icefaces.component.linkbutton.LinkButtonRenderer",
         componentType = "org.icefaces.LinkButton",
         rendererType = "org.icefaces.LinkButtonRenderer",
         extendsClass = "javax.faces.component.UICommand",
-        generatedClass = "org.icefaces.component.linkButton.LinkButtonBase",
+        generatedClass = "org.icefaces.component.linkbutton.LinkButtonBase",
         componentFamily="com.icesoft.faces.LinkButton"
 )
 

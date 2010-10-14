@@ -1,4 +1,4 @@
-package org.icefaces.component.linkButton;
+package org.icefaces.component.linkbutton;
 
 import java.io.IOException;
 import java.util.*;
