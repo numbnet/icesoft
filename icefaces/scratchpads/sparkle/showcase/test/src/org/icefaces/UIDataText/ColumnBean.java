@@ -1,6 +1,6 @@
 package org.icefaces.UIDataText;
 
-import org.icefaces.component.linkButton.LinkButton;
+import org.icefaces.component.linkbutton.LinkButton;
 
 import java.io.Serializable;
 import java.util.ArrayList;
