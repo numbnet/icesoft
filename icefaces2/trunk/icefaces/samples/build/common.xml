@@ -24,6 +24,7 @@
 
     <property name="icefaces.base.dir" location="../.."/>
     <property name="lib.dir" location="${icefaces.base.dir}/lib"/>
+    <property name="lib.myfaces.dir" location="${lib.dir}/myfaces"/>
     <property name="lib.compat.dir" location="${icefaces.base.dir}/compat/lib"/>
 
     <property name="java.dir" location="./src/main/java"/>
@@ -43,9 +44,6 @@
 	        <exclude name="jsf-api.jar"   unless="jsf"/>
 	        <exclude name="jsf-impl.jar"  unless="jsf"/>
 	    </patternset>
-            <patternset id="lib.distribute.myfaces" includes="myfaces-*">
-                <exclude name="myfaces-*"   unless="myfaces"/>
-            </patternset>
 
 	    <patternset id="lib.distribute.ice" includes="icefaces.jar icepush.jar">
 	        <exclude name="icefaces.jar" unless="ice"/>
@@ -96,6 +94,9 @@
              webxml="${web.dir}/WEB-INF/web.xml">
             <lib dir="${lib.dir}">
                 <patternset refid="lib.distribute"/>
+            </lib>
+            <lib dir="${lib.myfaces.dir}">
+                <selector if="myfaces"/>
             </lib>
             <lib dir="${lib.compat.dir}">
                 <patternset refid="lib.distribute.compat"/>
