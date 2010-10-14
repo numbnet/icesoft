@@ -98,8 +98,10 @@ public class BridgeSetup implements SystemEventListener {
             DOMRenderKit drk = (DOMRenderKit) rk;
             List<ExternalScript> scriptRenderers = drk.getCustomRenderScripts();
             String contextParamName;
-            String value; 
+            String value = "";
+            int i=0;
             for (ExternalScript es: scriptRenderers) {
+                i++;
                 contextParamName = es.contextParam();
                 boolean insertHere = true;
                 // If present, the context param must be true for rendering
@@ -109,7 +111,11 @@ public class BridgeSetup implements SystemEventListener {
                     insertHere = (value != null && !value.equalsIgnoreCase(""));
                 }
                 if (insertHere) {
-                    root.addComponentResource(context, new GenericScriptWriter( es.scriptURL() ), "head");
+                    UIOutput externalScript = new GenericScriptWriter( 
+                        es.scriptURL() + value );
+                    externalScript.setTransient(true);
+                    externalScript.setId("external-script-" + i);
+                    root.addComponentResource(context, externalScript, "head");
                 }
             }
         }
