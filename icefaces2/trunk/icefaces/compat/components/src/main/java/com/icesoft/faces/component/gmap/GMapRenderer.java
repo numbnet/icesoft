@@ -36,7 +36,10 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
 import com.icesoft.util.pooling.ClientIdPool;
+import org.icefaces.render.ExternalScript;
 
+@ExternalScript(scriptURL="http://maps.google.com/maps?file=api&v=2&key=", 
+    contextParam="com.icesoft.faces.gmapKey" )
 public class GMapRenderer extends DomBasicRenderer{
 	
     public boolean getRendersChildren() {
