@@ -53,10 +53,10 @@
             along with an expandable display to build a datatTablue using
             <ui:repeat/>
         -->
-        <div class="auctionMonitorContainer">
-            <table class="auctionMontiorTable"
+        <div id="amCntn" class="auctionMonitorContainer">
+            <table id="amTbl" class="auctionMontiorTable"
                    cellpadding="0" cellspacing="0" border="0">
-                <thead>
+                <thead id="thd">
                 <tr>
                     <th class="spacerColumn"></th>
                     <!-- Item Name column, sortable  -->
@@ -103,17 +103,17 @@
                     <th class="actionColumn">#{msgs['auction.table.header.action']}</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbdy">
                 <!-- Main repeat used to build out each row of the auction dislay, similar to h:dataTable
                     but give use more flexibility on what we can insert as content and we get to use
                     colspan and rowspan if needed.
                 -->
-                <ui:repeat value="#{auctionBean.auctionItems}"
+                <ui:repeat id="rpt1" value="#{auctionBean.auctionItems}"
                            varStatus="status"
                            var="auctionItem">
                     <tr class="#{status.even?'even':'odd'} #{auctionItem.showExtendedDescription?'expanded':''}">
                         <!-- contract/expand arrow graphic, toggles extend auction item decription visiblity -->
-                        <td valign="top">
+                        <td id="td1" valign="top">
                             <h:commandLink
                                     actionListener="#{auctionController.toggleExtendedDescription}"
                                     immediate="true">
@@ -125,10 +125,10 @@
                             </h:commandLink>
                         </td>
                         <!-- name of the auction item. -->
-                        <td valign="top">#{auctionItem.auctionItem.name}</td>
+                        <td id="td2" valign="top">#{auctionItem.auctionItem.name}</td>
                         <!-- current price of the auction item. -->
-                        <td align="right" valign="top">
-                            <h:outputText
+                        <td id="td3" align="right" valign="top">
+                            <h:outputText id="iprice"
                                     value="#{auctionItem.auctionItem.price}"
                                     styleClass="#{auctionItem.newBidPrice?'newBid':''}">
                                 <f:convertNumber type="currency"
@@ -136,29 +136,29 @@
                             </h:outputText>
                         </td>
                         <!-- number of bids made on this item.-->
-                        <td align="center"
+                        <td id="td4" align="center"
                             valign="top">#{auctionItem.auctionItem.bids}</td>
                         <!-- expires column value,-->
-                        <td valign="top">
-                            <h:graphicImage style="margin-right:5px;"
+                        <td id="td5" valign="top">
+                            <h:graphicImage id="ltime" style="margin-right:5px;"
                                             width="15" height="15"
                                             library="css/images"
                                             name="time_left_#{auctionItem.timeLeftType}.gif"
                                             title="#{msgs['auction.item.timeLeft']}"
                                             alt="#{msgs['auction.item.timeLeft']}"/>
-                            <h:outputText value="#{auctionItem}">
-                                <f:converter
+                            <h:outputText id="otime" value="#{auctionItem}">
+                                <f:converter id="ctime"
                                         converterId="auctionItemDateConverter"/>
                             </h:outputText>
                         </td>
                         <!-- bid column. -->
-                        <td valign="top">
+                        <td id="td6" valign="top">
                             <!-- command button to enable a auction bid-->
-                            <h:commandLink
+                            <h:commandLink id="bidlnk"
                                     rendered="#{not auctionItem.showBidInput}"
                                     actionListener="#{auctionController.toggleBidInput}"
                                     immediate="true">
-                                <h:graphicImage width="60" height="21"
+                                <h:graphicImage id="bidImg" width="60" height="21"
                                                 library="css/images"
                                                 name="button_bid.gif"
                                                 alt="#{msgs['auction.bid.showBid']}"
@@ -174,18 +174,18 @@
                                             validatorId="auctionItemBidValidator"/>
                                 </h:inputText>
                                 <!-- palce bid command -->
-                                <h:commandLink
+                                <h:commandLink id="bidSub"
                                         actionListener="#{auctionController.placeBid}">
-                                    <h:graphicImage width="15" height="15"
+                                    <h:graphicImage id="subImg" width="15" height="15"
                                                     library="css/images"
                                                     name="button_bid_accept.gif"
                                                     alt="#{msgs['auction.bid.makeBid']}"
                                                     title="#{msgs['auction.bid.makeBid']}"/>
                                 </h:commandLink>
                                 <!-- cancel/hide bid. -->
-                                <h:commandLink immediate="true"
+                                <h:commandLink id="bidCncl" immediate="true"
                                                actionListener="#{auctionController.toggleBidInput}">
-                                    <h:graphicImage width="15" height="15"
+                                    <h:graphicImage id="cnclImg" width="15" height="15"
                                                     library="css/images"
                                                     name="button_bid_decline.gif"
                                                     alt="#{msgs['auction.bid.hideBid']}"
