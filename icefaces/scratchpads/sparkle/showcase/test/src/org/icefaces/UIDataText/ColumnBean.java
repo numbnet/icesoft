@@ -1,7 +1,6 @@
 package org.icefaces.UIDataText;
 
-import org.icefaces.component.commandlink.CommandLink;
-import org.icefaces.UIDataText.StyleHolder;
+import org.icefaces.component.linkButton.LinkButton;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class ColumnBean implements Serializable {
     public void incrementStyleIndex(ActionEvent e) {
 
         UIComponent uic = e.getComponent();
-        CommandLink cl = (CommandLink) uic;
+        LinkButton cl = (LinkButton) uic;
         int index = styleIndex++ % styleData.size();
         String newStyle = styleData.get( index ).toString();
         cl.setStyle( newStyle );
@@ -62,7 +61,7 @@ public class ColumnBean implements Serializable {
     public void incrementStyleIndex2(ActionEvent e) {
 
         UIComponent uic = e.getComponent();
-        CommandLink cl = (CommandLink) uic;
+        LinkButton cl = (LinkButton) uic;
         int index = styleIndex2++ % styleData2.size();
         String newStyle = styleData2.get( index ).toString();
         cl.setStyle( newStyle );
@@ -73,7 +72,7 @@ public class ColumnBean implements Serializable {
     public void incrementStyleIndex3(ActionEvent e) {
 
         UIComponent uic = e.getComponent();
-        CommandLink cl = (CommandLink) uic;
+        LinkButton cl = (LinkButton) uic;
         int index = styleIndex3++ % styleData3.size();
         String newStyle = styleData3.get( index ).toString();
         cl.setStyle( newStyle );
