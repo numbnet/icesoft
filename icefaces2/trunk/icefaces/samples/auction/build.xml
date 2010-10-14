@@ -20,15 +20,10 @@
   ~
   -->
 
-<project name="auction" default="war.jsf.ice.push">
-
+<project name="auction" default="war">
+    
     <property file="./build.properties"/>
-    
-    <property name="icefaces.base.dir" 
-    		      location="../../"/>
-    
-    <property name="common.build.file"
-              location="${icefaces.base.dir}\\samples\\build\\common.xml"/>
-    <import file="${common.build.file}"/>
-
+    <property file="../build/build.properties"/>
+    <import file="../build/common.xml"/>
+        
 </project>
