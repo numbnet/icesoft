@@ -34,34 +34,34 @@
     </h:outputText>
     <h:outputText value=" (0-based 24-hour)"/>
     <h:form id="calForm2">
-        <ice:dateTimeSelector id="calendar1" value="#{calendarBean.selectedDate}"
+        <ice:dateTimeEntry id="calendar1" value="#{calendarBean.selectedDate}"
                              renderAsPopup="#{calendarBean.renderAsPopup}"
                              renderInputField="#{calendarBean.renderInputField}"
                              singleSubmit="#{calendarBean.singleSubmit}"
                              rendered="#{calendarBean.pattern == 'MM/dd/yyyy'}">
             <f:convertDateTime pattern="MM/dd/yyyy" timeZone="Canada/Mountain"/>
-        </ice:dateTimeSelector>
-        <ice:dateTimeSelector id="calendar2" value="#{calendarBean.selectedDate}"
+        </ice:dateTimeEntry>
+        <ice:dateTimeEntry id="calendar2" value="#{calendarBean.selectedDate}"
                              renderAsPopup="#{calendarBean.renderAsPopup}"
                              renderInputField="#{calendarBean.renderInputField}"
                              singleSubmit="#{calendarBean.singleSubmit}"
                              rendered="#{calendarBean.pattern == 'MMM/dd/yyyy HH:mm'}">
             <f:convertDateTime pattern="MMM/dd/yyyy HH:mm" timeZone="Canada/Mountain"/>
-        </ice:dateTimeSelector>
-        <ice:dateTimeSelector id="calendar3" value="#{calendarBean.selectedDate}"
+        </ice:dateTimeEntry>
+        <ice:dateTimeEntry id="calendar3" value="#{calendarBean.selectedDate}"
                              renderAsPopup="#{calendarBean.renderAsPopup}"
                              renderInputField="#{calendarBean.renderInputField}"
                              singleSubmit="#{calendarBean.singleSubmit}"
                              rendered="#{calendarBean.pattern == 'MMM/dd/yyyy hh:mm a'}">
             <f:convertDateTime pattern="MMM/dd/yyyy hh:mm a" timeZone="Canada/Mountain"/>
-        </ice:dateTimeSelector>
-        <ice:dateTimeSelector id="calendar4" value="#{calendarBean.selectedDate}"
+        </ice:dateTimeEntry>
+        <ice:dateTimeEntry id="calendar4" value="#{calendarBean.selectedDate}"
                              renderAsPopup="#{calendarBean.renderAsPopup}"
                              renderInputField="#{calendarBean.renderInputField}"
                              singleSubmit="#{calendarBean.singleSubmit}"
                              rendered="#{calendarBean.pattern == 'MMM/dd/yyyy KK:mm a'}">
             <f:convertDateTime pattern="MMM/dd/yyyy KK:mm a" timeZone="Canada/Mountain"/>
-        </ice:dateTimeSelector>
+        </ice:dateTimeEntry>
     </h:form>
     <div style="height:350px"/>
     <a href="index.html">Goto Main page</a>

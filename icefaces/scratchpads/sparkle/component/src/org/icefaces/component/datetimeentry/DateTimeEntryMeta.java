@@ -1,4 +1,4 @@
-package org.icefaces.component.datetimeselector;
+package org.icefaces.component.datetimeentry;
 
 import org.icefaces.component.annotation.*;
 import org.icefaces.component.annotation.ClientBehaviorHolder;
@@ -7,18 +7,18 @@ import javax.faces.application.ResourceDependency;
 
 import org.icefaces.component.baseMeta.UIInputMeta;
 
-@Component(componentClass = "org.icefaces.component.datetimeselector.DateTimeSelector",
-        tagName = "dateTimeSelector",
+@Component(componentClass = "org.icefaces.component.datetimeentry.DateTimeEntry",
+        tagName = "dateTimeEntry",
         extendsClass = "javax.faces.component.UIInput",
-        componentFamily = "javax.faces.Input",
-        componentType = "org.icefaces.DateTimeSelector",
-        rendererClass = "org.icefaces.component.datetimeselector.DateTimeSelectorRenderer",
-        rendererType = "org.icefaces.Calendar",
-        generatedClass = "org.icefaces.component.datetimeselector.DateTimeSelectorBase"
+        componentFamily = "org.icefaces.component.DateTimeEntry",
+        componentType = "org.icefaces.DateTimeEntry",
+        rendererClass = "org.icefaces.component.datetimeentry.DateTimeEntryRenderer",
+        rendererType = "org.icefaces.DateTimeEntry",
+        generatedClass = "org.icefaces.component.datetimeentry.DateTimeEntryBase"
 )
 
 @ResourceDependencies({
-        @ResourceDependency(name = "container.css", library = "org.icefaces.component.datetimeselector"),
+        @ResourceDependency(name = "container.css", library = "org.icefaces.component.datetimeentry"),
         @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
     	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
     	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
@@ -41,10 +41,10 @@ import org.icefaces.component.baseMeta.UIInputMeta;
         @ResourceDependency(library = "yui/2_8_1", name = "selector/selector-min.js"),
         @ResourceDependency(library = "yui/2_8_1", name = "datasource/datasource-min.js"),
         @ResourceDependency(library = "yui/2_8_1", name = "json/json-min.js"),
-        @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.datetimeselector")
+        @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.datetimeentry")
 })
 @ClientBehaviorHolder 
-public class DateTimeSelectorMeta extends UIInputMeta {
+public class DateTimeEntryMeta extends UIInputMeta {
     @Property(defaultValue = "false", tlddoc = "Whether to render a text input field for a popup calendar.")
     private Boolean renderInputField;
 

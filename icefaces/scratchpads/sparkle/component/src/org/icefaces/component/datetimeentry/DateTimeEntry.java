@@ -1,21 +1,18 @@
-package org.icefaces.component.datetimeselector;
+package org.icefaces.component.datetimeentry;
 
 import javax.faces.convert.DateTimeConverter;
 import javax.faces.convert.Converter;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.component.UIOutput;
 import java.util.TimeZone;
 import java.util.Locale;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.io.IOException;
 
-public class DateTimeSelector extends DateTimeSelectorBase {
+public class DateTimeEntry extends DateTimeEntryBase {
     
     // Copied from 1.8.2
     /**
-     * To properly function, dateTimeSelector needs to use the same timezone
+     * To properly function, dateTimeEntry needs to use the same timezone
      * in the inputText field as well as the calendar, which is accomplished
      * by using a javax.faces.convert.DateTimeConverter, which provides
      * the required Converter behaviours, as we as gives access to its

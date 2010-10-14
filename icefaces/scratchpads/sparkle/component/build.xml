@@ -231,12 +231,12 @@
 		<mapnosprites library="org.icefaces.component.checkbox" dir="src\org\icefaces\component\checkbox\skins" skin="sam" /> 
 		<mapnosprites library="org.icefaces.component.radiobutton" dir="src\org\icefaces\component\radiobutton\skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.linkbutton" dir="src\org\icefaces\component\linkbutton\skins" skin="sam" />
-		<mapnosprites library="org.icefaces.component.datetimeselector" dir="src\org\icefaces\component\datetimeselector\skins" skin="sam" />
+		<mapnosprites library="org.icefaces.component.datetimeentry" dir="src\org\icefaces\component\datetimeentry\skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.slider" dir="src\org\icefaces\component\slider\skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.tab" dir="src\org\icefaces\component\tab\skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.inputFiles" dir="src\org\icefaces\component\inputFiles\skins" skin="sam" />
 		
-		<mapnosprites library="org.icefaces.component.datetimeselector" dir="src\org\icefaces\component\datetimeselector\skins" skin="rime" />
+		<mapnosprites library="org.icefaces.component.datetimeentry" dir="src\org\icefaces\component\datetimeentry\skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.checkbox" dir="src\org\icefaces\component\checkbox\skins" skin="rime" />  
 		<mapnosprites library="org.icefaces.component.radiobutton" dir="src\org\icefaces\component\radiobutton\skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.linkbutton" dir="src\org\icefaces\component\linkbutton\skins" skin="rime" />
@@ -279,12 +279,12 @@
 		<includeresources dir="src\org\icefaces\component\checkbox\skins" name="checkbox" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\radiobutton\skins" name="radiobutton" skin="sam" />
  		<includeresources dir="src\org\icefaces\component\linkbutton\skins" name="linkbutton" skin="sam" />
-		<includeresources dir="src\org\icefaces\component\datetimeselector\skins" name="calendar" skin="sam" />
+		<includeresources dir="src\org\icefaces\component\datetimeentry\skins" name="calendar" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\slider\skins" name="slider" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\tab\skins" name="tabset" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\inputFiles\skins" name="inputfiles" skin="sam" />
 		
-		<includeresources dir="src\org\icefaces\component\datetimeselector\skins" name="calendar" skin="rime" />
+		<includeresources dir="src\org\icefaces\component\datetimeentry\skins" name="calendar" skin="rime" />
 		<includeresources dir="src\org\icefaces\component\tab\skins" name="tabset" skin="rime" />
 		<includeresources dir="src\org\icefaces\component\inputFiles\skins" name="inputfiles" skin="rime" />
 		<includeresources dir="src\org\icefaces\component\checkbox\skins" name="checkbox" skin="rime" />
@@ -310,12 +310,12 @@
 		<mapsprites library="org.icefaces.component.checkbox" name="checkbox" skin="sam" /> 
 		<mapsprites library="org.icefaces.component.radiobutton" name="radiobutton" skin="sam" />
 		<mapsprites library="org.icefaces.component.linkbutton" name="linkbutton" skin="sam" />
-		<mapsprites library="org.icefaces.component.datetimeselector" name="calendar" skin="sam" />
+		<mapsprites library="org.icefaces.component.datetimeentry" name="calendar" skin="sam" />
 		<mapsprites library="org.icefaces.component.slider" name="slider" skin="sam" />
 		<mapsprites library="org.icefaces.component.tab" name="tabset" skin="sam" />
 		<mapsprites library="org.icefaces.component.inputFiles" name="inputfiles" skin="sam" />
 		
-		<mapsprites library="org.icefaces.component.datetimeselector" name="calendar" skin="rime" />
+		<mapsprites library="org.icefaces.component.datetimeentry" name="calendar" skin="rime" />
  		<mapsprites library="org.icefaces.component.linkbutton" name="linkbutton" skin="rime" />
 		<mapsprites library="org.icefaces.component.tab" name="tabset" skin="rime" />
 		<mapsprites library="org.icefaces.component.inputFiles" name="inputfiles" skin="rime" />

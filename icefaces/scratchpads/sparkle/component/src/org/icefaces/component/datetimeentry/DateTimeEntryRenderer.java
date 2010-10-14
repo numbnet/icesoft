@@ -1,17 +1,14 @@
-package org.icefaces.component.datetimeselector;
+package org.icefaces.component.datetimeentry;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
 import org.icefaces.component.utils.Utils;
-import org.icefaces.component.datetimeselector.DateTimeSelector;
 import org.icefaces.component.animation.ClientBehaviorContextImpl;
 import org.icefaces.component.animation.AnimationBehavior;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.component.behavior.ClientBehaviorContext.Parameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
@@ -24,7 +21,7 @@ import java.text.ParseException;
 import java.text.DateFormat;
 import java.text.FieldPosition;
 
-public class DateTimeSelectorRenderer extends Renderer {
+public class DateTimeEntryRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
@@ -46,37 +43,37 @@ public class DateTimeSelectorRenderer extends Renderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        System.out.println("\nDateTimeSelectorRenderer.encodeEnd");
+        System.out.println("\nDateTimeEntryRenderer.encodeEnd");
 //        printParams();
         super.encodeEnd(context, component);
         ResponseWriter writer = context.getResponseWriter();
-        DateTimeSelector dateTimeSelector = (DateTimeSelector) component;
+        DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
         String clientId = component.getClientId(context);
 
-        DateTimeConverter converter = dateTimeSelector.resolveDateTimeConverter(context);
-        TimeZone tz = dateTimeSelector.resolveTimeZone(context);
-        Locale currentLocale = dateTimeSelector.resolveLocale(context);
+        DateTimeConverter converter = dateTimeEntry.resolveDateTimeConverter(context);
+        TimeZone tz = dateTimeEntry.resolveTimeZone(context);
+        Locale currentLocale = dateTimeEntry.resolveLocale(context);
         SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, currentLocale);
         Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
         Date date;
         if ("ice.ser".equals(paramMap.get("ice.submit.type"))) {
-            date = (Date) converter.getAsObject(context, component, (String) dateTimeSelector.getSubmittedValue());
+            date = (Date) converter.getAsObject(context, component, (String) dateTimeEntry.getSubmittedValue());
         } else {
-            date = (Date) dateTimeSelector.getValue();
+            date = (Date) dateTimeEntry.getValue();
         }
         if (date == null) {
             Calendar calendar = Calendar.getInstance(tz, currentLocale);
             date = calendar.getTime();
         }
-        String dateStr = converter.getAsString(context, dateTimeSelector, date);
+        String dateStr = converter.getAsString(context, dateTimeEntry, date);
         formatter.setTimeZone(tz);
         formatter.applyPattern("MM/yyyy");
         String pageDate = formatter.format(date);
         formatter.applyPattern("MM/dd/yyyy");
         String selectedDate = formatter.format(date);
 
-//        System.out.println("DateTimeSelector.getDateTimeConverterPattern(converter) = " + DateTimeSelector.getDateTimeConverterPattern(converter));
-        formatter.applyPattern(DateTimeSelector.getDateTimeConverterPattern(converter));
+//        System.out.println("DateTimeEntry.getDateTimeConverterPattern(converter) = " + DateTimeEntry.getDateTimeConverterPattern(converter));
+        formatter.applyPattern(DateTimeEntry.getDateTimeConverterPattern(converter));
         StringBuffer stringBuffer = new StringBuffer();
         DateFormat.Field[] hourFields = {DateFormat.Field.HOUR0, DateFormat.Field.HOUR1,
                 DateFormat.Field.HOUR_OF_DAY0, DateFormat.Field.HOUR_OF_DAY1};
@@ -124,9 +121,9 @@ public class DateTimeSelectorRenderer extends Renderer {
                     entry("amPmStr", amPmStr).
                     entry("amStr", amPmStrings[0]).
                     entry("pmStr", amPmStrings[1]).
-                    entry("renderAsPopup", dateTimeSelector.isRenderAsPopup()).
-                    entry("renderInputField", dateTimeSelector.isRenderInputField()).
-                    entry("singleSubmit", dateTimeSelector.isSingleSubmit()).
+                    entry("renderAsPopup", dateTimeEntry.isRenderAsPopup()).
+                    entry("renderInputField", dateTimeEntry.isRenderInputField()).
+                    entry("singleSubmit", dateTimeEntry.isSingleSubmit()).
                     entry("ariaEnabled", EnvUtils.isAriaEnabled(context)).                    
                 endMap().toString();
         System.out.println("params = " + params);
@@ -153,29 +150,29 @@ public class DateTimeSelectorRenderer extends Renderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        System.out.println("\nDateTimeSelectorRenderer.decode");
+        System.out.println("\nDateTimeEntryRenderer.decode");
         printParams();
         super.decode(context, component);
-        DateTimeSelector dateTimeSelector = (DateTimeSelector) component;
+        DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
         String clientId = component.getClientId(context);
         Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
         String dateString = paramMap.get(clientId + "_value");
         
         if (null == dateString) return;
-        DateTimeConverter converter = dateTimeSelector.resolveDateTimeConverter(context);
+        DateTimeConverter converter = dateTimeEntry.resolveDateTimeConverter(context);
         SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT,
-                DateFormat.SHORT, dateTimeSelector.resolveLocale(context));
-        formatter.setTimeZone(dateTimeSelector.resolveTimeZone(context));
+                DateFormat.SHORT, dateTimeEntry.resolveLocale(context));
+        formatter.setTimeZone(dateTimeEntry.resolveTimeZone(context));
         formatter.applyPattern("yyyy-M-d H:m");
         try {
 //            System.out.println("formatter.toPattern() = " + formatter.toPattern());
 //            System.out.println("formatter.toLocalizedPattern() = " + formatter.toLocalizedPattern());
-//            System.out.println("DateTimeSelector.getDateTimeConverterPattern(converter) = " + DateTimeSelector.getDateTimeConverterPattern(converter));
-            dateString = converter.getAsString(context, dateTimeSelector, formatter.parse(dateString));
+//            System.out.println("DateTimeEntry.getDateTimeConverterPattern(converter) = " + DateTimeEntry.getDateTimeConverterPattern(converter));
+            dateString = converter.getAsString(context, dateTimeEntry, formatter.parse(dateString));
         } catch (ParseException e) {
 //            e.printStackTrace();
         }
-        dateTimeSelector.setSubmittedValue(dateString);
+        dateTimeEntry.setSubmittedValue(dateString);
         if ("ice.ser".equals(paramMap.get("ice.submit.type"))) {
             System.out.println("Skip to renderResponse()");
             context.renderResponse();
@@ -184,11 +181,11 @@ public class DateTimeSelectorRenderer extends Renderer {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        System.out.println("\nDateTimeSelectorRenderer.getConvertedValue");
+        System.out.println("\nDateTimeEntryRenderer.getConvertedValue");
         System.out.println("submittedValue = " + submittedValue);
         super.getConvertedValue(context, component, submittedValue);
-        DateTimeSelector dateTimeSelector = (DateTimeSelector) component;
-        return dateTimeSelector.resolveDateTimeConverter(context).getAsObject(context, component, (String) submittedValue);
+        DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
+        return dateTimeEntry.resolveDateTimeConverter(context).getAsObject(context, component, (String) submittedValue);
     }
 
     private void printParams() {

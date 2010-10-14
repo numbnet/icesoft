@@ -275,7 +275,7 @@
             </h:panelGroup>
             
             <ice:checkboxButton id="check" label="Checkbox" singleSubmit="true" value="#{fileBean.checkValue}"/> 
-            <ice:dateTimeSelector id="date" singleSubmit="true" value="#{fileBean.dateValue}"/> 
+            <ice:dateTimeEntry id="date" singleSubmit="true" value="#{fileBean.dateValue}"/>
             
             <h:commandButton id="btnReg" value="Regular Submit" actionListener="#{fileBean.mixed}"/>
             <h:commandButton id="btnAA" value="f:ajax  exec: all  render: all" actionListener="#{fileBean.mixed}">
