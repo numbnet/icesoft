@@ -277,7 +277,7 @@
 		<includeresources dir="src\org\icefaces\component\pushbutton\skins" name="button" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\checkboxButton\skins" name="checkboxButton" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\radiobutton\skins" name="radiobutton" skin="sam" />
-		<includeresources dir="src\org\icefaces\component\linkbutton\skins" name="linkbutton" skin="sam" />
+<!-- 		<includeresources dir="src\org\icefaces\component\linkbutton\skins" name="linkbutton" skin="sam" /> --> 
 		<includeresources dir="src\org\icefaces\component\datetimeselector\skins" name="calendar" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\slider\skins" name="slider" skin="sam" />
 		<includeresources dir="src\org\icefaces\component\tab\skins" name="tabset" skin="sam" />
@@ -291,7 +291,7 @@
 		<includeresources dir="src\org\icefaces\component\slider\skins" name="slider" skin="rime" />
 		<includeresources dir="src\org\icefaces\component\menubutton\skins" name="menubutton" skin="rime" />
 		<includeresources dir="src\org\icefaces\component\pushbutton\skins" name="button" skin="rime" />
-		<includeresources dir="src\org\icefaces\component\linkbutton\skins" name="linkbutton" skin="rime" />
+<!-- 		<includeresources dir="src\org\icefaces\component\linkbutton\skins" name="linkbutton" skin="rime" /> --> 
 
 		<!-- Specify the names of the skins to process, based on the resources included above. -->
 		<generatesprites skin="sam" />
@@ -308,14 +308,14 @@
 		<mapsprites library="org.icefaces.component.pushbutton" name="button" skin="sam" />
 		<mapsprites library="org.icefaces.component.checkboxButton" name="checkboxButton" skin="sam" />
 		<mapsprites library="org.icefaces.component.radiobutton" name="radiobutton" skin="sam" />
-		<mapsprites library="org.icefaces.component.linkbutton" name="linkbutton" skin="sam" />
+<!--		<mapsprites library="org.icefaces.component.linkbutton" name="linkbutton" skin="sam" /> --> 
 		<mapsprites library="org.icefaces.component.datetimeselector" name="calendar" skin="sam" />
 		<mapsprites library="org.icefaces.component.slider" name="slider" skin="sam" />
 		<mapsprites library="org.icefaces.component.tab" name="tabset" skin="sam" />
 		<mapsprites library="org.icefaces.component.inputFiles" name="inputfiles" skin="sam" />
 		
 		<mapsprites library="org.icefaces.component.datetimeselector" name="calendar" skin="rime" />
-		<mapsprites library="org.icefaces.component.linkbutton" name="linkbutton" skin="rime" />
+<!-- 		<mapsprites library="org.icefaces.component.linkbutton" name="linkbutton" skin="rime" /> --> 
 		<mapsprites library="org.icefaces.component.tab" name="tabset" skin="rime" />
 		<mapsprites library="org.icefaces.component.inputFiles" name="inputfiles" skin="rime" />
 		<mapsprites library="org.icefaces.component.checkboxButton" name="checkboxButton" skin="rime" />
