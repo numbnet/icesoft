@@ -129,7 +129,6 @@ public class ProxyHttpServletResponse implements HttpServletResponse {
 
 
     public  void addCookie(javax.servlet.http.Cookie cookie) {
-        log.severe("ProxyHttpServletResponse unsupported operation");
         facesContext.getExternalContext().addResponseCookie(cookie.getName(), cookie.getValue(), null);
     }
 
