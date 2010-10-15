@@ -30,7 +30,7 @@
               </f:facet>
               <h:panelGroup id="col2content">
                  <h:inputText id="first" value="#{btns.firstName}"/>
-                 <ice:pushbutton  id="pushId" label="#{btns.label}"
+                 <ice:pushButton  id="pushId" label="#{btns.label}"
                                  actionListener="#{btns.actionListenerMethod}"  />
                  <h:outputText id="firstFormTest1" value="submitted for firstName:- #{btns.firstName}"/>
               </h:panelGroup>
@@ -66,25 +66,25 @@
         </ice:radioButtonGroup>
         <h:panelGrid id="addtotop" columns="3">
           <h:outputText value="Add and Remove Buttons to Top of Table"/>
-          <ice:pushbutton id="addBtnabove" value="Add Top"
+          <ice:pushButton id="addBtnabove" value="Add Top"
                singleSubmit="true"
                action="#{buttonList.addTopRow}"/>
-          <ice:pushbutton id="removeBtnabove" value="Remove"
+          <ice:pushButton id="removeBtnabove" value="Remove"
                singleSubmit="true"
                action="#{buttonList.removeTopRow}"/>
        </h:panelGrid>
        <h:panelGrid id="addtobottom" columns="3">
             <h:outputText value="add and remove from bottom of table"/>
-            <ice:pushbutton id="addBtnbelow" value="Add Below"
+            <ice:pushButton id="addBtnbelow" value="Add Below"
                  singleSubmit="true"
                  action="#{buttonList.addBottomRow}"/>
-            <ice:pushbutton id="removeBtnbelow" value="Remove"
+            <ice:pushButton id="removeBtnbelow" value="Remove"
                  singleSubmit="true"
                  action="#{buttonList.removeBottomRow}"/>
         </h:panelGrid>  
         <br /> <h:outputText id="text" value="#{buttonList.rows}"/><br />
         <h:outputText value="pushbutton to submit form for ss false checkboxes"/>
-        <ice:pushbutton id="formsubmitbutton" value="submitForm"
+        <ice:pushButton id="formsubmitbutton" value="submitForm"
            singleSubmit="false"/>   
         <div style="height:50px"/>
         <a href="../index.html">Goto Main page</a>
