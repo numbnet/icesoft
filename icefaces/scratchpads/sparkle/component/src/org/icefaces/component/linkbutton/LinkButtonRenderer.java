@@ -97,6 +97,7 @@ public class LinkButtonRenderer extends Renderer {
         String jsProps = JSONBuilder.create().beginMap().
                 entry("type", "link").
                 entry("tabindex", linkButton.getTabindex()).
+                entry("label", linkButton.getLabel()).
                 entry("disabled", linkButton.isDisabled()).endMap().toString();
         
         String params = "'" + clientId + "'," +
