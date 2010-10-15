@@ -268,6 +268,7 @@ if (!window.ice.icefaces) {
                 if (type == 'submit')  {
                     return;
                 }
+                ice.setFocus(null);
                 ice.se(e, element);
             }
             if (f.addEventListener) {
