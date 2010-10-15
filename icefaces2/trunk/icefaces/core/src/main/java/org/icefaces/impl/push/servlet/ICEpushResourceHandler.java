@@ -22,12 +22,19 @@
 
 package org.icefaces.impl.push.servlet;
 
+import org.icepush.PushContext;
 import org.icepush.servlet.MainServlet;
 
+import javax.faces.FactoryFinder;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.lifecycle.Lifecycle;
+import javax.faces.lifecycle.LifecycleFactory;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PhaseListener;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,10 +45,11 @@ import java.util.regex.Pattern;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ICEpushResourceHandler extends ResourceHandlerWrapper {
+public class ICEpushResourceHandler extends ResourceHandlerWrapper implements PhaseListener  {
     private static Logger log = Logger.getLogger(ICEpushResourceHandler.class.getName());
     private static final Pattern ICEpushRequestPattern = Pattern.compile(".*\\.icepush\\.jsf$");
     private static final String RESOURCE_KEY = "javax.faces.resource";
+    private static final String BROWSERID_COOKIE = "ice.push.browser";
     private ResourceHandler handler;
     private MainServlet mainServlet;
 
@@ -51,6 +59,10 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper {
             ServletContext context = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
             mainServlet = new MainServlet(context);
             context.setAttribute(ICEpushResourceHandler.class.getName(), this);
+            LifecycleFactory factory = (LifecycleFactory)
+                    FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+            Lifecycle lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
+            lifecycle.addPhaseListener(this);
         } catch (Throwable t)  {
             log.log(Level.INFO, "Ajax Push Resource Handling not available: " + t);
         }
@@ -109,6 +121,39 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper {
         HttpServletRequest servletRequest = (HttpServletRequest) externalContext.getRequest();
         String requestURI = servletRequest.getRequestURI();
         return handler.isResourceRequest(facesContext) || ICEpushRequestPattern.matcher(requestURI).find();
+    }
+
+    public PhaseId getPhaseId() {
+        return PhaseId.RESTORE_VIEW;
+    }
+
+    public void beforePhase(PhaseEvent event) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        Object BrowserID = externalContext.getRequestCookieMap()
+                .get(BROWSERID_COOKIE);
+                
+        HttpServletRequest request;
+        HttpServletResponse response;
+
+        if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
+            request = new ProxyHttpServletRequest(facesContext); 
+            response = new ProxyHttpServletResponse(facesContext);
+        } else {
+            request = (HttpServletRequest) externalContext.getRequest();
+            response = (HttpServletResponse) externalContext.getResponse();
+        }
+
+        if (null == BrowserID)  {
+            //Need better integration with ICEpush to assign ice.push.browser
+            //without createPushId()
+            ((PushContext) externalContext.getApplicationMap()
+                    .get(PushContext.class.getName()))
+                    .createPushId(request, response);
+        }
+    }
+
+    public void afterPhase(PhaseEvent event) {
     }
 
     public void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
