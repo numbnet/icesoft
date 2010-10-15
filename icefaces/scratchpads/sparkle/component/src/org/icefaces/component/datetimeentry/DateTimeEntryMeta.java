@@ -56,4 +56,10 @@ public class DateTimeEntryMeta extends UIInputMeta {
 
     @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "Value of the component as a Date object.")
     private Object value;
+
+    @Property (defaultValue = "", tlddoc="style will be rendered on a root element of this component")
+    private String style;
+    
+    @Property (defaultValue = "", tlddoc="style class will be rendered on a root element of this component")
+    private String styleClass;
 }

@@ -29,6 +29,15 @@ public class DateTimeEntryRenderer extends Renderer {
         String clientId = component.getClientId(context);
         writer.startElement(HTML.DIV_ELEM, component);
         writer.writeAttribute(HTML.ID_ATTR, clientId, "clientId");
+        DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
+        String style = dateTimeEntry.getStyle();
+        if (style != null && style.trim().length() != 0) {
+            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+        }
+        String styleClass = dateTimeEntry.getStyleClass();
+        if (styleClass != null && styleClass.trim().length() != 0) {
+            writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
+        }
     }
 
     @Override
@@ -124,7 +133,7 @@ public class DateTimeEntryRenderer extends Renderer {
                     entry("renderAsPopup", dateTimeEntry.isRenderAsPopup()).
                     entry("renderInputField", dateTimeEntry.isRenderInputField()).
                     entry("singleSubmit", dateTimeEntry.isSingleSubmit()).
-                    entry("ariaEnabled", EnvUtils.isAriaEnabled(context)).                    
+                    entry("ariaEnabled", EnvUtils.isAriaEnabled(context)).
                 endMap().toString();
         System.out.println("params = " + params);
         final UIComponent cal = component;
@@ -140,8 +149,9 @@ public class DateTimeEntryRenderer extends Renderer {
         effect.append("ice.component.calendar.updateProperties(");
         effect.append(params);
         effect.append(");");
-       // ScriptWriter.insertScript(context, component, effect.toString());    
-        
+       // ScriptWriter.insertScript(context, component, effect.toString());
+
+        System.out.println("effect = " + effect);
         ScriptWriter.insertScript(context, component, effect.toString());
         
         writer.endElement(HTML.DIV_ELEM);
