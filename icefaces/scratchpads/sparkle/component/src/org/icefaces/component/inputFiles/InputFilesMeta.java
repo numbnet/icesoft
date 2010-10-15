@@ -48,7 +48,7 @@ public class InputFilesMeta extends UIComponentBaseMeta {
     /*
     @Property(defaultValue="false",
         tlddoc="Default is false, means uses full submit.")
-    private Boolean singleSubmit;
+    private boolean singleSubmit;
     */
 
     @Property(defaultValue="false", tlddoc="When immediate is true, the " +
@@ -56,7 +56,7 @@ public class InputFilesMeta extends UIComponentBaseMeta {
         "ApplyRequestValues phase. Otherwise, it will be invoked just " +
         "before rendering, so that the application will receive the event, " +
         "regardless of whether the form has passed validation or not.")
-    private Boolean immediate;
+    private boolean immediate;
 
     @Property(tlddoc="A MethodExpression, which evaluates to a method in a " +
     	"bean, which takes an InputFilesEvent as a parameter. Invoked after " +
@@ -91,7 +91,7 @@ public class InputFilesMeta extends UIComponentBaseMeta {
     	"true, then an additional sub-directory, will be used, that is the " +
     	"session id, to separate file uploads from different sessions, from " +
     	"each other.")
-    private Boolean useSessionSubdir;
+    private boolean useSessionSubdir;
 
     @Property(defaultValue="false", tlddoc="Uploaded files' names, as they " +
         "were on the user's file-system, are always provided to the " +
@@ -107,7 +107,7 @@ public class InputFilesMeta extends UIComponentBaseMeta {
         "true, so that uploaded files will be saved using the user's file " +
         "name, which will cause any pre-existing file using that name to be " +
         "over-written.")
-    private Boolean useOriginalFilename;
+    private boolean useOriginalFilename;
 
     @Property(tlddoc="Maintains the results of file upload operations.")
     private InputFilesInfo info;
@@ -120,25 +120,25 @@ public class InputFilesMeta extends UIComponentBaseMeta {
         "If, for example, three files are uploaded, and the second one " +
         "exceeds maxTotalSize, then the second and third files will be " +
         "discarded.")
-    private Long maxTotalSize;
+    private long maxTotalSize;
 
     @Property(defaultValue="Long.MAX_VALUE", tlddoc="The maximum amount of " +
         "bytes allowed, that each individual file may have. If a file " +
         "exceeds both maxFileSize and maxTotalSize, then maxFileSize will " +
         "be the reported error. If a file size exceeds maxFileSize, it is " +
         "completely discarded.")
-    private Long maxFileSize;
+    private long maxFileSize;
 
     @Property(defaultValue="10", tlddoc="The maximum number of files that " +
         "may be uploaded, by this one component. Any files uploaded, beyond " +
         "this count, will be discarded.")
-    private Integer maxFileCount;
+    private int maxFileCount;
 
     @Property(defaultValue="false", tlddoc="Similar to required property on " +
         "input components, when true, this states that at least one file " +
         "must be selected, and uploaded, by this component, when the form " +
         "is submitted.")
-    private Boolean required;
+    private boolean required;
 
     //TODO
     //private String fileNamePattern;

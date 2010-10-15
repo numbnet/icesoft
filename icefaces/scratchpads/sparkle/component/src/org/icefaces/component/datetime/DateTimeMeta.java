@@ -21,14 +21,4 @@ public class DateTimeMeta extends UIOutputMeta {
     
     @Property
     private String format;
-
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private String id;
-    
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private Boolean rendered;
-    
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private UIComponent binding;    
-
 }

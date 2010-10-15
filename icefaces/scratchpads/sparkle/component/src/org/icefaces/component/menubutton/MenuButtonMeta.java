@@ -40,22 +40,16 @@ import org.icefaces.component.baseMeta.UISelectOneMeta;
 })
 
 public class MenuButtonMeta extends UISelectOneMeta {  
-	
-    @Property(defaultValue="false")    
-    private Boolean immediate; 
     
     @Property   
     private String label;
 
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private String id;
-	
 	@Property
     private String image;
     
     @Property (defaultValue="false",
     		tlddoc="if overlay is true can use menuitems with html markup")
-    private Boolean overlay;
+    private boolean overlay;
    
 //    @Property (inherit=true)
 //    private String value;
@@ -69,9 +63,6 @@ public class MenuButtonMeta extends UISelectOneMeta {
     @Property (tlddoc="basic selection is within this string indicator")
     private String selectedMenuItem;
     
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private UIComponent binding;  
-    
 //    @Property (tlddoc="use this to create a group of buttons")
 //    private SelectItemGroup selectItemGroup;
 //    
@@ -79,14 +70,14 @@ public class MenuButtonMeta extends UISelectOneMeta {
 //    private SelectItem selectedItem;
     @Property (defaultValue="false",
     		tlddoc="disabled property is required by aria specs")
-    private Boolean disabled;
+    private boolean disabled;
     
     @Property (defaultValue="0", tlddoc="tabindex of the component")
-    private Integer tabindex;  
+    private int tabindex;  
     
 	@Property(defaultValue="false",
 			tlddoc="Default is false, means uses full submit")
-    private Boolean singleSubmit;
+    private boolean singleSubmit;
 	
     @Property(expression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
             tlddoc="on menu item change value change event can be captured with this listener")

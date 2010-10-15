@@ -24,6 +24,11 @@ import org.icefaces.component.baseMeta.UICommandMeta;
    */
   public class TestComponentMeta extends UICommandMeta {
 
+      // Leaving properties that are auto-inherited, since this is a test 
+      // component, and some test might be relying on the generated code 
+      // for these properties, or might be testing to make sure we do not 
+      // generate the wrong ones.
+      
       @Property(defaultValue="false",implementation=Implementation.EXISTS_IN_SUPERCLASS)
       private Boolean immediate;
 

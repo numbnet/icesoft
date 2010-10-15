@@ -84,15 +84,15 @@ public class SliderMeta extends UIComponentBaseMeta {
     
     @Property (defaultValue="0", 
             tlddoc="The minimum value of slider, default is 0. Pass through to YUI component")
-    private Integer min;
+    private int min;
     
     @Property (defaultValue="100",
             tlddoc="The maximum value of slider, default is 100. Pass through to YUI component")
-    private Integer max;
+    private int max;
     
     @Property (defaultValue="0",
             tlddoc="The value of slider, default is 0. Pass through to YUI component")
-    private Integer value;    
+    private int value;    
     
     @Property (defaultValue="150px",
             tlddoc="The length of slider, default is 150px. Pass through to YUI component")
@@ -107,11 +107,11 @@ public class SliderMeta extends UIComponentBaseMeta {
     
     @Property (defaultValue="500",
             tlddoc="This attribute has an effect only when \"submitOn\" is set to \"slideInterval\". Default value is 500 (milliseconds)")
-    private Integer slideInterval; 
+    private int slideInterval; 
     
     @Property(defaultValue="false",
             tlddoc="Default is false, means uses full submit.")
-    private Boolean singleSubmit;
+    private boolean singleSubmit;
     
     @Property(tlddoc="style of the component")
     private String style;
@@ -123,13 +123,13 @@ public class SliderMeta extends UIComponentBaseMeta {
     private String thumbUrl; 
 
     @Property (defaultValue="0", tlddoc="tabindex of the component")
-    private Integer tabindex;  
+    private int tabindex;  
     
     @Property(defaultValue="false")
-    private Boolean immediate;
+    private boolean immediate;
 	
     @Property(defaultValue="true")
-    private Boolean clickableRail;
+    private boolean clickableRail;
     
     // A MethodExpression Property is a special type, that does not generate
     //  the same code, as it does not use a ValueExpression, but instead

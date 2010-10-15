@@ -40,20 +40,15 @@ public class ButtonGroupMeta extends UISelectOneMeta {
     @Property   
     private String label;
 
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private String id;
-    
     //not sure this is needed as the string id of the 
     //selected radio button in the group is stored
     //in the value property.
     @Property
     protected String selectedItemId;
     
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private UIComponent binding;  
 	@Property(defaultValue="false",
 			tlddoc="Default is false, means uses full submit")
-    private Boolean singleSubmit;
+    private boolean singleSubmit;
 	  
 	@Property(tlddoc="style of the component")
 	private String style;
@@ -62,15 +57,9 @@ public class ButtonGroupMeta extends UISelectOneMeta {
     private String styleClass;     
 	 
 	@Property (defaultValue="0", tlddoc="tabindex of the component")
-    private Integer tabindex;  
-	    
-	@Property(defaultValue="false")
-    private Boolean immediate;
-	    
-	@Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private Boolean rendered;
+    private int tabindex;  
 	    
 	@Property (defaultValue="false",
 			tlddoc="disabled property is required by aria specs")
-	private Boolean disabled;
+	private boolean disabled;
 }

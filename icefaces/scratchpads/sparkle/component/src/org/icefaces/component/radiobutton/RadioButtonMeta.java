@@ -44,21 +44,15 @@ public class RadioButtonMeta extends UISelectOneMeta {
     @Property(tlddoc="require groupId that this button belongs to")
     private String group;
 
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private String id;
-	
 	@Property
     private String image;
     
     @Property  (defaultValue="false")
-    private Boolean checked;
-    
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private UIComponent binding; 
+    private boolean checked;
     
 	@Property(defaultValue="false",
 			tlddoc="Default is false, means uses full submit")
-    private Boolean singleSubmit;
+    private boolean singleSubmit;
 	  
 	@Property(tlddoc="style of the component")
 	private String style;
@@ -67,15 +61,9 @@ public class RadioButtonMeta extends UISelectOneMeta {
     private String styleClass;     
 	 
 	@Property (defaultValue="0", tlddoc="tabindex of the component")
-    private Integer tabindex;  
-	    
-	@Property(defaultValue="false")
-    private Boolean immediate;
-	    
-	@Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private Boolean rendered;
+    private int tabindex;  
 	    
 	@Property (defaultValue="false",
 			tlddoc="disabled property is required by aria specs")
-	private Boolean disabled;
+	private boolean disabled;
 }
