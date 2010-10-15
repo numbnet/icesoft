@@ -10,7 +10,7 @@
 
 /* ----- BEGIN CORE STYLING ----- */
 
-/*
+
 
 .yui-calcontainer
 {
@@ -124,7 +124,7 @@ p#clear
 	padding-top: 10px;
 }
 
-*/
+
 
 /* ----- END CORE STYLING ----- */
 
@@ -206,6 +206,7 @@ p#clear
 /* -- Navbar left arrow -- */
 .ice-skin-sam .yui-calendar .calnavleft
 {
+	background-position: left top;
 	background-image: url(left-arrow.png); /** sprite-ref: sprite; */
 	background-repeat: no-repeat;
 }
@@ -213,6 +214,7 @@ p#clear
 /* -- Navbar right arrow -- */
 .ice-skin-sam .yui-calendar .calnavright
 {
+	background-position: left top;
 	background-image: url(right-arrow.png); /** sprite-ref: sprite; */
 	background-repeat: no-repeat;
 }
