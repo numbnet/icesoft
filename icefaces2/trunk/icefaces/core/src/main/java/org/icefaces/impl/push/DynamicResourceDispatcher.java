@@ -51,7 +51,7 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
     private static Logger log = Logger.getLogger("org.icefaces.resourcedispatcher");
     private static final Pattern ICEfacesBridgeRequestPattern = Pattern.compile(".*\\.icefaces\\.jsf$");
     private static final Pattern ICEfacesResourceRequestPattern = Pattern.compile(".*/icefaces/.*");
-    private static final String RESOURCE_PREFIX = "/icefaces/resource";
+    private static final String RESOURCE_PREFIX = "icefaces/resource";
     private static final DynamicResourceLinker.Handler NOOPHandler = new DynamicResourceLinker.Handler() {
         public void linkWith(DynamicResourceLinker linker) {
             //do nothing!
@@ -161,7 +161,12 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
                 log.info(e.getMessage());
             }
         }
-        final String name = prefix + "/" + encode(resource) + "/";
+        String pre = "";
+        if ( EnvUtils.instanceofPortletRequest(
+                FacesContext.getCurrentInstance().getExternalContext().getRequest() ))  {
+            pre = "/";
+        }
+        final String name = pre + prefix + "/" + encode(resource) + "/";
         final String fullName = name + uriFilename;
         dispatchOn(fullName, ".*" + name.replaceAll("\\/", "\\/") + dispatchFilename + "$", resource);
         if (handler != NOOPHandler) {
