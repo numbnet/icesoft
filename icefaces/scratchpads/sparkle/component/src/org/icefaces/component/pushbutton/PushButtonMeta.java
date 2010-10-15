@@ -38,40 +38,22 @@ public class PushButtonMeta extends UICommandMeta {
     @Property   
     private String label;
 
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private String id;
-	
 	@Property
     private String image;
 	
 	@Property(defaultValue="false",
 			tlddoc="Default is false, means uses full submit")
-    private Boolean singleSubmit;
+    private boolean singleSubmit;
 	
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private UIComponent binding;  
-    
     @Property (defaultValue="false")
-    private Boolean disabled;
-    
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS, defaultValue="true")
-    private Boolean rendered;
+    private boolean disabled;
     
     @Property (defaultValue="0", tlddoc="tabindex of the component")
-    private Integer tabindex;  
+    private int tabindex;  
   
     @Property(tlddoc="style class of the component, the renderer doesn't render any default class.")
     private String styleClass;  
 
     @Property(tlddoc="style of the component")
     private String style;
-    
-    @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS, expression=Expression.METHOD_EXPRESSION)
-    private MethodExpression actionListener;
- 
-    @Property(expression=Expression.METHOD_EXPRESSION, implementation=Implementation.EXISTS_IN_SUPERCLASS	)
-    private MethodExpression action;
-    
-    @Property(defaultValue="false",implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private Boolean immediate;
 }

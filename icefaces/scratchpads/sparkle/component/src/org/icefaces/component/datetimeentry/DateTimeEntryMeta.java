@@ -46,16 +46,13 @@ import org.icefaces.component.baseMeta.UIInputMeta;
 @ClientBehaviorHolder 
 public class DateTimeEntryMeta extends UIInputMeta {
     @Property(defaultValue = "false", tlddoc = "Whether to render a text input field for a popup calendar.")
-    private Boolean renderInputField;
+    private boolean renderInputField;
 
     @Property(defaultValue = "false", tlddoc = "Whether to render the calendar inline or as a popup.")
-    private Boolean renderAsPopup;
+    private boolean renderAsPopup;
 
     @Property(defaultValue = "false", tlddoc = "Whether to use single or full submit.")
-    private Boolean singleSubmit;
-
-    @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "ID of the component.")
-    private String id;
+    private boolean singleSubmit;
 
     @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "Value of the component as a Date object.")
     private Object value;

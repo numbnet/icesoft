@@ -36,10 +36,6 @@ import org.icefaces.component.baseMeta.UICommandMeta;
 
 public class LinkButtonMeta extends UICommandMeta {
 
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS,
-               tlddoc = "ID of the component")
-    private String id;
-
     @Property(tlddoc = "href of link. If specified and actionListener is absent, linkButton works " +
                        "as normal anchor. If specified and actionListener is present, linkButton works " +
                        "as AJAX event source, but href may be opened in a new tab or window")
@@ -50,39 +46,17 @@ public class LinkButtonMeta extends UICommandMeta {
 
     @Property(defaultValue="false",
               tlddoc="Default is false, means uses full submit")
-    private Boolean singleSubmit;
-
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private UIComponent binding;
+    private boolean singleSubmit;
 
     @Property (defaultValue="false", tlddoc="If true, disables the YUI component on the page")
-    private Boolean disabled;
-
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS, defaultValue="true",
-               tlddoc="If true the component is rendered. If false, the component is not " +
-                      "present on the page")
-    private Boolean rendered;
+    private boolean disabled;
 
     @Property (defaultValue="0", tlddoc="tabindex of the component")
-    private Integer tabindex;
+    private int tabindex;
 
     @Property(tlddoc="The CSS style class of the component")
     private String styleClass;
 
     @Property(tlddoc="the inline style of the component")
     private String style;
-
-    @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS,
-              expression=Expression.METHOD_EXPRESSION,
-              tlddoc="binding to a method for handling action events")
-    private MethodExpression actionListener;
-
-    @Property(expression=Expression.METHOD_EXPRESSION,
-              implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private MethodExpression action;
-
-    @Property(defaultValue="false",implementation=Implementation.EXISTS_IN_SUPERCLASS,
-              tlddoc="JSF immediate flag. If true, The event will be delivered at " +
-                     "the end of Apply Request Values phase" )
-    private Boolean immediate;
 }

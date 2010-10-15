@@ -37,9 +37,6 @@ public class LoggerMeta extends UIComponentBaseMeta {
 //    @Property   
 //    private String label;
 
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private String id;
-	
 	@Property
     private String debugElement;
 	
@@ -50,19 +47,16 @@ public class LoggerMeta extends UIComponentBaseMeta {
 //	private int height;
 //	
 //	@Property
-//	private Boolean footerEnabled;
+//	private boolean footerEnabled;
 //	
 //	@Property
-//	private Boolean logReaderEnabled;
+//	private boolean logReaderEnabled;
 	
 //other properties not included here are thresholdMax, thresholdMin,
 //draggable, outputBuffer, newestOnTop, verboseOutput, entryFormat
 	
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS, defaultValue="true")
-    private Boolean rendered;
-    
     @Property (defaultValue="0", tlddoc="tabindex of the component")
-    private Integer tabindex;  
+    private int tabindex;  
   
     @Property(tlddoc="style class of the component, the renderer doesn't render any default class.")
     private String styleClass;  

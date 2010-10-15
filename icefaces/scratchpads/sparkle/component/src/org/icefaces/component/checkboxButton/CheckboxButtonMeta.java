@@ -39,12 +39,9 @@ public class CheckboxButtonMeta extends UISelectBooleanMeta {
     		tlddoc="Default is left, Possible values are on, left")
     private String labelPosition;
 
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private String id;
-	
 	@Property(defaultValue="false",
 			tlddoc="Default is false, means uses full submit")
-    private Boolean singleSubmit;
+    private boolean singleSubmit;
 	    
     @Property(tlddoc="style of the component")
 	private String style;
@@ -53,19 +50,9 @@ public class CheckboxButtonMeta extends UISelectBooleanMeta {
 	private String styleClass;     
  
     @Property (defaultValue="0", tlddoc="tabindex of the component")
-    private Integer tabindex;  
-    
-    @Property(defaultValue="false")
-    private Boolean immediate;
-    
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private Boolean rendered;
+    private int tabindex;  
     
     @Property (defaultValue="false",
     		tlddoc="disabled property is required by aria specs")
-    private Boolean disabled;
-    
-    @Property (implementation=Implementation.EXISTS_IN_SUPERCLASS)
-    private UIComponent binding;    
-
+    private boolean disabled;
 }
