@@ -38,6 +38,7 @@ public class DateTimeEntryRenderer extends Renderer {
         if (styleClass != null && styleClass.trim().length() != 0) {
             writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
         }
+        writer.writeAttribute(HTML.TABINDEX_ATTR, dateTimeEntry.getTabindex(), HTML.TABINDEX_ATTR);
     }
 
     @Override
@@ -134,6 +135,7 @@ public class DateTimeEntryRenderer extends Renderer {
                     entry("renderInputField", dateTimeEntry.isRenderInputField()).
                     entry("singleSubmit", dateTimeEntry.isSingleSubmit()).
                     entry("ariaEnabled", EnvUtils.isAriaEnabled(context)).
+                    entry("disabled", dateTimeEntry.isDisabled()).
                 endMap().toString();
         System.out.println("params = " + params);
         final UIComponent cal = component;
