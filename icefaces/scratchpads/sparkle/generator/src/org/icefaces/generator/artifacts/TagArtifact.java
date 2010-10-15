@@ -174,10 +174,23 @@ public class TagArtifact extends Artifact{
 			generatedTagClass.append(field.getName()); 
 			generatedTagClass.append(" != null) {\n\t\t\t");
 			PropertyValues property = getComponentContext().getPropertyValuesMap().get(field);
-			if (property.expression == Expression.METHOD_EXPRESSION && "actionListener".equals(field.getName())) {
+			if (property.expression == Expression.METHOD_EXPRESSION &&
+                "actionListener".equals(field.getName())) {
 				generatedTagClass.append("_component.addActionListener(new MethodExpressionActionListener(actionListener)");
-			} else if (property.expression == Expression.METHOD_EXPRESSION && "action".equals(field.getName())) {
+			} else if (property.expression == Expression.METHOD_EXPRESSION &&
+                "action".equals(field.getName())) {
 				generatedTagClass.append("_component.setActionExpression(action");
+            } else if (property.expression == Expression.METHOD_EXPRESSION &&
+                "valueChangeListener".equals(field.getName()) &&
+                // Any UIInput inherits valueChangeListener, so should use
+                // addValueChangeListener, but any component not inheriting it,
+                // and just implementing it's own MethodExpression property
+                // named valueChangeListener should just use setValueChangeListener
+                !getComponentContext().getFieldsForComponentClass().containsKey("valueChangeListener")) {
+				generatedTagClass.append("_component.addValueChangeListener(new MethodExpressionValueChangeListener(valueChangeListener)");
+            } else if (property.expression == Expression.METHOD_EXPRESSION &&
+                "validator".equals(field.getName())) {
+				generatedTagClass.append("_component.addValidator(new MethodExpressionValidator(valueChangeListener)");
 			} else {
 				generatedTagClass.append("_component.set");
 
