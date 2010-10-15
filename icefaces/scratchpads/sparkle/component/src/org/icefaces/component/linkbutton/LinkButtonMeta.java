@@ -51,6 +51,10 @@ public class LinkButtonMeta extends UICommandMeta {
     @Property (defaultValue="false", tlddoc="If true, disables the YUI component on the page")
     private boolean disabled;
 
+     @Property(tlddoc="Label allowing the user to define the labelledby Aria setting",
+              defaultValue="Link button")
+    private String label;
+
     @Property (defaultValue="0", tlddoc="tabindex of the component")
     private int tabindex;
 
