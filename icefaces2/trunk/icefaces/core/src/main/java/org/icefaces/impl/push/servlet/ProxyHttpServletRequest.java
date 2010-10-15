@@ -105,9 +105,7 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
     }
 
     public  java.lang.Object getAttribute(java.lang.String name) {
-        log.severe("ProxyHttpServletRequest unsupported operation");
-        if (true) throw new UnsupportedOperationException();
-        return null;
+        return facesContext.getExternalContext().getRequestMap().get(name);
     }
 
     public  java.util.Enumeration getAttributeNames()  {
@@ -210,9 +208,7 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
     }
 
     public  void setAttribute(java.lang.String name, java.lang.Object value)  {
-        log.severe("ProxyHttpServletRequest unsupported operation");
-        if (true) throw new UnsupportedOperationException();
-        return ;
+        facesContext.getExternalContext().getRequestMap().put(name, value);
     }
 
     public  void removeAttribute(java.lang.String name)  {
