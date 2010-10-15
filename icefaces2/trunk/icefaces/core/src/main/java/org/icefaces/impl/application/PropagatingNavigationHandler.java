@@ -24,11 +24,13 @@ package org.icefaces.impl.application;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+import javax.faces.application.ConfigurableNavigationHandler;
+import javax.faces.application.NavigationCase;
 import javax.faces.application.NavigationHandler;
-import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIViewRoot;
 
@@ -43,7 +45,7 @@ import org.icefaces.impl.context.DOMResponseWriter;
  * </p>
  */
 
-public class PropagatingNavigationHandler extends NavigationHandler  {
+public class PropagatingNavigationHandler extends ConfigurableNavigationHandler {
     private static Logger log = Logger.getLogger(PropagatingNavigationHandler.class.getName());
     NavigationHandler wrapped;
 
@@ -88,5 +90,26 @@ public class PropagatingNavigationHandler extends NavigationHandler  {
                 viewMap.put(DOMResponseWriter.OLD_DOM, oldDOM);
             }
         }
+    }
+
+    @Override
+    public NavigationCase getNavigationCase(FacesContext context, String fromAction, String outcome) {
+        if( wrapped instanceof ConfigurableNavigationHandler){
+            return ((ConfigurableNavigationHandler)wrapped).getNavigationCase(context,fromAction,outcome);
+        } else {
+            log.warning( wrapped.toString() + " is not a ConfigurableNavigationHandler");
+        }
+
+        return null;
+    }
+
+    @Override
+    public Map<String, Set<NavigationCase>> getNavigationCases() {
+        if( wrapped instanceof ConfigurableNavigationHandler){
+            return ((ConfigurableNavigationHandler)wrapped).getNavigationCases();
+        } else {
+            log.warning( wrapped.toString() + " is not a ConfigurableNavigationHandler");
+        }
+        return null;
     }
 }
