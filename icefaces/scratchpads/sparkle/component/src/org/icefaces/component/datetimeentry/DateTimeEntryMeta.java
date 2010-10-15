@@ -14,7 +14,11 @@ import org.icefaces.component.baseMeta.UIInputMeta;
         componentType = "org.icefaces.DateTimeEntry",
         rendererClass = "org.icefaces.component.datetimeentry.DateTimeEntryRenderer",
         rendererType = "org.icefaces.DateTimeEntry",
-        generatedClass = "org.icefaces.component.datetimeentry.DateTimeEntryBase"
+        generatedClass = "org.icefaces.component.datetimeentry.DateTimeEntryBase",
+        tlddoc = "This component allows entry of a date/time. It can be in inline mode or popup mode. In either mode " +
+                "you can enter a date/time by clicking. In popup mode you have the additional option of entering in " +
+                "a text input field. The format of the input is determined by the nested &lt;f:convertDateTime&gt; " +
+                "tag."
 )
 
 @ResourceDependencies({
@@ -45,13 +49,17 @@ import org.icefaces.component.baseMeta.UIInputMeta;
 })
 @ClientBehaviorHolder 
 public class DateTimeEntryMeta extends UIInputMeta {
-    @Property(defaultValue = "false", tlddoc = "Whether to render a text input field for a popup calendar.")
+    @Property(defaultValue = "false", tlddoc = "When rendered as a popup, you can allow entering the date/time in " +
+            "a text input field as well. This attribute flags whether text input is allowed. Format of input is " +
+            "determined by the nested &lt;f:convertDateTime&gt; tag.")
     private boolean renderInputField;
 
     @Property(defaultValue = "false", tlddoc = "Whether to render the calendar inline or as a popup.")
     private boolean renderAsPopup;
 
-    @Property(defaultValue = "false", tlddoc = "Whether to use single or full submit.")
+    @Property(defaultValue = "false", tlddoc = "The default value of this attribute is false, so in this case full " +
+            "submit is being used, where all component gets rendered and executed. If this attribute is set to true, " +
+            "then only this component gets executed and entire view gets rendered")
     private boolean singleSubmit;
 
     @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "Value of the component as a Date object.")
