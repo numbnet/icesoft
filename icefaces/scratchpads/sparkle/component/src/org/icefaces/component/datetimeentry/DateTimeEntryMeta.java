@@ -62,4 +62,10 @@ public class DateTimeEntryMeta extends UIInputMeta {
     
     @Property (defaultValue = "", tlddoc="style class will be rendered on a root element of this component")
     private String styleClass;
+
+    @Property (tlddoc="If true then this date time entry will be disabled and can not be entered") 
+    private boolean disabled;
+
+    @Property (tlddoc="tabindex of the component")
+    private int tabindex;
 }
