@@ -1,10 +1,9 @@
-  package org.icefaces.component.pushbutton;
+  package org.icefaces.component.PushButton;
 
 import javax.faces.component.UIComponent;
 import javax.el.MethodExpression;
 import javax.faces.event.ActionListener;
 import org.icefaces.component.annotation.*;
-import java.util.List;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -12,13 +11,13 @@ import javax.faces.application.ResourceDependency;
 import org.icefaces.component.baseMeta.UICommandMeta;
 
 @Component(
-        tagName ="pushbutton",
-        componentClass ="org.icefaces.component.pushbutton.PushButton",
-        rendererClass ="org.icefaces.component.pushbutton.PushButtonRenderer", 
+        tagName ="pushButton",
+        componentClass ="org.icefaces.component.PushButton.PushButton",
+        rendererClass ="org.icefaces.component.PushButton.PushButtonRenderer",
         componentType = "org.icefaces.PushButton", 
         rendererType = "org.icefaces.PushButtonRenderer",            
         extendsClass = "javax.faces.component.UICommand", 
-        generatedClass = "org.icefaces.component.pushbutton.PushButtonBase",
+        generatedClass = "org.icefaces.component.PushButton.PushButtonBase",
 		componentFamily="com.icesoft.faces.PushButton"
         )
 		
@@ -45,7 +44,8 @@ public class PushButtonMeta extends UICommandMeta {
 			tlddoc="Default is false, means uses full submit")
     private boolean singleSubmit;
 	
-    @Property (defaultValue="false")
+    @Property (defaultValue="false",
+            tlddoc="disabled property is required by aria specs")
     private boolean disabled;
     
     @Property (defaultValue="0", tlddoc="tabindex of the component")

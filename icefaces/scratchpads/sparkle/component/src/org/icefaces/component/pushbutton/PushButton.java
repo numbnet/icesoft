@@ -1,12 +1,10 @@
-package org.icefaces.component.pushbutton;
+package org.icefaces.component.PushButton;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIOutput;
 
-import java.io.IOException;
-   
-    public class PushButton extends PushButtonBase {
+public class PushButton extends PushButtonBase {
 
 
 	

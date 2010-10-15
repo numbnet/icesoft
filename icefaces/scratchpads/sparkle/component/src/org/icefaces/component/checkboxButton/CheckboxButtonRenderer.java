@@ -32,7 +32,7 @@ public class CheckboxButtonRenderer extends Renderer {
 	        String clientId = uiComponent.getClientId();
 	        //update with hidden field
 		    String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
-			System.out.println("\t\tRenderer:-  HIDDEN value ONLY="+hiddenValue);
+		//	System.out.println("\t\tRenderer:-  HIDDEN value ONLY="+hiddenValue);
 			boolean submittedValue = isChecked(hiddenValue);
 			checkbox.setSubmittedValue(submittedValue);           	
     }

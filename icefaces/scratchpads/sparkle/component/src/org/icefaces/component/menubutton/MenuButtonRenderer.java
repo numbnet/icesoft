@@ -110,7 +110,7 @@ public class MenuButtonRenderer extends Renderer {
 		// if there's an image, render label manually, don't rely on YUI, since it'd override button's contents
 //		if (menuButton.getImage() != null) {
 //			writer.startElement(HTML.SPAN_ELEM, uiComponent);
-//			writer.write(checkbox.getLabel());
+//			writer.write(checkboxButton.getLabel());
 //			writer.endElement(HTML.SPAN_ELEM);
 //			
 //			writer.startElement(HTML.IMG_ELEM, uiComponent);

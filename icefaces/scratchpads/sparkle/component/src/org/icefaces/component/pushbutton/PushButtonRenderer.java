@@ -1,4 +1,4 @@
-package org.icefaces.component.pushbutton;
+package org.icefaces.component.PushButton;
 
 import java.io.IOException;
 import java.util.*;
@@ -23,7 +23,7 @@ public class PushButtonRenderer extends Renderer {
             PushButton pushButton = (PushButton) uiComponent;
             String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
             String clientId = pushButton.getClientId();
-       	    System.out.println("PBR:decode() button pressed is "+source+" for clientId="+clientId);
+    //   	    System.out.println("PBR:decode() button pressed is "+source+" for clientId="+clientId);
              if (clientId.equals(source)) { //won't always be the same ??
                 try {
              	   if (!pushButton.isDisabled()){
@@ -46,8 +46,16 @@ public class PushButtonRenderer extends Renderer {
         
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);
-		writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-min yui-push-button", null);
-		
+        String yuiBaseClass= "yui-button yui-min yui-push-button";
+        Object styleClass = pushButton.getStyleClass();
+        if (null!=styleClass){
+             yuiBaseClass = yuiBaseClass + " " + String.valueOf(styleClass);
+        }
+		writer.writeAttribute(HTML.CLASS_ATTR, yuiBaseClass, null);
+        Object style = pushButton.getStyle();
+        if (null!=style && !style.equals("")){
+            writer.writeAttribute(HTML.STYLE_ATTR, String.valueOf(style), null);
+        }		
 		// first child
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
 		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
@@ -96,7 +104,7 @@ public class PushButtonRenderer extends Renderer {
            endMap().toString();
  //         System.out.println("params = " + params);	    
 
-        String finalScript = "ice.component.pushbutton.updateProperties(" + params + ");";
+        String finalScript = "ice.component.PushButton.updateProperties(" + params + ");";
         ScriptWriter.insertScript(facesContext, uiComponent,finalScript);
             
         writer.endElement(HTML.DIV_ELEM);
