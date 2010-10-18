@@ -28,7 +28,7 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
         componentType = "org.icesoft.faces.SliderEntry",
         rendererType = "org.icesoft.faces.SliderEntryRenderer",
         componentFamily="org.icefaces.component.SliderEntry",
-        tlddoc="This is an extension of YUI's slider component."
+        tlddoc="The Slider Entry is a component that enables the user to adjust values in a finite range along a horizontal or vertical axis."
     )
 	
 @ResourceDependencies({
