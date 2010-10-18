@@ -39,6 +39,7 @@ public class CssUrlMapperTask {
 			
 			File inputdirFile = new File(inputdir);
 			if (!inputdirFile.exists()) {
+				System.out.println("cssurlmapper: WARNING: inputdir wasn't found when trying to process [libraryname: " + libraryname + ", inputdir: " + inputdir + ", outputdir:" + outputdir + "]");
 				throw new BuildException("cssurlmapper: inputdir does not exist.");
 			} else if (!inputdirFile.isDirectory()) {
 				throw new BuildException("cssurlmapper: inputdir is not a real directory.");
@@ -56,7 +57,7 @@ public class CssUrlMapperTask {
 			if (!referencedir.equals("")) {
 				referencedirFile = new File(referencedir);
 				if (!referencedirFile.exists()) {
-					throw new BuildException("ERROR: referencedir does not exist.");
+					throw new BuildException("cssurlmapper: referencedir does not exist.");
 				} else if (!inputdirFile.isDirectory()) {
 					throw new BuildException("cssurlmapper: referencedir is not a real directory.");
 				}
