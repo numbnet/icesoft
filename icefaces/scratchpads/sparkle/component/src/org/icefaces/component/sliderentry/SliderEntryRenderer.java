@@ -136,9 +136,13 @@ public class SliderEntryRenderer extends Renderer{
         if (thumbUrl != null && thumbUrl.trim().length() > 0) {
             jsBuilder.entry("thumbUrl", thumbUrl);
         }
+        String submitOn = slider.getSubmitOn();
+        if (submitOn.equals("slideStart") && slider.isClickableRail()) {
+            submitOn = "slideEnd";
+        }
 
         JSONBuilder jb = JSONBuilder.create().beginMap().
-                entry("submitOn", slider.getSubmitOn()).
+                entry("submitOn", submitOn).
                 entry("singleSubmit", slider.isSingleSubmit()).
                 entry("slideInterval", slider.getSlideInterval()).
                 entry("aria", EnvUtils.isAriaEnabled(facesContext)).
