@@ -232,7 +232,7 @@
 		<mapnosprites library="org.icefaces.component.radiobutton" dir="src/org/icefaces/component/radiobutton/skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.linkbutton" dir="src/org/icefaces/component/linkbutton/skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.datetimeentry" dir="src/org/icefaces/component/datetimeentry/skins" skin="sam" />
-		<mapnosprites library="org.icefaces.component.sliderentry" dir="src/org/icefaces/component/slider/skins" skin="sam" />
+		<mapnosprites library="org.icefaces.component.sliderentry" dir="src/org/icefaces/component/sliderentry/skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.tab" dir="src/org/icefaces/component/tab/skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.inputFiles" dir="src/org/icefaces/component/inputFiles/skins" skin="sam" />
 		
@@ -242,7 +242,7 @@
 		<mapnosprites library="org.icefaces.component.linkbutton" dir="src/org/icefaces/component/linkbutton/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.tab" dir="src/org/icefaces/component/tab/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.inputFiles" dir="src/org/icefaces/component/inputFiles/skins" skin="rime" />
-		<mapnosprites library="org.icefaces.component.sliderentry" dir="src/org/icefaces/component/slider/skins" skin="rime" />
+		<mapnosprites library="org.icefaces.component.sliderentry" dir="src/org/icefaces/component/sliderentry/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.pushbutton" dir="src/org/icefaces/component/pushbutton/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.menubutton" dir="src/org/icefaces/component/menubutton/skins" skin="rime" />
 
@@ -280,7 +280,7 @@
 		<includeresources dir="src/org/icefaces/component/radiobutton/skins" name="radiobutton" skin="sam" />
  		<includeresources dir="src/org/icefaces/component/linkbutton/skins" name="linkbutton" skin="sam" />
 		<includeresources dir="src/org/icefaces/component/datetimeentry/skins" name="calendar" skin="sam" />
-		<includeresources dir="src/org/icefaces/component/slider/skins" name="slider" skin="sam" />
+		<includeresources dir="src/org/icefaces/component/sliderentry/skins" name="slider" skin="sam" />
 		<includeresources dir="src/org/icefaces/component/tab/skins" name="tabset" skin="sam" />
 		<includeresources dir="src/org/icefaces/component/inputFiles/skins" name="inputfiles" skin="sam" />
 		
@@ -289,7 +289,7 @@
 		<includeresources dir="src/org/icefaces/component/inputFiles/skins" name="inputfiles" skin="rime" />
 		<includeresources dir="src/org/icefaces/component/checkboxButton/skins" name="checkboxButton" skin="rime" />
 		<includeresources dir="src/org/icefaces/component/radiobutton/skins" name="radiobutton" skin="rime" />
-		<includeresources dir="src/org/icefaces/component/slider/skins" name="slider" skin="rime" />
+		<includeresources dir="src/org/icefaces/component/sliderentry/skins" name="slider" skin="rime" />
 		<includeresources dir="src/org/icefaces/component/menubutton/skins" name="menubutton" skin="rime" />
 		<includeresources dir="src/org/icefaces/component/pushbutton/skins" name="button" skin="rime" />
  		<includeresources dir="src/org/icefaces/component/linkbutton/skins" name="linkbutton" skin="rime" />
