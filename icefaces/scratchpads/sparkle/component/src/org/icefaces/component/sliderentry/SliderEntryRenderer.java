@@ -154,7 +154,7 @@ public class SliderEntryRenderer extends Renderer{
                         jsProps
                         + "," +
                         jsfProps;
-        String finalScript = "ice.yui3.slider.updateProperties(" + params + ");";
+        String finalScript = "ice.component.slider.updateProperties(" + params + ");";
         log.finer("slider script contents: " + finalScript);
         ScriptWriter.insertScript(facesContext, uiComponent, finalScript);
 
