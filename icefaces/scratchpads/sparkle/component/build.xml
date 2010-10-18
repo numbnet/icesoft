@@ -111,24 +111,29 @@
 		</sequential>
 	</macrodef>
 
-  <target name="compile" depends="prepare, generator-dist, compile-meta, generate" 
+  <target name="compile" depends="prepare, generator-dist, compile-meta, generate, compile-base, compile-manual, compile-support" 
         description="compile the source " >
-    
-    <javac srcdir="${build}/generated/base" destdir="${exploded}" debug="true">
-        <classpath refid="compile.run.classpath"/>
-    </javac>
-      
-    <javac srcdir="${src}" destdir="${build}/exploded" debug="true" excludes="**/*Meta.java">
-    	<classpath refid="compile.run.classpath"/>
-    </javac>  
-
-    <javac srcdir="${build}/generated/support" destdir="${exploded}" debug="true">
-        <classpath refid="compile.run.classpath"/>
-    </javac> 
-    
     <copy todir="${exploded}/META-INF/resources">
 	    <fileset dir="${resources}"/>
     </copy>    
+  </target>
+  
+  <target name="compile-base">
+    <javac srcdir="${build}/generated/base" destdir="${exploded}" debug="true" verbose="true">
+        <classpath refid="compile.run.classpath"/>
+    </javac>
+  </target>
+  
+  <target name="compile-manual">
+    <javac srcdir="${src}" destdir="${build}/exploded" debug="true" excludes="**/*Meta.java" verbose="true" failonerror="true">
+    	<classpath refid="compile.run.classpath"/>
+    </javac>  
+  </target>
+  
+  <target name="compile-support">
+    <javac srcdir="${build}/generated/support" destdir="${exploded}" debug="true" verbose="true">
+        <classpath refid="compile.run.classpath"/>
+    </javac> 
   </target>
     
   <target name="prepare">
@@ -236,14 +241,14 @@
 		<mapnosprites library="org.icefaces.component.datetimeentry" dir="src/org/icefaces/component/datetimeentry/skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.sliderentry" dir="src/org/icefaces/component/sliderentry/skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.tab" dir="src/org/icefaces/component/tab/skins" skin="sam" />
-		<mapnosprites library="org.icefaces.component.inputFiles" dir="src/org/icefaces/component/inputFiles/skins" skin="sam" />
+		<mapnosprites library="org.icefaces.component.fileentry" dir="src/org/icefaces/component/fileentry/skins" skin="sam" />
 		
 		<mapnosprites library="org.icefaces.component.datetimeentry" dir="src/org/icefaces/component/datetimeentry/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.checkboxButton" dir="src/org/icefaces/component/checkboxButton/skins" skin="rime" />  
 		<mapnosprites library="org.icefaces.component.radiobutton" dir="src/org/icefaces/component/radiobutton/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.linkbutton" dir="src/org/icefaces/component/linkbutton/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.tab" dir="src/org/icefaces/component/tab/skins" skin="rime" />
-		<mapnosprites library="org.icefaces.component.inputFiles" dir="src/org/icefaces/component/inputFiles/skins" skin="rime" />
+		<mapnosprites library="org.icefaces.component.fileentry" dir="src/org/icefaces/component/fileentry/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.sliderentry" dir="src/org/icefaces/component/sliderentry/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.pushbutton" dir="src/org/icefaces/component/pushbutton/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.menubutton" dir="src/org/icefaces/component/menubutton/skins" skin="rime" />
@@ -284,11 +289,11 @@
 		<includeresources dir="src/org/icefaces/component/datetimeentry/skins" name="calendar" skin="sam" />
 		<includeresources dir="src/org/icefaces/component/sliderentry/skins" name="slider" skin="sam" />
 		<includeresources dir="src/org/icefaces/component/tab/skins" name="tabset" skin="sam" />
-		<includeresources dir="src/org/icefaces/component/inputFiles/skins" name="inputfiles" skin="sam" />
+		<includeresources dir="src/org/icefaces/component/fileentry/skins" name="fileEntry" skin="sam" />
 		
 		<includeresources dir="src/org/icefaces/component/datetimeentry/skins" name="calendar" skin="rime" />
 		<includeresources dir="src/org/icefaces/component/tab/skins" name="tabset" skin="rime" />
-		<includeresources dir="src/org/icefaces/component/inputFiles/skins" name="inputfiles" skin="rime" />
+		<includeresources dir="src/org/icefaces/component/fileentry/skins" name="fileEntry" skin="rime" />
 		<includeresources dir="src/org/icefaces/component/checkboxButton/skins" name="checkboxButton" skin="rime" />
 		<includeresources dir="src/org/icefaces/component/radiobutton/skins" name="radiobutton" skin="rime" />
 		<includeresources dir="src/org/icefaces/component/sliderentry/skins" name="slider" skin="rime" />
@@ -315,12 +320,12 @@
 		<mapsprites library="org.icefaces.component.datetimeentry" name="calendar" skin="sam" />
 		<mapsprites library="org.icefaces.component.sliderentry" name="slider" skin="sam" />
 		<mapsprites library="org.icefaces.component.tab" name="tabset" skin="sam" />
-		<mapsprites library="org.icefaces.component.inputFiles" name="inputfiles" skin="sam" />
+		<mapsprites library="org.icefaces.component.fileentry" name="fileEntry" skin="sam" />
 		
 		<mapsprites library="org.icefaces.component.datetimeentry" name="calendar" skin="rime" />
  		<mapsprites library="org.icefaces.component.linkbutton" name="linkbutton" skin="rime" />
 		<mapsprites library="org.icefaces.component.tab" name="tabset" skin="rime" />
-		<mapsprites library="org.icefaces.component.inputFiles" name="inputfiles" skin="rime" />
+		<mapsprites library="org.icefaces.component.fileentry" name="fileEntry" skin="rime" />
 		<mapsprites library="org.icefaces.component.checkboxButton" name="checkboxButton" skin="rime" />
 		<mapsprites library="org.icefaces.component.radiobutton" name="radiobutton" skin="rime" />
 		<mapsprites library="org.icefaces.component.sliderentry" name="slider" skin="rime" />

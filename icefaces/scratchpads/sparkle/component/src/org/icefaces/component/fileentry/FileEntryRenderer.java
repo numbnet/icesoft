@@ -20,7 +20,7 @@
  *
  */
 
-package org.icefaces.component.inputFiles;
+package org.icefaces.component.fileentry;
 
 import javax.faces.render.Renderer;
 import javax.faces.context.FacesContext;
@@ -28,51 +28,77 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIComponent;
 import java.io.IOException;
 
-public class InputFilesRenderer extends Renderer {
+public class FileEntryRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-        InputFiles inputFiles = (InputFiles) uiComponent;
+        FileEntry fileEntry = (FileEntry) uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
-//System.out.println("InputFilesRenderer.encode  clientId: " + clientId);
+//System.out.println("FileEntryRenderer.encode  clientId: " + clientId);
         
-        InputFilesConfig config = inputFiles.storeConfigForNextLifecycle(facesContext, clientId);
+        FileEntryConfig config = fileEntry.storeConfigForNextLifecycle(facesContext, clientId);
         
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement("div", uiComponent);
-		writer.writeAttribute("class", "iceInpFile", "class");
+		writer.writeAttribute("class", "ice-file-entry", "class");
         
         writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "file", "type");
         writer.writeAttribute("id", config.getIdentifier(), "clientId");
         writer.writeAttribute("name", config.getIdentifier(), "clientId");
+        //writer.writeAttribute("multiple", "multiple", "multiple");
         writer.endElement("input");
         
         writer.endElement("div");
+        
+        /*
+        Resource res = new Resource() {
+            public Map<String, String> getResponseHeaders() {
+                return null;
+            }
+
+            public String getRequestPath() {
+                return null;
+            }
+
+            public URL getURL() {
+                return null;
+            }
+
+            public boolean userAgentNeedsUpdate(FacesContext facesContext) {
+                return false;
+            }
+
+            public InputStream getInputStream() {
+                return null;
+            }
+        };
+        String resPath = ResourceRegistry.addSessionResource(res);
+        */
     }
     
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
-        InputFiles inputFiles = (InputFiles) uiComponent;
+        FileEntry fileEntry = (FileEntry) uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
-//System.out.println("InputFilesRenderer.decode  clientId: " + clientId);
-        InputFilesInfo info = InputFiles.retrieveInfoFromEarlierInLifecycle(facesContext, clientId);
+//System.out.println("FileEntryRenderer.decode  clientId: " + clientId);
+        FileEntryInfo info = FileEntry.retrieveInfoFromEarlierInLifecycle(facesContext, clientId);
         // If no new files have been uploaded, leave the old upload info in-place.
         if (info != null) {
-//System.out.println("InputFilesRenderer.decode    info: " + info);
-            inputFiles.setInfo(info);
-//System.out.println("InputFilesRenderer.decode      info ve: " + uiComponent.getValueExpression("info"));
+//System.out.println("FileEntryRenderer.decode    info: " + info);
+            fileEntry.setInfo(info);
+//System.out.println("FileEntryRenderer.decode      info ve: " + uiComponent.getValueExpression("info"));
             
-            InputFilesEvent event = new InputFilesEvent(inputFiles);
-            inputFiles.queueEvent(event);
+            FileEntryEvent event = new FileEntryEvent(fileEntry);
+            fileEntry.queueEvent(event);
         }
         
         // ICE-5750 deals with re-adding faces messages for components that
         // have no re-executed. Components that are executing should re-add
         // their faces messages themselves.
         if (info == null) {
-            info = inputFiles.getInfo();
+            info = fileEntry.getInfo();
         }
-        inputFiles.addMessagesFromInfo(facesContext, clientId, info);
+        fileEntry.addMessagesFromInfo(facesContext, clientId, info);
     }
 }

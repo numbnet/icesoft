@@ -20,13 +20,13 @@
  *
  */
 
-package org.icefaces.component.inputFiles;
+package org.icefaces.component.fileentry;
 
 import java.io.Serializable;
 
 /**
  * When files are being uploaded, they will be saved into the file-system
- * unless an InputFilesCallback is provided, in which case the application
+ * unless an FileEntryCallback is provided, in which case the application
  * may take responsibility for the process of saving the files. This is
  * useful in cases where the files should be saved into a database, or
  * processed in memory before being written to the file-system, etc.
@@ -39,7 +39,7 @@ import java.io.Serializable;
  * file had pre-failed (say, due to an invalid file extension), end(-) will
  * still be called, but not any of the write(-) methods. 
  */
-public interface InputFilesCallback extends Serializable {
+public interface FileEntryCallback extends Serializable {
     /**
      * Notify the callback of another file that has been uploaded
      * @param fileName The file name, as given by the user's browser
@@ -49,7 +49,7 @@ public interface InputFilesCallback extends Serializable {
     // Not sure if we can guarantee that we'll always know the file size, with all browsers
     // After writing the end method, I realised that we might know that a file has failed upload, before even commencing.
     // QUESTION: For files that have failed upload, before event beginning, should we simply not call begin at all, or inform the callback?
-    public void begin(String fileName, long fileSize, InputFilesStatus status);
+    public void begin(String fileName, long fileSize, FileEntryStatus status);
 
     // We write in chunks, as we read them in
     public void write(byte[] buffer, int offset, int length);
@@ -59,5 +59,5 @@ public interface InputFilesCallback extends Serializable {
 
     // If we detect that a file failed, say because it's over quota, then we'll tell the callback, and it might massage the result, to still accept the file, or possibly to fail the file that we thought was ok.
     // They can even return a custom status, with its own message format for the faces message.
-    public InputFilesStatus end(InputFilesStatus status);
+    public FileEntryStatus end(FileEntryStatus status);
 }

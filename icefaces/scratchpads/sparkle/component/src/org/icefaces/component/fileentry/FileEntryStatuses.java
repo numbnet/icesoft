@@ -20,7 +20,7 @@
  *
  */
 
-package org.icefaces.component.inputFiles;
+package org.icefaces.component.fileentry;
 
 import org.icefaces.component.utils.MessageUtils;
 
@@ -30,7 +30,7 @@ import javax.faces.component.UIComponent;
 import java.util.Locale;
 
 /**
- * InputFilesStatuses are the built-in statuses which correspond to the
+ * FileEntryStatuses are the built-in statuses which correspond to the
  * localised messages defined in the org.icefaces.component.resources.messages 
  * ResourceBundle. These can be overriden by specifing corresponding entries 
  * in the application ResourceBundle.
@@ -43,52 +43,52 @@ import java.util.Locale;
  * @see #getParameters
  * @see #PROBLEM_READING_MULTIPART
  */
-public enum InputFilesStatuses implements InputFilesStatus {
+public enum FileEntryStatuses implements FileEntryStatus {
     UPLOADING(false),
     SUCCESS(true),
     INVALID(false),
     MAX_TOTAL_SIZE_EXCEEDED(false) {
         @Override
         public FacesMessage getFacesMessage(FacesContext facesContext,
-                UIComponent inputFiles, InputFilesInfo.FileEntry fe) {
-            String pattern = (String) inputFiles.getAttributes().get(
+                UIComponent fileEntry, FileEntryInfo.FileInfo fi) {
+            String pattern = (String) fileEntry.getAttributes().get(
                 "maxTotalSizeMessage");
             return (pattern != null && pattern.length() > 0) ?
-                getFacesMessage(facesContext, inputFiles,fe, pattern) :
-                super.getFacesMessage(facesContext, inputFiles, fe);
+                getFacesMessage(facesContext, fileEntry, fi, pattern) :
+                super.getFacesMessage(facesContext, fileEntry, fi);
         }
     },
     MAX_FILE_SIZE_EXCEEDED(false) {
         @Override
         public FacesMessage getFacesMessage(FacesContext facesContext,
-                UIComponent inputFiles, InputFilesInfo.FileEntry fe) {
-            String pattern = (String) inputFiles.getAttributes().get(
+                UIComponent fileEntry, FileEntryInfo.FileInfo fi) {
+            String pattern = (String) fileEntry.getAttributes().get(
                 "maxFileSizeMessage");
             return (pattern != null && pattern.length() > 0) ?
-                getFacesMessage(facesContext, inputFiles,fe, pattern) :
-                super.getFacesMessage(facesContext, inputFiles, fe);
+                getFacesMessage(facesContext, fileEntry, fi, pattern) :
+                super.getFacesMessage(facesContext, fileEntry, fi);
         }
     },
     MAX_FILE_COUNT_EXCEEDED(false) {
         @Override
         public FacesMessage getFacesMessage(FacesContext facesContext,
-                UIComponent inputFiles, InputFilesInfo.FileEntry fe) {
-            String pattern = (String) inputFiles.getAttributes().get(
+                UIComponent fileEntry, FileEntryInfo.FileInfo fi) {
+            String pattern = (String) fileEntry.getAttributes().get(
                 "maxFileCountMessage");
             return (pattern != null && pattern.length() > 0) ?
-                getFacesMessage(facesContext, inputFiles,fe, pattern) :
-                super.getFacesMessage(facesContext, inputFiles, fe);
+                getFacesMessage(facesContext, fileEntry, fi, pattern) :
+                super.getFacesMessage(facesContext, fileEntry, fi);
         }
     },
     REQUIRED(false) {
         @Override
         public FacesMessage getFacesMessage(FacesContext facesContext,
-                UIComponent inputFiles, InputFilesInfo.FileEntry fe) {
-            String pattern = (String) inputFiles.getAttributes().get(
+                UIComponent fileEntry, FileEntryInfo.FileInfo fi) {
+            String pattern = (String) fileEntry.getAttributes().get(
                 "requiredMessage");
             return (pattern != null && pattern.length() > 0) ?
-                getFacesMessage(facesContext, inputFiles,fe, pattern) :
-                super.getFacesMessage(facesContext, inputFiles, fe);
+                getFacesMessage(facesContext, fileEntry, fi, pattern) :
+                super.getFacesMessage(facesContext, fileEntry, fi);
         }
     },
     UNKNOWN_SIZE(false),
@@ -103,7 +103,7 @@ public enum InputFilesStatuses implements InputFilesStatus {
     PROBLEM_READING_MULTIPART(false) {
         @Override
         public FacesMessage getFacesMessage(FacesContext facesContext,
-                UIComponent inputFiles, InputFilesInfo.FileEntry fe) {
+                UIComponent fileEntry, FileEntryInfo.FileInfo fi) {
             FacesMessage.Severity sev = getSeverity();
             String messageId = MESSAGE_KEY_PREFIX + name();
             FacesMessage fm = MessageUtils.getMessage(facesContext, sev, messageId, null);
@@ -113,12 +113,12 @@ public enum InputFilesStatuses implements InputFilesStatus {
     
     
     private static final String MESSAGE_KEY_PREFIX =
-        "org.icefaces.component.inputFiles.";
+        "org.icefaces.component.fileEntry.";
     
     private boolean success;
     
 
-    private InputFilesStatuses(boolean success) {
+    private FileEntryStatuses(boolean success) {
         this.success = success;
     }
 
@@ -127,15 +127,15 @@ public enum InputFilesStatuses implements InputFilesStatus {
     }
 
     public FacesMessage getFacesMessage(FacesContext facesContext,
-            UIComponent inputFiles, InputFilesInfo.FileEntry fe) {
-//System.out.println("InputFilesStatuses.getFacesMessage()");
+            UIComponent fileEntry, FileEntryInfo.FileInfo fi) {
+//System.out.println("FileEntryStatuses.getFacesMessage()");
         FacesMessage.Severity sev = getSeverity();
-//System.out.println("InputFilesStatuses.getFacesMessage()  sev: " + sev);
+//System.out.println("FileEntryStatuses.getFacesMessage()  sev: " + sev);
         String messageId = MESSAGE_KEY_PREFIX + name();
-//System.out.println("InputFilesStatuses.getFacesMessage()  messageId: " + messageId);
-        Object[] params = getParameters(facesContext, inputFiles, fe);
+//System.out.println("FileEntryStatuses.getFacesMessage()  messageId: " + messageId);
+        Object[] params = getParameters(facesContext, fileEntry, fi);
         FacesMessage fm = MessageUtils.getMessage(facesContext, sev, messageId, params);
-//System.out.println("InputFilesStatuses.getFacesMessage()  fm: " + fm);
+//System.out.println("FileEntryStatuses.getFacesMessage()  fm: " + fm);
         return fm;
     }
     
@@ -149,7 +149,7 @@ public enum InputFilesStatuses implements InputFilesStatus {
      * When formatting the MessageFormat patterns that comes from the 
      * ResourceBundles, the following parameters are provided:
      * 
-     * param[0] : label        (Identifies the inputFiles component)
+     * param[0] : label        (Identifies the fileEntry component)
      * param[1] : fileName     (The original file name, on user's computer)
      * param[2] : contentType  (MIME type of uploaded file)
      * param[3] : file         (Stored file, on server)
@@ -159,16 +159,16 @@ public enum InputFilesStatuses implements InputFilesStatus {
      * param[7] : maxFileCount (Maximum number of uploaded files)
      */
     protected Object[] getParameters(FacesContext facesContext,
-            UIComponent inputFiles, InputFilesInfo.FileEntry fe) {
+            UIComponent fileEntry, FileEntryInfo.FileInfo fi) {
         Object[] params = new Object[] {
-            inputFiles.getAttributes().get("facesMessageLabel"),
-            fe.getFileName(),
-            fe.getContentType(),
-            fe.getFile(),
-            fe.getSize(),
-            inputFiles.getAttributes().get("maxTotalSize"),
-            inputFiles.getAttributes().get("maxFileSize"),
-            inputFiles.getAttributes().get("maxFileCount")
+            fileEntry.getAttributes().get("facesMessageLabel"),
+            fi.getFileName(),
+            fi.getContentType(),
+            fi.getFile(),
+            fi.getSize(),
+            fileEntry.getAttributes().get("maxTotalSize"),
+            fileEntry.getAttributes().get("maxFileSize"),
+            fileEntry.getAttributes().get("maxFileCount")
         };
         return params;
     }
@@ -178,11 +178,11 @@ public enum InputFilesStatuses implements InputFilesStatus {
      * component, which specify the MessageFormat pattern themselves.
      */
     protected FacesMessage getFacesMessage(
-            FacesContext facesContext, UIComponent inputFiles,
-            InputFilesInfo.FileEntry fe, String pattern) {
+            FacesContext facesContext, UIComponent fileEntry,
+            FileEntryInfo.FileInfo fi, String pattern) {
         Locale locale = facesContext.getViewRoot().getLocale();
         FacesMessage.Severity sev = getSeverity();
-        Object[] params = getParameters(facesContext, inputFiles, fe);
+        Object[] params = getParameters(facesContext, fileEntry, fi);
         return MessageUtils.getMessage(locale, sev, pattern, pattern, params);
     }
 }    

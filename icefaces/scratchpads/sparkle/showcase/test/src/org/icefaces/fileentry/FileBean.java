@@ -1,8 +1,8 @@
-package org.icefaces.inputFiles;
+package org.icefaces.fileentry;
 
-import org.icefaces.component.inputFiles.InputFilesEvent;
-import org.icefaces.component.inputFiles.InputFilesInfo;
-import org.icefaces.component.inputFiles.InputFiles;
+import org.icefaces.component.fileentry.FileEntryEvent;
+import org.icefaces.component.fileentry.FileEntryInfo;
+import org.icefaces.component.fileentry.FileEntry;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.bean.ManagedBean;
@@ -81,9 +81,9 @@ public class FileBean {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("actionListener  clientId: " + e.getComponent().getClientId()));
     }
     
-    public void inputFilesListener(InputFilesEvent e) {
-        System.out.println("inputFilesListener()  e: " + e);
-        System.out.println("inputFilesListener()  phase: " + e.getPhaseId());
+    public void fileEntryListener(FileEntryEvent e) {
+        System.out.println("fileEntryListener()  e: " + e);
+        System.out.println("fileEntryListener()  phase: " + e.getPhaseId());
     }
     
     public List getTableList() {
@@ -113,7 +113,7 @@ public class FileBean {
     
     public static class Item {
         private boolean immediate;
-        private InputFilesInfo info;
+        private FileEntryInfo info;
         
         private boolean infosEqual;
         private boolean saved;
@@ -125,10 +125,10 @@ public class FileBean {
             this.immediate = immediate;
         }
         
-        public void listener(InputFilesEvent e) {
-            System.out.println("Item.inputFilesListener()  e: " + e);
-            InputFiles inputFiles = (InputFiles) e.getComponent();
-            InputFilesInfo info = inputFiles.getInfo();
+        public void listener(FileEntryEvent e) {
+            System.out.println("Item.listener()  e: " + e);
+            FileEntry fileEntry = (FileEntry) e.getComponent();
+            FileEntryInfo info = fileEntry.getInfo();
             infosEqual = info.equals(this.info); // this.info can be null
             if (info.getFiles().size() > 0) {
                 saved = info.getFiles().get(0).isSaved();
@@ -138,12 +138,12 @@ public class FileBean {
                 saved = false;
                 fileName = null;
             }
-            clientId = inputFiles.getClientId();
+            clientId = fileEntry.getClientId();
             phase = e.getPhaseId().toString();
         }
         
-        public InputFilesInfo getInfo() { return info; } 
-        public void setInfo(InputFilesInfo info) {
+        public FileEntryInfo getInfo() { return info; } 
+        public void setInfo(FileEntryInfo info) {
             System.out.println("Item.setInfo()  info: " + info);
             this.info = info;
         }

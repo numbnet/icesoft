@@ -20,7 +20,7 @@
  *
  */
 
-package org.icefaces.component.inputFiles;
+package org.icefaces.component.fileentry;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ProjectStage;
@@ -35,15 +35,15 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class InputFiles extends InputFilesBase {
-    private static final String INFO_KEY = "org.icefaces.component.inputFiles.infos";
-    private static final String EVENT_KEY = "org.icefaces.component.inputFiles.events";
+public class FileEntry extends FileEntryBase {
+    private static final String INFO_KEY = "org.icefaces.component.fileEntry.infos";
+    private static final String EVENT_KEY = "org.icefaces.component.fileEntry.events";
     
-    public InputFiles() {
+    public FileEntry() {
         super();
     }
-    
-    public void setInfo(InputFilesInfo info) {
+
+    public void setInfo(FileEntryInfo info) {
         try {
             super.setInfo(info);
         }
@@ -52,17 +52,17 @@ public class InputFiles extends InputFilesBase {
             if (facesContext.isProjectStage(ProjectStage.Development) ||
                 facesContext.isProjectStage(ProjectStage.UnitTest)) {
                 System.out.println("Problem setting info property on " +
-                    "InputFiles component: " + e);
+                    "FileEntry component: " + e);
                 e.printStackTrace();
             }
             throw e;
         }
     }
     
-    public InputFilesInfo getInfo() {
-        InputFilesInfo info = super.getInfo();
+    public FileEntryInfo getInfo() {
+        FileEntryInfo info = super.getInfo();
         if (info != null) {
-            info = (InputFilesInfo) info.clone();
+            info = (FileEntryInfo) info.clone();
         }
         return info;
     }
@@ -78,8 +78,8 @@ public class InputFiles extends InputFilesBase {
      * 
      * By definition, this method must encode both the clientId and the
      * view state id, so that both parts can be extracted out by the 
-     * InputFilesPhaseListener. It's used as a key into the session map, to 
-     * store the InputFilesConfig. As well, it has to be a valid HTML form 
+     * FileEntryPhaseListener. It's used as a key into the session map, to 
+     * store the FileEntryConfig. As well, it has to be a valid HTML form 
      * field id and name. From the HTML 4 and XHTML 1 specs: ID and NAME 
      * tokens must begin with a letter ([A-Za-z]) and may be followed by any 
      * number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), 
@@ -88,10 +88,10 @@ public class InputFiles extends InputFilesBase {
      * TODO
      * An alternative implementation, that would not rely on the view session 
      * id, would involve using a sequence number in the session, so that new
-     * inputFiles components would take a sequence number from the session, 
+     * fileEntry components would take a sequence number from the session, 
      * and then hold onto that, using state saving. There might even be a 
      * way to use view or page scope, to hold the identifier, using the 
-     * clientId as a key, so that if the inputFiles component is removed and 
+     * clientId as a key, so that if the fileEntry component is removed and 
      * re-added to the view, it would retain the original identifier.
      * 
      * TODO
@@ -110,12 +110,12 @@ public class InputFiles extends InputFilesBase {
     }
 
     /**
-     * Used by InputFilesRenderer to save config for InputFilesPhaseListener
+     * Used by FileEntryRenderer to save config for FileEntryPhaseListener
      * to use on the next postback
      */
-    InputFilesConfig storeConfigForNextLifecycle(FacesContext facesContext, String clientId) {
+    FileEntryConfig storeConfigForNextLifecycle(FacesContext facesContext, String clientId) {
         String identifier = getIdentifier(facesContext, clientId);
-        InputFilesConfig config = new InputFilesConfig(
+        FileEntryConfig config = new FileEntryConfig(
             identifier,
             clientId,
             getAbsolutePath(),
@@ -138,40 +138,40 @@ public class InputFiles extends InputFilesBase {
     }
     
     /**
-     * Used by InputFilesPhaseListener to retrieve config saved away by 
-     * InputFilesRenderer in previous lifecycle
+     * Used by FileEntryPhaseListener to retrieve config saved away by 
+     * FileEntryRenderer in previous lifecycle
      */
-    static InputFilesConfig retrieveConfigFromPreviousLifecycle(FacesContext facesContext, String identifier) {
-        InputFilesConfig config = null;
+    static FileEntryConfig retrieveConfigFromPreviousLifecycle(FacesContext facesContext, String identifier) {
+        FileEntryConfig config = null;
         Object sessionObj = facesContext.getExternalContext().getSession(false);
         if (sessionObj != null) {
             synchronized(sessionObj) {
                 Map<String,Object> map = facesContext.getExternalContext().getSessionMap();
-                config = (InputFilesConfig) map.get(identifier);
+                config = (FileEntryConfig) map.get(identifier);
             }
         }
         return config;
     }
 
     /**
-     * Used by InputFilesPhaseListener, before the component treee exists, to 
+     * Used by FileEntryPhaseListener, before the component treee exists, to 
      * save the outcome of the file uploads, to be retrieved later in the same 
      * lifecycle, once the component tree is in place. 
      */
     static void storeInfosForLaterInLifecycle(
             FacesContext facesContext,
-            Map<String,InputFilesInfo> clientId2Info) {
+            Map<String, FileEntryInfo> clientId2Info) {
         facesContext.getAttributes().put(INFO_KEY, clientId2Info);
     }
 
     /**
-     * Used by InputFilesRenderer.decode(-) to retrieve each inputFiles
+     * Used by FileEntryRenderer.decode(-) to retrieve each fileEntry
      * component's outcome for file uploads.
      */
-    static InputFilesInfo retrieveInfoFromEarlierInLifecycle(
+    static FileEntryInfo retrieveInfoFromEarlierInLifecycle(
             FacesContext facesContext, String clientId) {
-        InputFilesInfo info = null;
-        Map<String,InputFilesInfo> clientId2Info = (Map<String,InputFilesInfo>)
+        FileEntryInfo info = null;
+        Map<String, FileEntryInfo> clientId2Info = (Map<String, FileEntryInfo>)
             facesContext.getAttributes().get(INFO_KEY);
         if (clientId2Info != null) {
             info = clientId2Info.get(clientId);
@@ -180,7 +180,7 @@ public class InputFiles extends InputFilesBase {
     }
 
     /**
-     * After the ApplyRequestValues phase, when the inputFiles components 
+     * After the ApplyRequestValues phase, when the fileEntry components 
      * have all retrieved their outcomes for uploaded files, clear the 
      * outcomes away, so we don't leak memory. 
      */
@@ -188,15 +188,15 @@ public class InputFiles extends InputFilesBase {
         facesContext.getAttributes().remove(INFO_KEY);
     }
     
-    void addMessagesFromInfo(FacesContext facesContext, String clientId, InputFilesInfo info) {
-//System.out.println("InputFiles.addMessagesFromInfo  info: " + info);
+    void addMessagesFromInfo(FacesContext facesContext, String clientId, FileEntryInfo info) {
+//System.out.println("FileEntry.addMessagesFromInfo  info: " + info);
         if (info != null) {
-            ArrayList<InputFilesInfo.FileEntry> files = info.getFiles();
-            for (InputFilesInfo.FileEntry fe : files) {
-//System.out.println("InputFiles.addMessagesFromInfo    FileEntry: " + fe);
-                InputFilesStatus status = fe.getStatus();
-                FacesMessage fm = status.getFacesMessage(facesContext, this, fe);
-//System.out.println("InputFiles.addMessagesFromInfo    FacesMessage: " + fm);
+            ArrayList<FileEntryInfo.FileInfo> files = info.getFiles();
+            for (FileEntryInfo.FileInfo fi : files) {
+//System.out.println("FileEntry.addMessagesFromInfo    FileInfo: " + fi);
+                FileEntryStatus status = fi.getStatus();
+                FacesMessage fm = status.getFacesMessage(facesContext, this, fi);
+//System.out.println("FileEntry.addMessagesFromInfo    FacesMessage: " + fm);
                 facesContext.addMessage(clientId, fm);
             }
         }
@@ -215,24 +215,24 @@ public class InputFiles extends InputFilesBase {
     
     @Override
     public void queueEvent(FacesEvent event) {
-//System.out.println("InputFiles.queueEvent  clientId: " + getClientId());
+//System.out.println("FileEntry.queueEvent  clientId: " + getClientId());
         if (isImmediate()) {
             event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-//System.out.println("InputFiles.queueEvent    immediate == true  queuing event: " + event);
+//System.out.println("FileEntry.queueEvent    immediate == true  queuing event: " + event);
             super.queueEvent(event);
         }
         else {
             event.setPhaseId(PhaseId.RENDER_RESPONSE);
-//System.out.println("InputFiles.queueEvent    immediate == false  storing event: " + event);
+//System.out.println("FileEntry.queueEvent    immediate == false  storing event: " + event);
             storeEventForPreRender(event);
         }
     }
     
     @Override
     public void broadcast(FacesEvent event) {
-//System.out.println("InputFiles.broadcast  clientId: " + getClientId() + "  event: " + event);
-        if (event instanceof InputFilesEvent) {
-            MethodExpression inpFilesList = getInputFilesListener();
+//System.out.println("FileEntry.broadcast  clientId: " + getClientId() + "  event: " + event);
+        if (event instanceof FileEntryEvent) {
+            MethodExpression inpFilesList = getFileEntryListener();
             if (inpFilesList != null) {
                 FacesContext context = FacesContext.getCurrentInstance();
                 ELContext elContext = context.getELContext();
@@ -249,8 +249,8 @@ public class InputFiles extends InputFilesBase {
     }
     
     /**
-     * Used by InputFiles.queueEvent(-), to save non-immediate InputFilesEvent
-     * objects to be invoked by InputFilesPhaseListener in pre-Render phase. 
+     * Used by FileEntry.queueEvent(-), to save non-immediate FileEntryEvent
+     * objects to be invoked by FileEntryPhaseListener in pre-Render phase. 
      */
     private void storeEventForPreRender(FacesEvent event) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -264,7 +264,7 @@ public class InputFiles extends InputFilesBase {
     }
 
     /**
-     * Used by InputFilesPhaseListener(-) to retrieve each the InputFilesEvent
+     * Used by FileEntryPhaseListener(-) to retrieve each the FileEntryEvent
      * objects, so they can be invoked pre-Render phase.
      */
     static Map<String,FacesEvent> removeEventsForPreRender(
