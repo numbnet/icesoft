@@ -26,8 +26,8 @@ import org.icefaces.component.baseMeta.UISelectBooleanMeta;
 	    @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
 		@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
 	    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),	
-        @ResourceDependency(name="checkboxButton.js",library="org.icefaces.component.checkboxButton"),
-        @ResourceDependency(name="checkboxButton.css",library="org.icefaces.component.checkboxButton")
+        @ResourceDependency(name="checkboxbutton.js",library="org.icefaces.component.checkboxbutton"),
+        @ResourceDependency(name="checkboxbutton.css",library="org.icefaces.component.checkboxbutton")
 })
 
 public class CheckboxButtonMeta extends UISelectBooleanMeta {
