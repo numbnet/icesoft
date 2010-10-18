@@ -78,23 +78,23 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
     //  that will not collide with samely named properties or fields.
     
     @Property (defaultValue="x", 
-            tlddoc="It could be either x, for horizontal or y, for vertical. Default value is set to x. Pass through to YUI component")
+            tlddoc="It could be either x, for horizontal or y, for vertical. Default value is set to x.")
     private String axis;
     
     @Property (defaultValue="0", 
-            tlddoc="The minimum value of slider, default is 0. Pass through to YUI component")
+            tlddoc="The minimum value of slider, default is 0.")
     private int min;
     
     @Property (defaultValue="100",
-            tlddoc="The maximum value of slider, default is 100. Pass through to YUI component")
+            tlddoc="The maximum value of slider, default is 100.")
     private int max;
     
     @Property (defaultValue="0",
-            tlddoc="The value of slider, default is 0. Pass through to YUI component")
+            tlddoc="The value of slider, default is 0.")
     private int value;    
     
     @Property (defaultValue="150px",
-            tlddoc="The length of slider, default is 150px. Pass through to YUI component")
+            tlddoc="The length of slider, default is 150px.")
     private String length;
     
     @Property (defaultValue="slideEnd",
