@@ -129,7 +129,8 @@ public class SliderEntryRenderer extends Renderer{
                 entry("value", slider.getValue()).
                 entry("axis", slider.getAxis()).
                 entry("length", slider.getLength()).
-                entry("clickableRail", slider.isClickableRail());
+                entry("clickableRail", slider.isClickableRail()).
+                entry("disabled", slider.isDisabled());
 
         String thumbUrl = slider.getThumbUrl();
         if (thumbUrl != null && thumbUrl.trim().length() > 0) {
