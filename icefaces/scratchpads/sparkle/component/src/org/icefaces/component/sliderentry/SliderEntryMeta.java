@@ -135,4 +135,7 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
     //  describes a method to be called, and the parameter to pass to it.
     @Property(expression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
     private MethodExpression valueChangeListener;
+
+    @Property (tlddoc="Boolean indicating if the component should be disabled.") 
+    private boolean disabled;
 }
