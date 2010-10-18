@@ -126,7 +126,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
             //Object session = externalContext.getSession(true);
             WindowScopeManager.determineWindowID(context);
         } catch (Exception e) {
-            log.log(Level.WARNING, "Unable to set up WindowScope ", e);
+            log.log(Level.FINE, "Unable to set up WindowScope ", e);
         }
     }
 
