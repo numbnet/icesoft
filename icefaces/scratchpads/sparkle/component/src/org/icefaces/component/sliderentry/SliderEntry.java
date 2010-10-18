@@ -34,7 +34,7 @@ public class SliderEntry extends SliderEntryBase{
             ValueExpression ve = getValueExpression("value");
             if (ve != null) {
                 try {
-                    ve.setValue(getFacesContext().getELContext(), ((ValueChangeEvent)event).getNewValue());
+                    setValue((Integer)((ValueChangeEvent)event).getNewValue());
                 } catch (ELException ee) {
                     ee.printStackTrace();
                 }
