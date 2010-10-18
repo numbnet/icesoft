@@ -1,4 +1,4 @@
-package org.icefaces.component.slider;
+package org.icefaces.component.sliderentry;
 
 import java.io.IOException;
 import java.util.Map;
@@ -29,8 +29,8 @@ import org.icefaces.util.EnvUtils;
  *   In addition to the rendering the renderer performs decode as well. This component
  *   doesn't use a hidden field for it value instead takes advantage of param support of JSF2
  */
-public class SliderRenderer extends Renderer{
-    private final static Logger log = Logger.getLogger(SliderRenderer.class.getName());
+public class SliderEntryRenderer extends Renderer{
+    private final static Logger log = Logger.getLogger(SliderEntryRenderer.class.getName());
     // The decode method, in the renderer, is responsible for taking the values
     //  that have been submitted from the browser, and seeing if they correspond
     //  to this particular component, and also for the correct row(s) of any
@@ -44,7 +44,7 @@ public class SliderRenderer extends Renderer{
 
         //"ice.event.captured" should be holding the event source id
         if (requestParameterMap.containsKey("ice.event.captured")) {
-            Slider slider = (Slider)uiComponent;
+            SliderEntry slider = (SliderEntry)uiComponent;
             String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
             String clientId = uiComponent.getClientId(facesContext);
 
@@ -89,7 +89,7 @@ public class SliderRenderer extends Renderer{
     throws IOException {
         String clientId = uiComponent.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();        
-        Slider slider = (Slider)uiComponent;
+        SliderEntry slider = (SliderEntry)uiComponent;
 
         // Write outer div
         writer.startElement(HTML.DIV_ELEM, uiComponent);

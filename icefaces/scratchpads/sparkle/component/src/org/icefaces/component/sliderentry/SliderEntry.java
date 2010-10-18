@@ -1,24 +1,20 @@
-package org.icefaces.component.slider;
+package org.icefaces.component.sliderentry;
 
 import java.io.IOException;
 
 import javax.el.ELException;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
-import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
-import org.icefaces.component.tab.TabSet;
-
 //Does JSF respect order?
 //TODO make it so resources can be coalesce and served as whole 
 
-public class Slider extends SliderBase{
+public class SliderEntry extends SliderEntryBase{
     
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
