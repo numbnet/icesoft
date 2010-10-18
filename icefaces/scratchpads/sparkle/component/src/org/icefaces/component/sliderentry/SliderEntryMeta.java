@@ -59,8 +59,8 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 	@ResourceDependency(name="yahoo-dom-event/yahoo-dom-event.js",library="yui/2_8_1"),
 	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
-    @ResourceDependency(name="slider.js",library="org.icefaces.component.slider"),
-	@ResourceDependency(name="slider.css",library="org.icefaces.component.slider")
+    @ResourceDependency(name="slider.js",library="org.icefaces.component.sliderentry"),
+	@ResourceDependency(name="slider.css",library="org.icefaces.component.sliderentry")
 })
 
 public class SliderEntryMeta extends UIComponentBaseMeta {
