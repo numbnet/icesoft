@@ -1,4 +1,4 @@
-package org.icefaces.component.slider;
+package org.icefaces.component.sliderentry;
 
 import javax.el.MethodExpression;
 
@@ -15,19 +15,19 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
         tagName ="sliderEntry",
         // The end class that will be used by applications. Hand-coded.
         // The componentClass extends generatedClass, which extends extendsClass.
-        componentClass ="org.icefaces.component.slider.Slider",
+        componentClass ="org.icefaces.component.sliderentry.SliderEntry",
         // The renderer, which outputs the html markup and javascript. Hand-coded. 
-        rendererClass ="org.icefaces.component.slider.SliderRenderer",
+        rendererClass ="org.icefaces.component.sliderentry.SliderEntryRenderer",
         // Generated, to contain all of the properties, getters, setters, and
         //  state saving methods. 
-        generatedClass = "org.icefaces.component.slider.SliderBase",
+        generatedClass = "org.icefaces.component.sliderentry.SliderEntryBase",
         // The super-class of the component. Did not extend UIInput, because
         //  none of the conversion nor validation facilities it provides are
         //  relevant to a slider.
         extendsClass = "javax.faces.component.UIComponentBase",
-        componentType = "org.icesoft.faces.Slider",
-        rendererType = "org.icesoft.faces.SliderRenderer",
-        componentFamily="com.icesoft.faces.Slider",
+        componentType = "org.icesoft.faces.SliderEntry",
+        rendererType = "org.icesoft.faces.SliderEntryRenderer",
+        componentFamily="org.icefaces.component.SliderEntry",
         tlddoc="This is an extension of YUI's slider component."
     )
 	
@@ -64,7 +64,7 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 	@ResourceDependency(name="slider.css",library="org.icefaces.component.slider")
 })
 
-public class SliderMeta extends UIComponentBaseMeta {
+public class SliderEntryMeta extends UIComponentBaseMeta {
     // Every java field in the Meta class can be annotated to become either a
     //  Property, Field or Facet, in the generatedClass.
     // @Property annotations are for properties that should have a StateHelper,
