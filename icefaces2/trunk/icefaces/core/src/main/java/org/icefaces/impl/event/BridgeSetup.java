@@ -275,5 +275,15 @@ public class BridgeSetup implements SystemEventListener {
             writer.writeAttribute("type", "text/javascript" , null);
             writer.endElement("script");
         }
+        //Convince PortletFaces Bridge that this is a valid script for
+        //inserting into the Portal head
+        public String getRendererType()  {
+            return "javax.faces.resource.Script";
+        }
+        //Provide a script value for PortletFaces Bridge
+        //requires fix to bridge
+//        public Object getValue()  {
+//            return script;
+//        }
     }
 }
