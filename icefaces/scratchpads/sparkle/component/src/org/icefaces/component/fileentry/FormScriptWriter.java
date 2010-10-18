@@ -20,7 +20,7 @@
  *
  */
 
-package org.icefaces.component.inputFiles;
+package org.icefaces.component.fileentry;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;

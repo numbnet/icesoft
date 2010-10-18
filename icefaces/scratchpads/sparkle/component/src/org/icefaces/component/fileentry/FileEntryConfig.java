@@ -20,17 +20,17 @@
  *
  */
 
-package org.icefaces.component.inputFiles;
+package org.icefaces.component.fileentry;
 
 import java.io.Serializable;
 
 /**
  * The uploaded files need to be processed before RestoreViewPhase, meaning
- * that the InputFiles component is not yet available, to direct how and where
+ * that the FileEntry component is not yet available, to direct how and where
  * to save the files. So, any information that is needed to process uploaded
- * files needs to be accessible without a direct reference to the InputFiles.
+ * files needs to be accessible without a direct reference to the FileEntry.
  */
-public class InputFilesConfig implements Serializable {
+public class FileEntryConfig implements Serializable {
     private String identifier;
     private String clientId;
     
@@ -38,7 +38,7 @@ public class InputFilesConfig implements Serializable {
     private String relativePath;
     private boolean useSessionSubdir;
     private boolean useOriginalFilename;
-    private InputFilesCallback callback;
+    private FileEntryCallback callback;
     private long maxTotalSize;
     private long maxFileSize;
     private int maxFileCount;
@@ -47,14 +47,14 @@ public class InputFilesConfig implements Serializable {
     /**
      * InputFile uses this for publishing its own property configuration
      */
-    public InputFilesConfig(
+    public FileEntryConfig(
         String identifier,
         String clientId,
         String absolutePath,
         String relativePath,
         boolean useSessionSubdir,
         boolean useOriginalFilename,
-        InputFilesCallback callback,
+        FileEntryCallback callback,
         long maxTotalSize,
         long maxFileSize,
         int maxFileCount,
@@ -73,7 +73,7 @@ public class InputFilesConfig implements Serializable {
         this.required = required;
     }
 
-    
+
     public String getIdentifier() {
         return identifier;
     }
@@ -98,7 +98,7 @@ public class InputFilesConfig implements Serializable {
         return useOriginalFilename;
     }
     
-    public InputFilesCallback getCallback() {
+    public FileEntryCallback getCallback() {
         return callback;
     }
     
@@ -124,7 +124,7 @@ public class InputFilesConfig implements Serializable {
     
     public String toString() {
         return
-            "InputFilesConfig: {" +
+            "FileEntryConfig: {" +
             "\n  clientId=" + clientId +
             ",\n  absolutePath=" + absolutePath +
             ",\n  relativePath=" + relativePath +

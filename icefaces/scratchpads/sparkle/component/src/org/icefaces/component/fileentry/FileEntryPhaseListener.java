@@ -20,7 +20,7 @@
  *
  */
 
-package org.icefaces.component.inputFiles;
+package org.icefaces.component.fileentry;
 
 import org.icefaces.impl.context.DOMPartialViewContext;
 import org.icefaces.impl.util.CoreUtils;
@@ -52,7 +52,6 @@ import java.util.Enumeration;
 import java.util.Vector;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.Collection;
 import java.util.Set;
 import java.io.InputStream;
 import java.io.File;
@@ -60,32 +59,32 @@ import java.io.OutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class InputFilesPhaseListener implements PhaseListener {
+public class FileEntryPhaseListener implements PhaseListener {
     public void afterPhase(PhaseEvent phaseEvent) {
-//        System.out.println("InputFilesPhaseListener.afterPhase()   " + phaseEvent.getPhaseId());
-//        System.out.println("InputFilesPhaseListener.afterPhase()     renderResponse  : " + phaseEvent.getFacesContext().getRenderResponse());
-//        System.out.println("InputFilesPhaseListener.afterPhase()     responseComplete: " + phaseEvent.getFacesContext().getResponseComplete());
+//        System.out.println("FileEntryPhaseListener.afterPhase()   " + phaseEvent.getPhaseId());
+//        System.out.println("FileEntryPhaseListener.afterPhase()     renderResponse  : " + phaseEvent.getFacesContext().getRenderResponse());
+//        System.out.println("FileEntryPhaseListener.afterPhase()     responseComplete: " + phaseEvent.getFacesContext().getResponseComplete());
         if (phaseEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
-//System.out.println("InputFilesPhaseListener.afterPhase()  InputFiles.removeInfos()");
-            InputFiles.removeInfos(phaseEvent.getFacesContext());
+//System.out.println("FileEntryPhaseListener.afterPhase()  FileEntry.removeInfos()");
+            FileEntry.removeInfos(phaseEvent.getFacesContext());
         }
     }
 
     public void beforePhase(PhaseEvent phaseEvent) {
-//        System.out.println("InputFilesPhaseListener.beforePhase()  " + phaseEvent.getPhaseId());
+//        System.out.println("FileEntryPhaseListener.beforePhase()  " + phaseEvent.getPhaseId());
         if (!phaseEvent.getPhaseId().equals(PhaseId.RESTORE_VIEW)) {
             // Don't evaluate any of the fields on FacesContext or
             // PartialViewContext until after we've swapped in our
             // HttpServletRequest object
-//            System.out.println("InputFilesPhaseListener.beforePhase()    postback: " + phaseEvent.getFacesContext().isPostback());
-//            System.out.println("InputFilesPhaseListener.beforePhase()    partialViewContext.class: " + phaseEvent.getFacesContext().getPartialViewContext().getClass().getName());
-//            System.out.println("InputFilesPhaseListener.beforePhase()    partialViewContext.isAjaxRequest: " + phaseEvent.getFacesContext().getPartialViewContext().isAjaxRequest());
-//            System.out.println("InputFilesPhaseListener.beforePhase()    partialViewContext.isExecuteAll : " + phaseEvent.getFacesContext().getPartialViewContext().isExecuteAll());
-//            System.out.println("InputFilesPhaseListener.beforePhase()    partialViewContext.isRenderAll  : " + phaseEvent.getFacesContext().getPartialViewContext().isRenderAll());
+//            System.out.println("FileEntryPhaseListener.beforePhase()    postback: " + phaseEvent.getFacesContext().isPostback());
+//            System.out.println("FileEntryPhaseListener.beforePhase()    partialViewContext.class: " + phaseEvent.getFacesContext().getPartialViewContext().getClass().getName());
+//            System.out.println("FileEntryPhaseListener.beforePhase()    partialViewContext.isAjaxRequest: " + phaseEvent.getFacesContext().getPartialViewContext().isAjaxRequest());
+//            System.out.println("FileEntryPhaseListener.beforePhase()    partialViewContext.isExecuteAll : " + phaseEvent.getFacesContext().getPartialViewContext().isExecuteAll());
+//            System.out.println("FileEntryPhaseListener.beforePhase()    partialViewContext.isRenderAll  : " + phaseEvent.getFacesContext().getPartialViewContext().isRenderAll());
         }
         
         if (phaseEvent.getPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
-            final Map<String, FacesEvent> clientId2FacesEvent = InputFiles.
+            final Map<String, FacesEvent> clientId2FacesEvent = FileEntry.
                 removeEventsForPreRender(phaseEvent.getFacesContext());            
             if (clientId2FacesEvent != null) {
                 Set<String> clientIds = clientId2FacesEvent.keySet();
@@ -99,7 +98,7 @@ public class InputFilesPhaseListener implements PhaseListener {
                         FacesContext facesContext = visitContext.getFacesContext();
                         String clientId = uiComponent.getClientId(facesContext);
                         FacesEvent event = clientId2FacesEvent.get(clientId);
-//System.out.println("InputFilesPhaseListener  pre-Render  clientId: " + clientId + "  event: " + event);
+//System.out.println("FileEntryPhaseListener  pre-Render  clientId: " + clientId + "  event: " + event);
                         if (event != null) {
                             uiComponent.broadcast(event);
                         }
@@ -117,15 +116,15 @@ public class InputFilesPhaseListener implements PhaseListener {
             
         Object requestObject = phaseEvent.getFacesContext().getExternalContext().getRequest();
         if (!(requestObject instanceof HttpServletRequest)) {
-//            System.out.println("InputFilesPhaseListener.beforePhase()  requestObject: " + requestObject);
+//            System.out.println("FileEntryPhaseListener.beforePhase()  requestObject: " + requestObject);
 //            if (requestObject != null)
-//                System.out.println("InputFilesPhaseListener.beforePhase()  requestObject.class: " + requestObject.getClass().getName());
+//                System.out.println("FileEntryPhaseListener.beforePhase()  requestObject.class: " + requestObject.getClass().getName());
             return;
         }
         HttpServletRequest request = (HttpServletRequest) requestObject;
-//        System.out.println("InputFilesPhaseListener.beforePhase()  contentType: " + request.getContentType());
+//        System.out.println("FileEntryPhaseListener.beforePhase()  contentType: " + request.getContentType());
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-//        System.out.println("InputFilesPhaseListener.beforePhase()  isMultipart: " + isMultipart);
+//        System.out.println("FileEntryPhaseListener.beforePhase()  isMultipart: " + isMultipart);
         if (isMultipart) {
             final ServletFileUpload uploader = new ServletFileUpload();
             uploader.setProgressListener(new ProgressListener() {
@@ -145,7 +144,7 @@ public class InputFilesPhaseListener implements PhaseListener {
             });
             Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
             byte[] buffer = new byte[8*1024];
-            Map<String,InputFilesInfo> clientId2Info = new HashMap<String,InputFilesInfo>(6);
+            Map<String, FileEntryInfo> clientId2Info = new HashMap<String, FileEntryInfo>(6);
             try {
                 FileItemIterator iter = uploader.getItemIterator(request);
                 while (iter.hasNext()) {
@@ -167,13 +166,13 @@ public class InputFilesPhaseListener implements PhaseListener {
                 }
             }
             catch(Exception e) {
-                FacesMessage fm = InputFilesStatuses.PROBLEM_READING_MULTIPART.
+                FacesMessage fm = FileEntryStatuses.PROBLEM_READING_MULTIPART.
                     getFacesMessage(phaseEvent.getFacesContext(), null, null);
                 phaseEvent.getFacesContext().addMessage(null, fm);
                 System.out.println("Problem: " + e);
                 e.printStackTrace();
             }
-            InputFiles.storeInfosForLaterInLifecycle(phaseEvent.getFacesContext(), clientId2Info);
+            FileEntry.storeInfosForLaterInLifecycle(phaseEvent.getFacesContext(), clientId2Info);
             
             // Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
             Map<String, String[]> parameterMap = new HashMap<String, String[]>(
@@ -185,7 +184,7 @@ public class InputFilesPhaseListener implements PhaseListener {
                 parameterMap.put(key, values);
             }
             
-//            System.out.println("InputFilesPhaseListener.beforePhase()  parameterMap    : " + parameterMap);
+//            System.out.println("FileEntryPhaseListener.beforePhase()  parameterMap    : " + parameterMap);
             
             HttpServletRequest wrapper = new FileUploadRequestWrapper(request, parameterMap);
             phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
@@ -198,27 +197,27 @@ public class InputFilesPhaseListener implements PhaseListener {
             //phaseEvent.getFacesContext().getAttributes().remove(
             //   "com.sun.faces.context.FacesContextImpl_POST_BACK");
             
-//            System.out.println("InputFilesPhaseListener.beforePhase()  old    : " + request);
-//            System.out.println("InputFilesPhaseListener.beforePhase()  wrapper: " + wrapper);
-//            System.out.println("InputFilesPhaseListener.beforePhase()  set    : " + phaseEvent.getFacesContext().getExternalContext().getRequest());
+//            System.out.println("FileEntryPhaseListener.beforePhase()  old    : " + request);
+//            System.out.println("FileEntryPhaseListener.beforePhase()  wrapper: " + wrapper);
+//            System.out.println("FileEntryPhaseListener.beforePhase()  set    : " + phaseEvent.getFacesContext().getExternalContext().getRequest());
         }
         else if (false && phaseEvent.getFacesContext().isPostback()) {
             //TODO
             // This is only for testing with non-file-upload, regular postback,
             // to have it respond with an ajax response. This should typically
             // be disabled
-//            System.out.println("InputFilesPhaseListener.beforePhase()  Temporary test of adding Faces-Request HTTP header");
+//            System.out.println("FileEntryPhaseListener.beforePhase()  Temporary test of adding Faces-Request HTTP header");
             HttpServletRequest wrapper = new FileUploadRequestWrapper(request, null);
             phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
             PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
             if (pvc instanceof DOMPartialViewContext)
                 ((DOMPartialViewContext) pvc).setAjaxRequest(true);
             pvc.setPartialRequest(true);
-//            System.out.println("InputFilesPhaseListener.beforePhase()  partialViewContext.isAjaxRequest: " + phaseEvent.getFacesContext().getPartialViewContext().isAjaxRequest());
+//            System.out.println("FileEntryPhaseListener.beforePhase()  partialViewContext.isAjaxRequest: " + phaseEvent.getFacesContext().getPartialViewContext().isAjaxRequest());
             
-//            System.out.println("InputFilesPhaseListener.beforePhase()  old    : " + request);
-//            System.out.println("InputFilesPhaseListener.beforePhase()  wrapper: " + wrapper);
-//            System.out.println("InputFilesPhaseListener.beforePhase()  set    : " + phaseEvent.getFacesContext().getExternalContext().getRequest());
+//            System.out.println("FileEntryPhaseListener.beforePhase()  old    : " + request);
+//            System.out.println("FileEntryPhaseListener.beforePhase()  wrapper: " + wrapper);
+//            System.out.println("FileEntryPhaseListener.beforePhase()  set    : " + phaseEvent.getFacesContext().getExternalContext().getRequest());
         }
         
         request = (HttpServletRequest) phaseEvent.getFacesContext().getExternalContext().getRequest();
@@ -254,14 +253,14 @@ public class InputFilesPhaseListener implements PhaseListener {
     
     private static void uploadFile(
             FileItemStream item,
-            Map<String,InputFilesInfo> clientId2Info,
+            Map<String, FileEntryInfo> clientId2Info,
             byte[] buffer) {
-        InputFilesInfo info = null;
-        InputFilesInfo.FileEntry fileEntry = null;
+        FileEntryInfo info = null;
+        FileEntryInfo.FileInfo fileInfo = null;
         
         File file = null;
         long fileSizeRead = 0L;
-        InputFilesStatus status = InputFilesStatuses.UPLOADING;
+        FileEntryStatus status = FileEntryStatuses.UPLOADING;
         
 //System.out.println("vvvvvvvvvvvvvvv");
         try {
@@ -286,19 +285,19 @@ public class InputFilesPhaseListener implements PhaseListener {
             if (fileName != null && fileName.length() > 0) {
                 FacesContext facesContext = FacesContext.getCurrentInstance();
                 String identifier = fieldName;
-                InputFilesConfig config = InputFiles.retrieveConfigFromPreviousLifecycle(facesContext, identifier);
-                // config being null might be indicative of a non-ICEfaces'-inputFiles component in the form
+                FileEntryConfig config = FileEntry.retrieveConfigFromPreviousLifecycle(facesContext, identifier);
+                // config being null might be indicative of a non-ICEfaces' file upload component in the form
 //System.out.println("File    config: " + config);
 
                 info = clientId2Info.get(config.getClientId());
                 if (info == null) {
-                    info = new InputFilesInfo(config.isViaCallback());
+                    info = new FileEntryInfo(config.isViaCallback());
                     clientId2Info.put(config.getClientId(), info);
                 }
 //System.out.println("File    info: " + info);
                 
-                fileEntry = new InputFilesInfo.FileEntry();
-                fileEntry.begin(fileName, contentType);
+                fileInfo = new FileEntryInfo.FileInfo();
+                fileInfo.begin(fileName, contentType);
 
                 long availableTotalSize = info.getAvailableTotalSize(config.getMaxTotalSize());
 //System.out.println("File    availableTotalSize: " + availableTotalSize);
@@ -307,7 +306,7 @@ public class InputFilesPhaseListener implements PhaseListener {
                 int maxFileCount = config.getMaxFileCount();
 //System.out.println("File    maxFileCount: " + maxFileCount);
                 if (info.getFiles().size() >= maxFileCount) {
-                    status = InputFilesStatuses.MAX_FILE_COUNT_EXCEEDED;
+                    status = FileEntryStatuses.MAX_FILE_COUNT_EXCEEDED;
                 }
                 else {
                     String folder = calculateFolder(facesContext, config);
@@ -326,11 +325,11 @@ public class InputFilesPhaseListener implements PhaseListener {
                             if (!overQuota) {
                                 if (fileSizeRead > availableFileSize) {
                                     overQuota = true;
-                                    status = InputFilesStatuses.MAX_FILE_SIZE_EXCEEDED;
+                                    status = FileEntryStatuses.MAX_FILE_SIZE_EXCEEDED;
                                 }
                                 else if (fileSizeRead > availableTotalSize) {
                                     overQuota = true;
-                                    status = InputFilesStatuses.MAX_TOTAL_SIZE_EXCEEDED;
+                                    status = FileEntryStatuses.MAX_TOTAL_SIZE_EXCEEDED;
                                 }
                                 if (!overQuota) {
                                     output.write(buffer, 0, read);
@@ -340,8 +339,8 @@ public class InputFilesPhaseListener implements PhaseListener {
 //System.out.println("File    fileSizeRead: " + fileSizeRead);
 //if (overQuota)
 //  System.out.println("File    overQuota  status: " + status);
-                        if (status == InputFilesStatuses.UPLOADING) {
-                            status = InputFilesStatuses.SUCCESS;
+                        if (status == FileEntryStatuses.UPLOADING) {
+                            status = FileEntryStatuses.SUCCESS;
                         }
                     }
                     finally {
@@ -352,14 +351,14 @@ public class InputFilesPhaseListener implements PhaseListener {
             }
             else { // If no file name specified
 //System.out.println("File    UNSPECIFIED_NAME");
-                status = InputFilesStatuses.UNSPECIFIED_NAME;
+                status = FileEntryStatuses.UNSPECIFIED_NAME;
                 InputStream in = item.openStream();
                 while (in.read(buffer) >= 0) {}
             }
         }
         catch(Exception e) {
 //System.out.println("File    Exception: " + e);
-            status = InputFilesStatuses.INVALID;
+            status = FileEntryStatuses.INVALID;
             //TODO Put e.getMessage() into status somehow
             e.printStackTrace();
         }
@@ -371,16 +370,16 @@ public class InputFilesPhaseListener implements PhaseListener {
         }
         
 //System.out.println("File    Ending  status: " + status);
-        if (info != null && fileEntry != null) {
-            fileEntry.finish(file, fileSizeRead, status);
-            info.addCompletedFileEntry(fileEntry);
+        if (info != null && fileInfo != null) {
+            fileInfo.finish(file, fileSizeRead, status);
+            info.addCompletedFile(fileInfo);
 //System.out.println("File    Added completed file");
         }
 //System.out.println("^^^^^^^^^^^^^^^");
     }
     
     protected static String calculateFolder(
-            FacesContext facesContext, InputFilesConfig config) {
+            FacesContext facesContext, FileEntryConfig config) {
         String folder = null;
         // absolutePath takes precedence over relativePath
         if (config.getAbsolutePath() != null && config.getAbsolutePath().length() > 0) {
@@ -411,7 +410,7 @@ public class InputFilesPhaseListener implements PhaseListener {
     }
     
     protected static File makeFile(
-            InputFilesConfig config, String folder, String fileName)
+            FileEntryConfig config, String folder, String fileName)
             throws IOException {
         File file = null;
         File folderFile = new File(folder);

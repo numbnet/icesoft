@@ -20,7 +20,7 @@
  *
  */
 
-package org.icefaces.component.inputFiles;
+package org.icefaces.component.fileentry;
 
 import org.icefaces.component.annotation.*;
 import javax.el.MethodExpression;
@@ -31,20 +31,20 @@ import javax.faces.application.ResourceDependencies;
 import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 
 @Component(
-    tagName         = "inputFiles",
-    componentClass  = "org.icefaces.component.inputFiles.InputFiles",
-    rendererClass   = "org.icefaces.component.inputFiles.InputFilesRenderer",
-    generatedClass  = "org.icefaces.component.inputFiles.InputFilesBase",
+    tagName         = "fileEntry",
+    componentClass  = "org.icefaces.component.fileentry.FileEntry",
+    rendererClass   = "org.icefaces.component.fileentry.FileEntryRenderer",
+    generatedClass  = "org.icefaces.component.fileentry.FileEntryBase",
     extendsClass    = "javax.faces.component.UIComponentBase",
-    componentType   = "org.icefaces.faces.InputFiles",
-    rendererType    = "org.icefaces.faces.InputFilesRenderer",
-    componentFamily = "org.icefaces.faces.InputFiles"
+    componentType   = "org.icefaces.faces.FileEntry",
+    rendererType    = "org.icefaces.faces.FileEntryRenderer",
+    componentFamily = "org.icefaces.faces.FileEntry"
 )
 
 @ResourceDependencies({
-    @ResourceDependency(name="inputFiles.js",library="org.icefaces.component.inputFiles")
+    @ResourceDependency(name="fileEntry.js",library="org.icefaces.component.fileentry")
 })
-public class InputFilesMeta extends UIComponentBaseMeta {
+public class FileEntryMeta extends UIComponentBaseMeta {
     /*
     @Property(defaultValue="false",
         tlddoc="Default is false, means uses full submit.")
@@ -52,22 +52,22 @@ public class InputFilesMeta extends UIComponentBaseMeta {
     */
 
     @Property(defaultValue="false", tlddoc="When immediate is true, the " +
-        "inputFilesListener will be invoked at the end of the " +
+        "fileEntryListener will be invoked at the end of the " +
         "ApplyRequestValues phase. Otherwise, it will be invoked just " +
         "before rendering, so that the application will receive the event, " +
         "regardless of whether the form has passed validation or not.")
     private boolean immediate;
 
     @Property(tlddoc="A MethodExpression, which evaluates to a method in a " +
-    	"bean, which takes an InputFilesEvent as a parameter. Invoked after " +
+    	"bean, which takes an FileEntryEvent as a parameter. Invoked after " +
     	"file(s) have been uploaded, during a lifecycle phase that is " +
     	"determined by the immediate property. It can be used to retrieve the " +
-    	"InputFilesInfo object from the info property of the InputFiles " +
+    	"FileEntryInfo object from the info property of the FileEntry " +
     	"component, giving access to the status information of the " +
     	"successfully, and unsuccessfully, uploaded files.",
     	expression=Expression.METHOD_EXPRESSION, methodExpressionArgument=
-        "org.icefaces.component.inputFiles.InputFilesEvent")
-    private MethodExpression inputFilesListener;
+        "org.icefaces.component.fileentry.FileEntryEvent")
+    private MethodExpression fileEntryListener;
 
 
     @Property(tlddoc="The absolute path, into the file-system, where the " +
@@ -95,8 +95,8 @@ public class InputFilesMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue="false", tlddoc="Uploaded files' names, as they " +
         "were on the user's file-system, are always provided to the " +
-        "application, via the InputFilesInfo.FileEntry.fileName property. " +
-        "By default, the inputFiles component will store the " +
+        "application, via the FileEntryInfo.FileInfo.fileName property. " +
+        "By default, the fileEntry component will store the " +
         "uploaded files on the server's file-system using a unique naming " +
         "convention, to ensure that new files do not over-write older files, " +
         "and that the names do not create security issues. The application " +
@@ -110,10 +110,10 @@ public class InputFilesMeta extends UIComponentBaseMeta {
     private boolean useOriginalFilename;
 
     @Property(tlddoc="Maintains the results of file upload operations.")
-    private InputFilesInfo info;
+    private FileEntryInfo info;
 
     //TODO
-    //private InputFilesCallback callback;
+    //private FileEntryCallback callback;
 
     @Property(defaultValue="Long.MAX_VALUE", tlddoc="The maximum amount of " +
         "bytes allowed, in total, for all of the files uploaded, together. " +

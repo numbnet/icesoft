@@ -1,5 +1,5 @@
 
-.ice-skin-sam .iceInpFile {
+.rime .ice-file-entry {
     border: 1px solid #ABABAB;
     background-color: #FFFFFF;
     margin: 2px;
@@ -10,7 +10,7 @@
 	overflow: hidden;
 }
 
-.ice-skin-sam .iceInpFile-dis {
+.rime .ice-file-entry-dis {
     border: 1px solid #CCCCCC;
     background-color: #FFFFFF;
     margin: 2px;

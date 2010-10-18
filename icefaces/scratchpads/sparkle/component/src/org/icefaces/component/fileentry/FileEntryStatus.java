@@ -20,8 +20,22 @@
  *
  */
 
-package org.icefaces.component.inputFiles;
+package org.icefaces.component.fileentry;
 
-public interface InputFilesListener {
-    public void x();
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.component.UIComponent;
+import java.io.Serializable;
+
+public interface FileEntryStatus extends Serializable {
+    public boolean isSuccess();
+
+    /**
+     * @param facesContext FacesContext
+     * @param fileEntry FileEntry
+     * @param fi FileEntryInfo.FileInfo
+     * @return FacesMessage
+     */
+    public FacesMessage getFacesMessage(FacesContext facesContext,
+            UIComponent fileEntry, FileEntryInfo.FileInfo fi);
 }

@@ -20,7 +20,7 @@
  *
  */
 
-package org.icefaces.component.inputFiles;
+package org.icefaces.component.fileentry;
 
 import org.icefaces.impl.event.FormSubmit;
 
@@ -37,22 +37,22 @@ import javax.faces.component.UINamingContainer;
 import java.util.Iterator;
 import java.io.IOException;
 
-public class InputFilesFormSubmit implements SystemEventListener {
+public class FileEntryFormSubmit implements SystemEventListener {
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-//System.out.println("InputFilesFormSubmit.processEvent()  event: " + event);
+//System.out.println("FileEntryFormSubmit.processEvent()  event: " + event);
         FacesContext context = FacesContext.getCurrentInstance();
 
         //using PostAddToViewEvent ensures that the component resource is added to the view only once
         final HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
         if (form.getAttributes().get(FormSubmit.DISABLE_CAPTURE_SUBMIT) != null) {
-//System.out.println("InputFilesFormSubmit  DISABLE_CAPTURE_SUBMIT  " + form.getClientId(context));
+//System.out.println("FileEntryFormSubmit  DISABLE_CAPTURE_SUBMIT  " + form.getClientId(context));
             return;
         }
 
-        // See if there is at least one InputFiles component in the form,
+        // See if there is at least one FileEntry component in the form,
         // which should alter the form submission method.
-        if (!foundInputFiles(form)) {
-//System.out.println("InputFilesFormSubmit  !foundInputFiles");
+        if (!foundFileEntry(form)) {
+//System.out.println("FileEntryFormSubmit  !foundFileEntry");
             return;
         }
         
@@ -79,20 +79,20 @@ public class InputFilesFormSubmit implements SystemEventListener {
         
         String iframeClientIdSuffix = UINamingContainer.getSeparatorChar(context) + iframeId;
         FormScriptWriter scriptWriter = new FormScriptWriter(
-            "ice_inputFiles'.captureFormOnsubmit'(''{0}'', ''{0}" + iframeClientIdSuffix + "''')';",
+            "ice_fileEntry'.captureFormOnsubmit'(''{0}'', ''{0}" + iframeClientIdSuffix + "''')';",
             null,
             "_captureFileOnsubmit");
         form.getChildren().add(0, scriptWriter);        
     }
     
-    private static boolean foundInputFiles(UIComponent parent) {
+    private static boolean foundFileEntry(UIComponent parent) {
         Iterator<UIComponent> kids = parent.getFacetsAndChildren();
         while (kids.hasNext()) {
             UIComponent kid = kids.next();
-            if (kid instanceof InputFiles) {
+            if (kid instanceof FileEntry) {
                 return true;
             }
-            if (foundInputFiles(kid)) {
+            if (foundFileEntry(kid)) {
                 return true;
             }
         }

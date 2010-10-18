@@ -21,7 +21,7 @@
  */
 
 
-package org.icefaces.component.inputFiles;
+package org.icefaces.component.fileentry;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
@@ -35,31 +35,31 @@ import javax.faces.lifecycle.Lifecycle;
 import javax.faces.FactoryFinder;
 import java.util.Iterator;
 
-@ManagedBean(name="inputFilesLoader", eager=true)
+@ManagedBean(name="fileEntryLoader", eager=true)
 @ApplicationScoped
-public class InputFilesLoader {
-    public InputFilesLoader() {
-//System.out.println("InputFilesLoader");
+public class FileEntryLoader {
+    public FileEntryLoader() {
+//System.out.println("FileEntryLoader");
         Application application = FacesContext.getCurrentInstance().getApplication();
-        application.subscribeToEvent(PostAddToViewEvent.class, null, new InputFilesFormSubmit());
+        application.subscribeToEvent(PostAddToViewEvent.class, null, new FileEntryFormSubmit());
 
-        PhaseListener phaseListener = new InputFilesPhaseListener();
+        PhaseListener phaseListener = new FileEntryPhaseListener();
         LifecycleFactory lifecycleFactory = (LifecycleFactory)
             FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
         for (Iterator ids = lifecycleFactory.getLifecycleIds(); ids.hasNext();) {
             Lifecycle lifecycle = lifecycleFactory.getLifecycle(
                 (String) ids.next());
             lifecycle.addPhaseListener(phaseListener);
-//System.out.println("InputFilesLoader  lifecycle: " + lifecycle);
+//System.out.println("FileEntryLoader  lifecycle: " + lifecycle);
         }
     }
     
     @ManagedProperty(value="name")
     private String name;
-    
+
     public void setName(String n) {
         name = n;
-//System.out.println("InputFilesLoader.setName()  name: " + name);
+//System.out.println("FileEntryLoader.setName()  name: " + name);
     }
     
     public String getName() {

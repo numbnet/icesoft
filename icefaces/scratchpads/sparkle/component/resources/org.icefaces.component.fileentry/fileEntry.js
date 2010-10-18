@@ -20,7 +20,7 @@
  *
  */
 
-var ice_inputFiles = {
+var ice_fileEntry = {
     iframeLoaded : function(context, id) {
         //alert("iframeLoaded()  begin");
         
@@ -34,7 +34,7 @@ var ice_inputFiles = {
                 var serializer = new XMLSerializer();
                 var responseText = serializer.serializeToString(d);
                 //i.contentDocument.document.body?i.contentDocument.document.body.innerHTML:null;
-                ice_inputFiles.response(d, responseText, context);
+                ice_fileEntry.response(d, responseText, context);
             }
         } else if (i.contentWindow &&
                    i.contentWindow.document) {
@@ -44,7 +44,7 @@ var ice_inputFiles = {
             if (d.xml) {
                 var responseText = d.xml;
                 //i.contentWindow.document.body?ii.contentWindow.document.body.innerHTML:null;
-                ice_inputFiles.response(d, responseText, context);
+                ice_fileEntry.response(d, responseText, context);
             }
         }
         
@@ -65,7 +65,7 @@ var ice_inputFiles = {
     captureFormOnsubmit : function(formId, iframeId) {
         var f = document.getElementById(formId);
         f.onsubmit = function(event) {
-            ice_inputFiles.formOnsubmit(event, f, iframeId);
+            ice_fileEntry.formOnsubmit(event, f, iframeId);
         };
     },
     
@@ -88,13 +88,13 @@ var ice_inputFiles = {
             formElem.enctype = 'multipart/form-data';
         }
         
-        var hSrc = ice_inputFiles.addHiddenInput(
+        var hSrc = ice_fileEntry.addHiddenInput(
             formElem, 'javax.faces.source', context.sourceid);
-        var hParEx = ice_inputFiles.addHiddenInput(
+        var hParEx = ice_fileEntry.addHiddenInput(
             formElem, 'javax.faces.partial.execute', context_execute);
-        var hParRend = ice_inputFiles.addHiddenInput(
+        var hParRend = ice_fileEntry.addHiddenInput(
             formElem, 'javax.faces.partial.render', context.render);
-        var hParAjax = ice_inputFiles.addHiddenInput(
+        var hParAjax = ice_fileEntry.addHiddenInput(
             formElem, 'javax.faces.partial.ajax', 'true');
         
         formElem.target = iframeId;
@@ -118,7 +118,7 @@ var ice_inputFiles = {
             formElem.removeChild( hParRend );
             formElem.removeChild( hParAjax );
             
-            ice_inputFiles.iframeLoaded(context, iframeId);
+            ice_fileEntry.iframeLoaded(context, iframeId);
             
             // Cleanup the response iframe, after finished using it
             if (iframeElem.removeEventListener) {
