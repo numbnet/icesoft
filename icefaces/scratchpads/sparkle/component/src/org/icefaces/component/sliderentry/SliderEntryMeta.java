@@ -98,18 +98,20 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
     private String length;
     
     @Property (defaultValue="slideEnd",
-            tlddoc="The 3 valid values are slideStart, slideEnd and slideInterval. slideStart not applicable to clickableRail." +
+            tlddoc="Specifies when to do a submit. The 3 valid values are slideStart, slideEnd and slideInterval. slideStart not applicable to clickableRail." +
             		"Default value is slideEnd",
             javadocGet="returns value of submitOn. It is not a pass through because slideInterval is a custom event " +
             		"which internally uses \"thumbMove\"")
     private String submitOn;   
     
     @Property (defaultValue="500",
-            tlddoc="This attribute has an effect only when \"submitOn\" is set to \"slideInterval\". Default value is 500 (milliseconds)")
+            tlddoc="Time interval to do submit when changing slider value. This attribute has an effect only when \"submitOn\" is set to \"slideInterval\". Default value is 500 (milliseconds)")
     private int slideInterval; 
     
     @Property(defaultValue="false",
-            tlddoc="Default is false, means uses full submit.")
+            tlddoc="When singleSubmit is true, changing the value of this component will submit and execute this " +
+                    "component only (equivalent to &lt;f:ajax execute=\"@this\" render=\"@all\"&gt;). " +
+                    "When singleSubmit is false, no submit will occur. The default value is false.")
     private boolean singleSubmit;
     
     @Property(tlddoc="style of the component")
@@ -118,22 +120,28 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
     @Property(tlddoc="style class of the component, the renderer doesn't render any default class.")
     private String styleClass;  
 
-    @Property()
+    @Property(tlddoc = "Path to the thumb image.")
     private String thumbUrl; 
 
     @Property (defaultValue="0", tlddoc="tabindex of the component")
     private int tabindex;  
     
-    @Property(defaultValue="false")
+    @Property(defaultValue="false", tlddoc="A flag indicating that conversion and validation of this component's value " +
+            "should occur during Apply Request Values phase instead of Process Validations phase.")
     private boolean immediate;
 	
-    @Property(defaultValue="true")
+    @Property(defaultValue="true", tlddoc="If true, clicking on the rail moves the thumb to that point.")
     private boolean clickableRail;
     
     // A MethodExpression Property is a special type, that does not generate
     //  the same code, as it does not use a ValueExpression, but instead
     //  describes a method to be called, and the parameter to pass to it.
-    @Property(expression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent")
+    @Property(expression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
+    tlddoc = "MethodExpression representing a value change listener method that will be notified when a new value has " +
+            "been set for this input component. The expression must evaluate to a public method that takes a " +
+            "ValueChangeEvent  parameter, with a return type of void, or to a public method that takes no arguments " +
+            "with a return type of void. In the latter case, the method has no way of easily knowing what the new value " +
+            "is, but this can be useful in cases where a notification is needed that \"this value changed\".")
     private MethodExpression valueChangeListener;
 
     @Property (tlddoc="Boolean indicating if the component should be disabled.") 
