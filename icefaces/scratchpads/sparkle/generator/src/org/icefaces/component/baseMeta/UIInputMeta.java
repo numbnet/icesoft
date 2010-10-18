@@ -15,7 +15,7 @@ public class UIInputMeta extends UIOutputMeta {
         defaultValueType= DefaultValueType.EXPRESSION,
         implementation= Implementation.EXISTS_IN_SUPERCLASS,
         tlddoc="A flag indicating that conversion and validation of this " +
-            "component’s value should occur during Apply Request Values " +
+            "component's value should occur during Apply Request Values " +
             "phase instead of Process Validations phase.")
     private boolean immediate;
     
