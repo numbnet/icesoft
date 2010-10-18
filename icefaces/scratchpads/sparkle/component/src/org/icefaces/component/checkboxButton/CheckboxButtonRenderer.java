@@ -132,7 +132,7 @@ public class CheckboxButtonRenderer extends Renderer {
            endMap().toString();
   //        System.out.println("params = " + params);	    
 
-        String finalScript = "ice.component.checkboxButton.updateProperties(" + params + ");";
+        String finalScript = "ice.component.checkboxbutton.updateProperties(" + params + ");";
         ScriptWriter.insertScript(facesContext, uiComponent,finalScript);        		  
         
        writer.endElement(HTML.DIV_ELEM);
