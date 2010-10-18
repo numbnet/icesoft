@@ -1,4 +1,4 @@
-package org.icefaces.component.checkboxButton;
+package org.icefaces.component.checkboxbutton;
 
 
 import javax.faces.component.UIComponent;
@@ -10,13 +10,13 @@ import org.icefaces.component.baseMeta.UISelectBooleanMeta;
 
 @Component(
         tagName ="checkboxButton",
-        componentClass ="org.icefaces.component.checkboxButton.CheckboxButton",
-        rendererClass ="org.icefaces.component.checkboxButton.CheckboxButtonRenderer",
+        componentClass ="org.icefaces.component.checkboxbutton.CheckboxButton",
+        rendererClass ="org.icefaces.component.checkboxbutton.CheckboxButtonRenderer",
         componentType = "org.icefaces.CheckboxButton",
         rendererType = "org.icefaces.CheckboxButtonRenderer",
         extendsClass = "javax.faces.component.UISelectBoolean", 
-        generatedClass = "org.icefaces.component.checkboxButton.CheckboxButtonBase",
-		componentFamily="com.icesoft.faces.CheckboxButton"
+        generatedClass = "org.icefaces.component.checkboxbutton.CheckboxButtonBase",
+		componentFamily="org.icefaces.CheckboxButton"
         )
         
 @ResourceDependencies({

@@ -1,4 +1,4 @@
-package org.icefaces.component.checkboxButton;
+package org.icefaces.component.checkboxbutton;
 
 
 

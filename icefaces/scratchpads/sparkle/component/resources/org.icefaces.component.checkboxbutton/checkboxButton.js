@@ -1,4 +1,4 @@
-ice.component.checkboxButton = {
+ice.component.checkboxbutton = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
 	   var Dom = YAHOO.util.Dom;
        var divNode = document.getElementById(clientId);
