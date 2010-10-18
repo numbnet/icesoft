@@ -57,9 +57,9 @@ public class DateTimeEntryMeta extends UIInputMeta {
     @Property(defaultValue = "false", tlddoc = "Whether to render the calendar inline or as a popup.")
     private boolean renderAsPopup;
 
-    @Property(defaultValue = "false", tlddoc = "The default value of this attribute is false, so in this case full " +
-            "submit is being used, where all component gets rendered and executed. If this attribute is set to true, " +
-            "then only this component gets executed and entire view gets rendered")
+    @Property(defaultValue = "false", tlddoc = "When singleSubmit is true, changing the value of this component will " +
+            "submit and execute this component only (equivalent to &lt;f:ajax execute=\"@this\" render=\"@all\"&gt;). " +
+            "When singleSubmit is false, no submit will occur. The default value is false.")
     private boolean singleSubmit;
 
     @Property(implementation=Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "Value of the component as a Date object.")
