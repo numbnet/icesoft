@@ -1,4 +1,4 @@
-ice.yui3.slider = {
+ice.component.slider = {
    initialize:function(clientId, yuiProps, jsfProps, bindYUI) {
         
         //get the slider html element
