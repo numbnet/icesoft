@@ -37,6 +37,12 @@
 			<copy todir="${root.dir.path}/@{skin}/@{name}">
 				<fileset dir="@{dir}/@{skin}" includes="**" />
 			</copy>
+			<!-- Copy all CSS files to the staging directory to prevent issues 
+				with SmartSprites not copying CSS files with no annotations. -->
+			<mkdir dir="${output.dir.path}/@{skin}/@{name}" />
+			<copy todir="${output.dir.path}/@{skin}/@{name}">
+				<fileset dir="@{dir}/@{skin}" includes="**.css" />
+			</copy>
 		</sequential>
 	</macrodef>
 	
