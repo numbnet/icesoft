@@ -30,10 +30,8 @@ import javax.faces.bean.ViewScoped;
 
 import javax.faces.event.ActionEvent;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.ThreadFactory;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Logger;
 
 import java.io.Serializable;
@@ -55,21 +53,7 @@ public class OutputProgressController implements Serializable{
 
     // long running thread will sleep 10 times for this duration.
     public static final long PROCCESS_SLEEP_LENGTH = 300;
-  
-    // A thread pool is used to make this demo a little more scalable then
-    // just creating a new thread for each user.
-    protected static ThreadPoolExecutor longRunningTaskThreadPool =
-            new ThreadPoolExecutor(5, 15, 30, TimeUnit.SECONDS,
-                    new LinkedBlockingQueue(20), new ThreadFactory() {
-                        int i = 0;
-                        public Thread newThread(Runnable r) {
-                            Thread t = new Thread(r);
-                            t.setDaemon(true);
-                            t.setName("progressControllerWorker-" + (i++));
-                            return t;
-                        }
-                    });
-    
+      
     // Model where we store the dynamic properties associated with outputProgress
     private OutputProgressModel outputProgressModel;
 
@@ -92,7 +76,10 @@ public class OutputProgressController implements Serializable{
      * @param event
      */
     public void startLongProcress(ActionEvent event) {
-    	longRunningTaskThreadPool.execute(new LongOperationRunner(outputProgressModel));
+        Timer timer = new Timer(true);
+        timer.scheduleAtFixedRate(
+                new LongOperationRunner(timer, outputProgressModel), 
+                0, PROCCESS_SLEEP_LENGTH );
     }
  
     /**
@@ -109,36 +96,33 @@ public class OutputProgressController implements Serializable{
      * Utility class to represent some server process that we want to monitor
      * using ouputProgress and server push.
      */
-    protected class LongOperationRunner implements Runnable {
+    protected class LongOperationRunner extends TimerTask {
         private OutputProgressModel ouputProgressModel;
+        private int percentComplete = 0;
+        private Timer timer;
 
-         public LongOperationRunner(OutputProgressModel ouputProgressModel) {
+        public LongOperationRunner(Timer timer, OutputProgressModel ouputProgressModel) {
             this.ouputProgressModel = ouputProgressModel;
+            this.timer = timer;
         }
 
         /**
          * Routine that takes time and updates percentage as it runs.
          */
         public void run() {
-             ouputProgressModel.setPogressStarted(true);
-            try {
-                for (int i = 0; i <= 100; i += 10) {
-                    // pause the thread
-                    Thread.sleep(PROCCESS_SLEEP_LENGTH);
-                    // update the percent value
-                    ouputProgressModel.setPercentComplete(i);
-                        SessionRenderer.render("progressExample");
-                }
+            if (0 == percentComplete)  {
+                ouputProgressModel.setPogressStarted(true);
             }
-            catch (InterruptedException e) { }
-            ouputProgressModel.setPogressStarted(false);
+            ouputProgressModel.setPercentComplete(percentComplete);
+            SessionRenderer.render("progressExample");
+            if (percentComplete >= 100)  {
+                ouputProgressModel.setPogressStarted(false);
+                timer.cancel();
+            }
+            percentComplete += 10;
         }
 
     }
 
-    @PreDestroy
-    public void dispose()  {
-        longRunningTaskThreadPool.shutdown();
-    }
    
 }
