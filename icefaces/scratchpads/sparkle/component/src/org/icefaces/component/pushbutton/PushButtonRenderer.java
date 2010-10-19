@@ -1,4 +1,4 @@
-package org.icefaces.component.PushButton;
+package org.icefaces.component.pushbutton;
 
 import java.io.IOException;
 import java.util.*;
@@ -104,7 +104,7 @@ public class PushButtonRenderer extends Renderer {
            endMap().toString();
  //         System.out.println("params = " + params);	    
 
-        String finalScript = "ice.component.PushButton.updateProperties(" + params + ");";
+        String finalScript = "ice.component.pushbutton.updateProperties(" + params + ");";
         ScriptWriter.insertScript(facesContext, uiComponent,finalScript);
             
         writer.endElement(HTML.DIV_ELEM);
