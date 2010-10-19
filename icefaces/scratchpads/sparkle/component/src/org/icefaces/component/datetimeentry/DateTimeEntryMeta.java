@@ -18,7 +18,8 @@ import org.icefaces.component.baseMeta.UIInputMeta;
         tlddoc = "This component allows entry of a date/time. It can be in inline mode or popup mode. In either mode " +
                 "you can enter a date/time by clicking. In popup mode you have the additional option of entering in " +
                 "a text input field. The format of the input is determined by the nested &lt;f:convertDateTime&gt; " +
-                "tag."
+                "tag. For more information, see the " +
+                "<a href=\"http://wiki.icefaces.org/display/facesDev/DateTime+Entry\">Wiki doc</a>."
 )
 
 @ResourceDependencies({
