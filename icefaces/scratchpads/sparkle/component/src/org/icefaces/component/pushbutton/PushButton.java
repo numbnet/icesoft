@@ -1,4 +1,4 @@
-package org.icefaces.component.PushButton;
+package org.icefaces.component.pushbutton;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;

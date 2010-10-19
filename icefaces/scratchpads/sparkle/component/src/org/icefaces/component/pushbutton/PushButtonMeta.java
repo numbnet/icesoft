@@ -1,4 +1,4 @@
-  package org.icefaces.component.PushButton;
+  package org.icefaces.component.pushbutton;
 
 import javax.faces.component.UIComponent;
 import javax.el.MethodExpression;
@@ -12,12 +12,12 @@ import org.icefaces.component.baseMeta.UICommandMeta;
 
 @Component(
         tagName ="pushButton",
-        componentClass ="org.icefaces.component.PushButton.PushButton",
-        rendererClass ="org.icefaces.component.PushButton.PushButtonRenderer",
+        componentClass ="org.icefaces.component.pushbutton.PushButton",
+        rendererClass ="org.icefaces.component.pushbutton.PushButtonRenderer",
         componentType = "org.icefaces.PushButton", 
         rendererType = "org.icefaces.PushButtonRenderer",            
         extendsClass = "javax.faces.component.UICommand", 
-        generatedClass = "org.icefaces.component.PushButton.PushButtonBase",
+        generatedClass = "org.icefaces.component.pushbutton.PushButtonBase",
 		componentFamily="com.icesoft.faces.PushButton"
         )
 		
