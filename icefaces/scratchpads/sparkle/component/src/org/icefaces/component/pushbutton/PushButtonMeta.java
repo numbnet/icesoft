@@ -18,7 +18,11 @@ import org.icefaces.component.baseMeta.UICommandMeta;
         rendererType = "org.icefaces.PushButtonRenderer",            
         extendsClass = "javax.faces.component.UICommand", 
         generatedClass = "org.icefaces.component.pushbutton.PushButtonBase",
-		componentFamily="com.icesoft.faces.PushButton"
+		componentFamily="com.icesoft.faces.PushButton",
+	    tlddoc = "This component allows entry of a complete form or just itself. " +
+	         "It has athe same functionality of a regular jsf command button " +
+	         "but without having to add extra attributes other than determining singleSubmit " +
+	         "to be true or false"
         )
 		
 @ResourceDependencies({
@@ -37,23 +41,25 @@ public class PushButtonMeta extends UICommandMeta {
     @Property   
     private String label;
 
-	@Property
-    private String image;
-	
 	@Property(defaultValue="false",
-			tlddoc="Default is false, means uses full submit")
+			tlddoc="When singleSubmit is true, triggering an action on this component will submit" +
+			" and execute this component only. Equivalent to <f:ajax execute='@this' render='@all'>." +
+			" When singleSubmit is false, triggering an action on this component will submit and execute " +
+			" the full form that this component is contained within." +
+			" The default value is false.")
     private boolean singleSubmit;
 	
     @Property (defaultValue="false",
-            tlddoc="disabled property is required by aria specs")
+            tlddoc="disabled property. If true no input may be submitted via this" +
+    				"component.  Is required by aria specs")
     private boolean disabled;
     
     @Property (defaultValue="0", tlddoc="tabindex of the component")
     private int tabindex;  
   
-    @Property(tlddoc="style class of the component, the renderer doesn't render any default class.")
+    @Property(tlddoc="style class of the component, rendered on the div root of the component")
     private String styleClass;  
 
-    @Property(tlddoc="style of the component")
+    @Property(tlddoc="style of the component, rendered on the div root of the component")
     private String style;
 }

@@ -23,7 +23,7 @@ public class PushButtonRenderer extends Renderer {
             PushButton pushButton = (PushButton) uiComponent;
             String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
             String clientId = pushButton.getClientId();
-    //   	    System.out.println("PBR:decode() button pressed is "+source+" for clientId="+clientId);
+  
              if (clientId.equals(source)) { //won't always be the same ??
                 try {
              	   if (!pushButton.isDisabled()){
