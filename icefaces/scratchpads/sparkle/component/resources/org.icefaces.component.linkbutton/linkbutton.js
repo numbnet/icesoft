@@ -1,4 +1,4 @@
-ice.component.commandlink = {
+ice.component.linkButton = {
 
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
 	    YAHOO.widget.Logger.enableBrowserConsole();
