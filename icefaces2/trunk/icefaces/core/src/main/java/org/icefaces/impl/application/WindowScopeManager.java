@@ -79,6 +79,11 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
     }
 
     public void handleResourceRequest(FacesContext facesContext) throws IOException {
+        //a null session cannot have any window scope beans
+        if (null == facesContext.getExternalContext().getSession(false))  {
+            wrapped.handleResourceRequest(facesContext);
+            return;
+        }
         ExternalContext externalContext = facesContext.getExternalContext();
         Map parameters = externalContext.getRequestParameterMap();
         if (isDisposeWindowRequest(parameters)) {
@@ -204,7 +209,6 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
     }
 
     private static void disposeViewScopeBeans(FacesContext facesContext)  {
-
         //Unfortunately we must execute the lifecycle to get to the viewMap
         LifecycleFactory factory = (LifecycleFactory)
                 FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
