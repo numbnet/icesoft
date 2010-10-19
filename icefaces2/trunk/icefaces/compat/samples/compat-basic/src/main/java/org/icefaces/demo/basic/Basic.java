@@ -22,13 +22,15 @@
 
 package org.icefaces.demo.basic;
 
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 @ManagedBean(name = "basic")
 @ViewScoped
-public class Basic {
+public class Basic implements Serializable  {
     Boolean visible = false;
 
     public Boolean getVisible() {
