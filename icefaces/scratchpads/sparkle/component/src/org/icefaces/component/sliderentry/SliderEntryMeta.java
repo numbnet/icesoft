@@ -28,7 +28,10 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
         componentType = "org.icesoft.faces.SliderEntry",
         rendererType = "org.icesoft.faces.SliderEntryRenderer",
         componentFamily="org.icefaces.component.SliderEntry",
-        tlddoc="The Slider Entry is a component that enables the user to adjust values in a finite range along a horizontal or vertical axis."
+        tlddoc="The Slider Entry is a component that enables the user to adjust values in a finite range along a " +
+                "horizontal or vertical axis. It can be used as a visual replacement for an input box that takes a " +
+                "number as input. For more information, see the " +
+                "<a href=\"http://wiki.icefaces.org/display/facesDev/Slider\">Wiki doc</a>."
     )
 	
 @ResourceDependencies({
@@ -99,7 +102,7 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
     
     @Property (defaultValue="slideEnd",
             tlddoc="Specifies when to do a submit. The 3 valid values are slideStart, slideEnd and slideInterval. slideStart not applicable to clickableRail." +
-            		"Default value is slideEnd",
+            		" Default value is slideEnd.",
             javadocGet="returns value of submitOn. It is not a pass through because slideInterval is a custom event " +
             		"which internally uses \"thumbMove\"")
     private String submitOn;   
@@ -130,7 +133,7 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
             "should occur during Apply Request Values phase instead of Process Validations phase.")
     private boolean immediate;
 	
-    @Property(defaultValue="true", tlddoc="If true, clicking on the rail moves the thumb to that point.")
+    @Property(defaultValue="true", tlddoc="Allows clicking on the rail to move the thumb. Default is true.")
     private boolean clickableRail;
     
     // A MethodExpression Property is a special type, that does not generate
