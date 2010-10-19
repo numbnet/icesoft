@@ -16,7 +16,12 @@ import org.icefaces.component.baseMeta.UISelectBooleanMeta;
         rendererType = "org.icefaces.CheckboxButtonRenderer",
         extendsClass = "javax.faces.component.UISelectBoolean", 
         generatedClass = "org.icefaces.component.checkboxbutton.CheckboxButtonBase",
-		componentFamily="org.icefaces.CheckboxButton"
+		componentFamily="org.icefaces.CheckboxButton",
+		tlddoc="This component allows entry of a selection button"+
+		       "supports browsers which see checkbox as true or false,"+
+		       "yes or no, on or off.  LabelPosition property allows label "+
+		       "to be placed on the button-in case of sam style, or to the left "+
+		       "of the button - in the case of rime style."
         )
         
 @ResourceDependencies({
@@ -40,19 +45,24 @@ public class CheckboxButtonMeta extends UISelectBooleanMeta {
     private String labelPosition;
 
 	@Property(defaultValue="false",
-			tlddoc="Default is false, means uses full submit")
+			tlddoc= "When singleSubmit is true, changing the value of this component" +
+					" will submit and execute this component only. Equivalent to " +
+					"<f:ajax execute='@this' render='@all'>. " +
+					"When singleSubmit is false, no submit will occur. " +
+					"The default value is false.")
     private boolean singleSubmit;
 	    
-    @Property(tlddoc="style of the component")
+    @Property(tlddoc="style of the component, rendered on the root div of the component")
 	private String style;
 	    
-    @Property(tlddoc="style class of the component, the renderer doesn't render any default class.")
+    @Property(tlddoc="style class of the component, rendered on the root div of the component.")
 	private String styleClass;     
  
     @Property (defaultValue="0", tlddoc="tabindex of the component")
     private int tabindex;  
     
     @Property (defaultValue="false",
-    		tlddoc="disabled property is required by aria specs")
+    		tlddoc="disabled property. If true no input may be submitted via this" +
+    				"component.  Is required by aria specs")
     private boolean disabled;
 }
