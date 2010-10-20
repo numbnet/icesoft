@@ -36,7 +36,7 @@
 	             <h:inputText id="last" value="#{button.lastName}"/>
 	          </h:panelGrid>
 	        <h:panelGroup id="push1">
-	         <ice:pushButton  id="pushId" label="#{button.label}"
+	         <ice:pushButton  id="pushId" value="#{button.label}"
 	           actionListener="#{button.actionListenerMethod}"  />
 	        </h:panelGroup>
 	        <h:panelGroup id="outputTextTests">
@@ -56,7 +56,7 @@
 	          <h:inputText id="testData" value="#{button.extraData}"/>
 	        </h:panelGroup>
 	        <h:panelGroup id="push2">
-	         <ice:pushButton id="pushId2" label="Action"
+	         <ice:pushButton id="pushId2" value="Action"
 	            singleSubmit="true"
 	            action="#{button.methodAction}"  />
 	         <h:outputText value="using action property on button" />
@@ -74,7 +74,7 @@
 	       <h:panelGrid id="disabledId" columns="2">       	
 	          <h:commandButton id="regular" value="HtmlCommandButton" 
 	               actionListener="#{button.actionListenerMethod}"/>     
-	          <ice:pushButton id="disabledButton" label="disabled"
+	          <ice:pushButton id="disabledButton" value="disabled"
 	               disabled="true" singleSubmit="true"
 	               action="${button.methodAction}"/>
 	        </h:panelGrid>

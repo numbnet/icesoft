@@ -53,8 +53,8 @@ ice.component.pushbutton = {
         if (jsfProps.aria) {
             //add roles and attributes to the YUI slider widget
             buttonRoot.firstChild.setAttribute("role", "button");
-            if (jsProps.label) {
-                buttonRoot.firstChild.setAttribute("aria-describedby", jsProps.label);
+            if (jsfProps.ariaLabel) {
+                buttonRoot.firstChild.setAttribute("aria-describedby", jsfProps.ariaLabel);
             } else {
                 buttonRoot.firstChild.setAttribute("aria-describedby", "button description unavailable");
             }

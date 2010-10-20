@@ -17,8 +17,8 @@ import org.icefaces.component.baseMeta.UISelectBooleanMeta;
         extendsClass = "javax.faces.component.UISelectBoolean", 
         generatedClass = "org.icefaces.component.checkboxbutton.CheckboxButtonBase",
 		componentFamily="org.icefaces.CheckboxButton",
-		tlddoc="This component allows entry of a selection button"+
-		       "supports browsers which see checkbox as true or false,"+
+		tlddoc="This component allows entry of a button which "+
+		       "supports browsers that see checkbox as true or false, "+
 		       "yes or no, on or off.  LabelPosition property allows label "+
 		       "to be placed on the button-in case of sam style, or to the left "+
 		       "of the button - in the case of rime style."
@@ -37,18 +37,20 @@ import org.icefaces.component.baseMeta.UISelectBooleanMeta;
 
 public class CheckboxButtonMeta extends UISelectBooleanMeta {
     
-    @Property   
+    @Property(tlddoc="A localized user presentable name for this component. "+
+    		" used by aria")
     private String label;
     
     @Property(defaultValue="left",
-    		tlddoc="Default is left, Possible values are on, left")
+    		tlddoc="Default is left for rime theme. Other possibility is \"on\" )+" +
+    				" for sam skin.")
     private String labelPosition;
 
 	@Property(defaultValue="false",
 			tlddoc= "When singleSubmit is true, changing the value of this component" +
 					" will submit and execute this component only. Equivalent to " +
-					"<f:ajax execute='@this' render='@all'>. " +
-					"When singleSubmit is false, no submit will occur. " +
+					" execute=\"@this\" render=\"@all\" of the f ajax tag. " +
+					"When singleSubmit is false, no submit occurs. " +
 					"The default value is false.")
     private boolean singleSubmit;
 	    
@@ -63,6 +65,6 @@ public class CheckboxButtonMeta extends UISelectBooleanMeta {
     
     @Property (defaultValue="false",
     		tlddoc="disabled property. If true no input may be submitted via this" +
-    				"component.  Is required by aria specs")
+    				" component.  Is required by aria")
     private boolean disabled;
 }

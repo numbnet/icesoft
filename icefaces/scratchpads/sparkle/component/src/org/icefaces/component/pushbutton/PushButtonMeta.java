@@ -38,7 +38,7 @@ import org.icefaces.component.baseMeta.UICommandMeta;
         
 public class PushButtonMeta extends UICommandMeta {
     
-    @Property   
+    @Property(tlddoc=" A localized user presentable name for this component. Used by aria.") 
     private String label;
 
 	@Property(defaultValue="false",

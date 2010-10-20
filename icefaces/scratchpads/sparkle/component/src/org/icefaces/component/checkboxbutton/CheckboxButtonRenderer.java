@@ -65,12 +65,12 @@ public class CheckboxButtonRenderer extends Renderer {
 			// should be either a label or an image as a minimum
 		if (labelPosition.equals("left")){
 			writer.startElement(HTML.LABEL_ELEM, uiComponent);
-    		writer.writeAttribute(HTML.FOR_ATTR, clientId+"_button", null );
+    		writer.writeAttribute(HTML.FOR_ATTR, clientId+"_span-button", null );
             writer.writeText(label,null);
 	   		writer.endElement("label");		
 		}
 	
-		System.out.println(" CBR: label="+label);	 	
+//		System.out.println(" CBR: label="+label);	 	
 	 	
 		// button element
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
