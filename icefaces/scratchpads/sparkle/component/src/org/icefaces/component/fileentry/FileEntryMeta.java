@@ -36,14 +36,10 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
     rendererClass   = "org.icefaces.component.fileentry.FileEntryRenderer",
     generatedClass  = "org.icefaces.component.fileentry.FileEntryBase",
     extendsClass    = "javax.faces.component.UIComponentBase",
-    componentType   = "org.icefaces.faces.FileEntry",
-    rendererType    = "org.icefaces.faces.FileEntryRenderer",
-    componentFamily = "org.icefaces.faces.FileEntry"
-)
-
-@ResourceDependencies({
-    @ResourceDependency(name="fileEntry.js",library="org.icefaces.component.fileentry")
-})
+    componentType   = "org.icefaces.FileEntry",
+    rendererType    = "org.icefaces.FileEntryRenderer",
+    componentFamily = "org.icefaces.FileEntry")
+@ResourceDependency(name="fileEntry.js",library="org.icefaces.component.fileentry")
 public class FileEntryMeta extends UIComponentBaseMeta {
     /*
     @Property(defaultValue="false")
