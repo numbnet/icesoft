@@ -52,10 +52,10 @@ public class PushButtonRenderer extends Renderer {
              yuiBaseClass +=  " " + String.valueOf(styleClass);
         }
 		writer.writeAttribute(HTML.STYLE_CLASS_ATTR, yuiBaseClass, null);
-        Object style = pushButton.getStyle();
-        if (null!=style && !style.equals("")){
-            writer.writeAttribute(HTML.STYLE_ATTR, String.valueOf(style), null);
-        }		
+        String style = pushButton.getStyle();
+        if (style != null && style.trim().length() > 0) {
+            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+        }
 		// first child
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
 		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
@@ -67,7 +67,11 @@ public class PushButtonRenderer extends Renderer {
 		writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
 		writer.writeAttribute(HTML.ID_ATTR, clientId+"_button", null);		
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
-		writer.write(pushButton.getLabel());
+		Object oVal = pushButton.getValue();
+		if (null!=oVal) writer.writeText(String.valueOf(oVal), null);
+		else{
+			writer.writeText(pushButton.getLabel(), null);
+		}
 		writer.endElement(HTML.SPAN_ELEM);
     }
     

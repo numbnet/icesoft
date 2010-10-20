@@ -37,13 +37,13 @@ import org.icefaces.component.baseMeta.UISelectBooleanMeta;
 
 public class CheckboxButtonMeta extends UISelectBooleanMeta {
     
-    @Property(tlddoc="A localized user presentable name for this component. "+
-    		" used by aria")
+    @Property(tlddoc="A label to be printed either on the buttton or to the left of it "+
+    		" according to labelPosition parameter")
     private String label;
     
     @Property(defaultValue="left",
-    		tlddoc="Default is left for rime theme. Other possibility is \"on\" )+" +
-    				" for sam skin.")
+    		tlddoc="Default is left for rime theme. Other possibility is \"on\" " +
+    				"for sam skin.")
     private String labelPosition;
 
 	@Property(defaultValue="false",
