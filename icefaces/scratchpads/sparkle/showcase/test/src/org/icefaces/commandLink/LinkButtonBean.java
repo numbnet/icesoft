@@ -15,6 +15,7 @@ public class LinkButtonBean implements Serializable {
     private boolean checked = false;
 	private String label = "ActionListener";
 	private boolean rendered = false;
+    private String linkValue="Link with actionListener only (Text by ValueExpression)";
 
 
   /** @PostConstruct
@@ -65,5 +66,13 @@ public class LinkButtonBean implements Serializable {
 
     public boolean isRendered(){
     	return this.rendered;
+    }
+
+    public String getLinkValue() {
+        return linkValue;
+    }
+
+    public void setLinkValue(String linkValue) {
+        //this.linkValue = linkValue;
     }
 }
