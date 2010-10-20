@@ -24,7 +24,7 @@ public class PushButtonRenderer extends Renderer {
             String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
             String clientId = pushButton.getClientId();
   
-             if (clientId.equals(source)) { //won't always be the same ??
+             if (clientId.equals(source)) { 
                 try {
              	   if (!pushButton.isDisabled()){
                         uiComponent.queueEvent(new ActionEvent (uiComponent));
