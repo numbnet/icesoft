@@ -26,11 +26,10 @@ import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.util.CoreUtils;
 import org.icefaces.impl.event.UIOutputWriter;
-import org.icefaces.util.EnvUtils;
 import org.icefaces.impl.util.FormEndRenderer;
 import org.icefaces.impl.util.FormEndRendering;
+import org.icefaces.util.EnvUtils;
 
-import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
@@ -85,15 +84,21 @@ public class ExtrasSetup implements SystemEventListener {
                         localizedBundle = defaultBridgeMessages;
                     }
 
-                    ViewHandler handler = context.getApplication().getViewHandler();
-
                     String connectionLostRedirectURI;
                     String uri = EnvUtils.getConnectionLostRedirectURI(context);
-                    connectionLostRedirectURI = "'" + CoreUtils.resolveResourceURL(context, uri.replaceAll("'", "")) + "'";
+                    if (uri == null) {
+                        connectionLostRedirectURI = "null";
+                    } else {
+                        connectionLostRedirectURI = "'" + CoreUtils.resolveResourceURL(context, uri.replaceAll("'", "")) + "'";
+                    }
 
                     String sessionExpiredRedirectURI;
                     uri = EnvUtils.getSessionExpiredRedirectURI(context);
-                    sessionExpiredRedirectURI = "'" + CoreUtils.resolveResourceURL(context, uri.replaceAll("'", "")) + "'";
+                    if (uri == null) {
+                        sessionExpiredRedirectURI = "null";
+                    } else {
+                        sessionExpiredRedirectURI = "'" + CoreUtils.resolveResourceURL(context, uri.replaceAll("'", "")) + "'";
+                    }
 
                     final String contextPath = CoreUtils.resolveResourceURL(context, "/");
                     final boolean blockUI = EnvUtils.isBlockUIOnSubmit(context);
