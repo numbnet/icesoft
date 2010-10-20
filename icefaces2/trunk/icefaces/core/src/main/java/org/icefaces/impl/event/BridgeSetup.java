@@ -24,10 +24,12 @@ package org.icefaces.impl.event;
 import org.icefaces.impl.application.LazyPushManager;
 import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.impl.push.SessionViewManager;
+import org.icefaces.impl.push.servlet.ICEpushListenResource;
 import org.icefaces.impl.renderkit.DOMRenderKit;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.render.ExternalScript;
 
+import javax.faces.application.Resource;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
@@ -49,11 +51,15 @@ public class BridgeSetup implements SystemEventListener {
     private int seed = 0;
     private boolean standardFormSerialization;
     private boolean deltaSubmit;
+    private Resource icepushListenResource;
 
     public BridgeSetup() {
         FacesContext fc = FacesContext.getCurrentInstance();
         deltaSubmit = EnvUtils.isDeltaSubmit(fc);
         standardFormSerialization = EnvUtils.isStandardFormSerialization(fc);
+        icepushListenResource = fc.getApplication()
+                .getResourceHandler().createResource( 
+                ICEpushListenResource.RESOURCE_NAME );
     }
 
     public boolean isListenerForSource(Object source) {
@@ -208,15 +214,10 @@ public class BridgeSetup implements SystemEventListener {
                         writer.writeAttribute("type", "text/javascript", null);
                         writer.write(LazyPushManager.enablePush(context, viewID) ?
                                 "ice.setupPush('" + viewID + "');" : "");
-                        String[] pathTemplate = EnvUtils.getPathTemplate();
-                        String rawURL = pathTemplate[0] + "listen.icepush"
-                                + pathTemplate[1];
-                        String encodedURL = context.getExternalContext()
-                                .encodeResourceURL(rawURL);
-                        if (!rawURL.equals(encodedURL)) {
-                            writer.write("ice.push.configuration.uri=\"" +
-                                    encodedURL + "\";");
-                        }
+                        String encodedURL = 
+                                icepushListenResource.getRequestPath();
+                        writer.write("ice.push.configuration.uri=\"" +
+                                encodedURL + "\";");
                         writer.endElement("script");
                         writer.endElement("span");
                     }
