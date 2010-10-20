@@ -6,9 +6,9 @@
  */
 
  
-.rime .yui3-slider-x .yui3-slider-rail,
-.rime .yui3-slider-x .yui3-slider-rail-cap-left,
-.rime .yui3-slider-x .yui3-slider-rail-cap-right {
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail,
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-left,
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-right {
     background-image: url(rail-x.png);
     background-repeat: repeat-x;
     background-repeat: repeat-x;
@@ -16,32 +16,32 @@
     /* alternate: rail-x-lines.png */
 }
 
-.rime .yui3-slider-x .yui3-slider-rail {
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail {
     height: 25px;
 }
-.rime .yui3-slider-x .yui3-slider-thumb {
+.ice-skin-rime .yui3-slider-x .yui3-slider-thumb {
     height: 30px;
     width: 14px;
 }
 
-.rime .yui3-slider-x .yui3-slider-rail-cap-left {
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-left {
     background-position: 0 -20px;
     height: 20px;
     left: -2px;
     width: 5px;
 }
-.rime .yui3-slider-x .yui3-slider-rail-cap-right {
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-right {
     background-position: 0 -40px;
     height: 20px;
     right: -2px;
     width: 5px;
 }
 
-.rime .yui3-slider-x .yui3-slider-thumb-image {
+.ice-skin-rime .yui3-slider-x .yui3-slider-thumb-image {
     left: 0;
     top: -10px;
 }
-.rime .yui3-slider-x .yui3-slider-thumb-shadow {
+.ice-skin-rime .yui3-slider-x .yui3-slider-thumb-shadow {
     left: 0;
     opacity: 0.15;
     filter: alpha(opacity=15);
@@ -53,9 +53,9 @@
 /* Use thumbUrl /build/slider/assets/skins/capsule/thumb-y.png */
 /* Alternate thumbUrl /build/slider/assets/skins/capsule/thumb-y-line.png */
 
-.rime .yui3-slider-y .yui3-slider-rail,
-.rime .yui3-slider-y .yui3-slider-rail-cap-top,
-.rime .yui3-slider-y .yui3-slider-rail-cap-bottom {
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail,
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-top,
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-bottom {
     background-image: url(rail-y.png);
     background-repeat: repeat-y;
     background-repeat: repeat-y;
@@ -63,32 +63,32 @@
     /* alternate: rail-y-lines.png */
 }
 
-.rime .yui3-slider-y .yui3-slider-rail {
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail {
     width: 25px;
 }
-.rime .yui3-slider-y .yui3-slider-thumb {
+.ice-skin-rime .yui3-slider-y .yui3-slider-thumb {
     width: 30px;
     height: 14px;
 }
 
-.rime .yui3-slider-y .yui3-slider-rail-cap-top {
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-top {
     background-position: -20px 0;
     width: 20px;
     top: -2px;
     height: 5px;
 }
-.rime .yui3-slider-y .yui3-slider-rail-cap-bottom {
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-bottom {
     background-position: -40px 0;
     width: 20px;
     bottom: -2px;
     height: 5px;
 }
 
-.rime .yui3-slider-y .yui3-slider-thumb-image {
+.ice-skin-rime .yui3-slider-y .yui3-slider-thumb-image {
     left: -10px;
     top: 0;
 }
-.rime .yui3-slider-y .yui3-slider-thumb-shadow {
+.ice-skin-rime .yui3-slider-y .yui3-slider-thumb-shadow {
     left: -50px;
     opacity: 0.15;
     filter: alpha(opacity=15);
@@ -136,76 +136,76 @@
 
 /* -- Horizontal rail -- */
 
-.rime .yui3-slider-x .yui3-slider-rail,.rime .yui3-slider-x .yui3-slider-rail-cap-left,.rime .yui3-slider-x .yui3-slider-rail-cap-right
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail,.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-left,.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-right
 {
 	background-image: url(rail-x.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;
 }
 
-.rime .yui3-slider-x .yui3-slider-rail
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail
 {
 
 }
 
-.rime .yui3-slider-x .yui3-slider-thumb
+.ice-skin-rime .yui3-slider-x .yui3-slider-thumb
 {
 
 }
 
-.rime .yui3-slider-x .yui3-slider-rail-cap-left
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-left
 {
 
 }
 
-.rime .yui3-slider-x .yui3-slider-rail-cap-right
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-right
 {
 
 }
 
-.rime .yui3-slider-x .yui3-slider-thumb-image
+.ice-skin-rime .yui3-slider-x .yui3-slider-thumb-image
 {
 
 }
 
-.rime .yui3-slider-x .yui3-slider-thumb-shadow
+.ice-skin-rime .yui3-slider-x .yui3-slider-thumb-shadow
 {
 
 }
 
 /* -- Vertical rail -- */
 
-.rime .yui3-slider-y .yui3-slider-rail,.rime .yui3-slider-y .yui3-slider-rail-cap-top,.rime .yui3-slider-y .yui3-slider-rail-cap-bottom
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail,.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-top,.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-bottom
 {
 	background-image: url(rail-y.png); /** sprite-ref: sprite-y; sprite-alignment: repeat; */
 	background-repeat: repeat-y;
 }
 
-.rime .yui3-slider-y .yui3-slider-rail
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail
 {
 
 }
 
-.rime .yui3-slider-y .yui3-slider-thumb
+.ice-skin-rime .yui3-slider-y .yui3-slider-thumb
 {
 
 }
 
-.rime .yui3-slider-y .yui3-slider-rail-cap-top
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-top
 {
 
 }
 
-.rime .yui3-slider-y .yui3-slider-rail-cap-bottom
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-bottom
 {
 
 }
 
-.rime .yui3-slider-y .yui3-slider-thumb-image
+.ice-skin-rime .yui3-slider-y .yui3-slider-thumb-image
 {
 
 }
 
-.rime .yui3-slider-y .yui3-slider-thumb-shadow
+.ice-skin-rime .yui3-slider-y .yui3-slider-thumb-shadow
 {
 
 }
