@@ -32,7 +32,6 @@ public class CheckboxButtonRenderer extends Renderer {
 	        String clientId = uiComponent.getClientId();
 	        //update with hidden field
 		    String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
-		//	System.out.println("\t\tRenderer:-  HIDDEN value ONLY="+hiddenValue);
 			boolean submittedValue = isChecked(hiddenValue);
 			checkbox.setSubmittedValue(submittedValue);           	
     }
@@ -76,9 +75,7 @@ public class CheckboxButtonRenderer extends Renderer {
     		writer.writeAttribute(HTML.FOR_ATTR, clientId+"_span-button", null );
             writer.writeText(label,null);
 	   		writer.endElement("label");		
-		}
-	
-//		System.out.println(" CBR: label="+label);	 	
+		} 	
 	 	
 		// button element
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
@@ -122,7 +119,6 @@ public class CheckboxButtonRenderer extends Renderer {
 	        entry("label", label).endMap().toString();
 	    }
 	    else {
-	    	System.out.println("LABEL NOT ON");
 	        builder = JSONBuilder.create().beginMap().
 	        entry("type", "checkbox").
 	        entry("checked", isChecked).
