@@ -19,8 +19,8 @@
 <h:body>
 The tabset is not a child of any form, each tab has its own form. The first tab has required fields so tab can be changed without entring those fields:
     <h:panelGroup styleClass="ice-skin-sam">
-       <ice:tabPanel id="myTabSet">
-            <ice:tab label="Tab 1" >
+       <ice:tabSet id="myTabSet">
+            <ice:tabPane label="Tab 1" >
                 <h:form>    <h:messages /> 
          <h:panelGrid columns="3">
 			<h:outputText value="Required Field: "/>   <h:inputText value="#{tabBean.txt1}" required="true" />   <h:outputText value="#{tabBean.txt1}"/>  
@@ -30,21 +30,21 @@ The tabset is not a child of any form, each tab has its own form. The first tab 
                    
 				
                 </h:form>                
-            </ice:tab>       
-            <ice:tab label="Tab 2" >
+            </ice:tabPane>       
+            <ice:tabPane label="Tab 2" >
                 <h:form>            
                 	<h:inputText value="#{tabBean.txt3}"/> 
                 	<h:commandButton value="Save" />
                 </h:form>
-            </ice:tab>
-            <ice:tab label="Tab 3" >
+            </ice:tabPane>
+            <ice:tabPane label="Tab 3" >
                 <h:form> 
                 	<h:inputText value="#{tabBean.txt4}"/> 
                 	<h:commandButton value="Save" />
              	
                 </h:form>                 	
-            </ice:tab>
-        </ice:tabPanel> 
+            </ice:tabPane>
+        </ice:tabSet> 
         <h:form>
 			<ice:tabSetController for="myTabSet" />
 		</h:form>

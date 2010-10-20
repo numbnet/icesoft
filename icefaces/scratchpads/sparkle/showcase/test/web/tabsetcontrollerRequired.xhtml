@@ -16,17 +16,17 @@
    <h4> In this demo tabsets are not enclosed inside a "form", instead it uses tabsetController component. The form which contains tabSetController has a required field </h4>	
    <br/>
    <b>Changing a tab should cause validation error on the form. </b>
-       <ice:tabPanel id="myTabSet">
-            <ice:tab label="Tab contents from JSP" >
+       <ice:tabSet id="myTabSet">
+            <ice:tabPane label="Tab contents from JSP" >
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ice:tab>       
-            <ice:tab label="Tab contents from Bean" >
+            </ice:tabPane>       
+            <ice:tabPane label="Tab contents from Bean" >
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ice:tab>
-            <ice:tab label="Tab contents.." >
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ice:tab>
-        </ice:tabPanel> 
+            </ice:tabPane>
+        </ice:tabSet> 
 
 <hr/>
 
@@ -42,17 +42,17 @@
 <hr/>
 
    <b>Chanding a tab should cause validation error on the form. </b>
-        <ice:tabPanel id="myTabSet2">
-            <ice:tab label="Tab contents from JSP" >
+        <ice:tabSet id="myTabSet2">
+            <ice:tabPane label="Tab contents from JSP" >
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ice:tab>       
-            <ice:tab label="Tab contents from Bean" >
+            </ice:tabPane>       
+            <ice:tabPane label="Tab contents from Bean" >
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ice:tab>
-            <ice:tab label="Tab contents.." >
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ice:tab>
-        </ice:tabPanel> 
+            </ice:tabPane>
+        </ice:tabSet> 
    </h:panelGroup>
    <a href="index.html"> Goto Main page </a>    
    <h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />

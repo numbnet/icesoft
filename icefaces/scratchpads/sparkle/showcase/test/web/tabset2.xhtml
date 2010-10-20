@@ -23,16 +23,16 @@
        <h:messages />
        <h:dataTable  value="#{tabBean.movies}" var="movie">
             <h:column>
-            <ice:tabPanel  dynamic="true" tabIndex="#{movie.tabindex}">
-            <ice:tab label="#{movie.director}" rendered="#{movie.rendered1}">
+            <ice:tabSet  dynamic="true" tabIndex="#{movie.tabindex}">
+            <ice:tabPane label="#{movie.director}" rendered="#{movie.rendered1}">
                    
                 <h:outputText value="#{movie.plot}"/> 
                 
-            </ice:tab>
-            <ice:tab label="#{movie.title}" rendered="#{movie.rendered2}" >
+            </ice:tabPane>
+            <ice:tabPane label="#{movie.title}" rendered="#{movie.rendered2}" >
                    <h:outputText value="#{movie.genre}"/> <br/>
-             </ice:tab>   
-        </ice:tabPanel>
+             </ice:tabPane>   
+        </ice:tabSet>
          <h:commandButton value="Hide tab1" actionListener="#{movie.hideTab1}" /> 
          <h:commandButton value="Hide tab2" actionListener="#{movie.hideTab2}" /> 
          <h:commandButton value="show All" actionListener="#{movie.showTabs}" />

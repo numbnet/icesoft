@@ -33,22 +33,22 @@
             
     <h:form id="frm1">
 
-       <ice:tabPanel id="tabst" styleClass="myTab" >
-            <ice:tab id="tab1" label="Tab contents from JSP" >
+       <ice:tabSet id="tabst" styleClass="myTab" >
+            <ice:tabPane id="tab1" label="Tab contents from JSP" >
             <h:panelGroup id="slider1">
                 <h:outputText id="out1" value="#{sliderBean.valueChangeString}"/>             
             </h:panelGroup>
 
             <ice:sliderEntry id="s1" length="300px" value="#{sliderBean.value1}" valueChangeListener="#{sliderBean.sliderChanged}" />
-            </ice:tab>       
-            <ice:tab  id="tab2" label="Tab 2">
+            </ice:tabPane>       
+            <ice:tabPane  id="tab2" label="Tab 2">
                 <h:outputText id="txt2" value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ice:tab>
-            <ice:tab id="tab3" label="Tab contents.." >
+            </ice:tabPane>
+            <ice:tabPane id="tab3" label="Tab contents.." >
                 <h:messages />              
                 <h:outputText id="txt3" value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ice:tab>
-        </ice:tabPanel> 
+            </ice:tabPane>
+        </ice:tabSet> 
         <h:panelGroup id="slider2">
            <h:outputText id="out2" value="Slider 2 value = #{sliderBean.value2}"/> 
            </h:panelGroup>

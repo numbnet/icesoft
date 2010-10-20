@@ -7,7 +7,6 @@ import java.util.List;
 import javax.faces.application.Application;
 
 import javax.faces.component.html.HtmlOutputText;
-import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -16,7 +15,7 @@ import javax.faces.model.SelectItem;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
 
-import org.icefaces.component.tab.Tab;
+import org.icefaces.component.tab.TabPane;
 import org.icefaces.component.tab.TabSet;
 
 @ManagedBean (name="tabBean")
@@ -46,7 +45,7 @@ public class Bean {
     private String genre;
     private boolean showPopup;
     private int selectedTabIndex = 0;
-    private String delayedContents ="Tab contextns";
+    private String delayedContents = "TabPane contents";
     private boolean closeButton;
     private int labelFacetIndex=0;
     private boolean closeTabValue;
@@ -153,23 +152,23 @@ public class Bean {
     } 
     int i=2;
     public void addTab(ActionEvent event) {
-        System.out.println("Add tab caled................." +
+        System.out.println("Add tab called................." +
         		"" );
         Application application = FacesContext.getCurrentInstance().getApplication();
 
-        Tab tab = (Tab) application
-                .createComponent(Tab.COMPONENT_TYPE);
+        TabPane tabPane = (TabPane) application
+                .createComponent(TabPane.COMPONENT_TYPE);
         String tabid = "id"+ i;
-        tab.setId(tabid);
+        tabPane.setId(tabid);
         
         HtmlOutputText output = (HtmlOutputText) application
         .createComponent(HtmlOutputText.COMPONENT_TYPE); 
         output.setId(FacesContext.getCurrentInstance().getViewRoot().createUniqueId());
         output.setRendererType("javax.faces.Text");
         output.setValue("This is tab "+ ++i);
-        tab.getChildren().add(output);
-        tab.setLabel("Tab "+ i);
-        tabSet.getChildren().add(tab);
+        tabPane.getChildren().add(output);
+        tabPane.setLabel("Tab "+ i);
+        tabSet.getChildren().add(tabPane);
         resetIndexes();        
     }
     public int getTabIndex() {

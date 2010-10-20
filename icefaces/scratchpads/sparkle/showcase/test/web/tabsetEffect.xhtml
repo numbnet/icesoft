@@ -39,51 +39,51 @@
 			}
 &lt;/style&gt;</pre> 
 
-	   <ice:tabPanel >
-            <ice:tab label="Tab contents from JSP" >
+	   <ice:tabSet >
+            <ice:tabPane label="Tab contents from JSP" >
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ice:tab>       
-            <ice:tab label="Tab contents from Bean" >
+            </ice:tabPane>       
+            <ice:tabPane label="Tab contents from Bean" >
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ice:tab>
-            <ice:tab label="Tab contents.." >
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ice:tab>
-        </ice:tabPanel> 
+            </ice:tabPane>
+        </ice:tabSet> 
 	 </h:panelGroup>		
  	
      <h:panelGroup style="height:150px; display:block" layout="block">
 	   <h3>Following tabset using predefine highlight animation, so overriding theme default.</h3>
 	   <pre> &lt;ice:animation event="transition" name="highlight"/&gt; </pre>
-	   <ice:tabPanel >
+	   <ice:tabSet >
 	   	<ice:animation event="transition" name="highlight"/>
-            <ice:tab label="Tab contents from JSP" >
+            <ice:tabPane label="Tab contents from JSP" >
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ice:tab>       
-            <ice:tab label="Tab contents from Bean" >
+            </ice:tabPane>       
+            <ice:tabPane label="Tab contents from Bean" >
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ice:tab>
-            <ice:tab label="Tab contents.." >
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ice:tab>
-        </ice:tabPanel> 
+            </ice:tabPane>
+        </ice:tabSet> 
 	 </h:panelGroup>		
  
      <h:panelGroup style="height:140px; display:block" layout="block">
 		<h3>Following tabset using free form animation using from and to attributes to mimic blind up/down effect</h3>	
 		<pre> &lt;ice:animation event="transition" from="{opacity:1, height:28}" to="{opacity:0, height:1}" easing="backIn"/&gt; </pre>
-		<ice:tabPanel >
+		<ice:tabSet >
 			<ice:animation event="transition" from="{opacity:1, height:28}" to="{opacity:0, height:1}" easing="backIn"/>
-            <ice:tab label="Tab contents from JSP" >
+            <ice:tabPane label="Tab contents from JSP" >
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ice:tab>       
-            <ice:tab label="Tab contents from Bean" >
+            </ice:tabPane>       
+            <ice:tabPane label="Tab contents from Bean" >
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ice:tab>
-            <ice:tab label="Tab contents.." >
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ice:tab>
-        </ice:tabPanel> 
+            </ice:tabPane>
+        </ice:tabSet> 
 	 </h:panelGroup>		
 
  
@@ -92,19 +92,19 @@
 		<pre> &lt;ice:animation event="transition" name="highlight"/&gt; </pre>
 	   	<pre> &lt;ice:animation event="transition" name="fade"/&gt; </pre>
 	 
-		<ice:tabPanel >
+		<ice:tabSet >
 		<ice:animation event="transition" name="highlight"/>
 	   	<ice:animation event="transition" name="fade"/>
-            <ice:tab label="Tab contents from JSP" >
+            <ice:tabPane label="Tab contents from JSP" >
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ice:tab>       
-            <ice:tab label="Tab contents from Bean" >
+            </ice:tabPane>       
+            <ice:tabPane label="Tab contents from Bean" >
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ice:tab>
-            <ice:tab label="Tab contents.." >
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ice:tab>
-        </ice:tabPanel> 
+            </ice:tabPane>
+        </ice:tabSet> 
 	 </h:panelGroup>
 	 
   
