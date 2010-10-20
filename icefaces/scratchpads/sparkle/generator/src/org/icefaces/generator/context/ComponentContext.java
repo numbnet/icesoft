@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 
 import org.icefaces.component.annotation.*;
@@ -14,7 +15,6 @@ import org.icefaces.generator.artifacts.Artifact;
 import org.icefaces.generator.artifacts.ComponentArtifact;
 import org.icefaces.generator.artifacts.ComponentHandlerArtifact;
 import org.icefaces.generator.artifacts.TagArtifact;
-import org.icefaces.generator.behavior.ActionSourceBehavior;
 import org.icefaces.generator.behavior.Behavior;
 import org.icefaces.generator.utils.PropertyValues;
 
@@ -79,6 +79,14 @@ public class ComponentContext {
 	public Map<String, Field> getFieldsForTagClass() {
 		return fieldsForTagClass;
 	}
+
+    /**
+     * Alphabetically sorted keys from fieldsForTagClass
+     */
+    public Iterator<String> getFieldNamesForTagClass() {
+        TreeSet<String> treeSet = new TreeSet<String>(fieldsForTagClass.keySet());
+        return treeSet.iterator();
+    }
 
 	public void setFieldsForTagClass(Map<String, Field> fieldsForTagClass) {
 		this.fieldsForTagClass = fieldsForTagClass;

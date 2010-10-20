@@ -104,7 +104,7 @@ public class TagArtifact extends Artifact{
 
 	private void addSetters() {
 		//set
-		Iterator<String> iterator = getComponentContext().getFieldsForTagClass().keySet().iterator();
+		Iterator<String> iterator = getComponentContext().getFieldNamesForTagClass();
 		while (iterator.hasNext()){
 			Field field = getComponentContext().getFieldsForTagClass().get(iterator.next());
 			PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field);
@@ -167,7 +167,7 @@ public class TagArtifact extends Artifact{
 		generatedTagClass.append(componentClass);
 		generatedTagClass.append("\");\n");
 		generatedTagClass.append("\t\t}\n");        
-		Iterator<String> iterator = getComponentContext().getFieldsForTagClass().keySet().iterator();
+		Iterator<String> iterator = getComponentContext().getFieldNamesForTagClass();
 		while (iterator.hasNext()){
 			Field field = getComponentContext().getFieldsForTagClass().get(iterator.next());
 			generatedTagClass.append("\t\tif ("); 
