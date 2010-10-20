@@ -26,9 +26,12 @@ import javax.faces.application.Resource;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.icefaces.impl.push.servlet.ICEpushListenResource;
 
 public class EnvUtils {
 
@@ -370,8 +373,8 @@ public class EnvUtils {
         String pathInfo = ec.getRequestPathInfo();
         String reqParam = ec.getRequestParameterMap().get("ice.submit.type");
 
-        if (reqPath != null && reqPath.contains("listen.icepush") ||
-                pathInfo != null && pathInfo.contains("listen.icepush") ||
+        if (reqPath != null && reqPath.contains(ICEpushListenResource.RESOURCE_NAME) ||
+                pathInfo != null && pathInfo.contains(ICEpushListenResource.RESOURCE_NAME) ||
                 "ice.push".equals(reqParam)) {
             return true;
         }

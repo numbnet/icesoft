@@ -26,6 +26,7 @@ import org.icepush.PushContext;
 import org.icepush.servlet.MainServlet;
 
 import javax.faces.FactoryFinder;
+import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.ExternalContext;
@@ -72,6 +73,16 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         return handler;
     }
 
+    @Override
+    public Resource createResource(String resourceName) {
+        if (ICEpushListenResource.RESOURCE_NAME.equals(resourceName)) {
+            return new ICEpushListenResource(this);
+        }
+        else {
+            return super.createResource(resourceName);
+        }
+    }
+
     public void handleResourceRequest(FacesContext facesContext) throws IOException {
         if (null == mainServlet)  {
             handler.handleResourceRequest(facesContext);
@@ -81,7 +92,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         String resourceName = facesContext.getExternalContext()
             .getRequestParameterMap().get(RESOURCE_KEY);
         //special proxied code path for portlets
-        if ("listen.icepush".equals(resourceName))  {
+        if (ICEpushListenResource.RESOURCE_NAME.equals(resourceName))  {
             try {
                 mainServlet.service(new ProxyHttpServletRequest(facesContext), 
                         new ProxyHttpServletResponse(facesContext));
@@ -111,7 +122,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
     public boolean isResourceRequest(FacesContext facesContext) {
         String resourceName = facesContext.getExternalContext()
             .getRequestParameterMap().get(RESOURCE_KEY);
-        if ("listen.icepush".equals(resourceName))  {
+        if (ICEpushListenResource.RESOURCE_NAME.equals(resourceName))  {
             return true;
         }
         ExternalContext externalContext = facesContext.getExternalContext();
