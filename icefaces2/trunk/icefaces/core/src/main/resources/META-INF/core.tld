@@ -32,4 +32,7 @@
     <listener>
         <listener-class>org.icefaces.impl.push.servlet.ICEpushResourceHandlerLifecycle</listener-class>
     </listener>
+    <listener>
+        <listener-class>org.icefaces.impl.application.SessionExpiredListener</listener-class>
+    </listener>
 </taglib>

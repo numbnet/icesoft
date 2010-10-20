@@ -21,24 +21,22 @@
 
 package org.icefaces.impl.application;
 
-import org.icepush.PushContext;
-import org.icefaces.util.EnvUtils;
 import org.icefaces.application.SessionExpiredException;
+import org.icefaces.util.EnvUtils;
+import org.icepush.PushContext;
 
 import javax.faces.FactoryFinder;
-import javax.faces.event.ExceptionQueuedEvent;
-import javax.faces.event.ExceptionQueuedEventContext;
 import javax.faces.application.Application;
 import javax.faces.application.ApplicationFactory;
 import javax.faces.context.FacesContext;
-import javax.servlet.annotation.WebListener;
+import javax.faces.event.ExceptionQueuedEvent;
+import javax.faces.event.ExceptionQueuedEventContext;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import javax.servlet.http.HttpSession;
-import javax.servlet.ServletContext;
 import java.util.logging.Logger;
 
-@WebListener
 public class SessionExpiredListener implements HttpSessionListener {
 
     private static Logger log = Logger.getLogger(SessionExpiredListener.class.getName());
@@ -55,19 +53,19 @@ public class SessionExpiredListener implements HttpSessionListener {
         //we can't put an exception into the queue.
         if (fc != null) {
             Application app = fc.getApplication();
-            if( app == null ){
+            if (app == null) {
                 ApplicationFactory factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
                 app = factory.getApplication();
             }
 
             ExceptionQueuedEventContext ctxt =
-                    new ExceptionQueuedEventContext(fc, new SessionExpiredException("Session has expired") );
+                    new ExceptionQueuedEventContext(fc, new SessionExpiredException("Session has expired"));
             app.publishEvent(fc, ExceptionQueuedEvent.class, ctxt);
         }
 
         //If the session is destroyed and ICEpush is available, we can request a push request immediately
         //which should result in a SessionExpiredException being sent to the client.
-        if(EnvUtils.isICEpushPresent()){
+        if (EnvUtils.isICEpushPresent()) {
             HttpSession session = httpSessionEvent.getSession();
             ServletContext servletContext = session.getServletContext();
             PushContext pushContext = PushContext.getInstance(servletContext);
