@@ -50,9 +50,17 @@ public class CheckboxButtonRenderer extends Renderer {
         
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);      
-
-		writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-checkboxButton-button", null);
-		
+        String yuiBaseClass= "yui-button yui-min yui-checkboxButton-button";
+        Object styleClass = checkbox.getStyleClass();
+        if (null!=styleClass){
+             yuiBaseClass +=  " " + String.valueOf(styleClass);
+        }
+		writer.writeAttribute(HTML.STYLE_CLASS_ATTR, yuiBaseClass, null);
+//		writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-checkboxButton-button", null);
+        String style = checkbox.getStyle();
+        if (style != null && style.trim().length() > 0) {
+            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+        }
 		// first child
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
 		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);

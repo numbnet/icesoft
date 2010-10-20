@@ -24,20 +24,25 @@
 	<h:outputText value="click the button trigger the display of the image." />
     <h:outputText value="click again so image disappears"/>
 	<br/>
+	<h:messages/>
 	<fieldset id="pushButtonActionListenerForm">
-	   <legend>Simple Buttons on separate forms</legend>
+	   <legend>first name is required singleSubmit true</legend>
 	   <h:form id="push1Form">
 	     <ice:logger rendered="false"/>
 	      <h:panelGrid columns="3">
 	          <h:panelGrid id="firstNameGroup">
 	             <h:outputText value="First Name"/>
-	             <h:inputText id="first" value="#{button.firstName}"/>
+	             <h:inputText id="first" value="#{button.firstName}"
+	                 required="true"/>
 	             <h:outputText value="Last Name"/>
 	             <h:inputText id="last" value="#{button.lastName}"/>
 	          </h:panelGrid>
 	        <h:panelGroup id="push1">
-	         <ice:pushButton  id="pushId" value="#{button.label}"
+	         <ice:pushButton  id="pushId" label="#{button.label}"
 	           actionListener="#{button.actionListenerMethod}"  />
+	         <ice:pushButton id="cancel1" label="cancel"
+	            actionListener="#{button.actionListenerMethod}"
+	            immediate="true"/>
 	        </h:panelGroup>
 	        <h:panelGroup id="outputTextTests">
 	           <h:outputText id="firstFormTest1" value="submitted for firstName:- #{button.firstName}"/>
@@ -48,6 +53,7 @@
 	 </fieldset>
 	<br />
 	<fieldset id="pushButtonActionForm">
+	  <legend>PushButtonSingleSubmitFalse</legend>
 	  <h:outputText id="instructions" value="singleSubmit is true so button should"/>
 	  <h:outputText id="instr2" value="  only submit itself and update picture"/>
 	   <h:form id="push2form">
@@ -56,8 +62,8 @@
 	          <h:inputText id="testData" value="#{button.extraData}"/>
 	        </h:panelGroup>
 	        <h:panelGroup id="push2">
-	         <ice:pushButton id="pushId2" label="ActionLabel"
-	            singleSubmit="true" value="ActionValue"
+	         <ice:pushButton id="pushId2" label="Action"
+	            singleSubmit="true"
 	            action="#{button.methodAction}"  />
 	         <h:outputText value="using action property on button" />
 	       </h:panelGroup>
@@ -69,7 +75,7 @@
 	</fieldset>
 		<br />
     <fieldset id="htmlcommandbutton">
-       <legend>HtmlCommandButton</legend>
+       <legend>HtmlCommandButton and disabled Pushbutton</legend>
 	    <h:form id="regularButtonForm">
 	       <h:panelGrid id="disabledId" columns="2">       	
 	          <h:commandButton id="regular" value="HtmlCommandButton" 
