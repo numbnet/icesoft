@@ -50,7 +50,7 @@ public enum FileEntryStatuses implements FileEntryStatus {
     MAX_TOTAL_SIZE_EXCEEDED(false) {
         @Override
         public FacesMessage getFacesMessage(FacesContext facesContext,
-                UIComponent fileEntry, FileEntryInfo.FileInfo fi) {
+                UIComponent fileEntry, FileEntryResults.FileInfo fi) {
             String pattern = (String) fileEntry.getAttributes().get(
                 "maxTotalSizeMessage");
             return (pattern != null && pattern.length() > 0) ?
@@ -61,7 +61,7 @@ public enum FileEntryStatuses implements FileEntryStatus {
     MAX_FILE_SIZE_EXCEEDED(false) {
         @Override
         public FacesMessage getFacesMessage(FacesContext facesContext,
-                UIComponent fileEntry, FileEntryInfo.FileInfo fi) {
+                UIComponent fileEntry, FileEntryResults.FileInfo fi) {
             String pattern = (String) fileEntry.getAttributes().get(
                 "maxFileSizeMessage");
             return (pattern != null && pattern.length() > 0) ?
@@ -72,7 +72,7 @@ public enum FileEntryStatuses implements FileEntryStatus {
     MAX_FILE_COUNT_EXCEEDED(false) {
         @Override
         public FacesMessage getFacesMessage(FacesContext facesContext,
-                UIComponent fileEntry, FileEntryInfo.FileInfo fi) {
+                UIComponent fileEntry, FileEntryResults.FileInfo fi) {
             String pattern = (String) fileEntry.getAttributes().get(
                 "maxFileCountMessage");
             return (pattern != null && pattern.length() > 0) ?
@@ -83,7 +83,7 @@ public enum FileEntryStatuses implements FileEntryStatus {
     REQUIRED(false) {
         @Override
         public FacesMessage getFacesMessage(FacesContext facesContext,
-                UIComponent fileEntry, FileEntryInfo.FileInfo fi) {
+                UIComponent fileEntry, FileEntryResults.FileInfo fi) {
             String pattern = (String) fileEntry.getAttributes().get(
                 "requiredMessage");
             return (pattern != null && pattern.length() > 0) ?
@@ -103,7 +103,7 @@ public enum FileEntryStatuses implements FileEntryStatus {
     PROBLEM_READING_MULTIPART(false) {
         @Override
         public FacesMessage getFacesMessage(FacesContext facesContext,
-                UIComponent fileEntry, FileEntryInfo.FileInfo fi) {
+                UIComponent fileEntry, FileEntryResults.FileInfo fi) {
             FacesMessage.Severity sev = getSeverity();
             String messageId = MESSAGE_KEY_PREFIX + name();
             FacesMessage fm = MessageUtils.getMessage(facesContext, sev, messageId, null);
@@ -127,7 +127,7 @@ public enum FileEntryStatuses implements FileEntryStatus {
     }
 
     public FacesMessage getFacesMessage(FacesContext facesContext,
-            UIComponent fileEntry, FileEntryInfo.FileInfo fi) {
+            UIComponent fileEntry, FileEntryResults.FileInfo fi) {
 //System.out.println("FileEntryStatuses.getFacesMessage()");
         FacesMessage.Severity sev = getSeverity();
 //System.out.println("FileEntryStatuses.getFacesMessage()  sev: " + sev);
@@ -159,7 +159,7 @@ public enum FileEntryStatuses implements FileEntryStatus {
      * param[7] : maxFileCount (Maximum number of uploaded files)
      */
     protected Object[] getParameters(FacesContext facesContext,
-            UIComponent fileEntry, FileEntryInfo.FileInfo fi) {
+            UIComponent fileEntry, FileEntryResults.FileInfo fi) {
         Object[] params = new Object[] {
             fileEntry.getAttributes().get("facesMessageLabel"),
             fi.getFileName(),
@@ -179,7 +179,7 @@ public enum FileEntryStatuses implements FileEntryStatus {
      */
     protected FacesMessage getFacesMessage(
             FacesContext facesContext, UIComponent fileEntry,
-            FileEntryInfo.FileInfo fi, String pattern) {
+            FileEntryResults.FileInfo fi, String pattern) {
         Locale locale = facesContext.getViewRoot().getLocale();
         FacesMessage.Severity sev = getSeverity();
         Object[] params = getParameters(facesContext, fileEntry, fi);

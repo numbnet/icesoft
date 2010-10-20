@@ -340,6 +340,44 @@
         </h:panelGrid>
     </h:form>
 
+    <h:form id="form15">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form15  styling disabled tabindex" />
+            
+            <h:outputText value="Form15  1. Normal" />
+    	    <ice:fileEntry label="Normal"
+                           fileEntryListener="#{fileBean.fileEntryListener}"/>
+            
+            <h:outputText value="Form15  2. tabindex=-1, style=blue" />
+    	    <ice:fileEntry label="TabindexStyleBlue"
+                            tabindex="-1"
+                            style="background-color: #0000FF;"
+                            fileEntryListener="#{fileBean.fileEntryListener}"/>
+            
+            <h:outputText value="Form15  3. No app class, enabled" />
+    	    <ice:fileEntry label="NoAppEnabled"
+                            disabled="false"
+                            fileEntryListener="#{fileBean.fileEntryListener}"/>
+            
+            <h:outputText value="Form15  4. No app class, disabled" />
+    	    <ice:fileEntry label="NoAppEnabled"
+                            disabled="true"
+                            fileEntryListener="#{fileBean.fileEntryListener}"/>
+            
+            <h:outputText value="Form15  5. App class, enabled" />
+    	    <ice:fileEntry label="AppEnabled"
+                            disabled="false"
+                            styleClass="applicationStyleClass"
+                            fileEntryListener="#{fileBean.fileEntryListener}"/>
+            
+            <h:outputText value="Form15  6. App class, disabled" />
+    	    <ice:fileEntry label="AppEnabled"
+                            disabled="true"
+                            styleClass="applicationStyleClass"
+                            fileEntryListener="#{fileBean.fileEntryListener}"/>
+        </h:panelGrid>
+    </h:form>
+    
 	<h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
 </h:body>
 </f:view>

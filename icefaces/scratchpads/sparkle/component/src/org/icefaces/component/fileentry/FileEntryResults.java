@@ -26,12 +26,12 @@ import java.util.ArrayList;
 import java.io.Serializable;
 import java.io.File;
 
-public class FileEntryInfo implements Serializable, Cloneable {
+public class FileEntryResults implements Serializable, Cloneable {
     private ArrayList<FileInfo> fileInfos;
     private boolean viaCallback;
     private long totalSize;
 
-    FileEntryInfo(boolean viaCallback) {
+    FileEntryResults(boolean viaCallback) {
         fileInfos = new ArrayList<FileInfo>(6);
         this.viaCallback = viaCallback;
     }
@@ -48,17 +48,17 @@ public class FileEntryInfo implements Serializable, Cloneable {
      * @return Deep copy
      */
     public Object clone() {
-        FileEntryInfo info = new FileEntryInfo(viaCallback);
+        FileEntryResults results = new FileEntryResults(viaCallback);
         int numFileEntries = fileInfos.size();
-        info.fileInfos = new ArrayList<FileInfo>(Math.max(1,numFileEntries));
+        results.fileInfos = new ArrayList<FileInfo>(Math.max(1,numFileEntries));
         for (FileInfo fi : fileInfos) {
-            info.fileInfos.add( (FileInfo) fi.clone() );
+            results.fileInfos.add( (FileInfo) fi.clone() );
         }
-        return info;
+        return results;
     }
     
     public String toString() {
-        String pre = "FileEntryInfo: {" +
+        String pre = "FileEntryResults: {" +
                      "\n  viaCallback=" + viaCallback +
                      ",\n  totalSize=" + totalSize +
                      ",\n  files:\n";
@@ -71,26 +71,26 @@ public class FileEntryInfo implements Serializable, Cloneable {
     }
     
     public boolean equals(Object ob) {
-        if (!(ob instanceof FileEntryInfo)) {
+        if (!(ob instanceof FileEntryResults)) {
             return false;
         }
-        FileEntryInfo info = (FileEntryInfo) ob;
-        if (this.viaCallback != info.viaCallback) {
+        FileEntryResults results = (FileEntryResults) ob;
+        if (this.viaCallback != results.viaCallback) {
             return false;
         }
-        if ((this.fileInfos == null && info.fileInfos != null) ||
-            (this.fileInfos != null && info.fileInfos == null)) {
+        if ((this.fileInfos == null && results.fileInfos != null) ||
+            (this.fileInfos != null && results.fileInfos == null)) {
             return false;
         }
         if (this.fileInfos != null) {
             int sz = this.fileInfos.size();
-            int isz = info.fileInfos.size();
+            int isz = results.fileInfos.size();
             if (sz != isz) {
                 return false;
             }
             for (int i = 0; i < sz; i++) {
                 FileInfo fi = this.fileInfos.get(i);
-                FileInfo ifi = info.fileInfos.get(i);
+                FileInfo ifi = results.fileInfos.get(i);
                 if (!fi.equals(ifi)) {
                     return false;
                 }
@@ -177,7 +177,7 @@ public class FileEntryInfo implements Serializable, Cloneable {
 
         public String toString() {
             return
-                "FileEntryInfo.FileInfo: {" +
+                "FileEntryResults.FileInfo: {" +
                     "\n  fileName=" + fileName +
                     ",\n  contentType=" + contentType +
                     ",\n  file=" + file +

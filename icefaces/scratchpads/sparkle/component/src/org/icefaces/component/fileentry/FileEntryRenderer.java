@@ -22,6 +22,8 @@
 
 package org.icefaces.component.fileentry;
 
+import org.icefaces.component.utils.Utils;
+
 import javax.faces.render.Renderer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -40,13 +42,21 @@ public class FileEntryRenderer extends Renderer {
         
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement("div", uiComponent);
-		writer.writeAttribute("class", "ice-file-entry", "class");
+        writer.writeAttribute("id", clientId, "clientId");
+        boolean disabled = fileEntry.isDisabled();
+        Utils.writeConcatenatedStyleClasses(writer, "ice-file-entry",
+            fileEntry.getStyleClass());
+		writer.writeAttribute("style", fileEntry.getStyle(), "style");
         
         writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "file", "type");
         writer.writeAttribute("id", config.getIdentifier(), "clientId");
         writer.writeAttribute("name", config.getIdentifier(), "clientId");
         //writer.writeAttribute("multiple", "multiple", "multiple");
+        if (disabled) {
+            writer.writeAttribute("disabled", "true", "disabled");
+        }
+        writer.writeAttribute("tabindex", fileEntry.getTabindex(), "tabindex");
         writer.endElement("input");
         
         writer.endElement("div");
@@ -82,12 +92,12 @@ public class FileEntryRenderer extends Renderer {
         FileEntry fileEntry = (FileEntry) uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
 //System.out.println("FileEntryRenderer.decode  clientId: " + clientId);
-        FileEntryInfo info = FileEntry.retrieveInfoFromEarlierInLifecycle(facesContext, clientId);
-        // If no new files have been uploaded, leave the old upload info in-place.
-        if (info != null) {
-//System.out.println("FileEntryRenderer.decode    info: " + info);
-            fileEntry.setInfo(info);
-//System.out.println("FileEntryRenderer.decode      info ve: " + uiComponent.getValueExpression("info"));
+        FileEntryResults results = FileEntry.retrieveResultsFromEarlierInLifecycle(facesContext, clientId);
+        // If no new files have been uploaded, leave the old upload results in-place.
+        if (results != null) {
+//System.out.println("FileEntryRenderer.decode    results: " + results);
+            fileEntry.setResults(results);
+//System.out.println("FileEntryRenderer.decode      results ve: " + uiComponent.getValueExpression("results"));
             
             FileEntryEvent event = new FileEntryEvent(fileEntry);
             fileEntry.queueEvent(event);
@@ -96,9 +106,9 @@ public class FileEntryRenderer extends Renderer {
         // ICE-5750 deals with re-adding faces messages for components that
         // have no re-executed. Components that are executing should re-add
         // their faces messages themselves.
-        if (info == null) {
-            info = fileEntry.getInfo();
+        if (results == null) {
+            results = fileEntry.getResults();
         }
-        fileEntry.addMessagesFromInfo(facesContext, clientId, info);
+        fileEntry.addMessagesFromResults(facesContext, clientId, results);
     }
 }
