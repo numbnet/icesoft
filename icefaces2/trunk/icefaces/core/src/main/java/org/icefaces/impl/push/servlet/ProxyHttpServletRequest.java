@@ -23,6 +23,7 @@
 package org.icefaces.impl.push.servlet;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
@@ -279,7 +280,12 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
     }
 
     public  javax.servlet.http.Cookie[] getCookies() {
-        return facesContext.getExternalContext().getRequestCookieMap().values().toArray(new javax.servlet.http.Cookie[0]);
+        Cookie[] cookies = new Cookie[0];
+        Map cookieMap = facesContext.getExternalContext().getRequestCookieMap();
+        if( cookieMap == null ){
+            return cookies;
+        }
+        return (Cookie[]) cookieMap.values().toArray(cookies);
     }
 
     public  long getDateHeader(String name) {
