@@ -14,7 +14,7 @@
     <title>PushButton</title>
 <h:outputScript name="jsf.js" library="javax.faces" />
 </h:head>
-<h:body class="ice-skin-rime">
+<h:body class="ice-skin-sam">
  
   <h:panelGroup  id="demo">
            <h2>PushButton Demo</h2>   
@@ -36,7 +36,7 @@
 	             <h:inputText id="last" value="#{button.lastName}"/>
 	          </h:panelGrid>
 	        <h:panelGroup id="push1">
-	         <ice:pushButton  id="pushId" label="#{button.label}"
+	         <ice:pushButton  id="pushId" value="#{button.label}"
 	           actionListener="#{button.actionListenerMethod}"  />
 	        </h:panelGroup>
 	        <h:panelGroup id="outputTextTests">

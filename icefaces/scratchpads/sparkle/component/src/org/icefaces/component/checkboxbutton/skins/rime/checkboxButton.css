@@ -2,6 +2,7 @@
 	    background-image: url( checkbox.gif ); /** sprite-ref: sprite; */
 	    background-repeat: no-repeat; 
 	    border: none; 
+	    display:table-row;
 	    height: 13px;
 	    width: 13px;
 	} 

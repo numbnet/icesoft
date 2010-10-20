@@ -49,9 +49,9 @@ public class PushButtonRenderer extends Renderer {
         String yuiBaseClass= "yui-button yui-min yui-push-button";
         Object styleClass = pushButton.getStyleClass();
         if (null!=styleClass){
-             yuiBaseClass = yuiBaseClass + " " + String.valueOf(styleClass);
+             yuiBaseClass +=  " " + String.valueOf(styleClass);
         }
-		writer.writeAttribute(HTML.CLASS_ATTR, yuiBaseClass, null);
+		writer.writeAttribute(HTML.STYLE_CLASS_ATTR, yuiBaseClass, null);
         Object style = pushButton.getStyle();
         if (null!=style && !style.equals("")){
             writer.writeAttribute(HTML.STYLE_ATTR, String.valueOf(style), null);
@@ -81,18 +81,25 @@ public class PushButtonRenderer extends Renderer {
 		writer.endElement(HTML.SPAN_ELEM);
 		 
 		// js call using JSONBuilder utility ICE-5831 and ScriptWriter ICE-5830
-	    String label = "";
+	    String ariaLabel = "";
+	    String yuiLabel="";
 	    String builder = "";
-	    String valueString = String.valueOf(pushButton.getValue());
-	    if (null!=pushButton.getLabel())label=pushButton.getLabel();
-	    else if (label.equals(""))
-	    	label=String.valueOf(pushButton.getValue());
+	    //if there is a value, then it goes to yui-label property
+	    //otherwise, see if there is a label property.  If both exist then send 
+	    //separately.
+	    Object oVal=pushButton.getValue();
+	    if (null!=oVal) yuiLabel = String.valueOf(oVal);
+	    Object oLab=pushButton.getLabel();
+	    if (null!=oLab) ariaLabel=String.valueOf(oLab);
+	    if (yuiLabel.equals(""))yuiLabel=ariaLabel;
+	    if (ariaLabel.equals(""))ariaLabel=yuiLabel;
+	    	    
 	   // need to worry if label isn't set?
 	    builder = JSONBuilder.create().beginMap().
 	    entry("type", "button").
         entry("disabled", pushButton.isDisabled()).
         entry("tabindex", pushButton.getTabindex()).
-	    entry("label", label).endMap().toString();
+	    entry("label", yuiLabel).endMap().toString();
 
 	    String params = "'" + clientId + "'," +
         builder
@@ -100,6 +107,7 @@ public class PushButtonRenderer extends Renderer {
            JSONBuilder.create().
            beginMap().
                entry("singleSubmit", pushButton.isSingleSubmit()).
+               entry("ariaLabel", ariaLabel).
                entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext)).
            endMap().toString();
  //         System.out.println("params = " + params);	    
