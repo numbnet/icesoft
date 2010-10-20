@@ -269,8 +269,8 @@ public class BridgeSetup implements SystemEventListener {
         }
         public void encode(ResponseWriter writer, FacesContext context) throws IOException {
             String clientID = getClientId(context);
-            writer.writeAttribute("id", clientID, null);
             writer.startElement("script", this);
+            writer.writeAttribute("id", clientID, null);
             //define potential script entries
             writer.writeAttribute("src", script, null);
             writer.writeAttribute("type", "text/javascript" , null);
