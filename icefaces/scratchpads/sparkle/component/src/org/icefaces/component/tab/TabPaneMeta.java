@@ -9,14 +9,13 @@ import javax.faces.application.ResourceDependency;
 
 import org.icefaces.component.baseMeta.UICommandMeta;
 
-@Component(tagName ="tab",
-        componentClass ="org.icefaces.component.tab.Tab",
-        componentType = "com.icesoft.faces.Tab",
-        extendsClass = "javax.faces.component.UICommand", 
-        generatedClass = "org.icefaces.component.tab.TabBase",
-        componentFamily="com.icesoft.faces.TabSet"
-        )
-public class TabMeta extends UICommandMeta {
+@Component(tagName = "tabPane",
+        componentClass  = "org.icefaces.component.tab.TabPane",
+        generatedClass  = "org.icefaces.component.tab.TabPaneBase",
+        extendsClass    = "javax.faces.component.UICommand", 
+        componentType   = "org.icefaces.TabPane",
+        componentFamily = "org.icefaces.TabPane")
+public class TabPaneMeta extends UICommandMeta {
     @Property (tlddoc="This attribute represents Label of the tab")  
     private String label;
     

@@ -18,19 +18,19 @@
 </h:head>
 <h:body>
     <h:form styleClass="ice-skin-sam">
-       <ice:tabPanel>
-            <ice:tab label="Tab 1" >
+       <ice:tabSet>
+            <ice:tabPane label="Tab 1" >
                 <h:inputText value="#{tabBean.txt1}"/>    
                 <h:inputText value="#{tabBean.txt2}"/>                  
-            </ice:tab>       
-            <ice:tab label="Tab 2" >
+            </ice:tabPane>       
+            <ice:tabPane label="Tab 2" >
                 <h:inputText value="#{tabBean.txt3}"/>    
           
-            </ice:tab>
-            <ice:tab label="Tab 3" >
+            </ice:tabPane>
+            <ice:tabPane label="Tab 3" >
                 <h:inputText value="#{tabBean.txt4}"/>    
-            </ice:tab>
-        </ice:tabPanel> 
+            </ice:tabPane>
+        </ice:tabSet> 
         <h:panelGrid>
         	<h:outputText value="#{tabBean.txt1}"/> 
         	<h:outputText value="#{tabBean.txt2}"/> 

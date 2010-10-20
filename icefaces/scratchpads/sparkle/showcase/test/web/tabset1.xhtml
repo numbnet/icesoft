@@ -24,17 +24,17 @@
     </style>
     <h:form styleClass="ice-skin-sam">
       <h2> Demo has a TabchangeListener </h2>
-       <ice:tabPanel tabChangeListener="#{tabBean.tabChangeListener}" styleClass="myTab">
-            <ice:tab label="Tab contents from JSP" >
+       <ice:tabSet tabChangeListener="#{tabBean.tabChangeListener}" styleClass="myTab">
+            <ice:tabPane label="Tab contents from JSP" >
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ice:tab>       
-            <ice:tab  disabled="true" label="Disabled tab">
+            </ice:tabPane>       
+            <ice:tabPane  disabled="true" label="Disabled tab">
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ice:tab>
-            <ice:tab label="Tab contents.." >
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ice:tab>
-        </ice:tabPanel> 
+            </ice:tabPane>
+        </ice:tabSet> 
         <h:outputText value="Select Tab Index #{tabBean.selectedTabIndex}" />
     </h:form>
 

@@ -27,21 +27,21 @@
 	</h:commandButton> 
 	</h:form>	
     <h:panelGroup styleClass="ice-skin-sam" rendered="#{tabBean.renderPanel}">
-       <ice:tabPanel clientSide="true">
-            <ice:tab label="Tab contents from JSP" >
+       <ice:tabSet clientSide="true">
+            <ice:tabPane label="Tab contents from JSP" >
                 <h:form>
                     <h:inputText required="true" />
 				    <h:commandButton value="submit"/> 
                     <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>
                 </h:form>            
-            </ice:tab>       
-            <ice:tab label="Tab contents from Bean #{tabBean.counter}" >
+            </ice:tabPane>       
+            <ice:tabPane label="Tab contents from Bean #{tabBean.counter}" >
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ice:tab>
-            <ice:tab label="Tab contents.." >
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ice:tab>
-        </ice:tabPanel>
+            </ice:tabPane>
+        </ice:tabSet>
       </h:panelGroup> 
 
 

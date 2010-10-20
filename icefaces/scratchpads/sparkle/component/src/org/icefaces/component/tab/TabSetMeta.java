@@ -18,14 +18,14 @@ import org.icefaces.component.annotation.*;
 import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 
 @Component(
-    tagName ="tabPanel",
-    componentClass ="org.icefaces.component.tab.TabSet",
-    rendererClass ="org.icefaces.component.tab.TabSetRenderer",
-    componentType = "org.icesoft.faces.TabSet",
-    rendererType = "org.icesoft.faces.TabSetRenderer",
-    extendsClass = "javax.faces.component.UIComponentBase",
-    generatedClass = "org.icefaces.component.tab.TabSetBase",
-    componentFamily="com.icesoft.faces.TabSet"    
+    tagName ="tabSet", // tabPanel
+    componentClass  = "org.icefaces.component.tab.TabSet",
+    rendererClass   = "org.icefaces.component.tab.TabSetRenderer",
+    generatedClass  = "org.icefaces.component.tab.TabSetBase",
+    extendsClass    = "javax.faces.component.UIComponentBase",
+    componentType   = "org.icefaces.TabSet",
+    rendererType    = "org.icefaces.TabSetRenderer",
+    componentFamily = "org.icefaces.TabSet"
 )
 @ResourceDependencies({
 	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),

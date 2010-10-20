@@ -18,17 +18,17 @@
 </h:head>
 <h:body>
     <h:form styleClass="ice-skin-rime" prependId="false">
-       <ice:tabPanel >
-            <ice:tab label="Tab contents from JSP" >
+       <ice:tabSet >
+            <ice:tabPane label="Tab contents from JSP" >
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ice:tab>       
-            <ice:tab label="Tab contents from Bean" >
+            </ice:tabPane>       
+            <ice:tabPane label="Tab contents from Bean" >
                 <h:outputText value="#{tabBean.tabContents}"/>            
-            </ice:tab>
-            <ice:tab label="Tab contents.." >
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ice:tab>
-        </ice:tabPanel> 
+            </ice:tabPane>
+        </ice:tabSet> 
     </h:form>
 
    <a href="index.html"> Goto Main page </a>    

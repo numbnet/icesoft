@@ -1,14 +1,10 @@
 package org.icefaces.component.tab;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
@@ -16,7 +12,6 @@ import javax.faces.render.Renderer;
 
 import org.icefaces.component.animation.ClientBehaviorContextImpl;
 import org.icefaces.component.animation.AnimationBehavior;
-import org.icefaces.component.animation.Effect;
 import org.icefaces.component.utils.ARIA;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
@@ -179,7 +174,7 @@ public class TabSetRenderer extends Renderer{
             writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.PRESENTATION_ROLE, ARIA.ROLE_ATTR);  
         }
 
-        UIComponent labelFacet = ((Tab)tab).getLabelFacet();
+        UIComponent labelFacet = ((TabPane)tab).getLabelFacet();
         if (tabSet.getSelectedIndex() == index) {
             writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
         }
@@ -195,7 +190,7 @@ public class TabSetRenderer extends Renderer{
         writer.writeAttribute(HTML.ONCLICK_ATTR, "if(Ice.isEventSourceInputElement(event)) event.cancelBubble = true;", HTML.ONCLICK_ATTR);            
         
         if (labelFacet!= null)
-            Utils.renderChild(facesContext, ((Tab)tab).getLabelFacet());
+            Utils.renderChild(facesContext, ((TabPane)tab).getLabelFacet());
         else
             writer.write(String.valueOf(tab.getAttributes().get("label")));
         writer.endElement("em");
@@ -249,7 +244,7 @@ public class TabSetRenderer extends Renderer{
         int index = -1;
         while (children.hasNext()) {
             UIComponent child = (UIComponent)children.next();
-            if (child instanceof Tab) {
+            if (child instanceof TabPane) {
                 if (child.isRendered()) {
                     index++;
                     if(isLabel) {

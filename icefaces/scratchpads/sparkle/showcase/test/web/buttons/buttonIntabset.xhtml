@@ -19,10 +19,10 @@
 <h:body>
     <h:form styleClass="ice-skin-sam">
        <ice:tabSet>
-            <ice:tab label="Tab contents from JSP" >
+            <ice:tabPane label="Tab contents from JSP" >
                 <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
-            </ice:tab>       
-            <ice:tab label="Buttons in tab" >
+            </ice:tabPane>       
+            <ice:tabPane label="Buttons in tab" >
                 <h:panelGrid id="buttonGroupId" columns="2">
 	               <ice:checkbox id="chkbox" label="button1" 
 	                  value="#{button.checked}"
@@ -41,10 +41,10 @@
 	               <ice:pushbutton  id="pushId" label="submitForm" 
 	                   actionListener="#{button.actionListenerMethod}"  />
 	           </h:panelGroup>          
-            </ice:tab>
-            <ice:tab label="Tab contents.." >
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
                 <h:outputText value="Test ...."/>            
-            </ice:tab>
+            </ice:tabPane>
         </ice:tabSet> 
     </h:form>
 

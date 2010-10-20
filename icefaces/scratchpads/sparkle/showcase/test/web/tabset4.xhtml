@@ -25,16 +25,16 @@
        </h:panelGrid> 
                
        <h:messages />
-       <ice:tabPanel dynamic="true" binding="#{tabBean.tabSet}">
-            <ice:tab label="Tab 1">
+       <ice:tabSet dynamic="true" binding="#{tabBean.tabSet}">
+            <ice:tabPane label="Tab 1">
                 <h:outputText value="This is tab 1"/> <br/>
-            </ice:tab>
-            <ice:tab label="Tab 2">
+            </ice:tabPane>
+            <ice:tabPane label="Tab 2">
                 <h:panelGrid>
                     <h:outputText value="This is tab 2" />
                 </h:panelGrid>            
-            </ice:tab> 
-        </ice:tabPanel>
+            </ice:tabPane> 
+        </ice:tabSet>
     <h:commandButton value="goto main page" action="main"/>
     </h:form>
 
