@@ -29,4 +29,7 @@
     <tlib-version>1.2</tlib-version>
     <short-name>icecore</short-name>
     <uri>http://icefaces.org/tld/core</uri>
+    <listener>
+        <listener-class>org.icefaces.impl.push.servlet.ICEpushResourceHandlerLifecycle</listener-class>
+    </listener>
 </taglib>
