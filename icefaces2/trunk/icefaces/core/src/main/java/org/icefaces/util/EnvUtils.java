@@ -22,16 +22,15 @@
 
 package org.icefaces.util;
 
+import org.icefaces.impl.push.servlet.ICEpushListenResource;
+
 import javax.faces.application.Resource;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.icefaces.impl.push.servlet.ICEpushListenResource;
 
 public class EnvUtils {
 
@@ -222,7 +221,7 @@ public class EnvUtils {
      * ICEpush will be initially lazily.  In other words, ICEpush will not activate and open a blocking connection
      * until the first push request is made.  By setting lazyPush to false, ICEpush will be automatically activated for
      * each ICEfaces page.
-     *
+     * <p/>
      * This context parameter is application-wide and works together with the lazyPush attribute of the ICEfaces
      * configuration tag <ice:config> so that ICEpush can be set to activate lazily on a per-page basis.
      *
@@ -267,8 +266,8 @@ public class EnvUtils {
 
     /**
      * Returns the value of the context parameter org.icefaces.strictSessionTimeout.  The default value is false and indicates
-     * that ICEfaces should not interfere with container-managed session timeout.  Setting this value to true indicates that 
-     * ICEfaces should attempt to enforce the configured session timeout by ignoring intervening push activity.  Only 
+     * that ICEfaces should not interfere with container-managed session timeout.  Setting this value to true indicates that
+     * ICEfaces should attempt to enforce the configured session timeout by ignoring intervening push activity.  Only
      * user events result in extending the session lifetime.
      *
      * @param facesContext The current FacesContext instance used to access the application map.
@@ -327,6 +326,7 @@ public class EnvUtils {
 
 
     //remove this once multi-form ViewState is addressed
+
     public static boolean needViewStateHack() {
         return mojarraPresent;
     }
@@ -413,10 +413,10 @@ class EnvConfig {
         blockUIOnSubmit = decodeBoolean(initMap, EnvUtils.BLOCK_UI_ON_SUBMIT, false, info);
         compressDOM = decodeBoolean(initMap, EnvUtils.COMPRESS_DOM, false, info);
         compressResources = decodeBoolean(initMap, EnvUtils.COMPRESS_RESOURCES, true, info);
-        connectionLostRedirectURI = decodeString(initMap, EnvUtils.CONNECTION_LOST_REDIRECT_URI, "null", info);
+        connectionLostRedirectURI = decodeString(initMap, EnvUtils.CONNECTION_LOST_REDIRECT_URI, null, info);
         deltaSubmit = decodeBoolean(initMap, EnvUtils.DELTA_SUBMT, false, info);
         lazyPush = decodeBoolean(initMap, EnvUtils.LAZY_PUSH, true, info);
-        sessionExpiredRedirectURI = decodeString(initMap, EnvUtils.SESSION_EXPIRED_REDIRECT_URI, "null", info);
+        sessionExpiredRedirectURI = decodeString(initMap, EnvUtils.SESSION_EXPIRED_REDIRECT_URI, null, info);
         standardFormSerialization = decodeBoolean(initMap, EnvUtils.STANDARD_FORM_SERIALIZATION, false, info);
         strictSessionTimeout = decodeBoolean(initMap, EnvUtils.STRICT_SESSION_TIMEOUT, false, info);
         windowScopeExpiration = decodeLong(initMap, EnvUtils.WINDOW_SCOPE_EXPIRATION, 1000, info);
