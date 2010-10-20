@@ -17,13 +17,13 @@
 <h:body styleClass="ice-skin-sam">
 
     <h:panelGroup >
-        <h2> Demonstration commandLink! </h2>
+        <h2> Demonstration linkButton! </h2>
 
         <div class="yui-skin-sam" id="sam-skin-div">
             <h:form id="frm1">
 
-                This simple output link should only navigate to google.com <br></br>
-                <ann:linkButton href="http://google.com" >Google.com</ann:linkButton>   <p></p>
+                1) This simple output link should only navigate to google.com <br></br>
+                <ann:linkButton href="http://google.com" value="Google.com">Google.com</ann:linkButton>   <p></p>
 
             </h:form>
 
@@ -31,34 +31,68 @@
             <hr></hr>
 
             <h:form id="frm2">
-                This link should only toggle the employee image <br></br>
-                <ann:linkButton value="click me" actionListener="#{linkBean.actionListenerMethod}" >
+                2) This link should only toggle the employee image <br></br>
+                <ann:linkButton value="#{linkBean.linkValue}" actionListener="#{linkBean.actionListenerMethod}" >
                         Link with actionListener only  </ann:linkButton>
                 <p></p>
 
-                A single submit link with actionOnly <br></br>
-                <ann:linkButton value="click me" singleSubmit="true" actionListener="#{linkBean.singleSubmitListenerMethod}" >Single Submit action
+                3) A single submit link with actionOnly <br></br>
+                <ann:linkButton value="single submit action" singleSubmit="true" actionListener="#{linkBean.singleSubmitListenerMethod}" />
                     <!--<f:param name="fartyTowel" value="10" /> -->
-                </ann:linkButton>
                 <p></p>
             </h:form>
 
             <hr></hr>
             <h:form id="frm4">
-                This link should toggle the image if clicked, but not navigate to google.com. You <em>should</em> be able to open the link in another tab<br></br>
+                4) This link should toggle the image if clicked, but not navigate to google.com. You <em>should</em> be able to open the link in another tab<br></br>
                 <ann:linkButton  href="http://www.google.ca"
+                                 value="Link with actionListener and HREF defined"
                                actionListener="#{linkBean.hrefAndActionMethod}" >
-                                  Link with actionListener and HREF defined
-
+                                  Link with actionListener and HREF defined OLD STRING
                 </ann:linkButton>
 
                 <p></p>
             </h:form>
 
-            <h:form id="frm5">
-                <a id="success" href="http://www.icefaces.org" onclick="return ice.component.commandlink.theInsideClick(event)" >Link ID Test for IE</a>
+            <hr></hr>
+            <h4>This section is an informal test section containing stuff that
+            I don't want to lose</h4>
+
+            <h:form id="frm6">
+               5) This is a 'value Only' link with no embedded text
+                <ann:linkButton  href="http://www.google.ca"
+                                 value="Link with actionListener and HREF defined"
+                               actionListener="#{linkBean.hrefAndActionMethod}" />
+                <p></p>
             </h:form>
 
+             <h:form id="frm7">
+                6) This JSF:link might not behave the same as an ice:link. You <em>probably wont</em> be able to open Google.com in another tab<br></br>
+                <h:commandLink  href="http://www.google.ca"
+                                 value="[The value inside the link] "
+                               actionListener="#{linkBean.hrefAndActionMethod}" >
+                                  <h:outputText value="you could press me" />
+                    <h:graphicImage value="images/employee.gif" label="output"
+                                    />
+                    And you could press me too.
+                </h:commandLink>
+
+                <p></p>
+            </h:form>
+
+            <h:form id="frm8">
+                7) This is a ice:linkButton with an output text in it<br></br>
+                <ann:linkButton
+                                 value="Link with inner text button PLUS EXTRA"
+                               actionListener="#{linkBean.hrefAndActionMethod}">And here's just some text
+                     <h:graphicImage value="images/employee.gif" label="output"
+                                    />
+                </ann:linkButton>
+
+                <p></p>
+            </h:form>
+
+            <h2> Here's the place for the output image</h2>
             <h:form id="output">
                 <h:panelGroup id="image">
                     <h:graphicImage value="images/employee.gif" label="output"
@@ -67,8 +101,14 @@
 
                <ui:remove> <ann:logger rendered="false" />    </ui:remove>
             </h:form>
+
+
         </div>
     </h:panelGroup>
+
+    <hr>
+    </hr>
+    <hr></hr>
 
     <a href="index.html"> Goto Main page </a>
 </h:body>
