@@ -45,15 +45,19 @@ public class LinkButtonMeta extends UICommandMeta {
     private String hrefLang;
 
     @Property(defaultValue="false",
-              tlddoc="Default is false, means uses full submit")
+              tlddoc="When singleSubmit is true, triggering an action on this component " +
+                     "will submit and execute this component only (equivalent to " +
+                     "<f:ajax execute=\"@this\" render=\"@all\">). When singleSubmit is false, " +
+                     "triggering an action on this component will submit and execute the full " +
+                     "form that this component is contained within. The default value is false.")
     private boolean singleSubmit;
 
     @Property (defaultValue="false", tlddoc="If true, disables the YUI component on the page")
     private boolean disabled;
 
-     @Property(tlddoc="Label allowing the user to define the labelledby Aria setting",
-              defaultValue="Link button")
-    private String label;
+    @Property (tlddoc="This property defines the link text visible in the component",
+               defaultValue="Undefined link text" )
+    private String value; 
 
     @Property (defaultValue="0", tlddoc="tabindex of the component")
     private int tabindex;
