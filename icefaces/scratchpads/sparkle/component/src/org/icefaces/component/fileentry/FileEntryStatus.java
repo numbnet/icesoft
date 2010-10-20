@@ -33,9 +33,9 @@ public interface FileEntryStatus extends Serializable {
     /**
      * @param facesContext FacesContext
      * @param fileEntry FileEntry
-     * @param fi FileEntryInfo.FileInfo
+     * @param fi FileEntryResults.FileInfo
      * @return FacesMessage
      */
     public FacesMessage getFacesMessage(FacesContext facesContext,
-            UIComponent fileEntry, FileEntryInfo.FileInfo fi);
+            UIComponent fileEntry, FileEntryResults.FileInfo fi);
 }

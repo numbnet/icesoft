@@ -36,22 +36,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FileEntry extends FileEntryBase {
-    private static final String INFO_KEY = "org.icefaces.component.fileEntry.infos";
+    private static final String RESULTS_KEY = "org.icefaces.component.fileEntry.results";
     private static final String EVENT_KEY = "org.icefaces.component.fileEntry.events";
-    
+
     public FileEntry() {
         super();
     }
 
-    public void setInfo(FileEntryInfo info) {
+    public void setResults(FileEntryResults results) {
         try {
-            super.setInfo(info);
+            super.setResults(results);
         }
         catch(RuntimeException e) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             if (facesContext.isProjectStage(ProjectStage.Development) ||
                 facesContext.isProjectStage(ProjectStage.UnitTest)) {
-                System.out.println("Problem setting info property on " +
+                System.out.println("Problem setting results property on " +
                     "FileEntry component: " + e);
                 e.printStackTrace();
             }
@@ -59,16 +59,16 @@ public class FileEntry extends FileEntryBase {
         }
     }
     
-    public FileEntryInfo getInfo() {
-        FileEntryInfo info = super.getInfo();
-        if (info != null) {
-            info = (FileEntryInfo) info.clone();
+    public FileEntryResults getResults() {
+        FileEntryResults results = super.getResults();
+        if (results != null) {
+            results = (FileEntryResults) results.clone();
         }
-        return info;
+        return results;
     }
     
     public void reset() {
-        setInfo(null);
+        setResults(null);
     }
 
     /**
@@ -113,7 +113,8 @@ public class FileEntry extends FileEntryBase {
      * Used by FileEntryRenderer to save config for FileEntryPhaseListener
      * to use on the next postback
      */
-    FileEntryConfig storeConfigForNextLifecycle(FacesContext facesContext, String clientId) {
+    FileEntryConfig storeConfigForNextLifecycle(FacesContext facesContext,
+            String clientId) {
         String identifier = getIdentifier(facesContext, clientId);
         FileEntryConfig config = new FileEntryConfig(
             identifier,
@@ -130,7 +131,8 @@ public class FileEntry extends FileEntryBase {
         Object sessionObj = facesContext.getExternalContext().getSession(false);
         if (sessionObj != null) {
             synchronized(sessionObj) {
-                Map<String,Object> map = facesContext.getExternalContext().getSessionMap();
+                Map<String,Object> map =
+                    facesContext.getExternalContext().getSessionMap();
                 map.put(identifier, config);
             }
         }
@@ -141,12 +143,14 @@ public class FileEntry extends FileEntryBase {
      * Used by FileEntryPhaseListener to retrieve config saved away by 
      * FileEntryRenderer in previous lifecycle
      */
-    static FileEntryConfig retrieveConfigFromPreviousLifecycle(FacesContext facesContext, String identifier) {
+    static FileEntryConfig retrieveConfigFromPreviousLifecycle(
+            FacesContext facesContext, String identifier) {
         FileEntryConfig config = null;
         Object sessionObj = facesContext.getExternalContext().getSession(false);
         if (sessionObj != null) {
             synchronized(sessionObj) {
-                Map<String,Object> map = facesContext.getExternalContext().getSessionMap();
+                Map<String,Object> map =
+                    facesContext.getExternalContext().getSessionMap();
                 config = (FileEntryConfig) map.get(identifier);
             }
         }
@@ -155,48 +159,50 @@ public class FileEntry extends FileEntryBase {
 
     /**
      * Used by FileEntryPhaseListener, before the component treee exists, to 
-     * save the outcome of the file uploads, to be retrieved later in the same 
+     * save the results of the file uploads, to be retrieved later in the same 
      * lifecycle, once the component tree is in place. 
      */
-    static void storeInfosForLaterInLifecycle(
+    static void storeResultsForLaterInLifecycle(
             FacesContext facesContext,
-            Map<String, FileEntryInfo> clientId2Info) {
-        facesContext.getAttributes().put(INFO_KEY, clientId2Info);
+            Map<String, FileEntryResults> clientId2Results) {
+        facesContext.getAttributes().put(RESULTS_KEY, clientId2Results);
     }
 
     /**
      * Used by FileEntryRenderer.decode(-) to retrieve each fileEntry
-     * component's outcome for file uploads.
+     * component's results for file uploads.
      */
-    static FileEntryInfo retrieveInfoFromEarlierInLifecycle(
+    static FileEntryResults retrieveResultsFromEarlierInLifecycle(
             FacesContext facesContext, String clientId) {
-        FileEntryInfo info = null;
-        Map<String, FileEntryInfo> clientId2Info = (Map<String, FileEntryInfo>)
-            facesContext.getAttributes().get(INFO_KEY);
-        if (clientId2Info != null) {
-            info = clientId2Info.get(clientId);
+        FileEntryResults results = null;
+        Map<String, FileEntryResults> clientId2Result =
+            (Map<String, FileEntryResults>) facesContext.getAttributes().get(
+                RESULTS_KEY);
+        if (clientId2Result != null) {
+            results = clientId2Result.get(clientId);
         }
-        return info;
+        return results;
     }
 
     /**
      * After the ApplyRequestValues phase, when the fileEntry components 
-     * have all retrieved their outcomes for uploaded files, clear the 
-     * outcomes away, so we don't leak memory. 
+     * have all retrieved their results for uploaded files, clear the 
+     * results away, so we don't leak memory. 
      */
-    static void removeInfos(FacesContext facesContext) {
-        facesContext.getAttributes().remove(INFO_KEY);
+    static void removeResults(FacesContext facesContext) {
+        facesContext.getAttributes().remove(RESULTS_KEY);
     }
     
-    void addMessagesFromInfo(FacesContext facesContext, String clientId, FileEntryInfo info) {
-//System.out.println("FileEntry.addMessagesFromInfo  info: " + info);
-        if (info != null) {
-            ArrayList<FileEntryInfo.FileInfo> files = info.getFiles();
-            for (FileEntryInfo.FileInfo fi : files) {
-//System.out.println("FileEntry.addMessagesFromInfo    FileInfo: " + fi);
+    void addMessagesFromResults(FacesContext facesContext, String clientId,
+            FileEntryResults results) {
+//System.out.println("FileEntry.addMessagesFromResults  results: " + results);
+        if (results != null) {
+            ArrayList<FileEntryResults.FileInfo> files = results.getFiles();
+            for (FileEntryResults.FileInfo fi : files) {
+//System.out.println("FileEntry.addMessagesFromResults    FileInfo: " + fi);
                 FileEntryStatus status = fi.getStatus();
                 FacesMessage fm = status.getFacesMessage(facesContext, this, fi);
-//System.out.println("FileEntry.addMessagesFromInfo    FacesMessage: " + fm);
+//System.out.println("FileEntry.addMessagesFromResults    FacesMessage: " + fm);
                 facesContext.addMessage(clientId, fm);
             }
         }
@@ -239,7 +245,8 @@ public class FileEntry extends FileEntryBase {
                 try {
                     inpFilesList.invoke(elContext, new Object[] {event});
                 } catch (ELException ee) {
-                    throw new AbortProcessingException(ee.getMessage(), ee.getCause());
+                    throw new AbortProcessingException(ee.getMessage(),
+                        ee.getCause());
                 }
             }
         }

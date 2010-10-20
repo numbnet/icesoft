@@ -46,11 +46,25 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 })
 public class FileEntryMeta extends UIComponentBaseMeta {
     /*
-    @Property(defaultValue="false",
-        tlddoc="Default is false, means uses full submit.")
+    @Property(defaultValue="false")
     private boolean singleSubmit;
     */
 
+    @Property(defaultValue="false",
+        tlddoc="When disabled, files are not selectable for upload.")
+    private boolean disabled;
+    
+    @Property(defaultValue="0", tlddoc="tabindex of the component")
+    private int tabindex;
+    
+    @Property(tlddoc="style will be rendered on the root element of this " +
+        "component.")
+    private String style;
+    
+    @Property(tlddoc="style class will be rendered on the root element of " +
+        "this component.")
+    private String styleClass;
+    
     @Property(defaultValue="false", tlddoc="When immediate is true, the " +
         "fileEntryListener will be invoked at the end of the " +
         "ApplyRequestValues phase. Otherwise, it will be invoked just " +
@@ -62,7 +76,7 @@ public class FileEntryMeta extends UIComponentBaseMeta {
     	"bean, which takes an FileEntryEvent as a parameter. Invoked after " +
     	"file(s) have been uploaded, during a lifecycle phase that is " +
     	"determined by the immediate property. It can be used to retrieve the " +
-    	"FileEntryInfo object from the info property of the FileEntry " +
+    	"FileEntryResults object from the results property of the FileEntry " +
     	"component, giving access to the status information of the " +
     	"successfully, and unsuccessfully, uploaded files.",
     	expression=Expression.METHOD_EXPRESSION, methodExpressionArgument=
@@ -95,7 +109,7 @@ public class FileEntryMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue="false", tlddoc="Uploaded files' names, as they " +
         "were on the user's file-system, are always provided to the " +
-        "application, via the FileEntryInfo.FileInfo.fileName property. " +
+        "application, via the FileEntryResults.FileInfo.fileName property. " +
         "By default, the fileEntry component will store the " +
         "uploaded files on the server's file-system using a unique naming " +
         "convention, to ensure that new files do not over-write older files, " +
@@ -109,8 +123,12 @@ public class FileEntryMeta extends UIComponentBaseMeta {
         "over-written.")
     private boolean useOriginalFilename;
 
-    @Property(tlddoc="Maintains the results of file upload operations.")
-    private FileEntryInfo info;
+    @Property(tlddoc="Maintains the results of the most recent file upload " +
+        "operation. From this, applications can retrieve the uploaded " +
+        "files' information, such as the file name, MIME content type, " +
+        "size, location where the file has been stored, and status of the " +
+        "success of the upload.")
+    private FileEntryResults results;
 
     //TODO
     //private FileEntryCallback callback;
@@ -130,8 +148,10 @@ public class FileEntryMeta extends UIComponentBaseMeta {
     private long maxFileSize;
 
     @Property(defaultValue="10", tlddoc="The maximum number of files that " +
-        "may be uploaded, by this one component. Any files uploaded, beyond " +
-        "this count, will be discarded.")
+        "may be uploaded, per form submit upload operation, by this one " +
+        "component. Any files uploaded, beyond this count, will be " +
+        "discarded. Any subsequent form submit which uploads files will " +
+        "restart the counting at zero.")
     private int maxFileCount;
 
     @Property(defaultValue="false", tlddoc="Similar to required property on " +

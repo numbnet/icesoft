@@ -65,8 +65,8 @@ public class FileEntryPhaseListener implements PhaseListener {
 //        System.out.println("FileEntryPhaseListener.afterPhase()     renderResponse  : " + phaseEvent.getFacesContext().getRenderResponse());
 //        System.out.println("FileEntryPhaseListener.afterPhase()     responseComplete: " + phaseEvent.getFacesContext().getResponseComplete());
         if (phaseEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
-//System.out.println("FileEntryPhaseListener.afterPhase()  FileEntry.removeInfos()");
-            FileEntry.removeInfos(phaseEvent.getFacesContext());
+//System.out.println("FileEntryPhaseListener.afterPhase()  FileEntry.removeResults()");
+            FileEntry.removeResults(phaseEvent.getFacesContext());
         }
     }
 
@@ -144,7 +144,7 @@ public class FileEntryPhaseListener implements PhaseListener {
             });
             Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
             byte[] buffer = new byte[8*1024];
-            Map<String, FileEntryInfo> clientId2Info = new HashMap<String, FileEntryInfo>(6);
+            Map<String, FileEntryResults> clientId2Results = new HashMap<String, FileEntryResults>(6);
             try {
                 FileItemIterator iter = uploader.getItemIterator(request);
                 while (iter.hasNext()) {
@@ -161,7 +161,7 @@ public class FileEntryPhaseListener implements PhaseListener {
                         }
                         parameterList.add(value);
                     } else {
-                        uploadFile(item, clientId2Info, buffer);
+                        uploadFile(item, clientId2Results, buffer);
                     }
                 }
             }
@@ -172,7 +172,7 @@ public class FileEntryPhaseListener implements PhaseListener {
                 System.out.println("Problem: " + e);
                 e.printStackTrace();
             }
-            FileEntry.storeInfosForLaterInLifecycle(phaseEvent.getFacesContext(), clientId2Info);
+            FileEntry.storeResultsForLaterInLifecycle(phaseEvent.getFacesContext(), clientId2Results);
             
             // Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
             Map<String, String[]> parameterMap = new HashMap<String, String[]>(
@@ -253,10 +253,10 @@ public class FileEntryPhaseListener implements PhaseListener {
     
     private static void uploadFile(
             FileItemStream item,
-            Map<String, FileEntryInfo> clientId2Info,
+            Map<String, FileEntryResults> clientId2Results,
             byte[] buffer) {
-        FileEntryInfo info = null;
-        FileEntryInfo.FileInfo fileInfo = null;
+        FileEntryResults results = null;
+        FileEntryResults.FileInfo fileInfo = null;
         
         File file = null;
         long fileSizeRead = 0L;
@@ -289,23 +289,23 @@ public class FileEntryPhaseListener implements PhaseListener {
                 // config being null might be indicative of a non-ICEfaces' file upload component in the form
 //System.out.println("File    config: " + config);
 
-                info = clientId2Info.get(config.getClientId());
-                if (info == null) {
-                    info = new FileEntryInfo(config.isViaCallback());
-                    clientId2Info.put(config.getClientId(), info);
+                results = clientId2Results.get(config.getClientId());
+                if (results == null) {
+                    results = new FileEntryResults(config.isViaCallback());
+                    clientId2Results.put(config.getClientId(), results);
                 }
-//System.out.println("File    info: " + info);
+//System.out.println("File    results: " + results);
                 
-                fileInfo = new FileEntryInfo.FileInfo();
+                fileInfo = new FileEntryResults.FileInfo();
                 fileInfo.begin(fileName, contentType);
 
-                long availableTotalSize = info.getAvailableTotalSize(config.getMaxTotalSize());
+                long availableTotalSize = results.getAvailableTotalSize(config.getMaxTotalSize());
 //System.out.println("File    availableTotalSize: " + availableTotalSize);
                 long availableFileSize = config.getMaxFileSize();
 //System.out.println("File    availableFileSize: " + availableFileSize);
                 int maxFileCount = config.getMaxFileCount();
 //System.out.println("File    maxFileCount: " + maxFileCount);
-                if (info.getFiles().size() >= maxFileCount) {
+                if (results.getFiles().size() >= maxFileCount) {
                     status = FileEntryStatuses.MAX_FILE_COUNT_EXCEEDED;
                 }
                 else {
@@ -370,9 +370,9 @@ public class FileEntryPhaseListener implements PhaseListener {
         }
         
 //System.out.println("File    Ending  status: " + status);
-        if (info != null && fileInfo != null) {
+        if (results != null && fileInfo != null) {
             fileInfo.finish(file, fileSizeRead, status);
-            info.addCompletedFile(fileInfo);
+            results.addCompletedFile(fileInfo);
 //System.out.println("File    Added completed file");
         }
 //System.out.println("^^^^^^^^^^^^^^^");

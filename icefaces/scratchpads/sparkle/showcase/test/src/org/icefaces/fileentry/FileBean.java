@@ -1,7 +1,7 @@
 package org.icefaces.fileentry;
 
 import org.icefaces.component.fileentry.FileEntryEvent;
-import org.icefaces.component.fileentry.FileEntryInfo;
+import org.icefaces.component.fileentry.FileEntryResults;
 import org.icefaces.component.fileentry.FileEntry;
 
 import javax.faces.event.ActionEvent;
@@ -113,14 +113,14 @@ public class FileBean {
     
     public static class Item {
         private boolean immediate;
-        private FileEntryInfo info;
+        private FileEntryResults results;
         
         private boolean infosEqual;
         private boolean saved;
         private String fileName;
         private String clientId;
         private String phase;
-        
+
         Item(boolean immediate) {
             this.immediate = immediate;
         }
@@ -128,11 +128,11 @@ public class FileBean {
         public void listener(FileEntryEvent e) {
             System.out.println("Item.listener()  e: " + e);
             FileEntry fileEntry = (FileEntry) e.getComponent();
-            FileEntryInfo info = fileEntry.getInfo();
-            infosEqual = info.equals(this.info); // this.info can be null
-            if (info.getFiles().size() > 0) {
-                saved = info.getFiles().get(0).isSaved();
-                fileName = info.getFiles().get(0).getFileName();
+            FileEntryResults results = fileEntry.getResults();
+            infosEqual = results.equals(this.results); // this.results can be null
+            if (results.getFiles().size() > 0) {
+                saved = results.getFiles().get(0).isSaved();
+                fileName = results.getFiles().get(0).getFileName();
             }
             else {
                 saved = false;
@@ -142,10 +142,10 @@ public class FileBean {
             phase = e.getPhaseId().toString();
         }
         
-        public FileEntryInfo getInfo() { return info; } 
-        public void setInfo(FileEntryInfo info) {
-            System.out.println("Item.setInfo()  info: " + info);
-            this.info = info;
+        public FileEntryResults getInfo() { return results; } 
+        public void setInfo(FileEntryResults results) {
+            System.out.println("Item.setResults()  results: " + results);
+            this.results = results;
         }
         
         public boolean isImmediate() { return immediate; }
