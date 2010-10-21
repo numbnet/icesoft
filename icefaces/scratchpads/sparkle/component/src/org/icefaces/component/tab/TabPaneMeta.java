@@ -4,18 +4,22 @@ import javax.faces.component.UIComponent;
 
 import org.icefaces.component.annotation.*;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-
-import org.icefaces.component.baseMeta.UICommandMeta;
+import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 
 @Component(tagName = "tabPane",
         componentClass  = "org.icefaces.component.tab.TabPane",
         generatedClass  = "org.icefaces.component.tab.TabPaneBase",
         extendsClass    = "javax.faces.component.UIComponentBase", 
         componentType   = "org.icefaces.TabPane",
-        componentFamily = "org.icefaces.TabPane")
-public class TabPaneMeta extends UICommandMeta {
+        componentFamily = "org.icefaces.TabPane",
+        tlddoc = "The TabPane component belongs inside of a TabSet " +
+            "component, and encapsulates both the clickabled tab, and the " +
+            "content pane that is shown when the TabPane is selected. The " +
+            "clickable tab part may be specified by the label property, " +
+            "or by the label facet, allowing for any components to be " +
+            "placed within the clickable tab. The content pane is specified " +
+            "through a combination of the header, body and footer facets.")
+public class TabPaneMeta extends UIComponentBaseMeta {
     @Property (tlddoc="This attribute represents Label of the tab")  
     private String label;
     
