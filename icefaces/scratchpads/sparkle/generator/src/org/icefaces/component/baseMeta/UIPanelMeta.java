@@ -1,7 +1,7 @@
 package org.icefaces.component.baseMeta;
 
 /**
- * TODO 2326
+ * These are the properties for javax.faces.component.UIPanel
  */
-public class UIPanelMeta {
+public class UIPanelMeta extends UIComponentBaseMeta {
 }
