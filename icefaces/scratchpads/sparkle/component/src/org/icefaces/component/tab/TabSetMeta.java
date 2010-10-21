@@ -18,14 +18,36 @@ import org.icefaces.component.annotation.*;
 import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 
 @Component(
-    tagName ="tabSet", // tabPanel
+    tagName = "tabSet",
     componentClass  = "org.icefaces.component.tab.TabSet",
     rendererClass   = "org.icefaces.component.tab.TabSetRenderer",
     generatedClass  = "org.icefaces.component.tab.TabSetBase",
     extendsClass    = "javax.faces.component.UIComponentBase",
     componentType   = "org.icefaces.TabSet",
     rendererType    = "org.icefaces.TabSetRenderer",
-    componentFamily = "org.icefaces.TabSet"
+    componentFamily = "org.icefaces.TabSet",
+    tlddoc = "The TabSet component is a container for its TabPane children, " +
+        "each of which may contain any arbitrary components. Only one " +
+        "TabPane component is currently active, and its contents shown, " +
+        "at any given time. The TabSet may operate in a server-side mode, " +
+        "where only the current TabPane's contents exist in the browser; or " +
+        "in client-side mode, where every TabPane's contents exist in the " +
+        "browser, and no server round-trip is necessary to change TabPanes. " +
+        "The entire TabSet may exist within a single parent form, so that " +
+        "validation will apply to all of its contents, and so that " +
+        "validation may enforce remaining on the current TabPane if the " +
+        "user attempts to change the selected TabPane while other input " +
+        "components are in an invalid state. Also, a TabSet may exist " +
+        "outside of any form, perhaps with each TabPane containing their " +
+        "own child form, so that validation may be more limited in scope. " +
+        "In this case, a TabSetProxy may be used, in conjunction with the " +
+        "TabSet, so that the TabSetProxy may be placed in a form, for " +
+        "communicating with the server, removing the need for the TabSet " +
+        "itself to be in a form. When changing the selected TabPane, the " +
+        "TabSet may use application configurable animations to accentuate " +
+        "the transition from the previously selected TabPane to the newly " +
+        "selected TabPane. The label portion of the TabPanes may be shown " +
+        "on the bottom, top, left, or right of the TabSet."
 )
 @ResourceDependencies({
 	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
