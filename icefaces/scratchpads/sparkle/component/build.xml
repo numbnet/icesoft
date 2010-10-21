@@ -162,7 +162,12 @@
   </target>
     
   <target name="generate" >
-    <ant inheritAll="false" antfile="../generator/build.xml" target="generate"/>
+    <ant inheritAll="false" antfile="../generator/build.xml" target="generate" >
+        <property name="generator.tld.doc.display.name"
+                  value="${generator.tld.doc.display.name}"/>
+        <property name="generator.tld.doc.version"
+                  value="${generator.tld.doc.version}"/>
+    </ant>
   </target>
 
   <target name="dist" depends="resources,compile" 
@@ -393,9 +398,9 @@
                 <arg value="-d"/>
                 <arg value="${tld.doc}"/>
                 <arg value="-doctitle"/>
-                <arg value="Sparkle Components"/>
+                <arg value="${generator.tld.doc.overall.name} ${generator.tld.doc.version}"/>
                 <arg value="-windowtitle"/>
-                <arg value="Sparkle Components"/>
+                <arg value="${generator.tld.doc.overall.name} ${generator.tld.doc.version}"/>
                 <arg value="@{tld.file}"/>
             </java>
         </sequential>

@@ -32,7 +32,23 @@ public class GeneratorContext{
      public static final Map<String,String> SpecialReturnSignatures = new HashMap<String,String>();
      public static final Map<String,String> PrimitiveDefaults = new HashMap<String,String>();
 
-
+    
+    public static String getDisplayName() {
+        String ret = System.getProperty("generator.tld.doc.display.name");
+        if (ret == null) {
+            ret = "";
+        }
+        return ret;
+    }
+    
+    public static String getVersion() {
+        String ret = System.getProperty("generator.tld.doc.version");
+        if (ret == null) {
+            ret = "";
+        }
+        return ret;
+    }
+    
 	public List<Behavior> getBehaviors() {     
 		return behaviors;
 	}
