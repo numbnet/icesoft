@@ -35,8 +35,20 @@
     <h:outputScript name="jsf.js" library="javax.faces"/>
 </h:head>
 <h:body>
+
+    <h2>View scoped counter -- Standard</h2>
+
+    <h3>
+        <h:outputText id="out0" value="#{ViewScopedCounter.count}"/>
+    </h3>
+    <h:form id="form0" prependId="false">
+        <p>
+            <h:commandButton id="plus0" value="+" action="#{ViewScopedCounter.increment}"/>
+            <h:commandButton id="minus0" value="-" action="#{ViewScopedCounter.decrement}"/>
+        </p>
+    </h:form>
     
-    <h2>View scoped counter -- page A</h2>
+    <h2>View scoped counter -- Retained</h2>
 
     <h3>
         <h:outputText id="out" value="#{ViewScopedCounterViewRetained.count}"/>
@@ -49,7 +61,7 @@
         <p>
             <h:commandButton id="reload" value="Navigate in place" action="/view-scope-retained.xhtml"/>
         </p>
-        <p style="font-style: italic;">Navigating in place should preserve the value of the counter.</p>
+        <p style="font-style: italic;">Navigating in place should preserve the value of the retained counter.  The standard counter should be reset to 0.</p>
         <a href="index.html">back to tests index</a>
         <h:messages/>
     </h:form>
