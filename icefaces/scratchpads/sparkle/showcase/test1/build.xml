@@ -1,7 +1,7 @@
 <project name="advcomps-showcase" default="war">
 
     <property name="classes.dir" value="src/main/webapp/WEB-INF/classes"/>
-    <property name="icefaces2.lib.dir" location="../../../glimmer/lib"/>
+    <property name="icefaces2.lib.dir" location="../../../icefaces/lib"/>
 
     <target name="clean">
         <delete dir="dist"/>
