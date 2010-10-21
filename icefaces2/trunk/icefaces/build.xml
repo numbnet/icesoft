@@ -48,6 +48,7 @@
         </subant>
         <delete file="lib/icefaces.jar"/>
         <delete file="lib/icefaces-compat.jar"/>
+        <delete file="lib/icefaces-advcomps.jar"/>
     </target>
 
     <target name="bundle.clean">
@@ -88,7 +89,7 @@
             <fileset dir="${bundle.dir.bin}" includes="build.xml"/>
         </subant>
 
-        <!-- Create the JavaDocs for Core and Compat Core and move them to the root bundle directory -->
+        <!-- Create the JavaDocs for Core,  and Compat Core and move them to the root bundle directory -->
         <subant target="javadoc">
             <fileset dir="${bundle.dir.bin}/core" includes="build.xml"/>
         </subant>
