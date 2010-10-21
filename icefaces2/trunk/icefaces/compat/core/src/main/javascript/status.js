@@ -272,12 +272,12 @@ var ComponentIndicators;
     DefaultIndicators = function(configuration, container) {
 
         var connectionLostURI = configuration.connectionLostRedirectURI;
-        if( connectionLostURI == "null"){
+        if (connectionLostURI == "null") {
             connectionLostURI = null;
         }
 
         var sessionExpiredURI = configuration.sessionExpiredRedirectURI;
-        if( sessionExpiredURI == "null"){
+        if (sessionExpiredURI == "null") {
             sessionExpiredURI = null;
         }
 
@@ -305,14 +305,14 @@ var ComponentIndicators;
                 container.appendChild(overlay);
 
                 var resize = container.tagName.toLowerCase() == 'body' ?
-                             function() {
-                                 overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-                                 overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
-                             } :
-                             function() {
-                                 overlayStyle.width = container.offsetWidth + 'px';
-                                 overlayStyle.height = container.offsetHeight + 'px';
-                             };
+                        function() {
+                            overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
+                            overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+                        } :
+                        function() {
+                            overlayStyle.width = container.offsetWidth + 'px';
+                            overlayStyle.height = container.offsetHeight + 'px';
+                        };
                 resize();
                 onResize(window, resize);
             });
@@ -371,7 +371,12 @@ var ComponentIndicators;
             indctrs && on(indctrs.serverError);
         });
         ice.onSessionExpiry(function() {
-            indctrs && on(indctrs.sessionExpired);
+            if (indctrs) {
+                //avoid displaying irrelevant notifications from ICEpush bridge
+                indctrs.connectionTrouble = NOOPIndicator;
+                indctrs.connectionLost = NOOPIndicator;
+                on(indctrs.sessionExpired);
+            }
         });
 
         if (ice.push) {
