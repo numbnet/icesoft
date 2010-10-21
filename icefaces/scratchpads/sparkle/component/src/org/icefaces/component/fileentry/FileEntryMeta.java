@@ -38,7 +38,16 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
     extendsClass    = "javax.faces.component.UIComponentBase",
     componentType   = "org.icefaces.FileEntry",
     rendererType    = "org.icefaces.FileEntryRenderer",
-    componentFamily = "org.icefaces.FileEntry")
+    componentFamily = "org.icefaces.FileEntry",
+    tlddoc = "The FileEntry component allows for uploading files to the " +
+        "server within a form submit POST. The actual POST is non-AJAX, " +
+        "but leverages ICEfaces to return incremental page updates. " +
+        "The upload occurs within as single JSF lifecycle, along with " +
+        "the form's other component processing, allowing applications " +
+        "to handle input field validation together with file content " +
+        "validation, for model coherency. As well, server push is not " +
+        "necessary for receiving the rendered view from the lifecycle " +
+        "in which the files were uploaded.")
 @ResourceDependency(name="fileEntry.js",library="org.icefaces.component.fileentry")
 public class FileEntryMeta extends UIComponentBaseMeta {
     /*
