@@ -67,7 +67,12 @@
             <artifactId>sparkle</artifactId>
             <version>2.0-Beta2</version>
         </dependency>
- 
+        <dependency>
+           <groupId>org.glassfish.web</groupId>
+           <artifactId>el-impl</artifactId>
+           <version>2.2.1-b04</version>
+           <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
