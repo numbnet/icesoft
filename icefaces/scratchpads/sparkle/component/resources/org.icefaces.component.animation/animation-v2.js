@@ -6,7 +6,7 @@ function setY(y) {
 
 
 var anim;
-YUI().use("plugin", "anim", "json",  function(Y) {
+YUI({bootstrap:false}).use("plugin", "anim", "json",  function(Y) {
 
 	setY(Y);
 	
