@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<div xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
-  <h:form id="panelContent2">
+ <h:panelGroup id="cxxjfkjd">
     <h:outputText id="content2" value="#{msgs['content.tabTitle.text']}" />
-  </h:form>
-</div>
+
+    <h:form  prependId="false">
+       <ice:tabSet >
+            <ice:tabPane label="Tab contents from JSP" >
+                <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
+            </ice:tabPane>       
+            <ice:tabPane label="Tab contents from Bean" >
+                <h:outputText value="#{tabBean.tabContents}"/>            
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
+                <h:outputText value="Test ...."/>            
+            </ice:tabPane>
+        </ice:tabSet> 
+    </h:form>
+  </h:panelGroup>
+</ui:composition>

@@ -12,8 +12,8 @@
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link href="./css/default.css" rel="stylesheet" type="text/css" />
         <link href="./css/cssLayout.css" rel="stylesheet" type="text/css" />
+       <h:outputScript name="jsf.js" library="javax.faces" />
         <title>ICEfaces Advanced Components</title>
     </h:head>
 
@@ -21,30 +21,29 @@
 
         <div id="header">
             <ui:insert name="header">
-                <ui:include src="../content/header.xhtml" />
+                <ui:include src="header.xhtml" />
             </ui:insert>
         </div>
 
         <div id="navAndContentdiv">
             <div id="navigation">
-                <ui:insert name="navigation">
-                    <ui:include src="../content/navigation.xhtml" />
-                </ui:insert>
+                    <ui:include src="navigation.xhtml" />
             </div>
 
             <div id="content">
-                <h:panelGroup id="iceformcontent">
-                    <ui:insert name="page-content"/>
+                <h:panelGroup id="icecontentTemplate">
+                    <ui:insert name="page-content"/>  
                 </h:panelGroup>
             </div>
         </div>
 
         <div id="footer">
-            <ui:insert name="footer">
-                <ui:include src="../content/footer.xhtml"/>
-            </ui:insert>
+                <ui:include src="footer.xhtml"/>
         </div>
-
+        <h:form id="checkbutton">
+                 <h:inputText value="are the js files being loaded"/>
+                 <ice:pushButton id="disabledButton" value="test"/>      
+        </h:form>
     </h:body>
 <h:outputStylesheet library="org.icefaces.component.skins" name="rime.css" />
 </f:view>
