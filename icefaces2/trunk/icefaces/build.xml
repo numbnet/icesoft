@@ -20,19 +20,19 @@
   ~
   -->
 
-<project name="icefaces" default="all">
+<project name="icefaces" default="world">
 
     <property file="build.properties"/>
 
-    <target name="all">
+    <target name="core" description="Builds the ICEfaces core framework (icefaces.jar).">
         <subant>
-            <fileset dir="." excludes="compat/build.xml" includes="*/build.xml">
+            <fileset dir="." excludes="compat/build.xml, advcomps/build.xml" includes="*/build.xml">
               <exclude name="**/maven2/build.xml"/>
             </fileset>
         </subant> 
     </target>
 
-    <target name="world" depends="all">
+    <target name="compat" depends="core" description="Builds the ICEfaces Components and 1.x Compat libraries (icefaces-compat.jar).">
             <subant>
                   <fileset dir="." includes="compat/build.xml">
                     <exclude name="**/maven2/build.xml"/>
@@ -40,7 +40,19 @@
             </subant>
     </target>
 
-    <target name="allclean">
+    <target name="advcomps" depends="core" description="Builds the ICEfaces Advanced Components (icefaces-advcomps.jar).">
+            <subant>
+                  <fileset dir="." includes="advcomps/build.xml">
+                    <exclude name="**/maven2/build.xml"/>
+                </fileset>
+            </subant>
+    </target>
+
+    <target name="world" depends="core, compat, advcomps"  description="Builds all ICEfaces libraries.">
+    </target>
+
+
+    <target name="allclean"  description="Cleans all remnants of previous ICEfaces builds.">
         <subant target="clean">
             <fileset dir="." includes="*/build.xml">
                 <exclude name="**/maven2/build.xml"/>

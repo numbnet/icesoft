@@ -1,4 +1,4 @@
-<project name="sparkle-generator" default="dist" basedir=".">
+<project name="ace-generator" default="dist" basedir=".">
     <description>
         simple example build file
     </description>

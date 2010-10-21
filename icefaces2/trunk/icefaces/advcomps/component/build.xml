@@ -1,6 +1,6 @@
- <project name="sparkle-comps" default="dist" basedir=".">
+ <project name="icefaces-advcomps" default="dist" basedir=".">
     <description>
-        Component build file
+        ICEfaces Advanced Components build file.
     </description>
   <property file="build.properties"/>    
   <property name="src" location="src"/>
@@ -16,6 +16,10 @@
   <property name="tld.jar"  location="${icefaces.lib.dir}"/>
   <property name="smartsprites.basedir" location="../tools/smartsprites" />
   <property name="temp.dir.path" location="${smartsprites.basedir}/temp/" />
+
+  <tstamp>
+      <format property="build.time" pattern="yyyy-mm-dd hh:mm:ss"/>
+  </tstamp>
 
   
   <path id="compile.run.classpath">
@@ -144,6 +148,7 @@
     
   <target name="prepare">
     <mkdir dir="${build}/meta"/>
+    <mkdir dir="${build}/resources/META-INF"/>
     <mkdir dir="${exploded}"/>
     <mkdir dir="${build}/generated"/>
     <mkdir dir="${build}/generated/base"/>
@@ -170,16 +175,31 @@
     </ant>
   </target>
 
-  <target name="dist" depends="resources,compile" 
+  <target name="dist" depends="resources,compile,tlddoc" 
         description="generate the distribution" >
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>
 
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
     <jar destfile="${dist}/${ant.project.name}.jar" duplicate="fail">
+            <metainf dir="${build}/resources/META-INF"/>
+
+            <manifest>
+                <attribute name="Built-By" value="${user.name}"/>
+                <section name="org.icefaces">
+                    <attribute name="Implementation-Title"
+                               value="${product}"/>
+                    <attribute name="Implementation-Version"
+                               value="${release.type} ${version.primary}.${version.secondary}.${version.tertiary}_${build.number} (${build.time})"/>
+                    <attribute name="Implementation-Vendor"
+                               value="${company}"/>
+                </section>
+            </manifest>
+
         <fileset dir="${exploded}"/>
         <fileset dir="${src}" includes="org/icefaces/component/resources/"/>
     </jar>
+    <copy file="${dist}/${ant.project.name}.jar" todir="${icefaces.lib.dir}" overwrite="true"/>
   </target>
 
   <target name="clean"
