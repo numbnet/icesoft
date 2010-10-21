@@ -21,6 +21,10 @@
     <tstamp/>
     <java classname="org.icefaces.generator.Generator"  classpathref="compile.run.classpath" fork="true"
     	classpath="${build}">
+        <sysproperty key="generator.tld.doc.display.name"
+                     value="${generator.tld.doc.display.name}"/>
+        <sysproperty key="generator.tld.doc.version"
+                     value="${generator.tld.doc.version}"/>
     </java>
 
     <java classname="org.icefaces.generator.TaglibMerge" classpathref="compile.run.classpath" fork="true" classpath="${build}" >

@@ -24,11 +24,11 @@ public class TLDBuilder extends XMLBuilder{
     //    root.setAttribute("xsi:schemaLocation", "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd");
         root.setAttribute("version",            "2.1");
         getDocument().appendChild(root);
-        addNode(root, "tlib-version", "2.1");
+        addNode(root, "tlib-version", GeneratorContext.getVersion());
         //addNode(root, "jsp-version", "1.2");
         addNode(root, "short-name", GeneratorContext.shortName);
         addNode(root, "uri", GeneratorContext.namespace);
-        addNode(root, "display-name", "ICEfaces Component Suite");         
+        addNode(root, "display-name", GeneratorContext.getDisplayName());         
     }
 
     public void addTagInfo(Class clazz, Component component) {
