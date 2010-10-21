@@ -1,7 +1,7 @@
 <project name="advcomps-showcase" default="war">
 
     <property name="classes.dir" value="src/main/webapp/WEB-INF/classes"/>
-    <property name="icefaces2.lib.dir" location="../../../icefaces2/icefaces/lib"/>
+    <property name="icefaces2.lib.dir" location="../../../glimmer/lib"/>
 
     <target name="clean">
         <delete dir="dist"/>
@@ -21,7 +21,7 @@
                 </fileset>
             </classpath>
         </javac>
-        <copy todir="${classes.dir}/org/icefaces/demo/resources">
+        <copy todir="${classes.dir}">
             <fileset dir="src/main/resources" />
         </copy>
     </target>
