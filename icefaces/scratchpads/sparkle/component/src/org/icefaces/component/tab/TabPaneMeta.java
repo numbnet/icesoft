@@ -12,7 +12,7 @@ import org.icefaces.component.baseMeta.UICommandMeta;
 @Component(tagName = "tabPane",
         componentClass  = "org.icefaces.component.tab.TabPane",
         generatedClass  = "org.icefaces.component.tab.TabPaneBase",
-        extendsClass    = "javax.faces.component.UICommand", 
+        extendsClass    = "javax.faces.component.UIComponentBase", 
         componentType   = "org.icefaces.TabPane",
         componentFamily = "org.icefaces.TabPane")
 public class TabPaneMeta extends UICommandMeta {
