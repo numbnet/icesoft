@@ -51,15 +51,11 @@ public class BridgeSetup implements SystemEventListener {
     private int seed = 0;
     private boolean standardFormSerialization;
     private boolean deltaSubmit;
-    private Resource icepushListenResource;
 
     public BridgeSetup() {
         FacesContext fc = FacesContext.getCurrentInstance();
         deltaSubmit = EnvUtils.isDeltaSubmit(fc);
         standardFormSerialization = EnvUtils.isStandardFormSerialization(fc);
-        icepushListenResource = fc.getApplication()
-                .getResourceHandler().createResource( 
-                ICEpushListenResource.RESOURCE_NAME );
     }
 
     public boolean isListenerForSource(Object source) {
@@ -214,6 +210,9 @@ public class BridgeSetup implements SystemEventListener {
                         writer.writeAttribute("type", "text/javascript", null);
                         writer.write(LazyPushManager.enablePush(context, viewID) ?
                                 "ice.setupPush('" + viewID + "');" : "");
+                        Resource icepushListenResource = context.getApplication()
+                                .getResourceHandler().createResource( 
+                                ICEpushListenResource.RESOURCE_NAME );
                         String encodedURL = 
                                 icepushListenResource.getRequestPath();
                         writer.write("ice.push.configuration.uri=\"" +
