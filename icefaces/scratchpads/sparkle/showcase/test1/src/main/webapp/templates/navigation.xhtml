@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<h:form xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:ui="http://java.sun.com/jsf/facelets"
+          xmlns:ice="http://www.icefaces.org/icefaces/components">
+
+ <h:panelGroup id="panelNavigation">
+    <f:facet name="header">
+        <h:panelGroup id="nav1pane">
+            <h:outputText value="#{msgs['navigation.panelCollapsible1.header']}"/>
+        </h:panelGroup>
+    </f:facet>
+  
+    <h:link id="homeLink" outcome="main.xhtml" value="#{msgs['navigation.content1.label']}">
+    </h:link>
+    <br />
+    <h:link id="buttonLink" outcome="buttons.xhtml" value="#{msgs['navigation.buttons.label']}">
+    </h:link>
+    <br />
+    <h:link id="tab1Link" outcome="tabSimple.xhtml" value="#{msgs['navigation.tabSimple.label']}"/>
+     <br />
+    <h:link id="tab2Link" outcome="tabClient.xhtml" value="#{msgs['navigation.tabClient.label']}"/>
+     <br />    
+    <h:link id="dateLink" outcome="dateTime.xhtml" value="#{msgs['navigation.dateTime.label']}"/>
+     <br />  
+ </h:panelGroup>
+</h:form>

@@ -6,11 +6,14 @@
       xmlns:ice="http://www.icefaces.org/icefaces/components"
       template="templates/page-template.xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets" >
-  
-      <ui:define name="page-content">
-           <h:panelGroup id="iceMaincontent">
-                 <ui:include src="content/splash.xhtml"/> 
-           </h:panelGroup>
-   </ui:define>
-</ui:composition>
 
+  <ui:define name="page-content">
+    <h:panelGroup id="panelContentButtons">
+       <h:outputText id="contentButtons" value="Button examples" />
+     </h:panelGroup>
+         <h:form id="checkbuttonIn">
+                 <h:inputText value="are the js files being loaded"/>
+                 <ice:pushButton id="disabledButton" value="test"/>      
+         </h:form>   
+   </ui:define>
+ </ui:composition>

@@ -18,7 +18,12 @@ public class NavigationBean {
     @ManagedProperty(value = "#{selectedIncludePath}")
     private String selectedIncludePath="content/splash.xhtml";
 
-    /**
+    @ManagedProperty(value="includeExample")
+    private String includeExample;
+    
+
+
+	/**
      * Gets the currently selected content include path.
      *
      * @return currently selected content include path.
@@ -55,5 +60,12 @@ public class NavigationBean {
         Map map = context.getExternalContext().getRequestParameterMap();
         selectedIncludePath = (String) map.get("includePath");
     }
+    public String getIncludeExample() {
+		return includeExample;
+	}
+
+	public void setIncludeExample(String includeExample) {
+		this.includeExample = includeExample;
+	}
 
 }

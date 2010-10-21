@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ice="http://www.icefaces.org/icefaces/components">
+  <h:form >
+    <h:commandButton id="btn" value="render panel #{tabBean.renderPanel}" actionListener="#{tabBean.toggleRenderPanel}">
+    	<f:ajax execute="btn" render="@all" />
+	</h:commandButton> 
+
+    <h:commandButton id="cntr" value="Label counter #{tabBean.renderPanel}" actionListener="#{tabBean.incrementCounter}">
+    	<f:ajax execute="cntr" render="@all" />
+	</h:commandButton> 
+	</h:form>	
+    <h:panelGroup styleClass="ice-skin-sam" rendered="#{tabBean.renderPanel}">
+       <ice:tabSet clientSide="true">
+            <ice:tabPane label="Tab contents from JSP" >
+                <h:form>
+                    <h:inputText required="true" />
+				    <h:commandButton value="submit"/> 
+                    <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>
+                </h:form>            
+            </ice:tabPane>       
+            <ice:tabPane label="Tab contents from Bean #{tabBean.counter}" >
+                <h:outputText value="#{tabBean.tabContents}"/>            
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
+                <h:outputText value="Test ...."/>            
+            </ice:tabPane>
+        </ice:tabSet>
+      </h:panelGroup> 
+</div>
