@@ -8,12 +8,12 @@
 <f:view  contentType="text/html"/>
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
-    <title>TabSetController demo</title>
+    <title>TabSetProxy demo</title>
 <h:outputScript name="jsf.js" library="javax.faces" />
 </h:head>
 <h:body>
   <h:panelGroup styleClass="ice-skin-sam">
-   <h4> In this demo tabsets are not enclosed inside a "form", instead it uses tabsetController component. </h4>	
+   <h4> In this demo tabsets are not enclosed inside a "form", instead it uses tabSetProxy component. </h4>	
  
        <ice:tabSet id="myTabSet">
             <ice:tabPane label="Tab contents from JSP" >
@@ -29,10 +29,10 @@
 
 <hr/>
 
-<b>This form contains two "tabSetController" components. One for the above tabset and another one for the tabset in the bottom of the page. Which shows there isn't any order restriction </b><br/>
+<b>This form contains two "tabSetProxy" components. One for the above tabset and another one for the tabset in the bottom of the page. Which shows there isn't any order restriction </b><br/>
     <h:form>
-        <ice:tabSetController for="myTabSet" />
-        <ice:tabSetController for="myTabSet2" />
+        <ice:tabSetProxy for="myTabSet" />
+        <ice:tabSetProxy for="myTabSet2" />
 	    <h:inputText />
     </h:form>
 <hr/>

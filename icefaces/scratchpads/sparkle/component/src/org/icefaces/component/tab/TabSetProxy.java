@@ -7,7 +7,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.icefaces.component.utils.HTML;
 
-public class TabSetController extends TabSetControllerBase{
+public class TabSetProxy extends TabSetProxyBase{
 
 	
     public void encodeBegin(FacesContext context) throws IOException {

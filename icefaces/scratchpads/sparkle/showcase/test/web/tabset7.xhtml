@@ -46,7 +46,7 @@ The tabset is not a child of any form, each tab has its own form. The first tab 
             </ice:tabPane>
         </ice:tabSet> 
         <h:form>
-			<ice:tabSetController for="myTabSet" />
+			<ice:tabSetProxy for="myTabSet" />
 		</h:form>
         <h:panelGrid>
         	<h:outputText value="#{tabBean.txt1}"/> 

@@ -308,17 +308,17 @@ ice.component.tabset = {
 		   //see if the tabset is enclosed inside a form
 	       _form = formOf(tabset);
 	   } catch(e) {
-		   //seems like tabset is not enclosed inside a form, now look for tabsetcontroller component 
+		   //seems like tabset is not enclosed inside a form, now look for tabsetproxy component 
 		   if (!_form) {
 			   var tsc = document.getElementById(tabset.id + '_tsc');
 			   if(tsc) {
 				   try {
 					   _form = formOf(tsc);
 				   } catch(e) {
-					   logger.info('ERROR: The tabSetController must be enclosed inside a Form element');
+					   logger.info('ERROR: The tabSetProxy must be enclosed inside a Form element');
 				   }
 			   } else {
-				   logger.info('ERROR: If tabset is not inside a form, then you must use tabsetController component');
+				   logger.info('ERROR: If tabset is not inside a form, then you must use tabSetProxy component');
 			   }
 		   }
 	   }
