@@ -64,7 +64,14 @@
                      actionListener="#{navigation.navigationPathChange}">
         <f:param name="includePath" value="content/tab.xhtml" />
         <h:outputText
-                value="Tab"/>
+                value="Simple Tab Example"/>
+    </h:commandLink>
+    <br />
+       <h:commandLink id="tabLinkClientSide"
+                     actionListener="#{navigation.navigationPathChange}">
+        <f:param name="includePath" value="content/clientside_tabset.xhtml" />
+        <h:outputText
+                value="Tab on Client Side"/>
     </h:commandLink>
     <br />
     <h:commandLink id="AnimationLink"
