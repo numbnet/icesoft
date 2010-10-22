@@ -70,7 +70,10 @@ public class PushButtonRenderer extends Renderer {
 		Object oVal = pushButton.getValue();
 		if (null!=oVal) writer.writeText(String.valueOf(oVal), null);
 		else{
-			writer.writeText(pushButton.getLabel(), null);
+            String label = pushButton.getLabel();
+            if (label != null) {
+                writer.writeText(label, null);
+            }
 		}
 		writer.endElement(HTML.SPAN_ELEM);
     }
