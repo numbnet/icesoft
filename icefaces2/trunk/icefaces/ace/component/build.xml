@@ -241,12 +241,18 @@
 		<delete dir="${root.dir.path}" />
 		<delete dir="${output.dir.path}" />
 		<delete dir="${temp.dir.path}" />
-		<delete includeemptydirs="true">
+
+<!--		<delete includeemptydirs="true">
 			<fileset dir="${resources}/${sprites.lib}" includes="**" />
 		</delete>
+		-->
+		
+		<delete dir="${resources}/${sprites.lib}" />
+
 		<delete includeemptydirs="true">
 			<fileset dir="${resources}/${skins.lib}" includes="**" excludes="sam_original/**" />
-		</delete>
+		</delete>	
+		
 		<delete file="cache.properties" />
 		
 		<!-- Delete generated skin files from resource libraries -->
