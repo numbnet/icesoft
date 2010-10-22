@@ -1,4 +1,4 @@
-package org.icefaces.slider;
+package org.icefaces.sliderentry;
 
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;

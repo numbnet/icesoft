@@ -1,4 +1,4 @@
-package org.icefaces.calendar;
+package org.icefaces.datetimeentry;
 
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
@@ -8,7 +8,7 @@ import java.text.ParseException;
 
 @ManagedBean
 @SessionScoped
-public class CalendarBean {
+public class DateTimeEntryBean {
     private Date selectedDate;
     private boolean renderAsPopup;
     private boolean renderInputField;
@@ -16,7 +16,7 @@ public class CalendarBean {
     private String pattern = "MMM/dd/yyyy hh:mm a";
 
 //    public CalendarBean() throws ParseException {
-    public CalendarBean() {
+    public DateTimeEntryBean() {
 //        selectedDate = new SimpleDateFormat("yyyy-M-d H:m z").parse("2008-4-30 13:9 Pacific Daylight Time");
     }
 
