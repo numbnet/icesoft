@@ -1,4 +1,4 @@
-package icefaces.ace.samples.showcase.src.main.java.org.icefaces.tabSet;
+package org.icefaces.tabSet;
 
 import java.io.Serializable;
 import java.util.ArrayList;
