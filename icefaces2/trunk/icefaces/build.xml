@@ -101,7 +101,7 @@
             <fileset dir="${bundle.dir.bin}" includes="build.xml"/>
         </subant>
 
-        <!-- Create the JavaDocs for Core,  and Compat Core and move them to the root bundle directory -->
+        <!-- Create the JavaDocs for Core, and Compat Core and move them to the root bundle directory -->
         <subant target="javadoc">
             <fileset dir="${bundle.dir.bin}/core" includes="build.xml"/>
         </subant>
@@ -112,6 +112,9 @@
         </subant>
         <move file="${bundle.dir.bin}/compat/core/build/javadocs" tofile="${bundle.dir}/javadocs-compat"/>
 
+        <!-- Move the ace TLDdocs to the root bundle directory -->
+        <move file="${bundle.dir.bin}/ace/component/build/doc/tld" tofile="${bundle.dir}/ace-taglib-doc"/>
+
         <!-- Remove the following files and directories as they are not required for the binary bundle -->
         <delete>
             <fileset dir="${bundle.dir.bin}">
@@ -119,7 +122,6 @@
                 <include name="build.properties"/>
             </fileset>
             <fileset dir="${bundle.dir.bin}/lib">
-                <include name="icefaces-compat.jar"/>
                 <include name="junit*.jar"/>
                 <include name="portlet*.jar"/>
                 <include name="junit*.jar"/>
@@ -139,16 +141,29 @@
         <delete dir="${bundle.dir.bin}/core"/>
         <delete dir="${bundle.dir.bin}/test"/>
 
+        <delete file="${bundle.dir.bin}/ace/build.properties"/>
+        <delete file="${bundle.dir.bin}/ace/build.xml"/>
+        <delete dir="${bundle.dir.bin}/ace/component/"/>
+        <delete dir="${bundle.dir.bin}/ace/generator/"/>
+        <delete dir="${bundle.dir.bin}/ace/test"/>
+        <delete dir="${bundle.dir.bin}/ace/tools/"/>
+        <delete dir="${bundle.dir.bin}/ace/samples/showcase/build/classes"/>
+        <delete dir="${bundle.dir.bin}/ace/samples/showcase/build/dist/exploded"/>
+
         <delete dir="${bundle.dir.bin}/samples/test"/>
         <delete dir="${bundle.dir.bin}/samples/auction/build/classes"/>
         <delete dir="${bundle.dir.bin}/samples/auction/build/dist/exploded"/>
+        <delete dir="${bundle.dir.bin}/samples/basic/build/dist/exploded"/>
+        <delete dir="${bundle.dir.bin}/samples/basic/build/classes"/>        
         <delete dir="${bundle.dir.bin}/samples/basic/tests"/>
 
+        <delete dir="${bundle.dir.bin}/compat/samples/basic/build/dist/exploded"/>
         <delete dir="${bundle.dir.bin}/compat/samples/compat-basic"/>
         <delete dir="${bundle.dir.bin}/compat/samples/auctionMonitor/web/WEB-INF/lib"/>
         <delete dir="${bundle.dir.bin}/compat/samples/auctionMonitor/web/WEB-INF/classes"/>
         <delete dir="${bundle.dir.bin}/compat/samples/component-showcase/web/WEB-INF/lib"/>
         <delete dir="${bundle.dir.bin}/compat/samples/component-showcase/web/WEB-INF/classes"/>
+        <delete file="${bundle.dir.bin}/compat/lib/icefaces-compat.jar"/>
 
         <delete dir="${bundle.dir.bin}/compat/component-metadata"/>
         <delete dir="${bundle.dir.bin}/compat/components"/>
@@ -166,6 +181,7 @@
         </delete>
 
         <delete dir="${bundle.dir.src}/test"/>
+        <delete dir="${bundle.dir.src}/ace/test"/>
         
         <delete dir="${bundle.dir.src}/samples/basic/tests"/>
         <delete dir="${bundle.dir.src}/samples/test"/>
