@@ -3,60 +3,61 @@
 <div xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:icecore="http://www.icefaces.org/icefaces/core"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
-  <h:panelGroup id="panelContent2">
-    <!--<h:outputText id="content2" value="#{msgs['content.sliderEntry.text']}" />-->
-      <h:form>
-          <h:panelGroup>
-              <table>
-                  <tr>
-                      <td>
-                          <h:outputText value="Min. value "/>
-                      </td>
-                      <td>
-                          <h:inputText value="#{sliderBean.minValue}" size="3" onchange="ice.se(event, this);"/>
-                      </td>
-                      <td>
-                          <h:outputText value="Max. value "/>
-                      </td>
-                      <td>
-                          <h:inputText value="#{sliderBean.maxValue}" size="3" onchange="ice.se(event, this);"/>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td>
-                          <h:outputText value="Axis"/>
-                      </td>
-                      <td>
-                          <h:selectOneMenu value="#{sliderBean.axis}" onchange="ice.se(event, this);">
-                              <f:selectItem itemLabel="x" itemValue="x"/>
-                              <f:selectItem itemLabel="y" itemValue="y"/>
-                          </h:selectOneMenu>
-                      </td>
-                      <td>
-                          <h:outputText value="Submit on"/>
-                      </td>
-                      <td>
-                          <h:selectOneMenu value="#{sliderBean.submitOn}" onchange="ice.se(event, this);">
-                              <f:selectItem itemLabel="slide start" itemValue="slideStart"/>
-                              <f:selectItem itemLabel="slide interval" itemValue="slideInterval"/>
-                              <f:selectItem itemLabel="slide end" itemValue="slideEnd"/>
-                          </h:selectOneMenu>
-                      </td>
-                  </tr>
-              </table>
-              <h:selectBooleanCheckbox value="#{sliderBean.clickableRail}" onclick="ice.se(event, this);"/>
-              <h:outputText value="Clickable rail"/>
-              <br/><br/>
+    <h:panelGroup id="panelContent2">
+        <!--<h:outputText id="content2" value="#{msgs['content.sliderEntry.text']}" />-->
+        <h:form>
+            <h:panelGroup>
+                <icecore:singleSubmit/>
+                <table>
+                    <tr>
+                        <td>
+                            <h:outputText value="Min. value "/>
+                        </td>
+                        <td>
+                            <h:inputText value="#{sliderBean.minValue}" size="3"/>
+                        </td>
+                        <td>
+                            <h:outputText value="Max. value "/>
+                        </td>
+                        <td>
+                            <h:inputText value="#{sliderBean.maxValue}" size="3"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText value="Axis"/>
+                        </td>
+                        <td>
+                            <h:selectOneMenu value="#{sliderBean.axis}">
+                                <f:selectItem itemLabel="x" itemValue="x"/>
+                                <f:selectItem itemLabel="y" itemValue="y"/>
+                            </h:selectOneMenu>
+                        </td>
+                        <td>
+                            <h:outputText value="Submit on"/>
+                        </td>
+                        <td>
+                            <h:selectOneMenu value="#{sliderBean.submitOn}">
+                                <f:selectItem itemLabel="slide interval" itemValue="slideInterval"/>
+                                <f:selectItem itemLabel="slide end" itemValue="slideEnd"/>
+                            </h:selectOneMenu>
+                        </td>
+                    </tr>
+                </table>
+                <h:selectBooleanCheckbox value="#{sliderBean.clickableRail}"/>
+                <h:outputText value="Clickable rail"/>
+                <br/><br/>
 
-              <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
-                               submitOn="#{sliderBean.submitOn}" clickableRail="#{sliderBean.clickableRail}"
-                               axis="#{sliderBean.axis}"/>
-              <br/>
+                <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
+                                 submitOn="#{sliderBean.submitOn}" clickableRail="#{sliderBean.clickableRail}"
+                                 axis="#{sliderBean.axis}"/>
+                <br/>
 
-              <h:outputText value="Output value = "/>
-              <h:outputText value="#{sliderBean.value}"/>
-          </h:panelGroup>
-      </h:form>
-  </h:panelGroup>
+                <h:outputText value="Output value = "/>
+                <h:outputText value="#{sliderBean.value}"/>
+            </h:panelGroup>
+        </h:form>
+    </h:panelGroup>
 </div>
