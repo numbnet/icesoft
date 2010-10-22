@@ -25,5 +25,46 @@
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>
     <import file="../build/common.xml"/>
-        
+    
+    <property name="portlet.dir" location="./src/portlets"/>
+    <property name="portlet.build.dir" location="${build.dir}/portlets"/>
+    <property name="portlet.lib.dir" location="${lib.dir}/portlets"/>
+
+    <patternset id="portlet.jars">
+        <include name="jsf*.jar"/>
+        <include name="portletfaces*.jar"/>
+        <include name="slf4j*.jar"/>
+    </patternset>
+
+    <target name="portletize" 
+            depends="war.ice" 
+            description="Adds portlet content to the .war file">
+            
+        <mkdir dir="${portlet.build.dir}/exploded"/>
+        <unzip src="${dist.dir}/${ant.project.name}.war" 
+               dest="${portlet.build.dir}/exploded"/>
+
+        <copy todir="${portlet.build.dir}/exploded">
+          <fileset dir="${portlet.dir}/webapp">
+            <include name="view.xhtml"/>
+          </fileset>
+        </copy>
+
+        <copy todir="${portlet.build.dir}/exploded/WEB-INF">
+          <fileset dir="${portlet.dir}/webapp/WEB-INF">
+              <include name="*.xml"/>
+              <include name="*.properties"/>
+          </fileset>
+        </copy>
+
+        <copy todir="${portlet.build.dir}/exploded/WEB-INF/lib">
+          <fileset dir="${portlet.lib.dir}">
+              <patternset refid="portlet.jars"/>
+          </fileset>
+        </copy>
+
+        <zip destfile="${portlet.build.dir}/${ant.project.name}-portlet.war"
+             basedir="${portlet.build.dir}/exploded"/>
+    </target>
+
 </project>
