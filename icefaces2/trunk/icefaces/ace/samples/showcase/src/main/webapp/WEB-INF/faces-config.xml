@@ -33,5 +33,5 @@
         </locale-config>
         <message-bundle>messages</message-bundle>
     </application>
-
+  
 </faces-config>
