@@ -20,7 +20,7 @@
   ~
   -->
 
-<project name="icefaces-components" default="all">
+<project name="icefaces-advanced-component-environment" default="all">
 
     <property file="build.properties"/>
 

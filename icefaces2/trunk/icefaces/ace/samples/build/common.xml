@@ -45,9 +45,9 @@
 	        <exclude name="jsf-impl.jar"  unless="jsf"/>
 	    </patternset>
 
-	    <patternset id="lib.distribute.ice" includes="icefaces.jar icefaces-advcomps.jar icepush.jar">
+	    <patternset id="lib.distribute.ice" includes="icefaces.jar icefaces-ace.jar icepush.jar">
 	        <exclude name="icefaces.jar" unless="ice"/>
-	        <exclude name="icefaces-advcomps.jar" unless="ice"/>
+	        <exclude name="icefaces-ace.jar" unless="ice"/>
             <exclude name="icepush.jar"  unless="push"/>
 	    </patternset>
     </patternset>

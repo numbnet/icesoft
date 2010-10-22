@@ -20,7 +20,7 @@
   ~
   -->
 
-<project name="ace-showcase" default="war">
+<project name="ace-showcase" default="war.ice">
     
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>

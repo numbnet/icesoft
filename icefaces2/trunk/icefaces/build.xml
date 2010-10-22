@@ -26,7 +26,7 @@
 
     <target name="core" description="Builds the ICEfaces core framework (icefaces.jar).">
         <subant>
-            <fileset dir="." excludes="compat/build.xml, advcomps/build.xml" includes="*/build.xml">
+            <fileset dir="." excludes="compat/build.xml, ace/build.xml" includes="*/build.xml">
               <exclude name="**/maven2/build.xml"/>
             </fileset>
         </subant> 
@@ -40,15 +40,15 @@
             </subant>
     </target>
 
-    <target name="advcomps" depends="core" description="Builds the ICEfaces Advanced Components (icefaces-advcomps.jar).">
+    <target name="ace" depends="core" description="Builds the ICEfaces Advanced Components (icefaces-ace.jar).">
             <subant>
-                  <fileset dir="." includes="advcomps/build.xml">
+                  <fileset dir="." includes="ace/build.xml">
                     <exclude name="**/maven2/build.xml"/>
                 </fileset>
             </subant>
     </target>
 
-    <target name="world" depends="core, compat, advcomps"  description="Builds all ICEfaces libraries.">
+    <target name="world" depends="core, compat, ace"  description="Builds all ICEfaces libraries.">
     </target>
 
 
@@ -60,7 +60,7 @@
         </subant>
         <delete file="lib/icefaces.jar"/>
         <delete file="lib/icefaces-compat.jar"/>
-        <delete file="lib/icefaces-advcomps.jar"/>
+        <delete file="lib/icefaces-ace.jar"/>
     </target>
 
     <target name="bundle.clean">
