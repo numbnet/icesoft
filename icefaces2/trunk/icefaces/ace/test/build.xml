@@ -1,4 +1,4 @@
-<project name="test" default="war">
+<project name="ace-test" default="war">
 
     <property name="classes.dir" value="web/WEB-INF/classes"/>
     <property name="icefaces2.lib.dir" location="../../lib"/>
@@ -17,7 +17,7 @@
                     <include name="el-api-2.2.1-b03.jar"/>
                 </fileset>
                 <fileset dir="../component/dist">
-                    <include name="icefaces-advcomps.jar"/>
+                    <include name="icefaces-ace.jar"/>
                 </fileset>
             </classpath>
         </javac>
@@ -32,7 +32,7 @@
             <!--<war basedir="web" destfile="dist/${ant.project.name}.war" webxml="web/WEB-INF/web.xml">-->
             <lib dir="${icefaces2.lib.dir}">
                 <include name="icefaces.jar"/>
-                <include name="icefaces-advcomps.jar"/>                <include name="jsf-api.jar"/>
+                <include name="icefaces-ace.jar"/>                <include name="jsf-api.jar"/>
                 <include name="jsf-impl.jar"/>
                 <include name="icepush.jar"/>
             </lib>

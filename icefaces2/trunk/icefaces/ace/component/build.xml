@@ -1,4 +1,4 @@
- <project name="icefaces-advcomps" default="dist" basedir=".">
+ <project name="icefaces-ace" default="dist" basedir=".">
     <description>
         ICEfaces Advanced Components build file.
     </description>
