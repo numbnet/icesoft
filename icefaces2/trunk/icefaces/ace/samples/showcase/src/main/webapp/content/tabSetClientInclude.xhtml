@@ -13,7 +13,7 @@
     <h:form id="forminputsId">
      <h:panelGrid columns="2" id="setupgrid">
        <h:panelGroup id="oldcontrols">	 
-		    <h:commandButton id="cntr" value="Label counter #{tabBean.renderPanel}" actionListener="#{tabBean.incrementCounter}">
+		    <h:commandButton id="cntr" value="increment counter" actionListener="#{tabBean.incrementCounter}">
 		    	<f:ajax execute="cntr" render="@all" />
 			</h:commandButton> 					  
         </h:panelGroup>
@@ -30,7 +30,7 @@
         </h:panelGroup> 
        </h:panelGrid>	
      </h:form>   
-    <h:panelGroup styleClass="ice-skin-sam" rendered="#{tabBean.renderPanel}">
+    <h:panelGroup  id="tabSetPanelGroupId">
        <ice:tabSet clientSide="true" orientation="#{tabBean.orientation}">
             <ice:tabPane label="TabPane One" >
                  <p>
@@ -49,21 +49,27 @@
                    </p>
       
             </ice:tabPane>       
-            <ice:tabPane label="TabPane Two counter=#{tabBean.counter}" >
-               <center>
-                  <h:outputText value="#{tabBean.tabContents}"/>   
-                </center>         
+            <ice:tabPane label="TabPane Two counter=#{tabBean.counter}" >  
+               <h:panelGroup id="pane2Panel">
+                 <center>
+                    <h:outputText value="#{tabBean.tabContents}"/>   
+                  </center>  
+                </h:panelGroup>       
             </ice:tabPane>
             <ice:tabPane label="TabPane Three" >
+              <h:panelGroup id="pane3PanelId">
                 <h:form id="tabPane1Form">
                  <h:panelGroup>
-                     <h:inputText required="true" />
+                     <h:inputText id="requiredInput" required="#{true}" 
+                          errorStyle="color:red"/>
+                     <h:message for="requiredInput"/>
 				    <h:commandButton value="submit"/>
 				 </h:panelGroup> 
-			   </h:form>                      
+			   </h:form> 
+			  </h:panelGroup>                     
             </ice:tabPane>
         </ice:tabSet>
-    </h:panelGroup> 
-    <h:messages/>
+       <h:messages/>
+    </h:panelGroup>  
   </h:panelGroup>  
 </ui:composition>
