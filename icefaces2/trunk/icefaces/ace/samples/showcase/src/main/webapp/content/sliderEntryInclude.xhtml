@@ -37,13 +37,13 @@
             <br/>
             <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
                              submitOn="slideInterval" clickableRail="#{sliderBean.clickableRail}"
-                             axis="x"/>
+                             axis="x" singleSubmit="false"/>
             <br/>
             <h:outputText value="Submit on slide end: "/>
             <br/><br/>
             <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
                              submitOn="slideEnd" clickableRail="#{sliderBean.clickableRail}"
-                             axis="y"/>
+                             axis="y" singleSubmit="false"/>
         </h:form>
         <br/>
 
