@@ -1,4 +1,4 @@
-<!--
+<%--
   ~ Version: MPL 1.1
   ~
   ~ "The contents of this file are subject to the Mozilla Public License
@@ -18,12 +18,9 @@
   ~
   ~ Contributor(s): _____________________.
   ~
-  -->
+  --%>
 
-<project name="ace-showcase" default="war">
-    
-    <property file="./build.properties"/>
-    <property file="../build/build.properties"/>
-    <import file="../build/common.xml"/>
-        
-</project>
+<%
+    response.sendRedirect("start.jsf");
+%>
+
