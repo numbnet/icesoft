@@ -27,3 +27,14 @@
     margin-left: 170px;
     height: 400px;
 }
+
+.ice-skin-rime .yui-navset .yui-content {
+background-color:#FFFBFF;
+border-color:#D9D9D9;
+border-style:solid;
+border-width:0 1px 1px;
+}
+
+.yui-navset .yui-content, .yui-navset .yui-content div{
+    height:300px;
+}

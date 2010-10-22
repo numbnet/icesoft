@@ -38,7 +38,7 @@ public class TabBean implements Serializable{
     private String txt2;
     private String txt3;
     private String txt4;    
-    private String tabContents = "The TabView control is defined by YAHOO.widget.TabView. To create a TabView from existing markup you can simply pass the id (or object reference) for the HTMLElement that will become the TabView. If you follow the default markup pattern outlined below, the tabs will be constructed automatically.";
+    private String tabContents = "The TabSet control is defined by YAHOO.widget.TabView. Please review the tlddoc for this component to fully understand its ability";
     private List movies = new ArrayList();
     private String title;
     private String director;
