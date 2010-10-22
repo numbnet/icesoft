@@ -50,7 +50,7 @@ public class TabBean implements Serializable{
     private boolean closeButton;
     private int labelFacetIndex=0;
     private boolean closeTabValue;
-    private boolean renderPanel = true;
+    private boolean renderPanel = true; 
     private int counter = 0;
     
     public int getCounter() {
