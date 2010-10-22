@@ -30,34 +30,36 @@
                             <h:outputText value="Axis"/>
                         </td>
                         <td>
-                            <h:selectOneMenu value="#{sliderBean.axis}">
+                            <h:selectOneRadio value="#{sliderBean.axis}">
                                 <f:selectItem itemLabel="x" itemValue="x"/>
                                 <f:selectItem itemLabel="y" itemValue="y"/>
-                            </h:selectOneMenu>
+                            </h:selectOneRadio>
                         </td>
                         <td>
                             <h:outputText value="Submit on"/>
                         </td>
                         <td>
-                            <h:selectOneMenu value="#{sliderBean.submitOn}">
+                            <h:selectOneRadio value="#{sliderBean.submitOn}">
                                 <f:selectItem itemLabel="slide interval" itemValue="slideInterval"/>
                                 <f:selectItem itemLabel="slide end" itemValue="slideEnd"/>
-                            </h:selectOneMenu>
+                            </h:selectOneRadio>
                         </td>
                     </tr>
                 </table>
                 <h:selectBooleanCheckbox value="#{sliderBean.clickableRail}"/>
                 <h:outputText value="Clickable rail"/>
-                <br/><br/>
-
-                <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
-                                 submitOn="#{sliderBean.submitOn}" clickableRail="#{sliderBean.clickableRail}"
-                                 axis="#{sliderBean.axis}"/>
-                <br/>
-
-                <h:outputText value="Output value = "/>
-                <h:outputText value="#{sliderBean.value}"/>
             </h:panelGroup>
         </h:form>
+        <br/><br/>
+
+        <h:form>
+            <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
+                             submitOn="#{sliderBean.submitOn}" clickableRail="#{sliderBean.clickableRail}"
+                             axis="#{sliderBean.axis}"/>
+        </h:form>
+        <br/>
+
+        <h:outputText value="Output value = "/>
+        <h:outputText value="#{sliderBean.value}"/>
     </h:panelGroup>
 </div>
