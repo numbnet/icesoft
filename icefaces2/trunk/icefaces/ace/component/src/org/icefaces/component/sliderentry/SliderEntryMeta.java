@@ -101,7 +101,7 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
     private String length;
     
     @Property (defaultValue="slideEnd",
-            tlddoc="Specifies when to do a submit. The 3 valid values are slideStart, slideEnd and slideInterval. slideStart not applicable to clickableRail." +
+            tlddoc="Specifies when to do a submit. Valid values are slideEnd and slideInterval." +
             		" Default value is slideEnd.",
             javadocGet="returns value of submitOn. It is not a pass through because slideInterval is a custom event " +
             		"which internally uses \"thumbMove\"")
