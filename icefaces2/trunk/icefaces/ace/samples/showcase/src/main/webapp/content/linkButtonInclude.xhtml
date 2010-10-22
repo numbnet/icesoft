@@ -1,10 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<div xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
   <h:panelGroup id="panelContent2">
-    <h:outputText id="content2" value="#{msgs['content.linkButton.text']}" />
+
+      <h:panelGroup styleClass="synopsisBox linkButtonContainer">
+        <h:outputText value="#{msgs['page.linkButton.synopsis']}"/>
+        <h:outputText value="#{msgs['page.linkButton.instructions']}"/>
+    </h:panelGroup>
+
+
+       <h:panelGrid columns="2"
+                   styleClass="exampleBox buttonsAndLinksContainer"
+                   rowClasses="textFieldNameRow">
+            <h:form id="frm1">
+
+                1) This simple output link should only navigate to google.com <br></br>
+                <ice:linkButton href="http://www.icefaces.org/main/home/" value="ICEFaces Home" />  
+
+            </h:form>
+
+            The following two items are in the same form to test single submit.
+            <hr></hr>
+
+            <h:form id="frm2">
+                2) This link should only toggle the employee image <br></br>
+                <ice:linkButton value="#{linkBean.linkValue}" actionListener="#{linkBean.actionListenerMethod}" >
+                        Link with actionListener only  </ice:linkButton>
+                <p></p>
+
+                3) A single submit link with actionOnly <br></br>
+                <ice:linkButton value="single submit action" singleSubmit="true" actionListener="#{linkBean.singleSubmitListenerMethod}" />
+                    <!--<f:param name="fartyTowel" value="10" /> -->
+                <p></p>
+            </h:form>
+
+            <hr></hr>
+            <h:form id="frm4">
+                4) This link should toggle the image if clicked, but not navigate to google.com. You <em>should</em> be able to open the link in another tab<br></br>
+                <ice:linkButton  href="http://www.google.ca"
+                                 value="Link with actionListener and HREF defined"
+                               actionListener="#{linkBean.hrefAndActionMethod}" >
+                                  Link with actionListener and HREF defined OLD STRING
+                </ice:linkButton>
+
+                <p></p>
+            </h:form>
+
+            <hr></hr>
+            <h4>This section is an informal test section containing stuff that
+            I don't want to lose</h4>
+
+            <h:form id="frm6">
+               5) This is a 'value Only' link with no embedded text
+                <ice:linkButton  href="http://www.google.ca"
+                                 value="Link with actionListener and HREF defined"
+                               actionListener="#{linkBean.hrefAndActionMethod}" />
+                <p></p>
+            </h:form>
+
+             <h:form id="frm7">
+                6) This JSF:link might not behave the same as an ice:link. You <em>probably wont</em> be able to open Google.com in another tab<br></br>
+                <h:commandLink  href="http://www.google.ca"
+                                 value="[The value inside the link] "
+                               actionListener="#{linkBean.hrefAndActionMethod}" >
+                                  <h:outputText value="you could press me" />
+                    <h:graphicImage value="images/employee.gif" label="output"
+                                    />
+                    And you could press me too.
+                </h:commandLink>
+
+                <p></p>
+            </h:form>
+
+            <h:form id="frm8">
+                7) This is a ice:linkButton with an output text in it<br></br>
+                <ice:linkButton
+                                 value="Link with inner text button PLUS EXTRA"
+                               actionListener="#{linkBean.hrefAndActionMethod}">And here's just some text
+                     <h:graphicImage value="images/employee.gif" label="output"
+                                    />
+                </ice:linkButton>
+
+                <p></p>
+            </h:form>
+
+            <h2> Here's the place for the output image</h2>
+            <h:form id="output">
+                <h:panelGroup id="image">
+                    <h:graphicImage value="images/employee.gif" label="output"
+                                    rendered="#{linkBean.rendered}" />
+                </h:panelGroup>
+
+             
+            </h:form>
+
+         </h:panelGrid>
+      
   </h:panelGroup>
-</div>
+</ui:composition>
