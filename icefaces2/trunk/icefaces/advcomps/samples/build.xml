@@ -20,10 +20,40 @@
   ~
   -->
 
-<project name="ace-showcase" default="war">
+<project name="samples" default="all">
+
+    <target name="all">
+        <subant>
+            <fileset dir="." includes="*/build.xml"/>
+        </subant> 
+    </target>
+
+    <target name="allclean">
+        <subant target="clean">
+            <fileset dir="." includes="*/build.xml"/>
+        </subant>
+    </target>
+
+    <target name="clean">
+    </target>
+
+    <target name="generate" depends="template.copy,replace.tokens">
+    </target>
+
+    <target name="template.copy">
+        <copy todir="./${name}">
+            <fileset dir="./build/template" />
+        </copy>
+    </target>
     
-    <property file="./build.properties"/>
-    <property file="../build/build.properties"/>
-    <import file="../build/common.xml"/>
-        
+    <target name="replace.tokens">
+        <replace dir="./${name}">
+            <include name="build.xml"/>
+            <replacefilter token="@@appName@@"
+                           value="${name}"/>
+        </replace>
+    </target>
+
+
 </project>
+

@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
   ~ Version: MPL 1.1
   ~
@@ -20,10 +21,17 @@
   ~
   -->
 
-<project name="ace-showcase" default="war">
-    
-    <property file="./build.properties"/>
-    <property file="../build/build.properties"/>
-    <import file="../build/common.xml"/>
-        
-</project>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+              version="2.0">
+
+    <managed-bean>
+        <managed-bean-name>basicBean</managed-bean-name>
+        <managed-bean-class>
+            org.icefaces.sample.simple.BasicBean
+        </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+</faces-config>
