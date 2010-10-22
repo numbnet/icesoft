@@ -38,7 +38,7 @@ public class TabBean implements Serializable{
     private String txt2;
     private String txt3;
     private String txt4;    
-    private String tabContents = "The TabSet control is defined by YAHOO.widget.TabView. Please review the tlddoc for this component to fully understand its ability";
+    private String tabContents = "This tabPane represents a simple pane with text";
     private List movies = new ArrayList();
     private String title;
     private String director;
@@ -70,57 +70,7 @@ public class TabBean implements Serializable{
 	}
 	private boolean formRendered = true;
     public TabBean() {
-        Movie m1 = new Movie();
-        m1.setTitle("The Shawshank Redemption (1994)");
-        m1.setDirector("Frank Darabont");
-        m1.setPlot("Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency");
-        m1.setGenre("Drama");
-        movies.add(m1);
-        
-        Movie m2 = new Movie();
-        m2.setTitle("The Godfather (1972)");
-        m2.setDirector("Francis Ford Coppola");
-        m2.setPlot("The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.");
-        m2.setGenre("Crime | Drama | Thriller");
-        movies.add(m2);     
-        
-        Movie m3 = new Movie();
-        m3.setTitle("Pulp Fiction (1994)");
-        m3.setDirector("Quentin Tarantino");
-        m3.setPlot("The lives of two mob hit men, a boxer, a gangster's wife, and a pair of diner bandits intertwine in four tales of violence and redemption.");
-        m3.setGenre("Crime | Thriller");
-        movies.add(m3);     
-        
-        Movie m4 = new Movie();
-        m4.setTitle("Casablanca (1942)");
-        m4.setDirector("Michael Curtiz");
-        m4.setPlot("Set in unoccupied Africa during the early days of World War II: An American expatriate meets a former lover, with unforeseen complications.");
-        m4.setGenre("Drama");
-        movies.add(m4); 
-        
-        Movie m5 = new Movie();
-        m5.setTitle("Memento (2000)");
-        m5.setDirector("Christopher Nolan");
-        m5.setPlot("A man, suffering from short-term memory loss, uses notes and tattoos to hunt for the man he thinks killed his wife.");
-        m5.setGenre("Mystery | Thriller");
-        movies.add(m5); 
-        
-        Movie m6 = new Movie();
-        m6.setTitle("Fight Club (1999)");
-        m6.setDirector("David Fincher");
-        m6.setPlot("An office employee and a soap salesman build a global organization to help vent male aggression.");
-        m6.setGenre("Action | Crime | Drama | Thriller");
-        movies.add(m6); 
-        
-        for (int i= 0; i < 500; i++) {
-            m6 = new Movie();
-            m6.setTitle("Fight Club (1999)"+i);
-            m6.setDirector("David Fincher");
-            m6.setPlot("An office employee and a soap salesman build a global organization to help vent male aggression.");
-            m6.setGenre("Action | Crime | Drama | Thriller");
-            movies.add(m6);             
-        }
-        
+   
     }
     
    public void tabsetChangeListener(ValueChangeEvent event) {
@@ -293,69 +243,9 @@ public class TabBean implements Serializable{
     public void setTabContents(String tabContents) {
         this.tabContents = tabContents;
     }
-    public List getMovies() {
-        return movies;
-    }
-    public void setMovies(List movies) {
-        this.movies = movies;
-    }
-   
-    public void addMovie(ActionEvent event) {
-        Movie m = new Movie();
-        m.setDirector(director);
-        m.setGenre(genre);
-        m.setPlot(plot);
-        m.setTitle(title);
-        movies.add(m);
-    }
+ 
     
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public String getDirector() {
-        return director;
-    }
-    public void setDirector(String director) {
-        this.director = director;
-    }
-    public String getPlot() {
-        return plot;
-    }
-    public void setPlot(String plot) {
-        this.plot = plot;
-    }
-    public String getGenre() {
-        return genre;
-    }
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-    
-    public void setMovieIndexes(List indexes) {
-        
-    }
-    
-    public List getMovieIndexes() {
-        List indexes = new ArrayList();
-        for (int i=0; i <movies.size(); i++) {
-            indexes.add(new SelectItem(""+i));
-        }
-        return indexes;
-    }    
-    
-    Object deleteIndex = "0";
-    public void movieIndexChanged(ValueChangeEvent event) {
-        deleteIndex = event.getNewValue();
-    }
-
-    public void deleteMovie(ActionEvent event) {
-        if (deleteIndex != null) {
-            movies.remove(Integer.parseInt(deleteIndex.toString()));
-        }
-    }
+  
     public boolean isShowPopup() {
         return showPopup;
     }
