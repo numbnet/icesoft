@@ -5,6 +5,16 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
   <h:panelGroup id="panelFooter">
-    <h:outputText value="#{msgs['footer.text']}" />
+        <div style="width:400px">
+            <h:outputText value="#{msgs['template.footer.copyright']}" nospan="true" escape="false"/>
+            <a href="http://www.icesoft.com/" target="_blank">
+                <h:outputText value="#{msgs['template.common.icesoft']}" nospan="true" escape="false" />
+            </a>
+        </div>
+        <div style="float:right;width:250px;">
+            <i><h:outputText value="#{msgs['template.footer.poweredBy']}" nospan="true" escape="false" />
+            <a href="http://www.icefaces.org/" target="_blank">
+            <h:outputText value="#{msgs['template.common.icefaces']}" nospan="true" escape="false" /></a></i>
+        </div>
   </h:panelGroup>
 </div>
