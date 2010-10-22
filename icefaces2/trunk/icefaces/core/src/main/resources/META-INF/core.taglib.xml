@@ -26,7 +26,7 @@
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd"
                 version="2.0">
-    <namespace>http://icefaces.org/core</namespace>
+    <namespace>http://www.icefaces.org/icefaces/core</namespace>
     <tag>
         <tag-name>config</tag-name>
         <handler-class>org.icefaces.impl.facelets.tag.icefaces.core.ConfigHandler</handler-class>
