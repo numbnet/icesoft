@@ -6,7 +6,7 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
-@ManagedBean
+@ManagedBean (name="calendarBean")
 @SessionScoped
 public class DateTimeEntryBean {
     private Date selectedDate;
