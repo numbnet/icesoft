@@ -1,7 +1,7 @@
 <project name="test" default="war">
 
     <property name="classes.dir" value="web/WEB-INF/classes"/>
-    <property name="icefaces2.lib.dir" location="../../../icefaces2/icefaces/lib"/>
+    <property name="icefaces2.lib.dir" location="../../lib"/>
 
     <target name="clean">
         <delete dir="dist"/>
@@ -16,8 +16,8 @@
                     <include name="jsf-api.jar"/>
                     <include name="el-api-2.2.1-b03.jar"/>
                 </fileset>
-                <fileset dir="../../../sparkle/component/dist">
-                    <include name="sparkle-comps.jar"/>
+                <fileset dir="../component/dist">
+                    <include name="icefaces-advcomps.jar"/>
                 </fileset>
             </classpath>
         </javac>
@@ -32,7 +32,7 @@
             <!--<war basedir="web" destfile="dist/${ant.project.name}.war" webxml="web/WEB-INF/web.xml">-->
             <lib dir="${icefaces2.lib.dir}">
                 <include name="icefaces.jar"/>
-                <include name="jsf-api.jar"/>
+                <include name="icefaces-advcomps.jar"/>                <include name="jsf-api.jar"/>
                 <include name="jsf-impl.jar"/>
                 <include name="icepush.jar"/>
             </lib>
@@ -41,7 +41,6 @@
                 <include name="jstl.jar"/>
             </lib>
 -->
-            <lib file="../../component/dist/sparkle-comps.jar"/>
         </war>
     </target>
 
