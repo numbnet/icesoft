@@ -3,42 +3,66 @@
 <div xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:icecore="http://icefaces.org/core"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
-  <h:panelGrid columns="2" id="setupgrid">
-     <h:panelGroup id="oldcontrols">
-		  <h:form >
-		    <h:commandButton id="btn" value="render panel #{tabBean.renderPanel}" actionListener="#{tabBean.toggleRenderPanel}">
-		    	<f:ajax execute="btn" render="@all" />
-			</h:commandButton> 
+   <h:panelGroup id="contentContainer" class="tabContainer">
+    
+        <h2>TabSet with state saved on Client</h2>
+   
+    <h:form id="forminputsId">
+     <h:panelGrid columns="2" id="setupgrid">
+       <h:panelGroup id="oldcontrols">	 
 		    <h:commandButton id="cntr" value="Label counter #{tabBean.renderPanel}" actionListener="#{tabBean.incrementCounter}">
 		    	<f:ajax execute="cntr" render="@all" />
-			</h:commandButton> 			
-		   </h:form>
-      </h:panelGroup>
-      <h:panelGroup id="newControls">
-         <h:selectOneMenu id="orientationSelection"
-              label="Orientation"
-              value="#{tabBean.orientation}">
-            <f:selectItems value="#{tabBean.orientations}"/> 
-            <f:ajax/>          
-         </h:selectOneMenu>
-      </h:panelGroup>
-	</h:panelGrid>	
+			</h:commandButton> 					  
+        </h:panelGroup>
+        <h:panelGroup id="newControls">
+         <icecore:singleSubmit/>
+         <h:panelGrid id="selectOrientation" columns="2">
+            <h:outputText value="Select Orientation:"/>
+            <h:selectOneMenu id="orientationSelection"
+                label="Orientation"
+                value="#{tabBean.orientation}">
+             <f:selectItems value="#{tabBean.orientations}"/>          
+           </h:selectOneMenu>
+         </h:panelGrid>
+        </h:panelGroup> 
+       </h:panelGrid>	
+     </h:form>   
     <h:panelGroup styleClass="ice-skin-sam" rendered="#{tabBean.renderPanel}">
-       <ice:tabSet clientSide="true">
-            <ice:tabPane label="Tab contents from JSP" >
-                <h:form>
-                    <h:inputText required="true" />
-				    <h:commandButton value="submit"/> 
-                    <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>
-                </h:form>            
+       <ice:tabSet clientSide="true" orientation="#{tabBean.orientation}">
+            <ice:tabPane label="TabPane One" >
+                 <p>
+                    <h:outputText value="The new tabSet component doesn't have to make all those return trips to the server"/>                  
+                    <h:outputText value="Also note note the ability to label tabs in any direction and the counter on tabPane 2"/>
+                </p>
+                 
+                  <h:panelGroup id="testOrientation">
+                    <h:outputText id="testOutput" value="Orientation Selected:- #{tabBean.orientation}"/>
+                   </h:panelGroup> 
+                   <br />
+                   <p>
+                   TabPane Three is an example of validation and ability to place a form within the tabPane
+                   by maintaining the state of the tabSet on the client.
+                   
+                   </p>
+      
             </ice:tabPane>       
-            <ice:tabPane label="Tab contents from Bean #{tabBean.counter}" >
-                <h:outputText value="#{tabBean.tabContents}"/>            
+            <ice:tabPane label="TabPane Two counter=#{tabBean.counter}" >
+               <center>
+                  <h:outputText value="#{tabBean.tabContents}"/>   
+                </center>         
             </ice:tabPane>
-            <ice:tabPane label="Tab contents.." >
-                <h:outputText value="Test ...."/>            
+            <ice:tabPane label="TabPane Three" >
+                <h:form id="tabPane1Form">
+                 <h:panelGroup>
+                     <h:inputText required="true" />
+				    <h:commandButton value="submit"/>
+				 </h:panelGroup> 
+			   </h:form>                      
             </ice:tabPane>
         </ice:tabSet>
-      </h:panelGroup> 
+    </h:panelGroup> 
+    <h:messages/>
+  </h:panelGroup>  
 </div>
