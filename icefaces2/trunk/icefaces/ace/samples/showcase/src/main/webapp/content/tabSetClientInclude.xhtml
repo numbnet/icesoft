@@ -4,15 +4,26 @@
      xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
-  <h:form >
-    <h:commandButton id="btn" value="render panel #{tabBean.renderPanel}" actionListener="#{tabBean.toggleRenderPanel}">
-    	<f:ajax execute="btn" render="@all" />
-	</h:commandButton> 
-
-    <h:commandButton id="cntr" value="Label counter #{tabBean.renderPanel}" actionListener="#{tabBean.incrementCounter}">
-    	<f:ajax execute="cntr" render="@all" />
-	</h:commandButton> 
-	</h:form>	
+  <h:panelGrid columns="2" id="setupgrid">
+     <h:panelGroup id="oldcontrols">
+		  <h:form >
+		    <h:commandButton id="btn" value="render panel #{tabBean.renderPanel}" actionListener="#{tabBean.toggleRenderPanel}">
+		    	<f:ajax execute="btn" render="@all" />
+			</h:commandButton> 
+		    <h:commandButton id="cntr" value="Label counter #{tabBean.renderPanel}" actionListener="#{tabBean.incrementCounter}">
+		    	<f:ajax execute="cntr" render="@all" />
+			</h:commandButton> 			
+		   </h:form>
+      </h:panelGroup>
+      <h:panelGroup id="newControls">
+         <h:selectOneMenu id="orientationSelection"
+              label="Orientation"
+              value="#{tabBean.orientation}">
+            <f:selectItems value="#{tabBean.orientations}"/> 
+            <f:ajax/>          
+         </h:selectOneMenu>
+      </h:panelGroup>
+	</h:panelGrid>	
     <h:panelGroup styleClass="ice-skin-sam" rendered="#{tabBean.renderPanel}">
        <ice:tabSet clientSide="true">
             <ice:tabPane label="Tab contents from JSP" >
