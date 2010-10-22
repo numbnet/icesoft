@@ -25,37 +25,25 @@
                             <h:inputText value="#{sliderBean.maxValue}" size="3"/>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <h:outputText value="Axis"/>
-                        </td>
-                        <td>
-                            <h:selectOneRadio value="#{sliderBean.axis}">
-                                <f:selectItem itemLabel="x" itemValue="x"/>
-                                <f:selectItem itemLabel="y" itemValue="y"/>
-                            </h:selectOneRadio>
-                        </td>
-                        <td>
-                            <h:outputText value="Submit on"/>
-                        </td>
-                        <td>
-                            <h:selectOneRadio value="#{sliderBean.submitOn}">
-                                <f:selectItem itemLabel="slide interval" itemValue="slideInterval"/>
-                                <f:selectItem itemLabel="slide end" itemValue="slideEnd"/>
-                            </h:selectOneRadio>
-                        </td>
-                    </tr>
                 </table>
                 <h:selectBooleanCheckbox value="#{sliderBean.clickableRail}"/>
                 <h:outputText value="Clickable rail"/>
             </h:panelGroup>
         </h:form>
-        <br/><br/>
+        <br/>
 
         <h:form>
+            <h:outputText value="Submit on slide interval: "/>
+            <br/>
             <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
-                             submitOn="#{sliderBean.submitOn}" clickableRail="#{sliderBean.clickableRail}"
-                             axis="#{sliderBean.axis}"/>
+                             submitOn="slideInterval" clickableRail="#{sliderBean.clickableRail}"
+                             axis="x"/>
+            <br/>
+            <h:outputText value="Submit on slide end: "/>
+            <br/><br/>
+            <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
+                             submitOn="slideEnd" clickableRail="#{sliderBean.clickableRail}"
+                             axis="y"/>
         </h:form>
         <br/>
 
