@@ -10,9 +10,9 @@ import java.text.ParseException;
 @SessionScoped
 public class DateTimeEntryBean {
     private Date selectedDate;
-    private boolean renderAsPopup;
-    private boolean renderInputField;
-    private boolean singleSubmit;
+    private boolean renderAsPopup = true;
+    private boolean renderInputField = true;
+    private boolean singleSubmit = true;
     private String pattern = "MMM/dd/yyyy hh:mm a";
 
 //    public CalendarBean() throws ParseException {
