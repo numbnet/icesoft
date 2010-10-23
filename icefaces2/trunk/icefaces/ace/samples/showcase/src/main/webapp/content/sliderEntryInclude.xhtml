@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<div xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:icecore="http://www.icefaces.org/icefaces/core"
-     xmlns:ice="http://www.icefaces.org/icefaces/components">
+     xmlns:ice="http://www.icefaces.org/icefaces/components"
+     xmlns:icecore="http://www.icefaces.org/icefaces/core" >
+
     <h:panelGroup id="panelContent2">
         <!--<h:outputText id="content2" value="#{msgs['content.sliderEntry.text']}" />-->
         <h:form>
@@ -50,4 +52,4 @@
         <h:outputText value="Output value = "/>
         <h:outputText value="#{sliderBean.value}"/>
     </h:panelGroup>
-</div>
+</ui:composition>
