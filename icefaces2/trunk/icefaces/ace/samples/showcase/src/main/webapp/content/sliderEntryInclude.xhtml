@@ -18,13 +18,19 @@
                             <h:outputText value="Min. value "/>
                         </td>
                         <td>
-                            <h:inputText value="#{sliderBean.minValue}" size="3"/>
+                            <h:inputText id="minValue" value="#{sliderBean.minValue}" size="3" validator="#{sliderBean.validateMinValue}"/>
                         </td>
                         <td>
                             <h:outputText value="Max. value "/>
                         </td>
                         <td>
-                            <h:inputText value="#{sliderBean.maxValue}" size="3"/>
+                            <h:inputText id="maxValue" value="#{sliderBean.maxValue}" size="3" validator="#{sliderBean.validateMaxValue}"/>
+                        </td>
+                        <td>
+                            <h:messages for="minValue"/>
+                        </td>
+                        <td>
+                            <h:messages for="maxValue"/>
                         </td>
                     </tr>
                 </table>

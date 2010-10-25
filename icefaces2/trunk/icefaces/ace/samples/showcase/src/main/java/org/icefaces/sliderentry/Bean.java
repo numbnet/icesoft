@@ -1,8 +1,12 @@
 package org.icefaces.sliderentry;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.validator.ValidatorException;
 
 @ManagedBean (name="sliderBean")
 @SessionScoped
@@ -122,5 +126,15 @@ public class Bean {
 
     public void setClickableRail(boolean clickableRail) {
         this.clickableRail = clickableRail;
+    }
+    public void validateMinValue(FacesContext context, UIComponent component, java.lang.Object newValue) {
+        if (!(maxValue - (Integer) newValue > 3)) {
+            throw new ValidatorException(new FacesMessage("Min must be < max by at least 3 units."));
+        }
+    }
+    public void validateMaxValue(FacesContext context, UIComponent component, java.lang.Object newValue) {
+        if (!((Integer) newValue - minValue > 3)) {
+            throw new ValidatorException(new FacesMessage("Max must be > min by at least 3 units."));
+        }
     }
 }
