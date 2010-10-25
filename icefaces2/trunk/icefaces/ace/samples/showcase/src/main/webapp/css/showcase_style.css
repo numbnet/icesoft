@@ -236,7 +236,7 @@ a.docViewNodeSelectedtrue{
     height: 20px;
     width: 275px;
     padding: 6px 0 0 8px;
-    background: #FFF url( '../xmlhttp/css/rime/css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
+    /*background: #FFF url( '../xmlhttp/css/rime/css-images/PnlHdr_bgslice.gif' ) repeat-x top left;*/
     border-bottom: 1px solid #d9d9d9;
 }
 
