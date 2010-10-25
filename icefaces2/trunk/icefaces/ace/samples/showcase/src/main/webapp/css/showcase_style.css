@@ -1018,3 +1018,6 @@ div.verticalAlignMdl{
     vertical-align:top;
 }
 
+.linkButtonColumn {
+    width: 150px;
+}
