@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:icecore="http://www.icefaces.org/icefaces/core"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:ice="http://www.icefaces.org/icefaces/components">
+ <h:panelGroup id="tabProxyPanel" >
+     <h4> The form below has a required field, with cancelOnInvalid="true"  
+         Any tab change will result in a validation error. </h4>	
+     <br />
+     <b>This tabset has cancelOnInvalid="true", which will allow to change the tab on validation error. </b>
+       <ice:tabSet id="myTabSet" cancelOnInvalid="true">
+            <ice:tabPane label="Tab contents from JSP" >
+                <h:outputText value="No other tab may be chosen without entering the required field below"/>            
+            </ice:tabPane>       
+            <ice:tabPane label="Tab contents from Bean" >
+                <h:outputText value="No validation errors may be present in order for this tabPane to be shown"/>            
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
+                <h:outputText value="No validation errors may be present in order for this tabPane to be shown"/>            
+            </ice:tabPane>
+        </ice:tabSet> 
+
+    <hr/>
+	<h:messages/>
+	<fieldset id="pushButtonActionListenerForm">
+	   <legend>Form with tabSetProxy to above form</legend>
+         <h:form id="form">
+	         <h:inputText id="inputText" required="true"/> Required field will block ability to change tabs when cancelOnInvalid true
+             <ice:tabSetProxy for="myTabSet" />
+         </h:form>
+    </fieldset>
+ 
+  </h:panelGroup>
+</ui:composition>
