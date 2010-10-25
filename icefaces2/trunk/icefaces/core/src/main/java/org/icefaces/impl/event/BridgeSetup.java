@@ -30,9 +30,12 @@ import org.icefaces.util.EnvUtils;
 import org.icefaces.render.ExternalScript;
 
 import javax.faces.application.Resource;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
+import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -44,6 +47,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 public class BridgeSetup implements SystemEventListener {
     public final static String ViewState = BridgeSetup.class.getName() + "::ViewState";
@@ -120,6 +125,54 @@ public class BridgeSetup implements SystemEventListener {
                     root.addComponentResource(context, externalScript, "head");
                 }
             }
+
+            Set<ResourceDependency> addedResDeps =
+                new HashSet<ResourceDependency>();
+            List<String> mandatoryResourceComponents = drk.getMandatoryResourceComponents();
+            for (String compClassName : mandatoryResourceComponents) {
+                try {
+                    Class<UIComponent> compClass = (Class<UIComponent>)
+                        Class.forName(compClassName);
+                    // Iterate over ResourceDependencies, ResourceDependency 
+                    // annotations, creating ResourceOutput components for 
+                    // each unique one, so they'll add the mandatory
+                    // resources.
+                    ResourceDependencies resDeps = compClass.getAnnotation(
+                        ResourceDependencies.class);
+                    if (resDeps != null) {
+                        for(ResourceDependency resDep : resDeps.value()) {
+                            addMandatoryResourceDependency(context,  root,
+                                compClassName, addedResDeps, resDep);
+                        }
+                    }
+                    ResourceDependency resDep = compClass.getAnnotation(
+                        ResourceDependency.class);
+                    if (resDep != null) {
+                        addMandatoryResourceDependency(context,  root,
+                            compClassName, addedResDeps, resDep);
+                    }
+                }
+                catch(Exception e) {
+                    if (log.isLoggable(Level.WARNING)) {
+                        log.log(Level.WARNING, "When processing mandatory " +
+                            "resource components, could not create instance " +
+                            "of '"+compClassName+"'");
+                    }
+                }
+            }
+            
+            /*
+            // Usefull for debugging the added resources
+            List<String> resStrings = new java.util.ArrayList<String>();
+            List<UIComponent> resources = root.getComponentResources(context, "head");
+            for (UIComponent resComp : resources) {
+                resStrings.add(resComp.toString());
+            }
+            java.util.Collections.sort(resStrings);
+            for(String resStr : resStrings) {
+                System.out.println("resStr: " + resStr);
+            }
+            */
         }
 
 
@@ -244,7 +297,56 @@ public class BridgeSetup implements SystemEventListener {
     private String generateViewID() {
         return "v" + Integer.toString(hashCode(), 36) + Integer.toString(++seed, 36);
     }
+    
+    private static void addMandatoryResourceDependency(
+            FacesContext facesContext, UIViewRoot root, String compClassName,
+            Set<ResourceDependency> addedResDeps, ResourceDependency resDep) {
+        if (addedResDeps.contains(resDep)) {
+            return;
+        }
+        addedResDeps.add(resDep);
+        addMandatoryResource(facesContext, root, compClassName, resDep.name(),
+            resDep.library(), resDep.target());
+    }
+    private static void addMandatoryResource(FacesContext facesContext,
+            UIViewRoot root, String compClassName, String name,
+            String library, String target) {
+        if (target == null || target.length() == 0) {
+            target = "head";
+        }
+        String rendererType = FacesContext.getCurrentInstance().
+                getApplication().getResourceHandler().
+                getRendererTypeForResourceName(name);
+        if (rendererType == null || rendererType.length() == 0) {
+            if (log.isLoggable(Level.WARNING)) {
+                log.log(Level.WARNING, "Could not determine renderer type " +
+                    "for mandatory resource, for component: " + compClassName +
+                    ". Resource name: " + name + ", library: " + library);
+            }
+        }
+        else {
+            root.addComponentResource(facesContext, new ResourceOutput(
+                rendererType, name, library), target);
+        }
+    }
 
+    public static class ResourceOutput extends UIOutput {
+        public ResourceOutput(String rendererType, String name, String library) {
+            setRendererType(rendererType);
+            if (name != null && name.length() > 0) {
+                getAttributes().put("name", name);
+            }
+            if (library != null && library.length() > 0) {
+                getAttributes().put("library", library);
+            }
+            setTransient(true);
+        }
+        
+        public String toString() {
+            return String.valueOf(getAttributes().get("library")) + "/" +
+                String.valueOf(getAttributes().get("name"));
+        }
+    }
     public static class JavascriptResourceOutput extends UIOutput {
 
         public JavascriptResourceOutput(String path, String library) {
