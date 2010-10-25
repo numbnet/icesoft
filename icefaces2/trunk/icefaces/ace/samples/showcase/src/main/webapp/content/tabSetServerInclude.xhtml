@@ -28,9 +28,11 @@
                          <h:panelGroup id="pane1Data">
                              <h:outputText value=" Employee Name: #{emp.lastName}, #{emp.firstName}"/>
                              <br />
+                            <h:outputText value="rendered for emp: #{emp.rendered}"/>
                              <h:panelGroup rendered="not #{emp.rendered}">
                                 <h:outputText value="This panel will only show when the other tabPane is not rendered"/>
                                 <br />
+
                                 <h:commandButton id="openTabOther" value="showOtherInfoTab" actionListener="#{emp.showTab}"/>
                              </h:panelGroup>                        
                          </h:panelGroup>
@@ -40,7 +42,7 @@
                                <h:panelGrid columns="3">
                                   <h:graphicImage style="border:none;width:20px; height:20px;" url="images/employee.gif"/>                    
                                   <h:outputText value=" #{emp.lastName}, #{emp.firstName}"/>
-                                  <h:commandButton id="closeTab" value="close" actionListener="#{emp.hideTab}"/>		                                                               
+                                  <h:commandButton id="closeTab" value="hide" actionListener="#{emp.hideTab}"/>		                                                               
                                </h:panelGrid>                   
                            </f:facet>              
                            <h:outputText value="Address: #{emp.address}"/> <br/>
