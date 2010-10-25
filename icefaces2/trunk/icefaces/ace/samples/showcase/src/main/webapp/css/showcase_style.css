@@ -215,10 +215,10 @@ a.docViewNodeSelectedtrue{
 .exampleBox {
     margin: 15px 15px 0 0;
     padding: 15px;
-    background: #FFF;
-    border: 1px solid #d9d9d9;
+    /*background: #FFF;*/
+    border: 1px solid #000000;
     display: block;
-    float:left;
+    /*float:left;*/
 }
 
 .synopsisBox .iceOutTxt {
