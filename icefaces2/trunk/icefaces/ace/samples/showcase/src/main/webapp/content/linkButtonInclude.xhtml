@@ -13,38 +13,37 @@
     </h:panelGroup>
 
 
-       <h:panelGrid columns="2"
+       <h:panelGrid columns="1"
                    styleClass="exampleBox"
                    rowClasses="textFieldNameRow">
 
             <h:form id="frm1">
-                <h:outputLabel for="LBSimLink"
+                <h:panelGrid columns="2"  rowClasses="textFieldNameRow">
+                  <h:outputLabel for="LBSimLink"
                     value="#{msgs['page.linkButton.simpleLinkLabel']}"/>
-                <ice:linkButton id="LBSimLink" href="http://www.icefaces.org/main/home/" value="#{msgs['page.linkButton.simpleLinkValue']}" />
+                  <ice:linkButton id="LBSimLink" href="http://www.icefaces.org/main/home/" value="#{msgs['page.linkButton.simpleLinkValue']}" />
+                </h:panelGrid>
             </h:form>
 
-           <h:form>
-             <ice:linkButton value="#{msgs['page.linkButton.actionSourceValue']}"
+           <h:form id="frm2">
+
+               <h:panelGrid columns="2"  rowClasses="textFieldNameRow">
+                   <h:outputLabel for="LBActLink"
+                    value="#{msgs['page.linkButton.actionSourceLabel']}" />
+             <ice:linkButton id="LBActLink" value="#{msgs['page.linkButton.actionSourceValue']}"
                                actionListener="#{linkBean.actionListenerMethod}" />
+               </h:panelGrid>
            </h:form>
 
-            <h:form >
-                 <h:outputLabel for="LBSingleSubmit"
-                    value="#{msgs['page.linkButton.singleSubmitLabel']}"/>
-                <h:panelGroup>
-                <ice:linkButton id="LBSingleSubmit" value="#{msgs['page.linkButton.singleSubmitOneValue']}" actionListener="#{linkBean.actionListenerMethod}" />
-
-                <ice:linkButton value="#{msgs['page.linkButton.singleSubmitTwoValue']}" singleSubmit="true" actionListener="#{linkBean.singleSubmitListenerMethod}" />
-                    <!--<f:param name="fartyTowel" value="10" /> -->
-                </h:panelGroup>
-            </h:form>
 
             <h:form id="frm4">
+                 <h:panelGrid columns="2"  rowClasses="textFieldNameRow">
                 <h:outputLabel for="LBComLink"
                     value="#{msgs['page.linkButton.comboButtonLabel']}"/>
                 <ice:linkButton id="LBComLink" href="http://www.google.ca"
                                  value="#{msgs['page.linkButton.comboButtonValue']}"
                                actionListener="#{linkBean.hrefAndActionMethod}" />
+                </h:panelGrid>
             </h:form>
 
             <h:form id="output">
