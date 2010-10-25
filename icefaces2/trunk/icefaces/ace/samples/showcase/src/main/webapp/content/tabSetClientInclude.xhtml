@@ -8,13 +8,13 @@
      xmlns:ice="http://www.icefaces.org/icefaces/components">
    <h:panelGroup id="contentContainer" class="tabContainer">
     
-        <h2>TabSet with state saved on Client</h2>
+        <h2>TabSet with state maintained on Client</h2>
    
     <h:form id="forminputsId">
      <h:panelGrid columns="2" id="setupgrid">
-       <h:panelGroup id="oldcontrols">	 
+       <h:panelGroup id="oldcontrols">	
+           <icecore:singleSubmit/> 
 		    <h:commandButton id="cntr" value="increment counter" actionListener="#{tabBean.incrementCounter}">
-		    	<f:ajax execute="cntr" render="@all" />
 			</h:commandButton> 					  
         </h:panelGroup>
         <h:panelGroup id="newControls">
@@ -31,7 +31,7 @@
        </h:panelGrid>	
      </h:form>   
     <h:panelGroup  id="tabSetPanelGroupId">
-       <ice:tabSet clientSide="true" orientation="#{tabBean.orientation}">
+       <ice:tabSet clientSide="true" orientation="#{tabBean.orientation}" >
             <ice:tabPane label="TabPane One" >
                  <p>
                     <h:outputText value="The new tabSet component doesn't have to make all those return trips to the server"/>                  
@@ -61,10 +61,14 @@
                 <h:form id="tabPane1Form">
                  <h:panelGroup>
                      <h:inputText id="requiredInput" required="#{true}" 
+                          value="#{tabBean.inpTxt}"
                           errorStyle="color:red"/>
                      <h:message for="requiredInput"/>
 				    <h:commandButton value="submit"/>
 				 </h:panelGroup> 
+				 <p>
+				    <h:outputText id="outputPlayback" value=" Value Entered: #{tabBean.inpTxt}"/>
+				 </p>                 
 			   </h:form> 
 			  </h:panelGroup>                     
             </ice:tabPane>
