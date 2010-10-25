@@ -42,7 +42,6 @@ public class TabBean implements Serializable{
     private int labelFacetIndex=0;
     private boolean closeTabValue;
     private boolean renderPanel = true; 
-    private int counter = 0;
     private List<Employee> employees = new ArrayList<Employee>();
     
  
@@ -224,10 +223,6 @@ public class TabBean implements Serializable{
     public void toggleRenderPanel(ActionEvent event) {
     	renderPanel = !renderPanel;    	
     }
-    
-    public void incrementCounter(ActionEvent event) {
-    	counter++;    	
-    }
 
 	public boolean isCancelOnInvalid() {
 		return cancelOnInvalid;
@@ -235,13 +230,6 @@ public class TabBean implements Serializable{
 
 	public void setCancelOnInvalid(boolean cancelOnInvalid) {
 		this.cancelOnInvalid = cancelOnInvalid;
-	}
-    public int getCounter() {
-			return counter;
- 	}
-    
-	public void setCounter(int counter) {
-			this.counter = counter;
 	}
 
 	public boolean isRenderPanel() {

@@ -60,10 +60,12 @@ public class Employee implements Serializable {
 		this.emailAddress = emailAddress;
 	}
 	public void showTab(ActionEvent event){
-		this.rendered=true;
+		this.setRendered(true);
+		System.out.println("showing Tab as rendered="+rendered);
 	}
 	public void hideTab(ActionEvent event){
-		this. rendered = false;
+		this.setRendered(false);
+		System.out.println("showing Tab as NOT rendered="+rendered);
 	}
    
 }
