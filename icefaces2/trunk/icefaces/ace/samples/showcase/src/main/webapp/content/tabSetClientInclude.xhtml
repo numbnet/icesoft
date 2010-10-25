@@ -16,11 +16,6 @@
     <h:panelGroup styleClass="exampleBox firstChildTitle" layout="block">
     <h:form id="forminputsId">
      <h:panelGrid columns="2" id="setupgrid">
-       <h:panelGroup id="oldcontrols">	
-           <icecore:singleSubmit/> 
-		    <h:commandButton id="cntr" value="increment counter" actionListener="#{tabBean.incrementCounter}">
-			</h:commandButton> 					  
-        </h:panelGroup>
         <h:panelGroup id="newControls">
          <icecore:singleSubmit/>
          <h:panelGrid id="selectOrientation" columns="2">
@@ -54,7 +49,7 @@
                    </p>
       
             </ice:tabPane>       
-            <ice:tabPane label="TabPane Two counter=#{tabBean.counter}" >  
+            <ice:tabPane label="TabPane Two" >  
                <h:panelGroup id="pane2Panel">
                  <center>
                     <h:outputText value="#{tabBean.tabContents}"/>   
