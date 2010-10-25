@@ -14,6 +14,7 @@ import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.render.MandatoryResourceComponent;
 
 /**
  * The sliderRender renders following elements:
@@ -29,6 +30,7 @@ import org.icefaces.util.EnvUtils;
  *   In addition to the rendering the renderer performs decode as well. This component
  *   doesn't use a hidden field for it value instead takes advantage of param support of JSF2
  */
+@MandatoryResourceComponent("org.icefaces.component.sliderentry.SliderEntry")
 public class SliderEntryRenderer extends Renderer{
     private final static Logger log = Logger.getLogger(SliderEntryRenderer.class.getName());
     // The decode method, in the renderer, is responsible for taking the values

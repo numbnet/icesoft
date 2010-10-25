@@ -15,9 +15,10 @@ import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.render.MandatoryResourceComponent;
 
 
-
+@MandatoryResourceComponent("org.icefaces.component.radiobutton.ButtonGroup")
 public class ButtonGroupRenderer extends Renderer {
 	private final static Logger log = Logger.getLogger(ButtonGroupRenderer.class.getName());
     

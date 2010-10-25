@@ -15,8 +15,10 @@ import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.render.MandatoryResourceComponent;
 
 
+@MandatoryResourceComponent("org.icefaces.component.linkbutton.LinkButton")
 public class LinkButtonRenderer extends Renderer {
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {

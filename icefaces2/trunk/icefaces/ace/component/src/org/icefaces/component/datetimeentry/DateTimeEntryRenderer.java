@@ -7,6 +7,7 @@ import org.icefaces.component.utils.Utils;
 import org.icefaces.component.animation.ClientBehaviorContextImpl;
 import org.icefaces.component.animation.AnimationBehavior;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -21,6 +22,7 @@ import java.text.ParseException;
 import java.text.DateFormat;
 import java.text.FieldPosition;
 
+@MandatoryResourceComponent("org.icefaces.component.datetimeentry.DateTimeEntry")
 public class DateTimeEntryRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {

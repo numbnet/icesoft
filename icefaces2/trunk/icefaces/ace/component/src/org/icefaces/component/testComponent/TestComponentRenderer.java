@@ -10,8 +10,10 @@ import javax.faces.render.Renderer;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.render.MandatoryResourceComponent;
 
 
+@MandatoryResourceComponent("org.icefaces.component.testComponent.TestComponent")
 public class TestComponentRenderer extends Renderer {
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
