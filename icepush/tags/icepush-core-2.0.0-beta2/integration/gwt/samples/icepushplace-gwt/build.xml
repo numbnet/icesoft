@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="icepushplace-gwt" default="war">
+
+	<property file="build.properties"/>
+	<property file="../samples.properties" />
+	<property file="${root.offset}/build.properties" />
+    <property name="server.url" value="http://localhost:8080"/>
+    <property name="replace.file" value="src/org/icepush/integration/icepushplace/client/WorldService.java"/>
+    <property name="replace.token.app" value="${replace.applicationURL}"/>
+    <property name="replace.value.app" value="${server.url}/icepushplace-gwt"/>
+    <property name="replace.token.ser" value="${replace.webserviceURL}"/>
+    <property name="replace.value.ser" value="${server.url}/icePushPlaceService"/>
+
+	<!-- Configure path to GWT SDK -->
+	<property name="gwt.sdk" location="${root.offset}/integration/gwt/core/lib/gwt" />
+	
+	<import file="${root.offset}/build-common.xml" />
+
+	<path id="project.class.path">
+		<pathelement location="./war/WEB-INF/classes" />
+		<pathelement location="${gwt.sdk}/gwt-user.jar" />
+		<fileset dir="${gwt.sdk}" includes="gwt-dev*.jar" />
+		<!-- Add any additional non-server libs (such as JUnit) -->
+		<fileset dir="./war/WEB-INF/lib" includes="**/*.jar" />
+	</path>
+
+	<target name="libs" description="Copy libs to WEB-INF/lib">
+		<mkdir dir="./war/WEB-INF/lib" />
+		<copy todir="./war/WEB-INF/lib" file="${gwt.sdk}/gwt-servlet.jar" />
+		
+        <icepush.available/>
+        <icepush.gwt.available/>
+        <copy todir="./war/WEB-INF/lib" preservelastmodified="true" verbose="true">
+            <fileset refid="icepush.dist"/>
+            <fileset refid="icepush.gwt.dist" />
+        </copy>
+		
+        <copy todir="./war/WEB-INF/lib">
+			<fileset dir="./lib" includes="**/*.jar"/>
+		</copy>
+	</target>
+
+	<target name="javac" depends="libs" description="Compile java source">
+		<antcall target="-pre.war.replace"/>
+        
+        <mkdir dir="war/WEB-INF/classes" />
+        <javac srcdir="src" includes="**" encoding="utf-8" destdir="war/WEB-INF/classes" source="1.5" target="1.5" nowarn="true" debug="true" debuglevel="lines,vars,source">
+            <classpath refid="project.class.path" />
+        </javac>
+        <copy todir="war/WEB-INF/classes">
+            <fileset dir="src" excludes="**/*.java" />
+        </copy>
+	</target>
+
+	<target name="gwtc" depends="javac" description="GWT compile to JavaScript">
+		<java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
+			<classpath>
+				<pathelement location="src" />
+				<path refid="project.class.path" />
+			</classpath>
+			<!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
+			<jvmarg value="-Xmx256M" />
+			<!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+			<arg value="org.icepush.integration.icepushplace.Page" />
+		</java>
+	</target>
+
+	<target name="devmode" depends="javac" description="Run development mode">
+		<java failonerror="true" fork="true" classname="com.google.gwt.dev.DevMode">
+			<classpath>
+				<pathelement location="src" />
+				<path refid="project.class.path" />
+			</classpath>
+			<jvmarg value="-Xmx256M" />
+			<arg value="-startupUrl" />
+			<arg value="Page.html" />
+			<!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+			<arg value="org.icepush.integration.icepushplace.Page" />
+		</java>
+	</target>
+
+	<target name="hosted" depends="devmode" description="Run development mode (NOTE: the 'hosted' target is deprecated)" />
+
+	<target name="build" depends="gwtc" description="Build this project" />
+
+	<target name="war" depends="build" description="Create a war file">
+		<zip destfile="${ant.project.name}.war" basedir="war" whenempty="fail"/>
+		<mkdir dir="${dist.dir}" />
+		<move file="${ant.project.name}.war" todir="${dist.dir}" preservelastmodified="true" verbose="true"/>
+	</target>
+	
+    <target name="-pre.war.replace">
+        <replace file="${replace.file}" token="${replace.token.app}" value="${replace.value.app}"/>
+        <replace file="${replace.file}" token="${replace.token.ser}" value="${replace.value.ser}"/>
+    </target>
+	
+	<target name="clean" description="Cleans this project">
+		<delete dir="war/WEB-INF/classes" failonerror="false" />
+		<delete dir="war/WEB-INF/lib" failonerror="false" />
+		<delete dir="war/icepushplace" failonerror="false" />
+		<delete file="${ant.project.name}.war" failonerror="false" />
+        <replace file="${replace.file}" token="${replace.value.app}" value="${replace.token.app}"/>
+        <replace file="${replace.file}" token="${replace.value.ser}" value="${replace.token.ser}"/>		
+	</target>
+
+</project>
