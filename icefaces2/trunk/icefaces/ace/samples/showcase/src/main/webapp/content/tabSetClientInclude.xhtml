@@ -7,9 +7,13 @@
      xmlns:icecore="http://www.icefaces.org/icefaces/core"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
    <h:panelGroup id="contentContainer" class="tabContainer">
-    
-        <h2>TabSet with state maintained on Client</h2>
+       <h:panelGroup styleClass="synopsisBox" layout="block">
+           <h:outputText styleClass="iceOutTxt" value="Client Side Tab Set"/>
+           <h:outputText styleClass="iceOutTxt" value="TabSet with state maintained on Client"/>
+       </h:panelGroup>
+
    
+    <h:panelGroup styleClass="exampleBox firstChildTitle" layout="block">
     <h:form id="forminputsId">
      <h:panelGrid columns="2" id="setupgrid">
        <h:panelGroup id="oldcontrols">	
@@ -30,7 +34,8 @@
         </h:panelGroup> 
        </h:panelGrid>	
      </h:form>   
-    <h:panelGroup  id="tabSetPanelGroupId">
+    </h:panelGroup>
+    <h:panelGroup  id="tabSetPanelGroupId" styleClass="exampleBox" layout="block">
        <ice:tabSet clientSide="true" orientation="#{tabBean.orientation}" >
             <ice:tabPane label="TabPane One" >
                  <p>
