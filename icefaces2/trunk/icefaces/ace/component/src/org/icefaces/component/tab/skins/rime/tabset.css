@@ -10,7 +10,7 @@
     border-width:1px 1px 0px 1px; 
     background-color:#FFFBFF;
     background-position: 6px 3px;
-	background-image: url(bullet-off.gif); /** sprite-ref: sprite; sprite-margin-top: 4px; sprite-margin-bottom: 4px; sprite-margin-left: 4px; */
+	background-image: url(bullet-off.gif); /** sprite-ref: sprite; sprite-margin-top: 4px; sprite-margin-bottom: 40px; sprite-margin-left: 4px; */
 	background-repeat: no-repeat;
     padding: 6px 1px 1px 12px;
 }
@@ -23,7 +23,7 @@
 .ice-skin-rime .yui-navset .yui-nav li.selected div.yui-navdiv {
     background-color:#F7F7F7;
     background-position: 6px 3px;
-	background-image: url(bullet.gif); /** sprite-ref: sprite; sprite-margin-top: 4px; sprite-margin-bottom: 4px; sprite-margin-left: 4px; */
+	background-image: url(bullet.gif); /** sprite-ref: sprite; sprite-margin-top: 4px; sprite-margin-bottom: 40px; sprite-margin-left: 4px; */
 	background-repeat: no-repeat;
 }
 
