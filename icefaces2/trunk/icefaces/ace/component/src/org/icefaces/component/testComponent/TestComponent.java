@@ -13,8 +13,8 @@ import javax.faces.application.ResourceDependency;
     @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
     @ResourceDependency(library = "yui/2_8_1", name = "logger/logger-min.js"),
 	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
-    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
-    @ResourceDependency(name="commandlink.js",library="org.icefaces.component.testcomponent")
+    @ResourceDependency(name="component.js",library="org.icefaces.component.util")
+//    @ResourceDependency(name="commandlink.js",library="org.icefaces.component.testcomponent")
 })
 
     public class TestComponent extends TestComponentBase {

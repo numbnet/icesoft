@@ -5,7 +5,17 @@
  * existing skin, then leave the core styles below comented out.
  */
 
+/* ICE-6155 - need to manually copy slider-skin.css contents into sam slider.css so image reference mapping will resolve correctly. 
+
 @import url('#{resource['org.icefaces.component.skins/sam_original/slider-skin.css']}');
+
+*/
+
+/* BEGIN -> slider-skin.css copy in */
+
+/* ---- END slider-skin COPY IN */
+
+
  
 /* ----- BEGIN CORE STYLING ----- */
 
