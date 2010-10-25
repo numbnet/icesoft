@@ -18,7 +18,7 @@
                    rowClasses="textFieldNameRow">
 
             <h:form id="frm1">
-                <h:panelGrid columns="2"  rowClasses="textFieldNameRow">
+                <h:panelGrid columns="2"  rowClasses="textFieldNameRow" columnClasses="linkButtonColumn">
                   <h:outputLabel for="LBSimLink"
                     value="#{msgs['page.linkButton.simpleLinkLabel']}"/>
                   <ice:linkButton id="LBSimLink" href="http://www.icefaces.org/main/home/" value="#{msgs['page.linkButton.simpleLinkValue']}" />
@@ -27,7 +27,7 @@
 
            <h:form id="frm2">
 
-               <h:panelGrid columns="2"  rowClasses="textFieldNameRow">
+               <h:panelGrid columns="2"  rowClasses="textFieldNameRow" columnClasses="linkButtonColumn">
                    <h:outputLabel for="LBActLink"
                     value="#{msgs['page.linkButton.actionSourceLabel']}" />
              <ice:linkButton id="LBActLink" value="#{msgs['page.linkButton.actionSourceValue']}"
@@ -37,7 +37,7 @@
 
 
             <h:form id="frm4">
-                 <h:panelGrid columns="2"  rowClasses="textFieldNameRow">
+                 <h:panelGrid columns="2"  rowClasses="textFieldNameRow" columnClasses="linkButtonColumn">
                 <h:outputLabel for="LBComLink"
                     value="#{msgs['page.linkButton.comboButtonLabel']}"/>
                 <ice:linkButton id="LBComLink" href="http://www.google.ca"
