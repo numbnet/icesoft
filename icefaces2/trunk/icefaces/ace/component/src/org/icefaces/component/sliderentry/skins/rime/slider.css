@@ -9,8 +9,7 @@
 .ice-skin-rime .yui3-slider-x .yui3-slider-rail,
 .ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-left,
 .ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-right {
-    background-image: url(rail-x.png);
-    background-repeat: repeat-x;
+    background-image: url(rail-x.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
     background-repeat: repeat-x;
     /* alternate: rail-x-dots.png */
     /* alternate: rail-x-lines.png */
@@ -56,8 +55,7 @@
 .ice-skin-rime .yui3-slider-y .yui3-slider-rail,
 .ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-top,
 .ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-bottom {
-    background-image: url(rail-y.png);
-    background-repeat: repeat-y;
+    background-image: url(rail-y.png);  /** sprite-ref: sprite-y; sprite-alignment: repeat; */
     background-repeat: repeat-y;
     /* alternate: rail-y-dots.png */
     /* alternate: rail-y-lines.png */
