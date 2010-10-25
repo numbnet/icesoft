@@ -62,9 +62,9 @@ public class FileEntryController implements Serializable {
         FileEntry fileEntry = (FileEntry) event.getSource();
         FileEntryResults results = fileEntry.getResults();
         for (FileEntryResults.FileInfo fileInfo : results.getFiles()) {
-System.out.println("Uploaded file: " + fileInfo.getFileName());
+//System.out.println("Uploaded file: " + fileInfo.getFileName());
             if (fileInfo.isSaved()) {
-System.out.println("  Saved, adding to list");
+//System.out.println("  Saved, adding to list");
                 FileData fileData = new FileData(fileInfo, getIdCounter());
                 synchronized (fileList) {
                     fileList.add(fileData);
@@ -86,7 +86,7 @@ System.out.println("  Saved, adding to list");
         Map map = context.getExternalContext().getRequestParameterMap();
         String fileIdStr = (String) map.get("fileId");
         int fileId = Integer.parseInt(fileIdStr);
-System.out.println("removeUploadedFile()  fileId: " + fileId);
+//System.out.println("removeUploadedFile()  fileId: " + fileId);
 
         synchronized (fileList) {
             FileData fileData;
@@ -94,9 +94,9 @@ System.out.println("removeUploadedFile()  fileId: " + fileId);
                 fileData = (FileData)fileList.get(i);
                 // remove our file
                 if (fileData.getId() == fileId) {
-System.out.println("removeUploadedFile()    found: " + fileData.getFileInfo().getFileName());
+//System.out.println("removeUploadedFile()    found: " + fileData.getFileInfo().getFileName());
                     boolean del = fileData.getFileInfo().getFile().delete();
-System.out.println("removeUploadedFile()    deleted: " + del);
+//System.out.println("removeUploadedFile()    deleted: " + del);
                     fileList.remove(i);
                     break;
                 }
