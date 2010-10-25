@@ -1,8 +1,7 @@
-package org.icefaces.component.Logger;
+package org.icefaces.component.logger;
 
 import java.io.IOException;
 import java.util.*;
-import javax.faces.event.ActionEvent;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -11,7 +10,6 @@ import javax.faces.render.Renderer;
 
 
 import org.icefaces.component.utils.HTML;
-import org.icefaces.util.EnvUtils;
 
 
 public class LoggerRenderer extends Renderer {

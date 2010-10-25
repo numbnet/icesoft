@@ -1,4 +1,4 @@
-package org.icefaces.component.Logger;
+package org.icefaces.component.logger;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
