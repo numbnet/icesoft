@@ -1,61 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:ui="http://java.sun.com/jsf/facelets"
-     xmlns:h="http://java.sun.com/jsf/html"
-     xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:ice="http://www.icefaces.org/icefaces/components"
-     xmlns:icecore="http://www.icefaces.org/icefaces/core" >
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ice="http://www.icefaces.org/icefaces/components"
+                xmlns:icecore="http://www.icefaces.org/icefaces/core">
 
     <h:panelGroup id="panelContent2">
-        <!--<h:outputText id="content2" value="#{msgs['content.sliderEntry.text']}" />-->
-        <h:form>
-            <h:panelGroup>
-                <icecore:singleSubmit/>
-                <table>
-                    <tr>
-                        <td>
-                            <h:outputText value="Min. value "/>
-                        </td>
-                        <td>
-                            <h:inputText id="minValue" value="#{sliderBean.minValue}" size="3" validator="#{sliderBean.validateMinValue}"/>
-                        </td>
-                        <td>
-                            <h:outputText value="Max. value "/>
-                        </td>
-                        <td>
-                            <h:inputText id="maxValue" value="#{sliderBean.maxValue}" size="3" validator="#{sliderBean.validateMaxValue}"/>
-                        </td>
-                        <td>
-                            <h:messages for="minValue"/>
-                        </td>
-                        <td>
-                            <h:messages for="maxValue"/>
-                        </td>
-                    </tr>
-                </table>
-                <h:selectBooleanCheckbox value="#{sliderBean.clickableRail}"/>
-                <h:outputText value="Clickable rail"/>
-            </h:panelGroup>
-        </h:form>
-        <br/>
-
-        <h:form>
-            <h:outputText value="Submit on slide interval: "/>
+        <h:panelGroup styleClass="synopsisBox" layout="block">
+            <h:outputText styleClass="iceOutTxt" value="Slider Entry"/>
+            <h:outputText styleClass="iceOutTxt" value="Change the params and slide the thumbs."/>
+        </h:panelGroup>
+        <h:panelGroup styleClass="exampleBox firstChildTitle" layout="block">
+            <h:form>
+                <h:panelGroup>
+                    <icecore:singleSubmit/>
+                    <table>
+                        <tr>
+                            <td>
+                                <h:outputText value="Min. value "/>
+                            </td>
+                            <td>
+                                <h:inputText id="minValue" value="#{sliderBean.minValue}" size="3"
+                                             validator="#{sliderBean.validateMinValue}"/>
+                            </td>
+                            <td>
+                                <h:outputText value="Max. value "/>
+                            </td>
+                            <td>
+                                <h:inputText id="maxValue" value="#{sliderBean.maxValue}" size="3"
+                                             validator="#{sliderBean.validateMaxValue}"/>
+                            </td>
+                            <td>
+                                <h:messages for="minValue"/>
+                            </td>
+                            <td>
+                                <h:messages for="maxValue"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <h:selectBooleanCheckbox value="#{sliderBean.clickableRail}"/>
+                    <h:outputText value="Clickable rail"/>
+                </h:panelGroup>
+            </h:form>
+        </h:panelGroup>
+        <h:panelGroup styleClass="exampleBox" layout="block">
+            <h:form>
+                <h:outputText value="Submit on slide interval: "/>
+                <br/>
+                <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
+                                 submitOn="slideInterval" clickableRail="#{sliderBean.clickableRail}"
+                                 axis="x" singleSubmit="false"/>
+                <br/>
+                <h:outputText value="Submit on slide end: "/>
+                <br/><br/>
+                <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
+                                 submitOn="slideEnd" clickableRail="#{sliderBean.clickableRail}"
+                                 axis="y" singleSubmit="false"/>
+            </h:form>
             <br/>
-            <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
-                             submitOn="slideInterval" clickableRail="#{sliderBean.clickableRail}"
-                             axis="x" singleSubmit="false"/>
-            <br/>
-            <h:outputText value="Submit on slide end: "/>
-            <br/><br/>
-            <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
-                             submitOn="slideEnd" clickableRail="#{sliderBean.clickableRail}"
-                             axis="y" singleSubmit="false"/>
-        </h:form>
-        <br/>
 
-        <h:outputText value="Output value = "/>
-        <h:outputText value="#{sliderBean.value}"/>
+            <h:outputText value="Output value = "/>
+            <h:outputText value="#{sliderBean.value}"/>
+        </h:panelGroup>
     </h:panelGroup>
+
 </ui:composition>
