@@ -24,7 +24,6 @@ import org.icefaces.component.tab.TabSet;
 public class TabBean implements Serializable{
     private String inpTxt;
     private String richText;
-    private Date selectedDate;
     private TabSet tabSet;
     private int tabIndex = 0;
     private int userDefineIndex = 0;
@@ -32,18 +31,10 @@ public class TabBean implements Serializable{
     private boolean renderTab1 = true;
     private SelectItem[] orientations = {new SelectItem("top", "top"), new SelectItem("bottom", "bottom"), new SelectItem("left", "left"), new SelectItem("right", "right")};
     private SelectItem[] tabIndexes = {new SelectItem(new Integer(0), "1"), new SelectItem(new Integer(1), "2")};
-    private String userDefineOrientation = "top";
-    private String orientation;
-    private String txt1;
-    private String txt2;
-    private String txt3;
-    private String txt4;    
+    private String orientation="top";  //originally set to top
+
     private String tabContents = "This tabPane represents a simple pane with text";
-    private List movies = new ArrayList();
-    private String title;
-    private String director;
-    private String plot;
-    private String genre;
+    private boolean cancelOnInvalid = false;
     private boolean showPopup;
     private int selectedTabIndex = 0;
     private String delayedContents = "TabPane contents";
@@ -89,12 +80,7 @@ public class TabBean implements Serializable{
     public void setRichText(String richText) {
         this.richText = richText;
     }
-    public Date getSelectedDate() {
-        return selectedDate;
-    }
-    public void setSelectedDate(Date selectedDate) {
-        this.selectedDate = selectedDate;
-    }
+
     public TabSet getTabSet() {
         return tabSet;
     }
@@ -209,42 +195,20 @@ public class TabBean implements Serializable{
     public void setOrientations(SelectItem[] orientations) {
         this.orientations = orientations;
     }
-    public String getUserDefineOrientation() {
-        return userDefineOrientation;
-    }
-    public void setUserDefineOrientation(String userDefineOrientation) {
-        this.userDefineOrientation = userDefineOrientation;
-    }
+
     public String getOrientation() {
         return orientation;
     }
     public void setOrientation(String orientation) {
         this.orientation = orientation;
     }
-    public String getTxt1() {
-        System.out.println("getTxt1()" + txt1);
-        return txt1;
-    }
-    public void setTxt1(String txt1) {
-        System.out.println("setTxt1()" + txt1);        
-        this.txt1 = txt1;
-    }
-    public String getTxt2() {
-        System.out.println("getTxt2()" + txt2);        
-        return txt2;
-    }
-    public void setTxt2(String txt2) {
-        System.out.println("setTxt2()" + txt2);        
-        this.txt2 = txt2;
-    }
+ 
     public String getTabContents() {
         return tabContents;
     }
     public void setTabContents(String tabContents) {
         this.tabContents = tabContents;
-    }
- 
-    
+    }    
   
     public boolean isShowPopup() {
         return showPopup;
@@ -298,31 +262,16 @@ public class TabBean implements Serializable{
         faceTabRendered = !faceTabRendered;
         labelFacetIndex = 0;
     }
+    public void openClosedTab(ActionEvent event){
+        faceTabRendered = !faceTabRendered;
+        labelFacetIndex = 0;	
+    }
+    
     public int getLabelFacetIndex() {
         return labelFacetIndex;
     }
     public void setLabelFacetIndex(int labelFacetIndex) {
         this.labelFacetIndex = labelFacetIndex;
-    }
-
-    public String getTxt3() {
-        System.out.println("getTxt3()" + txt3);         
-        return txt3;
-    }
-
-    public void setTxt3(String txt3) {
-        System.out.println("setTxt3()" + txt3);         
-        this.txt3 = txt3;
-    }
-
-    public String getTxt4() {
-        System.out.println("getTxt4()" + txt4);         
-        return txt4;
-    }
-
-    public void setTxt4(String txt4) {
-        System.out.println("setTxt4()" + txt4);         
-        this.txt4 = txt4;
     }
     
     public void formRenderedChange(ActionEvent event) {
@@ -353,5 +302,13 @@ public class TabBean implements Serializable{
     public void incrementCounter(ActionEvent event) {
     	counter++;    	
     }
+
+	public boolean isCancelOnInvalid() {
+		return cancelOnInvalid;
+	}
+
+	public void setCancelOnInvalid(boolean cancelOnInvalid) {
+		this.cancelOnInvalid = cancelOnInvalid;
+	}
    
 }
