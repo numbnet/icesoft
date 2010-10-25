@@ -3,47 +3,59 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:icecore="http://www.icefaces.org/icefaces/core"
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
  <h:panelGroup id="tabProxyPanel" >
-     <h:panelGroup styleClass="synopsisBox" layout="block">
-         <h:outputText styleClass="iceOutTxt" value="Server Side Tab Set"/>
-         <h:outputText styleClass="iceOutTxt" value="The form below has a requried field, originally cancelOnInvalid=&quot;false&quot; where
-         validation is ignored and tabs can change successfully. Change cancelOnInvalid=&quot;true&quot; 
-         and a tab change will result in a validation error."/>
-     </h:panelGroup>
-    <h:panelGroup styleClass="exampleBox firstChildTitle" layout="block">
-     <form id="checkBoxForCancelOnInvalidForm">
-         <icecore:singleSubmit/> 
-        <h:selectBooleanCheckbox value="#{tabBean.cancelOnInvalid}"/> CancelOnInvalid
+
+     <h4> This example shows the facet ability of tabSet as well as the ability to use this 
+          component in repeating fashion</h4>	
+     <br/>
+
+     <form id="repeatWithFacetForm">
+          <h:messages />
+        <table>
+          <ui:repeat id="itemTable" value="#{tabBean.employees}" var="emp">
+           <tr><td>
+                <h:outputText id="firstname" value="#{emp.firstName}"/>
+                <h:outputText id="lastname" value="#{emp.lastName}"/>
+             </td>
+             
+             <td>
+                 <ice:tabSet rendered="#{emp.rendered}" tabChangeListener="#{tabBean.tabChangeListener}">
+                      <ice:tabPane label="Employee" >
+                         <h:panelGroup id="pane1Data">
+                             <h:outputText value=" Employee Name: #{emp.lastName}, #{emp.firstName}"/>
+                             <br />
+                             <h:panelGroup rendered="not #{emp.rendered}">
+                                <h:outputText value="This panel will only show when the other tabPane is not rendered"/>
+                                <br />
+                                <h:commandButton id="openTabOther" value="showOtherInfoTab" actionListener="#{emp.showTab}"/>
+                             </h:panelGroup>                        
+                         </h:panelGroup>
+                      </ice:tabPane>
+                      <ice:tabPane rendered="#{emp.rendered}" >
+                           <f:facet name="label">
+                               <h:panelGrid columns="3">
+                                  <icecore:singleSubmit/>
+                                  <h:graphicImage style="border:none;width:20px; height:20px;" url="images/employee.gif"/>                    
+                                  <h:outputText value=" #{emp.lastName}, #{emp.firstName}"/>
+                                  <h:commandButton id="closeTab" value="close" actionListener="#{emp.hideTab}"/>		                                                               
+                               </h:panelGrid>                   
+                           </f:facet>              
+                           <h:outputText value="Address: #{emp.address}"/> <br/>
+                           <h:outputText value="email: #{emp.emailAddress}"/>
+                      </ice:tabPane>   
+                 </ice:tabSet>
+            </td>
+          </tr>      
+        </ui:repeat>
+         </table>
      </form>
     </h:panelGroup>
     <h:panelGroup styleClass="exampleBox" layout="block">
-     <b>This tabset has cancelOnInvalid="#{tabBean.cancelOnInvalid}", which will allow to change the tab on validation error. </b>
-        <br/><br/>
-       <ice:tabSet id="myTabSet" cancelOnInvalid="#{tabBean.cancelOnInvalid}">
-            <ice:tabPane label="Tab contents from JSP" >
-                <h:outputText value="CancelOnInvalid is currently: #{tabBean.cancelOnInvalid}"/>            
-            </ice:tabPane>       
-            <ice:tabPane label="Tab contents from Bean" >
-                <h:outputText value="#{tabBean.tabContents}"/>            
-            </ice:tabPane>
-            <ice:tabPane label="Tab contents.." >
-                <h:outputText value="Test ...."/>            
-            </ice:tabPane>
-        </ice:tabSet> 
 
-    <hr/>
-	<h:messages/>
-	<fieldset id="pushButtonActionListenerForm">
-	   <legend>Form with tabSetProxy to above form</legend>
-         <h:form id="form">
-	         <h:inputText id="inputText" required="true"/> Required field will block ability to change tabs if cancelOnInvalid true
-             <ice:tabSetProxy for="myTabSet" />
-         </h:form>
-    </fieldset>
+        <h:outputText value="CURRENT TABINDEX: #{emp.tabIndex}"/>
+
     </h:panelGroup>
  
-  </h:panelGroup>
 </ui:composition>

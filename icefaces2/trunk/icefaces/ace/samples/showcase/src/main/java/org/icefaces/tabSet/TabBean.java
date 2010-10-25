@@ -43,25 +43,15 @@ public class TabBean implements Serializable{
     private boolean closeTabValue;
     private boolean renderPanel = true; 
     private int counter = 0;
+    private List<Employee> employees = new ArrayList<Employee>();
     
-    public int getCounter() {
-		return counter;
-	}
-
-	public void setCounter(int counter) {
-		this.counter = counter;
-	}
-
-	public boolean isRenderPanel() {
-		return renderPanel;
-	}
-
-	public void setRenderPanel(boolean renderPanel) {
-		this.renderPanel = renderPanel;
-	}
+ 
 	private boolean formRendered = true;
     public TabBean() {
-   
+    	employees.add(new Employee("John", "Smith", "123 Oak Dr, Calgary, AB", "jsmith@icesoft.com"));
+    	employees.add(new Employee("Nancy", "Brown", "456 Elm Lane, Calgary, AB", "nbrown@icesoft.com"));
+    	employees.add(new Employee("James", "Gagnon", "789 Birch Grove, Calgary, AB", "jgagnon@icesoft.com"));
+    	employees.add(new Employee("Sara", "Messier", "120 Maple Circle, Calgary, AB", "smessier@icesoft.com"));
     }
     
    public void tabsetChangeListener(ValueChangeEvent event) {
@@ -88,26 +78,7 @@ public class TabBean implements Serializable{
         this.tabSet = tabSet;
     } 
     int i=2;
-    public void addTab(ActionEvent event) {
-        System.out.println("Add tab called................." +
-        		"" );
-        Application application = FacesContext.getCurrentInstance().getApplication();
-
-        TabPane tabPane = (TabPane) application
-                .createComponent(TabPane.COMPONENT_TYPE);
-        String tabid = "id"+ i;
-        tabPane.setId(tabid);
-        
-        HtmlOutputText output = (HtmlOutputText) application
-        .createComponent(HtmlOutputText.COMPONENT_TYPE); 
-        output.setId(FacesContext.getCurrentInstance().getViewRoot().createUniqueId());
-        output.setRendererType("javax.faces.Text");
-        output.setValue("This is tab "+ ++i);
-        tabPane.getChildren().add(output);
-        tabPane.setLabel("Tab "+ i);
-        tabSet.getChildren().add(tabPane);
-        resetIndexes();        
-    }
+ 
     public int getTabIndex() {
         return tabIndex;
     }
@@ -137,12 +108,6 @@ public class TabBean implements Serializable{
         } catch (Exception e){}
     }
     
-    public int getUserDefineIndex() {
-        return userDefineIndex;
-    }
-    public void setUserDefineIndex(int userDefineIndex) {
-        this.userDefineIndex = userDefineIndex;
-    }
     public boolean isRenderTab0() {
         return renderTab0;
     }
@@ -156,23 +121,6 @@ public class TabBean implements Serializable{
         this.renderTab1 = renderTab1;
     }
     
-    public String getRederTab0Txt() {
-        return "Tab1 render ="+ renderTab0;
-    }
-    
-    public String getRederTab1Txt() {
-        return "Tab2 render ="+ renderTab1;
-    }  
-    
-    public void flipTab0(ActionEvent event) {
-        renderTab0 = !renderTab0;
-        resetIndexes();        
-    }
-    
-    public void flipTab1(ActionEvent event) {
-        renderTab1 = !renderTab1; 
-        resetIndexes();
-    }
     
     private void resetIndexes() {
         int childCount = tabSet.getChildCount();
@@ -210,29 +158,7 @@ public class TabBean implements Serializable{
         this.tabContents = tabContents;
     }    
   
-    public boolean isShowPopup() {
-        return showPopup;
-    }
-    public void setShowPopup(boolean showPopup) {
-        this.showPopup = showPopup;
-    }
-    public void flipPopupState(ActionEvent event) {
-        showPopup = !showPopup;
-    }
-    public String getDelayedContents() {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return delayedContents;
-        
-    }
-    public void setDelayedContents(String delayedContents) {
-        this.delayedContents = delayedContents;
-    }
-    
+ 
     public void tabChangeListener(ValueChangeEvent event) {
         selectedTabIndex = Integer.parseInt(event.getNewValue().toString());
     }
@@ -310,5 +236,28 @@ public class TabBean implements Serializable{
 	public void setCancelOnInvalid(boolean cancelOnInvalid) {
 		this.cancelOnInvalid = cancelOnInvalid;
 	}
-   
+    public int getCounter() {
+			return counter;
+ 	}
+    
+	public void setCounter(int counter) {
+			this.counter = counter;
+	}
+
+	public boolean isRenderPanel() {
+			return renderPanel;
+	}
+
+	public void setRenderPanel(boolean renderPanel) {
+			this.renderPanel = renderPanel;
+	}
+
+	public List<Employee> getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
+	}
+	
 }
