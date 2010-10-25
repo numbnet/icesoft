@@ -18,7 +18,8 @@
     </h:panelGroup>
     
     <h:panelGroup style="display: block; border:1px;">
-      <ice:fileEntry label="#{msgs['content.fileEntry.comp.label']}"
+      <ice:fileEntry id="fileEntryComp"
+                     label="#{msgs['content.fileEntry.comp.label']}"
                      relativePath="uploaded"
                      fileEntryListener="#{fileEntryController.listener}"/>
       <h:commandButton value="#{msgs['content.fileEntry.upload.label']}"/>
