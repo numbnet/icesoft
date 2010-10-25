@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.icefaces.render.ExternalScript;
+import org.icefaces.render.MandatoryResourceComponent;
 
 public class DOMRenderKit extends RenderKitWrapper {
     private static Logger log = Logger.getLogger(DOMRenderKit.class.getName());
@@ -52,6 +53,7 @@ public class DOMRenderKit extends RenderKitWrapper {
     private static final String MESSAGES_CLASS = 
             "org.icefaces.impl.renderkit.html_basic.MessagesRenderer";
     private ArrayList<ExternalScript> customScriptRenderers = new ArrayList<ExternalScript>();
+    private ArrayList<String> mandatoryResourceComponents = new ArrayList<String>();
 
     //Announce ICEfaces 2.0
     static {
@@ -90,6 +92,16 @@ public class DOMRenderKit extends RenderKitWrapper {
                 customScriptRenderers.add(ec);
             }
         }
+        MandatoryResourceComponent mrc = (MandatoryResourceComponent)
+            clazz.getAnnotation(MandatoryResourceComponent.class);
+        if (mrc != null) {
+            String compClassName = mrc.value();
+            if (compClassName != null && compClassName.length() > 0) {
+                if (!mandatoryResourceComponents.contains(compClassName)) {
+                    mandatoryResourceComponents.add(compClassName);
+                }
+            }
+        }
 //        if (!property.methodExpressionArgument().equals(Property.Null)) {
 //					propertyValues.methodExpressionArgument = property.methodExpressionArgument();
 //				}
@@ -115,7 +127,11 @@ public class DOMRenderKit extends RenderKitWrapper {
 
     public List<ExternalScript> getCustomRenderScripts() {
         return customScriptRenderers;
-    } 
+    }
+    
+    public List<String> getMandatoryResourceComponents() {
+        return mandatoryResourceComponents;
+    }
 
     private class FormBoost extends RendererWrapper {
         private FormBoost(Renderer renderer) {
