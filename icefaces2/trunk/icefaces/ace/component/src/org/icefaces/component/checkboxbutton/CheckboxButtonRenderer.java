@@ -18,7 +18,9 @@ import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
 
 import org.icefaces.util.EnvUtils;
+import org.icefaces.render.MandatoryResourceComponent;
 
+@MandatoryResourceComponent("org.icefaces.component.checkboxbutton.CheckboxButton")
 public class CheckboxButtonRenderer extends Renderer {
 
 	public CheckboxButtonRenderer(){
