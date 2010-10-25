@@ -64,15 +64,6 @@ public class MessagesRenderer extends HtmlBasicRenderer {
         assert(messageIter != null);
 
         if (!messageIter.hasNext()) {
-            if (mustRender) {
-                // no message to render, but must render anyway
-                // but if we're writing the dev stage messages,
-                // only write it if messages exist
-                if ("javax_faces_developmentstage_messages".equals(component.getId())) {
-                    return;
-                }
-                // ok here's where must render adds the div
-            }
             writer.startElement("div", component);
             if (mustRender) {
                 writeIdAttributeIfNecessary(context, writer, component);
