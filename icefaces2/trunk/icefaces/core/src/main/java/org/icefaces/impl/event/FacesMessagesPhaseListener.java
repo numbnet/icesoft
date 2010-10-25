@@ -72,6 +72,7 @@ public class FacesMessagesPhaseListener implements PhaseListener {
     }
     
     protected void saveFacesMessages(FacesContext facesContext) {
+//System.out.println("saveFacesMessages()");
         List<FacesMessage> globals = facesContext.getMessageList(null);
 //System.out.println("  global FacesMessage(s): " + toStringListOfFacesMessages(globals));
         
@@ -116,6 +117,10 @@ public class FacesMessagesPhaseListener implements PhaseListener {
     }
     
     protected void restoreFacesMessages(FacesContext facesContext) {
+//System.out.println("restoreFacesMessages()");
+//System.out.println("    isAjaxRequest   : " + facesContext.getPartialViewContext().isAjaxRequest());
+//System.out.println("    isPartialRequest: " + facesContext.getPartialViewContext().isPartialRequest());
+//System.out.println("    isExecuteAll    : " + facesContext.getPartialViewContext().isExecuteAll());
         List<FacesMessage> globals = (List<FacesMessage>)
             facesContext.getViewRoot().getAttributes().remove(
                 SAVED_GLOBAL_FACES_MESSAGES_KEY);
@@ -190,7 +195,7 @@ public class FacesMessagesPhaseListener implements PhaseListener {
                     for (String execId : executeIds) {
                         if (execId.length() > 0 &&
                             (clientId.equals(execId) || clientId.startsWith(execId + sep))) {
-//System.out.println("        clientId startsWith execId: " + execId);
+System.out.println("        clientId startsWith execId: " + execId);
                             executed = true;
                             break;
                         }
@@ -198,9 +203,29 @@ public class FacesMessagesPhaseListener implements PhaseListener {
                     */
                     if (!executed) {
                         List<FacesMessage> msgs = components.get(clientId);
+                        List<FacesMessage> existingMsgs =
+                            facesContext.getMessageList(clientId);
                         for (FacesMessage fm : msgs) {
-//System.out.println("        adding fm: " + toStringFacesMessage(fm));
-                            facesContext.addMessage(clientId, fm);
+//System.out.println("        considering adding fm: " + toStringFacesMessage(fm));
+                            
+                            boolean matchedSummaryAndDetail = false;
+                            if (existingMsgs != null) {
+                                for (FacesMessage existing : existingMsgs) {
+                                    if (stringEquals(existing.getSummary(),
+                                            fm.getSummary()) &&
+                                        stringEquals(existing.getDetail(),
+                                            fm.getDetail()))
+                                    {
+                                        matchedSummaryAndDetail = true;
+                                        break;
+                                    }
+                                }
+                            }
+//System.out.println("          matchedSummaryAndDetail: " + matchedSummaryAndDetail);
+                            if (!matchedSummaryAndDetail) {
+//System.out.println("          adding");
+                                facesContext.addMessage(clientId, fm);
+                            }
                         }
                     }
                 }
