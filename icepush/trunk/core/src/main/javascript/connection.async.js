@@ -285,6 +285,7 @@ var AsyncConnection;
                 }
             } else {
                 //ensure that only one blocking connection exists
+                stop(timeoutBomb);
                 abort(listener);
             }
         }, pollingPeriod));
