@@ -1,0 +1,153 @@
+<!--
+ *
+ * Version: MPL 1.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ *
+-->
+<project name="ICEpush Place Web Service common builds">
+
+	<fileset id="dist.icepushplacews.jar" file="${dist.dir}/icepushplacews.jar" />
+
+	<property file="./build.properties" />
+
+	<fileset id="icepushplacews.dist" dir="${root.offset}/${dist.dir}">
+		<include name="icepushplacews.jar" />
+	</fileset>
+	
+	<tstamp>
+		<format property="build.time" pattern="yyyy-mm-dd hh:mm:ss" />
+	</tstamp>
+
+	<macrodef name="clean">
+		<element name="add.filesets" optional="true" />
+		<sequential>
+			<delete failonerror="false" includeEmptyDirs="true">
+				<fileset dir="${build.dir}" />
+				<fileset dir="${dist.dir}" />
+				<add.filesets/>
+			</delete>
+		</sequential>
+	</macrodef>
+	
+	<target name="clean">
+		<echo>Cleaning ${ant.project.name}...</echo>
+		<clean/>
+	</target>
+
+	<target name="pre.compile" description="prepare for compilation" depends="clean">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dir}/classes" />
+		<mkdir dir="${dist.dir}" />
+	</target>
+	
+	<target name="compile" depends="pre.compile">
+		<compile/>
+	</target>
+	
+	<target name="jar" depends="compile">
+		<build.jar/>	
+	</target>
+
+	<macrodef name="compile">
+		<attribute name="src.copy.excludes" default="**/*.java" />
+		<attribute name="failonerror" default="true" />
+		<attribute name="src.javac.excludes" default="" />
+		<attribute name="compile.target" default="1.5" />
+		<attribute name="compile.source" default="1.5" />
+		<attribute name="compile.debug" default="true" />
+		<attribute name="compile.debuglevel" default="lines,vars,source"/>
+		<attribute name="src.dir" default="${java.dir}"/>
+		
+		<element name="add.javac.elements" optional="true" />
+		<element name="add.classpath.elements" optional="true" />
+
+		<sequential>
+			<echo>Compiling ${ant.project.name}...</echo>
+			<mkdir dir="${java.dir}" />
+			<mkdir dir="${build.dir}/classes" />
+
+			<javac destdir="${classes.dir}" sourcepath="" 
+				source="@{compile.source}" 
+				target="@{compile.target}" 
+				debug="@{compile.debug}" 
+				debuglevel="@{compile.debuglevel}"
+				failonerror="@{failonerror}">
+				
+				<src location="@{src.dir}" />
+				<include name="**/*.java" />
+				<exclude name="@{src.javac.excludes}" />
+				<classpath>
+					<fileset refid="icepushplacews.dist" />
+					<fileset dir="${root.offset}/${lib.dir}" />
+					<pathelement location="${root.offset}/../target/classes/" />
+					<add.classpath.elements />
+				</classpath>
+				<add.javac.elements />
+				
+			</javac>
+
+			<copy todir="${build.dir}/classes" preservelastmodified="true">
+				<fileset dir="${java.dir}" excludes="@{src.copy.excludes}" />
+			</copy>
+
+		</sequential>
+	</macrodef>
+
+	<macrodef name="build.jar">
+		<attribute name="jar.file.name" default="${ant.project.name}.jar" />
+		<element name="add.excludes" optional="true" />
+		<element name="add.filesets" optional="true" />
+
+		<sequential>
+			<echo>Jarring ${ant.project.name}...</echo>
+			<delete file="${dist.dir}/@{jar.file.name}" />
+			<mkdir dir="${dist.dir}" />	
+			<mkdir dir="${build.dir}/jar"/>		
+			<copy todir="${build.dir}/jar">
+				<fileset dir="${classes.dir}">
+					<include name="**/*"/>
+					<add.excludes />
+				</fileset>
+				<fileset dir="../target/classes">
+					<include name="**/*.class"/>
+					<exclude name="**/icepushplace/ws/**"/>
+					<exclude name="**/icepushplace/service/**"/>
+				</fileset>
+			</copy>
+			<jar destfile="${dist.dir}/@{jar.file.name}" duplicate="fail">
+				<fileset dir="${build.dir}/jar">
+					<include name="**/*"></include>
+				</fileset>
+				<add.filesets/>
+				<manifest>
+	                <attribute name="Built-By" value="${user.name}"/>
+	                <section name="org.icepushplacews">
+	                    <attribute name="Implementation-Title"
+	                               value="${product}"/>
+	                    <attribute name="Implementation-Version"
+	                               value="${release.type} ${version.primary}.${version.secondary}.${version.tertiary}_${build.number} (${build.time})"/>
+	                    <attribute name="Implementation-Vendor"
+	                               value="${company}"/>
+	                </section>
+	            </manifest>
+			</jar>			
+		</sequential>
+	</macrodef>
+
+</project>
