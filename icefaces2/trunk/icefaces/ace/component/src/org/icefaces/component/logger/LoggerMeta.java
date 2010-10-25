@@ -1,4 +1,4 @@
-  package org.icefaces.component.Logger;
+package org.icefaces.component.logger;
 
 import javax.faces.component.UIComponent;
 import javax.el.MethodExpression;
@@ -13,13 +13,13 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 
 @Component(
         tagName ="logger",
-        componentClass ="org.icefaces.component.Logger.Logger",
-        rendererClass ="org.icefaces.component.Logger.LoggerRenderer", 
+        componentClass ="org.icefaces.component.logger.Logger",
+        rendererClass ="org.icefaces.component.logger.LoggerRenderer", 
         componentType = "org.icefaces.Logger", 
         rendererType = "org.icefaces.LoggerRenderer",            
         extendsClass = "javax.faces.component.UIComponentBase", 
-        generatedClass = "org.icefaces.component.Logger.LoggerBase",
-		componentFamily="com.icesoft.faces.Logger"
+        generatedClass = "org.icefaces.component.logger.LoggerBase",
+		componentFamily="org.icefaces.Logger"
         )
         
 @ResourceDependencies({
