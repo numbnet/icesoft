@@ -7,15 +7,19 @@
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
  <h:panelGroup id="tabProxyPanel" >
-     <h4> The form below has a requried field, originally cancelOnInvalid="false" where
-         validation is ignored and tabs can change successfully. Change cancelOnInvalid="true" 
-         and a tab change will result in a validation error. </h4>	
-     <br/>
+     <h:panelGroup styleClass="synopsisBox" layout="block">
+         <h:outputText styleClass="iceOutTxt" value="Server Side Tab Set"/>
+         <h:outputText styleClass="iceOutTxt" value="The form below has a requried field, originally cancelOnInvalid=&quot;false&quot; where
+         validation is ignored and tabs can change successfully. Change cancelOnInvalid=&quot;true&quot; 
+         and a tab change will result in a validation error."/>
+     </h:panelGroup>
+    <h:panelGroup styleClass="exampleBox firstChildTitle" layout="block">
      <form id="checkBoxForCancelOnInvalidForm">
          <icecore:singleSubmit/> 
         <h:selectBooleanCheckbox value="#{tabBean.cancelOnInvalid}"/> CancelOnInvalid
      </form>
-     <br />
+    </h:panelGroup>
+    <h:panelGroup styleClass="exampleBox" layout="block">
      <b>This tabset has cancelOnInvalid="#{tabBean.cancelOnInvalid}", which will allow to change the tab on validation error. </b>
        <ice:tabSet id="myTabSet" cancelOnInvalid="#{tabBean.cancelOnInvalid}">
             <ice:tabPane label="Tab contents from JSP" >
@@ -38,6 +42,7 @@
              <ice:tabSetProxy for="myTabSet" />
          </h:form>
     </fieldset>
+    </h:panelGroup>
  
   </h:panelGroup>
 </ui:composition>
