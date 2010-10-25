@@ -21,6 +21,7 @@
     </h:panelGroup>
     <h:panelGroup styleClass="exampleBox" layout="block">
      <b>This tabset has cancelOnInvalid="#{tabBean.cancelOnInvalid}", which will allow to change the tab on validation error. </b>
+        <br/><br/>
        <ice:tabSet id="myTabSet" cancelOnInvalid="#{tabBean.cancelOnInvalid}">
             <ice:tabPane label="Tab contents from JSP" >
                 <h:outputText value="CancelOnInvalid is currently: #{tabBean.cancelOnInvalid}"/>            
