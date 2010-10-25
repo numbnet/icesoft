@@ -6,7 +6,7 @@
      xmlns:ice="http://www.icefaces.org/icefaces/components">
   <h:panelGroup id="panelContentButtons">
 
-  <h:panelGroup styleClass="synopsisBox buttonsAndLinksContainer">
+  <h:panelGroup styleClass="synopsisBox" layout="block">
         <h:outputText styleClass="iceOutTxt" value="#{msgs['page.buttonsAndLinks.synopsis']}"/>
         <h:outputText styleClass="iceOutTxt" value="#{msgs['page.buttonsAndLinks.instructions']}"/>
     </h:panelGroup>
@@ -14,7 +14,7 @@
     <!-- Layout the links and buttons. -->
       <h:form id ="pageFormOfAbsoluteSubmission">
     <h:panelGrid columns="2"
-                   styleClass="exampleBox buttonsAndLinksContainer"
+                   styleClass="exampleBox"
                    rowClasses="textFieldNameRow">
         <h:outputLabel for="BLTxt"
                          value="#{msgs['page.buttonsAndLinks.inputTextLabel']}"/>
@@ -60,7 +60,7 @@
       </h:form>
 
     <!-- Display the input value submitted. -->
-    <h:panelGroup
+    <h:panelGroup layout="block"
             styleClass="exampleBox firstChildTitle backBeanChangeContainer">
 
         <!-- backing bean title box. Replace H3 with appropriate stuff later. -->
