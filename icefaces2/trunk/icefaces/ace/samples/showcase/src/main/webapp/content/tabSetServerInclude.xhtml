@@ -36,7 +36,6 @@
                       <ice:tabPane rendered="#{emp.rendered}" >
                            <f:facet name="label">
                                <h:panelGrid columns="3">
-                                  <icecore:singleSubmit/>
                                   <h:graphicImage style="border:none;width:20px; height:20px;" url="images/employee.gif"/>                    
                                   <h:outputText value=" #{emp.lastName}, #{emp.firstName}"/>
                                   <h:commandButton id="closeTab" value="close" actionListener="#{emp.hideTab}"/>		                                                               
