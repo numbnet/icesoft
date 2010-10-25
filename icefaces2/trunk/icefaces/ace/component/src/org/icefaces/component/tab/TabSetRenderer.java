@@ -109,19 +109,21 @@ public class TabSetRenderer extends Renderer{
         ResponseWriter writer = facesContext.getResponseWriter();
         final TabSet tabSet = (TabSet) uiComponent;        
         String clientId = uiComponent.getClientId(facesContext);
-        String userDefinedClass = String.valueOf(tabSet.getAttributes().get("styleClass"));       
-        String styleClass = userDefinedClass != null ? 
-                userDefinedClass +" yui-navset": "yui-navset";
+        String styleClass = "yui-naveset";
+        
         String orientation = tabSet.getOrientation();
         if ("top".equalsIgnoreCase(orientation)) {
-            styleClass+= " yui-navset-top";
+            styleClass= "yui-navset yui-navset-top ";
         } else if ("left".equalsIgnoreCase(orientation)) {
-            styleClass+= " yui-navset-left";
+            styleClass= "yui-navset yui-navset-left ";
         } else if ("right".equalsIgnoreCase(orientation)) {
-            styleClass+= " yui-navset-right";
+            styleClass= "yui-navset yui-navset-right ";
         } else if ("bottom".equalsIgnoreCase(orientation)) {
-            styleClass+= " yui-navset-bottom";
+            styleClass= "yui-navset yui-navset-bottom ";
         } 
+        Object userDefinedClass = tabSet.getAttributes().get("styleClass"); 
+        if (userDefinedClass != null ) 
+        		styleClass+= userDefinedClass.toString() ;
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
         boolean isClientSide = tabSet.isClientSide();
         boolean singleSubmit = tabSet.isSingleSubmit();        
@@ -175,7 +177,6 @@ public class TabSetRenderer extends Renderer{
         if (EnvUtils.isAriaEnabled(facesContext)) {
             writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.PRESENTATION_ROLE, ARIA.ROLE_ATTR);  
         }
-
         UIComponent labelFacet = ((TabPane)tab).getLabelFacet();
         if (tabSet.getSelectedIndex() == index) {
             writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
