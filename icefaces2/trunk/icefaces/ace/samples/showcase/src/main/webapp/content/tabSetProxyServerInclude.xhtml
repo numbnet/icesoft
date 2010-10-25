@@ -7,9 +7,12 @@
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
  <h:panelGroup id="tabProxyPanel" >
-     <h4> The form below has a required field, with cancelOnInvalid="true"  
-         Any tab change will result in a validation error. </h4>	
-     <br />
+     <h:panelGroup styleClass="synopsisBox" layout="block">
+         <h:outputText styleClass="iceOutTxt" value="Tab Set Proxy"/>
+         <h:outputText styleClass="iceOutTxt" value="The form below has a required field, with cancelOnInvalid=&quot;true&quot;
+         Any tab change will result in a validation error."/>
+     </h:panelGroup>
+    <h:panelGroup styleClass="exampleBox" layout="block">
      <b>This tabset has cancelOnInvalid="true", which will allow to change the tab on validation error. </b>
        <ice:tabSet id="myTabSet" cancelOnInvalid="true">
             <ice:tabPane label="Tab contents from JSP" >
@@ -32,6 +35,7 @@
              <ice:tabSetProxy for="myTabSet" />
          </h:form>
     </fieldset>
+    </h:panelGroup>
  
   </h:panelGroup>
 </ui:composition>
