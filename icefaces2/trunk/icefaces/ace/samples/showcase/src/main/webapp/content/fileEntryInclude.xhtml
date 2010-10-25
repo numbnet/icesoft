@@ -7,17 +7,18 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
   <h:form id="fileform">
-    <h2><h:outputText value="#{msgs['content.fileEntry.text']}"/></h2>
     
-    <h:panelGroup style="display: block; border:1px;">
-      <h3><h:outputText value="#{msgs['content.fileEntry.messages.label']}"/></h3>
-      <h:messages layout="table"
-                  globalOnly="false"
-                  showDetail="true"
-                  showSummary="false"/>
+    <h:panelGroup styleClass="synopsisBox" layout="block">
+        <h:outputText styleClass="iceOutTxt" value="#{msgs['content.fileEntry.text']}"/>
+        <h:outputText styleClass="iceOutTxt" value="#{msgs['content.fileEntry.instructions']}"/>
     </h:panelGroup>
     
-    <h:panelGroup style="display: block; border:1px;">
+    <h:panelGroup styleClass="exampleBox" layout="block">
+        <h3><h:outputText value="#{msgs['content.fileEntry.messages.label']}"/></h3>
+        <h:messages layout="table"
+                    globalOnly="false"
+                    showDetail="true"
+                    showSummary="false"/>
       <ice:fileEntry id="fileEntryComp"
                      label="#{msgs['content.fileEntry.comp.label']}"
                      relativePath="uploaded"
@@ -25,7 +26,7 @@
       <h:commandButton value="#{msgs['content.fileEntry.upload.label']}"/>
     </h:panelGroup>
     
-    <h:panelGroup style="display: block; border:1px;">
+    <h:panelGroup styleClass="exampleBox" layout="block">
       <h3><h:outputText value="#{msgs['content.fileEntry.history.label']}"/></h3>
       <h:dataTable border="1"
                    value="#{fileEntryController.fileList}"
