@@ -548,10 +548,12 @@ p#clear {
 
 .ice-skin-sam .ice-calcontainer .toggle-popup.open-popup {
     background-image: url(cal_button.gif); /** sprite-ref: sprite-x; */
+    background-color: transparent;
 }
 
 .ice-skin-sam .ice-calcontainer .toggle-popup.close-popup {
     background-image: url(cal_off.gif); /** sprite-ref: sprite-x; */
+    background-color: transparent;
 }
 
 .ice-skin-sam .yui-panel-container {
