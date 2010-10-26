@@ -8,8 +8,8 @@
      xmlns:ice="http://www.icefaces.org/icefaces/components">
    <h:panelGroup id="contentContainer" class="tabContainer">
        <h:panelGroup styleClass="synopsisBox" layout="block">
-           <h:outputText styleClass="iceOutTxt" value="Client Side Tab Set"/>
-           <h:outputText styleClass="iceOutTxt" value="TabSet with state maintained on Client"/>
+           <h:outputText styleClass="iceOutTxt" value="Tab Set (Client-Side)"/>
+           <h:outputText styleClass="iceOutTxt" value="Illustrates a TabSet with selected-tab state maintained on the client and support for various tab orientations."/>
        </h:panelGroup>
 
    
@@ -19,7 +19,7 @@
         <h:panelGroup id="newControls">
          <icecore:singleSubmit/>
          <h:panelGrid id="selectOrientation" columns="2">
-            <h:outputText value="Select Orientation:"/>
+            <h:outputText value="Tab Orientation:"/>
             <h:selectOneMenu id="orientationSelection"
                 label="Orientation"
                 value="#{tabBean.orientation}">
@@ -34,32 +34,28 @@
        <ice:tabSet clientSide="true" orientation="#{tabBean.orientation}" >
             <ice:tabPane label="TabPane One" >
                  <p>
-                    <h:outputText value="The new tabSet component doesn't have to make all those return trips to the server"/>                  
-                    <h:outputText value="Also note note the ability to label tabs in any direction and the counter on tabPane 2"/>
-                </p>
-                 
-                  <h:panelGroup id="testOrientation">
-                    <h:outputText id="testOutput" value="Orientation Selected:- #{tabBean.orientation}"/>
-                   </h:panelGroup> 
-                   <br />
-                   <p>
-                   TabPane Three is an example of validation and ability to place a form within the tabPane
-                   by maintaining the state of the tabSet on the client.
-                   
-                   </p>
-      
+                    <h:outputText value="When used in client mode, all tabPanes are rendered to the client, and the visibilty of each tabPane is managed by the tabSet without requiring a server round-trip."/>                  
+                </p>                       
             </ice:tabPane>       
             <ice:tabPane label="TabPane Two" >  
                <h:panelGroup id="pane2Panel">
-                 <center>
-                    <h:outputText value="#{tabBean.tabContents}"/>   
-                  </center>  
+                  <h:panelGroup id="testOrientation">
+					<p>
+                    <h:outputText value="Note the ability to orient the tabPane labels along any side of the tabSet."/>
+                    </p><p>
+                    <h:outputText id="testOutput" value="The selected orientation is: '#{tabBean.orientation}'."/>
+					</p>
+                   </h:panelGroup> 
                 </h:panelGroup>       
             </ice:tabPane>
             <ice:tabPane label="TabPane Three" >
               <h:panelGroup id="pane3PanelId">
                 <h:form id="tabPane1Form">
                  <h:panelGroup>
+                   <p>
+                   <h:outputText value="When in client mode, all components in all tabPanes are rendered, with just the client visibility being toggled by the tabSet. Thus, it is easy to keep the state of entered, but not yet submitted values in the client, even when switching between tabs." />
+                   </p>
+                   <p/>
                      <h:inputText id="requiredInput" required="#{true}" 
                           value="#{tabBean.inpTxt}"
                           errorStyle="color:red"/>
