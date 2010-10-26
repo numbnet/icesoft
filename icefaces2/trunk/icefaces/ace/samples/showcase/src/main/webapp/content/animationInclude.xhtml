@@ -5,7 +5,10 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
     <h:panelGroup id="panelContentAnimation">
-        <h:outputText id="contentAnimation" value="Animation" />
+        <h:panelGroup styleClass="synopsisBox" layout="block">
+            <h:outputText styleClass="iceOutTxt" id="contentAnimation" value="Animation"/>
+            <h:outputText styleClass="iceOutTxt" value="Special attributes that can be used to invoke effects on the components."/>
+        </h:panelGroup>
 
         <style type="text/css">
             .default_display_value {
@@ -69,7 +72,7 @@
                 </ice:tabSet>
             </h:panelGroup>
             
-            <h:panelGroup style="display:block" layout="block">
+            <h:panelGroup styleClass="exampleBox" layout="block">
                 <h3>The following demonstrates a customised animation, to mimic pulsate effect, in a standard h:panelGrid</h3>
                 <pre> &lt;ice:animation event="mouseover" to="{opacity:1}" from="{opacity:0}" iterations="3" duration="0.4" easing="easeIn"/&gt; </pre>
                 <h:panelGrid style="font-weight:bold">
