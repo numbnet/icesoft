@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 import javax.faces.bean.ViewScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 
 @ManagedBean (name="checkBean")
@@ -26,7 +26,7 @@ public class CheckboxBean implements Serializable {
         this.checked = selected;
     }
 
-    public void changeValue(ActionEvent e) {
+    public void changeValue(ValueChangeEvent e) {
         checked = !checked;
     }
 
