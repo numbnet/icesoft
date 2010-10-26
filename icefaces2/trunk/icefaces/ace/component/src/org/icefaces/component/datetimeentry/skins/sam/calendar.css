@@ -503,6 +503,7 @@ p#clear {
     min-height: 0;
     background-image: none;
     color: #000000;
+    border-style: none;
 }
 
 .ice-skin-sam .ice-calcontainer .yui-button-hover {
@@ -619,5 +620,9 @@ p#clear {
 }
 
 .ice-skin-sam .ice-calcontainer .yui-button {
+    border: 1px solid #808080;
+}
+
+.ice-skin-sam .ice-calcontainer .yui-button .first-child {
     border-style: none;
 }
