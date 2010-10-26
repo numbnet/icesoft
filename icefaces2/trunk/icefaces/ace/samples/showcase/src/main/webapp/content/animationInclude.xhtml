@@ -17,7 +17,7 @@
         </style>
 
         <h:form prependId="false">
-            <h:panelGroup style="height:170px; display:block" layout="block">
+            <h:panelGroup styleClass="exampleBox" layout="block">
                 <h3>The following tabSet uses the theme default of 'fade' for its transition</h3>
                 <ice:tabSet >
                     <ice:tabPane label="One" >
@@ -32,7 +32,7 @@
                 </ice:tabSet>
             </h:panelGroup>
 
-            <h:panelGroup style="height:140px; display:block" layout="block">
+            <h:panelGroup styleClass="exampleBox" layout="block">
                 <h3>The following tabSet overrides the the theme default for its transition. It also demonstrates chaining by using two predefined animations 'highlight' and 'fade'.</h3>
                 <pre> &lt;ice:animation event="transition" name="highlight"/&gt; </pre>
                 <pre> &lt;ice:animation event="transition" name="fade"/&gt; </pre>
@@ -52,7 +52,7 @@
                 </ice:tabSet>
             </h:panelGroup>
             
-            <h:panelGroup style="height:140px; display:block" layout="block">
+            <h:panelGroup styleClass="exampleBox" layout="block">
                 <h3>The following tabSet uses a fully customised animation, using 'from' and 'to' attributes to mimic blind up/down effect</h3>
                 <pre> &lt;ice:animation event="transition" from="{opacity:1, height:28}" to="{opacity:0, height:1}" easing="backIn"/&gt; </pre>
                 <ice:tabSet >
