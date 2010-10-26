@@ -22,6 +22,7 @@
                          value="#{msgs['page.checkbox.checkboxLabel']}" />
           <ice:checkboxButton id="CBBoxOne"
                               label="#{msgs['page.checkbox.checkboxValue']}"
+                              valueChangeListener="#{checkBean.changeValue}"
                               value="#{checkBean.checked}" />
 
       </h:panelGrid>
