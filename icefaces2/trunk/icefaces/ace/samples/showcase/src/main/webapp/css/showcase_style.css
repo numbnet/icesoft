@@ -1029,3 +1029,7 @@ div.verticalAlignMdl{
 .exampleBox.popup-cal {
     height: 300px;
 }
+
+.err-msg {
+    color: red;
+}
