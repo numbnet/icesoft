@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<div xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
   <h:panelGroup id="panelContentButtons">
 
@@ -30,20 +31,6 @@
         <ice:pushButton id="BLCmdBtn"
                            value="Submit"
                            actionListener="#{buttonsAndLinks.submitButtonListener}"/>
-              
-        <h:outputLabel for="BLCmdLnk"
-                         value="#{msgs['page.buttonsAndLinks.linkButtonLabel']}"/>
-        <ice:linkButton id="BLCmdLnk"
-                         value="Submit"
-                         actionListener="#{buttonsAndLinks.linkButtonListener}"/>
-
-        <h:outputLabel for="BLOutLnk"
-                         value="#{msgs['page.buttonsAndLinks.outputLinkLabel']}"/>
-        <h:outputLink id="BLOutLnk"
-                        value="http://www.icesoft.com"
-                        target="_blank">
-            <h:outputText value="www.icesoft.com"/>
-        </h:outputLink>
     </h:panelGrid>
 
       </h:form>
@@ -78,4 +65,4 @@
     </h:panelGroup>
 
   </h:panelGroup>
-</div>
+</ui:composition>
