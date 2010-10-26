@@ -1025,3 +1025,7 @@ div.verticalAlignMdl{
 .ice-file-entry {
     width: 190px;
 }
+
+.exampleBox.popup-cal {
+    height: 300px;
+}
