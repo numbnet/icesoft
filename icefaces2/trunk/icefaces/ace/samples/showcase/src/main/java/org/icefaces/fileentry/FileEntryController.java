@@ -111,4 +111,8 @@ public class FileEntryController implements Serializable {
     public List getFileList() {
         return fileList;
     }
+    
+    public boolean isEmptyFileList() {
+        return fileList.isEmpty();
+    }
 }

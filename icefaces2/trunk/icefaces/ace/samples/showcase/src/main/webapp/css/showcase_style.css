@@ -1022,12 +1022,28 @@ div.verticalAlignMdl{
     width: 150px;
 }
 
-.ice-file-entry {
-    width: 190px;
-}
-
 .exampleBox.popup-cal {
     height: 300px;
+}
+
+.fileTable {
+    border-style:none none none solid;
+    border-width:medium medium medium 1px;
+    border-collapse:collapse;
+}
+
+.fileTable th {
+    border:1px solid black;
+    color:#484848;
+    padding:5px;
+    text-align:center;
+}
+
+.fileTable td {
+    border:1px solid black;
+    color:#000000;
+    padding:3px 5px;
+    text-align:left;
 }
 
 .err-msg {

@@ -1,7 +1,5 @@
 
 .rime .ice-file-entry {
-    border: 1px solid #ABABAB;
-    background-color: #FFFFFF;
     margin: 2px;
     padding: 2px;
     font-family: Arial, Helvetica, sans-serif;
@@ -11,8 +9,6 @@
 }
 
 .rime .ice-file-entry-disabled {
-    border: 1px solid #CCCCCC;
-    background-color: #FFFFFF;
     margin: 2px;
     padding: 2px;
     font-family: Arial, Helvetica, sans-serif;
