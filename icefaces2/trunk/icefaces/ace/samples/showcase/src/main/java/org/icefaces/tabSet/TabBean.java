@@ -27,8 +27,9 @@ public class TabBean implements Serializable{
     private TabSet tabSet;
     private int tabIndex = 0;
     private int userDefineIndex = 0;
-    private boolean renderTab0 = true;
     private boolean renderTab1 = true;
+    private boolean renderTab2 = true;
+    private boolean renderTab3 = true;
     private SelectItem[] orientations = {new SelectItem("top", "top"), new SelectItem("bottom", "bottom"), new SelectItem("left", "left"), new SelectItem("right", "right")};
     private SelectItem[] tabIndexes = {new SelectItem(new Integer(0), "1"), new SelectItem(new Integer(1), "2")};
     private String orientation="top";  //originally set to top
@@ -38,7 +39,7 @@ public class TabBean implements Serializable{
     private boolean showPopup;
     private int selectedTabIndex = 0;
     private String delayedContents = "TabPane contents";
-    private boolean closeButton;
+    private boolean closeButton1, closeButton2, closeButton3;
     private int labelFacetIndex=0;
     private boolean closeTabValue;
     private boolean renderPanel = true; 
@@ -83,13 +84,14 @@ public class TabBean implements Serializable{
     }
     public void setTabIndex(int tabIndex) {
         this.tabIndex = tabIndex;
-    }
+   }
     public SelectItem[] getTabIndexes() {
         return tabIndexes;
     }
     public void setTabIndexes(SelectItem[] tabIndexes) {
         this.tabIndexes = tabIndexes;
     }
+
 
     public void tabIndexChanged(ValueChangeEvent event) {
         System.out.println("------>> TabIndexChanged");
@@ -107,24 +109,30 @@ public class TabBean implements Serializable{
         } catch (Exception e){}
     }
     
-    public boolean isRenderTab0() {
-        return renderTab0;
-    }
-    public void setRenderTab0(boolean renderTab0) {
-        this.renderTab0 = renderTab0;
-    }
     public boolean isRenderTab1() {
         return renderTab1;
     }
-    public void setRenderTab1(boolean renderTab1) {
-        this.renderTab1 = renderTab1;
+    public void setRenderTab1(boolean renderTab) {
+        this.renderTab1 = renderTab;
+    }
+    public boolean isRenderTab2() {
+        return renderTab2;
+    }
+    public void setRenderTab2(boolean renderTab) {
+        this.renderTab2 = renderTab;
+    }
+    public boolean isRenderTab3() {
+        return renderTab3;
+    }
+    public void setRenderTab3(boolean renderTab) {
+        this.renderTab3 = renderTab;
     }
     
     
     private void resetIndexes() {
         int childCount = tabSet.getChildCount();
         int diff = 1;
-        if (!renderTab0) {
+        if (!renderTab1) {
             childCount = childCount -1;
             diff = diff + 1;
         }
@@ -168,37 +176,38 @@ public class TabBean implements Serializable{
     public void setSelectedTabIndex(int selectedTabIndex) {
         this.selectedTabIndex = selectedTabIndex;
     }
-    public boolean isCloseButton() {
-        return closeButton;
-    }
-    public void setCloseButton(boolean closeButton) {
-        this.closeButton = closeButton;
-    }
     
-    private boolean faceTabRendered = true;
+    private boolean faceTab1Rendered = true;
 
-    public boolean isFaceTabRendered() {
-        return faceTabRendered;
+    public boolean isFaceTab1Rendered() {
+        return faceTab1Rendered;
     }
-    public void setFaceTabRendered(boolean faceTabRendered) {
-        this.faceTabRendered = faceTabRendered;
+ 
+    private boolean faceTab2Rendered = true;
+
+    public boolean isFaceTab2Rendered() {
+        return faceTab2Rendered;
+    }
+     private boolean faceTab3Rendered = true;
+
+    public boolean isFaceTab3Rendered() {
+        return faceTab3Rendered;
+    }
+     
+    public void closeTab1(ActionEvent event) {
+        faceTab1Rendered = false;
+    }
+    public void closeTab2(ActionEvent event) {
+        faceTab2Rendered = false;
+    }
+    public void closeTab3(ActionEvent event) {
+        faceTab3Rendered = false;
+    }
+
+    public void openClosedTabs(ActionEvent event){
+        faceTab1Rendered = faceTab2Rendered = faceTab3Rendered = true;
     }
     
-    public void closeTab(ActionEvent event) {
-        faceTabRendered = !faceTabRendered;
-        labelFacetIndex = 0;
-    }
-    public void openClosedTab(ActionEvent event){
-        faceTabRendered = !faceTabRendered;
-        labelFacetIndex = 0;	
-    }
-    
-    public int getLabelFacetIndex() {
-        return labelFacetIndex;
-    }
-    public void setLabelFacetIndex(int labelFacetIndex) {
-        this.labelFacetIndex = labelFacetIndex;
-    }
     
     public void formRenderedChange(ActionEvent event) {
         formRendered = !formRendered;
