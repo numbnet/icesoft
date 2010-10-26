@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:ice="http://www.icefaces.org/icefaces/components">
+  <h:panelGroup id="panelContentCheckboxes">
+
+  <h:panelGroup styleClass="synopsisBox" layout="block">
+        <h:outputText styleClass="iceOutTxt" value="#{msgs['page.checkbox.synopsis']}"/>
+        <h:outputText styleClass="iceOutTxt" value="#{msgs['page.checkbox.instructions']}"/>
+    </h:panelGroup>
+
+    <!-- Layout the links and buttons. -->
+  <h:form id ="checkboxForm">
+
+      <h:panelGrid columns="2"
+                   styleClass="exampleBox"
+                   rowClasses="textFieldNameRow">
+          <h:outputLabel for="CBBoxOne"
+                         value="#{msgs['page.checkbox.checkboxLabel']}" />
+          <ice:checkboxButton id="CBBoxOne"
+                              label="#{msgs['page.checkbox.checkboxValue']}"
+                              value="#{checkBean.checked}" />
+
+      </h:panelGrid>
+    </h:form>
+
+    <h:panelGroup id="imagePanel">
+        <h:graphicImage value="images/employee.gif"
+                                    rendered="#{checkBean.checked}" />
+    </h:panelGroup>
+
+
+  </h:panelGroup>
+</ui:composition>
