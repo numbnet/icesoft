@@ -20,11 +20,12 @@
   ~
   -->
 
-<project name="icefaces" default="install" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+<project name="icefaces-maven" default="install" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 
     <property file="../core/build.properties"/>
     <property name="lib.dir" location="../lib"/>
     <property name="build.dir" location="../lib"/>
+	<property name="compat.dir" location="compat"/>
     <property name="finalNameGlimmer" value="${glimmer.artifactId}-${mvn.version}"/>
     <property name="finalNameCompat" value="${compat.artifactId}-${mvn.version}"/>
     <property name="finalNameCompsCompat" value="${comps.compat.artifactId}-${mvn.version}"/>
@@ -50,11 +51,26 @@
     	 <localRepository refid="local.repository"/>
       </artifact:pom>
        <echo>installing icefaces-${glimmerPom.version} to local repository</echo>
-      <artifact:install file="${build.dir}/icefaces.jar" >
+      <artifact:install file="${lib.dir}/icefaces.jar" >
       	 <localRepository refid="local.repository"/>      	
     	  <pom refid="glimmerPom"/>
       </artifact:install>
-      
+	  <artifact:pom id="compatPom" file="icefaces-compat.pom"> 
+	     	 <localRepository refid="local.repository"/>
+	  </artifact:pom>
+	      	<echo> installing icefaces-compat-${compatPom.version} to local repository</echo>
+	  <artifact:install file="${lib.dir}/icefaces-compat.jar" >
+	      	 <localRepository refid="local.repository"/>      	
+	         	  <pom refid="compatPom"/>
+	  </artifact:install>	
+  	  <artifact:pom id="acePom" file="icefaces-ace.pom"> 
+  	     	 <localRepository refid="local.repository"/>
+  	  </artifact:pom>
+  	      	<echo> installing icefaces-ace-${acePom.version} to local repository</echo>
+  	  <artifact:install file="${lib.dir}/icefaces-ace.jar" >
+  	      	 <localRepository refid="local.repository"/>      	
+  	         	  <pom refid="acePom"/>
+  	  </artifact:install>	  
     </target>
 	
 	<target name="get-maven">
