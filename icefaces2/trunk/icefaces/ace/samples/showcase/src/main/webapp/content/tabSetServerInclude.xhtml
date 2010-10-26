@@ -4,6 +4,7 @@
      xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:icecore="http://www.icefaces.org/icefaces/core"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
     <h:panelGroup styleClass="synopsisBox" layout="block">
         <h:outputText styleClass="iceOutTxt" value="Server Side Tab Set"/>
@@ -13,52 +14,36 @@
  <h:panelGroup id="tabProxyPanel" styleClass="exampleBox" layout="block">
 
 
-     <form id="repeatWithFacetForm">
-          <h:messages />
-        <table>
-          <ui:repeat id="itemTable" value="#{tabBean.employees}" var="emp">
-           <tr><td>
-                <h:outputText id="firstname" value="#{emp.firstName}"/>
-                <h:outputText id="lastname" value="#{emp.lastName}"/>
-             </td>
-             
-             <td>
-                 <ice:tabSet rendered="#{emp.rendered}" tabChangeListener="#{tabBean.tabChangeListener}">
-                      <ice:tabPane label="Employee" >
-                         <h:panelGroup id="pane1Data">
-                             <h:outputText value=" Employee Name: #{emp.lastName}, #{emp.firstName}"/>
-                             <br />
-                            <h:outputText value="rendered for emp: #{emp.rendered}"/>
-                             <h:panelGroup rendered="not #{emp.rendered}">
-                                <h:outputText value="This panel will only show when the other tabPane is not rendered"/>
-                                <br />
-
-                                <h:commandButton id="openTabOther" value="showOtherInfoTab" actionListener="#{emp.showTab}"/>
-                             </h:panelGroup>                        
-                         </h:panelGroup>
-                      </ice:tabPane>
-                      <ice:tabPane rendered="#{emp.rendered}" >
-                           <f:facet name="label">
-                               <h:panelGrid columns="3">
-                                  <h:graphicImage style="border:none;width:20px; height:20px;" url="images/employee.gif"/>                    
-                                  <h:outputText value=" #{emp.lastName}, #{emp.firstName}"/>
-                                  <h:commandButton id="closeTab" value="hide" actionListener="#{emp.hideTab}"/>		                                                               
-                               </h:panelGrid>                   
-                           </f:facet>              
-                           <h:outputText value="Address: #{emp.address}"/> <br/>
-                           <h:outputText value="email: #{emp.emailAddress}"/>
-                      </ice:tabPane>   
-                 </ice:tabSet>
-            </td>
-          </tr>      
-        </ui:repeat>
-         </table>
-     </form>
-    </h:panelGroup>
-    <h:panelGroup styleClass="exampleBox" layout="block">
+    <h:form styleClass="ice-skin-sam">
+       <ice:tabSet tabIndex="#{tabBean.labelFacetIndex}">
+            <ice:tabPane label="Tab 1">
+                <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
+            </ice:tabPane>       
+            <ice:tabPane rendered="#{tabBean.faceTabRendered}">
+                <f:facet name="label">
+                    <h:panelGrid columns="3">
+                            <h:graphicImage style="border:none;width:12px; height:12px;" url="images/employee.gif"/>                    
+                            <h:outputText value="Tab 2"/>
+                            <h:commandButton id="closeTab" value="close" actionListener="#{tabBean.closeTab}">
+		                       <f:ajax execute="closeTab" render="@all" />
+		                    </h:commandButton>                                       
+                    </h:panelGrid>                   
+                </f:facet>            
+                <h:outputText value="#{tabBean.tabContents}"/>            
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
+                <h:outputText value="Test ...."/>            
+            </ice:tabPane>
+        </ice:tabSet> 
+    </h:form>          
+  </h:panelGroup>
+  <h:panelGroup styleClass="exampleBox" layout="block">
 
         <h:outputText value="CURRENT TABINDEX: #{emp.tabIndex}"/>
-
-    </h:panelGroup>
+        <h:form>
+          <icecore:singleSubmit/>
+           <h:commandButton value="resetTabs" actionListener="#{tabBean.openClosedTab}"/>
+        </h:form>
+  </h:panelGroup>
  
 </ui:composition>
