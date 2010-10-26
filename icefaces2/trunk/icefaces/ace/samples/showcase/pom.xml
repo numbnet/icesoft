@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.icesoft</groupId>
-  <artifactId>test1</artifactId>
+  <artifactId>ace-showcase</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>test1</name>
+  <name>ace-showcase</name>
   <url>http://icefaces.org</url>
       <properties>
-    <jsf.version>2.0.3-b04</jsf.version>
+    <jsf.version>2.0.3-FCS</jsf.version>
     <ice.version>2.0-Beta2</ice.version>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -26,10 +26,10 @@
     <dependencies>
       <dependency>
     	<groupId>org.icefaces</groupId>
-    	<artifactId>sparkle</artifactId>
+    	<artifactId>icefaces-ace</artifactId>
     	<version>${ice.version}</version>
     	<scope>compile</scope>
-    	<exclusions>
+   <!-- 	<exclusions>
     	   <exclusion>
     	      <groupId>javax.servlet</groupId>
     	      <artifactId>servlet-api</artifactId>
@@ -38,11 +38,7 @@
     	      <groupId>javax.el</groupId>
     	      <artifactId>el-api</artifactId>
     	   </exclusion>
-    	 <exclusion>
-    	  <artifactId>icefacesl</artifactId>
-    	  <groupId>org.icefaces</groupId>
-    	 </exclusion>
-    	</exclusions>
+    	</exclusions> --> 
        </dependency>
 
       <dependency>
@@ -63,14 +59,15 @@
          <version>${ice.version}</version>
       </dependency> -->
         <dependency>
-            <groupId>org.icefaces</groupId>
-            <artifactId>sparkle</artifactId>
-            <version>2.0-Beta2</version>
-        </dependency>
-        <dependency>
            <groupId>org.glassfish.web</groupId>
            <artifactId>el-impl</artifactId>
            <version>2.2.1-b04</version>
+           <scope>provided</scope>
+        </dependency>
+        <dependency>
+           <groupId>javax.portlet</groupId>
+           <artifactId>portlet-api</artifactId>
+           <version>2.0</version>
            <scope>provided</scope>
         </dependency>
     </dependencies>
