@@ -159,7 +159,8 @@ public class TabBean implements Serializable{
   
  
     public void tabChangeListener(ValueChangeEvent event) {
-        selectedTabIndex = Integer.parseInt(event.getNewValue().toString());
+        this.selectedTabIndex = Integer.parseInt(event.getNewValue().toString());
+        System.out.println("TabBean:tabChangeListener: selectedTabIndex="+this.selectedTabIndex);
     }
     public int getSelectedTabIndex() {
         return selectedTabIndex;
