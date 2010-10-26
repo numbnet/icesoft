@@ -14,28 +14,42 @@
      </h:panelGroup>
     <h:panelGroup styleClass="exampleBox" layout="block">
      <b>This tabset has cancelOnInvalid="true", which will NOT allow to change the tab on validation error. </b><br/><br/>
+  
        <ice:tabSet id="myTabSet" cancelOnInvalid="true" styleClass="tabSetDemo">
-            <ice:tabPane label="Tab contents from JSP" >
-                <h:outputText value="No other tab may be chosen without entering the required field below"/>            
+            <ice:tabPane label="Required Tab 1" >
+                <p/>
+                <h:outputText value="No other tab may be chosen without entering the required field below"/>
+				<h:messages styleClass="err-msg"/>
+			         <h:form id="form">
+				         <p>
+				         <h:inputText id="inputText" required="true"/> Required field will block ability to change tabs when cancelOnInvalid true
+						</p>	
+		             	<ice:tabSetProxy for="myTabSet" />
+
+			         </h:form>
             </ice:tabPane>       
-            <ice:tabPane label="Tab contents from Bean" >
-                <h:outputText value="No validation errors may be present in order for this tabPane to be shown"/>            
+            <ice:tabPane label="Tab 2" >
+            	<p>
+                <h:outputText value="No validation errors may be present on 'Required Tab 1' in order for this tabPane to be shown."/>            
+                </p>
+                <h:form id="proxyForm2">
+					<ice:tabSetProxy for="myTabSet" />
+				</h:form>
+
             </ice:tabPane>
-            <ice:tabPane label="Tab contents.." >
-                <h:outputText value="No validation errors may be present in order for this tabPane to be shown"/>            
+            <ice:tabPane label="Tab 3" >
+				<p>
+                <h:outputText value="No validation errors may be present on 'Required Tab 1' in order for this tabPane to be shown."/>            
+                </p>
+                <h:form id="proxyForm3">
+					<ice:tabSetProxy for="myTabSet" />
+				</h:form>
+
             </ice:tabPane>
         </ice:tabSet> 
 
-    <hr/>
-	<h:messages styleClass="err-msg"/>
-	<fieldset id="pushButtonActionListenerForm">
-	   <legend>Form with tabSetProxy to above form</legend>
-         <h:form id="form">
-	         <h:inputText id="inputText" required="true"/> Required field will block ability to change tabs when cancelOnInvalid true
-             <ice:tabSetProxy for="myTabSet" />
-         </h:form>
-    </fieldset>
     </h:panelGroup>
- 
+
+
   </h:panelGroup>
 </ui:composition>
