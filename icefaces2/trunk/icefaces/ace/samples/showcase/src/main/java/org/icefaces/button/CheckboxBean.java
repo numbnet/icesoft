@@ -8,11 +8,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
 
 
-@ManagedBean (name="checkboxBean")
+@ManagedBean (name="checkBean")
 @ViewScoped
 public class CheckboxBean implements Serializable {
 
     private boolean checked = false;
+    private String imageName;
 
     public CheckboxBean(){
    }
@@ -25,7 +26,17 @@ public class CheckboxBean implements Serializable {
         this.checked = selected;
     }
 
-    public void actionListenerMethod(ActionEvent e) {
+    public void changeValue(ActionEvent e) {
         checked = !checked;
+    }
+
+    public String getImageName() {
+        System.out.println(checked ? "images/checked.gif" : "images/unchecked.gif" );
+
+        return checked ? "images/checked.gif" : "images/unchecked.gif"; 
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }
