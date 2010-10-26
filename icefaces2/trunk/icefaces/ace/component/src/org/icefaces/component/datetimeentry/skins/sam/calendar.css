@@ -611,3 +611,11 @@ p#clear {
 .ice-calcontainer .yui-dialog button {
     position: static;
 }
+
+.ice-skin-sam .yui-calendar .calheader {
+    color: black;
+}
+
+.ice-skin-sam .ice-calcontainer .yui-button {
+    border-style: none;
+}
