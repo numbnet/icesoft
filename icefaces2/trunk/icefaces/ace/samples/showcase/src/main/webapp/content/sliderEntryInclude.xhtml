@@ -10,7 +10,7 @@
     <h:panelGroup id="panelContentX">
         <h:panelGroup styleClass="synopsisBox" layout="block">
             <h:outputText styleClass="iceOutTxt" value="Slider Entry"/>
-            <h:outputText styleClass="iceOutTxt" value="Change the params and slide the thumbs."/>
+            <h:outputText styleClass="iceOutTxt" value="Select an integer value within a range by dragging the arrow along the rail."/>
         </h:panelGroup>
         <h:panelGroup styleClass="exampleBox firstChildTitle" layout="block">
             <h:form>
@@ -19,14 +19,14 @@
                     <table>
                         <tr>
                             <td>
-                                <h:outputText value="Min. value "/>
+                                <h:outputText value="Min. Value "/>
                             </td>
                             <td>
                                 <h:inputText id="xminValue" value="#{sliderBean.minValue}" size="3"
                                              validator="#{sliderBean.validateMinValue}"/>
                             </td>
                             <td>
-                                <h:outputText value="Max. value "/>
+                                <h:outputText value="Max. Value "/>
                             </td>
                             <td>
                                 <h:inputText id="xmaxValue" value="#{sliderBean.maxValue}" size="3"
@@ -43,69 +43,31 @@
                 </h:panelGroup>
             </h:form>
         </h:panelGroup>
+
         <h:panelGroup styleClass="exampleBox" layout="block">
             <h:form>
-                <h:outputText value="Submit on slide interval: "/>
+                <h:outputText value="SubmitOn='slideInterval' - slider value submits repeatadly while arrow drag is occurring: "/>
                 <br/>
                 <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
-                                 submitOn="slideInterval" clickableRail="true"
+                                 submitOn="slideInterval" clickableRail="false"
                                  axis="x" singleSubmit="false"/>
-            </h:form>
-            <br></br>
+             </h:form>
+            <br/>
              <h:outputText value="Horizontal slider value: "/>
             <h:outputText value="#{sliderBean.value}"/>
             <br/>
         </h:panelGroup>
-    </h:panelGroup>
 
-    <hr/>
-    <h:panelGroup id="panelContentY">
-        <h:panelGroup styleClass="synopsisBox" layout="block">
-            <h:outputText styleClass="iceOutTxt" value="Slider Entry"/>
-            <h:outputText styleClass="iceOutTxt" value="Change the params and slide the thumbs."/>
-        </h:panelGroup>
-        <h:panelGroup styleClass="exampleBox firstChildTitle" layout="block">
-            <h:form>
-                <h:panelGroup>
-                    <icecore:singleSubmit/>
-                    <table>
-                        <tr>
-                            <td>
-                                <h:outputText value="Min. value "/>
-                            </td>
-                            <td>
-                                <h:inputText id="yminValue" value="#{sliderBean2.minValue}" size="3"
-                                             validator="#{sliderBean2.validateMinValue}"/>
-                            </td>
-                            <td>
-                                <h:outputText value="Max. value "/>
-                            </td>
-                            <td>
-                                <h:inputText id="ymaxValue" value="#{sliderBean2.maxValue}" size="3"
-                                             validator="#{sliderBean2.validateMaxValue}"/>
-                            </td>
-                            <td>
-                                <h:messages for="yminValue"/>
-                            </td>
-                            <td>
-                                <h:messages for="ymaxValue"/>
-                            </td>
-                        </tr>
-                    </table>
-                </h:panelGroup>
-            </h:form>
-        </h:panelGroup>
         <h:panelGroup styleClass="exampleBox" layout="block">
             <h:form>
 
-                <h:outputText value="Submit on slide end: "/>
+                <h:outputText value="SubmitOn='slideEnd'- slider value submits once when arrow is 'dropped': "/>
                 <br/><br/>
-                <ice:sliderEntry min="#{sliderBean2.minValue}" max="#{sliderBean2.maxValue}" value="#{sliderBean2.value}"
+                <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean2.value}"
                                  submitOn="slideEnd" clickableRail="false" length="100"
                                  axis="y" singleSubmit="false"/>
             </h:form>
             <br/>
-
             <h:outputText value="Vertical slider value: "/>
             <h:outputText value="#{sliderBean2.value}"/>
         </h:panelGroup>
