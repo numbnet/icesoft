@@ -168,7 +168,7 @@ public class AnimationBehavior extends ClientBehaviorBase{
  
     
 	public AnimationBehavior() {
-		System.out.println("EffectBehavior initialized ");
+		// System.out.println("EffectBehavior initialized ");
 	}
 	
 	public void setUsingStyleClass(boolean usingStyleClass) {
@@ -224,7 +224,7 @@ public class AnimationBehavior extends ClientBehaviorBase{
     	call.append("(");
     	call.append(effect.getPropertiesAsJSON());
     	call.append(");");
-    	System.out.println(call.toString());
+    	// System.out.println(call.toString());
     	return call.toString();
     }
     
@@ -237,7 +237,7 @@ public class AnimationBehavior extends ClientBehaviorBase{
 		String id = "effect_style"+ component.getClientId();
 		if (map.containsKey(id)) {
 			setStyle(map.get(id).toString());
-			System.out.println("Style found "+ map.get(id).toString());
+			 // System.out.println("Style found "+ map.get(id).toString());
 		}
     }
     
