@@ -58,6 +58,10 @@
           <exclude>**/.svn/*</exclude>
           <exclude>**/webapp/*</exclude> 
           <exclude>**/web/*</exclude> 
+          <exclude>**/*.xhtml</exclude>
+          <exclude>**/WEB-INF/*</exclude>
+          <exclude>**/css/*</exclude>
+          <exclude>**/images/*</exclude>
           <exclude>**/messages*</exclude>        
         </excludes>
       </resource>
