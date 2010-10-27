@@ -5,6 +5,8 @@
      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
+
+
   <h:panelGroup id="panelContentCheckboxes">
 
   <h:panelGroup styleClass="synopsisBox" layout="block">
@@ -22,17 +24,10 @@
                          value="#{msgs['page.checkbox.checkboxLabel']}" />
           <ice:checkboxButton id="CBBoxOne"
                               label="#{msgs['page.checkbox.checkboxValue']}"
-                              valueChangeListener="#{checkBean.changeValue}"
-                              value="#{checkBean.checked}" />
+                              value="#{checkBean.checked}"/>
 
       </h:panelGrid>
     </h:form>
 
-    <h:panelGroup id="imagePanel">
-        <h:graphicImage value="images/employee.gif"
-                                    rendered="#{checkBean.checked}" />
-    </h:panelGroup>
-
-
-  </h:panelGroup>
+   </h:panelGroup>
 </ui:composition>
