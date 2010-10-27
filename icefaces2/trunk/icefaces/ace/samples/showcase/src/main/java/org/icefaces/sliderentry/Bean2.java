@@ -7,10 +7,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.validator.ValidatorException;
+import java.io.Serializable;
 
 @ManagedBean (name="sliderBean2")
 @SessionScoped
-public class Bean2 {
+public class Bean2 implements Serializable {
     private int value1;
     private int value2;
     private int value3;
