@@ -8,9 +8,8 @@
      xmlns:ice="http://www.icefaces.org/icefaces/components">
  <h:panelGroup id="tabProxyPanel" >
      <h:panelGroup styleClass="synopsisBox" layout="block">
-         <h:outputText styleClass="iceOutTxt" value="Tab Set with Proxy"/>
-         <h:outputText styleClass="iceOutTxt" value="The form below has a required field, with cancelOnInvalid=&quot;true&quot;
-         Any tab change will result in a validation error."/>
+         <h:outputText styleClass="iceOutTxt" value="Tab Set (Tab Set Proxy)"/>
+         <h:outputText styleClass="iceOutTxt" value="Demonstrates the ability to use multiple forms inside the tabSet component by use of the tabSetProxy component. Each tabPane below uses its own form, providing cleaner separation of logic between each tabPane."/>
      </h:panelGroup>
     <h:panelGroup styleClass="exampleBox" layout="block">
      <b>This tabset has cancelOnInvalid="true", which will NOT allow to change the tab on validation error. </b><br/><br/>
@@ -18,15 +17,16 @@
        <ice:tabSet id="myTabSet" cancelOnInvalid="true" styleClass="tabSetDemo">
             <ice:tabPane label="Required Tab 1" >
                 <p/>
-                <h:outputText value="No other tab may be chosen without entering the required field below"/>
-				<h:messages styleClass="err-msg"/>
-			         <h:form id="form">
-				         <p>
-				         <h:inputText id="inputText" required="true"/> Required field will block ability to change tabs when cancelOnInvalid true
-						</p>	
-		             	<ice:tabSetProxy for="myTabSet" />
-
-			         </h:form>
+                <h:outputText value="The inputText below has required='true'. The containing tabSet has cancelOnInvalid='true', which will prevent the user from switching tabs if there is an invalid component in the current tabPane form." />
+                <p/>
+                <h:outputText value="No other tab may be chosen without entering the required field below."/>
+  	            <h:form id="form">
+		          	<ice:tabSetProxy for="myTabSet" />
+				   <p/>
+				      <h:inputText id="inputText1" required="true"/>   
+				  <p/>	
+					  <h:message for="inputText1" styleClass="err-msg"/>	       				  
+		         </h:form>
             </ice:tabPane>       
             <ice:tabPane label="Tab 2" >
             	<p>
