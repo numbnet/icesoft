@@ -23,6 +23,8 @@
 
 package org.icefaces.component.fileentry;
 
+import org.icefaces.impl.application.WindowScopeManager;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedProperty;
@@ -41,7 +43,8 @@ public class FileEntryLoader {
     public FileEntryLoader() {
 //System.out.println("FileEntryLoader");
         Application application = FacesContext.getCurrentInstance().getApplication();
-        application.subscribeToEvent(PostAddToViewEvent.class, null, new FileEntryFormSubmit());
+        application.subscribeToEvent(PostAddToViewEvent.class, null,
+            new FileEntryFormSubmit());
 
         PhaseListener phaseListener = new FileEntryPhaseListener();
         LifecycleFactory lifecycleFactory = (LifecycleFactory)
@@ -51,6 +54,13 @@ public class FileEntryLoader {
                 (String) ids.next());
             lifecycle.addPhaseListener(phaseListener);
 //System.out.println("FileEntryLoader  lifecycle: " + lifecycle);
+            for (PhaseListener otherPhaseListener : lifecycle.getPhaseListeners()) {
+                if (otherPhaseListener instanceof WindowScopeManager) {
+//System.out.println("FileEntryLoader  WindowScopeManager: " + otherPhaseListener);
+                    ((WindowScopeManager) otherPhaseListener).
+                        setInvokeBeforeSelf(phaseListener);
+                }
+            }
         }
     }
     
