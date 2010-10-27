@@ -52,7 +52,7 @@ public class Bean {
     }
 
     public void sliderChanged(ValueChangeEvent event) {
-        System.out.println("Slider value changed to: " + event.getNewValue() );
+//        System.out.println("Slider value changed to: " + event.getNewValue() );
         valueChangeString = ("Slider ValueChangeEvent fired oldValue = "+ event.getOldValue() + " : newValue = " +  event.getNewValue());
     }
     public String getValueChangeString() {
