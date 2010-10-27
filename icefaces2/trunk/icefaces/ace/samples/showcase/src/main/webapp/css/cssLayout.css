@@ -22,6 +22,8 @@
     padding: 5px;
     width: 150px;
     /*height: 400px;*/
+	font-size: 1.25em;
+	font-style: bold;
 }
 
 #content {
