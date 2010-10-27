@@ -16,7 +16,7 @@ public class CheckboxBean implements Serializable {
     private String imageName;
 
     public CheckboxBean(){
-    	System.out.println("checkbean version="+this);
+
    }
 
     public boolean isChecked() {
