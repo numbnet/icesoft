@@ -62,6 +62,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
     private static String seed = Integer.toString(new Random().nextInt(1000), 36);
 
     private ResourceHandler wrapped;
+    private PhaseListener invokeBeforeSelf;
 
     public WindowScopeManager(ResourceHandler wrapped) {
         this.wrapped = wrapped;
@@ -78,6 +79,10 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
         return wrapped;
     }
 
+    public void setInvokeBeforeSelf(PhaseListener invoke) {
+        invokeBeforeSelf = invoke;
+    }
+    
     public void handleResourceRequest(FacesContext facesContext) throws IOException {
         //a null session cannot have any window scope beans
         if (null == facesContext.getExternalContext().getSession(false))  {
@@ -120,6 +125,10 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
     }
 
     public void beforePhase(PhaseEvent event) {
+        if (invokeBeforeSelf != null) {
+            invokeBeforeSelf.beforePhase(event);
+        }
+        
         final FacesContext context = FacesContext.getCurrentInstance();
 
         try {
@@ -136,6 +145,9 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
     }
 
     public void afterPhase(PhaseEvent event) {
+        if (invokeBeforeSelf != null) {
+            invokeBeforeSelf.afterPhase(event);
+        }
     }
 
     public static ScopeMap lookupWindowScope(FacesContext context) {

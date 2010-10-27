@@ -60,6 +60,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class FileEntryPhaseListener implements PhaseListener {
+    /**
+     * This method is called by the lifecycle and by WindowScopeManager,
+     * so make sure that if it's called more than once per lifecycle,
+     * that it's handled properly. That should only happen for the
+     * RestoreView phase, but we should try not to be brittle.
+     */
     public void afterPhase(PhaseEvent phaseEvent) {
 //        System.out.println("FileEntryPhaseListener.afterPhase()   " + phaseEvent.getPhaseId());
 //        System.out.println("FileEntryPhaseListener.afterPhase()     renderResponse  : " + phaseEvent.getFacesContext().getRenderResponse());
@@ -70,6 +76,12 @@ public class FileEntryPhaseListener implements PhaseListener {
         }
     }
 
+    /**
+     * This method is called by the lifecycle and by WindowScopeManager,
+     * so make sure that if it's called more than once per lifecycle,
+     * that it's handled properly. That should only happen for the
+     * RestoreView phase, but we should try not to be brittle.
+     */
     public void beforePhase(PhaseEvent phaseEvent) {
 //        System.out.println("FileEntryPhaseListener.beforePhase()  " + phaseEvent.getPhaseId());
         if (!phaseEvent.getPhaseId().equals(PhaseId.RESTORE_VIEW)) {
