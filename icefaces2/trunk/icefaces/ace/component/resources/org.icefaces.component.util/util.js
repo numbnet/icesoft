@@ -30,5 +30,6 @@ Ice.printArguments = function() {
        logger.info(arguments[i]);
 }
 
-if (!window['ice'])
-var ice = {};
+if (!window['ice']) {
+    window.ice = {};
+}
