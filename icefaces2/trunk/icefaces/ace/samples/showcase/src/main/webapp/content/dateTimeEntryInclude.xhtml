@@ -25,7 +25,7 @@
     <h:panelGroup id="panelContentDateTimeEntry">
         <h:panelGroup styleClass="synopsisBox" layout="block">
             <h:outputText styleClass="iceOutTxt" value="Date Time Entry"/>
-            <h:outputText styleClass="iceOutTxt" value="Change the params and select a date/time."/>
+            <h:outputText styleClass="iceOutTxt" value="Client-side DateTime navigation and selection."/>
         </h:panelGroup>
 
         <h:panelGroup styleClass="exampleBox firstChildTitle" layout="block">
@@ -50,8 +50,9 @@
                                 <h:outputText value="Render input field (popup only)"/>
                             </td>
                         </tr>
+<!--
                         <tr>
-                            <td>
+                             <td>
                                 <h:selectBooleanCheckbox id="singleSubmit" value="#{calendarBean.singleSubmit}"
                                                          styleClass="cal-chk-box"/>
                             </td>
@@ -62,6 +63,7 @@
                             <td colspan="2">
                             </td>
                         </tr>
+     -->
                         <tr>
                             <td colspan="2">
                                 <h:outputText value="Input date/time format "/>
@@ -82,7 +84,7 @@
         </h:panelGroup>
 
         <h:panelGroup styleClass="exampleBox popup-cal" layout="block">
-            <h:outputText value="Output date/time (0-based 24-hour): "/>
+            <h:outputText value="Output date/time (0-based 24-hour):  "/>
             <h:outputText value="#{calendarBean.selectedDate}" styleClass="output-date-time">
                 <f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="Canada/Mountain"/>
             </h:outputText>
