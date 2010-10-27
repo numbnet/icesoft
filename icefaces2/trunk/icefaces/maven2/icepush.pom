@@ -7,9 +7,9 @@
   <artifactId>icepush</artifactId>
   <version>2.0-Beta2</version>
   <packaging>jar</packaging>
-  <name>ICEfaces Core</name>
+  <name>ICEpush</name>
   <url>http://www.icefaces.org</url> 
-  <description>icepush is the non-dependent push facility from ICEfaces.</description> 
+  <description>ICEpush library - provides ajax push capabilties to ICEfaces 2.</description> 
  
 
  </project>

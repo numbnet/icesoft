@@ -9,7 +9,7 @@
   <packaging>jar</packaging>
   <name>ICEfaces Core</name>
   <url>http://www.icefaces.org</url> 
-  <description>ICEfaces is an Ajax extension for JavaServer Faces.</description> 
+  <description>ICEfaces core framework library.</description> 
    
   <properties>
     <jsf.version>2.0.3</jsf.version>

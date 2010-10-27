@@ -26,7 +26,7 @@
   <groupId>org.icefaces.samples</groupId>
   <artifactId>chat-ice2-portlet</artifactId>
   <packaging>war</packaging>
-  <name>@{artifactId}</name>
+  <name>ICEfaces 2 Chat portlet sample</name>
   <version>2.0-Beta2</version>
   <description />
   <properties>

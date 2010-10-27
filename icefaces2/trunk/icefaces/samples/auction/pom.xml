@@ -28,7 +28,7 @@
     <groupId>org.icefaces.samples</groupId>
     <artifactId>auction</artifactId>
     <packaging>war</packaging>
-    <name>auction2</name>
+    <name>ICEfaces 2 Auction sample</name>
     <url>http://www.icefaces.org/</url>
     <version>2.0-Beta2</version>
     <properties>
