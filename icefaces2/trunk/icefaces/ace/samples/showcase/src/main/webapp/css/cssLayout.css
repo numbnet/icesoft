@@ -38,6 +38,38 @@ border-style:solid;
 border-width:0 1px 1px;
 }
 
+.linkButtonColumn {
+  width: 400px;
+}
+
+/* TODO: The original SAM style rules have (duplicate? redundant?) specific selectors
+   all the way down the hierarchy and to make the simple anchor tag look as an anchor,
+   we need to override all the styles at all levels
+*/ 
+.ice-skin-sam .simpleLinkButton {
+    /*background-image: none;*/
+    /*background-repeat: no-repeat;*/
+    text-decoration: underline;
+    cursor:hand;
+    /*border: none;*/
+}
+
+.ice-skin-sam .yui-button .first-child .simpleLinkButton {
+    /*background-image: none;*/
+    /*background-repeat: no-repeat;*/
+    text-decoration: underline;
+    cursor:hand;
+    /*border: none;*/
+}
+
+.ice-skin-sam .yui-button .first-child .simpleLinkButton a {
+    /*background-image: none;*/
+    /*background-repeat: no-repeat;*/
+    text-decoration: underline;
+    cursor:hand;
+    /*border: none;*/
+}
+
 .tabSetDemo .yui-content {
     height:150px;
 }
