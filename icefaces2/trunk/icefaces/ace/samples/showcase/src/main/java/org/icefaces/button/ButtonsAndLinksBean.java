@@ -35,6 +35,7 @@ package org.icefaces.button;
 import javax.faces.event.ActionEvent;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import java.io.Serializable;
 
 /**
  * <p>The ButtonsAndLinksBean class is the backing bean for the buttons and
@@ -43,7 +44,7 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean (name="buttonsAndLinks")
 @SessionScoped
-public class ButtonsAndLinksBean  {
+public class ButtonsAndLinksBean implements Serializable {
 
     /**
      * Variables to store the button clicked and the input submitted.
