@@ -2,13 +2,14 @@ package org.icefaces.datetimeentry;
 
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
+import java.io.Serializable;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
 @ManagedBean (name="calendarBean")
 @SessionScoped
-public class DateTimeEntryBean {
+public class DateTimeEntryBean implements Serializable {
     private Date selectedDate;
     private boolean renderAsPopup = true;
     private boolean renderInputField = true;
