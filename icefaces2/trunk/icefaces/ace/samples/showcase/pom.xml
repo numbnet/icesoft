@@ -87,7 +87,7 @@
                 <artifactId>maven-war-plugin</artifactId>
             </plugin>
         </plugins>
-        <finalName>test1</finalName>
+        <finalName>ace-showcase</finalName>
     </build>
     <profiles>
          <profile>
