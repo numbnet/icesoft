@@ -23,8 +23,6 @@
 
 package org.icefaces.component.fileentry;
 
-import org.icefaces.impl.application.WindowScopeManager;
-
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedProperty;
@@ -42,7 +40,8 @@ import java.util.Iterator;
 public class FileEntryLoader {
     public FileEntryLoader() {
 //System.out.println("FileEntryLoader");
-        Application application = FacesContext.getCurrentInstance().getApplication();
+        Application application =
+            FacesContext.getCurrentInstance().getApplication();
         application.subscribeToEvent(PostAddToViewEvent.class, null,
             new FileEntryFormSubmit());
 
@@ -52,14 +51,16 @@ public class FileEntryLoader {
         for (Iterator ids = lifecycleFactory.getLifecycleIds(); ids.hasNext();) {
             Lifecycle lifecycle = lifecycleFactory.getLifecycle(
                 (String) ids.next());
+            // Remove all other PhaseListeners, and re-add them after
+            // FileEntryPhaseListener, since they'll likely rely on it having 
+            // setup a valid environment for JSF. Eg: WindowScopeManager.
+            PhaseListener[] phaseListeners = lifecycle.getPhaseListeners();
+            for (PhaseListener otherPhaseListener : phaseListeners) {
+                lifecycle.removePhaseListener(otherPhaseListener);
+            }
             lifecycle.addPhaseListener(phaseListener);
-//System.out.println("FileEntryLoader  lifecycle: " + lifecycle);
-            for (PhaseListener otherPhaseListener : lifecycle.getPhaseListeners()) {
-                if (otherPhaseListener instanceof WindowScopeManager) {
-//System.out.println("FileEntryLoader  WindowScopeManager: " + otherPhaseListener);
-                    ((WindowScopeManager) otherPhaseListener).
-                        setInvokeBeforeSelf(phaseListener);
-                }
+            for (PhaseListener otherPhaseListener : phaseListeners) {
+                lifecycle.addPhaseListener(otherPhaseListener);
             }
         }
     }
