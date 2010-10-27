@@ -51,9 +51,9 @@ public class LinkButtonRenderer extends Renderer {
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);
         String styleClass = "yui-button yui-link-button";
-        String temp;
-        if ((temp = linkButton.getStyleClass()) != null) {
-            styleClass += " " + temp;
+        String myStyleClass = linkButton.getStyleClass();
+        if ((myStyleClass != null) && (!"".equals(myStyleClass) )) {
+            styleClass += " " + myStyleClass;
         } 
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
 
@@ -64,7 +64,11 @@ public class LinkButtonRenderer extends Renderer {
 
         // first child
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
-        writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
+        styleClass = "first-child";
+        if ((myStyleClass != null) && (!"".equals(myStyleClass) )) {
+            styleClass += " " + myStyleClass;
+        }
+        writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
         writer.writeAttribute(HTML.ID_ATTR, "first-child", null);
 
         // button element
@@ -74,11 +78,12 @@ public class LinkButtonRenderer extends Renderer {
         writer.writeAttribute(HTML.ONCLICK_ATTR,
                               "return ice.component.linkButton.clickHandler(event, '" + clientId + "' );",
                               null);
+        String temp;
         if ((temp = linkButton.getHref()) != null) {
             writer.writeAttribute(HTML.HREF_ATTR, temp, null );
         }
-        if ((temp = linkButton.getHrefLang()) != null) {
-            writer.writeAttribute(HTML.HREFLANG_ATTR, temp, null );  
+        if ((temp  = linkButton.getHrefLang()) != null) {
+            writer.writeAttribute(HTML.HREFLANG_ATTR, temp , null );
         }
 
     }
