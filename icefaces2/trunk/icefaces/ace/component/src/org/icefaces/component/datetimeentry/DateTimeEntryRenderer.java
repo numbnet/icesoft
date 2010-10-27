@@ -55,7 +55,7 @@ public class DateTimeEntryRenderer extends Renderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        System.out.println("\nDateTimeEntryRenderer.encodeEnd");
+//        System.out.println("\nDateTimeEntryRenderer.encodeEnd");
 //        printParams();
         super.encodeEnd(context, component);
         ResponseWriter writer = context.getResponseWriter();
@@ -139,7 +139,7 @@ public class DateTimeEntryRenderer extends Renderer {
                     entry("ariaEnabled", EnvUtils.isAriaEnabled(context)).
                     entry("disabled", dateTimeEntry.isDisabled()).
                 endMap().toString();
-        System.out.println("params = " + params);
+//        System.out.println("params = " + params);
         final UIComponent cal = component;
         final StringBuilder effect = new StringBuilder();
         Utils.iterateEffects(new AnimationBehavior.Iterator(component) {
@@ -148,14 +148,14 @@ public class DateTimeEntryRenderer extends Renderer {
 				effect.append(effectBehavior.getScript(new ClientBehaviorContextImpl(this.getUIComponent(), "transition"), false));	
 			}
 		});   
-        System.out.println(effect.toString());
+//        System.out.println(effect.toString());
         effect.append(";");
         effect.append("ice.component.calendar.updateProperties(");
         effect.append(params);
         effect.append(");");
        // ScriptWriter.insertScript(context, component, effect.toString());
 
-        System.out.println("effect = " + effect);
+//        System.out.println("effect = " + effect);
         ScriptWriter.insertScript(context, component, effect.toString());
         
         writer.endElement(HTML.DIV_ELEM);
@@ -164,8 +164,8 @@ public class DateTimeEntryRenderer extends Renderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        System.out.println("\nDateTimeEntryRenderer.decode");
-        printParams();
+//        System.out.println("\nDateTimeEntryRenderer.decode");
+//        printParams();
         super.decode(context, component);
         DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
         String clientId = component.getClientId(context);
@@ -188,15 +188,15 @@ public class DateTimeEntryRenderer extends Renderer {
         }
         dateTimeEntry.setSubmittedValue(dateString);
         if ("ice.ser".equals(paramMap.get("ice.submit.type"))) {
-            System.out.println("Skip to renderResponse()");
+//            System.out.println("Skip to renderResponse()");
             context.renderResponse();
         }
     }
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        System.out.println("\nDateTimeEntryRenderer.getConvertedValue");
-        System.out.println("submittedValue = " + submittedValue);
+//        System.out.println("\nDateTimeEntryRenderer.getConvertedValue");
+//        System.out.println("submittedValue = " + submittedValue);
         super.getConvertedValue(context, component, submittedValue);
         DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
         return dateTimeEntry.resolveDateTimeConverter(context).getAsObject(context, component, (String) submittedValue);
