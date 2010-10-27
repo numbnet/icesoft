@@ -69,7 +69,7 @@ var renderFooter = function(html) {
     var k = hourField.match(/^HOUR_OF_DAY[01]$/) ? j + 23 : j + 11;
     var i, temp;
     html[html.length] = "<tfoot><tr><td align='center' colspan='7'>";
-    html[html.length] = "<select" + " id='" + selHrId + "'>";
+    html[html.length] = "<select" + " id='" + selHrId + "' name='" + selHrId + "'>";
     for (i = j; i <= k; i++) {
         temp = "<option value='" + i + "'";
         if (i == selectedHour) {
@@ -81,7 +81,7 @@ var renderFooter = function(html) {
     html[html.length] = "</select>";
     Event.onAvailable(selHrId, selAvailable, selHrId);
     html[html.length] = ": ";
-    html[html.length] = "<select" + " id='" + selMinId + "'>";
+    html[html.length] = "<select" + " id='" + selMinId + "' name='" + selMinId + "'>";
     for (i = 0; i <= 59; i++) {
         temp = "<option value='" + i + "'";
         if (i == selectedMinute) {
@@ -93,7 +93,7 @@ var renderFooter = function(html) {
     html[html.length] = "</select>";
     Event.onAvailable(selMinId, selAvailable, selMinId);
     if (hourField.match(/^HOUR[01]$/)) {
-        html[html.length] = "<select" + " id='" + selAmPmId + "'>";
+        html[html.length] = "<select" + " id='" + selAmPmId + "' name='" + selAmPmId + "'>";
         temp = "<option value='" + amStr + "'";
         if (amStr == amPmStr) {
             temp += " selected='selected'";
