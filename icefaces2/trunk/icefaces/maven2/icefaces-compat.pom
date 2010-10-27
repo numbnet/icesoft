@@ -7,9 +7,9 @@
   <artifactId>icefaces-compat</artifactId>
   <version>2.0-Beta2</version>
   <packaging>jar</packaging>
-  <name>ICEfaces Compat Core</name>
+  <name>ICEfaces Components and Compatibility APIs</name>
   <url>http://www.icefaces.org</url> 
-  <description>compat are the classic components for ICEfaces-2.0</description> 
+  <description>ICEfaces Components and ICEfaces 1.x Compatibility APIs.</description> 
   <dependencies>
     <dependency>
       <groupId>org.icefaces</groupId>
