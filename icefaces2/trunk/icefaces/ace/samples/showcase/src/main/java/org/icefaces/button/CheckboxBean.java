@@ -16,6 +16,7 @@ public class CheckboxBean implements Serializable {
     private String imageName;
 
     public CheckboxBean(){
+    	System.out.println("checkbean version="+this);
    }
 
     public boolean isChecked() {
@@ -26,17 +27,5 @@ public class CheckboxBean implements Serializable {
         this.checked = selected;
     }
 
-    public void changeValue(ValueChangeEvent e) {
-        checked = !checked;
-    }
 
-    public String getImageName() {
-        System.out.println(checked ? "images/checked.gif" : "images/unchecked.gif" );
-
-        return checked ? "images/checked.gif" : "images/unchecked.gif"; 
-    }
-
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
 }

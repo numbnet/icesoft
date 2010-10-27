@@ -25,10 +25,11 @@
           <ice:checkboxButton id="CBBoxOne" labelPosition="on"
                               label="#{msgs['page.checkbox.checkboxValue']}"
                               value="#{checkBean.checked}"
-                                singleSubmit="false" />
+                                singleSubmit="true" />
+                       
 
       </h:panelGrid>
     </h:form>
-
+       <h:outputText value="value of checkboxButton is: #{checkBean.checked}"/>
    </h:panelGroup>
 </ui:composition>
