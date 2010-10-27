@@ -55,7 +55,7 @@ public class LinkButtonRenderer extends Renderer {
         if ((temp = linkButton.getStyleClass()) != null) {
             styleClass += " " + temp;
         } 
-        writer.writeAttribute(HTML.STYLE_CLASS_ATTR, styleClass, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
 
         String style = linkButton.getStyle();
         if (style != null && style.trim().length() > 0) {
