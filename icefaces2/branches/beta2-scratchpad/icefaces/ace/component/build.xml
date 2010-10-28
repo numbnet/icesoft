@@ -273,7 +273,6 @@
 		<mapnosprites library="org.icefaces.component.menubutton" dir="src/org/icefaces/component/menubutton/skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.pushbutton" dir="src/org/icefaces/component/pushbutton/skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.checkboxbutton" dir="src/org/icefaces/component/checkboxbutton/skins" skin="sam" />
-		<mapnosprites library="org.icefaces.component.radiobutton" dir="src/org/icefaces/component/radiobutton/skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.linkbutton" dir="src/org/icefaces/component/linkbutton/skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.datetimeentry" dir="src/org/icefaces/component/datetimeentry/skins" skin="sam" />
 		<mapnosprites library="org.icefaces.component.sliderentry" dir="src/org/icefaces/component/sliderentry/skins" skin="sam" />
@@ -282,13 +281,11 @@
 		
 		<mapnosprites library="org.icefaces.component.datetimeentry" dir="src/org/icefaces/component/datetimeentry/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.checkboxbutton" dir="src/org/icefaces/component/checkboxbutton/skins" skin="rime" />  
-		<mapnosprites library="org.icefaces.component.radiobutton" dir="src/org/icefaces/component/radiobutton/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.linkbutton" dir="src/org/icefaces/component/linkbutton/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.tab" dir="src/org/icefaces/component/tab/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.fileentry" dir="src/org/icefaces/component/fileentry/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.sliderentry" dir="src/org/icefaces/component/sliderentry/skins" skin="rime" />
 		<mapnosprites library="org.icefaces.component.pushbutton" dir="src/org/icefaces/component/pushbutton/skins" skin="rime" />
-		<mapnosprites library="org.icefaces.component.menubutton" dir="src/org/icefaces/component/menubutton/skins" skin="rime" />
 
 	</target>
 	
@@ -318,10 +315,8 @@
 			'skin' is the name of the directory inside 'dir' to look for the files for a specific skin.
 			'name' is the output name of the directory that will contain the generated files for the component inside the skin directory.
 		-->
-		<includeresources dir="src/org/icefaces/component/menubutton/skins" name="menubutton" skin="sam" />
 		<includeresources dir="src/org/icefaces/component/pushbutton/skins" name="button" skin="sam" />
 		<includeresources dir="src/org/icefaces/component/checkboxbutton/skins" name="checkboxbutton" skin="sam" />
-		<includeresources dir="src/org/icefaces/component/radiobutton/skins" name="radiobutton" skin="sam" />
  		<includeresources dir="src/org/icefaces/component/linkbutton/skins" name="linkbutton" skin="sam" />
 		<includeresources dir="src/org/icefaces/component/datetimeentry/skins" name="calendar" skin="sam" />
 		<includeresources dir="src/org/icefaces/component/sliderentry/skins" name="slider" skin="sam" />
@@ -332,9 +327,7 @@
 		<includeresources dir="src/org/icefaces/component/tab/skins" name="tabset" skin="rime" />
 		<includeresources dir="src/org/icefaces/component/fileentry/skins" name="fileEntry" skin="rime" />
 		<includeresources dir="src/org/icefaces/component/checkboxbutton/skins" name="checkboxbutton" skin="rime" />
-		<includeresources dir="src/org/icefaces/component/radiobutton/skins" name="radiobutton" skin="rime" />
 		<includeresources dir="src/org/icefaces/component/sliderentry/skins" name="slider" skin="rime" />
-		<includeresources dir="src/org/icefaces/component/menubutton/skins" name="menubutton" skin="rime" />
 		<includeresources dir="src/org/icefaces/component/pushbutton/skins" name="button" skin="rime" />
  		<includeresources dir="src/org/icefaces/component/linkbutton/skins" name="linkbutton" skin="rime" />
 
@@ -349,10 +342,8 @@
 			'name' is the name of the component (or arbitrary set of resources).
 			'skin' is the name of the processed skin.
 		-->
-		<mapsprites library="org.icefaces.component.menubutton" name="menubutton" skin="sam" />
 		<mapsprites library="org.icefaces.component.pushbutton" name="button" skin="sam" />
 		<mapsprites library="org.icefaces.component.checkboxbutton" name="checkboxbutton" skin="sam" />
-		<mapsprites library="org.icefaces.component.radiobutton" name="radiobutton" skin="sam" />
 		<mapsprites library="org.icefaces.component.linkbutton" name="linkbutton" skin="sam" />
 		<mapsprites library="org.icefaces.component.datetimeentry" name="calendar" skin="sam" />
 		<mapsprites library="org.icefaces.component.sliderentry" name="slider" skin="sam" />
@@ -364,9 +355,7 @@
 		<mapsprites library="org.icefaces.component.tab" name="tabset" skin="rime" />
 		<mapsprites library="org.icefaces.component.fileentry" name="fileEntry" skin="rime" />
 		<mapsprites library="org.icefaces.component.checkboxbutton" name="checkboxbutton" skin="rime" />
-		<mapsprites library="org.icefaces.component.radiobutton" name="radiobutton" skin="rime" />
 		<mapsprites library="org.icefaces.component.sliderentry" name="slider" skin="rime" />
-		<mapsprites library="org.icefaces.component.menubutton" name="menubutton" skin="rime" />
 		<mapsprites library="org.icefaces.component.pushbutton" name="button" skin="rime" />
 		
 		<!-- copy sprite images to the sprites resource library -->
