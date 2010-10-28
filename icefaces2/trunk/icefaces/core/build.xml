@@ -121,6 +121,7 @@
             <fileset dir="${java.dir}" defaultexcludes="yes">
                 <include name="org/icefaces/bean/*.java"/>
                 <include name="org/icefaces/util/EnvUtils.java"/>
+                <include name="org/icefaces/render/ExternalScript.java"/>
                 <include name="org/icefaces/util/FocusController.java"/>
                 <include name="org/icefaces/util/JavaScriptRunner.java"/>
                 <include name="org/icefaces/application/PortableRenderer.java"/>
