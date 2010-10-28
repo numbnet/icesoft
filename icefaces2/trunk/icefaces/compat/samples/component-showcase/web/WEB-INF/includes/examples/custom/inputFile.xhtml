@@ -20,13 +20,6 @@
   ~
   -->
 
-<div xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:h="http://java.sun.com/jsf/html"
-     xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:ice="http://www.icesoft.com/icefaces/component"
-     class="exampleBox  splashContainer"
-     style="background: url('./xmlhttp/css/rime/css-images/contentContainer_bg.gif') top repeat-x">
-
 <ice:panelGroup styleClass="componentBox"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
@@ -38,9 +31,8 @@
         <ice:outputText value="#{msgs['page.inputFile.synopsis']}"/>
     </ice:panelGroup>
 
-    <br/>
-    <br/>    <p><ice:outputText value="Deprecation Notice: " style="font-weight:bold" /></p>
-    <br/>
+   <ice:panelGroup styleClass="exampleBox effectsContainer">
+    <p><ice:outputText value="Deprecation Notice: " style="font-weight:bold" /></p>
     <ul>
         <li><ice:outputText value="The ice:inputFile component is deprecated in ICEfaces 2." /> <br/><br/>
         </li>
@@ -49,6 +41,6 @@
         <li><ice:outputText value="For more information on the fileEntry component see the "/> <ice:outputLink value="http://wiki.icefaces.org/display/ICE/FileEntry" target="_blank" style="font-weight:bold">online documentation</ice:outputLink>.<br/><br/>
         </li>
     </ul>
+	</ice:panelGroup>
+	
 </ice:panelGroup>
-
-</div>
