@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  -->
+
+<project name="bridge" default="build">
+    <property file="build.properties"/>
+    <property name="src.dir" location="${basedir}/src/main/javascript"/>
+    <property name="extras.dir" location="${src.dir}/extras"/>
+    <property name="prototype.dir" location="${src.dir}/prototype"/>
+    <property name="scriptaculous.dir" location="${src.dir}/scriptaculous"/>
+    <property name="lib.dir" location="${basedir}/src/main/javascript/lib"/>
+    <property name="build.dir" location="${basedir}/build/resources/META-INF/resources"/>
+    <property name="script" location="${build.dir}/compat.js"/>
+    <property name="icefaces-compat.js" location="${build.dir}/icefaces-compat.js"/>
+    <property name="tmp" value="${build.dir}/tmp.js"/>
+
+    <target name="prepare" depends="build.icefaces.compat" description="Collate bridge code">
+        <tstamp/>
+        <echoproperties/>
+        <mkdir dir="${build.dir}"/>
+        <loadfile property="functional.js" srcFile="${lib.dir}/functional.js"/>
+        <loadfile property="oo.js" srcFile="${lib.dir}/oo.js"/>
+        <loadfile property="collection.js" srcFile="${lib.dir}/collection.js"/>
+        <loadfile property="string.js" srcFile="${lib.dir}/string.js"/>
+        <loadfile property="window.js" srcFile="${lib.dir}/window.js"/>
+        <loadfile property="delay.js" srcFile="${lib.dir}/delay.js"/>
+        <loadfile property="status.js" srcFile="${src.dir}/status.js"/>
+        <loadfile property="submit.js" srcFile="${src.dir}/submit.js"/>
+        <copy file="${src.dir}/compat.js" tofile="${tmp}" overwrite="yes">
+            <filterset begintoken="//include " endtoken=".js">
+                <filter token="functional" value="${functional.js}"/>
+                <filter token="oo" value="${oo.js}"/>
+                <filter token="collection" value="${collection.js}"/>
+                <filter token="string" value="${string.js}"/>
+                <filter token="window" value="${window.js}"/>
+                <filter token="delay" value="${delay.js}"/>
+                <filter token="status" value="${status.js}"/>
+                <filter token="submit" value="${submit.js}"/>
+            </filterset>
+        </copy>
+    </target>
+
+
+    <target name="build.icefaces.compat" description="Collate compat components code">
+        <tstamp/>
+        <echoproperties/>
+        <mkdir dir="${build.dir}"/>
+        <concat destfile="${icefaces-compat.js}" append="yes" fixlastline="yes">
+            <header file="src/main/javascript/compat.header.js"/>
+            <footer file="src/main/javascript/compat.footer.js"/>
+            <filelist dir="${prototype.dir}">
+                <file name="prototype.js"/>
+            </filelist>
+            <filelist dir="${scriptaculous.dir}">
+                <file name="builder.js"/>
+                <file name="effects.js"/>
+                <file name="dragdrop.js"/>
+                <file name="controls.js"/>
+                <file name="slider.js"/>
+                <file name="sound.js"/>
+            </filelist>
+            <filelist dir="${extras.dir}">
+                <file name="extras.js"/>
+            </filelist>
+        </concat>
+    </target>
+
+
+    <target name="build.bridge.uncompressed" depends="prepare">
+        <touch file="${script}"/>
+        <move file="${tmp}" tofile="${script}" overwrite="yes">
+            <filterchain>
+                <stripjavacomments/>
+                <ignoreblank/>
+            </filterchain>
+        </move>
+    </target>
+
+    <target name="build.cleanup">
+        <delete file="${tmp}"/>
+    </target>
+
+    <target name="build" depends="build.bridge.uncompressed, build.cleanup"
+            description="Build bridge"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+</project>

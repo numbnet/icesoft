@@ -1,0 +1,88 @@
+/*
+Copyright (c) 2008, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 2.6.0
+*/
+
+@import url('#{resource['yui/2_8_1/menu/assets/skins/sam/menu-skin.css']}');
+
+.yuimenu .topscrollbar {
+
+    background-image: url(menu_up_arrow.png);  /** sprite-ref: sprite;  */
+
+}
+
+.yuimenu .topscrollbar_disabled {
+
+    background-image: url(menu_up_arrow_disabled.png);  /** sprite-ref: sprite;  */
+
+}
+
+.yuimenu .bottomscrollbar {
+
+    background-image: url(menu_down_arrow.png);  /** sprite-ref: sprite;  */
+
+}
+
+.yuimenu .bottomscrollbar_disabled {
+
+    background-image: url(menu_down_arrow_disabled.png);  /** sprite-ref: sprite;  */
+
+}
+
+.yuimenubaritem-hassubmenu {
+    background-repeat: no-repeat; 
+    background-position: right center; 
+    background-image: url(menubaritem_submenuindicator.png);  /** sprite-ref: sprite; sprite-alignment: right */
+}
+
+.yuimenuitem-hassubmenu {
+
+    background-image: url(menuitem_submenuindicator.png);  /** sprite-ref: sprite;  sprite-alignment: right*/
+    background-repeat: no-repeat; 
+    background-position: right center; 
+}
+
+.yuimenuitem-checked {
+
+     background-image: url(menuitem_checkbox.png); /** sprite-ref: sprite;  sprite-alignment: left*/
+     background-repeat: no-repeat; 
+     background-position: left center; 
+}
+
+.yuimenubaritem-hassubmenu-selected {
+
+    background-image: url(menubaritem_submenuindicator_selected.png); /** sprite-ref: sprite;  */
+
+}
+
+.yuimenuitem-hassubmenu-selected {
+
+    background-image: url(menuitem_submenuindicator_selected.png); /** sprite-ref: sprite;  */
+
+}
+
+.yuimenuitem-checked-selected {
+
+    background-image: url(menuitem_checkbox_selected.png); /** sprite-ref: sprite;  */
+
+}
+
+.yuimenubaritem-hassubmenu-disabled {
+
+    background-image: url(menubaritem_submenuindicator_disabled.png); /** sprite-ref: sprite;  */
+
+}
+
+.yuimenuitem-hassubmenu-disabled {
+
+    background-image: url(menuitem_submenuindicator_disabled.png); /** sprite-ref: sprite;  */
+
+}
+
+.yuimenuitem-checked-disabled {
+
+    background-image: url(menuitem_checkbox_disabled.png); /** sprite-ref: sprite;  */
+
+}

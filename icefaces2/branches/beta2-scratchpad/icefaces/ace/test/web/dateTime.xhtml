@@ -1,0 +1,31 @@
+<!--
+
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
+
+        >
+<f:view renderKitId="xHTML_BASIC" contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Calendar</title>
+    <link rel="stylesheet" type="text/css"
+          href="http://yui.yahooapis.com/2.7.0/build/calendar/assets/skins/sam/calendar.css"/>
+    <script type="text/javascript"
+            src="http://yui.yahooapis.com/2.7.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/calendar/calendar-min.js"></script>
+    <script type="text/javascript" src="calendar.js"></script>
+</h:head>
+<h:body>
+    <h:form id="form1" prependId="false">
+        <ice:dateTime format="E mm, yyyy"/>
+    </h:form>
+   <a href="index.html"> Goto Main page </a>    
+</h:body>
+</html>
+
