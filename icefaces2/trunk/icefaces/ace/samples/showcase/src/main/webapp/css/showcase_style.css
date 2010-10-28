@@ -1027,8 +1027,8 @@ div.verticalAlignMdl{
 }
 
 .fileTable {
-    border-style:none none none solid;
-    border-width:medium medium medium 1px;
+    border-style:none none none none;
+    border-width:medium medium medium medium;
     border-collapse:collapse;
 }
 
