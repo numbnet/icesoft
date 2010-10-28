@@ -27,8 +27,17 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * Utility API for evaluating Javascript code on the client.
+ */
 public class JavaScriptRunner {
 
+    /**
+     * Send immediately Javascript code to the client for evaluation and execution.
+     *
+     * @param context the current FacesContext
+     * @param script  the Javascript code
+     */
     public static void runScript(FacesContext context, String script) {
         Map requestMap = context.getExternalContext().getRequestMap();
         Collection scripts = (Collection) requestMap.get(JavaScriptRunner.class.getName());
