@@ -25,7 +25,7 @@ var ice_fileEntry = {
         //alert("iframeLoaded()  begin");
         
         var i = document.getElementById(id);
-        if (i.contentDocument) {
+        if ((typeof XMLDocument != "undefined") && i.contentDocument) {
             //var doc = i.contentDocument.document.XMLDocument ?
             //    i.contentDocument.document.XMLDocument :
             //    i.contentDocument.document;
