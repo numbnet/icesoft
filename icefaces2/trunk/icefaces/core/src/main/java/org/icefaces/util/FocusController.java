@@ -27,9 +27,18 @@ import javax.faces.context.FacesContext;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * Utility API for managing the element focus in the browser.
+ */
 public class FocusController {
     private static final Pattern ClientIdPattern = Pattern.compile("^(([\\w\\_]*)\\" + NamingContainer.SEPARATOR_CHAR + "([\\w\\_]*))*$");
 
+    /**
+     * Acquire the ID of the currently focused element in the browser.
+     *
+     * @param context the FacesContext
+     * @return the element ID
+     */
     public static String getReceivedFocus(FacesContext context) {
         ExternalContext externalContext = context.getExternalContext();
         Map map = externalContext.getRequestParameterMap();
@@ -37,16 +46,34 @@ public class FocusController {
         return focusedElement != null && ClientIdPattern.matcher(focusedElement).matches() && !focusedElement.equals("null") && !focusedElement.equals("undefined") ? focusedElement : null;
     }
 
+    /**
+     * Set the element ID that should received focus during next update.
+     *
+     * @param context the FacesContext
+     * @param id      the element ID
+     */
     public static void setFocus(FacesContext context, String id) {
         if (id != null && !"".equals(id)) {
             context.getExternalContext().getRequestMap().put(FocusController.class.getName(), id);
         }
     }
 
+    /**
+     * Get the element ID the will receive focus during next update.
+     *
+     * @param context the FacesContext
+     * @return the element ID
+     */
     public static String getFocus(FacesContext context) {
         return (String) context.getExternalContext().getRequestMap().get(FocusController.class.getName());
     }
 
+    /**
+     * Test if focus is defined for a certain element.
+     *
+     * @param context the FacesContext
+     * @return return true if focus is defined
+     */
     public static boolean isFocusSet(FacesContext context) {
         return context.getExternalContext().getRequestMap().containsKey(FocusController.class.getName());
     }
