@@ -1,3 +1,0 @@
-
-/* load core styling from YUI library */
-@import url('#{resource['yui/3_1_1/slider/assets/slider-core.css']}');
