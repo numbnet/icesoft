@@ -48,7 +48,7 @@ import java.util.logging.Logger;
 
 public class ICEpushResourceHandler extends ResourceHandlerWrapper implements PhaseListener  {
     private static Logger log = Logger.getLogger(ICEpushResourceHandler.class.getName());
-    private static final Pattern ICEpushRequestPattern = Pattern.compile(".*\\.icepush\\.jsf$");
+    private static final Pattern ICEpushRequestPattern = Pattern.compile(".*listen\\.icepush");
     private static final String RESOURCE_KEY = "javax.faces.resource";
     private static final String BROWSERID_COOKIE = "ice.push.browser";
     private ResourceHandler handler;
