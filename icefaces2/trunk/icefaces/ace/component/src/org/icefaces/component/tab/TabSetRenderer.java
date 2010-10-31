@@ -128,6 +128,9 @@ public class TabSetRenderer extends Renderer{
         boolean isClientSide = tabSet.isClientSide();
         boolean singleSubmit = tabSet.isSingleSubmit();        
         int selectedIndex = tabSet.getSelectedIndex();
+        if (selectedIndex >= getRenderedChildCount(tabSet)) {
+        	selectedIndex = 0;
+        }
 
         
         StringBuilder call = new StringBuilder();
@@ -293,5 +296,15 @@ public class TabSetRenderer extends Renderer{
                 uiList.setRowIndex(-1);
             }
         }
+    }
+    
+    private int getRenderedChildCount(UIComponent uiComponent) {
+    	int count = 0;
+    	for (UIComponent component: uiComponent.getChildren()) {
+    		if (component instanceof TabPane && component.isRendered()) {
+    			count++;
+    		}
+    	}
+    	return count;
     }
 }   
