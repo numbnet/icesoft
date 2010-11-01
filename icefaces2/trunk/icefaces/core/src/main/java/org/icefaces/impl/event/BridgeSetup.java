@@ -26,16 +26,16 @@ import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.impl.push.servlet.ICEpushListenResource;
 import org.icefaces.impl.renderkit.DOMRenderKit;
-import org.icefaces.util.EnvUtils;
 import org.icefaces.render.ExternalScript;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
-import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -44,11 +44,11 @@ import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import javax.faces.render.RenderKit;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BridgeSetup implements SystemEventListener {
     public final static String ViewState = BridgeSetup.class.getName() + "::ViewState";
@@ -106,20 +106,20 @@ public class BridgeSetup implements SystemEventListener {
             List<ExternalScript> scriptRenderers = drk.getCustomRenderScripts();
             String contextParamName;
             String value = "";
-            int i=0;
-            for (ExternalScript es: scriptRenderers) {
+            int i = 0;
+            for (ExternalScript es : scriptRenderers) {
                 i++;
                 contextParamName = es.contextParam();
                 boolean insertHere = true;
                 // If present, the context param must be true for rendering
                 // but if not present, always insert the script. Annotation default is "Null"
-                if (!contextParamName.equals("Null") )  {
-                    value = externalContext.getInitParameter( contextParamName );
+                if (!contextParamName.equals("Null")) {
+                    value = externalContext.getInitParameter(contextParamName);
                     insertHere = (value != null && !value.equalsIgnoreCase(""));
                 }
                 if (insertHere) {
-                    UIOutput externalScript = new GenericScriptWriter( 
-                        es.scriptURL() + value );
+                    UIOutput externalScript = new GenericScriptWriter(
+                            es.scriptURL() + value);
                     externalScript.setTransient(true);
                     externalScript.setId("external-script-" + i);
                     root.addComponentResource(context, externalScript, "head");
@@ -127,40 +127,40 @@ public class BridgeSetup implements SystemEventListener {
             }
 
             Set<ResourceDependency> addedResDeps =
-                new HashSet<ResourceDependency>();
+                    new HashSet<ResourceDependency>();
             List<String> mandatoryResourceComponents = drk.getMandatoryResourceComponents();
             for (String compClassName : mandatoryResourceComponents) {
                 try {
                     Class<UIComponent> compClass = (Class<UIComponent>)
-                        Class.forName(compClassName);
+                            Class.forName(compClassName);
                     // Iterate over ResourceDependencies, ResourceDependency 
                     // annotations, creating ResourceOutput components for 
                     // each unique one, so they'll add the mandatory
                     // resources.
                     ResourceDependencies resDeps = compClass.getAnnotation(
-                        ResourceDependencies.class);
+                            ResourceDependencies.class);
                     if (resDeps != null) {
-                        for(ResourceDependency resDep : resDeps.value()) {
-                            addMandatoryResourceDependency(context,  root,
-                                compClassName, addedResDeps, resDep);
+                        for (ResourceDependency resDep : resDeps.value()) {
+                            addMandatoryResourceDependency(context, root,
+                                    compClassName, addedResDeps, resDep);
                         }
                     }
                     ResourceDependency resDep = compClass.getAnnotation(
-                        ResourceDependency.class);
+                            ResourceDependency.class);
                     if (resDep != null) {
-                        addMandatoryResourceDependency(context,  root,
-                            compClassName, addedResDeps, resDep);
+                        addMandatoryResourceDependency(context, root,
+                                compClassName, addedResDeps, resDep);
                     }
                 }
-                catch(Exception e) {
+                catch (Exception e) {
                     if (log.isLoggable(Level.WARNING)) {
                         log.log(Level.WARNING, "When processing mandatory " +
-                            "resource components, could not create instance " +
-                            "of '"+compClassName+"'");
+                                "resource components, could not create instance " +
+                                "of '" + compClassName + "'");
                     }
                 }
             }
-            
+
             /*
             // Usefull for debugging the added resources
             List<String> resStrings = new java.util.ArrayList<String>();
@@ -174,9 +174,6 @@ public class BridgeSetup implements SystemEventListener {
             }
             */
         }
-
-
-
 
         try {
             String tempWindowID = "unknownWindow";
@@ -225,22 +222,6 @@ public class BridgeSetup implements SystemEventListener {
 
             //make sure there's always a form so that ice.singleSubmit and ice.retrieveUpdate can do their job
             UIForm retrieveUpdateSetup = new UIForm() {
-                public void encodeEnd(FacesContext context) throws IOException {
-                    ResponseWriter writer = context.getResponseWriter();
-                    //apply similar fix as for http://jira.icefaces.org/browse/ICE-5728
-                    if (EnvUtils.needViewStateHack() && context.isPostback()) {
-                        writer.startElement("input", this);
-                        writer.writeAttribute("id", "javax.faces.ViewState", null);
-                        writer.writeAttribute("type", "hidden", null);
-                        writer.writeAttribute("autocomplete", "off", null);
-                        writer.writeAttribute("value", context.getApplication().getStateManager().getViewState(context), null);
-                        writer.writeAttribute("name", "javax.faces.ViewState", null);
-                        writer.endElement("input");
-                    }
-
-                    super.encodeEnd(context);
-                }
-
                 //ID is assigned uniquely by ICEpush so no need to prepend
                 public String getClientId(FacesContext context) {
                     return getId();
@@ -264,9 +245,9 @@ public class BridgeSetup implements SystemEventListener {
                         writer.write(LazyPushManager.enablePush(context, viewID) ?
                                 "ice.setupPush('" + viewID + "');" : "");
                         Resource icepushListenResource = context.getApplication()
-                                .getResourceHandler().createResource( 
-                                ICEpushListenResource.RESOURCE_NAME );
-                        String encodedURL = 
+                                .getResourceHandler().createResource(
+                                        ICEpushListenResource.RESOURCE_NAME);
+                        String encodedURL =
                                 icepushListenResource.getRequestPath();
                         writer.write("ice.push.configuration.uri=\"" +
                                 encodedURL + "\";");
@@ -297,7 +278,7 @@ public class BridgeSetup implements SystemEventListener {
     private String generateViewID() {
         return "v" + Integer.toString(hashCode(), 36) + Integer.toString(++seed, 36);
     }
-    
+
     private static void addMandatoryResourceDependency(
             FacesContext facesContext, UIViewRoot root, String compClassName,
             Set<ResourceDependency> addedResDeps, ResourceDependency resDep) {
@@ -306,11 +287,12 @@ public class BridgeSetup implements SystemEventListener {
         }
         addedResDeps.add(resDep);
         addMandatoryResource(facesContext, root, compClassName, resDep.name(),
-            resDep.library(), resDep.target());
+                resDep.library(), resDep.target());
     }
+
     private static void addMandatoryResource(FacesContext facesContext,
-            UIViewRoot root, String compClassName, String name,
-            String library, String target) {
+                                             UIViewRoot root, String compClassName, String name,
+                                             String library, String target) {
         if (target == null || target.length() == 0) {
             target = "head";
         }
@@ -320,13 +302,12 @@ public class BridgeSetup implements SystemEventListener {
         if (rendererType == null || rendererType.length() == 0) {
             if (log.isLoggable(Level.WARNING)) {
                 log.log(Level.WARNING, "Could not determine renderer type " +
-                    "for mandatory resource, for component: " + compClassName +
-                    ". Resource name: " + name + ", library: " + library);
+                        "for mandatory resource, for component: " + compClassName +
+                        ". Resource name: " + name + ", library: " + library);
             }
-        }
-        else {
+        } else {
             root.addComponentResource(facesContext, new ResourceOutput(
-                rendererType, name, library), target);
+                    rendererType, name, library), target);
         }
     }
 
@@ -341,12 +322,13 @@ public class BridgeSetup implements SystemEventListener {
             }
             setTransient(true);
         }
-        
+
         public String toString() {
             return String.valueOf(getAttributes().get("library")) + "/" +
-                String.valueOf(getAttributes().get("name"));
+                    String.valueOf(getAttributes().get("name"));
         }
     }
+
     public static class JavascriptResourceOutput extends UIOutput {
 
         public JavascriptResourceOutput(String path, String library) {
@@ -363,23 +345,26 @@ public class BridgeSetup implements SystemEventListener {
 
     class GenericScriptWriter extends UIOutputWriter {
         private String script;
-        public GenericScriptWriter (String script) {
-            super(); 
+
+        public GenericScriptWriter(String script) {
+            super();
             this.script = script;
             this.setTransient(true);
         }
+
         public void encode(ResponseWriter writer, FacesContext context) throws IOException {
             String clientID = getClientId(context);
             writer.startElement("script", this);
             writer.writeAttribute("id", clientID, null);
             //define potential script entries
             writer.writeAttribute("src", script, null);
-            writer.writeAttribute("type", "text/javascript" , null);
+            writer.writeAttribute("type", "text/javascript", null);
             writer.endElement("script");
         }
+
         //Convince PortletFaces Bridge that this is a valid script for
         //inserting into the Portal head
-        public String getRendererType()  {
+        public String getRendererType() {
             return "javax.faces.resource.Script";
         }
         //Provide a script value for PortletFaces Bridge
