@@ -119,6 +119,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
 
         // style is rendered on containing table
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, input, null, new String[]{HTML.TABINDEX_ATTR});
         input.setAttribute("onkeypress", combinedPassThru((String) uiSelectOne.getAttributes().get("onkeypress"),
                 "Ice.util.radioCheckboxEnter(form,this,event);"));
         Element label = domContext.createElement("label");
