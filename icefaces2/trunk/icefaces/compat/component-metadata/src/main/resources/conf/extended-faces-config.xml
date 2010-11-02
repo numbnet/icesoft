@@ -443,9 +443,6 @@
   <!ENTITY panelSeries-component   SYSTEM "custom/panelSeries-component.xml">
   <!ENTITY panelSeries-renderer    SYSTEM "custom/panelSeries-renderer.xml">
   
-  <!ENTITY outputDeclaration-component   SYSTEM "custom/outputDeclaration-component.xml">
-  <!ENTITY outputDeclaration-renderer    SYSTEM "custom/outputDeclaration-renderer.xml">
- 
   <!ENTITY outputstyle-component SYSTEM "custom/outputstyle-component.xml">
   <!ENTITY outputstyle-renderer SYSTEM "custom/outputstyle-renderer.xml">
   
