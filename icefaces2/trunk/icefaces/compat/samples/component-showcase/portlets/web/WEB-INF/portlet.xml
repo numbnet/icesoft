@@ -488,31 +488,6 @@
         </portlet-info>
 	</portlet>
 
-<!-- 
-  	<portlet>
-		<portlet-name>outputDeclaration</portlet-name>
-		<display-name>Document Type Declaration</display-name>
-		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-		<init-param>
-			<name>javax.portlet.faces.defaultViewId.view</name>
-			<value>/view.xhtml</value>
-		</init-param>
-        <init-param>
-            <name>org.icefaces.demo.viewPath</name>
-            <value>/WEB-INF/includes/examples/custom/outputDeclaration.xhtml</value>
-        </init-param>
-		<supports>
-			<mime-type>text/html</mime-type>
-			<portlet-mode>view</portlet-mode>
-		</supports>
-        <portlet-info>
-            <title>Document Type Declaration</title>
-            <short-title>Document Type Declaration</short-title>
-            <keywords>ICEfaces Component Showcase outputDeclaration</keywords>
-        </portlet-info>
-	</portlet>
- -->
-
   	<portlet>
 		<portlet-name>outputMedia</portlet-name>
 		<display-name>Media</display-name>
