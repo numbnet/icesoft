@@ -206,14 +206,6 @@
         <ajaxable>false</ajaxable>
     </portlet>
 
-<!-- 
-    <portlet>
-        <portlet-name>outputDeclaration</portlet-name>
-        <instanceable>true</instanceable>
-        <ajaxable>false</ajaxable>
-    </portlet>
- -->
-
     <portlet>
         <portlet-name>outputMedia</portlet-name>
         <instanceable>true</instanceable>
