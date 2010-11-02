@@ -40,6 +40,9 @@ import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.component.UISelectBoolean;
+import javax.faces.component.UISelectMany;
+import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
@@ -366,7 +369,11 @@ public class DataExporter extends OutputResource {
             if (vb != null)
                 str.append(vb.getValue(fc));
         }
-
+        if (uic instanceof UISelectBoolean || 
+        		uic instanceof UISelectMany || 
+        		uic instanceof UISelectOne){
+        	return str.toString();
+        }
         if (uic.getChildCount() > 0) {
             Iterator iter = uic.getChildren().iterator();
             while (iter.hasNext()) {
