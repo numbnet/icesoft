@@ -49,6 +49,7 @@ import java.util.Hashtable;
  *
  */
 public class TagToComponentMap implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public static final String XHTML_COMPONENT_TYPE =
             "com.icesoft.faces.XhtmlComponent";
