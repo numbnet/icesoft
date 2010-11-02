@@ -75,7 +75,6 @@
 <!ENTITY ice-OutputBody-renderer SYSTEM "ice/renderers/OutputBody-renderer.xml">
 <!ENTITY ice-OutputChart-renderer SYSTEM "ice/renderers/OutputChart-renderer.xml">
 <!ENTITY ice-OutputConnectionStatus-renderer SYSTEM "ice/renderers/OutputConnectionStatus-renderer.xml">
-<!ENTITY ice-OutputDeclaration-renderer SYSTEM "ice/renderers/OutputDeclaration-renderer.xml">
 <!ENTITY ice-OutputHead-renderer SYSTEM "ice/renderers/OutputHead-renderer.xml">
 <!ENTITY ice-OutputHtml-renderer SYSTEM "ice/renderers/OutputHtml-renderer.xml">
 <!ENTITY ice-OutputMedia-renderer SYSTEM "ice/renderers/OutputMedia-renderer.xml">
@@ -151,7 +150,6 @@
 <!ENTITY ice-OutputBody-component SYSTEM "ice/components/OutputBody-component.xml">
 <!ENTITY ice-OutputChart-component SYSTEM "ice/components/OutputChart-component.xml">
 <!ENTITY ice-OutputConnectionStatus-component SYSTEM "ice/components/OutputConnectionStatus-component.xml">
-<!ENTITY ice-OutputDeclaration-component SYSTEM "ice/components/OutputDeclaration-component.xml">
 <!ENTITY ice-OutputHead-component SYSTEM "ice/components/OutputHead-component.xml">
 <!ENTITY ice-OutputHtml-component SYSTEM "ice/components/OutputHtml-component.xml">
 <!ENTITY ice-OutputMedia-component SYSTEM "ice/components/OutputMedia-component.xml">
@@ -233,7 +231,6 @@
     &ice-OutputBody-component;
     &ice-OutputChart-component;
     &ice-OutputConnectionStatus-component;
-    &ice-OutputDeclaration-component;
     &ice-OutputHead-component;
     &ice-OutputHtml-component;
     &ice-OutputMedia-component;
@@ -303,7 +300,6 @@
             &ice-OutputBody-renderer;
             &ice-OutputChart-renderer;
             &ice-OutputConnectionStatus-renderer;
-            &ice-OutputDeclaration-renderer;
             &ice-OutputHead-renderer;
             &ice-OutputHtml-renderer;
             &ice-OutputMedia-renderer;
