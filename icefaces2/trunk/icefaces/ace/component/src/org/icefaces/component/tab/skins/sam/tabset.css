@@ -37,7 +37,6 @@ top:auto;
 }
 
 .ice-skin-sam .yui-navset .yui-nav div.yui-navdiv, .ice-skin-sam .yui-navset .yui-navset-top .yui-nav div.yui-navdiv {
-background:#D8D8D8 url(../../../../assets/skins/sam/sprite.png) repeat-x scroll 0 0;
 border-color:#A3A3A3;
 border-style:solid;
 border-width:0 1px;
@@ -59,7 +58,6 @@ top:-1px;
 }
 
 .ice-skin-sam .yui-navset .yui-nav .selected div.yui-navdiv, .ice-skin-sam .yui-navset .yui-nav .selected a:focus, .ice-skin-sam .yui-navset .yui-nav .selected a:hover {
-background:#2647A0 url(../../../../assets/skins/sam/sprite.png) repeat-x scroll left -1400px;
 color:#FFFFFF;
 }
 
