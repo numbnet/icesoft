@@ -77,10 +77,6 @@
             <portlet id="setEventPhase"/>
         </category>
         
-<!-- Disabled
-        <portlet id="inputFile"/>
-        <portlet id="outputDeclaration"/>
- -->
     </category>
 
 </display>
