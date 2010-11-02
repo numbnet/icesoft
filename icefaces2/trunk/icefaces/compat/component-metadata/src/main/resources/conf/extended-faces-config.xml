@@ -154,8 +154,6 @@
   <!ENTITY ice-ext-core-styled-props SYSTEM "ice_properties/ice-ext-core-styled-props.xml">
 
   <!-- extended components properties-->
-  <!ENTITY ice-outputHtml-props SYSTEM "ice_properties/ice-outputHtml-props.xml">
-  <!ENTITY ice-outputBody-props SYSTEM "ice_properties/ice-outputBody-props.xml">
   <!ENTITY ice-commandButton-props SYSTEM "ice_properties/ice-commandButton-props.xml">
   <!ENTITY ice-commandLink-props SYSTEM "ice_properties/ice-commandLink-props.xml">
   <!ENTITY ice-dataTable-props SYSTEM "ice_properties/ice-dataTable-props.xml">
