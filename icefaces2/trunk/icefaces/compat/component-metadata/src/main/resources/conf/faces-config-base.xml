@@ -72,11 +72,8 @@
 <!ENTITY ice-MenuItemSeparator-renderer SYSTEM "ice/renderers/MenuItemSeparator-renderer.xml">
 <!ENTITY ice-MenuItems-renderer SYSTEM "ice/renderers/MenuItems-renderer.xml">
 <!ENTITY ice-MenuPopup-renderer SYSTEM "ice/renderers/MenuPopup-renderer.xml">
-<!ENTITY ice-OutputBody-renderer SYSTEM "ice/renderers/OutputBody-renderer.xml">
 <!ENTITY ice-OutputChart-renderer SYSTEM "ice/renderers/OutputChart-renderer.xml">
 <!ENTITY ice-OutputConnectionStatus-renderer SYSTEM "ice/renderers/OutputConnectionStatus-renderer.xml">
-<!ENTITY ice-OutputHead-renderer SYSTEM "ice/renderers/OutputHead-renderer.xml">
-<!ENTITY ice-OutputHtml-renderer SYSTEM "ice/renderers/OutputHtml-renderer.xml">
 <!ENTITY ice-OutputMedia-renderer SYSTEM "ice/renderers/OutputMedia-renderer.xml">
 <!ENTITY ice-OutputResource-renderer SYSTEM "ice/renderers/OutputResource-renderer.xml">
 <!ENTITY ice-OutputStyle-renderer SYSTEM "ice/renderers/OutputStyle-renderer.xml">
@@ -147,11 +144,8 @@
 <!ENTITY ice-MenuItemSeparator-component SYSTEM "ice/components/MenuItemSeparator-component.xml">
 <!ENTITY ice-MenuItems-component SYSTEM "ice/components/MenuItems-component.xml">
 <!ENTITY ice-MenuPopup-component SYSTEM "ice/components/MenuPopup-component.xml">
-<!ENTITY ice-OutputBody-component SYSTEM "ice/components/OutputBody-component.xml">
 <!ENTITY ice-OutputChart-component SYSTEM "ice/components/OutputChart-component.xml">
 <!ENTITY ice-OutputConnectionStatus-component SYSTEM "ice/components/OutputConnectionStatus-component.xml">
-<!ENTITY ice-OutputHead-component SYSTEM "ice/components/OutputHead-component.xml">
-<!ENTITY ice-OutputHtml-component SYSTEM "ice/components/OutputHtml-component.xml">
 <!ENTITY ice-OutputMedia-component SYSTEM "ice/components/OutputMedia-component.xml">
 <!ENTITY ice-OutputResource-component SYSTEM "ice/components/OutputResource-component.xml">
 <!ENTITY ice-OutputStyle-component SYSTEM "ice/components/OutputStyle-component.xml">
@@ -228,11 +222,8 @@
     &ice-MenuItemSeparator-component;
     &ice-MenuItems-component;
     &ice-MenuPopup-component;
-    &ice-OutputBody-component;
     &ice-OutputChart-component;
     &ice-OutputConnectionStatus-component;
-    &ice-OutputHead-component;
-    &ice-OutputHtml-component;
     &ice-OutputMedia-component;
     &ice-OutputResource-component;
     &ice-OutputStyle-component;
@@ -297,11 +288,8 @@
             &ice-MenuItemSeparator-renderer;
             &ice-MenuItems-renderer;
             &ice-MenuPopup-renderer;            
-            &ice-OutputBody-renderer;
             &ice-OutputChart-renderer;
             &ice-OutputConnectionStatus-renderer;
-            &ice-OutputHead-renderer;
-            &ice-OutputHtml-renderer;
             &ice-OutputMedia-renderer;
             &ice-OutputResource-renderer;
             &ice-OutputStyle-renderer;

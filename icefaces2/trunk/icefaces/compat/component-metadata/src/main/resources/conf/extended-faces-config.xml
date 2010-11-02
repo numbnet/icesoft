@@ -156,7 +156,6 @@
   <!-- extended components properties-->
   <!ENTITY ice-outputHtml-props SYSTEM "ice_properties/ice-outputHtml-props.xml">
   <!ENTITY ice-outputBody-props SYSTEM "ice_properties/ice-outputBody-props.xml">
-  <!ENTITY ice-outputHead-props SYSTEM "ice_properties/ice-outputHead-props.xml">
   <!ENTITY ice-commandButton-props SYSTEM "ice_properties/ice-commandButton-props.xml">
   <!ENTITY ice-commandLink-props SYSTEM "ice_properties/ice-commandLink-props.xml">
   <!ENTITY ice-dataTable-props SYSTEM "ice_properties/ice-dataTable-props.xml">
@@ -242,15 +241,6 @@
   <!ENTITY ice-cust-setEventPhase-props SYSTEM "ice_cust_properties/cust-setEventPhase-props.xml">
 
   <!-- ICE Extended components -->
-  <!ENTITY ice-outputHtml-component   SYSTEM "components/ice-outputHtml-component.xml">
-  <!ENTITY ice-outputHtml-renderer    SYSTEM "components/ice-outputHtml-renderer.xml">
-    
-  <!ENTITY ice-outputHead-component   SYSTEM "components/ice-outputHead-component.xml">
-  <!ENTITY ice-outputHead-renderer    SYSTEM "components/ice-outputHead-renderer.xml">
-  
-  <!ENTITY ice-outputBody-component   SYSTEM "components/ice-outputBody-component.xml">
-  <!ENTITY ice-outputBody-renderer    SYSTEM "components/ice-outputBody-renderer.xml">
-    
   <!ENTITY ice-button-component   SYSTEM "components/ice-button-component.xml">
   <!ENTITY ice-button-renderer    SYSTEM "components/ice-button-renderer.xml">
   
@@ -534,9 +524,6 @@
     &ice-columngroup-component;	
 	&ice-uicolumn-component;
 	&ice-uicolumns-component;
-    &ice-outputHtml-component;
-    &ice-outputHead-component;
-    &ice-outputBody-component;
 
 	<!--  custom component -->
 	&selectinputdate-component;
@@ -623,10 +610,7 @@
         &ice-columngroup-renderer;       
 		&ice-uicolumn-renderer;
 		&ice-uicolumns-renderer;
-        &ice-outputHtml-renderer;
-        &ice-outputHead-renderer;
-        &ice-outputBody-renderer;
-		
+
 		<!-- custom component -->
 		&selectinputdate-renderer;
 		&jseventlistener-renderer;
