@@ -217,13 +217,11 @@ var submit;
                     createHiddenInputInDeltaSubmitForm(removePrefix + name, value);
                 }));
 
-                deltaSubmitForm.appendChild(clonedElement);
-                jsf.ajax.request(clonedElement, event, options);
+                jsf.ajax.request(deltaSubmitForm, event, options);
             } finally {
                 each(appendedElements, function(element) {
                     deltaSubmitForm.removeChild(element);
                 });
-                deltaSubmitForm.removeChild(clonedElement);
             }
         } else {
             jsf.ajax.request(element, event, options);
