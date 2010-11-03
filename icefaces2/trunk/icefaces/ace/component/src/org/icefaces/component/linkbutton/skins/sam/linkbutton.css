@@ -26,7 +26,7 @@ version: 2.6.0
 	
 .yui-skin-sam .yui-button button,.yui-skin-sam .yui-button a{
 	padding:0 10px;
-	background-image: url(background.png);
+	background-image: url(background.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	font-size:93%;
 	line-height:2;
 	*line-height:1.7;
