@@ -369,6 +369,7 @@ public class PanelTabSet
      * The current style class name.
      */
     private String _styleClass = null;
+    private String tabindex;
 
     /**
      * Creates an instance and sets the default renderer type to
@@ -558,7 +559,7 @@ public class PanelTabSet
     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
     */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[36];
+        Object values[] = new Object[37];
         values[0] = super.saveState(context);
         values[1] = _selectedIndex.saveState(this);
         values[2] = _bgcolor;
@@ -595,6 +596,7 @@ public class PanelTabSet
         values[33] = immediate;   
         values[34] = border_set ? Boolean.TRUE : Boolean.FALSE;
         values[35] = keyboardNavigationEnabled;
+        values[36] = tabindex;
         return ((Object) (values));
     }
 
@@ -649,6 +651,7 @@ public class PanelTabSet
         immediate = (Boolean)values[33];
         border_set = ((Boolean) values[34]).booleanValue(); 
         keyboardNavigationEnabled = (Boolean) values[35];         
+        tabindex = (String)values[36];
     }
 
     public Object saveSeriesState(FacesContext facesContext) {
@@ -1211,5 +1214,17 @@ public class PanelTabSet
 
     public void setKeyboardNavigationEnabled(boolean keyboardNavigationEnabled) {
         this.keyboardNavigationEnabled = new Boolean(keyboardNavigationEnabled);
+    }
+
+    public void setTabindex(String tabindex) {
+        this.tabindex = tabindex;
+    }
+
+    public String getTabindex() {
+        if (tabindex != null) {
+            return tabindex;
+        }
+        ValueBinding vb = getValueBinding("tabindex");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 }
