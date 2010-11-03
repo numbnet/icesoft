@@ -634,6 +634,9 @@ public class PanelTabSetRenderer
                 td_mid_mid.appendChild(div);
                 div.setAttribute(HTML.ONCLICK_ATTR, "if(!Ice.isEventSourceInputElement(event)) document.getElementById('"+ linkId+"').onclick();");
                 div.setAttribute(HTML.CLASS_ATTR, "ptfd");
+                if (active) {
+                    renderAttribute(tabSet, div, HTML.TABINDEX_ATTR, HTML.TABINDEX_ATTR);
+                }
                 div.appendChild(link);
                 Node cursor = domContext.getCursorParent();
                 domContext.setCursorParent(div);
