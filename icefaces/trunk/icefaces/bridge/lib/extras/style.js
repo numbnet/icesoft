@@ -262,6 +262,7 @@ Ice.modal = {
             }
 
             Ice.modal.rollbacks.broadcast();
+            Ice.modal.rollbacks = null;
         }
     },
 
