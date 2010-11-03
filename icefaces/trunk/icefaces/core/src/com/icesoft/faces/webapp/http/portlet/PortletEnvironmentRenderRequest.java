@@ -150,7 +150,7 @@ public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentR
 
     public String getProperty(String name) {
         if (properties.containsKey(name)) {
-            List values = (LinkedList) properties.get(name);
+            List values = (List) properties.get(name);
             return (String) values.get(0);
         } else {
             return null;
@@ -159,7 +159,7 @@ public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentR
 
     public Enumeration getProperties(String name) {
         if (properties.containsKey(name)) {
-            LinkedList values = (LinkedList) properties.get(name);
+            List values = (List) properties.get(name);
             return Collections.enumeration(values);
         } else {
             return Collections.enumeration(Collections.EMPTY_LIST);
