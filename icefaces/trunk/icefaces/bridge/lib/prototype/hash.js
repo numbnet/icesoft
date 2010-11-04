@@ -87,7 +87,7 @@ var Hashtable = Class.create(Enumerable, (function() {
             }).join(', ') + '}>';
         },
 
-        toJSON: function() {
+        toJSON_Prototype: function() {
             return Object.toJSON(this.toObject());
         },
 

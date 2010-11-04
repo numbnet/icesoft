@@ -48,7 +48,7 @@ Object.extend(String.prototype, {
         length = length || 30;
         truncation = Object.isUndefined(truncation) ? '...' : truncation;
         return this.length > length ?
-               this.slice(0, length - truncation.length) + truncation : String(this);
+                this.slice(0, length - truncation.length) + truncation : String(this);
     },
 
     strip: function() {
@@ -87,10 +87,10 @@ Object.extend(String.prototype, {
         var div = new Element('div');
         div.innerHTML = this.stripTags();
         return div.childNodes[0] ? (div.childNodes.length > 1 ?
-                                    $A(div.childNodes).inject('', function(memo, node) {
-                                        return memo + node.nodeValue
-                                    }) :
-                                    div.childNodes[0].nodeValue) : '';
+                $A(div.childNodes).inject('', function(memo, node) {
+                    return memo + node.nodeValue
+                }) :
+                div.childNodes[0].nodeValue) : '';
     },
 
     toQueryParams: function(separator) {
@@ -119,7 +119,7 @@ Object.extend(String.prototype, {
 
     succ: function() {
         return this.slice(0, this.length - 1) +
-               String.fromCharCode(this.charCodeAt(this.length - 1) + 1);
+                String.fromCharCode(this.charCodeAt(this.length - 1) + 1);
     },
 
     times: function(count) {
@@ -161,7 +161,7 @@ Object.extend(String.prototype, {
         return "'" + escapedString.replace(/'/g, '\\\'') + "'";
     },
 
-    toJSON: function() {
+    toJSON_Prototype: function() {
         return this.inspect(true);
     },
 
