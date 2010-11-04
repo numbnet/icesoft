@@ -10,7 +10,7 @@ if (Prototype.Browser.WebKit) {
     function $A(iterable) {
         if (!iterable) return [];
         if (!(Object.isFunction(iterable) && iterable == '[object NodeList]') &&
-            iterable.toArray) return iterable.toArray();
+                iterable.toArray) return iterable.toArray();
         var length = iterable.length, results = new Array(length);
         while (length--) results[length] = iterable[length];
         return results;
@@ -51,7 +51,7 @@ Object.extend(Array.prototype, {
     flatten: function() {
         return this.inject([], function(array, value) {
             return array.concat(Object.isArray(value) ?
-                                value.flatten() : [value]);
+                    value.flatten() : [value]);
         });
     },
 
@@ -98,7 +98,7 @@ Object.extend(Array.prototype, {
         return '[' + this.map(Object.inspect).join(', ') + ']';
     },
 
-    toJSON: function() {
+    toJSON_Prototype: function() {
         var results = [];
         this.each(function(object) {
             var value = Object.toJSON(object);

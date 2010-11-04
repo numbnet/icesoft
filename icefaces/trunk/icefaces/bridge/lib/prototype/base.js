@@ -44,7 +44,7 @@ Class.Methods = {
         for (var i = 0, length = properties.length; i < length; i++) {
             var property = properties[i], value = source[property];
             if (ancestor && Object.isFunction(value) &&
-                value.argumentNames().first() == "$super") {
+                    value.argumentNames().first() == "$super") {
                 var method = value, value = Object.extend((function(m) {
                     return function() {
                         return ancestor[m].apply(this, arguments)
@@ -85,7 +85,7 @@ Object.extend(Object, {
         }
     },
 
-    toJSON: function(object) {
+    toJSON_Prototype: function(object) {
         var type = typeof object;
         switch (type) {
             case 'undefined':
@@ -219,11 +219,11 @@ Function.prototype.defer = Function.prototype.delay.curry(0.01);
 
 Date.prototype.toJSON = function() {
     return '"' + this.getUTCFullYear() + '-' +
-           (this.getUTCMonth() + 1).toPaddedString(2) + '-' +
-           this.getUTCDate().toPaddedString(2) + 'T' +
-           this.getUTCHours().toPaddedString(2) + ':' +
-           this.getUTCMinutes().toPaddedString(2) + ':' +
-           this.getUTCSeconds().toPaddedString(2) + 'Z"';
+            (this.getUTCMonth() + 1).toPaddedString(2) + '-' +
+            this.getUTCDate().toPaddedString(2) + 'T' +
+            this.getUTCHours().toPaddedString(2) + ':' +
+            this.getUTCMinutes().toPaddedString(2) + ':' +
+            this.getUTCSeconds().toPaddedString(2) + 'Z"';
 };
 
 var Try = {
