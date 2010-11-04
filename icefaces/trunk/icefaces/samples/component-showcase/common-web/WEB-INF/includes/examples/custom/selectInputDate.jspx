@@ -123,6 +123,12 @@ the click of a button.
             <f:convertDateTime pattern="MM/dd/yyyy hh:mm a"
                                timeZone="#{dateSelect.timeZone}"/>
         </ice:outputText>        
+
+        <ice:outputText id="popupSelectedDatePattern4" value="#{dateSelect.date5}" rendered="#{dateSelect.pattern eq 'dateTimeSs'}"
+                        effect="#{dateSelect.valueChangeEffect2}">
+            <f:convertDateTime pattern="MMM/dd/yyyy HH:mm:ss"
+                               timeZone="#{dateSelect.timeZone}"/>
+        </ice:outputText>
         <!-- Calendar Component -->
         
         <ice:selectInputDate id="popupDatePttrn1" renderMonthAsDropdown="true" renderYearAsDropdown="true"
@@ -150,6 +156,15 @@ the click of a button.
                              title="#{msgs['page.selectInputDate.popup.title']}"
                              renderAsPopup="true">
             <f:convertDateTime pattern="MM/dd/yyyy hh:mm a"
+                               timeZone="#{dateSelect.timeZone}"/>
+        </ice:selectInputDate>
+
+        <ice:selectInputDate id="popupDatePttrn4" renderMonthAsDropdown="true" renderYearAsDropdown="true"
+                             value="#{dateSelect.date5}" rendered="#{dateSelect.pattern eq 'dateTimeSs'}"
+                             valueChangeListener="#{dateSelect.effect2ChangeListener}"
+                             title="#{msgs['page.selectInputDate.popup.title']}"
+                             renderAsPopup="true">
+            <f:convertDateTime pattern="MMM/dd/yyyy HH:mm:ss"
                                timeZone="#{dateSelect.timeZone}"/>
         </ice:selectInputDate>
 
