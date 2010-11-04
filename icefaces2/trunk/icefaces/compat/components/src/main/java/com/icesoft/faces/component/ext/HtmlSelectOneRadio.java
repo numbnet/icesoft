@@ -556,7 +556,7 @@ public class HtmlSelectOneRadio
         visible = (Boolean) values[20];
         autocomplete = (String) values[21];
     }
-
+/*
     public String getOnclick() {
         String onclick = super.getOnclick();
         if (getPartialSubmit()) {
@@ -567,6 +567,18 @@ public class HtmlSelectOneRadio
             }
         }
         return onclick;
+    }
+*/
+    public String getOnmouseup() {
+        String onmouseup = super.getOnmouseup();
+        if (getPartialSubmit()) {
+            if (onmouseup != null) {
+                onmouseup += ";setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL;
+            } else {
+                onmouseup = ";setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL;
+            }
+        }
+        return onmouseup;
     }
 }
 
