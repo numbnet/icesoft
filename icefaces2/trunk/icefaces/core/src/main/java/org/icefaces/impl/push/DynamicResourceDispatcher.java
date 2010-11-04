@@ -51,13 +51,12 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
     private static Logger log = Logger.getLogger("org.icefaces.resourcedispatcher");
     private static final Pattern ICEfacesBridgeRequestPattern = Pattern.compile(".*\\.icefaces\\.jsf$");
     private static final Pattern ICEfacesResourceRequestPattern = Pattern.compile(".*/icefaces/.*");
-    private static final String RESOURCE_PREFIX = "icefaces/resource";
+    private static final String RESOURCE_PREFIX = "/icefaces/resource";
     private static final DynamicResourceLinker.Handler NOOPHandler = new DynamicResourceLinker.Handler() {
         public void linkWith(DynamicResourceLinker linker) {
             //do nothing!
         }
     };
-    private String prefix;
     //introducing a memory leak, but ensuring that resources
     //are available when requested
     private HashMap mappings = new HashMap();
@@ -65,7 +64,6 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
     private ResourceHandler wrapped;
 
     public DynamicResourceDispatcher(ResourceHandler wrapped) {
-        this.prefix = RESOURCE_PREFIX;
         this.wrapped = wrapped;
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
@@ -161,12 +159,7 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
                 log.info(e.getMessage());
             }
         }
-        String pre = "";
-        if ( EnvUtils.instanceofPortletRequest(
-                FacesContext.getCurrentInstance().getExternalContext().getRequest() ))  {
-            pre = "/";
-        }
-        final String name = pre + prefix + "/" + encode(resource) + "/";
+        final String name = RESOURCE_PREFIX + "/" + encode(resource) + "/";
         final String fullName = name + uriFilename;
         dispatchOn(fullName, ".*" + name.replaceAll("\\/", "\\/") + dispatchFilename + "$", resource);
         if (handler != NOOPHandler) {
