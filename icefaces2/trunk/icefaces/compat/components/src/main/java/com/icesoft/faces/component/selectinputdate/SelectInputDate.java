@@ -157,7 +157,8 @@ public class SelectInputDate
     private static final Pattern timePattern = Pattern.compile("[aHkKhmsS]");
     private Integer submittedHours = null;
     private Integer submittedMinutes = null;
-    private String submittedAmPm= null;    
+    private Integer submittedSeconds = null;
+    private String submittedAmPm= null;
     /**
      * Creates an instance and sets renderer type to "com.icesoft.faces.Calendar".
      */
@@ -654,7 +655,7 @@ public class SelectInputDate
     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
     */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[29];
+        Object values[] = new Object[30];
         values[0] = super.saveState(context);
         values[1] = _renderAsPopup;
         values[2] = _popupDateFormat;
@@ -681,9 +682,10 @@ public class SelectInputDate
         values[23] = selectedDayLink;
         values[24] = showPopup;
         values[25] = submittedHours;
-        values[26] = submittedMinutes;  
-        values[27] = submittedAmPm;         
-        values[28] = popupDate;        
+        values[26] = submittedMinutes;
+        values[27] = submittedSeconds;
+        values[28] = submittedAmPm;
+        values[29] = popupDate;
         return ((Object) (values));
     }
 
@@ -718,19 +720,21 @@ public class SelectInputDate
         selectedDayLink = (String) values[23];
         showPopup = (List) values[24];
         submittedHours = (Integer)values[25];
-        submittedMinutes = (Integer)values[26];  
-        submittedAmPm = (String)values[27];
-        popupDate = (Date) values[28];        
+        submittedMinutes = (Integer)values[26];
+        submittedSeconds = (Integer)values[27];
+        submittedAmPm = (String)values[28];
+        popupDate = (Date) values[29];
     }
     
     public Object saveSeriesState(FacesContext facesContext) {
-        Object values[] = new Object[6];
+        Object values[] = new Object[7];
         values[0] = navEvent ? Boolean.TRUE : Boolean.FALSE;
         values[1] = navDate;
         values[2] = submittedHours;
         values[3] = submittedMinutes;
-        values[4] = submittedAmPm;
-        values[5] = popupDate;
+        values[4] = submittedSeconds;
+        values[5] = submittedAmPm;
+        values[6] = popupDate;
         return values;
     }
 
@@ -740,8 +744,9 @@ public class SelectInputDate
         navDate = (Date) values[1];
         submittedHours = (Integer)values[2];
         submittedMinutes = (Integer)values[3];
-        submittedAmPm = (String)values[4];
-        popupDate = (Date) values[5];
+        submittedSeconds = (Integer)values[4];
+        submittedAmPm = (String)values[5];
+        popupDate = (Date) values[6];
     }
 
     private Map linkMap = new HashMap();
@@ -1112,6 +1117,11 @@ public class SelectInputDate
                pattern.indexOf("h") >= 0 ||
                pattern.indexOf("k") >= 0;
     }
+    
+    boolean isSecond(FacesContext context) {
+        String pattern = getDateTimeConverterPattern(resolveDateTimeConverter(context));        
+        return pattern.indexOf("s") >= 0;
+    }
 
     /**
      * This method is necesary since DateTimeConverter.getDateFormat(Locale) is private  
@@ -1185,6 +1195,21 @@ public class SelectInputDate
     
     Integer getMinutesSubmittedValue() {
         return submittedMinutes;
+    }
+    
+    void setSecondsSubmittedValue(Object submittedSeconds) {
+        if (submittedSeconds == null)
+            this.submittedSeconds = null;
+        else
+            try {
+                this.submittedSeconds = new Integer(submittedSeconds.toString());
+            } catch (NumberFormatException e) {
+                this.submittedSeconds = null;
+            }
+    }
+    
+    Integer getSecondsSubmittedValue() {
+        return submittedSeconds;
     }
     
     void setAmPmSubmittedValue(Object submittedAmPm) {
