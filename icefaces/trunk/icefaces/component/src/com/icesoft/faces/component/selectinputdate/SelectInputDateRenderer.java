@@ -114,8 +114,9 @@ public class SelectInputDateRenderer
     private static final String PREV_YEAR = "_py";
     private static final String NEXT_YEAR = "_ny";
     private static final String SELECT_HOUR = "_hr";
-    private static final String SELECT_MIN = "_min";  
-    private static final String SELECT_AM_PM = "_amPm";    
+    private static final String SELECT_MIN = "_min";
+    private static final String SELECT_SEC = "_sec";
+    private static final String SELECT_AM_PM = "_amPm";
 
     // constant for selectinputdate links
     private static final String CALENDAR = "_c_";
@@ -131,7 +132,8 @@ public class SelectInputDateRenderer
     private static final int IS_NEXT_YEAR       = 6;
     private static final int IS_HOUR            = 7;
     private static final int IS_MIN             = 8;
-    private static final int IS_AM_PM           = 9;
+    private static final int IS_SEC             = 9;
+    private static final int IS_AM_PM           = 10;
     
     private static final String INPUT_TEXT_TITLE =
         "com.icesoft.faces.component.selectinputdate.INPUT_TEXT_TITLE";
@@ -605,6 +607,9 @@ public class SelectInputDateRenderer
             Element td = domContext.createElement(HTML.TD_ELEM);
             td.setAttribute(HTML.COLSPAN_ATTR, "7");
             td.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeClass());
+            Element tbl = domContext.createElement(HTML.TABLE_ELEM);
+            Element tr2 = domContext.createElement(HTML.TR_ELEM);
+            Element tdHours = domContext.createElement(HTML.TD_ELEM);
             Element hours = domContext.createElement(HTML.SELECT_ELEM);
             hours.setAttribute(HTML.ID_ATTR, clientId+ SELECT_HOUR);
             hours.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_HOUR);
@@ -616,7 +621,8 @@ public class SelectInputDateRenderer
 //System.out.println("SIDR.encodeEnd()  hrs: " + hrs[0] + ", " + hrs[hrs.length-1]);
             int hourIndex;
             int min;
-            int amPm;                    
+            int sec;
+            int amPm;
 //System.out.println("SIDR.encodeEnd()  actuallyHaveTime: " + actuallyHaveTime);
             if (!actuallyHaveTime &&
                 selectInputDate.getHoursSubmittedValue() != null &&
@@ -627,7 +633,9 @@ public class SelectInputDateRenderer
 //System.out.println("SIDR.encodeEnd()  hour: " + hourIndex);
                 min = selectInputDate.getMinutesSubmittedValue().intValue();
 //System.out.println("SIDR.encodeEnd()  min: " + min);
-                String amPmStr = selectInputDate.getAmPmSubmittedValue(); 
+                sec = selectInputDate.getSecondsSubmittedValue().intValue();
+//System.out.println("SIDR.encodeEnd()  min: " + min);
+                String amPmStr = selectInputDate.getAmPmSubmittedValue();
 //System.out.println("SIDR.encodeEnd()  amPmStr: " + amPmStr);
                 if (amPmStr != null) {
                     amPm = amPmStr.equalsIgnoreCase("PM") ? 1 : 0;
@@ -661,7 +669,8 @@ public class SelectInputDateRenderer
 //System.out.println("SIDR.encodeEnd()  hourIndex: " + hourIndex);
 
                 min = timeKeeper.get(Calendar.MINUTE);
-                amPm = timeKeeper.get(Calendar.AM_PM) ;                    
+                sec = timeKeeper.get(Calendar.SECOND);
+                amPm = timeKeeper.get(Calendar.AM_PM) ;
 //System.out.println("SIDR.encodeEnd()  amPm: " + amPm);
             }
             for (int i = 0; i < hrs.length; i++ ) {
@@ -674,6 +683,8 @@ public class SelectInputDateRenderer
                 }
                 hours.appendChild(hoursOption);
             }
+            Element tdColon = domContext.createElement(HTML.TD_ELEM);
+            Element tdMinutes = domContext.createElement(HTML.TD_ELEM);
             Element minutes = domContext.createElement(HTML.SELECT_ELEM);
             minutes.setAttribute(HTML.ID_ATTR, clientId+SELECT_MIN);                    
             minutes.setAttribute(HTML.NAME_ATTR, clientId+SELECT_MIN); 
@@ -694,14 +705,49 @@ public class SelectInputDateRenderer
                 minutes.appendChild(minutesOption);
             }
             
-            Text colon = domContext.createTextNode(":"); 
+            Text colon = domContext.createTextNode(":");
             tfoot.appendChild(tr);
             tr.appendChild(td);
-            td.appendChild(hours);
-            td.appendChild(colon);
-            td.appendChild(minutes);
-            
+            td.appendChild(tbl);
+            tbl.appendChild(tr2);
+            tdHours.appendChild(hours);
+            tr2.appendChild(tdHours);
+            tdColon.appendChild(colon);
+            tdMinutes.appendChild(minutes);
+            tr2.appendChild(tdColon);
+            tr2.appendChild(tdMinutes);
+
+            if (selectInputDate.isSecond(facesContext)){
+                    Element tdSeconds = domContext.createElement(HTML.TD_ELEM);
+                    Element tdSecColon = domContext.createElement(HTML.TD_ELEM);
+                Element seconds = domContext.createElement(HTML.SELECT_ELEM);
+                seconds.setAttribute(HTML.ID_ATTR, clientId+SELECT_SEC);
+                seconds.setAttribute(HTML.NAME_ATTR, clientId+SELECT_SEC);
+                seconds.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeDropDownClass());
+                seconds.setAttribute(HTML.ONCHANGE_ATTR, DomBasicRenderer.ICESUBMITPARTIAL);
+                for (int i = 0; i < 60; i++ ) {
+                    Element secondsOption = domContext.createElement(HTML.OPTION_ELEM);
+                    secondsOption.setAttribute(HTML.VALUE_ATTR, String.valueOf(i));
+                    String digits = String.valueOf(i);
+                    if (i < 10) {
+                       digits = "0" + digits;
+                    }
+                    Text secondText = domContext.createTextNode(digits);
+                    secondsOption.appendChild(secondText);
+                    if (i == sec) {
+                        secondsOption.setAttribute(HTML.SELECTED_ATTR, "true");
+                    }
+                    seconds.appendChild(secondsOption);
+                }
+                Text secondColon = domContext.createTextNode(":");
+                tdSecColon.appendChild(secondColon);
+                tdSeconds.appendChild(seconds);
+                tr2.appendChild(tdSecColon);
+                tr2.appendChild(tdSeconds);
+            }
+
             if (selectInputDate.isAmPm(facesContext)){
+                Element tdAamPm = domContext.createElement(HTML.TD_ELEM);
                 Element amPmElement = domContext.createElement(HTML.SELECT_ELEM);
                 amPmElement.setAttribute(HTML.ID_ATTR, clientId+ SELECT_AM_PM);                         
                 amPmElement.setAttribute(HTML.NAME_ATTR, clientId+ SELECT_AM_PM); 
@@ -725,7 +771,8 @@ public class SelectInputDateRenderer
                 }
                 amPmElement.appendChild(amPmElementOption);                            
                 amPmElement.appendChild(amPmElementOption2);
-                td.appendChild(amPmElement);
+                tdAamPm.appendChild(amPmElement);
+                tr2.appendChild(tdAamPm);
             }
             table.appendChild(tfoot);
         }
@@ -1470,6 +1517,9 @@ public class SelectInputDateRenderer
             else if( (clientId+SELECT_MIN).equals(eventCapturedId) ) {
                 return IS_MIN;
             }
+            else if( (clientId+SELECT_SEC).equals(eventCapturedId) ) {
+                return IS_SEC;
+            }
             else if( (clientId+SELECT_AM_PM).equals(eventCapturedId) ) {
                 return IS_AM_PM;
             }
@@ -1514,7 +1564,8 @@ public class SelectInputDateRenderer
         String yearClientId = clientId + SELECT_YEAR;
         String hoursClientId = clientId + SELECT_HOUR;
         String minutesClientId = clientId + SELECT_MIN;
-        String amPmClientId = clientId + SELECT_AM_PM;        
+        String secondsClientId = clientId + SELECT_SEC;
+        String amPmClientId = clientId + SELECT_AM_PM;
         if (requestParameterMap.containsKey(hoursClientId)) {
 //System.out.println("SIDR.decode()    Hours: " + requestParameterMap.get(hoursClientId));
             dateSelect.setHoursSubmittedValue(requestParameterMap.get(hoursClientId));
@@ -1524,7 +1575,12 @@ public class SelectInputDateRenderer
 //System.out.println("SIDR.decode()    Minutes: " + requestParameterMap.get(minutesClientId));
             dateSelect.setMinutesSubmittedValue(requestParameterMap.get(minutesClientId));            
         }
-        
+
+        if (requestParameterMap.containsKey(secondsClientId)) {
+//System.out.println("SIDR.decode()    Seconds: " + requestParameterMap.get(secondsClientId));
+            dateSelect.setSecondsSubmittedValue(requestParameterMap.get(secondsClientId));
+        }
+
         if (requestParameterMap.containsKey(amPmClientId)) {
 //System.out.println("SIDR.decode()    AmPm: " + requestParameterMap.get(amPmClientId));
             dateSelect.setAmPmSubmittedValue(requestParameterMap.get(amPmClientId));            
@@ -1560,6 +1616,7 @@ String[] checkStrings = new String[] {
     "IS_NEXT_YEAR",
     "IS_HOUR",
     "IS_MIN",
+    "IS_SEC",
     "IS_AM_PM"
 };
 System.out.println("SIDR.decode()    link: " + checkStrings[check]);
@@ -1595,6 +1652,7 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
                     decodePopup(facesContext, component);
                 } else if (check == IS_HOUR ||
                            check == IS_MIN ||
+                           check == IS_SEC ||
                            check == IS_AM_PM) {
                     decodeTime(facesContext, component);
                 }
@@ -1608,6 +1666,7 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
                 if (enterKeyPressed) {
                     dateSelect.setHoursSubmittedValue(null);
                     dateSelect.setMinutesSubmittedValue(null);
+                    dateSelect.setSecondsSubmittedValue(null);
                     if ("13".equalsIgnoreCase(String.valueOf(requestParameterMap.get("ice.event.keycode")))) {
                         component.queueEvent(new ActionEvent(component));
                     }
@@ -1768,6 +1827,7 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
 
             String hoursClientId = clientId + SELECT_HOUR;
             String minutesClientId = clientId + SELECT_MIN;
+            String secondsClientId = clientId + SELECT_SEC;
             String amPmClientId = clientId + SELECT_AM_PM;
 
             int setMilitaryHour = -1;
@@ -1806,19 +1866,26 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
                         requestParameterMap.get(minutesClientId).toString());
 //System.out.println("mergeTimeIntoDateString()    setMinute: " + setMinute);
                 }
+                if (requestParameterMap.containsKey(secondsClientId)) {
+                    setSecond = Integer.parseInt(
+                        requestParameterMap.get(secondsClientId).toString());
+//System.out.println("mergeTimeIntoDateString()    setSeconds: " + setSeconds);
+                }
             }
             catch(NumberFormatException e) {
                 // We use drop down menus for the hours and minutes, so this shouldn't be possible
                 if (log.isDebugEnabled()) {
                     log.debug("Invalid hour ("+
                         requestParameterMap.get(hoursClientId)+") or minute ("+
-                        requestParameterMap.get(minutesClientId)+")");
+                            requestParameterMap.get(minutesClientId)+") or second ("+
+                            requestParameterMap.get(secondsClientId)+")");
                 }
                 setMilitaryHour = -1;
                 setMinute = -1;
+                setSecond = -1;
             }
             
-            if (setMilitaryHour != -1 || setMinute != -1) {
+            if (setMilitaryHour != -1 || setMinute != -1 || setSecond != -1) {
                 Date date;
                 try {
                     date = (Date) converter.getAsObject(facesContext, dateSelect, submittedDate);
@@ -1837,6 +1904,9 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
                     }
                     if (setMinute != -1) {
                         timeKeeper.set(Calendar.MINUTE, setMinute);
+                    }
+                    if (setSecond != -1) {
+                        timeKeeper.set(Calendar.SECOND, setSecond);
                     }
                     date = timeKeeper.getTime();
 //System.out.println("mergeTimeIntoDateString()    after calendar date: " + date);
