@@ -90,24 +90,24 @@
                 xercesImpl.jar
                 xml-apis.jar
     " >
-        <exclude name="el-api.jar"     if="jsf12" />
-        <exclude name="el-api.jar"     if="serverel" />
-		<exclude name="el-api.jar"	   if="noelapi" />
-        <exclude name="jstl.jar"       if="serverjsf" />
-		<exclude name="xercesImpl.jar" if="websphere6"/>
-		<exclude name="xml-apis.jar"   if="websphere6" />
-        <exclude name="xercesImpl.jar" if="jsf12" />
-        <exclude name="xercesImpl.jar" if="serverel" />
-        <exclude name="xml-apis.jar"   if="jsf12" />
-        <exclude name="xml-apis.jar"   if="serverel" />
-        <exclude name="icefaces.jar" if="just-ice" />
+        <exclude name="el-api.jar"         if="jsf12" />
+        <exclude name="el-api.jar"         if="serverel" />
+        <exclude name="el-api.jar"         if="noelapi" />
+        <exclude name="jstl.jar"           if="serverjsf" />
+        <exclude name="xercesImpl.jar"     if="websphere6"/>
+        <exclude name="xml-apis.jar"       if="websphere6" />
+        <exclude name="xercesImpl.jar"     if="jsf12" />
+        <exclude name="xercesImpl.jar"     if="serverel" />
+        <exclude name="xml-apis.jar"       if="jsf12" />
+        <exclude name="xml-apis.jar"       if="serverel" />
+        <exclude name="icefaces.jar"       if="just-ice" />
         <include name="grizzly-compat.jar" if="glassfish" />
     </patternset>
     
     <patternset id="additional.icefaces.lib.jars.to.include"
                 includes="just-ice.jar el-api.jar">
         <exclude name="just-ice.jar" unless="just-ice" />
-        <exclude name="el-api.jar"   unless="el-api" />
+        <exclude name="el-api.jar"   if="noelapi" />
     </patternset>
     
     <patternset id="additional.compile.lib.jars"/>
