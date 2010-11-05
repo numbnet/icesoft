@@ -234,12 +234,13 @@ public class InputFile extends UICommand implements Serializable {
                 getUploadServletPath(context) );
         writer.write("<body style=\"background-color:transparent; overflow:hidden\"><form method=\"post\" action=\"" + srv + "\" enctype=\"multipart/form-data\" id=\"fileUploadForm\">");
         writer.write("<input type=\"hidden\" name=\"ice.component\" value=\"");
-        writer.write(this.getClientId(context));
+        String clientId = getClientId(context); 
+        writer.write(clientId);
         writer.write("\"/>");
         writer.write("<input type=\"hidden\" name=\"ice.view\"");
         writer.write(" value=\"" + context.getViewNumber() + "\"/>");
         if (isAutoUpload()) {
-            writer.write("<input type=\"file\" name=\"upload\" onchange=\"form.submit()\"");
+            writer.write("<input type=\"file\" name=\"upload\" onchange=\"if(form.onsubmit){form.onsubmit();} form.submit();\"");
         } else {
             writer.write("<input type=\"file\" name=\"upload\"");           
         }
@@ -279,6 +280,40 @@ public class InputFile extends UICommand implements Serializable {
                 log.debug("State saving view contents: " + divAsString);
             } 
             writer.write(divAsString);
+        }
+        
+        String submitOnUpload = getValidatedSubmitOnUpload();
+        if (!submitOnUpload.equals(InputFile.SUBMIT_NONE)) {
+            boolean preUpload =
+                submitOnUpload.equals(InputFile.SUBMIT_PRE_UPLOAD) ||
+                submitOnUpload.equals(InputFile.SUBMIT_PRE_POST_UPLOAD);
+            boolean postUpload =
+                submitOnUpload.equals(InputFile.SUBMIT_POST_UPLOAD) ||
+                submitOnUpload.equals(InputFile.SUBMIT_PRE_POST_UPLOAD);
+
+            UIComponent ownerForm = DomBasicRenderer.findForm(this);
+            String ownerFormClientId = (ownerForm != null) ? ownerForm.getClientId(context) : null;
+            if(ownerFormClientId != null) {
+                writer.write("<script type=\"text/javascript\">");
+                writer.write(
+                            "var submit = function() { " +
+                                "if(arguments.length == 1 && arguments[0] == 1) { " +
+                                    ( postUpload
+                                      ? ("parent.Ice.InputFileIdPostUpload = '" + clientId + "'; parent.Ice.InputFileIdPreUpload = null;")
+                                      : "return;" ) +
+                                " } " +
+                                "else { " +
+                                    ( preUpload
+                                      ? ("parent.Ice.InputFileIdPreUpload = '" + clientId + "'; parent.Ice.InputFileIdPostUpload = null;")
+                                      : "return;" ) +
+                                " } try { if(parent.document.getElementById('" + ownerFormClientId + "')) { parent.document.getElementById('" + ownerFormClientId + "').submit(); } } catch (e) { parent.logger.warn('Form not available', e); } finally { parent.Ice.InputFileIdPreUpload = null; parent.Ice.InputFileIdPostUpload = null; } };" +
+                            //trigger form submit when the upload starts
+                            "document.getElementsByTagName('form')[0].onsubmit = submit;" +
+                            //trigger form submit when the upload ends
+                            "var uploadEnd = function() { submit(1);};" +
+                            "if (window.attachEvent) { window.attachEvent('onunload', uploadEnd); } else { window.onunload = uploadEnd; }");
+                writer.write("</script>");
+            }
         }
         
         writer.write("</form>");
