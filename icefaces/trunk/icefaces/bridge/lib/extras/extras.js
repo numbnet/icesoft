@@ -308,8 +308,11 @@ Ice.preventTextSelection = function(event) {
     if (Ice.isEventSourceInputElement(event)) {
         return true;
     } else {
-        Ice.disableTxtSelection(document.body);
-        return false;
+        if (event.shiftKey || event.ctrlKey) {
+            Ice.disableTxtSelection(document.body);
+            return false;
+        }
+        return true;
     }
 }
 
