@@ -374,14 +374,14 @@ public class DOMResponseWriter extends ResponseWriter {
         String connectionLostRedirectURI;
         try {
             String uri = configuration.getAttribute("connectionLostRedirectURI");
-            connectionLostRedirectURI = "'" + handler.getResourceURL(context, uri.replaceAll("'", "")) + "'";
+            connectionLostRedirectURI = handler.getResourceURL(context, uri.replaceAll("'", ""));
         } catch (ConfigurationException e) {
             connectionLostRedirectURI = "null";
         }
         String sessionExpiredRedirectURI;
         try {
             String uri = configuration.getAttribute("sessionExpiredRedirectURI");
-            sessionExpiredRedirectURI = "'" + handler.getResourceURL(context, uri.replaceAll("'", "")) + "'";
+            sessionExpiredRedirectURI = handler.getResourceURL(context, uri.replaceAll("'", ""));
         } catch (ConfigurationException e) {
             sessionExpiredRedirectURI = "null";
         }
@@ -400,8 +400,8 @@ public class DOMResponseWriter extends ResponseWriter {
                         "session: '" + sessionIdentifier + "'," +
                         "view: " + viewIdentifier + "," +
                         "synchronous: " + synchronousMode + "," +
-                        "connectionLostRedirectURI: " + encodeURL(externalContext, connectionLostRedirectURI) + "," +
-                        "sessionExpiredRedirectURI: " + encodeURL(externalContext, sessionExpiredRedirectURI) + "," +
+                        "connectionLostRedirectURI: '" + encodeURL(externalContext, connectionLostRedirectURI) + "'," +
+                        "sessionExpiredRedirectURI: '" + encodeURL(externalContext, sessionExpiredRedirectURI) + "'," +
                         "serverErrorRetryTimeouts: [" + configuration.getAttribute("serverErrorRetryTimeouts", "1000 2000 4000").trim().replaceAll("\\s+", ",") + "], " +
                         "connection: {" +
                         "blockUI: " + configuration.getAttribute("blockUIOnSubmit", "false") + "," +
