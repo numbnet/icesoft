@@ -186,6 +186,14 @@ public class BridgeExternalContext2 extends BridgeExternalContext  {
         return wrapped.getRequestMap();
     }
 
+    public Object getOriginalRequest() {
+        return wrapped.getOriginalRequest();
+    }
+
+    public Object getOriginalResponse() {
+        return wrapped.getOriginalResponse();
+    }
+
     public Map<String, String> getRequestParameterMap()  {
         return wrapped.getRequestParameterMap();
     }

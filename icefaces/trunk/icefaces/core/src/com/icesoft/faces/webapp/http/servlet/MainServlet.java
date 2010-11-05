@@ -43,6 +43,7 @@ import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
 import com.icesoft.faces.application.ProductInfo;
+import com.icesoft.jasper.Constants;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.http.HttpAdapter;
 import com.icesoft.net.messaging.jms.JMSAdapter;
@@ -180,6 +181,7 @@ public class MainServlet extends HttpServlet {
         }
         try {
             currentContextPath.attach(request.getContextPath());
+            storeOriginalRequestAndResponse(request, response);
             response.addHeader("X-Powered-By", ProductInfo.PRODUCT);
             dispatcher.service(request, response);
         } catch (SocketException e) {
@@ -210,8 +212,30 @@ public class MainServlet extends HttpServlet {
         } catch (Exception e) {
             throw new ServletException(e);
         } finally {
+            removeOriginalRequestResponse(request, response);
             currentContextPath.detach();
         }
+    }
+
+    private void storeOriginalRequestAndResponse(HttpServletRequest req, HttpServletResponse res){
+        Object originalRequest = req;
+        Object portletReq = req.getAttribute(Constants.PORTLET_REQUEST);
+        if( portletReq != null ){
+            originalRequest = portletReq;
+        }
+        req.setAttribute(Constants.ORIG_REQUEST_KEY, originalRequest);
+
+        Object originalResponse = res;
+        Object portletRes = req.getAttribute(Constants.PORTLET_RESPONSE);
+        if( portletRes != null ){
+            originalResponse = portletRes;
+        }
+        req.setAttribute(Constants.ORIG_RESPONSE_KEY, originalResponse);
+    }
+
+    private void removeOriginalRequestResponse(HttpServletRequest req, HttpServletResponse res){
+        req.removeAttribute(Constants.ORIG_REQUEST_KEY);
+        req.removeAttribute(Constants.ORIG_RESPONSE_KEY);
     }
 
     public void destroy() {

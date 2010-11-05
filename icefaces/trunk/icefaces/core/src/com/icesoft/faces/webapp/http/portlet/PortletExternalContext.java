@@ -146,6 +146,8 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public void update(final HttpServletRequest request, HttpServletResponse response) {
+        getRequestMap().put(Constants.ORIG_REQUEST_KEY, request);
+        getRequestMap().put(Constants.ORIG_RESPONSE_KEY, response);
 
         //ICE-2519
         if (adjustPortletSessionInactiveInterval) {
@@ -399,6 +401,15 @@ public class PortletExternalContext extends BridgeExternalContext {
             requestAttributes = NOOPRequestAttributes;
         }
     }
+
+    public Object getOriginalRequest() {
+        return getRequestMap().get(Constants.ORIG_REQUEST_KEY);
+    }
+
+    public Object getOriginalResponse() {
+        return getRequestMap().get(Constants.ORIG_RESPONSE_KEY);
+    }
+
 
     /**
      * called from PersistentFacesState.execute() as these request attributes give problems

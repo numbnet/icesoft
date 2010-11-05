@@ -47,6 +47,7 @@ import com.icesoft.faces.webapp.command.Redirect;
 import com.icesoft.faces.webapp.command.SetCookie;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
+import com.icesoft.jasper.Constants;
 import com.icesoft.util.SeamUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -325,7 +326,16 @@ public abstract class BridgeExternalContext extends ExternalContext {
     protected void resetRequestMap() {
         if (standardScope) {
             DisposeBeans.in(requestMap);
-            if (!requestMap.isEmpty()) requestMap.clear();
+            if (!requestMap.isEmpty()){
+                requestMap.clear();
+            }
+        }
+
+        // ICE-6177: need to remove these references on releasing the BridgeExternalContext
+        // to prevent memory leaks based on the object graph connected to these instances.
+        if(requestMap != null){
+            requestMap.remove(Constants.ORIG_REQUEST_KEY);
+            requestMap.remove(Constants.ORIG_RESPONSE_KEY);
         }
     }
 
@@ -357,6 +367,42 @@ public abstract class BridgeExternalContext extends ExternalContext {
     public Map getRequestMap() {
         return requestMap;
     }
+
+    /**
+     * Both JSF and ICEfaces provide various layers between application code
+     * in the managed beans and the original incoming request/response processed
+     * by the container. In some special cases, it may be necessary to get a
+     * reference to the original, 'raw' request/response.  This method returns
+     * a reference to the original request object.
+     *
+     * The reference is returned as an Object as it can be either a servlet or
+     * portlet type and this can differ depending on the vendor, platform,
+     * container version, etc. Casting to the appropriate type and using the reference
+     * is the responsibility of the application developer.  This should be done
+     * carefully and, since the behaviour may be container-specific, could make the
+     * code less portable to other containers.
+     *
+     * @return The original servlet or portlet request provided by the container.
+     */
+    public abstract Object getOriginalRequest();
+
+    /**
+     * Both JSF and ICEfaces provide various layers between application code
+     * in the managed beans and the original incoming request/response processed
+     * by the container. In some special cases, it may be necessary to get a
+     * reference to the original, 'raw' request/response.  This method returns
+     * a reference to the original response object.
+     *
+     * The reference is returned as an Object as it can be either a servlet or
+     * portlet type and this can differ depending on the vendor, platform,
+     * container version, etc. Casting to the appropriate type and using the reference
+     * is the responsibility of the application developer.  This should be done
+     * carefully and, since the behaviour may be container-specific, could make the
+     * code less portable to other containers.
+     *
+     * @return The original servlet or portlet response provided by the container.
+     */
+    public abstract Object getOriginalResponse();
 
     /**
      * Override the JSF method, but do nothing here. JSF interjects an
