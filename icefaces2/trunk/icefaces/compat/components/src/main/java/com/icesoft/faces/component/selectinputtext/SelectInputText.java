@@ -29,6 +29,7 @@ import com.icesoft.faces.component.ext.renderkit.FormRenderer;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
+import com.icesoft.faces.utils.SeriesStateHolder;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
@@ -56,7 +57,8 @@ import java.util.*;
  * By default this component is rendered by the "com.icesoft.faces.SelectInputText"
  * renderer type.
  */
-public class SelectInputText extends HtmlInputText implements NamingContainer {
+public class SelectInputText extends HtmlInputText implements NamingContainer,
+        SeriesStateHolder {
     public static final String COMPONENT_TYPE =
             "com.icesoft.faces.SelectInputText";
 
@@ -643,4 +645,27 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
         if (isDisabled() || isReadonly()) return "";
         return super.getOnkeypress();
     }
-}
+
+    public Object saveSeriesState(FacesContext facesContext) {
+        Object values[] = new Object[6];
+        values[0] = styleClass;
+        values[1] = listVar;
+        values[2] = rows;
+        values[3] = width;
+        values[4] = options;
+        values[5] = (selectedItem == null ||
+                     selectedItem.getValue() == null ||
+                     selectedItem.getValue() instanceof Serializable)
+                    ? selectedItem : null;
+        return ((Object) (values));
+    }
+
+    public void restoreSeriesState(FacesContext facesContext, Object state) {
+        Object values[] = (Object[]) state;
+        styleClass = (String) values[0];
+        listVar = (String) values[1];
+        rows = (Integer) values[2];
+        width = (String) values[3];
+        options = (String)values[4];
+        selectedItem = (SelectItem) values[5];
+    }}
