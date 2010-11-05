@@ -155,7 +155,7 @@ var Class = (function() {
         for (var i = 0, length = properties.length; i < length; i++) {
             var property = properties[i], value = source[property];
             if (ancestor && Object.isFunction(value) &&
-                value.argumentNames().first() == "$super") {
+                    value.argumentNames().first() == "$super") {
                 var method = value;
                 value = (function(m) {
                     return function() {
@@ -281,7 +281,7 @@ var Class = (function() {
     extend(Object, {
         extend:        extend,
         inspect:       inspect,
-        toJSON:        toJSON,
+        toJSON_Prototype:        toJSON,
         toQueryString: toQueryString,
         toHTML:        toHTML,
         keys:          keys,
@@ -388,11 +388,11 @@ Object.extend(Function.prototype, (function() {
 
 Date.prototype.toJSON = function() {
     return '"' + this.getUTCFullYear() + '-' +
-           (this.getUTCMonth() + 1).toPaddedString(2) + '-' +
-           this.getUTCDate().toPaddedString(2) + 'T' +
-           this.getUTCHours().toPaddedString(2) + ':' +
-           this.getUTCMinutes().toPaddedString(2) + ':' +
-           this.getUTCSeconds().toPaddedString(2) + 'Z"';
+            (this.getUTCMonth() + 1).toPaddedString(2) + '-' +
+            this.getUTCDate().toPaddedString(2) + 'T' +
+            this.getUTCHours().toPaddedString(2) + ':' +
+            this.getUTCMinutes().toPaddedString(2) + ':' +
+            this.getUTCSeconds().toPaddedString(2) + 'Z"';
 };
 
 
@@ -504,7 +504,7 @@ Object.extend(String.prototype, (function() {
         length = length || 30;
         truncation = Object.isUndefined(truncation) ? '...' : truncation;
         return this.length > length ?
-               this.slice(0, length - truncation.length) + truncation : String(this);
+                this.slice(0, length - truncation.length) + truncation : String(this);
     }
 
     function strip() {
@@ -568,7 +568,7 @@ Object.extend(String.prototype, (function() {
 
     function succ() {
         return this.slice(0, this.length - 1) +
-               String.fromCharCode(this.charCodeAt(this.length - 1) + 1);
+                String.fromCharCode(this.charCodeAt(this.length - 1) + 1);
     }
 
     function times(count) {
@@ -687,7 +687,7 @@ Object.extend(String.prototype, (function() {
         underscore:     underscore,
         dasherize:      dasherize,
         inspect:        inspect,
-        toJSON:         toJSON,
+        toJSON_Prototype:         toJSON,
         unfilterJSON:   unfilterJSON,
         isJSON:         isJSON,
         evalJSON:       evalJSON,
@@ -884,7 +884,7 @@ var Enumerable = (function() {
         var trues = [], falses = [];
         this.each(function(value, index) {
             (iterator.call(context, value, index) ?
-             trues : falses).push(value);
+                    trues : falses).push(value);
         });
         return [trues, falses];
     }
@@ -1130,7 +1130,7 @@ Array.from = $A;
         toArray:   clone,
         size:      size,
         inspect:   inspect,
-        toJSON:    toJSON
+        toJSON_Prototype:    toJSON
     });
 
     var CONCAT_ARGUMENTS_BUGGY = (function() {
@@ -1252,7 +1252,7 @@ var Hashtable = Class.create(Enumerable, (function() {
         update:                 update,
         toQueryString:          toQueryString,
         inspect:                inspect,
-        toJSON:                 toJSON,
+        toJSON_Prototype:                 toJSON,
         clone:                  clone
     };
 })());
@@ -1302,7 +1302,7 @@ Object.extend(Number.prototype, (function() {
         succ:           succ,
         times:          times,
         toPaddedString: toPaddedString,
-        toJSON:         toJSON,
+        toJSON_Prototype:         toJSON,
         abs:            abs,
         round:          round,
         ceil:           ceil,
@@ -1491,14 +1491,14 @@ Ajax.Request = Class.create(Ajax.Base, {
 
         if (this.method == 'post') {
             headers['Content-type'] = this.options.contentType +
-                                      (this.options.encoding ? '; charset=' + this.options.encoding : '');
+                    (this.options.encoding ? '; charset=' + this.options.encoding : '');
 
             /* Force "Connection: close" for older Mozilla browsers to work
              * around a bug where XMLHttpRequest sends an incorrect
              * Content-length header. See Mozilla Bugzilla #246651.
              */
             if (this.transport.overrideMimeType &&
-                (navigator.userAgent.match(/Gecko\/(\d{4})/) || [0,2005])[1] < 2005)
+                    (navigator.userAgent.match(/Gecko\/(\d{4})/) || [0,2005])[1] < 2005)
                 headers['Connection'] = 'close';
         }
 
@@ -1595,7 +1595,7 @@ Ajax.Request = Class.create(Ajax.Base, {
 });
 
 Ajax.Request.Events =
-['Uninitialized', 'Loading', 'Loaded', 'Interactive', 'Complete'];
+        ['Uninitialized', 'Loading', 'Loaded', 'Interactive', 'Complete'];
 
 
 Ajax.Response = Class.create({
@@ -1656,7 +1656,7 @@ Ajax.Response = Class.create({
         json = decodeURIComponent(escape(json));
         try {
             return json.evalJSON(this.request.options.sanitizeJSON ||
-                                 !this.request.isSameOrigin());
+                    !this.request.isSameOrigin());
         } catch (e) {
             this.request.dispatchException(e);
         }
@@ -1665,12 +1665,12 @@ Ajax.Response = Class.create({
     _getResponseJSON: function() {
         var options = this.request.options;
         if (!options.evalJSON || (options.evalJSON != 'force' &&
-                                  !(this.getHeader('Content-type') || '').include('application/json')) ||
-            this.responseText.blank())
+                !(this.getHeader('Content-type') || '').include('application/json')) ||
+                this.responseText.blank())
             return null;
         try {
             return this.responseText.evalJSON(options.sanitizeJSON ||
-                                              !this.request.isSameOrigin());
+                    !this.request.isSameOrigin());
         } catch (e) {
             this.request.dispatchException(e);
         }
@@ -1743,7 +1743,7 @@ Ajax.PeriodicalUpdater = Class.create(Ajax.Base, {
     updateComplete: function(response) {
         if (this.options.decay) {
             this.decay = (response.responseText == this.lastText ?
-                          this.decay * this.options.decay : 1);
+                    this.decay * this.options.decay : 1);
 
             this.lastText = response.responseText;
         }
@@ -1900,7 +1900,7 @@ Element.Methods = {
             try {
                 s.appendChild(document.createTextNode(""));
                 isBuggy = !s.firstChild ||
-                          s.firstChild && s.firstChild.nodeType !== 3;
+                        s.firstChild && s.firstChild.nodeType !== 3;
             } catch (e) {
                 isBuggy = true;
             }
@@ -1969,7 +1969,7 @@ Element.Methods = {
         element = $(element);
 
         if (Object.isString(insertions) || Object.isNumber(insertions) ||
-            Object.isElement(insertions) || (insertions && (insertions.toElement || insertions.toHTML)))
+                Object.isElement(insertions) || (insertions && (insertions.toElement || insertions.toHTML)))
             insertions = {bottom:insertions};
 
         var content, insert, tagName, childNodes;
@@ -2079,14 +2079,14 @@ Element.Methods = {
         if (arguments.length == 1) return $(element.parentNode);
         var ancestors = Element.ancestors(element);
         return Object.isNumber(expression) ? ancestors[expression] :
-               Selector.findElement(ancestors, expression, index);
+                Selector.findElement(ancestors, expression, index);
     },
 
     down: function(element, expression, index) {
         element = $(element);
         if (arguments.length == 1) return Element.firstDescendant(element);
         return Object.isNumber(expression) ? Element.descendants(element)[expression] :
-               Element.select(element, expression)[index || 0];
+                Element.select(element, expression)[index || 0];
     },
 
     previous: function(element, expression, index) {
@@ -2094,7 +2094,7 @@ Element.Methods = {
         if (arguments.length == 1) return $(Selector.handlers.previousElementSibling(element));
         var previousSiblings = Element.previousSiblings(element);
         return Object.isNumber(expression) ? previousSiblings[expression] :
-               Selector.findElement(previousSiblings, expression, index);
+                Selector.findElement(previousSiblings, expression, index);
     },
 
     next: function(element, expression, index) {
@@ -2102,7 +2102,7 @@ Element.Methods = {
         if (arguments.length == 1) return $(Selector.handlers.nextElementSibling(element));
         var nextSiblings = Element.nextSiblings(element);
         return Object.isNumber(expression) ? nextSiblings[expression] :
-               Selector.findElement(nextSiblings, expression, index);
+                Selector.findElement(nextSiblings, expression, index);
     },
 
 
@@ -2135,7 +2135,7 @@ Element.Methods = {
             if (t.names[name]) name = t.names[name];
             if (name.include(':')) {
                 return (!element.attributes || !element.attributes[name]) ? null :
-                       element.attributes[name].value;
+                        element.attributes[name].value;
             }
         }
         return element.getAttribute(name);
@@ -2177,7 +2177,7 @@ Element.Methods = {
         if (!(element = $(element))) return;
         var elementClassName = element.className;
         return (elementClassName.length > 0 && (elementClassName == className ||
-                                                new RegExp("(^|\\s)" + className + "(\\s|$)").test(elementClassName)));
+                new RegExp("(^|\\s)" + className + "(\\s|$)").test(elementClassName)));
     },
 
     addClassName: function(element, className) {
@@ -2197,7 +2197,7 @@ Element.Methods = {
     toggleClassName: function(element, className) {
         if (!(element = $(element))) return;
         return Element[Element.hasClassName(element, className) ?
-                       'removeClassName' : 'addClassName'](element, className);
+                'removeClassName' : 'addClassName'](element, className);
     },
 
     cleanWhitespace: function(element) {
@@ -2260,14 +2260,14 @@ Element.Methods = {
         if (Object.isString(styles)) {
             element.style.cssText += ';' + styles;
             return styles.include('opacity') ?
-                   element.setOpacity(styles.match(/opacity:\s*(\d?\.?\d*)/)[1]) : element;
+                    element.setOpacity(styles.match(/opacity:\s*(\d?\.?\d*)/)[1]) : element;
         }
         for (var property in styles)
             if (property == 'opacity') element.setOpacity(styles[property]);
             else
                 elementStyle[(property == 'float' || property == 'cssFloat') ?
-                             (Object.isUndefined(elementStyle.styleFloat) ? 'cssFloat' : 'styleFloat') :
-                             property] = styles[property];
+                        (Object.isUndefined(elementStyle.styleFloat) ? 'cssFloat' : 'styleFloat') :
+                        property] = styles[property];
 
         return element;
     },
@@ -2275,7 +2275,7 @@ Element.Methods = {
     setOpacity: function(element, value) {
         element = $(element);
         element.style.opacity = (value == 1 || value === '') ? '' :
-                                (value < 0.00001) ? 0 : value;
+                (value < 0.00001) ? 0 : value;
         return element;
     },
 
@@ -2320,10 +2320,10 @@ Element.Methods = {
         if (element._madePositioned) {
             element._madePositioned = undefined;
             element.style.position =
-            element.style.top =
-            element.style.left =
-            element.style.bottom =
-            element.style.right = '';
+                    element.style.top =
+                            element.style.left =
+                                    element.style.bottom =
+                                            element.style.right = '';
         }
         return element;
     },
@@ -2438,7 +2438,7 @@ Element.Methods = {
             valueL += element.offsetLeft || 0;
 
             if (element.offsetParent == document.body &&
-                Element.getStyle(element, 'position') == 'absolute') break;
+                    Element.getStyle(element, 'position') == 'absolute') break;
 
         } while (element = element.offsetParent);
 
@@ -2625,17 +2625,17 @@ else if (Prototype.Browser.IE) {
         element = $(element);
         var currentStyle = element.currentStyle;
         if ((currentStyle && !currentStyle.hasLayout) ||
-            (!currentStyle && element.style.zoom == 'normal'))
+                (!currentStyle && element.style.zoom == 'normal'))
             element.style.zoom = 1;
 
         var filter = element.getStyle('filter'), style = element.style;
         if (value == 1 || value === '') {
             (filter = stripAlpha(filter)) ?
-            style.filter = filter : style.removeAttribute('filter');
+                    style.filter = filter : style.removeAttribute('filter');
             return element;
         } else if (value < 0.00001) value = 0;
         style.filter = stripAlpha(filter) +
-                       'alpha(opacity=' + (value * 100) + ')';
+                'alpha(opacity=' + (value * 100) + ')';
         return element;
     };
 
@@ -2745,7 +2745,7 @@ else if (Prototype.Browser.IE) {
     Element._attributeTranslations.has = {};
 
     $w('colSpan rowSpan vAlign dateTime accessKey tabIndex ' +
-       'encType maxLength readOnly longDesc frameBorder').each(function(attr) {
+            'encType maxLength readOnly longDesc frameBorder').each(function(attr) {
         Element._attributeTranslations.write.names[attr.toLowerCase()] = attr;
         Element._attributeTranslations.has[attr.toLowerCase()] = attr;
     });
@@ -2795,7 +2795,7 @@ else if (Prototype.Browser.IE) {
                 element = $(element);
                 if (arguments.length == 1) return element.firstDescendant();
                 return Object.isNumber(expression) ? _descendants(element)[expression] :
-                       Element.select(element, expression)[index || 0];
+                        Element.select(element, expression)[index || 0];
             }
         })();
     }
@@ -2803,48 +2803,48 @@ else if (Prototype.Browser.IE) {
 }
 
 else if (Prototype.Browser.Gecko && /rv:1\.8\.0/.test(navigator.userAgent)) {
-        Element.Methods.setOpacity = function(element, value) {
-            element = $(element);
-            element.style.opacity = (value == 1) ? 0.999999 :
-                                    (value === '') ? '' : (value < 0.00001) ? 0 : value;
-            return element;
-        };
-    }
+    Element.Methods.setOpacity = function(element, value) {
+        element = $(element);
+        element.style.opacity = (value == 1) ? 0.999999 :
+                (value === '') ? '' : (value < 0.00001) ? 0 : value;
+        return element;
+    };
+}
 
-    else if (Prototype.Browser.WebKit) {
-            Element.Methods.setOpacity = function(element, value) {
-                element = $(element);
-                element.style.opacity = (value == 1 || value === '') ? '' :
-                                        (value < 0.00001) ? 0 : value;
+else if (Prototype.Browser.WebKit) {
+    Element.Methods.setOpacity = function(element, value) {
+        element = $(element);
+        element.style.opacity = (value == 1 || value === '') ? '' :
+                (value < 0.00001) ? 0 : value;
 
-                if (value == 1)
-                    if (element.tagName.toUpperCase() == 'IMG' && element.width) {
-                        element.width++;
-                        element.width--;
-                    } else try {
-                        var n = document.createTextNode(' ');
-                        element.appendChild(n);
-                        element.removeChild(n);
-                    } catch (e) {
-                    }
+        if (value == 1)
+            if (element.tagName.toUpperCase() == 'IMG' && element.width) {
+                element.width++;
+                element.width--;
+            } else try {
+                var n = document.createTextNode(' ');
+                element.appendChild(n);
+                element.removeChild(n);
+            } catch (e) {
+            }
 
-                return element;
-            };
+        return element;
+    };
 
-            Element.Methods.cumulativeOffset = function(element) {
-                var valueT = 0, valueL = 0;
-                do {
-                    valueT += element.offsetTop || 0;
-                    valueL += element.offsetLeft || 0;
-                    if (element.offsetParent == document.body)
-                        if (Element.getStyle(element, 'position') == 'absolute') break;
+    Element.Methods.cumulativeOffset = function(element) {
+        var valueT = 0, valueL = 0;
+        do {
+            valueT += element.offsetTop || 0;
+            valueL += element.offsetLeft || 0;
+            if (element.offsetParent == document.body)
+                if (Element.getStyle(element, 'position') == 'absolute') break;
 
-                    element = element.offsetParent;
-                } while (element);
+            element = element.offsetParent;
+        } while (element);
 
-                return Element._returnOffset(valueL, valueT);
-            };
-        }
+        return Element._returnOffset(valueL, valueT);
+    };
+}
 
 if ('outerHTML' in document.documentElement) {
     Element.Methods.replace = function(element, content) {
@@ -3001,7 +3001,7 @@ Element.extend = (function() {
 
     var extend = Object.extend(function(element) {
         if (!element || typeof element._extendedByPrototype != 'undefined' ||
-            element.nodeType != 1 || element == window) return element;
+                element.nodeType != 1 || element == window) return element;
 
         var methods = Object.clone(Methods),
                 tagName = element.tagName.toUpperCase();
@@ -3100,7 +3100,7 @@ Element.addMethods = function(methods) {
     }
 
     var elementPrototype = window.HTMLElement ? HTMLElement.prototype :
-                           Element.prototype;
+            Element.prototype;
 
     if (F.ElementExtensions) {
         copy(Element.Methods, elementPrototype);
@@ -3256,7 +3256,7 @@ var Selector = Class.create({
                 el.innerHTML = '<ul><li></li></ul><div><ul><li></li></ul></div>';
 
                 var xpath = ".//*[local-name()='ul' or local-name()='UL']" +
-                            "//*[local-name()='li' or local-name()='LI']";
+                        "//*[local-name()='li' or local-name()='LI']";
 
                 var result = document.evaluate(xpath, el, null,
                         XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
@@ -3273,7 +3273,7 @@ var Selector = Class.create({
             var e = this.expression;
 
             if (Prototype.Browser.WebKit &&
-                (e.include("-of-type") || e.include(":empty")))
+                    (e.include("-of-type") || e.include(":empty")))
                 return false;
 
             if ((/(\[[\w-]*?:|:checked)/).test(e))
@@ -3321,7 +3321,7 @@ var Selector = Class.create({
                 name = ps[i].name;
                 if (m = e.match(p)) {
                     this.matcher.push(Object.isFunction(c[name]) ? c[name](m) :
-                                      new Template(c[name]).evaluate(m));
+                            new Template(c[name]).evaluate(m));
                     e = e.replace(m[0], '');
                     break;
                 }
@@ -3349,7 +3349,7 @@ var Selector = Class.create({
                 name = ps[i].name;
                 if (m = e.match(ps[i].re)) {
                     this.matcher.push(Object.isFunction(x[name]) ? x[name](m) :
-                                      new Template(x[name]).evaluate(m));
+                            new Template(x[name]).evaluate(m));
                     e = e.replace(m[0], '');
                     break;
                 }
@@ -3427,7 +3427,7 @@ var Selector = Class.create({
 });
 
 if (Prototype.BrowserFeatures.SelectorsAPI &&
-    document.compatMode === 'BackCompat') {
+        document.compatMode === 'BackCompat') {
     Selector.CASE_INSENSITIVE_CLASS_NAMES = (function() {
         var div = document.createElement('div'),
                 span = document.createElement('span');
@@ -3452,7 +3452,7 @@ Object.extend(Selector, {
         tagName:      function(m) {
             if (m[1] == '*') return '';
             return "[local-name()='" + m[1].toLowerCase() +
-                   "' or local-name()='" + m[1].toUpperCase() + "']";
+                    "' or local-name()='" + m[1].toUpperCase() + "']";
         },
         className:    "[contains(concat(' ', @class, ' '), ' #{1} ')]",
         id:           "[@id='#{1}']",
@@ -3542,7 +3542,7 @@ Object.extend(Selector, {
                     var a = mm[1] ? Number(mm[1]) : 1;
                     var b = mm[2] ? Number(mm[2]) : 0;
                     predicate = "[((#{fragment} - #{b}) mod #{a} = 0) and " +
-                                "((#{fragment} - #{b}) div #{a} >= 0)]";
+                            "((#{fragment} - #{b}) div #{a} >= 0)]";
                     return new Template(predicate).evaluate({
                         fragment: fragment, a: a, b: b });
                 }
@@ -3664,16 +3664,16 @@ Object.extend(Selector, {
             })();
 
             return PROPERTIES_ATTRIBUTES_MAP ?
-                   function(nodes) {
-                       for (var i = 0, node; node = nodes[i]; i++)
-                           node.removeAttribute('_countedByPrototype');
-                       return nodes;
-                   } :
-                   function(nodes) {
-                       for (var i = 0, node; node = nodes[i]; i++)
-                           node._countedByPrototype = void 0;
-                       return nodes;
-                   }
+                    function(nodes) {
+                        for (var i = 0, node; node = nodes[i]; i++)
+                            node.removeAttribute('_countedByPrototype');
+                        return nodes;
+                    } :
+                    function(nodes) {
+                        for (var i = 0, node; node = nodes[i]; i++)
+                            node._countedByPrototype = void 0;
+                        return nodes;
+                    }
         })(),
 
         index: function(parentNode, reverse, ofType) {
@@ -4056,7 +4056,7 @@ var Form = {
                 key = element.name;
                 value = $(element).getValue();
                 if (value != null && element.type != 'file' && (element.type != 'submit' || (!submitted &&
-                                                                                             submit !== false && (!submit || key == submit) && (submitted = true)))) {
+                        submit !== false && (!submit || key == submit) && (submitted = true)))) {
                     if (key in result) {
                         if (!Object.isArray(result[key])) result[key] = [result[key]];
                         result[key].push(value);
@@ -4216,7 +4216,7 @@ Form.Element.Methods = {
         try {
             element.focus();
             if (element.select && (element.tagName.toLowerCase() != 'input' ||
-                                   !(/^(?:button|reset|submit)$/i.test(element.type))))
+                    !(/^(?:button|reset|submit)$/i.test(element.type))))
                 element.select();
         } catch (e) {
         }
@@ -4268,7 +4268,7 @@ Form.Element.Serializers = {
     select: function(element, value) {
         if (Object.isUndefined(value))
             return this[element.type == 'select-one' ?
-                        'selectOne' : 'selectMany'](element);
+                    'selectOne' : 'selectMany'](element);
         else {
             var opt, currentValue, single = !Object.isArray(value);
             for (var i = 0, length = element.length; i < length; i++) {
@@ -4319,7 +4319,7 @@ Abstract.TimedObserver = Class.create(PeriodicalExecuter, {
     execute: function() {
         var value = this.getValue();
         if (Object.isString(this.lastValue) && Object.isString(value) ?
-            this.lastValue != value : String(this.lastValue) != String(value)) {
+                this.lastValue != value : String(this.lastValue) != String(value)) {
             this.callback(this.element, value);
             this.lastValue = value;
         }
@@ -4455,8 +4455,8 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
 
         if (currentTarget && currentTarget.tagName) {
             if (type === 'load' || type === 'error' ||
-                (type === 'click' && currentTarget.tagName.toLowerCase() === 'input'
-                        && currentTarget.type === 'radio'))
+                    (type === 'click' && currentTarget.tagName.toLowerCase() === 'input'
+                            && currentTarget.type === 'radio'))
                 node = currentTarget;
         }
 
@@ -4482,8 +4482,8 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
                 body = document.body || { scrollLeft: 0 };
 
         return event.pageX || (event.clientX +
-                               (docElement.scrollLeft || body.scrollLeft) -
-                               (docElement.clientLeft || 0));
+                (docElement.scrollLeft || body.scrollLeft) -
+                (docElement.clientLeft || 0));
     }
 
     function pointerY(event) {
@@ -4491,8 +4491,8 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
                 body = document.body || { scrollTop: 0 };
 
         return  event.pageY || (event.clientY +
-                                (docElement.scrollTop || body.scrollTop) -
-                                (docElement.clientTop || 0));
+                (docElement.scrollTop || body.scrollTop) -
+                (docElement.clientTop || 0));
     }
 
 
@@ -4600,7 +4600,7 @@ Form.EventObserver = Class.create(Abstract.EventObserver, {
             };
         } else {
             if (!MOUSEENTER_MOUSELEAVE_EVENTS_SUPPORTED &&
-                (eventName === "mouseenter" || eventName === "mouseleave")) {
+                    (eventName === "mouseenter" || eventName === "mouseleave")) {
                 if (eventName === "mouseenter" || eventName === "mouseleave") {
                     responder = function(event) {
                         Event.extend(event, element);
@@ -4917,10 +4917,10 @@ var Position = {
         if (!mode) return 0;
         if (mode == 'vertical')
             return ((this.offset[1] + element.offsetHeight) - this.ycomp) /
-                   element.offsetHeight;
+                    element.offsetHeight;
         if (mode == 'horizontal')
             return ((this.offset[0] + element.offsetWidth) - this.xcomp) /
-                   element.offsetWidth;
+                    element.offsetWidth;
     },
 
 
@@ -4958,11 +4958,11 @@ if (!document.getElementsByClassName) document.getElementsByClassName = function
     }
 
     instanceMethods.getElementsByClassName = Prototype.BrowserFeatures.XPath ?
-                                             function(element, className) {
-                                                 className = className.toString().strip();
-                                                 var cond = /\s/.test(className) ? $w(className).map(iter).join('') : iter(className);
-                                                 return cond ? document._getElementsByXPath('.//*' + cond, element) : [];
-                                             } : function(element, className) {
+            function(element, className) {
+                className = className.toString().strip();
+                var cond = /\s/.test(className) ? $w(className).map(iter).join('') : iter(className);
+                return cond ? document._getElementsByXPath('.//*' + cond, element) : [];
+            } : function(element, className) {
         className = className.toString().strip();
         var elements = [], classNames = (/\s/.test(className) ? $w(className) : null);
         if (!classNames && !className) return elements;
@@ -4972,9 +4972,9 @@ if (!document.getElementsByClassName) document.getElementsByClassName = function
 
         for (var i = 0, child, cn; child = nodes[i]; i++) {
             if (child.className && (cn = ' ' + child.className + ' ') && (cn.include(className) ||
-                                                                          (classNames && classNames.all(function(name) {
-                                                                              return !name.toString().blank() && cn.include(' ' + name + ' ');
-                                                                          }))))
+                    (classNames && classNames.all(function(name) {
+                        return !name.toString().blank() && cn.include(' ' + name + ' ');
+                    }))))
                 elements.push(Element.extend(child));
         }
         return elements;
