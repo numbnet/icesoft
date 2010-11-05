@@ -38,6 +38,7 @@ import com.icesoft.faces.context.View;
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.jasper.Constants;
 import com.icesoft.util.SeamUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -309,6 +310,15 @@ public class ServletExternalContext extends BridgeExternalContext {
         }
         dispatcher = RequestNotAvailable;
     }
+
+    public Object getOriginalRequest() {
+        return getRequestMap().get(Constants.ORIG_REQUEST_KEY);
+    }
+
+    public Object getOriginalResponse() {
+        return getRequestMap().get(Constants.ORIG_RESPONSE_KEY);
+    }
+    
 
     /**
      * called from PersistentFacesState.execute() as these request attributes give problems

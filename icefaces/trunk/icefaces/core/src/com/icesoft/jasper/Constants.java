@@ -157,6 +157,9 @@ public class Constants {
     public static final String OLD_HELP_KEY = "com.icesoft.faces.HELP";
     public static final String NAMESPACE_KEY = "com.icesoft.faces.NAMESPACE";
 
+    public static final String ORIG_REQUEST_KEY = "com.icesoft.faces.portlet.originalRequest";
+    public static final String ORIG_RESPONSE_KEY = "com.icesoft.faces.portlet.originalResponse";
+
     public static final String TMP_DIR = "javax.servlet.context.tempdir";
     public static final String FORWARD_SEEN = "javax.servlet.forward.seen";
 
