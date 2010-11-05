@@ -1,4 +1,3 @@
-
 /*
  * Version: MPL 1.1
  *
@@ -153,7 +152,7 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
     if (!event)
         var event = window.event;
     if (!event)
-        var event = localEvent;                
+        var event = localEvent;
 
     if (ctrlKyFld.length > 0) {
         ctrlKyFld = ctrlKyFld[0];
@@ -175,9 +174,9 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
     var targ;
 
     if (event.target)
-       targ = event.target;
+        targ = event.target;
     else if (event.srcElement)
-       targ = event.srcElement;            
+        targ = event.srcElement;
     try {
         if (useEvent) {
             // Some versions of Safari return the text node,
@@ -190,11 +189,10 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
                     break;
                 }
                 if (tname == 'input' ||
-                    tname == 'select' ||
-                    tname == 'option' ||
-                    (tname == 'a' && 'iceHdnLnk' != targ.className) ||
-                    tname == 'textarea')
-                {
+                        tname == 'select' ||
+                        tname == 'option' ||
+                        (tname == 'a' && 'iceHdnLnk' != targ.className) ||
+                        tname == 'textarea') {
                     return;
                 }
                 // Search up to see if we're deep within an anchor
@@ -207,32 +205,32 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
         }
         //mouse clicked on the row, here we would like to set the focus id to the 
         //hidden focus link on this tr.
-        
+
         //first look if its already installed
         var focusElement = row["iceHdnLnk"];
         //not installed yet
         if (!focusElement) {
             //look in the dom
             var anchors = row.getElementsByTagName("a");
-            if (anchors.length > 0 && 
-                anchors[0].className == 'iceHdnLnk') {
-               //found 
-               focusElement = anchors[0];
-               //install on the row, so next time dom lookup will not be required.
-               row["iceHdnLnk"] = focusElement;
+            if (anchors.length > 0 &&
+                    anchors[0].className == 'iceHdnLnk') {
+                //found
+                focusElement = anchors[0];
+                //install on the row, so next time dom lookup will not be required.
+                row["iceHdnLnk"] = focusElement;
             }
         }
         //if focusElement has found, its mean keyboard navigation is enabled set the focus id.
         if (focusElement) {
             setFocus(focusElement.id);
         }
-            // If preStyleOnSelection=false, then toggleClassNames=='', so we
-            // should leave the row styling alone
-            if (toggleClassNames) {
-                row.className = toggleClassNames;
-                row.onmouseover = Prototype.emptyFunction;
-                row.onmouseout = Prototype.emptyFunction;
-            }
+        // If preStyleOnSelection=false, then toggleClassNames=='', so we
+        // should leave the row styling alone
+        if (toggleClassNames) {
+            row.className = toggleClassNames;
+            row.onmouseover = Prototype.emptyFunction;
+            row.onmouseout = Prototype.emptyFunction;
+        }
         var form = document.getElementById(formId);
         var fld = form[hdnFld];
         fld.value = rowid;
@@ -241,7 +239,7 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
         iceSubmitPartial(form, fld, event);
         setFocus('');
         fld.id = ""; //preserve ICE-2874
-        fld.value=""; //ICE-5492
+        fld.value = ""; //ICE-5492
     } catch(e) {
         logger.info("Error in rowSelector[" + e + "]");
     }
@@ -389,14 +387,14 @@ Ice.util = {
         var elementHeight = $(element).getHeight();
         var elementCumulativeTop = Element.cumulativeOffset($(element)).top;
         var documentX = document.viewport.getScrollOffsets().top + document.viewport.getHeight();
-        var containerElementTop = Element.cumulativeOffset($(containerElement)).top ;
-        var diff = elementCumulativeTop - containerElementTop ;
+        var containerElementTop = Element.cumulativeOffset($(containerElement)).top;
+        var diff = elementCumulativeTop - containerElementTop;
         var elementX = elementCumulativeTop + $(element).getHeight();
         var newElementX = elementHeight + diff;
 
         if (documentX < elementX &&
-            newElementX < documentX &&
-            elementHeight < containerElementTop) {
+                newElementX < documentX &&
+                elementHeight < containerElementTop) {
             $(element).parentNode.style.position = "absolute";
             $(element).parentNode.style.top = "-" + newElementX + "px";
             var iframe = $(element).up().next("iframe");
@@ -408,16 +406,16 @@ Ice.util = {
         var elementWidth = $(element).getWidth();
         var elementCumulativeLeft = Element.cumulativeOffset($(element)).left;
         var documentY = document.viewport.getScrollOffsets().left + document.viewport.getWidth();
-        var containerElementLeft = Element.cumulativeOffset($(containerElement)).left ;
-        diff = elementCumulativeLeft - containerElementLeft ;
+        var containerElementLeft = Element.cumulativeOffset($(containerElement)).left;
+        diff = elementCumulativeLeft - containerElementLeft;
         var elementY = elementCumulativeLeft + $(element).getWidth();
         var newElementY = elementWidth + diff;
-      
-        if (documentY < elementY && 
-              newElementY < documentY && 
-               elementWidth < containerElementLeft) {
+
+        if (documentY < elementY &&
+                newElementY < documentY &&
+                elementWidth < containerElementLeft) {
             $(element).parentNode.style.position = "absolute";
-            $(element).parentNode.style.left =  "-" + (elementWidth - inputWidth) + "px";
+            $(element).parentNode.style.left = "-" + (elementWidth - inputWidth) + "px";
             iframe = $(element).up().next("iframe");
             if (iframe) {
                 iframe.clonePosition(element);
@@ -476,40 +474,40 @@ var IE = (Try.these(
  * this file under either the MPL or the LGPL License."
  *
  */
- 
+
 //related class com.icesoft.faces.component.util.DelimitedProperties 
 Ice.delimitedProperties = Class.create({
-  initialize: function() {
-    this.props = {};
-  },
+    initialize: function() {
+        this.props = {};
+    },
 
-  set: function(key, value) {
-    this.props[key] = value;
-  },
-  
-  get:function(key) {
-    this.props[key];
-  },
-  
-  deleteAll: function() {
-    for (p in this.props) {
-       delete this.props[p];
+    set: function(key, value) {
+        this.props[key] = value;
+    },
+
+    get:function(key) {
+        this.props[key];
+    },
+
+    deleteAll: function() {
+        for (p in this.props) {
+            delete this.props[p];
+        }
+    },
+
+    getPropsAsString:function() {
+        var str = "";
+        for (p in this.props) {
+            str += p + '!' + this.props[p] + ',';
+        }
+        return str;
+    },
+
+    getPropsAsObject:function() {
+        return this.props;
     }
-  },
-  
-  getPropsAsString:function() {
-     var str = "";
-     for (p in this.props) {
-       str+= p + '!'+ this.props[p] +',';
-     }
-     return str;
-  },
-  
-  getPropsAsObject:function() {
-     return this.props;
-  }
 });
- 
+
 
 Ice.StateMon = Class.create();
 Ice.StateMon = {
@@ -873,16 +871,16 @@ Ice.modal = Class.create();
 Ice.modal = {
     running:{},
     isRunning:function(target) {
-        return (this.running[target]!= null);
+        return (this.running[target] != null);
     },
-    
+
     //caller Ice.modal.start()
     setRunning:function(target) {
         //register modal popup
         this.running[target] = target;
-        this.disableTabindex(target);        
+        this.disableTabindex(target);
     },
-    
+
     //caller Ice.modal.stop()
     stopRunning:function(target) {
         //de-register modal popup
@@ -892,17 +890,17 @@ Ice.modal = {
         //enable the focus on the document.  
         this.restoreTabindex(this.getRunning());
     },
-    
+
     //returns last modal popup on the stack, null if there isn't any    
     getRunning:function() {
         var modal = null;
         for (m in this.running)
-           modal = m;
+            modal = m;
         return modal;
     },
     target:null,
     zIndexCount: 25000,
-    start:function(target, iframeUrl,trigger, manualPosition) {
+    start:function(target, iframeUrl, trigger, manualPosition) {
         var modal = document.getElementById(target);
         modal.style.visibility = 'hidden';
         modal.style.position = 'absolute';
@@ -931,7 +929,7 @@ Ice.modal = {
             modalDiv.style.position = 'absolute';
             modalDiv.style.zIndex = parseInt(iframe.style.zIndex) + 1;
             modalDiv.style.backgroundColor = 'transparent';
-            modal.parentNode.insertBefore(modalDiv, modal);            
+            modal.parentNode.insertBefore(modalDiv, modal);
             var resize = function() {
                 //lookup element again because 'resize' closure is registered only once
                 var frame = document.getElementById('iceModalFrame' + target);
@@ -942,7 +940,7 @@ Ice.modal = {
                     var bodyWidth = document.body.scrollWidth;
                     var documentHeight = document.documentElement.scrollHeight;
                     var bodyHeight = document.body.scrollHeight;
-                    var width = (bodyWidth > documentWidth ? bodyWidth : documentWidth) ;
+                    var width = (bodyWidth > documentWidth ? bodyWidth : documentWidth);
                     var height = (bodyHeight > documentHeight ? bodyHeight : documentHeight);
                     var viewportHeight = document.viewport.getHeight();
                     if (height < viewportHeight) height = viewportHeight;
@@ -983,12 +981,55 @@ Ice.modal = {
             $(trigger).blur();
             setFocus('');
         }
+
+        function none() {
+            return false;
+        }
+
+        function childOfTarget(e) {
+            while (e.parentNode) {
+                var parent = e.parentNode;
+                if (parent == modal) {
+                    return true;
+                }
+                e = parent;
+            }
+            return false;
+        }
+
+        var rollbacks = Ice.modal.rollbacks = [];
+
+        ['input', 'select', 'textarea', 'button', 'a'].each(function(type) {
+            $enumerate(document.body.getElementsByTagName(type)).each(function(e) {
+                if (!childOfTarget(e)) {
+                    var onkeypress = e.onkeypress;
+                    var onkeyup = e.onkeyup;
+                    var onkeydown = e.onkeydown;
+                    var onclick = e.onclick;
+                    e.onkeypress = none;
+                    e.onkeyup = none;
+                    e.onkeydown = none;
+                    e.onclick = none;
+
+                    rollbacks.push(function() {
+                        try {
+                            e.onkeypress = onkeypress;
+                            e.onkeyup = onkeyup;
+                            e.onkeydown = onkeydown;
+                            e.onclick = onclick;
+                        } catch (e) {
+                            //don't fail if element is not present anymore
+                        }
+                    });
+                }
+            });
+        });
     },
     stop:function(target) {
         if (Ice.modal.getRunning() == target) {
             var iframe = document.getElementById('iceModalFrame' + target);
             if (iframe) {
-                iframe.parentNode.removeChild(iframe.nextSibling);            	
+                iframe.parentNode.removeChild(iframe.nextSibling);
                 iframe.parentNode.removeChild(iframe);
                 logger.debug('removed modal iframe for : ' + target);
             }
@@ -1001,15 +1042,18 @@ Ice.modal = {
                 }
                 Ice.modal.trigger = '';
             }
+
+            Ice.modal.rollbacks.broadcast();
+            Ice.modal.rollbacks = null;
         }
     },
     enableDisableTabindex: function(target, enable) {
         var targetElement = null;
         if (target) {
-              targetElement = $(target);
+            targetElement = $(target);
         } else {
-              targetElement = document;
-        }        
+            targetElement = document;
+        }
         var focusables = {};
         focusables.a = targetElement.getElementsByTagName('a');
         focusables.area = targetElement.getElementsByTagName('area');
@@ -1024,40 +1068,40 @@ Ice.modal = {
             for (var j = 0; j < list.length; j++) {
                 var ele = list[j];
                 if (enable) {//restore
-                   //restore index only if it was saved
-                   if (ele['oldtabIndex']!= null) {
-                      ele.tabIndex = ele['oldtabIndex'];
-                   }
+                    //restore index only if it was saved
+                    if (ele['oldtabIndex'] != null) {
+                        ele.tabIndex = ele['oldtabIndex'];
+                    }
                 } else {//disable
-                  //save index only if it was not saved already
-                  if (!ele['oldtabIndex']) {
-                        ele['oldtabIndex'] = ele.tabIndex ? ele.tabIndex:'';
-                  }
-                  ele.tabIndex = '-1';     
+                    //save index only if it was not saved already
+                    if (!ele['oldtabIndex']) {
+                        ele['oldtabIndex'] = ele.tabIndex ? ele.tabIndex : '';
+                    }
+                    ele.tabIndex = '-1';
                 }
             }
-        }    
+        }
     },
-    disableTabindex: function(target, restore) {     
+    disableTabindex: function(target, restore) {
         //restore all is necessary to support more than one modal
-        this.restoreTabindex();   
+        this.restoreTabindex();
         //disable all
-        this.enableDisableTabindex(null, false); 
+        this.enableDisableTabindex(null, false);
         //restore current modal, so it elements can have focus
-        this.restoreTabindex(target);      
-    },    
-    restoreTabindex: function(target) {  
+        this.restoreTabindex(target);
+    },
+    restoreTabindex: function(target) {
         this.enableDisableTabindex(target, true);
     }
 };
 
 Ice.autoCentre = Class.create();
 Ice.autoCentre = {
-	    ids:[],
-	    centerAll:function() {
-	        Ice.autoCentre.ids.each(Ice.autoCentre.keepCentred);
-	    },
-	    keepCentred:function(id) {
+    ids:[],
+    centerAll:function() {
+        Ice.autoCentre.ids.each(Ice.autoCentre.keepCentred);
+    },
+    keepCentred:function(id) {
         var scrollX = window.pageXOffset || document.body.scrollLeft || document.documentElement.scrollLeft;
         var scrollY = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
         var div = document.getElementById(id);
@@ -1397,17 +1441,17 @@ Ice.DndEvent.prototype = {
     },
 
     populateDrag:function(ele, ignoreCss) {
-       this.submitInfo.set(ele.id+'status', this.eventType);
-       if (this.drop) {
-          this.submitInfo.set(ele.id+'dropID', this.drop.element.id);         
-       }
-       if (!ignoreCss) Ice.DnD.StyleReader.upload(ele);
-       return true;
+        this.submitInfo.set(ele.id + 'status', this.eventType);
+        if (this.drop) {
+            this.submitInfo.set(ele.id + 'dropID', this.drop.element.id);
+        }
+        if (!ignoreCss) Ice.DnD.StyleReader.upload(ele);
+        return true;
     },
 
-    populateDrop:function(ele, ignoreCss) { 
-        this.submitInfo.set(ele.id+'status', this.eventType);
-        this.submitInfo.set(ele.id+'dropID', this.drag.element.id);      
+    populateDrop:function(ele, ignoreCss) {
+        this.submitInfo.set(ele.id + 'status', this.eventType);
+        this.submitInfo.set(ele.id + 'dropID', this.drag.element.id);
         if (!ignoreCss) Ice.DnD.StyleReader.upload(ele);
         return true;
     },
@@ -1422,21 +1466,21 @@ Ice.DndEvent.prototype = {
         }
         return result;
     },
-    
+
     serializeSubmitInfo: function (form) {
         var str = this.submitInfo.getPropsAsString();
-        var hdn = this.getHiddenField(form); 
-        if(hdn)        
-           hdn.value=str.substring(0, str.length-1);        
+        var hdn = this.getHiddenField(form);
+        if (hdn)
+            hdn.value = str.substring(0, str.length - 1);
     },
-    
+
     resetSubmitInfo: function(form) {
         this.submitInfo.deleteAll();
         var hdn = this.getHiddenField(form);
-        if(hdn)
-            hdn.value="";
+        if (hdn)
+            hdn.value = "";
     },
-    
+
     getHiddenField: function(form) {
         var hdnId = form.id + ":iceDND";
         var hdn = document.getElementsByName(hdnId)[0];
@@ -1754,9 +1798,9 @@ Droppables.isAffected = function(point, element, drop) {
 Droppables.ORIGINAL_add = Droppables.add;
 Droppables.add = function(ele, options) {
     //this should not be performed for Sortable
-    if (options && !options.sort)  {
+    if (options && !options.sort) {
         if (ele['droppableInstalled']) return;
-        ele['droppableInstalled']=true;
+        ele['droppableInstalled'] = true;
     }
     var monitors = Ice.StateMon.monitors;
     for (i = 0; i < monitors.length; i++) {
@@ -1922,10 +1966,10 @@ var Sortable = {
         if (options.reverteffect)
             options_for_draggable.reverteffect = options.reverteffect;
         else
-            if (options.ghosting) options_for_draggable.reverteffect = function(element) {
-                element.style.top = 0;
-                element.style.left = 0;
-            };
+        if (options.ghosting) options_for_draggable.reverteffect = function(element) {
+            element.style.top = 0;
+            element.style.left = 0;
+        };
         if (options.endeffect)
             options_for_draggable.endeffect = options.endeffect;
         if (options.zindex)
@@ -1954,7 +1998,7 @@ var Sortable = {
         }
         (options.elements || this.findElements(element, options) || []).each(function(e, i) {
             var handle = options.handles ? $(options.handles[i]) :
-                         (options.handle ? $(e).select('.' + options.handle)[0] : e);
+                    (options.handle ? $(e).select('.' + options.handle)[0] : e);
             options.draggables.push(
                     new Draggable(e, Object.extend(options_for_draggable, { handle: handle })));
             Droppables.add(e, options_for_droppable);
@@ -1978,7 +2022,7 @@ var Sortable = {
         var elements = [];
         $A(element.childNodes).each(function(e) {
             if (e.tagName && e.tagName.toUpperCase() == options.tag.toUpperCase() &&
-                (!options.only || (Element.hasClassName(e, options.only))))
+                    (!options.only || (Element.hasClassName(e, options.only))))
                 elements.push(e);
         });
         return (elements.length > 0 ? elements.flatten() : null);
@@ -2145,43 +2189,45 @@ Autocompleter.Base.prototype = {
         this.options.frequency = this.options.frequency || 0.4;
         this.options.minChars = this.options.minChars || 1;
         this.options.onShow = this.options.onShow ||
-                              function(element, update) {
-                                  // Based on code from MSDN
-                                  var ieEngine = null;
-                                  if (window.navigator.appName == "Microsoft Internet Explorer") {
-                                      if (document.documentMode) {
-                                          ieEngine = document.documentMode;
-                                      } else if (document.compatMode && document.compatMode == "CSS1Compat") {
-                                          ieEngine = 7;
-                                      } else {
-                                          ieEngine = 5;
-                                      }
-                                  }
-                                try {
-                                  if (update["style"] && (!update.style.position || update.style.position == 'absolute')) {
-                                      update.style.position = 'absolute';
-                                      Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
-                                      update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
-                                          offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
-                                      if (ieEngine == 7 || ieEngine == 8) {
-                                          var savedPos = element.style.position;
-                                          element.style.position = "relative";
-                                          update.style.left = element.offsetLeft + "px";
-                                          if (ieEngine == 7) {
-                                              update.style.top = (element.offsetTop + element.offsetHeight) + "px";
-                                          } else if (ieEngine == 8) {
-                                              update.style.top = (element.offsetTop - element.cumulativeScrollOffset().top + element.offsetHeight) + "px";
-                                          }
-                                          element.style.position = savedPos;
-                                      }
-                                  }
-                                  Effect.Appear(update, {duration:0.15});
-                                } catch(e){logger.info(e);}  
-                              };
+                function(element, update) {
+                    // Based on code from MSDN
+                    var ieEngine = null;
+                    if (window.navigator.appName == "Microsoft Internet Explorer") {
+                        if (document.documentMode) {
+                            ieEngine = document.documentMode;
+                        } else if (document.compatMode && document.compatMode == "CSS1Compat") {
+                            ieEngine = 7;
+                        } else {
+                            ieEngine = 5;
+                        }
+                    }
+                    try {
+                        if (update["style"] && (!update.style.position || update.style.position == 'absolute')) {
+                            update.style.position = 'absolute';
+                            Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
+                            update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
+                                offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
+                            if (ieEngine == 7 || ieEngine == 8) {
+                                var savedPos = element.style.position;
+                                element.style.position = "relative";
+                                update.style.left = element.offsetLeft + "px";
+                                if (ieEngine == 7) {
+                                    update.style.top = (element.offsetTop + element.offsetHeight) + "px";
+                                } else if (ieEngine == 8) {
+                                    update.style.top = (element.offsetTop - element.cumulativeScrollOffset().top + element.offsetHeight) + "px";
+                                }
+                                element.style.position = savedPos;
+                            }
+                        }
+                        Effect.Appear(update, {duration:0.15});
+                    } catch(e) {
+                        logger.info(e);
+                    }
+                };
         this.options.onHide = this.options.onHide ||
-                              function(element, update) {
-                                  new Effect.Fade(update, {duration:0.15})
-                              };
+                function(element, update) {
+                    new Effect.Fade(update, {duration:0.15})
+                };
 
         if (typeof(this.options.tokens) == 'string')
             this.options.tokens = new Array(this.options.tokens);
@@ -2199,30 +2245,34 @@ Autocompleter.Base.prototype = {
     },
 
     show: function() {
-      try {  
-        if (Element.getStyle(this.update, 'display') == 'none')this.options.onShow(this.element, this.update);
-        if (!this.iefix &&
-            (navigator.appVersion.indexOf('MSIE') > 0) &&
-            (navigator.userAgent.indexOf('Opera') < 0) &&
-            (Element.getStyle(this.update, 'position') == 'absolute')) {
-            new Insertion.After(this.update,
-                    '<iframe id="' + this.update.id + '_iefix" title="IE6_Fix" ' +
-                    'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
-                    'src="javascript:\'<html></html>\'" frameborder="0" scrolling="no"></iframe>');
-            this.iefix = $(this.update.id + '_iefix');
+        try {
+            if (Element.getStyle(this.update, 'display') == 'none')this.options.onShow(this.element, this.update);
+            if (!this.iefix &&
+                    (navigator.appVersion.indexOf('MSIE') > 0) &&
+                    (navigator.userAgent.indexOf('Opera') < 0) &&
+                    (Element.getStyle(this.update, 'position') == 'absolute')) {
+                new Insertion.After(this.update,
+                        '<iframe id="' + this.update.id + '_iefix" title="IE6_Fix" ' +
+                                'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
+                                'src="javascript:\'<html></html>\'" frameborder="0" scrolling="no"></iframe>');
+                this.iefix = $(this.update.id + '_iefix');
+            }
+            if (this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
+            this.element.focus();
+        } catch (e) {
+            logger.info(e);
         }
-        if (this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
-        this.element.focus();     
-      } catch (e) {logger.info(e);}
     },
 
     fixIEOverlapping: function() {
-      try {
-        Position.clone(this.update, this.iefix);
-        this.iefix.style.zIndex = 1;
-        this.update.style.zIndex = 2;
-        Element.show(this.iefix);
-      } catch(e) {logger.info(e);}
+        try {
+            Position.clone(this.update, this.iefix);
+            this.iefix.style.zIndex = 1;
+            this.update.style.zIndex = 2;
+            Element.show(this.iefix);
+        } catch(e) {
+            logger.info(e);
+        }
     },
 
     hide: function() {
@@ -2258,8 +2308,8 @@ Autocompleter.Base.prototype = {
             switch (event.keyCode) {
                 case Event.KEY_TAB:
                 case Event.KEY_RETURN:
-                //this.selectEntry();
-                //Event.stop(event);
+                    //this.selectEntry();
+                    //Event.stop(event);
 
                     this.hidden = true; // Hack to fix before beta. Was popup up the list after a selection was made
                     var idx = this.selectEntry();
@@ -2278,16 +2328,16 @@ Autocompleter.Base.prototype = {
                     return;
                 case Event.KEY_UP:
                     //ICE-4549 (the KEY_UP and KEY_DOWN would be handled by the onkeydown event for IE and WebKit)
-                    if (!(Prototype.Browser.IE || Prototype.Browser.WebKit)) {                      
+                    if (!(Prototype.Browser.IE || Prototype.Browser.WebKit)) {
                         this.markPrevious();
                         this.render();
                         //if(navigator.appVersion.indexOf('AppleWebKit')>0)
                         Event.stop(event);
                         return;
-	                }
+                    }
                 case Event.KEY_DOWN:
                     //ICE-4549 
-                    if (!(Prototype.Browser.IE || Prototype.Browser.WebKit)) {                 
+                    if (!(Prototype.Browser.IE || Prototype.Browser.WebKit)) {
                         this.markNext();
                         this.render();
                         //if(navigator.appVersion.indexOf('AppleWebKit')>0)
@@ -2391,7 +2441,7 @@ Autocompleter.Base.prototype = {
             // Right or bottom border, if any, will be treated as scrollbar.
             // No way to determine their width or scrollbar width accurately.
             if (event.clientX > docBody.clientLeft + docBody.clientWidth ||
-                event.clientY > docBody.clientTop + docBody.clientHeight) {
+                    event.clientY > docBody.clientTop + docBody.clientHeight) {
                 this.element.focus();
                 return;
             }
@@ -2516,7 +2566,7 @@ Autocompleter.Base.prototype = {
 
             if (this.update.firstChild && this.update.firstChild.childNodes) {
                 this.entryCount =
-                this.update.firstChild.childNodes.length;
+                        this.update.firstChild.childNodes.length;
                 for (var i = 0; i < this.entryCount; i++) {
                     var entry = this.getEntry(i);
                     entry.autocompleteIndex = i;
@@ -2607,7 +2657,7 @@ Object.extend(Object.extend(Ajax.Autocompleter.prototype, Autocompleter.Base.pro
                 encodeURIComponent(this.getToken());
 
         this.options.parameters = this.options.callback ?
-                                  this.options.callback(this.element, entry) : entry;
+                this.options.callback(this.element, entry) : entry;
 
         if (this.options.defaultParams)
             this.options.parameters += '&' + this.options.defaultParams;
@@ -2703,7 +2753,7 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
                 encodeURIComponent(this.getToken());
 
         this.options.parameters = this.options.callback ?
-                                  this.options.callback(this.element, entry) : entry;
+                this.options.callback(this.element, entry) : entry;
 
         if (this.options.defaultParams)
             this.options.parameters += '&' + this.options.defaultParams;
@@ -2723,9 +2773,9 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
             Ice.Autocompleter.logger.debug("Sending partial submit");
             iceSubmitPartial(form, this.element, event);
         }
-        
-           var indexName = this.element.id + "_idx";
-           form[indexName].value = "";
+
+        var indexName = this.element.id + "_idx";
+        form[indexName].value = "";
     },
 
     onComplete: function(request) {
@@ -3220,8 +3270,7 @@ Ice.GoogleMap = {
         if (gmapWrapper.geoMarkerSet
                 && gmapWrapper.geoMarker != null
                 && gmapWrapper.geoMarkerAddress != null
-                )
-        {
+                ) {
             gmapWrapper.getRealGMap().addOverlay(gmapWrapper.geoMarker);
             gmapWrapper.geoMarker.openInfoWindowHtml(gmapWrapper.geoMarkerAddress);
             gmapWrapper.geoMarkerSet = false;
@@ -3229,8 +3278,7 @@ Ice.GoogleMap = {
         if (gmapWrapper.getRealGMap().getCurrentMapType() != null) {
             //set the map type only when difference found
             if (gmapWrapper.getRealGMap().getCurrentMapType().getName() != type) {
-                switch (type)
-                        {
+                switch (type) {
                     case "Satellite":
                         gmapWrapper.getRealGMap().setMapType(G_SATELLITE_MAP);
                         break
@@ -3357,205 +3405,207 @@ Ice.Repository = {
 var visibleTooltipList = new Array();
 
 ToolTipPanelPopup = Class.create({
-  initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue, iFrameUrl, displayOn, moveWithMouse) {
-      //tooltip is not rendered 
-      if (!$(tooltipCompId)) return;
-    this.src = srcComp;
-    this.delay = delay || 500;
-    this.dynamic = (dynamic == "true");
-    this.tooltipCompId = tooltipCompId;
-    this.srcCompId = srcComp.id;
-    this.hideOn = hideOn;
-    this.x = Event.pointerX(event);
-    this.y = Event.pointerY(event);
-    this.formId = formId;
-    this.ctxValue = ctxValue
-    this.iFrameUrl = iFrameUrl;
-    this.moveWithMouse = moveWithMouse;
-      this.displayOn = displayOn;
-      this.event = event;
-    //cancel bubbling
-    event.cancelBubble = true;
-    //attach events
+    initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue, iFrameUrl, displayOn, moveWithMouse) {
+        //tooltip is not rendered
+        if (!$(tooltipCompId)) return;
+        this.src = srcComp;
+        this.delay = delay || 500;
+        this.dynamic = (dynamic == "true");
+        this.tooltipCompId = tooltipCompId;
+        this.srcCompId = srcComp.id;
+        this.hideOn = hideOn;
+        this.x = Event.pointerX(event);
+        this.y = Event.pointerY(event);
+        this.formId = formId;
+        this.ctxValue = ctxValue
+        this.iFrameUrl = iFrameUrl;
+        this.moveWithMouse = moveWithMouse;
+        this.displayOn = displayOn;
+        this.event = event;
+        //cancel bubbling
+        event.cancelBubble = true;
+        //attach events
 
-    if (this.hideOn == "mousedown") {
-        this.hideEvent = this.hidePopupOnMouseClick.bindAsEventListener(this);
-    } else if (this.hideOn == "mouseout") {
-        this.hideEvent = this.hidePopupOnMouseOut.bindAsEventListener(this);
-    } else {
-        this.hideOn = "none";
-    }
-
-    this.eventMouseMove = this.updateCordinate.bindAsEventListener(this);
-    this.clearTimerEvent = this.clearTimer.bindAsEventListener(this);
-    Event.observe(document, "mouseout" , this.clearTimerEvent);
-    Event.observe(document, this.hideOn , this.hideEvent);
-    Event.observe(document, "mousemove", this.eventMouseMove);
-      if (displayOn == "hover") {
-          this.timer = setTimeout(this.showPopup.bind(this), parseInt(this.delay));
-      } else {
-          this.showPopup.bind(this)();
-          Event.extend(event).stop();
-      }
-  },
-
-  showPopup: function() {
-    if (this.isTooltipVisible()) return;
-    if (this.dynamic) {
-         //its a dynamic tooltip, so remove all its childres
-        var tooltip = this.getTooltip();
-        if(tooltip) {
-	        tooltip.style.visibility = "hidden";        
-	        var table = tooltip.childNodes[0];
-	        if (table) {
-	            tooltip.removeChild(table);
-	        }
+        if (this.hideOn == "mousedown") {
+            this.hideEvent = this.hidePopupOnMouseClick.bindAsEventListener(this);
+        } else if (this.hideOn == "mouseout") {
+            this.hideEvent = this.hidePopupOnMouseOut.bindAsEventListener(this);
+        } else {
+            this.hideOn = "none";
         }
-    //dynamic? set status=show, populatefields, and submit
-      this.submit("show");
-      if (this.hideOn == "none") {
-        //reset the info
-        this.populateFields(true);
-      }
-    } else {
-        //static? just set the visibility= true 
-       var tooltip = this.getTooltip();
-        tooltip.style.visibility = "visible";
-        tooltip.style.position = "absolute" ;
-        tooltip.style.display = "";
-        tooltip.style.top = this.y - tooltip.offsetHeight - 4 + "px";
-        tooltip.style.left = this.x+4+"px";
-        ToolTipPanelPopupUtil.adjustPosition(tooltip);
-        Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
-    }
-    this.addToVisibleList();    
-      //prohibits to open browser's context menu, as 'altclick' uses onmenucontext handler    
-      if (this.event && this.displayOn == 'altclick') {
-          Event.extend(this.event).stop();
-      }
-  },
 
-  hidePopupOnMouseOut: function(event) {
-    if (!this.isTooltipVisible()) return;
-    if (Position.within($(this.tooltipCompId), Event.pointerX(event), Event.pointerY(event))) return; //ICE-3521
-    this.hidePopup(event);
-    this.state = "hide";
-    this.populateFields();
-    if (this.hideOn == "mouseout") {
-        this.removedFromVisibleList();
-    }
-    this.dispose(event);
-  },
+        this.eventMouseMove = this.updateCordinate.bindAsEventListener(this);
+        this.clearTimerEvent = this.clearTimer.bindAsEventListener(this);
+        Event.observe(document, "mouseout", this.clearTimerEvent);
+        Event.observe(document, this.hideOn, this.hideEvent);
+        Event.observe(document, "mousemove", this.eventMouseMove);
+        if (displayOn == "hover") {
+            this.timer = setTimeout(this.showPopup.bind(this), parseInt(this.delay));
+        } else {
+            this.showPopup.bind(this)();
+            Event.extend(event).stop();
+        }
+    },
 
-  hidePopupOnMouseClick: function(event) {
-    if (!this.isTooltipVisible() || !Event.isLeftClick(event)) return;
-    var eventSrc = Event.element(event);
-    if(this.srcOrchildOfSrcElement(eventSrc)) {
-        return;
-    } else {
+    showPopup: function() {
+        if (this.isTooltipVisible()) return;
+        if (this.dynamic) {
+            //its a dynamic tooltip, so remove all its childres
+            var tooltip = this.getTooltip();
+            if (tooltip) {
+                tooltip.style.visibility = "hidden";
+                var table = tooltip.childNodes[0];
+                if (table) {
+                    tooltip.removeChild(table);
+                }
+            }
+            //dynamic? set status=show, populatefields, and submit
+            this.submit("show");
+            if (this.hideOn == "none") {
+                //reset the info
+                this.populateFields(true);
+            }
+        } else {
+            //static? just set the visibility= true
+            var tooltip = this.getTooltip();
+            tooltip.style.visibility = "visible";
+            tooltip.style.position = "absolute";
+            tooltip.style.display = "";
+            tooltip.style.top = this.y - tooltip.offsetHeight - 4 + "px";
+            tooltip.style.left = this.x + 4 + "px";
+            ToolTipPanelPopupUtil.adjustPosition(tooltip);
+            Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
+        }
+        this.addToVisibleList();
+        //prohibits to open browser's context menu, as 'altclick' uses onmenucontext handler
+        if (this.event && this.displayOn == 'altclick') {
+            Event.extend(this.event).stop();
+        }
+    },
+
+    hidePopupOnMouseOut: function(event) {
+        if (!this.isTooltipVisible()) return;
+        if (Position.within($(this.tooltipCompId), Event.pointerX(event), Event.pointerY(event))) return; //ICE-3521
         this.hidePopup(event);
-    }
-    if (this.hideOn == "mousedown") {
-        this.removedFromVisibleList();
-    }
-    this.dispose(event);
-  },
+        this.state = "hide";
+        this.populateFields();
+        if (this.hideOn == "mouseout") {
+            this.removedFromVisibleList();
+        }
+        this.dispose(event);
+    },
+
+    hidePopupOnMouseClick: function(event) {
+        if (!this.isTooltipVisible() || !Event.isLeftClick(event)) return;
+        var eventSrc = Event.element(event);
+        if (this.srcOrchildOfSrcElement(eventSrc)) {
+            return;
+        } else {
+            this.hidePopup(event);
+        }
+        if (this.hideOn == "mousedown") {
+            this.removedFromVisibleList();
+        }
+        this.dispose(event);
+    },
 
 
- dispose: function(event) {
-    Event.stopObserving(document, this.hideOn, this.hideEvent);
-    Event.stopObserving(document, "mousemove", this.eventMouseMove);
+    dispose: function(event) {
+        Event.stopObserving(document, this.hideOn, this.hideEvent);
+        Event.stopObserving(document, "mousemove", this.eventMouseMove);
 
-   },
+    },
 
-  hidePopup:function(event) {
-    if(this.dynamic) {
-    //dynamic? set status=hide, populatefiels and submit 
-        this.submit("hide");
-    } else {
-        //static? set visibility = false;
-        tooltip =  this.getTooltip();
-        tooltip.style.visibility = "hidden";
-        tooltip.style.display = "none";
-    }
-  },
-  
-  
-  submit:function(state, event) {
-      if (!event) event = new Object();
-      this.state = state;
-      this.populateFields();
-      var element = $(this.srcCompId);
-      try {
-        var form = Ice.util.findForm(element);
-        iceSubmitPartial(form,element,event);
-      } catch (e) {logger.info("Form not found" + e);}
-  },
-  
-  clearTimer:function() {
-     //   $(action).innerHTML += "<br/> Clearing the event";
+    hidePopup:function(event) {
+        if (this.dynamic) {
+            //dynamic? set status=hide, populatefiels and submit
+            this.submit("hide");
+        } else {
+            //static? set visibility = false;
+            tooltip = this.getTooltip();
+            tooltip.style.visibility = "hidden";
+            tooltip.style.display = "none";
+        }
+    },
+
+
+    submit:function(state, event) {
+        if (!event) event = new Object();
+        this.state = state;
+        this.populateFields();
+        var element = $(this.srcCompId);
+        try {
+            var form = Ice.util.findForm(element);
+            iceSubmitPartial(form, element, event);
+        } catch (e) {
+            logger.info("Form not found" + e);
+        }
+    },
+
+    clearTimer:function() {
+        //   $(action).innerHTML += "<br/> Clearing the event";
         Event.stopObserving(document, "mouseout", this.clearTimerEvent);
         clearTimeout(this.timer);
 
-  },
-
-  updateCordinate: function(event) {
-      if (Event.element(event) != this.src && !Element.descendantOf(event.element(), this.src)) return;
-    this.x = Event.pointerX(event);
-    this.y = Event.pointerY(event);
-      if (!this.isTooltipVisible() || !this.moveWithMouse) return;
-      var tooltip = this.getTooltip();
-      tooltip.style.top = this.y - tooltip.offsetHeight - 4 + "px";
-      tooltip.style.left = this.x + 4 + "px";
-      ToolTipPanelPopupUtil.adjustPosition(tooltip);
-      Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
-  },
-
-  srcOrchildOfSrcElement: function(ele) {
-     var tooltip =  this.getTooltip();
-     if (tooltip  == ele) return true;
-     while (ele.parentNode) {
-        ele = ele.parentNode;
-        if (tooltip  == ele){
-            return true;
-        }
-     }
-  },
-
-  getTooltip: function () {
-      return $(this.tooltipCompId);
-  },
-  
-  populateFields: function(reset) {
-  // the following field should be rendered by the panelPoupRenderer if rendered as tooltip
-
-
-	    var form = $(this.formId);
-	    if (form == null) return;
-	    var iceTooltipInfo = form.getElements().find( function(element) {
-	        if (element.id == "iceTooltipInfo") return element;
-	    });
-	    if (!iceTooltipInfo) { 
-		    iceTooltipInfo = document.createElement('input');
-		    iceTooltipInfo.id="iceTooltipInfo";
-		    iceTooltipInfo.name="iceTooltipInfo";            
-		    iceTooltipInfo.type="hidden";
-	        form.appendChild(iceTooltipInfo);
-	    }  else {
-	 
-	    }
-	    if (reset) {
-	       iceTooltipInfo.value = "";
-	    } else {
-	       iceTooltipInfo.value = "tooltip_id=" + this.tooltipCompId + 
-	                     "; tooltip_src_id="+ this.src.id+ 
-	                     "; tooltip_state="+ this.state +
-	                     "; tooltip_x="+ this.x +
-	                     "; tooltip_y="+ this.y +
-	                     "; cntxValue="+ this.ctxValue;
-	    }
     },
-    
+
+    updateCordinate: function(event) {
+        if (Event.element(event) != this.src && !Element.descendantOf(event.element(), this.src)) return;
+        this.x = Event.pointerX(event);
+        this.y = Event.pointerY(event);
+        if (!this.isTooltipVisible() || !this.moveWithMouse) return;
+        var tooltip = this.getTooltip();
+        tooltip.style.top = this.y - tooltip.offsetHeight - 4 + "px";
+        tooltip.style.left = this.x + 4 + "px";
+        ToolTipPanelPopupUtil.adjustPosition(tooltip);
+        Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
+    },
+
+    srcOrchildOfSrcElement: function(ele) {
+        var tooltip = this.getTooltip();
+        if (tooltip == ele) return true;
+        while (ele.parentNode) {
+            ele = ele.parentNode;
+            if (tooltip == ele) {
+                return true;
+            }
+        }
+    },
+
+    getTooltip: function () {
+        return $(this.tooltipCompId);
+    },
+
+    populateFields: function(reset) {
+        // the following field should be rendered by the panelPoupRenderer if rendered as tooltip
+
+
+        var form = $(this.formId);
+        if (form == null) return;
+        var iceTooltipInfo = form.getElements().find(function(element) {
+            if (element.id == "iceTooltipInfo") return element;
+        });
+        if (!iceTooltipInfo) {
+            iceTooltipInfo = document.createElement('input');
+            iceTooltipInfo.id = "iceTooltipInfo";
+            iceTooltipInfo.name = "iceTooltipInfo";
+            iceTooltipInfo.type = "hidden";
+            form.appendChild(iceTooltipInfo);
+        } else {
+
+        }
+        if (reset) {
+            iceTooltipInfo.value = "";
+        } else {
+            iceTooltipInfo.value = "tooltip_id=" + this.tooltipCompId +
+                    "; tooltip_src_id=" + this.src.id +
+                    "; tooltip_state=" + this.state +
+                    "; tooltip_x=" + this.x +
+                    "; tooltip_y=" + this.y +
+                    "; cntxValue=" + this.ctxValue;
+        }
+    },
+
     addToVisibleList: function() {
         if (!this.isTooltipVisible()) {
             this.removedFromVisibleList('all');
@@ -3563,35 +3613,35 @@ ToolTipPanelPopup = Class.create({
         } else {
         }
     },
-    
+
     removedFromVisibleList: function(all) {
         if (this.isTooltipVisible() || all) {
-	        var newList = new Array();
-		    var index = -1;
-		    for (i=0; i < visibleTooltipList.length; i++) {
-		        if (visibleTooltipList[i].tooltipId != this.tooltipCompId) {
-		            index = parseInt(index)+ 1;
-		            newList[index] = visibleTooltipList[i];
-		        }else {
-		        }
-		    }
-		    visibleTooltipList = newList;
-		} else {
-		}
-    },
-    
-    isTooltipVisible: function(onlyTooltip) {
-        for (i=0; i < visibleTooltipList.length; i++) {
-            if (onlyTooltip) {
-                if (visibleTooltipList[i].tooltipId== this.tooltipCompId) {
-                    return true;
-                }             
-            } else {
-                if (visibleTooltipList[i].tooltipId== this.tooltipCompId && visibleTooltipList[i].srcCompId == this.srcCompId) {
-                    return true;
-                } 
+            var newList = new Array();
+            var index = -1;
+            for (i = 0; i < visibleTooltipList.length; i++) {
+                if (visibleTooltipList[i].tooltipId != this.tooltipCompId) {
+                    index = parseInt(index) + 1;
+                    newList[index] = visibleTooltipList[i];
+                } else {
+                }
             }
-  
+            visibleTooltipList = newList;
+        } else {
+        }
+    },
+
+    isTooltipVisible: function(onlyTooltip) {
+        for (i = 0; i < visibleTooltipList.length; i++) {
+            if (onlyTooltip) {
+                if (visibleTooltipList[i].tooltipId == this.tooltipCompId) {
+                    return true;
+                }
+            } else {
+                if (visibleTooltipList[i].tooltipId == this.tooltipCompId && visibleTooltipList[i].srcCompId == this.srcCompId) {
+                    return true;
+                }
+            }
+
         }
         return false;
     }
@@ -3601,11 +3651,11 @@ ToolTipPanelPopupUtil = {
     removeFromVisibleList:function(comp_id) {
         var newList = new Array();
         var index = -1;
-        for (i=0; i < visibleTooltipList.length; i++) {
+        for (i = 0; i < visibleTooltipList.length; i++) {
             if (visibleTooltipList[i].tooltipId != comp_id) {
-                index = parseInt(index)+ 1;
+                index = parseInt(index) + 1;
                 newList[index] = visibleTooltipList[i];
-            }else {
+            } else {
             }
         }
         visibleTooltipList = newList;
@@ -3626,7 +3676,7 @@ ToolTipPanelPopupUtil = {
             diff = - Math.min(diff, (elementOffsets.left - viewportScrollOffsets.left));
         }
         element.style.left = positionedOffset.left + diff + "px";
-        
+
         diff = 0;
         if (elementOffsets.top < viewportScrollOffsets.top) {
             diff = viewportScrollOffsets.top - elementOffsets.top;
@@ -3909,9 +3959,9 @@ Ice.ResizableGrid.addMethods({
         var children = container.firstChild.firstChild.childNodes;
         var widths = "";
         for (i = 0; i < children.length; i++) {
-        	if (children[i].className == 'iceDatTblResBor') {
-        		continue;
-        	}
+            if (children[i].className == 'iceDatTblResBor') {
+                continue;
+            }
             widths += Element.getStyle(children[i].firstChild, "width") + ",";
         }
         return widths;
@@ -4218,311 +4268,316 @@ Ice.KeyNavigator = Class.create({
 
     keydown: function(event) {
         this.srcElement = Event.element(event);
-        switch(event.keyCode) {
-    
+        switch (event.keyCode) {
+
             case Event.KEY_RETURN:
                 this.showMenu(event);
                 break;
-	    
+
             case Event.KEY_UP:
                 this.goNorth(event);
-                Event.stop(event);            
+                Event.stop(event);
                 break;
 
             case Event.KEY_DOWN:
                 this.goSouth(event);
-                Event.stop(event);            
+                Event.stop(event);
                 break;
 
             case Event.KEY_LEFT:
                 this.goWest(event);
-                Event.stop(event);            
+                Event.stop(event);
                 break;
 
             case Event.KEY_RIGHT:
                 this.goEast(event);
                 Event.stop(event);
                 break;
-         }
+        }
     },
 
-    goNorth: function(event) {},
+    goNorth: function(event) {
+    },
 
-    goSouth: function(event) {},
+    goSouth: function(event) {
+    },
 
-    goWest: function(event) {},
+    goWest: function(event) {
+    },
 
-    goEast: function(event) {}
+    goEast: function(event) {
+    }
 
 });
 
-	Ice.MenuBarKeyNavigator = Class.create(Ice.KeyNavigator, {
-	  initialize: function($super, componentId, displayOnClick) {
-	    $super(componentId);
-	    this.displayOnClick = displayOnClick;
-	    this.component.onclick = this.hideAll.bindAsEventListener(this);
-	    document.onclick = this.hideAllDocument.bindAsEventListener(this);    
-	  
-	    if (Element.hasClassName(this.component, 'iceMnuBarVrt')) {
-	        this.vertical = true;
-	    } else {
-	        this.vertical = false;
-	    }
-	    this.clicked = true;
-	    this.configureRootItems();
-	  }
-	});
+Ice.MenuBarKeyNavigator = Class.create(Ice.KeyNavigator, {
+    initialize: function($super, componentId, displayOnClick) {
+        $super(componentId);
+        this.displayOnClick = displayOnClick;
+        this.component.onclick = this.hideAll.bindAsEventListener(this);
+        document.onclick = this.hideAllDocument.bindAsEventListener(this);
 
-	Ice.MenuBarKeyNavigator.addMethods({
-	  goEast: function(event) {
-	    this.applyFocus('e');
-	  },
-	  
-	  goWest: function(event) { 
-	    this.applyFocus('w');
-	  },
+        if (Element.hasClassName(this.component, 'iceMnuBarVrt')) {
+            this.vertical = true;
+        } else {
+            this.vertical = false;
+        }
+        this.clicked = true;
+        this.configureRootItems();
+    }
+});
 
-	  goSouth: function(event) {
-	    this.applyFocus('s');
-	  },
+Ice.MenuBarKeyNavigator.addMethods({
+    goEast: function(event) {
+        this.applyFocus('e');
+    },
 
-	  goNorth: function(event) { 
-	    this.applyFocus('n');  
-	  },
+    goWest: function(event) {
+        this.applyFocus('w');
+    },
 
-	  focusMenuItem: function(iclass, next, direct) {
-	      var ci = this.srcElement.up(iclass);
-	      if (ci) {
-	          if(direct =='e') {
-	             var sm = $(ci.id+'_sub');
-	             this.focusAnchor(sm);
-	             return;
-	          }
-	          
-	          if(direct =='w') {
-	             var owner = $(ci.id.substring(0, ci.id.length-6));
-	             if (owner) {
-	                this.focusAnchor(owner);
-	             } else {
-	                this.focusAnchor($(ci.id.substring(0, ci.id.lastIndexOf(':'))));
-	             }
-	             return;
-	          }          
-	                                   
-	          var ni = null;
-	          if(next) {
-	             ni = ci.next(iclass);
-	          } else {
-	             ni = ci.previous(iclass);  
-	             if (!ni && direct == 'n') {
-	                this.focusAnchor($(ci.id.substring(0, ci.id.lastIndexOf(':'))));
-	                return;
-	             }        
-	          }
-	          this.focusAnchor(ni);
-	      }
-	  },
-	  
-	  focusSubMenuItem: function(item) {
-	      if (item) {
-	         var sm = $(item.id+'_sub');
-	         this.focusAnchor(sm);
-	      }
-	  },
-	  
-	  focusAnchor: function(item) {
-	      if (item) {
-	          try {
-	              var anch = item.down('a');
-	              anch.focus();
-	          } catch(e){}
-	      }
-	  },
-	  
+    goSouth: function(event) {
+        this.applyFocus('s');
+    },
+
+    goNorth: function(event) {
+        this.applyFocus('n');
+    },
+
+    focusMenuItem: function(iclass, next, direct) {
+        var ci = this.srcElement.up(iclass);
+        if (ci) {
+            if (direct == 'e') {
+                var sm = $(ci.id + '_sub');
+                this.focusAnchor(sm);
+                return;
+            }
+
+            if (direct == 'w') {
+                var owner = $(ci.id.substring(0, ci.id.length - 6));
+                if (owner) {
+                    this.focusAnchor(owner);
+                } else {
+                    this.focusAnchor($(ci.id.substring(0, ci.id.lastIndexOf(':'))));
+                }
+                return;
+            }
+
+            var ni = null;
+            if (next) {
+                ni = ci.next(iclass);
+            } else {
+                ni = ci.previous(iclass);
+                if (!ni && direct == 'n') {
+                    this.focusAnchor($(ci.id.substring(0, ci.id.lastIndexOf(':'))));
+                    return;
+                }
+            }
+            this.focusAnchor(ni);
+        }
+    },
+
+    focusSubMenuItem: function(item) {
+        if (item) {
+            var sm = $(item.id + '_sub');
+            this.focusAnchor(sm);
+        }
+    },
+
+    focusAnchor: function(item) {
+        if (item) {
+            try {
+                var anch = item.down('a');
+                anch.focus();
+            } catch(e) {
+            }
+        }
+    },
+
     applyFocus: function(direct) {
-	      var p = this.srcElement.parentNode;
-	      var pm = Element.hasClassName(p, this.getPopupMenuClass());      
-	      var mb = Element.hasClassName(p, this.getMenuBarItemClass());
-	      var mi = Element.hasClassName(p, this.getMenuItemClass());
+        var p = this.srcElement.parentNode;
+        var pm = Element.hasClassName(p, this.getPopupMenuClass());
+        var mb = Element.hasClassName(p, this.getMenuBarItemClass());
+        var mi = Element.hasClassName(p, this.getMenuItemClass());
 
-	        if(mb){
-	            switch(direct) {
-	                case 's':
-	                if (this.vertical) 
-	                    this.focusMenuItem('.'+this.getMenuBarItemClass(), true);
-	                else
-	                    this.focusSubMenuItem(p);
-	                break;
-	                
-	                case 'e':
-	                if (this.vertical)
-	                    this.focusSubMenuItem(p);
-	                else
-	                    this.focusMenuItem('.'+this.getMenuBarItemClass(), true);                    
-	                break;
-	                
-	                case 'w':
-	                    this.focusMenuItem('.'+this.getMenuBarItemClass());
-	                break;
-	                                    
-	                case 'n':
-	                    if (this.vertical)
-	                        this.focusMenuItem('.'+this.getMenuBarItemClass());
-	                break;
-	            }
-	            
-	        }else if (mi) {
-	            this.focusMenuItem('.'+this.getMenuItemClass(), direct == 's', direct);
-	        }else if (pm) {
-	            switch(direct) {
-	                case 'n':
-	                     this.focusMenuItem('.'+this.getPopupMenuClass());
-	                break;
-	                case 's':
-	                     this.focusMenuItem('.'+this.getPopupMenuClass(), true);                
-	                break;
-	                case 'e':
-	                      this.focusSubMenuItem(p);
-	                break;                
-	                
-	             }                
-	        }
+        if (mb) {
+            switch (direct) {
+                case 's':
+                    if (this.vertical)
+                        this.focusMenuItem('.' + this.getMenuBarItemClass(), true);
+                    else
+                        this.focusSubMenuItem(p);
+                    break;
+
+                case 'e':
+                    if (this.vertical)
+                        this.focusSubMenuItem(p);
+                    else
+                        this.focusMenuItem('.' + this.getMenuBarItemClass(), true);
+                    break;
+
+                case 'w':
+                    this.focusMenuItem('.' + this.getMenuBarItemClass());
+                    break;
+
+                case 'n':
+                    if (this.vertical)
+                        this.focusMenuItem('.' + this.getMenuBarItemClass());
+                    break;
+            }
+
+        } else if (mi) {
+            this.focusMenuItem('.' + this.getMenuItemClass(), direct == 's', direct);
+        } else if (pm) {
+            switch (direct) {
+                case 'n':
+                    this.focusMenuItem('.' + this.getPopupMenuClass());
+                    break;
+                case 's':
+                    this.focusMenuItem('.' + this.getPopupMenuClass(), true);
+                    break;
+                case 'e':
+                    this.focusSubMenuItem(p);
+                    break;
+
+            }
+        }
     },
-	  
-	  
+
+
     getMenuBarItemClass: function(event) {
-	    if (this.vertical) {
-	        return "iceMnuBarVrtItem";
-	    } else {
-	        return "iceMnuBarItem";
-	    }
-	  },
-
-	  getSubMenuClass: function(event) {
-	    if (this.vertical) {
-	        return "iceMnuBarVrtSubMenu";
-	    } else {
-	        return "iceMnuBarSubMenu";
-	    }
-	  },
-
-	  getSubMenuIndClass: function(event) {
-	    if (this.vertical) {
-	        return "iceMnuBarVrtSubMenuInd";
-	    } else {
-	        return "iceMnuBarSubMenuInd";
-	    }
-	  },
-	  
-	  getRootClass: function() {
-	    if (this.vertical) {
-	        return "iceMnuBarVrt";
-	    } else {
-	        return "iceMnuBar";
-	    }  
-	  },
-	  
-	  getMenuItemClass: function() {
-	     return "iceMnuItm";
-	  },
-	  
-	  getPopupMenuClass: function() {
-	     return "iceMnuPopVrtItem";
-	  },
-	    
-	  hover: function(event, element, isMouseDown) {
-	    if (!isMouseDown) {
-	        if (Ice.Menu.currentHover && Ice.Menu.currentHover == element.id) {
-	            //already hovered do nothing
-	            return;
-	        }
-	    }
-	    Ice.Menu.currentHover = element.id;
-	    if (this.clicked) {
-	       if (this.displayOnClick && Ice.Menu.lastClickedMenu != this.component.id) {
-	          this.clicked = false;
-	          return;
-	       }    
-	    
-	        var submenu = $(element.id + '_sub');
-	        Ice.Menu.hideOrphanedMenusNotRelatedTo(element);
-	        if (this.vertical) {
-	            Ice.Menu.show(this.component,submenu,element);
-	        } else {
-	            Ice.Menu.show(element,submenu,null);
-	        }
-	    }
-	  },
-	  
-	  mousedown: function(event, element) {
-	    Ice.Menu.lastClickedMenu = this.component.id;
-	    if (this.clicked) {
-	        this.clicked = false;
-	    } else {
-	        this.clicked = true;    
-	        this.hover(event, element, true);
-	    }
-	  },
-	  
-	  focus: function(event, element) {
-	    this.hover(event, element);
-	  },
-	  
-	  configureRootItems: function () {
-	    var rootLevelItems = this.component.childNodes;
-	    for(i=0; i < rootLevelItems.length; i++) {
-	        var element = rootLevelItems[i];
-		    if (element.tagName == "DIV") {
-		        if (Element.hasClassName(element, this.getMenuBarItemClass())) {
-		            element.onmouseover = this.hover.bindAsEventListener(this, element);
-			        //add focus support 
-			        var anch = element.firstChild;
-			        if (anch.tagName == "A") {
-			            anch.onfocus = this.focus.bindAsEventListener(this, element);
-			        }
-			        if (this.displayOnClick) { 
-			            element.onmousedown = this.mousedown.bindAsEventListener(this, element);
-			            this.clicked = false;            
-			        }
-		        }
-		    }
-	    }
-	  },
-	  
-	  hideAll:function(event) {
-	      element = Event.element(event); 
-	      var baritem = element.up('.'+ this.getMenuBarItemClass());
-	      var elt = event.element();
-	      if (elt && elt.match("a[onclick]")) {
-	          elt = elt.down();
-	      }
-	      if (elt) {
-	          elt = elt.up(".iceMnuItm a[onclick^='return false']");
-	      }
-	      if (!(baritem && this.clicked) && !elt) {
-	        Ice.Menu.lastClickedMenue = null;
-	        Ice.Menu.hideAll();
-	        if (this.displayOnClick) {       
-	            this.clicked = false;
-	        }         
-	      }
-	      event.stopPropagation();
+        if (this.vertical) {
+            return "iceMnuBarVrtItem";
+        } else {
+            return "iceMnuBarItem";
+        }
     },
-	   
+
+    getSubMenuClass: function(event) {
+        if (this.vertical) {
+            return "iceMnuBarVrtSubMenu";
+        } else {
+            return "iceMnuBarSubMenu";
+        }
+    },
+
+    getSubMenuIndClass: function(event) {
+        if (this.vertical) {
+            return "iceMnuBarVrtSubMenuInd";
+        } else {
+            return "iceMnuBarSubMenuInd";
+        }
+    },
+
+    getRootClass: function() {
+        if (this.vertical) {
+            return "iceMnuBarVrt";
+        } else {
+            return "iceMnuBar";
+        }
+    },
+
+    getMenuItemClass: function() {
+        return "iceMnuItm";
+    },
+
+    getPopupMenuClass: function() {
+        return "iceMnuPopVrtItem";
+    },
+
+    hover: function(event, element, isMouseDown) {
+        if (!isMouseDown) {
+            if (Ice.Menu.currentHover && Ice.Menu.currentHover == element.id) {
+                //already hovered do nothing
+                return;
+            }
+        }
+        Ice.Menu.currentHover = element.id;
+        if (this.clicked) {
+            if (this.displayOnClick && Ice.Menu.lastClickedMenu != this.component.id) {
+                this.clicked = false;
+                return;
+            }
+
+            var submenu = $(element.id + '_sub');
+            Ice.Menu.hideOrphanedMenusNotRelatedTo(element);
+            if (this.vertical) {
+                Ice.Menu.show(this.component, submenu, element);
+            } else {
+                Ice.Menu.show(element, submenu, null);
+            }
+        }
+    },
+
+    mousedown: function(event, element) {
+        Ice.Menu.lastClickedMenu = this.component.id;
+        if (this.clicked) {
+            this.clicked = false;
+        } else {
+            this.clicked = true;
+            this.hover(event, element, true);
+        }
+    },
+
+    focus: function(event, element) {
+        this.hover(event, element);
+    },
+
+    configureRootItems: function () {
+        var rootLevelItems = this.component.childNodes;
+        for (i = 0; i < rootLevelItems.length; i++) {
+            var element = rootLevelItems[i];
+            if (element.tagName == "DIV") {
+                if (Element.hasClassName(element, this.getMenuBarItemClass())) {
+                    element.onmouseover = this.hover.bindAsEventListener(this, element);
+                    //add focus support
+                    var anch = element.firstChild;
+                    if (anch.tagName == "A") {
+                        anch.onfocus = this.focus.bindAsEventListener(this, element);
+                    }
+                    if (this.displayOnClick) {
+                        element.onmousedown = this.mousedown.bindAsEventListener(this, element);
+                        this.clicked = false;
+                    }
+                }
+            }
+        }
+    },
+
+    hideAll:function(event) {
+        element = Event.element(event);
+        var baritem = element.up('.' + this.getMenuBarItemClass());
+        var elt = event.element();
+        if (elt && elt.match("a[onclick]")) {
+            elt = elt.down();
+        }
+        if (elt) {
+            elt = elt.up(".iceMnuItm a[onclick^='return false']");
+        }
+        if (!(baritem && this.clicked) && !elt) {
+            Ice.Menu.lastClickedMenue = null;
+            Ice.Menu.hideAll();
+            if (this.displayOnClick) {
+                this.clicked = false;
+            }
+        }
+        event.stopPropagation();
+    },
+
     hideAllDocument:function(event) {
         Ice.Menu.lastClickedMenu = "document";
-        if (this.displayOnClick) {       
+        if (this.displayOnClick) {
             this.clicked = false;
-        } 
+        }
         Ice.Menu.hideAll();
     },
-	      
+
     showMenu:function(event) {
-        element = Event.element(event);    
-        var baritem = element.up('.'+ this.getMenuBarItemClass());
+        element = Event.element(event);
+        var baritem = element.up('.' + this.getMenuBarItemClass());
         if (baritem && this.displayOnClick) {
             this.mousedown(event, baritem);
-       }
+        }
     }
 
 });
@@ -4810,8 +4865,8 @@ Ice.Menu = Class.create();
 Ice.Menu = {
     menuContext:null,
     currentMenu:null,
-    currentHover:null,    
-    lastClickedMenu:null,   
+    currentHover:null,
+    lastClickedMenu:null,
     openMenus:new Array(0),
     printOpenMenus:function() {
         var openMenuString = '';
@@ -4846,7 +4901,7 @@ Ice.Menu = {
         Ice.Menu.openMenus = new Array();
         Ice.Menu.currentMenu = null;
         Ice.Menu.menuContext = null;
-        Ice.Menu.currentHover = null;        
+        Ice.Menu.currentHover = null;
     },
     getPosition: function(element, positionProperty) {
         var position = 0;
@@ -4863,38 +4918,38 @@ Ice.Menu = {
             if (menu && menu.style.display == '') return;
             Ice.Menu.showMenuWithId(submenu);
             var supmVPO = supermenu.viewportOffset(),
-                submVPO = submenu.viewportOffset(),
-                viewport = document.viewport,
-                supmOW = supermenu.offsetWidth,
-                submOW = submenu.offsetWidth,  
-                submOH = submenu.offsetHeight,  
-                supmOH = supermenu.offsetHeight;
-                submenuDiv = $(submenuDiv);
+                    submVPO = submenu.viewportOffset(),
+                    viewport = document.viewport,
+                    supmOW = supermenu.offsetWidth,
+                    submOW = submenu.offsetWidth,
+                    submOH = submenu.offsetHeight,
+                    supmOH = supermenu.offsetHeight;
+            submenuDiv = $(submenuDiv);
             if (submenuDiv) {
                 var subdOH = submenuDiv.offsetHeight;
                 // ICE-3196, ICE-3620
                 if (supmVPO.left + supmOW + submOW < viewport.getWidth()) {
-                    if(Prototype.Browser.IE)
+                    if (Prototype.Browser.IE)
                         Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:supmOW}, supmVPO);
                     else
                         submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:supmOW});
-                    
+
                 } else {
-                    if(Prototype.Browser.IE)
-                       Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:- submOW}, supmVPO);
-                    else 
-                       submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:- submOW});
-                    
+                    if (Prototype.Browser.IE)
+                        Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:- submOW}, supmVPO);
+                    else
+                        submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:- submOW});
+
                 }
                 if (submenuDiv.viewportOffset().top + submOH < viewport.getHeight()) {
-                    if(Prototype.Browser.IE)
+                    if (Prototype.Browser.IE)
                         Ice.clonePositionIE(submenu, submenuDiv, {setLeft:false, setWidth:false, setHeight:false});
-                    else 
-                        submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false});          
+                    else
+                        submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false});
                 } else {
-                    if(Prototype.Browser.IE)                
-                      Ice.clonePositionIE(submenu, submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
-                         offsetTop:- submOH + subdOH});   
+                    if (Prototype.Browser.IE)
+                        Ice.clonePositionIE(submenu, submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
+                            offsetTop:- submOH + subdOH});
                     else
                         submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
                             offsetTop:- submOH + subdOH});
@@ -4902,19 +4957,19 @@ Ice.Menu = {
             } else {
                 // ICE-3196, ICE-3620
                 if (supmVPO.left + submOW < viewport.getWidth()) {
-                    if(Prototype.Browser.IE)   
-                       Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false}, supmVPO);
-                    else              
-                       submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false});
-                                    
+                    if (Prototype.Browser.IE)
+                        Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false}, supmVPO);
+                    else
+                        submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false});
+
                 } else {
-                    if(Prototype.Browser.IE)   
-                         Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false,
-                           offsetLeft:viewport.getWidth() - supmVPO.left - submOW}, supmVPO); 
-	                else
-	                    submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false,
-                           offsetLeft:viewport.getWidth() - supmVPO.left - submOW});
-                
+                    if (Prototype.Browser.IE)
+                        Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false,
+                            offsetLeft:viewport.getWidth() - supmVPO.left - submOW}, supmVPO);
+                    else
+                        submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false,
+                            offsetLeft:viewport.getWidth() - supmVPO.left - submOW});
+
                 }
                 if (supmVPO.top + supmOH + submOH < viewport.getHeight()) {
                     if (Prototype.Browser.IE) {
@@ -4924,21 +4979,21 @@ Ice.Menu = {
                         }
                     } else {
                         submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:supmOH});
-                }
+                    }
                 } else {
-                    if(Prototype.Browser.IE)   
-                       Ice.clonePositionIE(submenu, supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submOH}, supmVPO);
-                    else              
-                       submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submOH});
-                      
+                    if (Prototype.Browser.IE)
+                        Ice.clonePositionIE(submenu, supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submOH}, supmVPO);
+                    else
+                        submenu.clonePosition(supermenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submOH});
+
                 }
             }
             submVPO.top = submenu.cumulativeOffset().top - document.viewport.getScrollOffsets().top; // ICE-5251
             if (submVPO.top < 0) { // ICE-3658
-//                if(Prototype.Browser.IE)
-//                    Ice.clonePositionIE(submenu, submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submVPO.top}, submVPO);
-//                else
-                    submenu.clonePosition(submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submVPO.top});
+                //                if(Prototype.Browser.IE)
+                //                    Ice.clonePositionIE(submenu, submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submVPO.top}, submVPO);
+                //                else
+                submenu.clonePosition(submenu, {setLeft:false, setWidth:false, setHeight:false, offsetTop:- submVPO.top});
             }
             Ice.Menu.showIframe(submenu); // ICE-2066, ICE-2912
         }
@@ -5168,72 +5223,71 @@ Ice.Menu = {
 
 //modified version of Prototype's Element.clonePosition for IE
 Ice.clonePositionIE = function(element, source, options, sourceVOS) {
-      logger.info('Using clonePosition() optimized for IE');
-        var options = Object.extend({
-            setLeft:    true,
-            setTop:     true,
-            setWidth:   true,
-            setHeight:  true,
-            offsetTop:  0,
-            offsetLeft: 0
-        }, arguments[2] || { });
-        element = $(element);
+    logger.info('Using clonePosition() optimized for IE');
+    var options = Object.extend({
+        setLeft:    true,
+        setTop:     true,
+        setWidth:   true,
+        setHeight:  true,
+        offsetTop:  0,
+        offsetLeft: 0
+    }, arguments[2] || { });
+    element = $(element);
     // find page position of source
-        var p = null;
-        if (sourceVOS){
-            p = sourceVOS;
-        } else {
-            p = source.viewportOffset();
-        }
-        
+    var p = null;
+    if (sourceVOS) {
+        p = sourceVOS;
+    } else {
+        p = source.viewportOffset();
+    }
 
 
     // find coordinate system to use
-        var delta = [0, 0];
-        var parent = null;
+    var delta = [0, 0];
+    var parent = null;
     // delta [0,0] will do fine with position: fixed elements, 
-        // position:absolute needs offsetParent deltas
-        if (Element.getStyle(element, 'position') == 'absolute') {
-            parent = element.getOffsetParent();
-            
-            var top = Element.getStyle(parent, 'top');
-            var left = Element.getStyle(parent, 'left');
-            var bdyScrollTop = document.documentElement.scrollTop;
-            var bdyScrollLeft = document.documentElement.scrollLeft;            
-            var repositioned = false;
-            
-            _viewportOffset =  parent['_viewportOffset'];
-            
-            if (!_viewportOffset) {
-                parent['_top'] = null;
-                parent['_left'] = null;
-                parent['_bodyScrollTop'] = bdyScrollTop;
-                parent['_bodyScrollLeft'] = bdyScrollLeft;                
-                repositioned = true;
-            } else {
-                repositioned = !((parent['_top'] == top && parent['_left'] == left) && 
-                (parent['_bodyScrollTop'] == bdyScrollTop && parent['_bodyScrollLeft'] == bdyScrollLeft)); 
-            }
-           
-            parent['_top'] = top;
-            parent['_left'] = left;
+    // position:absolute needs offsetParent deltas
+    if (Element.getStyle(element, 'position') == 'absolute') {
+        parent = element.getOffsetParent();
+
+        var top = Element.getStyle(parent, 'top');
+        var left = Element.getStyle(parent, 'left');
+        var bdyScrollTop = document.documentElement.scrollTop;
+        var bdyScrollLeft = document.documentElement.scrollLeft;
+        var repositioned = false;
+
+        _viewportOffset = parent['_viewportOffset'];
+
+        if (!_viewportOffset) {
+            parent['_top'] = null;
+            parent['_left'] = null;
             parent['_bodyScrollTop'] = bdyScrollTop;
-            parent['_bodyScrollLeft'] = bdyScrollLeft;   
-            if(repositioned) {
-                delta = parent.viewportOffset();
-                parent['_viewportOffset'] = delta;                 
-            } else {
-               delta = parent['_viewportOffset'];
-            }
+            parent['_bodyScrollLeft'] = bdyScrollLeft;
+            repositioned = true;
+        } else {
+            repositioned = !((parent['_top'] == top && parent['_left'] == left) &&
+                    (parent['_bodyScrollTop'] == bdyScrollTop && parent['_bodyScrollLeft'] == bdyScrollLeft));
         }
 
+        parent['_top'] = top;
+        parent['_left'] = left;
+        parent['_bodyScrollTop'] = bdyScrollTop;
+        parent['_bodyScrollLeft'] = bdyScrollLeft;
+        if (repositioned) {
+            delta = parent.viewportOffset();
+            parent['_viewportOffset'] = delta;
+        } else {
+            delta = parent['_viewportOffset'];
+        }
+    }
+
     // set position
-        if (options.setLeft)   element.style.left = (p[0] - delta[0] + options.offsetLeft) + 'px';
-        if (options.setTop)    element.style.top = (p[1] - delta[1] + options.offsetTop) + 'px';
-        if (options.setWidth)  element.style.width = source.offsetWidth + 'px';
-        if (options.setHeight) element.style.height = source.offsetHeight + 'px';
-        return element;
-    };
+    if (options.setLeft)   element.style.left = (p[0] - delta[0] + options.offsetLeft) + 'px';
+    if (options.setTop)    element.style.top = (p[1] - delta[1] + options.offsetTop) + 'px';
+    if (options.setWidth)  element.style.width = source.offsetWidth + 'px';
+    if (options.setHeight) element.style.height = source.offsetHeight + 'px';
+    return element;
+};
 
 ice.onAfterUpdate(function() {
     if (Ice.StateMon) {
@@ -5244,175 +5298,175 @@ ice.onAfterUpdate(function() {
 
 Ice.treeNavigator = Class.create();
 Ice.treeNavigator = {
-  
-      handleFocus: function (event, root, deep) {
-           var type = event.type;
-           if(type == 'click') {
-              Ice.treeNavigator.reset();
-              return;
-           }
 
-           var ele = Event.element(event);
-           var kc= event.keyCode;
-           var imgSrc = null;
-           if (ele && ele.firstChild.getAttribute) {
-              imgSrc = ele.firstChild.getAttribute('src');
-           }
-          if (!imgSrc) return;
-          switch (kc) {
-	          case 37: //left
-	          //root node
-	          if (imgSrc.indexOf('top_close_no_siblings') > 0 ||
-	          imgSrc.indexOf('middle_close') > 0 ||
-	          imgSrc.indexOf('bottom_close') > 0 ) {
-	            logger.info('LEFT_KEY: top_close_no_siblings FOUND, root Node opend close it and reinitialize index'); 
-	            ele.onclick();
-	            Ice.treeNavigator.reset();
-                return false;
-	          }    
-	    
-	          break;
-	
-	          case 39: //right
-		          if (imgSrc.indexOf('top_open_no_siblings') > 0 ||
-		          imgSrc.indexOf('middle_open') > 0 ||
-		          imgSrc.indexOf('bottom_open') > 0 ) {
-		                ele.onclick();
-		                Ice.treeNavigator.reset();  
-		                return false;             
-		          }        
-	                
-	          break;
-	
-	          case 38: //up
-	              if (!Ice.treeNavigator.anchors) {
-		             Ice.treeNavigator.updateAnchor(root, ele, deep);
-		          }
-		
-		          if (imgSrc) {
-		             if(imgSrc.indexOf('top_close_no_siblings') > 0) {
-			            Ice.treeNavigator.index = 1;
-			            Ice.treeNavigator.anchors[Ice.treeNavigator.index].focus();
-		             }
-		            Ice.treeNavigator.focusPrevious();
-		          }  else {
-		            Ice.treeNavigator.focusPrevious();
-		          }
-	          return false;              
-	          case 40: //down
-	              logger.info ('down'); 
-	              if (!Ice.treeNavigator.anchors) {
-	                Ice.treeNavigator.updateAnchor(root, ele, deep);
-	              }
-	              Ice.treeNavigator.focusNext();
-	          return false;
-          }//switch ends    
-      }, //func ends
-  
-          index:0,
-          
-          anchors:null,
-          
-          reset: function() {
-             Ice.treeNavigator.index = 0;
-             Ice.treeNavigator.anchors = null;     
-      },
-      
-      focusNext: function(deep) {  
-         if (Ice.treeNavigator.index <(Ice.treeNavigator.anchors.length-1)){
-             Ice.treeNavigator.index = Ice.treeNavigator.index + 1;
-         }
-         Ice.treeNavigator.anchors[Ice.treeNavigator.index].focus();
-      },
-      
-      focusPrevious : function(deep) {
-         if (Ice.treeNavigator.index>0) {
-             Ice.treeNavigator.index = Ice.treeNavigator.index - 1;
-         }
-         Ice.treeNavigator.anchors[Ice.treeNavigator.index].focus();      
-      },
-      
-      updateAnchor: function(root, ele, deep) {
-        var anchors = [];
-            if(deep) { 
-                anchors = root.parentNode.getElementsByTagName('a');
-                for (i=0; anchors.length > i; i++) {
-                    if (ele == anchors[i]) {
-                        Ice.treeNavigator.index = i;   
+    handleFocus: function (event, root, deep) {
+        var type = event.type;
+        if (type == 'click') {
+            Ice.treeNavigator.reset();
+            return;
+        }
+
+        var ele = Event.element(event);
+        var kc = event.keyCode;
+        var imgSrc = null;
+        if (ele && ele.firstChild.getAttribute) {
+            imgSrc = ele.firstChild.getAttribute('src');
+        }
+        if (!imgSrc) return;
+        switch (kc) {
+            case 37: //left
+                //root node
+                if (imgSrc.indexOf('top_close_no_siblings') > 0 ||
+                        imgSrc.indexOf('middle_close') > 0 ||
+                        imgSrc.indexOf('bottom_close') > 0) {
+                    logger.info('LEFT_KEY: top_close_no_siblings FOUND, root Node opend close it and reinitialize index');
+                    ele.onclick();
+                    Ice.treeNavigator.reset();
+                    return false;
+                }
+
+                break;
+
+            case 39: //right
+                if (imgSrc.indexOf('top_open_no_siblings') > 0 ||
+                        imgSrc.indexOf('middle_open') > 0 ||
+                        imgSrc.indexOf('bottom_open') > 0) {
+                    ele.onclick();
+                    Ice.treeNavigator.reset();
+                    return false;
+                }
+
+                break;
+
+            case 38: //up
+                if (!Ice.treeNavigator.anchors) {
+                    Ice.treeNavigator.updateAnchor(root, ele, deep);
+                }
+
+                if (imgSrc) {
+                    if (imgSrc.indexOf('top_close_no_siblings') > 0) {
+                        Ice.treeNavigator.index = 1;
+                        Ice.treeNavigator.anchors[Ice.treeNavigator.index].focus();
                     }
-                }//for                  
-            } else {   
-	            _anchors = root.parentNode.getElementsByTagName('a');
-	            j = 0;
-	            for (i=0; _anchors.length > i; i++) {
-	               if (_anchors[i].firstChild.src && _anchors[i].firstChild.src.indexOf('tree_nav') > 0) {
-	                    if (ele == _anchors[i]) {
-	                       Ice.treeNavigator.index = j;     
-	                    }
-	                    anchors[j++] = _anchors[i];
-	               }
-	            }//for    
+                    Ice.treeNavigator.focusPrevious();
+                } else {
+                    Ice.treeNavigator.focusPrevious();
+                }
+                return false;
+            case 40: //down
+                logger.info('down');
+                if (!Ice.treeNavigator.anchors) {
+                    Ice.treeNavigator.updateAnchor(root, ele, deep);
+                }
+                Ice.treeNavigator.focusNext();
+                return false;
+        }//switch ends
+    }, //func ends
+
+    index:0,
+
+    anchors:null,
+
+    reset: function() {
+        Ice.treeNavigator.index = 0;
+        Ice.treeNavigator.anchors = null;
+    },
+
+    focusNext: function(deep) {
+        if (Ice.treeNavigator.index < (Ice.treeNavigator.anchors.length - 1)) {
+            Ice.treeNavigator.index = Ice.treeNavigator.index + 1;
+        }
+        Ice.treeNavigator.anchors[Ice.treeNavigator.index].focus();
+    },
+
+    focusPrevious : function(deep) {
+        if (Ice.treeNavigator.index > 0) {
+            Ice.treeNavigator.index = Ice.treeNavigator.index - 1;
+        }
+        Ice.treeNavigator.anchors[Ice.treeNavigator.index].focus();
+    },
+
+    updateAnchor: function(root, ele, deep) {
+        var anchors = [];
+        if (deep) {
+            anchors = root.parentNode.getElementsByTagName('a');
+            for (i = 0; anchors.length > i; i++) {
+                if (ele == anchors[i]) {
+                    Ice.treeNavigator.index = i;
+                }
+            }//for
+        } else {
+            _anchors = root.parentNode.getElementsByTagName('a');
+            j = 0;
+            for (i = 0; _anchors.length > i; i++) {
+                if (_anchors[i].firstChild.src && _anchors[i].firstChild.src.indexOf('tree_nav') > 0) {
+                    if (ele == _anchors[i]) {
+                        Ice.treeNavigator.index = j;
+                    }
+                    anchors[j++] = _anchors[i];
+                }
+            }//for
+        }
+        Ice.treeNavigator.anchors = anchors;
+    }//updateAnchor
+}// func ends
+
+Ice.tabNavigator = function(event) {
+    var ele = Event.element(event);
+    var kc = event.keyCode;
+    switch (kc) {
+        case 37:
+        case 38:
+            var preCell = ele.up('.icePnlTb').previousSibling;
+            if (preCell) {
+                var lnk = preCell.down('.icePnlTbLblLnk');
+                if (lnk) {
+                    lnk.focus();
+                }
             }
-            Ice.treeNavigator.anchors = anchors;
-         }//updateAnchor
-  }// func ends
-  
-  Ice.tabNavigator = function(event) {
-       var ele = Event.element(event);
-       var kc= event.keyCode;
-       switch (kc) {
-          case 37:
-          case 38:
-             var preCell = ele.up('.icePnlTb').previousSibling;
-             if (preCell) {
-                 var lnk = preCell.down('.icePnlTbLblLnk');
-                 if(lnk) {
+            if (ele.up('.icePnlTb')) {
+                if (event.preventDefault) {
+                    event.preventDefault();
+                } else if (event.returnValue) {
+                    event.returnValue = false;
+                }
+            }
+            break;
+        case 39:
+        case 40:
+            var nextCell = ele.up('.icePnlTb').nextSibling;
+            if (nextCell && Element.hasClassName(nextCell, 'icePnlTb')) {
+                var lnk = nextCell.down('.icePnlTbLblLnk');
+                if (lnk) {
                     lnk.focus();
-                 }
-             }
-             if (ele.up('.icePnlTb')) {
-                 if (event.preventDefault){
-                     event.preventDefault();
-                 } else if (event.returnValue){
-                     event.returnValue = false;
-                 }
-             }           
-          break; 
-          case 39:
-          case 40:
-             var nextCell = ele.up('.icePnlTb').nextSibling;
-             if (nextCell && Element.hasClassName(nextCell, 'icePnlTb')) {
-                 var lnk = nextCell.down('.icePnlTbLblLnk');
-                 if(lnk) {
-                    lnk.focus();
-                 }
-             }
-             if (ele.up('.icePnlTb')) {
-                 if (event.preventDefault){
-                     event.preventDefault();
-                 } else if (event.returnValue){
-                     event.returnValue = false;
-                 }
-             }
-          break;            
-       
-      }    
-  }
-  
+                }
+            }
+            if (ele.up('.icePnlTb')) {
+                if (event.preventDefault) {
+                    event.preventDefault();
+                } else if (event.returnValue) {
+                    event.returnValue = false;
+                }
+            }
+            break;
+
+    }
+}
+
 Ice.pnlTabOnFocus = function(ele, facet, kbs) {
     setFocus(ele.id);
-    if(kbs) { 
-        Event.observe(ele, 'keydown', Ice.tabNavigator); 
-    }   
+    if (kbs) {
+        Event.observe(ele, 'keydown', Ice.tabNavigator);
+    }
     if (!facet) return;
     Ice.simulateFocus(ele.parentNode, ele);
 }
 
 Ice.pnlTabOnBlur = function(ele, facet, kbs) {
-    if(kbs) { 
+    if (kbs) {
         Event.stopObserving(ele, 'keydown', Ice.tabNavigator);
     }
-    if (!facet)return;    
+    if (!facet)return;
     setFocus('');
     Ice.simulateBlur(ele.parentNode, ele);
 }
@@ -5420,64 +5474,64 @@ Ice.pnlTabOnBlur = function(ele, facet, kbs) {
 Ice.pnlClpFocus = function(anc) {
     var parent = anc.parentNode;
     Ice.simulateFocus(parent, anc);
-    parent.style.padding='0px'; 
+    parent.style.padding = '0px';
 }
 
 Ice.pnlClpBlur = function(anc) {
     var parent = anc.parentNode;
     Ice.simulateBlur(parent, anc);
-    parent.style.padding='1px';   
+    parent.style.padding = '1px';
 }
 
 Ice.simulateFocus = function(ele, anc) {
-    if(!document.all) {
-        anc.style.visibility='hidden';
-    } 
-    anc.style.borderStyle='none';
-    anc.style.outlineStyle='none'; 
-    anc.style.borderWidth='0px';
-    anc.style.outlineWidth='0px'; 
-    anc.style.margin='0px';  
-    if (ele == null) return; 
-    ele['_borderStyle'] = ele.style.borderStyle;     
-    ele.style.borderStyle='dotted';
-    ele['_borderWidth'] = ele.style.borderWidth;   
-    ele.style.borderWidth='1px 1px 1px 1px';
-    ele['_borderColor'] = ele.style.borderColor;   
-    ele.style.borderColor = 'black';    
+    if (!document.all) {
+        anc.style.visibility = 'hidden';
+    }
+    anc.style.borderStyle = 'none';
+    anc.style.outlineStyle = 'none';
+    anc.style.borderWidth = '0px';
+    anc.style.outlineWidth = '0px';
+    anc.style.margin = '0px';
+    if (ele == null) return;
+    ele['_borderStyle'] = ele.style.borderStyle;
+    ele.style.borderStyle = 'dotted';
+    ele['_borderWidth'] = ele.style.borderWidth;
+    ele.style.borderWidth = '1px 1px 1px 1px';
+    ele['_borderColor'] = ele.style.borderColor;
+    ele.style.borderColor = 'black';
 }
 
 Ice.simulateBlur = function(ele, anc) {
-    if(!document.all) {    
-        anc.style.visibility='visible';
-    } 
-    if (ele == null) return; 
+    if (!document.all) {
+        anc.style.visibility = 'visible';
+    }
+    if (ele == null) return;
     ele.style.borderStyle = ele['_borderStyle'];
-    ele.style.borderWidth = ele['_borderWidth'];  
-    ele.style.borderColor = ele['_borderColor'];   
+    ele.style.borderWidth = ele['_borderWidth'];
+    ele.style.borderColor = ele['_borderColor'];
 };
 
 Ice.DataExporterOpenWindow = function(clientId, path, label, popupBlockerLbl) {
     var wdo = window.open(path);
 
-    if (!wdo || typeof(wdo)== "undefined") {
-        var ele = $(clientId+'container').firstChild;
-        var lbl = popupBlockerLbl == "null"? label: popupBlockerLbl ;
-        ele.onclick= function() {
-           window.open(path);
+    if (!wdo || typeof(wdo) == "undefined") {
+        var ele = $(clientId + 'container').firstChild;
+        var lbl = popupBlockerLbl == "null" ? label : popupBlockerLbl;
+        ele.onclick = function() {
+            window.open(path);
         };
-      
+
         if (ele.tagName == "INPUT") {
-           ele.value=lbl;
+            ele.value = lbl;
         } else {
             if (ele.firstChild.tagName == "IMG") {
-               ele.firstChild.title = lbl;
+                ele.firstChild.title = lbl;
             } else {
-               ele.innerHTML = lbl;
+                ele.innerHTML = lbl;
             }
         }
     }
-    new Effect.Highlight(clientId+'container', { startcolor: '#fda505',endcolor: '#ffffff' });
+    new Effect.Highlight(clientId + 'container', { startcolor: '#fda505',endcolor: '#ffffff' });
 }
 
 Ice.tblRowFocus = function(anc, singleSelection) {
@@ -5489,7 +5543,7 @@ Ice.tblRowFocus = function(anc, singleSelection) {
         Element.observe(anc, "keydown", function(event) {
             event = Event.extend(event);
             var keyCode = event.keyCode;
-            switch(keyCode) {
+            switch (keyCode) {
                 case 0://Firefox
                 case 32://IE && Safari
                     parent.onclick.apply(parent, arguments);
@@ -5500,47 +5554,49 @@ Ice.tblRowFocus = function(anc, singleSelection) {
                         var tr = Element.previous(parent);
                         tr.firstChild.firstChild.focus();
                         if (singleSelection) {
-                            localEvent = Object.clone(event); 
-                            window.clearTimeout (singleRowSelectionExecuter);
+                            localEvent = Object.clone(event);
+                            window.clearTimeout(singleRowSelectionExecuter);
                             singleRowSelectionExecuter = window.setTimeout(function() {
                                 try {
                                     arguments[0] = localEvent;
                                     tr.onclick.apply(tr, arguments);
-                                 } catch(ee) {}
-                            },400);
-                        }                        
+                                } catch(ee) {
+                                }
+                            }, 400);
+                        }
                     }
 
-                    Event.stop(event);                    
+                    Event.stop(event);
                     return false;
                 case 40://down
                     if (Element.next(parent)) {
                         var tr = Element.next(parent);
                         tr.firstChild.firstChild.focus();
                         if (singleSelection) {
-                            localEvent = Object.clone(event); 
-                            window.clearTimeout (singleRowSelectionExecuter);
+                            localEvent = Object.clone(event);
+                            window.clearTimeout(singleRowSelectionExecuter);
                             singleRowSelectionExecuter = window.setTimeout(function() {
                                 try {
-                                    arguments[0] = localEvent;                                
+                                    arguments[0] = localEvent;
                                     tr.onclick.apply(tr, arguments);
-                                 } catch(ee) {}
-                            },400);
+                                } catch(ee) {
+                                }
+                            }, 400);
                         }
                     }
-                    Event.stop(event);                    
+                    Event.stop(event);
                     return false;
                 case 33: //page up 
                 case 34: //page down
                 case 35: //end
                 case 36: //home 
-                   var table = Element.up(parent, ".iceDatTbl");
-                   var paginator = null;
-                   if (table["paginator"] == null) {
-                       if (Prototype.Browser.IE) {
+                    var table = Element.up(parent, ".iceDatTbl");
+                    var paginator = null;
+                    if (table["paginator"] == null) {
+                        if (Prototype.Browser.IE) {
                             var paginators = $(document.body).select(".iceDatPgr");
-                            for(i=0; i < paginators.length; i++) {
-                                if (paginators[i].name == table.id){
+                            for (i = 0; i < paginators.length; i++) {
+                                if (paginators[i].name == table.id) {
                                     paginator = paginators[i];
                                     table["paginator"] = paginator;
                                     break;
@@ -5552,67 +5608,67 @@ Ice.tblRowFocus = function(anc, singleSelection) {
                                 paginator = paginators[0];
                             }
                         }
-                   }
-                   if (paginator) {
+                    }
+                    if (paginator) {
                         Ice.DatPagKybrd(paginator.id, event);
-                   }
-                   return false;                    
+                    }
+                    return false;
             }//select
         });
         anc["keydownRegistered"] = true;
     }
-    
+
 };
 
 Ice.tblRowBlur = function(anc) {
     var parent = anc.parentNode.parentNode;
     Ice.simulateBlur(null, anc);
-    parent.onmouseout.apply(parent, arguments);  
+    parent.onmouseout.apply(parent, arguments);
     setFocus('');
 }
 
 Ice.tblMsOvr = function(tr) {
-  //  var focusHoveredTr = tr.up("table")["focusHoveredTr"];
-   // if (focusHoveredTr && tr.id != focusHoveredTr.id) {
+    //  var focusHoveredTr = tr.up("table")["focusHoveredTr"];
+    // if (focusHoveredTr && tr.id != focusHoveredTr.id) {
     //    focusHoveredTr.onmouseout.apply(focusHoveredTr, arguments);
-   // }
-    
-} 
+    // }
+
+}
 
 
-Ice.DatPagKybrd = function(pId, event){
-     event = Event.extend(event);
-     var keyCode = event.keyCode;
-     var button = null;
-     switch(keyCode) {  
+Ice.DatPagKybrd = function(pId, event) {
+    event = Event.extend(event);
+    var keyCode = event.keyCode;
+    var button = null;
+    switch (keyCode) {
         case 33: //page up
             logger.info('PageUp');
             button = "previous";
-        break;
+            break;
         case 34: //page down
-             button = "next";
-                    logger.info('pageDown');
-        break;
+            button = "next";
+            logger.info('pageDown');
+            break;
         case 35: //end
-             button = "last";
-                   logger.info('end');
-        break;
+            button = "last";
+            logger.info('end');
+            break;
         case 36: //home 
-                     button = "first";
-                    logger.info('Home');
-        break;
-     }
-     
-     if (button == null) return;
-     var form = formOf(document.getElementById(pId));
-     var query = new Ice.Parameter.Query();
-     query.add(pId, button);
-     if (event.target.id.contains(pId)) {
-        query.add(pId+'kbd', 'true');    
-     } 
-     iceSubmitPartial(form, null, event, query);
-     Event.stop(event); 
-     
+            button = "first";
+            logger.info('Home');
+            break;
+    }
+
+    if (button == null) return;
+    var form = formOf(document.getElementById(pId));
+    var query = new Ice.Parameter.Query();
+    query.add(pId, button);
+    if (event.target.id.contains(pId)) {
+        query.add(pId + 'kbd', 'true');
+    }
+    iceSubmitPartial(form, null, event, query);
+    Event.stop(event);
+
 }
 
 Prototype.Browser.Safari4 = navigator.userAgent.indexOf('4.0.4 Safari') > -1;
@@ -5630,26 +5686,32 @@ Ice.registerEventListener = function(ele, mask, handler) {
     events = mask.split(",");
     if (handler) {
         try {
-          ele["jshandler"] = eval(handler.trim());
-        } catch (e) {logger.info(e);}
-    }
-          
-    for (i=0; i<events.length; i++) {
-        Event.observe(ele, events[i].trim(), function(event) {
-        event = Event.extend(event);
-        var proceed = true;
-        if (ele["jshandler"]) {
-            try {
-               proceed = ele["jshandler"](event);
-            } catch (e) { logger.info(e) }
+            ele["jshandler"] = eval(handler.trim());
+        } catch (e) {
+            logger.info(e);
         }
-        if (!proceed) return;
-        try {
-           var form = formOf(ele);
-           var query = new Ice.Parameter.Query();
-           query.add(ele.id, 'submitted'); 
-           iceSubmitPartial(form, null, event, query); 
-        } catch (e) {logger.info(e);}                       
+    }
+
+    for (i = 0; i < events.length; i++) {
+        Event.observe(ele, events[i].trim(), function(event) {
+            event = Event.extend(event);
+            var proceed = true;
+            if (ele["jshandler"]) {
+                try {
+                    proceed = ele["jshandler"](event);
+                } catch (e) {
+                    logger.info(e)
+                }
+            }
+            if (!proceed) return;
+            try {
+                var form = formOf(ele);
+                var query = new Ice.Parameter.Query();
+                query.add(ele.id, 'submitted');
+                iceSubmitPartial(form, null, event, query);
+            } catch (e) {
+                logger.info(e);
+            }
         });
     }
 }
@@ -5666,14 +5728,13 @@ Ice.selectChange = function(form, elem, event, partialSubmitDelay) {
         var currentTime = new Date();
         var currentMillis = currentTime.getTime();
         if (! elem.lastTime ||
-            ((currentMillis - elem.lastTime) > partialSubmitDelay) ||
-            (partialSubmitDelay <= 0))
-        {
+                ((currentMillis - elem.lastTime) > partialSubmitDelay) ||
+                (partialSubmitDelay <= 0)) {
             elem.lastTime = currentTime.getTime();
             return iceSubmitPartial(form, elem, event);
         }
     }
-    
+
     elem.timeout = setTimeout(function() {
         elem.removeAttribute('timeout');
         var currentTime = new Date();
