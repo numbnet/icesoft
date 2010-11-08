@@ -15,7 +15,10 @@
   <property name="tld.file"   location="${build}/exploded/META-INF/components.tld"/>
   <property name="tld.jar"  location="${icefaces.lib.dir}"/>
   <property name="smartsprites.basedir" location="../tools/smartsprites" />
-  <property name="temp.dir.path" location="${smartsprites.basedir}/temp/" />
+  
+  <property name="root.dir.path" location="${build}/skins/in" />
+  <property name="output.dir.path" location="${build}/skins/out" />
+  <property name="temp.dir.path" location="${build}/skins/temp" />
 
   <tstamp>
       <format property="build.time" pattern="yyyy-mm-dd hh:mm:ss"/>
