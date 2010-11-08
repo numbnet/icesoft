@@ -626,7 +626,8 @@ public class SelectInputDateRenderer
 //System.out.println("SIDR.encodeEnd()  actuallyHaveTime: " + actuallyHaveTime);
             if (!actuallyHaveTime &&
                 selectInputDate.getHoursSubmittedValue() != null &&
-                selectInputDate.getMinutesSubmittedValue() != null)
+                selectInputDate.getMinutesSubmittedValue() != null &&
+                selectInputDate.getSecondsSubmittedValue() != null)
             {
 //System.out.println("SIDR.encodeEnd()  Using submitted hours and minutes");
                 hourIndex = selectInputDate.getHoursSubmittedValue().intValue();
