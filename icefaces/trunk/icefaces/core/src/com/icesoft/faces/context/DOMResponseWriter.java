@@ -376,14 +376,14 @@ public class DOMResponseWriter extends ResponseWriter {
             String uri = configuration.getAttribute("connectionLostRedirectURI");
             connectionLostRedirectURI = handler.getResourceURL(context, uri.replaceAll("'", ""));
         } catch (ConfigurationException e) {
-            connectionLostRedirectURI = "null";
+            connectionLostRedirectURI = "";
         }
         String sessionExpiredRedirectURI;
         try {
             String uri = configuration.getAttribute("sessionExpiredRedirectURI");
             sessionExpiredRedirectURI = handler.getResourceURL(context, uri.replaceAll("'", ""));
         } catch (ConfigurationException e) {
-            sessionExpiredRedirectURI = "null";
+            sessionExpiredRedirectURI = "";
         }
         String configurationID = prefix + "configuration-script";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
