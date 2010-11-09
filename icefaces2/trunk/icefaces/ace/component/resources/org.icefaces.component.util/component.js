@@ -32,93 +32,91 @@
  */
 String.prototype.trim = function () {
     return this.replace(/^\s*/, "").replace(/\s*$/, "");
-}
- 
-logger = {
-   info: function(msg) {
-	   if (window["console"]) {
-	   	    window["console"].info (msg);
-	   }else {
-	        //alert(msg);
-	   }
-   }
 };
 
-
-
 ice.yui3 = {
+    logger: {
+        info: function(msg) {
+            if (window["console"]) {
+                window["console"].info(msg);
+            } else {
+                //alert(msg);
+            }
+        }
+    },
     y : null,
     modules: {},
     use :function(callback) {
-	        if(ice.yui3.y == null) {  
-	          logger.info('Loading modules '+  this.getModules());
-	           YUI({combine: true, timeout: 10000, bootstrap: false}).use('*', function(Y){
-	               ice.yui3.y = Y;
-	               callback(ice.yui3.y);
-	           });
-            } else {
-               callback(ice.yui3.y);
-            }
+        if (ice.yui3.y == null) {
+            ice.yui3.logger.info('Loading modules ' + this.getModules());
+            YUI({combine: true, timeout: 10000, bootstrap: false}).use('*', function(Y) {
+                ice.yui3.y = Y;
+                callback(ice.yui3.y);
+            });
+        } else {
+            callback(ice.yui3.y);
+        }
     },
     loadModule: function(module) {
         if (!this.modules[module])
-             this.modules[module] = module;
+            this.modules[module] = module;
     },
     getModules: function() {
-        var modules = ''; 
+        var modules = '';
         for (module in this.modules)
-             modules+= module + ',';
-        return modules.substring(0, modules.length-1);     
+            modules += module + ',';
+        return modules.substring(0, modules.length - 1);
     }
 };
 
 
-
-var JSContext = function(clientId) {this.clientId = clientId};
+var JSContext = function(clientId) {
+    this.clientId = clientId
+};
 JSContext.list = {};
 JSContext.prototype = {
-   setComponent:function(component) {
-      this.component = component;
-   },
-   
-   getComponent:function() {
-      return this.component;
-   },
-   
-   setJSProps:function(props) {
-      this.jsPorps = props;
-   },
-   
-   getJSProps:function() {
-      return this.jsPorps;
-   },
-   setJSFProps:function(props) {
-      this.jsfProps = props;
-   },
-   
-   getJSFProps:function() {
-      return this.jsfProps;
-   },
-   
-   isAttached:function() {
-    return document.getElementById(this.clientId)['JSContext'];
-   } 
+    setComponent:function(component) {
+        this.component = component;
+    },
+
+    getComponent:function() {
+        return this.component;
+    },
+
+    setJSProps:function(props) {
+        this.jsPorps = props;
+    },
+
+    getJSProps:function() {
+        return this.jsPorps;
+    },
+    setJSFProps:function(props) {
+        this.jsfProps = props;
+    },
+
+    getJSFProps:function() {
+        return this.jsfProps;
+    },
+
+    isAttached:function() {
+        return document.getElementById(this.clientId)['JSContext'];
+    }
 };
 
 ice.component = {
     updateProperties:function(clientId, jsProps, jsfProps, events, lib) {
-		ice.yui3.use(function() {
-			ice.component.getInstance(clientId, function(yuiComp) {
-				for (prop in jsProps) {
-					var propValue = yuiComp.get(prop);
-					if (propValue != jsProps[prop]) {
-					  logger.info('change found in '+ prop +' updating from ['+ propValue + '] to [' + jsProps[prop]); 
-					  yuiComp.set(prop, jsProps[prop]);        
-					}
-				}
-			}, lib, jsProps, jsfProps);
-		});
-        
+        ice.yui3.use(function() {
+            ice.component.getInstance(clientId, function(yuiComp) {
+                for (prop in jsProps) {
+                    var propValue = yuiComp.get(prop);
+                    if (propValue != jsProps[prop]) {
+                        ice.yui3.logger.info('change found in ' + prop + ' updating from [' + propValue + '] to [' + jsProps[prop]);
+                        yuiComp.set(prop, jsProps[prop]);
+                    }
+                }
+            }, lib, jsProps, jsfProps);
+        });
+
     },
     getInstance:function(clientId, callback, lib, jsProps, jsfProps) {
         var component = document.getElementById(clientId);
@@ -127,9 +125,9 @@ ice.component = {
         if (!context || (context && !context.isAttached())) {
             context = this.createContext(clientId);
             context.setJSProps(jsProps);
-            context.setJSFProps(jsfProps);            
+            context.setJSFProps(jsfProps);
             lib.initialize(clientId, jsProps, jsfProps, function(YUIJS) {
-                logger.info('getInstance callback executed..');
+                ice.yui3.logger.info('getInstance callback executed..');
                 context.setComponent(YUIJS);
                 callback(context.getComponent());
             });
@@ -140,45 +138,45 @@ ice.component = {
             callback(context.getComponent());
         }
     },
-    
+
     getJSContext: function(clientId) {
         var component = document.getElementById(clientId);
         if (component) {
-            if(component['JSContext'])
+            if (component['JSContext'])
                 return component['JSContext'];
-            else 
+            else
                 return JSContext[clientId];
         }
         return null;
     },
-    
+
     createContext:function(clientId) {
         var component = document.getElementById(clientId);
         component['JSContext'] = new JSContext(clientId);
         JSContext[clientId] = component['JSContext'];
         return component['JSContext'];
     },
-    
+
     clientState: {
-    	set: function(clientId, state) {
-    	   this.getStateHolder()[clientId]=state;
-    	},
-    	
-    	get: function(clientId) {
-    		return this.getStateHolder()[clientId];
-    	},
-    	
-    	has: function(clientId) {
-     	   return (this.getStateHolder()[clientId] != null);
-     	},
-     	
-     	getStateHolder: function () {
-     		if (!window.document['sparkle_clientState']) {
-     			window.document['sparkle_clientState'] = {};
-     		}
-     		return window.document['sparkle_clientState'];
-     	}
-   }
+        set: function(clientId, state) {
+            this.getStateHolder()[clientId] = state;
+        },
+
+        get: function(clientId) {
+            return this.getStateHolder()[clientId];
+        },
+
+        has: function(clientId) {
+            return (this.getStateHolder()[clientId] != null);
+        },
+
+        getStateHolder: function () {
+            if (!window.document['sparkle_clientState']) {
+                window.document['sparkle_clientState'] = {};
+            }
+            return window.document['sparkle_clientState'];
+        }
+    }
 };
 
 for (props in ice.component) {
