@@ -31,6 +31,41 @@
  */
 
 [ Ice.Community.Connection = new Object, Ice.Connection, Ice.Ajax, Ice.Reliability.Heartbeat, Ice.Cookie, Ice.Parameter.Query ].as(function(This, Connection, Ajax, Heartbeat, Cookie, Query) {
+    This.CachingResponse = Object.subclass({
+        initialize: function(response) {
+            //store the header values, as we can't rely on the request to hold onto the values
+            this.responseHeaders = $H();
+            response.eachResponseHeader(function(name, value) {
+                this.responseHeaders.set(name, value);
+            }.bind(this));
+            this.textContent = response.content();
+            this.domContent = response.contentAsDOM();
+            this.identifier = response.identifier;
+        },
+
+        eachResponseHeader: function(iterator) {
+            this.responseHeaders.each(function(header) {
+                iterator(header.key, header.value);
+            });
+        },
+
+        getResponseHeader: function(name) {
+            return this.responseHeaders.get(name);
+        },
+
+        containsResponseHeader: function(name) {
+            return !!this.responseHeaders.contains(name);
+        },
+
+        content: function() {
+            this.textContent;
+        },
+
+        contentAsDOM: function() {
+            return this.domContent;
+        }
+    });
+
     This.AsyncConnection = Object.subclass({
         initialize: function(logger, sessionID, viewID, configuration, defaultQuery, commandDispatcher) {
             this.logger = logger.child('async-connection');
@@ -69,16 +104,52 @@
             }.bind(this));
 
             this.serverErrorCallback = this.onServerErrorListeners.broadcaster();
-            this.receiveCallback = function(response) {
+
+            this.notifyReceiveListeners = function(response) {
+                this.logger.debug('processing response: ' + response.identifier);
                 try {
                     this.onReceiveListeners.broadcast(response);
                 } catch (e) {
                     this.logger.error('receive broadcast failed', e);
                 }
+            };
+            var requestResponseQueue = [];
+            this.queueRequest = function(request) {
+                requestResponseQueue.push({request: request, response: null, timestamp: new Date().getTime()});
+            };
+            //order the responses before invoking onReceiveListeners
+            this.receiveCallback = function(response) {
+                //Find the position in the array that has been reserved for the request's response
+                var matchingRequestResponse = requestResponseQueue.detect(function(requestResponse) {
+                    return requestResponse.request.isMatchingResponse(response);
+                });
+
+                if (matchingRequestResponse == null) {
+                    //we have a response for a request we didn't know about, just process it
+                    //the response is usually an asynchronous notification
+                    this.notifyReceiveListeners(response);
+                } else {
+                    if (matchingRequestResponse == requestResponseQueue.first()) {
+                        matchingRequestResponse.response = response;
+                        while (requestResponseQueue.isNotEmpty() && requestResponseQueue.first().response) {
+                            this.notifyReceiveListeners(requestResponseQueue.shift().response)
+                        }
+                    } else {
+                        this.logger.debug('queuing response ' + response.identifier);
+                        matchingRequestResponse.response = new This.CachingResponse(response);
+                    }
+                }
+
+                //discard responses that didn't get their corresponding responses in a while (5 minutes)
+                var now = new Date().getTime();
+                requestResponseQueue = requestResponseQueue.reject(function(r) {
+                    return now > r.timestamp + 300000;
+                });
             }.bind(this);
+
             this.badResponseCallback = function(response) {
                 logger.warn('bad response received\nstatus: [' + response.statusCode() + '] ' + response.statusText() +
-                            '\ncontent:\n' + response.content());
+                        '\ncontent:\n' + response.content());
                 this.connectionDownListeners.broadcast(response);
             }.bind(this);
             this.sendXWindowCookie = Function.NOOP;
@@ -271,6 +342,7 @@
             function pickUpdates() {
                 self.sendChannel.postAsynchronously(self.getURI, self.defaultQuery.asURIEncodedString(), function(request) {
                     Connection.FormPost(request);
+                    self.queueRequest(request);
                     request.on(Connection.OK, self.receiveCallback);
                     request.on(Connection.BadResponse, this.badResponseCallback);
                     request.on(Connection.OK, Connection.Close);
@@ -314,6 +386,7 @@
                     this.logger.debug('send > ' + compoundQuery.asString());
                     this.sendChannel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
                         Connection.FormPost(request);
+                        this.queueRequest(request);
                         if (!ignoreLocking) request.on(Connection.OK, this.lock.release);
                         request.on(Connection.OK, onReceiveFromSendListeners.broadcaster());
                         request.on(Connection.OK, this.receiveCallback);
