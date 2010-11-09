@@ -70,7 +70,7 @@ public class MultiViewServer implements Server {
                            final ResourceDispatcher resourceDispatcher,
                            final String blockingRequestHandlerContext,
                            final Authorization authorization,
-                           AssociatedPageViews associatedPageViews) {
+                           final AssociatedPageViews associatedPageViews) {
         this.session = session;
         this.sessionID = sessionID;
         this.sessionMonitor = sessionMonitor;
@@ -109,8 +109,12 @@ public class MultiViewServer implements Server {
         try {
             sessionMonitor.touchSession();
             view.servePage(request);
-        } finally {
             associatedPageViews.add(view);
+        } catch (Exception ex) {
+            views.remove(view.getViewIdentifier());
+            view.dispose();
+            throw ex;
+        } finally {
             view.release();
         }
     }

@@ -515,13 +515,20 @@ public class D2DViewHandler extends ViewHandler {
         tracePrintComponentTree(context, context.getViewRoot());
     }
 
+    protected String tracePrintComponentTree(FacesContext context, String id) {
+        StringBuffer sb = new StringBuffer(4096);
+        java.util.Set nonICEfacesRenderers = new java.util.HashSet();
+        tracePrintComponentTree(context, context.getViewRoot(), 0, sb, null, nonICEfacesRenderers, id);
+        return sb.toString();
+    }
+
     protected void tracePrintComponentTree(
             FacesContext context, UIComponent component) {
         if (log.isTraceEnabled()) {
             StringBuffer sb = new StringBuffer(4096);
             sb.append("tracePrintComponentTree() vvvvvv\n");
             java.util.Set nonICEfacesRenderers = new java.util.HashSet();
-            tracePrintComponentTree(context, component, 0, sb, null, nonICEfacesRenderers);
+            tracePrintComponentTree(context, component, 0, sb, null, nonICEfacesRenderers, null);
             log.trace(sb.toString());
             if (!nonICEfacesRenderers.isEmpty()) {
                 log.trace("Non-ICEfaces Renderers: " + nonICEfacesRenderers.size());
@@ -536,7 +543,7 @@ public class D2DViewHandler extends ViewHandler {
     private void tracePrintComponentTree(
             FacesContext context, UIComponent component,
             int levels, StringBuffer sb, String facetName,
-            java.util.Set nonICEfacesRenderers) {
+            java.util.Set nonICEfacesRenderers, String flaggedID) {
         if (component == null) {
             sb.append("null\n");
             return;
@@ -564,6 +571,9 @@ public class D2DViewHandler extends ViewHandler {
         }
         open.append(" id: ");
         open.append(component.getId());
+        if (component.getId().equals(flaggedID)) {
+            open.append(" [DUPLICATE] ");
+        }
         if (component.getParent() != null) {
             open.append(" clientId: ");
             open.append(component.getClientId(context));
@@ -603,7 +613,7 @@ public class D2DViewHandler extends ViewHandler {
                     tracePrintComponentTree(
                             context, (UIComponent) facetsMap.get(facetKeys[i]),
                             levels + 1, sb, facetKeys[i].toString(),
-                            nonICEfacesRenderers);
+                            nonICEfacesRenderers, flaggedID);
                 }
             }
             if (hasKids) {
@@ -612,7 +622,7 @@ public class D2DViewHandler extends ViewHandler {
                     while (kids.hasNext()) {
                         tracePrintComponentTree(
                                 context, (UIComponent) kids.next(), levels + 1,
-                                sb, null, nonICEfacesRenderers);
+                                sb, null, nonICEfacesRenderers, flaggedID);
                     }
                 }
             }

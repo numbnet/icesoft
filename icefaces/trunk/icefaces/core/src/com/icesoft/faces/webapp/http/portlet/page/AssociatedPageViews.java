@@ -107,6 +107,7 @@ public interface AssociatedPageViews {
      * Disposes the specified view as well as all other views associated with the same page. Implementations should
      * rely on the superclass (AssociatedPageViewsImpl) to handle this.
      *
+     * @param views The map of all views for this session
      * @param view The view to dispose.
      */
     public void disposeAssociatedViews(Map views, View view);

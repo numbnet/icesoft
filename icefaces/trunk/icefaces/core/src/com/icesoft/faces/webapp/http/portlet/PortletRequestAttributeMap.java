@@ -48,6 +48,10 @@ public class PortletRequestAttributeMap extends AbstractCopyingAttributeMap {
     public PortletRequestAttributeMap(PortletRequest request) {
         this.request = request;
         initialize();
+        localAttributes.add("javax.portlet.request");
+        localAttributes.add("javax.portlet.response");
+        localAttributes.add("com.liferay.portal.kernel.servlet.PortletServletResponse");
+        localAttributes.add("com.liferay.portal.kernel.servlet.PortletServletRequest");
     }
 
     public Enumeration getAttributeNames() {

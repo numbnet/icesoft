@@ -72,6 +72,17 @@ public class PartialSubmitPhaseListener implements PhaseListener  {
                 requestMap.put(ALTERED_KEY, alteredRequiredComponents);
             }
         }
+        if (!"true".equalsIgnoreCase(externalContext.getInitParameter("com.icesoft.faces.legacyPartialSubmitPhaseListener"))) {
+            return;
+        }
+        if (PhaseId.RENDER_RESPONSE == phaseEvent.getPhaseId()) {
+            Map requestMap = externalContext.getRequestMap();
+            Map alteredComponents = (Map) requestMap.get(ALTERED_KEY);
+            if (null != alteredComponents) {
+                setRequiredTrue((Map) requestMap.get(ALTERED_KEY));
+                requestMap.remove(ALTERED_KEY);
+            }
+        }
     }
 
     public void beforePhase(PhaseEvent phaseEvent)  {
@@ -80,6 +91,9 @@ public class PartialSubmitPhaseListener implements PhaseListener  {
         // writes the component state in stone 
         FacesContext facesContext = phaseEvent.getFacesContext();
         ExternalContext externalContext= facesContext.getExternalContext();
+        if ("true".equalsIgnoreCase(externalContext.getInitParameter("com.icesoft.faces.legacyPartialSubmitPhaseListener"))) {
+            return;
+        }
         if (PhaseId.RENDER_RESPONSE == phaseEvent.getPhaseId())  {
             Map requestMap = externalContext.getRequestMap();
             Map alteredComponents = (Map) requestMap.get(ALTERED_KEY);

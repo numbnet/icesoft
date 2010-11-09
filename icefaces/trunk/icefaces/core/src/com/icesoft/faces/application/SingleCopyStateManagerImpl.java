@@ -36,6 +36,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.faces.application.StateManager;
+import javax.faces.application.ViewHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.ResponseWriter;
@@ -322,6 +323,10 @@ public class SingleCopyStateManagerImpl extends StateManager {
                 String message = "duplicate component id error:" + id;
                 if (log.isErrorEnabled()) {
                     log.error(message);
+                }
+                ViewHandler viewHandler = context.getApplication().getViewHandler();
+                if (viewHandler instanceof D2DViewHandler) {
+                    System.out.println(((D2DViewHandler) viewHandler).tracePrintComponentTree(context, id));
                 }
                 throw new IllegalStateException(message);
             }
