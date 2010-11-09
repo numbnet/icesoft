@@ -1,6 +1,6 @@
-/*
+﻿/*
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
- * Copyright (C) 2003-2009 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2010 Frederico Caldeira Knabben
  *
  * == BEGIN LICENSE ==
  *
@@ -488,17 +488,17 @@ var FCKDomTools =
 
 		for ( var i = 0 ; i < attributes.length ; i++ )
 		{
-			if ( FCKBrowserInfo.IsIE ) 
+			if ( FCKBrowserInfo.IsIE )
 			{
 				var attributeNodeName = attributes[i].nodeName ;
 
-				if ( attributeNodeName.StartsWith( '_fck' ) ) 
-			       {
+				if ( attributeNodeName.StartsWith( '_fck' ) )
+				{
 					/**
 					 * There are places in the FCKeditor code where HTML element objects
 					 * get values stored as properties (e.g. _fckxhtmljob).  In Internet
 					 * Explorer, these are interpreted as attempts to set attributes on
-					 * the element. 
+					 * the element.
 					 *
 					 * http://msdn.microsoft.com/en-us/library/ms533026(VS.85).aspx#Accessing_Element_Pr
 					 *
@@ -514,7 +514,7 @@ var FCKDomTools =
 					continue ;
 				}
 
-				if ( attributeNodeName == 'class' ) 
+				if ( attributeNodeName == 'class' )
 				{
 					// IE has a strange bug. If calling removeAttribute('className'),
 					// the attributes collection will still contain the "class"
@@ -526,7 +526,7 @@ var FCKDomTools =
 						return true ;
 					continue ;
 				}
-			}		
+			}
 			if ( attributes[i].specified )
 				return true ;
 		}
