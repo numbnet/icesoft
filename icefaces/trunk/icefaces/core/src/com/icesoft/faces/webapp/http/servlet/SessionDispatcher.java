@@ -37,6 +37,7 @@ import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.util.ThreadLocalUtility;
 
 import java.io.Externalizable;
+import java.io.Serializable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -133,7 +134,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 });
                 //add to the session so that our WeakHashMap does not ignore the
                 //reference
-                session.setAttribute(id + ":sessionboundserver", pservlet);
+                session.setAttribute(id + ":sessionboundserver", new KeepAliveHolder(pservlet));
                 sessionBoundServers.put(id, new WeakReference(pservlet));
             }
         }
@@ -420,5 +421,13 @@ public abstract class SessionDispatcher implements PseudoServlet {
         public Monitor() {
             //ignore
         }
+    }
+}
+
+class KeepAliveHolder implements Serializable {
+    transient Object held = null;
+    
+    public KeepAliveHolder(Object object)  {
+        held = object;
     }
 }
