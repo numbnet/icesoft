@@ -84,6 +84,13 @@ Autocompleter.Base.prototype = {
                                       Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
                                       update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
                                           offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
+									if (Prototype.Browser.IE && navigator.userAgent.indexOf("MSIE 8") > -1) {
+                                          var savedPos = element.style.position;
+                                          element.style.position = "relative";
+                                          update.style.left = element.offsetLeft + "px";
+                                          update.style.top = (element.offsetTop + element.offsetHeight) + "px";
+                                          element.style.position = savedPos;
+                                      }	  
                                   }
                                   Effect.Appear(update, {duration:0.15});
                               };
