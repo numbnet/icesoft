@@ -47,15 +47,19 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
+import javax.faces.application.StateManager;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletException;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import javax.portlet.PortletSession;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.WindowState;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -399,6 +403,41 @@ public class PortletExternalContext extends BridgeExternalContext {
             requestAttributes.setAttribute("org.jboss.seam.web.requestPathInfo", "");
         } else {
             requestAttributes = NOOPRequestAttributes;
+        }
+
+        // ICE-6197
+        // Clearing the request map completely also clears request-scoped beans.  While okay
+        // for standard request scope, it's not okay for extended request scope so we need to
+        // manually remove the other references that can cause a memory leak.
+        tidyRequestMap();
+        response = null;
+    }
+
+    // ICE-6197
+    // Clearing the request map completely also clears request-scoped beans.  While okay
+    // for standard request scope, it's not okay for extended request scope so we need to
+    // manually remove the other references that can potentially cause excessive memory
+    // consumption in live sessions.
+    private void tidyRequestMap(){
+        Iterator keys = requestMap.keySet().iterator();
+        while (keys.hasNext()) {
+            String key = (String)keys.next();
+            if( "javax.portlet.request".equals(key) ||
+                "javax.portlet.response".equals(key)){
+                keys.remove();
+                if( Log.isDebugEnabled() ){
+                    Log.debug("removed " + key);
+                }
+            } else {
+                Object val = requestMap.get(key);
+                if( val instanceof PortletRequest || val instanceof PortletResponse ||
+                    val instanceof ServletRequest || val instanceof ServletResponse){
+                    keys.remove();
+                    if( Log.isDebugEnabled() ){
+                        Log.debug("removed " + key);
+                    }
+                }
+            }
         }
     }
 

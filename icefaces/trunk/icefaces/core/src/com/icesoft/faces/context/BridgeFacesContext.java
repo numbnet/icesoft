@@ -90,7 +90,8 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
-public class BridgeFacesContext extends FacesContext implements ResourceRegistry {
+public class
+        BridgeFacesContext extends FacesContext implements ResourceRegistry {
     private static final Log log = LogFactory.getLog(BridgeFacesContext.class);
     //todo: factor out the page template extension pattern to reuse it MainServlet.java as well (maybe in configuration)
     private static final Pattern PageTemplatePattern = Pattern.compile(".*(\\.iface$|\\.jsf$|\\.faces$|\\.jsp$|\\.jspx$|\\.xhtml$|\\.seam$)");
@@ -909,6 +910,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             serializer.setOutputStream(out);
             serializer.serialize(document);
             data = out.toByteArray();
+            if (log.isDebugEnabled()) {
+                log.debug("DOM compression stored " + data.length + " bytes ");
+            }
             this.document = null;
         }
 

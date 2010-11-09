@@ -45,6 +45,7 @@ import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Map;
 import java.util.HashMap;
 import java.lang.reflect.Method;
@@ -101,7 +102,7 @@ public class ViewRootStateManagerImpl extends StateManager {
 
         UIViewRoot root;
 
-        root = (UIViewRoot) stateMap.get( viewNumber );
+        root = ((ViewRootHolder) stateMap.get(viewNumber)).getViewRoot();
         if (root == null) {
             log.error("Missing ViewRoot in restoreState, ice.session: " + bfc.getIceFacesId() + ", viewNumber: " + viewNumber );
             return null;
@@ -178,7 +179,7 @@ public class ViewRootStateManagerImpl extends StateManager {
             stateMap  = new HashMap();
             sessionMap.put(View.ICEFACES_STATE_MAPS, stateMap );
         }
-        stateMap.put( viewNumber, root );
+        stateMap.put( viewNumber, new ViewRootHolder(root));
 
         StateManager sm = context.getApplication().getStateManager();
         return sm.new SerializedView( viewNumber, null);
@@ -275,5 +276,18 @@ public class ViewRootStateManagerImpl extends StateManager {
 
     protected Object getTreeStructureToSave(FacesContext context) {
         return null;
+    }
+}
+
+
+class ViewRootHolder implements Serializable {
+    public transient UIViewRoot viewRoot;
+
+    public ViewRootHolder(UIViewRoot viewRoot) {
+        this.viewRoot = viewRoot;
+    }
+
+    public UIViewRoot getViewRoot() {
+        return viewRoot;
     }
 }

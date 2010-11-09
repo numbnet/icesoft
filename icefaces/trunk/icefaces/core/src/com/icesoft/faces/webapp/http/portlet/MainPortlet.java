@@ -155,8 +155,12 @@ public class MainPortlet extends GenericPortlet {
         //       Content-Type is set either before or when the
         //       ServletExternalContext.getWriter(String encoding) method is
         //       invoked.
-        renderResponse.setContentType("text/html");
-        disp.include(renderRequest, renderResponse);
+        try {
+            renderResponse.setContentType("text/html");
+            disp.include(renderRequest, renderResponse);
+        } finally {
+            wrapper.release();
+        }
     }
 
 
