@@ -52,7 +52,6 @@ public class Repeat extends UISeries{
        
         int numberOfRowsToDisplay = getRows();
         int countOfRowsDisplayed = 0;
-        System.out.println("getRow count "+ getRowCount());
         while (  ( numberOfRowsToDisplay == 0 ) ||
                  ( (numberOfRowsToDisplay > 0) &&
                    (countOfRowsDisplayed < numberOfRowsToDisplay) )  )
