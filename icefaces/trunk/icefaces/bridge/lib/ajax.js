@@ -143,6 +143,10 @@
             }
         },
 
+        isMatchingResponse: function(response) {
+            return response == this;
+        },
+
         getAsynchronously: function(path, query, requestConfigurator) {
             //the 'rand' parameter is used to force IE into creating new request object, thus avoiding potential infinite loops.
             this.request.open('GET', path + '?' + query + '&rand=' + Math.random(), true);
@@ -181,6 +185,17 @@
             this.request.send(query + '&rand=' + Math.random() + '\n\n');
             this.responseCallback();
             return this;
+        },
+
+        eachResponseHeader: function(iterator) {
+            var allHeaders = this.request.getAllResponseHeaders();
+            var headerArray = allHeaders.split('\n');
+            headerArray.each(function(header) {
+                var nameValue = header.split(':');
+                var name = nameValue[0].trim();
+                var value = nameValue[1];
+                iterator(name, value ? value.trim() : '');
+            });
         },
 
         setRequestHeader: function(name, value) {
