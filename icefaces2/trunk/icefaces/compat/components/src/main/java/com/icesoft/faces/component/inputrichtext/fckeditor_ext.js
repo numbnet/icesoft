@@ -19,6 +19,23 @@
  * Contributor(s): _____________________.
  *
  */
+ 
+ 
+function getContent(ele) {
+    try {
+		var _iframe = Ice.Prototype.$(ele +'___Frame');
+		var doc = (_iframe.contentWindow || _iframe.contentDocument);
+		if (doc.document) doc = doc.document;
+		var bdy = doc.getElementsByTagName('iframe')[0].contentDocument.body;
+		if (bdy.firstChild)
+			bdy.firstChild.removeAttribute('_fckxhtmljob');
+			   
+			
+			return bdy.innerHTML;
+	} catch(err) {
+		return null;
+	}
+}
 
 Ice.FCKeditor = Ice.Prototype.Class.create();
 
@@ -76,7 +93,7 @@ Ice.FCKeditorUtility = {
                 var valueHolder = Ice.Prototype.$(ele + 'valueHolder');
                 var editorValue = Ice.Prototype.$(ele);
                 editorValue.value = valueHolder.value
-                editorContent = oEditor.GetXHTML(true);
+                editorContent = getContent(ele);
                 //update the editor only, when there is a value change 
                 if (editorContent != editorValue.value) {
                     oEditor.SetHTML(editorValue.value);
@@ -96,18 +113,21 @@ Ice.FCKeditorUtility = {
     //this event will be fired on mouseout event, so clear the activeEditor property
     updateFields: function(ele) {
         Ice.FCKeditorUtility.activeEditor = "";
-        try {
-            var oEditor = FCKeditorAPI.GetInstance(ele) ;
-            if (!oEditor) return;
-            var editorValue = Ice.Prototype.$(ele);
-            var saveOnSubmit = Ice.Prototype.$(ele + 'saveOnSubmit');
-            if (saveOnSubmit && editorValue && oEditor.GetXHTML(true).length > 0) {
-                var valueHolder = Ice.Prototype.$(ele + 'valueHolder');
-                editorValue.value = oEditor.GetXHTML(true);
-                valueHolder.value = editorValue.value;
-            }
-        } catch (err) {
-        }
+	    try {
+		
+		    var oEditor = FCKeditorAPI.GetInstance(ele) ;   
+		    if (!oEditor) return;
+		    var editorValue = Ice.Prototype.$(ele);
+		    var saveOnSubmit = Ice.Prototype.$(ele + 'saveOnSubmit');
+			var content = getContent(ele);
+		    if (saveOnSubmit && editorValue && content && content.length > 0) { 
+		        var valueHolder = Ice.Prototype.$(ele + 'valueHolder');
+		        editorValue.value = content;
+		        valueHolder.value = editorValue.value;    
+		    }
+	    } catch (err) {
+
+	    }     
     },
 
     saveAll: function() {
@@ -120,10 +140,11 @@ Ice.FCKeditorUtility = {
                 if (!oEditor) return;
                 var editorValue = Ice.Prototype.$(ele);
                 var saveOnSubmit = Ice.Prototype.$(ele + 'saveOnSubmit');
-                if (saveOnSubmit && editorValue) {
+				var content = getContent(ele);
+                if (saveOnSubmit && editorValue && content) { 
                     var valueHolder = Ice.Prototype.$(ele + 'valueHolder');
-                    editorValue.value = oEditor.GetXHTML(true);
-                    valueHolder.value = editorValue.value;
+                    editorValue.value = content;
+                   valueHolder.value = editorValue.value;
                 }
             }
         } catch (err) {
@@ -235,7 +256,7 @@ function FCKeditorSave(editorInstance) {
         unwantedField.name = unwantedField.id;
     }
     var element = Ice.Prototype.$(editIns.Name);
-    element.value = editIns.GetXHTML(true);
+    element.value = getContent(editIns.Name);
     var valueHolder = Ice.Prototype.$(editIns.Name + 'valueHolder');
     valueHolder.value = element.value;
     Ice.FCKeditorUtility.saveClicked = true;
