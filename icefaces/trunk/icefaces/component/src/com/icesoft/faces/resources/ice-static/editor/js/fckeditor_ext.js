@@ -30,6 +30,25 @@
  * this file under either the MPL or the LGPL License."
  */
  
+ 
+function getContent(ele) {
+    try {
+		var _iframe = $(ele +'___Frame');
+		var doc = (_iframe.contentWindow || _iframe.contentDocument);
+		if (doc.document) doc = doc.document;
+		var bdy = doc.getElementsByTagName('iframe')[0].contentDocument.body;
+		if (bdy.firstChild)
+			bdy.firstChild.removeAttribute('_fckxhtmljob');
+			   
+			
+			return bdy.innerHTML;
+	} catch(err) {
+		return null;
+	}
+}
+
+
+ 
 Ice.FCKeditor = Class.create();
 
 Ice.FCKeditor.prototype = {
@@ -72,7 +91,7 @@ Object.extend(Ice.FCKeditor,  Ice.Repository);
 Ice.FCKeditorUtility = Class.create();
 Ice.FCKeditorUtility = {
     //this will be called on every render cycle
-    updateValue: function(ele) {
+    updateValue: function(ele) { 
         var onCompleteInvoked = $(ele + 'onCompleteInvoked');
         if (onCompleteInvoked){
             if (onCompleteInvoked.value != "true"){return}
@@ -84,7 +103,7 @@ Ice.FCKeditorUtility = {
                 var valueHolder = $(ele + 'valueHolder');
                 var editorValue = $(ele);                
                 editorValue.value = valueHolder.value  
-                editorContent = oEditor.GetXHTML(true);
+                editorContent = getContent(ele);
                 //update the editor only, when there is a value change 
                 if (editorContent != editorValue.value) {
 	                oEditor.SetHTML( editorValue.value) ;
@@ -102,16 +121,20 @@ Ice.FCKeditorUtility = {
     updateFields: function(ele) {
         Ice.FCKeditorUtility.activeEditor = "";
 	    try {
+		
 		    var oEditor = FCKeditorAPI.GetInstance(ele) ;   
 		    if (!oEditor) return;
 		    var editorValue = $(ele);
 		    var saveOnSubmit = $(ele + 'saveOnSubmit');
-		    if (saveOnSubmit && editorValue && oEditor.GetXHTML(true).length > 0) { 
+			var content = getContent(ele);
+		    if (saveOnSubmit && editorValue && content && content.length > 0) { 
 		        var valueHolder = $(ele + 'valueHolder');
-		        editorValue.value = oEditor.GetXHTML(true);
+		        editorValue.value = content;
 		        valueHolder.value = editorValue.value;    
 		    }
-	    } catch (err) {}     
+	    } catch (err) {
+
+	    }     
     },
     
     saveAll: function() {
@@ -124,13 +147,16 @@ Ice.FCKeditorUtility = {
                 if (!oEditor) return;
                 var editorValue = $(ele);
                 var saveOnSubmit = $(ele + 'saveOnSubmit');
-                if (saveOnSubmit && editorValue) { 
+				var content = getContent(ele);
+                if (saveOnSubmit && editorValue && content) { 
                     var valueHolder = $(ele + 'valueHolder');
-                    editorValue.value = oEditor.GetXHTML(true);
+                    editorValue.value = content;
                    valueHolder.value = editorValue.value;
                 }
             }
-        } catch (err) {}     
+        } catch (err) {
+        	 
+        }     
     }    
 };
 
@@ -230,7 +256,7 @@ function FCKeditorSave(editorInstance) {
         unwantedField.name = unwantedField.id;
     }
     var element = $(editIns.Name); 
-    element.value = editIns.GetXHTML(true);
+    element.value = getContent(editIns.Name);
     var valueHolder = $(editIns.Name + 'valueHolder');    
     valueHolder.value = element.value ;                 
     Ice.FCKeditorUtility.saveClicked=true;
