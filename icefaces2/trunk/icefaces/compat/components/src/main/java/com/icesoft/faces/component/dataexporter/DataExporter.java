@@ -38,6 +38,7 @@ import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 
+import com.icesoft.faces.component.ext.UIColumns;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -381,6 +382,9 @@ public class DataExporter extends OutputResource {
             if ((kid instanceof UIColumn) && kid.isRendered()) {
                 results.add(kid);
             }
+            else if (kid instanceof UIColumns) {
+                results.add(kid);
+            }
         }
         return results;
     }
@@ -397,7 +401,6 @@ public class DataExporter extends OutputResource {
                 first = rowIndex;
                 rows = numberOfRowsToDisplay;
             }
-            int colIndex = 0;
  
             int countOfRowsDisplayed = 0;
             uiData.setRowIndex(rowIndex);
@@ -405,21 +408,14 @@ public class DataExporter extends OutputResource {
             String includeColumns = getIncludeColumns();
             if (includeColumns != null)
                 includeColumnsArray = includeColumns.split(",");
+            List columns = getRenderedChildColumnsList(uiData);
+//System.out.println("DataExporter.renderToHandler()  columns.size: " + columns.size());
                 
             // write header
-            List columns = getRenderedChildColumnsList(uiData);
-            Iterator childColumns;
-            if (includeColumnsArray != null) {
-               renderInUserDefinedOrder(fc, outputHandler, columns, includeColumnsArray, colIndex, -1);
-            } else {
-                childColumns = columns.iterator();
-                while (childColumns.hasNext()) {
-                    UIColumn nextColumn = (UIColumn) childColumns.next();
-                    processColumnHeader(fc, outputHandler, nextColumn, colIndex);
-                    colIndex++;
-                }
-            }
+//System.out.println("DataExporter.renderToHandler()  HEADERS");
+            processAllColumns(fc, outputHandler, columns, includeColumnsArray, -1);
 
+//System.out.println("DataExporter.renderToHandler()  ROWS");
             while (uiData.isRowAvailable()) {
                 if (numberOfRowsToDisplay > 0
                         && countOfRowsDisplayed >= numberOfRowsToDisplay) {
@@ -427,18 +423,8 @@ public class DataExporter extends OutputResource {
                 }
 
                 // render the child columns; each one in a td
-                colIndex = 0;
-
-                if (includeColumnsArray != null) {
-                    renderInUserDefinedOrder(fc, outputHandler, columns, includeColumnsArray, colIndex, countOfRowsDisplayed);
-                } else {
-                    childColumns = columns.iterator();
-                    while (childColumns.hasNext()) {
-                        UIColumn nextColumn = (UIColumn) childColumns.next();
-                        processColumn(fc, outputHandler, nextColumn, colIndex, countOfRowsDisplayed);
-                        colIndex++;
-                    }
-                }
+                processAllColumns(fc, outputHandler, columns, includeColumnsArray, countOfRowsDisplayed);
+                
                 // keep track of rows displayed
                 countOfRowsDisplayed++;
                 // maintain the row index property on the underlying UIData
@@ -454,7 +440,6 @@ public class DataExporter extends OutputResource {
         } catch (Exception e) {
             log.error("renderToHandler()", e);
         }
-
     }
     
     public void addInfo() {}
@@ -508,9 +493,70 @@ public class DataExporter extends OutputResource {
                 "styleClass");
     } 
     
+    protected void processAllColumns(FacesContext fc,
+                                     OutputTypeHandler outputHandler,
+                                     List columns,
+                                     String[] includeColumnsArray,
+                                     int countOfRowsDisplayed) {
+        if (includeColumnsArray != null) {
+//System.out.println("DataExporter.processAllColumns()  COLUMNS ARRAY");
+            renderInUserDefinedOrder(fc, outputHandler, columns,
+                includeColumnsArray, 0, countOfRowsDisplayed);
+        } else {
+//System.out.println("DataExporter.processAllColumns()  COLUMNS ITERATING");
+            int colIndex = 0;
+            Iterator childColumns = columns.iterator();
+            while (childColumns.hasNext()) {
+                UIComponent nextColumn = (UIComponent) childColumns.next();
+                if (nextColumn instanceof UIColumn) {
+//System.out.println("DataExporter.processAllColumns()  UIColumn  colIndex: " + colIndex);
+                    if (countOfRowsDisplayed == -1) {
+//System.out.println("DataExporter.processAllColumns()    HEADER CELL");
+                        processColumnHeader(
+                            fc, outputHandler, nextColumn, colIndex);
+                    }
+                    else {
+//System.out.println("DataExporter.processAllColumns()    CELL");
+                        processColumn(fc, outputHandler, nextColumn, colIndex,
+                            countOfRowsDisplayed);                        
+                    }
+                    colIndex++;
+                }
+                else if (nextColumn instanceof UIColumns) {
+                    UIColumns nextColumns = (UIColumns) nextColumn;
+                    int colsSpecificIndex = nextColumns.getFirst();
+                    int count = nextColumns.getRows();
+                    int colsSpecificLast = (count == 0) ?
+                        (Integer.MAX_VALUE - 1) :
+                        (colsSpecificIndex + count - 1);
+//System.out.println("DataExporter.processAllColumns()  UIColumns  first: " + colsSpecificIndex + "  rows: " + count);
+                    while (colsSpecificIndex <= colsSpecificLast) {
+                        nextColumns.setRowIndex(colsSpecificIndex);
+                        if (!nextColumns.isRowAvailable()) {
+                            break;
+                        }
+                        if (countOfRowsDisplayed == -1) {
+//System.out.println("DataExporter.processAllColumns()    HEADER CELL  colIndex: " + colIndex);
+                            processColumnHeader(
+                                fc, outputHandler, nextColumn, colIndex);
+                        }
+                        else {
+//System.out.println("DataExporter.processAllColumns()    CELL  colIndex: " + colIndex);
+                            processColumn(fc, outputHandler, nextColumn,
+                                colIndex, countOfRowsDisplayed);
+                        }
+                        colsSpecificIndex++;
+                        colIndex++;
+                    }
+                    nextColumns.setRowIndex(-1);
+                }
+            }
+        }
+    }
+    
     protected void processColumnHeader(FacesContext fc, 
                                     OutputTypeHandler outputHandler,
-                                    UIColumn uiColumn, int colIndex) {
+                                    UIComponent uiColumn, int colIndex) {
         UIComponent headerComp = uiColumn.getFacet("header");
         if (headerComp != null) {
             String headerText = encodeParentAndChildrenAsString(fc, headerComp);
@@ -522,7 +568,7 @@ public class DataExporter extends OutputResource {
     
     protected void processColumn(FacesContext fc, 
             OutputTypeHandler outputHandler,
-            UIColumn uiColumn, int colIndex,
+            UIComponent uiColumn, int colIndex,
             int countOfRowsDisplayed) {
         StringBuffer stringOutput = new StringBuffer();
 
@@ -570,7 +616,9 @@ public class DataExporter extends OutputResource {
             int colIndex,
             int countOfRowsDisplayed
             ) {
+        UIComponent previousColumn = null;
         for (int i=0; i<includeColumnsArray.length; i++) {
+//System.out.println("DataExporter.renderInUserDefinedOrder()  includeColumnsArray["+i+"]: " + includeColumnsArray[i]);
             int userIndex = 0;
             try {
                 userIndex = Integer.parseInt(includeColumnsArray[i].trim());
@@ -578,11 +626,88 @@ public class DataExporter extends OutputResource {
                 log.error("renderInUserDefinedOrder() invalid column index ", e);
                 continue;
             }
-            if ( userIndex < 0 || userIndex > columns.size()) {
-                log.info("["+userIndex +"] is invalid column index. Column index is 0 based and should be less then from "+ columns.size());
+//System.out.println("DataExporter.renderInUserDefinedOrder()  userIndex: " + userIndex);
+            UIComponent nextColumn = null;
+            int runningIndex = 0;
+            for (int listIndex = 0; listIndex < columns.size(); listIndex++) {
+                UIComponent runningComp = (UIComponent) columns.get(listIndex);
+                if (runningComp instanceof UIColumn) {
+//System.out.println("DataExporter.renderInUserDefinedOrder()    Check UIColumn  runningIndex: " + runningIndex);
+                    if (runningIndex == userIndex) {
+//System.out.println("DataExporter.renderInUserDefinedOrder()      MATCH");
+                        nextColumn = runningComp;
+                        break;
+                    }
+                    runningIndex++;
+                }
+                else if (runningComp instanceof UIColumns) {
+//System.out.println("DataExporter.renderInUserDefinedOrder()    Check UIColumns");
+                    UIColumns runningCols = (UIColumns) runningComp;
+                    // If rows is specified, so it's possible to know if 
+                    // userIndex is contained in this UIColumns or not.
+                    int runningColsSize = runningCols.getRows();
+                    if (runningColsSize != 0) {
+//System.out.println("DataExporter.renderInUserDefinedOrder()      rows specified");
+                        if (userIndex >= runningIndex &&
+                            userIndex < runningIndex + runningColsSize) {
+                            int colsSpecificIndex = userIndex - runningIndex +
+                                runningCols.getFirst();
+                            runningIndex = userIndex;
+                            runningCols.setRowIndex(colsSpecificIndex);
+//System.out.println("DataExporter.renderInUserDefinedOrder()      MATCH  colsSpecificIndex: " + colsSpecificIndex);
+                            nextColumn = runningCols;
+                            break;
+                        }
+                        else {
+//System.out.println("DataExporter.renderInUserDefinedOrder()      beyond rows");
+                            runningIndex += runningColsSize;
+                        }
+                    }
+                    // Have to just iterate over the UIColumns to determine
+                    // its size, to know if userIndex falls within it.
+                    else {
+//System.out.println("DataExporter.renderInUserDefinedOrder()      rows not specified");
+                        int colsSpecificIndex = runningCols.getFirst();
+                        while (true) {
+                            runningCols.setRowIndex(colsSpecificIndex);
+                            if (!runningCols.isRowAvailable()) {
+                                break;
+                            }
+                            if (runningIndex == userIndex) {
+//System.out.println("DataExporter.renderInUserDefinedOrder()      MATCH  colsSpecificIndex: " + colsSpecificIndex);
+                                nextColumn = runningCols;
+                                break;
+                            }
+                            runningIndex++;
+                            colsSpecificIndex++;
+                        }
+                        if (nextColumn != null) {
+                            break;
+                        }
+                        
+                        // If we just scanned through runningCols, and aren't 
+                        // using it, clean it up, unless we're going to already
+                        if (nextColumn == null &&
+                            runningCols != previousColumn) {
+                            runningCols.setRowIndex(-1);
+                        }
+                    }
+                }
+            }
+            
+            if (nextColumn == null) {
+                log.info("["+userIndex +"] is invalid column index. Column index is 0 based and should be less then from "+ runningIndex);
                 continue;
             }
-            UIColumn nextColumn = (UIColumn) columns.get(userIndex);
+            
+            // If we're switching away from a UIColumns, clean it up
+            if (previousColumn != null &&
+                nextColumn != previousColumn &&
+                previousColumn instanceof UIColumns) {
+                ((UIColumns)previousColumn).setRowIndex(-1);
+            }
+            previousColumn = nextColumn;
+            
             if (countOfRowsDisplayed == -1) {
                 processColumnHeader(fc, outputHandler, nextColumn, colIndex);
             } else {
@@ -590,7 +715,13 @@ public class DataExporter extends OutputResource {
             }
             colIndex++; 
         }
-                
+        
+        
+        // Cleanup any trailing UIColumns
+        if (previousColumn != null &&
+            previousColumn instanceof UIColumns) {
+            ((UIColumns)previousColumn).setRowIndex(-1);
+        }
     }
 
     public String getPopupBlockerLabel() {
