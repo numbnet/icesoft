@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf12892335581140" configfile="/icepushplace-icefaces2/web/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="370" id="pf12894158144960" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf12894158144961 pf12894158144962" path="/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="world.xhtml" x="338" y="178" id="pf12894158144963" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf12894158144961" path="/world.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="338" y="562" id="pf12894158144964" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf12894158144962" path="/login.xhtml"/>
+  <links id="pf12894158144961" target="pf12894158144963" source="pf12894158144960" outcome="world" redirect="true"/>
+  <links id="pf12894158144962" target="pf12894158144964" source="pf12894158144960" outcome="login" redirect="true"/>
+</pageflow:Pageflow>
