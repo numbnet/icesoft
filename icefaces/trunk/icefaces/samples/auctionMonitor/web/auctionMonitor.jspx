@@ -162,7 +162,8 @@
                         <ice:inputText id="item_localBid"
                                        actionListener="#{item.localBid}"
                                        value="#{item.tempLocalBid}" size="6"
-                                       style="text-align:right">
+                                       style="text-align:right"
+                                       maxlength="15">
                             <f:validator validatorId="bidValidator" />
                         </ice:inputText>
                         <ice:commandButton id="image_button_bid_accept"
