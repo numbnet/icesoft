@@ -251,6 +251,7 @@ public class CSS_DEFAULT {
      * The default style class name for the row containg the names of the days
      * of the week.
      */
+    public final static String DEFAULT_WEEK_NUM_HDR_CLASS = "WeekNumHdr";
     public final static String DEFAULT_WEEKHEADER_CLASS =
             "Week"; // iceCalWeek Originally was "weekRowClass"
     /**
@@ -263,6 +264,7 @@ public class CSS_DEFAULT {
      * The default style class name for the cells containing the days of the
      * month.
      */
+    public final static String DEFAULT_WEEK_NUM_CLASS = "WeekNum";
     public final static String DEFAULT_DAYCELL_CLASS =
             "Day"; // iceCalDay Originally was "dayCellClass"
       /**

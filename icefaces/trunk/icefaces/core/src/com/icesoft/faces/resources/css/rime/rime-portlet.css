@@ -223,7 +223,7 @@ input.iceSelInpDateClosePopup {
     height: 16px;
 }
 
-.iceSelInpDateWeek {
+.iceSelInpDateWeek, .iceSelInpDateWeekNumHdr {
 /* the days of the week row */
     font-weight: normal;
     color: #666;
@@ -237,11 +237,15 @@ input.iceSelInpDateClosePopup {
 
 /* set the look for the days of the week backgrounds */
 
-.iceSelInpDateDay {
+.iceSelInpDateDay, .iceSelInpDateWeekNum {
     text-align: center;
     border-right: 1px solid #d9d9d9;
     border-bottom: 1px solid #d9d9d9;
     padding: 3px;
+}
+
+.iceSelInpDateWeekNum, .iceSelInpDateWeekNum-dis {
+    background-color: #F5F5F5;
 }
 
 .iceSelInpDateCur {
@@ -2498,7 +2502,7 @@ Disabled classes for the calendar controls
     cursor: default;
 }
 
-.iceSelInpDateWeek-dis {
+.iceSelInpDateWeek-dis, .iceSelInpDateWeekNumHdr-dis {
 /* the days of the week row */
     font-weight: normal;
     color: #999999;
@@ -2510,7 +2514,7 @@ Disabled classes for the calendar controls
 }
 
 /* set the look for the days of the week backgrounds */
-.iceSelInpDateDay-dis, .iceSelInpDateCur-dis {
+.iceSelInpDateDay-dis, .iceSelInpDateCur-dis, .iceSelInpDateWeekNum-dis {
 /* the background & alignment for the days */
     padding: 3px;
     text-align: center;

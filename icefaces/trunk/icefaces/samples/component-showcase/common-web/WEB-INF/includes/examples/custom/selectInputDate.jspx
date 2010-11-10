@@ -131,7 +131,7 @@ the click of a button.
         </ice:outputText>
         <!-- Calendar Component -->
         
-        <ice:selectInputDate id="popupDatePttrn1" renderMonthAsDropdown="true" renderYearAsDropdown="true"
+        <ice:selectInputDate id="popupDatePttrn1" renderMonthAsDropdown="true" renderYearAsDropdown="true" renderWeekNumbers="true"
                              value="#{dateSelect.date2}" rendered="#{dateSelect.pattern eq 'date'}"
                              valueChangeListener="#{dateSelect.effect2ChangeListener}"
                              title="#{msgs['page.selectInputDate.popup.title']}"
@@ -141,7 +141,7 @@ the click of a button.
         </ice:selectInputDate>
         
         
-        <ice:selectInputDate id="popupDatePttrn2" renderMonthAsDropdown="true" renderYearAsDropdown="true"
+        <ice:selectInputDate id="popupDatePttrn2" renderMonthAsDropdown="true" renderYearAsDropdown="true" renderWeekNumbers="true"
                              value="#{dateSelect.date3}" rendered="#{dateSelect.pattern eq 'dateTime'}"
                              valueChangeListener="#{dateSelect.effect2ChangeListener}"
                              title="#{msgs['page.selectInputDate.popup.title']}"
@@ -150,7 +150,7 @@ the click of a button.
                                timeZone="#{dateSelect.timeZone}"/>
         </ice:selectInputDate>
 
-        <ice:selectInputDate id="popupDatePttrn3" renderMonthAsDropdown="true" renderYearAsDropdown="true"
+        <ice:selectInputDate id="popupDatePttrn3" renderMonthAsDropdown="true" renderYearAsDropdown="true" renderWeekNumbers="true"
                              value="#{dateSelect.date4}" rendered="#{dateSelect.pattern eq 'dateTimeAmPm'}"
                              valueChangeListener="#{dateSelect.effect2ChangeListener}"
                              title="#{msgs['page.selectInputDate.popup.title']}"
@@ -159,7 +159,7 @@ the click of a button.
                                timeZone="#{dateSelect.timeZone}"/>
         </ice:selectInputDate>
 
-        <ice:selectInputDate id="popupDatePttrn4" renderMonthAsDropdown="true" renderYearAsDropdown="true"
+        <ice:selectInputDate id="popupDatePttrn4" renderMonthAsDropdown="true" renderYearAsDropdown="true" renderWeekNumbers="true"
                              value="#{dateSelect.date5}" rendered="#{dateSelect.pattern eq 'dateTimeSs'}"
                              valueChangeListener="#{dateSelect.effect2ChangeListener}"
                              title="#{msgs['page.selectInputDate.popup.title']}"
