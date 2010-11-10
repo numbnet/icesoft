@@ -9,7 +9,7 @@
 	<managed-bean>
 	    <managed-bean-name>personModel</managed-bean-name>
 	    <managed-bean-class>org.icepush.ws.samples.icepushplace.PersonType</managed-bean-class>
-	    <managed-bean-scope>session</managed-bean-scope>
+	    <managed-bean-scope>#{window}</managed-bean-scope>
 	</managed-bean>
 	
 	<navigation-rule>
