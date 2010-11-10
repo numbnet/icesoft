@@ -84,27 +84,27 @@ Ice.DnD.StyleReader = {
             }
         }
     }
-}
+};
 
-
-Ice.modal = Class.create();
 Ice.modal = {
-    running:{},
+    running: [],
     isRunning:function(target) {
-        return (this.running[target] != null);
+        return this.running.include(target);
     },
 
     //caller Ice.modal.start()
     setRunning:function(target) {
         //register modal popup
-        this.running[target] = target;
+        if (!this.running.include(target)) {
+            this.running.push(target);
+        }
         this.disableTabindex(target);
     },
 
     //caller Ice.modal.stop()
     stopRunning:function(target) {
         //de-register modal popup
-        delete this.running[target];
+        this.running.pop();
         //if there are more than one modal popups then this will enable the focus on
         //last opened modal popup and if there is no modal popup left then it will
         //enable the focus on the document.  
@@ -113,10 +113,7 @@ Ice.modal = {
 
     //returns last modal popup on the stack, null if there isn't any    
     getRunning:function() {
-        var modal = null;
-        for (m in this.running)
-            modal = m;
-        return modal;
+        return this.running.isEmpty() ? null : this.running.last();
     },
     target:null,
     zIndexCount: 25000,
