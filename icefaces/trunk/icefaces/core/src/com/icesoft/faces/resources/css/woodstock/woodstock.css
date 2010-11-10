@@ -246,7 +246,7 @@ table.iceSelInpDate tbody tr td table{
     height: 20px;
 }
 
-.iceSelInpDateWeek {
+.iceSelInpDateWeek, .iceSelInpDateWeekNumHdr {
 /* the days of the week row */
     background-color: #E5E9ED;
     font-weight: bold;
@@ -259,9 +259,13 @@ table.iceSelInpDate tbody tr td table{
     /*width: 22px;*/
 }
 
+.iceSelInpDateWeekNum, .iceSelInpDateWeekNum-dis {
+    background-color: #F5F5F5;
+}
+
 /* set the look for the days of the week backgrounds */
 
-.iceSelInpDateDay, .iceSelInpDateCur {
+.iceSelInpDateDay, .iceSelInpDateCur, .iceSelInpDateWeekNum {
     text-align: center;
     border-right: 1px solid #d6dce1;
     border-bottom: 1px solid #d6dce1;
@@ -2544,7 +2548,7 @@ Disabled classes for the calendar controls
     cursor: default;
 }
 
-.iceSelInpDateWeek-dis {
+.iceSelInpDateWeek-dis, .iceSelInpDateWeekNumHdr-dis {
 /* the days of the week row */
     font-weight: normal;
     color: #999999;
@@ -2556,7 +2560,7 @@ Disabled classes for the calendar controls
 }
 
 /* set the look for the days of the week backgrounds */
-.iceSelInpDateDay-dis, .iceSelInpDateCur-dis {
+.iceSelInpDateDay-dis, .iceSelInpDateCur-dis, .iceSelInpDateWeekNum-dis {
 /* the background & alignment for the days */
     padding: 3px;
     text-align: center;

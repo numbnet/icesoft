@@ -175,6 +175,8 @@ public class SelectInputDateRenderer
         "com.icesoft.faces.component.selectinputdate.PREV_YEAR_LABEL";
     private static final String NEXT_YEAR_LABEL =
         "com.icesoft.faces.component.selectinputdate.NEXT_YEAR_LABEL";
+    private static final String WEEK_NUM_HDR = "com.icesoft.faces.component.selectinputdate.WEEK_NUM_HDR";
+    private static final String WEEK_NUM_HDR_TITLE = "com.icesoft.faces.component.selectinputdate.WEEK_NUM_HDR_TITLE";
     private static final int yearListSize = 11;
 
     //private static final String[] passThruAttributes = ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_SELECTINPUTDATE);
@@ -605,7 +607,7 @@ public class SelectInputDateRenderer
             Element tfoot = domContext.createElement(HTML.TFOOT_ELEM);
             Element tr = domContext.createElement(HTML.TR_ELEM);
             Element td = domContext.createElement(HTML.TD_ELEM);
-            td.setAttribute(HTML.COLSPAN_ATTR, "7");
+            td.setAttribute(HTML.COLSPAN_ATTR, selectInputDate.isRenderWeekNumbers() ? "8" : "7");
             td.setAttribute(HTML.CLASS_ATTR, selectInputDate.getTimeClass());
             Element tbl = domContext.createElement(HTML.TABLE_ELEM);
             Element tr2 = domContext.createElement(HTML.TR_ELEM);
@@ -809,7 +811,7 @@ public class SelectInputDateRenderer
         headertd.appendChild(table);
         headerTr.appendChild(headertd);
 
-        headertd.setAttribute(HTML.COLSPAN_ATTR, "7"); // weekdays.length = 7
+        headertd.setAttribute(HTML.COLSPAN_ATTR, inputComponent.isRenderWeekNumbers() ? "8" : "7");
 
         int calYear = timeKeeper.get(Calendar.YEAR);
         if (inputComponent.getHightlightRules().containsKey(Calendar.YEAR + "$" + calYear)) {
@@ -1064,6 +1066,15 @@ public class SelectInputDateRenderer
                                         String[] months, String[] weekdaysLong,
                                         Converter converter)
             throws IOException {
+        if (inputComponent.isRenderWeekNumbers()) {
+            Element td = domContext.createElement(HTML.TD_ELEM);
+            td.setAttribute(HTML.CLASS_ATTR, Util.getQualifiedStyleClass(inputComponent,
+                    CSS_DEFAULT.DEFAULT_WEEK_NUM_HDR_CLASS, inputComponent.isDisabled()));
+            addAttributeToElementFromResource(facesContext, WEEK_NUM_HDR_TITLE, td, HTML.TITLE_ATTR);
+            tr.appendChild(td);
+            Text text = domContext.createTextNode(MessageUtils.getResource(facesContext, WEEK_NUM_HDR));
+            td.appendChild(text);
+        }
         // the week can start with Sunday (index 0) or Monday (index 1)
         for (int i = weekStartsAtDayIndex; i < weekdays.length; i++) {
             writeCell(domContext, facesContext,
@@ -1108,6 +1119,16 @@ public class SelectInputDateRenderer
             if (columnIndexCounter == 0) {
                 tr1 = domContext.createElement(HTML.TR_ELEM);
                 table.appendChild(tr1);
+                if (inputComponent.isRenderWeekNumbers()) {
+                    cal = copyCalendar(facesContext, timeKeeper);
+                    cal.set(Calendar.DAY_OF_MONTH, 1);
+                    Element td = domContext.createElement(HTML.TD_ELEM);
+                    td.setAttribute(HTML.CLASS_ATTR, Util.getQualifiedStyleClass(inputComponent,
+                            CSS_DEFAULT.DEFAULT_WEEK_NUM_CLASS, inputComponent.isDisabled()));
+                    tr1.appendChild(td);
+                    Text text = domContext.createTextNode(String.valueOf(cal.get(Calendar.WEEK_OF_YEAR)));
+                    td.appendChild(text);
+                }
             }
             
             writeCell(domContext, facesContext, writer, inputComponent, "&nbsp;",
@@ -1144,8 +1165,15 @@ public class SelectInputDateRenderer
             } catch (Exception e) {
                 // hmmm this should never happen
             }
-            
-           
+            if (inputComponent.isRenderWeekNumbers() && columnIndexCounter == 0) {
+                Element td = domContext.createElement(HTML.TD_ELEM);
+                td.setAttribute(HTML.CLASS_ATTR, Util.getQualifiedStyleClass(inputComponent,
+                        CSS_DEFAULT.DEFAULT_WEEK_NUM_CLASS, inputComponent.isDisabled()));
+                tr2.appendChild(td);
+                Text text = domContext.createTextNode(String.valueOf(cal.get(Calendar.WEEK_OF_YEAR)));
+                td.appendChild(text);
+            }
+
             if (inputComponent.getHightlightRules().size()>0) {
                 int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
                 int weekOfMonth = cal.get(Calendar.WEEK_OF_MONTH);
