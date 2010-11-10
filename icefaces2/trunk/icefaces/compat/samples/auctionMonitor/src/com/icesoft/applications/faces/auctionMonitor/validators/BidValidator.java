@@ -21,8 +21,8 @@ public class BidValidator implements Validator {
     // max bid that can be mad, period.
     public static final long MAX_BID = 1000000000;
 
-    public static final String ERROR_BID_LOW = "<br />Bid declined, too small.";
-    public static final String ERROR_BID_HIGH = "<br />Bid declined, too large.";
+    public static final String ERROR_BID_LOW = "<br />Bid declined, too low.";
+    public static final String ERROR_BID_HIGH = "<br />Bid declined, too high.";
 
     public void validate(FacesContext facesContext, UIComponent uiComponent, Object value)
             throws ValidatorException {
