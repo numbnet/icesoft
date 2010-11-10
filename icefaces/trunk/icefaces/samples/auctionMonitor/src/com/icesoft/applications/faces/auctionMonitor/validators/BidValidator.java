@@ -37,7 +37,7 @@ public class BidValidator implements Validator {
         // get the original bid value
         double originalBid = auctionMonitorItemBean.getCurrentPrice();
         // get the new value
-        double newBid = (Double)value;
+        double newBid = Double.parseDouble(value.toString());
 
         // we don't use the jsf message system as we are pushing and the messages
         // will be cleared on the next push. However we thought the event

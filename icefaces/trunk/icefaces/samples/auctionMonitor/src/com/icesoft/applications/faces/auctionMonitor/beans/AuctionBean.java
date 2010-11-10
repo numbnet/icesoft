@@ -152,9 +152,10 @@ public class AuctionBean  {
                 !auctionMonitorItemBean.isBidExpanded());
         // hide the all other auction items as the bid inputs cause some
         // validation issues.
-        for (AuctionMonitorItemBean item :searchItemBeans){
-            if (item.isBidExpanded() &&
-                    !item.equals(auctionMonitorItemBean)){
+        AuctionMonitorItemBean item = null;
+        for (int i = 0; i < searchItemBeans.length; i++) {
+            item = searchItemBeans[i];
+            if (item.isBidExpanded() && !item.equals(auctionMonitorItemBean)){
                 item.setBidExpanded(false);
             }
         }
