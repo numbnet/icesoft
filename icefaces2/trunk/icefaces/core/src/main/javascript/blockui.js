@@ -67,16 +67,19 @@
                     var onkeypress = e.onkeypress;
                     var onkeyup = e.onkeyup;
                     var onkeydown = e.onkeydown;
+                    var onclick = e.onclick;
                     e.onkeypress = none;
                     e.onkeyup = none;
                     e.onkeydown = none;
+                    e.onclick = none;
 
                     return function() {
                         try {
                             e.onkeypress = onkeypress;
                             e.onkeyup = onkeyup;
                             e.onkeydown = onkeydown;
-                        } catch (e) {
+                            e.onclick = onclick;
+                        } catch (ex) {
                             //don't fail if element is not present anymore
                         }
                     };
