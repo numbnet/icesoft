@@ -8,6 +8,7 @@ public class Reload extends AbstractCommand {
 
     public Reload(String viewIdentifier) {
         this.viewIdentifier = viewIdentifier;
+(new Exception()).printStackTrace();
     }
 
     public Command coalesceWithNext(Command command) {
