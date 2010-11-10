@@ -83,6 +83,11 @@ public class PushModeSerializer implements DOMSerializer {
                 String tag = element.getTagName();
                 //send reload command if 'html', 'body', or 'head' elements need to be updated (see: ICE-3063)
                 reload = reload || "html".equalsIgnoreCase(tag) || "head".equalsIgnoreCase(tag);
+if (reload)  {
+    System.out.println("reload html/head\n" + DOMUtils.nodeToString(element));
+}
+
+
                 if (topElements.contains(element)) {
                     if (!dupCheck.contains(element)) {
                         dupCheck.add(element);
