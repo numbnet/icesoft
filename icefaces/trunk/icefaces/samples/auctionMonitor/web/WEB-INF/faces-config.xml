@@ -137,4 +137,10 @@
     </managed-bean-scope>
 </managed-bean>
 
+<validator>
+    <description>Bid validation, bid &lt; current bid or really large bid</description>
+    <validator-id>bidValidator</validator-id>
+    <validator-class>com.icesoft.applications.faces.auctionMonitor.validators.BidValidator</validator-class>
+</validator>
+
 </faces-config>

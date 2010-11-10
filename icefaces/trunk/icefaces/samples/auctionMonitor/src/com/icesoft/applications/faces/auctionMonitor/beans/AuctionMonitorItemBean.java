@@ -44,6 +44,8 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.faces.event.ActionEvent;
+
 /**
  * Class used to represent a single item within the auction This class handles
  * such things as pricing, bidding, UI management, etc.
@@ -56,7 +58,7 @@ public class AuctionMonitorItemBean extends ItemType {
     private boolean bidExpanded;
     private double oldBid;
     private double tempLocalBid;
-    private boolean bidMessage;
+    private String bidMessage;
     private String imageUrl;
     private long[] timeLeftBrokenDown;
     private String timeLeftStyleClass;
@@ -154,51 +156,30 @@ public class AuctionMonitorItemBean extends ItemType {
     }
 
     public void setTempLocalBid(double tempLocalBid) {
-        if (tempLocalBid <= MAX_BID && 
-            tempLocalBid - localHighBid <= MAX_BID_INCREASE) {
-            this.tempLocalBid = tempLocalBid;
-            setLocalBid();
-            bidMessage = false;
-        }
-        else{
-            bidMessage = true;
-        }
+        this.tempLocalBid = tempLocalBid;
     }
 
     public double getTempLocalBid() {
         return tempLocalBid;
     }
-
-    public String setLocalBid() {
-        if (tempLocalBid > localHighBid &&
-            tempLocalBid <= MAX_BID && 
-            tempLocalBid - localHighBid <= MAX_BID_INCREASE) {
-            localHighBid = tempLocalBid;
-            bidMessage = false;
-            Map auctionMap = AuctionState.getAuctionMap();
-            auctionMap.put(getItemID() + ".price", new Double(localHighBid));
-            auctionMap.put(getItemID() + ".bidCount", new Integer(
-                    Integer.parseInt(auctionMap.get(getItemID() +".bidCount")
-                        .toString()) + 1 ) );
-            getCurrentPrice();
-            SessionRenderer.render("auction");
-        }
-        else if (tempLocalBid <= localHighBid){
-            bidMessage = false;
-        }
-        else {
-            bidMessage = true;
-        }
-        return SUCCESS;
+    
+    public void localBid(ActionEvent event) {
+        localHighBid = tempLocalBid;
+        Map auctionMap = AuctionState.getAuctionMap();
+        auctionMap.put(getItemID() + ".price", new Double(localHighBid));
+        auctionMap.put(getItemID() + ".bidCount", new Integer(
+                Integer.parseInt(auctionMap.get(getItemID() +".bidCount")
+                    .toString()) + 1 ) );
+        getCurrentPrice();
+        SessionRenderer.render("auction");
     }
 
     public String getBidMessage(){
-        if (!bidMessage){
-            return "";
-        }
-        else{
-            return "<br />Bid declined.";
-        }
+        return bidMessage;
+    }
+    
+    public void setBidMessage(String bidMessage) {
+        this.bidMessage = bidMessage;
     }
 
     public double getLocalBid() {
@@ -346,11 +327,6 @@ public class AuctionMonitorItemBean extends ItemType {
         } else {
             return TRIANGLE_CLOSED;
         }
-    }
-
-    public String pressBidButton() {
-        bidExpanded = !bidExpanded;
-        return SUCCESS;
     }
 
     public boolean isExpired() {

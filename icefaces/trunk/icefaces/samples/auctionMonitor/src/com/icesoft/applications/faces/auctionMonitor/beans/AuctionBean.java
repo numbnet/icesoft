@@ -46,6 +46,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.util.Arrays;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 /**
  * Class used to handle searching and sorting of auction items, as well as front
@@ -133,6 +135,30 @@ public class AuctionBean  {
             }
         }
         return null;
+    }
+    
+    /**
+     * Called when a bit button is pressed which causes the current auction
+     * element to collapse
+     * @return
+     */
+    public String pressBidButton() {
+        // get row instance that was clicked on .
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        AuctionMonitorItemBean auctionMonitorItemBean = (AuctionMonitorItemBean)
+                externalContext.getRequestMap().get("item");
+        // toggle the expanded state.
+        auctionMonitorItemBean.setBidExpanded(
+                !auctionMonitorItemBean.isBidExpanded());
+        // hide the all other auction items as the bid inputs cause some
+        // validation issues.
+        for (AuctionMonitorItemBean item :searchItemBeans){
+            if (item.isBidExpanded() &&
+                    !item.equals(auctionMonitorItemBean)){
+                item.setBidExpanded(false);
+            }
+        }
+        return SUCCESS;
     }
 
     public void reSearchItems() {
