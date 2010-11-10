@@ -4,6 +4,16 @@
 	    ICEpushPlace with ICEfaces 2.0
 	</display-name>
 	
+	<context-param>
+	    <param-name>applicationURL</param-name>
+	    <param-value>http://localhost:8080/icepushplace-icefaces2</param-value>
+	</context-param>
+	
+	<context-param>
+	    <param-name>webServiceURL</param-name>
+	    <param-value>http://localhost:8080/icePushPlaceService</param-value>
+	</context-param>
+	
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
@@ -33,10 +43,6 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.jsf</url-pattern>
     </servlet-mapping>
-	
-	<listener>
-	    <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
-	</listener>
 	
 	<welcome-file-list>
 	    <welcome-file>index.jsp</welcome-file>
