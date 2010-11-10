@@ -83,7 +83,7 @@ public class AuctionMonitorItemBean extends ItemType {
         localHighBid = getCurrentPrice();
 
         // Instead of a meaningless initial price of 0.0,
-        tempLocalBid = localHighBid;
+        tempLocalBid = localHighBid+1;
     }
 
     public String getPicture() {
@@ -166,6 +166,7 @@ public class AuctionMonitorItemBean extends ItemType {
         auctionMap.put(getItemID() + ".bidCount", new Integer(
                 Integer.parseInt(auctionMap.get(getItemID() +".bidCount")
                     .toString()) + 1 ) );
+        tempLocalBid++;
         getCurrentPrice();
         SessionRenderer.render("auction");
     }
