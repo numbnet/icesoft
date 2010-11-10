@@ -153,6 +153,7 @@ public class SelectInputDate
     public final static String CALENDAR_INPUTTEXT = "";
     private Boolean _renderMonthAsDropdown;
     private Boolean _renderYearAsDropdown;
+    private Boolean _renderWeekNumbers;
     private String inputTitle = null;
     private static final Pattern timePattern = Pattern.compile("[aHkKhmsS]");
     private Integer submittedHours = null;
@@ -544,6 +545,19 @@ public class SelectInputDate
         _renderYearAsDropdown = new Boolean(b);
     }
 
+    public boolean isRenderWeekNumbers() {
+        if (_renderWeekNumbers != null) {
+            return _renderWeekNumbers.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("renderWeekNumbers");
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : false;
+    }
+
+    public void setRenderWeekNumbers(boolean b) {
+        _renderWeekNumbers = new Boolean(b);
+    }
+
     /**
      * Sets the directory where the images used by this component are located.
      *
@@ -655,7 +669,7 @@ public class SelectInputDate
     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
     */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[30];
+        Object values[] = new Object[31];
         values[0] = super.saveState(context);
         values[1] = _renderAsPopup;
         values[2] = _popupDateFormat;
@@ -686,6 +700,7 @@ public class SelectInputDate
         values[27] = submittedSeconds;
         values[28] = submittedAmPm;
         values[29] = popupDate;
+        values[30] = _renderWeekNumbers;
         return ((Object) (values));
     }
 
@@ -724,6 +739,7 @@ public class SelectInputDate
         submittedSeconds = (Integer)values[27];
         submittedAmPm = (String)values[28];
         popupDate = (Date) values[29];
+        _renderWeekNumbers = (Boolean) values[30];
     }
     
     public Object saveSeriesState(FacesContext facesContext) {

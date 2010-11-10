@@ -300,4 +300,17 @@
         <category>ADVANCED</category>
     </property-extension>
 </property>
+
+<property>
+	<description>
+		Whether to render the week numbers of the year. Default is false.
+    </description>
+	<property-name>renderWeekNumbers</property-name>
+	<property-class>boolean</property-class>
+	<property-extension>
+		<category>ICE_LAYOUT</category>
+		<is-bindable>true</is-bindable>
+		<is-hidden>false</is-hidden>
+	</property-extension>
+</property>
         
