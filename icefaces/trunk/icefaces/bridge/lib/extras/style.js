@@ -237,8 +237,8 @@ Ice.modal = {
                             e.onkeyup = onkeyup;
                             e.onkeydown = onkeydown;
                             e.onclick = onclick;
-                        } catch (e) {
-                            //don't fail if element is not present anymore
+                        } catch (ex) {
+                            //do nothing
                         }
                     });
                 }
