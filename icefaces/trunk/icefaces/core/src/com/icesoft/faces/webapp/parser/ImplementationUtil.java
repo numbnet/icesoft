@@ -234,7 +234,8 @@ public class ImplementationUtil {
      * @return true if the JSF implementation is JSF 2.x
      */
     public static boolean isJSF2() {
-        return isJSF2;
+        //JSF 2.0 compatibility is not feasible due to ExternalContext API changes
+        return false;
     }
     
     /**
