@@ -429,9 +429,6 @@ public class PortletExternalContext extends BridgeExternalContext {
                 //reason.  So we store the key and remove it after we've checked everything.
                 //keys.remove();
                 tidyKeys.add(key);
-                if( Log.isDebugEnabled() ){
-                    Log.debug("removed " + key);
-                }
             } else {
                 Object val = requestMap.get(key);
                 if( val instanceof PortletRequest || val instanceof PortletResponse ||
@@ -440,9 +437,6 @@ public class PortletExternalContext extends BridgeExternalContext {
                     //reason.  So we store the key and remove it after we've checked everything.
                    //keys.remove();
                     tidyKeys.add(key);
-                    if( Log.isDebugEnabled() ){
-                        Log.debug("removed " + key);
-                    }
                 }
             }
         }
@@ -450,6 +444,9 @@ public class PortletExternalContext extends BridgeExternalContext {
         for(int index=0; index < tidyKeys.size(); index++){
             Object tidyKey = tidyKeys.get(index);
             requestMap.remove(tidyKey);
+            if( Log.isDebugEnabled() ){
+                Log.debug("removed " + tidyKey);
+            }
         }
     }
 
