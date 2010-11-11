@@ -68,6 +68,7 @@ import java.io.InputStream;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -75,7 +76,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.Date;
 
 public class PortletExternalContext extends BridgeExternalContext {
     private static final Log Log = LogFactory.getLog(BridgeExternalContext.class);
@@ -419,12 +419,16 @@ public class PortletExternalContext extends BridgeExternalContext {
     // manually remove the other references that can potentially cause excessive memory
     // consumption in live sessions.
     private void tidyRequestMap(){
+        ArrayList tidyKeys = new ArrayList();
         Iterator keys = requestMap.keySet().iterator();
         while (keys.hasNext()) {
             String key = (String)keys.next();
             if( "javax.portlet.request".equals(key) ||
                 "javax.portlet.response".equals(key)){
-                keys.remove();
+                //Using the iterator to do the removal does not work for some
+                //reason.  So we store the key and remove it after we've checked everything.
+                //keys.remove();
+                tidyKeys.add(key);
                 if( Log.isDebugEnabled() ){
                     Log.debug("removed " + key);
                 }
@@ -432,12 +436,20 @@ public class PortletExternalContext extends BridgeExternalContext {
                 Object val = requestMap.get(key);
                 if( val instanceof PortletRequest || val instanceof PortletResponse ||
                     val instanceof ServletRequest || val instanceof ServletResponse){
-                    keys.remove();
+                    //Using the iterator to do the removal does not work for some
+                    //reason.  So we store the key and remove it after we've checked everything.
+                   //keys.remove();
+                    tidyKeys.add(key);
                     if( Log.isDebugEnabled() ){
                         Log.debug("removed " + key);
                     }
                 }
             }
+        }
+
+        for(int index=0; index < tidyKeys.size(); index++){
+            Object tidyKey = tidyKeys.get(index);
+            requestMap.remove(tidyKey);
         }
     }
 
