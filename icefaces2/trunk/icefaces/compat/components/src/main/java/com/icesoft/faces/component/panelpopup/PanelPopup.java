@@ -22,6 +22,7 @@
 
 package com.icesoft.faces.component.panelpopup;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
@@ -421,7 +422,19 @@ public class PanelPopup extends HtmlPanelGroup {
     public void setDragged(boolean dragged) {
         this.dragged = dragged;
     }
-    
+
+    boolean visibleBefore = false;
+
+    public void encodeEnd(FacesContext context) throws IOException {
+        super.encodeEnd(context);
+        //capture previous state
+        visibleBefore = isVisible();
+    }
+
+    public boolean isVisibilityChanged() {
+        return isVisible() != visibleBefore;
+    }
+
     // ICE-3563 {
     private Boolean runningModal = null;
     

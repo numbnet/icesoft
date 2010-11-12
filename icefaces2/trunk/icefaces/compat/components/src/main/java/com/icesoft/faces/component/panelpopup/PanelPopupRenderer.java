@@ -179,7 +179,9 @@ public class PanelPopupRenderer extends GroupRenderer {
 		} catch (Exception e) {
 			log.error("Error rendering Modal Panel Popup ", e);
 		}
-        JavascriptContext.fireEffect(uiComponent, facesContext);
+        if (visibilityChanged(uiComponent)) {
+            JavascriptContext.fireEffect(uiComponent, facesContext);
+        }
 		
 		// get tables , our table is the first and only one
 		NodeList tables = root.getElementsByTagName(HTML.TABLE_ELEM);
@@ -258,11 +260,13 @@ public class PanelPopupRenderer extends GroupRenderer {
 
 		// Rebroadcast Javascript to survive refresh
 		if (dndType != null) {
-            JavascriptContext.addJavascriptCall(facesContext, "Ice.DnD.adjustPosition('" + uiComponent.getClientId(facesContext) + "');");
-           StringBuffer dropCall = new StringBuffer();
-            String call = addJavascriptCalls(uiComponent, "DRAG", handleId,
-					facesContext, dropCall);
-			JavascriptContext.addJavascriptCall(facesContext, call);
+            if (visibilityChanged(uiComponent)) {
+                JavascriptContext.addJavascriptCall(facesContext, "Ice.DnD.adjustPosition('" + uiComponent.getClientId(facesContext) + "');");
+                StringBuffer dropCall = new StringBuffer();
+                String call = addJavascriptCalls(uiComponent, "DRAG", handleId,
+                        facesContext, dropCall);
+                JavascriptContext.addJavascriptCall(facesContext, call);
+            }
 	        if (panelPopup.isClientOnly()) {
 	            //the "submit" method in the dragdrop_custom.js would check for this
 	            //element inside the panelPopup and will not fire submit if found
@@ -293,27 +297,35 @@ public class PanelPopupRenderer extends GroupRenderer {
 		} else {
 			autoPositionJS = "Ice.autoPosition.stop('" + clientId + "');";
 		}
-		JavascriptContext.addJavascriptCall(facesContext, autoPositionJS);
+        if (visibilityChanged(uiComponent)) {
+		    JavascriptContext.addJavascriptCall(facesContext, autoPositionJS);
+        }
 
 		// autoCentre handling
 		boolean autoCentre = panelPopup.isAutoCentre();
 		String centreJS;
         if (autoCentre && (!positionOnLoadOnly || (positionOnLoadOnly && !dragged))) {
 			centreJS = "Ice.autoCentre.start('" + clientId + "');";
-
 		} else {
 			centreJS = "Ice.autoCentre.stop('" + clientId + "');";
 		}
-		JavascriptContext.addJavascriptCall(facesContext, centreJS);
 
-        if (panelPopup instanceof PanelTooltip) {
-            JavascriptContext.addJavascriptCall(facesContext, "ToolTipPanelPopupUtil.adjustPosition('" + clientId + "');");
+        if (visibilityChanged(uiComponent)) {
+    		JavascriptContext.addJavascriptCall(facesContext, centreJS);
+
+            if (panelPopup instanceof PanelTooltip) {
+                JavascriptContext.addJavascriptCall(facesContext, "ToolTipPanelPopupUtil.adjustPosition('" + clientId + "');");
+            }
+            
+            JavascriptContext.addJavascriptCall(facesContext, "Ice.iFrameFix.start('" + clientId + "','" +
+                    CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank") + "');");
         }
-
-        JavascriptContext.addJavascriptCall(facesContext, "Ice.iFrameFix.start('" + clientId + "','" +
-                CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank") + "');");
     }
-    
+
+    private boolean visibilityChanged(UIComponent uiComponent) {
+        return ((PanelPopup) uiComponent).isVisibilityChanged();
+    }
+
     protected void doPassThru(FacesContext facesContext, UIComponent uiComponent,
             Element root) {
         PassThruAttributeRenderer.renderNonBooleanHtmlAttributes(uiComponent,
