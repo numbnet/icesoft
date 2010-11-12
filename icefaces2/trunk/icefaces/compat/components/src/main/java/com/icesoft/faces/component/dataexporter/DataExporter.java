@@ -413,7 +413,8 @@ public class DataExporter extends OutputResource {
                 
             // write header
 //System.out.println("DataExporter.renderToHandler()  HEADERS");
-            processAllColumns(fc, outputHandler, columns, includeColumnsArray, -1);
+            processAllColumns(
+                fc, outputHandler, columns, includeColumnsArray, -1, false);
 
 //System.out.println("DataExporter.renderToHandler()  ROWS");
             while (uiData.isRowAvailable()) {
@@ -423,7 +424,8 @@ public class DataExporter extends OutputResource {
                 }
 
                 // render the child columns; each one in a td
-                processAllColumns(fc, outputHandler, columns, includeColumnsArray, countOfRowsDisplayed);
+                processAllColumns(fc, outputHandler, columns,
+                    includeColumnsArray, countOfRowsDisplayed, false);
                 
                 // keep track of rows displayed
                 countOfRowsDisplayed++;
@@ -436,6 +438,11 @@ public class DataExporter extends OutputResource {
             // reset the underlying UIData component
             uiData.setRowIndex(-1);
 
+            // write footer
+//System.out.println("DataExporter.renderToHandler()  FOOTERS");
+            processAllColumns(fc, outputHandler, columns,
+                includeColumnsArray, countOfRowsDisplayed, true);
+            
             outputHandler.flushFile();
         } catch (Exception e) {
             log.error("renderToHandler()", e);
@@ -497,11 +504,12 @@ public class DataExporter extends OutputResource {
                                      OutputTypeHandler outputHandler,
                                      List columns,
                                      String[] includeColumnsArray,
-                                     int countOfRowsDisplayed) {
+                                     int countOfRowsDisplayed,
+                                     boolean footer) {
         if (includeColumnsArray != null) {
 //System.out.println("DataExporter.processAllColumns()  COLUMNS ARRAY");
             renderInUserDefinedOrder(fc, outputHandler, columns,
-                includeColumnsArray, 0, countOfRowsDisplayed);
+                includeColumnsArray, 0, countOfRowsDisplayed, footer);
         } else {
 //System.out.println("DataExporter.processAllColumns()  COLUMNS ITERATING");
             int colIndex = 0;
@@ -514,6 +522,11 @@ public class DataExporter extends OutputResource {
 //System.out.println("DataExporter.processAllColumns()    HEADER CELL");
                         processColumnHeader(
                             fc, outputHandler, nextColumn, colIndex);
+                    }
+                    else if (footer) {
+//System.out.println("DataExporter.processAllColumns()    FOOTER CELL");
+                        processColumnFooter(fc, outputHandler, nextColumn,
+                            colIndex, countOfRowsDisplayed);
                     }
                     else {
 //System.out.println("DataExporter.processAllColumns()    CELL");
@@ -540,6 +553,11 @@ public class DataExporter extends OutputResource {
                             processColumnHeader(
                                 fc, outputHandler, nextColumn, colIndex);
                         }
+                        else if (footer) {
+//System.out.println("DataExporter.processAllColumns()    FOOTER CELL  colIndex: " + colIndex);
+                            processColumnFooter(fc, outputHandler, nextColumn,
+                                colIndex, countOfRowsDisplayed);
+                        }
                         else {
 //System.out.println("DataExporter.processAllColumns()    CELL  colIndex: " + colIndex);
                             processColumn(fc, outputHandler, nextColumn,
@@ -562,6 +580,19 @@ public class DataExporter extends OutputResource {
             String headerText = encodeParentAndChildrenAsString(fc, headerComp);
             if (headerText != null) {
                 outputHandler.writeHeaderCell(headerText, colIndex);
+            }
+        }        
+    }
+    
+    protected void processColumnFooter(FacesContext fc, 
+                                    OutputTypeHandler outputHandler,
+                                    UIComponent uiColumn, int colIndex,
+                                    int countOfRowsDisplayed) {
+        UIComponent footerComp = uiColumn.getFacet("footer");
+        if (footerComp != null) {
+            Object output = encodeParentAndChildrenAsString(fc, footerComp);
+            if (output != null) {
+                outputHandler.writeFooterCell(output, colIndex, countOfRowsDisplayed);
             }
         }        
     }
@@ -614,8 +645,8 @@ public class DataExporter extends OutputResource {
             List columns,
             String[] includeColumnsArray,
             int colIndex,
-            int countOfRowsDisplayed
-            ) {
+            int countOfRowsDisplayed,
+            boolean footer) {
         UIComponent previousColumn = null;
         for (int i=0; i<includeColumnsArray.length; i++) {
 //System.out.println("DataExporter.renderInUserDefinedOrder()  includeColumnsArray["+i+"]: " + includeColumnsArray[i]);
@@ -710,6 +741,9 @@ public class DataExporter extends OutputResource {
             
             if (countOfRowsDisplayed == -1) {
                 processColumnHeader(fc, outputHandler, nextColumn, colIndex);
+            } else if (footer) {
+                processColumnFooter(fc, outputHandler, nextColumn, colIndex,
+                    countOfRowsDisplayed);
             } else {
                 processColumn(fc, outputHandler, nextColumn, colIndex, countOfRowsDisplayed);
             }

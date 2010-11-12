@@ -37,7 +37,7 @@ public class CSVOutputHandler extends OutputTypeHandler{
 	}
 
 	public void flushFile() {
-		buffer.deleteCharAt(buffer.lastIndexOf(","));		
+        deleteComma();
 		try{
 			FileWriter fw = new FileWriter(getFile());
 			fw.write(buffer.toString());
@@ -51,16 +51,46 @@ public class CSVOutputHandler extends OutputTypeHandler{
 
 	public void writeCell(Object output, int col, int row) {
 		if( row != rowIndex ){
-			buffer.deleteCharAt(buffer.lastIndexOf(","));
+            deleteComma();
 			buffer.append("\n");
 			rowIndex ++;
 		}
-		buffer.append(output.toString() + ",");
-		
+		buffer.append(escapeString(output));
+		buffer.append(",");
 	}
 
 	public void writeHeaderCell(String text, int col) {
 		//do nothing, no header to write for csv		
 	}
+
+    private void deleteComma() {
+        int comma = buffer.lastIndexOf(",");
+        if (comma > 0) {
+            buffer.deleteCharAt(comma);
+        }
+    }
+    
+    protected String escapeString(Object output) {
+        if (output == null) {
+            return "";
+        }
+        else {
+            StringBuffer sb = new StringBuffer(output.toString());
+            boolean addDoubleQuotes = ( sb.indexOf(",") >= 0 );
+            if (sb.indexOf("\"") >= 0) {
+                addDoubleQuotes = true;
+                for (int i = sb.length() - 1; i >= 0; i--) {
+                    if (sb.charAt(i) == '"') {
+                        sb.insert(i, '"');
+                    }
+                }
+            }
+            if (addDoubleQuotes) {
+                sb.insert(0, '"');
+                sb.append('"');
+            }
+            return sb.toString();
+        }
+    }
 
 }
