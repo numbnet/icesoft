@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icefaces.impl.util.DOMUtils;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponent;
@@ -66,9 +67,6 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         String clientId = uiComponent.getClientId(facesContext);
         String divId = ClientIdPool.get(clientId + AUTOCOMPLETE_DIV);
-        String call = " new Ice.Autocompleter('" + clientId + "','" + divId +
-                "', " + component.getOptions() + " ,'" + component.getRowClass() + "','" +
-                component.getSelectedRowClass() + "');";
 
         if (!domContext.isInitialized()) {
             Element root = domContext.createRootElement(HTML.DIV_ELEM);
@@ -128,15 +126,17 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
             PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
             PassThruAttributeRenderer.renderBooleanAttributes(facesContext,
                     uiComponent, input, PassThruAttributeRenderer.EMPTY_STRING_ARRAY);
-        }
-//        Set excludes = new HashSet();
-//        excludes.add(HTML.ONKEYDOWN_ATTR);
-//        excludes.add(HTML.ONKEYUP_ATTR);
-//        excludes.add(HTML.ONFOCUS_ATTR);
-//        excludes.add(HTML.ONBLUR_ATTR);
 
-        if (!component.isDisabled() && !component.isReadonly()) {
-            JavascriptContext.addJavascriptCall(facesContext, call);
+            Element scriptEle = domContext.createElement(HTML.SCRIPT_ELEM);
+            scriptEle.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));
+            scriptEle.setAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT);
+            if (!component.isDisabled() && !component.isReadonly()) {
+                Node node = domContext.createTextNode("new Ice.Autocompleter('" + clientId + "','" + divId +
+                        "', " + component.getOptions() + " ,'" + component.getRowClass() + "','" +
+                        component.getSelectedRowClass() + "');");
+                scriptEle.appendChild(node);
+            }
+            root.appendChild(scriptEle);
         }
     }
 
