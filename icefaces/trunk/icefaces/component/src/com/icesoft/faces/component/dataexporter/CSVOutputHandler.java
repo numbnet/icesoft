@@ -65,8 +65,8 @@ public class CSVOutputHandler extends OutputTypeHandler{
 			buffer.append("\n");
 			rowIndex ++;
 		}
-		buffer.append(output.toString() + ",");
-		
+		buffer.append(escapeString(output));
+		buffer.append(",");
 	}
 
 	public void writeHeaderCell(String text, int col) {
@@ -77,6 +77,29 @@ public class CSVOutputHandler extends OutputTypeHandler{
         int comma = buffer.lastIndexOf(",");
         if (comma > 0) {
             buffer.deleteCharAt(comma);
+        }
+    }
+    
+    protected String escapeString(Object output) {
+        if (output == null) {
+            return "";
+        }
+        else {
+            StringBuffer sb = new StringBuffer(output.toString());
+            boolean addDoubleQuotes = ( sb.indexOf(",") >= 0 );
+            if (sb.indexOf("\"") >= 0) {
+                addDoubleQuotes = true;
+                for (int i = sb.length() - 1; i >= 0; i--) {
+                    if (sb.charAt(i) == '"') {
+                        sb.insert(i, '"');
+                    }
+                }
+            }
+            if (addDoubleQuotes) {
+                sb.insert(0, '"');
+                sb.append('"');
+            }
+            return sb.toString();
         }
     }
 

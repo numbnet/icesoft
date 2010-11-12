@@ -56,7 +56,20 @@ public abstract class OutputTypeHandler {
 
 	public abstract void writeHeaderCell(String text, int col);
 
+    /**
+     * The row indexing is zero based, from the perspective of the row data,
+     * ignoring how many rows were used for the header 
+     */
 	public abstract void writeCell(Object output, int col, int row);
+    
+    /**
+     * The row indexing is zero based, from the perspective of the row data,
+     * ignoring how many rows were used for the header 
+     */
+    public void writeFooterCell(Object output, int col, int row) {
+        // Empty, instead of abstract, so we don't break any other classes 
+        // which extend this
+    }
 
 	public abstract void flushFile();
 
