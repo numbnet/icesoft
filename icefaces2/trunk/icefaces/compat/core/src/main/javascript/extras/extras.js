@@ -896,7 +896,7 @@ Ice.modal = {
 
     //returns last modal popup on the stack, null if there isn't any    
     getRunning:function() {
-        return this.running.isEmpty() ? null : this.running.last();
+        return this.running.length > 0 ? this.running.last() : null;
     },
     target:null,
     zIndexCount: 25000,
