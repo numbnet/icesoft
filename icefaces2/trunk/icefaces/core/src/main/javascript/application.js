@@ -155,6 +155,9 @@ if (!window.ice.icefaces) {
             return function() {
                 var form = document.getElementById(viewID);
                 try {
+                    //dispose is the final operation on this page, so no harm
+                    //in modifying the action to remove CDI conversation id
+                    form.action = form.action.replace(/(\?|&)cid=[0-9]+/,"$1");
                     debug(logger, 'dispose window and associated views ' + viewIDs);
                     postSynchronously(client, form.action, function(query) {
                         addNameValue(query, 'ice.submit.type', 'ice.dispose.window');
