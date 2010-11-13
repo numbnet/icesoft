@@ -320,7 +320,7 @@ public class PanelPopup extends HtmlPanelGroup {
 	public Object saveState(FacesContext context) {
 
             if(values == null){
-                values = new Object[12];
+                values = new Object[13];
             }
 		values[0] = super.saveState(context);
 		values[1] = styleClass;
@@ -334,6 +334,7 @@ public class PanelPopup extends HtmlPanelGroup {
         values[9] = positionOnLoadOnly;
         values[10] = Boolean.valueOf(dragged);
         values[11] = runningModal;        
+        values[12] = visibleBefore;
         
 		return ((Object) (values));
 	}
@@ -358,6 +359,7 @@ public class PanelPopup extends HtmlPanelGroup {
         positionOnLoadOnly = (Boolean) values[9];
         dragged = ((Boolean) values[10]).booleanValue();      
         runningModal = (Boolean) values[11];           
+        visibleBefore = ((Boolean) values[12]).booleanValue();
 	}
 
 	private String title = null;
