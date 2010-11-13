@@ -157,7 +157,7 @@ if (!window.ice.icefaces) {
                 try {
                     //dispose is the final operation on this page, so no harm
                     //in modifying the action to remove CDI conversation id
-                    form.action = form.action.replace(/(\?|&)cid=[0-9]+/,"$1");
+                    form.action = form.action.replace(/(\?|&)cid=[0-9]+/, "$1");
                     debug(logger, 'dispose window and associated views ' + viewIDs);
                     postSynchronously(client, form.action, function(query) {
                         addNameValue(query, 'ice.submit.type', 'ice.dispose.window');
@@ -250,7 +250,7 @@ if (!window.ice.icefaces) {
                     var element = event.target || event.srcElement;
                     var disabled = document.getElementById(id + ":ajaxDisabled");
                     if ((disabled) &&
-                        (disabled.value.indexOf(" " + element.id + " ") >= 0)) {
+                            (disabled.value.indexOf(" " + element.id + " ") >= 0)) {
                         return true;
                     }
                     f.onsubmit = function() {
@@ -264,22 +264,22 @@ if (!window.ice.icefaces) {
 
         namespace.enableSingleSubmit = function(id) {
             var f = document.getElementById(id);
-            var doSubmit = function(ev)  {
+
+            function submitForm(ev) {
                 var e = $event(ev, f);
                 var element = triggeredBy(e);
-                var type = toLowerCase(element.type);
-                if (type == 'submit')  {
+                if (toLowerCase(element.type) == 'submit') {
                     return;
                 }
                 ice.setFocus(null);
                 ice.se(e, element);
             }
+
             if (f.addEventListener) {
-                f.addEventListener('blur', doSubmit, true);
-                f.addEventListener('change', doSubmit, true);
-            }
-            else {
-                f.onfocusout = doSubmit;
+                f.addEventListener('blur', submitForm, true);
+                f.addEventListener('change', submitForm, true);
+            } else {
+                f.attachEvent('onfocusout', submitForm);
             }
         };
 
