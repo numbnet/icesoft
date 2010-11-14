@@ -65,7 +65,7 @@ public class JBossAssociatedPageViews extends AssociatedPageViewsImpl {
 
         //Provided we've made all the right assumptions above, we can get and invoke
         //the getRealRequest() method and send back the HttpServletRequest.
-        Method getRealReqMethod = superClass.getDeclaredMethod("getRealRequest");
+        Method getRealReqMethod = superClass.getDeclaredMethod("getRealRequest", new Class[0]);
         if (getRealReqMethod == null) {
             log.error("could not get method 'getRealRequest'" +
                     "\n  original request class is: " + origPortletReqClass +
@@ -75,7 +75,7 @@ public class JBossAssociatedPageViews extends AssociatedPageViewsImpl {
             );
         }
 
-        Object realRequestObj = getRealReqMethod.invoke(origPortletReqObj);
+        Object realRequestObj = getRealReqMethod.invoke(origPortletReqObj, new Object[0]);
 
         if (realRequestObj instanceof HttpServletRequest) {
             return (HttpServletRequest) realRequestObj;
