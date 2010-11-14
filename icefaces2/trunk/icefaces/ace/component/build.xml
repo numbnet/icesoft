@@ -133,7 +133,7 @@
     </ant>
   </target>
 
-  <target name="dist" depends="resources,compile,tlddoc" 
+  <target name="dist" depends="skins,compile,tlddoc" 
         description="generate the distribution" >
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>
@@ -167,12 +167,12 @@
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
 	
-	<antcall target="clean-resources" />
+	<antcall target="clean-skins" />
 
 	<subant buildpath="${cssurlmapper.rootdir}" target="clean" />
   </target>
   
-	<target name="resources" description="Prepare CSS and image resources." depends="cssurlmapper">
+	<target name="skins" description="Generate skinning resources for deployment." depends="cssurlmapper">
 	
 		<taskdef name="cssurlmapper" classname="${cssurlmapper.class}" 
 			classpath="${cssurlmapper.rootdir}/dist/cssurlmapper.jar;${cssurlmapper.rootdir}/lib/commons-cli-1.2.jar"/>
@@ -221,7 +221,7 @@
 		
 	</target>
 	
-	<target name="clean-resources" description="Clean all generated resources.">
+	<target name="clean-skins" description="Clean all generated skinning resources.">
 	
 		<!-- Delete temporary directories -->
 		<delete dir="${root.dir.path}" />
