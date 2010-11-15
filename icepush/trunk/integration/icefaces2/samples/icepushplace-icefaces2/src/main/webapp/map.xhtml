@@ -13,9 +13,16 @@
 	</h:head>
 	<h:body>
 	<center>
-		<h1>ICEfaces 2.0 - ICEpush Place View</h1>
-		<h:outputLink value="world.jsf">Table View</h:outputLink>
+		<h:graphicImage library="images" name="world-map.png" styleClass="worldImage"
+		                alt="The World"/>
 		
+        <place:floater list="#{personServiceImpl.world.africa}" startX="685" startY="185"/>
+        <place:floater list="#{personServiceImpl.world.antarctica}" startX="685" startY="500"/>
+        <place:floater list="#{personServiceImpl.world.asia}" startX="990" startY="155"/>
+        <place:floater list="#{personServiceImpl.world.europe}" startX="695" startY="60"/>
+        <place:floater list="#{personServiceImpl.world.northAmerica}" startX="380" startY="85"/>
+        <place:floater list="#{personServiceImpl.world.southAmerica}" startX="470" startY="280"/>
+        
 		<ice:panelPopup autoPosition="10,10"
 		                styleClass="consolePopup"
 		                visible="true">
@@ -32,6 +39,10 @@
 		    <f:facet name="body">
 		        <ice:panelGroup>
 		            <h:form>
+		                <center>
+		                    <h:outputLink value="world.jsf">Table View</h:outputLink>
+                        </center>
+                        
                         <ice:panelGroup rendered="#{mapBean.consolePopupVisible}">
                             <ui:include src="/WEB-INF/includes/person-input.xhtml"/>
                             
@@ -43,29 +54,6 @@
 		        </ice:panelGroup>
 		    </f:facet>
 		</ice:panelPopup>
-		
-		<table class="worldPanel" cellspacing="0" cellpadding="0">
-		<tbody>
-		    <tr><td>
-		    	<place:continent name="Africa" list="#{personServiceImpl.world.africa}"/>
-		    </td></tr>
-		    <tr><td>
-		    	<place:continent name="Antarctica" list="#{personServiceImpl.world.antarctica}"/>
-		    </td></tr>
-		    <tr><td>
-		    	<place:continent name="Asia" list="#{personServiceImpl.world.asia}"/>
-		    </td></tr>
-		    <tr><td>
-		    	<place:continent name="Europe" list="#{personServiceImpl.world.europe}"/>
-		    </td></tr>
-		    <tr><td>
-		    	<place:continent name="North America" list="#{personServiceImpl.world.northAmerica}"/>
-		    </td></tr>
-		    <tr><td>
-		    	<place:continent name="South America" list="#{personServiceImpl.world.southAmerica}"/>
-		    </td></tr>
-		</tbody>
-		</table>
 	</center>
 	</h:body>
 </html>
