@@ -219,6 +219,12 @@
 		<!-- add files from the YUI library to the concatenated sam skin -->
 		<antcall target="concatyuisam" />
 		
+		<!-- Copy the original Sam CSS files with class names renamed to ice-skin-sam -->
+		<mkdir dir="${resources}/${skins.lib}/sam/sam_renamed" />
+		<copy todir="${resources}/${skins.lib}/sam/sam_renamed">
+			<fileset dir="src/org/icefaces/component/skins/sam_renamed" includes="**" />
+		</copy>
+		
 	</target>
 	
 	<target name="clean-skins" description="Clean all generated skinning resources.">
