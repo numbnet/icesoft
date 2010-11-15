@@ -17,6 +17,24 @@ body, table td, select {
   font-size: small;
 }
 
+.consolePopup {
+    background-color: #DDDDDD;
+    border: 1px solid #104675;
+    z-index: 1001;
+    width: 300px;
+}
+
+.consolePopupHdr {
+    width: 100%;
+    background-color: #BBBBBB;
+    padding: 5px;
+}
+
+.consolePopupBody {
+    width: 100%;
+    padding: 5px;
+}
+
 .nameLabel, .moodLabel, .thoughtLabel, .messageLabel, .regionLabel {
     width: 100%;
     text-align: right;
@@ -28,8 +46,8 @@ body, table td, select {
 }
 
 .inputSet {
-    width: 35%;
     margin-bottom: 5px;
+    width: 100%;
 }
 
 .inputSetColLabel {

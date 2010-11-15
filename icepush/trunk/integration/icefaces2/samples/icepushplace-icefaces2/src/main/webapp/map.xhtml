@@ -4,7 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:place="http://java.sun.com/jsf/composite/comps">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:place="http://java.sun.com/jsf/composite/comps"
+      xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<h:head>
 		<title>ICEfaces 2.0 ICEpush Place</title>
 		<h:outputStylesheet library="css" name="style.css"/>
@@ -12,11 +14,35 @@
 	<h:body>
 	<center>
 		<h1>ICEfaces 2.0 - ICEpush Place View</h1>
-		<h:form>
-			<ui:include src="/WEB-INF/includes/person-input.xhtml"/>
-			
-			<h:commandButton value="Update" actionListener="#{personController.update}"/>
-		</h:form>
+		<h:outputLink value="world.jsf">Table View</h:outputLink>
+		
+		<ice:panelPopup autoPosition="10,10"
+		                styleClass="consolePopup"
+		                visible="true">
+		    <f:facet name="header">
+		        <h:form>
+		            <ice:panelGrid columns="2">
+                        ICEpush Place Console
+                        <h:commandLink value="#{mapBean.consolePopupVisible ? 'Collapse' : 'Expand'}"
+                                       actionListener="#{mapBean.toggleConsolePopup}"
+                                       immediate="true"/>
+                    </ice:panelGrid>
+                </h:form>
+		    </f:facet>
+		    <f:facet name="body">
+		        <ice:panelGroup>
+		            <h:form>
+                        <ice:panelGroup rendered="#{mapBean.consolePopupVisible}">
+                            <ui:include src="/WEB-INF/includes/person-input.xhtml"/>
+                            
+                            <center>
+                                <h:commandButton value="Update" actionListener="#{personController.update}"/>
+                            </center>
+                        </ice:panelGroup>
+		            </h:form>
+		        </ice:panelGroup>
+		    </f:facet>
+		</ice:panelPopup>
 		
 		<table class="worldPanel" cellspacing="0" cellpadding="0">
 		<tbody>

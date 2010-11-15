@@ -13,6 +13,8 @@ import org.icepush.ws.samples.icepushplace.PersonType;
 @ManagedBean(name="personController")
 @ApplicationScoped
 public class PersonController {
+    private static final String LOGIN_SUCCESS_REDIRECT = "map";
+    
 	@ManagedProperty(value="#{personServiceImpl}")
 	private PersonServiceImpl personService;
 	
@@ -29,7 +31,7 @@ public class PersonController {
         		PushRenderer.addCurrentSession(currentContinent);
         	}
         	
-        	return "world";
+        	return LOGIN_SUCCESS_REDIRECT;
         }
         else {
         	FacesUtil.addErrorMessage("Error while adding user '" + personModel.getName() + "' to the ICEpushplace.");
