@@ -89,7 +89,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             scriptHolder.setAttribute(HTML.STYLE_ATTR, "display:none");
             Element script = domContext.createElement(HTML.SCRIPT_ELEM);
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
-            script.appendChild(domContext.createTextNode(call.toString()));
+            script.appendChild(domContext.createTextNodeUnescaped(call.toString()));
             scriptHolder.appendChild(script);
             root.appendChild(scriptHolder);
             if (inputRichText.isSaveOnSubmit()) {

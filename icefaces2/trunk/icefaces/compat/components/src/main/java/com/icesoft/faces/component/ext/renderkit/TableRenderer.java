@@ -440,7 +440,7 @@ public class TableRenderer
                 resizeHandler.setAttribute(HTML.STYLE_ATTR, "cursor: e-resize; display:block;  height:100%;");
                 resizeHandler.setAttribute(HTML.ONMOUSEDOWN_ATTR, "new Ice.ResizableGrid(event);");
                 resizeHandler.setAttribute(HTML.CLASS_ATTR, "iceDatTblResHdlr");
-                resizeHandler.appendChild(domContext.createTextNode("&nbsp;"));
+                resizeHandler.appendChild(domContext.createTextNodeUnescaped("&nbsp;"));
                 handlerTd.appendChild(resizeHandler);
                 tr.appendChild(handlerTd);
             }
@@ -559,7 +559,7 @@ public class TableRenderer
                 resizeHandler.setAttribute(HTML.STYLE_ATTR, "cursor: e-resize; display:block;  height:100%;");
                 resizeHandler.setAttribute(HTML.ONMOUSEDOWN_ATTR, "new Ice.ResizableGrid(event);");
                 resizeHandler.setAttribute(HTML.CLASS_ATTR, "iceDatTblResHdlr");
-                resizeHandler.appendChild(domContext.createTextNode("&nbsp;"));
+                resizeHandler.appendChild(domContext.createTextNodeUnescaped("&nbsp;"));
                 handlerTd.appendChild(resizeHandler);
                 tr.appendChild(handlerTd);
             }
@@ -781,7 +781,7 @@ public class TableRenderer
                             anchor.setAttribute(HTML.ID_ATTR, clientId + "_idx_"+ countOfRowsDisplayed);                               
                             anchor.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT.FOCUS_HIDDEN_LINK_STYLE_CLASS);             
                             anchor.setAttribute(HTML.HREF_ATTR, "#"); 
-                            anchor.appendChild(domContext.createTextNode("<img src='"+ CoreUtils.resolveResourceURL(facesContext,
+                            anchor.appendChild(domContext.createTextNodeUnescaped("<img src='"+ CoreUtils.resolveResourceURL(facesContext,
                                         "/xmlhttp/css/xp/css-images/spacer.gif") + "'/>"));
                             anchor.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.tblRowFocus(this, "+ singleSelection +");");
                             anchor.setAttribute(HTML.ONBLUR_ATTR, "return Ice.tblRowBlur(this);");                                   

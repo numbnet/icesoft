@@ -78,7 +78,7 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
             Element script = domContext.createElement(HTML.SCRIPT_ELEM);
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
             script.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "script"));
-            script.appendChild(domContext.createTextNode(
+            script.appendChild(domContext.createTextNodeUnescaped(
                     "ice.onLoad(function(){ice.ComponentIndicators('" + workingID + "', '" + idleID + "', '" + troubleID + "', '" + lostID + "', " + component.isShowPopupOnDisconnect() + ", " + component.isDisplayHourglassWhenActive() + ");});"
             ));
             root.appendChild(script);

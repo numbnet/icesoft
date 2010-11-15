@@ -45,6 +45,7 @@ import com.icesoft.util.pooling.ClientIdPool;
 public class OutputProgressRenderer extends DomBasicInputRenderer {
     private static final String[] passThruAttributes =
             ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_OUTPUTPROGRESS);
+    private final String NBSP = "&nbsp;";
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -81,7 +82,6 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
                                DOMContext domContext,
                                Text percentageText,
                                Element fillBar) {
-        String space = "&nbsp;";
 
         OutputProgress progressBar = (OutputProgress) uiComponent;
 
@@ -108,7 +108,7 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
                 if (percentValue < 1) {
                     fillBar.setAttribute(HTML.CLASS_ATTR, 
                             progressBar.getIndeterminateInactiveClass());
-                    percentageText.setData(space);
+                    percentageText.setData(NBSP);
                 } else {
                     fillBar.setAttribute(HTML.CLASS_ATTR, 
                             progressBar.getIndeterminateActiveClass());
@@ -118,7 +118,7 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
                     if (progressLabel != null && progressLabel.length() > 0) {
                         percentageText.setData(progressLabel);
                     } else {
-                        percentageText.setData(space);
+                        percentageText.setData(NBSP);
                     }
                 }
             }
@@ -149,7 +149,7 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
                 }
             } else if (node == null) {
                 if (percentValue > 0) {
-                    Text nbsp4opera = domContext.createTextNode("&nbsp;");
+                    Text nbsp4opera = domContext.createTextNodeUnescaped(NBSP);
                     fillBar.appendChild(nbsp4opera);
                 }
             }
@@ -163,7 +163,6 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
 
     private void buildLayout(Element table, UIComponent uiComponent,
                              DOMContext domContext) {
-        String space = "&nbsp;";
         Node node = table.getFirstChild();
         Element tbody = domContext.createElement(HTML.TBODY_ELEM);
         if (node != null) {
@@ -185,7 +184,7 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
         Text percentageText = null;
         if (progressBar.getProgressLabel() != null) {
             //add the blank label initially
-            percentageText = domContext.createTextNode(space);
+            percentageText = domContext.createTextNodeUnescaped(NBSP);
         } else {
             percentageText = domContext.createTextNode("0 %");
         }
@@ -215,7 +214,7 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
 
 
         bgBar.appendChild(fillBar);
-        Text nbsp4mozila = domContext.createTextNode(space);
+        Text nbsp4mozila = domContext.createTextNodeUnescaped(NBSP);
 
         barTd.appendChild(bgBar);
 
@@ -279,7 +278,7 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
             row.appendChild(barTd);
         } else {
             //&nbsp fix for mozila
-            Text nbsp4opera = domContext.createTextNode(space);
+            Text nbsp4opera = domContext.createTextNodeUnescaped(NBSP);
             //&nbsp fix for opera
             fillBar.appendChild(nbsp4opera);
             bgBar.appendChild(nbsp4mozila);

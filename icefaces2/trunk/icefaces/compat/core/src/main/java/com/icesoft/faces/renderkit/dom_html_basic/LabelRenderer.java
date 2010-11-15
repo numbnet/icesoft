@@ -103,7 +103,7 @@ public class LabelRenderer extends DomBasicInputRenderer {
                 ((Text) firstChild).setData(currentValue);
             } else {
                 root.appendChild(
-                        domContext.getDocument().createTextNode(currentValue));
+                        domContext.createTextNode(currentValue));
             }
         }
 
