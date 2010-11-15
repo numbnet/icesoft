@@ -449,12 +449,14 @@ p#clear {
 }
 
 .ice-skin-sam .yui-calendar .calnavleft {
+    background-position: 0 0; /* reset previous value set by original Sam skin */
     background-image: url(cal_arrow_left.gif); /** sprite-ref: sprite-x; */
     width: 9px;
     height: 12px;
 }
 
 .ice-skin-sam .yui-calendar .calnavright {
+    background-position: 0 0; /* reset previous value set by original Sam skin */
     background-image: url(cal_arrow_right.gif); /** sprite-ref: sprite-x; */
     width: 9px;
     height: 12px;
