@@ -5,7 +5,8 @@ http://developer.yahoo.net/yui/license.txt
 version: 2.6.0
 */
 
-@import url('#{resource['org.icefaces.component.skins/sam_original/menu-skin.css']}');
+/* load original sam skin from YUI library (with class names renamed to ice-skin-sam) */
+@import url('../sam_renamed/menu-skin.css');
 
 .yuimenu .topscrollbar {
 

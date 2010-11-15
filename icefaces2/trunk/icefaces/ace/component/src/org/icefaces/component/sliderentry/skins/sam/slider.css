@@ -7,7 +7,7 @@
 
 /* ICE-6155 - need to manually copy slider-skin.css contents into sam slider.css so image reference mapping will resolve correctly. 
 
-@import url('#{resource['org.icefaces.component.skins/sam_original/slider-skin.css']}');
+@import url('../sam_renamed/slider-skin.css');
 
 */
 

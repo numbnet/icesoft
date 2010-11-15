@@ -6,8 +6,8 @@
  * existing skin, then leave the core styles below comented out.
  */
 
-/* load sam skin from YUI library */
-@import url('#{resource['org.icefaces.component.skins/sam_original/tabview-skin.css']}');
+/* load original sam skin from YUI library (with class names renamed to ice-skin-sam) */
+@import url('../sam_renamed/tabview-skin.css');
 
 .ice-skin-sam .yui-navset-left .yui-nav div.yui-navdiv, .ice-skin-sam .yui-navset-right .yui-nav div.yui-navdiv {
 border-width:1px 0;
