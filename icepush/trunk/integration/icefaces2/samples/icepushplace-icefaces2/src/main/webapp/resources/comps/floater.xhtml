@@ -14,7 +14,8 @@
     <composite:implementation>
         <ice:panelSeries value="#{cc.attrs.list}" var="occupant" varStatus="status">
             <ice:panelPopup styleClass="occupantPopup"
-                            autoPosition="#{cc.attrs.startX+status.index*10},#{cc.attrs.startY+status.index*10}">
+                            style="z-index: #{1999+status.index*-1};"
+                            autoPosition="#{cc.attrs.startX+status.index*5},#{cc.attrs.startY+status.index*18}">
                 <f:facet name="body">
                     <table width="100%" cellspacing="0" cellpadding="0">
                         <tr>
