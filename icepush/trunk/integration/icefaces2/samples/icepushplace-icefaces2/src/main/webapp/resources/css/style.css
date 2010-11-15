@@ -28,7 +28,7 @@ body, table td, select {
 .consolePopup {
     background-color: #DDDDDD;
     border: 1px solid #000000;
-    z-index: 1010;
+    z-index: 2005;
     width: 300px;
 }
 
@@ -46,7 +46,6 @@ body, table td, select {
 .occupantPopup {
     background-color: #FFFFFF;
     border: 1px solid #BBBBBB;
-    z-index: 1005;
     padding-left: 2px;
     padding-right: 2px;
 }
