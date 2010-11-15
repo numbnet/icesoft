@@ -187,6 +187,8 @@ public class SelectInputDateRenderer
 
     private static final String ID_SUFFIX = ":j_idcl";
 
+    private static final String NBSP = "&nbsp;";
+
     /* (non-Javadoc)
     * @see javax.faces.render.Renderer#getRendersChildren()
     */
@@ -423,7 +425,7 @@ public class SelectInputDateRenderer
                     return;
                 }
 
-                Text br = domContext.createTextNode("<br/>");
+                Text br = domContext.createTextNodeUnescaped("<br/>");
                 root.appendChild(br);
 
                 Element calendarDiv = domContext.createElement(HTML.DIV_ELEM);
@@ -455,7 +457,7 @@ public class SelectInputDateRenderer
                 Element positionDiv = domContext.createElement(HTML.DIV_ELEM);
                 positionDiv.appendChild(table);
                 calendarDiv.appendChild(positionDiv);
-                Text iframe = domContext.createTextNode("<!--[if lte IE" +
+                Text iframe = domContext.createTextNodeUnescaped("<!--[if lte IE" +
                         " 6.5]><iframe src='" + CoreUtils.resolveResourceURL
                         (FacesContext.getCurrentInstance(), "/xmlhttp/blank") +
                         "' class=\"iceSelInpDateIFrameFix\"></iframe><![endif]-->");
@@ -1134,7 +1136,7 @@ public class SelectInputDateRenderer
                 }
             }
 
-            writeCell(domContext, facesContext, writer, inputComponent, "&nbsp;",
+            writeCell(domContext, facesContext, writer, inputComponent, NBSP,
                     null, inputComponent.getDayCellClass(), tr1, null,
                     (weekStartsAtDayIndex + i) % 7,
                     timeKeeper, months, weekdaysLong, converter);
@@ -1247,7 +1249,7 @@ public class SelectInputDateRenderer
         if ((columnIndexCounter != 0) && (tr2 != null)) {
             for (int i = columnIndexCounter; i < weekdays.length; i++) {
                 writeCell(domContext, facesContext, writer,
-                        inputComponent, "&nbsp;", null,
+                        inputComponent, NBSP, null,
                         inputComponent.getDayCellClass(), tr2, null,
                         (weekStartsAtDayIndex + i) % 7,
                         timeKeeper, months, weekdaysLong, converter);
@@ -1274,7 +1276,14 @@ public class SelectInputDateRenderer
 
         if (valueForLink == null) {
             if (content != null && content.length() > 0) {
-                Text text = domContext.createTextNode(content);
+                //code path is complex, so only NBSP is passed
+                //through unescaped
+                Text text;
+                if (NBSP.equals(content))  {
+                    text = domContext.createTextNodeUnescaped(content);
+                } else {
+                    text = domContext.createTextNode(content);
+                }
                 td.setAttribute(HTML.TITLE_ATTR, weekdaysLong[weekDayIndex]);
                 td.appendChild(text);
             }

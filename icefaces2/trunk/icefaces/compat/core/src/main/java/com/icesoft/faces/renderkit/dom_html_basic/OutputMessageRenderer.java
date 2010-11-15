@@ -115,7 +115,7 @@ public class OutputMessageRenderer extends DomBasicRenderer {
         if (!domContext.isInitialized()) {
             // create the text message
             Document document = domContext.getDocument();
-            Text textNode = (Text) document.createTextNode(uiComponentValue);
+            Text textNode = (Text) domContext.createTextNode(uiComponentValue);
             // create a parent span, if required, otherwise set the root node
             // to the text node
             if (spanIsRequired) {

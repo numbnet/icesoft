@@ -138,7 +138,7 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         if (linkText != null && linkText.length() != 0) {
             Text labelNode = (Text) root.getFirstChild();
             if (labelNode == null) {
-                labelNode = domContext.getDocument().createTextNode(linkText);
+                labelNode = domContext.createTextNode(linkText);
                 root.appendChild(labelNode);
             } else {
                 labelNode.setData(linkText);

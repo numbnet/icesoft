@@ -312,7 +312,7 @@ public class PanelTabSetRenderer
             Element td = domContext.createElement(HTML.TD_ELEM);
             String className = tabSet.getSpacerClass();
             td.setAttribute(HTML.CLASS_ATTR, className);
-            Text text = domContext.createTextNode("&#160;");
+            Text text = domContext.createTextNodeUnescaped("&#160;");
             td.appendChild(text);
             // append the empty TextNode table data to our table row Element tr1
             tabsTableRow.appendChild(td);
@@ -395,7 +395,7 @@ public class PanelTabSetRenderer
 
             String className = tabSet.getSpacerClass();
             td.setAttribute(HTML.CLASS_ATTR, className);
-            Text text = domContext.createTextNode("&#160;");
+            Text text = domContext.createTextNodeUnescaped("&#160;");
 
             td.appendChild(text);
             // append the empty TextNode table data to our table row Element tr1
@@ -619,8 +619,6 @@ public class PanelTabSetRenderer
                 renderLinkText(label, domContext, link, tab, tabSet);                
             } else {
                 //link.setAttribute(HTML.STYLE_ATTR, "display:none;");
-                label = "<img src='"+ CoreUtils.resolveResourceURL(facesContext,
-                        "/xmlhttp/css/xp/css-images/spacer.gif") + "' />";
                 // set focus handler
                 if (tabSet.isKeyboardNavigationEnabled()) {
                     link.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.pnlTabOnFocus(this, true, true);");
@@ -643,7 +641,9 @@ public class PanelTabSetRenderer
                 CustomComponentUtils.renderChild(facesContext, labelFacet);
                 domContext.setCursorParent(cursor);  
 
-                Text spacer = domContext.createTextNode(label);
+                label = "<img src='"+ CoreUtils.resolveResourceURL(facesContext,
+                        "/xmlhttp/css/xp/css-images/spacer.gif") + "' />";
+                Text spacer = domContext.createTextNodeUnescaped(label);
                 link.appendChild(spacer);
             }
 
@@ -773,7 +773,7 @@ public class PanelTabSetRenderer
         if (linkText != null && linkText.length() != 0) {
             Text labelNode = (Text) link.getFirstChild();
             if (labelNode == null) {
-                labelNode = domContext.getDocument().createTextNode(linkText);
+                labelNode = domContext.createTextNode(linkText);
                 tab.addHeaderText(domContext, link, labelNode, tabSet);
             } else {
                 labelNode.setData(linkText);

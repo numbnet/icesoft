@@ -214,7 +214,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         	Element label = domContext.createElement("label");
             label.setAttribute(HTML.FOR_ATTR, itemId);
             Text textNode =
-                domContext.getDocument().createTextNode(selectItem.getLabel());
+                domContext.createTextNode(selectItem.getLabel());
             label.appendChild(textNode);            
             td.appendChild(label);
         }

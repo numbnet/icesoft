@@ -129,17 +129,17 @@ public class MessageRenderer extends DomBasicRenderer {
         if (title !=null) root.setAttribute(HTML.TITLE_ATTR, title);
 
         if (tooltip && showSummary && showDetail) {
-            Text textNode = domContext.getDocument().createTextNode(detail);
+            Text textNode = domContext.createTextNode(detail);
             root.appendChild(textNode);
 
         } else {
             if (showSummary) {
                 Text textNode =
-                        domContext.getDocument().createTextNode(summary);
+                        domContext.createTextNode(summary);
                 root.appendChild(textNode);
             }
             if (showDetail) {
-                Text textNode = domContext.getDocument().createTextNode(detail);
+                Text textNode = domContext.createTextNode(detail);
                 root.appendChild(textNode);
             }
         }

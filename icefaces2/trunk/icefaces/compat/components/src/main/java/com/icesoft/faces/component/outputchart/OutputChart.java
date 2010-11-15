@@ -49,6 +49,8 @@ import java.net.URI;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.icefaces.impl.util.DOMUtils;
+
 public class OutputChart extends HtmlCommandButton implements Serializable {
 
     public static final String SCATTER_PLOT_CHART_TYPE = "scatterplot";
@@ -431,9 +433,10 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
             Iterator area = getGeneratedImageMapArea().values().iterator();
             while (area.hasNext()) {
                 ImageMapArea areaMap = (ImageMapArea) area.next();
-                Text areaNode = domContext.createTextNode(areaMap.toHTML(
+                //unescape overall insertion, but ensure label is escaped
+                Text areaNode = domContext.createTextNodeUnescaped(areaMap.toHTML(
                         "id='"+ clientId + i++ + "' "+
-                        "title ='" + areaMap.getLengendLabel() +
+                        "title ='" + DOMUtils.escapeAnsi(areaMap.getLengendLabel()) +
                         "' href=\"javascript:;\" onclick=\"document.forms['" +
                         getParentFormId() + "']['" + ICE_CHART_COMPONENT +
                         "'].value='" + getClientId(getFacesContext()) +

@@ -114,7 +114,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
             anchor.setAttribute(HTML.ONBLUR_ATTR, "Ice.pnlClpBlur(this);");
             anchor.setAttribute(HTML.STYLE_ATTR, "float:left;border:none;margin:0px;");
             anchor.setAttribute(HTML.HREF_ATTR, "#");
-            anchor.appendChild(domContext.createTextNode("<img src=\"" + CoreUtils.resolveResourceURL(facesContext,
+            anchor.appendChild(domContext.createTextNodeUnescaped("<img src=\"" + CoreUtils.resolveResourceURL(facesContext,
                     "/xmlhttp/css/xp/css-images/spacer.gif") + "\"/>"));
             div.appendChild(anchor);
         }
