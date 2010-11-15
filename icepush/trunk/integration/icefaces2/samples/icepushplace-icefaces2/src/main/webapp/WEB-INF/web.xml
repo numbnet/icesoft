@@ -29,11 +29,6 @@
         <param-value>true</param-value>
     </context-param>
     
-    <context-param>
-        <param-name>com.icesoft.net.messaging.properties</param-name>
-        <param-value>active-mq.properties</param-value>
-    </context-param>
-
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
