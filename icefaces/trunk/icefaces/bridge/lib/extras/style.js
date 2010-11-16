@@ -103,7 +103,7 @@ Ice.modal = {
 
     //caller Ice.modal.stop()
     stopRunning:function(target) {
-        if (this.running.last() == target()) {
+        if (this.running.last() == target) {
             //de-register modal popup
             this.running.pop();
             //if there are more than one modal popups then this will enable the focus on
