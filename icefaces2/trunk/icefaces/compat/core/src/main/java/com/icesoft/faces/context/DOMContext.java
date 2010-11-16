@@ -42,12 +42,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * <p><strong>DOMContext</strong> provides a component specific interface to the
  * DOM renderer
  */
 public class DOMContext implements java.io.Serializable {
+    private static Logger log = Logger.getLogger(DOMContext.class.getName());
     private transient DOMResponseWriter writer;
     private Node cursor;
     private Document document;
@@ -91,7 +93,10 @@ public class DOMContext implements java.io.Serializable {
         if (responseWriter instanceof DOMResponseWriter) {
             domWriter = (DOMResponseWriter) responseWriter;
         } else {
-            domWriter = createTemporaryDOMResponseWriter(responseWriter, facesContext);
+//            domWriter = createTemporaryDOMResponseWriter(responseWriter, facesContext);
+            log.severe("ICEfaces rendering required by icefaces-compat.jar " +
+                      "components. Enable via <icecore:config render=\"true\" />.");
+            throw new UnsupportedOperationException("ICEfaces rendering required.");
         }
         Node cursorParent = domWriter.getCursorParent();
         Document doc = domWriter.getDocument();
@@ -225,7 +230,10 @@ public class DOMContext implements java.io.Serializable {
         if (responseWriter instanceof DOMResponseWriter) {
             domWriter = (DOMResponseWriter) responseWriter;
         } else {
-            domWriter = createTemporaryDOMResponseWriter(responseWriter, facesContext);
+//            domWriter = createTemporaryDOMResponseWriter(responseWriter, facesContext);
+            log.severe("ICEfaces rendering required by icefaces-compat.jar " +
+                      "components. Enable via <icecore:config render=\"true\" />.");
+            throw new UnsupportedOperationException("ICEfaces rendering required.");
         }
         Document doc = domWriter.getDocument();
         Map domContexts = getDOMContexts(facesContext);
