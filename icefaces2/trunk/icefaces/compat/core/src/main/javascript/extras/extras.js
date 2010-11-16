@@ -887,11 +887,13 @@ Ice.modal = {
     //caller Ice.modal.stop()
     stopRunning:function(target) {
         //de-register modal popup
-        this.running.pop();
-        //if there are more than one modal popups then this will enable the focus on
-        //last opened modal popup and if there is no modal popup left then it will
-        //enable the focus on the document.  
-        this.restoreTabindex(this.getRunning());
+        if (this.running.last() == target) {
+            this.running.pop();
+            //if there are more than one modal popups then this will enable the focus on
+            //last opened modal popup and if there is no modal popup left then it will
+            //enable the focus on the document.
+            this.restoreTabindex(this.getRunning());
+        }
     },
 
     //returns last modal popup on the stack, null if there isn't any    
@@ -3473,7 +3475,7 @@ ToolTipPanelPopup = Class.create({
             tooltip.style.display = "";
             var srcComp = $(this.srcCompId);
             var cumulativeOffset = srcComp.cumulativeOffset();
-            var positionedOffset =  srcComp.positionedOffset();
+            var positionedOffset = srcComp.positionedOffset();
             tooltip.style.top = this.y - tooltip.offsetHeight - 4 - cumulativeOffset.top + positionedOffset.top + "px";
             tooltip.style.left = this.x + 4 - cumulativeOffset.left + positionedOffset.left + "px";
             ToolTipPanelPopupUtil.adjustPosition(tooltip);
