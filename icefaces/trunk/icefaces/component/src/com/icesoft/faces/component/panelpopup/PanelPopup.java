@@ -44,7 +44,6 @@ import org.w3c.dom.Element;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -347,7 +346,7 @@ public class PanelPopup extends HtmlPanelGroup {
         values[10] = Boolean.valueOf(dragged);
         values[11] = runningModal;
         values[12] = Boolean.valueOf(visibleBefore);
-        
+
         return ((Object) (values));
     }
 
@@ -440,8 +439,8 @@ public class PanelPopup extends HtmlPanelGroup {
 
     boolean visibleBefore = false;
 
-    public void encodeEnd(FacesContext context) throws IOException {
-        super.encodeEnd(context);
+    public void processDecodes(FacesContext context) {
+        super.processDecodes(context);
         //capture previous state
         visibleBefore = isVisible();
     }

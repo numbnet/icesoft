@@ -48,8 +48,8 @@ import com.icesoft.util.pooling.ClientIdPool;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -123,62 +123,58 @@ public class PanelPopupRenderer extends GroupRenderer {
 
         String clientId = uiComponent.getClientId(facesContext);
 
-        if (!domContext.isInitialized()) {
-            Element rootDiv = domContext.createRootElement(HTML.DIV_ELEM);
-            setRootElementId(facesContext, rootDiv, uiComponent);
-            rootDiv.setAttribute(HTML.NAME_ATTR, clientId);
-            if (uiComponent instanceof PanelTooltip) {
-                if (((PanelTooltip) uiComponent).isDynamic() && !((PanelTooltip) uiComponent).isVisible()) {
-                    rootDiv.setAttribute(HTML.STYLE_ATTR, "display:none;");
-                    domContext.stepOver();
-                    return;
-                }
+        Element rootDiv = domContext.createRootElement(HTML.DIV_ELEM);
+        setRootElementId(facesContext, rootDiv, uiComponent);
+        rootDiv.setAttribute(HTML.NAME_ATTR, clientId);
+        if (uiComponent instanceof PanelTooltip) {
+            if (((PanelTooltip) uiComponent).isDynamic() && !((PanelTooltip) uiComponent).isVisible()) {
+                rootDiv.setAttribute(HTML.STYLE_ATTR, "display:none;");
+                domContext.stepOver();
+                return;
             }
-            Element table = domContext.createElement(HTML.TABLE_ELEM);
-            table.setAttribute(HTML.CELLPADDING_ATTR, "0");
-            table.setAttribute(HTML.CELLSPACING_ATTR, "0");
+        }
+        Element table = domContext.createElement(HTML.TABLE_ELEM);
+        table.setAttribute(HTML.CELLPADDING_ATTR, "0");
+        table.setAttribute(HTML.CELLSPACING_ATTR, "0");
 //			table.setAttribute(HTML.WIDTH_ATTR, "100%");
-            rootDiv.appendChild(table);
+        rootDiv.appendChild(table);
 /*
             Text iframe = domContext.createTextNode("<!--[if lte IE 6.5]><iframe src=\"" +
                     CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(), "/xmlhttp/blank") +
                     "\" class=\"iceIEIFrameFix\" style=\"width:100%;height:100%;\"></iframe><![endif]-->");
             rootDiv.appendChild(iframe);
 */
-            // extracted from GroupRenderer encodeBegin
-            if (dndType != null) {
-                // Drag an drop needs some hidden fields
-                Element statusField = createHiddenField(domContext,
-                        facesContext, uiComponent, STATUS);
-                rootDiv.appendChild(statusField);
-                Element targetID = createHiddenField(domContext, facesContext,
-                        uiComponent, DROP);
-                rootDiv.appendChild(targetID);
-                UIComponent form = findForm(uiComponent);
-                String formId = form.getClientId(facesContext);
-                FormRenderer.addHiddenField(facesContext, ClientIdPool.get(formId + HIDDEN_FILED));
-            }
-            if (modal.booleanValue() && visible.booleanValue()) {
-                Element elt = domContext.createElement(HTML.INPUT_ELEM);
-                elt.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN);
-                String idAndName = clientId + "_rendered";
-                elt.setAttribute(HTML.NAME_ATTR, idAndName);
-                elt.setAttribute(HTML.ID_ATTR, idAndName);
-                rootDiv.appendChild(elt);
-            }
-            // Write Modal Javascript so that on refresh it will still be modal.
-            String script = modalJavascript(uiComponent, modal, visible, facesContext, clientId);
-            if (script != null) {
-                Element scriptEle = domContext.createElement(HTML.SCRIPT_ELEM);
-                scriptEle.setAttribute(HTML.SCRIPT_LANGUAGE_ATTR,
-                        HTML.SCRIPT_LANGUAGE_JAVASCRIPT);
-                scriptEle.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));
-                scriptEle.setAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT);
-                Node node = domContext.createTextNode(script);
-                scriptEle.appendChild(node);
-                rootDiv.appendChild(scriptEle);
-            }
+        // extracted from GroupRenderer encodeBegin
+        if (dndType != null) {
+            // Drag an drop needs some hidden fields
+            Element statusField = createHiddenField(domContext,
+                    facesContext, uiComponent, STATUS);
+            rootDiv.appendChild(statusField);
+            Element targetID = createHiddenField(domContext, facesContext,
+                    uiComponent, DROP);
+            rootDiv.appendChild(targetID);
+            UIComponent form = findForm(uiComponent);
+            String formId = form.getClientId(facesContext);
+            FormRenderer.addHiddenField(facesContext, ClientIdPool.get(formId + HIDDEN_FILED));
         }
+        if (modal.booleanValue() && visible.booleanValue()) {
+            Element elt = domContext.createElement(HTML.INPUT_ELEM);
+            elt.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN);
+            String idAndName = clientId + "_rendered";
+            elt.setAttribute(HTML.NAME_ATTR, idAndName);
+            elt.setAttribute(HTML.ID_ATTR, idAndName);
+            rootDiv.appendChild(elt);
+        }
+        // Write Modal Javascript so that on refresh it will still be modal.
+        String script = modalJavascript(uiComponent, modal, visible, facesContext, clientId);
+        Element scriptEle = domContext.createElement(HTML.SCRIPT_ELEM);
+        scriptEle.setAttribute(HTML.SCRIPT_LANGUAGE_ATTR,
+                HTML.SCRIPT_LANGUAGE_JAVASCRIPT);
+        scriptEle.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));
+        scriptEle.setAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT);
+        Text scriptTextNode = domContext.createTextNode(script);
+        scriptEle.appendChild(scriptTextNode);
+        rootDiv.appendChild(scriptEle);
 
         Element root = (Element) domContext.getRootNode();
 
@@ -187,17 +183,15 @@ public class PanelPopupRenderer extends GroupRenderer {
         } catch (Exception e) {
             log.error("Error rendering Modal Panel Popup ", e);
         }
-        if (visibilityChanged(uiComponent)) {
-            JavascriptContext.fireEffect(uiComponent, facesContext);
-        }
+        JavascriptContext.fireEffect(uiComponent, facesContext);
 
         // get tables , our table is the first and only one
         NodeList tables = root.getElementsByTagName(HTML.TABLE_ELEM);
         // assumption we want the first table in tables. there should only be
         // one
-        Element table = (Element) tables.item(0);
+        Element t = (Element) tables.item(0);
         // clean out child nodes and build a fresh selectinputdate
-        DOMContext.removeChildrenByTagName(table, HTML.TR_ELEM);
+        DOMContext.removeChildrenByTagName(t, HTML.TR_ELEM);
 
         doPassThru(facesContext, uiComponent, root);
         String handleId = null;
@@ -216,7 +210,7 @@ public class PanelPopupRenderer extends GroupRenderer {
             headerTdSpacer.appendChild(headerDiv);
             headerTr.appendChild(headerTdSpacer);
             // add header facet to header tr and add to table
-            table.appendChild(headerTr);
+            t.appendChild(headerTr);
             // set the cursor parent to the new table row Element
             // to the new table row Element
             domContext.setCursorParent(headerTd);
@@ -235,7 +229,7 @@ public class PanelPopupRenderer extends GroupRenderer {
             bodyTr.appendChild(bodyTd);
             bodyTd.setAttribute(HTML.COLSPAN_ATTR, "2");
             // add body facet to body tr then add to table
-            table.appendChild(bodyTr);
+            t.appendChild(bodyTr);
             // set the cursor parent to the new table row Element
             // this will cause the renderChild method to append the child nodes
             // to the new table row Element
@@ -260,7 +254,7 @@ public class PanelPopupRenderer extends GroupRenderer {
             img.setAttribute(HTML.STYLE_ATTR, "cursor: se-resize");
             footerTd.appendChild(img);
             footerTr.appendChild(footerTd);
-            table.appendChild(footerTr);
+            t.appendChild(footerTr);
         }
 
         panelPopup.applyStyle(facesContext, root);
@@ -268,11 +262,10 @@ public class PanelPopupRenderer extends GroupRenderer {
 
         // Rebroadcast Javascript to survive refresh
         if (dndType != null) {
-            JavascriptContext.addJavascriptCall(facesContext, "Ice.DnD.adjustPosition('" + uiComponent.getClientId(facesContext) + "');");
+            scriptTextNode.appendData("; Ice.DnD.adjustPosition('" + uiComponent.getClientId(facesContext) + "');");
             StringBuffer dropCall = new StringBuffer();
-            String call = addJavascriptCalls(uiComponent, "DRAG", handleId,
-                    facesContext, dropCall);
-            JavascriptContext.addJavascriptCall(facesContext, call);
+            String call = addJavascriptCalls(uiComponent, "DRAG", handleId, facesContext, dropCall);
+            scriptTextNode.appendData("; " + call);
             if (panelPopup.isClientOnly()) {
                 //the "submit" method in the dragdrop_custom.js would check for this
                 //element inside the panelPopup and will not fire submit if found
@@ -302,9 +295,7 @@ public class PanelPopupRenderer extends GroupRenderer {
         } else {
             autoPositionJS = "Ice.autoPosition.stop('" + clientId + "');";
         }
-        if (visibilityChanged(uiComponent)) {
-            JavascriptContext.addJavascriptCall(facesContext, autoPositionJS);
-        }
+        scriptTextNode.appendData("; " + autoPositionJS);
 
         // autoCentre handling
         boolean autoCentre = panelPopup.isAutoCentre();
@@ -315,21 +306,14 @@ public class PanelPopupRenderer extends GroupRenderer {
         } else {
             centreJS = "Ice.autoCentre.stop('" + clientId + "');";
         }
-        if (visibilityChanged(uiComponent)) {
-            JavascriptContext.addJavascriptCall(facesContext, centreJS);
-        }
+
+        scriptTextNode.appendData("; " + centreJS);
 
         if (panelPopup instanceof PanelTooltip) {
-            JavascriptContext.addJavascriptCall(facesContext, "ToolTipPanelPopupUtil.adjustPosition('" + clientId + "');");
+            scriptTextNode.appendData("; ToolTipPanelPopupUtil.adjustPosition('" + clientId + "');");
         }
-        if (visibilityChanged(uiComponent)) {
-            JavascriptContext.addJavascriptCall(facesContext, "Ice.iFrameFix.start('" + clientId + "','" +
-                    CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank") + "');");
-        }
-    }
-
-    private boolean visibilityChanged(UIComponent uiComponent) {
-        return ((PanelPopup) uiComponent).isVisibilityChanged();
+        scriptTextNode.appendData("; Ice.iFrameFix.start('" + clientId + "','" +
+                CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank") + "');");
     }
 
     protected void doPassThru(FacesContext facesContext, UIComponent uiComponent,
@@ -342,7 +326,7 @@ public class PanelPopupRenderer extends GroupRenderer {
 
     private String modalJavascript(UIComponent uiComponent, Boolean modal, Boolean visible,
                                    FacesContext facesContext, String clientId) {
-        String call = null;
+        String call = "";
         String iframeUrl = CoreUtils.resolveResourceURL(facesContext,
                 "/xmlhttp/blank");
         if (modal != null) {
