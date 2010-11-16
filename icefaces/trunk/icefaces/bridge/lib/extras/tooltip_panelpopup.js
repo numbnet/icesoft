@@ -99,8 +99,11 @@ ToolTipPanelPopup = Class.create({
         tooltip.style.visibility = "visible";
         tooltip.style.position = "absolute" ;
         tooltip.style.display = "";
-        tooltip.style.top = this.y - tooltip.offsetHeight - 4 + "px";
-        tooltip.style.left = this.x+4+"px";
+        var srcComp = $(this.srcCompId);
+        var cumulativeOffset = srcComp.cumulativeOffset();
+        var positionedOffset =  srcComp.positionedOffset();
+        tooltip.style.top = this.y - tooltip.offsetHeight - 4 - cumulativeOffset.top + positionedOffset.top + "px";
+        tooltip.style.left = this.x+4 - cumulativeOffset.left + positionedOffset.left +"px";
         ToolTipPanelPopupUtil.adjustPosition(tooltip);
         Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
     }
