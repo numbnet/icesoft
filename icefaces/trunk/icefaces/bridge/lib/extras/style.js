@@ -103,12 +103,14 @@ Ice.modal = {
 
     //caller Ice.modal.stop()
     stopRunning:function(target) {
-        //de-register modal popup
-        this.running.pop();
-        //if there are more than one modal popups then this will enable the focus on
-        //last opened modal popup and if there is no modal popup left then it will
-        //enable the focus on the document.  
-        this.restoreTabindex(this.getRunning());
+        if (this.running.last() == target()) {
+            //de-register modal popup
+            this.running.pop();
+            //if there are more than one modal popups then this will enable the focus on
+            //last opened modal popup and if there is no modal popup left then it will
+            //enable the focus on the document.
+            this.restoreTabindex(this.getRunning());
+        }
     },
 
     //returns last modal popup on the stack, null if there isn't any    
