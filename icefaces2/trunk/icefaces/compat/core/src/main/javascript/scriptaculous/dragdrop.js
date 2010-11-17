@@ -33,8 +33,19 @@ var Droppables = {
     drops: [],
 
     remove: function(element) {
+        var dollarElement = $(element);
         this.drops = this.drops.reject(function(d) {
-            return d.element == $(element)
+            return d.element == dollarElement;
+        });
+    },
+
+    removeOptimised: function(id, element) {
+        var dollarElement = $(element);
+        this.drops = this.drops.reject(function(d) {
+            if (id) {
+                return (d.id == id);
+            }
+            return d.element == dollarElement;
         });
     },
 
