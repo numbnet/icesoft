@@ -25,7 +25,7 @@ import org.icefaces.component.baseMeta.UISelectOneMeta;
         )
         
 @ResourceDependencies({
-    @ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
+    @ResourceDependency(name="yui/yui-min.js",library="yui/3_2_0"),
     @ResourceDependency(library = "yui/2_8_1", name="yuiloader/yuiloader-min.js"),
     @ResourceDependency(library = "yui/2_8_1", name="dom/dom-min.js"),   
     @ResourceDependency(library = "yui/2_8_1", name = "event/event-min.js"),
