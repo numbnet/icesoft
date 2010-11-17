@@ -23,7 +23,7 @@ import org.icefaces.component.baseMeta.UISelectOneMeta;
         )
         
 @ResourceDependencies({
-    @ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
+    @ResourceDependency(name="yui/yui-min.js",library="yui/3_2_0"),
     @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
     @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
     @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
