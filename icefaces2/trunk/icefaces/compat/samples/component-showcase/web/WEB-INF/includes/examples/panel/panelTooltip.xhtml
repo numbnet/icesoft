@@ -36,23 +36,36 @@
 -->
 <ice:panelGroup styleClass="exampleBox panelToolTipContainer">
 
+    <ice:panelGroup style="display:inline;">
+        <ice:outputLabel value="#{msgs['page.panelTooltip.displayOn.label']}" for="displayOn"/>
+        <ice:selectOneMenu id="displayOn" value="#{tooltipController.panelToolTipModel.displayOn}" partialSubmit="true">
+            <f:selectItem itemValue="hover" itemLabel="#{msgs['page.panelTooltip.displayOn.label1']}"/>
+            <f:selectItem itemValue="click" itemLabel="#{msgs['page.panelTooltip.displayOn.label2']}"/>
+            <f:selectItem itemValue="altclick" itemLabel="#{msgs['page.panelTooltip.displayOn.label3']}"/>
+            <f:selectItem itemValue="dblclick" itemLabel="#{msgs['page.panelTooltip.displayOn.label4']}"/>
+        </ice:selectOneMenu>
+    </ice:panelGroup>
     <!-- tool tip duration config -->
-    <ice:panelGroup style="float:left;margin-right:3px;">
+    <ice:panelGroup style="display:inline;">
         <ice:outputLabel value="#{msgs['page.panelTooltip.duration.label']}"
-                         for="duration"/>
+                         for="duration" style="margin-left:1em;"/>
         <ice:selectOneMenu id="duration"
-                           partialSubmit="true"
+                           partialSubmit="true" disabled="#{tooltipController.panelToolTipModel.displayOn != 'hover'}"
                            value="#{tooltipController.panelToolTipModel.hoverDelay}">
             <f:selectItem
-                    itemValue="1000"
+                    itemValue="500"
                     itemLabel="#{msgs['page.panelTooltip.duration.label1']}"/>
             <f:selectItem
-                    itemValue="1500"
+                    itemValue="1000"
                     itemLabel="#{msgs['page.panelTooltip.duration.label2']}"/>
             <f:selectItem
-                    itemValue="2000"
+                    itemValue="1500"
                     itemLabel="#{msgs['page.panelTooltip.duration.label3']}"/>
         </ice:selectOneMenu>
+    </ice:panelGroup>
+    <ice:panelGroup style="display:inline;">
+        <ice:outputLabel value="#{msgs['page.panelTooltip.moveWithMouse.label']}" for="moveWithMouse" style="margin-left:1em;"/>
+        <ice:selectBooleanCheckbox id="moveWithMouse" partialSubmit="true" value="#{tooltipController.panelToolTipModel.moveWithMouse}"/>
     </ice:panelGroup>
     <ice:messages />
 </ice:panelGroup>
@@ -74,8 +87,8 @@
                 <ice:outputText value="#{inventoryItem.name}"/>
             </ice:panelGroup>
     
-            <ice:panelTooltip id="pnlSerPanelToolTip"
-                              hideOn="#{tooltipController.panelToolTipModel.hideOn}"
+            <ice:panelTooltip id="pnlSerPanelToolTip" displayOn="#{tooltipController.panelToolTipModel.displayOn}"
+                              hideOn="#{tooltipController.panelToolTipModel.hideOn}" moveWithMouse="#{tooltipController.panelToolTipModel.moveWithMouse}"
                               hoverDelay="#{tooltipController.panelToolTipModel.hoverDelayTime}"
                               style="width:100px;height:75px;text-align:left;">
                 <f:facet name="header">
@@ -91,7 +104,7 @@
                             <f:convertNumber type="currency" currencySymbol="$"
                                              groupingUsed="true"
                                              maxFractionDigits="2"/>
-                        </ice:outputText><br/>
+                        </ice:outputText>
                         <ice:outputText id="DDQty"
                                         value="#{msgs['page.dragDrop.store.quantity.label']}#{inventoryItem.quantity}"/>
                     </ice:panelGroup>
@@ -132,8 +145,8 @@
     </ice:panelGroup>
 
     <!-- toolTip decloration that is ued for more then one panelGroup -->
-    <ice:panelTooltip id="provinceInfo"
-                      hideOn="#{tooltipController.panelToolTipModel.hideOn}"
+    <ice:panelTooltip id="provinceInfo" displayOn="#{tooltipController.panelToolTipModel.displayOn}"
+                      hideOn="#{tooltipController.panelToolTipModel.hideOn}" moveWithMouse="#{tooltipController.panelToolTipModel.moveWithMouse}"
                       hoverDelay="#{tooltipController.panelToolTipModel.hoverDelayTime}"
                       displayListener="#{tooltipController.displayListener}"
                       style="width: 125px; height: 135px;" >

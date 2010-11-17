@@ -42,7 +42,7 @@ import javax.faces.component.UIViewRoot;
 /**
  * <p>The LocaleBean is responsible for keeping track of the current application
  * locale.  The locale of the application can be changed using the a
- * selectOneMenu located in the languageThemeControl.jspx.  The application
+ * selectOneMenu located in the languageThemeControl.xhtml.  The application
  * currently support English, German and Spanish</p>
  *
  * @author ICEsoft Technologies Inc.

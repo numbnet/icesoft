@@ -80,7 +80,10 @@ public class Media  implements Serializable {
     }
 
     public String getSource() {
-        return playerProps.getProperty("source");
+        if (playerProps != null) return playerProps.getProperty("source");
+        // ICE-4749
+        selectedPlayer = "flash";
+        return "/media/ICEfaces_Flash.swf";
     }
 
     public String getStyle() {

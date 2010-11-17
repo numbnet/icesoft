@@ -183,6 +183,19 @@ are shown but could easily be made to invoke application logic.
     </ice:menuItem>
 </ice:menuItem>
 
+<!-- Help Menu -->
+<ice:menuItem value="Help"
+              id="help" onclick="return false;">
+    <!-- Example of using the menu item to open a new window.
+    	Note that the attributes of 'link' and 'action*' are mutually exclusive.
+    -->
+    <ice:menuItem id="docs"
+    			value="Documentation"
+    			icon="/images/menu/help.gif"
+    			link="http://www.icefaces.org/main/resources/documentation.iface"
+    			target="_blank"/>
+</ice:menuItem>
+
 </ice:menuBar>
 </ice:panelGroup>
 

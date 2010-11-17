@@ -45,16 +45,18 @@ public class OutputResourceBean implements Serializable {
     public static final String RESOURCE_PATH = "/WEB-INF/classes/org/icefaces/application/showcase/view/resources/";
 
 
-    public OutputResourceBean() {
-        try {
-            imgResource = new MyResource("logo.jpg");
-            pdfResource = new MyResource("WP_Security_Whitepaper.pdf");
-            pdfResourceDynFileName = new MyResource("WP_Security_Whitepaper.pdf");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public OutputResourceBean(){
+		try{
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+            imgResource = new MyResource(ec,"logo.jpg");
+			pdfResource =  new MyResource(ec,"WP_Security_Whitepaper.pdf");
+			pdfResourceDynFileName = new MyResource(ec,"WP_Security_Whitepaper.pdf");
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 
     public Resource getImgResource() {
         return imgResource;
@@ -94,8 +96,10 @@ class MyResource implements Resource, Serializable {
     private String resourceName;
     private InputStream inputStream;
     private final Date lastModified;
+    private ExternalContext extContext;
 
-    public MyResource( String resourceName) {
+    public MyResource(ExternalContext ec, String resourceName) {
+        this.extContext = ec;
         this.resourceName = resourceName;
         this.lastModified = new Date();
     }
@@ -111,11 +115,11 @@ class MyResource implements Resource, Serializable {
      * com.icesoft.faces.context.FileResource, com.icesoft.faces.context.JarResource.
      */
     public InputStream open() throws IOException {
-        InputStream stream = FacesContext.getCurrentInstance()
-                .getExternalContext().getResourceAsStream(
-                        OutputResourceBean.RESOURCE_PATH + resourceName);
-        byte[] byteArray = OutputResourceBean.toByteArray(stream);
-        inputStream = new ByteArrayInputStream(byteArray);
+        if (inputStream == null) {
+            InputStream stream = extContext.getResourceAsStream(OutputResourceBean.RESOURCE_PATH + resourceName);
+            byte[] byteArray = OutputResourceBean.toByteArray(stream);
+            inputStream = new ByteArrayInputStream(byteArray);
+        }
         return inputStream;
     }
 

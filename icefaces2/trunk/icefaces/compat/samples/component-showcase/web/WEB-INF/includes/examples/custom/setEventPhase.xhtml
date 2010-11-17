@@ -58,7 +58,7 @@ clicks a selection or tabs out of a field.
                 <ice:panelGroup styleClass="selectionListBoxGroup">
                     <ice:setEventPhase events="ValueChangeEvent"
                                        phase="INVOKE_APPLICATION"
-                                       disabled="#{setEventPhaseBean.disabled}">
+                                       disabled="#{setEventPhaseBean.disabled == 'true'}">
                         <ice:selectOneListbox id="sepCnty"
                                               value="#{setEventPhaseBean.selectedCountry}"
                                               partialSubmit="true"

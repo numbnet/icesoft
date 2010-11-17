@@ -48,16 +48,12 @@
 
             <ice:inputText id="tabLabelInput"
                    value="#{dynamicTabbedPaneExample.newTabLabel}"
-                   accesskey="L"
                    alt="#{msgs['page.panelTabSet.dynamic.tabLabel.title']}"
-                   tabindex="3"
                    title="#{msgs['page.panelTabSet.dynamic.tabLabel.title']}"/>
 
             <ice:panelGrid columns="2" cellspacing="1" cellpadding="1">
                 <ice:inputText id="tabContentInput"
                        value="#{dynamicTabbedPaneExample.newTabContent}"
-                       accesskey="C"
-                       tabindex="4"
                        alt="#{msgs['page.panelTabSet.dynamic.tabContent.title']}"
                        title="#{msgs['page.panelTabSet.dynamic.tabContent.title']}"/>
 
@@ -65,9 +61,7 @@
                            disabled="#{dynamicTabbedPaneExample.tabsSize >= 5}"
                            value="#{msgs['page.panelTabSet.dynamic.addButton']}"
                            actionListener="#{dynamicTabbedPaneExample.addTab}"
-                           accesskey="A"
                            alt="#{msgs['page.panelTabSet.dynamic.addButton.alt']}"
-                           tabindex="5"
                            title="#{msgs['page.panelTabSet.dynamic.addButton.title']}"/>
             </ice:panelGrid>
 
@@ -75,9 +69,7 @@
                            disabled="#{dynamicTabbedPaneExample.tabsSize == 1}"
                            value="#{msgs['page.panelTabSet.dynamic.removeButton']}"
                            actionListener="#{dynamicTabbedPaneExample.removeTab}"
-                           accesskey="R"
                            alt="#{msgs['page.panelTabSet.dynamic.removeButton.alt']}"
-                           tabindex="6"
                            title="#{msgs['page.panelTabSet.dynamic.removeButton.title']}"/>
         </ice:panelGrid>
     </ice:panelGroup>

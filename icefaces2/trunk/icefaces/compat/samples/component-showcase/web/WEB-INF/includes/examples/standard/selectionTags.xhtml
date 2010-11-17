@@ -19,7 +19,6 @@
   ~ Contributor(s): _____________________.
   ~
   -->
-
 <!--
 In this demonstration, various selection tags are used to present different
 kinds of selection components. The inputs are submitted to the server one by
@@ -49,6 +48,7 @@ clicks a selection or tabs out of a field.
         <!-- selection tags -->
         <ice:panelGroup styleClass="exampleBox selectionContainer" >
             <ice:panelGrid columns="2" styleClass="verticalAlignTop" >
+                <!-- Check box - new user -->
                 <ice:outputLabel
                         for="SlctUsr"
                         value="#{msgs['page.selection.users.label']}"/>
@@ -57,6 +57,7 @@ clicks a selection or tabs out of a field.
                                value="#{selectionTags.newUser}"
                                partialSubmit="true"/>
 
+                <!-- Select one menu - component type -->
                 <ice:outputLabel
                         for="SlctCompTyp"
                         value="#{msgs['page.selection.component.label']}"/>
@@ -68,6 +69,7 @@ clicks a selection or tabs out of a field.
                                    value="#{selectionTags.componentItems}"/>
                 </ice:selectOneMenu>
                 
+                <!---Select many menu - select cars-->
                 <ice:outputLabel
                         for="SlctCar"
                         value="#{msgs['page.selection.cars.label']}" />
@@ -80,6 +82,7 @@ clicks a selection or tabs out of a field.
                 </ice:selectManyMenu>
                                
 
+                <!-- Radio buttons - select drink -->
                 <ice:outputLabel for="SlctDrk"
                                 value="#{msgs['page.selection.drink.label']}"/>
                 <ice:panelGroup styleClass="selectionRadioGroup">
@@ -92,6 +95,7 @@ clicks a selection or tabs out of a field.
                     </ice:selectOneRadio>
                 </ice:panelGroup>
 
+                <!-- Check boxes - select language -->
                 <ice:outputLabel
                         for="SlctLang"
                         value="#{msgs['page.selection.language.label']}"/>
@@ -106,6 +110,7 @@ clicks a selection or tabs out of a field.
                 </ice:panelGroup>
 
 
+                <!-- Select one list boxes - select countries and city -->
                 <ice:outputLabel
                         for="SlctCnty"
                         value="#{msgs['bean.selection.countryCities.label']}"/>
