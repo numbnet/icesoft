@@ -22,31 +22,27 @@
 
 package org.icefaces.impl.util;
 
-import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
-import javax.faces.component.UIViewRoot;
-import javax.faces.application.Resource;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.zip.GZIPOutputStream;
-import java.util.Arrays;
-import java.util.List;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.logging.Logger;
+import java.util.zip.GZIPOutputStream;
 
 public class Util {
     private static Logger log = Logger.getLogger(Util.class.getName());
     private static List DEFAULT_EXCLUSIONS = Arrays.asList(
-            "image/gif",  "image/png", "image/jpeg", "image/tiff", "application/pdf", 
+            "image/gif", "image/png", "image/jpeg", "image/tiff", "application/pdf",
             "application/zip", "application/x-compress", "application/x-gzip ",
             "application/java-archive", "video/x-sgi-movie", "audio/x-mpeg ",
             "video/mp4", "video/mpeg");
-    public static final DateFormat HTTP_DATE = 
-            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+    public static final DateFormat HTTP_DATE =
+            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
 
     public static void copyStream(InputStream in, OutputStream out) throws IOException {
         byte[] buf = new byte[1000];
@@ -58,22 +54,22 @@ public class Util {
             }
         }
     }
-    
+
     public static void compressStream(InputStream in, OutputStream out) throws IOException {
         GZIPOutputStream gzip = new GZIPOutputStream(out);
         copyStream(in, gzip);
         gzip.finish();
     }
-    
-    public static boolean acceptGzip(ExternalContext externalContext)  {
+
+    public static boolean acceptGzip(ExternalContext externalContext) {
         String acceptHeader = externalContext.getRequestHeaderMap()
-            .get("Accept-Encoding");
-        boolean acceptGzip = (null != acceptHeader) && 
-            (acceptHeader.indexOf("gzip") >=0);
+                .get("Accept-Encoding");
+        boolean acceptGzip = (null != acceptHeader) &&
+                (acceptHeader.indexOf("gzip") >= 0);
         return acceptGzip;
     }
 
-    public static boolean shouldCompress(String contentType)  {
+    public static boolean shouldCompress(String contentType) {
         return !DEFAULT_EXCLUSIONS.contains(contentType);
     }
 }
