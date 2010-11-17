@@ -21,10 +21,11 @@
                         <tr>
                             <td align="center" valign="middle">
                                 <h:graphicImage library="images" name="mood-#{occupant.mood}.png"
-                                                style="width: 26px; height: 29px;"/>
+                                                style="width: 26px; height: 29px;"
+                                                title="using #{occupant.technology}"/>
                             </td>
                             <td>
-                                #{occupant.name}
+                                <h:outputText value="#{occupant.name}" title="thinking '#{occupant.comment}'"/>
                             </td>
                         </tr>
                     </table>
