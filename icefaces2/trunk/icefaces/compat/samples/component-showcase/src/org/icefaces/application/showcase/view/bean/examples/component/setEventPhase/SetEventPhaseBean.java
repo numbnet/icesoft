@@ -41,7 +41,7 @@ import javax.faces.model.SelectItem;
 @ViewScoped
 public class SetEventPhaseBean extends BaseBean {
     // If the setEventPhase component should be disabled
-    private boolean disabled = false;
+    private String disabled = "false";
     // selectOneListbox example value
     private String selectedCountry;
     // selectManyListbox example value
@@ -50,14 +50,14 @@ public class SetEventPhaseBean extends BaseBean {
     /**
      * @return If the setEventPhase event should be disabled
      */
-    public boolean isDisabled() {
+    public String getDisabled() {
         return disabled;
     }
     
     /**
      * @param disabled If the setEventPhase event should be disabled
      */
-    public void setDisabled(boolean disabled) {
+    public void setDisabled(String disabled) {
         this.disabled = disabled;
     }
     

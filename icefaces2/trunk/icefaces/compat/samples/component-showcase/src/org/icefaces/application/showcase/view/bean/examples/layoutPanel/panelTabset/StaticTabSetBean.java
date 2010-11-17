@@ -103,7 +103,14 @@ public class StaticTabSetBean implements TabChangeListener, Serializable {
     }
 
     public int getFocusIndex() {
-        return Integer.parseInt(selectedIndex);
+    	int focusIndex = 0;
+    	try{
+    		focusIndex = Integer.parseInt(selectedIndex);
+    	}
+    	catch(NumberFormatException nfe){
+    		//do nothing
+    	}
+        return focusIndex;
     }
 
     public void setFocusIndex(int index){

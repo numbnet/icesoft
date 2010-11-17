@@ -1,4 +1,3 @@
-
 <!--
   ~ Version: MPL 1.1
   ~
@@ -20,7 +19,6 @@
   ~ Contributor(s): _____________________.
   ~
   -->
-
 <ice:form xmlns="http://www.w3.org/1999/xhtml"
           xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
@@ -317,6 +315,13 @@
         <f:param name="includePath" value="/WEB-INF/includes/examples/panel/panelTooltip.xhtml" />
         <ice:outputText
                 value="#{msgs['node.panelTooltip.label']}"/>
+    </ice:commandLink>
+    <br/>
+    <ice:commandLink id="panelConfirmationContentPanel"
+                     actionListener="#{navigation.navigationPathChange}">
+        <f:param name="includePath" value="/WEB-INF/includes/examples/panel/panelConfirmation.xhtml" />
+        <ice:outputText
+                value="#{msgs['node.panelConfirmation.label']}"/>
     </ice:commandLink>
 
 </ice:panelCollapsible>

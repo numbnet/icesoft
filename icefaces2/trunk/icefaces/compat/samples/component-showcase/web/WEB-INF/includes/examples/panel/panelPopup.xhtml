@@ -43,9 +43,11 @@
         <ice:panelGroup style="float:left">
             <ice:inputText id="modalMessageInput"
                            value="#{popup.modalMessage}"
+                           disabled="#{popup.modalRendered}"
                            size="30" maxlength="90" style="font-size:12px"/>
             <ice:commandButton id="toggleModal"
                                value="#{popup.determineModalButtonText}"
+                               disabled="#{popup.modalRendered}"
                                style="margin-right: 2px;font-size:12px"
                                actionListener="#{popup.toggleModal}"/>
         </ice:panelGroup>

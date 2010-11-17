@@ -118,8 +118,8 @@ public class ChartController implements Serializable {
         }
 
         // set the default dataModel
-        currentChartType = OutputChart.PIE2D_CHART_TYPE;
-        currentChartModel = (AbstractChartData) chartDataModels.get(currentChartType);
+        currentChartType = OutputChart.CUSTOM_CHART_TYPE;
+        currentChartModel = (AbstractChartData)chartDataModels.get(currentChartType);
     }
 
     /**

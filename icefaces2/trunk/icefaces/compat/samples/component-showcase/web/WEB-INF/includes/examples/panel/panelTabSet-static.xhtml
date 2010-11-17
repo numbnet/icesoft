@@ -47,8 +47,6 @@
             <ice:selectBooleanCheckbox id="tab1Visibility"
                                        partialSubmit="true"
                                        value="#{staticTabbedPaneExample.tabbedPane1Visible}"
-                                       tabindex="1"
-                                       accesskey="1"
                                        title="#{msgs['page.panelTabSet.static.accessibility.chkBox1']}"/>
             <ice:outputLabel value="#{msgs['page.panelTabSet.tab1']}"
                              for="tab1Visibility"/>
@@ -56,8 +54,6 @@
             <ice:selectBooleanCheckbox id="tab2Visibility"
                                        partialSubmit="true"
                                        value="#{staticTabbedPaneExample.tabbedPane2Visible}"
-                                       tabindex="2"
-                                       accesskey="2"
                                        title="#{msgs['page.panelTabSet.static.accessibility.chkBox2']}"/>
             <ice:outputLabel value="#{msgs['page.panelTabSet.tab2']}"
                              for="tab2Visibility"/>
@@ -65,8 +61,6 @@
             <ice:selectBooleanCheckbox id="tab3Visibility"
                                        partialSubmit="true"
                                        value="#{staticTabbedPaneExample.tabbedPane3Visible}"
-                                       tabindex="3"
-                                       accesskey="3"
                                        title="#{msgs['page.panelTabSet.static.accessibility.chkBox3']}"/>
             <ice:outputLabel value="#{msgs['page.panelTabSet.tab3']}"
                              for="tab3Visibility"/>
@@ -86,8 +80,6 @@
             <ice:selectOneRadio id="tabFocusRadioBtns"
                                 partialSubmit="true"
                                 value="#{staticTabbedPaneExample.selectedIndex}"
-                                tabindex="4"
-                                accesskey="S"
                                 title="#{msgs['page.panelTabSet.static.accessibility.focusRadio']}">
                 <f:selectItem itemValue="0"
                               itemLabel="#{msgs['page.panelTabSet.tab1']}"/>
@@ -112,8 +104,6 @@
             <ice:selectOneRadio id="tabPlacementRadioBtns"
                                 value="#{staticTabbedPaneExample.tabPlacement}"
                                 partialSubmit="true"
-                                tabindex="5"
-                                accesskey="L"
                                 title="#{msgs['page.panelTabSet.static.accessibility.placementRadio']}">
                 <f:selectItem itemLabel="#{msgs['page.panelTabSet.top']}"
                               itemValue="top"/>
