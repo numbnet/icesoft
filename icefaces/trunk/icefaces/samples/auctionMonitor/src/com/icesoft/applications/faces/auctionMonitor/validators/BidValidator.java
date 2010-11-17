@@ -17,8 +17,8 @@ import javax.faces.validator.ValidatorException;
 public class BidValidator implements Validator {
     
     // cap the size of a bid that can be made over the the original bid value.
-    public static final int MAX_BID_INCREASE = 1000000;
-    // max bid that can be mad, period.
+    public static final int MAX_BID_INCREASE = 10000;
+    // max bid that can be made, period.
     public static final long MAX_BID = 1000000000;
 
     public static final String ERROR_BID_LOW = "<br />Bid declined, too low.";
@@ -49,8 +49,8 @@ public class BidValidator implements Validator {
             message.setDetail(ERROR_BID_LOW);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
-        } else if (newBid >= MAX_BID &&
-            newBid - originalBid >= MAX_BID_INCREASE) {
+        } else if (newBid >= MAX_BID ||
+            newBid - originalBid > MAX_BID_INCREASE) {
             // set the bean message holder.
             auctionMonitorItemBean.setBidMessage(ERROR_BID_HIGH);
             FacesMessage message = new FacesMessage();
