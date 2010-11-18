@@ -1003,33 +1003,36 @@ Ice.modal = {
             return false;
         }
 
-        var rollbacks = Ice.modal.rollbacks = [];
+        //disable event handlers only once (in case multiple modal popups are rendered)
+        if (Ice.modal.rollbacks) {
+            var rollbacks = Ice.modal.rollbacks = [];
 
-        ['input', 'select', 'textarea', 'button', 'a'].each(function(type) {
-            $enumerate(document.body.getElementsByTagName(type)).each(function(e) {
-                if (!childOfTarget(e)) {
-                    var onkeypress = e.onkeypress;
-                    var onkeyup = e.onkeyup;
-                    var onkeydown = e.onkeydown;
-                    var onclick = e.onclick;
-                    e.onkeypress = none;
-                    e.onkeyup = none;
-                    e.onkeydown = none;
-                    e.onclick = none;
+            ['input', 'select', 'textarea', 'button', 'a'].each(function(type) {
+                $enumerate(document.body.getElementsByTagName(type)).each(function(e) {
+                    if (!childOfTarget(e)) {
+                        var onkeypress = e.onkeypress;
+                        var onkeyup = e.onkeyup;
+                        var onkeydown = e.onkeydown;
+                        var onclick = e.onclick;
+                        e.onkeypress = none;
+                        e.onkeyup = none;
+                        e.onkeydown = none;
+                        e.onclick = none;
 
-                    rollbacks.push(function() {
-                        try {
-                            e.onkeypress = onkeypress;
-                            e.onkeyup = onkeyup;
-                            e.onkeydown = onkeydown;
-                            e.onclick = onclick;
-                        } catch (ex) {
-                            //don't fail if element is not present anymore
-                        }
-                    });
-                }
+                        rollbacks.push(function() {
+                            try {
+                                e.onkeypress = onkeypress;
+                                e.onkeyup = onkeyup;
+                                e.onkeydown = onkeydown;
+                                e.onclick = onclick;
+                            } catch (ex) {
+                                logger.error('failed to restore callbacks on ' + e, ex);
+                            }
+                        });
+                    }
+                });
             });
-        });
+        }
     },
     stop:function(target) {
         if (Ice.modal.getRunning() == target) {
@@ -1049,8 +1052,11 @@ Ice.modal = {
                 Ice.modal.trigger = '';
             }
 
-            Ice.modal.rollbacks.broadcast();
-            Ice.modal.rollbacks = null;
+            //restore event handlers only when all modal popups are gone
+            if (Ice.modal.running.length == 0) {
+                Ice.modal.rollbacks.broadcast();
+                Ice.modal.rollbacks = null;
+            }
         }
     },
     enableDisableTabindex: function(target, enable) {
