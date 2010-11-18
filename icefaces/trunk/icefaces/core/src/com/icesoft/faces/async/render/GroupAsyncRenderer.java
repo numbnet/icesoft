@@ -368,7 +368,6 @@ implements AsyncRenderer {
     }
     private void add(String id) {
         // todo: remove synchronized block as CopyOnWriteArraySet is used?
-        System.out.println("GroupAsyncRenderer.add: session id " + id);
         synchronized (group) {
             if (!group.contains(id)) {
                 if (group.add(id)) {
