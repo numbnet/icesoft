@@ -628,15 +628,12 @@ public class SelectInputDateRenderer
 //System.out.println("SIDR.encodeEnd()  actuallyHaveTime: " + actuallyHaveTime);
             if (!actuallyHaveTime &&
                 selectInputDate.getHoursSubmittedValue() != null &&
-                selectInputDate.getMinutesSubmittedValue() != null &&
-                selectInputDate.getSecondsSubmittedValue() != null)
+                selectInputDate.getMinutesSubmittedValue() != null)
             {
 //System.out.println("SIDR.encodeEnd()  Using submitted hours and minutes");
                 hourIndex = selectInputDate.getHoursSubmittedValue().intValue();
 //System.out.println("SIDR.encodeEnd()  hour: " + hourIndex);
                 min = selectInputDate.getMinutesSubmittedValue().intValue();
-//System.out.println("SIDR.encodeEnd()  min: " + min);
-                sec = selectInputDate.getSecondsSubmittedValue().intValue();
 //System.out.println("SIDR.encodeEnd()  min: " + min);
                 String amPmStr = selectInputDate.getAmPmSubmittedValue();
 //System.out.println("SIDR.encodeEnd()  amPmStr: " + amPmStr);
@@ -672,9 +669,13 @@ public class SelectInputDateRenderer
 //System.out.println("SIDR.encodeEnd()  hourIndex: " + hourIndex);
 
                 min = timeKeeper.get(Calendar.MINUTE);
-                sec = timeKeeper.get(Calendar.SECOND);
                 amPm = timeKeeper.get(Calendar.AM_PM) ;
 //System.out.println("SIDR.encodeEnd()  amPm: " + amPm);
+            }
+            if (!actuallyHaveTime && selectInputDate.getSecondsSubmittedValue() != null) {
+                sec = selectInputDate.getSecondsSubmittedValue().intValue();
+            } else {
+                sec = timeKeeper.get(Calendar.SECOND);
             }
             for (int i = 0; i < hrs.length; i++ ) {
                 Element hoursOption = domContext.createElement(HTML.OPTION_ELEM);
