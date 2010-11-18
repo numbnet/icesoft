@@ -234,13 +234,11 @@ Ice.modal = {
 
                         rollbacks.push(function() {
                             try {
-                                logger.info('restoring callbacks on ' + e.id);
                                 e.onkeypress = onkeypress;
                                 e.onkeyup = onkeyup;
                                 e.onkeydown = onkeydown;
                                 e.onclick = onclick;
                             } catch (ex) {
-                                //do nothing
                                 logger.error('failed to restore callbacks on ' + e, ex);
                             }
                         });
