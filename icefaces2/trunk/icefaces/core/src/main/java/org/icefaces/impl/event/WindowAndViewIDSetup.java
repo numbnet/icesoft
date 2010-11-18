@@ -25,6 +25,7 @@ package org.icefaces.impl.event;
 import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.util.EnvUtils;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
@@ -39,6 +40,12 @@ import java.util.logging.Logger;
 
 public class WindowAndViewIDSetup implements SystemEventListener {
     private static final Logger Log = Logger.getLogger(WindowAndViewIDSetup.class.getName());
+    private boolean partialStateSaving;
+
+    public WindowAndViewIDSetup()  {
+        partialStateSaving = EnvUtils.isPartialStateSaving(
+            FacesContext.getCurrentInstance() );
+    }
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         final FacesContext context = FacesContext.getCurrentInstance();
@@ -47,6 +54,17 @@ public class WindowAndViewIDSetup implements SystemEventListener {
         }
 
         HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
+        String componentId = form.getId() + "_windowviewid";
+
+        if (!partialStateSaving)  {
+            for (UIComponent child : form.getChildren())  {
+                String id = child.getId();
+                if ((null != id) && id.equals(componentId))  {
+                    return;
+                }
+            }
+        }
+
         UIOutput output = new UIOutputWriter() {
             public void encode(ResponseWriter writer, FacesContext context) throws IOException {
                 Map requestMap = context.getExternalContext().getRequestMap();
@@ -73,8 +91,9 @@ public class WindowAndViewIDSetup implements SystemEventListener {
                 writer.endElement("input");
             }
         };
+
         output.setTransient(true);
-        output.setId(form.getId() + "_windowviewid");
+        output.setId(componentId);
         form.getChildren().add(0, output);
     }
 

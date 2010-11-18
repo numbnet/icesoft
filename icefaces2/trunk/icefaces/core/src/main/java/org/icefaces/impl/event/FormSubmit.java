@@ -23,6 +23,7 @@ package org.icefaces.impl.event;
 
 import org.icefaces.util.EnvUtils;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
@@ -38,9 +39,12 @@ import java.io.IOException;
 public class FormSubmit implements SystemEventListener {
     public static final String DISABLE_CAPTURE_SUBMIT = "DISABLE_CAPTURE_SUBMIT";
     private boolean deltaSubmit;
+    private boolean partialStateSaving;
 
     public FormSubmit() {
-        deltaSubmit = EnvUtils.isDeltaSubmit(FacesContext.getCurrentInstance());
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        deltaSubmit = EnvUtils.isDeltaSubmit(facesContext);
+        partialStateSaving = EnvUtils.isPartialStateSaving(facesContext);
     }
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
@@ -48,10 +52,21 @@ public class FormSubmit implements SystemEventListener {
         if (!EnvUtils.isICEfacesView(context)) {
             return;
         }
+
         //using PostAddToViewEvent ensures that the component resource is added to the view only once
         final HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
         if (form.getAttributes().get(DISABLE_CAPTURE_SUBMIT) != null) {
             return;
+        }
+        String componentId = form.getId() + "_captureSubmit";
+
+        if (!partialStateSaving)  {
+            for (UIComponent child : form.getChildren())  {
+                String id = child.getId();
+                if ((null != id) && id.equals(componentId))  {
+                    return;
+                }
+            }
         }
 
         UIOutput scriptWriter = new UIOutputWriter() {
@@ -75,7 +90,7 @@ public class FormSubmit implements SystemEventListener {
             }
         };
 
-        scriptWriter.setId(form.getId() + "_captureSubmit");
+        scriptWriter.setId(componentId);
         scriptWriter.setTransient(true);
         form.getChildren().add(0, scriptWriter);
 
