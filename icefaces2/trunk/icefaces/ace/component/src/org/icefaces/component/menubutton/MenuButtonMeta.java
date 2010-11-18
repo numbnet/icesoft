@@ -30,7 +30,7 @@ import org.icefaces.component.baseMeta.UISelectOneMeta;
     @ResourceDependency(library = "yui/2_8_1", name="dom/dom-min.js"),   
     @ResourceDependency(library = "yui/2_8_1", name = "event/event-min.js"),
     @ResourceDependency(library = "yui/2_8_1", name = "container/container_core-min.js"),
-    @ResourceDependency(library = "yui/2_8_1", name = "menu/menu.js"),
+    @ResourceDependency(library = "yui/2_8_1", name = "menu/menu-min.js"),
     @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),   
     @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
 	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),

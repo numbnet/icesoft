@@ -56,7 +56,7 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 	@ResourceDependency(name="dd/dd-constrain-min.js",library="yui/3_2_0"),
 	@ResourceDependency(name="dump/dump-min.js",library="yui/3_2_0"),
 	@ResourceDependency(name="substitute/substitute-min.js",library="yui/3_2_0"),
-	@ResourceDependency(name="slider/slider.js",library="yui/3_2_0"),
+	@ResourceDependency(name="slider/slider-min.js",library="yui/3_2_0"),
 	@ResourceDependency(name="intl/intl-min.js",library="yui/3_2_0"),
 	@ResourceDependency(name="widget/assets/skins/sam/widget.css",library="yui/3_2_0"),
 	@ResourceDependency(name="yahoo-dom-event/yahoo-dom-event.js",library="yui/2_8_1"),
