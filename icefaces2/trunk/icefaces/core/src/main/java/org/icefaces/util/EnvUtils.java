@@ -238,6 +238,18 @@ public class EnvUtils {
         return (Boolean.TRUE.equals(lazyPush));
     }
 
+    
+    /**
+     * Returns true if JSF Partial State Saving is active.
+     * @param facesContext The current FacesContext instance.
+     * @return Returns the current state of JSF Partial State Saving.  The default is true.
+     */
+    public static boolean isPartialStateSaving(FacesContext facesContext) {
+        return !( "false".equalsIgnoreCase(
+                FacesContext.getCurrentInstance().getExternalContext()
+                .getInitParameter("javax.faces.PARTIAL_STATE_SAVING")) );
+    }
+
     /**
      * Returns the value of the context parameter org.icefaces.sessionExpiredRedirectURI.  The default value is the String
      * "null" and indicates that no URI has been set and the default behaviour is taken when the session expires.  Setting
