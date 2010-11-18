@@ -22,27 +22,28 @@
 
 package org.icefaces.impl.push;
 
-import org.icepush.PushContext;
-
-import javax.faces.context.FacesContext;
-import javax.portlet.PortletSession;
-import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
-public class SessionViewManager {
+import javax.faces.context.FacesContext;
+import javax.portlet.PortletSession;
+import javax.servlet.http.HttpSession;
 
+import org.icepush.PushContext;
+
+public class SessionViewManager {
     public static String addView(FacesContext context, String id) {
         PushContext pushContext = getPushContext(context);
         State state = getState(context);
-        state.viewIDs.add(id);
-        pushContext.addGroupMember(state.groupName, id);
-
-        Iterator i = state.groups.iterator();
-        while (i.hasNext()) {
-            pushContext.addGroupMember((String) i.next(), id);
+        if (!state.viewIDs.contains(id)) {
+            state.viewIDs.add(id);
+            pushContext.addGroupMember(state.groupName, id);
+            Iterator i = state.groups.iterator();
+            while (i.hasNext()) {
+                pushContext.addGroupMember((String) i.next(), id);
+            }
         }
         return id;
     }
@@ -50,12 +51,13 @@ public class SessionViewManager {
     public static void removeView(FacesContext context, String id) {
         PushContext pushContext = getPushContext(context);
         State state = getState(context);
-        state.viewIDs.remove(id);
-        pushContext.removeGroupMember(state.groupName, id);
-
-        Iterator i = state.groups.iterator();
-        while (i.hasNext()) {
-            pushContext.removeGroupMember((String) i.next(), id);
+        if (state.viewIDs.contains(id)) {
+            state.viewIDs.remove(id);
+            pushContext.removeGroupMember(state.groupName, id);
+            Iterator i = state.groups.iterator();
+            while (i.hasNext()) {
+                pushContext.removeGroupMember((String) i.next(), id);
+            }
         }
     }
 
