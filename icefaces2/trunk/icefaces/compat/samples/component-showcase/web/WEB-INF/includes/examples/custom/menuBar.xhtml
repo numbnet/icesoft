@@ -111,17 +111,23 @@ are shown but could easily be made to invoke application logic.
             </ice:menuItem>
             <ice:menuItem id="para3"
                           value="Para 3"
-                          actionListener="#{menuBar.primaryListener}"/>
+                          actionListener="#{menuBar.primaryListener}">
+                <f:param name="myParam"
+                         value="Para 3"/>
+            </ice:menuItem>
         </ice:menuItem>
         <ice:menuItem value="File 3"
                       id="file3"
                       actionListener="#{menuBar.primaryListener}">
             <f:param name="myParam"
-                     value="file3"/>
+                     value="File 3"/>
         </ice:menuItem>
         <ice:menuItem value="File 4"
                       id="file4"
-                      actionListener="#{menuBar.primaryListener}"/>
+                      actionListener="#{menuBar.primaryListener}">
+            <f:param name="myParam"
+                     value="File 4"/>
+        </ice:menuItem>
     </ice:menuItem>
 
     <ice:menuItem id="save"
@@ -129,7 +135,7 @@ are shown but could easily be made to invoke application logic.
                   value="Save"
                   actionListener="#{menuBar.primaryListener}">
         <f:param name="myParam"
-                 value="save"/>
+                 value="Save"/>
     </ice:menuItem>
     <ice:menuItemSeparator/>
     <ice:menuItem id="print"
