@@ -4,16 +4,20 @@ import java.beans.Beans;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.StringTokenizer;
+import java.util.List;
+import java.util.ArrayList;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
+import javax.faces.component.UIParameter;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.icefaces.component.animation.AnimationBehavior;
+import org.icefaces.impl.util.DOMUtils;
 
 public class Utils {
     public static void renderChildren(FacesContext facesContext,
@@ -215,5 +219,64 @@ public class Utils {
             sb.append(styleClass);
             sb.append(disabledStr);
         }
+    }
+
+    /**
+     * Capture UIParameter (f:param) children of a component
+     * @param component The component to work from
+     * @return List of UIParameter objects, null if no UIParameter children present
+     */
+     public static List<UIParameter> captureParameters( UIComponent component) {
+        List<UIComponent> children = component.getChildren();
+        List<UIParameter>  returnVal = null;
+        for (UIComponent child: children) {
+            if (child instanceof UIParameter) {
+                UIParameter param = (UIParameter) child;
+                if (returnVal == null) {
+                    returnVal = new ArrayList<UIParameter>();
+                } 
+                returnVal.add( param );
+            }
+        }
+        return returnVal;
+    }
+
+    /**
+     * Return the name value pairs parameters as a ANSI escaped string
+     * formatted in query string parameter format.
+     * TODO: determine the correct escaping here
+     * @param children List of children
+     * @return a String in the form name1=value1&name2=value2...
+     */
+    public static String asParameterString ( List<UIParameter> children) {
+        StringBuffer builder = new StringBuffer();
+        for (UIParameter param: children) {
+            builder.append(DOMUtils.escapeAnsi(param.getName()) )
+                    .append("=").append(DOMUtils.escapeAnsi(
+                    (String)param.getValue() ).replace(' ', '+')).append("&");
+        }
+        if (builder.length() > 0) {
+            builder.setLength( builder.length() - 1 );
+        }
+        return builder.toString();
+    }
+
+    /**
+     * Return the name value pairs parameters as a comma separated list. This is
+     * simpler for passing to the javascript parameter rebuilding code.
+     * TODO: determine the correct escaping here
+     * @param children List of children
+     * @return a String in the form name1, value1, name2, value2...
+     */
+    public static String asCommaSeperated( List<UIParameter> children) {
+        StringBuffer builder = new StringBuffer();
+        for (UIParameter param: children) {
+            builder.append(DOMUtils.escapeAnsi(param.getName()) )
+                    .append(",").append( ((String)param.getValue() ).replace(' ', '+')).append(",");
+        }
+        if (builder.length() > 0) {
+            builder.setLength( builder.length() - 1 );
+        }
+        return builder.toString();
     }
 }
