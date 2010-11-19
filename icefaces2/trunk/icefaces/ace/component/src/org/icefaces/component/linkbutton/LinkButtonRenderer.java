@@ -6,6 +6,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
@@ -14,12 +15,16 @@ import javax.faces.render.Renderer;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
+import org.icefaces.component.utils.Utils;
+import org.icefaces.component.RendererBase;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 
 
 @MandatoryResourceComponent("org.icefaces.component.linkbutton.LinkButton")
 public class LinkButtonRenderer extends Renderer {
+
+    List <UIParameter> uiParamChildren;
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
@@ -42,7 +47,9 @@ public class LinkButtonRenderer extends Renderer {
         String clientId = uiComponent.getClientId(facesContext);
 
         LinkButton linkButton = (LinkButton) uiComponent;
-        // root element
+
+        // capture any children UIParameter (f:param) parameters.
+        uiParamChildren = RendererBase.captureParameters( linkButton );
 
         writer.startElement(HTML.DIV_ELEM, uiComponent );
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
@@ -80,12 +87,17 @@ public class LinkButtonRenderer extends Renderer {
                               null);
         String temp;
         if ((temp = linkButton.getHref()) != null) {
+            if (uiParamChildren != null) {
+                temp += "?" + Utils.asParameterString( uiParamChildren );
+            }
             writer.writeAttribute(HTML.HREF_ATTR, temp, null );
         }
         if ((temp  = linkButton.getHrefLang()) != null) {
             writer.writeAttribute(HTML.HREFLANG_ATTR, temp , null );
         }
-
+        if ((temp = linkButton.getTarget()) != null) {
+            writer.writeAttribute(HTML.TARGET_ATTR, temp, null );
+        } 
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
@@ -106,17 +118,18 @@ public class LinkButtonRenderer extends Renderer {
                 entry("tabindex", linkButton.getTabindex()).
                 entry("label", (String) linkButton.getValue()).
                 entry("disabled", linkButton.isDisabled()).endMap().toString();
-        
-        String params = "'" + clientId + "'," +
-                         jsProps
-                        + "," +
-                        JSONBuilder.create().
+
+        JSONBuilder paramBuilder = JSONBuilder.create().
                                 beginMap().
                                 entry("singleSubmit", linkButton.isSingleSubmit()).
                                 entry("doAction", doAction).
-                                entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext)).
-                                endMap().toString();
-
+                                entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
+        if (doAction && uiParamChildren != null) {
+            paramBuilder.entry("postParameters",  Utils.asCommaSeperated(uiParamChildren) );
+        }
+        String params = "'" + clientId + "'," +
+                         jsProps
+                        + "," + paramBuilder.endMap().toString();
 
         String finalScript = "ice.component.linkButton.updateProperties(" + params + ");";
         ScriptWriter.insertScript(facesContext, uiComponent, finalScript);
