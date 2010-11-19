@@ -39,8 +39,8 @@
                 3) A single submit link with actionOnly <br></br>
                 <ann:linkButton value="single submit action" singleSubmit="true" actionListener="#{linkBean.singleSubmitListenerMethod}" />
                     <!--<f:param name="fartyTowel" value="10" /> -->
-                <p></p>
             </h:form>
+            <p></p>
 
             <hr></hr>
             <h:form id="frm4">
@@ -50,9 +50,10 @@
                                actionListener="#{linkBean.hrefAndActionMethod}" >
                                   Link with actionListener and HREF defined OLD STRING
                 </ann:linkButton>
-
-                <p></p>
             </h:form>
+            <p></p>
+
+            <h:graphicImage value="images/employee.gif" label="output" rendered="#{linkBean.rendered}" />
 
             <hr></hr>
             <h4>This section is an informal test section containing stuff that
@@ -63,8 +64,19 @@
                 <ann:linkButton  href="http://www.google.ca"
                                  value="Link with actionListener and HREF defined"
                                actionListener="#{linkBean.hrefAndActionMethod}" />
-                <p></p>
             </h:form>
+            <p></p>
+
+            <h:form id="frm6a">
+               5a) This is a 'value Only' link with no embedded text
+                <ann:linkButton  href="http://www.google.ca"
+                                 value="Link with actionListener and HREF defined"
+                               actionListener="#{linkBean.hrefAndActionMethod}" >
+                    <f:param name="parameterOne" value="Here's some" />
+                    <f:param name="parameterTwo" value="Helly Dolly!" />
+                 </ann:linkButton>
+            </h:form>
+            <p></p>
 
              <h:form id="frm7">
                 6) This JSF:link might not behave the same as an ice:link. You <em>probably wont</em> be able to open Google.com in another tab<br></br>
@@ -72,36 +84,69 @@
                                  value="[The value inside the link] "
                                actionListener="#{linkBean.hrefAndActionMethod}" >
                                   <h:outputText value="you could press me" />
-                    <h:graphicImage value="images/employee.gif" label="output"
-                                    />
-                    And you could press me too.
                 </h:commandLink>
-
-                <p></p>
             </h:form>
+            <p></p>
 
             <h:form id="frm8">
                 7) This is a ice:linkButton with an output text in it<br></br>
                 <ann:linkButton
                                  value="Link with inner text button PLUS EXTRA"
-                               actionListener="#{linkBean.hrefAndActionMethod}">And here's just some text
-                     <h:graphicImage value="images/employee.gif" label="output"
-                                    />
+                               actionListener="#{linkBean.hrefAndActionMethod}" />
+            </h:form>
+
+            <h3> Here's an example</h3>
+            <h:form id="jsfwithParamForm">
+                <h:outputLink value="http://www.google.ca" >
+                    <f:param  name="parameterOne" value="Hello Dolly!" />
+                    <f:param  name="parameterTwo" value="No_escape_necessary" />
+                </h:outputLink>
+            </h:form>
+
+           <h:form id="frmOfTarget">
+                8) Target _blank to open in new window.  <br></br>
+                <ann:linkButton href="http://google.com" value="Google.com"
+                        target="_blank" />
+            </h:form>
+            <p></p>
+
+             <h:form id="frmOfTargetTwo">
+                9) Target _self to open in this window  <br></br>
+                <ann:linkButton href="http://google.com" value="Google.com"
+                        target="_self" />
+            </h:form>
+            <p></p>
+
+            <h:form id="frmOfTargetThree">
+                10) Target _parent to open in parent frameset  <br></br>
+                <ann:linkButton href="http://google.com" value="Google.com"
+                        target="_parent" />
+            </h:form>
+            <p></p>
+
+            <h:form id="frmOfTargetFour">
+                11) Target _top to open in full body of the window  <br></br>
+                <ann:linkButton href="http://google.com" value="Google.com"
+                                target="_top" />
+            </h:form>
+            <p></p>
+
+            <h:form id="frmOfTargetFive">
+                12) Target framename to open in named frame: <em>frameOne</em>  <br></br>
+                <ann:linkButton href="http://google.com" value="Google.com"
+                        target="frameOne" />
+            </h:form>
+            <p></p>
+
+            <h:form id="frmOfActionLinkParams">
+                13) LinkButton with actionHandler and f:param arguments <br></br>
+                <ann:linkButton value="Google.com" actionListener="#{linkBean.singleSubmitListenerMethod}"
+                        singleSubmit="true">
+                    <f:param name="firstActionParam" value="first Action Value" />
+                    <f:param name="secondActionParam" value="secondActionValue" />
                 </ann:linkButton>
-
-                <p></p>
             </h:form>
-
-            <h2> Here's the place for the output image</h2>
-            <h:form id="output">
-                <h:panelGroup id="image">
-                    <h:graphicImage value="images/employee.gif" label="output"
-                                    rendered="#{linkBean.rendered}" />
-                </h:panelGroup>
-
-               <ui:remove> <ann:logger rendered="false" />    </ui:remove>
-            </h:form>
-
+            <p></p>
 
         </div>
     </h:panelGroup>
