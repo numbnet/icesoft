@@ -16,11 +16,8 @@ import javax.faces.render.Renderer;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.DateTimeConverter;
 import java.io.IOException;
+import java.text.*;
 import java.util.*;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
-import java.text.DateFormat;
-import java.text.FieldPosition;
 
 @MandatoryResourceComponent("org.icefaces.component.datetimeentry.DateTimeEntry")
 public class DateTimeEntryRenderer extends Renderer {
@@ -65,6 +62,10 @@ public class DateTimeEntryRenderer extends Renderer {
         DateTimeConverter converter = dateTimeEntry.resolveDateTimeConverter(context);
         TimeZone tz = dateTimeEntry.resolveTimeZone(context);
         Locale currentLocale = dateTimeEntry.resolveLocale(context);
+//        currentLocale = Locale.CANADA_FRENCH;
+//        currentLocale = Locale.TAIWAN;
+//        currentLocale = Locale.GERMANY;
+//        currentLocale = new Locale("es", "MX");
         SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, currentLocale);
         Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
         Date date;
@@ -115,8 +116,20 @@ public class DateTimeEntryRenderer extends Renderer {
 
         formatter.applyPattern("a");
         String amPmStr = formatter.format(date);
-        String[] amPmStrings = formatter.getDateFormatSymbols().getAmPmStrings();
-        
+        DateFormatSymbols dateFormatSymbols = formatter.getDateFormatSymbols();
+        String[] amPmStrings = dateFormatSymbols.getAmPmStrings();
+        String[] longMonths = mapMonths(dateFormatSymbols);
+        String[] shortWeekdays = mapWeekdays(dateFormatSymbols);
+        StringBuffer unicodeLongMonths = new StringBuffer(), unicodeShortWeekdays = new StringBuffer();
+        for (String longMonth : longMonths) {
+            unicodeLongMonths.append(",\"").append(convertToEscapedUnicode(longMonth)).append("\"");
+        }
+        unicodeLongMonths.replace(0, 1, "[").append("]");
+        for (String shortWeekday : shortWeekdays) {
+            unicodeShortWeekdays.append(",\"").append(convertToEscapedUnicode(shortWeekday)).append("\"");
+        }
+        unicodeShortWeekdays.replace(0, 1, "[").append("]");
+
         String params = "'" + clientId + "'," +
                 JSONBuilder.create().
                 beginMap().
@@ -138,6 +151,8 @@ public class DateTimeEntryRenderer extends Renderer {
                     entry("singleSubmit", dateTimeEntry.isSingleSubmit()).
                     entry("ariaEnabled", EnvUtils.isAriaEnabled(context)).
                     entry("disabled", dateTimeEntry.isDisabled()).
+                    entry("longMonths", unicodeLongMonths.toString(), true).
+                    entry("shortWeekdays", unicodeShortWeekdays.toString(), true).
                 endMap().toString();
 //        System.out.println("params = " + params);
         final UIComponent cal = component;
@@ -217,5 +232,63 @@ public class DateTimeEntryRenderer extends Renderer {
             }
             System.out.println();
         }
+    }
+
+    public static String convertToEscapedUnicode(String s) {
+        char[] chars = s.toCharArray();
+        String hexStr;
+        StringBuffer stringBuffer = new StringBuffer(chars.length * 6);
+        String[] leadingZeros = {"0000", "000", "00", "0", ""};
+        for (int i = 0; i < chars.length; i++) {
+            hexStr = Integer.toHexString(chars[i]).toUpperCase();
+            stringBuffer.append("\\u");
+            stringBuffer.append(leadingZeros[hexStr.length()]);
+//            stringBuffer.append("0000".substring(0, 4 - hexStr.length()));
+            stringBuffer.append(hexStr);
+        }
+        return stringBuffer.toString();
+    }
+
+    // Copied from 1.8.2
+    /**
+     * @param symbols
+     * @return months - String[] containing localized month names
+     */
+    public static String[] mapMonths(DateFormatSymbols symbols) {
+        String[] months = new String[12];
+
+        String[] localeMonths = symbols.getMonths();
+
+        months[0] = localeMonths[Calendar.JANUARY];
+        months[1] = localeMonths[Calendar.FEBRUARY];
+        months[2] = localeMonths[Calendar.MARCH];
+        months[3] = localeMonths[Calendar.APRIL];
+        months[4] = localeMonths[Calendar.MAY];
+        months[5] = localeMonths[Calendar.JUNE];
+        months[6] = localeMonths[Calendar.JULY];
+        months[7] = localeMonths[Calendar.AUGUST];
+        months[8] = localeMonths[Calendar.SEPTEMBER];
+        months[9] = localeMonths[Calendar.OCTOBER];
+        months[10] = localeMonths[Calendar.NOVEMBER];
+        months[11] = localeMonths[Calendar.DECEMBER];
+
+        return months;
+    }
+
+    // Copied from 1.8.2. Modified indexes.
+    private static String[] mapWeekdays(DateFormatSymbols symbols) {
+        String[] weekdays = new String[7];
+
+        String[] localeWeekdays = symbols.getShortWeekdays();
+
+        weekdays[0] = localeWeekdays[Calendar.SUNDAY];
+        weekdays[1] = localeWeekdays[Calendar.MONDAY];
+        weekdays[2] = localeWeekdays[Calendar.TUESDAY];
+        weekdays[3] = localeWeekdays[Calendar.WEDNESDAY];
+        weekdays[4] = localeWeekdays[Calendar.THURSDAY];
+        weekdays[5] = localeWeekdays[Calendar.FRIDAY];
+        weekdays[6] = localeWeekdays[Calendar.SATURDAY];
+
+        return weekdays;
     }
 }
