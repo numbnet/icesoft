@@ -16,7 +16,7 @@ import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
 import org.icefaces.component.utils.Utils;
-//import org.icefaces.component.RendererBase;
+
 import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 
@@ -49,7 +49,7 @@ public class LinkButtonRenderer extends Renderer {
         LinkButton linkButton = (LinkButton) uiComponent;
 
         // capture any children UIParameter (f:param) parameters.
-//        uiParamChildren = RendererBase.captureParameters( linkButton );
+        uiParamChildren = Utils.captureParameters( linkButton );
 
         writer.startElement(HTML.DIV_ELEM, uiComponent );
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
@@ -124,9 +124,9 @@ public class LinkButtonRenderer extends Renderer {
                                 entry("singleSubmit", linkButton.isSingleSubmit()).
                                 entry("doAction", doAction).
                                 entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
-//        if (doAction && uiParamChildren != null) {
-//            paramBuilder.entry("postParameters",  Utils.asCommaSeperated(uiParamChildren) );
-//        }
+        if (doAction && uiParamChildren != null) {
+            paramBuilder.entry("postParameters",  Utils.asCommaSeperated(uiParamChildren) );
+        }
         String params = "'" + clientId + "'," +
                          jsProps
                         + "," + paramBuilder.endMap().toString();
