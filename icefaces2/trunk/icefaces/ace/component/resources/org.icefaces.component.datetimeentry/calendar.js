@@ -173,6 +173,8 @@ configCal: function (calendar, params) {
     cfg.addProperty("amStr", {value:params.amStr});
     cfg.addProperty("pmStr", {value:params.pmStr});
     cfg.addProperty("renderAsPopup", {value:params.renderAsPopup});
+    cfg.setProperty("MONTHS_LONG", params.longMonths);
+    cfg.setProperty("WEEKDAYS_SHORT", params.shortWeekdays);
     if (params.ariaEnabled) {
         calendar.renderEvent.subscribe(this.aria, null, calendar);
     }
