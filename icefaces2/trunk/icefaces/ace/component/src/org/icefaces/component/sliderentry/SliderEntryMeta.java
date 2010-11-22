@@ -47,6 +47,7 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 	@ResourceDependency(name="node/node-min.js",library="yui/3_2_0"),
 	@ResourceDependency(name="event/event-delegate-min.js",library="yui/3_2_0"),
 	@ResourceDependency(name="event/event-focus-min.js",library="yui/3_2_0"),
+	@ResourceDependency(name="event/event-synthetic-min.js",library="yui/3_2_0"),
 	@ResourceDependency(name="base/base-min.js",library="yui/3_2_0"),
 	@ResourceDependency(name="classnamemanager/classnamemanager-min.js",library="yui/3_2_0"),
 	@ResourceDependency(name="widget/widget-min.js",library="yui/3_2_0"),
