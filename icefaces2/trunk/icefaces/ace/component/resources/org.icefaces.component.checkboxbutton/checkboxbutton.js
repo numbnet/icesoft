@@ -1,11 +1,12 @@
 ice.component.checkboxbutton = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
-	   var Dom = YAHOO.util.Dom;
-       var divNode = document.getElementById(clientId);
+	  var Dom = YAHOO.util.Dom;
+      var divNode = document.getElementById(clientId);
 
-       if (YAHOO.widget.Logger){
+      if (YAHOO.widget.Logger){
 	 	  YAHOO.widget.Logger.enableBrowserConsole();
-       }
+      }
+      YAHOO.util.Event.onDOMReady(function() {    
        var spanId = clientId+"_span";
 	   var button = new YAHOO.widget.Button(spanId, {type: jsProps.type});
 
@@ -16,6 +17,7 @@ ice.component.checkboxbutton = {
    			button.set('checked', hiddenField.value);
  		}
         YAHOO.log(" initialize: checked="+jsProps.checked);
+        ice.yui3.logger.info(' using logger defined by ice.yui3.logger ' + jsfProps.checked);
 
 		var onCheckedChange = function (e) {
            var context = ice.component.getJSContext(clientId);
@@ -82,6 +84,7 @@ ice.component.checkboxbutton = {
 	            }, divNode);
 	    }
 		bindYUI(button);
+      });
 	},
 	
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib

@@ -1,8 +1,9 @@
 ice.component.pushbutton = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
-        if (YAHOO.widget.Logger) {
+      if (YAHOO.widget.Logger) {
             YAHOO.widget.Logger.enableBrowserConsole();
-        }
+      }
+      YAHOO.util.Event.onDOMReady(function() {
         //want the span id
         var spanId = clientId + "_span";
         YAHOO.log("clientId=" + clientId + " spanId=" + spanId);
@@ -67,6 +68,7 @@ ice.component.pushbutton = {
 
 
         bindYUI(button);
+      });
     },
 	
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib

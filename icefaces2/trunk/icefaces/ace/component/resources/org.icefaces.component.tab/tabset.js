@@ -1,8 +1,8 @@
 ice.component.tabset = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
        //logger.info('1. tabset initialize');
-       var Dom = YAHOO.util.Dom;
-  
+     var Dom = YAHOO.util.Dom;
+     YAHOO.util.Event.onDOMReady(function() {    
        var tabview = new YAHOO.widget.TabView(clientId);  
        tabview.set('orientation', jsProps.orientation);
        var thiz = this;
@@ -298,6 +298,7 @@ ice.component.tabset = {
 		   tabview.addListener('activeTabChange', tabChange);
 	   }
        bindYUI(tabview);
+     });
    },
    
    //this function is responsible to provide an element that keeps tab index
