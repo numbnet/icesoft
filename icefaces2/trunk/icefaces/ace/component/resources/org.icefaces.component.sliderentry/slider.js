@@ -14,6 +14,7 @@ ice.component.slider = {
         
         //set a callback to create slider component 
         ice.yui3.use(function(Y){ 
+        	Y.on('domready', function(){
 			   var obj = null;
 		       YUI({bootstrap:false}).use('slider', function(Yui) {
 					try {
@@ -163,6 +164,7 @@ ice.component.slider = {
 		                } 
 		                //bind the initilized js component, so it can be reused for later calls
 		                bindYUI(obj);
+		          });
  			   });
             });
    },

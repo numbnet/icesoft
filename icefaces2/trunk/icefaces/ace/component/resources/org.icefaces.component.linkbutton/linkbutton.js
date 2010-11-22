@@ -1,11 +1,11 @@
 ice.component.linkButton = {
 
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
-	    YAHOO.widget.Logger.enableBrowserConsole();
+	   if (YAHOO.widget.Logger){
+	 	  YAHOO.widget.Logger.enableBrowserConsole();
+       }
 
-	YAHOO.util.Event.onDOMReady(function() {
-    });
-
+	  YAHOO.util.Event.onDOMReady(function() {
 
         var spanId = clientId + "_span";
 	    var oLinkButton = new YAHOO.widget.Button(spanId,{ label: jsProps.label }, {type: jsProps.type});
@@ -26,6 +26,7 @@ ice.component.linkButton = {
         } 
 
 		bindYUI(oLinkButton);
+      });
 	},
 	
     //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
