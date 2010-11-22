@@ -50,10 +50,12 @@ ice.component.linkButton = {
         YAHOO.log("--> Button.doAction = " + doAction);
 
          var params = function(parameter) {
-            var nameAndValue = postParameters.split(",");
-            var argCount = nameAndValue.length / 2;
-            for (var idx =0; idx < argCount; idx ++ ) {
-                parameter( nameAndValue[idx*2], nameAndValue[(idx*2)+1] );
+            if (postParameters != null) {
+                var nameAndValue = postParameters.split(",");
+                var argCount = nameAndValue.length / 2;
+                for (var idx =0; idx < argCount; idx ++ ) {
+                    parameter( nameAndValue[idx*2], nameAndValue[(idx*2)+1] );
+                }
             }
         };
 
