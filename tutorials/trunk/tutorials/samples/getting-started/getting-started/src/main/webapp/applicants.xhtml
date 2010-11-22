@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:param name="title" value="Applicant System" />
+    
+        <ui:define name="header"><h:graphicImage library="images" name="icefaces.png"/></ui:define>
+    
+        <ui:define name="menu">
+            <h:button outcome="jobApplicantPage" value="Job Applicant Page" />
+        </ui:define>
+    
+        <ui:define name="content">
+            <h:dataTable value="#{applicants.applicantsList}"
+                         var="row">
+                <h:column>
+                    <f:facet name="header">FIRST NAME</f:facet>
+                    #{row.firstName}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">LAST NAME</f:facet>
+                    #{row.lastName}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">EMAIL ADDRESS</f:facet>
+                    #{row.email}
+                </h:column>
+            </h:dataTable>
+        </ui:define>
+
+    </ui:composition>
+</html>
