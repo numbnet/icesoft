@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:jobApp="http://java.sun.com/jsf/composite/examples">
+	<ui:composition template="/WEB-INF/templates/template.xhtml">
+		<ui:param name="title" value="Applicant System" />
+        		
+		<ui:define name="header">
+			<h:graphicImage library="images" name="icefaces.png"/>
+		</ui:define>
+		
+		<ui:define name="menu">
+			<h:button outcome="applicants" value="Listing Page" />
+		</ui:define>
+		
+		<ui:define name="content">
+	    <h:messages globalOnly="true" />
+	    	<h:panelGroup id="table" layout="block" >
+	        <table>   
+	        	<tr>
+	        		<td>     
+	            		<h:outputLabel for="title" value="#{msgs.title}" />
+			        </td>
+			        <td>
+			            <h:selectOneRadio id="title" 
+			                              required="true"
+			                              value="#{jobApplicant.title}">
+			                <f:selectItem itemLabel="Dr." itemValue="1" />
+			                <f:selectItem itemLabel="Ms." itemValue="2" />
+			                <f:selectItem itemLabel="Mrs." itemValue="3" />
+			                <f:selectItem itemLabel="Miss" itemValue="4" />
+			                <f:selectItem itemLabel="Mr." itemValue="5" />
+			            </h:selectOneRadio>
+	            	</td>
+	            	<td>
+	            		<h:message for="title" />
+	            	</td>
+	            </tr>
+	            
+	            <jobApp:fieldSet id="firstName" label="#{msgs.firstName}" value="#{jobApplicant.firstName}" required="true" inTable="true">
+	            	<f:converter for="input" converterId="wordCapitalization" />
+	            </jobApp:fieldSet>
+	           
+	            <jobApp:fieldSet id="lastName" label="#{msgs.lastName}" value="#{jobApplicant.lastName}" required="true" inTable="true">
+	            	<f:converter for="input" converterId="wordCapitalization" />
+	            </jobApp:fieldSet>
+	            
+	            <jobApp:fieldSet id="email" label="#{msgs.email}" value="#{jobApplicant.email}" inTable="true">
+	            	<!-- input id is used internally by fieldSet for id assignment. -->
+                    <f:validator for="input" validatorId="emailValidator" />
+					<f:ajax event="tabOut" render="msg" />
+	            </jobApp:fieldSet>
+       	    	<tr>
+	        		<td>	        	
+	        			<h:commandButton action="#{applicantController.addApplicant}" 
+	                             value="#{msgs.submitApplicant}" />
+	            	</td>
+	            	<td>
+	            		<h:commandButton id="clearButton" value="Clear">
+	                    	<f:ajax event="click" render="@form" listener="#{applicantController.clearForm}" immediate="true" />
+	                    </h:commandButton>
+	                </td>
+	                <td>
+	           			<h:commandButton id="cancelButton"
+	                             action="cancelJobApplicant"
+	                             immediate="true"
+	                             value="Cancel" />
+	                </td>
+	           </tr>
+	        </table>
+	        </h:panelGroup>
+		</ui:define>
+		
+	</ui:composition>
+</html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<composite:interface>
+		<composite:attribute name="id" required="true" />
+		<composite:attribute name="label" />
+		<composite:attribute name="value" required="true" />
+		<composite:attribute name="inTable" default="false" />
+		<composite:attribute name="required" default="false" />
+		<composite:editableValueHolder name="input" />
+        <!-- mapping of blur event to a named even tabOut, tab out could be any name -->
+        <composite:clientBehavior name="tabOut" event="blur" targets="input" />
+	</composite:interface>
+    	
+	<composite:implementation>
+	
+		<c:choose>
+			<c:when test="#{cc.attrs.inTable}"> 
+				<tr>
+				<td><h:outputLabel for="input" value="#{cc.attrs.label}" style="float:left;" /></td>
+				<td>
+				<h:inputText id="input" value="#{cc.attrs.value}" style="float:left;" required="#{cc.attrs.required}" />				
+				</td>		
+				<td><h:message for="input" id="msg" /></td>
+				</tr>
+			</c:when>
+			<c:otherwise>
+				<h:outputLabel for="input" value="#{cc.attrs.label}" style="float:left;" />  
+				<h:inputText id="input" value="#{cc.attrs.value}" style="float:left;"  required="#{cc.attrs.required}" />		
+				<h:message for="input" id="msg" />			
+			</c:otherwise>
+		</c:choose>
+	</composite:implementation>
+</html>
