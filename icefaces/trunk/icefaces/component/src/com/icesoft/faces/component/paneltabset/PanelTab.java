@@ -51,6 +51,7 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.util.CoreUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -659,7 +660,7 @@ public class PanelTab
 
         Element iconTd = (Element) domContext.createElement(HTML.TD_ELEM);
         Element icon = (Element) domContext.createElement(HTML.IMG_ELEM);
-        icon.setAttribute(HTML.SRC_ATTR, getIcon());
+        icon.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(getFacesContext(), getIcon()) );
         icon.setAttribute(HTML.BORDER_ATTR, "border");
         iconTd.appendChild(icon);
 
