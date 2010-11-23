@@ -31,6 +31,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
@@ -56,21 +57,21 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
             else
                 root.removeAttribute(HTML.STYLE_ATTR);
 
-            String idleID = ClientIdPool.get(id + ":connection-idle");
+            String idleID = ClientIdPool.get(id + UINamingContainer.getSeparatorChar(context) + "connection-idle");
             root.appendChild(getNextNode(domContext,
                     component.getInactiveClass(),
                     component.getInactiveLabel(),
                     idleID, true));
-            String workingID = ClientIdPool.get(id + ":connection-working");
+            String workingID = ClientIdPool.get(id + UINamingContainer.getSeparatorChar(context) + "connection-working");
             root.appendChild(getNextNode(domContext, component.getActiveClass(),
                     component.getActiveLabel(),
                     workingID, false));
-            String troubleID = ClientIdPool.get(id + ":connection-trouble");
+            String troubleID = ClientIdPool.get(id + UINamingContainer.getSeparatorChar(context) + "connection-trouble");
             root.appendChild(getNextNode(domContext,
                     component.getCautionClass(),
                     component.getCautionLabel(),
                     troubleID, false));
-            String lostID = ClientIdPool.get(id + ":connection-lost");
+            String lostID = ClientIdPool.get(id + UINamingContainer.getSeparatorChar(context) + "connection-lost");
             root.appendChild(getNextNode(domContext,
                     component.getDisconnectedClass(),
                     component.getDisconnectedLabel(),

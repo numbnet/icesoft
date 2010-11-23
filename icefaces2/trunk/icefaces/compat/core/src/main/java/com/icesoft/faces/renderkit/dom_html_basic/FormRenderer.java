@@ -30,6 +30,7 @@ import org.w3c.dom.Element;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -153,7 +154,7 @@ public class FormRenderer extends DomBasicRenderer {
                 log.fine("Embedding Spring Param - name: " + flowParamName +
                         ", value: " + flowId);
             }
-            String flowParamId = formClientId + ":" + flowParamName;
+            String flowParamId = formClientId + UINamingContainer.getSeparatorChar(facesContext) + flowParamName;
             flowIDElement
                     .setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN);
             flowIDElement

@@ -29,6 +29,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -111,7 +112,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         }
 
         input.setAttribute("name", uiSelectOne.getClientId(facesContext));
-        String inputID = ClientIdPool.get(uiComponent.getClientId(facesContext) + ":_" + counter);
+        String inputID = ClientIdPool.get(uiComponent.getClientId(facesContext) + UINamingContainer.getSeparatorChar(facesContext) + "_" + counter);
         input.setAttribute("id", inputID);
         input.setAttribute("value", (formatComponentValue(facesContext,
                                                           uiSelectOne,
@@ -163,7 +164,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         SelectItem selectItem = (SelectItem) selectItemList.get(radioIndex);
 
         String selectOneClientId = selectOne.getClientId(facesContext);
-        String radioClientId = ClientIdPool.get(selectOneClientId + ":_" + radioIndex);
+        String radioClientId = ClientIdPool.get(selectOneClientId + UINamingContainer.getSeparatorChar(facesContext) + "_" + radioIndex);
 
         String selectItemValue = formatComponentValue(facesContext, selectOne, selectItem.getValue());
         String selectItemLabel = selectItem.getLabel();

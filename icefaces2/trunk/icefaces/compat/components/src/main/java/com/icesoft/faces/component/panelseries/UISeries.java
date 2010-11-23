@@ -32,11 +32,7 @@ import com.icesoft.faces.utils.SeriesStateHolder;
 
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.component.UIInput;
+import javax.faces.component.*;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
@@ -64,7 +60,6 @@ import java.util.Set;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitResult;
-import javax.faces.component.UIColumn;
 import java.util.Collection;
 
 
@@ -695,7 +690,7 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
     protected void synchWithPaginator() {
         if (!this.getAttributes().containsKey(DataPaginator.class.getName())) return;
         String dataPaginatorClientId = (String) this.getAttributes().get(DataPaginator.class.getName()); 
-        DataPaginator paginator = (DataPaginator) CoreComponentUtils.findComponent(":" + dataPaginatorClientId, FacesContext.getCurrentInstance().getViewRoot());
+        DataPaginator paginator = (DataPaginator) CoreComponentUtils.findComponent(UINamingContainer.getSeparatorChar(getFacesContext()) + dataPaginatorClientId, FacesContext.getCurrentInstance().getViewRoot());
         if (paginator != null && paginator.isRendered()) {
             paginator.getPageIndex();
         }

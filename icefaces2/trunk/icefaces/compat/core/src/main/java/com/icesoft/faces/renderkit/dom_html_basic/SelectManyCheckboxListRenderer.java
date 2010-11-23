@@ -30,6 +30,7 @@ import org.w3c.dom.Node;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UISelectMany;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -202,7 +203,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         rootTR.appendChild(td);
         
         String clientId = uiComponent.getClientId(facesContext);
-        String itemId = ClientIdPool.get(clientId + ":_" + counter);
+        String itemId = ClientIdPool.get(clientId + UINamingContainer.getSeparatorChar(facesContext) + "_" + counter);
         
         Element inputElement = domContext.createElement("input");
         inputElement
@@ -294,7 +295,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         SelectItem selectItem = (SelectItem) selectItemList.get(checkboxIndex);
 
         String selectManyClientId = selectMany.getClientId(facesContext);
-        String checkboxClientId = ClientIdPool.get(selectManyClientId + ":_" + checkboxIndex);
+        String checkboxClientId = ClientIdPool.get(selectManyClientId + UINamingContainer.getSeparatorChar(facesContext) + "_" + checkboxIndex);
 
         String selectItemValue = formatComponentValue(facesContext, selectMany, selectItem.getValue());
         String selectItemLabel = selectItem.getLabel();

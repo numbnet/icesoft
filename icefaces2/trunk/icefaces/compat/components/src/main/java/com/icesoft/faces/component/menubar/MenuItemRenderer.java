@@ -39,6 +39,7 @@ import org.w3c.dom.Node;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
@@ -89,7 +90,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 
         // debugging
         //examineRequest(facesContext, uiComponent, requestParameterMap, hiddenFieldName, hiddenFieldNameInRequestMap);
-        String commandLinkClientId = componentId + ":" + LINK_SUFFIX;
+        String commandLinkClientId = componentId + UINamingContainer.getSeparatorChar(facesContext) + LINK_SUFFIX;
         if (hiddenFieldNameInRequestMap.equals(commandLinkClientId)) {
             ActionEvent actionEvent = new ActionEvent(uiComponent);
             uiComponent.queueEvent(actionEvent);
@@ -385,7 +386,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             }
         }
         anchor.setAttribute(HTML.ID_ATTR, ClientIdPool.get(
-                menuItem.getClientId(facesContext)+ ":"+LINK_SUFFIX));
+                menuItem.getClientId(facesContext)+ UINamingContainer.getSeparatorChar(facesContext)+LINK_SUFFIX));
         if (menuItem.getChildCount() > 0 && menuItem.isChildrenMenuItem()) {
             Element subImg = domContext.createElement(HTML.IMG_ELEM);
             subImg.setAttribute(HTML.SRC_ATTR,

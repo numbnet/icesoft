@@ -54,6 +54,7 @@ import org.w3c.dom.Node;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.*;
@@ -1014,19 +1015,19 @@ public class TableRenderer
 
     public static String getSelectedRowParameterName(String dataTableId) {
         // strip the last ':' because the Datatables client Id changes for each iterator
-        int i = dataTableId.lastIndexOf(":");
+        int i = dataTableId.lastIndexOf(UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()));
         dataTableId = dataTableId.substring(0, i);
         return dataTableId + SELECTED_ROWS;
     }
     
     public static String getClickedRowParameterName(String dataTableId) {
-        int i = dataTableId.lastIndexOf(":");
+        int i = dataTableId.lastIndexOf(UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()));
         dataTableId = dataTableId.substring(0, i);
         return dataTableId + CLICKED_ROW;
     }
     
     public static String getClickCountParameterName(String dataTableId) {
-        int i = dataTableId.lastIndexOf(":");
+        int i = dataTableId.lastIndexOf(UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()));
         dataTableId = dataTableId.substring(0, i);
         return dataTableId + CLICK_COUNT;
     }    

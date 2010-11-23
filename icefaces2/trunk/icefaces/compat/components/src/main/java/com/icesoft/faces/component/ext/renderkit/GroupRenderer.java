@@ -54,6 +54,7 @@ import org.w3c.dom.Element;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
@@ -72,7 +73,7 @@ public class GroupRenderer
     protected static final String STATUS = "status";
 
     protected static final String DROP = "dropID";
-    protected static final String HIDDEN_FILED = ":iceDND";    
+    protected static final String HIDDEN_FILED = UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()) + "iceDND";
     private static Log log = LogFactory.getLog(GroupRenderer.class);
 
     // Basically, everything is excluded
