@@ -159,6 +159,9 @@
                 <file name="hash.js"/>
                 <file name="range.js"/>
             </filelist>
+            <filelist dir="${build.dir}/src">
+                <file name="header.js"/>
+            </filelist>
             <filelist dir="${build.dir}/lib">
                 <file name="namespace.js"/>
                 <file name="object.js"/>
@@ -190,6 +193,7 @@
                 <file name="connection.async.js"/>
                 <file name="application.js"/>
                 <file name="callback.js"/>
+                <file name="footer.js"/>
             </filelist>
             <path location="${script.open.ajax}"/>
         </concat>
@@ -207,6 +211,9 @@
                 <file name="form.js"/>
                 <file name="deprecated.js"/>
             </filelist>
+            <filelist dir="${build.dir}/lib/extras">
+                <file name="header.js"/>
+            </filelist>
             <filelist dir="${build.dir}/lib/scriptaculous">
                 <file name="builder.js"/>
                 <file name="effects.js"/>
@@ -221,7 +228,7 @@
                 <file name="state_mon.js"/>
                 <file name="style.js"/>
                 <file name="initializer.js"/>
-                <file name="delimitedProperties.js"/> 
+                <file name="delimitedProperties.js"/>
                 <file name="dragdrop_custom.js"/>
                 <file name="draggable_ext.js"/>
                 <file name="droppable_ext.js"/>
@@ -242,6 +249,9 @@
             </filelist>
             <filelist dir="${build.dir}/component">
                 <file name="menu.js"/>
+            </filelist>
+            <filelist dir="${build.dir}/lib/extras">
+                <file name="footer.js"/>
             </filelist>
         </concat>
     </target>
