@@ -662,6 +662,11 @@ public class MenuRenderer extends DomBasicInputRenderer {
                         for (int i = 0; i < stringItemArray.length; i++) {
                             selectItems.add(new SelectItem(stringItemArray[i]));
                         }
+                    } else if (selectItemsValue instanceof Enum[]) {
+                    	Enum[] enumArray = ((Enum[])selectItemsValue);
+                    	for (int i = 0; i < enumArray.length; i++) {
+                    		selectItems.add(new SelectItem(enumArray[i]));
+                    	}
                     }
                 }
             }
