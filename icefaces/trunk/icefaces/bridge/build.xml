@@ -102,6 +102,8 @@
         <include name="src/**/*.js"/>
         <include name="lib/**/*.js"/>
         <include name="component/**/*.js"/>
+        <exclude name="**/header.js"/>
+        <exclude name="**/footer.js"/>
         <exclude name="component/keyboardNavigator.js"/>
         <exclude name="component/resizblePanelGrid.js"/>
         <exclude name="lib/prototype/ajax.js"/>
@@ -118,11 +120,18 @@
         <include name="lib/prototype/form.js"/>
         <include name="lib/scriptaculous/controls.js"/>
     </fileset>
+    <fileset id="just-copy.js.files" dir=".">
+        <include name="src/header.js"/>
+        <include name="src/footer.js"/>
+        <include name="lib/extras/header.js"/>
+        <include name="lib/extras/footer.js"/>
+    </fileset>
 
     <target name="copy" depends="prepare" if="no-compress">
         <copy todir="${build.dir}">
             <fileset refid="munge.js.files"/>
             <fileset refid="no-munge.js.files"/>
+            <fileset refid="just-copy.js.files"/>
         </copy>
     </target>
 
@@ -134,6 +143,9 @@
         <yui-compress todir="${build.dir}" yui-switches="--nomunge">
             <fileset refid="no-munge.js.files"/>
         </yui-compress>
+        <copy todir="${build.dir}">
+            <fileset refid="just-copy.js.files"/>
+        </copy>
     </target>
 
     <target name="build.RegisterProperties" depends="prepare">
