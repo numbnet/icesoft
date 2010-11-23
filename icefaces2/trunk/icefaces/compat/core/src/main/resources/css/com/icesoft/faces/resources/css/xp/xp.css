@@ -565,6 +565,11 @@ fieldset {
     padding-left: 15px;
 }
 
+.icePnlTbOn .MidMid div {
+    padding-top: 0;
+    padding-right: 0;
+    padding-left: 0;
+}
 
 * html .icePnlTbOn .MidMid a, * html .icePnlTbOn .MidMid div {
     width: 1%;
@@ -765,6 +770,12 @@ fieldset {
     padding-top: 5px;
     padding-right: 15px;
     padding-left: 15px;
+}
+
+.icePnlTbOver .MidMid div {
+    padding-top: 0;
+    padding-right: 0;
+    padding-left: 0;
 }
 
 * html .icePnlTbOver .MidMid a, * html .icePnlTbOver .MidMid div {
