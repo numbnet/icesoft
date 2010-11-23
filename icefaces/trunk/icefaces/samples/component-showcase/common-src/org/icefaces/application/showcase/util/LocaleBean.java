@@ -40,6 +40,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import java.util.Locale;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 
 /**
@@ -48,10 +49,11 @@ import java.util.ArrayList;
  * selectOneMenu located in the languageThemeControl.jspx.  The application
  * currently support English, German and Spanish</p>
  *
+ * 
  * @since 1.8
  *
  */
-public class LocaleBean {
+public class LocaleBean implements Serializable {
 
     private static final Log logger =
             LogFactory.getLog(LocaleBean.class);
