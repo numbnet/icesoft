@@ -36,6 +36,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -417,7 +418,7 @@ public class TreeRenderer extends DomBasicRenderer {
             Element navAnchor = domContext.createElement(HTML.ANCHOR_ELEM);
             navAnchor.setAttribute(HTML.HREF_ATTR, "javascript:;");
             navAnchor.setAttribute(HTML.ID_ATTR, ClientIdPool.get(
-                    treeComponent.getClientId(facesContext) + ":" + pathToCurrentRoot));
+                    treeComponent.getClientId(facesContext) + UINamingContainer.getSeparatorChar(facesContext) + pathToCurrentRoot));
             navAnchor.setAttribute(HTML.ONFOCUS_ATTR, "setFocus(this.id);");
             navAnchor.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');");
             String hiddenFieldName =

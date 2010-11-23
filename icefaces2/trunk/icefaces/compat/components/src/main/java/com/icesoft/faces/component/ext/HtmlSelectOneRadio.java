@@ -31,6 +31,7 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.util.CoreComponentUtils;
 
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
@@ -85,7 +86,7 @@ public class HtmlSelectOneRadio
         if (this.getChildCount() > 0) {
             JavascriptContext.focus(FacesContext.getCurrentInstance(),
                                     this.getClientId(
-                                            FacesContext.getCurrentInstance())+ ":_1");
+                                            FacesContext.getCurrentInstance())+ UINamingContainer.getSeparatorChar(getFacesContext()) + "_1");
         }
     }
 

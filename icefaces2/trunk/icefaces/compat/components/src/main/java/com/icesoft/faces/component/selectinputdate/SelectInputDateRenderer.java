@@ -69,11 +69,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.component.UISelectItem;
-import javax.faces.component.UIViewRoot;
+import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
@@ -185,7 +181,7 @@ public class SelectInputDateRenderer
     //required for popup calendar
     private static final String[] passThruAttributesWithoutTabindex = new String[]{HTML.DIR_ATTR, HTML.LANG_ATTR, HTML.ONCLICK_ATTR, HTML.ONDBLCLICK_ATTR, HTML.ONKEYDOWN_ATTR, HTML.ONKEYPRESS_ATTR, HTML.ONKEYUP_ATTR, HTML.ONMOUSEDOWN_ATTR, HTML.ONMOUSEMOVE_ATTR, HTML.ONMOUSEOUT_ATTR, HTML.ONMOUSEOVER_ATTR, HTML.ONMOUSEUP_ATTR, HTML.STYLE_ATTR, HTML.TITLE_ATTR};
 
-    private static final String ID_SUFFIX = ":j_idcl";
+    private static final String ID_SUFFIX = UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()) + "j_idcl";
 
     private static final String NBSP = "&nbsp;";
 
