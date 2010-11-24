@@ -46,7 +46,7 @@ public class ClockBean implements Serializable {
     private static Log log = LogFactory.getLog(ClockBean.class);
 //    private IntervalRenderer clock;
     private int pollInterval = 1000;
-    private static Thread thread = null;
+    private volatile Thread thread = null;
     private boolean isRunning = true;
     private String autoLoad = " ";
 
@@ -59,7 +59,7 @@ public class ClockBean implements Serializable {
 
     @PostConstruct
     public synchronized void renderPeriodically() {
-        if (null != thread)  {
+        if (thread != null)  {
             return;
         }
         thread = new Thread("Auction Clock Thread") {
@@ -77,7 +77,7 @@ public class ClockBean implements Serializable {
     }
 
     public String getAutoLoad() {
-        if (null == thread)  {
+        if (thread == null)  {
            renderPeriodically(); 
         }
         if (" ".equals(autoLoad)) {
@@ -97,6 +97,9 @@ public class ClockBean implements Serializable {
     @PreDestroy
     public void dispose()  {
         isRunning = false;
+        if (thread != null) {
+            thread.stop();
+        }
     }
 
 }

@@ -28,6 +28,7 @@ import com.icesoft.applications.faces.auctionMonitor.stubs.StubServer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.annotation.PreDestroy;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.sql.Time;
@@ -57,16 +58,15 @@ public class LogBean {
     private ArrayList controlLog = new ArrayList(0);
     private MessageLog messageLog = new MessageLog(0);
     private String autoLoad = " ";
+    private Timer nightlyReset;
 
     private static final int TIME_DAYS = 24 * 60 * 60 * 1000;
 
     public LogBean() {
         externalContext =
                 FacesContext.getCurrentInstance().getExternalContext();
-        //Disabling the reset functionality as it causes a PermGen memory
-        //leak through the TimerThread ContextClassLoader keeping references
-        //to all ICEfaces classes
-        //timedReset();
+        // This was commented out in 2007 due to ICE-1613, but that bug is less valid three years later
+        timedReset();
     }
 
     public long getFreeMemory() {
@@ -150,12 +150,22 @@ public class LogBean {
         tomorrow.add(Calendar.DATE, 1);
         Date midnight = new GregorianCalendar(tomorrow.get(Calendar.YEAR),
                                               tomorrow.get(Calendar.MONTH),
-                                              tomorrow.get(Calendar.DATE))
-                .getTime();
+                                              tomorrow.get(Calendar.DATE)).getTime();
 
+        
+        // Setup the timer task object, or cancel existing tasks on the current object 
+        if (nightlyReset == null) {
+            nightlyReset = new Timer("Nightly Auction Reset", true);
+        }
+        else {
+            nightlyReset.cancel();
+            nightlyReset.purge();
+        }
+        
         // Schedule a task to reset at midnight, then every 24 hours past that
-        new Timer().scheduleAtFixedRate(new TimerTask() {
+        nightlyReset.scheduleAtFixedRate(new TimerTask() {
             public void run() {
+                log.info("Nightly reset of auction items.");
                 resetAuction(true);
             }
         }, midnight, TIME_DAYS);
@@ -309,5 +319,14 @@ public class LogBean {
         }
 
         return (toClear);
+    }
+    
+    @PreDestroy
+    public void dispose() {
+        if (nightlyReset != null) {
+            nightlyReset.cancel();
+            nightlyReset.purge();
+            nightlyReset = null;
+        }
     }
 }
