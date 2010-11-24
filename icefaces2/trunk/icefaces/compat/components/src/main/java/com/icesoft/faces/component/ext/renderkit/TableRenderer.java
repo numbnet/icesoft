@@ -441,7 +441,7 @@ public class TableRenderer
                 resizeHandler.setAttribute(HTML.STYLE_ATTR, "cursor: e-resize; display:block;  height:100%;");
                 resizeHandler.setAttribute(HTML.ONMOUSEDOWN_ATTR, "new Ice.ResizableGrid(event);");
                 resizeHandler.setAttribute(HTML.CLASS_ATTR, "iceDatTblResHdlr");
-                resizeHandler.appendChild(domContext.createTextNodeUnescaped("&nbsp;"));
+                resizeHandler.appendChild(domContext.createTextNodeUnescaped(HTML.NBSP_ENTITY));
                 handlerTd.appendChild(resizeHandler);
                 tr.appendChild(handlerTd);
             }
@@ -560,7 +560,7 @@ public class TableRenderer
                 resizeHandler.setAttribute(HTML.STYLE_ATTR, "cursor: e-resize; display:block;  height:100%;");
                 resizeHandler.setAttribute(HTML.ONMOUSEDOWN_ATTR, "new Ice.ResizableGrid(event);");
                 resizeHandler.setAttribute(HTML.CLASS_ATTR, "iceDatTblResHdlr");
-                resizeHandler.appendChild(domContext.createTextNodeUnescaped("&nbsp;"));
+                resizeHandler.appendChild(domContext.createTextNodeUnescaped(HTML.NBSP_ENTITY));
                 handlerTd.appendChild(resizeHandler);
                 tr.appendChild(handlerTd);
             }

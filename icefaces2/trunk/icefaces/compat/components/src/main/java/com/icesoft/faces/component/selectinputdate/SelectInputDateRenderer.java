@@ -183,7 +183,7 @@ public class SelectInputDateRenderer
 
     private static final String ID_SUFFIX = UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()) + "j_idcl";
 
-    private static final String NBSP = "&nbsp;";
+    private static final String NBSP = HTML.NBSP_ENTITY;
 
     /* (non-Javadoc)
     * @see javax.faces.render.Renderer#getRendersChildren()

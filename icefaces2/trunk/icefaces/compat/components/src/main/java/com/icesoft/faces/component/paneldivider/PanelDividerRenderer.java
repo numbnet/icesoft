@@ -79,7 +79,7 @@ public class PanelDividerRenderer extends DomBasicRenderer{
         }
         
         String clientId = uiComponent.getClientId(facesContext);
-        dividerContainer.appendChild(domContext.createTextNodeUnescaped("&nbsp;"));
+        dividerContainer.appendChild(domContext.createTextNodeUnescaped(HTML.NBSP_ENTITY));
         renderPane(facesContext, uiComponent, true);
         container.appendChild(dividerContainer);
         dividerContainer.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "Divider"));

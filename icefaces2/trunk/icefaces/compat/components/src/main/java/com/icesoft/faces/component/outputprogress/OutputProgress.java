@@ -23,6 +23,7 @@ package com.icesoft.faces.component.outputprogress;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import org.icefaces.impl.util.DOMUtils;
 
 import javax.faces.component.UIComponentBase;
@@ -219,7 +220,7 @@ public class OutputProgress extends UIComponentBase {
      */
     public String getProgressLabelComplete() {
         if (getLabelComplete() == null && getIndeterminate()) {
-            return "&nbsp;";
+            return HTML.NBSP_ENTITY;
         } else if (getLabelComplete() != null) {
             return DOMUtils.escapeAnsi(getLabelComplete());
         } else {
