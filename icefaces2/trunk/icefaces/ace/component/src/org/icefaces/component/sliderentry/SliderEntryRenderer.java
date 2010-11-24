@@ -40,25 +40,39 @@ public class SliderEntryRenderer extends Renderer{
     //  row's slider, this slider will decode 5 times, but should only be affected
     //  the 3rd time. Once it find that there is data relevant to it, it then
     //  extracts that data, and passes it to the component.
+    //  There is another case where we perform decode, its when the singleSubmit is set 
+    //  to false, the reason behind is that the source of event can be any component. 
+    //  So we have to respect the change in value, however we queue event only 
+    //  if there is a change in value
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         // The RequestParameterMap holds the values received from the browser
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
+        String clientId = uiComponent.getClientId(facesContext);
 
+        SliderEntry slider = (SliderEntry)uiComponent;
+
+        boolean foundInMap = false;
+        if (requestParameterMap.containsKey(clientId+"_hidden")) {
+        	if (!slider.isSingleSubmit()) {
+        		foundInMap = true;
+        	}
+        }
+        
         //"ice.event.captured" should be holding the event source id
-        if (requestParameterMap.containsKey("ice.event.captured")) {
-            SliderEntry slider = (SliderEntry)uiComponent;
+        if (requestParameterMap.containsKey("ice.event.captured")
+        		|| foundInMap) {
+
             String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
-            String clientId = uiComponent.getClientId(facesContext);
 
             if ("ice.ser".equals(requestParameterMap.get("ice.submit.type"))) {
                 facesContext.renderResponse();
                 return; 
             }
-            String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));;
-
+            Object hiddenValue = requestParameterMap.get(clientId+"_hidden");
+            if (hiddenValue == null) return;
 			int submittedValue = 0;
             try {
-                submittedValue = Integer.valueOf(hiddenValue);
+                submittedValue = Integer.valueOf(hiddenValue.toString());
                 log.finer("Decoded slider value [id:value] [" + clientId + ":" + hiddenValue + "]" );
             } catch (NumberFormatException nfe) {
                 log.warning("NumberFormatException  Decoding value for [id:value] [" + clientId + ":" + hiddenValue + "]");
@@ -67,7 +81,7 @@ public class SliderEntryRenderer extends Renderer{
             }
 
             //If I am a source of event?
-            if (clientId.equals(source)) {
+            if (clientId.equals(source) || foundInMap) {
                 try {
                     int value = slider.getValue();
                     //if there is a value change, queue a valueChangeEvent    

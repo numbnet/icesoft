@@ -55,9 +55,7 @@ ice.component.slider = {
 		                    hiddenField.value=sliderValue;
 		                    
 		                    if (singleSubmit) {
-		                        ice.singleSubmit(event, root);
-		                    } else {
-		                        ice.submit(event, root);                    
+		                        ice.se(event, root, function(param) {param(hiddenField.id, sliderValue)});
 		                    }                    
 		                };
 		                                
