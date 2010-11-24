@@ -45,7 +45,7 @@ import com.icesoft.util.pooling.ClientIdPool;
 public class OutputProgressRenderer extends DomBasicInputRenderer {
     private static final String[] passThruAttributes =
             ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_OUTPUTPROGRESS);
-    private final String NBSP = "&nbsp;";
+    private final String NBSP = HTML.NBSP_ENTITY;
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
