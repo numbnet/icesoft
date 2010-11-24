@@ -215,6 +215,9 @@
             description="Collate extra libraries used by specialized components.">
         <delete file="${extras.script}"/>
         <concat destfile="${extras.script}" append="yes" fixlastline="yes">
+            <filelist dir="${build.dir}/lib/extras">
+                <file name="header.js"/>
+            </filelist>
             <filelist dir="${build.dir}/lib/prototype">
                 <file name="ajax.js"/>
                 <file name="dom.js"/>
@@ -222,9 +225,6 @@
                 <file name="event.js"/>
                 <file name="form.js"/>
                 <file name="deprecated.js"/>
-            </filelist>
-            <filelist dir="${build.dir}/lib/extras">
-                <file name="header.js"/>
             </filelist>
             <filelist dir="${build.dir}/lib/scriptaculous">
                 <file name="builder.js"/>
