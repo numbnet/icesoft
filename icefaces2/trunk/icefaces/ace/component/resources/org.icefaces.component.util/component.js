@@ -35,20 +35,10 @@ String.prototype.trim = function () {
 };
 
 ice.yui3 = {
-    logger: {
-        info: function(msg) {
-            if (window["console"]) {
-                window["console"].info(msg);
-            } else {
-                //alert(msg);
-            }
-        }
-    },
     y : null,
     modules: {},
     use :function(callback) {
         if (ice.yui3.y == null) {
-            ice.yui3.logger.info('Loading modules ' + this.getModules());
             YUI({combine: true, timeout: 10000, bootstrap: false}).use('*', function(Y) {
                 ice.yui3.y = Y;
                 callback(ice.yui3.y);
@@ -110,7 +100,6 @@ ice.component = {
                 for (prop in jsProps) {
                     var propValue = yuiComp.get(prop);
                     if (propValue != jsProps[prop]) {
-                        ice.yui3.logger.info('change found in ' + prop + ' updating from [' + propValue + '] to [' + jsProps[prop]);
                         yuiComp.set(prop, jsProps[prop]);
                     }
                 }
@@ -127,7 +116,6 @@ ice.component = {
             context.setJSProps(jsProps);
             context.setJSFProps(jsfProps);
             lib.initialize(clientId, jsProps, jsfProps, function(YUIJS) {
-                ice.yui3.logger.info('getInstance callback executed..');
                 context.setComponent(YUIJS);
                 callback(context.getComponent());
             });
