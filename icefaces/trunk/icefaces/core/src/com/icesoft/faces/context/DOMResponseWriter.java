@@ -391,42 +391,43 @@ public class DOMResponseWriter extends ResponseWriter {
         //todo: build startup script only once on aplication startup
         boolean synchronousMode = configuration.getAttributeAsBoolean("synchronousUpdate", false);
         String startupScript = context.getStartupScript();
-        if (null == startupScript)  {
+        if (null == startupScript) {
             startupScript =
-                "window.disposeViewsURI = '" + encodeURL(externalContext, blockingRequestHandlerContext + "block/dispose-views") +"';\n" +
-                        "var container = '" + configurationID + "'.asElement().parentNode;\n" +
-                        "container.bridge = new Ice.Community.Application({" +
-                        "optimizedJSListenerCleanup: " + configuration.getAttribute("optimizedJSListenerCleanup", "false") + "," +
-                        "session: '" + sessionIdentifier + "'," +
-                        "view: " + viewIdentifier + "," +
-                        "synchronous: " + synchronousMode + "," +
-                        "connectionLostRedirectURI: '" + encodeURL(externalContext, connectionLostRedirectURI) + "'," +
-                        "sessionExpiredRedirectURI: '" + encodeURL(externalContext, sessionExpiredRedirectURI) + "'," +
-                        "serverErrorRetryTimeouts: [" + configuration.getAttribute("serverErrorRetryTimeouts", "1000 2000 4000").trim().replaceAll("\\s+", ",") + "], " +
-                        "connection: {" +
-                        "blockUI: " + configuration.getAttribute("blockUIOnSubmit", "false") + "," +
-                        "context: '" + contextPath + "', " +
-                        "sendReceiveUpdatesURI: '" + encodeURL(externalContext, contextPath + "block/send-receive-updates") + "'," +
-                        (synchronousMode ?
-                                ("") :
-                                ("pingURI: '" + encodeURL(externalContext, contextPath + "block/ping") + "'," +
-                                        "receiveUpdatesURI: '" + encodeURL(externalContext, contextPath + "block/receive-updates") + "'," +
-                                        "receiveUpdatedViewsURI: '" + encodeURL(externalContext, blockingRequestHandlerContext + "block/receive-updated-views") + "',") +
-                                        "heartbeat: {" +
-                                        "interval: " + configuration.getAttributeAsLong("heartbeatInterval", 50000) + "," +
-                                        "timeout: " + configuration.getAttributeAsLong("heartbeatTimeout", 30000) + "," +
-                                        "retries: " + configuration.getAttributeAsLong("heartbeatRetries", 3) + "},"
-                        ) +
-                        "timeout: " + configuration.getAttributeAsLong("connectionTimeout", 60000) +
-                        "}," +
-                        "messages: {" +
-                        "sessionExpired: '" + localizedBundle.getString("session-expired") + "'," +
-                        "connectionLost: '" + localizedBundle.getString("connection-lost") + "'," +
-                        "serverError: '" + localizedBundle.getString("server-error") + "'," +
-                        "description: '" + localizedBundle.getString("description") + "'," +
-                        "buttonText: '" + localizedBundle.getString("button-text") + "'" +
-                        "}" +
-                        "}, container);";
+                    "window.disposeViewsURI = '" + encodeURL(externalContext, blockingRequestHandlerContext + "block/dispose-views") + "';\n" +
+                            "window.windowFocusRestore = " + configuration.getAttributeAsBoolean("windowFocusRestore", false) + ";\n" +
+                            "var container = '" + configurationID + "'.asElement().parentNode;\n" +
+                            "container.bridge = new Ice.Community.Application({" +
+                            "optimizedJSListenerCleanup: " + configuration.getAttribute("optimizedJSListenerCleanup", "false") + "," +
+                            "session: '" + sessionIdentifier + "'," +
+                            "view: " + viewIdentifier + "," +
+                            "synchronous: " + synchronousMode + "," +
+                            "connectionLostRedirectURI: '" + encodeURL(externalContext, connectionLostRedirectURI) + "'," +
+                            "sessionExpiredRedirectURI: '" + encodeURL(externalContext, sessionExpiredRedirectURI) + "'," +
+                            "serverErrorRetryTimeouts: [" + configuration.getAttribute("serverErrorRetryTimeouts", "1000 2000 4000").trim().replaceAll("\\s+", ",") + "], " +
+                            "connection: {" +
+                            "blockUI: " + configuration.getAttribute("blockUIOnSubmit", "false") + "," +
+                            "context: '" + contextPath + "', " +
+                            "sendReceiveUpdatesURI: '" + encodeURL(externalContext, contextPath + "block/send-receive-updates") + "'," +
+                            (synchronousMode ?
+                                    ("") :
+                                    ("pingURI: '" + encodeURL(externalContext, contextPath + "block/ping") + "'," +
+                                            "receiveUpdatesURI: '" + encodeURL(externalContext, contextPath + "block/receive-updates") + "'," +
+                                            "receiveUpdatedViewsURI: '" + encodeURL(externalContext, blockingRequestHandlerContext + "block/receive-updated-views") + "',") +
+                                            "heartbeat: {" +
+                                            "interval: " + configuration.getAttributeAsLong("heartbeatInterval", 50000) + "," +
+                                            "timeout: " + configuration.getAttributeAsLong("heartbeatTimeout", 30000) + "," +
+                                            "retries: " + configuration.getAttributeAsLong("heartbeatRetries", 3) + "},"
+                            ) +
+                            "timeout: " + configuration.getAttributeAsLong("connectionTimeout", 60000) +
+                            "}," +
+                            "messages: {" +
+                            "sessionExpired: '" + localizedBundle.getString("session-expired") + "'," +
+                            "connectionLost: '" + localizedBundle.getString("connection-lost") + "'," +
+                            "serverError: '" + localizedBundle.getString("server-error") + "'," +
+                            "description: '" + localizedBundle.getString("description") + "'," +
+                            "buttonText: '" + localizedBundle.getString("button-text") + "'" +
+                            "}" +
+                            "}, container);";
         }
         context.setStartupScript(startupScript);
 
@@ -479,8 +480,8 @@ public class DOMResponseWriter extends ResponseWriter {
         }
     }
 
-    private static String encodeURL(ExternalContext ec, String url){
-        if(url == null || url.equals("null")){
+    private static String encodeURL(ExternalContext ec, String url) {
+        if (url == null || url.equals("null")) {
             return url;
         }
         return ec.encodeResourceURL(url);
