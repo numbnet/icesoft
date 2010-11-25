@@ -283,8 +283,10 @@ public class PanelPopupRenderer extends GroupRenderer {
         String positions = panelPopup.getAutoPosition();
         if (positions != null && !positions.equalsIgnoreCase("manual") && (!positionOnLoadOnly || (positionOnLoadOnly && !dragged))) {
             if (positions.indexOf(',') < 1) {
-                log.warn("The autoPosition attribute should be used with an "
-                        + " x and y value for the position, such as '20,40'");
+                if (positions.trim().length() != 0) {
+                    log.warn("The autoPosition attribute should be used with an "
+                            + " x and y value for the position, such as '20,40'");
+                }
             } else {
                 String x = positions.substring(0, positions.indexOf(','));
                 String y = positions.substring(positions.indexOf(',') + 1);
