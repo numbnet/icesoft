@@ -63,7 +63,7 @@ public class Constants {
             "org.apache.catalina.jsp_classpath";
 
     /**
-     * FIXME Request attribute for <code>&lt;jsp-file&gt;</code> element of a
+     * FIXME Request attribute for <code>&#60;jsp-file&#62;</code> element of a
      * servlet definition.  If present on a request, this overrides the value
      * returned by <code>request.getServletPath()</code> to select the JSP page
      * to be executed.

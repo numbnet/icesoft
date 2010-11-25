@@ -84,7 +84,7 @@ public class JavascriptContext {
     public static final String ICE_EXTRAS = "/xmlhttp" + StartupTime.getStartupInc() + "icefaces-compat.js";
 
     /**
-     * Include a script tag in the &lt;head&gt; section of the page with the src
+     * Include a script tag in the &#60;head&#62; section of the page with the src
      * attribute set to libname. This will insure that all icefaces pages
      * contain this script for the remainder of the session.
      *
