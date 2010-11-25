@@ -60,7 +60,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
 
     //private static final String[] passThruAttributes = ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_SELECTINPUTTEXT);
     //handle         HTML.ONKEYDOWN_ATTR, HTML.ONKEYUP_ATTR, HTML.ONFOCUS_ATTR, HTML.ONBLUR_ATTR
-    private static final String[] passThruAttributes = new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ALT_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.MAXLENGTH_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,   HTML.ONKEYPRESS_ATTR,   HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR, HTML.SIZE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        
+    private static final String[] passThruAttributes = new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ALT_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.MAXLENGTH_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,   HTML.ONKEYPRESS_ATTR,   HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR, HTML.SIZE_ATTR,  HTML.STYLE_ATTR, HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        
            
     public boolean getRendersChildren() {
         return true;
@@ -134,6 +134,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                         clientId);
             }
             PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, input, null, new String[]{HTML.TABINDEX_ATTR});
             PassThruAttributeRenderer.renderBooleanAttributes(facesContext, 
                     uiComponent, input, PassThruAttributeRenderer.EMPTY_STRING_ARRAY);
 
