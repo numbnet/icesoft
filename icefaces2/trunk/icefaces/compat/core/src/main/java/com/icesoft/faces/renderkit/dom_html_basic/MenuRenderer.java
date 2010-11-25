@@ -633,7 +633,12 @@ public class MenuRenderer extends DomBasicInputRenderer {
                         Iterator selectItemsIterator =
                                 ((Collection) selectItemsValue).iterator();
                         while (selectItemsIterator.hasNext()) {
-                            selectItems.add(selectItemsIterator.next());
+                        	Object item = selectItemsIterator.next();
+                        	if (item instanceof SelectItem) {
+                        		selectItems.add(item);
+                        	} else {
+                        		selectItems.add(new SelectItem(item));
+                        	}
                         }
                     } else if (selectItemsValue instanceof SelectItem[]) {
                         SelectItem selectItemArray[] =
