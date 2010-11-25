@@ -241,9 +241,9 @@ public class UserBean implements Serializable  {
      * @return String the cleaned and trimmed result
      */
     private String cleanTags(String clean) {
-        clean = clean.replaceAll("<", "&lt;");
-        clean = clean.replaceAll(">", "&gt;");
-        clean = clean.replaceAll("&", "&amp;");
+        clean = clean.replaceAll("<", "&#60;");
+        clean = clean.replaceAll(">", "&#62;");
+        clean = clean.replaceAll("&", "&#38;");
 
         return (clean);
     }

@@ -127,14 +127,14 @@ public class DefaultValueTest {
                                    result.append("<tr style='background-color:#339900;'><td >"+ attName +"</td><td> sentinel value found "+ value +"</td></tr>");
                                } else {
                                    failed++;
-                                   result.append("<tr style='background-color:#FF6633;'><td >"+ attName +"</td><td>[Warning] sentinel value found : ["+  value + "], &nbsp;&nbsp;&nbsp;and metadata contains a default value ["+ valueInTld +"], However default-value is not required for sentinel value</td></tr>");
+                                   result.append("<tr style='background-color:#FF6633;'><td >"+ attName +"</td><td>[Warning] sentinel value found : ["+  value + "], &#160;&#160;&#160;and metadata contains a default value ["+ valueInTld +"], However default-value is not required for sentinel value</td></tr>");
                                }
                             }else if (value.equals(valueInTld)) {
                                 passed++;
                                 result.append("<tr style='background-color:#339900;'><td >"+ attName +"</td><td>"+ value +"</td></tr>");
                             } else {
                                 failed++;
-                                result.append("<tr style='background-color:#CC0000;'><td >"+ attName +"</td><td> component returns expected: ["+  value + "], &nbsp;&nbsp;&nbsp;in meta-data found: ["+ valueInTld +"] </td></tr>");
+                                result.append("<tr style='background-color:#CC0000;'><td >"+ attName +"</td><td> component returns expected: ["+  value + "], &#160;&#160;&#160;in meta-data found: ["+ valueInTld +"] </td></tr>");
                             }
 
                         }
