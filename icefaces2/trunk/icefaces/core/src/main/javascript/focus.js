@@ -35,7 +35,7 @@ var currentFocus;
 
     var isIE = /MSIE/.test(navigator.userAgent);
 
-    applyFocus = function(id) {
+    var focusOn = function(id) {
         runOnce(Delay(function() {
             if (id && isValidID(id)) {
                 var e = document.getElementById(id);
@@ -47,9 +47,9 @@ var currentFocus;
                         } catch (ex) {
                             //IE throws exception if element is invisible
                         } finally {
-                            if(isIE){
+                            if (isIE) {
                                 //IE sometimes requires that focus() be called again
-                                try{
+                                try {
                                     e.focus();
                                 } catch (ex2) {
                                     //IE throws exception if element is invisible
@@ -61,6 +61,46 @@ var currentFocus;
             }
         }, 100));
     };
+
+    var focusStrategy = focusOn;
+    //indirect reference to the currently used focus strategy
+    applyFocus = function(id) {
+        focusStrategy(id);
+    };
+
+    if (isIE) {
+        var activeElement;
+        //initialize activeElement if IE
+        onLoad(window, function() {
+            activeElement = document.activeElement;
+        });
+
+        //window.onblur in IE is triggered also when moving focus from window to an element inside the same window
+        //to avoid bogus 'blur' events in IE the window.onblur behavior is simulated with the help of document.onfocusout
+        //event handler
+        var onBlur = function(callback) {
+            registerElementListener(document, 'onfocusout', function() {
+                if (activeElement == document.activeElement) {
+                    callback();
+                } else {
+                    activeElement = document.activeElement;
+                }
+            });
+        };
+
+        var onFocus = function(callback) {
+            registerElementListener(window, 'onfocus', callback);
+        };
+
+        //on window blur the ID of the focused element is just saved, not applied
+        onBlur(function() {
+            focusStrategy = setFocus;
+        });
+
+        onFocus(function() {
+            focusStrategy = focusOn;
+        });
+    }
 
     function registerElementListener(element, eventType, listener) {
         var previousListener = element[eventType];
