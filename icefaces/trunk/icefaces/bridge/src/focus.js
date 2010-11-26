@@ -73,19 +73,13 @@ function setFocus(id) {
     This.setFocus = focusOn;
 
     window.onLoad(function() {
-        if (window.windowFocusRestore) {
-            var activeElement;
-            var isIE = /MSIE/.test(navigator.userAgent);
-
-            //initialize activeElement if IE
-            window.onLoad(function() {
-                if (isIE) activeElement = document.activeElement;
-            });
+        if (window.windowFocusRestore && /MSIE/.test(navigator.userAgent)) {
+            var activeElement = document.activeElement;
 
             //window.onblur in IE is triggered also when moving focus from window to an element inside the same window
             //to avoid bogus 'blur' events in IE the window.onblur behavior is simulated with the help of document.onfocusout
             //event handler
-            window.onBlur = isIE ? function(callback) {
+            var onBlur = function(callback) {
                 registerElementListener(document, 'onfocusout', function() {
                     if (activeElement == document.activeElement) {
                         callback();
@@ -93,27 +87,19 @@ function setFocus(id) {
                         activeElement = document.activeElement;
                     }
                 });
-            } : function(callback) {
-                registerElementListener(window, 'onblur', callback);
             };
 
-            window.onFocus = function(callback) {
+            var onFocus = function(callback) {
                 registerElementListener(window, 'onfocus', callback);
             };
 
             //on window blur the ID of the focused element is just saved, not applied
-            window.onBlur(function() {
-                This.setFocus = function(id) {
-                    currentFocus = id;
-                    logger.debug('save pending focus for ' + id);
-                };
+            onBlur(function() {
+                This.setFocus = setFocus;
             });
 
-            //on window focus the saved ID is applied and Ice.Focus.setFocus function is re-enabled
-            window.onFocus(function() {
+            onFocus(function() {
                 This.setFocus = focusOn;
-                logger.debug('apply saved focus for ' + currentFocus);
-                focusOn(currentFocus);
             });
         }
     });
