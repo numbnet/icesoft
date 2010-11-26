@@ -42,6 +42,7 @@ function setFocus(id) {
         return /^\w[\w\-\:]*$/.test(id);
     }
 
+    var isIE = /MSIE/.test(navigator.userAgent);
     var focusOn = (function(id) {
         if (id && isValidID(id)) {
             try {
@@ -73,7 +74,7 @@ function setFocus(id) {
     This.setFocus = focusOn;
 
     window.onLoad(function() {
-        if (window.windowFocusRestore && /MSIE/.test(navigator.userAgent)) {
+        if (window.windowFocusRestore && isIE) {
             var activeElement = document.activeElement;
 
             //window.onblur in IE is triggered also when moving focus from window to an element inside the same window
@@ -100,6 +101,7 @@ function setFocus(id) {
 
             onFocus(function() {
                 This.setFocus = focusOn;
+                focusOn(currentFocus);
             });
         }
     });
