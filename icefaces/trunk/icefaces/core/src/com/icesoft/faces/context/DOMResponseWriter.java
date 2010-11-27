@@ -375,15 +375,17 @@ public class DOMResponseWriter extends ResponseWriter {
         try {
             String uri = configuration.getAttribute("connectionLostRedirectURI");
             connectionLostRedirectURI = handler.getResourceURL(context, uri.replaceAll("'", ""));
+            connectionLostRedirectURI = "'" + encodeURL(externalContext, connectionLostRedirectURI) + "'";
         } catch (ConfigurationException e) {
-            connectionLostRedirectURI = "";
+            connectionLostRedirectURI = null;
         }
         String sessionExpiredRedirectURI;
         try {
             String uri = configuration.getAttribute("sessionExpiredRedirectURI");
             sessionExpiredRedirectURI = handler.getResourceURL(context, uri.replaceAll("'", ""));
+            sessionExpiredRedirectURI = "'" + encodeURL(externalContext, sessionExpiredRedirectURI) + "'";
         } catch (ConfigurationException e) {
-            sessionExpiredRedirectURI = "";
+            sessionExpiredRedirectURI = null;
         }
         String configurationID = prefix + "configuration-script";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
@@ -401,8 +403,8 @@ public class DOMResponseWriter extends ResponseWriter {
                             "session: '" + sessionIdentifier + "'," +
                             "view: " + viewIdentifier + "," +
                             "synchronous: " + synchronousMode + "," +
-                            "connectionLostRedirectURI: '" + encodeURL(externalContext, connectionLostRedirectURI) + "'," +
-                            "sessionExpiredRedirectURI: '" + encodeURL(externalContext, sessionExpiredRedirectURI) + "'," +
+                            "connectionLostRedirectURI: " + connectionLostRedirectURI + "," +
+                            "sessionExpiredRedirectURI: " + sessionExpiredRedirectURI + "," +
                             "serverErrorRetryTimeouts: [" + configuration.getAttribute("serverErrorRetryTimeouts", "1000 2000 4000").trim().replaceAll("\\s+", ",") + "], " +
                             "connection: {" +
                             "blockUI: " + configuration.getAttribute("blockUIOnSubmit", "false") + "," +
