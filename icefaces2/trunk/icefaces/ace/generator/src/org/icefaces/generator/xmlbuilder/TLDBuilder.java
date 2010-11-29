@@ -19,16 +19,16 @@ public class TLDBuilder extends XMLBuilder{
     public TLDBuilder() {
         super("components.tld");
         Element root = getDocument().createElement("taglib");
-      //  root.setAttribute("xmlns",              "http://java.sun.com/xml/ns/javaee");
-     //   root.setAttribute("xmlns:xsi",          "http://www.w3.org/2001/XMLSchema-instance");
-    //    root.setAttribute("xsi:schemaLocation", "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd");
+        root.setAttribute("xmlns",              "http://java.sun.com/xml/ns/javaee");
+        root.setAttribute("xmlns:xsi",          "http://www.w3.org/2001/XMLSchema-instance");
+        root.setAttribute("xsi:schemaLocation", "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd");
         root.setAttribute("version",            "2.1");
         getDocument().appendChild(root);
+        addNode(root, "display-name", GeneratorContext.getDisplayName());
         addNode(root, "tlib-version", GeneratorContext.getVersion());
         //addNode(root, "jsp-version", "1.2");
         addNode(root, "short-name", GeneratorContext.shortName);
         addNode(root, "uri", GeneratorContext.namespace);
-        addNode(root, "display-name", GeneratorContext.getDisplayName());         
     }
 
     public void addTagInfo(Class clazz, Component component) {
@@ -37,13 +37,14 @@ public class TLDBuilder extends XMLBuilder{
         Element root = (Element)getDocument().getDocumentElement();
         tag = getDocument().createElement("tag");        
         root.appendChild(tag);
-        addNode(tag, "name", component.tagName());
-        addNode(tag, "tag-class", component.componentClass()+"Tag");
-        addNode(tag, "body-content", "JSP");
-        Element description = getDocument().createElement("description");  
+        Element description = getDocument().createElement("description");
         CDATASection descriptionCDATA = getDocument().createCDATASection( component.tlddoc());
         description.appendChild(descriptionCDATA);
         tag.appendChild(description);
+        addNode(tag, "name", component.tagName());
+        addNode(tag, "tag-class", component.componentClass()+"Tag");
+        addNode(tag, "body-content", "JSP");
+//
     }
     
     public void addAttributeInfo(Field field) {
@@ -52,11 +53,6 @@ public class TLDBuilder extends XMLBuilder{
 		
         Element attribute = getDocument().createElement("attribute");
         tag.appendChild(attribute);
-        addNode(attribute, "name", field.getName());
-        addNode(attribute, "required", String.valueOf(propertyValues.required));
-        addNode(attribute, "rtexprvalue", "false");
-        addNode(attribute, "type", field.getType().getName());
-
         Element description = getDocument().createElement("description");
         String des = propertyValues.tlddoc;
         if ("null".endsWith(des)) {
@@ -64,7 +60,13 @@ public class TLDBuilder extends XMLBuilder{
         }
         CDATASection descriptionCDATA = getDocument().createCDATASection(des);
         description.appendChild(descriptionCDATA);
-        attribute.appendChild(description);        
+        attribute.appendChild(description);
+        addNode(attribute, "name", field.getName());
+        addNode(attribute, "required", String.valueOf(propertyValues.required));
+        addNode(attribute, "rtexprvalue", "false");
+        addNode(attribute, "type", field.getType().getName());
+
+//
     }
     
     
