@@ -78,7 +78,7 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         addNode(attribute, "name", field.getName());
         
         String required = "false";
-        if (propertyValues.required == Required.REQUIRED) {
+        if (propertyValues.required == Required.yes) {
         	required = "true";
         }
         addNode(attribute, "required",required);

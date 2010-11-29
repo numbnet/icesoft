@@ -1,9 +1,9 @@
 package org.icefaces.component.annotation;
 
 public enum Required {
-	REQUIRED,
-	OPTIONAL,
+	yes,
+	no,
 	UNSET;
 	
-	public static final Required DEFAULT = Required.OPTIONAL;
+	public static final Required DEFAULT = Required.no;
 }
