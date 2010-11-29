@@ -168,7 +168,10 @@
     <delete dir="${build.dir}"/>
     <delete dir="${dist.dir}"/>
     <ice:subant target="clean">
-        <fileset dir="." includes="*/**/build.xml"/>
+        <fileset dir=".">
+            <include name="*/**/build.xml"/>
+            <exclude name="**/maven2/build.xml"/>
+        </fileset>
     </ice:subant>
 </target>
 
