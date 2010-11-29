@@ -1,0 +1,20 @@
+.ice-skin-rime .yui-checkbox-button .first-child button{ 
+	    background-image: url( checkbox.gif ); /** sprite-ref: sprite; */
+	    background-repeat: no-repeat; 
+	    border: none; 
+	    display:table-row;
+	    height: 13px;
+	    width: 13px;
+	} 
+.ice-skin-rime .yui-checkbox-button-checked .first-child button{ 
+	    background-image: url( checkbox_selected.gif ); /** sprite-ref: sprite; */
+	} 
+ 
+ .ice-skin-rime .yui-checkbox-button-checked button .first-child button{ 
+	    color: #000; 
+	} 
+	 
+.ice-skin-rime .yui-checkbox-button .first-child { 
+	    border: none; 
+	    padding-left: 5px; 
+	} 
