@@ -1,0 +1,51 @@
+<project name="ace-test" default="war">
+
+    <property name="classes.dir" value="web/WEB-INF/classes"/>
+    <property name="icefaces2.lib.dir" location="../../lib"/>
+
+    <target name="clean">
+        <delete dir="dist"/>
+        <delete dir="${classes.dir}"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="src" destdir="${classes.dir}">
+            <classpath>
+                <fileset dir="${icefaces2.lib.dir}">
+                    <include name="jsf-api.jar"/>
+                    <include name="el-api-2.2.1-b03.jar"/>
+                </fileset>
+                <fileset dir="../component/dist">
+                    <include name="icefaces-ace.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+        <copy todir="${classes.dir}/org/icefaces/demo/resources">
+            <fileset dir="src/org/icefaces/demo/resources" />
+        </copy>
+    </target>
+
+    <target name="war" depends="compile">
+        <mkdir dir="dist"/>
+        <war basedir="web" destfile="dist/${ant.project.name}.war">
+            <!--<war basedir="web" destfile="dist/${ant.project.name}.war" webxml="web/WEB-INF/web.xml">-->
+            <lib dir="${icefaces2.lib.dir}">
+                <include name="icefaces.jar"/>
+                <include name="icefaces-ace.jar"/>                <include name="jsf-api.jar"/>
+                <include name="jsf-impl.jar"/>
+                <include name="icepush.jar"/>
+            </lib>
+<!--
+            <lib dir="../../../glimmer/compat/lib">
+                <include name="jstl.jar"/>
+            </lib>
+-->
+        </war>
+    </target>
+
+    <target name="intellij" depends="war">
+        <delete dir="C:/IdeaProjects/sparkle-showcase/out/exploded/testWeb"/>
+        <unwar src="dist/${ant.project.name}.war" dest="C:/IdeaProjects/sparkle-showcase/out/exploded/testWeb"/>
+    </target>
+</project>

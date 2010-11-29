@@ -1,0 +1,211 @@
+/**
+ * NOTE:
+ * If this file defines a completely new skin, then uncomment the core styles
+ * below. If this file simply aims at overriding certain aspects of another
+ * existing skin, then leave the core styles below comented out.
+ */
+
+ 
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail,
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-left,
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-right {
+    background-image: url(rail-x.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+    background-repeat: repeat-x;
+    /* alternate: rail-x-dots.png */
+    /* alternate: rail-x-lines.png */
+}
+
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail {
+    height: 25px;
+}
+.ice-skin-rime .yui3-slider-x .yui3-slider-thumb {
+    height: 30px;
+    width: 14px;
+}
+
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-left {
+    background-position: 0 -20px;
+    height: 20px;
+    left: -2px;
+    width: 5px;
+}
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-right {
+    background-position: 0 -40px;
+    height: 20px;
+    right: -2px;
+    width: 5px;
+}
+
+.ice-skin-rime .yui3-slider-x .yui3-slider-thumb-image {
+    left: 0;
+    top: -10px;
+}
+.ice-skin-rime .yui3-slider-x .yui3-slider-thumb-shadow {
+    left: 0;
+    opacity: 0.15;
+    filter: alpha(opacity=15);
+    top: -50px;
+}
+
+/* Vertical Slider */
+
+/* Use thumbUrl /build/slider/assets/skins/capsule/thumb-y.png */
+/* Alternate thumbUrl /build/slider/assets/skins/capsule/thumb-y-line.png */
+
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail,
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-top,
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-bottom {
+    background-image: url(rail-y.png);  /** sprite-ref: sprite-y; sprite-alignment: repeat; */
+    background-repeat: repeat-y;
+    /* alternate: rail-y-dots.png */
+    /* alternate: rail-y-lines.png */
+}
+
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail {
+    width: 25px;
+}
+.ice-skin-rime .yui3-slider-y .yui3-slider-thumb {
+    width: 30px;
+    height: 14px;
+}
+
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-top {
+    background-position: -20px 0;
+    width: 20px;
+    top: -2px;
+    height: 5px;
+}
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-bottom {
+    background-position: -40px 0;
+    width: 20px;
+    bottom: -2px;
+    height: 5px;
+}
+
+.ice-skin-rime .yui3-slider-y .yui3-slider-thumb-image {
+    left: -10px;
+    top: 0;
+}
+.ice-skin-rime .yui3-slider-y .yui3-slider-thumb-shadow {
+    left: -50px;
+    opacity: 0.15;
+    filter: alpha(opacity=15);
+    top: 0;
+}
+
+ 
+/* ----- BEGIN CORE STYLING ----- */
+
+/*
+
+.yui3-slider,.yui3-slider-rail
+{
+	display: inline;
+	display: inline-block;
+	display: -moz-inline-stack;
+	vertical-align: middle;
+	zoom: 1;
+}
+.yui3-slider-content
+{
+	display: block;
+	position: relative;
+}
+.yui3-slider-rail
+{
+	position: relative;
+}
+.yui3-slider-rail-cap-top,.yui3-slider-rail-cap-left,.yui3-slider-rail-cap-bottom,.yui3-slider-rail-cap-right,.yui3-slider-thumb,.yui3-slider-thumb-image,.yui3-slider-thumb-shadow
+{
+	position: absolute;
+}
+.yui3-slider-thumb
+{
+	overflow: hidden;
+}
+
+*/
+
+/* ----- END CORE STYLING ----- */
+
+
+
+/* ----- BEGIN YUI SAM SKIN STYLING ----- */
+
+/* -- Horizontal rail -- */
+
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail,.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-left,.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-right
+{
+	background-image: url(rail-x.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+}
+
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail
+{
+
+}
+
+.ice-skin-rime .yui3-slider-x .yui3-slider-thumb
+{
+
+}
+
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-left
+{
+
+}
+
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-right
+{
+
+}
+
+.ice-skin-rime .yui3-slider-x .yui3-slider-thumb-image
+{
+
+}
+
+.ice-skin-rime .yui3-slider-x .yui3-slider-thumb-shadow
+{
+
+}
+
+/* -- Vertical rail -- */
+
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail,.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-top,.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-bottom
+{
+	background-image: url(rail-y.png); /** sprite-ref: sprite-y; sprite-alignment: repeat; */
+	background-repeat: repeat-y;
+}
+
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail
+{
+
+}
+
+.ice-skin-rime .yui3-slider-y .yui3-slider-thumb
+{
+
+}
+
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-top
+{
+
+}
+
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-bottom
+{
+
+}
+
+.ice-skin-rime .yui3-slider-y .yui3-slider-thumb-image
+{
+
+}
+
+.ice-skin-rime .yui3-slider-y .yui3-slider-thumb-shadow
+{
+
+}
+
+/* ----- END YUI SAM SKIN STYLING ----- */

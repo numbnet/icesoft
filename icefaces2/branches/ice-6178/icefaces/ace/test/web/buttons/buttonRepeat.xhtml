@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icesoft.com/icefaces/component/annotated">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+        <title>Button Inside ui:repeat</title>
+    </h:head>
+    <h:body class="ice-skin-rime">
+        <h:form id="btnForm">
+            <h:panelGroup>
+                <h2>ui:repeat</h2>
+                <ui:repeat id="btnRepeat1" value="#{buttonList.buttons}" var="btns">
+
+                    <h:column id="col1">
+                        <h:outputText value="#{btns.btn}"/>
+                    </h:column>
+                    <h:column id="col2">
+                        <ice:checkboxButton id="chkbox2" label="#{btns.checkButtonLabel}"
+                                      value="#{btns.checked}"
+                                      singleSubmit="true"/>
+                        <h:outputText value="isChecked: " /><h:outputText value="#{btns.checked}" />
+                        <h:graphicImage value="http://www.icefaces.org/main/css/images/top_logo.jpg" rendered="#{button.checked}" />
+
+                    </h:column><br /><br />
+                </ui:repeat>
+
+                <div style="height:30px"/>
+
+            </h:panelGroup>
+
+            <a href="index.html">Goto Main page</a>
+        </h:form>
+        
+    </h:body>
+    <h:outputStylesheet library="org.icefaces.component.skins" name="rime.css" />
+</html>

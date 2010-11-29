@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icefaces.org/icefaces/components">
+<f:view>
+<h:head>
+    <title>Input Files</title>
+    <h:outputScript name="jsf.js" library="javax.faces" />
+</h:head>
+<h:body styleClass="rime">
+    <h:panelGrid columns="2">
+        <h:outputText value="Messages: "/>
+        <h:messages id="myMessages"/>
+    </h:panelGrid>
+    <h:form id="justRegular">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form that only has regular input components, and no fileEntry component" />
+            <h:inputText id="text" value="#{fileBean.regularText}" required="true"/>
+    	    <h:outputText id="textUpper" value="#{fileBean.regularTextUppercase}" />
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.regular}"/>
+        </h:panelGrid>
+    </h:form>
+    <h:form id="alsoFiles">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form with fileEntry component" />
+            <h:inputText id="text" value="#{fileBean.mixedText}" required="true"/>
+    	    <h:outputText id="textUpper" value="#{fileBean.mixedTextUppercase}" />
+    	    <ice:fileEntry />
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    
+    <h:form id="form1">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form1  None" />
+    	    <ice:fileEntry fileEntryListener="#{fileBean.fileEntryListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form2">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form2  Abs" />
+    	    <ice:fileEntry absolutePath="c:\\ICE-5032\\upload2"
+                     fileEntryListener="#{fileBean.fileEntryListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form3">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form3  Rel" />
+    	    <ice:fileEntry relativePath="upload3"
+                     fileEntryListener="#{fileBean.fileEntryListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>    
+    
+    <h:form id="form4">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form4  Both" />
+    	    <ice:fileEntry absolutePath="c:\\ICE-5032\\upload4" relativePath="upload4"
+                     fileEntryListener="#{fileBean.fileEntryListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>    
+    
+    
+    <h:form id="form5">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form5  None NoSess Orig" />
+    	    <ice:fileEntry useSessionSubdir="false" useOriginalFilename="true"
+                     fileEntryListener="#{fileBean.fileEntryListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form6">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form6  Abs NoSess Orig" />
+    	    <ice:fileEntry absolutePath="c:\\ICE-5032\\upload6" useSessionSubdir="false" useOriginalFilename="true"
+                     fileEntryListener="#{fileBean.fileEntryListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form7">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form7  Rel NoSess Orig" />
+    	    <ice:fileEntry relativePath="upload7" useSessionSubdir="false" useOriginalFilename="true"
+                     fileEntryListener="#{fileBean.fileEntryListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>    
+    
+    <h:form id="form8">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form8  Both NoSess Orig" />
+    	    <ice:fileEntry absolutePath="c:\\ICE-5032\\upload8" relativePath="upload8" useSessionSubdir="false" useOriginalFilename="true"
+                     fileEntryListener="#{fileBean.fileEntryListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form9">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form9  [Rel NoSess Orig] maxTotalSize 50" />
+    	    <ice:fileEntry maxTotalSize="50" relativePath="upload9" useSessionSubdir="false" useOriginalFilename="true"
+                     fileEntryListener="#{fileBean.fileEntryListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form10">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form10  [Rel NoSess Orig] maxFileSize 50" />
+    	    <ice:fileEntry maxFileSize="50" relativePath="upload9" useSessionSubdir="false" useOriginalFilename="true"
+                     fileEntryListener="#{fileBean.fileEntryListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form11">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form11  [Rel NoSess Orig] maxTotalSize maxFileSize 50" />
+    	    <ice:fileEntry maxTotalSize="50" maxFileSize="50" relativePath="upload9" useSessionSubdir="false" useOriginalFilename="true"
+                     fileEntryListener="#{fileBean.fileEntryListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form12">
+        <h:panelGrid columns="1"> 
+    	    <h:outputText value="Form12  (1) Immediate true" />
+    	    <ice:fileEntry id="one"
+                            immediate="true"
+                            fileEntryListener="#{fileBean.fileEntryListener}"/>
+    	    <h:outputText value="Form12  (2) Immediate false" />
+    	    <ice:fileEntry id="two"
+                            immediate="false"
+                            fileEntryListener="#{fileBean.fileEntryListener}"/>
+    	    <h:outputText value="Form12  (3) maxTotalSize 100" />
+    	    <ice:fileEntry id="three"
+                            maxTotalSize="100"
+                            fileEntryListener="#{fileBean.fileEntryListener}"/>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="form13">
+        <h:panelGrid columns="1">
+    	    <h:outputText value="Form13  DataTable of FileEntry" />
+            <h:dataTable value="#{fileBean.tableList}" var="tblItm">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Upload"/>
+                    </f:facet>
+                    <ice:fileEntry id="upload"
+                                    immediate="#{tblItm.immediate}"
+                                    fileEntryListener="#{tblItm.listener}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Saved"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm.saved}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Immediate"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm.immediate}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="FileName"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm.fileName}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="ClientId"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm.clientId}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Phase"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm.phase}"/>
+                </h:column>
+            </h:dataTable>
+            
+    	    <h:outputText value="Form13  DataTable of FileEntry Info ValueExpression" />
+            <h:dataTable value="#{fileBean.tableList2}" var="tblItm2">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Upload"/>
+                    </f:facet>
+                    <ice:fileEntry id="upload"
+                                    info="#{tblItm2.info}"
+                                    immediate="#{tblItm2.immediate}"
+                                    fileEntryListener="#{tblItm2.listener}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Saved"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm2.saved}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Immediate"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm2.immediate}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="InfosEqual"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm2.infosEqual}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="FileName"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm2.fileName}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="ClientId"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm2.clientId}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Phase"/>
+                    </f:facet>
+                    <h:outputText value="#{tblItm2.phase}"/>
+                </h:column>
+            </h:dataTable>
+            <h:commandButton id="btn" value="Submit" actionListener="#{fileBean.mixed}"/>
+        </h:panelGrid>
+    </h:form>
+    
+    <h:form id="testFacesMessages">
+        <h:panelGrid columns="2"> 
+    	    <h:outputText value="Faces Messages: " />
+            <h:messages id="theMessages"/>
+            
+    	    <h:outputText value="File maxTotalSize 50" />
+    	    <ice:fileEntry id="file"
+                            maxTotalSize="50"
+                            fileEntryListener="#{fileBean.fileEntryListener}"/>
+            
+    	    <h:outputText value="Text required" />
+    	    <h:inputText value="#{fileBean.regularText}" required="true" />
+            
+    	    <h:outputText value="Text back out: " />
+    	    <h:outputText value="#{fileBean.regularTextUppercase}" />
+            
+    	    <h:outputText value="Sub-panel" />
+            <h:panelGroup id="subPanel" style="border:1;">
+                <h:outputText value="Text required" />
+                <h:inputText value="#{fileBean.mixedText}" required="true" />
+
+                <h:outputText value="Text back out: " />
+                <h:outputText value="#{fileBean.mixedTextUppercase}" />
+            </h:panelGroup>
+            
+            <ice:checkboxButton id="check" label="Checkbox" singleSubmit="true" value="#{fileBean.checkValue}"/> 
+            <ice:dateTimeEntry id="date" singleSubmit="true" value="#{fileBean.dateValue}"/>
+            
+            <h:commandButton id="btnReg" value="Regular Submit" actionListener="#{fileBean.mixed}"/>
+            <h:commandButton id="btnAA" value="f:ajax  exec: all  render: all" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="@all" render="@all"/>
+            </h:commandButton>
+            <h:commandButton id="btnFF" value="f:ajax  exec: form  render: form" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="@form" render="@form"/>
+            </h:commandButton>
+            <h:commandButton id="btnTT" value="f:ajax  exec: this  render: this" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="@this" render="@this"/>
+            </h:commandButton>
+            <h:commandButton id="btnFA" value="f:ajax  exec: form  render: all" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="@form" render="@all"/>
+            </h:commandButton>
+            <h:commandButton id="btnTA" value="f:ajax  exec: this  render: all" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="@this" render="@all"/>
+            </h:commandButton>
+            
+            <h:commandButton id="btnSS" value="f:ajax  exec: subPanel  render: subPanel" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="testFacesMessages:subPanel" render="testFacesMessages:subPanel"/>
+            </h:commandButton>
+            <h:commandButton id="btnSA" value="f:ajax  exec: subPanel  render: all" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="testFacesMessages:subPanel" render="@all"/>
+            </h:commandButton>
+            
+        </h:panelGrid>
+    </h:form>
+	<h:outputStylesheet library="org.icefaces.component.skins" name="rime.css" />
+</h:body>
+</f:view>
+</html>

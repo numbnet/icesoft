@@ -1,0 +1,73 @@
+<!--
+
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
+
+        >
+<f:view  contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>TabSet</title>
+<h:outputScript name="jsf.js" library="javax.faces" />
+</h:head>
+<h:body>
+<!--
+    <style>
+    .yui-nav .disabled em{
+      color:gray;
+    }
+    
+    .hSlider .yui-slider-thumb-image{
+
+    }
+    
+   .hSlider .yui-slider-rail{
+      background: url("images/slider/rail.png") no-repeat 0 0;
+      height: 217px;
+      width: 17px;
+      padding: 0 7px;
+   }
+   
+   
+    </style>
+-->
+    <h:panelGroup styleClass="ice-skin-sam">
+      <h2> Demo has a TabchangeListener </h2>
+                   
+            
+            
+    <h:form>
+    <h:panelGroup>
+        <b>Using submitOn="slideInterval" default slideInterval 500ms</b>
+        <ice:sliderEntry submitOn="slideInterval" value="#{sliderBean.value5}"/>
+        <h:panelGroup id="o1">
+           <h:outputText value="#{sliderBean.value5}"/>
+        </h:panelGroup>
+        <hr/>
+
+        <b>Using submitOn="slideInterval" slideInterval="200" </b>
+        <ice:sliderEntry submitOn="slideInterval" slideInterval="200" value="#{sliderBean.value6}"/>
+        <h:panelGroup id="o2">
+           <h:outputText value="#{sliderBean.value6}"/>
+        </h:panelGroup>
+        <hr/>
+
+        <b>Using mix="20" max="40" </b>
+        <ice:sliderEntry min="20" max="40" value="#{sliderBean.value7}"/>    
+        <h:panelGroup id="o3">
+           <h:outputText value="#{sliderBean.value7}"/>
+        </h:panelGroup>
+    </h:panelGroup>
+    </h:form>
+   </h:panelGroup>
+   <a href="index.html"> Goto Main page </a>    
+   <h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
+</h:body>
+</html>
+

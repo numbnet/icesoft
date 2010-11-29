@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ice="http://www.icefaces.org/icefaces/components">
+  <h:panelGroup id="panelFooter" layout="block">
+        <div style="float:left;width:400px">
+            <h:outputText value="#{msgs['template.footer.copyright']}" nospan="true" escape="false"/>
+            <a href="http://www.icesoft.com/" target="_blank">
+                <h:outputText value="#{msgs['template.common.icesoft']}" nospan="true" escape="false" />
+            </a>
+        </div>
+        <div style="float:right;">
+            <i><h:outputText value="#{msgs['template.footer.poweredBy']}" nospan="true" escape="false" />
+            <a href="http://www.icefaces.org/" target="_blank">
+            <h:outputText value="#{msgs['template.common.icefaces']}" nospan="true" escape="false" /></a></i>
+        </div>
+  </h:panelGroup>
+</ui:composition>
