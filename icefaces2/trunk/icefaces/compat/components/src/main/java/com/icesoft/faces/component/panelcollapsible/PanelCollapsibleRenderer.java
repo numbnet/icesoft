@@ -86,10 +86,12 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
         //add click handler if not disabled and toggleOnClick is set to true
         if (panelCollapsible.isToggleOnClick() &&
                 !panelCollapsible.isDisabled()) {
+/*
             Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
             hiddenField.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
             hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
             root.appendChild(hiddenField);
+*/
             UIComponent form = findForm(uiComponent);
             if (form == null) {
                 throw new FacesException("PanelCollapsible must be contained within a form");
@@ -99,11 +101,11 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
                         "document.getElementById('" + uiComponent.getClientId(facesContext) + "')." +
                                 "getElementsByTagName('a')[0].focus();");
             }
+            String paramFunc = "function(p){p('" + uiComponent.getClientId(facesContext) + "Expanded"
+                    + "','" + panelCollapsible.isExpanded() + "');}";
             header.setAttribute(HTML.ONCLICK_ATTR,
-                    "document.forms['" + form.getClientId(facesContext) + "']" +
-                            "['" + uiComponent.getClientId(facesContext) + "Expanded" + "'].value='" +
-                            panelCollapsible.isExpanded() + "'; " +
-                            "iceSubmit(document.forms['" + form.getClientId(facesContext) + "'],this,event); return false;");
+                            "iceSubmit(document.forms['" + form.getClientId(facesContext) + "'],this,event," +
+                                    paramFunc + "); return false;");
             header.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "hdr");
             Element div = domContext.createElement(HTML.DIV_ELEM);
             div.setAttribute(HTML.STYLE_ATTR, "padding:0px;background-image:none;width:100%;");
