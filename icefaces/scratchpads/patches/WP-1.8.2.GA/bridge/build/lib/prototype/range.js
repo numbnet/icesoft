@@ -1,0 +1,1 @@
+var ObjectRange=Class.create(Enumerable,{initialize:function(C,A,B){this.start=C;this.end=A;this.exclusive=B;},_each:function(A){var B=this.start;while(this.include(B)){A(B);B=B.succ();}},include:function(A){if(A<this.start){return false;}if(this.exclusive){return A<this.end;}return A<=this.end;}});var $R=function(C,A,B){return new ObjectRange(C,A,B);};

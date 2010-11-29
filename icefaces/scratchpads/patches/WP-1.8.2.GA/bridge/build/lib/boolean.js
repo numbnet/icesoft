@@ -1,0 +1,1 @@
+Boolean.prototype.ifTrue=function(A){if(this==true){A();}return this;};Boolean.prototype.ifFalse=function(A){if(this==false){A();}return this;};

@@ -1,0 +1,1 @@
+Ice.Community=new Object;

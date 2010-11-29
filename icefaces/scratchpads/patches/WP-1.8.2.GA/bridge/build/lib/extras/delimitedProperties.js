@@ -1,0 +1,1 @@
+Ice.delimitedProperties=Class.create({initialize:function(){this.props={};},set:function(A,B){this.props[A]=B;},get:function(A){this.props[A];},deleteAll:function(){for(p in this.props){delete this.props[p];}},getPropsAsString:function(){var A="";for(p in this.props){A+=p+"!"+this.props[p]+",";}return A;},getPropsAsObject:function(){return this.props;}});

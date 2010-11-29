@@ -1,0 +1,1 @@
+[Ice.Geometry=new Object].as(function(A){A.Point=Object.subclass({initialize:function(B,C){this.x=B;this.y=C;},asString:function(){return"point ["+this.x+", "+this.y+"]";},toString:function(){return this.asString();},serializeOn:function(B){B.add("ice.event.x",this.x);B.add("ice.event.y",this.y);}});});
