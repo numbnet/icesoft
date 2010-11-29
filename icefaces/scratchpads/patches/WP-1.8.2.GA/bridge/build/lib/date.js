@@ -1,0 +1,1 @@
+Number.prototype.asZeroPrefixedString=function(){return this<9?("0"+this):this.toString();};Date.prototype.toTimestamp=function(){return this.toLocaleTimeString().substr(0,8);};

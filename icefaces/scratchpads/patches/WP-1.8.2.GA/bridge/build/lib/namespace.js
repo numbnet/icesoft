@@ -1,0 +1,1 @@
+var Ice=new Object;

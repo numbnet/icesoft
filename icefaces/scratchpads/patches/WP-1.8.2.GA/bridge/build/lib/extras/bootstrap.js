@@ -1,0 +1,1 @@
+try{Ice.DnD.init();Ice.Autocompleter.logger=logger.child("autocomplete");Ice.StateMon.checkAll();Ice.StateMon.rebuild();}catch(ee){alert("Error in extras bootstrap ["+ee+"]");}window.onUnload(function(){try{Ice.StateMon.destroyAll();Autocompleter.Finder.list=new Array();}catch(A){Ice.DnD.logger.debug("Unload Error ["+A+"]");}});
