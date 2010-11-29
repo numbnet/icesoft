@@ -9,7 +9,6 @@ ice.component.slider = {
 
         var Dom = YAHOO.util.Dom;
    
-
         var hiddenField = Dom.get(clientId+"_hidden");
         
         //set a callback to create slider component 
@@ -26,21 +25,22 @@ ice.component.slider = {
 							}).render(root);
 			            } catch(e){alert(e)}
 						
-		                
-		                //create a generic submit handler
-		                // Depending if submitOn is slideStart, slideEnd or slideInterval,
-		                //  this will be called either when the user commences sliding,
-		                //  finishes sliding, or as they're dragging the slider around,
-		                //  if an interval of time passes when they've paused sliding.
-		                // If aria is enabled, it will also submit after one of the
-		                //  relevant keypresses has been made.
-		                var submitHandler = function(event) {
-		                    //get the value of singleSubmit property
-		                    var singleSubmit = jsfProps.singleSubmit;
-		                    
-		                    //get the current value of slider
-		                    var sliderValue = obj.get('value');
-		                    
+						var invokeSubmit = function (event) {
+		                    if (jsfProps.singleSubmit) {
+		                        ice.se(event, root, function(param) {
+									param(hiddenField.id, obj.get('value'));
+									param('onevent', function(data) { 
+										if (data.status == 'success') {
+											root.firstChild.focus();
+										}
+									});
+								});
+		                    }  						
+						}
+						
+					    var eventName;
+						obj.after("valueChange", function(event) {
+						   var sliderValue = obj.get('value');
 		                    //if aria is enabled, then set aria property so screen reader can pick it
 		                    if (jsfProps.aria) {
 		                        // Because we're in a callback, to be safe we'll lookup
@@ -52,56 +52,22 @@ ice.component.slider = {
 		                    // Strategy is now to use hidden field rather than
 		                    // request map value
 
-		                    hiddenField.value=sliderValue;
-		                    
-		                    if (singleSubmit) {
-		                        ice.se(event, root, function(param) {param(hiddenField.id, sliderValue)});
-		                    }                    
-		                };
-		                                
-		                //the value of submitOn property represents the event name that 
-		                //is reponsible to invoke a submit. The valid values are slideStart,
-		                //slideEnd and slideInterval.
-		                var submitOn = jsfProps.submitOn;
- 
-		                //as "slideInterval" is not known by the YUI slider, and its 
-		                //created by us, which internally uses "thumbMove" event of slider.
-		                if (submitOn == 'slideInterval') {
+		                    hiddenField.value=sliderValue;		
+							if (eventName == 'railMouseDown') {
+								invokeSubmit(event);
+							}
+							eventName = "";
+						});
+						
+						obj.after("railMouseDown", function() {
+						  eventName = "railMouseDown";
+						});
+						
+						obj.after("slideEnd", function(event) {
+							invokeSubmit(event);
+						});						
+						
 
-		                    //now set the submitOn with origional value "thumbMove"
-		                    submitOn = 'thumbMove';
-
-		                    //get the slideInterval time 
-		                    var slideInterval = jsfProps.slideInterval;   
-		                    
-		                    //boundary test         
-		                    if (slideInterval < 100)
-		                        slideInterval = 100;
-		                    else if (slideInterval > 1000) {
-		                        slideInterval = 1000;
-		                    }    
-
-		                    //create a slider timeout handler
-		                    var sliderTimeoutHandler = null;
-		                    
-		                    //get the reference of submitHandler
-		                    var originalSubmitHandler = submitHandler;
-		                    
-		                    //create a timeout based submitHandler
-		                    submitHandler = function(event) {
-		                        if (sliderTimeoutHandler != null) return;
-
-		                        sliderTimeoutHandler = setTimeout (function(){
-		                            //invoke submit
-		                            originalSubmitHandler(event);
-		                            //cleanup
-		                            clearTimeout(sliderTimeoutHandler);
-		                            sliderTimeoutHandler = null;
-		                        },  slideInterval);
-		                    }
-		                } 
-		                //register submit handler
-		                obj.after(submitOn, submitHandler);
 		                //add aria support
 		                if (jsfProps.aria) {
 		                    //add roles and attributes to the YUI slider widget
@@ -114,7 +80,7 @@ ice.component.slider = {
 
 		                    //TODO shouldn't it be configurable?
 		                    var step = 5;
-
+							var keydownTimeoutHandler = null;
 		                    //listen for keydown event, to provide short-cut key support.
 		                    //react on left, right, up, down, home and end key 
 		                    Yui.on("keydown", function(event) {
@@ -151,16 +117,22 @@ ice.component.slider = {
 		                            //update slider value on client                       
 		                            obj.set('value', valuenow);
 		                            //notify server
-		                            obj.fire(submitOn, submitHandler);
+							        clearTimeout(keydownTimeoutHandler);	
+							        keydownTimeoutHandler = setTimeout (function(){
+											//invoke submit
+											invokeSubmit(event);		                            
+											keydownTimeoutHandler = null;
+										},  300);									
 		                            //cancel event
 		                            event.halt();
 		                        }
 		                    }, root);
-		                    Yui.on("click", function(event) {
-		                    	root.firstChild.focus();
-		                    }, root);
 		                } 
-		                //bind the initilized js component, so it can be reused for later calls
+
+						Yui.on("click", function(event) {
+							root.firstChild.focus();
+						}, root);		                
+						//bind the initilized js component, so it can be reused for later calls
 		                bindYUI(obj);
 		          });
  			   });

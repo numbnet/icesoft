@@ -101,17 +101,6 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
             tlddoc="The length of slider, default is 150px.")
     private String length;
     
-    @Property (defaultValue="slideEnd",
-            tlddoc="Specifies when to do a submit. Valid values are slideEnd and slideInterval." +
-            		" Default value is slideEnd.",
-            javadocGet="returns value of submitOn. It is not a pass through because slideInterval is a custom event " +
-            		"which internally uses \"thumbMove\"")
-    private String submitOn;   
-    
-    @Property (defaultValue="500",
-            tlddoc="Time interval to do submit when changing slider value. This attribute has an effect only when \"submitOn\" is set to \"slideInterval\". Default value is 500 (milliseconds)")
-    private int slideInterval; 
-    
     @Property(defaultValue="false",
             tlddoc="When singleSubmit is true, changing the value of this component will submit and execute this " +
                     "component only (equivalent to &lt;f:ajax execute=\"@this\" render=\"@all\"&gt;). " +
