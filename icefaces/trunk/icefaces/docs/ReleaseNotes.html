@@ -1755,39 +1755,38 @@ of the component.</li>
 </ul>
 <h3><a name="KIPortlets"></a>Portlets</h3>
 <ul>
-<li>The following ICEfaces components are known not to work
-correctly in a portlet environment:
-<ul>
-<li>ice:gMapDirection</li>
-<li>ice:inputRichText - using this component in more
-than
-one portlet
-on a&nbsp;page may cause problems with the functioning of this
-component.</li>
-<li>Drag &amp; drop (via ice:panelGroup) - using
-drag-and-drop&nbsp;in more
-than one portlet on a page may cause drag-and-drop to not
-function in some of the portlets on the page.</li>
-</ul>
-</li>
+<li>When deploying ICEfaces portlets to a Tomcat/Liferay platform where Liferay is deployed to a servlet context other than ROOT, 
+ ensure the emptySessionPath attribute of the Connector node is set to 'true' in Tomcat's server.xml as follows: <br><br>
+<ul><code>&lt;Connector port="8080" protocol="HTTP/1.1"</code><br>
+<ul><code>         connectionTimeout="20000"</code><br>
+    <code>         redirectPort="8443" URIEncoding="UTF-8"</code><br>
+    <code>         emptySessionPath="true" /&gt;</code><br>
+ </ul></ul>
 </ul>
 <ul>
-<li>When using ICEfaces with
-Liferay Portal positioning problems may occur with components that
-rely on dynamic positioning, such as ice:panelPopup, ice:menuBar,
-and&nbsp;menuPopup. This issue is related to an aggressive styling
-behavior in Liferay and there is a work-around identified. See <a href="http://jira.icefaces.org/browse/ICE-2967" target="_blank">ICE-2967</a>
-for details.</li>
-</ul>
-<ul>
-<li>Liferay 5.2.x automatically compresses all resources
+  <li>Liferay 5.2+ automatically compresses all resources
 being
 served by the Portal container. By default&nbsp;this will conflict
 with ICEfaces automatic resource compression. When running with Liferay
 5.2+ it is necessary to either disable Liferay's resource compression,
 or disable ICEfaces resource compression by
 specifying the&nbsp;"<code>com.icesoft.faces.compressResources=false</code>"
-configuration parameter setting in the web.xml file.</li>
+configuration
+parameter
+setting
+in
+the
+web.xml
+file.</li>
+</ul>
+<ul>
+  <li>When using ICEfaces with
+Liferay Portal positioning problems may occur with components that
+rely on dynamic positioning, such as ice:panelPopup, ice:menuBar,
+and&nbsp;menuPopup. This issue is related to an aggressive styling
+behavior in Liferay and there is a work-around identified. See <a
+ href="http://jira.icefaces.org/browse/ICE-2967" target="_blank">ICE-2967</a>
+for details.</li>
 </ul>
 <ul>
 <li>The ICEfaces Component Showcase portlet sample
