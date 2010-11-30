@@ -58,7 +58,7 @@ var formOf;
         return false;
     };
 
-    iceSubmit = function(form, component, evt, paramFunc) {
+    iceSubmit = function(form, component, evt) {
         form = form || formOf(component);
         var code;
         if (evt.keyCode) code = evt.keyCode;
@@ -71,9 +71,6 @@ var formOf;
         ice.submit(evt, component || form, function(parameter) {
             if (Ice.Menu != null && Ice.Menu.menuContext != null) {
                 parameter('ice.menuContext', Ice.Menu.menuContext);
-            }
-            if (paramFunc) {
-                paramFunc(parameter);
             }
         });
         resetHiddenFieldsFor(form);
