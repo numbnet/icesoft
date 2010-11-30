@@ -45,8 +45,7 @@ are shown but could easily be made to invoke application logic.
     <!-- toggle menu bar orientation -->
     <ice:panelGroup style="float:left;">
         <ice:selectOneRadio id="MenuSlctRadio"
-                            value="#{menuBar.orientation}"
-                            partialSubmit="true">
+                            value="#{menuBar.orientation}" >
             <f:selectItem id="MenuHoriz"
                           itemValue="#{msgs['page.menuBar.orientation.horiz']}"
                           itemLabel="#{msgs['page.menuBar.orientation.horiz']}"/>

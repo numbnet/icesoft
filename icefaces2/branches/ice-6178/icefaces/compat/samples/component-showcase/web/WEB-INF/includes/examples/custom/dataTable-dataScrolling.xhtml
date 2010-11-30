@@ -42,7 +42,6 @@ with more data than can be displayed in a single page.
     <ice:panelGroup styleClass="exampleBox dataScrollingContainer">
 
         <ice:selectOneRadio id="paginatorLayout"
-                            partialSubmit="true"
                             valueChangeListener="#{dataScrollingController.dataModelChangeListener}"
                             value="#{dataScrollingModel.selectedDataScrollMode}">
             <f:selectItem id="paging"

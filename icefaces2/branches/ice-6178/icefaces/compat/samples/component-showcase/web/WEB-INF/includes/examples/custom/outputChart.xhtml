@@ -53,8 +53,7 @@
                 <ice:panelGroup>
                     <ice:selectOneRadio
                             id="axialOrientation"
-                            value="#{chartController.currentChartModel.barChartOrientationHorizontal}"
-                            partialSubmit="true" >
+                            value="#{chartController.currentChartModel.barChartOrientationHorizontal}">
                         <f:selectItem itemValue="#{true}"
                                       itemLabel="#{msgs['page.outputChart.orientation.horiz.label']}"/>
                         <f:selectItem itemValue="#{false}"
@@ -74,8 +73,7 @@
                     <ice:selectOneMenu
                             id="legedPosition"
                             disabled="#{not chartController.currentChartModel.enabledLengendPosition}"
-                            value="#{chartController.currentChartModel.legendPlacement}"
-                            partialSubmit="true">
+                            value="#{chartController.currentChartModel.legendPlacement}">
                         <f:selectItem itemValue="bottom"
                                       itemLabel="#{msgs['page.outputChart.legend.position.bottom.label']}"/>
                         <f:selectItem itemValue="top"
@@ -140,8 +138,7 @@
         <br /><br />
         <ice:selectOneListbox
                    value="#{chartController.currentChartType}"
-                   valueChangeListener="#{chartController.chartTypeChange}"
-                   partialSubmit="true" >
+                   valueChangeListener="#{chartController.chartTypeChange}">
             <f:selectItems value="#{chartController.chartList}"/>
         </ice:selectOneListbox>
 

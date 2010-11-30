@@ -3,6 +3,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ice="http://www.icesoft.com/icefaces/component"
+	  xmlns:icecore="http://www.icefaces.org/icefaces/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
 
@@ -53,9 +54,9 @@
                        controls which content to display for the respective navigation
                     -->
                     <ice:form id="iceform">
+                    	<icecore:singleSubmit />
                         <ui:insert name="page-content"/>
                         <ice:panelGroup styleClass="clearer"/>
-
                     </ice:form>
 
                 </div>
@@ -69,5 +70,3 @@
     </h:body>
  </f:view>
 </html>
- 
-

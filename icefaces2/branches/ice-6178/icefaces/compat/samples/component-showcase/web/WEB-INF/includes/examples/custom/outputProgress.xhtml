@@ -49,7 +49,6 @@ dynamically changed.
                 value="#{msgs['page.outputProgress.mode.label']}"/><br />
         <ice:selectOneRadio id="outputMode"
                             value="#{outputProgressController.outputProgressModel.intermediatMode}"
-                            partialSubmit="true"
                             layout="pageDirection">
             <f:selectItem id="standardRb"
                           itemValue="#{false}"
@@ -70,8 +69,7 @@ dynamically changed.
         <!-- Controls the progress bar label alignment -->
         <!-- |left | right | top | topcenter | topright | bottom | bottomcenter | bottomright | embed | -->
         <ice:selectOneMenu id="labelAlign"
-                           value="#{outputProgressController.outputProgressModel.labelPosition}"
-                           partialSubmit="true">
+                           value="#{outputProgressController.outputProgressModel.labelPosition}">
             <f:selectItem itemValue="embed"
                           itemLabel="#{msgs['page.outputProgress.alignment.embedded.label']}"/>
             <f:selectItem itemValue="left"
@@ -107,13 +105,11 @@ dynamically changed.
             -->
             <ice:selectBooleanCheckbox
                     id="customProgress"
-                    value="#{outputProgressController.outputProgressModel.progressMessageEnabled}"
-                    partialSubmit="true"/>
+                    value="#{outputProgressController.outputProgressModel.progressMessageEnabled}"/>
             <ice:inputText
                     id="progressLabel"
                     disabled="#{not outputProgressController.outputProgressModel.progressMessageEnabled}"
-                    value="#{outputProgressController.outputProgressModel.progressMessage}"
-                    partialSubmit="true" />
+                    value="#{outputProgressController.outputProgressModel.progressMessage}"/>
         </ice:panelGroup>
 
         <ice:panelGroup styleClass="clearer" />
@@ -131,13 +127,11 @@ dynamically changed.
             -->
             <ice:selectBooleanCheckbox
                     id="customComplete"
-                    value="#{outputProgressController.outputProgressModel.completedMessageEnabled}"
-                    partialSubmit="true"/>
+                    value="#{outputProgressController.outputProgressModel.completedMessageEnabled}"/>
 
             <ice:inputText id="progressCompleteLabel"
                            disabled="#{not outputProgressController.outputProgressModel.completedMessageEnabled}"
-                           value="#{outputProgressController.outputProgressModel.completedMessage}"
-                           partialSubmit="true"/>
+                           value="#{outputProgressController.outputProgressModel.completedMessage}"/>
         </ice:panelGroup>
     </ice:panelGroup>
 

@@ -37,7 +37,7 @@
 
     <ice:panelGroup style="display:inline;">
         <ice:outputLabel value="#{msgs['page.panelTooltip.displayOn.label']}" for="displayOn"/>
-        <ice:selectOneMenu id="displayOn" value="#{tooltipController.panelToolTipModel.displayOn}" partialSubmit="true">
+        <ice:selectOneMenu id="displayOn" value="#{tooltipController.panelToolTipModel.displayOn}">
             <f:selectItem itemValue="hover" itemLabel="#{msgs['page.panelTooltip.displayOn.label1']}"/>
             <f:selectItem itemValue="click" itemLabel="#{msgs['page.panelTooltip.displayOn.label2']}"/>
             <f:selectItem itemValue="altclick" itemLabel="#{msgs['page.panelTooltip.displayOn.label3']}"/>
@@ -49,7 +49,7 @@
         <ice:outputLabel value="#{msgs['page.panelTooltip.duration.label']}"
                          for="duration" style="margin-left:1em;"/>
         <ice:selectOneMenu id="duration"
-                           partialSubmit="true" disabled="#{tooltipController.panelToolTipModel.displayOn != 'hover'}"
+                           disabled="#{tooltipController.panelToolTipModel.displayOn != 'hover'}"
                            value="#{tooltipController.panelToolTipModel.hoverDelay}">
             <f:selectItem
                     itemValue="500"
@@ -64,7 +64,7 @@
     </ice:panelGroup>
     <ice:panelGroup style="display:inline;">
         <ice:outputLabel value="#{msgs['page.panelTooltip.moveWithMouse.label']}" for="moveWithMouse" style="margin-left:1em;"/>
-        <ice:selectBooleanCheckbox id="moveWithMouse" partialSubmit="true" value="#{tooltipController.panelToolTipModel.moveWithMouse}"/>
+        <ice:selectBooleanCheckbox id="moveWithMouse" value="#{tooltipController.panelToolTipModel.moveWithMouse}"/>
     </ice:panelGroup>
     <ice:messages />
 </ice:panelGroup>

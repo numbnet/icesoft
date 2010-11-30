@@ -40,8 +40,7 @@
         <ice:panelGroup style="float:left" >
             <ice:selectOneRadio id="orientation"
                                 value="#{panelDividerBean.orientation}"
-                                valueChangeListener="#{panelDividerBean.orientationChanged}"
-                                partialSubmit="true">
+                                valueChangeListener="#{panelDividerBean.orientationChanged}">
                 <f:selectItem itemValue="vertical"
                               itemLabel="#{msgs['page.panelDivider.vertical.label']}"/>
                 <f:selectItem itemValue="horizontal"

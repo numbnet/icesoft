@@ -39,7 +39,7 @@
                                      for="mapCityList"/>
                 </td>
                 <td>
-                    <ice:selectOneMenu id="mapCityList" partialSubmit="true"
+                    <ice:selectOneMenu id="mapCityList"
                                        value="#{gmap.standardAddress}"
                                        valueChangeListener="#{gmap.findAddress}">
                         <f:selectItem itemValue="" itemLabel="#{msgs['page.gMap.search.select']}"/>
@@ -56,7 +56,7 @@
                 </td>
                 <td>
                     <ice:selectBooleanCheckbox id="showControlBox"
-                                               value="#{gmap.showControls}" partialSubmit="true" />
+                                               value="#{gmap.showControls}" />
                 </td>
                 <td>
                     <ice:outputLabel value="#{msgs['page.gMap.markers.label']}"
@@ -65,7 +65,7 @@
                 <td>
                     <ice:selectBooleanCheckbox id="showMarkerBox"
                             disabled="#{not empty gmap.standardAddress}"
-                            value="#{gmap.showMarkers}" partialSubmit="true" />
+                            value="#{gmap.showMarkers}" />
                 </td>
             </tr>
             <tr>

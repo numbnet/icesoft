@@ -53,7 +53,7 @@
 				value="Download a pdf file resource with a dynamic filename:" />
 			<ice:panelGroup>
 				<ice:inputText id="pdfResourceFileName"
-					value="#{resourceBean.fileName}" partialSubmit="true"/>
+					value="#{resourceBean.fileName}" />
 				<ice:outputResource id="pdfResource1"
 					resource="#{resourceBean.pdfResourceDynFileName}" mimeType="application/pdf"
 					fileName="#{resourceBean.fileName}.pdf" 
