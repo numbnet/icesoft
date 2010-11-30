@@ -73,7 +73,10 @@ public class CompatResourceServlet extends HttpServlet {
                 }
             } catch (ParseException e) {
                 //if the headers are corrupted, still just serve the resource
-                log.log(Level.WARNING, "failed to parse date: " + modifedHeader, e);
+                log.log(Level.FINE, "failed to parse date: " + modifedHeader, e);
+            } catch (NumberFormatException e) {
+                //if the headers are corrupted, still just serve the resource
+                log.log(Level.FINE, "failed to parse date: " + modifedHeader, e);
             }
         }
 
