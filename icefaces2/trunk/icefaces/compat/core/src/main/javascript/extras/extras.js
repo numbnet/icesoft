@@ -295,6 +295,8 @@ Ice.clickEvent = Class.create({
             var nothingEvent = new Object();
             iceSubmitPartial(null, rowField, nothingEvent);
         }
+        rowField.value = "";
+        countField.value = "";
     }
 });
 
