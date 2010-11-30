@@ -870,6 +870,7 @@ Ice.DnD.StyleReader = {
             if (submit) {
                 var form = Ice.util.findForm(ele);
                 iceSubmitPartial(form, ele, null);
+                cssUpdate.value = "";
             }
         }
     }
@@ -1431,6 +1432,7 @@ Ice.DndEvent.prototype = {
                 this.serializeSubmitInfo(form);
                 try {
                     iceSubmitPartial(form, ele, nothingEvent);
+                    cssUpdate.value = "";
                 } catch(formExcept) {
                     Ice.DnD.logger.error("error submitting dnd event", formExcept);
 
@@ -1444,6 +1446,7 @@ Ice.DndEvent.prototype = {
                     if (form.id != formId) {
                         Ice.DnD.logger.debug("Diff [" + form.id + "]!=[" + formId + "] Submitting");
                         iceSubmitPartial(form, this.drop.element, nothingEvent);
+                        cssUpdate.value = "";
                     }
                 }
                 this.resetSubmitInfo(form);
