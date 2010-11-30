@@ -37,7 +37,6 @@
         <ice:outputLabel for="columnsInput"
                          value="#{msgs['page.columns.selectonemenu.title']}"/>
         <ice:selectOneMenu id="columnsInput"
-                           partialSubmit="true"
                            valueChangeListener="#{columnsBean.updateTableColumns}"
                            value="#{columnsBean.columns}" >
             <f:selectItems id="columnsItms"

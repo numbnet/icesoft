@@ -46,7 +46,6 @@ when the user presses the Enter key or tabs out of a field.
                            maxlength="30"
                            valueChangeListener="#{textFields.effectChangeListener}"
                            value="#{textFields.name}"
-                           partialSubmit="true"
                            required="true"
                            >
             </ice:inputText>
@@ -61,7 +60,6 @@ when the user presses the Enter key or tabs out of a field.
                              size="20"
                              valueChangeListener="#{textFields.effectChangeListener}"
                              value="#{textFields.password}"
-                             partialSubmit="true"
                              redisplay="true"
                              required="true">
                 <f:validateLength minimum="6" maximum="10"/>
@@ -75,7 +73,6 @@ when the user presses the Enter key or tabs out of a field.
             <ice:inputTextarea id="TxtCmt"
                                value="#{textFields.comments}"
                                cols="20" rows="4"
-                               partialSubmit="true"
                                valueChangeListener="#{textFields.effectChangeListener}"
                                style="width:280px;height:80px;overflow: auto;">
             </ice:inputTextarea>

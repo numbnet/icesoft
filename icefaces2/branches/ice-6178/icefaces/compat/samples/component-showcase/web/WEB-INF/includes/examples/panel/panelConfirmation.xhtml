@@ -77,9 +77,8 @@
         <ice:panelGrid style="float:left" columns="2" cellspacing="2" cellpadding="3">
             <ice:outputLabel value="#{msgs['page.panelConfirmation.confirmationCheckboxLabel']}"
                              for="confirmCheck"/>
-            <ice:selectBooleanCheckbox id="confirmCheck" partialSubmit="true"
-                                       value="#{confirmation.withConfirmation}"
-                                       />
+            <ice:selectBooleanCheckbox id="confirmCheck"
+                                       value="#{confirmation.withConfirmation}" />
         </ice:panelGrid>
     </ice:panelGroup>
 
