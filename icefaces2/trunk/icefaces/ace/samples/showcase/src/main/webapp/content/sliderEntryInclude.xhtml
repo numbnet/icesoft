@@ -47,11 +47,11 @@
 
         <h:panelGroup styleClass="exampleBox" layout="block">
             <h:form>
-                <h:outputText value="SubmitOn='slideInterval' - slider value submits repeatadly while arrow drag is occurring: "/>
+                <h:outputText value="singleSubmit='true' - slider value submits once the drag is complete: "/>
                 <br/>
                 <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
-                                 submitOn="slideInterval" clickableRail="false"
-                                 axis="x" singleSubmit="false"/>
+                                   clickableRail="true"
+                                 axis="x" singleSubmit="true"/>
              </h:form>
             <br/>
              <h:outputText value="Horizontal slider value: "/>
@@ -62,11 +62,14 @@
         <h:panelGroup styleClass="exampleBox" layout="block">
             <h:form>
 
-                <h:outputText value="SubmitOn='slideEnd'- slider value submits once when arrow is 'dropped': "/>
+                <h:outputText value="singleSubmit='false'- value of slider will get submitted only when a submit call initiated by some other component."/>
                 <br/><br/>
                 <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean2.value}"
-                                 submitOn="slideEnd" clickableRail="false" length="100"
-                                 axis="y" singleSubmit="false"/>
+                                 submitOn="slideEnd" clickableRail="true" length="100"
+                                 axis="y" singleSubmit="false"/><br/>
+				<h:commandButton value="submit" />					
+								 
+								 
             </h:form>
             <br/>
             <h:outputText value="Vertical slider value: "/>
