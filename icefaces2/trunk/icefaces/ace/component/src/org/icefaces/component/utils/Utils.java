@@ -2,10 +2,12 @@ package org.icefaces.component.utils;
 
 import java.beans.Beans;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.List;
 import java.util.ArrayList;
+import java.net.URLEncoder;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
@@ -31,14 +33,14 @@ public class Utils {
             }
         }
     }
-    
-    
+
+
     public static void renderChild(FacesContext facesContext, UIComponent child)
             throws IOException {
         if (!child.isRendered()) {
             return;
         }
-    
+
         child.encodeBegin(facesContext);
         if (child.getRendersChildren()) {
             child.encodeChildren(facesContext);
@@ -67,31 +69,31 @@ public class Utils {
         }
         return parent;
     }
-    
+
     public static void decodeBehavior(FacesContext facesContext, UIComponent uiComponent) {
-    	
+
     }
-    
-    
+
+
     public static boolean iterateEffects(AnimationBehavior.Iterator iterator) {
-    	if (!(iterator.getUIComponent() instanceof ClientBehaviorHolder)) return false;
-    	for (String effect : ((ClientBehaviorHolder)iterator.getUIComponent()).getClientBehaviors().keySet()) {
-    		for (ClientBehavior behavior: ((ClientBehaviorHolder)iterator.getUIComponent()).getClientBehaviors().get(effect)) {
-    			if (behavior instanceof AnimationBehavior) {
-    				iterator.next(effect, (AnimationBehavior)behavior);		
-    			}
-    		}
-    	}
-    	return true;
+        if (!(iterator.getUIComponent() instanceof ClientBehaviorHolder)) return false;
+        for (String effect : ((ClientBehaviorHolder)iterator.getUIComponent()).getClientBehaviors().keySet()) {
+            for (ClientBehavior behavior: ((ClientBehaviorHolder)iterator.getUIComponent()).getClientBehaviors().get(effect)) {
+                if (behavior instanceof AnimationBehavior) {
+                    iterator.next(effect, (AnimationBehavior)behavior);
+                }
+            }
+        }
+        return true;
     }
-    
+
     public static void writeConcatenatedStyleClasses(ResponseWriter writer,
-            String componentClass, String applicationClass)
+                                                     String componentClass, String applicationClass)
             throws IOException {
         int componentLen = (componentClass == null) ? 0 :
-            (componentClass = componentClass.trim()).length();
+                           (componentClass = componentClass.trim()).length();
         int applicationLen = (applicationClass == null) ? 0 :
-            (applicationClass = applicationClass.trim()).length();
+                             (applicationClass = applicationClass.trim()).length();
         if (componentLen > 0 && applicationLen == 0) {
             writer.writeAttribute("class", componentClass, "styleClass");
         }
@@ -103,7 +105,7 @@ public class Utils {
             if (componentLen > 0 && applicationLen > 0) {
                 totalLen++;
             }
-            
+
             StringBuilder sb = new StringBuilder(totalLen);
             if (componentLen > 0) {
                 sb.append(componentClass);
@@ -117,15 +119,15 @@ public class Utils {
             writer.writeAttribute("class", sb.toString(), "styleClass");
         }
     }
-    
+
     public static void writeConcatenatedStyleClasses(ResponseWriter writer,
-            String componentClass, String applicationClass, boolean disabled)
+                                                     String componentClass, String applicationClass, boolean disabled)
             throws IOException {
         final String disabledStr = "-disabled";
         int componentLen = (componentClass == null) ? 0 :
-            (componentClass = componentClass.trim()).length();
+                           (componentClass = componentClass.trim()).length();
         int applicationLen = (applicationClass == null) ? 0 :
-            (applicationClass = applicationClass.trim()).length();
+                             (applicationClass = applicationClass.trim()).length();
         if (componentLen > 0 && applicationLen == 0) {
             if (disabled) {
                 String styleClass = (componentClass + disabledStr).intern();
@@ -149,7 +151,7 @@ public class Utils {
             if (componentLen > 0 && applicationLen > 0) {
                 totalLen++;
             }
-            
+
             StringBuilder sb = new StringBuilder(totalLen);
             if (componentLen > 0) {
                 sb.append(componentClass);
@@ -169,20 +171,20 @@ public class Utils {
             writer.writeAttribute("class", sb.toString(), "styleClass");
         }
     }
-    
+
     public static void writeConcatenatedStyleClasses(ResponseWriter writer,
-            String[] componentClasses, String applicationClass, boolean disabled)
+                                                     String[] componentClasses, String applicationClass, boolean disabled)
             throws IOException {
         final String disabledStr = "-disabled";
         int componentCount = (componentClasses == null ? 0 :
-            componentClasses.length);
+                              componentClasses.length);
         StringTokenizer st = new StringTokenizer(applicationClass, " ");
         int applicationCount = st.countTokens();
-        
+
         if (componentCount == 1 && applicationCount == 0) {
             if (disabled) {
                 String styleClass =
-                    (componentClasses[0].trim() + disabledStr).intern();
+                        (componentClasses[0].trim() + disabledStr).intern();
                 writer.writeAttribute("class", styleClass, "styleClass");
             }
             else {
@@ -194,22 +196,22 @@ public class Utils {
         }
         else if (componentCount > 0 || applicationCount > 0) {
             StringBuilder sb = new StringBuilder(
-                (componentCount + applicationCount) * 16 );
+                    (componentCount + applicationCount) * 16 );
             for (int i = 0; i < componentCount; i++) {
                 concatenateStyleClass(sb, componentClasses[i], disabled,
-                    disabledStr);
+                                      disabledStr);
             }
             while (st.hasMoreTokens()) {
                 concatenateStyleClass(sb, st.nextToken(), disabled,
-                    disabledStr);
+                                      disabledStr);
             }
             sb.trimToSize();
             writer.writeAttribute("class", sb.toString(), "styleClass");
         }
     }
-    
+
     private static void concatenateStyleClass(StringBuilder sb,
-            String styleClass, boolean disabled, String disabledStr) {
+                                              String styleClass, boolean disabled, String disabledStr) {
         if (sb.length() > 0) {
             sb.append(' ');
         }
@@ -226,7 +228,7 @@ public class Utils {
      * @param component The component to work from
      * @return List of UIParameter objects, null if no UIParameter children present
      */
-     public static List<UIParameter> captureParameters( UIComponent component) {
+    public static List<UIParameter> captureParameters( UIComponent component) {
         List<UIComponent> children = component.getChildren();
         List<UIParameter>  returnVal = null;
         for (UIComponent child: children) {
@@ -234,7 +236,7 @@ public class Utils {
                 UIParameter param = (UIParameter) child;
                 if (returnVal == null) {
                     returnVal = new ArrayList<UIParameter>();
-                } 
+                }
                 returnVal.add( param );
             }
         }
@@ -261,22 +263,21 @@ public class Utils {
         return builder.toString();
     }
 
+
     /**
      * Return the name value pairs parameters as a comma separated list. This is
      * simpler for passing to the javascript parameter rebuilding code.
-     * TODO: determine the correct escaping here
      * @param children List of children
      * @return a String in the form name1, value1, name2, value2...
      */
-    public static String asCommaSeperated( List<UIParameter> children) {
-        StringBuffer builder = new StringBuffer();
+    public static String[] asStringArray( List<UIParameter> children) {
+        ArrayList builder = new ArrayList();
         for (UIParameter param: children) {
-            builder.append(DOMUtils.escapeAnsi(param.getName()) )
-                    .append(",").append( ((String)param.getValue() ).replace(' ', '+')).append(",");
+            builder.add(param.getName());
+            builder.add(param.getValue());
         }
-        if (builder.length() > 0) {
-            builder.setLength( builder.length() - 1 );
-        }
-        return builder.toString();
+        Object[] returnVal = new String[ builder.size()];
+        builder.toArray (returnVal);
+        return (String[]) returnVal;
     }
 }
