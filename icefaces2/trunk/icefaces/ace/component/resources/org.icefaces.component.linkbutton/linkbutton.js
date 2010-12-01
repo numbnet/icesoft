@@ -44,18 +44,17 @@ ice.component.linkButton = {
 
         var JSContext = ice.component.getJSContext(clientId);
         var singleSubmit = JSContext.getJSFProps().singleSubmit;
-        var postParameters = JSContext.getJSFProps().postParameters; 
         var doAction = JSContext.getJSFProps().doAction;
-        var divRoot = document.getElementById(clientId);
-
         YAHOO.log("--> Button.doAction = " + doAction);
 
-         var params = function(parameter) {
+        var divRoot = document.getElementById(clientId);
+
+        var postParameters = JSContext.getJSFProps().postParameters;
+        var params = function(parameter) {
             if (postParameters != null) {
-                var nameAndValue = postParameters.split(",");
-                var argCount = nameAndValue.length / 2;
+                var argCount = postParameters.length / 2;
                 for (var idx =0; idx < argCount; idx ++ ) {
-                    parameter( nameAndValue[idx*2], nameAndValue[(idx*2)+1] );
+                    parameter( postParameters[idx*2], postParameters[(idx*2)+1] );
                 }
             }
         };
