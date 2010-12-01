@@ -208,4 +208,30 @@
 
 }
 
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail .yui3-slider-thumb img {
+    top: -225px;		
+	
+}
+ 
+/* set the slide image using css */
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail .yui3-slider-thumb {
+    background: url(thumb-x.png) no-repeat 0px -12px;
+    height: 24px;
+    width: 13px; 
+}
+ 
+ 
+ 
+/* above classes for Y */
+
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail .yui3-slider-thumb img {
+    top: -225px;
+} 
+ 
+.ice-skin-rime .yui3-slider-y .yui3-slider-rail .yui3-slider-thumb {
+    background: url(thumb-y.png)  no-repeat -14px 0px;
+    height: 14px;
+    width: 30px;
+}
+
 /* ----- END YUI SAM SKIN STYLING ----- */
