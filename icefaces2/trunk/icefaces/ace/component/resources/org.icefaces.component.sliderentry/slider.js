@@ -24,6 +24,12 @@ ice.component.slider = {
                             disabled:yuiProps.disabled
 							}).render(root);
 			            } catch(e){alert(e)}
+
+                        var postParameters = jsfProps.postParameters;
+                        var params = function(parameter) {
+
+                        };
+
 						
 						var invokeSubmit = function (event) {
 		                    if (jsfProps.singleSubmit) {
@@ -33,6 +39,12 @@ ice.component.slider = {
 										if (data.status == 'success') {
 											root.firstChild.focus();
 										}
+								        if (postParameters != null) {
+                                            var argCount = postParameters.length / 2;
+                                            for (var idx =0; idx < argCount; idx ++ ) {
+                                                parameter( postParameters[idx*2], postParameters[(idx*2)+1] );
+                                            }
+                                        }
 									});
 								});
 		                    }  						
