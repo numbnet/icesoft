@@ -119,17 +119,18 @@ public class LinkButtonRenderer extends Renderer {
                 entry("label", (String) linkButton.getValue()).
                 entry("disabled", linkButton.isDisabled()).endMap().toString();
 
-        JSONBuilder paramBuilder = JSONBuilder.create().
+        JSONBuilder jBuild = JSONBuilder.create().
                                 beginMap().
                                 entry("singleSubmit", linkButton.isSingleSubmit()).
                                 entry("doAction", doAction).
                                 entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
+        
         if (doAction && uiParamChildren != null) {
-            paramBuilder.entry("postParameters",  Utils.asCommaSeperated(uiParamChildren) );
+            jBuild.entry("postParameters",  Utils.asStringArray(uiParamChildren) );
         }
         String params = "'" + clientId + "'," +
                          jsProps
-                        + "," + paramBuilder.endMap().toString();
+                        + "," + jBuild.endMap().toString();
 
         String finalScript = "ice.component.linkButton.updateProperties(" + params + ");";
         ScriptWriter.insertScript(facesContext, uiComponent, finalScript);
