@@ -2,9 +2,11 @@ package org.icefaces.component.sliderentry;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
@@ -13,6 +15,7 @@ import javax.faces.render.Renderer;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
+import org.icefaces.component.utils.Utils;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 
@@ -32,6 +35,8 @@ import org.icefaces.render.MandatoryResourceComponent;
  */
 @MandatoryResourceComponent("org.icefaces.component.sliderentry.SliderEntry")
 public class SliderEntryRenderer extends Renderer{
+
+     List<UIParameter> uiParamChildren;
     private final static Logger log = Logger.getLogger(SliderEntryRenderer.class.getName());
     // The decode method, in the renderer, is responsible for taking the values
     //  that have been submitted from the browser, and seeing if they correspond
@@ -107,6 +112,9 @@ public class SliderEntryRenderer extends Renderer{
         ResponseWriter writer = facesContext.getResponseWriter();        
         SliderEntry slider = (SliderEntry)uiComponent;
 
+         // capture any children UIParameter (f:param) parameters.
+        uiParamChildren = Utils.captureParameters( slider );
+
         // Write outer div
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_div", HTML.ID_ATTR);
@@ -162,6 +170,9 @@ public class SliderEntryRenderer extends Renderer{
         if (thumbUrl != null && thumbUrl.trim().length() > 0) {
                 jb.entry("thumbUrl", thumbUrl);
         }
+        if (uiParamChildren != null) {
+            jb.entry("postParams", Utils.asStringArray( uiParamChildren ));
+        } 
 
         String jsProps = jsBuilder.endMap().toString();
         String jsfProps = jb.endMap().toString();
