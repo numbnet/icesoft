@@ -7,6 +7,7 @@ import java.util.*;
 
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
@@ -16,12 +17,15 @@ import javax.faces.event.ValueChangeEvent;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.ScriptWriter;
+import org.icefaces.component.utils.Utils;
 
 import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 
 @MandatoryResourceComponent("org.icefaces.component.checkboxbutton.CheckboxButton")
 public class CheckboxButtonRenderer extends Renderer {
+
+     List <UIParameter> uiParamChildren;
 
 	public CheckboxButtonRenderer(){
 		super();
@@ -44,6 +48,9 @@ public class CheckboxButtonRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         CheckboxButton checkbox = (CheckboxButton) uiComponent;
+
+         // capture any children UIParameter (f:param) parameters.
+        uiParamChildren = Utils.captureParameters( checkbox );
 
 		// root element
         writer.startElement(HTML.DIV_ELEM, uiComponent);
@@ -128,14 +135,19 @@ public class CheckboxButtonRenderer extends Renderer {
             entry("tabindex", checkbox.getTabindex()).
 	        entry("label", "").endMap().toString();  
 	    }
-	    String params = "'" + clientId + "'," +
-        builder
-           + "," +
-           JSONBuilder.create().
+
+        JSONBuilder jBuild = JSONBuilder.create().
            beginMap().
                entry("singleSubmit", checkbox.isSingleSubmit()).
-               entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext)).
-           endMap().toString();
+               entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
+
+        if (uiParamChildren != null) {
+            jBuild.entry("postParameters",  Utils.asStringArray(uiParamChildren) );
+        } 
+
+	    String params = "'" + clientId + "'," +
+        builder
+           + "," + jBuild.endMap().toString();
   //        System.out.println("params = " + params);	    
 
         String finalScript = "ice.component.checkboxbutton.updateProperties(" + params + ");";
