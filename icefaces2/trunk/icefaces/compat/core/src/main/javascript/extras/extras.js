@@ -240,6 +240,12 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
         setFocus('');
         fld.id = ""; //preserve ICE-2874
         fld.value = ""; //ICE-5492
+        if (ctrlKyFld && event) {
+            ctrlKyFld.value = "";
+        }
+        if (sftKyFld && event) {
+            sftKyFld.value = "";
+        }
     } catch(e) {
         logger.info("Error in rowSelector[" + e + "]");
     }
