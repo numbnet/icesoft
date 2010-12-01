@@ -32,6 +32,17 @@ ice.component.pushbutton = {
             button.set("disabled", false);
         }
 
+        var postParameters = jsfProps.postParameters;
+        var params = function(parameter) {
+            if (postParameters != null) {
+                 var argCount = postParameters.length / 2;
+                 for (var idx =0; idx < argCount; idx ++ ) {
+                     parameter( postParameters[idx*2], postParameters[(idx*2)+1] );
+                 }
+            }
+        };
+
+
         var onClick = function (e) {
             YAHOO.log(" in onClick and e.target=" + e.target);
             YAHOO.log("  buttonRoot=" + buttonRoot + "  buttonNode=" + buttonNode);
@@ -43,10 +54,10 @@ ice.component.pushbutton = {
 
             if (singleSubmit) {
                 YAHOO.log(" single submit is true for clientId=" + spanId);
-                ice.se(e, divRoot);
+                ice.se(e, divRoot, params);
             } else {
                 YAHOO.log("single Submit is false for clientId=" + spanId);
-                ice.s(e, divRoot);
+                ice.s(e, divRoot, params);
             }
         };
 
