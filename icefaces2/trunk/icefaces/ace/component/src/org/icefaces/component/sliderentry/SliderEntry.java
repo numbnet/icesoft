@@ -59,16 +59,6 @@ public class SliderEntry extends SliderEntryBase{
         super.queueEvent(event);
     } 
 
-    public String getSubmitOn() {
-if (true) throw new UnsupportedOperationException();
-        return "undefined";
-    }
-
-    public String getSlideInterval() {
-if (true) throw new UnsupportedOperationException();
-        return "undefined";
-    }
-
     
     public String getThumbUrl() {
     	String thumbUrl = super.getThumbUrl();
