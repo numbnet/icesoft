@@ -18,7 +18,15 @@ ice.component.checkboxbutton = {
  		}
         YAHOO.log(" initialize: checked="+jsProps.checked);
         ice.yui3.logger.info(' using logger defined by ice.yui3.logger ' + jsfProps.checked);
-
+        var postParameters = jsfProps.postParameters;
+        var params = function(parameter) {
+            if (postParameters != null) {
+                var argCount = postParameters.length / 2;
+                for (var idx =0; idx < argCount; idx ++ ) {
+                    parameter( postParameters[idx*2], postParameters[(idx*2)+1] );
+                }
+            }
+        };
 		var onCheckedChange = function (e) {
            var context = ice.component.getJSContext(clientId);
            var singleSubmit= context.getJSFProps().singleSubmit;
@@ -41,7 +49,7 @@ ice.component.checkboxbutton = {
  	         	YAHOO.log("single submit goes to server");
  			    //e.target is null so have to set the target to the root of this button for submit
  	         	e.target = buttonNode;
-                ice.se(e, divNode);
+                ice.se(e, divNode, params);
             } else {
              	YAHOO.log("single Submit is false doesn't go to server");
                 //no submit!! already updated the hidden field
