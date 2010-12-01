@@ -107,6 +107,31 @@ public class JSONBuilder {
     }
 
     /**
+     * Append a key bound String array that is itself a set of key-value pairs.
+     * Even array indexes = key, odd array index  = values
+     * @param key overall key to put entry under
+     * @param keyValuePairs Array of key value pair string entries 
+     * @return The builder object 
+     */
+    public JSONBuilder entry (String key, String[] keyValuePairs) {
+        appendCommaAndKey(key);
+        params.append("[");
+        int argCount = keyValuePairs.length /2;
+        StringBuilder localCopy = new StringBuilder();
+        for (int idx = 0; idx < argCount; idx ++ ) {
+            localCopy.append('"').append( escapeString(keyValuePairs[2*idx])).append('"').
+                    append(",").append('"').append( escapeString(keyValuePairs[(2*idx)+1] )).append('"'); 
+            localCopy.append(",");
+        }
+        if (localCopy.length() > 0) {
+            localCopy.setLength( localCopy.length() - 1 );
+        }
+        params.append( localCopy.toString() );
+        params.append("]");
+        return this; 
+    } 
+
+    /**
      * Adds a String property.
      * Adds quotes and does JSON string escaping, as described at <a href="http://www.json.org/">json.org</a>. 
      * @param key name of the property.
@@ -129,19 +154,24 @@ public class JSONBuilder {
         if (isStringLiteral) {
         	params.append(value);   
         } else {
-	        value = value.replace("\\", "\\\\");
-	        value = value.replace("\"", "\\\"");
-	        value = value.replace("/", "\\/");
-	        value = value.replace("\b", "\\b");
-	        value = value.replace("\f", "\\f");
-	        value = value.replace("\n", "\\n");
-	        value = value.replace("\r", "\\r");
-	        value = value.replace("\t", "\\t");
+            value = escapeString(value);
 	    	params.append('"').append(value).append('"');     
         }
         return this;
     }
-    
+
+    private String escapeString(String value) {
+        value = value.replace("\\", "\\\\");
+        value = value.replace("\"", "\\\"");
+        value = value.replace("/", "\\/");
+        value = value.replace("\b", "\\b");
+        value = value.replace("\f", "\\f");
+        value = value.replace("\n", "\\n");
+        value = value.replace("\r", "\\r");
+        value = value.replace("\t", "\\t");
+        return value;
+    }
+
 
     /**
      * Outputs the JSON string.
