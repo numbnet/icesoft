@@ -148,7 +148,8 @@ public class PushRenderer {
     }
 
     /**
-     * Create a PortableRenderer instance. PortableRenderer can trigger renderings in the context of the application.
+     * Create a PortableRenderer instance. PortableRenderer can trigger renderings
+     * in the context of the application.
      * Once acquired it does not need a current FacesContext in order to function.
      *
      * @param context the FacesContext instance
