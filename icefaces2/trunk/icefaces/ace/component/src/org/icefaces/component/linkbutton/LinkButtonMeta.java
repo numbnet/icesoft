@@ -1,8 +1,5 @@
 package org.icefaces.component.linkbutton;
 
-import javax.faces.component.UIComponent;
-import javax.el.MethodExpression;
-
 import org.icefaces.component.annotation.*;
 
 import javax.faces.application.ResourceDependencies;
