@@ -17,18 +17,18 @@ ice.component.checkboxbutton = {
    			button.set('checked', hiddenField.value);
  		}
     
-        var postParameters = jsfProps.postParameters;
-        var params = function(parameter) {
-            if (postParameters != null) {
-                var argCount = postParameters.length / 2;
-                for (var idx =0; idx < argCount; idx ++ ) {
-                    parameter( postParameters[idx*2], postParameters[(idx*2)+1] );
-                }
-            }
-        };
 		var onCheckedChange = function (e) {
            var context = ice.component.getJSContext(clientId);
            var singleSubmit= context.getJSFProps().singleSubmit;
+           var postParameters = context.getJSFProps().postParameters;
+           var params = function(parameter) {
+               if (postParameters != null) {
+                   var argCount = postParameters.length / 2;
+                   for (var idx =0; idx < argCount; idx ++ ) {
+                       parameter( postParameters[idx*2], postParameters[(idx*2)+1] );
+                   }
+               }
+           };
            YAHOO.log(" in onCheckedChange singleSubmit="+singleSubmit);
            if (singleSubmit)
                 YAHOO.log("in onCheckedChange singleSubmit="+singleSubmit);
