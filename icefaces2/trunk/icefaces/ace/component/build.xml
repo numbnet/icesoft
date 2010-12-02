@@ -12,6 +12,7 @@
   <property name="exploded"  location="${build}/exploded"/>
   <property name="doc" location="${build}/doc"/>
   <property name="tld.doc" location="${doc}/tld"/>
+  <property name="java.doc" location="${doc}/javadoc"/>
   <property name="tld.file"   location="${build}/exploded/META-INF/components.tld"/>
   <property name="tld.jar"  location="${icefaces.lib.dir}"/>
   <property name="smartsprites.basedir" location="../tools/smartsprites" />
@@ -133,7 +134,9 @@
     </ant>
   </target>
 
-  <target name="dist" depends="skins,compile,tlddoc" 
+ <!-- <target name="dist"  --> 
+  <target name="dist" depends="skins,compile,tlddoc,javadoc"
+
         description="generate the distribution" >
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>
@@ -159,6 +162,10 @@
     </jar>
     <copy file="${dist}/${ant.project.name}.jar" todir="${icefaces.lib.dir}" overwrite="true"/>
   </target>
+
+  <target name="javadoc" > 
+      <javadoc sourcepath="${src}" destdir="${java.doc}" classpathref="compile.run.classpath" />
+  </target> 
 
   <target name="clean"
         description="clean up" >
