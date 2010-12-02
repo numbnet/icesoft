@@ -296,6 +296,15 @@ if (!window.ice.icefaces) {
                     //click events should not trigger text box submit
                     return;
                 }
+
+                if ("select-one" == elementType) {
+                    if (element.selectedIndex == element.previousSelectedIndex)  {
+                        //ignore clicks that do not change state
+                        return;
+                    } else {
+                        element.previousSelectedIndex = element.selectedIndex;
+                    }
+                }
     
                 ice.setFocus(null);
                 ice.se(e, element);
