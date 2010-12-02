@@ -434,15 +434,16 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
             while (area.hasNext()) {
                 ImageMapArea areaMap = (ImageMapArea) area.next();
                 //unescape overall insertion, but ensure label is escaped
+                String hiddenValue = "document.forms['" +
+                        getParentFormId() + "']['" + ICE_CHART_COMPONENT +
+                        "'].value='";
                 Text areaNode = domContext.createTextNodeUnescaped(areaMap.toHTML(
                         "id='"+ clientId + i++ + "' "+
-                        "title ='" + DOMUtils.escapeAnsi(areaMap.getLengendLabel()) +
-                        "' href=\"javascript:;\" onclick=\"document.forms['" +
-                        getParentFormId() + "']['" + ICE_CHART_COMPONENT +
-                        "'].value='" + getClientId(getFacesContext()) +
+                                "title ='" + DOMUtils.escapeAnsi(areaMap.getLengendLabel()) +
+                                "' href=\"javascript:;\" onclick=\"" + hiddenValue + getClientId(getFacesContext()) +
                         "id-key" + areaMap.hashCode() +
                         "';iceSubmitPartial(document.forms['" +
-                        getParentFormId() + "'],this,event); return false;\""));
+                        getParentFormId() + "'],this,event);" + hiddenValue + "'; return false;\""));
                 map.appendChild(areaNode);
             }
         } else {
