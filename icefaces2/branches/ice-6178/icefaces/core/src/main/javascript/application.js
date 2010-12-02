@@ -266,11 +266,37 @@ if (!window.ice.icefaces) {
             var f = document.getElementById(id);
 
             function submitForm(ev) {
+                //need to investigate why $event did not provide type
+                var eType;
+                if (window.event)  {
+                    eType = window.event.type;
+                } else {
+                    eType = ev.type;
+                }
                 var e = $event(ev, f);
                 var element = triggeredBy(e);
-                if (toLowerCase(element.type) == 'submit') {
+
+                var elementType = element.type;
+                if (!elementType)  {
                     return;
                 }
+                elementType = toLowerCase(elementType);
+
+                if (elementType == 'submit') {
+                    return;
+                }
+                if ((null == element.id) || ("" == element.id) )  {
+                    return;
+                } 
+
+                var isText = ( (elementType == "text") || 
+                               (elementType == "password") || 
+                               (elementType == "textarea") );
+                if (isText && (eType == "click"))  {
+                    //click events should not trigger text box submit
+                    return;
+                }
+    
                 ice.setFocus(null);
                 ice.se(e, element);
             }
@@ -280,6 +306,7 @@ if (!window.ice.icefaces) {
                 f.addEventListener('change', submitForm, true);
             } else {
                 f.attachEvent('onfocusout', submitForm);
+                f.attachEvent('onclick', submitForm);
             }
         };
 
