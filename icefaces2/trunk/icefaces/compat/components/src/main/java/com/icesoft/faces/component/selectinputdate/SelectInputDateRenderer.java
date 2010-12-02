@@ -336,18 +336,22 @@ public class SelectInputDateRenderer
                 calendarButton.setAttribute(HTML.ONFOCUS_ATTR, "setFocus('');");
                 // render onclick to set value of hidden field to true
                 String formClientId = parentForm.getClientId(facesContext);
-                String onClick = "document.forms['" +
+                String hiddenValue1 = "document.forms['" +
                         formClientId + "']['" +
                         this.getLinkId(facesContext, uiComponent) +
-                        "'].value='" + clientId + CALENDAR_BUTTON +
-                        "';"
-                        + "document.forms['" +
+                        "'].value='";
+                String hiddenValue2 = "document.forms['" +
                         formClientId + "']['" +
                         getHiddenFieldName(facesContext, uiComponent) +
-                        "'].value='toggle';"
+                        "'].value='";
+                String onClick = hiddenValue1 + clientId + CALENDAR_BUTTON +
+                        "';"
+                        + hiddenValue2 + "toggle';"
                         + "iceSubmitPartial( document.forms['" +
                         formClientId +
                         "'], this,event);"
+                        + hiddenValue1 + "';"
+                        + hiddenValue2 + "';"
                         + "Ice.Calendar.addCloseListener('"
                         + clientId + "','" + formClientId + "','"
                         + this.getLinkId(facesContext, uiComponent) + "','"
