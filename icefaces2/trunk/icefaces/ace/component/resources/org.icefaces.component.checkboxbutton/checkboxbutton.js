@@ -16,8 +16,7 @@ ice.component.checkboxbutton = {
   		if(jsProps.checked) {
    			button.set('checked', hiddenField.value);
  		}
-        YAHOO.log(" initialize: checked="+jsProps.checked);
-        ice.yui3.logger.info(' using logger defined by ice.yui3.logger ' + jsfProps.checked);
+    
         var postParameters = jsfProps.postParameters;
         var params = function(parameter) {
             if (postParameters != null) {
