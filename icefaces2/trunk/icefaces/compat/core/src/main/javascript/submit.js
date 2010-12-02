@@ -25,26 +25,6 @@ var iceSubmit;
 var formOf;
 
 (function() {
-    function resetHiddenFieldsFor(aForm) {
-        try {
-            each(aForm.elements, function(formElement) {
-                var elName = formElement.name;
-                if (formElement.type == 'hidden' && formElement.id == '' &&
-                    formElement.name != 'javax.faces.ViewState' &&
-                    formElement.name != 'ice.window' &&
-                    //special case for Portlet bridge
-                    formElement.name != 'javax.faces.encodedURL' &&
-                    //special case for MyFaces 2.0
-                    (elName.lastIndexOf("_SUBMIT") != (elName.length - 7)) &&
-                    formElement.name != 'ice.view') {
-                    formElement.value = '';
-                }
-            });
-        } catch (e) {
-
-        }
-    }
-
     iceSubmitPartial = function(form, component, evt) {
         form = form || formOf(component);
         ice.submit(evt, component || form, function(parameter) {
@@ -54,7 +34,6 @@ var formOf;
             parameter('ice.submit.partial', true);
         });
 
-        resetHiddenFieldsFor(form);
         return false;
     };
 
@@ -73,7 +52,6 @@ var formOf;
                 parameter('ice.menuContext', Ice.Menu.menuContext);
             }
         });
-        resetHiddenFieldsFor(form);
 
         return false;
     };
