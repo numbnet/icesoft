@@ -70,12 +70,14 @@ public class CommandLinkRenderer extends com.icesoft.faces.renderkit.dom_html_ba
     private String getJavaScriptPartialOnClickString(FacesContext facesContext, UIComponent uiComponent, Map parameters) {
         return com.icesoft.faces.renderkit.dom_html_basic.CommandLinkRenderer
                 .getJavascriptHiddenFieldSetters(facesContext, (UICommand) uiComponent, parameters) +
-                "return iceSubmitPartial(form,this,event);";
+                "iceSubmitPartial(form,this,event);" +
+                getJavascriptHiddenFieldReSetters(facesContext, (UICommand) uiComponent, parameters) + "return false;";
     }
 
     private String getJavaScriptOnClickString(FacesContext facesContext, UIComponent uiComponent, Map parameters) {
         return com.icesoft.faces.renderkit.dom_html_basic.CommandLinkRenderer
                 .getJavascriptHiddenFieldSetters(facesContext, (UICommand) uiComponent, parameters) +
-                "return iceSubmit(form,this,event);";
+                "iceSubmit(form,this,event);" +
+                getJavascriptHiddenFieldReSetters(facesContext, (UICommand) uiComponent, parameters) + "return false;";
     }
 }
