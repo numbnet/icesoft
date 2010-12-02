@@ -169,7 +169,8 @@ public class CommandLinkRenderer extends DomBasicRenderer {
 
     private String getJavaScriptOnClickString(FacesContext facesContext, UIComponent uiComponent, Map parameters) {
         return getJavascriptHiddenFieldSetters(facesContext, (UICommand) uiComponent, parameters) +
-                "return iceSubmit(form,this,event);";
+                "iceSubmit(form,this,event);" +
+                getJavascriptHiddenFieldReSetters(facesContext, (UICommand) uiComponent, parameters) + "return false;";
     }
 
     /**
@@ -195,6 +196,27 @@ public class CommandLinkRenderer extends DomBasicRenderer {
             buffer.append(nextParamName);
             buffer.append("'].value='");
             buffer.append(nextParamValue);
+            buffer.append("';");
+        }
+        return buffer.toString();
+    }
+    protected static String getJavascriptHiddenFieldReSetters(
+            FacesContext facesContext,
+            UICommand uiCommand, Map parameters) {
+        StringBuffer buffer;
+        buffer = new StringBuffer("form['");
+        buffer.append(deriveCommonHiddenFieldName(facesContext, uiCommand));
+        buffer.append("'].value='");
+//        buffer.append(uiCommand.getClientId(facesContext));
+        buffer.append("';");
+        Iterator parameterKeys = parameters.keySet().iterator();
+        while (parameterKeys.hasNext()) {
+            String nextParamName = (String) parameterKeys.next();
+            Object nextParamValue = parameters.get(nextParamName);
+            buffer.append("form['");
+            buffer.append(nextParamName);
+            buffer.append("'].value='");
+//            buffer.append(nextParamValue);
             buffer.append("';");
         }
         return buffer.toString();
