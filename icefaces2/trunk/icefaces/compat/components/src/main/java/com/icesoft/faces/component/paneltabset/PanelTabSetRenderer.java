@@ -843,6 +843,7 @@ public class PanelTabSetRenderer
                + submit              
                + " document.forms['" + formClientId + "'],"
                + " this,event); "
+               + getJavascriptHiddenFieldReSetters(facesContext, uiComponent, formClientId, parameters)
                + "return false;";
     }
 
@@ -875,6 +876,32 @@ public class PanelTabSetRenderer
             buffer.append(nextParamName);
             buffer.append("'].value='");
             buffer.append((String) nextParamValue);
+            buffer.append("';");
+        }
+        return buffer.toString();
+    }
+    private String getJavascriptHiddenFieldReSetters(FacesContext facesContext,
+                                                   UIComponent uiComponent,
+                                                   String formClientId,
+                                                   Map parameters) {
+        StringBuffer buffer;
+        buffer = new StringBuffer("document.forms['" + formClientId + "']['");
+        buffer.append(deriveCommonHiddenFieldName(facesContext, uiComponent));
+        buffer.append("'].value='");
+//        buffer.append(uiComponent.getClientId(facesContext));
+        buffer.append("';");
+        Iterator parameterKeys = parameters.keySet().iterator();
+        String nextParamName;
+        Object nextParamValue;
+        while (parameterKeys.hasNext()) {
+            nextParamName = (String) parameterKeys.next();
+            nextParamValue = parameters.get(nextParamName);
+            buffer.append("document.forms['");
+            buffer.append(formClientId);
+            buffer.append("']['");
+            buffer.append(nextParamName);
+            buffer.append("'].value='");
+//            buffer.append((String) nextParamValue);
             buffer.append("';");
         }
         return buffer.toString();
