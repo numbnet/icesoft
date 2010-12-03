@@ -7,18 +7,15 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
   <h:panelGroup id="panelHeader">
-  <script>
-	function changeTheme(ele) {
-	    var skin = "ice-skin-"+ ele.value;
-		document.body.setAttribute("class", skin);
-	}
-  </script>
     <h:outputText value="#{msgs['header.text']}" />
 	<h:panelGroup style="float:right; font-size:16px;">
-	   <select onchange="changeTheme(this);">
-			<option value="rime"> Rime </option>
-			<option value="sam"> Sam </option>			
-	   </select>
+		<h:form>
+			<h:selectOneMenu value="#{skinBean.skin}"
+				valueChangeListener="#{skinBean.skinChanged}">
+				<f:selectItems value="#{skinBean.skins}"/>
+				<f:ajax execute="@this" render="@all" />
+			</h:selectOneMenu>
+		</h:form>		
 	</h:panelGroup>
   </h:panelGroup>
 </ui:composition>
