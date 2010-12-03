@@ -97,7 +97,7 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                     // panel. When an element is moved in the same list then it container element moves with it
                     // When the update occurs the elements are replaced but because the containers have moved
                     // then the result looks the same. (But a refresh shows otherwise)
-                    Node node = domContext.createTextNode(
+                    Node node = domContext.createTextNodeUnescaped(
                             "<!-- " + (new Random().nextInt(1000)) + "-->");
                     root.appendChild(node);
                 }
