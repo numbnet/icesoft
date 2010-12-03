@@ -274,9 +274,9 @@ public class Utils {
         ArrayList builder = new ArrayList();
         for (UIParameter param: children) {
             builder.add(param.getName());
-            builder.add(param.getValue());
+            builder.add(param.getValue().toString());
         }
-        Object[] returnVal = new String[ builder.size()];
+        Object[] returnVal = new String[ builder.size() ];
         builder.toArray (returnVal);
         return (String[]) returnVal;
     }
