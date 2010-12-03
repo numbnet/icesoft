@@ -22,7 +22,7 @@
         <title>ICEfaces Advanced Components</title>
     </h:head>
 
-    <h:body class="ice-skin-sam">
+    <h:body>
 
         <div id="header">
             <ui:insert name="header">
@@ -30,7 +30,7 @@
             </ui:insert>
         </div>
 
-        <div id="navAndContentdiv">
+        <div id="navAndContentdiv" class="#{skinBean.skin}">
             <div id="navigation">
                     <ui:include src="navigation.xhtml" />
             </div>
