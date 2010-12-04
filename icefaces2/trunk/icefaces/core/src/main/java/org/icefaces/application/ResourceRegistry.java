@@ -152,6 +152,27 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         }
     }
 
+    public static Resource getResourceByPath(
+            FacesContext facesContext, String resPath) {
+        if (resPath == null) {
+            return null;
+        }
+        int prefixIndex = resPath.lastIndexOf(RESOURCE_PREFIX);
+        if (prefixIndex < 0) {
+            return null;
+        }
+        String key = resPath.substring(prefixIndex+RESOURCE_PREFIX.length(),
+                resPath.length() - EnvUtils.getPathTemplate()[1].length());
+
+        ELContext elContext = facesContext.getELContext();
+        ResourceRegistryHolder holder = (ResourceRegistryHolder) elContext
+            .getELResolver().getValue(elContext, null, MAP_PREFIX + key);
+        if (null == holder)  {
+            return null;
+        }
+        return holder.resource;
+    }
+
     private synchronized static int getNextKey()  {
         Map appMap = FacesContext.getCurrentInstance().getExternalContext()
                 .getApplicationMap();

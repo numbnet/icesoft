@@ -43,6 +43,9 @@ public class FileEntryConfig implements Serializable {
     private long maxFileSize;
     private int maxFileCount;
     private boolean required;
+
+    private String progressResourcePath;
+    private String progressGroupName;
     
     /**
      * InputFile uses this for publishing its own property configuration
@@ -58,7 +61,9 @@ public class FileEntryConfig implements Serializable {
         long maxTotalSize,
         long maxFileSize,
         int maxFileCount,
-        boolean required) {
+        boolean required,
+        String progressResourcePath,
+        String progressGroupName) {
         
         this.identifier = identifier;
         this.clientId = clientId;
@@ -71,6 +76,8 @@ public class FileEntryConfig implements Serializable {
         this.maxFileSize = maxFileSize;
         this.maxFileCount = maxFileCount;
         this.required = required;
+        this.progressResourcePath = progressResourcePath;
+        this.progressGroupName = progressGroupName;
     }
 
 
@@ -121,7 +128,16 @@ public class FileEntryConfig implements Serializable {
     public boolean isRequired() {
         return required;
     }
-    
+
+    public String getProgressResourcePath() {
+        return progressResourcePath;
+    }
+
+    public String getProgressGroupName() {
+        return progressGroupName;
+    }
+
+
     public String toString() {
         return
             "FileEntryConfig: {" +
@@ -135,6 +151,9 @@ public class FileEntryConfig implements Serializable {
             ",\n  maxFileSize=" + maxFileSize +
             ",\n  maxFileCount=" + maxFileCount +
             ",\n  required=" + required +
-            "\n}";        
+            ",\n  identifier=" + identifier +
+            ",\n  progressResourcePath=" + progressResourcePath +
+            ",\n  progressGroupName=" + progressGroupName +
+            "\n}";
     }
 }

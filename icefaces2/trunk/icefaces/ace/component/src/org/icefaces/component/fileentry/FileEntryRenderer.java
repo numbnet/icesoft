@@ -62,31 +62,6 @@ public class FileEntryRenderer extends Renderer {
         writer.endElement("input");
         
         writer.endElement("div");
-        
-        /*
-        Resource res = new Resource() {
-            public Map<String, String> getResponseHeaders() {
-                return null;
-            }
-
-            public String getRequestPath() {
-                return null;
-            }
-
-            public URL getURL() {
-                return null;
-            }
-
-            public boolean userAgentNeedsUpdate(FacesContext facesContext) {
-                return false;
-            }
-
-            public InputStream getInputStream() {
-                return null;
-            }
-        };
-        String resPath = ResourceRegistry.addSessionResource(res);
-        */
     }
     
     @Override

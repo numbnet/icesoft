@@ -30,20 +30,22 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.component.html.HtmlForm;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIForm;
 import java.util.Iterator;
 import java.io.IOException;
 
 public class FileEntryFormSubmit implements SystemEventListener {
+    static final String IFRAME_ID = "hiddenIframe";
     public void processEvent(SystemEvent event) throws AbortProcessingException {
 //System.out.println("FileEntryFormSubmit.processEvent()  event: " + event);
         FacesContext context = FacesContext.getCurrentInstance();
 
         //using PostAddToViewEvent ensures that the component resource is added to the view only once
-        final HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
+        UIForm form = (UIForm) ((PostAddToViewEvent) event).getComponent();
+//System.out.println("FileEntryFormSubmit.processEvent()  form.clientId: " + form.getClientId(context));
         if (form.getAttributes().get(FormSubmit.DISABLE_CAPTURE_SUBMIT) != null) {
 //System.out.println("FileEntryFormSubmit  DISABLE_CAPTURE_SUBMIT  " + form.getClientId(context));
             return;
@@ -57,11 +59,15 @@ public class FileEntryFormSubmit implements SystemEventListener {
         }
         
         form.getAttributes().put(FormSubmit.DISABLE_CAPTURE_SUBMIT, "true");
-        
-        final String iframeId = "hiddenIframe";
+
+        FormScriptWriter scriptWriter = new FormScriptWriter(
+            null, "_captureFileOnsubmit");
+        form.getChildren().add(0, scriptWriter);
+
         UIOutput output = new UIOutput() {
             public void encodeBegin(FacesContext context) throws IOException {
                 String clientId = getClientId(context);
+//System.out.println("RENDER IFRAME  clientId: " + clientId);
                 ResponseWriter writer = context.getResponseWriter();
                 writer.startElement("iframe", this);
                 writer.writeAttribute("id", clientId, "clientId");
@@ -73,16 +79,9 @@ public class FileEntryFormSubmit implements SystemEventListener {
             public void encodeEnd(FacesContext context) throws IOException {
             }
         };
-        output.setId(iframeId);
+        output.setId(IFRAME_ID);
         output.setTransient(true);
-        form.getChildren().add(output);
-        
-        String iframeClientIdSuffix = UINamingContainer.getSeparatorChar(context) + iframeId;
-        FormScriptWriter scriptWriter = new FormScriptWriter(
-            "ice_fileEntry'.captureFormOnsubmit'(''{0}'', ''{0}" + iframeClientIdSuffix + "''')';",
-            null,
-            "_captureFileOnsubmit");
-        form.getChildren().add(0, scriptWriter);        
+        form.getChildren().add(1, output);
     }
     
     private static boolean foundFileEntry(UIComponent parent) {
@@ -100,6 +99,6 @@ public class FileEntryFormSubmit implements SystemEventListener {
     }
 
     public boolean isListenerForSource(Object source) {
-        return source instanceof HtmlForm;
+        return source instanceof UIForm;
     }
 }

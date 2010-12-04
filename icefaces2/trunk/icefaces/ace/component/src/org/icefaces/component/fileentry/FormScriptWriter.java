@@ -22,12 +22,13 @@
 
 package org.icefaces.component.fileentry;
 
+import org.icefaces.component.utils.Utils;
+import org.icefaces.component.utils.ScriptWriter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIOutput;
-import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
-import javax.faces.component.html.HtmlForm;
+import javax.faces.component.UIForm;
 import java.io.IOException;
 import java.util.logging.Logger;
 import java.text.MessageFormat;
@@ -37,25 +38,20 @@ import java.text.MessageFormat;
  */
 public class FormScriptWriter extends UIOutput {
 
-    private String javascriptMessageFormat;
     private String disablingAttribute;
     private String id;
 
     private static final Logger Log = Logger.getLogger(FormScriptWriter.class.getName());
 
     /**
-     * Write an adhoc snippet of un-escaped javascript. It is apparently unnecessary for
-     * javascript elements to have id's, but if one is passed, it's used.
+     * Write a snippet of un-escaped javascript. It is apparently unnecessary
+     * for javascript elements to have id's, but if one is passed, it's used.
      *
-     * @param javascriptMessageFormat The contents intended to go between
-     *        the <script></script> tags, used as a MessageFormat pattern,
-     *        taking the HtmlForm's clientId as the parameter.
      * @param disablingAttribute If the form has this attribute set, don't
      *        render the javascript.
      * @param id An id for the script element.
      */
-    public FormScriptWriter(String javascriptMessageFormat, String disablingAttribute, String id) {
-        this.javascriptMessageFormat = javascriptMessageFormat;
+    public FormScriptWriter(String disablingAttribute, String id) {
         this.disablingAttribute = disablingAttribute;
         this.id = id;
         // Always give the component an id, even if the markup doesn't get one
@@ -66,11 +62,12 @@ public class FormScriptWriter extends UIOutput {
             setId(FacesContext.getCurrentInstance().getViewRoot().createUniqueId());
         }
         setTransient(true);
+        this.setRendererType(null);
     }
 
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
-        HtmlForm form = findParentForm(this);
+        UIForm form = Utils.findParentForm(this);
         if (form == null) {
             return;
         }
@@ -81,28 +78,29 @@ public class FormScriptWriter extends UIOutput {
                 return;
             }
         }
-        
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("script", this);
-        writer.writeAttribute("type", "text/javascript", "type");
-        if (id != null) {
-            String scriptId =
-                formClientId+UINamingContainer.getSeparatorChar(context)+id;
-            writer.writeAttribute("id", scriptId, "id");
+
+        //TODO render into javascript. Probably have to scrape out notion of MessageFormat.
+        String progressResourcePath = "";
+        String progressPushId = "";
+        if (PushUtils.isPushPresent()) {
+            progressResourcePath = PushUtils.getProgressResourcePath(context, form);
+//System.out.println("FormScriptWriter  progressResourcePath: " + progressResourcePath);
+            progressPushId = PushUtils.getPushId(context, form);
+//System.out.println("FormScriptWriter  progressPushId: " + progressPushId);
         }
-        String script = MessageFormat.format(javascriptMessageFormat, formClientId);
+
+        String iframeClientIdSuffix =
+                UINamingContainer.getSeparatorChar(context) +
+                FileEntryFormSubmit.IFRAME_ID;
+        String script = "ice_fileEntry.captureFormOnsubmit('" + formClientId +
+                "', '" + formClientId + iframeClientIdSuffix + "', '" +
+                progressPushId + "', '" + progressResourcePath + "');";
 //System.out.println("FormScriptWriter  script: " + script);
-        writer.write(script);
-        writer.endElement("script");
+
+        ScriptWriter.insertScript(context, this, script, getClientId(context));
     }
-    
-    protected HtmlForm findParentForm(UIComponent comp) {
-        if (comp == null) {
-            return null;
-        }
-        if (comp instanceof HtmlForm) {
-            return (HtmlForm) comp;
-        }
-        return findParentForm(comp.getParent());
+
+    @Override
+    public void encodeEnd(FacesContext context) throws IOException {
     }
 }
