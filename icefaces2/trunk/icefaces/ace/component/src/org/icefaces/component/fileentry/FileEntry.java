@@ -22,12 +22,15 @@
 
 package org.icefaces.component.fileentry;
 
+import org.icefaces.component.utils.Utils;
+import org.icefaces.impl.event.BridgeSetup;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ProjectStage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.AbortProcessingException;
+import javax.faces.component.UIForm;
 import javax.el.ELContext;
 import javax.el.ELException;
 import javax.el.MethodExpression;
@@ -72,12 +75,12 @@ public class FileEntry extends FileEntryBase {
     }
 
     /**
-     * Apparently, the view state id changes, if you try to get it early in 
+     * Apparently, the view id changes, if you try to get it early in
      * the lifecycle. So, you can only call this method later on, while 
      * rendering. As such, it's only really applicable from storeConfig(-)
      * 
      * By definition, this method must encode both the clientId and the
-     * view state id, so that both parts can be extracted out by the 
+     * view id, so that both parts can be extracted out by the
      * FileEntryPhaseListener. It's used as a key into the session map, to 
      * store the FileEntryConfig. As well, it has to be a valid HTML form 
      * field id and name. From the HTML 4 and XHTML 1 specs: ID and NAME 
@@ -86,7 +89,7 @@ public class FileEntry extends FileEntryBase {
      * colons (":"), and periods (".").
      * 
      * TODO
-     * An alternative implementation, that would not rely on the view session 
+     * An alternative implementation, that would not rely on the view
      * id, would involve using a sequence number in the session, so that new
      * fileEntry components would take a sequence number from the session, 
      * and then hold onto that, using state saving. There might even be a 
@@ -100,12 +103,12 @@ public class FileEntry extends FileEntryBase {
      * beginning of the lifecycle, so that if it's stored under a new 
      * identifier at the end of the lifecycle, then the old one is not leaked. 
      */
-    private String getIdentifier(FacesContext facesContext, String clientId) {
-        String viewState = facesContext.getApplication().getStateManager().
-            getViewState(facesContext);
+    static String getGloballyUniqueComponentIdentifier(
+            FacesContext facesContext, String clientId) {
+        String viewId = BridgeSetup.getViewID(facesContext.getExternalContext());
         // I couldn't find a character that's valid in an HTML id/name, but 
         // not in a clientId, do just going with a double colon delimiter.
-        String id = clientId + "::" + viewState;
+        String id = clientId + "::" + viewId;
         return id;
     }
 
@@ -115,7 +118,16 @@ public class FileEntry extends FileEntryBase {
      */
     FileEntryConfig storeConfigForNextLifecycle(FacesContext facesContext,
             String clientId) {
-        String identifier = getIdentifier(facesContext, clientId);
+        String resPath = null;
+        String groupName = null;
+        if (PushUtils.isPushPresent()) {
+            UIForm form = Utils.findParentForm(this);
+            resPath = PushUtils.getProgressResourcePath(facesContext, form);
+            groupName = PushUtils.getPushGroupName(facesContext, form);
+        }
+
+        String identifier = getGloballyUniqueComponentIdentifier(
+                facesContext, clientId);
         FileEntryConfig config = new FileEntryConfig(
             identifier,
             clientId,
@@ -127,7 +139,10 @@ public class FileEntry extends FileEntryBase {
             getMaxTotalSize(),
             getMaxFileSize(),
             getMaxFileCount(),
-            isRequired());
+            isRequired(),
+            resPath,
+            groupName);
+//System.out.println("FileEntry.storeConfigForNextLifecycle()  config: " + config);
         Object sessionObj = facesContext.getExternalContext().getSession(false);
         if (sessionObj != null) {
             synchronized(sessionObj) {

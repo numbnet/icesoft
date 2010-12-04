@@ -26,7 +26,6 @@ import org.icefaces.impl.context.DOMPartialViewContext;
 import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.apache.commons.fileupload.FileItemStream;
 import org.icefaces.apache.commons.fileupload.FileItemIterator;
-import org.icefaces.apache.commons.fileupload.ProgressListener;
 import org.icefaces.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.icefaces.apache.commons.fileupload.util.Streams;
 
@@ -127,24 +126,12 @@ public class FileEntryPhaseListener implements PhaseListener {
 //        System.out.println("FileEntryPhaseListener.beforePhase()  isMultipart: " + isMultipart);
         if (isMultipart) {
             final ServletFileUpload uploader = new ServletFileUpload();
-            uploader.setProgressListener(new ProgressListener() {
-                private long lastPercent = 0;
-                public void update(long read, long total, int chunkIndex) {
-                    if (read > 0 && total > 0) {
-                        long currPercent = (read * 100L) / total;
-                        if (currPercent >= (lastPercent + 10L)) {
-                            lastPercent = currPercent;
-//System.out.println("Progress: " + lastPercent + "%");
-                        }
-                    }
-                    else {
-                        lastPercent = 0L;
-                    }
-                }
-            });
-            Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
-            byte[] buffer = new byte[8*1024];
             Map<String, FileEntryResults> clientId2Results = new HashMap<String, FileEntryResults>(6);
+            ProgressListenerResourcePusher progressListenerResourcePusher =
+                    new ProgressListenerResourcePusher(clientId2Results);
+            uploader.setProgressListener(progressListenerResourcePusher);
+            Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
+            byte[] buffer = new byte[16*1024];
             try {
                 FileItemIterator iter = uploader.getItemIterator(request);
                 while (iter.hasNext()) {
@@ -161,7 +148,7 @@ public class FileEntryPhaseListener implements PhaseListener {
                         }
                         parameterList.add(value);
                     } else {
-                        uploadFile(item, clientId2Results, buffer);
+                        uploadFile(item, clientId2Results, progressListenerResourcePusher, buffer);
                     }
                 }
             }
@@ -173,6 +160,7 @@ public class FileEntryPhaseListener implements PhaseListener {
                 e.printStackTrace();
             }
             FileEntry.storeResultsForLaterInLifecycle(phaseEvent.getFacesContext(), clientId2Results);
+            progressListenerResourcePusher.clear();
             
             // Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
             Map<String, String[]> parameterMap = new HashMap<String, String[]>(
@@ -254,6 +242,7 @@ public class FileEntryPhaseListener implements PhaseListener {
     private static void uploadFile(
             FileItemStream item,
             Map<String, FileEntryResults> clientId2Results,
+            ProgressListenerResourcePusher progressListenerResourcePusher,
             byte[] buffer) {
         FileEntryResults results = null;
         FileEntryResults.FileInfo fileInfo = null;
@@ -299,6 +288,10 @@ public class FileEntryPhaseListener implements PhaseListener {
                 fileInfo = new FileEntryResults.FileInfo();
                 fileInfo.begin(fileName, contentType);
 
+                progressListenerResourcePusher.setPushResourcePathAndGroupName(
+                        facesContext, config.getProgressResourcePath(),
+                        config.getProgressGroupName());
+                
                 long availableTotalSize = results.getAvailableTotalSize(config.getMaxTotalSize());
 //System.out.println("File    availableTotalSize: " + availableTotalSize);
                 long availableFileSize = config.getMaxFileSize();

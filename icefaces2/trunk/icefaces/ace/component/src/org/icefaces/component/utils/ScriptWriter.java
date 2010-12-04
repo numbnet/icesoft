@@ -51,6 +51,22 @@ public class ScriptWriter {
     }
 
     /**
+     * Write script markup and script code in one method call.
+     *
+     * @param context   the curent FacesContext
+     * @param component the component making the call
+     * @param script    the code
+     * @param id        the id of the rendered span
+     * @throws IOException
+     */
+    public static void insertScript(FacesContext context, final UIComponent component, String script, String id) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writeScriptStart(writer, component, id);
+        writer.write(script);
+        writeScriptEnd(writer);
+    }
+
+    /**
      * Write the script markup and then gradually write the script code by calling the 'write' write methods on the
      * ScriptWriter instance.
      *
@@ -111,6 +127,12 @@ public class ScriptWriter {
     private static void writeScriptStart(ResponseWriter writer, UIComponent component) throws IOException {
         writer.startElement("span", component);
         writer.writeAttribute("id", component.getId() + "_script", null);
+        writer.startElement("script", component);
+    }
+
+    private static void writeScriptStart(ResponseWriter writer, UIComponent component, String id) throws IOException {
+        writer.startElement("span", component);
+        writer.writeAttribute("id", id, null);
         writer.startElement("script", component);
     }
 

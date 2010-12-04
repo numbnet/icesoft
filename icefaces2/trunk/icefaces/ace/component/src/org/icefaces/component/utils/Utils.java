@@ -70,6 +70,17 @@ public class Utils {
         return parent;
     }
 
+
+    public static UIForm findParentForm(UIComponent comp) {
+        if (comp == null) {
+            return null;
+        }
+        if (comp instanceof UIForm) {
+            return (UIForm) comp;
+        }
+        return findParentForm(comp.getParent());
+    }
+
     public static void decodeBehavior(FacesContext facesContext, UIComponent uiComponent) {
 
     }

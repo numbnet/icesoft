@@ -29,7 +29,6 @@ import org.icefaces.impl.application.LazyPushManager;
 import org.icepush.PushContext;
 
 import javax.faces.context.FacesContext;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -177,8 +176,7 @@ public class PushRenderer {
     }
 
     private static String lookupViewState(FacesContext context) {
-        Map requestMap = context.getExternalContext().getRequestMap();
-        return (String) requestMap.get(BridgeSetup.ViewState);
+        return BridgeSetup.getViewID(context.getExternalContext());
     }
 
     private static void missingFacesContext(FacesContext context) {

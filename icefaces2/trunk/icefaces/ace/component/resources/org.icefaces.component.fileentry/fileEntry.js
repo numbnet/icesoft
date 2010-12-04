@@ -62,16 +62,35 @@ var ice_fileEntry = {
         jsf.ajax.response(request, context);
     },
     
-    captureFormOnsubmit : function(formId, iframeId) {
+    captureFormOnsubmit : function(formId, iframeId, progressPushId, progressResourcePath) {
         var f = document.getElementById(formId);
         f.onsubmit = function(event) {
-            ice_fileEntry.formOnsubmit(event, f, iframeId);
+            ice_fileEntry.formOnsubmit(event, f, iframeId, progressPushId, progressResourcePath);
         };
     },
     
-    formOnsubmit : function(event, formElem, iframeId) {
+    formOnsubmit : function(event, formElem, iframeId, progressPushId, progressResourcePath) {
         //alert("formOnsubmit()  begin");
-        
+
+        if (progressPushId) {
+            //alert("formOnsubmit()  progressPushId: " + progressPushId);
+
+            //POLL: Comment this section
+            var regPushIds = new Array(1);
+            regPushIds[0] = progressPushId;
+            window.ice.push.register(regPushIds, function(pushedIds) {
+                ice_fileEntry.onProgress(pushedIds, progressResourcePath);
+            });
+        }
+
+        //TODO To get context.sourceid, use on of the following techniques
+        //Firefox || Opera || IE || unsupported (No WebKit)
+        //var orignalSource = event.explicitOriginalTarget || event.relatedTarget || document.activeElement || {};
+
+        //var submitted = e.originalEvent.explicitOriginalTarget || e.originalEvent.relatedTarget || document.activeElement;
+        //Look if it was a text node (IE bug)
+        //submitted = submitted.nodeType == 1 ? submitted : submitted.parentNode;
+
         var context = {};
         context.sourceid = "";             //TODO Not sure how to get this
         context.formid = formElem.id;
@@ -133,6 +152,15 @@ var ice_fileEntry = {
                 }
             }
 
+            if (progressPushId) {
+                //POLL: Comment this section
+                /*
+                var unregPushIds = new Array(1);
+                unregPushIds[0] = progressPushId;
+                window.ice.push.deregister(unregPushIds);
+                */
+            }
+
             //alert("onload()  end");
         };
         if (iframeElem.addEventListener) {
@@ -142,9 +170,35 @@ var ice_fileEntry = {
             iframeElem.attachEvent("onload",iframeOnloadHandler);
         }
 
+        /*
+        //POLL: Uncomment this section
+        var progressTimeout = function() {
+            ice_fileEntry.onProgress(null, progressResourcePath);
+            setTimeout(progressTimeout, 2000);
+        };
+        setTimeout(progressTimeout, 2000);
+        */
+
         //alert("formOnsubmit()  end");
     },
         
+    onProgress : function(pushIds, progressResourcePath) {
+        //alert('onProgress()  progressResourcePath: ' + progressResourcePath);
+        var fileDiv2 = document.getElementById('fileform:fileEntryComp');
+        var span2 = document.createElement('span');
+        span2.innerHTML = "P";
+        fileDiv2.appendChild(span2);
+
+        window.ice.push.post(progressResourcePath, function(parameter) {}, function(statusCode, contentAsText, contentAsDOM) {
+            //alert('onProgress()  GET  contentAsText: ' + contentAsText);
+            var fileDiv = document.getElementById('fileform:fileEntryComp');
+            var span = document.createElement('span');
+            //span.innerHTML = ("statusCode: " + statusCode + "  content: " + contentAsText);
+            span.innerHTML = contentAsText;
+            fileDiv.appendChild(span);
+        });
+    },
+
     addHiddenInput : function(formElem, hiddenName, val) {
         var inputElem = document.createElement('input');
         inputElem.setAttribute('type','hidden');

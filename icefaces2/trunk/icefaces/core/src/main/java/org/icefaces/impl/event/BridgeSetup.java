@@ -47,6 +47,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -277,6 +278,16 @@ public class BridgeSetup implements SystemEventListener {
 
     private String generateViewID() {
         return "v" + Integer.toString(hashCode(), 36) + Integer.toString(++seed, 36);
+    }
+
+    /**
+     * This is only valid after a postback, or during or after rendering in
+     * the initial page get.
+     * @return The view id
+     */
+    public static String getViewID(ExternalContext externalContext) {
+        Map requestMap = externalContext.getRequestMap();
+        return (String) requestMap.get(BridgeSetup.ViewState);
     }
 
     private static void addMandatoryResourceDependency(

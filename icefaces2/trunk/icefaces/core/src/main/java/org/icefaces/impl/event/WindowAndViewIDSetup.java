@@ -73,7 +73,8 @@ public class WindowAndViewIDSetup implements SystemEventListener {
                     Log.severe("Missing window ID attribute. Request map cleared prematurely.");
                     return;
                 }
-                if (requestMap.get(BridgeSetup.ViewState) == null) {
+                String viewId = BridgeSetup.getViewID(context.getExternalContext());
+                if (viewId == null) {
                     Log.severe("Missing view ID attribute. Request map cleared prematurely.");
                     return;
                 }
@@ -87,7 +88,7 @@ public class WindowAndViewIDSetup implements SystemEventListener {
                 writer.startElement("input", this);
                 writer.writeAttribute("type", "hidden", null);
                 writer.writeAttribute("name", "ice.view", null);
-                writer.writeAttribute("value", requestMap.get(BridgeSetup.ViewState), null);
+                writer.writeAttribute("value", viewId, null);
                 writer.endElement("input");
             }
         };
