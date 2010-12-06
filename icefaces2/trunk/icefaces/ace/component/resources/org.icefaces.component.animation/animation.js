@@ -247,6 +247,9 @@ ice.yui3.use(function(Y) {
 			this.set("easing", Y.Easing[params['easing']]);
 		}		
 		this.params = params;
+		if (!this.params['duration']) {
+			this.set("duration", 0.2);
+		}
 		this.cloneNode = Y.one(params.node).cloneNode(false);
 		this.cloneNode.setStyle("display", "none");
 		var ancestor= Y.one(this.params["node"]).ancestor();
