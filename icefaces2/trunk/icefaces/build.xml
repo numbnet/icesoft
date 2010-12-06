@@ -26,7 +26,7 @@
 
     <target name="core" description="Builds the ICEfaces core framework (icefaces.jar).">
         <subant>
-            <fileset dir="." excludes="compat/build.xml, ace/build.xml" includes="*/build.xml">
+            <fileset dir="." includes="core/build.xml test/build.xml">
               <exclude name="**/maven2/build.xml"/>
             </fileset>
         </subant> 
@@ -48,7 +48,15 @@
             </subant>
     </target>
 
-    <target name="world" depends="core, compat, ace"  description="Builds all ICEfaces libraries.">
+    <target name="samples" depends="core, ace, compat" description="Builds the ICEfaces samples.">
+        <subant>
+            <fileset dir="." includes="samples/build.xml">
+                <exclude name="**/maven2/build.xml"/>
+            </fileset>
+        </subant>
+    </target>
+
+    <target name="world" depends="core, compat, ace, samples"  description="Builds all ICEfaces libraries.">
     </target>
 
 
