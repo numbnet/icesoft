@@ -1,8 +1,6 @@
 package org.icefaces.component.fileentry;
 
-import org.icefaces.util.EnvUtils;
 import org.icefaces.application.ResourceRegistry;
-import org.icepush.PushContext;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.application.Resource;
@@ -10,6 +8,7 @@ import javax.faces.component.UIComponent;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 
 /**
  * Consolidates the push functionality used by the FileEntry component, for
@@ -30,8 +29,41 @@ class PushUtils {
     private static final String PROGRESS_GROUP_NAME_PREFIX =
             PROGRESS_PREFIX + "group_name.";
 
+    private static Class org_icepush_PushContext_class;
+    private static Method org_icepush_PushContext_getInstance_method;
+    private static Method org_icepush_PushContext_createPushId_method;
+    private static Method org_icepush_PushContext_addGroupMember_method;
+    private static Method org_icepush_PushContext_removeGroupMember_method;
+    private static Method org_icepush_PushContext_push_method;
+    static {
+        try {
+            org_icepush_PushContext_class = Class.forName(
+                    "org.icepush.PushContext");
+            org_icepush_PushContext_getInstance_method =
+                    org_icepush_PushContext_class.getMethod("getInstance",
+                            javax.servlet.ServletContext.class);
+            org_icepush_PushContext_createPushId_method =
+                    org_icepush_PushContext_class.getMethod("createPushId",
+                            javax.servlet.http.HttpServletRequest.class,
+                            javax.servlet.http.HttpServletResponse.class);
+            org_icepush_PushContext_addGroupMember_method =
+                    org_icepush_PushContext_class.getMethod("addGroupMember",
+                            String.class, String.class);
+            org_icepush_PushContext_removeGroupMember_method =
+                    org_icepush_PushContext_class.getMethod("removeGroupMember",
+                            String.class, String.class);
+            org_icepush_PushContext_push_method =
+                    org_icepush_PushContext_class.getMethod("push",
+                            String.class);
+        } catch (ClassNotFoundException e) {
+            org_icepush_PushContext_class = null;
+        } catch (NoSuchMethodException e) {
+            org_icepush_PushContext_class = null;
+        }
+    }
+
     static boolean isPushPresent() {
-        return EnvUtils.isICEpushPresent();
+        return org_icepush_PushContext_class != null;
     }
 
     /**
@@ -79,11 +111,13 @@ class PushUtils {
                 comp.getClientId(context);
         String pushId = (String) comp.getAttributes().get(attribKey);
         if (pushId == null) {
-            pushId = createPushId(context);
-            comp.getAttributes().put(attribKey, pushId);
+            pushId = createPushId();
+            if (pushId != null) {
+                comp.getAttributes().put(attribKey, pushId);
 
-            String groupName = getPushGroupName(context, comp);
-            addPushGroupMember(groupName, pushId);
+                String groupName = getPushGroupName(context, comp);
+                addPushGroupMember(groupName, pushId);
+            }
         }
         return pushId;
     }
@@ -115,41 +149,79 @@ class PushUtils {
         return groupName;
     }
 
-    static String createPushId(FacesContext context) {
-        ExternalContext externalContext = context.getExternalContext();
-        ServletContext servletContext = (ServletContext)
-                externalContext.getContext();
+    static String createPushId() {
+        ExternalContext externalContext =
+                FacesContext.getCurrentInstance().getExternalContext();
         HttpServletRequest request = (HttpServletRequest)
                 externalContext.getRequest();
         HttpServletResponse response = (HttpServletResponse)
                 externalContext.getResponse();
-        return PushContext.getInstance(servletContext).createPushId(
-                request, response);
+        String id = null;
+        // PushContext.getInstance(servletContext).createPushId(
+        //         request, response);
+        try {
+            Object pushContext = reflectPushContextInstance();
+            if (pushContext != null) {
+                id = (String) org_icepush_PushContext_createPushId_method.
+                        invoke(pushContext, request, response);
+            }
+        } catch (Exception e) {
+        }
+        return id;
     }
 
     static void addPushGroupMember(String groupName, String pushId) {
-        ExternalContext externalContext =
-                FacesContext.getCurrentInstance().getExternalContext();
-        ServletContext servletContext = (ServletContext)
-                externalContext.getContext();
-        PushContext.getInstance(servletContext).addGroupMember(
-                groupName, pushId);
+        // PushContext.getInstance(servletContext).addGroupMember(
+        //         groupName, pushId);
+        try {
+            Object pushContext = reflectPushContextInstance();
+            if (pushContext != null) {
+                org_icepush_PushContext_addGroupMember_method.invoke(
+                        pushContext, groupName, pushId);
+            }
+        } catch (Exception e) {
+        }
     }
 
     static void removePushGroupMember(String groupName, String pushId) {
-        ExternalContext externalContext =
-                FacesContext.getCurrentInstance().getExternalContext();
-        ServletContext servletContext = (ServletContext)
-                externalContext.getContext();
-        PushContext.getInstance(servletContext).removeGroupMember(
-                groupName, pushId);
+        // PushContext.getInstance(servletContext).removeGroupMember(
+        //         groupName, pushId);
+        try {
+            Object pushContext = reflectPushContextInstance();
+            if (pushContext != null) {
+                org_icepush_PushContext_removeGroupMember_method.invoke(
+                        pushContext, groupName, pushId);
+            }
+        } catch (Exception e) {
+        }
     }
     
     static void push(String groupName) {
+        // PushContext.getInstance(servletContext).push(groupName);
+        try {
+            Object pushContext = reflectPushContextInstance();
+            if (pushContext != null) {
+                org_icepush_PushContext_push_method.invoke(
+                        pushContext, groupName);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private static Object reflectPushContextInstance() {
         ExternalContext externalContext =
                 FacesContext.getCurrentInstance().getExternalContext();
         ServletContext servletContext = (ServletContext)
                 externalContext.getContext();
-        PushContext.getInstance(servletContext).push(groupName);
+        Object inst = null;
+        // PushContext.getInstance(servletContext);
+        try {
+            if (org_icepush_PushContext_getInstance_method != null) {
+                inst = org_icepush_PushContext_getInstance_method.invoke(
+                        null, servletContext);
+            }
+        } catch(Exception e) {
+        }
+        return inst;
     }
 }

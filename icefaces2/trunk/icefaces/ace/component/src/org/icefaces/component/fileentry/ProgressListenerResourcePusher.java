@@ -43,10 +43,10 @@ public class ProgressListenerResourcePusher implements ProgressListener {
     }
 
     protected boolean tryPush(long percent) {
-System.out.println("tryPush()  percent: " + percent);
         if (pushResource == null || pushGroupName == null) {
             return false;
         }
+System.out.println("tryPush()  percent: " + percent);
 
         //TODO Update resource contents
         int deltaGottenPushed = pushResource.updateProgressInfo(" " + Long.toString(percent) + "% ");
