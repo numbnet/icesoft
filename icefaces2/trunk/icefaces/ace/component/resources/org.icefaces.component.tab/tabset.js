@@ -85,7 +85,7 @@ ice.component.tabset = {
             	ice.component.clientState.set(clientId, currentIndex);
                 //console.info('Client side tab ');
             } else {
-                var targetElement = thiz.getTabIndexField(tbset);
+                var targetElement = ice.component.tabset.getTabIndexField(tbset);
                 if(targetElement) {
                 	targetElement.value = tabIndexInfo;
                 }            	
@@ -217,7 +217,7 @@ ice.component.tabset = {
 
 						        tabIndexInfo = clientId + '='+ currentIndex;
 
-							    var targetElement = thiz.getTabIndexField(tbset);
+							    var targetElement = ice.component.tabset.getTabIndexField(tbset);
 
 								if(targetElement) {
 									targetElement.value = tabIndexInfo;
