@@ -115,6 +115,10 @@
         <!-- Move the ace TLDdocs to the root bundle directory -->
         <move file="${bundle.dir.bin}/ace/component/build/doc/tld" tofile="${bundle.dir}/ace-taglib-doc"/>
 
+
+	<!-- Move the ace JAVAdocs to the root bundle directory -->
+        <move file="${bundle.dir.bin}/ace/component/build/doc/javadoc" tofile="${bundle.dir}/ace-javadoc"/>
+
         <!-- Remove the following files and directories as they are not required for the binary bundle -->
         <delete>
             <fileset dir="${bundle.dir.bin}">
