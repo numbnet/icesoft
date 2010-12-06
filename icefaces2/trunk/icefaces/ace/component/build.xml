@@ -32,6 +32,15 @@
         <pathelement path="../component/build/meta"/>
 
   </path>
+
+  <path id="javadoc.classpath">
+  	<fileset dir="${icefaces.lib.dir}" includes="*.jar"/>
+        <pathelement path="../component/src"/>
+        <pathelement path="../generator/build"/>
+        <pathelement path="../component/build/meta"/>
+        <pathelement path="build/generated/base"/>
+
+  </path>
   
 	<!-- include source images and css for sprite generation -->
 	<macrodef name="includeresources">
@@ -164,7 +173,7 @@
   </target>
 
   <target name="javadoc" > 
-      <javadoc sourcepath="${src}" destdir="${java.doc}" classpathref="compile.run.classpath" />
+      <javadoc sourcepath="${src}" destdir="${java.doc}" classpathref="javadoc.classpath" />
   </target> 
 
   <target name="clean"
