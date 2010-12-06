@@ -47,6 +47,16 @@ import javax.faces.context.ResponseWriter;
 public class ViewNumberRenderer extends Renderer {
     private static final Log log = LogFactory.getLog(ViewNumberRenderer.class);
     public static String VIEW_NUMBER = "com.icesoft.faces.viewNumber";
+    public static String CONCURRENT_DOM_VIEWS = 
+            "com.icesoft.faces.concurrentDOMViews";
+    private static boolean concurrentDOMViews = false;
+
+    public ViewNumberRenderer()  {
+        String concurrentDOMViewsStr = FacesContext.getCurrentInstance()
+                .getExternalContext().getInitParameter(CONCURRENT_DOM_VIEWS);
+        concurrentDOMViews = "true".equalsIgnoreCase(concurrentDOMViewsStr);
+        System.out.println("concurrentDOMViews config: " + concurrentDOMViews);
+    }
 
     public void encodeBegin(FacesContext context, UIComponent component) 
         throws IOException  {
@@ -73,6 +83,9 @@ public class ViewNumberRenderer extends Renderer {
 
 
     public static String getViewNumber(FacesContext facesContext)  {
+        if (!concurrentDOMViews)  {
+            return "1";
+        }
         String viewNumber = null;
         UIViewRoot viewRoot = facesContext.getViewRoot();
         if (null != viewRoot)  {
