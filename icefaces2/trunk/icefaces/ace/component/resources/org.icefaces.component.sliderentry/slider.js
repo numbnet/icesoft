@@ -35,9 +35,12 @@ ice.component.slider = {
 		                    if (jsfProps.singleSubmit) {
 		                        ice.se(event, root, function(param) {
 									param(hiddenField.id, obj.get('value'));
+									param('ice.focus', ice.focus);
 									param('onevent', function(data) { 
 										if (data.status == 'success') {
-											root.firstChild.focus();
+											if (ice.focus == clientId) {
+												root.firstChild.focus();
+											}
 										}
 								        if (postParameters != null) {
                                             var argCount = postParameters.length / 2;
@@ -49,6 +52,14 @@ ice.component.slider = {
 								});
 		                    }  						
 						}
+						
+						obj.after("focus", function() {
+							ice.focus = clientId;
+						});
+						
+						obj.after("blur", function() {
+							ice.focus = "";
+						});
 						
 					    var eventName;
 						obj.after("valueChange", function(event) {
