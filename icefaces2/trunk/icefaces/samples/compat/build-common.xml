@@ -39,7 +39,7 @@
     <dirname property="build.common.basedir" file="${ant.file.common}"/>
     <property name="icefaces.lib.dir" location="${build.common.basedir}/../../lib"/>
     <property name="myfaces.lib.dir" location="${build.common.basedir}/../../lib/myfaces"/>
-    <property name="compat.lib.dir" location="${build.common.basedir}/../lib"/>
+    <property name="compat.lib.dir" location="${build.common.basedir}/../../compat/lib"/>
     <property name="icefaces.build.facilities.dir" location="${build.common.basedir}/lib"/>
 
     <patternset id="liferay.xmls">
