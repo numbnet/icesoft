@@ -228,7 +228,8 @@ if (!window.ice.icefaces) {
             f.onkeypress = function(ev) {
                 var e = $event(ev, f);
                 var element = triggeredBy(e);
-                if (isEnterKey(e) && toLowerCase(element.nodeName) != 'textarea') {
+                var type = toLowerCase(element.nodeName);
+                if (isEnterKey(e) && (type != 'textarea' && type != 'a')) {
                     submit(ev || window.event, element);
                     return false;
                 } else {
