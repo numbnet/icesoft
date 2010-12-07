@@ -171,7 +171,7 @@ public class SliderEntryRenderer extends Renderer{
                 jb.entry("thumbUrl", thumbUrl);
         }
         if (uiParamChildren != null) {
-            jb.entry("postParams", Utils.asStringArray( uiParamChildren ));
+            jb.entry("postParameters", Utils.asStringArray( uiParamChildren ));
         } 
 
         String jsProps = jsBuilder.endMap().toString();
