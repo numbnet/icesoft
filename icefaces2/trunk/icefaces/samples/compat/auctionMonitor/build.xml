@@ -21,8 +21,8 @@
   -->
 
 <project name="auctionMonitor" default="servlet-profile">
-    
-    <property file="./build.properties"/>
-    <import file="../build/common.xml"/>
+
+    <property file="./build.properties" />
+    <import file="../build/common.xml" />
 
 </project>
