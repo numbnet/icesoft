@@ -22,6 +22,9 @@
 
 <project name="component-showcase" default="servlet-profile">
 
+    <property name="lib.compile.compat.includes" value="commons-beanutils.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
+    <property name="lib.distribute.compat.includes" value="commons-beanutils.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
+
     <property file="./build.properties"/>
     <import file="../build/common.xml"/>
 
@@ -33,27 +36,9 @@
         <include name="*.jar"/>
     </patternset>
 
-<!--
-    <property name="compile.source" value="1.5"/>
-    <property name="compile.target" value="1.5"/>
--->
-
-<!--
-    <import file="../build-common.xml"/>
--->
-    
     <property name="portlet.dir" location="./portlets"/>
     <property name="portlet.build.dir" location="./portlets/build"/>
     <property name="portlet.lib.dir" location="${icefaces.lib.dir}/portlets"/>
-
-<!--
-    <patternset id="additional.icefaces.lib.jars.to.include"
-                includes="
-                krysalis-jCharts-1.0.0-alpha-1.jar
-    	        jxl.jar
-                "
-            />
--->
 
     <patternset id="portlet.jars">
         <include name="jsf*.jar"/>
@@ -61,16 +46,9 @@
         <include name="slf4j*.jar"/>
     </patternset>
 
-<!--
-    <target name="build.war" depends="compile">
-        <build.war />
-    </target>
-
     <target name="clean">
         <delete dir="${portlet.build.dir}"/>
-        <clean />
     </target>
--->
 
     <target name="portletize.war" depends="servlet-profile" description="Adds portlet content to the .war file">
         <mkdir dir="${portlet.build.dir}/exploded"/>

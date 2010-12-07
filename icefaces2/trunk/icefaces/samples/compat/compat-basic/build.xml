@@ -25,19 +25,4 @@
     <property file="./build.properties"/>
     <import file="../build/common.xml"/>
 
-<!--
-    <patternset id="application.lib.compile">
-        <include name="*.jar"/>
-    </patternset>
-
-    <patternset id="application.lib.distribute">
-        <include name="*.jar"/>
-    </patternset>
--->
-
-<!--
-    <property name="compile.source" value="1.5"/>
-    <property name="compile.target" value="1.5"/>
--->
-    
 </project>

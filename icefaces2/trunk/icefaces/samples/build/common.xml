@@ -23,10 +23,10 @@
 <project name="common"> 
 
     <property name="icefaces.base.dir" location="../.."/>
-    <property name="application.lib.dir" location="./lib"/>
     <property name="lib.dir" location="${icefaces.base.dir}/lib"/>
     <property name="lib.myfaces.dir" location="${lib.dir}/myfaces"/>
     <property name="lib.compat.dir" location="${icefaces.base.dir}/compat/lib"/>
+    <property name="lib.compat.dir.includes" value=""/>
 
     <property name="java.dir" location="./src/main/java"/>
     <property name="res.dir" location="./src/main/resources"/>
@@ -35,14 +35,6 @@
     <property name="build.dir" location="./build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
-
-    <patternset id="application.lib.compile">
-        <include name="*.jar"/>
-    </patternset>
-
-    <patternset id="application.lib.distribute">
-        <include name="*.jar"/>
-    </patternset>
 
     <patternset id="lib.compile">
         <include name="*.jar"/>
@@ -63,7 +55,12 @@
         </patternset>
     </patternset>
 
-    <patternset id="lib.distribute.compat" includes="icefaces-compat.jar commons-logging.jar">
+    <patternset id="lib.compile.compat" includes="icefaces-compat.jar commons-logging.jar ${lib.compile.compat.includes}">
+        <exclude name="icefaces-compat.jar" if="no-icefaces"/>
+        <exclude name="icefaces-compat.jar" unless="compat"/>
+    </patternset>
+
+    <patternset id="lib.distribute.compat" includes="icefaces-compat.jar commons-logging.jar ${lib.distribute.compat.includes}">
         <exclude name="icefaces-compat.jar"  if="no-icefaces"/>
         <exclude name="icefaces-compat.jar"  unless="compat"/>
     </patternset>
@@ -86,8 +83,8 @@
                debug="true">
 
             <classpath>
-                <fileset dir="${application.lib.dir}">
-                    <patternset refid="application.lib.compile"/>
+                <fileset dir="${lib.compat.dir}">
+                    <patternset refid="lib.compile.compat"/>
                 </fileset>
                 <fileset dir="${lib.dir}" >
                     <patternset refid="lib.compile"/>
@@ -109,9 +106,6 @@
         <war basedir="${web.dir}" 
              destfile="${dist.dir}/${ant.project.name}.war" 
              webxml="${web.dir}/WEB-INF/web.xml">
-            <lib dir="${application.lib.dir}">
-                <patternset refid="application.lib.distribute"/>
-            </lib>
             <lib dir="${lib.dir}">
                 <patternset refid="lib.distribute"/>
             </lib>
@@ -127,7 +121,7 @@
     </target>
 
     <target name="servlet-profile"
-            description="Generate a .war file according to the servlet-profile which includes the JSF and EL libraries.">
+            description="Generate a .war file according to the servlet-profile which includes the JSF and EL libraries. (Jetty 7, Tomcat 6 and 7)">
 
         <antcall target="war.basic">
             <param name="jsf"  value="true" />
@@ -135,7 +129,7 @@
     </target>
 
     <target name="web-profile"
-            description="Generate a .war file according to the web-profile which excludes the JSF and EL libraries.">
+            description="Generate a .war file according to the web-profile which excludes the JSF and EL libraries. (GlassFish v3, JBoss 6)">
 
         <antcall target="war.basic" /> 
     </target>
