@@ -77,26 +77,20 @@ var submit;
     function singleSubmit(execute, render, event, element, additionalParameters) {
         var viewID = viewIDOf(element);
         var form = document.getElementById(viewID);
-        var elementParent = element.parentNode;
-        //create a place marker
-        var marker = document.createComment('');
+        var clonedElement = element.cloneNode(true);
         try {
-            //mark the place where element is
-            elementParent.insertBefore(marker, element);
-            var restoreState;
-            //restoring the state of input[checkbox/radio] is necessary only for IE6
-            if (toLowerCase(element.nodeName) == 'input' && (element.type == 'checkbox' || element.type == 'radio')) {
-                var check = element.checked;
-                restoreState = function(e) {
-                    e.checked = check;
-                };
-            } else {
-                restoreState = noop;
+            form.appendChild(clonedElement);
+            //copy state which IE won't copy during cloning
+            var tagName = toLowerCase(element.nodeName);
+            if (tagName == 'input' && (element.type == 'checkbox' || element.type == 'radio')) {
+                clonedElement.checked = element.checked;
+            } else if (tagName == 'select') {
+                var clonedOptions = clonedElement.options;
+                each(element.options, function(option, i) {
+                    clonedOptions[i].selected = option.selected;
+                });
+                clonedElement.selectedIndex = element.selectedIndex;
             }
-            //move element from its original place into the single submit form
-            form.appendChild(element);
-            //restore the state of element for IE6
-            restoreState(element);
 
             event = event || null;
             var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID, 'ice.focus': currentFocus};
@@ -109,13 +103,9 @@ var submit;
 
             serializeEventToOptions(decoratedEvent, options);
             serializeAdditionalParameters(additionalParameters, options);
-            jsf.ajax.request(element, event, options);
+            jsf.ajax.request(clonedElement, event, options);
         } finally {
-            //move back the element from the single submit form to the previously marked place
-            form.removeChild(element);
-            elementParent.insertBefore(element, marker);
-            //remove marker
-            elementParent.removeChild(marker);
+            form.removeChild(clonedElement);
         }
     }
 
