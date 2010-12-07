@@ -22,9 +22,17 @@ public class fParamBean implements Serializable {
     private boolean checkOneChecked;
     private boolean checkTwoChecked;
 
-    private String junkParameter = " \\ // ]]>  '  \" \u7669 \u4e40 \u019e ";
+    private String junkParameter = " \\\\ // ]]>  '  \" \u7669 \u4e40 \u019e # $\t alert('hello'); ";
 
-    private boolean showError; 
+    private boolean showError;
+
+    private int sliderValue = 50;
+
+    private int intParam =99;
+    private boolean boolParam = Boolean.TRUE;
+    private Object objectParam = new Object();
+
+    private String forParam;
 
     public void linkActionMethod (ActionEvent ae) {
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -83,6 +91,17 @@ public class fParamBean implements Serializable {
         firstParameter = (String) requestParameters.get(firstParameterKey);
         secondParameter = (String) requestParameters.get(secondParameterKey);
         System.out.println("___----__--__  Hello I'm in the RADIO valuechange method. firstParameter: " + firstParameter + ", secondParam: " + secondParameter);
+    }
+
+     public void sliderChanged (ValueChangeEvent vae) {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        Map requestParameters = ec.getRequestParameterMap();
+        System.out.println("---> Slider Value changed : " + vae.toString() );
+
+        firstParameter = (String) requestParameters.get(firstParameterKey);
+        secondParameter = (String) requestParameters.get(secondParameterKey);
+        System.out.println("___----__--__  Hello I'm in the Slider valuechange method. firstParameter: " + firstParameter + ", secondParam: " + secondParameter);
     }
 
     public void radioSubmitter (ActionEvent ae) {
@@ -172,5 +191,45 @@ public class fParamBean implements Serializable {
 
     public void setShowError(boolean showError) {
         this.showError = showError;
+    }
+
+    public int getSliderValue() {
+        return sliderValue;
+    }
+
+    public void setSliderValue(int sliderValue) {
+        this.sliderValue = sliderValue;
+    }
+
+    public int getIntParameter() {
+        return intParam;
+    }
+
+    public void setIntParameter(int intProperty) {
+        this.intParam = intProperty;
+    }
+
+    public boolean isBoolParam() {
+        return boolParam;
+    }
+
+    public void setBoolParam(boolean boolParam) {
+        this.boolParam = boolParam;
+    }
+
+    public Object getObjectParam() {
+        return objectParam;
+    }
+
+    public void setObjectParam(Object objectParam) {
+        this.objectParam = objectParam;
+    }
+
+    public String getForParam() {
+        return forParam;
+    }
+
+    public void setForParam(String forParam) {
+        this.forParam = forParam;
     }
 }
