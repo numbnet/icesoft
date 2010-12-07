@@ -20,10 +20,11 @@
   ~
   -->
 
-<project name="auction" default="servlet-profile">
-    
-    <property file="./build.properties"/>
-    <property file="../build/build.properties"/>
-    <import file="../build/common.xml"/>
-        
+<project name="compat-common">
+
+    <property name="icefaces.base.dir" location="../../.." />
+    <property name="compat"            value="true" />
+
+    <import file="../../build/common.xml" />
+
 </project>

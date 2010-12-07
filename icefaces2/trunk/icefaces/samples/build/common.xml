@@ -20,9 +20,10 @@
   ~
   -->
 
-<project name="common">
+<project name="common"> 
 
     <property name="icefaces.base.dir" location="../.."/>
+    <property name="application.lib.dir" location="./lib"/>
     <property name="lib.dir" location="${icefaces.base.dir}/lib"/>
     <property name="lib.myfaces.dir" location="${lib.dir}/myfaces"/>
     <property name="lib.compat.dir" location="${icefaces.base.dir}/compat/lib"/>
@@ -35,39 +36,49 @@
     <property name="classes.dir" location="${build.dir}/classes"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
 
+    <patternset id="application.lib.compile">
+        <include name="*.jar"/>
+    </patternset>
+
+    <patternset id="application.lib.distribute">
+        <include name="*.jar"/>
+    </patternset>
+
     <patternset id="lib.compile">
         <include name="*.jar"/>
     </patternset>
 
     <patternset id="lib.distribute">
-	    <patternset id="lib.distribute.jsf" includes="jsf-api.jar jsf-impl.jar">
-	        <exclude name="jsf-api.jar"   unless="jsf"/>
-	        <exclude name="jsf-impl.jar"  unless="jsf"/>
-	    </patternset>
+        <patternset id="lib.distribute.jsf" includes="jsf-api.jar jsf-impl.jar">
+            <exclude name="jsf-api.jar"      unless="jsf"/>
+            <exclude name="jsf-impl.jar"     unless="jsf"/>
+        </patternset>
 
-	    <patternset id="lib.distribute.ice" includes="icefaces.jar icepush.jar">
-	        <exclude name="icefaces.jar" unless="ice"/>
-            <exclude name="icepush.jar"  unless="push"/>
-	    </patternset>
+        <patternset id="lib.distribute.ice" includes="icefaces.jar icefaces-ace.jar icepush.jar">
+            <exclude name="icefaces.jar"     if="no-icefaces"/>
+            <exclude name="icefaces-ace.jar" if="no-icefaces"/>
+            <exclude name="icefaces-ace.jar" unless="ace"/>
+            <exclude name="icepush.jar"      if="no-icefaces"/>
+            <exclude name="icepush.jar"      if="no-icepush"/>
+        </patternset>
     </patternset>
 
-    <patternset id="lib.distribute.compat" 
-                includes="icefaces-compat.jar commons-logging.jar">
-        <exclude name="icefaces-compat.jar"        unless="compat"/>
-        <exclude name="commons-logging.jar"        unless="compat"/>
+    <patternset id="lib.distribute.compat" includes="icefaces-compat.jar commons-logging.jar">
+        <exclude name="icefaces-compat.jar"  if="no-icefaces"/>
+        <exclude name="icefaces-compat.jar"  unless="compat"/>
     </patternset>
 
     <target name="clean">
         <delete dir="${build.dir}"/>
     </target>
 
-    <target name="pre.compile" description="prepare for compilation">
+    <target name="pre.compile">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${build.dir}/classes"/>
         <mkdir dir="${build.dir}/dist"/>
     </target>
 
-    <target name="compile" depends="pre.compile" description="compile web application source">
+    <target name="compile" depends="pre.compile">
         <javac srcdir="${java.dir}"
                destdir="${classes.dir}"
                source="1.5"
@@ -75,6 +86,9 @@
                debug="true">
 
             <classpath>
+                <fileset dir="${application.lib.dir}">
+                    <patternset refid="application.lib.compile"/>
+                </fileset>
                 <fileset dir="${lib.dir}" >
                     <patternset refid="lib.compile"/>
                 </fileset>
@@ -85,13 +99,19 @@
             <fileset dir="${res.dir}">
                 <include name="**/*"/>
             </fileset>
+            <fileset dir="${java.dir}">
+                <include name="**/*"/>
+            </fileset>
         </copy>
     </target>
 
-    <target name="war.basic" depends="compile" description="generate .war file">
+    <target name="war.basic" depends="compile">
         <war basedir="${web.dir}" 
              destfile="${dist.dir}/${ant.project.name}.war" 
              webxml="${web.dir}/WEB-INF/web.xml">
+            <lib dir="${application.lib.dir}">
+                <patternset refid="application.lib.distribute"/>
+            </lib>
             <lib dir="${lib.dir}">
                 <patternset refid="lib.distribute"/>
             </lib>
@@ -106,67 +126,18 @@
         <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
     </target>
 
-    <target name="war"
-            depends="war.ice.push"
-            description="generate .war file (includes ICEfaces and ICEpush, excludes the JSF libraries)">
-    </target>
+    <target name="servlet-profile"
+            description="Generate a .war file according to the servlet-profile which includes the JSF and EL libraries.">
 
-    <target name="war.jsf"
-            description="generate .war file (includes the JSF libraries, excludes ICEfaces and ICEpush)">
         <antcall target="war.basic">
-            <param name="jsf" value="true"/>
+            <param name="jsf"  value="true" />
         </antcall>
     </target>
 
-    <target name="war.jsf.ice"
-            description="generate .war file (includes the JSF libraries and ICEfaces, excludes ICEpush)">
-        <antcall target="war.basic">
-            <param name="jsf" value="true"/>
-            <param name="ice" value="true"/>
-        </antcall>
-    </target>
+    <target name="web-profile"
+            description="Generate a .war file according to the web-profile which excludes the JSF and EL libraries.">
 
-    <target name="war.ice"
-            description="generate .war file (includes ICEfaces, excludes ICEpush and the JSF libraries)">
-        <antcall target="war.basic">
-            <param name="ice"  value="true"/>
-        </antcall>
-    </target>
-
-    <target name="war.ice.push"
-            description="generate .war file (includes ICEfaces and ICEpush, excludes the JSF libraries)">
-        <antcall target="war.basic">
-            <param name="ice"  value="true"/>
-            <param name="push" value="true"/>
-        </antcall>
-    </target>
-
-    <target name="war.jsf.ice.push"
-            description="generate .war file (includes ICEfaces, ICEpush, and the JSF libraries)">
-        <antcall target="war.basic">
-            <param name="jsf"  value="true"/>
-            <param name="ice"  value="true"/>
-            <param name="push" value="true"/>
-        </antcall>
-    </target>
-
-    <target name="deploy.gf3"
-            description="copy .war file to Glassfish v3 autodeploy directory">
-        <copy todir="${glassfish.v3.deploy}">
-            <fileset dir="${dist.dir}">
-                <include name="${ant.project.name}.war"/>
-            </fileset>
-        </copy>
-    </target>
-
-    <target name="deploy.tomcat6"
-            description="copy .war file to Tomcat 6 webapps directory">
-        <copy todir="${tomcat.v6.deploy}">
-            <fileset dir="${dist.dir}">
-                <include name="${ant.project.name}.war"/>
-            </fileset>
-        </copy>
+        <antcall target="war.basic" /> 
     </target>
 
 </project>
-
