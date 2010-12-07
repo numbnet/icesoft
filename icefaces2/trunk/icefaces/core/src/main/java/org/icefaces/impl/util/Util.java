@@ -23,6 +23,7 @@
 package org.icefaces.impl.util;
 
 import javax.faces.context.ExternalContext;
+import javax.faces.component.UIComponent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -33,6 +34,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
+
+import org.icefaces.impl.renderkit.html_basic.SingleSubmitRenderer;
 
 public class Util {
     private static Logger log = Logger.getLogger(Util.class.getName());
@@ -71,5 +74,23 @@ public class Util {
 
     public static boolean shouldCompress(String contentType) {
         return !DEFAULT_EXCLUSIONS.contains(contentType);
+    }
+
+    /**
+     * Determines whether the component is "under" singleSubmit.
+     *
+     * @param component to test for singleSubmit
+     * @return true if the component is under singleSubmit
+     */
+    public static boolean withinSingleSubmit(UIComponent component)  {
+        UIComponent parent = component;
+        while (null != parent)  {
+            if ( parent.getAttributes().containsKey(
+                    SingleSubmitRenderer.SINGLE_SUBMIT_MARKER) )  {
+                return true;
+            }
+            parent = parent.getParent();
+        }
+        return false;
     }
 }
