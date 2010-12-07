@@ -22,11 +22,9 @@
  *
 -->
 
-<project name="ICE-3182" default="war">
+<project name="ICE-3182" default="servlet-profile">
     
     <property file="./build.properties"/>
-    <property file="../build/build.properties"/>
-    <property name="lib.dir" location="../../../lib"/>    
-    <import file="../../build/common.xml"/>
+    <import file="../build/common.xml"/>
 
 </project>

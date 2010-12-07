@@ -20,9 +20,9 @@
   ~
   -->
 
-<project name="deltasubmit" default="servlet-profile">
+<project name="core-common">
 
-    <property file="./build.properties"/>
-    <import file="../build/common.xml"/>
+    <property name="icefaces.base.dir" location="../../../.." />
+    <import file="../../../build/common.xml" />
 
 </project>
