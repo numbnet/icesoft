@@ -24,15 +24,11 @@ ice.component.slider = {
                             disabled:yuiProps.disabled
 							}).render(root);
 			            } catch(e){alert(e)}
-
-                        var postParameters = jsfProps.postParameters;
-                        var params = function(parameter) {
-
-                        };
-
 						
 						var invokeSubmit = function (event) {
 		                    if (jsfProps.singleSubmit) {
+
+                                var postParameters = jsfProps.postParameters;
 		                        ice.se(event, root, function(param) {
 									param(hiddenField.id, obj.get('value'));
 									param('ice.focus', ice.focus);
@@ -42,13 +38,13 @@ ice.component.slider = {
 												root.firstChild.focus();
 											}
 										}
-								        if (postParameters != null) {
-                                            var argCount = postParameters.length / 2;
-                                            for (var idx =0; idx < argCount; idx ++ ) {
-                                                parameter( postParameters[idx*2], postParameters[(idx*2)+1] );
-                                            }
-                                        }
 									});
+									if (postParameters != null) {
+                                        var argCount = postParameters.length / 2;
+                                        for (var idx =0; idx < argCount; idx ++ ) {
+                                            param( postParameters[idx*2], postParameters[(idx*2)+1] );
+                                        }
+                                    }
 								});
 		                    }  						
 						}
