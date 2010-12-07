@@ -22,11 +22,9 @@
  *
 -->
 
-<project name="nav" default="war">
+<project name="nav" default="servlet-profile">
     
     <property file="./build.properties"/>
-    <property file="../../build/build.properties"/>
-    <property name="lib.dir" location="../../../lib"/>
-    <import file="../../build/common.xml"/>
+    <import file="../build/common.xml"/>
         
 </project>
