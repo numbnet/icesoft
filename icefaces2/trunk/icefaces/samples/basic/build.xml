@@ -20,7 +20,7 @@
   ~
   -->
 
-<project name="basic" default="war">
+<project name="basic" default="servlet-profile">
     
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>

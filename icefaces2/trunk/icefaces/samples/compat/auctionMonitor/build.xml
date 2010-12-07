@@ -20,14 +20,9 @@
   ~
   -->
 
-<project name="auctionMonitor" default="glassfishv3">
+<project name="auctionMonitor" default="servlet-profile">
     
-    <import file="../build-common.xml"/>
-    
-    <!--property name="ant.project.name" value="auctionMonitor"/-->
-    
-    <target name="build.war" depends="compile">
-        <build.war />
-    </target>
-    
+    <property file="./build.properties"/>
+    <import file="../build/common.xml"/>
+
 </project>

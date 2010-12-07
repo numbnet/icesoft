@@ -20,15 +20,24 @@
   ~
   -->
 
-<project name="compat-basic" default="glassfishv3">
+<project name="compat-basic" default="servlet-profile">
 
+    <property file="./build.properties"/>
+    <import file="../build/common.xml"/>
+
+<!--
+    <patternset id="application.lib.compile">
+        <include name="*.jar"/>
+    </patternset>
+
+    <patternset id="application.lib.distribute">
+        <include name="*.jar"/>
+    </patternset>
+-->
+
+<!--
     <property name="compile.source" value="1.5"/>
     <property name="compile.target" value="1.5"/>
-    
-    <import file="../build-common.xml"/>
-
-    <target name="build.war" depends="compile">
-        <build.war />
-    </target>
+-->
     
 </project>

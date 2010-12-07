@@ -20,7 +20,7 @@
   ~
   -->
 
-<project name="ace-showcase" default="war.ice">
+<project name="ace-showcase" default="servlet-profile">
     
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>
@@ -37,7 +37,7 @@
     </patternset>
 
     <target name="portletize" 
-            depends="war.ice" 
+            depends="web-profile" 
             description="Adds portlet content to the .war file">
             
         <mkdir dir="${portlet.build.dir}/exploded"/>
