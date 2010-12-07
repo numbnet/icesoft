@@ -89,7 +89,6 @@ var submit;
                 each(element.options, function(option, i) {
                     clonedOptions[i].selected = option.selected;
                 });
-                clonedElement.selectedIndex = element.selectedIndex;
             }
 
             event = event || null;
