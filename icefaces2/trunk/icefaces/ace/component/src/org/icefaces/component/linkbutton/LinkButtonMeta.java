@@ -46,7 +46,7 @@ public class LinkButtonMeta extends UICommandMeta {
                      "form that this component is contained within. The default value is false.")
     private boolean singleSubmit;
 
-    @Property (defaultValue="false", tlddoc="If true, disables the YUI component on the page")
+    @Property (defaultValue="false", tlddoc="If true, disables the YUI component on the page. Currently not supported.")
     private boolean disabled;
 
     @Property (tlddoc="This property defines the link text visible in the component",
