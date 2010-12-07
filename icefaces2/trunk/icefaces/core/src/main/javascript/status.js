@@ -124,7 +124,7 @@
             if (namespace.configuration.disableDefaultIndicators) {
                 return;
             }
-            PopupIndicator("User session expired", "Reload the page to start another user session", BackgroundOverlay);
+            PopupIndicator("User Session Expired", "Reload this page to start a new user session.", BackgroundOverlay);
         });
     });
 })();
