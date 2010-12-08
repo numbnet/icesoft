@@ -30,7 +30,8 @@
   ~ this file under either the MPL or the LGPL License."
   ~
 -->
-<f:view xmlns:h="http://java.sun.com/jsf/html"
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component"
         xmlns:ui="http://java.sun.com/jsf/facelets">
@@ -38,11 +39,8 @@
 <f:loadBundle basename="com.icesoft.faces.presenter.resource.messages"
               var="msgs"/>
 
-<ice:outputDeclaration doctypeRoot="HTML"
-                       doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
-                       doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
-<html>
-<head>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
     <title>
         <ice:outputText value="WebMC"/>
     </title>
@@ -56,16 +54,15 @@
             window.open(sUrl, '', 'width=800, height=600, scrollbars=yes, resizable=yes, status=no, location=no, menubar=no');
         }
     </script>
-</head>
+</h:head>
 
-<body>
+<h:body>
     <!-- The rootDiv is required for Safari -->
     <div id="rootDiv">
         <!-- Performs browser sniffing and sets mobile boolean in bean -->
         <ice:outputText value="#{participant.mobile}" visible="false" />
-        <ui:include src="#{participant.loggedIn?'WEB-INF/inc/main.jspx':'WEB-INF/inc/login.jspx'}"/>
+        <ui:include src="#{participant.loggedIn?'WEB-INF/inc/main.xhtml':'WEB-INF/inc/login.xhtml'}"/>
 
     </div>
-</body>
+</h:body>
 </html>
-</f:view>

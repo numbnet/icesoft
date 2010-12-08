@@ -37,14 +37,14 @@
      id="container">
 
 	<ice:panelGroup styleClass="navigationBar">
-	    <ui:include src="navigationpanel.jspx"/>
+	    <ui:include src="navigationpanel.xhtml"/>
 	</ice:panelGroup>
 
 	<ice:form id="mainForm" styleClass="mainForm">
         <div class="mainBackground" >
 
 			<div class="presentationDIV">
-			    <ui:include src="presentation.jspx"/>
+			    <ui:include src="presentation.xhtml"/>
 			</div>
 
     		<div class="participantsChatDIV">
@@ -52,13 +52,13 @@
 					<img src="resources/images/logo_reflection.jpg" />
 					<img src="resources/images/part_tab.jpg"/>
                 </ice:panelGroup>
-                <ui:include src="participants.jspx"/>
-                <ui:include src="popups.jspx" />
+                <ui:include src="participants.xhtml"/>
+                <ui:include src="popups.xhtml" />
 				<ice:panelGroup rendered="#{!participant.mobile}"
 				                style="padding-top: 15px;">
 				    <img src="resources/images/chat_tab.gif"/>
 				</ice:panelGroup>
-				<ui:include src="chat.jspx"/>
+				<ui:include src="chat.xhtml"/>
     		</div>
 
         </div>
@@ -66,7 +66,7 @@
 
     <ice:panelGroup rendered="#{!participant.mobile}"
                     styleClass="footerBar">
-        <ui:include src="footer.jspx"/>
+        <ui:include src="footer.xhtml"/>
     </ice:panelGroup>
 
 </div>

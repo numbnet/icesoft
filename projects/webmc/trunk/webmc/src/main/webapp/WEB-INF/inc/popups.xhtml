@@ -30,7 +30,7 @@
   ~ this file under either the MPL or the LGPL License."
   ~
 -->
-<f:view xmlns:h="http://java.sun.com/jsf/html"
+<h:panelGroup xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
@@ -54,12 +54,14 @@
                             value="#{msgs['page.popup.fileUpload.body.text']}"/>
                 </div>
                 <br />
+<!--
                 <ice:inputFile uniqueFolder="true"
                                width="500"
                                actionListener="#{participant.presentation.load}"
                                progressListener="#{participant.presentation.progressChange}"
                                buttonClass="none"
                                action="#{participant.presentation.closeUploadDialog}" />
+-->
                 <ice:panelGroup>
                     <ice:outputText value="#{msgs['page.popup.fileUpload.body.progress.text']}"
                                     style="font-size: smaller;"/>
@@ -133,4 +135,4 @@
     </f:facet>
 </ice:panelPopup>
 
-</f:view>
+</h:panelGroup>

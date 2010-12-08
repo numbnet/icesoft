@@ -30,38 +30,11 @@
   ~ this file under either the MPL or the LGPL License."
   ~
 -->
-<f:view xmlns:h="http://java.sun.com/jsf/html"
-        xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:ice="http://www.icesoft.com/icefaces/component"
-        xmlns:ui="http://java.sun.com/jsf/facelets">
-
-<f:loadBundle basename="com.icesoft.faces.presenter.resource.messages"
-              var="msgs"/>
-
-<ice:outputDeclaration doctypeRoot="HTML"
-                       doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
-                       doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
-<html>
-<head>
-    <title>
-        <ice:outputText value="WebMC"/>
-    </title>
-    <!-- Not using the ice:outputStyle component because we want to force the 
-         mobile styles -->
-    <link href="resources/css/login.css" rel="stylesheet" type="text/css"/>
-    <link href="resources/css/login_safarimobile.css" rel="stylesheet" type="text/css"/>
-    <link href="resources/css/styles.css" rel="stylesheet" type="text/css"/>
-    <link href="resources/css/styles_safarimobile.css" rel="stylesheet" type="text/css"/>
-</head>
-
-<body>
-    <!-- The rootDiv is required for Safari -->
-    <div id="rootDiv">
-        <!-- This page is used to view the mobile version on a desktop browser.
-             No browser sniffing, sets mobile to true -->
-        <ice:outputText value="#{participant.testMobile}" visible="false" />
-        <ui:include src="#{participant.loggedIn?'WEB-INF/inc/main.jspx':'WEB-INF/inc/login.jspx'}"/>
-    </div>
-</body>
-</html>
-</f:view>
+<!-- This page is used to enter a presentation directly from a url with the 
+     presentation name as a parameter. For example, users can bypass login with
+     http://localhost:8080/webmc/join.iface?s=The-Wow-Of-Palau -->
+<h:panelGroup xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+    <ice:outputText value="#{participant.directlyEnterPresentation}" 
+                    visible="false" />
+</h:panelGroup>

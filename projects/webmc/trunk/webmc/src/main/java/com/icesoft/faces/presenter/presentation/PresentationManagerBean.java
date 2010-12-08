@@ -32,8 +32,7 @@
  */
 package com.icesoft.faces.presenter.presentation;
 
-import com.icesoft.faces.async.render.OnDemandRenderer;
-import com.icesoft.faces.async.render.RenderManager;
+import org.icefaces.application.PushRenderer;
 import com.icesoft.faces.presenter.participant.Participant;
 import com.icesoft.faces.presenter.util.MessageBundleLoader;
 
@@ -54,30 +53,12 @@ public class PresentationManagerBean {
     private PresentationManager backendManager =
             PresentationManager.getInstance();
     private String currentPresentationsSelection = NO_PRESENTATION;
-    private RenderManager renderManager;
-    private OnDemandRenderer loginPageRenderer;
 
     public PresentationManagerBean() {
     }
 
     public String getCurrentPresentationsSelection() {
         return currentPresentationsSelection;
-    }
-
-    public RenderManager getRenderManager() {
-        return renderManager;
-    }
-
-    /**
-     * Method to set the render manager This should be called automatically from
-     * faces-config In addition this method will setup the loginPageRenderer
-     *
-     * @param renderManager to set
-     */
-    public void setRenderManager(RenderManager renderManager) {
-        this.renderManager = renderManager;
-        loginPageRenderer =
-                renderManager.getOnDemandRenderer("loginPageRenderer");
     }
 
     /**
@@ -154,15 +135,13 @@ public class PresentationManagerBean {
     public Presentation createPresentation(Participant participant,
                                            String name) {
         Presentation toReturn =
-                backendManager.createPresentation(participant, name,
-                                                  renderManager.getOnDemandRenderer(
-                                                          name));
+                backendManager.createPresentation(participant, name);
 
         if (toReturn != null) {
             toReturn.setManager(this);
         }
         // The presentation list should be updated.
-        loginPageRenderer.requestRender();
+        PushRenderer.render("loginPage");
 
         return toReturn;
     }
@@ -189,6 +168,6 @@ public class PresentationManagerBean {
     public void endPresentation(Presentation presentation) {
         backendManager.removePresentation(presentation);
         // The presentation list should be updated.
-        loginPageRenderer.requestRender();
+        PushRenderer.render("loginPage");
     }
 }

@@ -32,7 +32,7 @@
  */
 package com.icesoft.faces.presenter.presentation;
 
-import com.icesoft.faces.async.render.OnDemandRenderer;
+import org.icefaces.application.PushRenderer;
 import com.icesoft.faces.presenter.participant.Participant;
 import com.icesoft.faces.presenter.util.MessageBundleLoader;
 
@@ -90,17 +90,16 @@ public class PresentationManager {
      *
      * @param participant moderator who created and owns the presentation
      * @param name        of the presentation
-     * @param renderer    to use with the presentation
      * @return the created presentation
      */
-    public Presentation createPresentation(Participant participant, String name,
-                                           OnDemandRenderer renderer) {
+    public Presentation createPresentation(Participant participant, String name
+) {
         Presentation toReturn = null;
 
         if (!presentationExists(name)) {
             toReturn = new Presentation(name,
                                         participant.getLoginBean().getPresentationPassword(),
-                                        participant, renderer);
+                                        participant);
 
             toReturn.addChatMessage(MessageBundleLoader.getMessage("bean.presentationManager.createPresentation.chatMessage.user"),
             		MessageBundleLoader.getMessage("bean.presentationManager.createPresentation.chatMessage.text"));
