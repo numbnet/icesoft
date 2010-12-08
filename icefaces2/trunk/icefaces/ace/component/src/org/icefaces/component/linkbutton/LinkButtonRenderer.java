@@ -77,7 +77,6 @@ public class LinkButtonRenderer extends Renderer {
             styleClass += " " + myStyleClass;
         }
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
-        writer.writeAttribute(HTML.ID_ATTR, "first-child", null);
 
         // button element
         writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
@@ -112,12 +111,12 @@ public class LinkButtonRenderer extends Renderer {
         writer.endElement(HTML.SPAN_ELEM);
 
         ActionListener[] al = linkButton.getActionListeners();
-        boolean doAction = (al.length > 0); 
+        boolean doAction = (al.length > 0);
 
         String jsProps = JSONBuilder.create().beginMap().
                 entry("type", "link").
                 entry("tabindex", linkButton.getTabindex()).
-                entry("label", (String) linkButton.getValue()).
+                entry("label", (String) linkButton.getValue() ).
                 entry("disabled", linkButton.isDisabled()).endMap().toString();
 
         JSONBuilder jBuild = JSONBuilder.create().
@@ -129,6 +128,11 @@ public class LinkButtonRenderer extends Renderer {
         if (doAction && uiParamChildren != null) {
             jBuild.entry("postParameters",  Utils.asStringArray(uiParamChildren) );
         }
+        String style = linkButton.getStyle();
+        if (style != null && style.trim().length() > 0) {
+            jBuild.entry("style", style);
+        }
+
         String params = "'" + clientId + "'," +
                          jsProps
                         + "," + jBuild.endMap().toString();
