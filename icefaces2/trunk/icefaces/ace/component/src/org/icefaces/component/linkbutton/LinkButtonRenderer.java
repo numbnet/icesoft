@@ -53,6 +53,7 @@ public class LinkButtonRenderer extends Renderer {
 
         writer.startElement(HTML.DIV_ELEM, uiComponent );
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+		writer.writeAttribute(HTML.CLASS_ATTR, "ice-linkbutton", null);
 
         //writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.startElement(HTML.SPAN_ELEM, uiComponent);

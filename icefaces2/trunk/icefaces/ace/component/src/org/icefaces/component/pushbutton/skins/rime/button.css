@@ -5,80 +5,80 @@ http://developer.yahoo.net/yui/license.txt
 version: 2.6.0
 */
 
-.ice-skin-rime .yui-button{
+.ice-skin-rime .ice-pushbutton .yui-button{
 	border-width:1px 0;
 	border-style:solid;
 	border-color:#808080;
 }
 	
-.ice-skin-rime .yui-button .first-child{
+.ice-skin-rime .ice-pushbutton .yui-button .first-child{
 	border-width:0 1px;
 	border-style:solid;
 	border-color:#808080;
 	color: initial;
 	}
 	
-.ice-skin-rime .yui-button button{
+.ice-skin-rime .ice-pushbutton .yui-button button{
 	border-width:1px 0;
 	border-style:solid;
 	border-color:#808080;
 	}
 	
 
-.ice-skin-rime .yui-button-focus{
+.ice-skin-rime .ice-pushbutton .yui-button-focus{
 	border-color:#7D98B8;
    }
 	
-.ice-skin-rime .yui-button-focus .first-child{
+.ice-skin-rime .ice-pushbutton .yui-button-focus .first-child{
 	border-color:#7D98B8;}
 	
-.ice-skin-rime .yui-button-focus button{
+.ice-skin-rime .ice-pushbutton .yui-button-focus button{
 	color: initial;}
 	
 
-.ice-skin-rime .yui-button-hover{
+.ice-skin-rime .ice-pushbutton .yui-button-hover{
 	border-color:#7D98B8;
     }
 	
-.ice-skin-rime .yui-button-hover .first-child{
+.ice-skin-rime .ice-pushbutton .yui-button-hover .first-child{
 	border-color:#7D98B8;}
 	
-.ice-skin-rime .yui-button-hover button{
+.ice-skin-rime .ice-pushbutton .yui-button-hover button{
 
 	border-color:#7D98B8;
    }
 	
 
 	
-.ice-skin-rime .yui-button-active{
+.ice-skin-rime .ice-pushbutton .yui-button-active{
 	border-color:#7D98B8;  
 }
 	
-.ice-skin-rime .yui-button-active .first-child{
+.ice-skin-rime .ice-pushbutton .yui-button-active .first-child{
 	border-color:#7D98B8;}
 	
-.ice-skin-rime .yui-button-active button{
+.ice-skin-rime .ice-pushbutton .yui-button-active button{
 	color: initial;
 	border-color:#7D98B8;
 	 }
 	
 	
-.ice-skin-rime .yui-button-disabled{
+.ice-skin-rime .ice-pushbutton .yui-button-disabled{
 	border-color:#ccc;
 		
 }
 	
-.ice-skin-rime .yui-button-disabled .first-child{
+.ice-skin-rime .ice-pushbutton .yui-button-disabled .first-child{
 	border-color:#ccc; 	
 	color: #A6A6A6;
 	}
 	
-.ice-skin-rime .yui-button-disabled button{
+.ice-skin-rime .ice-pushbutton .yui-button-disabled button{
 	color:#A6A6A6;
 	cursor:default;
 	}
 /* temporary image just to make it work with smartsprites */
-.ice-skin-rime .yui-button-dis {
+.ice-skin-rime .ice-pushbutton .yui-button-dis {
 	background-image: url(bullet.gif); /** sprite-ref: sprite; */
 	overflow: hidden;
 }

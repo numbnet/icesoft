@@ -25,7 +25,8 @@ import org.icefaces.component.baseMeta.UICommandMeta;
         @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
         @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
         @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
-        @ResourceDependency(name="linkbutton.js",library="org.icefaces.component.linkbutton")
+        @ResourceDependency(name="linkbutton.js",library="org.icefaces.component.linkbutton"),
+		@ResourceDependency(name="linkbutton.css",library="org.icefaces.component.linkbutton")
 })
 
 public class LinkButtonMeta extends UICommandMeta {
