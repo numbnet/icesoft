@@ -8,6 +8,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
 import java.io.Serializable;
 import java.util.Map;
+import org.icefaces.component.testComponent.TestComponent;
 
 @ManagedBean(name="fParamBean")
 @ViewScoped
@@ -32,7 +33,8 @@ public class fParamBean implements Serializable {
     private boolean boolParam = Boolean.TRUE;
     private Object objectParam = new Object();
 
-    private String forParam;
+    private String forParam = "undefined";
+    private String forParameter = "Horton Hears a Who";
 
     public void linkActionMethod (ActionEvent ae) {
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -102,6 +104,11 @@ public class fParamBean implements Serializable {
         firstParameter = (String) requestParameters.get(firstParameterKey);
         secondParameter = (String) requestParameters.get(secondParameterKey);
         System.out.println("___----__--__  Hello I'm in the Slider valuechange method. firstParameter: " + firstParameter + ", secondParam: " + secondParameter);
+    }
+
+    public void forParameterAdjuster (ActionEvent ae) {
+
+       
     }
 
     public void radioSubmitter (ActionEvent ae) {
@@ -231,5 +238,13 @@ public class fParamBean implements Serializable {
 
     public void setForParam(String forParam) {
         this.forParam = forParam;
+    }
+
+    public String getForParameter() {
+        return forParameter;
+    }
+
+    public void setForParameter(String forParameter) {
+        this.forParameter = forParameter;
     }
 }
