@@ -34,18 +34,113 @@
 
     <br/>
     <hr/>
+
     Here's the full set of custom transitions
 
+    1) backIn example
     <h:inputTextarea>
         <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="backIn" duration="2000"/>
         <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="backIn" duration="2000"/>
     </h:inputTextarea>
-
-
+    <p/>
+    2) backOut example
     <h:inputTextarea>
         <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="backOut" duration="2000"/>
         <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="backOut" duration="2000"/>
     </h:inputTextarea>
+
+    <p/>
+
+        3) backBoth example
+    <h:inputText>
+       <ice:animation event="focus" to="{ background-color: #CCC }" from="{  background-color: #222 }" easeing="backBoth" duration="2000"/>
+       <ice:animation event="blur" to="{ background-color: #222 }" from="{  background-color: #CCC }" easeing="backBoth" duration="2000"/>
+    </h:inputText> <br/>
+
+    <p/>
+
+
+    4) bounceIn example
+    <h:inputText>
+       <ice:animation event="click" to="{ color: #CCC }" from="{  color: #222 }" easeing="bounceIn" duration="2000"/>
+    </h:inputText> <br/>
+    <p/>
+
+
+    5) bounceOut example
+    <h:inputText>
+       <ice:animation event="click" to="{ color: #CCC }" from="{  color: #222 }" easeing="bounceOut" duration="2000"/>
+    </h:inputText> <br/>
+    <p/>
+
+
+    6) bounceBoth example
+    <h:inputText>
+       <ice:animation event="click" to="{ color: #CCC }" from="{  color: #222 }" easeing="bounceBoth" duration="2000"/>
+    </h:inputText> <br/>
+    <p/>
+
+
+    7) easeIn example
+    <h:inputText>
+       <ice:animation event="click" to="{ color: #CCC }" from="{  color: #222 }" easeing="easeIn" duration="2000"/>
+    </h:inputText> <br/>
+    <p/>
+
+
+    8) easeInStrong example
+    <h:inputText>
+       <ice:animation event="click" to="{ color: #CCC }" from="{  color: #222 }" easeing="easeInStrong" duration="2000"/>
+    </h:inputText> <br/>
+    <p/>
+
+
+    9) easeNone example
+    <h:inputText>
+       <ice:animation event="click" to="{ color: #CCC }" from="{  color: #222 }" easeing="easeNone" duration="2000"/>
+    </h:inputText> <br/>
+    <p/>
+
+
+    10) easeBoth example
+    <h:inputText>
+       <ice:animation event="click" to="{ color: #CCC }" from="{  color: #222 }" easeing="easeBoth" duration="2000"/>
+    </h:inputText> <br/>
+    <p/>
+
+
+    11) easeOut example
+    <h:inputText>
+       <ice:animation event="click" to="{ color: #CCC }" from="{  color: #222 }" easeing="easeOut" duration="2000"/>
+    </h:inputText> <br/>
+    <p/>
+
+
+    12) easeOutStrong example
+    <h:inputText>
+       <ice:animation event="click" to="{ color: #CCC }" from="{  color: #222 }" easeing="easeOutStrong" duration="2000"/>
+    </h:inputText> <br/>
+    <p/>
+
+
+    13) elasticIn example
+    <h:inputText>
+       <ice:animation event="click" to="{ color: #CCC }" from="{  color: #222 }" easeing="elasticIn" duration="2000"/>
+    </h:inputText> <br/>
+    <p/>
+
+
+    14) elasticOut example
+    <h:inputText>
+       <ice:animation event="click" to="{ color: #CCC }" from="{  color: #222 }" easeing="elasticOut" duration="2000"/>
+    </h:inputText> <br/>
+    <p/>
+
+     15) elasticBoth example
+    <h:inputText>
+       <ice:animation event="click" to="{ color: #CCC }" from="{  color: #222 }" easeing="elasticBoth" duration="2000"/>
+    </h:inputText> <br/>
+    <p/>
 
 </h:body>
 <h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
