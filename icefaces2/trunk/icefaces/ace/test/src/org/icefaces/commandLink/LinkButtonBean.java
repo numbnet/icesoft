@@ -1,11 +1,16 @@
 package org.icefaces.commandLink;
 
 import java.io.Serializable;
+import java.util.Map;
+import java.util.Set;
+import java.util.Iterator;
 
 
 import javax.faces.bean.ViewScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
 
 
 @ManagedBean (name="linkBean")
@@ -17,6 +22,7 @@ public class LinkButtonBean implements Serializable {
 	private boolean rendered = false;
     private String linkValue="Link with actionListener only (Text by ValueExpression)";
 
+    private String testingFor = "A valueExpression 'for' value";
 
   /** @PostConstruct
    public void init(){
@@ -56,6 +62,16 @@ public class LinkButtonBean implements Serializable {
      public void singleSubmitListenerMethod(ActionEvent e) {
         System.out.println("___----- SingleSubmit actionListener ");
         rendered=!rendered;
+         FacesContext fc = FacesContext.getCurrentInstance();
+         ExternalContext ec = fc.getExternalContext();
+         Map requestParameters = ec.getRequestParameterMap();
+         Set keys = requestParameters.keySet();
+         Iterator i = keys.iterator();
+         while (i.hasNext() ) {
+             Object key = i.next();
+             System.out.println("Request parameter: " + key.toString() +
+                                " value: " + requestParameters.get(key) );
+         } 
     }
 
 
@@ -75,4 +91,12 @@ public class LinkButtonBean implements Serializable {
     public void setLinkValue(String linkValue) {
         //this.linkValue = linkValue;
     }
+
+    public String getForValue() {
+        return testingFor;
+    }
+
+    public void setForValue(String forValue) {
+        testingFor = forValue;
+    } 
 }
