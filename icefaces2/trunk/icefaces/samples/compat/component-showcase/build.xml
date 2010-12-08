@@ -47,6 +47,7 @@
     </patternset>
 
     <target name="clean">
+        <delete dir="${build.dir}"/>
         <delete dir="${portlet.build.dir}"/>
     </target>
 
