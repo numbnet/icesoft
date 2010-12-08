@@ -77,13 +77,29 @@ var submit;
     function singleSubmit(execute, render, event, element, additionalParameters) {
         var viewID = viewIDOf(element);
         var form = document.getElementById(viewID);
-        var clonedElement = element.cloneNode(true);
+        var clonedElements = [];
         try {
-            form.appendChild(clonedElement);
-            //copy state which IE won't copy during cloning
+            var clonedElement = form.appendChild(element.cloneNode(true));
+            append(clonedElements, clonedElement);
+
             var tagName = toLowerCase(element.nodeName);
-            if (tagName == 'input' && (element.type == 'checkbox' || element.type == 'radio')) {
-                clonedElement.checked = element.checked;
+            //copy state which IE won't copy during cloning
+            if (tagName == 'input') {
+                if (element.type == 'radio') {
+                    clonedElement.checked = element.checked;
+                }
+                if (element.type == 'checkbox') {
+                    clonedElement.checked = element.checked;
+                    //copy the rest of checkboxes with the same name and their state
+                    var name = element.name;
+                    each(element.form.elements, function(checkbox) {
+                        if (checkbox.name == name && checkbox != element) {
+                            var checkboxClone = form.appendChild(checkbox.cloneNode(true));
+                            append(clonedElements, checkboxClone);
+                            checkboxClone.checked = checkbox.checked;
+                        }
+                    });
+                }
             } else if (tagName == 'select') {
                 var clonedOptions = clonedElement.options;
                 each(element.options, function(option, i) {
@@ -104,7 +120,9 @@ var submit;
             serializeAdditionalParameters(additionalParameters, options);
             jsf.ajax.request(clonedElement, event, options);
         } finally {
-            form.removeChild(clonedElement);
+            each(clonedElements, function(c) {
+                form.removeChild(c);
+            });
         }
     }
 
