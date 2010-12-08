@@ -46,19 +46,6 @@ version: 2.6.0
 	*padding-bottom:1px;
 	}
 	
-.ice-skin-sam .ice-linkbutton .yui-split-button button,.ice-skin-sam .ice-linkbutton .yui-menu-button button{
-	padding-right:20px;
-	background-position:right center;
-	background-repeat:no-repeat;}
-	
-.ice-skin-sam .ice-linkbutton .yui-menu-button button{
-	background-image:url(menu-button-arrow.png); /** sprite-ref: sprite;  */
-	}
-	
-.ice-skin-sam .ice-linkbutton .yui-split-button button{
-	background-image:url(split-button-arrow.png);  /** sprite-ref: sprite;  */
-	}
-	
 .ice-skin-sam .ice-linkbutton .yui-button-focus{
 	border-color:#7D98B8;
  	background-image: url(background-focus.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
@@ -69,10 +56,6 @@ version: 2.6.0
 	
 .ice-skin-sam .ice-linkbutton .yui-button-focus button,.ice-skin-sam .ice-linkbutton .yui-button-focus a{
 	color:#000;}
-	
-.ice-skin-sam .ice-linkbutton .yui-split-button-focus button{
-	background-image:url(split-button-arrow-focus.png);  /** sprite-ref: sprite;  */
-	}
 	
 .ice-skin-sam .ice-linkbutton .yui-button-hover{
 	border-color:#7D98B8;
@@ -87,10 +70,6 @@ version: 2.6.0
 	border-color:#7D98B8;
  	background-image: url(background-focus.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;   }
-	
-.ice-skin-sam .ice-linkbutton .yui-split-button-hover button{
-	background-image:url(split-button-arrow-hover.png);  /** sprite-ref: sprite;  */
-	}
 	
 .ice-skin-sam .ice-linkbutton .yui-button-active{
 	border-color:#7D98B8;
@@ -107,37 +86,6 @@ version: 2.6.0
   	background-image: url(background-active.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;
 	 }
-	
-.ice-skin-sam .ice-linkbutton .yui-split-button-activeoption{
-	border-color:#808080;
-	background-position:0 0;}
-	
-.ice-skin-sam .ice-linkbutton .yui-split-button-activeoption .first-child{
-	border-color:#808080;}
-	
-.ice-skin-sam .ice-linkbutton .yui-split-button-activeoption button{
-	background-image:url(split-button-arrow-active.png);  /** sprite-ref: sprite;  */
-	}
-	
-.ice-skin-sam .ice-linkbutton .yui-radio-button-checked,.ice-skin-sam .ice-linkbutton
- .yui-checkbox-button-checked{
-	border-color:#304369;
-	background-image: url(background-highlight.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
-	background-repeat: repeat-x;   
-}
-	
-.ice-skin-sam .ice-linkbutton .yui-radio-button-checked .first-child,
-.ice-skin-sam .ice-linkbutton .yui-checkbox-button-checked .first-child{
-	border-color:#304369;
-	background-image: url(background-highlight.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
-	background-repeat: repeat-x; 	
-	}
-	
-.ice-skin-sam .ice-linkbutton .yui-radio-button-checked button,.ice-skin-sam .ice-linkbutton .yui-checkbox-button-checked button{
-	color:#fff;
-	background-image: url(background-highlight.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
-	background-repeat: repeat-x; 	
-	}
 	
 .ice-skin-sam .ice-linkbutton .yui-button-disabled{
 	border-color:#ccc;
@@ -157,12 +105,3 @@ version: 2.6.0
 	background-image: url(background-disabled.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x; 	
 	}
-	
-.ice-skin-sam .ice-linkbutton .yui-menu-button-disabled button{
-	background-image:url(menu-button-arrow-disabled.png);  /** sprite-ref: sprite;  */
-	}
-	
-.ice-skin-sam .ice-linkbutton .yui-split-button-disabled button{
-	background-image:url(split-button-arrow-disabled.png);  /** sprite-ref: sprite;  */
-}
-
