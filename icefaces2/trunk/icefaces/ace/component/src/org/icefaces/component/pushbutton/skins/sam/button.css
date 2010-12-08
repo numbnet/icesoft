@@ -18,7 +18,7 @@ version: 2.6.0
 	border-style:solid;
 	border-color:#808080;
 	margin:0 -1px;
-    position: relative;    /* Art: */
+    position: relative;
     left: -1px;
 	*position:relative;
 	*left:-1px;
@@ -80,7 +80,6 @@ version: 2.6.0
 	
 .ice-skin-sam .ice-pushbutton .yui-button-active .first-child{
 	border-color:#7D98B8;
-	/* Art: */
 }
 	
 .ice-skin-sam .ice-pushbutton .yui-button-active button,.ice-skin-sam .ice-pushbutton .yui-button-active a{
