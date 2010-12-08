@@ -52,6 +52,7 @@ public class PushButtonRenderer extends Renderer {
 		// root element
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+		writer.writeAttribute(HTML.CLASS_ATTR, "ice-pushbutton", null);
         
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);
