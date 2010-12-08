@@ -49,6 +49,7 @@ public class EnvUtils {
     public static String STANDARD_FORM_SERIALIZATION = "org.icefaces.standardFormSerialization";
     public static String STRICT_SESSION_TIMEOUT = "org.icefaces.strictSessionTimeout";
     public static String WINDOW_SCOPE_EXPIRATION = "org.icefaces.windowScopeExpiration";
+    public static String MANDATORY_RESOURCE_CONFIG = "org.icefaces.mandatoryResourceConfiguration";
 
     //Parameters configurable using context parameters but only in compatibility mode
     public static String CONNECTION_LOST_REDIRECT_URI = "org.icefaces.connectionLostRedirectURI";
@@ -302,6 +303,10 @@ public class EnvUtils {
         return EnvConfig.getEnvConfig(facesContext).windowScopeExpiration;
     }
 
+    public static String getMandatoryResourceConfig(FacesContext facesContext) {
+        return EnvConfig.getEnvConfig(facesContext).mandatoryResourceConfig;
+    }
+
     public static boolean isICEfacesView(FacesContext facesContext) {
         //Check to see if the view is configured to use ICEfaces (default is to enable ICEfaces).
         UIViewRoot viewRoot = facesContext.getViewRoot();
@@ -411,6 +416,7 @@ class EnvConfig {
     boolean standardFormSerialization;
     boolean strictSessionTimeout;
     long windowScopeExpiration;
+    String mandatoryResourceConfig;
 
     public EnvConfig(Map initMap) {
         init(initMap);
@@ -432,6 +438,7 @@ class EnvConfig {
         standardFormSerialization = decodeBoolean(initMap, EnvUtils.STANDARD_FORM_SERIALIZATION, false, info);
         strictSessionTimeout = decodeBoolean(initMap, EnvUtils.STRICT_SESSION_TIMEOUT, false, info);
         windowScopeExpiration = decodeLong(initMap, EnvUtils.WINDOW_SCOPE_EXPIRATION, 1000, info);
+        mandatoryResourceConfig = decodeString(initMap, EnvUtils.MANDATORY_RESOURCE_CONFIG, null, info);
 
         log.info("ICEfaces Configuration: \n" + info);
     }
@@ -479,7 +486,7 @@ class EnvConfig {
     long decodeLong(Map map, String name, long defaultValue, StringBuilder info) {
         String paramValue = (String) map.get(name);
         if (null == paramValue) {
-            info.append(name).append(" = ").append(defaultValue).append(" [default]  ");
+            info.append(name).append(" = ").append(defaultValue).append(" [default]\n");
             return defaultValue;
         }
         try {
