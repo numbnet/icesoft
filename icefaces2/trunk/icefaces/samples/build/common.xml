@@ -43,27 +43,30 @@
 
     <patternset id="lib.distribute">
         <patternset id="lib.distribute.jsf" includes="jsf-api.jar jsf-impl.jar">
-            <exclude name="jsf-api.jar"      unless="jsf"/>
-            <exclude name="jsf-impl.jar"     unless="jsf"/>
+            <exclude name="jsf-api.jar"         unless="jsf"/>
+            <exclude name="jsf-impl.jar"        unless="jsf"/>
         </patternset>
 
-        <patternset id="lib.distribute.ice" includes="icefaces.jar icefaces-ace.jar icepush.jar">
-            <exclude name="icefaces.jar"     if="no-icefaces"/>
-            <exclude name="icefaces-ace.jar" if="no-icefaces"/>
-            <exclude name="icefaces-ace.jar" unless="ace"/>
-            <exclude name="icepush.jar"      if="no-icefaces"/>
-            <exclude name="icepush.jar"      if="no-icepush"/>
+        <patternset id="lib.distribute.ice" includes="icefaces.jar icefaces-ace.jar icefaces-compat.jar icepush.jar">
+            <exclude name="icefaces.jar"        if="no-icefaces"/>
+
+            <exclude name="icefaces-ace.jar"    if="no-icefaces"/>
+            <exclude name="icefaces-ace.jar"    unless="ace"/>
+
+            <exclude name="icefaces-compat.jar" if="no-icefaces"/>
+            <exclude name="icefaces-compat.jar" unless="compat"/>
+
+            <exclude name="icepush.jar"         if="no-icefaces"/>
+            <exclude name="icepush.jar"         if="no-icepush"/>
         </patternset>
     </patternset>
 
-    <patternset id="lib.compile.compat" includes="icefaces-compat.jar commons-logging.jar ${lib.compile.compat.includes}">
-        <exclude name="icefaces-compat.jar" if="no-icefaces"/>
-        <exclude name="icefaces-compat.jar" unless="compat"/>
+    <patternset id="lib.compile.compat" includes="commons-logging.jar ${lib.compile.compat.includes}">
+        <exclude name="*.jar"                   unless="compat"/>
     </patternset>
 
-    <patternset id="lib.distribute.compat" includes="icefaces-compat.jar commons-logging.jar ${lib.distribute.compat.includes}">
-        <exclude name="icefaces-compat.jar"  if="no-icefaces"/>
-        <exclude name="icefaces-compat.jar"  unless="compat"/>
+    <patternset id="lib.distribute.compat" includes="commons-logging.jar ${lib.distribute.compat.includes}">
+        <exclude name="*.jar"                   unless="compat"/>
     </patternset>
 
     <target name="clean">
