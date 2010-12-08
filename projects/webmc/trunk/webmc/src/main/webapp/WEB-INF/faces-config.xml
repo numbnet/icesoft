@@ -31,18 +31,11 @@
   ~ this file under either the MPL or the LGPL License."
   ~
 -->
-<!DOCTYPE faces-config PUBLIC
-        "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
-        "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
-
-<faces-config>
-
-    <!-- Facelets -->
-    <application>
-        <view-handler>
-            com.icesoft.faces.facelets.D2DFaceletViewHandler
-        </view-handler>
-    </application>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+              version="2.0"
+              metadata-complete="false">
 
     <!-- Language Settings -->
     <application>
@@ -66,21 +59,10 @@
 
     <!-- Bean Declarations -->
     <managed-bean>
-        <managed-bean-name>renderMgr</managed-bean-name>
-        <managed-bean-class>com.icesoft.faces.async.render.RenderManager
-        </managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-
-    <managed-bean>
         <managed-bean-name>presentationMgr</managed-bean-name>
         <managed-bean-class>com.icesoft.faces.presenter.presentation.PresentationManagerBean
         </managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
-        <managed-property>
-            <property-name>renderManager</property-name>
-            <value>#{renderMgr}</value>
-        </managed-property>
     </managed-bean>
 
     <managed-bean>
@@ -88,10 +70,6 @@
         <managed-bean-class>com.icesoft.faces.presenter.participant.Participant
         </managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
-        <managed-property>
-            <property-name>renderManager</property-name>
-            <value>#{renderMgr}</value>
-        </managed-property>
         <managed-property>
             <property-name>presentationManager</property-name>
             <value>#{presentationMgr}</value>

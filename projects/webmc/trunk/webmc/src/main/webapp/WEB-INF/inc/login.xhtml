@@ -133,12 +133,6 @@
             <ice:message for="newPresentationName" id="newPresentationNameErr"
                          errorClass="inputError"/>
         </ice:panelGroup>
-        <!-- Refresh PersistentFacesState (Empty Cell with Spacer) -->
-        <ice:panelGroup>
-            &amp;nbsp;
-            <ice:outputText value="#{participant.refreshPersistentFacesState}" 
-                            visible="false"/>
-        </ice:panelGroup>
         <!-- Empty Cell -->
         <ice:panelGroup rendered="#{!participant.mobile}" /> 
         <!-- Viewer inputs password -->
