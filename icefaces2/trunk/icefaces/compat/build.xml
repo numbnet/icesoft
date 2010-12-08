@@ -22,7 +22,7 @@
 
 <project name="icefaces-compat" default="all" >
 	
-	<property file="../core/build.properties"/>
+    <property file="../core/build.properties"/>
     <property name="lib.dir" location="../lib"/>
     
     <target name="all">
@@ -32,7 +32,7 @@
             </fileset>
         </subant> 
         <subant>
-            <fileset dir="." includes="components/build.xml samples/build.xml"/>
+            <fileset dir="." includes="components/build.xml"/>
         </subant>
     </target>
 

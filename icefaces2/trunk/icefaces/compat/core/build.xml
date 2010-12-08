@@ -26,7 +26,7 @@
     <property name="java.dir" location="./src/main/java"/>
     <property name="resources.dir" location="./src/main/resources"/>
     <property name="lib.dir" location="../../lib"/>
-    <property name="compat.lib.dir" location="../lib"/>
+    <property name="compat.lib.dir" location="${lib.dir}/compat"/>
     <property name="build.dir" location="./build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
@@ -115,8 +115,6 @@
 
             <!-- fileset dir="${build.dir}/javascript"/ -->
         </jar>
-        <copy file="${dist.dir}/${ant.project.name}.jar" todir="${compat.lib.dir}" overwrite="true"/>
-
     </target>
 
     <target name="lib" depends="jar" description="copy icefaces.jar to main lib directory">

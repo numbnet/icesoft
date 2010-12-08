@@ -29,7 +29,7 @@
     <property name="maven.test.reports" value="${maven.build.directory}/test-reports" />
     <property name="maven.test.output" value="target/test-classes" />
     <property name="lib.dir" location="../../lib" />
-    <property name="compat.lib.dir" location="../lib" />
+    <property name="compat.lib.dir" location="${lib.dir}/compat" />
     <property name="project.title" value="ICEfaces components" />
     <property name="project.version" value="${version.primary}.${version.secondary}.${version.tertiary}" />
     <property name="maven.build.final.name" value="component-metadata-${project.version}" />
