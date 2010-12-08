@@ -88,14 +88,15 @@ var submit;
                 if (element.type == 'radio') {
                     clonedElement.checked = element.checked;
                 }
-                //copy all checkboxes with the same name
                 if (element.type == 'checkbox') {
+                    clonedElement.checked = element.checked;
+                    //copy the rest of checkboxes with the same name and their state
                     var name = element.name;
                     each(element.form.elements, function(checkbox) {
-                        if (checkbox.name == name) {
+                        if (checkbox.name == name && checkbox != element) {
                             var checkboxClone = form.appendChild(checkbox.cloneNode(true));
-                            checkboxClone.checked = checkbox.checked;
                             append(clonedElements, checkboxClone);
+                            checkboxClone.checked = checkbox.checked;
                         }
                     });
                 }
