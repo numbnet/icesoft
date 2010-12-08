@@ -43,10 +43,19 @@ public class SessionTimeoutMonitor extends ResourceHandlerWrapper {
     }
 
     public boolean isResourceRequest(FacesContext context) {
+        final ExternalContext externalContext = context.getExternalContext();
+        //create session if non-ajax request
+        final Object session = externalContext.getSession(!context.getPartialViewContext().isAjaxRequest());
+        //if session invalid or expired block other resource handlers from running
+        if (session == null) {
+            //return false to force JSF to run and throw ViewExpiredException which eventually will be captured
+            //and re-cast in a SessionExpiredException
+            return false;
+        }
+
         if (!EnvUtils.isStrictSessionTimeout(context)) {
             return handler.isResourceRequest(context);
         }
-        final ExternalContext externalContext = context.getExternalContext();
         Map sessionMap = externalContext.getSessionMap();
         Long lastAccessTime = (Long) sessionMap.get(SessionTimeoutMonitor.class.getName());
         boolean isPushRelatedRequest = EnvUtils.isPushRequest(context);
@@ -55,7 +64,6 @@ public class SessionTimeoutMonitor extends ResourceHandlerWrapper {
             sessionMap.put(SessionTimeoutMonitor.class.getName(), System.currentTimeMillis());
         }
 
-        Object session = externalContext.getSession(false);
         int maxInactiveInterval;
         if (EnvUtils.instanceofPortletSession(session)) {
             maxInactiveInterval = ((javax.portlet.PortletSession) session).getMaxInactiveInterval();
@@ -70,5 +78,4 @@ public class SessionTimeoutMonitor extends ResourceHandlerWrapper {
 
         return super.isResourceRequest(context);
     }
-
 }
