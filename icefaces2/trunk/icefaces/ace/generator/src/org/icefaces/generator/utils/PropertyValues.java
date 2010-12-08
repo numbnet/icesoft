@@ -16,6 +16,7 @@ public class PropertyValues {
 	public String javadocGet = Property.Null;
 	public String javadocSet = Property.Null;
 	public Required required = Required.UNSET;
+    public String name = Property.Null; 
 
 	public Implementation implementation = Implementation.UNSET;
 

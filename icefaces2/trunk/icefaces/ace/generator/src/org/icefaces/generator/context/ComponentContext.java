@@ -304,6 +304,9 @@ public class ComponentContext {
 				if (property.implementation() != Implementation.UNSET) {
 					propertyValues.implementation = property.implementation();
 				}
+                if (!property.name().equals(Property.Null)) {
+                    propertyValues.name = property.name();
+                } 
 			}
 		} catch (NoSuchFieldException e) {
 			// do nothing

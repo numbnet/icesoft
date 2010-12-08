@@ -55,7 +55,14 @@ public @interface Property {
      * @return 
      */    
     DefaultValueType defaultValueType() default DefaultValueType.UNSET;
-    
+
+    /**
+     * Allow the user to specify a 'name' for the property that is different
+     * from the field name. This allows a property 'for' or 'while' which are
+     * Java keywords.
+     * @return optional name of the field
+     */
+    String name() default Null; 
     
     /**
      * TLDDoc for this property

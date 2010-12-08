@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Facet;
-import org.icefaces.component.annotation.Property;
 import org.icefaces.generator.behavior.Behavior;
 import org.icefaces.generator.context.ComponentContext;
 import org.icefaces.generator.context.GeneratorContext;
@@ -157,12 +156,21 @@ public class ComponentArtifact extends Artifact{
 		for (Behavior behavior: getComponentContext().getBehaviors()) {
 			behavior.addPropertiesEnumToComponent(writer);
 		}
+        String propertyName; 
 		Map<Field, PropertyValues> propertyValuesMap = getComponentContext().getPropertyValuesMap();
 		for (int i = 0; i < generatedComponentProperties.size(); i++){
 			PropertyValues propertyValues = propertyValuesMap.get(generatedComponentProperties.get(i));
+
+            if (!"null".equalsIgnoreCase( propertyName = propertyValues.name))  {
+                propertyName += "Val(\"" + propertyName + "\")";
+            } else {
+                propertyName = generatedComponentProperties.get(i).getName();
+            } 
+            System.out.println("Processing property " + propertyName );
+
 			if (!propertyValues.isDelegatingProperty) {
 				writer.append("\t\t");
-				writer.append(generatedComponentProperties.get(i).getName());
+				writer.append( propertyName );
 				writer.append(",\n");
 			}
 		}
@@ -209,7 +217,7 @@ public class ComponentArtifact extends Artifact{
         // primitive properties are supported (ones with values
         // even if no default is specified in the Meta). Wrapper properties
         // (null default and settable values) are also supported
-        // There are four property names which must be forced to be primitive
+        // There are four property names which must be forced to be primitive                                L
         // or else the generated signiture clashes with the property names in
         // EditableValueHolder
         boolean isPrimitive = field.getType().isPrimitive() ||
@@ -225,15 +233,27 @@ public class ComponentArtifact extends Artifact{
             }
         }
 
-		String methodName = field.getName().substring(0,1).toUpperCase() + field.getName().substring(1);
+		String methodName;
+        // The publicly exposed property name. Will differ from the field name
+        // if the field name is a java keyword
+		String pseudoFieldName;
+        String camlCaseMethodName;
+        if (!"null".equals(prop.name) ) {
+            methodName = prop.name;
+            pseudoFieldName = methodName + "Val";
+        } else {
+            methodName = field.getName();
+            pseudoFieldName = methodName;
+        }
+        camlCaseMethodName = methodName.substring(0,1).toUpperCase() + methodName.substring(1);
 
 		//-------------------------------------
 		// writing Setter
         //-------------------------------------
 
-		addJavaDoc(field.getName(), true, prop.javadocSet);
+		addJavaDoc(pseudoFieldName, true, prop.javadocSet);
 		writer.append("\tpublic void set");
-		writer.append(methodName);
+		writer.append(camlCaseMethodName);
 
         // Allow java autoconversion to deal with most of the conversion between
         // primitive types and Wrapper classes
@@ -245,9 +265,8 @@ public class ComponentArtifact extends Artifact{
 
 		if (!prop.isDelegatingProperty) {
 			writer.append("\n\t\tValueExpression ve = getValueExpression(PropertyKeys.");
-			writer.append(field.getName());
+			writer.append(pseudoFieldName);
 			writer.append(".name() );");
-
 //			writer.append("\n\t\tMap clientValues = null;");
 			writer.append("\n\t\tif (ve != null) {");
 			writer.append("\n\t\t\t// map of style values per clientId");
@@ -272,21 +291,21 @@ public class ComponentArtifact extends Artifact{
 			writer.append("\n\t\t\tif (pi.equals(PhaseId.RENDER_RESPONSE) || pi.equals(PhaseId.RESTORE_VIEW))  {");
             // Here,
 
-            writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append(field.getName()).
-                                append(".toString() + \"_defaultValues\";" );
+            writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append( pseudoFieldName ).
+                                append(".name() + \"_defaultValues\";" );
             writer.append("\n\t\t\t\tMap clientDefaults = (Map) sh.get(defaultKey);");
 
             writer.append("\n\t\t\t\tif (clientDefaults == null) { ");
             writer.append("\n\t\t\t\t\tclientDefaults = new HashMap(); ");
-            writer.append("\n\t\t\t\t\tclientDefaults.put(\"defValue\"," ).append( field.getName().toString()).append(");");
+            writer.append("\n\t\t\t\t\tclientDefaults.put(\"defValue\"," ).append( field.getName().toString() ).append(");");
             writer.append("\n\t\t\t\t\tsh.put(defaultKey, clientDefaults); "); 
             writer.append("\n\t\t\t\t} "); 
 
 
 			writer.append("\n\t\t\t} else {");
 			writer.append("\n\t\t\t\tString clientId = getClientId();");
-            writer.append("\n\t\t\t\tString valuesKey = PropertyKeys.").append(field.getName().toString() ).
-                    append(" + \"_rowValues\"; ");
+            writer.append("\n\t\t\t\tString valuesKey = PropertyKeys.").append( pseudoFieldName ).
+                    append(".name() + \"_rowValues\"; ");
             writer.append("\n\t\t\t\tMap clientValues = (Map) sh.get(valuesKey); ");
             writer.append("\n\t\t\t\tif (clientValues == null) {");
             writer.append("\n\t\t\t\t\tclientValues = new HashMap(); ");
@@ -311,7 +330,7 @@ public class ComponentArtifact extends Artifact{
 		//getter
         //-----------------
 
-		addJavaDoc(field.getName(), false, prop.javadocGet);
+		addJavaDoc(pseudoFieldName, false, prop.javadocGet);
 
         // Internal value representation is always Wrapper type
         String internalType = returnAndArgumentType;
@@ -328,7 +347,7 @@ public class ComponentArtifact extends Artifact{
 		} else {
 			writer.append("get");
 		}
-		writer.append(methodName);
+		writer.append(camlCaseMethodName);
 		writer.append("() {");
 
         if (!prop.isDelegatingProperty) {
@@ -357,10 +376,8 @@ public class ComponentArtifact extends Artifact{
 
 			// Start of Value Expression code
 			writer.append("\n\t\tValueExpression ve = getValueExpression( PropertyKeys.");
-			writer.append(field.getName());
+			writer.append( pseudoFieldName );
 			writer.append(".name() );");
-
-
 
 			writer.append("\n\t\tif (ve != null) {" );
 			// For primitives, don't overwrite a default value with a null value obtained from
@@ -378,7 +395,7 @@ public class ComponentArtifact extends Artifact{
 			}
 			writer.append("\n\t\t} else {");
 			writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
-			writer.append("\n\t\t\tString valuesKey = \"").append(field.getName().toString()).append("_rowValues\";");
+			writer.append("\n\t\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_rowValues\";");
 			writer.append("\n\t\t\tMap clientValues = (Map) sh.get(valuesKey);");
             writer.append("\n\t\t\tboolean mapNoValue = false;");
 			// differentiate between the case where the map has clientId and it's value is null
@@ -395,7 +412,7 @@ public class ComponentArtifact extends Artifact{
 
 
 			writer.append("\n\t\t\tif (mapNoValue || clientValues == null ) { ");
-            writer.append("\n\t\t\t\tString defaultKey = \"").append(field.getName().toString()).append("_defaultValues\";");
+            writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_defaultValues\";");
             writer.append("\n\t\t\t\tMap defaultValues = (Map) sh.get(defaultKey); ");
             writer.append("\n\t\t\t\tif (defaultValues != null) { ");
             writer.append("\n\t\t\t\t\tif (defaultValues.containsKey(\"defValue\" )) {");
