@@ -24,13 +24,13 @@
 
     <target name="all">
         <subant>
-            <fileset dir="." includes="*/build.xml"/>
+            <fileset dir="." includes="**/build.xml" excludes="build.xml **/template/build.xml **/portlets/**/build.xml **/test/**/build.xml"/>
         </subant> 
     </target>
 
     <target name="allclean">
         <subant target="clean">
-            <fileset dir="." includes="*/build.xml"/>
+            <fileset dir="." includes="**/build.xml" excludes="build.xml **/template/build.xml **/portlets/**/build.xml **/test/**/build.xml"/>
         </subant>
     </target>
 
@@ -54,6 +54,4 @@
         </replace>
     </target>
 
-
 </project>
-
