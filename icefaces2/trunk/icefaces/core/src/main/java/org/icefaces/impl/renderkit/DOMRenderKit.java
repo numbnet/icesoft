@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class DOMRenderKit extends RenderKitWrapper {
     private MainEventListener mainEventListener = new MainEventListener();
     private RenderKit delegate;
     private boolean deltaSubmit;
+    private List mandatoryResourceConfig = null;
     private Renderer modifiedMessagesRenderer = null;
     private static final String MESSAGES = "javax.faces.Messages";
     private static final String MESSAGES_CLASS = 
@@ -64,7 +66,14 @@ public class DOMRenderKit extends RenderKitWrapper {
 
     public DOMRenderKit(RenderKit delegate) {
         this.delegate = delegate;
-        deltaSubmit = EnvUtils.isDeltaSubmit(FacesContext.getCurrentInstance());
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        deltaSubmit = EnvUtils.isDeltaSubmit(facesContext);
+        String mandatoryResourceConfigString = 
+                EnvUtils.getMandatoryResourceConfig(facesContext);
+        if (null != mandatoryResourceConfigString)  {
+            mandatoryResourceConfig = Arrays.asList(
+                mandatoryResourceConfigString.split("\\s+") );
+        }
         try {
             modifiedMessagesRenderer = 
                     (Renderer) Class.forName(MESSAGES_CLASS).newInstance();
@@ -98,7 +107,10 @@ public class DOMRenderKit extends RenderKitWrapper {
             String compClassName = mrc.value();
             if (compClassName != null && compClassName.length() > 0) {
                 if (!mandatoryResourceComponents.contains(compClassName)) {
-                    mandatoryResourceComponents.add(compClassName);
+                    if ((null == mandatoryResourceConfig) || 
+                        mandatoryResourceConfig.contains(compClassName)) {
+                        mandatoryResourceComponents.add(compClassName);
+                    }
                 }
             }
         }
