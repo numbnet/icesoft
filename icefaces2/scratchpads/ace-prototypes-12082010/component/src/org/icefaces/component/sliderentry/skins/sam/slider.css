@@ -1,0 +1,157 @@
+/**
+ * NOTE:
+ * If this file defines a completely new skin, then uncomment the core styles
+ * below. If this file simply aims at overriding certain aspects of another
+ * existing skin, then leave the core styles below comented out.
+ */
+
+/* ICE-6155 - need to manually copy slider-skin.css contents into sam slider.css so image reference mapping will resolve correctly. 
+
+@import url('../sam_renamed/slider-skin.css');
+
+*/
+
+/* BEGIN -> slider-skin.css copy in */
+
+/* ---- END slider-skin COPY IN */
+
+
+ 
+/* ----- BEGIN CORE STYLING ----- */
+
+/*
+
+.yui3-slider,.yui3-slider-rail
+{
+	display: inline;
+	display: inline-block;
+	display: -moz-inline-stack;
+	vertical-align: middle;
+	zoom: 1;
+}
+.yui3-slider-content
+{
+	display: block;
+	position: relative;
+}
+.yui3-slider-rail
+{
+	position: relative;
+}
+.yui3-slider-rail-cap-top,.yui3-slider-rail-cap-left,.yui3-slider-rail-cap-bottom,.yui3-slider-rail-cap-right,.yui3-slider-thumb,.yui3-slider-thumb-image,.yui3-slider-thumb-shadow
+{
+	position: absolute;
+}
+.yui3-slider-thumb
+{
+	overflow: hidden;
+}
+
+*/
+
+/* ----- END CORE STYLING ----- */
+
+
+
+/* ----- BEGIN YUI SAM SKIN STYLING ----- */
+
+/* -- Horizontal rail -- */
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-rail,.ice-skin-sam .yui3-slider-x .yui3-slider-rail-cap-left,.ice-skin-sam .yui3-slider-x .yui3-slider-rail-cap-right
+{
+	background-image: url(rail-x.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+}
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-rail
+{
+
+}
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-thumb
+{
+
+}
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-rail-cap-left
+{
+
+}
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-rail-cap-right
+{
+
+}
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-thumb-image
+{
+
+}
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-thumb-shadow
+{
+
+}
+
+/* -- Vertical rail -- */
+
+.ice-skin-sam .yui3-slider-y .yui3-slider-rail,.ice-skin-sam .yui3-slider-y .yui3-slider-rail-cap-top,.ice-skin-sam .yui3-slider-y .yui3-slider-rail-cap-bottom
+{
+	background-image: url(rail-y.png); /** sprite-ref: sprite-y; sprite-alignment: repeat; */
+	background-repeat: repeat-y;
+}
+
+.ice-skin-sam .yui3-slider-y .yui3-slider-rail
+{
+
+}
+
+.ice-skin-sam .yui3-slider-y .yui3-slider-thumb
+{
+
+}
+
+.ice-skin-sam .yui3-slider-y .yui3-slider-rail-cap-top
+{
+
+}
+
+.ice-skin-sam .yui3-slider-y .yui3-slider-rail-cap-bottom
+{
+
+}
+
+.ice-skin-sam .yui3-slider-y .yui3-slider-thumb-image
+{
+
+}
+
+.ice-skin-sam .yui3-slider-y .yui3-slider-thumb-shadow
+{
+
+}
+
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-rail .yui3-slider-thumb img {
+    top: -225px;		
+	
+}
+ 
+.ice-skin-sam .yui3-slider-x .yui3-slider-rail .yui3-slider-thumb {
+    background: url(thumb-x.png) no-repeat 0px -12px;
+    height: 18px;
+    width: 13px; 
+}
+ 
+ 
+.ice-skin-sam .yui3-slider-y .yui3-slider-rail .yui3-slider-thumb img {
+    top: -225px;
+} 
+ 
+.ice-skin-sam .yui3-slider-y .yui3-slider-rail .yui3-slider-thumb {
+    background: url(thumb-y.png)  no-repeat -14px 0px;
+    height: 14px;
+    width: 30px;
+}
+
+/* ----- END YUI SAM SKIN STYLING ----- */
