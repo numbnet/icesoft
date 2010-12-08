@@ -20,7 +20,7 @@
   ~
   -->
 
-<project name="samples" default="all">
+<project name="ace-samples" default="all">
 
     <target name="all">
         <subant>
