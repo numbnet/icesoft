@@ -21,18 +21,17 @@
 
 package org.icefaces.impl.application;
 
+import org.icefaces.bean.WindowDisposed;
 import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
-import org.icefaces.bean.WindowDisposed;
 
 import javax.annotation.PreDestroy;
-import java.lang.reflect.Method;
 import javax.faces.FactoryFinder;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.component.UIViewRoot;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
@@ -46,12 +45,12 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.util.Iterator;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Observable;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,7 +58,8 @@ import java.util.logging.Logger;
 public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseListener {
     public static final String ScopeName = "window";
     private static final Logger log = Logger.getLogger(WindowScopeManager.class.getName());
-    private static String seed = Integer.toString(new Random().nextInt(1000), 36);
+    private static final String seed = Integer.toString(new Random().nextInt(1000), 36);
+    private static final int SameWindowMaxDelay = 500;
 
     private ResourceHandler wrapped;
 
@@ -77,10 +77,10 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
     public ResourceHandler getWrapped() {
         return wrapped;
     }
-    
+
     public void handleResourceRequest(FacesContext facesContext) throws IOException {
         //a null session cannot have any window scope beans
-        if (null == facesContext.getExternalContext().getSession(false))  {
+        if (null == facesContext.getExternalContext().getSession(false)) {
             wrapped.handleResourceRequest(facesContext);
             return;
         }
@@ -160,13 +160,27 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
 
         Map requestMap = externalContext.getRequestMap();
         if (id == null) {
-            ScopeMap scopeMap;
-            if (state.disposedWindowScopedMaps.isEmpty()) {
-                scopeMap = new ScopeMap(context);
-            } else {
-                scopeMap = (ScopeMap) state.disposedWindowScopedMaps.removeFirst();
+            ScopeMap scopeMap = null;
+
+            //use scope map that was created a very short time ago, hopefully during the same page load
+            Iterator i = state.windowScopedMaps.values().iterator();
+            while (i.hasNext()) {
+                ScopeMap sm = (ScopeMap) i.next();
+                if (sm.activateTimestamp + SameWindowMaxDelay > System.currentTimeMillis()) {
+                    scopeMap = sm;
+                    break;
+                }
             }
-            scopeMap.activate(state);
+
+            if (scopeMap == null) {
+                if (state.disposedWindowScopedMaps.isEmpty()) {
+                    scopeMap = new ScopeMap(context);
+                } else {
+                    scopeMap = (ScopeMap) state.disposedWindowScopedMaps.removeFirst();
+                }
+                scopeMap.activate(state);
+            }
+
             associateWindowID(scopeMap.id, requestMap);
             return scopeMap.id;
         } else {
@@ -208,55 +222,56 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
         disposeViewScopeBeans(context);
     }
 
-    private static void disposeViewScopeBeans(FacesContext facesContext)  {
+    private static void disposeViewScopeBeans(FacesContext facesContext) {
         //Unfortunately we must execute the lifecycle to get to the viewMap
         LifecycleFactory factory = (LifecycleFactory)
                 FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
         Lifecycle lifecycle = factory.getLifecycle(
-                LifecycleFactory.DEFAULT_LIFECYCLE );
+                LifecycleFactory.DEFAULT_LIFECYCLE);
         lifecycle.execute(facesContext);
 
         UIViewRoot viewRoot = facesContext.getViewRoot();
-        if (null == viewRoot)  {
+        if (null == viewRoot) {
             return;
         }
         Map viewMap = viewRoot.getViewMap();
         Iterator keys = viewMap.keySet().iterator();
-        while (keys.hasNext())  {
+        while (keys.hasNext()) {
             Object key = keys.next();
             Object object = viewMap.get(key);
-            if ( object.getClass().isAnnotationPresent(WindowDisposed.class) )  {
+            if (object.getClass().isAnnotationPresent(WindowDisposed.class)) {
                 keys.remove();
                 callPreDestroy(object);
                 if (log.isLoggable(Level.FINE)) {
                     log.log(Level.FINE, "Closing window disposed ViewScoped bean " + key);
                 }
-            } 
+            }
         }
     }
 
-    private static void callPreDestroy(Object object)  {
+    private static void callPreDestroy(Object object) {
         Class theClass = object.getClass();
         try {
-            while (null != theClass)  {
+            while (null != theClass) {
                 Method[] methods = object.getClass().getDeclaredMethods();
-                for (Method method : methods)  {
-                    if (method.isAnnotationPresent(PreDestroy.class))  {
-                            method.setAccessible(true);
-                            method.invoke(object);
-                            return;
+                for (Method method : methods) {
+                    if (method.isAnnotationPresent(PreDestroy.class)) {
+                        method.setAccessible(true);
+                        method.invoke(object);
+                        return;
                     }
                 }
                 theClass = theClass.getSuperclass();
             }
-        } catch (Exception e)  {
+        } catch (Exception e) {
             log.log(Level.WARNING, "Failed to invoke PreDestroy on " + theClass, e);
         }
     }
 
     public static class ScopeMap extends HashMap {
         private String id = generateID();
-        private long timestamp = -1;
+        private long activateTimestamp = System.currentTimeMillis();
+        private long deactivateTimestamp = -1;
 
         public String getId() {
             return id;
@@ -275,7 +290,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
 
         private void discardIfExpired(FacesContext facesContext) {
             State state = getState(facesContext);
-            if (System.currentTimeMillis() > timestamp + state.expirationPeriod) {
+            if (System.currentTimeMillis() > deactivateTimestamp + state.expirationPeriod) {
                 boolean processingEvents = facesContext.isProcessingEvents();
                 try {
                     facesContext.setProcessingEvents(true);
@@ -290,10 +305,11 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
 
         private void activate(State state) {
             state.windowScopedMaps.put(id, this);
+            activateTimestamp = System.currentTimeMillis();
         }
 
         private void disactivate(State state) {
-            timestamp = System.currentTimeMillis();
+            deactivateTimestamp = System.currentTimeMillis();
             state.disposedWindowScopedMaps.addLast(state.windowScopedMaps.remove(id));
         }
     }
@@ -308,37 +324,37 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
 
     private static State getState(FacesContext context) {
         ExternalContext externalContext = context.getExternalContext();
-        Map sessionMap = externalContext.getSessionMap();
-        State state = (State) sessionMap.get(WindowScopeManager.class.getName());
+        Object session = externalContext.getSession(false);
+        if (session != null) {
+            return EnvUtils.instanceofPortletSession(session) ?
+                    getPortletState(context, session) : getServletState(context, session);
+        } else {
+            return null;
+        }
+    }
+
+    private static State getServletState(FacesContext context, Object session) {
+        HttpSession servletSession = (HttpSession) session;
+        State state = (State) servletSession.getAttribute(WindowScopeManager.class.getName());
         if (state == null) {
             state = new State(EnvUtils.getWindowScopeExpiration(context));
-            sessionMap.put(WindowScopeManager.class.getName(), state);
+            servletSession.setAttribute(WindowScopeManager.class.getName(), state);
         }
-
         return state;
     }
 
-    private static State getState(HttpSession session) {
-        State state = (State) session.getAttribute(WindowScopeManager.class.getName());
+    //portlet session is accessed in a separate method to avoid ClassNotFound errors in servlet environment
+    private static State getPortletState(FacesContext context, Object session) {
+        javax.portlet.PortletSession portletSession = (javax.portlet.PortletSession) session;
+        State state = (State) portletSession.getAttribute(WindowScopeManager.class.getName(), javax.portlet.PortletSession.APPLICATION_SCOPE);
         if (state == null) {
-            state = new State(EnvUtils.getWindowScopeExpiration(FacesContext.getCurrentInstance()));
-            session.setAttribute(WindowScopeManager.class.getName(), state);
+            state = new State(EnvUtils.getWindowScopeExpiration(context));
+            portletSession.setAttribute(WindowScopeManager.class.getName(), state, javax.portlet.PortletSession.APPLICATION_SCOPE);
         }
-
         return state;
-    }
-
-    private static class ReadyObservable extends Observable {
-        public synchronized void notifyObservers(Object object) {
-            setChanged();
-            super.notifyObservers(object);
-            clearChanged();
-        }
     }
 
     private static class State implements Externalizable {
-        private transient Observable activatedWindowNotifier = new ReadyObservable();
-        private transient Observable disactivatedWindowNotifier = new ReadyObservable();
         private HashMap windowScopedMaps = new HashMap();
         private LinkedList disposedWindowScopedMaps = new LinkedList();
         public long expirationPeriod;
@@ -360,9 +376,6 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
             windowScopedMaps = (HashMap) in.readObject();
             disposedWindowScopedMaps = (LinkedList) in.readObject();
             expirationPeriod = in.readLong();
-
-            activatedWindowNotifier = new ReadyObservable();
-            disactivatedWindowNotifier = new ReadyObservable();
         }
     }
 }
