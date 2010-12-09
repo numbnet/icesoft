@@ -26,7 +26,6 @@ version: 2.8.1
 
 .ice-skin-rime .yui-navset .yui-nav a,
 .ice-skin-rime .yui-navset .yui-navset-top .yui-nav a {
-    background:#d8d8d8 url(../../../../assets/skins/sam/sprite.png) repeat-x; /* tab background */
     border:solid #a3a3a3;
     border-width:0 1px;
     color:#000;
@@ -48,13 +47,11 @@ version: 2.8.1
 .ice-skin-rime .yui-navset .yui-nav .selected a,
 .ice-skin-rime .yui-navset .yui-nav .selected a:focus, /* no focus effect for selected */
 .ice-skin-rime .yui-navset .yui-nav .selected a:hover { /* no hover effect for selected */
-    background:#2647a0 url(../../../../assets/skins/sam/sprite.png) repeat-x left -1400px; /* selected tab background */
     color:#fff;
 }
 
 .ice-skin-rime .yui-navset .yui-nav a:hover,
 .ice-skin-rime .yui-navset .yui-nav a:focus {
-    background:#bfdaff url(../../../../assets/skins/sam/sprite.png) repeat-x left -1300px; /* selected tab background */
     outline:0;
 }
 
@@ -266,9 +263,9 @@ border-color:#243356;
 }
 
 /* -- Tab background -- */
-.ice-skin-rime .yui-navset .yui-nav a,.ice-skin-rime .yui-navset .yui-navset-top .yui-nav a
+.ice-skin-rime .yui-navset .yui-nav div.yui-navdiv, .ice-skin-rime .yui-navset .yui-navset-top .yui-nav div.yui-navdiv
 {
-	background-image: url(background.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-image: url(Tab_MidMid_off.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;
 }
 
@@ -278,16 +275,15 @@ border-color:#243356;
 }
 
 /* -- Selected tab background -- */
-.ice-skin-rime .yui-navset .yui-nav .selected a,.ice-skin-rime .yui-navset .yui-nav .selected a:focus,.ice-skin-rime .yui-navset .yui-nav .selected a:hover
-{
-	background-image: url(background-selected-1.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+.ice-skin-rime .yui-navset .yui-nav .selected div.yui-navdiv, .ice-skin-rime .yui-navset .yui-nav .selected a:focus, .ice-skin-rime .yui-navset .yui-nav .selected a:hover {
+	background-image: url(Tab_MidMid.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;
 }
 
 /* -- Selected tab background -- */
 .ice-skin-rime .yui-navset .yui-nav a:hover,.ice-skin-rime .yui-navset .yui-nav a:focus
 {
-	background-image: url(background-selected-2.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-image: url(Tab_MidMid.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;
 }
 
@@ -393,94 +389,8 @@ border-color:#243356;
 }
 
 
-
-/**
- * NOTE:
- * The following rules were added to work with the ICEfaces TabSet component
- * and override certain aspects of the YUI SAM skin.
- */
-
-.yui-navset button
-{
-
-}
-
-.ice-skin-rime .yui-navset-left .yui-nav div.yui-navdiv, .ice-skin-rime .yui-navset-right .yui-nav div.yui-navdiv
-{
-
-}
-
-.ice-skin-rime .yui-navset-left .yui-nav div.yui-navdiv em, .ice-skin-rime .yui-navset .yui-navset-left .yui-nav div.yui-navdiv em, .ice-skin-rime .yui-navset-right .yui-nav div.yui-navdiv em
-{
-
-}
-
-.ice-skin-rime .yui-navset-right .yui-nav div.yui-navdiv em
-{
-
-}
-
-.ice-skin-rime .yui-navset-left .yui-nav div.yui-navdiv, .ice-skin-rime .yui-navset-left .yui-nav .selected div.yui-navdiv, .ice-skin-rime .yui-navset-left .yui-nav a:hover, .ice-skin-rime .yui-navset-right .yui-nav div.yui-navdiv, .ice-skin-rime .yui-navset-right .yui-nav .selected div.yui-navdiv, .ice-skin-rime .yui-navset-right .yui-nav a:hover, .ice-skin-rime .yui-navset-bottom .yui-nav div.yui-navdiv, .ice-skin-rime .yui-navset-bottom .yui-nav .selected div.yui-navdiv, .ice-skin-rime .yui-navset-bottom .yui-nav a:hover
-{
-
-}
-
-.ice-skin-rime .yui-navset .yui-navset-bottom .yui-nav div.yui-navdiv em, .ice-skin-rime .yui-navset-bottom .yui-nav div.yui-navdiv em
-{
-
-}
-
-.ice-skin-rime .yui-navset .yui-nav div.yui-navdiv, .ice-skin-rime .yui-navset .yui-navset-top .yui-nav div.yui-navdiv
-{
-	background-image: url(Tab_MidMid_off.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
-	background-repeat: repeat-x;
-}
-
-.ice-skin-rime .yui-navset .yui-nav div.yui-navdiv em, .ice-skin-rime .yui-navset .yui-navset-top .yui-nav div.yui-navdiv em
-{
-
-}
-
-.ice-skin-rime .yui-navset .yui-nav .selected div.yui-navdiv, .ice-skin-rime .yui-navset .yui-nav .selected a:focus, .ice-skin-rime .yui-navset .yui-nav .selected a:hover {
-	background-image: url(Tab_MidMid.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
-	background-repeat: repeat-x;
-}
-
-.ice-skin-rime .yui-navset .yui-nav .selected div.yui-navdiv em
-{
-
-}
-
-.ice-skin-rime .yui-navset .yui-nav .selected div.yui-navdiv, .ice-skin-rime .yui-navset .yui-nav .selected div.yui-navdiv em
-{
-
-}
-
-.yui-navset .yui-nav a
-{
-
-}
-
-.yui-navset-left .yui-nav li div.yui-navdiv, .yui-navset-right .yui-nav li div.yui-navdiv
-{
-
-}
-
-.yui-navset-bottom .yui-nav li div.yui-navdiv
-{
-
-}
-
-.yui-navset .yui-nav li div.yui-navdiv em, .yui-navset-top .yui-nav li div.yui-navdiv em, .yui-navset-bottom .yui-nav li div.yui-navdiv em
-{
-
-}
-
-.ice-skin-rime .yui-navset .yui-nav .selected div.yui-navdiv, .ice-skin-rime .yui-navset .yui-nav .selected div.yui-navdiv em
-{
-
-}
-
+/*
 .yui-navset .yui-nav li {
     background-image: none;
 }
+*/
