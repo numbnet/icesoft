@@ -40,11 +40,13 @@ import javax.faces.event.PreDestroyCustomScopeEvent;
 import javax.faces.event.ScopeContext;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +61,15 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
     public static final String ScopeName = "window";
     private static final Logger log = Logger.getLogger(WindowScopeManager.class.getName());
     private static final String seed = Integer.toString(new Random().nextInt(1000), 36);
-    private static final int SameWindowMaxDelay = 500;
+    private static SharedMapLookupStrategy sharedMapLookupStrategy;
+
+    static {
+        try {
+            sharedMapLookupStrategy = new LiferayOriginalRequestWindowScopeSharing();
+        } catch (Exception e) {
+            sharedMapLookupStrategy = new TimeBasedHeuristicWindowScopeSharing();
+        }
+    }
 
     private ResourceHandler wrapped;
 
@@ -68,8 +78,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
         //insane bit of code to call addPhaseListener(this)
         //if determineWindowID can run lazily, this PhaseListener approach
         //may not be necessary
-        LifecycleFactory factory = (LifecycleFactory)
-                FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+        LifecycleFactory factory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
         Lifecycle lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
         lifecycle.addPhaseListener(this);
     }
@@ -160,17 +169,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
 
         Map requestMap = externalContext.getRequestMap();
         if (id == null) {
-            ScopeMap scopeMap = null;
-
-            //use scope map that was created a very short time ago, hopefully during the same page load
-            Iterator i = state.windowScopedMaps.values().iterator();
-            while (i.hasNext()) {
-                ScopeMap sm = (ScopeMap) i.next();
-                if (sm.activateTimestamp + SameWindowMaxDelay > System.currentTimeMillis()) {
-                    scopeMap = sm;
-                    break;
-                }
-            }
+            ScopeMap scopeMap = sharedMapLookupStrategy.lookup(context);
 
             if (scopeMap == null) {
                 if (state.disposedWindowScopedMaps.isEmpty()) {
@@ -212,7 +211,6 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
 
     public static synchronized void disposeWindow(FacesContext context, String id) {
         State state = getState(context);
-        //TODO remove Servlet dependency
         ScopeMap scopeMap = (ScopeMap) state.windowScopedMaps.get(id);
         //verify if the ScopeMap is present
         //it's possible to have dispose-window request arriving after an application restart or re-deploy
@@ -285,6 +283,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
                 facesContext.getApplication().publishEvent(facesContext, PostConstructCustomScopeEvent.class, context);
             } finally {
                 facesContext.setProcessingEvents(processingEvents);
+                sharedMapLookupStrategy.associate(facesContext, id);
             }
         }
 
@@ -376,6 +375,74 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
             windowScopedMaps = (HashMap) in.readObject();
             disposedWindowScopedMaps = (LinkedList) in.readObject();
             expirationPeriod = in.readLong();
+        }
+    }
+
+    private static interface SharedMapLookupStrategy {
+        ScopeMap lookup(FacesContext context);
+
+        void associate(FacesContext context, String windowID);
+    }
+
+    private static class TimeBasedHeuristicWindowScopeSharing implements SharedMapLookupStrategy {
+        private static final int SameWindowMaxDelay = 500;
+
+        public ScopeMap lookup(FacesContext context) {
+            State state = getState(context);
+            Iterator i = state.windowScopedMaps.values().iterator();
+            while (i.hasNext()) {
+                ScopeMap sm = (ScopeMap) i.next();
+                if (sm.activateTimestamp + SameWindowMaxDelay > System.currentTimeMillis()) {
+                    return sm;
+                }
+            }
+
+            return null;
+        }
+
+        public void associate(FacesContext context, String windowID) {
+            //cannot share the windowID
+        }
+    }
+
+    private static class LiferayOriginalRequestWindowScopeSharing implements SharedMapLookupStrategy {
+        private Class PortalUtilClass;
+        private Method GetHttpServletRequest;
+        private Method GetOriginalServletRequest;
+
+        private LiferayOriginalRequestWindowScopeSharing() throws ClassNotFoundException, NoSuchMethodException {
+            PortalUtilClass = Class.forName("com.liferay.portal.util.PortalUtil");
+            GetHttpServletRequest = PortalUtilClass.getDeclaredMethod("getHttpServletRequest", javax.portlet.PortletRequest.class);
+            GetOriginalServletRequest = PortalUtilClass.getDeclaredMethod("getOriginalServletRequest", HttpServletRequest.class);
+            ;
+        }
+
+        public ScopeMap lookup(FacesContext context) {
+            State state = getState(context);
+            ExternalContext externalContext = context.getExternalContext();
+            HttpServletRequest originalRequest = getOriginalServletRequest(externalContext);
+            String sharedWindowID = (String) originalRequest.getAttribute(WindowScopeManager.class.getName());
+            return sharedWindowID == null ? null : (ScopeMap) state.windowScopedMaps.get(sharedWindowID);
+        }
+
+        public void associate(FacesContext context, String windowID) {
+            ExternalContext externalContext = context.getExternalContext();
+            HttpServletRequest originalRequest = getOriginalServletRequest(externalContext);
+            originalRequest.setAttribute(WindowScopeManager.class.getName(), windowID);
+
+        }
+
+        private HttpServletRequest getOriginalServletRequest(ExternalContext externalContext) {
+            try {
+                javax.portlet.PortletRequest portletRequest = (javax.portlet.PortletRequest) externalContext.getRequest();
+                HttpServletRequest httpPortletRequest = (HttpServletRequest) GetHttpServletRequest.invoke(PortalUtilClass, portletRequest);
+                HttpServletRequest originalRequest = (HttpServletRequest) GetOriginalServletRequest.invoke(PortalUtilClass, httpPortletRequest);
+                return originalRequest;
+            } catch (InvocationTargetException e) {
+                return null;
+            } catch (IllegalAccessException e) {
+                return null;
+            }
         }
     }
 }
