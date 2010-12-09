@@ -41,10 +41,10 @@ public class CheckboxButtonMeta extends UISelectBooleanMeta {
     		" according to labelPosition parameter")
     private String label;
     
-    @Property(defaultValue="left",
+/*    @Property(defaultValue="left",
     		tlddoc="Default is left for rime theme. Other possibility is \"on\" " +
     				"for sam skin.")
-    private String labelPosition;
+    private String labelPosition; */
 
 	@Property(defaultValue="false",
 			tlddoc= "When singleSubmit is true, changing the value of this component" +
