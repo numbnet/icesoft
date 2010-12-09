@@ -1,18 +1,107 @@
+/*
+Copyright (c) 2008, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 2.6.0
+*/
 
-.ice-skin-rime .ice-linkbutton .yui-link-button a {
-    text-decoration: none;
-    font-weight: normal;
-    color: #333333;
+.ice-skin-rime .ice-linkbutton .yui-button{
+	border-width:1px 0;
+	border-style:solid;
+	border-color:#808080;
+	background-image: url(background.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+	margin:auto .25em;}
+	
+.ice-skin-rime .ice-linkbutton .yui-button .first-child{
+	border-width:0 1px;
+	border-style:solid;
+	border-color:#808080;
+	margin:0 -1px;
+	*position:relative;
+	*left:-1px;
+	_margin:0;
+	_position:static;
+	}
+	
+.ice-skin-rime .ice-linkbutton .yui-button button,.ice-skin-rime .ice-linkbutton .yui-button a{
+	padding:0 10px;
+	background-image: url(background.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	font-size:93%;
+	line-height:2;
+	*line-height:1.7;
+	min-height:2em;
+	*min-height:auto;
+	color:#000;
+	border-width:1px 0;
+	border-style:solid;
+	border-color:#808080;
+	 
+	background-repeat: repeat-x;
+	margin:auto .25em;
+	}
+	
+.ice-skin-rime .ice-linkbutton .yui-button a{
+	*line-height:1.875;
+	*padding-bottom:1px;
+	}
+	
+.ice-skin-rime .ice-linkbutton .yui-button-focus{
+	border-color:#7D98B8;
+ 	background-image: url(background-focus.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;   }
+	
+.ice-skin-rime .ice-linkbutton .yui-button-focus .first-child{
+	border-color:#7D98B8;}
+	
+.ice-skin-rime .ice-linkbutton .yui-button-focus button,.ice-skin-rime .ice-linkbutton .yui-button-focus a{
+	color:#000;}
+	
+.ice-skin-rime .ice-linkbutton .yui-button-hover{
+	border-color:#7D98B8;
+ 	background-image: url(background-focus.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;   }
+	
+.ice-skin-rime .ice-linkbutton .yui-button-hover .first-child{
+	border-color:#7D98B8;}
+	
+.ice-skin-rime .ice-linkbutton .yui-button-hover button,.ice-skin-rime .ice-linkbutton .yui-button-hover a{
+	color:#000;
+	border-color:#7D98B8;
+ 	background-image: url(background-focus.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;   }
+	
+.ice-skin-rime .ice-linkbutton .yui-button-active{
+	border-color:#7D98B8;
+  	background-image: url(background-active.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;   
 }
-
-.ice-skin-rime .ice-linkbutton .yui-button a {
-    text-decoration: none;
-    font-weight: normal;
-    color: #333333;
+	
+.ice-skin-rime .ice-linkbutton .yui-button-active .first-child{
+	border-color:#7D98B8;}
+	
+.ice-skin-rime .ice-linkbutton .yui-button-active button,.ice-skin-rime .ice-linkbutton .yui-button-active a{
+	color:#000;
+	border-color:#7D98B8;
+  	background-image: url(background-active.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+	 }
+	
+.ice-skin-rime .ice-linkbutton .yui-button-disabled{
+	border-color:#ccc;
+	background-image: url(background-disabled.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x; 	
 }
-
-.ice-skin-rime .ice-linkbutton .yui-button a:hover {
-    text-decoration: underline;
-    font-weight: normal;
-    color: #333333;
-}
+	
+.ice-skin-rime .ice-linkbutton .yui-button-disabled .first-child{
+	border-color:#ccc;
+	background-image: url(background-disabled.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x; 	
+	}
+	
+.ice-skin-rime .ice-linkbutton .yui-button-disabled button,.ice-skin-rime .ice-linkbutton .yui-button-disabled a{
+	color:#A6A6A6;
+	cursor:default;
+	background-image: url(background-disabled.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x; 	
+	}
