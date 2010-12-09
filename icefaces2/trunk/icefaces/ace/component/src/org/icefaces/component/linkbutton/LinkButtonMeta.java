@@ -51,7 +51,7 @@ public class LinkButtonMeta extends UICommandMeta {
     private boolean disabled;
 
     @Property (tlddoc="This property defines the link text visible in the component", implementation=Implementation.GENERATE,
-    defaultValue="a defaultString")
+    defaultValue="Default Anchor Label")
     private Object value; 
 
     @Property (defaultValue="0", tlddoc="tabindex of the component")
