@@ -28,17 +28,9 @@
     <property file="./build.properties"/>
     <import file="../build/common.xml"/>
 
-    <patternset id="application.lib.compile">
-        <include name="*.jar"/>
-    </patternset>
-
-    <patternset id="application.lib.distribute">
-        <include name="*.jar"/>
-    </patternset>
-
     <property name="portlet.dir" location="./portlets"/>
     <property name="portlet.build.dir" location="./portlets/build"/>
-    <property name="portlet.lib.dir" location="${icefaces.lib.dir}/portlets"/>
+    <property name="portlet.lib.dir" location="${lib.dir}/portlets"/>
 
     <patternset id="portlet.jars">
         <include name="jsf*.jar"/>
