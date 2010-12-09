@@ -50,6 +50,8 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import javax.annotation.PreDestroy;
+
 import javax.faces.component.UIData;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -743,5 +745,15 @@ public class Participant extends ParticipantInfo  {
 		    return null;
 		}
 	}
+
+    @PreDestroy
+    public void dispose() throws Exception {
+        if (log.isDebugEnabled()) {
+            log.debug("Participant " + firstName + " Disposed - logging out");
+        }
+        if (loggedIn) {
+            logout();
+        }
+    }
 
 }
