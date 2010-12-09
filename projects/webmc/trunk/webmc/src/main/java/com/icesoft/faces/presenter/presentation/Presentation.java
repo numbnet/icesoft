@@ -33,6 +33,7 @@
 package com.icesoft.faces.presenter.presentation;
 
 import org.icefaces.application.PushRenderer;
+import org.icefaces.application.PortableRenderer;
 //import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.presenter.document.UnknownPresentationDocument;
 import com.icesoft.faces.presenter.document.ZipPresentationDocument;
@@ -71,6 +72,7 @@ public class Presentation extends PresentationInfo {
     private File parentFile;
     private PresentationManagerBean manager;
     private SlideshowTimerBean stimer = new SlideshowTimerBean(this);
+    private PortableRenderer renderer = PushRenderer.getPortableRenderer();
     boolean usingPointer = false;
     private int pointerX = 0;
     private int pointerY = 0;
@@ -367,7 +369,6 @@ public class Presentation extends PresentationInfo {
      */
     public void addParticipant(Participant participant) {
         PushRenderer.addCurrentSession(name);
-
         if (log.isInfoEnabled()) {
             log.info("Added participant " + participant.getFirstName() + " to " + name );
         }
@@ -744,7 +745,7 @@ System.out.println("file upload not supported yet");
      * Convenience method to safely call request render
      */
     public void requestOnDemandRender() {
-        PushRenderer.render(name);
+        renderer.render(name);
     }
 
 }
