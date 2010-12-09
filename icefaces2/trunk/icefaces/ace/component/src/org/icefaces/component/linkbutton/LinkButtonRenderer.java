@@ -91,7 +91,13 @@ public class LinkButtonRenderer extends Renderer {
                 temp += "?" + Utils.asParameterString( uiParamChildren );
             }
             writer.writeAttribute(HTML.HREF_ATTR, temp, null );
-        }
+        } else {
+            // if there's no href, install a default key handler to catch the enter key
+            writer.writeAttribute(HTML.ONKEYDOWN_ATTR,
+                              "return ice.component.linkButton.keyDownHandler(event, '" + clientId + "' );",
+                              null);
+        } 
+
         if ((temp  = linkButton.getHrefLang()) != null) {
             writer.writeAttribute(HTML.HREFLANG_ATTR, temp , null );
         }
@@ -128,11 +134,7 @@ public class LinkButtonRenderer extends Renderer {
         if (doAction && uiParamChildren != null) {
             jBuild.entry("postParameters",  Utils.asStringArray(uiParamChildren) );
         }
-        String style = linkButton.getStyle();
-        if (style != null && style.trim().length() > 0) {
-            jBuild.entry("style", style);
-        }
-
+       
         String params = "'" + clientId + "'," +
                          jsProps
                         + "," + jBuild.endMap().toString();
