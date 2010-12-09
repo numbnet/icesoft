@@ -365,11 +365,12 @@ public class ComponentArtifact extends Artifact{
 				defaultValue = GeneratorContext.PrimitiveDefaults.get( field.getType().toString().trim() );
 			}
 
-			if ((internalType.indexOf("String") > -1 && (defaultValue != null ) && (!"null".equals(defaultValue))))  {
+            boolean needsQuotes = ((internalType.indexOf("String") > -1) || (internalType.indexOf("Object") > -1));
+			if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
 				writer.append("\"");
 			}
 			writer.append( defaultValue );
-			if ((internalType.indexOf("String") > -1 && (defaultValue != null ) && (!"null".equals(defaultValue))))  {
+			if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
 				writer.append("\"");
 			}
 			writer.append(";");
