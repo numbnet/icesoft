@@ -21,6 +21,6 @@
 
 <project name="chat" default="portletize">
     
-    <import file="../common.xml"/>
+    <import file="../build/common.xml"/>
             
 </project>

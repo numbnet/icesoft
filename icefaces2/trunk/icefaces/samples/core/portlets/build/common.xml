@@ -21,10 +21,9 @@
 
 <project name="portlets-common" default="war.basic">
     
-    <property name="icefaces.base.dir" location="../../.."/>
+    <property name="icefaces.base.dir" location="../../../.."/>
     <property name="portlet.lib.dir" location="${icefaces.base.dir}/lib/portlets"/>
-    <property file="../../build/build.properties"/>
-    <import file="../build/common.xml"/>
+    <import file="../../build/common.xml"/>
         
     <patternset id="portlet.jars">
         <include name="jsf*.jar"/>
