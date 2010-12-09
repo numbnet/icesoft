@@ -157,7 +157,9 @@ if (!window.ice.icefaces) {
                 try {
                     //dispose is the final operation on this page, so no harm
                     //in modifying the action to remove CDI conversation id
-                    form.action = form.action.replace(/(\?|&)cid=[0-9]+/, "$1");
+                    var encodedURLElement = form['javax.faces.encodedURL'];
+                    var url = encodedURLElement ? encodedURLElement.value : form.action;
+                    form.action = url.replace(/(\?|&)cid=[0-9]+/, "$1");
                     debug(logger, 'dispose window and associated views ' + viewIDs);
                     postSynchronously(client, form.action, function(query) {
                         addNameValue(query, 'ice.submit.type', 'ice.dispose.window');
@@ -269,7 +271,7 @@ if (!window.ice.icefaces) {
             function submitForm(ev) {
                 //need to investigate why $event did not provide type
                 var eType;
-                if (window.event)  {
+                if (window.event) {
                     eType = window.event.type;
                 } else {
                     eType = ev.type;
@@ -278,7 +280,7 @@ if (!window.ice.icefaces) {
                 var element = triggeredBy(e);
 
                 var elementType = element.type;
-                if (!elementType)  {
+                if (!elementType) {
                     return;
                 }
                 elementType = toLowerCase(elementType);
@@ -286,27 +288,27 @@ if (!window.ice.icefaces) {
                 if (elementType == 'submit') {
                     return;
                 }
-                if ((null == element.id) || ("" == element.id) )  {
+                if ((null == element.id) || ("" == element.id)) {
                     return;
-                } 
+                }
 
-                var isText = ( (elementType == "text") || 
-                               (elementType == "password") || 
-                               (elementType == "textarea") );
-                if (isText && (eType == "click"))  {
+                var isText = ( (elementType == "text") ||
+                        (elementType == "password") ||
+                        (elementType == "textarea") );
+                if (isText && (eType == "click")) {
                     //click events should not trigger text box submit
                     return;
                 }
 
                 if ("select-one" == elementType) {
-                    if (element.selectedIndex == element.previousSelectedIndex)  {
+                    if (element.selectedIndex == element.previousSelectedIndex) {
                         //ignore clicks that do not change state
                         return;
                     } else {
                         element.previousSelectedIndex = element.selectedIndex;
                     }
                 }
-    
+
                 ice.setFocus(null);
                 ice.se(e, element);
             }
