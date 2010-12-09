@@ -50,9 +50,9 @@ public class LinkButtonMeta extends UICommandMeta {
     @Property (defaultValue="false", tlddoc="If true, disables the YUI component on the page. Currently not supported.")
     private boolean disabled;
 
-    @Property (tlddoc="This property defines the link text visible in the component",
-               defaultValue="Undefined link text" )
-    private String value; 
+    @Property (tlddoc="This property defines the link text visible in the component", implementation=Implementation.GENERATE,
+    defaultValue="a defaultString")
+    private Object value; 
 
     @Property (defaultValue="0", tlddoc="tabindex of the component")
     private int tabindex;
