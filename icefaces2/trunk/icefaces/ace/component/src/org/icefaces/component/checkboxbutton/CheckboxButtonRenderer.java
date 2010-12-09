@@ -65,7 +65,7 @@ public class CheckboxButtonRenderer extends Renderer {
              yuiBaseClass +=  " " + String.valueOf(styleClass);
         }
 		writer.writeAttribute(HTML.STYLE_CLASS_ATTR, yuiBaseClass, null);
-//		writer.writeAttribute(HTML.CLASS_ATTR, "yui-button yui-checkboxButton-button", null);
+
         String style = checkbox.getStyle();
         if (style != null && style.trim().length() > 0) {
             writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
@@ -74,18 +74,18 @@ public class CheckboxButtonRenderer extends Renderer {
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
 		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
 	 	writer.writeAttribute(HTML.ID_ATTR, clientId+"_s2", null);
-	 	//labelling  should be either a label or an image
+	 	//labelling  should be label images are skinned
 
 		String label=this.findCheckboxLabel(checkbox);
-		String labelPosition = this.findCheckboxLabelPosition(checkbox);
+
 			
 			// should be either a label or an image as a minimum
-		if (labelPosition.equals("left")){
+/*
 			writer.startElement(HTML.LABEL_ELEM, uiComponent);
     		writer.writeAttribute(HTML.FOR_ATTR, clientId+"_span-button", null );
             writer.writeText(label,null);
-	   		writer.endElement("label");		
-		} 	
+	   		writer.endElement("label");		*/
+	
 	 	
 		// button element
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
@@ -100,7 +100,7 @@ public class CheckboxButtonRenderer extends Renderer {
 		String clientId = uiComponent.getClientId(facesContext);
 		CheckboxButton checkbox = (CheckboxButton) uiComponent;
  		String label=this.findCheckboxLabel(checkbox);
-		String labelPosition = this.findCheckboxLabelPosition(checkbox);
+
         writer.endElement(HTML.BUTTON_ELEM);
 		writer.endElement(HTML.SPAN_ELEM);  
 	    
@@ -120,22 +120,14 @@ public class CheckboxButtonRenderer extends Renderer {
 	    boolean isChecked = this.isChecked(boxValue);
         String builder="";
 	    JSONBuilder.create().beginMap().entry("nothing", label).toString();
-	    if (labelPosition.equals("on")){
+
 	        builder = JSONBuilder.create().beginMap().
 	        entry("type", "checkbox").
 	        entry("checked", isChecked).
             entry("disabled", checkbox.isDisabled()).
             entry("tabindex", checkbox.getTabindex()).
 	        entry("label", label).endMap().toString();
-	    }
-	    else {
-	        builder = JSONBuilder.create().beginMap().
-	        entry("type", "checkbox").
-	        entry("checked", isChecked).
-            entry("disabled", checkbox.isDisabled()).
-            entry("tabindex", checkbox.getTabindex()).
-	        entry("label", "").endMap().toString();  
-	    }
+	
 
         JSONBuilder jBuild = JSONBuilder.create().
            beginMap().
@@ -165,14 +157,7 @@ public class CheckboxButtonRenderer extends Renderer {
 		}
 		return label;
     }
-    private String findCheckboxLabelPosition(CheckboxButton checkbox){
-    	String labelPosition="";
-        String checkLabelPos = checkbox.getLabelPosition();
-		if (null!=checkLabelPos && !checkLabelPos.equals("")){
-			labelPosition=checkLabelPos.trim().toLowerCase();
-		}
-		return labelPosition;
-    }
+ 
  
     /**
      * support similar return values as jsf component
