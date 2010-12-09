@@ -26,6 +26,8 @@ import javax.faces.event.ActionEvent;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -36,7 +38,7 @@ import java.util.Map;
  */
 @ManagedBean(name = "navigation")
 @SessionScoped
-public class NavigationBean {
+public class NavigationBean implements Serializable{
 
     private boolean extendedRender = false;
     private boolean customRender = true;
