@@ -2,17 +2,18 @@ package org.icefaces.calendar;
 
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
+import java.io.Serializable;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
 @ManagedBean
 @SessionScoped
-public class CalendarBean {
+public class CalendarBean implements Serializable {
     private Date selectedDate;
     private boolean renderAsPopup;
     private boolean renderInputField;
-    private boolean singleSubmit;
+    private boolean singleSubmit = false;
     private String pattern = "MMM/dd/yyyy hh:mm a";
 
 //    public CalendarBean() throws ParseException {
