@@ -44,7 +44,7 @@
     </target>
 
     <target name="test.compile" depends="test.pre.compile" description="compile ICEfaces 2.0 test classes">
-        <javac srcdir="${test.dir}" destdir="${test.classes.dir}">
+        <javac srcdir="${test.dir}" destdir="${test.classes.dir}" includeantruntime="false">
             <classpath>
                 <fileset dir="${lib.dir}">
                     <patternset refid="lib.compile"/>

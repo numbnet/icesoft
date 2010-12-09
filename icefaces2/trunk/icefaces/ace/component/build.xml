@@ -97,19 +97,19 @@
   </target>
   
   <target name="compile-base">
-    <javac srcdir="${build}/generated/base" destdir="${exploded}" debug="true" verbose="true">
+    <javac srcdir="${build}/generated/base" destdir="${exploded}" debug="true" verbose="true" includeantruntime="false">
         <classpath refid="compile.run.classpath"/>
     </javac>
   </target>
   
   <target name="compile-manual">
-    <javac srcdir="${src}" destdir="${build}/exploded" debug="true" excludes="**/*Meta.java" verbose="true" failonerror="true">
+    <javac srcdir="${src}" destdir="${build}/exploded" debug="true" excludes="**/*Meta.java" verbose="true" failonerror="true" includeantruntime="false">
     	<classpath refid="compile.run.classpath"/>
     </javac>  
   </target>
   
   <target name="compile-support">
-    <javac srcdir="${build}/generated/support" destdir="${exploded}" debug="true" verbose="true">
+    <javac srcdir="${build}/generated/support" destdir="${exploded}" debug="true" verbose="true" includeantruntime="false">
         <classpath refid="compile.run.classpath"/>
     </javac> 
   </target>
@@ -129,7 +129,7 @@
     
   <target  name="compile-meta">
     <!-- Add these to javac if getting funky compilation errors: optimize="false" verbose="true" -->
-    <javac srcdir="${src}" destdir="${build}/meta" debug="true" includes="**/*Meta.java">
+    <javac srcdir="${src}" destdir="${build}/meta" debug="true" includes="**/*Meta.java" includeantruntime="false">
         <classpath refid="compile.run.classpath"/>
     </javac>   
   </target>
