@@ -193,6 +193,7 @@
 
     <target name="clean">
         <delete dir="${build.dir}"/>
+        <delete file="src/main/resources/META-INF/icefaces.taglib.xml"/>
         <delete dir="${dist.dir}"/>
     </target>
 
