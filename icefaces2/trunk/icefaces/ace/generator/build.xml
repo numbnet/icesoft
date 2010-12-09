@@ -40,8 +40,8 @@
 
     <echo message="Compiling generator and code"/>
    <!-- compile generator code -->
-   <javac srcdir="${src}" destdir="${build}" debug="true">
-   <classpath refid="compile.run.classpath"/>
+   <javac srcdir="${src}" destdir="${build}" debug="true" includeantruntime="false">
+       <classpath refid="compile.run.classpath"/>
    </javac>    
   </target>
 	

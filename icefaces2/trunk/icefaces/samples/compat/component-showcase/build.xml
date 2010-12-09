@@ -48,6 +48,7 @@
 
     <target name="clean">
         <delete dir="${build.dir}"/>
+        <delete file="${samples.dist.dir}/${ant.project.name}.war"/>
         <delete dir="${portlet.build.dir}"/>
     </target>
 

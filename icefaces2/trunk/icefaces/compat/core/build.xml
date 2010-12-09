@@ -65,7 +65,8 @@
                destdir="${classes.dir}"
                source="1.5"
                target="1.5"
-               debug="true">
+               debug="true"
+               includeantruntime="false">
             <classpath>
                 <fileset dir="${lib.dir}">
                     <patternset refid="lib.compile"/>

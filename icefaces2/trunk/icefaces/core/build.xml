@@ -43,6 +43,7 @@
 
     <target name="clean">
         <delete dir="${build.dir}"/>
+        <delete file="${java.dir}/${product.info}"/>
     </target>
 
     <target name="pre.compile" description="pre-compilation tasks">
@@ -80,7 +81,8 @@
                destdir="${classes.dir}"
                source="1.5"
                target="1.5"
-               debug="true">
+               debug="true"
+               includeantruntime="false">
             <classpath>
                 <fileset dir="${lib.dir}">
                     <patternset refid="lib.compile"/>

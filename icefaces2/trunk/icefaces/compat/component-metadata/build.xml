@@ -72,7 +72,7 @@
         <replace file="src/main/java/com/icesoft/metadata/generators/TLDGenerator.java">
             <replacefilter token="@tlib-version@" value="${project.version}"/>
         </replace>
-        <javac destdir="${maven.build.output}" excludes="**/package.html" debug="true" deprecation="true" optimize="false">
+        <javac destdir="${maven.build.output}" excludes="**/package.html" debug="true" deprecation="true" optimize="false" includeantruntime="false">
             <src>
                 <pathelement location="src/main/java" />
             </src>
@@ -137,7 +137,7 @@
     
     <target name="compile-tests" depends="junit-present, compile" description="Compile the test code" if="junit.present">
         <mkdir dir="${maven.test.output}" />
-        <javac destdir="${maven.test.output}" failonerror="true" excludes="**/package.html" debug="true" deprecation="true" optimize="false">
+        <javac destdir="${maven.test.output}" failonerror="true" excludes="**/package.html" debug="true" deprecation="true" optimize="false" includeantruntime="false">
             <src>
                 <pathelement location="src/test/java" />
             </src>

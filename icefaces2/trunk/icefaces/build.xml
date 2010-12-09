@@ -66,6 +66,9 @@
                 <exclude name="**/maven2/build.xml"/>
 		</fileset>
         </subant>
+        <subant target="allclean">
+            <fileset file="samples/build.xml" />
+        </subant>
         <delete file="lib/icefaces.jar"/>
         <delete file="lib/icefaces-compat.jar"/>
         <delete file="lib/icefaces-ace.jar"/>
