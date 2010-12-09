@@ -1,8 +1,13 @@
 package org.icefaces.component.datetimeentry;
 
+import org.icefaces.impl.util.Util;
+
+import javax.el.ValueExpression;
+import javax.faces.component.StateHelper;
 import javax.faces.convert.DateTimeConverter;
 import javax.faces.convert.Converter;
 import javax.faces.context.FacesContext;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.Locale;
 import java.text.DateFormat;
@@ -97,5 +102,66 @@ public class DateTimeEntry extends DateTimeEntryBase {
         else if ("long".equals(name))   return DateFormat.LONG;
         else if ("full".equals(name))   return DateFormat.FULL;
         else                            return DateFormat.DEFAULT;
+    }
+
+    @Override
+    public boolean isSingleSubmit() {
+        System.out.println("DateTimeEntry.isSingleSubmit");
+        java.lang.Boolean retVal = false;
+        ValueExpression ve = getValueExpression( PropertyKeys.singleSubmit.name() );
+        if (ve != null) {
+            Object o = ve.getValue( getFacesContext().getELContext() );
+            if (o != null) {
+                System.out.println("1");
+                retVal = (java.lang.Boolean) o;
+            }
+        } else {
+            StateHelper sh = getStateHelper();
+            String valuesKey = PropertyKeys.singleSubmit.name() + "_rowValues";
+            Map clientValues = (Map) sh.get(valuesKey);
+            boolean mapNoValue = false;
+            if (clientValues != null) {
+                String clientId = getClientId();
+                if (clientValues.containsKey( clientId ) ) {
+                    System.out.println("2");
+                    retVal = (java.lang.Boolean) clientValues.get(clientId);
+                } else {
+                    mapNoValue=true;
+                }
+            }
+            if (mapNoValue || clientValues == null ) {
+                String defaultKey = PropertyKeys.singleSubmit.name() + "_defaultValues";
+                Map defaultValues = (Map) sh.get(defaultKey);
+                if (defaultValues != null) {
+                    if (defaultValues.containsKey("defValue" )) {
+                        System.out.println("3");
+                        retVal = (java.lang.Boolean) defaultValues.get("defValue");
+                    }
+                }
+            }
+        }
+        return retVal;
+/*
+        ValueExpression ve = getValueExpression(PropertyKeys.singleSubmit.name());
+        if (ve != null) {
+            Object o = ve.getValue(getFacesContext().getELContext());
+            if (o != null) {
+                System.out.println("super 1");
+                return super.isSingleSubmit();
+            }
+        }
+        StateHelper sh = getStateHelper();
+        String valuesKey = "singleSubmit_rowValues";
+        Map clientValues = (Map) sh.get(valuesKey);
+        if (clientValues != null) {
+            String clientId = getClientId();
+            if (clientValues.containsKey(clientId)) {
+                System.out.println("super 2");
+                return super.isSingleSubmit();
+            }
+        }
+        System.out.println("withinSingleSubmit");
+        return Util.withinSingleSubmit(this);
+*/
     }
 }
