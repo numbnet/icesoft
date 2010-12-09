@@ -122,7 +122,9 @@ public class BridgeSetup implements SystemEventListener {
                     UIOutput externalScript = new GenericScriptWriter(
                             es.scriptURL() + value);
                     externalScript.setTransient(true);
-                    externalScript.setId("external-script-" + i);
+                    String externalScriptId = "external-script-" + i;
+                    externalScript.setId(externalScriptId);
+                    externalScript.getAttributes().put("name", externalScriptId);
                     root.addComponentResource(context, externalScript, "head");
                 }
             }
