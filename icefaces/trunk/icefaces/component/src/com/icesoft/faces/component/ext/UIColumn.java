@@ -57,7 +57,8 @@ public class UIColumn extends javax.faces.component.UIColumn {
     private String style = null;
     private String styleClass = null;
     private String groupOn = null;
-    
+    private Boolean rowIdentifier;
+
     // Temporary state, within a single render, for grouping
     private transient String previousGroupValue = null;
     private transient int groupCount;
@@ -129,13 +130,14 @@ public class UIColumn extends javax.faces.component.UIColumn {
         this.rowspan = (String)_values[6];
         this.styleClass = (String)_values[7];
         this.colspan = (String)_values[8];
+        this.rowIdentifier = (Boolean) _values[9];
     }
 
     /**
      * <p>Save the state of this component.</p>
      */
     public Object saveState(FacesContext _context) {
-        Object _values[] = new Object[9];
+        Object _values[] = new Object[10];
         _values[0] = super.saveState(_context);
         _values[1] = this.binding;
         _values[2] = this.id;
@@ -145,6 +147,7 @@ public class UIColumn extends javax.faces.component.UIColumn {
         _values[6] = this.rowspan;
         _values[7] = this.styleClass;
         _values[8] = this.colspan;
+        _values[9] = this.rowIdentifier;
         return _values;
     }
 
@@ -268,5 +271,18 @@ public class UIColumn extends javax.faces.component.UIColumn {
     public void resetGroupState() {
         previousGroupValue = null;
         groupCount = 1;
+    }
+
+    public boolean isRowIdentifier() {
+        if (rowIdentifier != null) {
+            return rowIdentifier.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("rowIdentifier");
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : false;
+    }
+
+    public void setRowIdentifier(boolean rowIdentifier) {
+        this.rowIdentifier = new Boolean(rowIdentifier);
     }
 }

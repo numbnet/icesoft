@@ -469,7 +469,7 @@ public class TableRenderer
             }
 
             th.setAttribute("class", styles);
-
+            th.setAttribute("scope", "col");
         } else {
             th.setAttribute("class",getFooterClass(htmlDataTable));
         }
@@ -856,6 +856,10 @@ public class TableRenderer
                             }
                         }
 
+                        Object isRowIdentifier = nextChild.getAttributes().get("rowIdentifier");
+                        if (((Boolean)isRowIdentifier).booleanValue()) {
+                            td.setAttribute("scope", "row");
+                        }
 
                         tr.appendChild(td);
                         // if column styles exist, then apply the appropriate one

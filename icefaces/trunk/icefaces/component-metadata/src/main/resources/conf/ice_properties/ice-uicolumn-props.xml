@@ -124,4 +124,17 @@
         </editor-class>
     </property-extension>
 </property>
-
+  <property>
+  	<description>
+          <![CDATA[
+  			Whether or not the column will render each of its &#60;td&#62; elements with the following scope attribute:
+  			&#60;td scope="row"&#62;. Default is false.
+        ]]>
+  	</description>
+    <property-name>rowIdentifier</property-name>
+	<property-class>boolean</property-class>
+	<property-extension>
+		<category>ADVANCED</category>
+	    <default-value>false</default-value> 
+	</property-extension>
+  </property>
