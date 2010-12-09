@@ -41,7 +41,6 @@ ice.component.linkButton = {
 
     // Click handler visible from Renderer code 
     clickHandler : function (e, clientId) {
-
         var JSContext = ice.component.getJSContext(clientId);
         var singleSubmit = JSContext.getJSFProps().singleSubmit;
         var doAction = JSContext.getJSFProps().doAction;
@@ -58,9 +57,41 @@ ice.component.linkButton = {
                 }
             }
         };
-
         if (singleSubmit) {
+            YAHOO.log("Single Submit on element: " + divRoot);
+            ice.se(e, divRoot, params );
+        } else {
+            YAHOO.log("Full Submit on element: " + divRoot);
+            ice.s(e, divRoot, params );
+        }
+        // If there are actionListeners, don't do default behaviour
+        if (doAction) {
+            return false;
+        }
+    },
 
+    // keyDown handler visible from Renderer code
+    keyDownHandler : function (e, clientId) {
+        if (e.keyCode != 13) {
+            return true;
+        }
+        var JSContext = ice.component.getJSContext(clientId);
+        var singleSubmit = JSContext.getJSFProps().singleSubmit;
+        var doAction = JSContext.getJSFProps().doAction;
+        YAHOO.log("--> Button.doAction = " + doAction);
+
+        var divRoot = document.getElementById(clientId);
+
+        var postParameters = JSContext.getJSFProps().postParameters;
+        var params = function(parameter) {
+            if (postParameters != null) {
+                var argCount = postParameters.length / 2;
+                for (var idx =0; idx < argCount; idx ++ ) {
+                    parameter( postParameters[idx*2], postParameters[(idx*2)+1] );
+                }
+            }
+        };
+        if (singleSubmit) {
             YAHOO.log("Single Submit on element: " + divRoot);
             ice.se(e, divRoot, params );
         } else {
