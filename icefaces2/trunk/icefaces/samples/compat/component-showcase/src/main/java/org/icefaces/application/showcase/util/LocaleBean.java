@@ -32,6 +32,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -51,7 +52,7 @@ import javax.faces.component.UIViewRoot;
  */
 @ManagedBean(name= "localeBean")
 @SessionScoped
-public class LocaleBean {
+public class LocaleBean implements Serializable{
 
     private static final Log logger =
             LogFactory.getLog(LocaleBean.class);
