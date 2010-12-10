@@ -126,7 +126,7 @@ public class ScriptWriter {
 
     private static void writeScriptStart(ResponseWriter writer, UIComponent component) throws IOException {
         writer.startElement("span", component);
-        writer.writeAttribute("id", component.getId() + "_script", null);
+        writer.writeAttribute("id", component.getClientId() + "_script", null);
         writer.startElement("script", component);
     }
 
