@@ -55,9 +55,41 @@ public class TLDBuilder extends XMLBuilder{
         tag.appendChild(attribute);
         Element description = getDocument().createElement("description");
         String des = propertyValues.tlddoc;
+        boolean meaningfulDes = true;
         if ("null".endsWith(des)) {
         	des = "&nbsp;";
+            meaningfulDes = false;
+        } 
+
+        // ICE-6209 Append the default value to the description, if present
+        String defaultVal = propertyValues.defaultValue;
+        if (! "null".endsWith(defaultVal)) {
+        	des += (meaningfulDes) ? ", default Value = " : "default value = ";
+            des += defaultVal;
+            meaningfulDes = true;
         }
+
+        // ICE-6207 If no javadoc set/get property, then if a description, use that instead.
+        boolean meaningfullSet = true;
+        String javadocSet = propertyValues.javadocSet;
+        if ("null".endsWith(javadocSet)) {
+            if (meaningfulDes) {
+                javadocSet = des;
+            } else {
+                meaningfullSet = false;
+            } 
+        }
+
+        boolean meaningfullGet = true;
+        String javadocGet = propertyValues.javadocGet;
+        if ("null".endsWith(javadocGet)) {
+            if (meaningfulDes) {
+                javadocGet = des;
+            } else {
+                meaningfullGet = false;
+            }
+        }
+
         CDATASection descriptionCDATA = getDocument().createCDATASection(des);
         description.appendChild(descriptionCDATA);
         attribute.appendChild(description);
@@ -66,8 +98,11 @@ public class TLDBuilder extends XMLBuilder{
         addNode(attribute, "rtexprvalue", "false");
         addNode(attribute, "type", field.getType().getName());
 
-//
-    }
-    
-    
+        if (meaningfullSet) {
+            addNode(attribute, "javadocSet", javadocSet);
+        }
+        if (meaningfullGet) {
+            addNode(attribute, "javadocGet", javadocGet);
+        }
+    }       
 }
