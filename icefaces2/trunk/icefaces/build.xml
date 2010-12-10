@@ -121,6 +121,7 @@
 
         <subant target="world">
             <fileset dir="${bundle.dir.bin}" includes="build.xml"/>
+            <propertyset refid="build.properties"/>
         </subant>
 
         <!-- Create the JavaDocs for core, compat, and ace and move them to the docs directory -->
