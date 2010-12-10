@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
- 
 
 //import org.icefaces.component.annotation.PropertyTemplate; /* ### removed */
 import org.icefaces.generator.behavior.ActionSourceBehavior;
@@ -45,6 +46,12 @@ public class GeneratorContext{
         String ret = System.getProperty("generator.tld.doc.version");
         if (ret == null) {
             ret = "";
+        }
+        Pattern evalPattern = Pattern.compile( "([\\d\\.\\d]*)" );
+        Matcher searchMatcher = evalPattern.matcher( ret  );
+        if (searchMatcher.find() )  {
+            ret = searchMatcher.group();
+            System.out.println("Dewey build version = " + ret);
         }
         return ret;
     }
