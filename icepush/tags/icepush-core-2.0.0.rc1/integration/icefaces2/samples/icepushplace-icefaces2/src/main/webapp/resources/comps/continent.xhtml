@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+			  xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+		      xmlns:ice="http://www.icesoft.com/icefaces/component"
+              xmlns:composite="http://java.sun.com/jsf/composite">
+    <composite:interface>
+        <composite:attribute name="name" required="true"/>
+        <composite:attribute name="list" required="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <table cellspacing="0" cellpadding="0" style="width: 100%;">
+		<tbody>
+		    <tr>
+		        <td>
+		            <div class="regionPanel" style="width: 100%;">
+		                <div class="regionHeader">#{cc.attrs.name}</div>
+		            </div>
+		        </td>
+		    </tr>
+		    <tr><td>
+			    <h:panelGroup rendered="#{empty cc.attrs.list}">
+		            <table>
+		            <tbody>
+		                <tr><td>
+		                    No users on this continent.
+		                </td></tr>
+		            </tbody>
+		            </table>		    
+			    </h:panelGroup>
+			    <h:panelGroup rendered="#{!empty cc.attrs.list}">
+			    	<h:dataTable value="#{cc.attrs.list}" var="occupant">
+			    		<h:column>
+							<table>
+				            <tbody>
+				                <tr>
+				                    <td>
+				                    	<h:graphicImage library="images"
+				                    					name="mood-#{occupant.mood}.png"
+				                    					style="width: 26px; height: 29px;"/>
+				                    </td>
+				                    <td>
+				                    	#{occupant.name}
+				                    </td>
+				                    <h:panelGroup rendered="#{!empty occupant.technology}">
+					                    <td>
+					                    	using #{occupant.technology}
+					                    </td>
+				                    </h:panelGroup>
+				                    <td>
+				                    	thinks '#{occupant.comment}'
+				                    </td>
+				                    <h:panelGroup rendered="#{!empty occupant.messageIn}">
+				                    <td>
+				                    	and
+				                    </td>
+				                    <td>
+				                    	says '#{occupant.messageIn}'
+				                    </td>
+				                    </h:panelGroup>
+				                </tr>
+				            </tbody>
+				            </table>
+			    		</h:column>
+			    	</h:dataTable>
+			    </h:panelGroup>
+		    </td></tr>
+		</tbody>
+		</table>
+    </composite:implementation>
+</ui:component>
