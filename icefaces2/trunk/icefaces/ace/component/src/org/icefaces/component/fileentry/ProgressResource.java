@@ -38,27 +38,27 @@ public class ProgressResource extends Resource {
         responseHeaders.put("Pragma", "no-cache");//HTTP 1.0
         responseHeaders.put("Expires", "0");//prevents proxy caching
         
-System.out.println("PR.getResponseHeaders()  responseHeaders: " + responseHeaders);
+//System.out.println("PR.getResponseHeaders()  responseHeaders: " + responseHeaders);
         return responseHeaders;
     }
 
     public String getRequestPath() {
-System.out.println("PR.getRequestPath()  " + PushUtils.PROGRESS_PREFIX + uniqueIdentifier);
+//System.out.println("PR.getRequestPath()  " + PushUtils.PROGRESS_PREFIX + uniqueIdentifier);
         return PushUtils.PROGRESS_PREFIX + uniqueIdentifier;
     }
 
     public URL getURL() {
-System.out.println("PR.getURL()");
+//System.out.println("PR.getURL()");
         return null;
     }
 
     public boolean userAgentNeedsUpdate(FacesContext facesContext) {
-System.out.println("PR.userAgentNeedsUpdate()");
+//System.out.println("PR.userAgentNeedsUpdate()");
         return true;
     }
 
     public InputStream getInputStream() {
-System.out.println("PR.getInputStream()  progressInfo: " + progressInfo);
+//System.out.println("PR.getInputStream()  progressInfo: " + progressInfo);
         deltaGottenPushed--;
         if (progressInfo == null) {
             return null;
@@ -67,7 +67,7 @@ System.out.println("PR.getInputStream()  progressInfo: " + progressInfo);
             byte[] progressBytes = progressInfo.getBytes("UTF-8");
             return new ByteArrayInputStream(progressBytes);
         } catch(UnsupportedEncodingException e) {
-System.out.println("PR.getInputStream()  UnsupportedEncodingException: " + e);
+//System.out.println("PR.getInputStream()  UnsupportedEncodingException: " + e);
         }
         return null;
     }

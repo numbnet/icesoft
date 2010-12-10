@@ -48,11 +48,11 @@ public class ProgressListenerResourcePusher implements ProgressListener {
         if (pushResource == null || pushGroupName == null) {
             return false;
         }
-System.out.println("tryPush()  percent: " + percent);
+//System.out.println("tryPush()  percent: " + percent);
 
         //TODO Update resource contents
         int deltaGottenPushed = updateResourceContents(percent);
-System.out.println("deltaGottenPushed: " + deltaGottenPushed + "  lastDeltaGottenPushed: " + lastDeltaGottenPushed);
+//System.out.println("deltaGottenPushed: " + deltaGottenPushed + "  lastDeltaGottenPushed: " + lastDeltaGottenPushed);
         int localLastDeltaGottenPushed = lastDeltaGottenPushed;
         if (!force && deltaGottenPushed > 2 && deltaGottenPushed > localLastDeltaGottenPushed + 1) {
             lastDeltaGottenPushed = deltaGottenPushed;
@@ -62,7 +62,7 @@ System.out.println("deltaGottenPushed: " + deltaGottenPushed + "  lastDeltaGotte
         //POLL: Comment this section
         PushUtils.push(pushGroupName);
 
-System.out.println("tryPush()  Pushed progress update");
+//System.out.println("tryPush()  Pushed progress update");
         return true;
     }
 
@@ -93,7 +93,7 @@ System.out.println("tryPush()  Pushed progress update");
         }
         contents.endArray();
         contents.endMap();
-System.out.println("updateResourceContents()  contents: " + contents.toString());
+//System.out.println("updateResourceContents()  contents: " + contents.toString());
         return pushResource.updateProgressInfo(contents.toString());
     }
 }
