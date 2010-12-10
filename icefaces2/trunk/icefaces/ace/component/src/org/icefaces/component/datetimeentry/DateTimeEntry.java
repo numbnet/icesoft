@@ -1,5 +1,7 @@
 package org.icefaces.component.datetimeentry;
 
+import org.icefaces.component.utils.Utils;
+import org.icefaces.impl.util.Util;
 import javax.faces.convert.DateTimeConverter;
 import javax.faces.convert.Converter;
 import javax.faces.context.FacesContext;
@@ -97,5 +99,9 @@ public class DateTimeEntry extends DateTimeEntryBase {
         else if ("long".equals(name))   return DateFormat.LONG;
         else if ("full".equals(name))   return DateFormat.FULL;
         else                            return DateFormat.DEFAULT;
+    }
+
+    public boolean isSingleSubmit() {
+        return Utils.superValueIfSet(this, getStateHelper(), PropertyKeys.singleSubmit.name(), super.isSingleSubmit(), Util.withinSingleSubmit(this));
     }
 }

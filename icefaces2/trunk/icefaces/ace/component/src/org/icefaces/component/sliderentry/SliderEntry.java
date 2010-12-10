@@ -1,5 +1,8 @@
 package org.icefaces.component.sliderentry;
 
+import org.icefaces.component.utils.Utils;
+import org.icefaces.impl.util.Util;
+
 import java.io.IOException;
 
 import javax.el.ELException;
@@ -72,4 +75,7 @@ public class SliderEntry extends SliderEntryBase{
     	return thumbUrl;
     }
     
+    public boolean isSingleSubmit() {
+        return Utils.superValueIfSet(this, getStateHelper(), PropertyKeys.singleSubmit.name(), super.isSingleSubmit(), Util.withinSingleSubmit(this));
+    }
 }
