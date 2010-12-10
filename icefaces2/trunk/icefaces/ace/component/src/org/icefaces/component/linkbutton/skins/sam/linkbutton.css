@@ -14,14 +14,11 @@ version: 2.6.0
 	margin:auto .25em;}
 	
 .ice-skin-sam .ice-linkbutton .yui-button .first-child{
-	border-width:0 1px;
+	border-width: 0 1px;
 	border-style:solid;
 	border-color:#808080;
 	margin:0 -1px;
-	*position:relative;
-	*left:-1px;
-	_margin:0;
-	_position:static;
+    _margin: 0;
 	}
 	
 .ice-skin-sam .ice-linkbutton .yui-button button,.ice-skin-sam .ice-linkbutton .yui-button a{
@@ -33,7 +30,7 @@ version: 2.6.0
 	min-height:2em;
 	*min-height:auto;
 	color:#000;
-	border-width:1px 0;
+	border-width:0px;
 	border-style:solid;
 	border-color:#808080;
 	 

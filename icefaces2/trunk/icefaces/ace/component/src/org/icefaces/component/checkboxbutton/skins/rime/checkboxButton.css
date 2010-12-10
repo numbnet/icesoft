@@ -1,20 +1,17 @@
 .ice-skin-rime .ice-checkboxbutton .yui-button{
-	border-width:1px 0;
+    border-width: 1px 0;
 	border-style:solid;
 	border-color:#808080;
-	background-image: url(background-focus.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
-	background-repeat: repeat-x;   
+	background-image: url(background.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
 	margin:auto .25em;}
 	
 .ice-skin-rime .ice-checkboxbutton .yui-button .first-child{
-	border-width:0 1px;
+	border-width: 0 1px;
 	border-style:solid;
 	border-color:#808080;
 	margin:0 -1px;
-	*position:relative;
-	*left:-1px;
-	_margin:0;
-	_position:static;
+    _margin: 0;
 	}
 	
 .ice-skin-rime .ice-checkboxbutton .yui-button button,.ice-skin-rime .ice-checkboxbutton .yui-button a{
@@ -25,12 +22,12 @@
 	min-height:2em;
 	*min-height:auto;
 	color:#000;
-	border-width:1px 0;
+	border-width: 0px;
 	border-style:solid;
 	border-color:#808080;
-	background-image: url(background-focus.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
-	background-repeat: repeat-x;   }
-	margin:auto .25em;}
+	background-image: url(background.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+	margin:auto .25em;
 	}
 	
 .ice-skin-rime .ice-checkboxbutton .yui-button a{
@@ -40,7 +37,7 @@
 	
 .ice-skin-rime .ice-checkboxbutton .yui-button-focus{
 	border-color:#7D98B8;
- 	background-image: url(background-focus.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+ 	background-image: url(background-focus.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;   }
 	
 .ice-skin-rime .ice-checkboxbutton .yui-button-focus .first-child{
@@ -51,7 +48,7 @@
 		
 .ice-skin-rime .ice-checkboxbutton .yui-button-hover{
 	border-color:#7D98B8;
- 	background-image: url(background-focus.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+ 	background-image: url(background-focus.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;   }
 	
 .ice-skin-rime .ice-checkboxbutton .yui-button-hover .first-child{
@@ -60,12 +57,12 @@
 .ice-skin-rime .ice-checkboxbutton .yui-button-hover button,.ice-skin-rime .ice-checkboxbutton .yui-button-hover a{
 	color:#000;
 	border-color:#7D98B8;
- 	background-image: url(background-focus.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+ 	background-image: url(background-focus.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;   }
 	
 .ice-skin-rime .ice-checkboxbutton .yui-button-active{
 	border-color:#7D98B8;
-  	background-image: url(background-active.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+  	background-image: url(background-active.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x;   
 }
 	
@@ -94,7 +91,7 @@
 	}
 	
 .ice-skin-rime .ice-checkboxbutton .yui-radio-button-checked button,.ice-skin-rime .ice-checkboxbutton .yui-checkbox-button-checked button{
-	color:#fff;
+	color:#0000;
  	background-image: url(background-highlight.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
 	background-repeat: repeat-x; 
 	}
