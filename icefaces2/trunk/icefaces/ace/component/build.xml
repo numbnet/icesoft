@@ -174,7 +174,10 @@
   </target>
 
   <target name="javadoc" depends="compile" > 
-      <javadoc sourcepath="${src}" destdir="${java.doc}" classpathref="javadoc.classpath" />
+      <javadoc sourcepath="${src}" 
+               destdir="${java.doc}" 
+	       classpathref="javadoc.classpath" 
+	       excludepackagenames="org.icefaces.apache.*" />
   </target> 
 
   <target name="clean"
