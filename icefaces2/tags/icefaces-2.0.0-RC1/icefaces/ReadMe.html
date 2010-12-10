@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  -->
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>ICEfaces 2.0 Bundle ReadMe.html</title>
+  <style>
+body, td, th, input {
+font-family:verdana,sans-serif;
+font-size:80%;
+}
+code, pre {
+font-size:110% }
+body {
+color:#333333;
+margin-right:40px;
+margin-bottom:3em;
+margin-left:40px;
+}
+h2{
+font-size:150%;
+font-weight:normal;
+}
+h3 {
+font-size:125%;
+}
+h1, h2, h3, h4, h5, h6 {
+font-family:arial,verdana,sans-serif;
+margin:1em 0pt 0.2em;
+}
+h1, h2 {
+border-bottom:1px solid #AAAAAA;
+font-weight: bold;
+}
+h4 {
+font-size: 110%
+}
+  </style>
+</head>
+<body>
+<h2>Welcome to ICEfaces 2.0!<br>
+</h2>
+<br>
+This bundle contains software source-code and executables
+for&nbsp;ICEfaces 2.0.<br>
+<br>
+All documentation related to ICEfaces 2.0 and the use of this bundle
+can be found in the <a target="_blank"
+ href="http://wiki.icefaces.org/display/ICE/">ICEfaces
+Wiki</a>.<br>
+<br>
+<h3>Documentation Quick-links</h3>
+<ul>
+  <li><a target="_blank"
+ href="http://wiki.icefaces.org/display/ICE/ICEfaces+2.0.0+RC+1+Release+Notes">Release
+Notes</a></li>
+  <li><a target="_blank"
+ href="http://wiki.icefaces.org/display/ICE/ICEfaces+2.0+Documentation">ICEfaces
+2.0
+Documentation<span style="font-weight: bold;"></span></a></li>
+</ul>
+<br>
+<h3>Contents</h3>
+<h4 style="font-weight: normal;">You can download ICEfaces as either a
+binary bundle or a source bundle. </h4>
+<h4>Binary Bundle</h4>
+The binary bundle comes with the various
+libraries pre-compiled and the sample applications pre-built to run on
+Glassfish 3 using JSF 2.0.3. The binary bundle also includes all the
+source files for the sample applications, but not the ICEfaces
+libraries themselves.&nbsp; <br>
+<br>
+The icefaces
+directory of the binary bundle contains:
+<br>
+<ul>
+  <li style="font-weight: bold;">ace<br>
+  </li>
+  <ul>
+    <li>Examples related to the new ICEfaces Advanced Component
+Environment (ACE). </li>
+    <li>See the <a
+ href="http://wiki.icefaces.org/display/ICE/Compatibility">Advanced
+Components&nbsp;</a> topic of the ICEfaces Wiki for more information.</li>
+    <ul>
+      <li style="font-style: italic;">samples/showcase<br>
+      </li>
+      <ul>
+        <li>ICEfaces Advanced Components library showcase sample
+application. </li>
+      </ul>
+    </ul>
+  </ul>
+  <li style="font-weight: bold;">compat</li>
+  <ul>
+    <li>Libraries and examples related to using the original ICEfaces
+Components and/or the ICEfaces 1.x compatibility APIs. </li>
+    <li>See the <a
+ href="http://wiki.icefaces.org/display/ICE/Compatibility">Compatibility</a>
+topic of the ICEfaces Wiki for more information. </li>
+    <ul>
+      <li style="font-style: italic;">lib</li>
+      <ul>
+        <li>ICEfaces compatibility library (icefaces-compat.jar) that
+includes the original suite of ICEfaces components and a set of
+ICEfaces 1.x core APIs to ease migration of existing ICEfaces 1.x
+applications to ICEfaces 2.0.</li>
+      </ul>
+      <li><span style="font-style: italic;">samples</span></li>
+      <ul>
+        <li>ICEfaces 1.x sample applications running on ICEfaces 2
+using the original ICEfaces Components and the core compatibility APIs.<br>
+        </li>
+        <li>auctionMonitor</li>
+        <li>component-showcase</li>
+      </ul>
+    </ul>
+  </ul>
+  <li><span style="font-weight: bold;">lib</span></li>
+  <ul>
+    <li>The ICEfaces 2.0 libraries along with related compile-time
+library dependencies. </li>
+    <ul>
+      <li>icefaces.jar - The core ICEfaces framework.</li>
+      <li>icepush.jar - The ICEpush library, provides push
+functionality to the ICEfaces framework (optional).</li>
+      <li>icefaces-compat.jar - The original ICEfaces Components and
+1.x core compatibility APIs (optional).</li>
+      <li>icefaces-ace.jar - The new ICEfaces Advanced Components
+library (optional).</li>
+    </ul>
+  </ul>
+  <li><span style="font-weight: bold;">licenses</span></li>
+  <ul>
+    <li>Summary of legal licenses used by ICEfaces and 3rd party
+libraries.</li>
+  </ul>
+  <li><span style="font-weight: bold;">maven2</span></li>
+  <ul>
+    <li>Project files to support using ICEfaces with Maven.</li>
+  </ul>
+  <li><span style="font-weight: bold;">samples</span></li>
+  <ul>
+    <li>ICEfaces 2.0 core framework sample applications. Demonstrates
+using the ICEfaces framework without the ICEfaces Components or
+Advanced Components.<br>
+    </li>
+    <li>auction</li>
+    <ul>
+      <li>An simulated online auction application using only standard
+JSF components. Demonstrates core benefits of the ICEfaces framework,
+including the use of push to asynchronously update user's browsers when
+an auction bid occurs.</li>
+    </ul>
+    <li>basic</li>
+    <ul>
+      <li>A simple, pure JSF 2 application that shows how ICEfaces can
+be easily added to an existing application to provide seamless Ajax
+support. </li>
+    </ul>
+    <li>portlets/chat</li>
+    <ul>
+      <li>A simple ICEfaces chat portlet that demonstrates using
+ICEfaces and ICEpush in a portal environment.<br>
+      </li>
+    </ul>
+  </ul>
+</ul>
+<h4>Source Bundle</h4>
+The source bundle contains all the same libraries and applications as
+the binary bundle but also includes the complete source code for the
+ICEfaces libraries&nbsp; and examples. The source bundle does not
+contain any pre-built ICEfaces libraries or example .wars, etc.<br>
+<h3>Support</h3>
+Please direct all inquiries regarding ICEfaces 2.0 to the <a
+ target="_blank" href="http://www.icefaces.org/JForum/">ICEfaces forums</a>.<br
+ style="font-family: monospace;">
+<br style="font-family: monospace;">
+<span style="font-family: monospace;"></span><span
+ style="font-family: monospace;"></span><br>
+<br>
+<br>
+<p class="Body"><small><br>
+&copy; Copyright
+2010 ICEsoft Technologies, Inc.</small></p>
+</body>
+</html>
