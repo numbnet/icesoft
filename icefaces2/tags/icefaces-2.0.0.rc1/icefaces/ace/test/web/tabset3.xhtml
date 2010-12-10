@@ -1,0 +1,46 @@
+<!--
+
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
+
+        >
+<f:view  contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>TabSet</title>
+<h:outputScript name="jsf.js" library="javax.faces" />
+</h:head>
+<h:body>
+    <h:form styleClass="ice-skin-sam">
+       <ice:tabSet>
+            <ice:tabPane label="Tab 1" >
+                <h:inputText value="#{tabBean.txt1}"/>    
+                <h:inputText value="#{tabBean.txt2}"/>                  
+            </ice:tabPane>       
+            <ice:tabPane label="Tab 2" >
+                <h:inputText value="#{tabBean.txt3}"/>    
+          
+            </ice:tabPane>
+            <ice:tabPane label="Tab 3" >
+                <h:inputText value="#{tabBean.txt4}"/>    
+            </ice:tabPane>
+        </ice:tabSet> 
+        <h:panelGrid>
+        	<h:outputText value="#{tabBean.txt1}"/> 
+        	<h:outputText value="#{tabBean.txt2}"/> 
+        	<h:outputText value="#{tabBean.txt3}"/> 
+        	<h:outputText value="#{tabBean.txt4}"/>         	
+        </h:panelGrid>        
+    </h:form>
+
+   <a href="index.html"> Goto Main page </a>    
+   <h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
+</h:body>
+</html>
+
