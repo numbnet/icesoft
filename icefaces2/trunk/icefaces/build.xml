@@ -149,7 +149,6 @@
             </fileset>
             <fileset dir="${bundle.dir.bin}/lib">
                 <include name="junit*.jar"/>
-             /*   <include name="javax.annotation.jar"/>  */
                 <include name="junit*.jar"/>
                 <include name="commons-fileupload.jar"/>
                 <include name="tlddoc.jar"/>                
