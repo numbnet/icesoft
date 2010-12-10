@@ -141,48 +141,40 @@
                 <include name="portlet*.jar"/>
                 <include name="junit*.jar"/>
                 <include name="commons-fileupload.jar"/>
+                <include name="tlddoc.jar"/>                
             </fileset>
-            <fileset dir="${bundle.dir.bin}/compat">
-                <include name="build.xml"/>
-            </fileset>
-            <fileset dir="${bundle.dir.bin}/compat/lib">
+            <fileset dir="${bundle.dir.bin}/lib/compat">
                 <include name="freemarker*.jar"/>
                 <include name="jsf-metadata*.jar"/>
                 <include name="jsp-api*.jar"/>
                 <include name="portlet*.jar"/>
             </fileset>
-        </delete>
+            <fileset dir="${bundle.dir.bin}/samples/dist">
+                <include name="basic.war"/>
+                <include name="compat-basic.war"/>
+            </fileset>
 
+        </delete>
+        <delete dir="${bundle.dir.bin}/lib/myfaces"/>
+
+        <delete dir="${bundle.dir.bin}/ace"/>
+        <delete dir="${bundle.dir.bin}/compat"/>
         <delete dir="${bundle.dir.bin}/core"/>
         <delete dir="${bundle.dir.bin}/test"/>
 
-        <delete file="${bundle.dir.bin}/ace/build.properties"/>
-        <delete file="${bundle.dir.bin}/ace/build.xml"/>
-        <delete dir="${bundle.dir.bin}/ace/component/"/>
-        <delete dir="${bundle.dir.bin}/ace/generator/"/>
-        <delete dir="${bundle.dir.bin}/ace/test"/>
-        <delete dir="${bundle.dir.bin}/ace/tools/"/>
-        <delete dir="${bundle.dir.bin}/ace/samples/showcase/build/classes"/>
-        <delete dir="${bundle.dir.bin}/ace/samples/showcase/build/dist/exploded"/>
+        <delete dir="${bundle.dir.bin}/samples/core/test"/>        
+        <delete dir="${bundle.dir.bin}/samples/core/basic"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/compat-basic"/>
 
-        <delete dir="${bundle.dir.bin}/samples/test"/>
-        <delete dir="${bundle.dir.bin}/samples/auction/build/classes"/>
-        <delete dir="${bundle.dir.bin}/samples/auction/build/dist/exploded"/>
-        <delete dir="${bundle.dir.bin}/samples/basic/build/dist/exploded"/>
-        <delete dir="${bundle.dir.bin}/samples/basic/build/classes"/>        
-        <delete dir="${bundle.dir.bin}/samples/basic/tests"/>
-
-        <delete dir="${bundle.dir.bin}/compat/samples/basic/build/dist/exploded"/>
-        <delete dir="${bundle.dir.bin}/compat/samples/compat-basic"/>
-        <delete dir="${bundle.dir.bin}/compat/samples/auctionMonitor/web/WEB-INF/lib"/>
-        <delete dir="${bundle.dir.bin}/compat/samples/auctionMonitor/web/WEB-INF/classes"/>
-        <delete dir="${bundle.dir.bin}/compat/samples/component-showcase/web/WEB-INF/lib"/>
-        <delete dir="${bundle.dir.bin}/compat/samples/component-showcase/web/WEB-INF/classes"/>
-        <delete file="${bundle.dir.bin}/compat/lib/icefaces-compat.jar"/>
-
-        <delete dir="${bundle.dir.bin}/compat/component-metadata"/>
-        <delete dir="${bundle.dir.bin}/compat/components"/>
-        <delete dir="${bundle.dir.bin}/compat/core"/>
+        <delete dir="${bundle.dir.bin}/samples/ace/showcase/build"/>
+        <delete dir="${bundle.dir.bin}/samples/core/auction/build"/>
+        <delete dir="${bundle.dir.bin}/samples/core/portlets/chat/build"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/build"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/lib"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/classes"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/build"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/src/main/webapp/WEB-INF/lib"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/src/main/webapp/WEB-INF/classes"/>
 
     </target>
 
@@ -197,9 +189,11 @@
 
         <delete dir="${bundle.dir.src}/test"/>
         <delete dir="${bundle.dir.src}/ace/test"/>
-        
-        <delete dir="${bundle.dir.src}/samples/basic/tests"/>
-        <delete dir="${bundle.dir.src}/samples/test"/>
+        <delete dir="${bundle.dir.src}/samples/core/basic"/>
+        <delete dir="${bundle.dir.src}/samples/core/test"/>
+        <delete dir="${bundle.dir.src}/samples/compat/compat-basic"/>
+        <delete dir="${bundle.dir.src}/samples/dist"/>
+
 
     </target>
 
