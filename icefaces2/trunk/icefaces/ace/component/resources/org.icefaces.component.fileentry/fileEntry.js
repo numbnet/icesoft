@@ -72,6 +72,25 @@ var ice_fileEntry = {
     formOnsubmit : function(event, formElem, iframeId, progressPushId, progressResourcePath) {
         //alert("formOnsubmit()  begin");
 
+        // Set every fileEntry component in the form into the indeterminate
+        // state, before progress notifications arrive, if icepush is present
+        var fileEntryDivs = ice_fileEntry.getElementsByClass(
+                "ice-file-entry",formElem,"div");
+        var fileEntryIndex;
+        for (fileEntryIndex in fileEntryDivs) {
+            var fileDiv = fileEntryDivs[fileEntryIndex];
+            if (fileDiv) {
+                var outerDiv = fileDiv.childNodes[1];
+                if (outerDiv) {
+                    var progDiv = outerDiv.firstChild;
+                    if (progDiv) {
+                        progDiv.style.width = "100%";
+                    }
+                    outerDiv.className = "uploading";
+                }
+            }
+        }
+        
         if (progressPushId) {
             //alert("formOnsubmit()  progressPushId: " + progressPushId);
 
@@ -184,18 +203,39 @@ var ice_fileEntry = {
         
     onProgress : function(pushIds, progressResourcePath) {
         //alert('onProgress()  progressResourcePath: ' + progressResourcePath);
-        var fileDiv2 = document.getElementById('fileform:fileEntryComp');
-        var span2 = document.createElement('span');
-        span2.innerHTML = "P";
-        fileDiv2.appendChild(span2);
+
+        //var fileDiv2 = document.getElementById('fileform:fileEntryComp');
+        //var span2 = document.createElement('span');
+        //span2.innerHTML = "P";
+        //fileDiv2.appendChild(span2);
 
         window.ice.push.post(progressResourcePath, function(parameter) {}, function(statusCode, contentAsText, contentAsDOM) {
             //alert('onProgress()  GET  contentAsText: ' + contentAsText);
-            var fileDiv = document.getElementById('fileform:fileEntryComp');
-            var span = document.createElement('span');
-            //span.innerHTML = ("statusCode: " + statusCode + "  content: " + contentAsText);
-            span.innerHTML = contentAsText;
-            fileDiv.appendChild(span);
+            var progressInfo = eval("(" + contentAsText + ")");
+            var percent = progressInfo['percent'];
+            var percentStr = percent + "%";
+            var results = progressInfo['results'];
+            var res;
+            for (res in results) {
+                var fileDiv = document.getElementById(results[res]);
+                if (fileDiv) {
+                    var outerDiv = fileDiv.childNodes[1];
+                    if (outerDiv) {
+                        var progDiv = outerDiv.firstChild;
+                        if (progDiv) {
+                            progDiv.style.width = percentStr;
+                        }
+                        if (percent == 100) {
+                            outerDiv.className = "complete";
+                        } else {
+                            outerDiv.className = "progress";
+                        }
+                    }
+                    //var span = document.createElement('span');
+                    //span.innerHTML = percentStr;
+                    //fileDiv.appendChild(span);
+                }
+            }
         });
     },
 
@@ -206,5 +246,25 @@ var ice_fileEntry = {
         inputElem.setAttribute('value',val);
         formElem.appendChild(inputElem);
         return inputElem;
+    },
+
+    getElementsByClass : function(searchClass,node,tag) {
+        var classElements = new Array();
+        if (node == null) {
+            node = document;
+        }
+        if (tag == null) {
+            tag = '*';
+        }
+        var els = node.getElementsByTagName(tag);
+        var elsLen = els.length;
+        var pattern = new RegExp("(^|\\s)"+searchClass+"(\\s|$)");
+        for (i = 0, j = 0; i < elsLen; i++) {
+            if ( pattern.test(els[i].className) ) {
+                classElements[j] = els[i];
+                j++;
+            }
+        }
+        return classElements;
     }
 };

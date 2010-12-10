@@ -2,6 +2,7 @@ package org.icefaces.component.fileentry;
 
 import org.icefaces.apache.commons.fileupload.ProgressListener;
 import org.icefaces.application.ResourceRegistry;
+import org.icefaces.component.utils.JSONBuilder;
 import javax.faces.context.FacesContext;
 import javax.faces.application.Resource;
 import java.util.Map;
@@ -26,11 +27,12 @@ public class ProgressListenerResourcePusher implements ProgressListener {
 
     public void update(long read, long total, int chunkIndex) {
         if (read > 0 && total > 0) {
+            boolean force = read == total;
             long currPercent = (read * 100L) / total;
-            if (currPercent > lastPercent) {
+            if (force || currPercent > lastPercent) {
                 long now = System.currentTimeMillis();
-                if ((now - lastPushTime) >= MIN_INTERVAL) {
-                    if (tryPush(currPercent)) {
+                if (force || (now - lastPushTime) >= MIN_INTERVAL) {
+                    if (tryPush(currPercent, force)) {
                         lastPushTime = now;
                         lastPercent = currPercent;
                     }
@@ -42,17 +44,17 @@ public class ProgressListenerResourcePusher implements ProgressListener {
         }
     }
 
-    protected boolean tryPush(long percent) {
+    protected boolean tryPush(long percent, boolean force) {
         if (pushResource == null || pushGroupName == null) {
             return false;
         }
 System.out.println("tryPush()  percent: " + percent);
 
         //TODO Update resource contents
-        int deltaGottenPushed = pushResource.updateProgressInfo(" " + Long.toString(percent) + "% ");
+        int deltaGottenPushed = updateResourceContents(percent);
 System.out.println("deltaGottenPushed: " + deltaGottenPushed + "  lastDeltaGottenPushed: " + lastDeltaGottenPushed);
         int localLastDeltaGottenPushed = lastDeltaGottenPushed;
-        if (deltaGottenPushed > 2 && deltaGottenPushed > localLastDeltaGottenPushed + 1) {
+        if (!force && deltaGottenPushed > 2 && deltaGottenPushed > localLastDeltaGottenPushed + 1) {
             lastDeltaGottenPushed = deltaGottenPushed;
             return true;
         }
@@ -71,7 +73,7 @@ System.out.println("tryPush()  Pushed progress update");
                 (ProgressResource) res : null);
         this.pushGroupName = pushGroupName;
     }
-    
+
     void clear() {
         clientId2Results = null;
         pushResource = null;
@@ -79,5 +81,19 @@ System.out.println("tryPush()  Pushed progress update");
         lastPushTime = 0L;
         lastPercent = 0L;
         lastDeltaGottenPushed = 0;
+    }
+
+    private int updateResourceContents(long percent) {
+        //String contents = " " + Long.toString(percent) + "% ";
+        JSONBuilder contents = JSONBuilder.create().beginMap();
+        contents.entry("percent", percent);
+        contents.beginArray("results");
+        for (String clientId : clientId2Results.keySet()) {
+            contents.item(clientId);
+        }
+        contents.endArray();
+        contents.endMap();
+System.out.println("updateResourceContents()  contents: " + contents.toString());
+        return pushResource.updateProgressInfo(contents.toString());
     }
 }
