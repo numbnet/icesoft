@@ -172,7 +172,7 @@
     <copy file="${dist}/${ant.project.name}.jar" todir="${icefaces.lib.dir}" overwrite="true"/>
   </target>
 
-  <target name="javadoc" > 
+  <target name="javadoc" depends="compile" > 
       <javadoc sourcepath="${src}" destdir="${java.doc}" classpathref="javadoc.classpath" />
   </target> 
 
