@@ -24,9 +24,9 @@
 .ice-skin-sam .ice-file-entry .uploading,
 .ice-skin-sam .ice-file-entry .progress {
     display: block;
-    background: none repeat scroll 0 0 #FFFFFF;
-    border: 1px solid #D9D9D9;
-    height: 17px; /* 1em */
+    background-color: #D0D4EE;
+    border: 1px solid #0056EA;
+    height: 15px;
     width: 200px;
 }
 
@@ -34,13 +34,18 @@
 .ice-skin-sam .ice-file-entry .progress .progress-bar {
     position: relative;
     display: block;
-    height: 17px; /* 1 em */
+    height: 15px;
 }
 
 .ice-skin-sam .ice-file-entry .uploading .progress-bar {
-    background-color: blue;
+    background-color: #EFEFEF;
+    background-image: url( fileEntryIndet.gif );
+    background-position: center;
+    background-repeat: repeat-x;
 }
 
 .ice-skin-sam .ice-file-entry .progress .progress-bar {
-    background-color: lightblue;
+    background-color: #026AFF;
+    background-position: top left;
+    background-repeat: repeat-x;
 }

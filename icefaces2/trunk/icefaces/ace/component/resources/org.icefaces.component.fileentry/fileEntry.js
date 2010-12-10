@@ -74,23 +74,8 @@ var ice_fileEntry = {
 
         // Set every fileEntry component in the form into the indeterminate
         // state, before progress notifications arrive, if icepush is present
-        var fileEntryDivs = ice_fileEntry.getElementsByClass(
-                "ice-file-entry",formElem,"div");
-        var fileEntryIndex;
-        for (fileEntryIndex in fileEntryDivs) {
-            var fileDiv = fileEntryDivs[fileEntryIndex];
-            if (fileDiv) {
-                var outerDiv = fileDiv.childNodes[1];
-                if (outerDiv) {
-                    var progDiv = outerDiv.firstChild;
-                    if (progDiv) {
-                        progDiv.style.width = "100%";
-                    }
-                    outerDiv.className = "uploading";
-                }
-            }
-        }
-        
+        ice_fileEntry.setFormFileEntryStates(formElem, "uploading");
+
         if (progressPushId) {
             //alert("formOnsubmit()  progressPushId: " + progressPushId);
 
@@ -155,7 +140,11 @@ var ice_fileEntry = {
             formElem.removeChild( hParEx );
             formElem.removeChild( hParRend );
             formElem.removeChild( hParAjax );
-            
+
+            // Set every fileEntry component in the form into the indeterminate
+            // state, before progress notifications arrive, if icepush is present
+            ice_fileEntry.setFormFileEntryStates(formElem, "complete");
+
             ice_fileEntry.iframeLoaded(context, iframeId);
             
             // Cleanup the response iframe, after finished using it
@@ -225,11 +214,11 @@ var ice_fileEntry = {
                         if (progDiv) {
                             progDiv.style.width = percentStr;
                         }
-                        if (percent == 100) {
-                            outerDiv.className = "complete";
-                        } else {
+                        //if (percent == 100) {
+                        //    outerDiv.className = "complete";
+                        //} else {
                             outerDiv.className = "progress";
-                        }
+                        //}
                     }
                     //var span = document.createElement('span');
                     //span.innerHTML = percentStr;
@@ -246,6 +235,25 @@ var ice_fileEntry = {
         inputElem.setAttribute('value',val);
         formElem.appendChild(inputElem);
         return inputElem;
+    },
+
+    setFormFileEntryStates : function(formElem, className) {
+        var fileEntryDivs = ice_fileEntry.getElementsByClass(
+                "ice-file-entry",formElem,"div");
+        var fileEntryIndex;
+        for (fileEntryIndex in fileEntryDivs) {
+            var fileDiv = fileEntryDivs[fileEntryIndex];
+            if (fileDiv) {
+                var outerDiv = fileDiv.childNodes[1];
+                if (outerDiv) {
+                    var progDiv = outerDiv.firstChild;
+                    if (progDiv) {
+                        progDiv.style.width = "100%";
+                    }
+                    outerDiv.className = className;
+                }
+            }
+        }
     },
 
     getElementsByClass : function(searchClass,node,tag) {
