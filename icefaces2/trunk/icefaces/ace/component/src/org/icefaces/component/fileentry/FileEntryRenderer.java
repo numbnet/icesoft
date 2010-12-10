@@ -60,7 +60,15 @@ public class FileEntryRenderer extends Renderer {
         }
         writer.writeAttribute("tabindex", fileEntry.getTabindex(), "tabindex");
         writer.endElement("input");
-        
+
+        writer.startElement("div", uiComponent);
+        writer.writeAttribute("class", "inactive", null);
+        writer.startElement("div", uiComponent);
+        writer.writeAttribute("class", "progress-bar", null);
+        writer.endElement("div");
+        writer.endElement("div");
+
+
         writer.endElement("div");
     }
     

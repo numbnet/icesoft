@@ -46,6 +46,17 @@ public class JSONBuilder {
         return this;
     }
 
+    public JSONBuilder beginArray(String key) {
+        appendCommaAndKey(key);
+        params.append("[");
+        return this;
+    }
+
+    public JSONBuilder endArray() {
+        params.append("]");
+        return this;
+    }
+
     /**
      * Adds an int property.
      * @param key name of the property.
@@ -114,8 +125,7 @@ public class JSONBuilder {
      * @return The builder object 
      */
     public JSONBuilder entry (String key, String[] keyValuePairs) {
-        appendCommaAndKey(key);
-        params.append("[");
+        beginArray(key);
         int argCount = keyValuePairs.length /2;
         StringBuilder localCopy = new StringBuilder();
         for (int idx = 0; idx < argCount; idx ++ ) {
@@ -127,9 +137,9 @@ public class JSONBuilder {
             localCopy.setLength( localCopy.length() - 1 );
         }
         params.append( localCopy.toString() );
-        params.append("]");
+        endArray();
         return this; 
-    } 
+    }
 
     /**
      * Adds a String property.
@@ -160,6 +170,13 @@ public class JSONBuilder {
         return this;
     }
 
+    public JSONBuilder item(String value) {
+        conditionallyAppendComma();
+        value = escapeString(value);
+        params.append('"').append(value).append('"');
+        return this;
+    }
+
     private String escapeString(String value) {
         value = value.replace("\\", "\\\\");
         value = value.replace("\"", "\\\"");
@@ -182,7 +199,14 @@ public class JSONBuilder {
     }
 
     private void appendCommaAndKey(String key) {
-        if (params.charAt(params.length() - 1) != '{') params.append(",");
+        conditionallyAppendComma();
         params.append('"').append(key).append('"').append(":");
+    }
+
+    private void conditionallyAppendComma() {
+        char lastChar = params.charAt(params.length() - 1);
+        if (lastChar != '{' && lastChar != '[') {
+            params.append(",");
+        }
     }
 }
