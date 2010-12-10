@@ -164,7 +164,7 @@ public class OutputProgress extends UIComponentBase {
     /**
      * <p>
      * Using isIndeterminate instead. </p>
-     * @Deprecated
+     * @deprecated
      */
     public boolean getIndeterminate() {
         return isIndeterminate();
