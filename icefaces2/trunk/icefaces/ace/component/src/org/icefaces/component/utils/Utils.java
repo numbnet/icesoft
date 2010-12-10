@@ -3,16 +3,11 @@ package org.icefaces.component.utils;
 import java.beans.Beans;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Iterator;
-import java.util.StringTokenizer;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 import java.net.URLEncoder;
 
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.UIParameter;
+import javax.el.ValueExpression;
+import javax.faces.component.*;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
@@ -290,5 +285,28 @@ public class Utils {
         Object[] returnVal = new String[ builder.size() ];
         builder.toArray (returnVal);
         return (String[]) returnVal;
+    }
+
+    public static boolean superValueIfSet(UIComponent component, StateHelper sh, String attName, boolean superValue, boolean defaultValue) {
+        ValueExpression ve = component.getValueExpression(attName);
+        if (ve != null) {
+            return superValue;
+        }
+        String valuesKey = attName + "_rowValues";
+        Map clientValues = (Map) sh.get(valuesKey);
+        if (clientValues != null) {
+            String clientId = component.getClientId();
+            if (clientValues.containsKey(clientId)) {
+                return superValue;
+            }
+        }
+        String defaultKey = attName + "_defaultValues";
+        Map defaultValues = (Map) sh.get(defaultKey);
+        if (defaultValues != null) {
+            if (defaultValues.containsKey("defValue")) {
+                return superValue;
+            }
+        }
+        return defaultValue;
     }
 }
