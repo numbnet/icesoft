@@ -439,7 +439,7 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
         serializer.setOutputStream(out);
         serializer.serialize(document);
         data = out.toByteArray();
-        facesContext.getViewRoot().getViewMap().put(OLD_DOM, document);
+        facesContext.getViewRoot().getViewMap().put(OLD_DOM, data);
     }
 
     public Document getOldDocument() {
