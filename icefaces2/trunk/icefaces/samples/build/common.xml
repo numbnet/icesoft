@@ -112,7 +112,7 @@
             <lib dir="${lib.dir}">
                 <patternset refid="lib.distribute"/>
             </lib>
-            <lib dir="${lib.myfaces.dir}">
+            <lib dir="${lib.myfaces.dir}" erroronmissingdir="false">
                 <selector if="myfaces"/>
             </lib>
             <lib dir="${lib.compat.dir}">
