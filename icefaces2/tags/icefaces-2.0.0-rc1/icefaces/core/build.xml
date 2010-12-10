@@ -60,19 +60,19 @@
     </target>
 
     <target name="product.info" description="update product information">
+        <echoproperties/>
         <copy file="conf/${product.info}"
               tofile="${java.dir}/${product.info}"
               overwrite="true"/>
-        <replace file="${java.dir}/${product.info}"
-                 propertyFile="./build.properties">
-            <replacefilter token="@company@"           property="company"/>
-            <replacefilter token="@product@"           property="product"/>
-            <replacefilter token="@release.type@"      property="release.type"/>
-            <replacefilter token="@version.primary@"   property="version.primary"/>
-            <replacefilter token="@version.secondary@" property="version.secondary"/>
-            <replacefilter token="@version.tertiary@"  property="version.tertiary"/>
-            <replacefilter token="@build.number@"      property="build.number"/>
-            <replacefilter token="@revision@"          property="revision"/>
+        <replace file="${java.dir}/${product.info}" >
+            <replacefilter token="@company@"           value="${company}"/>
+            <replacefilter token="@product@"           value="${product}"/>
+            <replacefilter token="@release.type@"      value="${release.type}"/>
+            <replacefilter token="@version.primary@"   value="${version.primary}"/>
+            <replacefilter token="@version.secondary@" value="${version.secondary}"/>
+            <replacefilter token="@version.tertiary@"  value="${version.tertiary}"/>
+            <replacefilter token="@build.number@"      value="${build.number}"/>
+            <replacefilter token="@revision@"          value="${revision}"/>
         </replace>
     </target>
 
