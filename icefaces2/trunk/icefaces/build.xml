@@ -112,23 +112,34 @@
             <fileset dir="${bundle.dir.bin}" includes="build.xml"/>
         </subant>
 
-        <!-- Create the JavaDocs for Core, and Compat Core and move them to the root bundle directory -->
+        <!-- Create the JavaDocs for core, compat, and ace and move them to the docs directory -->
         <subant target="javadoc">
             <fileset dir="${bundle.dir.bin}/core" includes="build.xml"/>
         </subant>
-        <move file="${bundle.dir.bin}/core/build/javadocs" tofile="${bundle.dir}/javadocs-core"/>
+        <move file="${bundle.dir.bin}/core/build/javadocs" tofile="${bundle.dir.bin}/docs/core/api"/>
 
         <subant target="javadoc">
             <fileset dir="${bundle.dir.bin}/compat/core" includes="build.xml"/>
         </subant>
-        <move file="${bundle.dir.bin}/compat/core/build/javadocs" tofile="${bundle.dir}/javadocs-compat"/>
+        <move file="${bundle.dir.bin}/compat/core/build/javadocs" tofile="${bundle.dir.bin}/docs/compat/core/api"/>
 
-        <!-- Move the ace TLDdocs to the root bundle directory -->
-        <move file="${bundle.dir.bin}/ace/component/build/doc/tld" tofile="${bundle.dir}/ace-taglib-doc"/>
+        <subant target="javadoc">
+            <fileset dir="${bundle.dir.bin}/compat/components" includes="build.xml"/>
+        </subant>
+        <move file="${bundle.dir.bin}/compat/components/build/doc/api" tofile="${bundle.dir.bin}/docs/compat/comps/api"/>
+
+        <move file="${bundle.dir.bin}/ace/component/build/doc/javadoc" tofile="${bundle.dir.bin}/docs/ace/api"/>
+
+        <!-- Create the TLD docs for compat move them to the docs directory -->
+        <subant target="tlddoc">
+            <fileset dir="${bundle.dir.bin}/compat/components" includes="build.xml"/>
+        </subant>
+        <move file="${bundle.dir.bin}/compat/components/build/doc/tld" tofile="${bundle.dir.bin}/docs/compat/comps/tld"/>
+
+        <!-- Move the ace and compat TLDdocs to the docs directory -->
+        <move file="${bundle.dir.bin}/ace/component/build/doc/tld" tofile="${bundle.dir.bin}/docs/ace/tld"/>
 
 
-	<!-- Move the ace JAVAdocs to the root bundle directory -->
-        <move file="${bundle.dir.bin}/ace/component/build/doc/javadoc" tofile="${bundle.dir}/ace-javadoc"/>
 
         <!-- Remove the following files and directories as they are not required for the binary bundle -->
         <delete>
@@ -138,7 +149,7 @@
             </fileset>
             <fileset dir="${bundle.dir.bin}/lib">
                 <include name="junit*.jar"/>
-                <include name="portlet*.jar"/>
+                <include name="javax.annotation.jar"/>  
                 <include name="junit*.jar"/>
                 <include name="commons-fileupload.jar"/>
                 <include name="tlddoc.jar"/>                
@@ -186,6 +197,7 @@
                 <include name="commons-fileupload.jar"/>
             </fileset>
         </delete>
+        <delete dir="${bundle.dir.src}/lib/myfaces"/>
 
         <delete dir="${bundle.dir.src}/test"/>
         <delete dir="${bundle.dir.src}/ace/test"/>
@@ -193,8 +205,7 @@
         <delete dir="${bundle.dir.src}/samples/core/test"/>
         <delete dir="${bundle.dir.src}/samples/compat/compat-basic"/>
         <delete dir="${bundle.dir.src}/samples/dist"/>
-
-
+        
     </target>
 
 </project>
