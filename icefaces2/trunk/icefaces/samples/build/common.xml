@@ -25,7 +25,9 @@
     <property name="icefaces.base.dir" location="../.."/>
     <property name="samples.dist.dir" location="${icefaces.base.dir}/samples/dist"/>
     <property name="lib.dir" location="${icefaces.base.dir}/lib"/>
+<!--
     <property name="lib.myfaces.dir" location="${lib.dir}/myfaces"/>
+-->
     <property name="lib.compat.dir" location="${lib.dir}/compat"/>
     <property name="lib.compat.dir.includes" value=""/>
 
@@ -112,9 +114,11 @@
             <lib dir="${lib.dir}">
                 <patternset refid="lib.distribute"/>
             </lib>
+<!--
             <lib dir="${lib.myfaces.dir}" erroronmissingdir="false">
                 <selector if="myfaces"/>
             </lib>
+-->
             <lib dir="${lib.compat.dir}">
                 <patternset refid="lib.distribute.compat"/>
             </lib>
