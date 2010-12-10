@@ -38,7 +38,8 @@
         <pathelement path="../component/src"/>
         <pathelement path="../generator/build"/>
         <pathelement path="../component/build/meta"/>
-        <pathelement path="build/generated/base"/>
+        <pathelement path="./build/generated/base"/>
+	<pathelement path="./build/exploded" /> 
 
   </path>
   
