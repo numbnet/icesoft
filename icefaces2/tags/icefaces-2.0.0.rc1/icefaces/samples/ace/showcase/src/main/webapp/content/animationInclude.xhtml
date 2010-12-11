@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:ice="http://www.icefaces.org/icefaces/components">
+
+	 <style>  
+         .bold-blue-text {
+            color: #000099;
+            font-weight: bold;
+        }
+	</style>        
+
+    <h:panelGroup id="panelContentAnimation">
+        <h:panelGroup styleClass="synopsisBox" layout="block">
+            <h:outputText styleClass="iceOutTxt" id="contentAnimation" value="Animation"/>
+            <h:outputText styleClass="iceOutTxt" value="The animation component can be used to invoke animated transition effects on JSF2 components that support Client-Behaviors."/>
+        </h:panelGroup>
+
+        <style type="text/css">
+            .default_display_value {
+                display:none;
+            }
+            .default_transition_fade{
+                display:block;
+            }
+        </style>
+
+        <h:form prependId="false">
+
+            <h:panelGroup styleClass="exampleBox" layout="block">
+                <h3>The following tabSet explicitly specifies to use the predefined 'fade' animation for its transition.</h3>
+                <pre style="background-color: transparent;"> &lt;ice:animation event="transition" name="fade"/&gt; </pre>
+
+                <ice:tabSet >
+                    <ice:animation event="transition" name="fade" />
+                    <ice:tabPane label="One" >
+                        <h:outputText value="111111111111"/>
+                    </ice:tabPane>
+                    <ice:tabPane label="Two" >
+                        <h:outputText value="222222222222"/>
+                    </ice:tabPane>
+                    <ice:tabPane label="Three" >
+                        <h:outputText value="333333333333"/>
+                    </ice:tabPane>
+                </ice:tabSet>
+            </h:panelGroup>
+            
+            <h:panelGroup styleClass="exampleBox" layout="block">
+                <h3>The following tabSet uses a fully customised animation, using 'from' and 'to' attributes to mimic blind up/down effect</h3>
+                <pre style="background-color: transparent;"> &lt;ice:animation event="transition" from="{opacity:1, height:28}" to="{opacity:0, height:1}" easing="backIn" /&gt; </pre>
+                <ice:tabSet >
+                    <ice:animation duration="0.4"  event="transition" from="{opacity:1, height:28}" to="{opacity:0, height:1}" easing="backIn" />
+                    <ice:tabPane label="One" >
+                        <h:outputText value="111111111111"/>
+                    </ice:tabPane>
+                    <ice:tabPane label="Two" >
+                        <h:outputText value="222222222222"/>
+                    </ice:tabPane>
+                    <ice:tabPane label="Three" >
+                        <h:outputText value="333333333333"/>
+                    </ice:tabPane>
+                </ice:tabSet>
+            </h:panelGroup>
+            
+            <h:panelGroup styleClass="exampleBox" layout="block">
+                <h3>The following demonstrates a customised animation, to mimic pulsate effect, in a standard h:panelGrid</h3>
+                <pre style="background-color: transparent;"> &lt;ice:animation event="mouseover" to="{opacity:1}" from="{opacity:0}" iterations="3" duration="0.4" easing="easeIn"/&gt; </pre>
+                <h:panelGrid >
+                    <ice:animation event="mouseover" to="{opacity:1}" from="{opacity:0}" iterations="3" duration="0.4" easing="easeIn"/>
+                    <h:outputText styleClass="bold-blue-text" value="Move your mouse over me!"/>
+                </h:panelGrid>
+            </h:panelGroup>
+        </h:form>
+    </h:panelGroup>    
+</ui:composition>
