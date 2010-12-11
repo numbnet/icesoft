@@ -67,9 +67,9 @@ public class SliderEntry extends SliderEntryBase{
     	String thumbUrl = super.getThumbUrl();
     	if (null == thumbUrl) {
     		if ("x".equals(getAxis())) {
-    			thumbUrl =  "javax.faces.resource/assets/skins/sam/thumb-x.png.jsf?ln=yui/3_2_0";
+    			thumbUrl =  "javax.faces.resource/assets/skins/sam/thumb-x.png.jsf?ln=yui/3_1_1";
     		} else {
-    			thumbUrl = "javax.faces.resource/assets/skins/sam/thumb-y.png.jsf?ln=yui/3_2_0";
+    			thumbUrl = "javax.faces.resource/assets/skins/sam/thumb-y.png.jsf?ln=yui/3_1_1";
     		}
     	}
     	return thumbUrl;
