@@ -241,15 +241,20 @@ ice.yui3.use(function(Y) {
 
 	function AnimBase(params) { 
 
+		this.params = params;
+ 
 		AnimBase.superclass.constructor.apply(this, arguments); 
+		if (!this.params['duration']) {
+			this.set("duration", 0.2);
+		} else {
+		    //miliseconds to second
+			this.set("duration", this.params['duration'] / 1000);
+		}
 	    if (params['easing']) {  
 			//TODO check for valid names
 			this.set("easing", Y.Easing[params['easing']]);
 		}		
-		this.params = params;
-		if (!this.params['duration']) {
-			this.set("duration", 0.2);
-		}
+
 		this.cloneNode = Y.one(params.node).cloneNode(false);
 		this.cloneNode.setStyle("display", "none");
 		var ancestor= Y.one(this.params["node"]).ancestor();
