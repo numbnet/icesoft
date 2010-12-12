@@ -168,7 +168,12 @@ ice.component.tabset = {
        }
        var onKeyPress = function(event, index) {
             var target = Event.getTarget(event).parentNode;
-            var isEnter = Event.getCharCode(event) == 13;
+			if(Ice.isEventSourceInputElement(event)) {
+				return true ;
+			}
+			//check for enter or space key
+            var isEnter = Event.getCharCode(event) == 13 || 
+					Event.getCharCode(event) == 32 ; 
             if (isEnter) {
                tabview.set('activeIndex', index);
             }
