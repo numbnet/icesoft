@@ -6,13 +6,13 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:ice="http://www.icefaces.org/icefaces/components">
-  <h:form id="fileform">
     
     <h:panelGroup styleClass="synopsisBox" layout="block">
         <h:outputText styleClass="iceOutTxt" value="#{msgs['content.fileEntry.text']}"/>
         <h:outputText styleClass="iceOutTxt" value="#{msgs['content.fileEntry.instructions']}"/>
     </h:panelGroup>
     
+  <h:form id="fileform">
     <h:panelGroup styleClass="exampleBox" layout="block">
       <h3><h:outputText value="#{msgs['content.fileEntry.messages.label']}"/></h3>
       <h:messages id="fileMessages"
@@ -26,6 +26,8 @@
                      fileEntryListener="#{fileEntryController.listener}"/>
       <h:commandButton value="#{msgs['content.fileEntry.upload.label']}"/>
     </h:panelGroup>
+  </h:form>
+  <h:form id="fileform2">
     <h:panelGroup id="fileTableRenderedAncestor">
 	    <h:panelGroup rendered="#{not fileEntryController.emptyFileList}">
 	      <h:panelGroup styleClass="exampleBox" layout="block">
@@ -58,8 +60,8 @@
 	            </f:facet>
 	            <h:commandButton id="delFileBtn"
 	                             value="#{msgs['content.fileEntry.history.remove.label']}"
-	                             actionListener="#{fileEntryController.removeUploadedFile}">
-	              <f:param name="fileId" value="#{file.id}"/>
+	                             action="#{fileEntryController.removeUploadedFile}">
+	              <f:setPropertyActionListener target="#{fileEntryController.idToDelete}" value="#{file.id}"/>
 	            </h:commandButton>
 	          </h:column>
 	        </h:dataTable>

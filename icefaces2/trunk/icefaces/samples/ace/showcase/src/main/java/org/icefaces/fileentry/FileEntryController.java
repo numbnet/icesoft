@@ -62,15 +62,24 @@ public class FileEntryController implements Serializable {
         FileEntry fileEntry = (FileEntry) event.getSource();
         FileEntryResults results = fileEntry.getResults();
         for (FileEntryResults.FileInfo fileInfo : results.getFiles()) {
-//System.out.println("Uploaded file: " + fileInfo.getFileName());
             if (fileInfo.isSaved()) {
-//System.out.println("  Saved, adding to list");
                 FileData fileData = new FileData(fileInfo, getIdCounter());
                 synchronized (fileList) {
                     fileList.add(fileData);
                 }
             }
         }
+    }
+
+    int fileId = -1;
+
+    /**
+     * <p>Used with f:setPropertyActionListener to set current fileId.</p>
+     *
+     * @param fileId
+     */
+    public void setIdToDelete(int fileId)  {
+        this.fileId = fileId;
     }
 
     /**
@@ -80,28 +89,20 @@ public class FileEntryController implements Serializable {
      *
      * @param event jsf action event
      */
-    public void removeUploadedFile(ActionEvent event) {
-        // Get the inventory item ID from the context.
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map map = context.getExternalContext().getRequestParameterMap();
-        String fileIdStr = (String) map.get("fileId");
-        int fileId = Integer.parseInt(fileIdStr);
-//System.out.println("removeUploadedFile()  fileId: " + fileId);
-
+    public String removeUploadedFile() {
         synchronized (fileList) {
             FileData fileData;
             for (int i = 0; i < fileList.size(); i++) {
                 fileData = (FileData)fileList.get(i);
                 // remove our file
                 if (fileData.getId() == fileId) {
-//System.out.println("removeUploadedFile()    found: " + fileData.getFileInfo().getFileName());
                     boolean del = fileData.getFileInfo().getFile().delete();
-//System.out.println("removeUploadedFile()    deleted: " + del);
                     fileList.remove(i);
                     break;
                 }
             }
         }
+        return "";
     }
 
     private synchronized int getIdCounter() {
