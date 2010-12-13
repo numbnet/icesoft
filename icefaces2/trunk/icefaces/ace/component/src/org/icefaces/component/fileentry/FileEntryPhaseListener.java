@@ -116,12 +116,10 @@ public class FileEntryPhaseListener implements PhaseListener {
             
         Object requestObject = phaseEvent.getFacesContext().getExternalContext().getRequest();
         if (!(requestObject instanceof HttpServletRequest)) {
-            System.out.println("FileEntryPhaseListener.beforePhase: request is not an HttpServletRequest " + requestObject);
 //            System.out.println("FileEntryPhaseListener.beforePhase()  requestObject: " + requestObject);
 //            if (requestObject != null)
 //                System.out.println("FileEntryPhaseListener.beforePhase()  requestObject.class: " + requestObject.getClass().getName());
             requestObject = new ProxyHttpServletRequest(phaseEvent.getFacesContext());
-            System.out.println("FileEntryPhaseListener.beforePhase: converted to ProxyHttpServletRequest");
 //            return;
         }
         HttpServletRequest request = (HttpServletRequest) requestObject;
