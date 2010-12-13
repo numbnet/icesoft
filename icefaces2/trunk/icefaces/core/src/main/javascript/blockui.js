@@ -61,6 +61,7 @@
     namespace.onBeforeSubmit(function(source) {
         //don't block UI for the retrieveUpdate requests
         if (viewIDOf(source) != source.id && isBlockUIEnabled(source)) {
+            debug(logger, 'blocking UI');
             var blockUIOverlay = Overlay();
             var rollbacks = inject(['input', 'select', 'textarea', 'button', 'a'], [], function(result, type) {
                 return concatenate(result, asArray(collect(document.body.getElementsByTagName(type), function(e) {
@@ -89,6 +90,7 @@
             stopBlockingUI = function() {
                 broadcast(rollbacks);
                 off(blockUIOverlay);
+                debug(logger, 'unblocked UI');
             };
         } else {
             stopBlockingUI = noop;

@@ -100,18 +100,24 @@ if (!window.ice.icefaces) {
         //include hashtable.js
         //include string.js
         //include delay.js
+
         //include window.js
         namespace.onLoad = curry(onLoad, window);
         namespace.onUnload = curry(onUnload, window);
-        //include logger.js
+
         //include event.js
         //include element.js
-        //include http.js
+        //include logger.js
+        var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
+        var logger = Logger([ 'window' ], handler);
+
         //include focus.js
         namespace.setFocus = setFocus;
         namespace.sf = setFocus;
         namespace.applyFocus = applyFocus;
         namespace.af = applyFocus;
+
+        //include http.js
         //include submit.js
         namespace.se = singleSubmitExecuteThis;
         namespace.ser = singleSubmitExecuteThisRenderThis;
@@ -129,10 +135,6 @@ if (!window.ice.icefaces) {
             form.appendChild(hiddenInput);
             return hiddenInput;
         }
-
-
-        var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
-        var logger = Logger([ 'window' ], handler);
 
         var viewIDs = [];
 
@@ -193,6 +195,14 @@ if (!window.ice.icefaces) {
                     break;
                 case 'success':
                     broadcast(afterUpdateListeners, [ e.responseXML ]);
+
+                    var updates = e.responseXML.documentElement.firstChild.children;
+                    var updateDescriptions = collect(updates, function(update) {
+                        return update.nodeName +
+                                (update.hasAttribute('id') ? '["' + update.getAttribute('id') + '"]' : '') +
+                                ': ' + substring(update.firstChild.data, 0, 40) + '....';
+                    });
+                    debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
                     break;
             }
         });
@@ -203,11 +213,13 @@ if (!window.ice.icefaces) {
                 if (e.responseXML) {
                     var errorName = e.responseXML.getElementsByTagName("error-name")[0].firstChild.nodeValue;
                     if (errorName && contains(errorName, 'org.icefaces.application.SessionExpiredException')) {
+                        info(logger, 'received session expired message');
                         sessionExpired();
                         return;
                     }
                 }
 
+                info(logger, 'received error message [code: ' + e.responseCode + ']: ' + e.responseText);
                 broadcast(serverErrorListeners, [ e.responseCode, e.responseText, e.responseXML ]);
             }
         });
@@ -366,6 +378,7 @@ if (!window.ice.icefaces) {
                     //add hidden input field to the updated forms that don't have it
                     if (!form['javax.faces.ViewState']) {
                         appendHiddenInputElement(form, 'javax.faces.ViewState', viewState, viewState);
+                        debug(logger, 'append missing "javax.faces.ViewState" input element to form["' + form.id + '"]');
                     }
 
                     //recalculate previous parameters for the updated forms if necessary
@@ -374,6 +387,7 @@ if (!window.ice.icefaces) {
                         if (previousParameters) {
                             form.previousParameters = previousParameters;
                         } else {
+                            debug(logger, 'recalculate initial parameters for updated form["' + form.id + '"]');
                             form.previousParameters = HashSet(jsf.getViewState(form).split('&'));
                         }
                     }

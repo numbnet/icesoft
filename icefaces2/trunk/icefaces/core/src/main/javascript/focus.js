@@ -27,6 +27,7 @@ var currentFocus;
 (function() {
     setFocus = function(id) {
         currentFocus = id;
+        debug(logger, 'persisted focus for element "' + id + '"');
     };
 
     function isValidID(id) {
@@ -55,6 +56,7 @@ var currentFocus;
                                     //IE throws exception if element is invisible
                                 }
                             }
+                            debug(logger, 'focused element "' + id + '"');
                         }
                     }
                 }
