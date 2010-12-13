@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 
+import org.icefaces.impl.push.servlet.ProxyHttpServletRequest;
+import org.icefaces.impl.push.servlet.ProxyHttpServletResponse;
+
 /**
  * Consolidates the push functionality used by the FileEntry component, for
  * pushing the progress information to the browser.
@@ -150,12 +153,19 @@ class PushUtils {
     }
 
     static String createPushId() {
-        ExternalContext externalContext =
-                FacesContext.getCurrentInstance().getExternalContext();
-        HttpServletRequest request = (HttpServletRequest)
-                externalContext.getRequest();
-        HttpServletResponse response = (HttpServletResponse)
-                externalContext.getResponse();
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        HttpServletRequest request;
+        HttpServletResponse response;
+        
+        if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
+            request = new ProxyHttpServletRequest(facesContext); 
+            response = new ProxyHttpServletResponse(facesContext);
+        } else {
+            request = (HttpServletRequest) externalContext.getRequest();
+            response = (HttpServletResponse) externalContext.getResponse();
+        }
+
         String id = null;
         // PushContext.getInstance(servletContext).createPushId(
         //         request, response);
