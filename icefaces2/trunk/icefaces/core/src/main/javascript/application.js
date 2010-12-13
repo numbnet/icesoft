@@ -202,7 +202,7 @@ if (!window.ice.icefaces) {
                 case 'success':
                     broadcast(afterUpdateListeners, [ e.responseXML ]);
 
-                    var updates = e.responseXML.documentElement.firstChild.children;
+                    var updates = e.responseXML.documentElement.firstChild.childNodes;
                     var updateDescriptions = collect(updates, function(update) {
                         return update.nodeName +
                                 (update.hasAttribute('id') ? '["' + update.getAttribute('id') + '"]' : '') +
