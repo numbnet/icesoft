@@ -176,6 +176,7 @@ ice.component.tabset = {
 					Event.getCharCode(event) == 32 ; 
             if (isEnter) {
                tabview.set('activeIndex', index);
+			   event.cancelBubble = true;
             }
        }
        
