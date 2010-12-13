@@ -118,6 +118,15 @@ var submit;
 
             serializeEventToOptions(decoratedEvent, options);
             serializeAdditionalParameters(additionalParameters, options);
+
+            debug(logger, join([
+                'partial submit: ' + url,
+                'javax.faces.execute: ' + execute,
+                'javax.faces.render: ' + render,
+                'javax.faces.source: ' + element.id,
+                'view ID: ' + viewID,
+                'event type: ' + type(decoratedEvent)
+            ], '\n'));
             jsf.ajax.request(clonedElement, event, options);
         } finally {
             each(clonedElements, function(c) {
@@ -192,8 +201,20 @@ var submit;
         serializeEventToOptions(decoratedEvent, options);
         serializeAdditionalParameters(additionalParameters, options);
 
-        if (deltaSubmit(element)) {
-            var form = formOf(element);
+        var form = formOf(element);
+        var url = form['javax.faces.encodedURL'] ? form['javax.faces.encodedURL'].value : form.action;
+        var isDeltaSubmit = deltaSubmit(element);
+
+        debug(logger, join([
+            (isDeltaSubmit ? 'delta ' : '') + 'full submit: ' + url,
+            'javax.faces.execute: ' + execute,
+            'javax.faces.render: ' + render,
+            'javax.faces.source: ' + element.id,
+            'view ID: ' + viewID,
+            'event type: ' + type(decoratedEvent)
+        ], '\n'));
+
+        if (isDeltaSubmit) {
             var previousParameters = form.previousParameters || HashSet();
             var currentParameters = HashSet(jsf.getViewState(form).split('&'));
             var addedParameters = complement(currentParameters, previousParameters);
