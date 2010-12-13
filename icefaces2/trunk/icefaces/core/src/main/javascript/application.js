@@ -110,6 +110,12 @@ if (!window.ice.icefaces) {
         //include logger.js
         var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
         var logger = Logger([ 'window' ], handler);
+        namespace.log = logger;
+        namespace.log.debug = debug;
+        namespace.log.info = info;
+        namespace.log.warn = warn;
+        namespace.log.error = error;
+        namespace.log.childLogger = childLogger;
 
         //include focus.js
         namespace.setFocus = setFocus;
