@@ -245,10 +245,14 @@ ice.yui3.use(function(Y) {
  
 		AnimBase.superclass.constructor.apply(this, arguments); 
 		if (!this.params['duration']) {
-			this.set("duration", 0.2);
+			this.set("duration", 0.5);
 		} else {
+			try {
 		    //miliseconds to second
-			this.set("duration", this.params['duration'] / 1000);
+				this.set("duration", this.params['duration'] / 1000);
+			} catch (e) {
+				this.set("duration", 0.5);
+			}
 		}
 	    if (params['easing']) {  
 			//TODO check for valid names
