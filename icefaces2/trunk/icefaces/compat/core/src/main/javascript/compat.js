@@ -49,12 +49,12 @@ if (!window.ice.compat) {
         window.onLoad = namespace.onLoad;
         window.onUnload = namespace.onUnload;
 
-        var log = namespace.log.childLogger(namespace.log, "compat");
+        var compatLogger = namespace.log.childLogger(namespace.log, "compat");
         window.logger = {
-            debug:  curry(namespace.log.debug, log),
-            info:   curry(namespace.log.info, log),
-            warn:   curry(namespace.log.warn, log),
-            error:  curry(namespace.log.error, log),
+            debug:  curry(namespace.log.debug, compatLogger),
+            info:   curry(namespace.log.info, compatLogger),
+            warn:   curry(namespace.log.warn, compatLogger),
+            error:  curry(namespace.log.error, compatLogger),
             child:  function() {
                 return window.logger;
             }
