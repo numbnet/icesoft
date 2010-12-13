@@ -26,28 +26,51 @@
 	         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	         xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
 
-	<portlet>
-		<portlet-name>animation</portlet-name>
-		<display-name>Animation</display-name>
-		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-		<init-param>
-			<name>javax.portlet.faces.defaultViewId.view</name>
-			<value>/view.xhtml</value>
-		</init-param>
+    <portlet>
+        <portlet-name>animation</portlet-name>
+        <display-name>Animation</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/view.xhtml</value>
+        </init-param>
         <init-param>
             <name>org.icefaces.demo.viewPath</name>
             <value>content/animationInclude.xhtml</value>
         </init-param>
-		<supports>
-			<mime-type>text/html</mime-type>
-			<portlet-mode>view</portlet-mode>
-		</supports>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
         <portlet-info>
             <title>Animation</title>
             <short-title>Animation</short-title>
             <keywords>ICEfaces 2 Advanced Component Showcase ACE Animation</keywords>
         </portlet-info>
-	</portlet>
+    </portlet>
+
+    <portlet>
+        <portlet-name>checkbox</portlet-name>
+        <display-name>Checkbox</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>content/checkboxInclude.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Checkbox</title>
+            <short-title>Checkbox</short-title>
+            <keywords>ICEfaces 2 Advanced Component Showcase ACE Checkbox</keywords>
+        </portlet-info>
+    </portlet>
 
 	<portlet>
 		<portlet-name>dateTime</portlet-name>
@@ -164,28 +187,51 @@
         </portlet-info>
 	</portlet>
 
-	<portlet>
-		<portlet-name>tabSetClient</portlet-name>
-		<display-name>Tab Set - Client</display-name>
-		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-		<init-param>
-			<name>javax.portlet.faces.defaultViewId.view</name>
-			<value>/view.xhtml</value>
-		</init-param>
+    <portlet>
+        <portlet-name>tabSetClient</portlet-name>
+        <display-name>Tab Set - Client</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/view.xhtml</value>
+        </init-param>
         <init-param>
             <name>org.icefaces.demo.viewPath</name>
             <value>content/tabSetClientInclude.xhtml</value>
         </init-param>
-		<supports>
-			<mime-type>text/html</mime-type>
-			<portlet-mode>view</portlet-mode>
-		</supports>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
         <portlet-info>
             <title>Tab Set - Client</title>
             <short-title>Tab Set - Client</short-title>
             <keywords>ICEfaces 2 Advanced Component Showcase Tab Set Client</keywords>
         </portlet-info>
-	</portlet>
+    </portlet>
+
+    <portlet>
+        <portlet-name>tabSetProxyServer</portlet-name>
+        <display-name>Tab Set - Proxy Server</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>content/tabSetProxyServerInclude.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Tab Set - Proxy Server</title>
+            <short-title>Tab Set - Proxy Server</short-title>
+            <keywords>ICEfaces 2 Advanced Component Showcase Tab Set Proxy Server</keywords>
+        </portlet-info>
+    </portlet>
 
 	<portlet>
 		<portlet-name>tabSetServer</portlet-name>
