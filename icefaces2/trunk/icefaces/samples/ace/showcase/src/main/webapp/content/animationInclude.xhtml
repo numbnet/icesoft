@@ -53,7 +53,7 @@
                 <h3>The following tabSet uses a fully customised animation, using 'from' and 'to' attributes to mimic blind up/down effect</h3>
                 <pre style="background-color: transparent;"> &lt;ice:animation event="transition" from="{opacity:1, height:28}" to="{opacity:0, height:1}" easing="backIn" /&gt; </pre>
                 <ice:tabSet >
-                    <ice:animation duration="0.4"  event="transition" from="{opacity:1, height:28}" to="{opacity:0, height:1}" easing="backIn" />
+                    <ice:animation duration="400"  event="transition" from="{opacity:1, height:28}" to="{opacity:0, height:1}" easing="backIn" />
                     <ice:tabPane label="One" >
                         <h:outputText value="111111111111"/>
                     </ice:tabPane>
@@ -68,9 +68,9 @@
             
             <h:panelGroup styleClass="exampleBox" layout="block">
                 <h3>The following demonstrates a customised animation, to mimic pulsate effect, in a standard h:panelGrid</h3>
-                <pre style="background-color: transparent;"> &lt;ice:animation event="mouseover" to="{opacity:1}" from="{opacity:0}" iterations="3" duration="0.4" easing="easeIn"/&gt; </pre>
+                <pre style="background-color: transparent;"> &lt;ice:animation event="mouseover" to="{opacity:1}" from="{opacity:0}" iterations="3" duration="400" easing="easeIn"/&gt; </pre>
                 <h:panelGrid >
-                    <ice:animation event="mouseover" to="{opacity:1}" from="{opacity:0}" iterations="3" duration="0.4" easing="easeIn"/>
+                    <ice:animation event="mouseover" to="{opacity:1}" from="{opacity:0}" iterations="3" duration="400" easing="easeIn"/>
                     <h:outputText styleClass="bold-blue-text" value="Move your mouse over me!"/>
                 </h:panelGrid>
             </h:panelGroup>
