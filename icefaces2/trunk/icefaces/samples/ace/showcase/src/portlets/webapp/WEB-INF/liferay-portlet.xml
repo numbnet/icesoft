@@ -32,6 +32,12 @@
     </portlet>
 
     <portlet>
+        <portlet-name>checkbox</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
         <portlet-name>dateTime</portlet-name>
         <instanceable>true</instanceable>
         <ajaxable>false</ajaxable>
@@ -63,6 +69,12 @@
 
     <portlet>
         <portlet-name>tabSetClient</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>tabSetProxyServer</portlet-name>
         <instanceable>true</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
