@@ -27,8 +27,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Collection;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ProxyHttpServletRequest implements HttpServletRequest {
@@ -134,9 +136,7 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
     }
 
     public  java.lang.String getContentType()  {
-        log.severe("ProxyHttpServletRequest unsupported operation");
-        if (true) throw new UnsupportedOperationException();
-        return null;
+        return facesContext.getExternalContext().getRequestContentType();
     }
 
     public  javax.servlet.ServletInputStream getInputStream()       throws java.io.IOException  {
@@ -317,8 +317,18 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
     }
 
     public  java.lang.String getMethod() {
-        log.severe("ProxyHttpServletRequest unsupported operation");
-        if (true) throw new UnsupportedOperationException();
+        // ICE-6371; The getMethod call is not available on the ExternalContext.  While s
+        // supported on HttpServletRequest, it's not available on all types of Portlet 2.0
+        // requests so we do it reflectively. If it's there, we use it.  If not
+        // we just return null rather than fail with an exception.
+        Object rawRequestObject = facesContext.getExternalContext().getRequest();
+        try {
+            Method meth = rawRequestObject.getClass().getMethod("getMethod", new Class[0] );
+            Object result = meth.invoke(rawRequestObject);
+            return (String)result;
+        } catch (Exception e) {
+            log.log(Level.FINE, "request object doesn't support 'getMethod' call", e);
+        }
         return null;
     }
 

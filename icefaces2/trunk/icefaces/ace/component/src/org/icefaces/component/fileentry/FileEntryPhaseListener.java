@@ -23,6 +23,7 @@
 package org.icefaces.component.fileentry;
 
 import org.icefaces.impl.context.DOMPartialViewContext;
+import org.icefaces.impl.push.servlet.ProxyHttpServletRequest;
 import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.apache.commons.fileupload.FileItemStream;
 import org.icefaces.apache.commons.fileupload.FileItemIterator;
@@ -115,10 +116,13 @@ public class FileEntryPhaseListener implements PhaseListener {
             
         Object requestObject = phaseEvent.getFacesContext().getExternalContext().getRequest();
         if (!(requestObject instanceof HttpServletRequest)) {
+            System.out.println("FileEntryPhaseListener.beforePhase: request is not an HttpServletRequest " + requestObject);
 //            System.out.println("FileEntryPhaseListener.beforePhase()  requestObject: " + requestObject);
 //            if (requestObject != null)
 //                System.out.println("FileEntryPhaseListener.beforePhase()  requestObject.class: " + requestObject.getClass().getName());
-            return;
+            requestObject = new ProxyHttpServletRequest(phaseEvent.getFacesContext());
+            System.out.println("FileEntryPhaseListener.beforePhase: converted to ProxyHttpServletRequest");
+//            return;
         }
         HttpServletRequest request = (HttpServletRequest) requestObject;
 //        System.out.println("FileEntryPhaseListener.beforePhase()  contentType: " + request.getContentType());
@@ -208,7 +212,7 @@ public class FileEntryPhaseListener implements PhaseListener {
 //            System.out.println("FileEntryPhaseListener.beforePhase()  set    : " + phaseEvent.getFacesContext().getExternalContext().getRequest());
         }
         
-        request = (HttpServletRequest) phaseEvent.getFacesContext().getExternalContext().getRequest();
+//        request = (HttpServletRequest) phaseEvent.getFacesContext().getExternalContext().getRequest();
         
         /*
         System.out.println("About to list headers");
