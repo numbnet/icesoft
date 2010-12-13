@@ -394,3 +394,14 @@ border-color:#243356;
     background-image: none;
 }
 */
+.ice-skin-rime .yui-navset-bottom .yui-nav .selected div.yui-navdiv em {
+    border-top-style: none;
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav .selected div.yui-navdiv {
+    border-right-style: none;
+}
+
+.ice-skin-rime .yui-navset-right .yui-nav .selected div.yui-navdiv {
+    border-left-style: none;
+}
