@@ -36,6 +36,7 @@ import javax.faces.application.ResourceHandlerWrapper;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 
 import org.icefaces.util.EnvUtils;
 import org.icefaces.impl.util.Util;
@@ -198,7 +199,9 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
     }
 
     /**
-     * Add the provided resource in session scope.
+     * Add the provided resource in session scope.  Note that session scope
+     * resources should be Serializable to support cluster replication
+     * and session passivation.
      *
      * @param scopeMap the resource
      * @param scopeMap the resource
@@ -250,7 +253,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
 
 //Hold the resources in an instance of this private class to provide
 //security by ensuring that only resources stored via this API are served
-class ResourceRegistryHolder  {
+class ResourceRegistryHolder implements Serializable {
     public String key;
     public Resource resource;
     
