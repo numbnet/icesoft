@@ -48,9 +48,17 @@ if (!window.ice.compat) {
 
         window.onLoad = namespace.onLoad;
         window.onUnload = namespace.onUnload;
-        window.logger = {debug: noop, info: noop, warn: noop, error: noop, child: function() {
-            return window.logger;
-        }};
+
+        var log = namespace.log.childLogger(namespace.log, "compat");
+        window.logger = {
+            debug:  curry(namespace.log.debug, log),
+            info:   curry(namespace.log.info, log),
+            warn:   curry(namespace.log.warn, log),
+            error:  curry(namespace.log.error, log),
+            child:  function() {
+                return window.logger;
+            }
+        };
     })(window.ice);
 }
 
