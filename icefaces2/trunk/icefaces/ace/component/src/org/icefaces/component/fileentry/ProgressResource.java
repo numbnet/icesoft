@@ -8,11 +8,12 @@ import java.net.URL;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.io.ByteArrayInputStream;
+import java.io.Serializable;
 
 /**
  * The fileEntry progress information is accessed via a dynamic resource
  */
-public class ProgressResource extends Resource {
+public class ProgressResource extends Resource implements Serializable {
     private String uniqueIdentifier;
     private String progressInfo;
     private int deltaGottenPushed;
