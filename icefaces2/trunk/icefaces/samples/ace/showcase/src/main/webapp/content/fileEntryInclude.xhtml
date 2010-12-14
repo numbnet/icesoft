@@ -13,8 +13,8 @@
     </h:panelGroup>
     
   <h:form id="fileform">
-    <h:panelGroup styleClass="exampleBox" layout="block">
-      <h3><h:outputText value="#{msgs['content.fileEntry.messages.label']}"/></h3>
+    <h:panelGroup id="fileOuterPanel" styleClass="exampleBox" layout="block">
+      <h3><h:outputText id="fileMessagesLabel" value="#{msgs['content.fileEntry.messages.label']}"/></h3>
       <h:messages id="fileMessages"
                   layout="table"
                   globalOnly="false"
@@ -24,13 +24,13 @@
                      label="#{msgs['content.fileEntry.comp.label']}"
                      relativePath="uploaded"
                      fileEntryListener="#{fileEntryController.listener}"/>
-      <h:commandButton value="#{msgs['content.fileEntry.upload.label']}"/>
+      <h:commandButton id="fileUploadButton" value="#{msgs['content.fileEntry.upload.label']}"/>
     </h:panelGroup>
   </h:form>
   <h:form id="fileform2">
     <h:panelGroup id="fileTableRenderedAncestor">
-	    <h:panelGroup rendered="#{not fileEntryController.emptyFileList}">
-	      <h:panelGroup styleClass="exampleBox" layout="block">
+	    <h:panelGroup id="panelFileList" rendered="#{not fileEntryController.emptyFileList}">
+	      <h:panelGroup id="innerPanelFileList" styleClass="exampleBox" layout="block">
 	        <h3><h:outputText value="#{msgs['content.fileEntry.history.label']}"/></h3>
 	        <h:dataTable id="fileTable"
 	                     styleClass="fileTable"
@@ -40,19 +40,19 @@
 	            <f:facet name="header">
 	              <h:outputLabel value="#{msgs['content.fileEntry.history.name.label']}"/>
 	            </f:facet>
-	            <h:outputText value="#{file.fileInfo.fileName}"/>
+	            <h:outputText id="fileNameCol" value="#{file.fileInfo.fileName}"/>
 	          </h:column>
 	          <h:column>
 	            <f:facet name="header">
 	              <h:outputText value="#{msgs['content.fileEntry.history.content.label']}"/>
 	            </f:facet>
-	            <h:outputText value="#{file.fileInfo.contentType}"/>
+	            <h:outputText id="fileContentCol" value="#{file.fileInfo.contentType}"/>
 	          </h:column>
 	          <h:column>
 	            <f:facet name="header">
 	              <h:outputLabel value="#{msgs['content.fileEntry.history.size.label']}"/>
 	            </f:facet>
-	            <h:outputText value="#{file.sizeFormatted}"/>
+	            <h:outputText id="fileSize" value="#{file.sizeFormatted}"/>
 	          </h:column>
 	          <h:column>
 	            <f:facet name="header">
