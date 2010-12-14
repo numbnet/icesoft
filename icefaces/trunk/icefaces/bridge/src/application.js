@@ -128,7 +128,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
 
     This.Application = Object.subclass({
         initialize: function(configuration, container) {
-            this.optimizedJSListenerCleanup = configuration.optimizedJSListenerCleanup;
+            var optimizedJSListenerCleanup = configuration.optimizedJSListenerCleanup;
             var sessionID = configuration.session;
             var viewID = configuration.view;
             registerView(sessionID, viewID);
@@ -136,19 +136,19 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
             var statusManager = new Ice.Status.DefaultStatusManager(configuration, container);
             var scriptLoader = new Ice.Script.Loader(logger);
             var commandDispatcher = new Ice.Command.Dispatcher();
-            var documentSynchronizer = new Ice.Document.Synchronizer(window.logger, sessionID, viewID);
+            var documentSynchronizer = new Ice.Document.Synchronizer(window.logger, sessionID, viewID, optimizedJSListenerCleanup);
             var parameters = Ice.Parameter.Query.create(function(query) {
                 query.add('ice.session', sessionID);
                 query.add('ice.view', viewID);
             });
             var replaceContainerHTML = function(html) {
-                Ice.Document.replaceContainerHTML(container, html);
+                Ice.Document.replaceContainerHTML(container, html, optimizedJSListenerCleanup);
                 scriptLoader.searchAndEvaluateScripts(container);
             };
 
             var connection = configuration.synchronous ?
-                             new Ice.Connection.SyncConnection(logger, configuration.connection, parameters) :
-                             new This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, parameters, commandDispatcher);
+                    new Ice.Connection.SyncConnection(logger, configuration.connection, parameters) :
+                    new This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, parameters, commandDispatcher);
             var dispose = function() {
                 try {
                     dispose = Function.NOOP;
@@ -199,19 +199,12 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
             });
             commandDispatcher.register('updates', function(element) {
                 var numUpdate = 0;
-                var got_bridge_optimizedJSListenerCleanup = false;
-                var bridge_optimizedJSListenerCleanup = null;
                 $enumerate(element.getElementsByTagName('update')).each(function(updateElement) {
                     try {
                         var address = updateElement.getAttribute('address');
                         var update = new Ice.ElementModel.Update(updateElement);
                         var extElem = address.asExtendedElement();
-                        if (!got_bridge_optimizedJSListenerCleanup) {
-                            bridge_optimizedJSListenerCleanup =
-                            extElem.findBridge().optimizedJSListenerCleanup;
-                            got_bridge_optimizedJSListenerCleanup = true;
-                        }
-                        extElem.updateDOM(update, bridge_optimizedJSListenerCleanup);
+                        extElem.updateDOM(update, optimizedJSListenerCleanup);
                         logger.debug('applied update : ' + update.asString());
                         var updatedElement = address.asElement();
                         Ice.Focus.captureFocusIn(updatedElement);
