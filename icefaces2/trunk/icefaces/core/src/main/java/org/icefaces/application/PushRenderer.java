@@ -159,9 +159,7 @@ public class PushRenderer {
             final PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
             return new PortableRenderer() {
                 public void render(String group) {
-                    if (FacesContext.getCurrentInstance() == null) {
-                        pushContext.push(group);
-                    }
+                    pushContext.push(group);
                 }
             };
         } else {
