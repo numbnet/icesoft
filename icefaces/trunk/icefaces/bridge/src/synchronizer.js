@@ -31,24 +31,22 @@
  */
 
 [ Ice.Document = new Object, Ice.ElementModel.Element, Ice.Connection, Ice.Ajax ].as(function(This, Element, Connection, Ajax) {
-    This.replaceContainerHTML = function(container, html) {
+    This.replaceContainerHTML = function(container, html, optimizedJSListenerCleanup) {
         var start = new RegExp('\<body[^\<]*\>', 'g').exec(html);
         var end = new RegExp('\<\/body\>', 'g').exec(html);
-        var body = html.substring(start.index, end.index + end[0].length)
+        var body = html.substring(start.index, end.index + end[0].length);
         var bodyContent = body.substring(body.indexOf('>') + 1, body.lastIndexOf('<'));
         var tag = container.tagName;
         var c = $element(container);
-        var bridge_optimizedJSListenerCleanup =
-                c.findBridge().optimizedJSListenerCleanup;
-        c.disconnectEventListeners(bridge_optimizedJSListenerCleanup);
-        c.replaceHtml(['<', tag, '>', bodyContent, '</', tag, '>'].join(''),
-                bridge_optimizedJSListenerCleanup);
+        c.disconnectEventListeners(optimizedJSListenerCleanup);
+        c.replaceHtml(['<', tag, '>', bodyContent, '</', tag, '>'].join(''), optimizedJSListenerCleanup);
     };
 
     This.Synchronizer = Object.subclass({
-        initialize: function(logger, sessionID, viewID) {
+        initialize: function(logger, sessionID, viewID, optimizedJSListenerCleanup) {
             this.logger = logger.child('synchronizer');
             this.ajax = new Ajax.Client(this.logger);
+            this.optimizedJSListenerCleanup = optimizedJSListenerCleanup;
             var id = 'history-frame:' + sessionID + ':' + viewID;
             try {
                 //ICE-3242 under certain circumstances accessing location's hash property can throw an exception in Firefox                
@@ -83,9 +81,9 @@
                 this.ajax.getAsynchronously(document.URL, '', function(request) {
                     request.setRequestHeader('Connection', 'close');
                     request.on(Connection.OK, function(response) {
-                        This.replaceContainerHTML(document.body, response.content());
-                    });
-                });
+                        This.replaceContainerHTML(document.body, response.content(), this.optimizedJSListenerCleanup);
+                    }.bind(this));
+                }.bind(this));
             } catch (e) {
                 this.logger.error('failed to reload body', e);
             }
