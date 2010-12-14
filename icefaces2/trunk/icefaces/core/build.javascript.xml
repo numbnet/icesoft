@@ -39,6 +39,7 @@
         <loadfile property="collection.js" srcFile="${lib.dir}/collection.js"/>
         <loadfile property="hashtable.js" srcFile="${lib.dir}/hashtable.js"/>
         <loadfile property="string.js" srcFile="${lib.dir}/string.js"/>
+        <loadfile property="exception.js" srcFile="${lib.dir}/exception.js"/>
         <loadfile property="window.js" srcFile="${lib.dir}/window.js"/>
         <loadfile property="http.js" srcFile="${lib.dir}/http.js"/>
         <loadfile property="cookie.js" srcFile="${lib.dir}/cookie.js"/>
@@ -57,6 +58,7 @@
                 <filter token="collection" value="${collection.js}"/>
                 <filter token="hashtable" value="${hashtable.js}"/>
                 <filter token="string" value="${string.js}"/>
+                <filter token="exception" value="${exception.js}"/>
                 <filter token="window" value="${window.js}"/>
                 <filter token="http" value="${http.js}"/>
                 <filter token="cookie" value="${cookie.js}"/>
