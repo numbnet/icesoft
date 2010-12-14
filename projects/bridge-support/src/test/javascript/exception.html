@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <script type="text/javascript" src="../../main/javascript/oo.js"></script>
+    <script type="text/javascript" src="../../main/javascript/functional.js"></script>
+    <script type="text/javascript" src="../../main/javascript/collection.js"></script>
+    <script type="text/javascript" src="../../main/javascript/string.js"></script>
+    <script type="text/javascript" src="../../main/javascript/exception.js"></script>
+    <script type="text/javascript" src="unittest.js"></script>
+    <script type="text/javascript">
+        window.onload = InPageRunner('Collection test suite', function(test) {
+            test('check stack caturing', function() {
+                function a(x, y) {
+                    throw Exception('testing exception');
+                }
+
+                function b(z) {
+                    a(333, 'rrrr');
+                }
+
+                function c(x1, x2, x3) {
+                    b(x1, x2);
+                }
+
+                var d = function(q, t) {
+                    c(window, c);
+                };
+
+                try {
+                    d([1, 3, 4, 6]);
+                } catch (ex) {
+
+                    alert(asString(ex));
+                }
+            });
+        });
+    </script>
+</head>
+<body/>
+</html>

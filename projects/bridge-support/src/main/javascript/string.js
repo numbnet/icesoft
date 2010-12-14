@@ -74,6 +74,18 @@ var substring = function(s, from, to) {
     return s.substring(from, to);
 };
 
+var trim = function(s) {
+    s = s.replace(/^\s+/, '');
+    for (var i = s.length - 1; i >= 0; i--) {
+        if (/\S/.test(s.charAt(i))) {
+            s = s.substring(0, i + 1);
+            break;
+        }
+    }
+
+    return s;
+};
+
 var asNumber = Number;
 
 var asBoolean = function(s) {
