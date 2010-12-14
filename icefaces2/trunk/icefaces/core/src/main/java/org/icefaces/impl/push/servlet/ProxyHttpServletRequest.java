@@ -22,11 +22,14 @@
 
 package org.icefaces.impl.push.servlet;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Collection;
@@ -36,9 +39,11 @@ import java.util.logging.Logger;
 public class ProxyHttpServletRequest implements HttpServletRequest {
     private static Logger log = Logger.getLogger(ProxyHttpServletRequest.class.getName());
     private FacesContext facesContext;
+    private ExternalContext externalContext;
 
     public ProxyHttpServletRequest(FacesContext facesContext) {
         this.facesContext = facesContext;
+        externalContext = facesContext.getExternalContext();
     }
 
     public javax.servlet.DispatcherType getDispatcherType()  {
@@ -118,9 +123,8 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
     }
 
     public  java.lang.String getCharacterEncoding()  {
-        log.severe("ProxyHttpServletRequest unsupported operation");
-        if (true) throw new UnsupportedOperationException();
-        return null;
+        Object result = getMethodAndInvoke(externalContext.getRequest(),"getCharacterEncoding");
+        return (String)result;
     }
 
     public  void setCharacterEncoding(java.lang.String encoding)       throws java.io.UnsupportedEncodingException  {
@@ -130,18 +134,34 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
     }
 
     public  int getContentLength()  {
-        log.severe("ProxyHttpServletRequest unsupported operation");
-        if (true) throw new UnsupportedOperationException();
-        return -1;
+        return externalContext.getRequestContentLength();
     }
 
     public  java.lang.String getContentType()  {
-        return facesContext.getExternalContext().getRequestContentType();
+        //Normally we'd rely on the ExternalContext but the portlet bridge returns
+        //an incorrect content-type for the Ajax request used for fileUpload so we
+        //rely on the underlying request value if possible.
+        Object result = getMethodAndInvoke(externalContext.getRequest(),"getContentType");
+        if( result != null ){
+            return (String)result;
+        }
+        return externalContext.getRequestContentType();
     }
 
-    public  javax.servlet.ServletInputStream getInputStream()       throws java.io.IOException  {
-        log.severe("ProxyHttpServletRequest unsupported operation");
-        if (true) throw new UnsupportedOperationException();
+    public  javax.servlet.ServletInputStream getInputStream() throws java.io.IOException  {
+        //Since servlet requests and portlet requests have different return values, we
+        //check if there is a servlet version first.  If not, get the portlet version
+        //and wrap it to make it look like a ServletInputStream.
+        Object result = getMethodAndInvoke(externalContext.getRequest(),"getInputStream");
+        if( result != null ){
+            return (javax.servlet.ServletInputStream)result;
+        }
+
+        result = getMethodAndInvoke(externalContext.getRequest(),"getPortletInputStream");
+        if( result != null){
+            ProxyServletInputStream proxy = new ProxyServletInputStream((InputStream)result);
+            return (javax.servlet.ServletInputStream)proxy;
+        }
         return null;
     }
 
@@ -317,19 +337,12 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
     }
 
     public  java.lang.String getMethod() {
-        // ICE-6371; The getMethod call is not available on the ExternalContext.  While s
+        // ICE-6371: The getMethod call is not available on the ExternalContext.  While it's
         // supported on HttpServletRequest, it's not available on all types of Portlet 2.0
         // requests so we do it reflectively. If it's there, we use it.  If not
         // we just return null rather than fail with an exception.
-        Object rawRequestObject = facesContext.getExternalContext().getRequest();
-        try {
-            Method meth = rawRequestObject.getClass().getMethod("getMethod", new Class[0] );
-            Object result = meth.invoke(rawRequestObject);
-            return (String)result;
-        } catch (Exception e) {
-            log.log(Level.FINE, "request object doesn't support 'getMethod' call", e);
-        }
-        return null;
+        Object result = getMethodAndInvoke(externalContext.getRequest(),"getMethod");
+        return (String)result;
     }
 
     public  java.lang.String getPathInfo() {
@@ -469,5 +482,39 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
         return null;
     }
 
+    /**
+     * Convenience method for getting and invoking a method with no parameters via reflection.
+     *
+     * @param obj  The instance to get the method from and invoke it on
+     * @param method  The name of the method to look for and invoke on the object instance.
+     * @return The result, if any, of the invoked method.
+     */
+    private static Object getMethodAndInvoke(Object obj, String method){
+        try {
+            Method meth = obj.getClass().getMethod(method, new Class[0]);
+            Object result = meth.invoke(obj);
+            return result;
+        } catch (Exception e) {
+            log.log(Level.FINE, "problem getting " + method + " from " + obj, e);
+        }
+        return null;
+    }
 
+}
+
+/**
+ * A class that makes an InputStream look like a ServletInputStream
+ */
+class ProxyServletInputStream extends javax.servlet.ServletInputStream {
+
+    private InputStream portletInputStream;
+
+    ProxyServletInputStream( InputStream portletInputStream) {
+        this.portletInputStream = portletInputStream;
+    }
+
+    @Override
+    public int read() throws IOException {
+        return portletInputStream.read();
+    }
 }
