@@ -49,7 +49,7 @@ function enclosingForm(element) {
     return element.form || detect(parents(element), function(e) {
         return tag(e) == 'form';
     }, function() {
-        throw Exception('cannot find enclosing form');
+        throw 'cannot find enclosing form';
     });
 }
 
@@ -57,7 +57,7 @@ function enclosingBridge(element) {
     return property(detect(parents(element), function(e) {
         return property(e, 'bridge') != null;
     }, function() {
-        throw Exception('cannot find enclosing bridge');
+        throw 'cannot find enclosing bridge';
     }), 'bridge');
 }
 

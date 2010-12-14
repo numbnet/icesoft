@@ -17,7 +17,7 @@ function XMLDynamicConfiguration(lookupElement) {
         if (a) {
             return a;
         } else {
-            throw Exception('unknown attribute: ' + name);
+            throw 'unknown attribute: ' + name;
         }
     }
 
@@ -68,7 +68,7 @@ function XMLDynamicConfiguration(lookupElement) {
         method(childConfiguration, function(self, name) {
             var elements = lookupElement().getElementsByTagName(name);
             if (isEmpty(elements)) {
-                throw Exception('unknown configuration: ' + name);
+                throw 'unknown configuration: ' + name;
             } else {
                 return XMLDynamicConfiguration(function() {
                     return lookupElement().getElementsByTagName(name)[0];

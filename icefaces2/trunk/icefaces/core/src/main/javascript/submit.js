@@ -128,8 +128,6 @@ var submit;
                 'event type: ' + type(decoratedEvent)
             ], '\n'));
             jsf.ajax.request(clonedElement, event, options);
-        } catch (ex) {
-            error(logger, 'failed to execut single submit', ex);
         } finally {
             each(clonedElements, function(c) {
                 form.removeChild(c);
@@ -175,90 +173,86 @@ var submit;
     var removePrefix = 'patch-';
 
     function fullSubmit(execute, render, event, element, additionalParameters) {
-        try {
-            event = event || null;
+        event = event || null;
 
-            var disabled = document.getElementById(element.id + ":ajaxDisabled");
-            if (disabled) {
-                var disabledArray = disabled.value.split(" ");
-                var l = disabledArray.length;
-                for (var i = 1; i < l; i++) {
-                    var name = disabledArray[i];
-                    var field = element[name];
-                    if ((field) && (field.value == name ) && (element.nativeSubmit)) {
-                        element.nativeSubmit();
-                        return;
-                    }
+        var disabled = document.getElementById(element.id + ":ajaxDisabled");
+        if (disabled) {
+            var disabledArray = disabled.value.split(" ");
+            var l = disabledArray.length;
+            for (var i = 1; i < l; i++) {
+                var name = disabledArray[i];
+                var field = element[name];
+                if ((field) && (field.value == name ) && (element.nativeSubmit)) {
+                    element.nativeSubmit();
+                    return;
                 }
             }
+        }
 
-            var viewID = viewIDOf(element);
-            var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID, 'ice.focus': currentFocus};
-            var decoratedEvent = $event(event, element);
+        var viewID = viewIDOf(element);
+        var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID, 'ice.focus': currentFocus};
+        var decoratedEvent = $event(event, element);
 
-            if (isKeyEvent(decoratedEvent) && isEnterKey(decoratedEvent)) {
-                cancelBubbling(decoratedEvent);
-                cancelDefaultAction(decoratedEvent);
+        if (isKeyEvent(decoratedEvent) && isEnterKey(decoratedEvent)) {
+            cancelBubbling(decoratedEvent);
+            cancelDefaultAction(decoratedEvent);
+        }
+
+        serializeEventToOptions(decoratedEvent, options);
+        serializeAdditionalParameters(additionalParameters, options);
+
+        var form = formOf(element);
+        var url = form['javax.faces.encodedURL'] ? form['javax.faces.encodedURL'].value : form.action;
+        var isDeltaSubmit = deltaSubmit(element);
+
+        debug(logger, join([
+            (isDeltaSubmit ? 'delta ' : '') + 'full submit: ' + url,
+            'javax.faces.execute: ' + execute,
+            'javax.faces.render: ' + render,
+            'javax.faces.source: ' + element.id,
+            'view ID: ' + viewID,
+            'event type: ' + type(decoratedEvent)
+        ], '\n'));
+
+        if (isDeltaSubmit) {
+            var previousParameters = form.previousParameters || HashSet();
+            var currentParameters = HashSet(jsf.getViewState(form).split('&'));
+            var addedParameters = complement(currentParameters, previousParameters);
+            var removedParameters = complement(previousParameters, currentParameters);
+            form.previousParameters = currentParameters;
+            function splitStringParameter(f) {
+                return function(p) {
+                    var parameter = split(p, '=');
+                    f(decodeURIComponent(parameter[0]), decodeURIComponent(parameter[1]));
+                };
             }
 
-            serializeEventToOptions(decoratedEvent, options);
-            serializeAdditionalParameters(additionalParameters, options);
+            var deltaSubmitForm = document.getElementById(viewID);
+            var clonedElement = element.cloneNode(true);
+            var appendedElements = [];
 
-            var form = formOf(element);
-            var url = form['javax.faces.encodedURL'] ? form['javax.faces.encodedURL'].value : form.action;
-            var isDeltaSubmit = deltaSubmit(element);
-
-            debug(logger, join([
-                (isDeltaSubmit ? 'delta ' : '') + 'full submit: ' + url,
-                'javax.faces.execute: ' + execute,
-                'javax.faces.render: ' + render,
-                'javax.faces.source: ' + element.id,
-                'view ID: ' + viewID,
-                'event type: ' + type(decoratedEvent)
-            ], '\n'));
-
-            if (isDeltaSubmit) {
-                var previousParameters = form.previousParameters || HashSet();
-                var currentParameters = HashSet(jsf.getViewState(form).split('&'));
-                var addedParameters = complement(currentParameters, previousParameters);
-                var removedParameters = complement(previousParameters, currentParameters);
-                form.previousParameters = currentParameters;
-                function splitStringParameter(f) {
-                    return function(p) {
-                        var parameter = split(p, '=');
-                        f(decodeURIComponent(parameter[0]), decodeURIComponent(parameter[1]));
-                    };
-                }
-
-                var deltaSubmitForm = document.getElementById(viewID);
-                var clonedElement = element.cloneNode(true);
-                var appendedElements = [];
-
-                function createHiddenInputInDeltaSubmitForm(name, value) {
-                    append(appendedElements, appendHiddenInputElement(deltaSubmitForm, name, value));
-                }
-
-                try {
-                    createHiddenInputInDeltaSubmitForm('ice.deltasubmit.form', form.id);
-                    createHiddenInputInDeltaSubmitForm(form.id, form.id);
-                    each(addedParameters, splitStringParameter(function(name, value) {
-                        createHiddenInputInDeltaSubmitForm(addPrefix + name, value);
-                    }));
-                    each(removedParameters, splitStringParameter(function(name, value) {
-                        createHiddenInputInDeltaSubmitForm(removePrefix + name, value);
-                    }));
-
-                    jsf.ajax.request(deltaSubmitForm, event, options);
-                } finally {
-                    each(appendedElements, function(element) {
-                        deltaSubmitForm.removeChild(element);
-                    });
-                }
-            } else {
-                jsf.ajax.request(element, event, options);
+            function createHiddenInputInDeltaSubmitForm(name, value) {
+                append(appendedElements, appendHiddenInputElement(deltaSubmitForm, name, value));
             }
-        } catch (ex) {
-            error(logger, 'failed to execut full submit', ex);
+
+            try {
+                createHiddenInputInDeltaSubmitForm('ice.deltasubmit.form', form.id);
+                createHiddenInputInDeltaSubmitForm(form.id, form.id);
+                each(addedParameters, splitStringParameter(function(name, value) {
+                    createHiddenInputInDeltaSubmitForm(addPrefix + name, value);
+                }));
+                each(removedParameters, splitStringParameter(function(name, value) {
+                    createHiddenInputInDeltaSubmitForm(removePrefix + name, value);
+                }));
+
+                jsf.ajax.request(deltaSubmitForm, event, options);
+            } finally {
+                each(appendedElements, function(element) {
+                    deltaSubmitForm.removeChild(element);
+                });
+            }
+        } else {
+            jsf.ajax.request(element, event, options);
         }
     }
 

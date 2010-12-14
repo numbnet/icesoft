@@ -25,7 +25,7 @@ var indexOf = function(s, substring) {
     if (index >= 0) {
         return index;
     } else {
-        throw Exception('"' + s + '" does not contain "' + substring + '"');
+        throw '"' + s + '" does not contain "' + substring + '"';
     }
 };
 
@@ -34,7 +34,7 @@ var lastIndexOf = function(s, substring) {
     if (index >= 0) {
         return index;
     } else {
-        throw Exception('string "' + s + '" does not contain "' + substring + '"');
+        throw 'string "' + s + '" does not contain "' + substring + '"';
     }
 };
 

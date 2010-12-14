@@ -55,19 +55,19 @@ function FirebugLogHandler(priority) {
     }
 
     function debugPrimitive(self, category, message, exception) {
-        exception ? console.debug(formatOutput(category, message), '\n' + asString(exception)) : console.debug(formatOutput(category, message));
+        exception ? console.debug(formatOutput(category, message), exception) : console.debug(formatOutput(category, message));
     }
 
     function infoPrimitive(self, category, message, exception) {
-        exception ? console.info(formatOutput(category, message), '\n' + asString(exception)) : console.info(formatOutput(category, message));
+        exception ? console.info(formatOutput(category, message), exception) : console.info(formatOutput(category, message));
     }
 
     function warnPrimitive(self, category, message, exception) {
-        exception ? console.warn(formatOutput(category, message), '\n' + asString(exception)) : console.warn(formatOutput(category, message));
+        exception ? console.warn(formatOutput(category, message), exception) : console.warn(formatOutput(category, message));
     }
 
     function errorPrimitive(self, category, message, exception) {
-        exception ? console.error(formatOutput(category, message), '\n' + asString(exception)) : console.error(formatOutput(category, message));
+        exception ? console.error(formatOutput(category, message), exception) : console.error(formatOutput(category, message));
     }
 
     var handlers = [
@@ -147,21 +147,13 @@ function WindowLogHandler(thresholdPriority, name) {
         return !disabled;
     }
 
-    function displayException(exception) {
-        if (exception.message) {
-            return join([exception.name, ' <', exception.message, '>'], '');
-        } else {
-            return asString(exception);
-        }
-    }
-
     function displayEntry(priorityName, colorName, category, message, exception) {
         var categoryName = join(category, '.');
 
         if (categoryMatcher.test(categoryName)) {
             var elementDocument = logContainer.ownerDocument;
             var timestamp = new Date();
-            var completeMessage = join(['[', categoryName, '] : ', message, (exception ? join(['\n', displayException(exception)], '') : '')], '');
+            var completeMessage = join(['[', categoryName, '] : ', message, (exception ? join(['\n', exception.name, ' <', exception.message, '>'], '') : '')], '');
             each(split(completeMessage, '\n'), function(line) {
                 if (/(\w+)/.test(line)) {
                     var eventNode = elementDocument.createElement('div');
