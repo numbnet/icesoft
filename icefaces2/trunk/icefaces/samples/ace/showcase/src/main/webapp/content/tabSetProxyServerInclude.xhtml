@@ -16,34 +16,37 @@
      <b>This tabset has cancelOnInvalid="true", which will NOT allow to change the tab on validation error. </b><br/><br/>
   
        <ice:tabSet id="myTabSet" cancelOnInvalid="true" styleClass="tabSetDemo">
-            <ice:tabPane label="Required Tab 1" >
+            <ice:tabPane id="tpProxyOne" label="Required Tab 1" >
                 <p/>
-                <h:outputText value="The inputText below has required='true'. The containing tabSet has cancelOnInvalid='true', which will prevent the user from switching tabs if there is an invalid component in the current tabPane form." />
+                <h:outputText id="tpPaneOneText" 
+                     value="The inputText below has required='true'. The containing tabSet has cancelOnInvalid='true', which will prevent the user from switching tabs if there is an invalid component in the current tabPane form." />
                 <p/>
-                <h:outputText value="No other tab may be chosen without entering the required field below."/>
+                <h:outputText id="tpPaneOneTextTwo" 
+                      value="No other tab may be chosen without entering the required field below."/>
   	            <h:form id="form">
-		          	<ice:tabSetProxy for="myTabSet" />
+		          	<ice:tabSetProxy id="tsProxy" for="myTabSet" />
 				   <p/>
 				      <h:inputText id="inputText1" required="true"/>   
 				  <p/>	
 					  <h:message for="inputText1" styleClass="err-msg"/>	       				  
 		         </h:form>
             </ice:tabPane>       
-            <ice:tabPane label="Tab 2" >
+            <ice:tabPane id="tpProxyTwo" label="Tab 2" >
             	<p>
-                <h:outputText value="No validation errors may be present on 'Required Tab 1' in order for this tabPane to be shown."/>            
+                <h:outputText id="tpProxyTwoText" value="No validation errors may be present on 'Required Tab 1' in order for this tabPane to be shown."/>            
                 </p>
                 <h:form id="proxyForm2">
-					<ice:tabSetProxy for="myTabSet" />
+					<ice:tabSetProxy id="tsProxyTwo" for="myTabSet" />
 				</h:form>
 
             </ice:tabPane>
-            <ice:tabPane label="Tab 3" >
+            <ice:tabPane id="tpProxyThree" label="Tab 3" >
 				<p>
-                <h:outputText value="No validation errors may be present on 'Required Tab 1' in order for this tabPane to be shown."/>            
+                <h:outputText id="tpProxyThreeText" 
+                      value="No validation errors may be present on 'Required Tab 1' in order for this tabPane to be shown."/>            
                 </p>
-                <h:form id="proxyForm3">
-					<ice:tabSetProxy for="myTabSet" />
+                <h:form id="proxyForm3" >
+					<ice:tabSetProxy id="tsProxyThree" for="myTabSet" />
 				</h:form>
 
             </ice:tabPane>

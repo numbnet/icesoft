@@ -22,14 +22,15 @@
         }
     </style>
     <h:panelGroup id="panelContentDateTimeEntry">
-        <h:panelGroup styleClass="synopsisBox" layout="block">
-            <h:outputText styleClass="iceOutTxt" value="Date Time Entry"/>
-            <h:outputText styleClass="iceOutTxt" value="Client-side DateTime navigation and selection."/>
+        <h:panelGroup id="datePanelExplain" styleClass="synopsisBox" layout="block">
+            <h:outputText id="dateExplainText" styleClass="iceOutTxt" value="Date Time Entry"/>
+            <h:outputText id="dateoutText" styleClass="iceOutTxt" value="Client-side DateTime navigation and selection."/>
         </h:panelGroup>
 
-        <h:panelGroup styleClass="exampleBox firstChildTitle" layout="block">
+        <h:panelGroup id="datePanelOuter" styleClass="exampleBox firstChildTitle"
+                     layout="block">
             <h:form id="calForm1">
-                <h:panelGroup>
+                <h:panelGroup id="datePanelInner">
                     <icecore:singleSubmit/>
                     <table>
                         <tr>
@@ -82,9 +83,10 @@
             </h:form>
         </h:panelGroup>
 
-        <h:panelGroup styleClass="exampleBox popup-cal" layout="block">
+        <h:panelGroup id="outerPanelPopup" 
+               styleClass="exampleBox popup-cal" layout="block">
             <h:outputText value="Output date/time (0-based 24-hour):  "/>
-            <h:outputText value="#{calendarBean.selectedDate}" styleClass="output-date-time">
+            <h:outputText id="selectedDateTextChk" value="#{calendarBean.selectedDate}" styleClass="output-date-time">
                 <f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="Canada/Mountain"/>
             </h:outputText>
             <br/><br/>

@@ -15,9 +15,9 @@
 	</style>        
 
     <h:panelGroup id="panelContentAnimation">
-        <h:panelGroup styleClass="synopsisBox" layout="block">
+        <h:panelGroup id="innerAnimPanel" styleClass="synopsisBox" layout="block">
             <h:outputText styleClass="iceOutTxt" id="contentAnimation" value="Animation"/>
-            <h:outputText styleClass="iceOutTxt" value="The animation component can be used to invoke animated transition effects on JSF2 components that support Client-Behaviors."/>
+            <h:outputText styleClass="iceOutTxt" id="moreanimText" value="The animation component can be used to invoke animated transition effects on JSF2 components that support Client-Behaviors."/>
         </h:panelGroup>
 
         <style type="text/css">
@@ -31,36 +31,36 @@
 
         <h:form prependId="false">
 
-            <h:panelGroup styleClass="exampleBox" layout="block">
+            <h:panelGroup styleClass="exampleBox" id="exampleOneBox" layout="block">
                 <h3>The following tabSet explicitly specifies to use the predefined 'fade' animation for its transition.</h3>
                 <pre style="background-color: transparent;"> &lt;ice:animation event="transition" name="fade"/&gt; </pre>
 
-                <ice:tabSet >
+                <ice:tabSet id="tabSetFadeExample">
                     <ice:animation event="transition" name="fade" />
-                    <ice:tabPane label="One" >
+                    <ice:tabPane id="paneOne" label="One" >
                         <h:outputText value="111111111111"/>
                     </ice:tabPane>
-                    <ice:tabPane label="Two" >
+                    <ice:tabPane id="paneTwo" label="Two" >
                         <h:outputText value="222222222222"/>
                     </ice:tabPane>
-                    <ice:tabPane label="Three" >
+                    <ice:tabPane id="paneThree" label="Three" >
                         <h:outputText value="333333333333"/>
                     </ice:tabPane>
                 </ice:tabSet>
             </h:panelGroup>
             
-            <h:panelGroup styleClass="exampleBox" layout="block">
+            <h:panelGroup id="exampleTwoPanel" styleClass="exampleBox" layout="block">
                 <h3>The following tabSet uses a fully customised animation, using 'from' and 'to' attributes to mimic blind up/down effect</h3>
                 <pre style="background-color: transparent;"> &lt;ice:animation event="transition" from="{opacity:1, height:28}" to="{opacity:0, height:1}" easing="backIn" /&gt; </pre>
-                <ice:tabSet >
+                <ice:tabSet id="exampleTwoTabSet" >
                     <ice:animation duration="400"  event="transition" from="{opacity:1, height:28}" to="{opacity:0, height:1}" easing="backIn" />
-                    <ice:tabPane label="One" >
+                    <ice:tabPane id="paneOneA" label="One" >
                         <h:outputText value="111111111111"/>
                     </ice:tabPane>
-                    <ice:tabPane label="Two" >
+                    <ice:tabPane id="paneTwoA" label="Two" >
                         <h:outputText value="222222222222"/>
                     </ice:tabPane>
-                    <ice:tabPane label="Three" >
+                    <ice:tabPane id="pane3A" label="Three" >
                         <h:outputText value="333333333333"/>
                     </ice:tabPane>
                 </ice:tabSet>
@@ -71,7 +71,7 @@
                 <pre style="background-color: transparent;"> &lt;ice:animation event="mouseover" to="{opacity:1}" from="{opacity:0}" iterations="3" duration="400" easing="easeIn"/&gt; </pre>
                 <h:panelGrid >
                     <ice:animation event="mouseover" to="{opacity:1}" from="{opacity:0}" iterations="3" duration="400" easing="easeIn"/>
-                    <h:outputText styleClass="bold-blue-text" value="Move your mouse over me!"/>
+                    <h:outputText id="exampleThreeText" styleClass="bold-blue-text" value="Move your mouse over me!"/>
                 </h:panelGrid>
             </h:panelGroup>
         </h:form>

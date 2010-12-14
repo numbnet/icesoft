@@ -14,12 +14,13 @@
     </h:panelGroup>
 
 
-       <h:panelGrid columns="1"
+       <h:panelGrid columns="1" id="linkButtonGridBox"
                    styleClass="exampleBox"
                    rowClasses="textFieldNameRow">
 
             <h:form id="frm1">
-                <h:panelGrid columns="2"  rowClasses="textFieldNameRow" columnClasses="linkButtonColumn">
+                <h:panelGrid columns="2"  rowClasses="textFieldNameRow" 
+                     id="linkGridInner" columnClasses="linkButtonColumn">
                   <h:outputLabel for="LBSimLink"
                     value="#{msgs['page.linkButton.simpleLinkLabel']}"/>
                   <ice:linkButton id="LBSimLink" styleClass="simpleLinkButton" href="http://www.icefaces.org/main/home/" value="#{msgs['page.linkButton.simpleLinkValue']}" />
@@ -28,7 +29,9 @@
 
            <h:form id="frm2">
 
-               <h:panelGrid columns="2"  rowClasses="textFieldNameRow" columnClasses="linkButtonColumn linkButtonColumn">
+               <h:panelGrid columns="2"  rowClasses="textFieldNameRow" 
+                    id="linkGridMiddle"
+                    columnClasses="linkButtonColumn linkButtonColumn">
                    <h:outputLabel for="LBActLink"
                     value="#{msgs['page.linkButton.actionSourceLabel']}" />
              <ice:linkButton id="LBActLink" value="#{msgs['page.linkButton.actionSourceValue']}"
@@ -38,7 +41,7 @@
 
 
             <h:form id="frm4">
-                 <h:panelGrid columns="2"  rowClasses="textFieldNameRow" columnClasses="linkButtonColumn">
+                 <h:panelGrid id="linkgridbottom" columns="2"  rowClasses="textFieldNameRow" columnClasses="linkButtonColumn">
                 <h:outputLabel for="LBComLink"
                     value="#{msgs['page.linkButton.comboButtonLabel']}"/>
                 <ice:linkButton id="LBComLink" href="/ace-showcase/linkButton.jsf"
@@ -48,8 +51,8 @@
             </h:form>
 
             <h:form id="output">
-                <h:panelGroup id="image">
-                    <h:graphicImage value="images/employee.gif"
+                <h:panelGroup id="imagePanel">
+                    <h:graphicImage value="images/employee.gif" id="image"
                                     rendered="#{linkBean.rendered}" />
                 </h:panelGroup>
 

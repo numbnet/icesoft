@@ -11,26 +11,29 @@
         <h:outputText styleClass="iceOutTxt" value="Tab Set (Server-Side)"/>
         <h:outputText styleClass="iceOutTxt" value="A server-side tabSet where the tab-selection state is managed on the server. Also demonstrates the ability to use facets in the the tabPane labels for greater label flexibility."/>
     </h:panelGroup>
-  <h:panelGroup styleClass="exampleBox" layout="block">
-        <h:outputText value="Selected Tab-Index: #{tabBean.tabIndex}"/>
+  <h:panelGroup id="tsServerPanelIndex" styleClass="exampleBox" layout="block">
+        <h:outputText id="tsserverTextIndex" value="Selected Tab-Index: #{tabBean.tabIndex}"/>
          <p/>
-        <h:form>
+        <h:form id="tsServerFormOne">
           <icecore:singleSubmit/>
-           <h:commandButton value="Show All Tabs" actionListener="#{tabBean.openClosedTabs}"/>
+           <h:commandButton id="tsServerShowAllButton" 
+                 value="Show All Tabs" actionListener="#{tabBean.openClosedTabs}"/>
         </h:form>
   </h:panelGroup>
 
  <h:panelGroup id="tabProxyPanel" styleClass="exampleBox" layout="block">
 
 
-    <h:form styleClass="ice-skin-sam">
-       <ice:tabSet selectedIndex="#{tabBean.tabIndex}" styleClass="tabSetDemo">
-            <ice:tabPane rendered="#{tabBean.faceTab1Rendered}">
+    <h:form id="tabSetForm" styleClass="ice-skin-sam">
+       <ice:tabSet id="tabSetExample" 
+            selectedIndex="#{tabBean.tabIndex}" styleClass="tabSetDemo">
+            <ice:tabPane id="paneOne" rendered="#{tabBean.faceTab1Rendered}">
                 <f:facet name="label">
-					<h:panelGroup>
-                    <h:panelGrid columns="3">
-                            <h:graphicImage style="border:none;width:12px; height:12px;" url="images/employee.gif"/>                    
-                            <h:outputText value="Tab 1"/>
+					<h:panelGroup id="paneOnePanel">
+                    <h:panelGrid columns="3" id="paneOneGrid">
+                            <h:graphicImage id="paneOneImage" 
+                                 style="border:none;width:12px; height:12px;" url="images/employee.gif"/>                    
+                            <h:outputText id="paneOneText" value="Tab 1"/>
                             <h:commandButton id="closeTab1" value="close" actionListener="#{tabBean.closeTab1}">
 		                       <f:ajax execute="closeTab1" render="@all" />
 		                    </h:commandButton>                                       
@@ -41,12 +44,14 @@
                 <h:outputText value="When used in server mode, only the contents of the currently selected tabPane are rendered to the client. Changing the selected tab results in a server round-trip to toggle the rendering state of the contents for the previous and newly selected tabPanes. This reduces the total number of components that are included in the page at one time, and provides an opportunity for the state of the selected tabPane contents to be refreshed immediately prior to making them visible."/>
 				</p>
             </ice:tabPane>
-            <ice:tabPane rendered="#{tabBean.faceTab2Rendered}">
+            <ice:tabPane id="paneTwo" rendered="#{tabBean.faceTab2Rendered}">
                 <f:facet name="label">
-					<h:panelGroup>
-                    <h:panelGrid columns="3">
-                            <h:graphicImage style="border:none;width:12px; height:12px;" url="images/employee.gif"/>                    
-                            <h:outputText value="Tab 2"/>
+					<h:panelGroup id="paneTwoPanel">
+                    <h:panelGrid columns="3" id="paneTwoGrid">
+                            <h:graphicImage id="paneTwoImage"
+                                 style="border:none;width:12px; height:12px;" 
+                                 url="images/employee.gif"/>                    
+                            <h:outputText id="paneTwoOutText" value="Tab 2"/>
                             <h:commandButton id="closeTab2" value="close" actionListener="#{tabBean.closeTab2}">
 		                       <f:ajax execute="closeTab2" render="@all" />
 		                    </h:commandButton>                                       
@@ -54,15 +59,16 @@
                     </h:panelGroup>                   
                 </f:facet>            
                 <p>            
-                <h:outputText value="This is the tabPane content text for Tab 2."/>            
+                <h:outputText id="paneTwoOutputText" value="This is the tabPane content text for Tab 2."/>            
 				</p>
             </ice:tabPane>
-            <ice:tabPane rendered="#{tabBean.faceTab3Rendered}">
+            <ice:tabPane id="paneThree" rendered="#{tabBean.faceTab3Rendered}">
                 <f:facet name="label">
-					<h:panelGroup>
-                    <h:panelGrid columns="3">
-                            <h:graphicImage style="border:none;width:12px; height:12px;" url="images/employee.gif"/>                    
-                            <h:outputText value="Tab 3"/>
+					<h:panelGroup id="paneThreePanel">
+                    <h:panelGrid columns="3" id="paneThreeGrid">
+                            <h:graphicImage id="paneThreeImage"
+                                 style="border:none;width:12px; height:12px;" url="images/employee.gif"/>                    
+                            <h:outputText id="paneThreeTxt" value="Tab 3"/>
                             <h:commandButton id="closeTab3" value="close" actionListener="#{tabBean.closeTab3}">
 		                       <f:ajax execute="closeTab3" render="@all" />
 		                    </h:commandButton>                                       
@@ -70,7 +76,7 @@
                     </h:panelGroup>                   
                 </f:facet>
                 <p>            
-                <h:outputText value="This is the tabPane content text for Tab 3."/>            
+                <h:outputText id="paneThreeOutText" value="This is the tabPane content text for Tab 3."/>            
 				</p>
             </ice:tabPane>
         </ice:tabSet> 

@@ -14,7 +14,7 @@
             <h:outputText styleClass="iceOutTxt" value="Select an integer value within a range by dragging the arrow along the rail."/>
         </h:panelGroup>
         <h:panelGroup styleClass="exampleBox firstChildTitle" layout="block">
-            <h:form>
+            <h:form id="sliderform">
                 <h:panelGroup>
                     <icecore:singleSubmit/>
                     <table>
@@ -46,34 +46,40 @@
         </h:panelGroup>
 
         <h:panelGroup styleClass="exampleBox" layout="block">
-            <h:form>
+            <h:form id="sliderTwoForm">
                 <h:outputText value="singleSubmit='true' - slider value submits once the drag is complete: "/>
                 <br/>
-                <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean.value}"
+                <ice:sliderEntry id="sliderEntryOne"
+                             min="#{sliderBean.minValue}" 
+                             max="#{sliderBean.maxValue}" 
+                             value="#{sliderBean.value}"
                                    clickableRail="true"
                                  axis="x" singleSubmit="true"/>
              </h:form>
             <br/>
              <h:outputText value="Horizontal slider value: "/>
-            <h:outputText value="#{sliderBean.value}"/>
+            <h:outputText id="sliderOutVal" value="#{sliderBean.value}"/>
             <br/>
         </h:panelGroup>
 
         <h:panelGroup styleClass="exampleBox" layout="block">
-            <h:form>
+            <h:form id="sliderThreeForm">
 
                 <h:outputText value="singleSubmit='false'- value of slider will get submitted only when a submit call initiated by some other component."/>
                 <br/><br/>
-                <ice:sliderEntry min="#{sliderBean.minValue}" max="#{sliderBean.maxValue}" value="#{sliderBean2.value}"
+                <ice:sliderEntry id="sliderEntryTwo"
+                             min="#{sliderBean.minValue}" 
+                             max="#{sliderBean.maxValue}" 
+                             value="#{sliderBean2.value}"
                                  submitOn="slideEnd" clickableRail="true" length="100"
                                  axis="y" singleSubmit="false"/><br/>
-				<h:commandButton value="submit" />					
+				<h:commandButton id="sliderSubmitButton" value="submit" />					
 								 
 								 
             </h:form>
             <br/>
             <h:outputText value="Vertical slider value: "/>
-            <h:outputText value="#{sliderBean2.value}"/>
+            <h:outputText id="sliderOutputValTwo" value="#{sliderBean2.value}"/>
         </h:panelGroup>
     </h:panelGroup>
 
