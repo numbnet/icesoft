@@ -52,7 +52,7 @@ var uid = (function() {
 })();
 
 function operationNotSupported() {
-    throw Exception('operation not supported');
+    throw 'operation not supported';
 }
 
 function operator(defaultOperation) {
