@@ -24,7 +24,7 @@ function lookupCookieValue(name) {
     var tupleString = detect(split(asString(document.cookie), '; '), function(tuple) {
         return startsWith(tuple, name);
     }, function() {
-        throw Exception('Cannot find value for cookie: ' + name);
+        throw 'Cannot find value for cookie: ' + name;
     });
 
     return decodeURIComponent(contains(tupleString, '=') ? split(tupleString, '=')[1] : '');

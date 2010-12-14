@@ -100,7 +100,7 @@ var Client = function(autoclose) {
             return new window.ActiveXObject('Microsoft.XMLHTTP');
         };
     } else {
-        throw Exception('cannot create XMLHttpRequest');
+        throw 'cannot create XMLHttpRequest';
     }
 
     function withNewQuery(setup) {
