@@ -268,12 +268,14 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
         private final String POSITIVE_SESSION_TIMEOUT = "positive_session_timeout";
         private Set contexts = new HashSet();
         private HttpSession session;
+        String sessionID; 
         private long lastAccess;
 
         private Monitor(HttpSession session) {
             this.session = session;
             this.lastAccess = session.getLastAccessedTime();
             session.setAttribute(Monitor.class.getName(), this);
+            sessionID = session.getId();
         }
 
         public static Monitor lookupSessionMonitor(HttpSession session) {
@@ -319,6 +321,7 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
                 notifySessionShutdown(session, context);
             }
             try {
+System.out.println("SessionDispatcher forcing invalidate and SessionExpired due to inactivity " + (System.currentTimeMillis() - lastAccess) + " for " + sessionID);
                 session.invalidate();
             } catch (IllegalStateException e) {
                 Log.info("Session already invalidated.");
