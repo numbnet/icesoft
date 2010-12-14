@@ -1,41 +1,40 @@
 /* Horizontal Slider */
 
-/* Use thumbUrl /build/slider/assets/skins/round/thumb-x.png */
-/* Alternate thumbUrl /build/slider/assets/skins/round/thumb-x-grip.png */
-
-.ice-skin-rime .yui3-slider-x .yui3-slider-rail,
-.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-left,
-.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-right {
-    background-image: url(rail-x.png);
-    background-repeat: repeat-x;
-}
-
 .ice-skin-rime .yui3-slider-x .yui3-slider-rail {
+	background-position: 0 9px;
+    background-image: url(rail-x.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; sprite-margin-top: 9px; sprite-margin-bottom: 11px; */
+    background-repeat: repeat-x;
     height: 25px;
-    background-position: 0 3px;
-}
-.ice-skin-rime .yui3-slider-x .yui3-slider-thumb {
-    height: 26px;
-    width: 24px;
 }
 
 .ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-left {
-    background-position: 0 -17px;
+	background-position: 0 9px;
+	background-image: url(rail-cap-left.png); /** sprite-ref: sprite; sprite-margin-top: 9px; sprite-margin-bottom: 11px; */
+	background-repeat: no-repeat;
     height: 20px;
     left: -2px;
     width: 5px;
 }
+
 .ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-right {
-    background-position: 0 -37px;
+	background-position: 0 9px;
+	background-image: url(rail-cap-right.png); /** sprite-ref: sprite; sprite-margin-top: 9px; sprite-margin-bottom: 11px; */
+	background-repeat: no-repeat;
     height: 20px;
     right: -2px;
     width: 5px;
+}
+
+.ice-skin-rime .yui3-slider-x .yui3-slider-thumb {
+    height: 26px;
+    width: 24px;
 }
 
 .ice-skin-rime .yui3-slider-x .yui3-slider-thumb-image {
     left: 0;
     top: -7px;
 }
+
 .ice-skin-rime .yui3-slider-x .yui3-slider-thumb-shadow {
     left: 0;
     opacity: 0.15;
@@ -43,44 +42,57 @@
     top: -47px;
 }
 
+
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail .yui3-slider-thumb img {
+    top: -225px;		
+	
+}
+ 
+.ice-skin-rime .yui3-slider-x .yui3-slider-rail .yui3-slider-thumb {
+    background: url(thumb-x.png) no-repeat 0px -9px;
+    height: 22px;
+    width: 22px;
+}
+
+
+
 /* Vertical Slider */
 
-/* Use thumbUrl /build/slider/assets/skins/round/thumb-y.png */
-/* Alternate thumbUrl /build/slider/assets/skins/round/thumb-y-grip.png */
-
-.ice-skin-rime .yui3-slider-y .yui3-slider-rail,
-.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-top,
-.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-bottom {
-    background-image: url(rail-y.png);
-    background-repeat: repeat-y;
-}
-
 .ice-skin-rime .yui3-slider-y .yui3-slider-rail {
+	background-position: 9px 0;
+    background-image: url(rail-y.png); /** sprite-ref: sprite-y; sprite-alignment: repeat; sprite-margin-left: 9px; sprite-margin-right: 11px; */
+    background-repeat: repeat-y;
     width: 25px;
-    background-position: 3px 0;
-}
-.ice-skin-rime .yui3-slider-y .yui3-slider-thumb {
-    width: 26px;
-    height: 24px;
 }
 
 .ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-top {
-    background-position: -17px 0;
+	background-position: 9px 0;
+	background-image: url(rail-cap-top.png); /** sprite-ref: sprite; sprite-margin-left: 9px; sprite-margin-right: 11px; */
+	background-repeat: no-repeat;
     width: 20px;
     top: -2px;
     height: 5px;
 }
+
 .ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-bottom {
-    background-position: -37px 0;
+	background-position: 9px 0;
+	background-image: url(rail-cap-bottom.png); /** sprite-ref: sprite; sprite-margin-left: 9px; sprite-margin-right: 11px; */
+	background-repeat: no-repeat;
     width: 20px;
     bottom: -2px;
     height: 5px;
+}
+
+.ice-skin-rime .yui3-slider-y .yui3-slider-thumb {
+    width: 26px;
+    height: 24px;
 }
 
 .ice-skin-rime .yui3-slider-y .yui3-slider-thumb-image {
     top: 0;
     left: -8px;
 }
+
 .ice-skin-rime .yui3-slider-y .yui3-slider-thumb-shadow {
     top: 0;
     left: -48px;
@@ -88,104 +100,6 @@
     filter: alpha(opacity=15);
 
 }
-
- 
-
-
-
-/* ----- override original YUI skin (above) ----- */
-
-/* -- Horizontal rail -- */
-
-.ice-skin-rime .yui3-slider-x .yui3-slider-rail,.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-left,.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-right
-{
-	background-image: url(rail-x.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; sprite-margin-top: 3px; */
-	background-repeat: repeat-x;
-}
-
-.ice-skin-rime .yui3-slider-x .yui3-slider-rail
-{
-
-}
-
-.ice-skin-rime .yui3-slider-x .yui3-slider-thumb
-{
-
-}
-
-.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-left
-{
-
-}
-
-.ice-skin-rime .yui3-slider-x .yui3-slider-rail-cap-right
-{
-
-}
-
-.ice-skin-rime .yui3-slider-x .yui3-slider-thumb-image
-{
-
-}
-
-.ice-skin-rime .yui3-slider-x .yui3-slider-thumb-shadow
-{
-
-}
-
-/* -- Vertical rail -- */
-
-.ice-skin-rime .yui3-slider-y .yui3-slider-rail,.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-top,.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-bottom
-{
-	background-image: url(rail-y.png); /** sprite-ref: sprite-y; sprite-alignment: repeat; sprite-margin-left: 3px; */
-	background-repeat: repeat-y;
-}
-
-.ice-skin-rime .yui3-slider-y .yui3-slider-rail
-{
-
-}
-
-.ice-skin-rime .yui3-slider-y .yui3-slider-thumb
-{
-
-}
-
-.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-top
-{
-
-}
-
-.ice-skin-rime .yui3-slider-y .yui3-slider-rail-cap-bottom
-{
-
-}
-
-.ice-skin-rime .yui3-slider-y .yui3-slider-thumb-image
-{
-
-}
-
-.ice-skin-rime .yui3-slider-y .yui3-slider-thumb-shadow
-{
-
-}
-
-.ice-skin-rime .yui3-slider-x .yui3-slider-rail .yui3-slider-thumb img {
-    top: -225px;		
-	
-}
- 
-/* set the slide image using css */
-.ice-skin-rime .yui3-slider-x .yui3-slider-rail .yui3-slider-thumb {
-    background: url(thumb-x.png) no-repeat 0px -9px;
-    height: 22px;
-    width: 22px;
-}
- 
- 
- 
-/* above classes for Y */
 
 .ice-skin-rime .yui3-slider-y .yui3-slider-rail .yui3-slider-thumb img {
     top: -225px;
