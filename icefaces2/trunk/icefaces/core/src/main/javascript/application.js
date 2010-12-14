@@ -99,6 +99,7 @@ if (!window.ice.icefaces) {
         //include collection.js
         //include hashtable.js
         //include string.js
+        //include exception.js
         //include delay.js
 
         //include window.js
@@ -408,7 +409,7 @@ if (!window.ice.icefaces) {
         });
 
         //include status.js
-        //include blockui.js        
+        //include blockui.js
     })(window.ice);
 }
 
