@@ -22,7 +22,10 @@
 
 <project name="component-metadata" default="jar" basedir=".">
     <property environment="env" />
-    <property file="build.properties"/>
+
+	<property file="./build.properties"/>
+	<property file="../build.properties"/>    <property file="../../build.properties"/>
+
     <property name="maven.build.output" value="target/classes" />
     <property name="project.build.directory" value="target" />
     <property name="maven.build.directory" value="target" />    

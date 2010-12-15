@@ -22,7 +22,10 @@
 
 <project name="icefaces-compat" default="lib">
 
-    <property file="build.properties"/>
+    <property file="./build.properties"/>
+    <property file="../build.properties"/>
+    <property file="../../build.properties"/>
+
     <property name="java.dir" location="./src/main/java"/>
     <property name="resources.dir" location="./src/main/resources"/>
     <property name="lib.dir" location="../../lib"/>
@@ -33,6 +36,16 @@
     <property name="javadocs.dir" location="${build.dir}/javadocs"/>
     <property name="components.dir" value="../components"/>
 
+	<!-- Check if release.type is set, and if so append it after the tertiary value -->
+	<condition property="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">
+    	<isset property="release.type"/>
+	</condition>
+    <property name="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}"/>
+    	
+    <property name="javadoc.title" value="${product} ${product.lib} Java API Documentation" />
+    <property name="javadoc.header" value="${product} ${product.lib} ${version.string}&lt;br&gt;Java API Documentation" />
+
+    
 
     <tstamp>
         <format property="build.time" pattern="yyyy-mm-dd hh:mm:ss"/>
@@ -99,12 +112,15 @@
             <metainf dir="${build.dir}/resources/META-INF"/>
 
             <manifest>
-                <attribute name="Built-By" value="${user.name}"/>
                 <section name="org.icefaces">
                     <attribute name="Implementation-Title"
-                               value="${product}"/>
+                               value="${product} ${product.lib}"/>
                     <attribute name="Implementation-Version"
-                               value="${release.type} ${version.primary}.${version.secondary}.${version.tertiary}_${build.number} (${build.time})"/>
+                               value="${version.string}"/>
+                    <attribute name="Build-Number"
+                               value="${build.number}"/>
+                    <attribute name="Build-Time"
+                               value="${build.time}"/>
                     <attribute name="Implementation-Vendor"
                                value="${company}"/>
                 </section>
@@ -124,10 +140,11 @@
               overwrite="true"/>
     </target>
 
-    <target name="javadoc">
+  <target name="javadoc">
         <delete dir="${javadocs.dir}"/>
-        <javadoc destdir="${javadocs.dir}" windowtitle="ICEfaces 2 Compatibility API" failonerror="true">
-            <classpath>
+        <javadoc destdir="${javadocs.dir}" windowtitle="${javadoc.title}" failonerror="true"
+        	bottom="Copyright ${year} ${copyright}">
+        <classpath>
                 <fileset dir="${lib.dir}">
                     <patternset refid="lib.compile"/>
                 </fileset>
@@ -144,9 +161,11 @@
                 <include name="com/icesoft/faces/async/render/SessionRenderer.java"/>
                 <include name="com/icesoft/faces/context/effects/**"/>
             </fileset>
-            <doctitle><![CDATA[<h2>ICEfaces 2 Compatibility API</h2>]]></doctitle>
+            <header><![CDATA[${javadoc.header}]]></header>
+            <footer><![CDATA[${javadoc.header}]]></footer>
+            <doctitle><![CDATA[<h2>${javadoc.title}</h2>]]></doctitle>
         </javadoc>
     </target>
-
+    
 </project>
 

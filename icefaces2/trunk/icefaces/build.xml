@@ -140,15 +140,20 @@
         </subant>
         <move file="${bundle.dir.bin}/compat/components/build/doc/api" tofile="${bundle.dir.bin}/docs/compat/comps/api"/>
 
+        <subant target="javadoc">
+            <fileset dir="${bundle.dir.bin}/ace/component" includes="build.xml"/>
+        </subant>
         <move file="${bundle.dir.bin}/ace/component/build/doc/javadoc" tofile="${bundle.dir.bin}/docs/ace/api"/>
 
-        <!-- Create the TLD docs for compat move them to the docs directory -->
+        <!-- Create the TLD docs for compat, ace move them to the docs directory -->
         <subant target="tlddoc">
             <fileset dir="${bundle.dir.bin}/compat/components" includes="build.xml"/>
         </subant>
         <move file="${bundle.dir.bin}/compat/components/build/doc/tld" tofile="${bundle.dir.bin}/docs/compat/comps/tld"/>
 
-        <!-- Move the ace and compat TLDdocs to the docs directory -->
+        <subant target="tlddoc">
+            <fileset dir="${bundle.dir.bin}/ace/component" includes="build.xml"/>
+        </subant>
         <move file="${bundle.dir.bin}/ace/component/build/doc/tld" tofile="${bundle.dir.bin}/docs/ace/tld"/>
 
 

@@ -1,8 +1,14 @@
- <project name="icefaces-ace" default="dist" basedir=".">
+ <project name="icefaces-ace" default="lib" basedir=".">
     <description>
         ICEfaces Advanced Components build file.
     </description>
-  <property file="build.properties"/>    
+
+	<property file="./build.properties"/>
+	<property file="../build.properties"/>
+    <property file="../../build.properties"/>
+
+
+  <property name="lib.dir" location="../../lib"/>
   <property name="src" location="src"/>
   <property name="resources" location="resources"/>  
   <property name="build" location="build"/>
@@ -14,11 +20,23 @@
   <property name="tld.doc" location="${doc}/tld"/>
   <property name="java.doc" location="${doc}/javadoc"/>
   <property name="tld.file"   location="${build}/exploded/META-INF/components.tld"/>
-  <property name="tld.jar"  location="${icefaces.lib.dir}"/>
+  <property name="tld.jar"  location="${lib.dir}"/>
   <property name="smartsprites.basedir" location="../tools/smartsprites" />
   
   <property name="root.dir.path" location="${build}/skins/in" />
   <property name="output.dir.path" location="${build}/skins/out" />
+
+	<!-- Check if release.type is set, and if so append it after the tertiary value -->
+	<condition property="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">
+    	<isset property="release.type"/>
+	</condition>
+    <property name="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}"/>
+    	
+    <property name="javadoc.title" value="${product} ${product.lib} Java API Documentation" />
+    <property name="javadoc.header" value="${product} ${product.lib} ${version.string}&lt;br&gt;Java API Documentation" />
+    <property name="tld.title" value="${product} ${product.lib} ${version.string} Tag Library Reference" />
+
+
 
   <tstamp>
       <format property="build.time" pattern="yyyy-mm-dd hh:mm:ss"/>
@@ -26,7 +44,7 @@
 
   
   <path id="compile.run.classpath">
-  	    <fileset dir="${icefaces.lib.dir}" includes="*.jar"/>
+  	    <fileset dir="${lib.dir}" includes="*.jar"/>
         <pathelement path="../component/src"/>
         <pathelement path="../generator/build"/>
         <pathelement path="../component/build/meta"/>
@@ -34,7 +52,7 @@
   </path>
 
   <path id="javadoc.classpath">
-  	<fileset dir="${icefaces.lib.dir}" includes="*.jar"/>
+  	<fileset dir="${lib.dir}" includes="*.jar"/>
         <pathelement path="../component/src"/>
         <pathelement path="../generator/build"/>
         <pathelement path="../component/build/meta"/>
@@ -138,16 +156,15 @@
   <target name="generate" >
     <ant inheritAll="false" antfile="../generator/build.xml" target="generate" >
         <property name="generator.tld.doc.display.name"
-                  value="${generator.tld.doc.display.name}"/>
+                  value="${product} ${product.lib}"/>
         <property name="generator.tld.doc.version"
-                  value="${generator.tld.doc.version}"/>
+                  value="${version.string}"/>
     </ant>
   </target>
 
- <!-- <target name="dist"  --> 
-  <target name="dist" depends="skins,compile,tlddoc,javadoc"
+  <target name="lib" depends="skins,compile"
 
-        description="generate the distribution" >
+        description="Generate the icefaces-ace.jar" >
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>
 
@@ -156,12 +173,15 @@
             <metainf dir="${build}/resources/META-INF"/>
 
             <manifest>
-                <attribute name="Built-By" value="${user.name}"/>
                 <section name="org.icefaces">
                     <attribute name="Implementation-Title"
-                               value="${product}"/>
+                               value="${product} ${product.lib}"/>
                     <attribute name="Implementation-Version"
-                               value="${release.type} ${version.primary}.${version.secondary}.${version.tertiary}_${build.number} (${build.time})"/>
+                               value="${version.string}"/>
+                    <attribute name="Build-Number"
+                               value="${build.number}"/>
+                    <attribute name="Build-Time"
+                               value="${build.time}"/>
                     <attribute name="Implementation-Vendor"
                                value="${company}"/>
                 </section>
@@ -170,15 +190,25 @@
         <fileset dir="${exploded}"/>
         <fileset dir="${src}" includes="org/icefaces/component/resources/"/>
     </jar>
-    <copy file="${dist}/${ant.project.name}.jar" todir="${icefaces.lib.dir}" overwrite="true"/>
+    <copy file="${dist}/${ant.project.name}.jar" todir="${lib.dir}" overwrite="true"/>
   </target>
 
-  <target name="javadoc" depends="compile" > 
-      <javadoc sourcepath="${src}" 
+  <target name="dist" depends="lib,tlddoc,javadoc"
+        description="Generate the complete ICEfaces Advanced Components distribution (lib + javadoc, tld doc)" >
+  </target>
+
+  <target name="javadoc" depends="compile">
+        <delete dir="${javadocs.dir}"/>
+        <javadoc sourcepath="${src}" 
                destdir="${java.doc}" 
 	       classpathref="javadoc.classpath" 
-	       excludepackagenames="org.icefaces.apache.*" />
-  </target> 
+	       excludepackagenames="org.icefaces.apache.*" windowtitle="${javadoc.title}" failonerror="true"  
+        	bottom="Copyright ${year} ${copyright}">
+            <header><![CDATA[${javadoc.header}]]></header>
+            <footer><![CDATA[${javadoc.header}]]></footer>
+            <doctitle><![CDATA[<h2>${javadoc.title}</h2>]]></doctitle>
+        </javadoc>
+    </target>
 
   <target name="clean"
         description="clean up" >
@@ -319,7 +349,25 @@
 		<subant buildpath="${cssurlmapper.rootdir}" target="compile" />
 	</target>
 
-    <macrodef name="gen.tld.doc" description="Generate the TLD Doc in human readable form (HTML).">
+    <macrodef name="gen.tld.doc">
+        <attribute name="tld.file"/>
+        <sequential>
+            <delete dir="${tld.doc}"/>
+    		<mkdir dir="${tld.doc}"/>
+            <java jar="${tld.jar}/tlddoc.jar" fork="true" failonerror="true">
+                <arg value="-d"/>
+                <arg value="${tld.doc}"/>
+                <arg value="-doctitle"/>
+                <arg value="${tld.title}"/>
+                <arg value="-windowtitle"/>
+                <arg value="${tld.title}"/>
+                <arg value="@{tld.file}"/>
+            </java>
+        </sequential>
+    </macrodef>
+    
+<!--
+    <macrodef name="gen.tld.doc">
         <attribute name="tld.file"/>
         <sequential>
             <delete dir="${tld.doc}"/>
@@ -335,7 +383,7 @@
             </java>
         </sequential>
     </macrodef>
-
+-->
 
     <target name="tlddoc" description="Generate the component TLD Documentation in HTML format.">
         <gen.tld.doc tld.file="${tld.file}"/>
