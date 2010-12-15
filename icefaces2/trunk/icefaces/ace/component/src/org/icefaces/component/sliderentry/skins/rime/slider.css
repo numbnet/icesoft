@@ -49,7 +49,9 @@
 }
  
 .ice-skin-rime .yui3-slider-x .yui3-slider-rail .yui3-slider-thumb {
-    background: url(thumb-x.png) no-repeat 0px -9px;
+	background-position: 0 0;
+	background-image: url(thumb-x.png); /** sprite-ref: sprite; */
+	background-repeat: no-repeat;
     height: 22px;
     width: 22px;
 }
@@ -106,7 +108,9 @@
 } 
  
 .ice-skin-rime .yui3-slider-y .yui3-slider-rail .yui3-slider-thumb {
-    background: url(thumb-y.png)  no-repeat -8px 0px;
+	background-position: 0 0;
+	background-image: url(thumb-y.png); /** sprite-ref: sprite; */
+	background-repeat: no-repeat;
     height: 22px;
     width: 23px;	
 }
