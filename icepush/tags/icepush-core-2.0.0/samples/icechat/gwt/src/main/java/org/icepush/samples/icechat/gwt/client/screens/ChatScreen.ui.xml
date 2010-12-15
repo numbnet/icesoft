@@ -1,0 +1,84 @@
+<!-- 
+ * Version: MPL 1.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ -->
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:gwt='urn:import:com.google.gwt.user.client.ui'>
+    <ui:style>
+        .inline{
+        display: inline;
+        }
+
+        .fillWidth{
+        width: 98%;
+        text-align: center;
+        }
+
+
+
+        .fillHeightAndWidth{
+        height: 100%;
+        width: 100%;
+        }
+
+        .boldBlueText{
+        color: #0F65B8;
+        font-weight: bold;
+        }
+    </ui:style>
+    <gwt:HTMLPanel gwt:visible="false" height="450px">
+
+        <div class="chatRoomView {style.fillWidth}">
+            <div class="chatRoomHeader">
+                Chat Room '<gwt:Label ui:field="chatRoomNameLabel" gwt:stylePrimaryName="{style.inline}"/>'
+            </div>
+            <gwt:HorizontalPanel ui:field="horizontalLayoutPanel" gwt:spacing="10" stylePrimaryName="{style.fillWidth}">
+                <gwt:HTMLPanel ui:field="chatUsersPanel">
+                    <div class="chatRoomUsers" style="width: 100%;">
+                        <div class="chatViewSubHeader">Who's Here?</div>
+                        <gwt:ScrollPanel height="300px">
+                            <gwt:VerticalPanel ui:field="roomUserList" stylePrimaryName="{style.boldBlueText}">
+                            </gwt:VerticalPanel>
+                        </gwt:ScrollPanel>
+                    </div>
+
+                </gwt:HTMLPanel>
+                <gwt:HTMLPanel width="100%">
+                    <div class="chatRoomMessages" style="width: 100%;">
+                        <div class="chatViewSubHeader">Messages</div>
+                        <gwt:ScrollPanel height="300px" ui:field="messagesScrollingPanel">
+                            <gwt:VerticalPanel ui:field="messagesList" stylePrimaryName="{style.boldBlueText}">
+
+                            </gwt:VerticalPanel>
+                        </gwt:ScrollPanel>
+                    </div>
+
+
+
+                </gwt:HTMLPanel>
+            </gwt:HorizontalPanel>
+            <center>
+                <gwt:HorizontalPanel ui:field="chatControlsPanel" stylePrimaryName="{style.fillWidth}">
+                    <gwt:TextBox ui:field="newMessageTextbox" width="100%"/>
+                    <gwt:Button ui:field="newMessageButton" width="100%" gwt:text="Send"/>
+                </gwt:HorizontalPanel>
+            </center>
+        </div>
+    </gwt:HTMLPanel>
+</ui:UiBinder>
