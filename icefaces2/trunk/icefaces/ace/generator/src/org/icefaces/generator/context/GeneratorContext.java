@@ -27,7 +27,7 @@ public class GeneratorContext{
     private FaceletTagLibBuilder faceletTagLibBuilder = new FaceletTagLibBuilder();
 	private List<Class> components;
     private ComponentContext activeComponentContext;
-    public final static String shortName = "ice";    
+    public final static String shortName = "ace";    
     public final static String namespace = "http://www.icefaces.org/icefaces/components";
     private List<Behavior> behaviors = new ArrayList<Behavior>();
      public static final Map<String,String> SpecialReturnSignatures = new HashMap<String,String>();
