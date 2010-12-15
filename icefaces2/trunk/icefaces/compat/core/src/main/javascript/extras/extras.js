@@ -1033,6 +1033,8 @@ Ice.modal = {
                         logger.error('failed to restore callbacks on ' + e, ex);
                     }
                 };
+            } else {
+                return none;
             }
         }
 
