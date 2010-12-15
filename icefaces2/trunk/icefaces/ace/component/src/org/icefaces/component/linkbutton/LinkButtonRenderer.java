@@ -112,12 +112,23 @@ public class LinkButtonRenderer extends Renderer {
         String clientId = uiComponent.getClientId(facesContext);
 
         LinkButton linkButton = (LinkButton) uiComponent;
+        String value = (String) linkButton.getValue();
+        // put the value here to minimize impact in rendering
+        writer.writeText(value, null);
         writer.endElement(HTML.ANCHOR_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
 
         ActionListener[] al = linkButton.getActionListeners();
         boolean doAction = (al.length > 0);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append( value ).
+                append(linkButton.getHref()).
+                append(linkButton.getHrefLang()).
+                append(linkButton.getStyleClass()).
+                append(linkButton.getStyle()).
+                append(linkButton.getTarget());
 
         String jsProps = JSONBuilder.create().beginMap().
                 entry("type", "link").
@@ -129,12 +140,13 @@ public class LinkButtonRenderer extends Renderer {
                                 beginMap().
                                 entry("singleSubmit", linkButton.isSingleSubmit()).
                                 entry("doAction", doAction).
+                                entry("hashCode",  sb.toString().hashCode()).
                                 entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
         
         if (doAction && uiParamChildren != null) {
             jBuild.entry("postParameters",  Utils.asStringArray(uiParamChildren) );
         }
-       
+
         String params = "'" + clientId + "'," +
                          jsProps
                         + "," + jBuild.endMap().toString();
