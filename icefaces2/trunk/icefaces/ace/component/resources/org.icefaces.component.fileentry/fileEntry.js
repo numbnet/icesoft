@@ -64,6 +64,10 @@ var ice_fileEntry = {
     
     captureFormOnsubmit : function(formId, iframeId, progressPushId, progressResourcePath) {
         var f = document.getElementById(formId);
+        var encodedURL = f.elements['javax.faces.encodedURL'];
+        if(encodedURL){
+            f.action = encodedURL.value;
+        }
         f.onsubmit = function(event) {
             ice_fileEntry.formOnsubmit(event, f, iframeId, progressPushId, progressResourcePath);
         };
