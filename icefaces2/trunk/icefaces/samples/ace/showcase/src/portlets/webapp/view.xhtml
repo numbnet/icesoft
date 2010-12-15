@@ -31,17 +31,19 @@
 
     <f:view>
 
+    <f:loadBundle basename="messages" var="msgs"/>
+
     <h:head>
     </h:head>
-    
-    <h:body>
-        <h:panelGroup class="ice-skin-rime">
+
+    <h:body styleClass="ice-skin-rime">
+        <h:panelGroup>
             <ui:include src="#{portletUtil.portletViewPath}"/>
         </h:panelGroup>
     </h:body>
 
     <h:outputStylesheet library="org.icefaces.component.skins" name="rime.css" />
-    
+
     </f:view>
-    
+
 </html>
