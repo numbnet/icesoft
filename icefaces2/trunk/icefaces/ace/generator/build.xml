@@ -10,9 +10,10 @@
   <property name="dist"  location="dist"/>
   <property name="conf"  location="conf"/>
   <property name="bin"  location="bin/"/>
+  <property name="lib.dir" location="../../lib"/>
 
   <path id="compile.run.classpath">
-  	    <fileset dir="${icefaces.lib.dir}" includes="*.jar"/>
+  	    <fileset dir="${lib.dir}" includes="*.jar"/>
         <pathelement path="../generator/build"/>
       	<pathelement path="../component/build/meta"/>
   </path>

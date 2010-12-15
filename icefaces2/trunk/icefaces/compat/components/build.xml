@@ -22,6 +22,9 @@
 
 <project name="icefaces-comps-compat" default="gen.facelets.file">
 
+	<property file="./build.properties"/>
+	<property file="../build.properties"/>    <property file="../../build.properties"/>
+
     <property name="src.dir" location="src/main/java/"/>
     <property name="build.dir" location="build"/>
     <property name="build.classes.dir" location="${build.dir}/classes"/>
@@ -40,13 +43,17 @@
     <property name="build.sysclasspath" value="ignore"/>
     <property name="compile.debug" value="true"/>
 
-    <property name="company" value="ICEsoft Technologies, Inc."/>
-    <property name="product" value="ICEfaces"/>
-    <property name="version.primary" value="x"/>
-    <property name="version.secondary" value="x"/>
-    <property name="version.tertiary" value="x"/>
-    <property name="release.type" value="x"/>
-    <property name="build.number" value="x"/>
+
+	<!-- Check if release.type is set, and if so append it after the tertiary value -->
+	<condition property="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">
+    	<isset property="release.type"/>
+	</condition>
+    <property name="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}"/>
+    	
+    <property name="javadoc.title" value="${product} ${product.lib} Java API Documentation" />
+    <property name="javadoc.header" value="${product} ${product.lib} ${version.string}&lt;br&gt;Java API Documentation" />
+    <property name="tld.title" value="${product} ${product.lib} ${version.string} Tag Library Reference" />
+
 
     <tstamp>
         <format property="buildtime" pattern="yyyy-MM-dd HH:mm z" locale="en"/>
@@ -75,14 +82,20 @@
             <jar destfile="${dist.dir}/${ant.project.name}.jar" duplicate="fail">
                 <fileset dir="${build.classes.dir}"/>
                 <fileset dir="${src.dir}" excludes="**/*.java"/>
-                <manifest>
-                    <section name="com.icesoft.faces">
-                        <attribute name="Implementation-Title" value="${product}"/>
-                        <attribute name="Implementation-Version"
-                                   value="${release.type} ${version.primary}.${version.secondary}.${version.tertiary}_${build.number} (${buildtime})"/>
-                        <attribute name="Implementation-Vendor" value="${company}"/>
-                    </section>
-                </manifest>
+            <manifest>
+                <section name="org.icefaces">
+                    <attribute name="Implementation-Title"
+                               value="${product} ${product.lib}"/>
+                    <attribute name="Implementation-Version"
+                               value="${version.string}"/>
+                    <attribute name="Build-Number"
+                               value="${build.number}"/>
+                    <attribute name="Build-Time"
+                               value="${build.time}"/>
+                    <attribute name="Implementation-Vendor"
+                               value="${company}"/>
+                </section>
+            </manifest>
                 <add.metainfs/>
             </jar>
             <copy file="${dist.dir}/${ant.project.name}.jar" todir="${compat.lib.dir}" overwrite="true"/>
@@ -97,9 +110,9 @@
                 <arg value="-d"/>
                 <arg value="${build.tld.doc.dir}"/>
                 <arg value="-doctitle"/>
-                <arg value="ICEfaces Custom Components"/>
+                <arg value="${tld.title}"/>
                 <arg value="-windowtitle"/>
-                <arg value="ICEfaces Custom Components"/>
+                <arg value="${tld.title}"/>
                 <arg value="@{tld.file}"/>
             </java>
         </sequential>
@@ -150,19 +163,14 @@
 
     <target name="javadoc">
         <delete dir="${build.api.doc.dir}"/>
-        <javadoc packagenames="com.icesoft.faces.component.*"
-
-                 failonerror="true"
+        <javadoc destdir="${build.api.doc.dir}" windowtitle="${javadoc.title}" failonerror="true"
+        	bottom="Copyright ${year} ${copyright}" packagenames="com.icesoft.faces.component.*"
 
                  defaultexcludes="yes"
 
-                 destdir="${build.api.doc.dir}"
-
                  version="true"
 
-                 use="true"
-
-                 windowtitle="ICEfaces components">
+                 use="true">
 
             <fileset dir="${src.dir}" casesensitive="yes">
 
@@ -185,9 +193,9 @@
             </fileset>
 
             <classpath refid="compile.run.classpath"/>
-
-            <doctitle><![CDATA[<h1>ICEFaces</h1><br/><p>The API Javadocs for the ice components</p>]]></doctitle>
-
+            <header><![CDATA[${javadoc.header}]]></header>
+            <footer><![CDATA[${javadoc.header}]]></footer>
+            <doctitle><![CDATA[<h2>${javadoc.title}</h2>]]></doctitle>
         </javadoc>
     </target>
 
