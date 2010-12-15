@@ -69,27 +69,6 @@ public class TLDBuilder extends XMLBuilder{
             meaningfulDes = true;
         }
 
-        // ICE-6207 If no javadoc set/get property, then if a description, use that instead.
-        boolean meaningfullSet = true;
-        String javadocSet = propertyValues.javadocSet;
-        if ("null".endsWith(javadocSet)) {
-            if (meaningfulDes) {
-                javadocSet = des;
-            } else {
-                meaningfullSet = false;
-            } 
-        }
-
-        boolean meaningfullGet = true;
-        String javadocGet = propertyValues.javadocGet;
-        if ("null".endsWith(javadocGet)) {
-            if (meaningfulDes) {
-                javadocGet = des;
-            } else {
-                meaningfullGet = false;
-            }
-        }
-
         CDATASection descriptionCDATA = getDocument().createCDATASection(des);
         description.appendChild(descriptionCDATA);
         attribute.appendChild(description);
@@ -98,11 +77,5 @@ public class TLDBuilder extends XMLBuilder{
         addNode(attribute, "rtexprvalue", "false");
         addNode(attribute, "type", field.getType().getName());
 
-        if (meaningfullSet) {
-            addNode(attribute, "javadocSet", javadocSet);
-        }
-        if (meaningfullGet) {
-            addNode(attribute, "javadocGet", javadocGet);
-        }
     }       
 }
