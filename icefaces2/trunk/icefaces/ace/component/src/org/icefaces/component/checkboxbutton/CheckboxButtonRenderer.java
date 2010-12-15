@@ -118,6 +118,11 @@ public class CheckboxButtonRenderer extends Renderer {
 	    //note that ScriptWriter takes care of the span tag surrounding the script
 	    String boxValue = String.valueOf(checkbox.getValue());
 	    boolean isChecked = this.isChecked(boxValue);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(checkbox.getStyle()).
+           append(checkbox.getStyleClass());
+
         String builder="";
 	    JSONBuilder.create().beginMap().entry("nothing", label).toString();
 
@@ -132,6 +137,7 @@ public class CheckboxButtonRenderer extends Renderer {
         JSONBuilder jBuild = JSONBuilder.create().
            beginMap().
                entry("singleSubmit", checkbox.isSingleSubmit()).
+               entry("hashCode", sb.toString().hashCode()).
                entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
 
         if (uiParamChildren != null) {
