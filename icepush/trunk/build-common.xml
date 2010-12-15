@@ -25,6 +25,13 @@
 	<fileset id="dist.icepush.jar" file="${dist.dir}/icepush.jar" />
 
 	<property file="./build.properties" />
+	
+	<!-- Check if release.type is set, and if so append it after the tertiary value -->
+	<condition property="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">
+    	<isset property="release.type"/>
+	</condition>
+    <property name="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}"/>
+   
 
 	<fileset id="icepush.dist" dir="${root.offset}/core/${dist.dir}">
 		<include name="icepush.jar" />
@@ -145,12 +152,16 @@
 				</fileset>
 				<fileset dir="${java.dir}" includes="**/*.java"/>
 				<add.filesets/>
-				<manifest>
+	            <manifest>
 	                <section name="org.icepush">
 	                    <attribute name="Implementation-Title"
 	                               value="${product}"/>
 	                    <attribute name="Implementation-Version"
-	                               value="${release.type} ${version.primary}.${version.secondary}.${version.tertiary}_${build.number} (${build.time})"/>
+	                               value="${version.string}"/>
+	                    <attribute name="Build-Number"
+	                               value="${build.number}"/>
+	                    <attribute name="Build-Time"
+	                               value="${build.time}"/>
 	                    <attribute name="Implementation-Vendor"
 	                               value="${company}"/>
 	                </section>

@@ -35,6 +35,7 @@
     <import file="${root.offset}/build-common.xml"/>
 
     <target name="product.info" description="update product information">
+    	
         <sequential>
             <tempfile property="svninfo.log"/>
             <exec executable="svn" failonerror="no">
