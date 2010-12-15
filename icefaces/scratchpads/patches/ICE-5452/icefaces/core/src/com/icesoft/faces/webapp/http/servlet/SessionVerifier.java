@@ -57,6 +57,7 @@ public class SessionVerifier implements PseudoServlet {
         if (request.isRequestedSessionIdValid()) {
             servlet.service(request, response);
         } else {
+System.out.println("SessionVerifier Responding with SessionExpired due to invalid or old SessionID from client");
             if (xmlResponse) {
                 SessionExpiredServlet.service(request, response);
             } else {
