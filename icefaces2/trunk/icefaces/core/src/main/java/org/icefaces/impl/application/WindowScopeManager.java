@@ -149,7 +149,8 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
 
     public static ScopeMap lookupWindowScope(FacesContext context) {
         String id = lookupAssociatedWindowID(context.getExternalContext().getRequestMap());
-        return (ScopeMap) getState(context).windowScopedMaps.get(id);
+        State state = getState(context);
+        return state == null ? null : (ScopeMap) state.windowScopedMaps.get(id);
     }
 
     public static synchronized String determineWindowID(FacesContext context) {
