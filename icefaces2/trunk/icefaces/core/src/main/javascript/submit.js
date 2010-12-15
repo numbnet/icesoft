@@ -45,7 +45,7 @@ var submit;
         serializeOn(event, collectingQuery);
     }
 
-    function ajaxFormSubmitURL(form) {
+    function encodedURLOf(form) {
         return form['javax.faces.encodedURL'] ? form['javax.faces.encodedURL'].value : form.action;
     }
 
@@ -124,7 +124,7 @@ var submit;
             serializeAdditionalParameters(additionalParameters, options);
 
             debug(logger, join([
-                'partial submit to ' + ajaxFormSubmitURL(form),
+                'partial submit to ' + encodedURLOf(form),
                 'javax.faces.execute: ' + execute,
                 'javax.faces.render: ' + render,
                 'javax.faces.source: ' + element.id,
@@ -209,7 +209,7 @@ var submit;
         var isDeltaSubmit = deltaSubmit(element);
 
         debug(logger, join([
-            (isDeltaSubmit ? 'delta ' : '') + 'full submit to ' + ajaxFormSubmitURL(form),
+            (isDeltaSubmit ? 'delta ' : '') + 'full submit to ' + encodedURLOf(form),
             'javax.faces.execute: ' + execute,
             'javax.faces.render: ' + render,
             'javax.faces.source: ' + element.id,
