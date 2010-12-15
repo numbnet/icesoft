@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+ *
+ * Version: MPL 1.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ *
+  -->
+<html>
+    <head>
+        <title>ICEpush ICEchat (jQuery)</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="-1">
+        <link rel='stylesheet' type='text/css' href='./css/style-common.css'/>
+        <script type="text/javascript" src="code.icepush"></script>
+        <script type="text/javascript" src="./javascript/jquery-1.4.1.js"></script>
+        <script type="text/javascript" src="./javascript/jquery.icepush.js"></script>
+        <script type="text/javascript" src="./javascript/icechat.js"></script>           
+    </head>
+    <body>
+    	
+    	<div id="headerContainer" class="header_container">
+    		 <div class="header_content">
+				<div style="font-size: 20pt; color: #0F65B8; margin-top: 15px;">
+					<img src="./img/ICEpush-jQuery.png" title="ICEpush with jQuery"/>
+					<img src="./img/jquery.gif" width="170px" style="float:right;margin-top:20px;margin-right:25px;"/>
+				</div>
+			</div> 		
+     	</div>
+        
+        <div class="body_container body_container_pos" id="content"> 
+            <div id="chatPanel">
+			
+				<div class="chatSession chatSession_pos" id="chatSessionPanel">
+					<div class="loading"></div>
+				</div>
+				
+				<div class="clearer"></div>
+			
+				<div class="mainPanel_pos">
+				
+					<div id="chatRoomsPanel" class="chatRooms chatRooms_pos">
+						<h3>Chat Rooms</h3>
+						<div id="chatRooms">
+							<div class="loading"></div>
+						</div>
+						<form id="createNewChatRoom">
+							<div class="createNewChatRoom">
+								Create New Chat Room
+								<br />
+								<label for="newChatRoomName">Name</label>&nbsp;
+								<input type="text" id="newChatRoomName" style="width: 90px;margin-top:5px;" 
+									onkeypress="if(event.keyCode == 13){ click_createChatRoom();return false;}"/>
+								<input type="button" value="Create" style="margin-top:5px;"
+									onclick="click_createChatRoom();" />
+							</div>
+						</form>
+					</div>
+				
+					<div id="currentChatRoom" class="currentChatRoom_pos">
+					</div>					
+				
+				</div>
+				
+				<script type="text/javascript">
+					loadChatLogin(document.getElementById("chatSessionPanel"));
+					refreshChatRoomsList();
+					$("#chatRooms").loadPushUpdates("rooms","chatrooms");
+				</script>
+			
+			</div>
+        </div>
+        <div id="chatRoomTemplate" class="hidden">
+			<div class="chatRoom" id="chatRoom" style="display:none;">
+				<form id="chatRoomForm">
+					<input type="hidden" id="roomName" value=""/>
+					<div class="chatRoomHeader">
+						Chat Room '<span id="currentChatRoomName"></span>'
+					</div>
+					<div class="chatRoomContainer">
+						<div class="chatRoomUsers">
+							<div class="chatViewSubHeader">Who's Here?</div>
+							<div id="users"></div>
+						</div>
+						<div class="chatRoomMessages">
+							<div class="chatViewSubHeader">Messages</div>
+							<div id="chatRoomMessages"></div>
+						</div>
+					</div>
+					<div class="clearer"></div>
+					<div class="addNewMessage">
+						New Message&nbsp;
+						<input type="text" id="newChatRoomMessage" style="width:40%;"
+							onkeypress="if(event.keyCode == 13){ return false;}" />
+						<input type="button" onclick="click_sendMessage();return false;"
+							value="Send" />
+					</div>
+				</form>
+				<script type="text/javascript">
+					$('#chatRoomForm').submit(function() {
+					  return false;
+					});
+				</script>
+			</div>        
+        </div>
+    </body>
+</html>
+
