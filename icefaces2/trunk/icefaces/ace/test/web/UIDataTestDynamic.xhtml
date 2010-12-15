@@ -7,7 +7,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:ice="http://www.icefaces.org/icefaces/components">
+      xmlns:ace="http://www.icefaces.org/icefaces/components">
 <h:head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
@@ -26,7 +26,7 @@
         <div class="yui-skin-sam yui3-skin-sam">
            <h:dataTable id="calTable" value="#{styleMasterBean.styleHolderData}" var="styleHolder">
              <h:column>
-                 <ice:linkButton  value="A handsomely styled link" style="#{styleHolder.style}"  actionListener="#{styleMasterBean.alternateLinkStyle}" />
+                 <ace:linkButton  value="A handsomely styled link" style="#{styleHolder.style}"  actionListener="#{styleMasterBean.alternateLinkStyle}" />
              </h:column>
            </h:dataTable>
         </div>
@@ -39,7 +39,7 @@
         <div class="yui-skin-sam yui3-skin-sam">
            <h:dataTable id="calTable" value="#{labelMasterBean.linkLabelData}" var="labelHolder">
              <h:column>
-                 <ice:linkButton  value="#{labelHolder.label}" actionListener="#{labelMasterBean.alternateLinkLabel}" />
+                 <ace:linkButton  value="#{labelHolder.label}" actionListener="#{labelMasterBean.alternateLinkLabel}" />
              </h:column>
            </h:dataTable>
         </div>
@@ -53,7 +53,21 @@
         <div class="yui-skin-sam">
            <h:dataTable id="pbTable" value="#{labelMasterBean.buttonLabelData}" var="labelHolder">
              <h:column>
-                 <ice:pushButton  label="#{labelHolder.label}" actionListener = "#{labelMasterBean.alternateButtonLabel}" />
+                 <ace:pushButton  label="#{labelHolder.label}" actionListener = "#{labelMasterBean.alternateButtonLabel}" />
+             </h:column>
+           </h:dataTable>
+        </div>
+    </h:panelGroup>
+    </h:form>
+
+    <h:form id="form5">
+     <h:panelGroup styleClass="yui3-skin-sam yui-skin-sam">
+        <h2>These Checkboxes can dynamically change style</h2>
+        <div class="yui-skin-sam">
+           <h:dataTable id="cbTable" value="#{checkDataBean.styleHolderData}" var="styleHolder">
+             <h:column>
+                 <ace:checkboxButton  label="A finely styled checkbox"  style="#{styleHolder.style}" singleSubmit="true"
+                                  valueChangeListener = "#{checkDataBean.alternateCheckStyle}" />
              </h:column>
            </h:dataTable>
         </div>
