@@ -38,6 +38,7 @@ import java.io.IOException;
 
 public class FormSubmit implements SystemEventListener {
     public static final String DISABLE_CAPTURE_SUBMIT = "DISABLE_CAPTURE_SUBMIT";
+    private static final String CAPTURE_SUBMIT_SUFFIX = "_captureSubmit";
     private boolean deltaSubmit;
     private boolean partialStateSaving;
 
@@ -58,12 +59,12 @@ public class FormSubmit implements SystemEventListener {
         if (form.getAttributes().get(DISABLE_CAPTURE_SUBMIT) != null) {
             return;
         }
-        String componentId = form.getId() + "_captureSubmit";
+        String componentId = form.getId() + CAPTURE_SUBMIT_SUFFIX;
 
         if (!partialStateSaving)  {
             for (UIComponent child : form.getChildren())  {
                 String id = child.getId();
-                if ((null != id) && id.equals(componentId))  {
+                if ((null != id) && id.endsWith(CAPTURE_SUBMIT_SUFFIX))  {
                     return;
                 }
             }

@@ -40,6 +40,7 @@ import java.util.logging.Logger;
 
 public class WindowAndViewIDSetup implements SystemEventListener {
     private static final Logger Log = Logger.getLogger(WindowAndViewIDSetup.class.getName());
+    private static final String ID_SUFFIX = "_windowviewid";
     private boolean partialStateSaving;
 
     public WindowAndViewIDSetup()  {
@@ -54,12 +55,12 @@ public class WindowAndViewIDSetup implements SystemEventListener {
         }
 
         HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
-        String componentId = form.getId() + "_windowviewid";
+        String componentId = form.getId() + ID_SUFFIX;
 
         if (!partialStateSaving)  {
             for (UIComponent child : form.getChildren())  {
                 String id = child.getId();
-                if ((null != id) && id.equals(componentId))  {
+                if ((null != id) && id.endsWith(ID_SUFFIX))  {
                     return;
                 }
             }
