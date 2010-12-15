@@ -204,8 +204,8 @@ if (!window.ice.icefaces) {
 
                     var updates = e.responseXML.documentElement.firstChild.childNodes;
                     var updateDescriptions = collect(updates, function(update) {
-                        return update.nodeName +
-                                (update.hasAttribute('id') ? '["' + update.getAttribute('id') + '"]' : '') +
+                        var id = update.getAttribute('id');
+                        return update.nodeName + (id ? '["' + id + '"]' : '') +
                                 ': ' + substring(update.firstChild.data, 0, 40) + '....';
                     });
                     debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
