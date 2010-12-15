@@ -22,11 +22,11 @@
 
 var setFocus;
 var applyFocus;
-var currentFocus;
+var currentFocus = '';
 
 (function() {
     setFocus = function(id) {
-        currentFocus = id;
+        currentFocus = id ? id : '';
         debug(logger, 'persisted focus for element "' + id + '"');
     };
 
