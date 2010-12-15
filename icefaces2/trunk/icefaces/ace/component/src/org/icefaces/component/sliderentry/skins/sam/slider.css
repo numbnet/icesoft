@@ -48,7 +48,9 @@
 }
  
 .ice-skin-sam .yui3-slider-x .yui3-slider-rail .yui3-slider-thumb {
-    background: url(thumb-x.png) no-repeat 0px -12px;
+	background-position: 0 0;
+	background-image: url(thumb-x.png); /** sprite-ref: sprite; */
+	background-repeat: no-repeat;
     height: 18px;
     width: 13px; 
 }
@@ -104,7 +106,9 @@
 } 
  
 .ice-skin-sam .yui3-slider-y .yui3-slider-rail .yui3-slider-thumb {
-    background: url(thumb-y.png)  no-repeat -14px 0px;
+	background-position: 0 0;
+	background-image: url(thumb-y.png); /** sprite-ref: sprite; */
+	background-repeat: no-repeat;
     height: 14px;
     width: 30px;
 }
