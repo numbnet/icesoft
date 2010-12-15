@@ -91,7 +91,10 @@ public class BridgeSetup implements SystemEventListener {
 
         root.addComponentResource(context, new JavascriptResourceOutput("jsf.js", "javax.faces"), "head");
 
-        final String invalidateHTTPCache = "?a" + hashCode();
+        String invalidateHTTPCache = "";
+        if (EnvUtils.isUniqueResourceURLs(context))  {
+            invalidateHTTPCache = "?rand=" + hashCode();
+        }
 
         if (EnvUtils.isICEpushPresent()) {
             root.addComponentResource(context, new JavascriptResourceOutput("icepush.js" + invalidateHTTPCache), "head");
