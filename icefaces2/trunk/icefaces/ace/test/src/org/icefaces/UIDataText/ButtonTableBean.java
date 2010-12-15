@@ -1,6 +1,7 @@
 package showcase.test.src.org.icefaces.UIDataText;
 
 import org.icefaces.component.pushbutton.PushButton;
+import org.icefaces.component.linkbutton.LinkButton;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,102 +15,64 @@ import javax.faces.component.UIComponent;
 
 
 /**
- * The ColumnsBean object generates data for the ice:columns example.
- *
+ * Label service for handling dynamic labels
  * @since 1.5
  */
-@ManagedBean (name="buttonTableBean")
+@ManagedBean (name="labelMasterBean")
 @ViewScoped
 public class ButtonTableBean implements Serializable {
 
     private String Labels[] = {
-            "First Label",
-            "Second Label",
-            "Third Label",
-            "Fourth Label",
-            "Fifth Label",
-            "Sixth Label"
-    };
+            "On the one hand...",
+            "But, on the other hand..." };
 
-    List labelData = new ArrayList();
-    List labelData2 = new ArrayList();
-    List labelData3 = new ArrayList();
+    List linkLabelData = new ArrayList();
+    List buttonLabelData = new ArrayList();
 
-    private int labelIndex;
-    private int labelIndex2;
-    private int labelIndex3;
 
     public ButtonTableBean(){
-        for (int idx = 0; idx < Labels.length; idx ++ ) {
-            labelData.add( new LabelHolder( Labels[idx] ) );
-            labelData2.add( new LabelHolder( Labels[idx] ) );
-            labelData3.add( new LabelHolder( Labels[idx] ) );
+        for (int idx = 0; idx < 4; idx ++ ) {
+            linkLabelData.add( new LabelHolder( Labels[0] ) );
+            buttonLabelData.add( new LabelHolder( Labels[0] ) );
         }
     }
 
-    public void incrementLabelIndex(ActionEvent e) {
+    public void alternateButtonLabel(ActionEvent e) {
 
         UIComponent uic = e.getComponent();
-        PushButton cl = (PushButton) uic;
-        String oldStyle = cl.getLabel();
-
-        String newLabel = findNewLabel(oldStyle, labelIndex);
-        cl.setLabel( newLabel );
-        System.out.println("------ Label DATA CHANGED -------");
-        dump(labelData);
+        PushButton pb = (PushButton) uic;
+        String oldLabel = pb.getLabel();
+        String newLabel = findNewLabel(oldLabel);
+        pb.setLabel( newLabel );
+        System.out.println("------ Button: " + pb.getClientId() + " Label Changed to: " + newLabel + " -------");
     }
 
-    private String findNewLabel( String oldLabel, int LabelIndex) {
-        String newLabel;
-        int index = LabelIndex++ % labelData.size();
-        int idx = 0;
-        while ((newLabel = labelData.get( index ).toString()).equals(
-                oldLabel)) {
-            index = labelIndex++ % labelData.size();
-            idx++;
-            if (idx > 5) {
-                return oldLabel;
+    public void alternateLinkLabel(ActionEvent e) {
+
+        UIComponent uic = e.getComponent();
+        LinkButton cl = (LinkButton) uic;
+        String oldLabel = (String) cl.getValue();
+        String newLabel = findNewLabel(oldLabel);
+        cl.setValue( newLabel );
+        System.out.println("------ Link: " + cl.getClientId() + " Label Changed to: " + newLabel + " -------");
+    }
+
+
+    private String findNewLabel( String oldLabel ) {
+        String defLabel = "oops fall through case!";
+        for (int idx = 0; idx < Labels.length; idx ++ ) {
+            if (!Labels[idx].equals(oldLabel) ) {
+                return Labels[idx];
             }
-        }
-        return newLabel;
+        } 
+        return defLabel;
     }
-//    public void incrementLabelIndex2(ActionEvent e) {
-//
-//        UIComponent uic = e.getComponent();
-//        PushButton cl = (PushButton) uic;
-//        int index = labelIndex2++ % LabelData2.size();
-//        String newLabel = labelData2.get( index ).toString();
-//        cl.setLabel( newLabel );
-//        System.out.println("------ Label DATA 2-------");
-//        dump(labelData2);
-//    }
-//
-//    public void incrementLabelIndex3(ActionEvent e) {
-//
-//        UIComponent uic = e.getComponent();
-//        PushButton cl = (PushButton) uic;
-//        int index = labelIndex3++ % LabelData3.size();
-//        String newLabel = labelData3.get( index ).toString();
-//        cl.setLabel( newLabel );
-//        System.out.println("------ Label DATA 3  -------");
-//        dump(LabelData3);
-//    }
-
-    public List getLabelHolderData() {
-        return labelData;
+    
+    public List getLinkLabelData() {
+        return linkLabelData;
     }
 
-    public List getLabelHolderData2() {
-        return labelData2;
-    }
-
-    public List getLabelHolderData3() {
-        return labelData3;
-    }
-
-    public void dump(List al) {
-        for (int idx = 0; idx < al.size(); idx ++  ) {
-            System.out.println("   " + al.get(idx) + " idx: " + idx);
-        }
+    public List getButtonLabelData() {
+           return buttonLabelData;
     }
 }
