@@ -47,7 +47,7 @@ public class GeneratorContext{
         if (ret == null) {
             ret = "";
         }
-        Pattern evalPattern = Pattern.compile( "([\\d\\.\\d]*)" );
+        Pattern evalPattern = Pattern.compile( "([\\d\\.]*\\d)" );
         Matcher searchMatcher = evalPattern.matcher( ret  );
         if (searchMatcher.find() )  {
             ret = searchMatcher.group();
