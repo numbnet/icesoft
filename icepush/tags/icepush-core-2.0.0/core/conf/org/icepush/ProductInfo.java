@@ -52,8 +52,12 @@ public class ProductInfo {
         info.append(SECONDARY);
         info.append(".");
         info.append(TERTIARY);
-        info.append(" ");
-        info.append(RELEASE_TYPE);
+        if ( (RELEASE_TYPE.length() > 0) &&
+        	(!RELEASE_TYPE.equals("x")) &&
+        	(!RELEASE_TYPE.equals("${release.type}")) ) { 
+	        info.append(".");
+	        info.append(RELEASE_TYPE);
+        }    
         info.append("\n");
         info.append("Build number: ");
         info.append(BUILD_NO);
