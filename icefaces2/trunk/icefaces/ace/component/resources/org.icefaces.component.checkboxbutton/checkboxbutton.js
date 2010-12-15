@@ -98,6 +98,15 @@ ice.component.checkboxbutton = {
    updateProperties:function(clientId, jsProps, jsfProps, events) {        		
         YAHOO.log("updateProperties...checking jsfProps.singleSubmit="+jsfProps.singleSubmit);
 
+        var context = ice.component.getJSContext(clientId);
+        if (context && context.isAttached()) {
+            var prevJSFProps = context.getJSFProps();
+            if (prevJSFProps.hashCode != jsfProps.hashCode) {
+                context.getComponent().destroy();
+                document.getElementById(clientId)['JSContext'] = null;
+                JSContext[clientId] = null;
+            }
+        }
        ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
        //     var JSContext = ice.component.getJSContext(clientId);
        //     var singleSubmit = JSContext.getJSFProps().singleSubmit;
