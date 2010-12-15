@@ -190,6 +190,7 @@ public class MainSessionBoundServlet extends PathDispatcher implements PageTest 
                 DisposeBeans.in(session);
                 //send 'session-expired' to all views
                 Iterator i = views.values().iterator();
+System.out.println("5452: MainSessionBoundServlet shutting down and sending SessionExpired to all views in " + sessionID);
                 while (i.hasNext()) {
                     CommandQueue commandQueue = (CommandQueue) i.next();
                     commandQueue.put(SessionExpired);

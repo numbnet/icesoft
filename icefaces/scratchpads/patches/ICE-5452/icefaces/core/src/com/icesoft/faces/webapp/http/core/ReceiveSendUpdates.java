@@ -141,6 +141,7 @@ public class ReceiveSendUpdates implements Server {
                         //exception thrown in the middle of JSF lifecycle
                         //respond immediately with session-expired message to avoid any new connections
                         //being initiated by the bridge.
+System.out.println("ReceiveSendUpdates responding with SessionExpired from " + e);
                         request.respondWith(SessionExpiredResponse.Handler);
                     } finally {
                         view.release();

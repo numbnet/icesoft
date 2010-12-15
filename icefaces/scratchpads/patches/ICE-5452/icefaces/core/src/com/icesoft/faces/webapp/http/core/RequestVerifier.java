@@ -63,6 +63,7 @@ public class RequestVerifier implements Server {
                     server.service(request);
                 } else {
                     log.debug("Missmatched 'ice.session' value. Session has expired.");
+System.out.println("Missmatched ice.session value. Session has expired. Expected: " + sessionID + " got " + Arrays.asList(request.getParameterAsStrings("ice.session")) );
                     if ( "true".equalsIgnoreCase(configuration
                             .getAttribute("sessionExpiredServerRedirect", 
                                           "false")) )  {
