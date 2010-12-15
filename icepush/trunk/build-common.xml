@@ -146,7 +146,6 @@
 				<fileset dir="${java.dir}" includes="**/*.java"/>
 				<add.filesets/>
 				<manifest>
-	                <attribute name="Built-By" value="${user.name}"/>
 	                <section name="org.icepush">
 	                    <attribute name="Implementation-Title"
 	                               value="${product}"/>
