@@ -152,6 +152,14 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                 if(useragent == null){
                     useragent = ((OutputStyle)uiComponent).getUserAgent();
                 }
+				if(useragent == null){
+					//Get User-Agent for Weblogic/Webshpere
+					useragent = request.getHeader("User-Agent");
+				}
+				if(useragent == null){
+					//Get User-Agent for OC4J
+					useragent = request.getHeader("USER-AGENT");
+				}
                 if(useragent == null){
                 	if (log.isDebugEnabled()) {
                 		log.debug("Not able to find user agent. Returning default");
