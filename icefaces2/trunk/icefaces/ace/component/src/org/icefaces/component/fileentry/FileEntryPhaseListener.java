@@ -42,6 +42,7 @@ import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.component.UIComponent;
 import javax.faces.application.FacesMessage;
+import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.List;
@@ -115,14 +116,16 @@ public class FileEntryPhaseListener implements PhaseListener {
             return;
             
         Object requestObject = phaseEvent.getFacesContext().getExternalContext().getRequest();
+        HttpServletRequest request = null;
         if (!(requestObject instanceof HttpServletRequest)) {
 //            System.out.println("FileEntryPhaseListener.beforePhase()  requestObject: " + requestObject);
 //            if (requestObject != null)
 //                System.out.println("FileEntryPhaseListener.beforePhase()  requestObject.class: " + requestObject.getClass().getName());
-            requestObject = new ProxyHttpServletRequest(phaseEvent.getFacesContext());
+            request = new ProxyHttpServletRequest(phaseEvent.getFacesContext());
 //            return;
+        } else {
+            request = (HttpServletRequest) requestObject;
         }
-        HttpServletRequest request = (HttpServletRequest) requestObject;
 //        System.out.println("FileEntryPhaseListener.beforePhase()  contentType: " + request.getContentType());
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 //        System.out.println("FileEntryPhaseListener.beforePhase()  isMultipart: " + isMultipart);
@@ -175,8 +178,12 @@ public class FileEntryPhaseListener implements PhaseListener {
             }
             
 //            System.out.println("FileEntryPhaseListener.beforePhase()  parameterMap    : " + parameterMap);
-            
-            HttpServletRequest wrapper = new FileUploadRequestWrapper(request, parameterMap);
+            Object wrapper = null;
+            if( requestObject instanceof HttpServletRequest ){
+                wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, parameterMap);
+            } else {
+                wrapper = new FileUploadPortletRequestWrapper((PortletRequest) requestObject,parameterMap);
+            }
             phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
             PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
             if (pvc instanceof DOMPartialViewContext)
@@ -197,7 +204,12 @@ public class FileEntryPhaseListener implements PhaseListener {
             // to have it respond with an ajax response. This should typically
             // be disabled
 //            System.out.println("FileEntryPhaseListener.beforePhase()  Temporary test of adding Faces-Request HTTP header");
-            HttpServletRequest wrapper = new FileUploadRequestWrapper(request, null);
+            Object wrapper = null;
+            if( requestObject instanceof HttpServletRequest ){
+                wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, null);
+            } else {
+                wrapper = new FileUploadPortletRequestWrapper((PortletRequest) request, null);
+            }
             phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
             PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
             if (pvc instanceof DOMPartialViewContext)
@@ -427,13 +439,13 @@ public class FileEntryPhaseListener implements PhaseListener {
     }
     
     
+    private static final String APPLICATION_FORM_URLENCODED = "application/x-www-form-urlencoded";
+
     private static class FileUploadRequestWrapper extends HttpServletRequestWrapper {
         private static final String FACES_REQUEST = "Faces-Request";
         private static final String PARTIAL_AJAX = "partial/ajax";
-        
         private static final String CONTENT_TYPE = "content-type";
-        private static final String APPLICATION_FORM_URLENCODED = "application/x-www-form-urlencoded";
-        
+
         private Map<String,String[]> parameterMap;
 
         public FileUploadRequestWrapper(HttpServletRequest httpServletRequest,
@@ -507,7 +519,7 @@ public class FileEntryPhaseListener implements PhaseListener {
             }
             return super.getParameterMap();
         }
-        
+
         // Returns an Enumeration of String objects containing the names of
         // the parameters contained in this request.
         public Enumeration<String> getParameterNames() {
@@ -517,7 +529,7 @@ public class FileEntryPhaseListener implements PhaseListener {
             }
             return super.getParameterNames();
         }
-        
+
         // Returns the value of a request parameter as a String, or null if
         // the parameter does not exist.
         public String getParameter(String name) {
@@ -533,7 +545,7 @@ public class FileEntryPhaseListener implements PhaseListener {
             }
             return super.getParameter(name);
         }
-        
+
         // Returns an array of String objects containing all of the values the
         // given request parameter has, or null if the parameter does not exist.
         public String[] getParameterValues(String name) {
@@ -545,9 +557,72 @@ public class FileEntryPhaseListener implements PhaseListener {
             }
             return super.getParameterValues(name);
         }
-        
+
         public String getContentType() {
             return APPLICATION_FORM_URLENCODED;
         }
     }
+
+    private static class FileUploadPortletRequestWrapper extends javax.portlet.filter.PortletRequestWrapper {
+
+        private Map<String,String[]> parameterMap;
+
+        public FileUploadPortletRequestWrapper(PortletRequest request,
+                                               Map<String,String[]> parameterMap) {
+            super(request);
+            this.parameterMap = parameterMap;
+        }
+
+        // Returns a java.util.Map of the parameters of this request.
+        public Map<String, String[]> getParameterMap() {
+            if (parameterMap != null) {
+                return Collections.unmodifiableMap(parameterMap);
+            }
+            return super.getParameterMap();
+        }
+
+        // Returns an Enumeration of String objects containing the names of
+        // the parameters contained in this request.
+        public Enumeration<String> getParameterNames() {
+            if (parameterMap != null) {
+                Vector<String> keyVec = new Vector<String>(parameterMap.keySet());
+                return keyVec.elements();
+            }
+            return super.getParameterNames();
+        }
+
+        // Returns the value of a request parameter as a String, or null if
+        // the parameter does not exist.
+        public String getParameter(String name) {
+            if (parameterMap != null) {
+                if (!parameterMap.containsKey(name)) {
+                    return null;
+                }
+                String[] values = parameterMap.get(name);
+                if (values != null && values.length >= 1) {
+                    return values[0];
+                }
+                return null; // Or "", since the key does exist?
+            }
+            return super.getParameter(name);
+        }
+
+        // Returns an array of String objects containing all of the values the
+        // given request parameter has, or null if the parameter does not exist.
+        public String[] getParameterValues(String name) {
+            if (parameterMap != null) {
+                if (!parameterMap.containsKey(name)) {
+                    return null;
+                }
+                return parameterMap.get(name);
+            }
+            return super.getParameterValues(name);
+        }
+
+        public String getContentType() {
+            return APPLICATION_FORM_URLENCODED;
+        }
+
+    }
+
 }
