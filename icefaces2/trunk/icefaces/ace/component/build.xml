@@ -299,7 +299,6 @@
 			<filelist>
 				<file name="${src}/org/icefaces/component/skins/sam_renamed/calendar-skin.css" />
 				<file name="${src}/org/icefaces/component/skins/sam_renamed/menu-skin.css" />
-				<file name="${src}/org/icefaces/component/skins/sam_renamed/slider-skin.css" />
 				<file name="${src}/org/icefaces/component/skins/sam_renamed/tabview-skin.css" />
 			</filelist>
 		</concat>
