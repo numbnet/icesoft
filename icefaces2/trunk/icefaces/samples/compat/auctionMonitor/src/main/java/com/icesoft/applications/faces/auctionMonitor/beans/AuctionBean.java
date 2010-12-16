@@ -48,7 +48,7 @@ public class AuctionBean implements Serializable  {
     private static Log log = LogFactory.getLog(AuctionBean.class);
     private static int userCount = 0;
     public static final String RENDERER_NAME = "demand";
-    private static final String SUCCESS = "success";
+    private static final String SUCCESS = null;
     private String queryItemID;
     private String queryString;
     private AuctionMonitorItemBean[] searchItemBeans;
