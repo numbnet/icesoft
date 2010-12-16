@@ -56,9 +56,9 @@ a control on the data to hide/show the table columns.
                                        value="#{rowSelectController.multiRowSelect}"
                                        partialSubmit="true"
                                        valueChangeListener="#{rowSelectController.changeSelectionMode}">
-                <f:selectItem itemLabel="#{msgs['page.rowSelector.ItemSingle']}" itemValue="#{msgs['page.rowSelector.ItemSingle']}" />
-                <f:selectItem itemLabel="#{msgs['page.rowSelector.ItemMultiple']}" itemValue="#{msgs['page.rowSelector.ItemMultiple']}" />
-                <f:selectItem itemLabel="#{msgs['page.rowSelector.ItemEnhancedMultiple']}" itemValue="#{msgs['page.rowSelector.ItemEnhancedMultiple']}" />
+                <f:selectItem itemValue="Single" itemLabel="#{msgs['page.rowSelector.ItemSingle']}" />
+                <f:selectItem itemValue="Multiple" itemLabel="#{msgs['page.rowSelector.ItemMultiple']}" />
+                <f:selectItem itemValue="Enhanced Multiple" itemLabel="#{msgs['page.rowSelector.ItemEnhancedMultiple']}" />
             </ice:selectOneRadio> 
             <ice:panelGroup rendered="#{rowSelectController.enhancedMultiple}">                          
 	            <ice:outputLabel value="#{msgs['page.rowSelector.enhancedMultipleHeading']}"/> <br/>
