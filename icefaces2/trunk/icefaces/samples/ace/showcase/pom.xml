@@ -4,12 +4,12 @@
   <groupId>org.icesoft</groupId>
   <artifactId>ace-showcase</artifactId>
   <packaging>war</packaging>
-  <version>2.0.0</version>
+  <version>2.0.0-RC2</version>
   <name>ace-showcase</name>
   <url>http://icefaces.org</url>
       <properties>
     <jsf.version>2.0.3-FCS</jsf.version>
-    <ice.version>2.0.0</ice.version>
+    <ice.version>2.0.0-RC2</ice.version>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
