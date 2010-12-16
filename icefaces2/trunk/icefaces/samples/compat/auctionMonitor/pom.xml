@@ -27,7 +27,7 @@
   <artifactId>auctionMonitor</artifactId>
   <packaging>war</packaging>
   <name>ICEfaces Compat AuctionMonitor sample</name>
-  <version>2.0.0</version>
+  <version>2.0.0-RC2</version>
   <description />
   <properties>
     <jsf.version>2.0.3-FCS</jsf.version>
