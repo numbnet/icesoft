@@ -54,6 +54,9 @@ public class FileEntryLoader {
             // Remove all other PhaseListeners, and re-add them after
             // FileEntryPhaseListener, since they'll likely rely on it having 
             // setup a valid environment for JSF. Eg: WindowScopeManager.
+            // This also allows FileEntryPhaseListener to add FacesMessages
+            // for FileEntry components with immediate=false in PreRender
+            // before the core FacesMessagesPhaseListener works in PreRender.
             PhaseListener[] phaseListeners = lifecycle.getPhaseListeners();
             for (PhaseListener otherPhaseListener : phaseListeners) {
                 lifecycle.removePhaseListener(otherPhaseListener);

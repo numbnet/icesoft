@@ -132,7 +132,9 @@ public class FileEntryMeta extends UIComponentBaseMeta {
         "operation. From this, applications can retrieve the uploaded " +
         "files' information, such as the file name, MIME content type, " +
         "size, location where the file has been stored, and status of the " +
-        "success of the upload.")
+        "success of the upload. If saving a FileEntryResults object or " +
+        "FileEntryResults.FileInfo objects, in your application, then save " +
+        "a clone of the objects, instead.")
     private FileEntryResults results;
 
     //TODO

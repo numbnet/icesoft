@@ -214,19 +214,14 @@ var ice_fileEntry = {
                 if (fileDiv) {
                     var outerDiv = fileDiv.childNodes[1];
                     if (outerDiv) {
-                        var progDiv = outerDiv.firstChild;
-                        if (progDiv) {
-                            progDiv.style.width = percentStr;
-                        }
-                        //if (percent == 100) {
-                        //    outerDiv.className = "complete";
-                        //} else {
+                        if (outerDiv.className != "complete") {
+                            var progDiv = outerDiv.firstChild;
+                            if (progDiv) {
+                                progDiv.style.width = percentStr;
+                            }
                             outerDiv.className = "progress";
-                        //}
+                        }
                     }
-                    //var span = document.createElement('span');
-                    //span.innerHTML = percentStr;
-                    //fileDiv.appendChild(span);
                 }
             }
         });
@@ -244,6 +239,11 @@ var ice_fileEntry = {
     setFormFileEntryStates : function(formElem, className) {
         var fileEntryDivs = ice_fileEntry.getElementsByClass(
                 "ice-file-entry",formElem,"div");
+        /*
+        var fileEntryLen = fileEntryDivs.length;
+        var fileEntryIndex;
+        for (fileEntryIndex = 0; fileEntryIndex < fileEntryLen; fileEntryIndex++) {
+         */
         var fileEntryIndex;
         for (fileEntryIndex in fileEntryDivs) {
             var fileDiv = fileEntryDivs[fileEntryIndex];
