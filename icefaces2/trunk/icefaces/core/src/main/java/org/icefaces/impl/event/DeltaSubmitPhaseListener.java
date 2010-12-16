@@ -127,8 +127,10 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                     }
                 }
             } else {
-                //overwrite parameters
-                parameterValuesMap.put(patchKey, values);
+                //add direct parameter only when does not participate in the parameter diffing
+                if (!submittedParameters.containsKey("patch-" + patchKey) && !submittedParameters.containsKey("patch+" + patchKey)) {
+                    parameterValuesMap.put(patchKey, values);
+                }
                 directParameters.add(patchKey);
             }
         }
