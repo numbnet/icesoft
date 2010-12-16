@@ -450,14 +450,14 @@ p#clear {
 
 .ice-skin-sam .yui-calendar .calnavleft {
     background-position: 0 0; /* reset previous value set by original Sam skin */
-    background-image: url(cal_arrow_left.gif); /** sprite-ref: sprite-x; */
+    background-image: url(cal_arrow_left.gif); /** sprite-ref: sprite; */
     width: 9px;
     height: 12px;
 }
 
 .ice-skin-sam .yui-calendar .calnavright {
     background-position: 0 0; /* reset previous value set by original Sam skin */
-    background-image: url(cal_arrow_right.gif); /** sprite-ref: sprite-x; */
+    background-image: url(cal_arrow_right.gif); /** sprite-ref: sprite; */
     width: 9px;
     height: 12px;
 }
@@ -550,12 +550,12 @@ p#clear {
 }
 
 .ice-skin-sam .ice-calcontainer .toggle-popup.open-popup {
-    background-image: url(cal_button.gif); /** sprite-ref: sprite-x; */
+    background-image: url(cal_button.gif); /** sprite-ref: sprite; */
     background-color: transparent;
 }
 
 .ice-skin-sam .ice-calcontainer .toggle-popup.close-popup {
-    background-image: url(cal_off.gif); /** sprite-ref: sprite-x; */
+    background-image: url(cal_off.gif); /** sprite-ref: sprite; */
     background-color: transparent;
 }
 
