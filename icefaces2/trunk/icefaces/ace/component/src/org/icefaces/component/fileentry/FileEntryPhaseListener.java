@@ -42,7 +42,6 @@ import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.component.UIComponent;
 import javax.faces.application.FacesMessage;
-import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.List;
@@ -86,7 +85,7 @@ public class FileEntryPhaseListener implements PhaseListener {
         
         if (phaseEvent.getPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
             final Map<String, FacesEvent> clientId2FacesEvent = FileEntry.
-                removeEventsForPreRender(phaseEvent.getFacesContext());            
+                removeEventsForPreRender(phaseEvent.getFacesContext());
             if (clientId2FacesEvent != null) {
                 Set<String> clientIds = clientId2FacesEvent.keySet();
                 EnumSet<VisitHint> hints = EnumSet.of(
@@ -182,7 +181,7 @@ public class FileEntryPhaseListener implements PhaseListener {
             if( requestObject instanceof HttpServletRequest ){
                 wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, parameterMap);
             } else {
-                wrapper = new FileUploadPortletRequestWrapper((PortletRequest) requestObject,parameterMap);
+                wrapper = new FileUploadPortletRequestWrapper(requestObject, parameterMap);
             }
             phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
             PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
@@ -208,7 +207,7 @@ public class FileEntryPhaseListener implements PhaseListener {
             if( requestObject instanceof HttpServletRequest ){
                 wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, null);
             } else {
-                wrapper = new FileUploadPortletRequestWrapper((PortletRequest) request, null);
+                wrapper = new FileUploadPortletRequestWrapper(request, null);
             }
             phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
             PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
@@ -439,7 +438,7 @@ public class FileEntryPhaseListener implements PhaseListener {
     }
     
     
-    private static final String APPLICATION_FORM_URLENCODED = "application/x-www-form-urlencoded";
+    static final String APPLICATION_FORM_URLENCODED = "application/x-www-form-urlencoded";
 
     private static class FileUploadRequestWrapper extends HttpServletRequestWrapper {
         private static final String FACES_REQUEST = "Faces-Request";
@@ -561,68 +560,6 @@ public class FileEntryPhaseListener implements PhaseListener {
         public String getContentType() {
             return APPLICATION_FORM_URLENCODED;
         }
-    }
-
-    private static class FileUploadPortletRequestWrapper extends javax.portlet.filter.PortletRequestWrapper {
-
-        private Map<String,String[]> parameterMap;
-
-        public FileUploadPortletRequestWrapper(PortletRequest request,
-                                               Map<String,String[]> parameterMap) {
-            super(request);
-            this.parameterMap = parameterMap;
-        }
-
-        // Returns a java.util.Map of the parameters of this request.
-        public Map<String, String[]> getParameterMap() {
-            if (parameterMap != null) {
-                return Collections.unmodifiableMap(parameterMap);
-            }
-            return super.getParameterMap();
-        }
-
-        // Returns an Enumeration of String objects containing the names of
-        // the parameters contained in this request.
-        public Enumeration<String> getParameterNames() {
-            if (parameterMap != null) {
-                Vector<String> keyVec = new Vector<String>(parameterMap.keySet());
-                return keyVec.elements();
-            }
-            return super.getParameterNames();
-        }
-
-        // Returns the value of a request parameter as a String, or null if
-        // the parameter does not exist.
-        public String getParameter(String name) {
-            if (parameterMap != null) {
-                if (!parameterMap.containsKey(name)) {
-                    return null;
-                }
-                String[] values = parameterMap.get(name);
-                if (values != null && values.length >= 1) {
-                    return values[0];
-                }
-                return null; // Or "", since the key does exist?
-            }
-            return super.getParameter(name);
-        }
-
-        // Returns an array of String objects containing all of the values the
-        // given request parameter has, or null if the parameter does not exist.
-        public String[] getParameterValues(String name) {
-            if (parameterMap != null) {
-                if (!parameterMap.containsKey(name)) {
-                    return null;
-                }
-                return parameterMap.get(name);
-            }
-            return super.getParameterValues(name);
-        }
-
-        public String getContentType() {
-            return APPLICATION_FORM_URLENCODED;
-        }
-
     }
 
 }
