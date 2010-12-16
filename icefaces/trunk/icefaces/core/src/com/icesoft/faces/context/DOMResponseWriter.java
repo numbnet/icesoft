@@ -509,7 +509,7 @@ public class DOMResponseWriter extends ResponseWriter {
         //load libraries
         Collection libs = new ArrayList();
         if (configuration.getAttributeAsBoolean("openAjaxHub", false)) {
-            libs.add("/xmlhttp/openajax.js");
+        	libs.add("/xmlhttp" + StartupTime.getStartupInc() + "openajax.js"); 
         }
         libs.add("/xmlhttp" + StartupTime.getStartupInc() + "icefaces-d2d.js");
         //todo: refactor how external libraries are loaded into the bridge; always include extra libraries for now
