@@ -1,9 +1,9 @@
 ice.component.linkButton = {
 
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
-	   if (YAHOO.widget.Logger){
-	 	  YAHOO.widget.Logger.enableBrowserConsole();
-       }
+//	   if (YAHOO.widget.Logger){
+//	 	  YAHOO.widget.Logger.enableBrowserConsole();
+//       }
 
 	  YAHOO.util.Event.onDOMReady(function() {
 
