@@ -160,7 +160,16 @@ ice.component.slider = {
    
    //delegate call to ice.yui3.updateProperties(..)  with the reference of this lib
    updateProperties:function(clientId, yuiProps, jsfProps, events) {
-       ice.yui3.updateProperties(clientId, yuiProps, jsfProps, events, this);
+      var context = ice.component.getJSContext(clientId);
+      if (context && context.isAttached()) {
+          var prevJSFProps = context.getJSFProps();
+          if (prevJSFProps.hashCode != jsfProps.hashCode) {
+              context.getComponent().destroy();
+              document.getElementById(clientId)['JSContext'] = null;
+              JSContext[clientId] = null;
+          }
+      }
+      ice.yui3.updateProperties(clientId, yuiProps, jsfProps, events, this);
    },
  
    //delegate call to ice.yui3.getInstance(..) with the reference of this lib 
