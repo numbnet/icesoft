@@ -252,7 +252,9 @@
     <h:form id="testFacesMessages">
         <h:panelGrid columns="2"> 
     	    <h:outputText value="Faces Messages: " />
-            <h:messages id="theMessages"/>
+            <h:panelGroup>
+                <h:messages id="theMessages"/>
+            </h:panelGroup>
             
     	    <h:outputText value="File maxTotalSize 50" />
     	    <ice:fileEntry id="file"
@@ -377,8 +379,66 @@
                             fileEntryListener="#{fileBean.fileEntryListener}"/>
         </h:panelGrid>
     </h:form>
-    
+
+    <h:form id="form16">
+        <!--
+This tests the new automatic, and custom, validation for fileEntry : ICE-6203
+
+A CONTROL. immediate=true, file succeeded.
+             => Verify all phases happen, file exists, fileEntryListener is called
+A TEST.    immediate=true, file succeeded
+             -> custom fail and delete it.
+             => Verify no phases happen, file does not exist, fileEntryListener is called
+
+B CONTROL. immediate=false, file succeeded.
+             => Verify all phases happen, file exists, fileEntryListener is called
+B TEST.    immediate=false, file succeeded
+             -> custom fail and delete it.
+             => Verify all phases still happen, file does not exist, fileEntryListener is called
+
+C CONTROL. immediate=true, file failed (too large)
+             => Verify no phases happen, file does not exist, fileEntryListener is called
+C TEST.    immediate=true, file failed (too large)
+             -> custom restatus it INVALID
+             => Verify no phases happen, file does not exist, fileEntryListener is called
+
+D CONTROL. immediate=false, file failed (too large)
+             => Verify no phases happen, file does not exist, fileEntryListener is called
+D TEST.    immediate=false, file failed (too large)
+             -> custom restates it INVALID
+             => Verify no phases happen, file does not exist, fileEntryListener is called
+        -->
+        <h:panelGrid columns="2">
+    	    <h:outputText value="Form16  Custom validation" />
+            <h:panelGroup>
+                <h:messages id="theMessages"/>
+            </h:panelGroup>
+
+            <ice:checkboxButton label="Immediate" value="#{fileBean.immediate}" singleSubmit="true"/>
+            <ice:checkboxButton label="Invalidate" value="#{fileBean.invalidate}" singleSubmit="true"/>
+
+            <h:outputText value="Form16  Enter text. immediate=true. It is: #{fileBean.mixedText}" />
+            <h:inputText value="#{fileBean.mixedText}" immediate="true"/>
+
+            <h:outputText value="Form16  Enter text. immediate=false. It is: #{fileBean.regularText}" />
+            <h:inputText value="#{fileBean.regularText}" immediate="false"/>
+
+            <h:outputText value="Form16  file lt 100 MB" />
+    	    <ice:fileEntry label="file_16"
+                           id="file_16"
+                           immediate="#{fileBean.immediate}"
+                           maxFileSize="100000000"
+                           fileEntryListener="#{fileBean.fileEntryListenerInvalidateDelete}"/>
+
+            <h:commandButton id="btnReg" value="Submit Reg"/>
+            <h:commandButton id="btnTA" value="f:ajax  exec: this  render: all" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="@this" render="@all"/>
+            </h:commandButton>
+        </h:panelGrid>
+    </h:form>
+
 	<h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
+    <h:outputStylesheet library="org.icefaces.component.skins" name="rime.css" />
 </h:body>
 </f:view>
 </html>

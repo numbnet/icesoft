@@ -63,7 +63,9 @@ public class FileEntryController implements Serializable {
         FileEntryResults results = fileEntry.getResults();
         for (FileEntryResults.FileInfo fileInfo : results.getFiles()) {
             if (fileInfo.isSaved()) {
-                FileData fileData = new FileData(fileInfo, getIdCounter());
+                FileData fileData = new FileData(
+                    (FileEntryResults.FileInfo) fileInfo.clone(),
+                    getIdCounter());
                 synchronized (fileList) {
                     fileList.add(fileData);
                 }

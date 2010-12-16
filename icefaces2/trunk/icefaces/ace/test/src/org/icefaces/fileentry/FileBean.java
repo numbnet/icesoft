@@ -3,6 +3,7 @@ package org.icefaces.fileentry;
 import org.icefaces.component.fileentry.FileEntryEvent;
 import org.icefaces.component.fileentry.FileEntryResults;
 import org.icefaces.component.fileentry.FileEntry;
+import org.icefaces.component.fileentry.FileEntryStatuses;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.bean.ManagedBean;
@@ -86,6 +87,27 @@ public class FileBean {
         System.out.println("fileEntryListener()  phase: " + e.getPhaseId());
     }
     
+    public void fileEntryListenerInvalidateDelete(FileEntryEvent e) {
+        System.out.println("fileEntryListenerInvalidateDelete()  e: " + e);
+        System.out.println("fileEntryListenerInvalidateDelete()  phase: " + e.getPhaseId());
+        System.out.println("fileEntryListenerInvalidateDelete()  invalidate: " + invalidate);
+        if (invalidate) {
+            FileEntry fileEntry = (FileEntry) e.getComponent();
+            FileEntryResults results = fileEntry.getResults();
+            for(FileEntryResults.FileInfo fi : results.getFiles()) {
+                fi.updateStatus(FileEntryStatuses.INVALID, true, true);
+            }
+        }
+    }
+
+    private boolean immediate;
+    public boolean isImmediate() { return immediate; }
+    public void setImmediate(boolean imm) { immediate = imm; }
+
+    private boolean invalidate;
+    public boolean isInvalidate() { return invalidate; }
+    public void setInvalidate(boolean inv) { invalidate = inv; }
+
     public List getTableList() {
         if (tableList == null) {
             int sz = 4;
