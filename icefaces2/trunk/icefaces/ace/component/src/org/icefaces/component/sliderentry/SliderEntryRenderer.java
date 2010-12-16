@@ -145,6 +145,10 @@ public class SliderEntryRenderer extends Renderer{
         writer.writeAttribute("value",slider.getValue(), null);
         writer.endElement("input");
 
+        StringBuilder sb = new StringBuilder();
+        sb.append(styleClass).
+           append(style);
+
         
         // pass jsProps through to YUI, pass jsfProps to custom javascript. 
         JSONBuilder jsBuilder = JSONBuilder.create().beginMap().
@@ -164,6 +168,7 @@ public class SliderEntryRenderer extends Renderer{
         JSONBuilder jb = JSONBuilder.create().beginMap().
                 entry("singleSubmit", slider.isSingleSubmit()).
                 entry("aria", EnvUtils.isAriaEnabled(facesContext)).
+                entry("hashCode", sb.toString().hashCode()).
                 entry("tabindex", slider.getTabindex());
 
 
