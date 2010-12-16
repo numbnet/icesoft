@@ -267,6 +267,13 @@ public abstract class SessionDispatcher implements PseudoServlet {
         private boolean run = true;
 
         public void contextInitialized(ServletContextEvent servletContextEvent) {
+            if ("false".equalsIgnoreCase(servletContextEvent
+                    .getServletContext().getInitParameter(
+                            "org.icefaces.strictSessionTimeout")) ) {
+                System.out.println("org.icefaces.strictSessionTimeout FALSE");
+                return;
+            }
+            System.out.println("org.icefaces.strictSessionTimeout TRUE: sessions will be invalidated by ICEfaces Session Monitor");
             try {
                 Thread monitor = new Thread("Session Monitor") {
                     public void run() {
