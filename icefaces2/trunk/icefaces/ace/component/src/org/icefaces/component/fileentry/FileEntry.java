@@ -61,15 +61,7 @@ public class FileEntry extends FileEntryBase {
             throw e;
         }
     }
-    
-    public FileEntryResults getResults() {
-        FileEntryResults results = super.getResults();
-        if (results != null) {
-            results = (FileEntryResults) results.clone();
-        }
-        return results;
-    }
-    
+
     public void reset() {
         setResults(null);
     }
@@ -207,10 +199,35 @@ public class FileEntry extends FileEntryBase {
     static void removeResults(FacesContext facesContext) {
         facesContext.getAttributes().remove(RESULTS_KEY);
     }
-    
-    void addMessagesFromResults(FacesContext facesContext, String clientId,
-            FileEntryResults results) {
-//System.out.println("FileEntry.addMessagesFromResults  results: " + results);
+
+    /**
+     * Invoked by FileEntryRenderer.decode(-)
+     *
+     * @param results The current lifecycle results. If no files were uploaded
+     * this lifecycle, then this is null. Different from getResults(), which
+     * may be from a previous lifecycle.
+     */
+    void validateResults(FacesContext facesContext, FileEntryResults results) {
+        boolean failed = false;
+        if (results != null) {
+            for(FileEntryResults.FileInfo fi : results.getFiles()) {
+                if (!fi.isSaved()) {
+//System.out.println("FileEntry.validateResults()  FAILED: " + fi);
+                    failed = true;
+                    break;
+                }
+            }
+        }
+        if (failed) {
+            facesContext.validationFailed();
+            facesContext.renderResponse();
+        }
+    }
+
+    protected void addMessagesFromResults(FacesContext facesContext) {
+        String clientId = getClientId(facesContext);
+        FileEntryResults results = getResults();
+//System.out.println("FileEntry.addMessagesFromResults  clientId: " + clientId + "  results: " + results);
         if (results != null) {
             ArrayList<FileEntryResults.FileInfo> files = results.getFiles();
             for (FileEntryResults.FileInfo fi : files) {
@@ -251,18 +268,29 @@ public class FileEntry extends FileEntryBase {
     
     @Override
     public void broadcast(FacesEvent event) {
-//System.out.println("FileEntry.broadcast  clientId: " + getClientId() + "  event: " + event);
+//System.out.println("FileEntry.broadcast  clientId: " + getClientId() + "  event: " + event + "  phaseId: " + event.getPhaseId());
         if (event instanceof FileEntryEvent) {
-            MethodExpression inpFilesList = getFileEntryListener();
-            if (inpFilesList != null) {
-                FacesContext context = FacesContext.getCurrentInstance();
-                ELContext elContext = context.getELContext();
-                try {
-                    inpFilesList.invoke(elContext, new Object[] {event});
-                } catch (ELException ee) {
-                    throw new AbortProcessingException(ee.getMessage(),
-                        ee.getCause());
+            FileEntryEvent fee = (FileEntryEvent) event;
+            FacesContext context = FacesContext.getCurrentInstance();
+            try {
+//System.out.println("FileEntry.broadcast    invoke: " + fee.isInvoke());
+                if (fee.isInvoke()) {
+                    MethodExpression listener = getFileEntryListener();
+                    if (listener != null) {
+                        ELContext elContext = context.getELContext();
+                        try {
+                            listener.invoke(elContext, new Object[] {event});
+                        } catch (ELException ee) {
+                            throw new AbortProcessingException(ee.getMessage(),
+                                    ee.getCause());
+                        }
+                    }
                 }
+            } finally {
+                // ICE-5750 deals with re-adding faces messages for components
+                // that have not re-executed. Components that are executing
+                // should re-add their faces messages themselves.
+                addMessagesFromResults(context);
             }
         }
         else {

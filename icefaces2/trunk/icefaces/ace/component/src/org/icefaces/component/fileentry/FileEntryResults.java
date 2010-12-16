@@ -22,6 +22,7 @@
 
 package org.icefaces.component.fileentry;
 
+import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.io.Serializable;
 import java.io.File;
@@ -128,6 +129,33 @@ public class FileEntryResults implements Serializable, Cloneable {
             this.file = file;
             this.size = size;
             this.status = status;
+        }
+
+        /**
+         * In the fileEntryListener, applications may override the uploaded
+         * files' statuses, if the files fail the application's custom
+         * validation, by using this method.
+         *
+         * @param newStatus The new status for the uploaded file
+         * @param invalidate If should invalidate the component, and the form.
+         * This will only have an effect if this method is called before
+         * UpdateModel phase, such as when called from the fileEntryListener
+         * when the fileEntry has immediate=true.
+         * @param deleteFile If should delete the file from the file-system
+         */
+        public void updateStatus(FileEntryStatus newStatus, boolean invalidate,
+                boolean deleteFile) {
+            if (newStatus != null) {
+                status = newStatus;
+            }
+            if (invalidate) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.validationFailed();
+                context.renderResponse();
+            }
+            if (deleteFile && file != null && file.exists()) {
+                file.delete();
+            }
         }
         
         public String getFileName() { return fileName; }

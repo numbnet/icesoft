@@ -27,8 +27,23 @@ import javax.faces.event.FacesListener;
 import javax.faces.component.UIComponent;
 
 public class FileEntryEvent extends FacesEvent {
-    public FileEntryEvent(UIComponent src) {
+    private boolean invoke;
+
+    public FileEntryEvent(UIComponent src, boolean invoke) {
         super(src);
+        this.invoke = invoke;
+    }
+
+    /**
+     * FileEntry depends on this event being broadcast every lifecycle that
+     * it executes, whereas the fileEntryListener should only be invoked when
+     * files have been uploaded. So, this invoked flag tracks when to invoke
+     * the fileEntryListener.
+     *
+     * @return Whether to invoke the fileEntry component's fileEntryListener
+     */
+    public boolean isInvoke() {
+        return invoke;
     }
 
     public void processListener(FacesListener facesListener) {

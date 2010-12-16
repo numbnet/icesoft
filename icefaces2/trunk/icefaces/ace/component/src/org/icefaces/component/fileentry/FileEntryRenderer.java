@@ -83,17 +83,13 @@ public class FileEntryRenderer extends Renderer {
 //System.out.println("FileEntryRenderer.decode    results: " + results);
             fileEntry.setResults(results);
 //System.out.println("FileEntryRenderer.decode      results ve: " + uiComponent.getValueExpression("results"));
-            
-            FileEntryEvent event = new FileEntryEvent(fileEntry);
-            fileEntry.queueEvent(event);
         }
-        
-        // ICE-5750 deals with re-adding faces messages for components that
-        // have no re-executed. Components that are executing should re-add
-        // their faces messages themselves.
-        if (results == null) {
-            results = fileEntry.getResults();
-        }
-        fileEntry.addMessagesFromResults(facesContext, clientId, results);
+
+        boolean filesUploadedThisLifecycle = (results != null);
+        FileEntryEvent event = new FileEntryEvent(
+                fileEntry, filesUploadedThisLifecycle);
+        fileEntry.queueEvent(event);
+
+        fileEntry.validateResults(facesContext, results);
     }
 }
