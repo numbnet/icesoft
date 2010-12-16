@@ -54,7 +54,7 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
     private static final String[] StringArray = new String[0];
     private static final Logger log = Logger.getLogger("org.icefaces.event");
     private static final String Append = "patch+";
-    private static final String Substract = "patch-";
+    private static final String Subtract = "patch-";
 
     public DeltaSubmitPhaseListener() {
     }
@@ -113,7 +113,7 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                     allValues.addAll(Arrays.asList(values));
                     parameterValuesMap.put(key, allValues.toArray(StringArray));
                 }
-            } else if (patchKey.startsWith(Substract)) {
+            } else if (patchKey.startsWith(Subtract)) {
                 String key = patchKey.substring(6);
                 String[] previousValues = (String[]) parameterValuesMap.get(key);
                 if (previousValues == null) {
@@ -130,7 +130,7 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                 }
             } else {
                 //add direct parameter only when does not participate in the parameter diffing
-                if (!submittedParameters.containsKey(Substract + patchKey) && !submittedParameters.containsKey(Append + patchKey)) {
+                if (!submittedParameters.containsKey(Subtract + patchKey) && !submittedParameters.containsKey(Append + patchKey)) {
                     parameterValuesMap.put(patchKey, values);
                 }
                 directParameters.add(patchKey);
