@@ -6,8 +6,8 @@ version: 2.6.0
 */
 
 .ice-skin-rime .ice-linkbutton .yui-button{
-	border-width:0px;
-	margin:auto .25em;
+    border: 1px solid transparent;
+    margin:auto .25em;
 	}
 	
 .ice-skin-rime .ice-linkbutton .yui-button .first-child{
