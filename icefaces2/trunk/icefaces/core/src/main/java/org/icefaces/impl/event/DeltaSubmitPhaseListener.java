@@ -52,7 +52,9 @@ import java.util.logging.Logger;
 public class DeltaSubmitPhaseListener implements PhaseListener {
     private static final String PreviousParameters = "previous-parameters";
     private static final String[] StringArray = new String[0];
-    private static Logger log = Logger.getLogger("org.icefaces.event");
+    private static final Logger log = Logger.getLogger("org.icefaces.event");
+    private static final String Append = "patch+";
+    private static final String Substract = "patch-";
 
     public DeltaSubmitPhaseListener() {
     }
@@ -100,7 +102,7 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
             String patchKey = (String) entry.getKey();
             String[] values = (String[]) entry.getValue();
 
-            if (patchKey.startsWith("patch+")) {
+            if (patchKey.startsWith(Append)) {
                 String key = patchKey.substring(6);
                 String[] previousValues = (String[]) parameterValuesMap.get(key);
                 if (previousValues == null) {
@@ -111,7 +113,7 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                     allValues.addAll(Arrays.asList(values));
                     parameterValuesMap.put(key, allValues.toArray(StringArray));
                 }
-            } else if (patchKey.startsWith("patch-")) {
+            } else if (patchKey.startsWith(Substract)) {
                 String key = patchKey.substring(6);
                 String[] previousValues = (String[]) parameterValuesMap.get(key);
                 if (previousValues == null) {
@@ -128,7 +130,7 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                 }
             } else {
                 //add direct parameter only when does not participate in the parameter diffing
-                if (!submittedParameters.containsKey("patch-" + patchKey) && !submittedParameters.containsKey("patch+" + patchKey)) {
+                if (!submittedParameters.containsKey(Substract + patchKey) && !submittedParameters.containsKey(Append + patchKey)) {
                     parameterValuesMap.put(patchKey, values);
                 }
                 directParameters.add(patchKey);
@@ -141,7 +143,7 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
         while (directParameterIterator.hasNext()) {
             String parameterName = (String) directParameterIterator.next();
             //don't remove parameter when it also participates in the parameter diffing
-            if (!submittedParameters.containsKey("patch+" + parameterName)) {
+            if (!submittedParameters.containsKey(Append + parameterName)) {
                 newPreviousParameters.remove(parameterName);
             }
         }
