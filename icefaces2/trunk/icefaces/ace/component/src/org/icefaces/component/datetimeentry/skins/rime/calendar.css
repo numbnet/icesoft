@@ -445,13 +445,13 @@ p#clear {
 }
 
 .ice-skin-rime .yui-calendar .calnavleft {
-    background-image: url(cal_arrow_left.gif); /** sprite-ref: sprite-x; */
+    background-image: url(cal_arrow_left.gif); /** sprite-ref: sprite; */
     width: 18px;
     height: 18px;
 }
 
 .ice-skin-rime .yui-calendar .calnavright {
-    background-image: url(cal_arrow_right.gif); /** sprite-ref: sprite-x; */
+    background-image: url(cal_arrow_right.gif); /** sprite-ref: sprite; */
     width: 18px;
     height: 18px;
 }
@@ -537,11 +537,11 @@ p#clear {
 }
 
 .ice-skin-rime .ice-calcontainer .toggle-popup.open-popup {
-    background-image: url(cal_button.gif); /** sprite-ref: sprite-x; */
+    background-image: url(cal_button.gif); /** sprite-ref: sprite; */
 }
 
 .ice-skin-rime .ice-calcontainer .toggle-popup.close-popup {
-    background-image: url(cal_off.gif); /** sprite-ref: sprite-x; */
+    background-image: url(cal_off.gif); /** sprite-ref: sprite; */
 }
 
 .ice-skin-rime .yui-panel-container {
