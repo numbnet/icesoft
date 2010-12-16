@@ -1,0 +1,41 @@
+<!--
+
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
+
+        >
+<f:view  contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>TabSet</title>
+<h:outputScript name="jsf.js" library="javax.faces" />
+</h:head>
+<h:body>
+     <h:form styleClass="ice-skin-rime">
+       <ice:tabSet>
+            <ice:tabPane >
+                   <f:facet name="label">
+                    <h:outputText value="YUI g"/>
+                   </f:facet>
+                <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
+            </ice:tabPane>       
+            <ice:tabPane label="Tab contents from Bean" >
+                <h:outputText value="#{tabBean.tabContents}"/>            
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
+                <h:outputText value="Test ...."/>            
+            </ice:tabPane>
+        </ice:tabSet> 
+    </h:form>
+
+   <a href="index.html"> Goto Main page </a>    
+   <h:outputStylesheet library="org.icefaces.component.skins" name="rime.css" />
+</h:body>
+</html>
+
