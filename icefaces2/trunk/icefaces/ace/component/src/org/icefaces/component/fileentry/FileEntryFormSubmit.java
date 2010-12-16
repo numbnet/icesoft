@@ -22,6 +22,7 @@
 
 package org.icefaces.component.fileentry;
 
+import org.icefaces.util.EnvUtils;
 import org.icefaces.impl.event.FormSubmit;
 
 import javax.faces.event.SystemEventListener;
@@ -39,6 +40,14 @@ import java.io.IOException;
 
 public class FileEntryFormSubmit implements SystemEventListener {
     static final String IFRAME_ID = "hiddenIframe";
+    private static final String ID_SUFFIX = "_captureFileOnsubmit";
+    private boolean partialStateSaving;
+
+    public FileEntryFormSubmit()  {
+        partialStateSaving = EnvUtils.isPartialStateSaving(
+            FacesContext.getCurrentInstance() );
+    }
+
     public void processEvent(SystemEvent event) throws AbortProcessingException {
 //System.out.println("FileEntryFormSubmit.processEvent()  event: " + event);
         FacesContext context = FacesContext.getCurrentInstance();
@@ -46,9 +55,14 @@ public class FileEntryFormSubmit implements SystemEventListener {
         //using PostAddToViewEvent ensures that the component resource is added to the view only once
         UIForm form = (UIForm) ((PostAddToViewEvent) event).getComponent();
 //System.out.println("FileEntryFormSubmit.processEvent()  form.clientId: " + form.getClientId(context));
-        if (form.getAttributes().get(FormSubmit.DISABLE_CAPTURE_SUBMIT) != null) {
-//System.out.println("FileEntryFormSubmit  DISABLE_CAPTURE_SUBMIT  " + form.getClientId(context));
-            return;
+
+        if (!partialStateSaving)  {
+            for (UIComponent child : form.getChildren())  {
+                String id = child.getId();
+                if ((null != id) && id.endsWith(ID_SUFFIX))  {
+                    return;
+                }
+            }
         }
 
         // See if there is at least one FileEntry component in the form,
