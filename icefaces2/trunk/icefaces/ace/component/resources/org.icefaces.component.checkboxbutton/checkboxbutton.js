@@ -3,9 +3,9 @@ ice.component.checkboxbutton = {
 	  var Dom = YAHOO.util.Dom;
       var divNode = document.getElementById(clientId);
 
-      if (YAHOO.widget.Logger){
-	 	  YAHOO.widget.Logger.enableBrowserConsole();
-      }
+//      if (YAHOO.widget.Logger){
+//	 	  YAHOO.widget.Logger.enableBrowserConsole();
+//      }
       YAHOO.util.Event.onDOMReady(function() {    
        var spanId = clientId+"_span";
 	   var button = new YAHOO.widget.Button(spanId, {type: jsProps.type});

@@ -1,8 +1,8 @@
 ice.component.pushbutton = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
-      if (YAHOO.widget.Logger) {
-            YAHOO.widget.Logger.enableBrowserConsole();
-      }
+//      if (YAHOO.widget.Logger) {
+//            YAHOO.widget.Logger.enableBrowserConsole();
+//      }
       YAHOO.util.Event.onDOMReady(function() {
         //want the span id
         var spanId = clientId + "_span";
