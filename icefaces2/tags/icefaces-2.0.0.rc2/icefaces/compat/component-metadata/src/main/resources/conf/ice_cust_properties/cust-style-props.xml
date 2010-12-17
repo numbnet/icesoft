@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  -->
+&base-props;
+<property>
+	<description>
+		<![CDATA[<p>
+                  The href value of the link element that is rendered. An additional link elelement is rendered for internet explorer browsers.
+                  The IE style sheet must end with '_ie.css'. For example if the href value is 'style.css' then the IE style sheet needs to be
+                  named 'style_ie.css'  
+                </p>
+             ]]>
+             </description>
+		<property-name>href</property-name>
+		<property-class>java.lang.String</property-class>		
+		<property-extension>
+			<category>ICE_LAYOUT</category>
+			<editor-class>&sunWebUrlEditor;</editor-class>
+		</property-extension>
+</property>
