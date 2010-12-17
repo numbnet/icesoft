@@ -33,7 +33,7 @@
 
     <target name="portletize" description="Adds portlet content to the .war file">
     
-        <copy todir="${build.dir}/dist/exploded/WEB-INF/lib">
+        <copy todir="${build.dir}/dist/exploded/WEB-INF/lib" overwrite="true">
           <fileset dir="${portlet.lib.dir}">
               <patternset refid="portlet.jars"/>
           </fileset>
