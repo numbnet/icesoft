@@ -1,0 +1,55 @@
+<!--
+
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
+
+        >
+<f:view  contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Buttons partial submit test</title>
+<h:outputScript name="jsf.js" library="javax.faces" />
+</h:head>
+<h:body>
+ 
+    <h:panelGroup id="overPanel" styleClass="ice-skin-sam">
+      <h2>Buttons partial submit Demo</h2>  
+      <h5>    
+         <a href="../index.html"> Goto Main page </a>  <br /> 
+         <a href="../buttons.xhtml"> Goto Buttons page </a>   </h5>         
+    <h:form id="form1">
+     <ice:logger rendered="false"/> 
+	  <h:outputText value="Single Submit test for Check button " />
+	  <br/><br/>
+	  <h:panelGrid id="buttonGroupId" columns="2">
+	    <ice:checkboxButton id="chkbox" label="button1" 
+	       value="#{button.checked}"
+	       singleSubmit="false"/>
+	    <h:outputText id="chkval" value="isChecked:  #{button.checked} "/>
+	  </h:panelGrid>
+	 <br />
+	 <h:panelGrid id="buttonGroup2" columns="2">  
+	   <ice:checkboxButton id="chkbox2" label="button2"
+	       value="#{button.checked2}"
+	       singleSubmit="false"/>
+	       <h:outputText id="chk2" value="checked2: #{button.checked2}" />
+	   </h:panelGrid>
+	  <br />
+	   <h:panelGroup id="push1" class="yui-button yui-push-button">
+	         <ice:pushButton  id="pushId" label="submitForm" 
+	           actionListener="#{button.actionListenerMethod}"  />
+	     </h:panelGroup>
+    </h:form>
+    	      
+    </h:panelGroup>
+
+   <a href="index.html"> Goto Main page </a>    
+</h:body>
+</html>
+
