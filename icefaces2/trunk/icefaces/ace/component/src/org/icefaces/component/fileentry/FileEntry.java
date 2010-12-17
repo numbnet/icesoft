@@ -208,14 +208,28 @@ public class FileEntry extends FileEntryBase {
      * may be from a previous lifecycle.
      */
     void validateResults(FacesContext facesContext, FileEntryResults results) {
+//System.out.println("FileEntry.validateResults()  clientId: " + getClientId(facesContext));
         boolean failed = false;
         if (results != null) {
             for(FileEntryResults.FileInfo fi : results.getFiles()) {
                 if (!fi.isSaved()) {
-//System.out.println("FileEntry.validateResults()  FAILED: " + fi);
+//System.out.println("FileEntry.validateResults()    FAILED  file: " + fi);
                     failed = true;
                     break;
                 }
+            }
+        }
+        else {
+            // No files uploaded this lifecycle
+            // If required then failed unless was partial submit
+            String partialSubmitValue = facesContext.getExternalContext().
+                    getRequestParameterMap().get("ice.submit.partial");
+            boolean partialSubmit = "true".equals(partialSubmitValue);
+//System.out.println("FileEntry.validateResults()    partialSubmit: " + partialSubmit + "  required: " + isRequired());
+            if (!partialSubmit && isRequired()) {
+                addMessageFromRequired(facesContext);
+                failed = true;
+//System.out.println("FileEntry.validateResults()    FAILED  required");
             }
         }
         if (failed) {
@@ -238,6 +252,15 @@ public class FileEntry extends FileEntryBase {
                 facesContext.addMessage(clientId, fm);
             }
         }
+    }
+
+    protected void addMessageFromRequired(FacesContext facesContext) {
+        String clientId = getClientId(facesContext);
+        FacesMessage fm = FileEntryStatuses.REQUIRED.getFacesMessage(
+                facesContext, this, null);
+//System.out.println("FileEntry.addMessageFromRequired  clientId: " + clientId + "  FacesMessage: " + fm);
+        facesContext.addMessage(clientId, fm);
+
     }
 
     /**
