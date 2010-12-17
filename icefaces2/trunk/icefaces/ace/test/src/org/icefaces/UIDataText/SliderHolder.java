@@ -1,4 +1,4 @@
-package showcase.test.src.org.icefaces.UIDataText;
+package org.icefaces.UIDataText;
 
 
 /**
