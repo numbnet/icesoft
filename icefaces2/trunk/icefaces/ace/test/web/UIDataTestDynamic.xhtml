@@ -8,70 +8,110 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:ace="http://www.icefaces.org/icefaces/components">
+<f:view  contentType="text/html"/>
 <h:head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
     <title>Tables of Widgets in UIData Structures</title>
     <style>
-        .red_line { color: red; }
-        .blue_line { color: blue; }
+        .red_box { background-color: red; }
+        .blue_box { background-color: blue; border: 2px solid black; }
+        .green_box { background-color: green; border: 10px solid black; }
 
     </style>
+    <h:outputScript name="jsf.js" library="javax.faces" />
 </h:head>
 <h:body class="ice-skin-rime">
 
-     <h:form id="form1">
-     <h:panelGroup>
-        <h2>These links can dynamically alternate inline style from overline to underline and back.</h2>
-        <div class="yui-skin-sam yui3-skin-sam">
-           <h:dataTable id="calTable" value="#{styleMasterBean.styleHolderData}" var="styleHolder">
-             <h:column>
-                 <ace:linkButton  value="A handsomely styled link" style="#{styleHolder.style}"  actionListener="#{styleMasterBean.alternateLinkStyle}" />
-             </h:column>
-           </h:dataTable>
-        </div>
-    </h:panelGroup>
+    <h:form id="form1">
+        <h:panelGroup>
+            <h2>These links can dynamically alternate inline style from overline to underline and back.</h2>
+            <div class="yui-skin-sam yui3-skin-sam">
+                <h:dataTable id="calTable" value="#{styleMasterBean.styleHolderData}" var="styleHolder">
+                    <h:column>
+                        <ace:linkButton  value="A handsomely styled link" style="#{styleHolder.style}"  actionListener="#{styleMasterBean.alternateLinkStyle}" />
+                    </h:column>
+                </h:dataTable>
+            </div>
+        </h:panelGroup>
     </h:form>
 
     <h:form id="form2">
-     <h:panelGroup>
-        <h2>These links can dynamically change link text </h2>
-        <div class="yui-skin-sam yui3-skin-sam">
-           <h:dataTable id="calTable" value="#{labelMasterBean.linkLabelData}" var="labelHolder">
-             <h:column>
-                 <ace:linkButton  value="#{labelHolder.label}" actionListener="#{labelMasterBean.alternateLinkLabel}" />
-             </h:column>
-           </h:dataTable>
-        </div>
-    </h:panelGroup>
+        <h:panelGroup>
+            <h2>These links can dynamically change link text </h2>
+            <div class="yui-skin-sam yui3-skin-sam">
+                <h:dataTable id="calTable" value="#{labelMasterBean.linkLabelData}" var="labelHolder">
+                    <h:column>
+                        <ace:linkButton  value="#{labelHolder.label}" actionListener="#{labelMasterBean.alternateLinkLabel}" />
+                    </h:column>
+                </h:dataTable>
+            </div>
+        </h:panelGroup>
     </h:form>
 
 
-     <h:form id="form4">
-     <h:panelGroup styleClass="yui3-skin-sam yui-skin-sam">
-        <h2>These Buttons can dynamically change label</h2>
-        <div class="yui-skin-sam">
-           <h:dataTable id="pbTable" value="#{labelMasterBean.buttonLabelData}" var="labelHolder">
-             <h:column>
-                 <ace:pushButton  label="#{labelHolder.label}" actionListener = "#{labelMasterBean.alternateButtonLabel}" />
-             </h:column>
-           </h:dataTable>
-        </div>
-    </h:panelGroup>
+    <h:form id="form4">
+        <h:panelGroup styleClass="yui3-skin-sam yui-skin-sam">
+            <h2>These Buttons can dynamically change label</h2>
+            <div class="yui-skin-sam">
+                <h:dataTable id="pbTable" value="#{labelMasterBean.buttonLabelData}" var="labelHolder">
+                    <h:column>
+                        <ace:pushButton  label="#{labelHolder.label}" actionListener = "#{labelMasterBean.alternateButtonLabel}" />
+                    </h:column>
+                </h:dataTable>
+            </div>
+        </h:panelGroup>
     </h:form>
 
     <h:form id="form5">
-     <h:panelGroup styleClass="yui3-skin-sam yui-skin-sam">
-        <h2>These Checkboxes can dynamically change style</h2>
-        <div class="yui-skin-sam">
-           <h:dataTable id="cbTable" value="#{checkDataBean.styleHolderData}" var="styleHolder">
-             <h:column>
-                 <ace:checkboxButton  label="A finely styled checkbox"  style="#{styleHolder.style}" singleSubmit="true"
-                                  valueChangeListener = "#{checkDataBean.alternateCheckStyle}" />
-             </h:column>
-           </h:dataTable>
-        </div>
-    </h:panelGroup>
+        <h:panelGroup styleClass="yui3-skin-sam yui-skin-sam">
+            <h2>These Checkboxes can dynamically change style</h2>
+            <div class="yui-skin-sam">
+                <h:dataTable id="cbTable" value="#{checkDataBean.styleHolderData}" var="styleHolder">
+                    <h:column>
+                        <ace:checkboxButton  label="A finely styled checkbox"  style="#{styleHolder.style}" singleSubmit="true"
+                                             valueChangeListener = "#{checkDataBean.alternateCheckStyle}" />
+                    </h:column>
+                </h:dataTable>
+            </div>
+        </h:panelGroup>
+    </h:form>
+
+    <h:form id="form6">
+        <h:panelGroup styleClass="yui3-skin-sam yui-skin-sam">
+            <h2>This slider has a style that can be toggled by pressing the button</h2>
+            <div class="yui3-skin-sam ice-skin-sam">
+                <h:dataTable id="sliderDIV" value="#{sliderDataBean.sliderValues}" var="sliderHolder">
+                    <h:column>
+                        <ace:sliderEntry length="460px" height="20" axis="x" min="0" max="100" clickableRail="true"
+                                         thumbUrl="http://yui.yahooapis.com/3.1.1/build/slider/assets/skins/sam/thumb-y.png"
+                                         value="40"  singleSubmit="true" styleClass="red_box" />
+                        <ace:linkButton  value="set To Blue" actionListener="#{sliderDataBean.setToBlue}" />
+                        <ace:linkButton  value="set To Red" actionListener="#{sliderDataBean.setToRed}" />
+                        <ace:linkButton  value="set To Green" actionListener="#{sliderDataBean.setToGreen}" />
+                    </h:column>
+                </h:dataTable>
+            </div>
+        </h:panelGroup>
+    </h:form>
+
+    <h:form styleClass="ice-skin-sam" prependId="false">
+        <h:panelGroup>
+            <ace:tabSet id="tabset_uno" styleClass="red_box">
+                <ace:tabPane label="Section Blue" >
+                    <h:outputText value="This tab has a button that will change the style class of the parent Tabset to blue"/>
+                    <ace:pushButton actionListener="#{tabBackingBean.setToBlue}"
+                                    label="Change background to Blue" />
+                </ace:tabPane>
+                <ace:tabPane label="Sector Red" >
+                    <h:outputText value="#{tabBackingBean.tabContents}"/>
+                    <ace:pushButton actionListener="#{tabBackingBean.setToRed}" label="Change background to Red" />
+                </ace:tabPane>
+                <ace:tabPane label="Sector Green" >
+                    <h:outputText value="Level 5 contamination"/>
+                    <ace:pushButton actionListener="#{tabBackingBean.setToGreen}" label="Change background to Green" />
+                </ace:tabPane>
+            </ace:tabSet>
+        </h:panelGroup>
     </h:form>
 
     <a href="index.html"> Goto Main page </a>
