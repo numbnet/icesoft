@@ -80,15 +80,28 @@ public enum FileEntryStatuses implements FileEntryStatus {
                 super.getFacesMessage(facesContext, fileEntry, fi);
         }
     },
+
+    /**
+     * This one message is for when users have not uploaded a file, so there
+     * is no FileInfo to make use of, limiting the useful parameters to just
+     * the fileEntry label. 
+     */
     REQUIRED(false) {
         @Override
         public FacesMessage getFacesMessage(FacesContext facesContext,
                 UIComponent fileEntry, FileEntryResults.FileInfo fi) {
+            FacesMessage.Severity sev = getSeverity();
+            Object[] params = getParametersForRequired(facesContext, fileEntry);
             String pattern = (String) fileEntry.getAttributes().get(
                 "requiredMessage");
-            return (pattern != null && pattern.length() > 0) ?
-                getFacesMessage(facesContext, fileEntry, fi, pattern) :
-                super.getFacesMessage(facesContext, fileEntry, fi);
+            if (pattern != null && pattern.length() > 0) {
+                Locale locale = facesContext.getViewRoot().getLocale();
+                return MessageUtils.getMessage(locale, sev, pattern, pattern, params);
+            }
+            else {
+                String messageId = MESSAGE_KEY_PREFIX + name();
+                return MessageUtils.getMessage(facesContext, sev, messageId, params);
+            }
         }
     },
     UNKNOWN_SIZE(false),
@@ -106,8 +119,7 @@ public enum FileEntryStatuses implements FileEntryStatus {
                 UIComponent fileEntry, FileEntryResults.FileInfo fi) {
             FacesMessage.Severity sev = getSeverity();
             String messageId = MESSAGE_KEY_PREFIX + name();
-            FacesMessage fm = MessageUtils.getMessage(facesContext, sev, messageId, null);
-            return fm;
+            return MessageUtils.getMessage(facesContext, sev, messageId, null);
         }
     };
     
@@ -169,6 +181,21 @@ public enum FileEntryStatuses implements FileEntryStatus {
             fileEntry.getAttributes().get("maxTotalSize"),
             fileEntry.getAttributes().get("maxFileSize"),
             fileEntry.getAttributes().get("maxFileCount")
+        };
+        return params;
+    }
+
+    /**
+     * When formatting the MessageFormat patterns that comes from the
+     * ResourceBundles, for the required status, the following parameters
+     * are provided:
+     *
+     * param[0] : label        (Identifies the fileEntry component)
+     */
+    protected Object[] getParametersForRequired(
+            FacesContext facesContext, UIComponent fileEntry) {
+        Object[] params = new Object[] {
+            fileEntry.getAttributes().get("facesMessageLabel")
         };
         return params;
     }
