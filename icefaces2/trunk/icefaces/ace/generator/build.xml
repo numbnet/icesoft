@@ -2,7 +2,7 @@
     <description>
         simple example build file
     </description>
-    <property file="build.properties"/>    
+    <property file="./build.properties"/>    
   <!-- set global properties for this build -->
   <property name="src" location="src"/>
   <property name="component" location="../component"/>	
