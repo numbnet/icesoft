@@ -32,7 +32,7 @@
         <propertyref name="bundle.name"/>
     </propertyset>
 
-    <property file="build.properties"/>
+    <property file="./build.properties"/>
 
     <target name="core" description="Builds the ICEfaces core framework (icefaces.jar).">
         <subant>
