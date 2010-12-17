@@ -42,7 +42,7 @@
                     <ice:selectOneMenu id="mapCityList" partialSubmit="true"
                                        value="#{gmap.standardAddress}"
                                        valueChangeListener="#{gmap.findAddress}">
-                        <f:selectItem itemValue="North America" itemLabel="#{msgs['page.gMap.search.select']}"/>
+                        <f:selectItem itemValue="--Select--" itemLabel="#{msgs['page.gMap.search.select']}"/>
                         <f:selectItem itemValue="Tokyo" itemLabel="#{msgs['page.gMap.search.city1']}"/>
                         <f:selectItem itemValue="Mexico City" itemLabel="#{msgs['page.gMap.search.city2']}"/>
                         <f:selectItem itemValue="New York" itemLabel="#{msgs['page.gMap.search.city3']}"/>
@@ -57,15 +57,6 @@
                 <td>
                     <ice:selectBooleanCheckbox id="showControlBox"
                                                value="#{gmap.showControls}" partialSubmit="true" />
-                </td>
-                <td>
-                    <ice:outputLabel value="#{msgs['page.gMap.markers.label']}"
-                                     for="showMarkerBox"/>
-                </td>
-                <td>
-                    <ice:selectBooleanCheckbox id="showMarkerBox"
-                            disabled="#{not empty gmap.standardAddress}"
-                            value="#{gmap.showMarkers}" partialSubmit="true" />
                 </td>
             </tr>
             <tr>
