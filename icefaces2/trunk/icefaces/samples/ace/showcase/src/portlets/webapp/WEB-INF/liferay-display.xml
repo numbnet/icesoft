@@ -27,16 +27,20 @@
     <category name="ICEfaces2">
     
         <category name="ACE">
+            <!--
             <portlet id="animation"/>
             <portlet id="checkbox"/>
             <portlet id="dateTime"/>
-            <portlet id="fileUpload"/>
+            -->
+            <portlet id="fileEntry"/>
+            <!--
             <portlet id="linkButton"/>
             <portlet id="pushButton"/>
             <portlet id="slider"/>
             <portlet id="tabSetClient"/>
             <portlet id="tabSetProxyServer"/>
             <portlet id="tabSetServer"/>
+            -->
         </category>
         
     </category>
