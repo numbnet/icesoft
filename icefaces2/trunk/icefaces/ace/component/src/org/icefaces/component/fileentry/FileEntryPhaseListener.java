@@ -44,6 +44,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.application.FacesMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -181,7 +182,7 @@ public class FileEntryPhaseListener implements PhaseListener {
             if( requestObject instanceof HttpServletRequest ){
                 wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, parameterMap);
             } else {
-                wrapper = new FileUploadPortletRequestWrapper(requestObject, parameterMap);
+                wrapper = getPortletRequestWrapper(requestObject,parameterMap);
             }
             phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
             PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
@@ -207,7 +208,7 @@ public class FileEntryPhaseListener implements PhaseListener {
             if( requestObject instanceof HttpServletRequest ){
                 wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, null);
             } else {
-                wrapper = new FileUploadPortletRequestWrapper(request, null);
+                wrapper = getPortletRequestWrapper(requestObject,null);
             }
             phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
             PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
@@ -250,6 +251,21 @@ public class FileEntryPhaseListener implements PhaseListener {
             System.out.println("  RequestParameterMap  " + key + " -> " + rpm.get(key));
         }
         */
+    }
+
+    private static Object getPortletRequestWrapper(Object requestObject, Map map){
+        Object wrapper = null;
+        try {
+            Class wrapperClass = Class.forName("org.icefaces.component.fileentry.FileUploadPortletRequestWrapper");
+            Class paramClasses[] = new Class[2];
+            paramClasses[0] = Object.class;
+            paramClasses[1] = Map.class;
+            Constructor constructor = wrapperClass.getConstructor(paramClasses);
+            wrapper = constructor.newInstance(requestObject,map);
+        } catch (Exception e) {
+            throw new RuntimeException("problem getting FileUploadPortletRequestWrapper", e);
+        }
+        return wrapper;
     }
     
     private static void uploadFile(
