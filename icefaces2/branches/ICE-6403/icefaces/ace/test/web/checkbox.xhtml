@@ -1,0 +1,47 @@
+<!--
+
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
+
+        >
+<f:view  contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Checkbox</title>
+<h:outputScript name="jsf.js" library="javax.faces" />
+</h:head>
+<h:body>
+
+    <h:panelGroup styleClass="ice-skin-sam">
+      <h2>Checkbox Demo</h2>
+                   
+            
+            
+    <h:form>
+	
+	<h:outputText value="Check/uncheck the button to display/hide the image." />
+	<br/><br/>
+	
+	<ice:checkboxButton label="#{checkboxBean.label}" value="#{checkboxBean.checked}" image="http://www.icefaces.org/main/css/images/tools_contactus.gif" />
+	
+	<br /><br />
+	<h:outputText value="isChecked: " /><h:outputText value="#{checkboxBean.checked}" />
+	<br />
+	<h:graphicImage value="http://www.icefaces.org/main/css/images/top_logo.jpg" rendered="#{checkboxBean.checked}" />
+    </h:form>   
+
+
+
+       
+    </h:panelGroup>
+
+   <a href="index.html"> Goto Main page </a>    
+</h:body>
+</html>
+
