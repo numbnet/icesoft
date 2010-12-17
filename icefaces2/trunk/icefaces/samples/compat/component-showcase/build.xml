@@ -54,14 +54,14 @@
           </fileset>
         </copy>
 
-        <copy todir="${portlet.build.dir}/exploded/WEB-INF">
+        <copy todir="${portlet.build.dir}/exploded/WEB-INF" overwrite="true">
           <fileset dir="${portlet.dir}/web/WEB-INF">
               <include name="*.xml"/>
               <include name="*.properties"/>
           </fileset>
         </copy>
 
-        <copy todir="${portlet.build.dir}/exploded/WEB-INF/lib">
+        <copy todir="${portlet.build.dir}/exploded/WEB-INF/lib" overwrite="true">
           <fileset dir="${portlet.lib.dir}">
               <patternset refid="portlet.jars"/>
           </fileset>
