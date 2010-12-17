@@ -437,6 +437,41 @@ D TEST.    immediate=false, file failed (too large)
         </h:panelGrid>
     </h:form>
 
+    <h:form id="form17">
+        <h:panelGrid columns="2">
+    	    <h:outputText value="Form17  Required validation" />
+            <h:panelGroup>
+                <h:messages id="theMessages"/>
+            </h:panelGroup>
+
+            <ice:checkboxButton label="Immediate" value="#{fileBean.immediate}" singleSubmit="true"/>
+            <ice:checkboxButton label="Invalidate" value="#{fileBean.invalidate}" singleSubmit="true"/>
+
+            <h:outputText value="Form17  Enter text. immediate=true. It is: #{fileBean.mixedText}" />
+            <h:inputText value="#{fileBean.mixedText}" immediate="true"/>
+
+            <h:outputText value="Form17  Enter text. immediate=false. It is: #{fileBean.regularText}" />
+            <h:inputText value="#{fileBean.regularText}" immediate="false"/>
+
+    	    <ice:fileEntry label="file_required_17"
+                           id="file__required_17"
+                           immediate="#{fileBean.immediate}"
+                           required="true"
+                           fileEntryListener="#{fileBean.fileEntryListenerInvalidateDelete}"/>
+            <ice:fileEntry label="file_required_msg_17"
+                           id="file__required_msg_17"
+                           immediate="#{fileBean.immediate}"
+                           required="true"
+                           requiredMessage="Custom component required message for {0}"
+                           fileEntryListener="#{fileBean.fileEntryListenerInvalidateDelete}"/>
+
+            <h:commandButton id="btnReg" value="Submit Reg"/>
+            <h:commandButton id="btnTA" value="f:ajax  exec: this  render: all" actionListener="#{fileBean.mixed}">
+                <f:ajax execute="@this" render="@all"/>
+            </h:commandButton>
+        </h:panelGrid>
+    </h:form>
+
 	<h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
     <h:outputStylesheet library="org.icefaces.component.skins" name="rime.css" />
 </h:body>
