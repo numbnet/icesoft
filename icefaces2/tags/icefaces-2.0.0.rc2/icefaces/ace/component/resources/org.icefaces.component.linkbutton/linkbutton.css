@@ -1,3 +1,0 @@
-
-/* load core styling from YUI library */
-@import url('#{resource['yui/2_8_1/button/assets/button-core.css']}');
