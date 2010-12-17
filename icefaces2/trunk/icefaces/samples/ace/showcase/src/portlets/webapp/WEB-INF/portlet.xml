@@ -26,6 +26,7 @@
 	         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	         xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
 
+    <!--
     <portlet>
         <portlet-name>animation</portlet-name>
         <display-name>Animation</display-name>
@@ -94,10 +95,10 @@
             <keywords>ICEfaces 2 Advanced Component Showcase ACE Date and Time</keywords>
         </portlet-info>
 	</portlet>
-	
+	-->
     <portlet>
-		<portlet-name>fileUpload</portlet-name>
-		<display-name>File Upload</display-name>
+		<portlet-name>fileEntry</portlet-name>
+		<display-name>File Entry</display-name>
 		<portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
 		<init-param>
 			<name>javax.portlet.faces.defaultViewId.view</name>
@@ -112,12 +113,13 @@
 			<portlet-mode>view</portlet-mode>
 		</supports>
         <portlet-info>
-            <title>File Upload</title>
-            <short-title>File Upload</short-title>
-            <keywords>ICEfaces 2 Advanced Component Showcase ACE File Upload</keywords>
+            <title>File Entry</title>
+            <short-title>File Entry</short-title>
+            <keywords>ICEfaces 2 Advanced Component Showcase ACE File Entry</keywords>
         </portlet-info>
 	</portlet>
 
+    <!--
     <portlet>
 		<portlet-name>linkButton</portlet-name>
 		<display-name>Link Button</display-name>
@@ -255,5 +257,5 @@
             <keywords>ICEfaces 2 Advanced Component Showcase Tab Set Server</keywords>
         </portlet-info>
 	</portlet>
-
+    -->
 </portlet-app>

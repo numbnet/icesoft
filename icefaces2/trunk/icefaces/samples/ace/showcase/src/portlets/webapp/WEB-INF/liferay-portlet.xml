@@ -25,6 +25,7 @@
 
 <liferay-portlet-app>
 
+    <!--
     <portlet>
         <portlet-name>animation</portlet-name>
         <instanceable>true</instanceable>
@@ -42,13 +43,13 @@
         <instanceable>true</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
+    -->
     <portlet>
-        <portlet-name>fileUpload</portlet-name>
+        <portlet-name>fileEntry</portlet-name>
         <instanceable>true</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
+    <!--
     <portlet>
         <portlet-name>linkButton</portlet-name>
         <instanceable>true</instanceable>
@@ -101,5 +102,5 @@
 		<role-name>user</role-name>
 		<role-link>User</role-link>
 	</role-mapper>
-    
+    -->
 </liferay-portlet-app>
