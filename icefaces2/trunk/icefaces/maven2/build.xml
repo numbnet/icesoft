@@ -22,7 +22,7 @@
 
 <project name="icefaces-maven" default="install" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 
-    <property file="../core/build.properties"/>
+    <property file="build.properties"/>
     <property name="lib.dir" location="../lib"/>
 
 
