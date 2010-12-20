@@ -55,7 +55,12 @@
         <param-value>ABQIAAAADlu0ZiSTam64EKaCQr9eTRTOTuQNzJNXRlYRLknj4cQ89tFfpxTEqxQnVWL4k55OPICgF5_SOZE06A
         </param-value>
     </context-param>
-
+    
+    <context-param>
+        <param-name>org.icefaces.uniqueResourceURLs</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    
     <context-param>
         <param-name>com.icesoft.faces.uploadDirectory</param-name>
         <param-value>upload</param-value>
