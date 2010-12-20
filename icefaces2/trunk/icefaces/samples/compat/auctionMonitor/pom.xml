@@ -27,7 +27,7 @@
   <artifactId>auctionMonitor</artifactId>
   <packaging>war</packaging>
   <name>ICEfaces Compat AuctionMonitor sample</name>
-  <version>2.0.0.RC2</version>
+  <version>2.0.0</version>
   <description />
   <properties>
     <jsf.version>2.0.3-FCS</jsf.version>
@@ -40,79 +40,21 @@
   </repositories>
   <build>
     <finalName>${artifactId}</finalName>
-    <sourceDirectory>${basedir}/src</sourceDirectory>
-    <outputDirectory>${basedir}/web/WEB-INF/classes</outputDirectory>
-    <resources>
-      <resource>
-        <directory>${basedir}/src/main</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-          <exclude>**/.svn/*</exclude>
-          <exclude>**/webapp/*</exclude> 
-          <exclude>**/web/*</exclude>         
-        </excludes>
-        <includes>
-          <include>**/readme.html</include>
-          <include>**/auction.properties</include>
-        </includes>
-      </resource>
-    </resources>
-
+ 
     <plugins>
-      <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <webResources>
-              <resource>
-                 <directory>${basedir}/web</directory>
-                 <excludes>
-                    <exclude>.svn/*</exclude>               
-                 </excludes>
-              </resource>
-          </webResources>
-          <packagingExcludes>**/.svn/*</packagingExcludes> 
-        </configuration>
-      </plugin>
-      <plugin>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
         <configuration>
           <source>1.5</source>
           <target>1.5</target>
         </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-          <executions>
-            <execution>
-              <phase>process-resources</phase>
-              <configuration>
-                <tasks>
-                   <copy todir="${project.build.directory}/auctionMonitor/WEB-INF/classes/" preservelastmodified="true">
-                     <fileset dir="${basedir}/src">
-                        <include name="log4j.properties"/>
-                     </fileset>
-                   </copy>
-                   <copy todir="${project.build.directory}/auctionMonitor/WEB-INF/classes/com/icesoft/applications/faces/auctionMonitor" preservelastmodified="true"> 
-                     <fileset dir="${basedir}/src/com/icesoft/applications/faces/auctionMonitor">
-                        <include name="readme.html"/>
-                     </fileset>
-                   </copy>
-                    <copy todir="${project.build.directory}/auctionMonitor/WEB-INF/classes/com/icesoft/applications/faces/auctionMonitor/stubs" preservelastmodified="true"> 
-                     <fileset dir="${basedir}/src/com/icesoft/applications/faces/auctionMonitor/stubs">
-                        <include name="auction.properties"/>
-                     </fileset>
-                   </copy>                 
-                </tasks>
-               <sourceRoot>
-                ${project.build.directory}/generated-sources/main/java
-              </sourceRoot>
-              </configuration>
-              <goals>
-                 <goal>run</goal>
-              </goals>
-            </execution>
-          </executions>
-       </plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+      </plugin>
       
     </plugins>
   </build>
