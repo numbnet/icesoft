@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:ice="http://www.icefaces.org/icefaces/components">
+	 
+  <h:panelGroup id="chkboxPanelExplain" styleClass="synopsisBox" layout="block">
+        <h:outputText id="chkboxTextOne" styleClass="iceOutTxt" value="#{msgs['page.checkbox.synopsis']}"/>
+        <h:outputText id="chkboxTextTwo" styleClass="iceOutTxt" value="#{msgs['page.checkbox.instructions']}"/>
+  </h:panelGroup>
+
+  <h:panelGroup id="chckboxPanelOne" styleClass="exampleBox" layout="block">
+	<h:form id ="checkboxForm">
+      <h:panelGrid columns="2" id="chkboxGridOne"                 
+                   rowClasses="textFieldNameRow">
+          <h:outputLabel for="CBBoxOne"
+                         value="#{msgs['page.checkbox.checkboxLabel']}" />
+          <ice:checkboxButton id="CBBoxOne" labelPosition="on"
+                              label="#{msgs['page.checkbox.checkboxValue']}"
+                              value="#{checkBean.checked}"
+                                singleSubmit="true" />
+      </h:panelGrid>
+    </h:form>
+  </h:panelGroup>
+  <h:panelGroup id="chkboxPanelCheck" styleClass="exampleBox" layout="block"> 
+     <p/>
+	 <h:outputText id="chkboxTextCheck" value="Value of checkboxButton is: #{checkBean.checked}"/>
+	 <p/>	      
+   </h:panelGroup>
+</ui:composition>
