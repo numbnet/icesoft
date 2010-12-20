@@ -26,6 +26,9 @@ public class ButtonTableBean implements Serializable {
             "On the one hand...",
             "But, on the other hand..." };
 
+    private String red_box = "red_box";
+    private String blue_box = "blue_box"; 
+
     List linkLabelData = new ArrayList();
     List buttonLabelData = new ArrayList();
 
@@ -45,6 +48,20 @@ public class ButtonTableBean implements Serializable {
         String newLabel = findNewLabel(oldLabel);
         pb.setLabel( newLabel );
         System.out.println("------ Button: " + pb.getClientId() + " Label Changed to: " + newLabel + " -------");
+    }
+
+     public void alternateButtonStyleClass(ActionEvent e) {
+
+        UIComponent uic = e.getComponent();
+        PushButton pb = (PushButton) uic;
+        String oldStyle = pb.getStyleClass();
+         if (red_box.equals(oldStyle)) {
+             pb.setStyleClass(blue_box);
+             System.out.println("------ Button: " + pb.getClientId() + " New style to: blueBox  -------");
+         } else {
+             pb.setStyleClass(red_box);
+             System.out.println("------ Button: " + pb.getClientId() + " New style to: redBox  -------");
+         }
     }
 
     public void alternateLinkLabel(ActionEvent e) {
