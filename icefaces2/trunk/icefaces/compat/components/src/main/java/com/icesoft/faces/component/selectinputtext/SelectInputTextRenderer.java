@@ -233,7 +233,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                     itemLabel = converterGetAsString(
                             facesContext, component, item.getValue());
                 }
-                Text label = domContext.createTextNode(DOMUtils.escapeAnsi(itemLabel));
+                Text label = domContext.createTextNode((itemLabel));
                 spanToSelect.appendChild(label);
                 div.appendChild(spanToSelect);
                 component.resetId(facet);

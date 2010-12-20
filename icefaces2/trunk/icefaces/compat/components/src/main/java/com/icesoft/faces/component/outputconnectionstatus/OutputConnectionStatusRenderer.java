@@ -100,7 +100,7 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
             return div;
         }
         if (label != null) {
-            label = DOMUtils.escapeAnsi(label);
+//            label = DOMUtils.escapeAnsi(label);
         }
         Text text = (Text) domContext.createTextNode(label);
         div.appendChild(text);
