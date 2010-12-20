@@ -60,6 +60,7 @@ ice.component.tabset = {
             currentIndex = tabview.getTabIndex(event.newValue);
             tabIndexInfo = clientId + '='+ currentIndex;
             var params = function(parameter) {
+							parameter('ice.focus', event.newValue.get('element').firstChild.id);
                             parameter('onevent', function(data) { 
                                 if (data.status == 'success') {
                                         var lastKnownSelectedIndex = ice.component.getJSContext(clientId).getJSFProps().selectedIndex;   
@@ -69,15 +70,13 @@ ice.component.tabset = {
 	                                            tabview.addListener('activeTabChange', tabChange); 
 	                                            currentIndex = lastKnownSelectedIndex; 
 	                                    }
-                                   
-                                   /*
-                                       var LIs = Dom.getFirstChild(document.getElementById(clientId)).children;
-
-                                        //set the focus back to the selected tab
-                                        if (LIs.length > currentIndex) {
-                                            Dom.getFirstChild(LIs[currentIndex]).focus();
-                                        }        
-                                     */                                    
+                                   try {
+									document.getElementById(event.newValue.get('element').firstChild.id).focus();		
+                                   } catch(e) {}    
+								
+									 
+ 
+                                                                         
                                 }
                             });
                         };
@@ -230,11 +229,20 @@ ice.component.tabset = {
 								}            	
 							var event ={};
 							            var params = function(parameter) {
+
+										var ele = document.getElementById(newTab.get('element').id).firstChild;
+										parameter('ice.focus',  ele.id);
 										parameter('onevent', function(data) { 
 											if (data.status == 'success') {//console.info('Sucesssssss');
 								   // YAHOO.util.Dom.setStyle(newTab.get('contentEl').id, 'opacity', 0);
 									newTab.set('contentVisible', true);
 									animation.chain.set('node', '#'+  newTab.get('contentEl').id);
+                                        //set the focus back to the selected tab
+                                       // var selectedTab = tabview.getTab(currentIndex);
+var ele = document.getElementById(newTab.get('element').id).firstChild;									   
+ele.focus();
+ 										//ele.parentNode.focus();
+                                                                  									
 											// _effect.set('node', '#'+ newTab.get('contentEl').id);
 										  //  	Appear = new ice.yui3.effects.Appear(newTab.get('contentEl').id);
 											//	Appear.setContainerId(clientId);
