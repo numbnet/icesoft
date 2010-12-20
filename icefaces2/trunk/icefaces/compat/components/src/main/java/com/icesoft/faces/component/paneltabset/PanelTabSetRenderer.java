@@ -534,7 +534,7 @@ public class PanelTabSetRenderer
             label = "Tab " + tabIndex;
         }
 
-        label = DOMUtils.escapeAnsi(label);
+//        label = DOMUtils.escapeAnsi(label);
 
         String tabPlacement = "";
         if (tabSet.getTabPlacement()

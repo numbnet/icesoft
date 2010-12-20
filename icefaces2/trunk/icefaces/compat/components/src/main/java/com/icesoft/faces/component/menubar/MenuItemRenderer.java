@@ -353,7 +353,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                         CSS_DEFAULT.MENU_BAR_ITEM_LABEL_STYLE));
         anchor.appendChild(span);
         // create text
-        Node text = domContext.createTextNode(DOMUtils.escapeAnsi(menuItem.getValue().toString()));
+        Node text = domContext.createTextNode((menuItem.getValue().toString()));
         span.appendChild(text);
 
         return anchor;
@@ -426,7 +426,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 
         anchor.appendChild(span);
         // create text
-        Node text = domContext.createTextNode(DOMUtils.escapeAnsi(menuItem.getValue().toString()));
+        Node text = domContext.createTextNode((menuItem.getValue().toString()));
         span.appendChild(text);
 
         return anchor;
