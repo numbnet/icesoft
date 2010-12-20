@@ -180,6 +180,7 @@ public class TabSetRenderer extends Renderer{
         if (EnvUtils.isAriaEnabled(facesContext)) {
             writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.PRESENTATION_ROLE, ARIA.ROLE_ATTR);  
         }
+        writer.writeAttribute(HTML.ID_ATTR, clientId+ "li"+ index, HTML.ID_ATTR);
         UIComponent labelFacet = ((TabPane)tab).getLabelFacet();
         if (tabSet.getSelectedIndex() == index) {
             writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
@@ -191,6 +192,7 @@ public class TabSetRenderer extends Renderer{
         if (!tabSet.isClientSide()) {
         	writer.writeAttribute(HTML.ONFOCUS_ATTR, "this.parentNode.parentNode.parentNode.onmouseover()", HTML.ONFOCUS_ATTR);
         }
+        writer.writeAttribute(HTML.ID_ATTR, clientId+ "tab"+ index, HTML.ID_ATTR); 
         writer.writeAttribute(HTML.TABINDEX_ATTR, "0", HTML.TABINDEX_ATTR);
         writer.writeAttribute(HTML.CLASS_ATTR, "yui-navdiv", HTML.CLASS_ATTR);           
         writer.startElement("em", tab);
