@@ -1,0 +1,105 @@
+<!--
+
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ann="http://www.icefaces.org/icefaces/components" >
+<f:view  contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>f:param in component Test page</title>
+    <h:outputScript name="jsf.js" library="javax.faces" />
+</h:head>
+<h:body styleClass="ice-skin-sam">
+
+    <div class="yui-skin-sam" id="sam-skin-div">
+        <h:form id="frmLink">
+
+            1) This linkButton has a couple parameters <b>first parameter: </b>
+            "From linkButton" <b>second parameter:</b> "Parameter Two"
+
+            <br></br>
+            <ann:linkButton  id="linkButton" value="Simple actionListener linkButton"
+                             actionListener="#{fParamBean.linkActionMethod}" >
+                <f:param name="paramOne" value="From linkButton" />
+                <f:param name="paramTwo" value="Parameter Two" />
+            </ann:linkButton>
+        </h:form><p></p>
+
+        <h:form id="frmButton">
+
+            2) This pushButton example has a couple parameters <b>first parameter: </b>
+            "From Button" <b>second parameter:</b> "Paramtar Two"  <br></br>
+            <ann:pushButton id="pushButton" label="ActionLabel"
+                            singleSubmit="false" value="ActionValue"
+                            actionListener="#{fParamBean.buttonActionMethod}" >
+                <f:param name="paramOne" value="From Button" />
+                <f:param name="paramTwo" value="Paramtar Two" />
+            </ann:pushButton>
+        </h:form><p></p>
+
+
+        <p/>
+               3) This Checkbox example has a couple parameters <b>first parameter: </b>
+            "From Checkbox" <b>second parameter:</b> "Param Two"  <br></br>
+        <h:form id="formCheckBox" >
+        <ann:checkboxButton id="checkbox" label="Checkbox with params"
+	       value="#{fParamBean.checkOneChecked}"
+           valueChangeListener="#{fParamBean.checkOneChanged}"
+	       singleSubmit="true" >
+            <f:param name="paramOne" value="from Checkbox" />
+            <f:param name="paramTwo" value="param Two" />
+          </ann:checkboxButton>
+        </h:form>
+
+
+        <h:form id="frmLink2">
+
+            4) This simple output link has a couple parameters with some junk characters. Click the button and
+            if the submitted parameter doesn't match the source, an error message with the id="errorMessage"
+            will appear. The second parameter fetches an integer property from the backing bean and
+            should show  up as the number 99 (by default): 
+      
+
+            <br></br>
+            <ann:linkButton  id="linkButton2" value="Simple actionListener linkButton"
+                             actionListener="#{fParamBean.checkJunk}" >
+                <f:param name="paramOne" value="#{fParamBean.junkParameter}" />
+                <f:param name="paramTwo" value="#{fParamBean.intParameter}" />
+                <f:param name="paramThree" value="#{fParamBean.boolParam}" />
+                <f:param name="paramFour" value="#{fParamBean.objectParam}" />
+            </ann:linkButton>
+
+            <h:outputText id="errorMessage" rendered="${fParamBean.showError}"
+                          value="ESCAPED CHARACTERS ARE NOT WORKING!!" />
+            
+        </h:form><p></p>
+
+          5) This slider has two parameters <b>first parameter: </b>
+            "From Slider" <b>second parameter:</b> "param Two-a-rama"  <br></br>
+        
+         <h:form id="formSlider">
+           <h:outputText id="out3" value="Slider value = #{fParamBean.sliderValue}"/>
+           <ann:sliderEntry id="s3" length="200px" axis="x" value="#{fParamBean.sliderValue}" singleSubmit="true"
+                   valueChangeListener="${fParamBean.sliderChanged}">
+               <f:param name="paramOne" value="from Slider" />
+               <f:param name="paramTwo" value="param Two-a-Rama" />
+             </ann:sliderEntry>
+        </h:form>
+    </div>
+    <hr/>
+
+    <br/>
+    <br/>
+    First Submitted Parameter Value: <h:outputText value="#{fParamBean.firstParameter}" /> <br/>
+    Second Submitted Parameter Value: <h:outputText value="#{fParamBean.secondParameter}" />
+    <br/>
+    <br/>
+    <a href="index.html"> Goto Main page </a>
+</h:body>
+<h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
+</html>
