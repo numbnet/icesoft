@@ -119,8 +119,9 @@ public class LinkButtonRenderer extends Renderer {
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
 
+        // With Action or ActionListener attributes, don't act as a normal link
         ActionListener[] al = linkButton.getActionListeners();
-        boolean doAction = (al.length > 0);
+        boolean doAction = (al.length > 0 || (linkButton.getActionExpression() != null));
 
         StringBuilder sb = new StringBuilder();
         sb.append( value ).
