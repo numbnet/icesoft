@@ -1,0 +1,17 @@
+
+.fade_from {
+	opacity:1;
+}
+
+
+.fade_to {
+	opacity:0;
+}
+
+.highlight_from {
+
+}
+
+.highlight_to {
+	background-color:gray;
+}
