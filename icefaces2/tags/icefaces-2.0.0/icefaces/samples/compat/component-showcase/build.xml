@@ -1,0 +1,73 @@
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  -->
+
+<project name="component-showcase" default="servlet-profile">
+
+    <property name="lib.compile.compat.includes" value="commons-beanutils.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
+    <property name="lib.distribute.compat.includes" value="commons-beanutils.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
+
+    <property file="./build.properties"/>
+    <import file="../build/common.xml"/>
+
+    <property name="portlet.dir" location="./portlets"/>
+    <property name="portlet.build.dir" location="./portlets/build"/>
+    <property name="portlet.lib.dir" location="${lib.dir}/portlets"/>
+
+    <patternset id="portlet.jars">
+        <include name="jsf*.jar"/>
+        <include name="portletfaces*.jar"/>
+        <include name="slf4j*.jar"/>
+    </patternset>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete file="${samples.dist.dir}/${ant.project.name}.war"/>
+        <delete dir="${portlet.build.dir}"/>
+    </target>
+
+    <target name="portletize.war" depends="servlet-profile" description="Adds portlet content to the .war file">
+        <mkdir dir="${portlet.build.dir}/exploded"/>
+        <unzip src="${dist.dir}/${ant.project.name}.war" dest="${portlet.build.dir}/exploded"/>
+
+        <copy todir="${portlet.build.dir}/exploded">
+          <fileset dir="${portlet.dir}/web">
+            <include name="view.xhtml"/>
+          </fileset>
+        </copy>
+
+        <copy todir="${portlet.build.dir}/exploded/WEB-INF" overwrite="true">
+          <fileset dir="${portlet.dir}/web/WEB-INF">
+              <include name="*.xml"/>
+              <include name="*.properties"/>
+          </fileset>
+        </copy>
+
+        <copy todir="${portlet.build.dir}/exploded/WEB-INF/lib" overwrite="true">
+          <fileset dir="${portlet.lib.dir}">
+              <patternset refid="portlet.jars"/>
+          </fileset>
+        </copy>
+
+        <zip destfile="${portlet.build.dir}/${ant.project.name}-portlet.war" basedir="${portlet.build.dir}/exploded"/>
+    </target>
+
+</project>
