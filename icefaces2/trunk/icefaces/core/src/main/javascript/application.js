@@ -190,32 +190,36 @@ if (!window.ice.icefaces) {
             broadcast(sessionExpiryListeners);
         }
 
+        function containsXMLData(doc) {
+            //test if document contains XML data since IE will return a XML document for dropped connection
+            return doc && doc.documentElement;
+        }
+
         //wire callbacks into JSF bridge
         jsf.ajax.addOnEvent(function(e) {
-            var xmlContent = e.responseXML;
-            //test if document contains data since IE will return a XML document for dropped connection
-            if (xmlContent && xmlContent.documentElement) {
-                switch (e.status) {
-                    case 'begin':
-                        broadcast(beforeSubmitListeners, [ e.source ]);
-                        break;
-                    case 'complete':
+            switch (e.status) {
+                case 'begin':
+                    broadcast(beforeSubmitListeners, [ e.source ]);
+                    break;
+                case 'complete':
+                    var xmlContent = e.responseXML;
+                    if (containsXMLData(xmlContent)) {
                         broadcast(beforeUpdateListeners, [ xmlContent ]);
-                        break;
-                    case 'success':
-                        broadcast(afterUpdateListeners, [ xmlContent ]);
-
-                        var updates = xmlContent.documentElement.firstChild.childNodes;
-                        var updateDescriptions = collect(updates, function(update) {
-                            var id = update.getAttribute('id');
-                            return update.nodeName + (id ? '["' + id + '"]' : '') +
-                                    ': ' + substring(update.firstChild.data, 0, 40) + '....';
-                        });
-                        debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
-                        break;
-                }
-            } else {
-                warn(logger, 'the response does not contain XML data');
+                    } else {
+                        warn(logger, 'the response does not contain XML data');
+                    }
+                    break;
+                case 'success':
+                    var xmlContent = e.responseXML;
+                    broadcast(afterUpdateListeners, [ xmlContent ]);
+                    var updates = xmlContent.documentElement.firstChild.childNodes;
+                    var updateDescriptions = collect(updates, function(update) {
+                        var id = update.getAttribute('id');
+                        return update.nodeName + (id ? '["' + id + '"]' : '') +
+                                ': ' + substring(update.firstChild.data, 0, 40) + '....';
+                    });
+                    debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
+                    break;
             }
         });
 
