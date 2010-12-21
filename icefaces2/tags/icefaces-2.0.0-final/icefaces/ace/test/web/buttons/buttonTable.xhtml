@@ -1,0 +1,93 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icesoft.com/icefaces/component/annotated">
+<h:head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Button Inside Table</title>
+</h:head>
+<h:body class="ice-skin-sam">
+    <h2>Testing Pushbutton and Checkbox in datatable</h2>
+    <h:form id="btnForm">
+      <ice:logger rendered="false"/> 
+       <ice:buttongroup id="buttongroupA" 
+	       value="#{button.selectedRadio}"
+	          singleSubmit="false">
+        <h:dataTable id="btnTable" value="#{buttonList.buttons}" var="btns">
+
+            <h:column id="col1">
+               <f:facet name="header">
+                 <h:outputText value="id"/>
+               </f:facet>
+               <h:outputText value="#{btns.id}"/>
+            </h:column>
+
+            <h:column id="col2">
+               <f:facet name="header">
+                <h:outputText value="First Name"/>
+              </f:facet>
+              <h:panelGroup id="col2content">
+                 <h:inputText id="first" value="#{btns.firstName}"/>
+                 <ice:pushbutton  id="pushId" label="#{btns.label}"
+                                 actionListener="#{btns.actionListenerMethod}"  />
+                 <h:outputText id="firstFormTest1" value="submitted for firstName:- #{btns.firstName}"/>
+              </h:panelGroup>
+            </h:column>
+            <h:column id="col3">
+               <f:facet name="header">
+                  <h:outputText value="chkbox ss true"/>
+               </f:facet>
+               	<ice:checkbox id="chkbox" label="#{btns.checkButtonLabel}" 
+	              value="#{btns.checked}"
+	              singleSubmit="true"/>	
+	       <h:outputText value="isChecked: " /><h:outputText value="#{btns.checked}" />
+            </h:column>
+           <h:column id="col4">
+               <f:facet name="header">
+                  <h:outputText value="chkbox ss false"/>
+               </f:facet>
+               	<ice:checkbox id="chkbox2"  
+	              value="#{btns.checked2}"
+	              singleSubmit="false"/>	
+	             <h:outputLabel for="chkbox2">singleSubmit false</h:outputLabel>
+	       <h:outputText value="isChecked: " /><h:outputText value="#{btns.checked2}" />
+            </h:column>
+            <h:column id="col5">
+               <f:facet name="header">
+                  <h:outputText value="radioButton ss false"/>
+               </f:facet>
+               <ice:radiobutton id="testradio" group="buttongroupA" label="#{btns.id}" 
+	                 value="#{btns.selectedRadioCheck}" />
+            </h:column>
+        </h:dataTable>
+        </ice:buttongroup>
+        <h:panelGrid id="addtotop" columns="3">
+          <h:outputText value="Add and Remove Buttons to Top of Table"/>
+          <ice:pushbutton id="addBtnabove" value="Add Top"
+               singleSubmit="true"
+               action="#{buttonList.addTopRow}"/>
+          <ice:pushbutton id="removeBtnabove" value="Remove"
+               singleSubmit="true"
+               action="#{buttonList.removeTopRow}"/>
+       </h:panelGrid>
+       <h:panelGrid id="addtobottom" columns="3">
+            <h:outputText value="add and remove from bottom of table"/>
+            <ice:pushbutton id="addBtnbelow" value="Add Below"
+                 singleSubmit="true"
+                 action="#{buttonList.addBottomRow}"/>
+            <ice:pushbutton id="removeBtnbelow" value="Remove"
+                 singleSubmit="true"
+                 action="#{buttonList.removeBottomRow}"/>
+        </h:panelGrid>  
+        <br /> <h:outputText id="text" value="#{buttonList.rows}"/><br />
+        <h:outputText value="pushbutton to submit form for ss false checkboxes"/>
+        <ice:pushbutton id="formsubmitbutton" value="submitForm"
+           singleSubmit="false"/>   
+        <div style="height:50px"/>
+        <a href="index.html">Goto Main page</a>
+    </h:form>
+</h:body>
+<h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
+</html>
