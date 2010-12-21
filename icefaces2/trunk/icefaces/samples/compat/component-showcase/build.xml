@@ -61,6 +61,12 @@
           </fileset>
         </copy>
 
+        <delete>
+            <fileset dir="${portlet.build.dir}/exploded/WEB-INF/lib">
+                <patternset refid="portlet.jars"/>
+            </fileset>
+        </delete>
+
         <copy todir="${portlet.build.dir}/exploded/WEB-INF/lib" overwrite="true">
           <fileset dir="${portlet.lib.dir}">
               <patternset refid="portlet.jars"/>
