@@ -55,6 +55,8 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>        
+    </tag>
+        
     <tag>
         <tag-name>singleSubmit</tag-name>
         <component>
@@ -62,5 +64,5 @@
             <renderer-type>org.icefaces.singleSubmit</renderer-type>
         </component>
     </tag>
-    </tag>
+   
 </facelet-taglib>
