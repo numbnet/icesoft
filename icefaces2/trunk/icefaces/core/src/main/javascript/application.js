@@ -192,30 +192,36 @@ if (!window.ice.icefaces) {
 
         //wire callbacks into JSF bridge
         jsf.ajax.addOnEvent(function(e) {
-            switch (e.status) {
-                case 'begin':
-                    broadcast(beforeSubmitListeners, [ e.source ]);
-                    break;
-                case 'complete':
-                    broadcast(beforeUpdateListeners, [ e.responseXML ]);
-                    break;
-                case 'success':
-                    broadcast(afterUpdateListeners, [ e.responseXML ]);
+            var xmlContent = e.responseXML;
+            //test if document contains data since IE will return a XML document for dropped connection
+            if (xmlContent && xmlContent.documentElement) {
+                switch (e.status) {
+                    case 'begin':
+                        broadcast(beforeSubmitListeners, [ e.source ]);
+                        break;
+                    case 'complete':
+                        broadcast(beforeUpdateListeners, [ xmlContent ]);
+                        break;
+                    case 'success':
+                        broadcast(afterUpdateListeners, [ xmlContent ]);
 
-                    var updates = e.responseXML.documentElement.firstChild.childNodes;
-                    var updateDescriptions = collect(updates, function(update) {
-                        var id = update.getAttribute('id');
-                        return update.nodeName + (id ? '["' + id + '"]' : '') +
-                                ': ' + substring(update.firstChild.data, 0, 40) + '....';
-                    });
-                    debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
-                    break;
+                        var updates = xmlContent.documentElement.firstChild.childNodes;
+                        var updateDescriptions = collect(updates, function(update) {
+                            var id = update.getAttribute('id');
+                            return update.nodeName + (id ? '["' + id + '"]' : '') +
+                                    ': ' + substring(update.firstChild.data, 0, 40) + '....';
+                        });
+                        debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
+                        break;
+                }
+            } else {
+                warn(logger, 'the response does not contain XML data');
             }
         });
 
         //notify errors captured by JSF bridge
         jsf.ajax.addOnError(function(e) {
-            if (e.status == 'serverError' || e.status == 'httpError') {
+            if (e.status == 'serverError') {
                 if (e.responseXML) {
                     var errorName = e.responseXML.getElementsByTagName("error-name")[0].firstChild.nodeValue;
                     if (errorName && contains(errorName, 'org.icefaces.application.SessionExpiredException')) {
@@ -226,7 +232,9 @@ if (!window.ice.icefaces) {
                 }
 
                 info(logger, 'received error message [code: ' + e.responseCode + ']: ' + e.responseText);
-                broadcast(serverErrorListeners, [ e.responseCode, e.responseText, e.responseXML ]);
+                broadcast(serverErrorListeners, [ e.responseCode, e.responseText, isXMLResponse ? xmlContent : null]);
+            } else if (e.status == 'httpError') {
+                warn(logger, 'HTTP error [code: ' + e.responseCode + ']: ' + e.description);
             }
         });
 
