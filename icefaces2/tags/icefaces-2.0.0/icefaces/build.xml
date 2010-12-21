@@ -1,0 +1,228 @@
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  -->
+
+<project name="icefaces" default="world">
+
+    <propertyset id="build.properties">
+        <propertyref name="build.number"/>
+        <propertyref name="revision"/>
+        <propertyref name="version.primary"/>
+        <propertyref name="version.secondary"/>
+        <propertyref name="version.tertiary"/>
+        <propertyref name="release.type"/>
+        <propertyref name="bundle.name"/>
+    </propertyset>
+
+    <property file="./build.properties"/>
+
+    <target name="core" description="Builds the ICEfaces core framework (icefaces.jar).">
+        <subant>
+            <fileset dir="." includes="core/build.xml test/build.xml">
+              <exclude name="**/maven2/build.xml"/>
+            </fileset>
+            <propertyset refid="build.properties"/>
+        </subant> 
+    </target>
+
+    <target name="compat" depends="core" description="Builds the ICEfaces Components and 1.x Compat libraries (icefaces-compat.jar).">
+            <subant>
+                  <fileset dir="." includes="compat/build.xml">
+                    <exclude name="**/maven2/build.xml"/>
+                </fileset>
+            </subant>
+    </target>
+
+    <target name="ace" depends="core" description="Builds the ICEfaces Advanced Components (icefaces-ace.jar).">
+            <subant>
+                  <fileset dir="." includes="ace/build.xml">
+                    <exclude name="**/maven2/build.xml"/>
+                </fileset>
+            </subant>
+    </target>
+
+    <target name="samples" depends="core, ace, compat" description="Builds the ICEfaces samples.">
+        <subant>
+            <fileset dir="." includes="samples/build.xml">
+                <exclude name="**/maven2/build.xml"/>
+            </fileset>
+        </subant>
+    </target>
+
+    <target name="world" depends="core, compat, ace, samples"  description="Builds all ICEfaces libraries.">
+    </target>
+
+
+    <target name="allclean"  description="Cleans all remnants of previous ICEfaces builds.">
+        <subant target="clean">
+            <fileset dir="." includes="*/build.xml">
+                <exclude name="**/maven2/build.xml"/>
+		</fileset>
+        </subant>
+        <subant target="allclean">
+            <fileset file="samples/build.xml" />
+        </subant>
+        <delete file="lib/icefaces.jar"/>
+        <delete file="lib/icefaces-compat.jar"/>
+        <delete file="lib/icefaces-ace.jar"/>
+    </target>
+
+    <target name="bundle.clean">
+        <delete dir="${bundle.dir}"/>
+    </target>
+
+    <target name="bundle">
+        <mkdir dir="${bundle.dir}"/>
+
+        <copy todir="${bundle.dir.bin}">
+          <fileset dir="."/>
+        </copy>
+        <antcall target="bundle.bin"/>
+
+        <zip destfile="${bundle.dir}/${bundle.name.bin}.zip">
+            <zipfileset dir="${bundle.dir}/${bundle.name.bin}" prefix="${bundle.name.bin}"/>
+        </zip>
+
+        <copy todir="${bundle.dir.src}">
+          <fileset dir="."/>
+        </copy>
+        <antcall target="bundle.src"/>
+
+        <zip destfile="${bundle.dir}/${bundle.name.src}.zip">
+            <zipfileset dir="${bundle.dir}/${bundle.name.src}" prefix="${bundle.name.src}"/>
+        </zip>
+
+    </target>
+
+    <target name="bundle.bin">
+
+        <!-- Clean and build everything for the binary bundle -->
+        <subant target="allclean">
+            <fileset dir="${bundle.dir.bin}" includes="build.xml"/>
+        </subant>
+
+        <subant target="world">
+            <fileset dir="${bundle.dir.bin}" includes="build.xml"/>
+            <propertyset refid="build.properties"/>
+        </subant>
+
+        <!-- Create the JavaDocs for core, compat, and ace and move them to the docs directory -->
+        <subant target="javadoc">
+            <fileset dir="${bundle.dir.bin}/core" includes="build.xml"/>
+        </subant>
+        <move file="${bundle.dir.bin}/core/build/javadocs" tofile="${bundle.dir.bin}/docs/core/api"/>
+
+        <subant target="javadoc">
+            <fileset dir="${bundle.dir.bin}/compat/core" includes="build.xml"/>
+        </subant>
+        <move file="${bundle.dir.bin}/compat/core/build/javadocs" tofile="${bundle.dir.bin}/docs/compat/core/api"/>
+
+        <subant target="javadoc">
+            <fileset dir="${bundle.dir.bin}/compat/components" includes="build.xml"/>
+        </subant>
+        <move file="${bundle.dir.bin}/compat/components/build/doc/api" tofile="${bundle.dir.bin}/docs/compat/comps/api"/>
+
+        <subant target="javadoc">
+            <fileset dir="${bundle.dir.bin}/ace/component" includes="build.xml"/>
+        </subant>
+        <move file="${bundle.dir.bin}/ace/component/build/doc/javadoc" tofile="${bundle.dir.bin}/docs/ace/api"/>
+
+        <!-- Create the TLD docs for compat, ace move them to the docs directory -->
+        <subant target="tlddoc">
+            <fileset dir="${bundle.dir.bin}/compat/components" includes="build.xml"/>
+        </subant>
+        <move file="${bundle.dir.bin}/compat/components/build/doc/tld" tofile="${bundle.dir.bin}/docs/compat/comps/tld"/>
+
+        <subant target="tlddoc">
+            <fileset dir="${bundle.dir.bin}/ace/component" includes="build.xml"/>
+        </subant>
+        <move file="${bundle.dir.bin}/ace/component/build/doc/tld" tofile="${bundle.dir.bin}/docs/ace/tld"/>
+
+
+
+        <!-- Remove the following files and directories as they are not required for the binary bundle -->
+        <delete>
+            <fileset dir="${bundle.dir.bin}">
+                <include name="build.xml"/>
+                <include name="build.properties"/>
+            </fileset>
+            <fileset dir="${bundle.dir.bin}/lib">
+                <include name="junit*.jar"/>
+                <include name="junit*.jar"/>
+                <include name="commons-fileupload.jar"/>
+                <include name="tlddoc.jar"/>                
+            </fileset>
+            <fileset dir="${bundle.dir.bin}/lib/compat">
+                <include name="freemarker*.jar"/>
+                <include name="jsf-metadata*.jar"/>
+                <include name="jsp-api*.jar"/>
+                <include name="portlet*.jar"/>
+            </fileset>
+            <fileset dir="${bundle.dir.bin}/samples/dist">
+                <include name="basic.war"/>
+                <include name="compat-basic.war"/>
+            </fileset>
+
+        </delete>
+        <delete dir="${bundle.dir.bin}/lib/myfaces"/>
+
+        <delete dir="${bundle.dir.bin}/ace"/>
+        <delete dir="${bundle.dir.bin}/compat"/>
+        <delete dir="${bundle.dir.bin}/core"/>
+        <delete dir="${bundle.dir.bin}/test"/>
+
+        <delete dir="${bundle.dir.bin}/samples/core/test"/>        
+        <delete dir="${bundle.dir.bin}/samples/core/basic"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/compat-basic"/>
+
+        <delete dir="${bundle.dir.bin}/samples/ace/showcase/build"/>
+        <delete dir="${bundle.dir.bin}/samples/core/auction/build"/>
+        <delete dir="${bundle.dir.bin}/samples/core/portlets/chat/build"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/build"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/lib"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/classes"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/build"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/src/main/webapp/WEB-INF/lib"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/src/main/webapp/WEB-INF/classes"/>
+
+    </target>
+
+    <target name="bundle.src">
+
+        <!-- Remove the following files and directories as they are not required for the source bundle -->
+        <delete>
+            <fileset dir="${bundle.dir.src}/lib">
+                <include name="commons-fileupload.jar"/>
+            </fileset>
+        </delete>
+        <delete dir="${bundle.dir.src}/lib/myfaces"/>
+
+        <delete dir="${bundle.dir.src}/test"/>
+        <delete dir="${bundle.dir.src}/ace/test"/>
+        <delete dir="${bundle.dir.src}/samples/core/basic"/>
+        <delete dir="${bundle.dir.src}/samples/core/test"/>
+        <delete dir="${bundle.dir.src}/samples/compat/compat-basic"/>
+        <delete dir="${bundle.dir.src}/samples/dist"/>
+        
+    </target>
+
+</project>
+
