@@ -30,7 +30,7 @@
   <version>2.0.0</version>
   <description />
   <properties>
-    <jsf.version>2.0.4-b05</jsf.version>
+    <jsf.version>2.0.4-b06a</jsf.version>
   </properties>
   <repositories>
      <repository>
