@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
+
+        >
+<f:view  contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>TabSetProxy demo</title>
+<h:outputScript name="jsf.js" library="javax.faces" />
+</h:head>
+<h:body>
+  <h:panelGroup styleClass="ice-skin-sam">
+   <h4> In this demo tabsets are not enclosed inside a "form", instead it uses tabSetProxy component. </h4>	
+ 
+       <ice:tabSet id="myTabSet">
+            <ice:tabPane label="Tab contents from JSP" >
+                <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
+            </ice:tabPane>       
+            <ice:tabPane label="Tab contents from Bean" >
+                <h:outputText value="#{tabBean.tabContents}"/>            
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
+                <h:outputText value="Test ...."/>            
+            </ice:tabPane>
+        </ice:tabSet> 
+
+<hr/>
+
+<b>This form contains two "tabSetProxy" components. One for the above tabset and another one for the tabset in the bottom of the page. Which shows there isn't any order restriction </b><br/>
+    <h:form>
+        <ice:tabSetProxy for="myTabSet" />
+        <ice:tabSetProxy for="myTabSet2" />
+	    <h:inputText />
+    </h:form>
+<hr/>
+        <ice:tabSet id="myTabSet2">
+            <ice:tabPane label="Tab contents from JSP" >
+                <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
+            </ice:tabPane>       
+            <ice:tabPane label="Tab contents from Bean" >
+                <h:outputText value="#{tabBean.tabContents}"/>            
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
+                <h:outputText value="Test ...."/>            
+            </ice:tabPane>
+        </ice:tabSet> 
+   </h:panelGroup>
+   <a href="index.html"> Goto Main page </a>    
+   <h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
+</h:body>
+</html>
+
