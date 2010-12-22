@@ -43,6 +43,7 @@ import com.icesoft.faces.util.CoreUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
+import javax.servlet.http.HttpSession;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -86,41 +87,64 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
         //add click handler if not disabled and toggleOnClick is set to true
         if (panelCollapsible.isToggleOnClick() &&
                 !panelCollapsible.isDisabled()) {
-            Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
-            hiddenField.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
-            hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
-            root.appendChild(hiddenField);
-            UIComponent form = findForm(uiComponent);
-            if (form == null) {
-                throw new FacesException("PanelCollapsible must be contained within a form");
-            }
-            if (panelCollapsible.hasInitiatedSubmit(facesContext)) {
-                JavascriptContext.addJavascriptCall(facesContext,
-                        "document.getElementById('" + uiComponent.getClientId(facesContext) + "')." +
-                                "getElementsByTagName('a')[0].focus();");
-            }
-            String hiddenValue = "document.forms['" + form.getClientId(facesContext) + "']" +
-                    "['" + uiComponent.getClientId(facesContext) + "Expanded" + "'].value='";
-            header.setAttribute(HTML.ONCLICK_ATTR,
-                    hiddenValue +
-                            panelCollapsible.isExpanded() + "'; " +
-                            "iceSubmit(document.forms['" + form.getClientId(facesContext) + "'],this,event);" +
-                            hiddenValue + "'; return false;");
-            header.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "hdr");
-            Element div = domContext.createElement(HTML.DIV_ELEM);
-            div.setAttribute(HTML.STYLE_ATTR, "padding:0px;background-image:none;width:100%;");
-            header.appendChild(div);
-            //this anchor should be known by the component only, so we are defining style to the component level
-            Element anchor = domContext.createElement(HTML.ANCHOR_ELEM);
-            anchor.setAttribute(HTML.ONFOCUS_ATTR, "Ice.pnlClpFocus(this);");
-            anchor.setAttribute(HTML.ONBLUR_ATTR, "Ice.pnlClpBlur(this);");
-            anchor.setAttribute(HTML.STYLE_ATTR, "float:left;border:none;margin:0px;");
-            anchor.setAttribute(HTML.HREF_ATTR, "#");
-            anchor.appendChild(domContext.createTextNodeUnescaped("<img src=\"" + CoreUtils.resolveResourceURL(facesContext,
-                    "/xmlhttp/css/xp/css-images/spacer.gif") + "\"/>"));
-            div.appendChild(anchor);
-        }
-
+			HttpSession sesh = (HttpSession)facesContext.getExternalContext().getSession(false);
+			if (sesh.getAttribute("org.icefaces.JavaScriptDisabled") != null) {
+	            Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
+	            hiddenField.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
+	            hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
+				hiddenField.setAttribute(HTML.VALUE_ATTR, panelCollapsible.isExpanded() ? "true" : "false" ); 
+				
+	            root.appendChild(hiddenField);
+	            UIComponent form = findForm(uiComponent);
+	            if (form == null) {
+	                throw new FacesException("PanelCollapsible must be contained within a form");
+	            } 
+	            header.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "hdr");
+	            Element div = domContext.createElement(HTML.DIV_ELEM);
+	            div.setAttribute(HTML.STYLE_ATTR, "padding:0px;background-image:none;width:100%;");
+	            header.appendChild(div);
+	            //this anchor should be known by the component only, so we are defining style to the component level
+	            Element button = domContext.createElement(HTML.BUTTON_ELEM);
+	            button.setAttribute(HTML.STYLE_ATTR, "width:100%; height:100%; border:1px solid black; background-color:transparent; margin:0px;");
+	            button.setAttribute(HTML.TYPE_ATTR, "submit");
+		        button.setAttribute(HTML.VALUE_ATTR, "GUUUUH");
+	            div.appendChild(button);	               				
+			} else {
+	            Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
+	            hiddenField.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
+	            hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
+	            root.appendChild(hiddenField);
+	            UIComponent form = findForm(uiComponent);
+	            if (form == null) {
+	                throw new FacesException("PanelCollapsible must be contained within a form");
+	            }
+	            if (panelCollapsible.hasInitiatedSubmit(facesContext)) {
+	                JavascriptContext.addJavascriptCall(facesContext,
+	                        "document.getElementById('" + uiComponent.getClientId(facesContext) + "')." +
+	                                "getElementsByTagName('a')[0].focus();");
+	            }
+	            String hiddenValue = "document.forms['" + form.getClientId(facesContext) + "']" +
+	                    "['" + uiComponent.getClientId(facesContext) + "Expanded" + "'].value='";
+	            header.setAttribute(HTML.ONCLICK_ATTR,
+	                    hiddenValue +
+	                            panelCollapsible.isExpanded() + "'; " +
+	                            "iceSubmit(document.forms['" + form.getClientId(facesContext) + "'],this,event);" +
+	                            hiddenValue + "'; return false;");
+	            header.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "hdr");
+	            Element div = domContext.createElement(HTML.DIV_ELEM);
+	            div.setAttribute(HTML.STYLE_ATTR, "padding:0px;background-image:none;width:100%;");
+	            header.appendChild(div);
+	            //this anchor should be known by the component only, so we are defining style to the component level
+	            Element anchor = domContext.createElement(HTML.ANCHOR_ELEM);
+	            anchor.setAttribute(HTML.ONFOCUS_ATTR, "Ice.pnlClpFocus(this);");
+	            anchor.setAttribute(HTML.ONBLUR_ATTR, "Ice.pnlClpBlur(this);");
+	            anchor.setAttribute(HTML.STYLE_ATTR, "float:left;border:none;margin:0px;");
+	            anchor.setAttribute(HTML.HREF_ATTR, "#");
+	            anchor.appendChild(domContext.createTextNodeUnescaped("<img src=\"" + CoreUtils.resolveResourceURL(facesContext,
+	                    "/xmlhttp/css/xp/css-images/spacer.gif") + "\"/>"));
+	            div.appendChild(anchor);
+			}
+		}
     }
 
 
