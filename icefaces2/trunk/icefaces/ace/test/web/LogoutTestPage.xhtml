@@ -1,0 +1,66 @@
+<!--
+
+ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ace="http://www.icefaces.org/icefaces/components">
+<f:view  contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Tables of Widgets in UIData Structures</title>
+    <style>
+        .red_box { background-color: red; }
+        .blue_box { background-color: blue; border: 2px solid black; }
+        .green_box { background-color: green; border: 10px solid black; }
+
+    </style>
+    <h:outputScript name="jsf.js" library="javax.faces" />
+</h:head>
+<h:body class="ice-skin-rime">
+
+    <h:form id="form1">
+        <h:panelGroup>
+            <h2>This link simply invalidates the session to test web.xml configuration</h2>
+            <div class="yui-skin-sam yui3-skin-sam">
+               <ace:linkButton  value="A handsomely styled link" />
+            </div>
+        </h:panelGroup>
+    </h:form>
+
+     <h:form id="form2">
+        <h:panelGroup>
+            <h2>This link invalidates session with outcome to logout</h2>
+            <div class="yui-skin-sam yui3-skin-sam">
+                <ace:linkButton  value="Logout with outcome" action="#{logoutBean.logout}" />
+            </div>
+        </h:panelGroup>
+    </h:form>
+
+     <h:form id="form3">
+        <h:panelGroup>
+            <h2>This link will add a group to the push renderer</h2>
+            <div class="yui-skin-sam yui3-skin-sam">
+                <ace:linkButton  value="Add CurrentSession to group" action="#{logoutBean.addToGroup}" />
+            </div>
+        </h:panelGroup>
+    </h:form>
+
+    <h:form id="form4">
+        <h:panelGroup>
+            <h2>This link will render the group</h2>
+            <div class="yui-skin-sam yui3-skin-sam">
+                <ace:linkButton  value="Render Push Group" action="#{logoutBean.renderGroup}" />
+            </div>
+        </h:panelGroup>
+    </h:form>
+
+
+    <a href="index.html"> Goto Main page </a>
+</h:body>
+<h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
+</html>
+
