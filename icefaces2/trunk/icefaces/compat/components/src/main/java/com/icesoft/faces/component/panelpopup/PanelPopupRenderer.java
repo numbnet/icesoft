@@ -159,12 +159,14 @@ public class PanelPopupRenderer extends GroupRenderer {
         }
         // Write Modal Javascript so that on refresh it will still be modal.
         String script = modalJavascript(uiComponent, modal, visible, facesContext, clientId);
+        Element scriptWrapper = domContext.createElement(HTML.SPAN_ELEM);
+        scriptWrapper.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));
         Element scriptEle = domContext.createElement(HTML.SCRIPT_ELEM);
-        scriptEle.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));
         scriptEle.setAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT);
         Text scriptTextNode = domContext.createTextNodeUnescaped(script);
+        rootDiv.appendChild(scriptWrapper);
+        scriptWrapper.appendChild(scriptEle);
         scriptEle.appendChild(scriptTextNode);
-        rootDiv.appendChild(scriptEle);
 
         Element root = (Element) domContext.getRootNode();
 
