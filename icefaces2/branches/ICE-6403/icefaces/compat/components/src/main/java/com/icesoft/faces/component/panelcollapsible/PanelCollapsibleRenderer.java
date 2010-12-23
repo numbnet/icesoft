@@ -43,7 +43,6 @@ import com.icesoft.faces.util.CoreUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
-import javax.servlet.http.HttpSession;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -87,8 +86,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
         //add click handler if not disabled and toggleOnClick is set to true
         if (panelCollapsible.isToggleOnClick() &&
                 !panelCollapsible.isDisabled()) {
-			HttpSession sesh = (HttpSession)facesContext.getExternalContext().getSession(false);
-			if (sesh.getAttribute("org.icefaces.JavaScriptDisabled") != null) {
+			if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
 	            Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
 	            hiddenField.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
 	            hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");

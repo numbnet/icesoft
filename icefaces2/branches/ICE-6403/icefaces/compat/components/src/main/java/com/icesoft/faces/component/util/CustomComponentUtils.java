@@ -15,6 +15,7 @@
  */
 package com.icesoft.faces.component.util;
 
+ 
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,6 +32,8 @@ import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.el.PropertyNotFoundException;
+import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashSet;
@@ -606,4 +609,8 @@ public class CustomComponentUtils {
         return isAncestorRendered(component.getParent());   
     }
  
+    public static boolean isJavaScriptDisabled(FacesContext facesContext) {
+    	HttpSession sesh = (HttpSession)facesContext.getExternalContext().getSession(false);
+    	return (sesh.getAttribute("org.icefaces.JavaScriptDisabled") != null);
+    }
 }
