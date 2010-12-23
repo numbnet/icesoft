@@ -501,6 +501,16 @@ fieldset {
 
 /* tabOn style classes */
 
+.icePnlTbBtnOn {
+	border:none;
+	background-color:#FFFFFF;
+}
+
+.icePnlTbBtnOff {
+	border:none;
+	background-color:#E3E3E3;
+}
+
 .icePnlTbOn { /* was iceTabSetTabOn */
 }
 
