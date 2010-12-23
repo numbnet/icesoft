@@ -44,10 +44,12 @@ import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import javax.faces.render.RenderKit;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -87,12 +89,12 @@ public class BridgeSetup implements SystemEventListener {
         }
 
         UIViewRoot root = context.getViewRoot();
-        ExternalContext externalContext = context.getExternalContext();
+        final ExternalContext externalContext = context.getExternalContext();
 
         root.addComponentResource(context, new JavascriptResourceOutput("jsf.js", "javax.faces"), "head");
 
         String invalidateHTTPCache = "";
-        if (EnvUtils.isUniqueResourceURLs(context))  {
+        if (EnvUtils.isUniqueResourceURLs(context)) {
             invalidateHTTPCache = "?rand=" + hashCode();
         }
 
@@ -248,15 +250,15 @@ public class BridgeSetup implements SystemEventListener {
                         writer.writeAttribute("id", this.getClientId(context), null);
                         writer.startElement("script", this);
                         writer.writeAttribute("type", "text/javascript", null);
-                        writer.write(LazyPushManager.enablePush(context, viewID) ?
-                                "ice.setupPush('" + viewID + "');" : "");
+                        writer.write(LazyPushManager.enablePush(context, viewID) ? "ice.setupPush('" + viewID + "');" : "");
                         Resource icepushListenResource = context.getApplication()
-                                .getResourceHandler().createResource(
-                                        ICEpushListenResource.RESOURCE_NAME);
-                        String encodedURL =
-                                icepushListenResource.getRequestPath();
-                        writer.write("ice.push.configuration.uri=\"" +
-                                encodedURL + "\";");
+                                .getResourceHandler().createResource(ICEpushListenResource.RESOURCE_NAME);
+                        String path = stripHostInfo(icepushListenResource.getRequestPath());
+                        boolean isPortalEnvironment = EnvUtils.instanceofPortletRequest(externalContext.getRequest());
+                        String contextPath = isPortalEnvironment ? "/" : externalContext.getRequestContextPath();
+                        writer.write("ice.push.configuration.contextPath=\"" + contextPath + "\";");
+                        String uriPattern = path.replace(ICEpushListenResource.RESOURCE_NAME, "{{command}}");
+                        writer.write("ice.push.configuration.uriPattern=\"" + uriPattern + "\";");
                         writer.endElement("script");
                         writer.endElement("span");
                     }
@@ -268,7 +270,16 @@ public class BridgeSetup implements SystemEventListener {
         } catch (Exception e) {
             //could re-throw as a FacesException, but WindowScope failure should
             //not be fatal to the application
-            e.printStackTrace();
+            log.log(Level.WARNING, "Failed to generate JS bridge setup.", e);
+        }
+    }
+
+    private static String stripHostInfo(String uriString) {
+        try {
+            URI uri = URI.create(uriString);
+            return (new URI(null, null, uri.getPath(), uri.getQuery(), uri.getFragment())).toString();
+        } catch (URISyntaxException e) {
+            return uriString;
         }
     }
 
@@ -288,6 +299,7 @@ public class BridgeSetup implements SystemEventListener {
     /**
      * This is only valid after a postback, or during or after rendering in
      * the initial page get.
+     *
      * @return The view id
      */
     public static String getViewID(ExternalContext externalContext) {
@@ -380,6 +392,7 @@ public class BridgeSetup implements SystemEventListener {
 
         //Convince PortletFaces Bridge that this is a valid script for
         //inserting into the Portal head
+
         public String getRendererType() {
             return "javax.faces.resource.Script";
         }
