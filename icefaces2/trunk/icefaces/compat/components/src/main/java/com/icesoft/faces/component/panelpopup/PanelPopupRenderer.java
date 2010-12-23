@@ -337,7 +337,10 @@ public class PanelPopupRenderer extends GroupRenderer {
 
                 String autoPosition = (String) uiComponent.getAttributes().get("autoPosition");
                 call = "Ice.modal.start('" + clientId + "', '" + iframeUrl
-                        + "', '" + trigger + "'," + "manual".equalsIgnoreCase(autoPosition) + ");";
+                        + "', '" + trigger + "'," + "manual".equalsIgnoreCase(autoPosition) + ");" +
+                        "ice.onElementRemove('" + clientId + "',function() {Ice.modal.stop('" +
+                        clientId + "');});";
+
                 if (log.isTraceEnabled()) {
                     log.trace("Starting Modal Function");
                 }

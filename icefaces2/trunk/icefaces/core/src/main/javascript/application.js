@@ -59,6 +59,11 @@ if (!window.ice.icefaces) {
             append(afterUpdateListeners, callback);
         };
 
+        var elementRemoveListeners = [];
+        namespace.onElementRemove = function(id, callback) {
+            append(elementRemoveListeners, Cell(id, callback));
+        };
+
         function configurationOf(element) {
             return detect(parents(element), function(e) {
                 return e.configuration;
@@ -370,6 +375,7 @@ if (!window.ice.icefaces) {
             });
         }
 
+        //store form parameters in case the form will be updated (and thus parameters lost)
         var previousFormParameters = HashTable();
         namespace.onBeforeUpdate(function(updates) {
             each(findUpdatedForms(updates), function(form) {
@@ -408,6 +414,25 @@ if (!window.ice.icefaces) {
                 });
                 previousFormParameters = HashTable();
             }
+        });
+
+        //determine which elements are not present after an update, invoke corresponding callback when element was removed
+        namespace.onAfterUpdate(function(updates) {
+            elementRemoveListeners = reject(elementRemoveListeners, function(idCallbackTuple) {
+                var id = key(idCallbackTuple);
+                var notFound = !document.getElementById(id);
+                if (notFound) {
+                    var callback = value(idCallbackTuple);
+                    try {
+                        callback();
+                    } catch (e) {
+                        //ignore exception thrown in callback
+                        //to make sure that the corresponding entry is removed from the list 
+                    }
+                }
+
+                return notFound;
+            });
         });
 
         onKeyPress(document, function(ev) {
