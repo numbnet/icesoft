@@ -37,7 +37,7 @@ public class ConfigurationServer implements Server {
     private static final Logger log = Logger.getLogger(ConfigurationServer.class.getName());
     private static final int defaultServerErrorRetries = 3;
     private static final int defaultBlockingConnectionTimeout = 10000;
-    private static final String defaultFileExtension = "";
+    private static final String defaultURIPattern = "/{{command}}";
     private static final String BrowserIDCookieName = "ice.push.browser";
 
     private Server blockingConnectionServer;
@@ -52,15 +52,15 @@ public class ConfigurationServer implements Server {
         String contextPath = configuration.getAttribute("contextPath", (String) servletContext.getAttribute("contextPath"));
         long blockingConnectionTimeout = configuration.getAttributeAsLong("blockingConnectionTimeout", defaultBlockingConnectionTimeout);
         int serverErrorRetries = configuration.getAttributeAsInteger("serverErrorRetryTimeouts", defaultServerErrorRetries);
-        String fileExtension = configuration.getAttribute("fileExtension", defaultFileExtension);
+        String uriPattern = configuration.getAttribute("uriPattern", contextPath != null ? (contextPath + defaultURIPattern) : defaultURIPattern);
 
         String configurationMessage = "<configuration" +
                 (blockingConnectionTimeout != defaultBlockingConnectionTimeout ?
                         " heartbeatTimeout=\"" + blockingConnectionTimeout + "\"" : "") +
                 (serverErrorRetries != defaultServerErrorRetries ?
                         " serverErrorRetryTimeouts=\"" + serverErrorRetries + "\"" : "") +
-                (!fileExtension.equals(defaultFileExtension) ?
-                        " fileExtension=\"" + fileExtension + "\"" : "") +
+                (!uriPattern.equals(defaultURIPattern) ?
+                        " uriPattern=\"" + uriPattern + "\"" : "") +
                 (contextPath != null ?
                         " contextPath=\"" + contextPath + "\"" : "") +
                 "/>";

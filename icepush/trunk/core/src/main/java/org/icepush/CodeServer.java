@@ -26,20 +26,15 @@ import org.icepush.http.Response;
 import org.icepush.http.ResponseHandler;
 import org.icepush.http.standard.ResponseHandlerServer;
 
-import javax.servlet.ServletContext;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.SequenceInputStream;
 
 public class CodeServer extends ResponseHandlerServer {
-    public CodeServer(final ServletContext context) {
+    public CodeServer() {
         super(new ResponseHandler() {
             public void respond(Response response) throws Exception {
                 response.setHeader("Content-Type", "text/javascript");
                 InputStream code = CodeServer.class.getResourceAsStream("/META-INF/resources/icepush.js");
-                InputStream configuration = new ByteArrayInputStream(("ice.push.configuration.contextPath='" + context.getContextPath() + "';").getBytes("UTF-8"));
-
-                response.writeBodyFrom(new SequenceInputStream(code, configuration));
+                response.writeBodyFrom(code);
             }
         });
     }
