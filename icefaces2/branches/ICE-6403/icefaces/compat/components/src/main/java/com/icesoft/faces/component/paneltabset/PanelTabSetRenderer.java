@@ -606,7 +606,20 @@ public class PanelTabSetRenderer
             link.setAttribute(HTML.CLASS_ATTR, "icePnlTbLblLnk");
             
             if (labelFacet == null) {
-                td_mid_mid.appendChild(link);
+            	if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+                	Element button = domContext.createElement("input");
+                	button.setAttribute(HTML.TYPE_ATTR, "submit");
+                	button.setAttribute(HTML.VALUE_ATTR, label);
+                	button.setAttribute(HTML.NAME_ATTR, linkId);
+                	if (active) {
+                		button.setAttribute(HTML.CLASS_ATTR, "icePnlTbBtnOn");
+                	} else {
+                		button.setAttribute(HTML.CLASS_ATTR, "icePnlTbBtnOff");
+                	}
+                	td_mid_mid.appendChild(button);
+                } else {
+                	td_mid_mid.appendChild(link);
+                }
                 // set focus handler
                 if (tabSet.isKeyboardNavigationEnabled()) {
                     link.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.pnlTabOnFocus(this, false, true);");
