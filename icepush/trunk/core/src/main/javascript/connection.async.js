@@ -103,14 +103,9 @@ var AsyncConnection;
         }
 
         var lastSentPushIds = registeredPushIds();
-        //configuration->contextPath prevails if provided
-        function contextPath() {
-            return attributeAsString(configuration, 'contextPath', namespace.push.configuration.uriPrefix || '.');
-        }
 
-        //configuration->fileExtension prevails if provided
-        function fileExtension() {
-            return attributeAsString(configuration, 'fileExtension', namespace.push.configuration.uriSuffix);
+        function contextPath() {
+            return namespace.push.configuration.contextPath;
         }
 
         function askForConfiguration(query) {
@@ -130,8 +125,7 @@ var AsyncConnection;
                     offerCandidature();
                 } else {
                     debug(logger, 'connect...');
-                    var listenURI = ice.push.configuration.uri ? 
-                            ice.push.configuration.uri : contextPath() + '/listen.icepush' + fileExtension();                    
+                    var listenURI = applyURIPattern('listen.icepush');
                     listener = postAsynchronously(channel, listenURI, function(q) {
                         each(lastSentPushIds, curry(addNameValue, q, 'ice.pushid'));
                         askForConfiguration(q);

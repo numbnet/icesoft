@@ -54,7 +54,7 @@ public class MainServlet
         final PushGroupManager pushGroupManager = PushGroupManagerFactory.newPushGroupManager(context);
         final PushContext pushContext = new PushContext(context, pushGroupManager);
         PathDispatcher pathDispatcher = new PathDispatcher();
-        pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer(context)))));
+        pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer()))));
         pathDispatcher.dispatchOn(".*", new BrowserDispatcher(configuration) {
             protected PseudoServlet newServer(String browserID) {
                 return new BrowserBoundServlet(pushContext, context, pushGroupManager, timer, configuration);

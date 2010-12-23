@@ -110,8 +110,8 @@ if (!window.ice.icepush) {
             throw 'Server internal error: ' + contentAsText(response);
         }
 
-        function appendSuffix(uri, suffix) {
-            return uri + (suffix || namespace.push.configuration.uriSuffix || '');
+        function applyURIPattern(commandName) {
+            return replace(namespace.push.configuration.uriPattern, '{{command}}', commandName);
         }
 
         var currentNotifications = [];
@@ -145,7 +145,7 @@ if (!window.ice.icepush) {
 
             createPushId: function() {
                 var id;
-                postSynchronously(apiChannel, appendSuffix('create-push-id.icepush'), noop, FormPost, $witch(function (condition) {
+                postSynchronously(apiChannel, applyURIPattern('create-push-id.icepush'), noop, FormPost, $witch(function (condition) {
                     condition(OK, function(response) {
                         id = contentAsText(response);
                     });
@@ -155,7 +155,7 @@ if (!window.ice.icepush) {
             },
 
             notify: function(group) {
-                postAsynchronously(apiChannel, appendSuffix('notify.icepush'), function(q) {
+                postAsynchronously(apiChannel, applyURIPattern('notify.icepush'), function(q) {
                     addNameValue(q, 'group', group);
                 }, FormPost, $witch(function(condition) {
                     condition(ServerInternalError, throwServerError);
@@ -163,7 +163,7 @@ if (!window.ice.icepush) {
             },
 
             addGroupMember: function(group, id) {
-                postAsynchronously(apiChannel, appendSuffix('add-group-member.icepush'), function(q) {
+                postAsynchronously(apiChannel, applyURIPattern('add-group-member.icepush'), function(q) {
                     addNameValue(q, 'group', group);
                     addNameValue(q, 'id', id);
                 }, FormPost, $witch(function(condition) {
@@ -172,7 +172,7 @@ if (!window.ice.icepush) {
             },
 
             removeGroupMember: function(group, id) {
-                postAsynchronously(apiChannel, appendSuffix('remove-group-member.icepush'), function(q) {
+                postAsynchronously(apiChannel, applyURIPattern('remove-group-member.icepush'), function(q) {
                     addNameValue(q, 'group', group);
                     addNameValue(q, 'id', id);
                 }, FormPost, $witch(function(condition) {
@@ -219,14 +219,15 @@ if (!window.ice.icepush) {
             },
 
             configuration: {
-                uriSuffix: '',
-                uriPrefix: ''
+                contextPath: '.',
+                uriPattern: './{{command}}'
             }
         };
 
         function Bridge() {
             var windowID = namespace.windowID;
             var logger = childLogger(namespace.logger, windowID);
+            var publicConfiguration = namespace.push.configuration;
             var configurationElement = document.documentElement;//documentElement is used as a noop config. element
             var configuration = XMLDynamicConfiguration(function() {
                 return configurationElement;
@@ -239,6 +240,9 @@ if (!window.ice.icepush) {
             register(commandDispatcher, 'macro', Macro(commandDispatcher));
             register(commandDispatcher, 'configuration', function(message) {
                 configurationElement = message;
+                //update public values
+                publicConfiguration.contextPath = attributeAsString(configuration, 'contextPath', publicConfiguration.contextPath);
+                publicConfiguration.uriPattern = attributeAsString(configuration, 'uriPattern', publicConfiguration.uriPattern);
             });
             register(commandDispatcher, 'browser', function(message) {
                 document.cookie = BrowserIDCookieName + '=' + message.getAttribute('id');
