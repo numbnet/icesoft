@@ -16,6 +16,7 @@
 package com.icesoft.faces.component.util;
 
  
+import com.icesoft.faces.component.selectinputdate.SelectInputDate;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -478,6 +479,9 @@ public class CustomComponentUtils {
         }
         Map paramMap = facesContext.getExternalContext()
                 .getRequestParameterMap();
+        if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+        	paramMap = ((SelectInputDate)component).getParameterMap();
+        }
         if (paramMap.containsKey(clientId)) {
             //request parameter found, set submittedValue
             ((EditableValueHolder) component).setSubmittedValue(paramMap

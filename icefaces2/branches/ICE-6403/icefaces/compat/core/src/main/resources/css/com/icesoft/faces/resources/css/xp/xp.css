@@ -2975,3 +2975,8 @@ Disabled classes for the calendar controls
 	cursor:pointer; 
 	cursor:hand;
 }
+
+.iceSelInpDateCur .iceCmdLnkJSDis{
+	color:#FFFFFF;
+	background-color:#2A6CC2;
+}

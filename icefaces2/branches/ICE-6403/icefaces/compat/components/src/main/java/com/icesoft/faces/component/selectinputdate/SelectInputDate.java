@@ -160,7 +160,26 @@ public class SelectInputDate
     private Integer submittedMinutes = null;
     private Integer submittedSeconds = null;
     private String submittedAmPm= null;
-    /**
+    private Map<String, Map<String, String>> paramMap = new HashMap<String, Map<String, String>>();
+    private String clickedLink;
+    private Map parameterMap = new HashMap();
+    public Map getParameterMap() {
+		return parameterMap;
+	}
+
+	public void setParameterMap(Map parameterMap) {
+		this.parameterMap = parameterMap;
+	}
+
+	public String getClickedLink() {
+		return clickedLink;
+	}
+
+	public void setClickedLink(String clickedLink) {
+		this.clickedLink = clickedLink;
+	}
+
+	/**
      * Creates an instance and sets renderer type to "com.icesoft.faces.Calendar".
      */
     public SelectInputDate() {
@@ -173,6 +192,9 @@ public class SelectInputDate
         
     }
 
+    public Map<String, Map<String, String>> getParamMap() {
+    	return paramMap;
+    }
     /**
      * <p/>
      * CSS style attribute. </p>
@@ -669,7 +691,7 @@ public class SelectInputDate
     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
     */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[31];
+        Object values[] = new Object[33];
         values[0] = super.saveState(context);
         values[1] = _renderAsPopup;
         values[2] = _popupDateFormat;
@@ -701,6 +723,9 @@ public class SelectInputDate
         values[28] = submittedAmPm;
         values[29] = popupDate;
         values[30] = _renderWeekNumbers;
+        values[31] = paramMap;
+        values[32] = clickedLink;
+        
         return ((Object) (values));
     }
 
@@ -740,6 +765,8 @@ public class SelectInputDate
         submittedAmPm = (String)values[28];
         popupDate = (Date) values[29];
         _renderWeekNumbers = (Boolean) values[30];
+        paramMap = (Map) values[31];
+        clickedLink = (String)values[32];
     }
     
     public Object saveSeriesState(FacesContext facesContext) {
