@@ -47,6 +47,7 @@
 package com.icesoft.faces.component.selectinputdate;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.ext.HtmlCommandButton;
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.component.ext.HtmlGraphicImage;
 import com.icesoft.faces.component.ext.HtmlOutputText;
@@ -81,6 +82,8 @@ import java.text.DateFormatSymbols;
 import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -1322,39 +1325,58 @@ public class SelectInputDateRenderer
         String day = weekdaysLong[dayInt];
         String altText = null;
         String titleText = null;
+        StringBuffer params = new StringBuffer();
+
+        String componentId = "";
+        String btnValue = "";
+        
         // assign special ids for navigation links
         if (content.equals("<")) {
-            link.setId(component.getId() + this.PREV_MONTH);
+        	componentId = (component.getId() + this.PREV_MONTH);
             altText = getMessageWithParamFromResource(
                     facesContext, PREV_MONTH_ALT, month);
             titleText = getMessageWithParamFromResource(
                     facesContext, PREV_MONTH_TITLE, month);
+            btnValue = "<";
         } else if (content.equals(">")) {
-            link.setId(component.getId() + this.NEXT_MONTH);
+        	componentId = (component.getId() + this.NEXT_MONTH);
             altText = getMessageWithParamFromResource(
                     facesContext, NEXT_MONTH_ALT, month);
             titleText = getMessageWithParamFromResource(
                     facesContext, NEXT_MONTH_TITLE, month);
+            btnValue = ">";            
         } else if (content.equals(">>")) {
-            link.setId(component.getId() + this.NEXT_YEAR);
+        	componentId = (component.getId() + this.NEXT_YEAR);
             altText = getMessageWithParamFromResource(
                     facesContext, NEXT_YEAR_ALT, year);
             titleText = getMessageWithParamFromResource(
                     facesContext, NEXT_YEAR_TITLE, year);
+            btnValue = ">";            
         } else if (content.equals("<<")) {
-            link.setId(component.getId() + this.PREV_YEAR);
+        	componentId = (component.getId() + this.PREV_YEAR);
             altText = getMessageWithParamFromResource(
                     facesContext, PREV_YEAR_ALT, year);
             titleText = getMessageWithParamFromResource(
                     facesContext, PREV_YEAR_TITLE, year);
+            btnValue = "<";            
         } else {
-            link.setId(component.getId() + CALENDAR + content.hashCode());
+        	componentId = (component.getId() + CALENDAR + content.hashCode());
+            btnValue = content;
             if (log.isDebugEnabled()) {
                 log.debug("linkId=" +
                         component.getId() + CALENDAR + content.hashCode());
             }
         }
-
+        HtmlCommandButton button = null;
+        if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+	        button = new HtmlCommandButton();
+	        button.setId(componentId);
+	        button.setValue(btnValue);
+	        button.setTitle(titleText);
+	        button.setStyleClass("iceCmdLnkJSDis");
+        }
+        
+        link.setId(componentId);
         link.setPartialSubmit(true);
         link.setTransient(true);
         link.setImmediate(component.isImmediate());
@@ -1401,8 +1423,9 @@ public class SelectInputDateRenderer
         parameter.setName(component.getClientId(facesContext) + CALENDAR_CLICK);
         parameter.setValue(
                 converter.getAsString(facesContext, component, valueForLink));
+        Map<String, String> subMap = new HashMap<String, String>();
+        subMap.put(component.getClientId(facesContext) + CALENDAR_CLICK, converter.getAsString(facesContext, component, valueForLink));
 
-        component.getChildren().add(link);
         link.getChildren().add(parameter);
 
         //don't add this parameter for next and previouse button/link        
@@ -1415,11 +1438,26 @@ public class SelectInputDateRenderer
             parameter.setName(getHiddenFieldName(facesContext, component));
             parameter.setValue("false");
             link.getChildren().add(parameter);
+            subMap.put(getHiddenFieldName(facesContext, component), "false");
         }
-        link.encodeBegin(facesContext);
-        link.encodeChildren(facesContext);
-        link.encodeEnd(facesContext);
-        td.setAttribute(HTML.ID_ATTR, CSSNamePool.get(link.getClientId(facesContext) + "td"));
+
+        if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+            component.getChildren().add(button);
+            button.encodeBegin(facesContext);
+            button.encodeChildren(facesContext);
+            button.encodeEnd(facesContext);        
+            component.getParamMap().put(button.getClientId(facesContext), subMap);        	
+        } else {
+            component.getChildren().add(link);        
+            link.encodeBegin(facesContext);
+            link.encodeChildren(facesContext);
+            link.encodeEnd(facesContext);        	
+        }
+
+
+
+         
+         td.setAttribute(HTML.ID_ATTR, CSSNamePool.get(link.getClientId(facesContext) + "td"));
         try {
             Integer.parseInt(content);
             ((SelectInputDate) component).getLinkMap()
@@ -1578,7 +1616,7 @@ public class SelectInputDateRenderer
         }
         return IS_NOT;
     }
-
+ 
     /* (non-Javadoc)
     * @see com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer#decode(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
     */
@@ -1587,18 +1625,58 @@ public class SelectInputDateRenderer
         SelectInputDate dateSelect = (SelectInputDate) component;
         Map requestParameterMap =
                 facesContext.getExternalContext().getRequestParameterMap();
-        Object linkId = getLinkId(facesContext, component);
-        Object clickedLink = requestParameterMap.get(linkId);
         String clientId = component.getClientId(facesContext);
-//System.out.println("SIDR.decode()  clientId: " + clientId);
-
-        Object eventCapturedId = requestParameterMap.get("ice.event.captured");
+        Object linkId = getLinkId(facesContext, component);
         String monthClientId = clientId + SELECT_MONTH;
         String yearClientId = clientId + SELECT_YEAR;
         String hoursClientId = clientId + SELECT_HOUR;
         String minutesClientId = clientId + SELECT_MIN;
         String secondsClientId = clientId + SELECT_SEC;
         String amPmClientId = clientId + SELECT_AM_PM;
+        String cal = clientId + CALENDAR;
+        
+        if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+	        Iterator it = requestParameterMap.keySet().iterator();
+	        String param = "";
+	        while (it.hasNext()) {
+	        	param = String.valueOf(it.next());
+	        	dateSelect.getParameterMap().put(param, requestParameterMap.get(param));
+	        	if (param.startsWith(clientId)) {
+	        		if (param.equals(clientId + NEXT_MONTH) ||
+	        				param.equals(clientId + PREV_MONTH)||
+	        				param.equals(clientId + NEXT_YEAR) ||
+	        				param.equals(clientId + PREV_YEAR) ||
+	        				param.startsWith(cal)) {
+	        			dateSelect.getParameterMap().remove(linkId);        			
+	        			dateSelect.getParameterMap().put(linkId, param);
+	        		}
+	
+	        		if (dateSelect.getParamMap().containsKey(param)) {
+		        		Map<String, String> map = dateSelect.getParamMap().get(param);
+		        		Iterator<String> iot = map.keySet().iterator();
+		        		while (iot.hasNext()) {
+		        			String key = iot.next();
+		        			if ((
+		        					param.equals(clientId + NEXT_MONTH)  ||
+		        					param.equals(clientId + PREV_MONTH))&& key.endsWith(clientId + CALENDAR_CLICK)) {
+		        				dateSelect.getParameterMap().put(monthClientId, map.get(clientId + CALENDAR_CLICK));
+		        			}
+		        			if ((
+		        					param.equals(clientId + NEXT_YEAR)  ||
+		        					param.equals(clientId + PREV_YEAR))&& key.endsWith(clientId + CALENDAR_CLICK)) {
+		        				dateSelect.getParameterMap().put(yearClientId, map.get(clientId + CALENDAR_CLICK));
+		        			}	               			
+		        			dateSelect.getParameterMap().put(key, map.get(key));
+		        		}
+	            	}
+	        		
+	        	}
+	        }
+	        requestParameterMap = dateSelect.getParameterMap();
+        }
+        Object clickedLink = requestParameterMap.get(linkId);
+        Object eventCapturedId = requestParameterMap.get(linkId);
+
         if (requestParameterMap.containsKey(hoursClientId)) {
 //System.out.println("SIDR.decode()    Hours: " + requestParameterMap.get(hoursClientId));
             dateSelect.setHoursSubmittedValue(requestParameterMap.get(hoursClientId));
@@ -1708,10 +1786,9 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
 
     private void decodeNavigation(FacesContext facesContext,
                                   UIComponent component) {
-        Map requestParameterMap =
-                facesContext.getExternalContext().getRequestParameterMap();
+        Map requestParameterMap = getRequestParameterMap(facesContext, component);
         SelectInputDate dateSelect = (SelectInputDate) component;
-
+            
         // set the navDate on the Calendar
         if (log.isDebugEnabled()) {
             log.debug("setNavDate::");
@@ -1725,11 +1802,12 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
     }
 
     private void decodePopup(FacesContext facesContext, UIComponent component) {
-        Map requestParameterMap =
-                facesContext.getExternalContext().getRequestParameterMap();
+        Map requestParameterMap = getRequestParameterMap(facesContext, component);
+        SelectInputDate dateSelect = (SelectInputDate) component;
+
         String popupState = getHiddenFieldName(facesContext, component);
         String showPopup = (String) requestParameterMap.get(popupState);
-        SelectInputDate dateSelect = (SelectInputDate) component;
+
 
         if (log.isDebugEnabled()) {
             log.debug("decodePopup::" + showPopup);
@@ -1752,11 +1830,18 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
         dateSelect.setNavEvent(false);
     }
 
+    private Map getRequestParameterMap(FacesContext facesContext,
+            UIComponent component) {
+    	if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+    		return ((SelectInputDate)component).getParameterMap();
+    	} else {
+   		 	return facesContext.getExternalContext().getRequestParameterMap();
+    	}
+    }
     private void decodeSelectDate(FacesContext facesContext,
                                   UIComponent component) {
 
-        Map requestParameterMap =
-                facesContext.getExternalContext().getRequestParameterMap();
+        Map requestParameterMap = getRequestParameterMap(facesContext, component);
         String popupState = getHiddenFieldName(facesContext, component);
         String showPopup = (String) requestParameterMap.get(popupState);
         SelectInputDate dateSelect = (SelectInputDate) component;
@@ -1780,8 +1865,11 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
             log.debug("decodeUIInput::");
             log.debug("#################################");
         }
+        
 
         CustomComponentUtils.decodeUIInput(facesContext, component, clientId + CALENDAR_CLICK);
+        
+
         Object submittedValue = dateSelect.getSubmittedValue();
         if (submittedValue instanceof String &&
                 submittedValue.toString().trim().length() > 0) {
@@ -1797,10 +1885,12 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
     private void decodeInputText(FacesContext facesContext,
                                  UIComponent component) {
         Map requestParameterMap =
-                facesContext.getExternalContext().getRequestParameterMap();
+                 getRequestParameterMap(facesContext, component);
+        SelectInputDate dateSelect = (SelectInputDate) component;
+   
         String popupState = getHiddenFieldName(facesContext, component);
         String showPopup = (String) requestParameterMap.get(popupState);
-        SelectInputDate dateSelect = (SelectInputDate) component;
+
         String clientId = dateSelect.getClientId(facesContext);
 //System.out.println("SIDR.decodeInputText()  clientId: " + clientId);
         Object linkId = getLinkId(facesContext, component);
@@ -1850,8 +1940,7 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
         DateTimeConverter converter = dateSelect.resolveDateTimeConverter(facesContext);
         if (SelectInputDate.isTime(converter)) {
 //System.out.println("mergeTimeIntoDateString()    TIME");
-            Map requestParameterMap =
-                    facesContext.getExternalContext().getRequestParameterMap();
+            Map requestParameterMap =  getRequestParameterMap(facesContext, dateSelect);
 
             String hoursClientId = clientId + SELECT_HOUR;
             String minutesClientId = clientId + SELECT_MIN;
