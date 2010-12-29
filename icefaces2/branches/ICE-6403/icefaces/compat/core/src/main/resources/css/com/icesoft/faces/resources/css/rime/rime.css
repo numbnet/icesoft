@@ -3152,3 +3152,10 @@ Disabled classes for the calendar controls
     border: 0;	
     width:0px;
 }	
+
+.iceCmdLnkJSDis{
+	border:none;
+	background:none;
+	cursor:pointer; 
+	cursor:hand;
+}
