@@ -23,6 +23,7 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.component.AttributeConstants;
+import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import org.icefaces.impl.util.DOMUtils;
 import org.w3c.dom.Element;
@@ -33,8 +34,11 @@ import javax.faces.component.NamingContainer;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
+import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.render.Renderer;
+
 import java.beans.Beans;
 import java.io.IOException;
 import java.util.Iterator;
@@ -46,6 +50,12 @@ public class CommandLinkRenderer extends DomBasicRenderer {
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         validateParameters(facesContext, uiComponent, UICommand.class);
+        if ("HtmlCommandLink".equals(uiComponent.getClass().getSimpleName()) &&
+        		CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+        	getButtonRenderer(facesContext).decode(facesContext, uiComponent);
+        	return;
+        }
+        
         if (isStatic(uiComponent)) {
             return;
         }
@@ -78,12 +88,37 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         return hiddenFieldName;
     }
 
+    private Renderer getButtonRenderer(FacesContext facesContext) {
+    	return facesContext.getRenderKit().getRenderer(HtmlCommandButton.COMPONENT_FAMILY,
+                "javax.faces.Button");
+    }
+    
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, UICommand.class);
-
+        if ("HtmlCommandLink".equals(uiComponent.getClass().getSimpleName()) &&
+        		CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+        	Object styleClass = uiComponent.getAttributes().get("styleClass");
+        	boolean disClassAdded = false;
+        	String iceCmdLnkJSDis = "iceCmdLnkJSDis";
+        	if (styleClass != null) {
+        		disClassAdded  = styleClass.toString().indexOf(iceCmdLnkJSDis) > 0? true: false ;
+        	}
+        	if (!disClassAdded) {
+            	if (styleClass != null) {
+            		uiComponent.getAttributes().put("styleClass", iceCmdLnkJSDis + " "+ styleClass.toString());
+            	} else {
+            		uiComponent.getAttributes().put("styleClass", iceCmdLnkJSDis);
+            	}            	
+        	}              	
+        	getButtonRenderer(facesContext).encodeBegin(facesContext, uiComponent);
+        	return;
+        }
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
+        
+
+        
         boolean disabled = false;
         try {
             disabled = Boolean.valueOf(String.valueOf(uiComponent.getAttributes().get("disabled"))).booleanValue();
@@ -163,6 +198,13 @@ public class CommandLinkRenderer extends DomBasicRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, UICommand.class);
+        if ("HtmlCommandLink".equals(uiComponent.getClass().getSimpleName()) &&
+        		CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+        	getButtonRenderer(facesContext).encodeEnd(facesContext, uiComponent);
+
+        	return;
+        }
+        
         DOMContext domContext = DOMContext.getDOMContext(facesContext, uiComponent);
         domContext.stepOver();
     }
