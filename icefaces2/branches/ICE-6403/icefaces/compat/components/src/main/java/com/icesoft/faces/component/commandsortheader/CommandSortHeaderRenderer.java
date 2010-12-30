@@ -25,17 +25,36 @@ package com.icesoft.faces.component.commandsortheader;
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.ext.renderkit.CommandLinkRenderer;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
 import java.io.IOException;
+import java.util.Map;
 
 public class CommandSortHeaderRenderer extends CommandLinkRenderer {
     
+    public void decode(FacesContext facesContext, UIComponent uiComponent) {
+        validateParameters(facesContext, uiComponent, UICommand.class);
+        if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+	        String commandLinkClientId = uiComponent.getClientId(facesContext);
+	        Map requestParameterMap =
+	                facesContext.getExternalContext().getRequestParameterMap();
+	        if (requestParameterMap.containsKey(commandLinkClientId)) {
+	            // this command link caused the submit so queue an event
+	            uiComponent.queueEvent(new ActionEvent(uiComponent));
+	        }
+        } else {
+        	super.decode(facesContext, uiComponent);
+        }
+    }	
     /*
      *  (non-Javadoc)
      * @see javax.faces.render.Renderer#encodeEnd(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
@@ -49,6 +68,7 @@ public class CommandSortHeaderRenderer extends CommandLinkRenderer {
             HtmlDataTable dataTable = sortHeader.findParentDataTable();
 
             Node child = null;
+            String value = dataTable.getSortColumn();
             DOMContext domContext =
                     DOMContext.getDOMContext(facesContext, uiComponent);
             Element root = (Element) domContext.getRootNode();
@@ -56,33 +76,54 @@ public class CommandSortHeaderRenderer extends CommandLinkRenderer {
             if (headerClass != null) {
                 root.setAttribute(HTML.CLASS_ATTR, headerClass);
             }
+            child = (Element)root.getFirstChild();
+            if (child != null) {
+                if (child.getNodeType() == 1) { //span
+                    child = child.getFirstChild();
+                }
+                value = child.getNodeValue();
+            }
+            
+            Element div = root;
+            Element btn = null;
+            if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+            	div = (Element) domContext.createElement(HTML.DIV_ELEM);
+            	btn = (Element) domContext.createElement(HTML.INPUT_ELEM);
+            	div.appendChild(btn);
+            	btn.setAttribute(HTML.NAME_ATTR, root.getAttribute("id"));
+            	btn.setAttribute(HTML.ID_ATTR, root.getAttribute("id"));
+            	btn.setAttribute(HTML.TYPE_ATTR, "submit");
+            	btn.setAttribute(HTML.VALUE_ATTR, value);
+            	btn.setAttribute(HTML.CLASS_ATTR, "iceCmdLnkJSDis");
+            	root.getParentNode().replaceChild(div, root);
+            	root = div;
+            }
+            
             if (sortHeader.getColumnName().equals(dataTable.getSortColumn())) {
-                child = root.getFirstChild();
+
                 if (dataTable.isSortAscending()) {
                     headerClass += "Asc";
                 } else {
                     headerClass += "Desc";
                 }
-                if (child != null) {
-                    if (child.getNodeType() == 1) { //span
-                        child = child.getFirstChild();
-                    }
-                    String value = child.getNodeValue();
-                    Element table = domContext.createElement(HTML.TABLE_ELEM);
-                    Element tr = domContext.createElement(HTML.TR_ELEM);
-                    table.appendChild(tr);
-                    Element textTd = domContext.createElement(HTML.TD_ELEM);
-                    textTd.appendChild(domContext.createTextNode(value));
-                    Element arrowTd = domContext.createElement(HTML.TD_ELEM);
-                    tr.appendChild(textTd);
-                    tr.appendChild(arrowTd);
-                    Element arrowDiv = domContext.createElement(HTML.DIV_ELEM);
-                    arrowDiv.setAttribute(HTML.CLASS_ATTR, headerClass);
-                    arrowDiv.setAttribute("valign", "middle");
-                    arrowTd.appendChild(arrowDiv);
-                    child.setNodeValue("");
-                    child.getParentNode().appendChild(table);                   
-                }
+                Element arrowDiv = domContext.createElement(HTML.DIV_ELEM);
+                arrowDiv.setAttribute(HTML.CLASS_ATTR, headerClass);
+                arrowDiv.setAttribute("valign", "middle");   
+	        	Element table = domContext.createElement(HTML.TABLE_ELEM);
+	            Element tr = domContext.createElement(HTML.TR_ELEM);
+	            table.appendChild(tr);
+	            Element textTd = domContext.createElement(HTML.TD_ELEM);
+	            if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {	
+	             	textTd.appendChild(btn); 
+	            } else {
+	              	textTd.appendChild(domContext.createTextNode(value));  	
+	            }
+	            Element arrowTd = domContext.createElement(HTML.TD_ELEM);
+	            tr.appendChild(textTd);
+	            tr.appendChild(arrowTd);
+	            arrowTd.appendChild(arrowDiv);
+	            child.setNodeValue("");
+	            root.appendChild(table);    
             }
         }
         super.encodeEnd(facesContext, uiComponent);
