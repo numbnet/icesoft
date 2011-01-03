@@ -32,6 +32,10 @@ import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ExceptionHandler;
+import javax.faces.context.ExceptionHandlerWrapper;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
@@ -227,6 +231,11 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
                 FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
         Lifecycle lifecycle = factory.getLifecycle(
                 LifecycleFactory.DEFAULT_LIFECYCLE);
+        ExceptionHandler oldHandler = facesContext.getExceptionHandler();
+        //all Exceptions will be ignored since no further action can be taken
+        //during window disposal
+        facesContext.setExceptionHandler( 
+                new DiscardingExceptionHandler(oldHandler) );
         lifecycle.execute(facesContext);
 
         UIViewRoot viewRoot = facesContext.getViewRoot();
@@ -246,6 +255,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
                 }
             }
         }
+        facesContext.setExceptionHandler(oldHandler);
     }
 
     private static void callPreDestroy(Object object) {
@@ -446,4 +456,25 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
             }
         }
     }
+
+    static class DiscardingExceptionHandler extends ExceptionHandlerWrapper  {
+        ExceptionHandler wrapped;
+
+        public DiscardingExceptionHandler(ExceptionHandler wrapped)  {
+            this.wrapped = wrapped;
+        }
+
+        public void processEvent(SystemEvent exceptionQueuedEvent)  {
+            Throwable throwable = ((ExceptionQueuedEvent)exceptionQueuedEvent)
+                    .getContext().getException();
+            if (log.isLoggable(Level.FINE)) {
+                log.log(Level.FINE, "Exception during window disposal " + throwable);
+            }
+        }
+
+        public javax.faces.context.ExceptionHandler getWrapped()  {
+            return wrapped;
+        }
+    }
+
 }
