@@ -367,6 +367,9 @@ var ComponentIndicators;
         ice.onSubmitResponse(function() {
             indctrs && off(indctrs.busy);
         });
+        ice.onNetworkError(function() {
+            indctrs && on(indctrs.connectionLost);
+        });
         ice.onServerError(function() {
             indctrs && on(indctrs.serverError);
         });

@@ -83,14 +83,14 @@
         container.appendChild(overlay);
 
         var resize = container.tagName.toLowerCase() == 'body' ?
-                     function() {
-                         overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-                         overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
-                     } :
-                     function() {
-                         overlayStyle.width = container.offsetWidth + 'px';
-                         overlayStyle.height = container.offsetHeight + 'px';
-                     };
+                function() {
+                    overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
+                    overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+                } :
+                function() {
+                    overlayStyle.width = container.offsetWidth + 'px';
+                    overlayStyle.height = container.offsetHeight + 'px';
+                };
         resize();
         onResize(window, resize);
     }
@@ -118,6 +118,13 @@
                 description = extractTagContent('body', html);
             }
             PopupIndicator(message, description, BackgroundOverlay);
+        });
+
+        namespace.onNetworkError(function() {
+            if (namespace.configuration.disableDefaultIndicators) {
+                return;
+            }
+            PopupIndicator("Network Connection Interrupted", "Reload this page to try to reconnect.", BackgroundOverlay);
         });
 
         namespace.onSessionExpiry(function() {
