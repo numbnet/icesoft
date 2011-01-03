@@ -34,6 +34,11 @@ if (!window.ice.icefaces) {
             append(sessionExpiryListeners, callback);
         };
 
+        var networkErrorListeners = [];
+        namespace.onNetworkError = function(callback) {
+            append(networkErrorListeners, callback);
+        };
+
         var serverErrorListeners = [];
         namespace.onServerError = function(callback) {
             append(serverErrorListeners, callback);
@@ -240,6 +245,7 @@ if (!window.ice.icefaces) {
                 broadcast(serverErrorListeners, [ e.responseCode, e.responseText, isXMLResponse ? xmlContent : null]);
             } else if (e.status == 'httpError') {
                 warn(logger, 'HTTP error [code: ' + e.responseCode + ']: ' + e.description);
+                broadcast(networkErrorListeners, [ e.responseCode, e.description]);
             }
         });
 
