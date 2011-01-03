@@ -28,6 +28,8 @@ import javax.faces.component.UIData;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -218,4 +220,9 @@ public class CoreComponentUtils {
         String focusedElement = (String) map.get("ice.focus");
         return focusedElement != null && ClientIdPattern.matcher(focusedElement).matches() ? focusedElement : "";
     }
+    
+    public static boolean isJavaScriptDisabled(FacesContext facesContext) {
+    	HttpSession sesh = (HttpSession)facesContext.getExternalContext().getSession(false);
+    	return (sesh.getAttribute("org.icefaces.JavaScriptDisabled") != null);
+    }    
 }

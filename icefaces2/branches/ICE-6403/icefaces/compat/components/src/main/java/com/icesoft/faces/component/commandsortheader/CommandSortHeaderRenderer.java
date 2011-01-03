@@ -28,6 +28,8 @@ import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.util.CoreComponentUtils;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -43,7 +45,7 @@ public class CommandSortHeaderRenderer extends CommandLinkRenderer {
     
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         validateParameters(facesContext, uiComponent, UICommand.class);
-        if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+        if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
 	        String commandLinkClientId = uiComponent.getClientId(facesContext);
 	        Map requestParameterMap =
 	                facesContext.getExternalContext().getRequestParameterMap();
@@ -86,7 +88,7 @@ public class CommandSortHeaderRenderer extends CommandLinkRenderer {
             
             Element div = root;
             Element btn = null;
-            if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+            if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
             	div = (Element) domContext.createElement(HTML.DIV_ELEM);
             	btn = (Element) domContext.createElement(HTML.INPUT_ELEM);
             	div.appendChild(btn);
@@ -113,7 +115,7 @@ public class CommandSortHeaderRenderer extends CommandLinkRenderer {
 	            Element tr = domContext.createElement(HTML.TR_ELEM);
 	            table.appendChild(tr);
 	            Element textTd = domContext.createElement(HTML.TD_ELEM);
-	            if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {	
+	            if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {	
 	             	textTd.appendChild(btn); 
 	            } else {
 	              	textTd.appendChild(domContext.createTextNode(value));  	

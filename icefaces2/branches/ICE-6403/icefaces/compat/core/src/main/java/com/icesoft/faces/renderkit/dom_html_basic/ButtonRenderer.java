@@ -57,7 +57,7 @@ public class ButtonRenderer extends DomBasicRenderer {
      * @param uiComponent
      * @return boolean
      */
-    private boolean didThisButtonInvokeSubmit(
+    protected boolean didThisButtonInvokeSubmit(
             FacesContext facesContext, UIComponent uiComponent) {
         //find if the form submitted by a textField, workaround to deal with the default behaviour of the browser
         //(e.g.) if a form has a button on it, and enter key pressed on a text field, form submitted by the first intance of button

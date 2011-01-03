@@ -18,6 +18,8 @@ package com.icesoft.faces.component.util;
  
 import com.icesoft.faces.component.selectinputdate.SelectInputDate;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
+import com.icesoft.util.CoreComponentUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -33,7 +35,7 @@ import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.el.PropertyNotFoundException;
-import javax.servlet.http.HttpSession;
+
 
 import java.io.IOException;
 import java.util.Date;
@@ -479,7 +481,7 @@ public class CustomComponentUtils {
         }
         Map paramMap = facesContext.getExternalContext()
                 .getRequestParameterMap();
-        if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+        if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
         	paramMap = ((SelectInputDate)component).getParameterMap();
         }
         if (paramMap.containsKey(clientId)) {
@@ -611,10 +613,5 @@ public class CustomComponentUtils {
         if (!component.isRendered()) return false;
         if (component instanceof UIViewRoot) return true;
         return isAncestorRendered(component.getParent());   
-    }
- 
-    public static boolean isJavaScriptDisabled(FacesContext facesContext) {
-    	HttpSession sesh = (HttpSession)facesContext.getExternalContext().getSession(false);
-    	return (sesh.getAttribute("org.icefaces.JavaScriptDisabled") != null);
     }
 }
