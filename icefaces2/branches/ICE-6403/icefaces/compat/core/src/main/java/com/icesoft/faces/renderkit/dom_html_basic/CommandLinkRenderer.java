@@ -23,8 +23,9 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.component.AttributeConstants;
-import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.util.CoreComponentUtils;
+
 import org.icefaces.impl.util.DOMUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -51,7 +52,7 @@ public class CommandLinkRenderer extends DomBasicRenderer {
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         validateParameters(facesContext, uiComponent, UICommand.class);
         if ("HtmlCommandLink".equals(uiComponent.getClass().getSimpleName()) &&
-        		CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+        		CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
         	getButtonRenderer(facesContext).decode(facesContext, uiComponent);
         	return;
         }
@@ -97,7 +98,7 @@ public class CommandLinkRenderer extends DomBasicRenderer {
             throws IOException {
         validateParameters(facesContext, uiComponent, UICommand.class);
         if ("HtmlCommandLink".equals(uiComponent.getClass().getSimpleName()) &&
-        		CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+        		CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
         	Object styleClass = uiComponent.getAttributes().get("styleClass");
         	boolean disClassAdded = false;
         	String iceCmdLnkJSDis = "iceCmdLnkJSDis";
@@ -199,7 +200,7 @@ public class CommandLinkRenderer extends DomBasicRenderer {
             throws IOException {
         validateParameters(facesContext, uiComponent, UICommand.class);
         if ("HtmlCommandLink".equals(uiComponent.getClass().getSimpleName()) &&
-        		CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+        		CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
         	getButtonRenderer(facesContext).encodeEnd(facesContext, uiComponent);
 
         	return;

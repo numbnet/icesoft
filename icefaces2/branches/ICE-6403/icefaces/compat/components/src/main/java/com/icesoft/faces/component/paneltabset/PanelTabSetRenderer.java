@@ -53,6 +53,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.icesoft.util.CoreComponentUtils;
 import com.icesoft.util.pooling.ClientIdPool;
 import com.icesoft.util.pooling.CSSNamePool;
 
@@ -606,7 +607,7 @@ public class PanelTabSetRenderer
             link.setAttribute(HTML.CLASS_ATTR, "icePnlTbLblLnk");
             
             if (labelFacet == null) {
-            	if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+            	if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
                 	Element button = domContext.createElement("input");
                 	button.setAttribute(HTML.TYPE_ATTR, "submit");
                 	button.setAttribute(HTML.VALUE_ATTR, label);

@@ -40,6 +40,8 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
+import com.icesoft.util.CoreComponentUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
@@ -86,7 +88,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
         //add click handler if not disabled and toggleOnClick is set to true
         if (panelCollapsible.isToggleOnClick() &&
                 !panelCollapsible.isDisabled()) {
-			if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+			if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
 	            //Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
 	            //hiddenField.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
 	            //hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");

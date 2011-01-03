@@ -63,6 +63,7 @@ import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.utils.MessageUtils;
+import com.icesoft.util.CoreComponentUtils;
 import com.icesoft.util.pooling.CSSNamePool;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -1368,7 +1369,7 @@ public class SelectInputDateRenderer
             }
         }
         HtmlCommandButton button = null;
-        if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+        if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
 	        button = new HtmlCommandButton();
 	        button.setId(componentId);
 	        button.setValue(btnValue);
@@ -1441,7 +1442,7 @@ public class SelectInputDateRenderer
             subMap.put(getHiddenFieldName(facesContext, component), "false");
         }
 
-        if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+        if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
             component.getChildren().add(button);
             button.encodeBegin(facesContext);
             button.encodeChildren(facesContext);
@@ -1635,7 +1636,7 @@ public class SelectInputDateRenderer
         String amPmClientId = clientId + SELECT_AM_PM;
         String cal = clientId + CALENDAR;
         
-        if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+        if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
 	        Iterator it = requestParameterMap.keySet().iterator();
 	        String param = "";
 	        while (it.hasNext()) {
@@ -1832,7 +1833,7 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
 
     private Map getRequestParameterMap(FacesContext facesContext,
             UIComponent component) {
-    	if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
+    	if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
     		return ((SelectInputDate)component).getParameterMap();
     	} else {
    		 	return facesContext.getExternalContext().getRequestParameterMap();
