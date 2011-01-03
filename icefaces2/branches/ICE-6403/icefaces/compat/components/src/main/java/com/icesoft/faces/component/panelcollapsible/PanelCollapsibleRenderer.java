@@ -87,25 +87,27 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
         if (panelCollapsible.isToggleOnClick() &&
                 !panelCollapsible.isDisabled()) {
 			if (CustomComponentUtils.isJavaScriptDisabled(facesContext)) {
-	            Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
-	            hiddenField.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
-	            hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
-				hiddenField.setAttribute(HTML.VALUE_ATTR, panelCollapsible.isExpanded() ? "true" : "false" ); 
-				
-	            root.appendChild(hiddenField);
+	            //Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
+	            //hiddenField.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
+	            //hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
+				//hiddenField.setAttribute(HTML.VALUE_ATTR, panelCollapsible.isExpanded() ? "true" : "false" ); 				
+	            //root.appendChild(hiddenField);
+	
 	            UIComponent form = findForm(uiComponent);
 	            if (form == null) {
 	                throw new FacesException("PanelCollapsible must be contained within a form");
 	            } 
-	            header.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "hdr");
+
 	            Element div = domContext.createElement(HTML.DIV_ELEM);
 	            div.setAttribute(HTML.STYLE_ATTR, "padding:0px;background-image:none;width:100%;");
+	            header.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "hdr");
 	            header.appendChild(div);
 	            //this anchor should be known by the component only, so we are defining style to the component level
 	            Element button = domContext.createElement(HTML.BUTTON_ELEM);
 	            button.setAttribute(HTML.STYLE_ATTR, "width:100%; height:100%; border:1px solid black; background-color:transparent; margin:0px;");
 	            button.setAttribute(HTML.TYPE_ATTR, "submit");
-		        button.setAttribute(HTML.VALUE_ATTR, "GUUUUH");
+				button.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
+				button.setAttribute(HTML.VALUE_ATTR, panelCollapsible.isExpanded() ? "true" : "false" ); 				
 	            div.appendChild(button);	               				
 			} else {
 	            Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
