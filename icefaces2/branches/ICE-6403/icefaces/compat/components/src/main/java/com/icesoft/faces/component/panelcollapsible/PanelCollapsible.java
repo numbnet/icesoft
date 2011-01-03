@@ -65,8 +65,7 @@ public class PanelCollapsible extends UICommand {
     	if (map.containsKey(clientId) && !map.get(clientId).toString().equals("")) {
             getAttributes().put(getMatureClientId()+"changedByDecode", "true");
     		boolean exp = Boolean.valueOf(map.get(clientId).toString()).booleanValue();
-    		exp = !exp;
-    		setExpanded(exp);
+    		setExpanded(!exp);
     		queueEvent(new ActionEvent(this));
     	}
     }
