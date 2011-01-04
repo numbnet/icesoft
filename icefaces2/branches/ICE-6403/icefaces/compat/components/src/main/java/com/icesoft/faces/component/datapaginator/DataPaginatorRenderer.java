@@ -57,9 +57,14 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 
+import java.util.HashMap;
 import org.w3c.dom.Element;
-
+import javax.faces.component.UICommand;
+import com.icesoft.faces.component.util.CustomComponentUtils;
+import com.icesoft.util.CoreComponentUtils;
 import com.icesoft.faces.component.ext.HtmlCommandLink;
+import javax.faces.component.html.HtmlCommandButton;
+import javax.faces.component.html.HtmlOutputText;
 import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.component.CSS_DEFAULT;
@@ -83,8 +88,17 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         ExtendedAttributeConstants.getAttributes(
             ExtendedAttributeConstants.ICE_DATAPAGINATOR,
             PASSTHRU_EXCLUDE);
+
+	private static final Map<String, String> noJsLabelMap = new HashMap<String,String>() {{
+		  put("fastf", ">>");   
+		  put("fastr", "<<"); 
+		  put("previous", "<");   
+		  put("next", ">");
+		  put("last", ">|");   
+		  put("first", "|<");
+	}};    
     
-    public boolean getRendersChildren() {
+	public boolean getRendersChildren() {
         return true;
     }
 
@@ -357,16 +371,16 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             td.setAttribute(HTML.CLASS_ATTR, scrollButtonCellClass);
             tr.appendChild(td);
             domContext.setCursorParent(td);
-            renderFacet(facesContext, scroller, facetComp, facetName);
+            Element e = renderFacet(facesContext, domContext, scroller, facetComp, facetName);
+			if (e != null) td.appendChild(e);
         }
     }
     
-    protected void renderFacet(FacesContext facesContext,
+    protected Element renderFacet(FacesContext facesContext, DOMContext domContext,
                                DataPaginator scroller,
                                UIComponent facetComp, String facetName)
             throws IOException {
-        HtmlCommandLink link =
-                (HtmlCommandLink) getLink(facesContext, scroller, facetName);
+        Object linkObj = getLink(facesContext, domContext, scroller, facetName);
 
         if (scroller.isDisabled() ||
             (!scroller.isModelResultSet() && scroller.getPageCount() <= 1) ||
@@ -379,16 +393,29 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
              DataPaginator.FACET_NEXT.equals(facetName) 
              ))
             ) {
-            link.getAttributes().put(HTML.ONCLICK_ATTR, "return false;");
-            link.getAttributes().put(HTML.STYLE_ATTR, "cursor:default;");
-            link.getAttributes().put(HTML.STYLE_CLASS_ATTR, CSS_DEFAULT.COMMAND_LINK_DEFAULT_STYLE_CLASS+"-dis");            
-        } else {
-            link.setDisabled(false);
+				if (!CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
+					UICommand link = (UICommand) linkObj;
+		            link.getAttributes().put(HTML.ONCLICK_ATTR, "return false;");
+		            link.getAttributes().put(HTML.STYLE_ATTR, "cursor:default;");
+		            link.getAttributes().put(HTML.STYLE_CLASS_ATTR, CSS_DEFAULT.COMMAND_LINK_DEFAULT_STYLE_CLASS+"-dis");
+				} else {
+					Element button = (Element)linkObj;
+					button.setAttribute(HTML.STYLE_ATTR, "cursor:default;");
+					button.setAttribute(HTML.STYLE_CLASS_ATTR, CSS_DEFAULT.COMMAND_LINK_DEFAULT_STYLE_CLASS+"-dis");
+				}	      
+        } else if (linkObj instanceof HtmlCommandLink) {
+			((HtmlCommandLink)linkObj).setDisabled(false);
         }
-
-        link.encodeBegin(facesContext);
-        encodeParentAndChildren(facesContext, facetComp);
-        link.encodeEnd(facesContext);
+		
+		if (!CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
+	        UICommand link = (UICommand) linkObj;
+			link.encodeBegin(facesContext);
+	        encodeParentAndChildren(facesContext, facetComp);
+	        link.encodeEnd(facesContext);
+			return null;
+		} else {
+			return (Element)linkObj;
+		}
     }
 
     protected void renderPaginator(FacesContext facesContext,
@@ -477,63 +504,131 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
     protected Element getLink(FacesContext facesContext, DOMContext domContext,
                               DataPaginator scroller,
                               String text, int pageIndex, String formId) {
-
-        Element link = domContext.createElement(HTML.ANCHOR_ELEM);
-        if (text != null) {
-            link.appendChild(domContext.createTextNode(text));
-        }
-        String linkid = ClientIdPool.get(scroller.getClientId(facesContext) +
-                        DataPaginatorRenderer.PAGE_NAVIGATION +
-                        Integer.toString(pageIndex));
-        String onClick = /*"document.forms['"+ formId + "']" + "['"+ formId +":_idcl']" + ".value='" +  linkid  + "'"+ 
-        		";*/"document.forms['" + formId + "']['" +
-              scroller.getClientId(facesContext) + "'].value='" +
-              DataPaginatorRenderer.PAGE_NAVIGATION + text + "'" +
-              ";iceSubmit(" + " document.forms['" + formId + "']," +
-              " this,event); " + "return false;";
-        link.setAttribute(HTML.ID_ATTR, linkid);
-        if (scroller.isDisabled()) {
-            link.removeAttribute(HTML.ONCLICK_ATTR);
-        } else {
-            link.setAttribute(HTML.ONCLICK_ATTR, onClick);
-        }
-        link.setAttribute(HTML.HREF_ATTR, "javascript:;");
-        PassThruAttributeRenderer.renderOnFocus(scroller, link);
-        PassThruAttributeRenderer.renderOnBlur(link);
-        return link;
+		if (!CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
+	        Element link = domContext.createElement(HTML.ANCHOR_ELEM);
+	        if (text != null) {
+	            link.appendChild(domContext.createTextNode(text));
+	        }
+	        String linkid = ClientIdPool.get(scroller.getClientId(facesContext) +
+	                        DataPaginatorRenderer.PAGE_NAVIGATION +
+	                        Integer.toString(pageIndex));
+	        String onClick = /*"document.forms['"+ formId + "']" + "['"+ formId +":_idcl']" + ".value='" +  linkid  + "'"+ 
+	        		";*/"document.forms['" + formId + "']['" +
+	              scroller.getClientId(facesContext) + "'].value='" +
+	              DataPaginatorRenderer.PAGE_NAVIGATION + text + "'" +
+	              ";iceSubmit(" + " document.forms['" + formId + "']," +
+	              " this,event); " + "return false;";
+	        link.setAttribute(HTML.ID_ATTR, linkid);
+	        if (scroller.isDisabled()) {
+	            link.removeAttribute(HTML.ONCLICK_ATTR);
+	        } else {
+	            link.setAttribute(HTML.ONCLICK_ATTR, onClick);
+	        }
+	        link.setAttribute(HTML.HREF_ATTR, "javascript:;");
+	        PassThruAttributeRenderer.renderOnFocus(scroller, link);
+	        PassThruAttributeRenderer.renderOnBlur(link);
+	        return link;
+		} else {
+			Element button = domContext.createElement(HTML.BUTTON_ELEM);
+	        if (text != null) {
+	            button.appendChild(domContext.createTextNode(text));
+	        }
+			String linkid;
+			if (text != "idx") linkid = 
+							ClientIdPool.get(scroller.getClientId(facesContext) +
+	                        DataPaginatorRenderer.PAGE_NAVIGATION +
+	                        Integer.toString(pageIndex));
+			else linkid = scroller.getClientId(facesContext);
+	        
+			button.setAttribute(HTML.ID_ATTR, linkid);
+			button.setAttribute(HTML.NAME_ATTR,	scroller.getClientId(facesContext));
+			button.setAttribute(HTML.VALUE_ATTR, DataPaginatorRenderer.PAGE_NAVIGATION + text); 					
+	        if (scroller.isDisabled()) {
+	            button.setAttribute(HTML.TYPE_ATTR, "hidden");
+	        } else {
+	            button.setAttribute(HTML.TYPE_ATTR, "submit");
+	        }				
+			return button;
+		}
     }
 
-    protected HtmlCommandLink getLink(FacesContext facesContext,
+    protected Object getLink(FacesContext facesContext, DOMContext domContext,
                                       DataPaginator scroller,
                                       String facetName) {
-        Application application = facesContext.getApplication();
+		Application application = facesContext.getApplication();
+	
+		if (!CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
+	        HtmlCommandLink link = (HtmlCommandLink) application.createComponent(HtmlCommandLink.COMPONENT_TYPE);
+	        
+			String id = scroller.getId() + facetName;
+	        link.setId(id);
+	        link.setTransient(true);
+	        UIParameter parameter = (UIParameter) application
+	                .createComponent(UIParameter.COMPONENT_TYPE);
+	        parameter.setId(id + "_param");
+	        parameter.setTransient(true);
+	        parameter.setName(scroller.getClientId(facesContext));
+	        parameter.setValue(facetName);
+	        //getChildren doesn't need any check for the childCount
+	        List children = link.getChildren();
+	        children.add(parameter);
+        
+	        // For some reason, these components being marked transient isn't 
+	        // resulting in them going away, so we'll explicitly remove old ones
+	        for(int i = 0; i < scroller.getChildCount(); i++) {
+	            UIComponent comp = (UIComponent) scroller.getChildren().get(i);
+	            if (comp.getId().equals(id)) {
+	                scroller.getChildren().remove(i);
+	                break;
+	            }
+	        }
+        
+	        scroller.getChildren().add(link);
+	        return link;
+		} else {
+			Element button = domContext.createElement(HTML.BUTTON_ELEM);
+	        button.appendChild(domContext.createTextNode(noJsLabelMap.get(facetName)));
 
-        HtmlCommandLink link = (HtmlCommandLink) application
-                .createComponent(HtmlCommandLink.COMPONENT_TYPE);
-        String id = scroller.getId() + facetName;
-        link.setId(id);
-        link.setTransient(true);
-        UIParameter parameter = (UIParameter) application
-                .createComponent(UIParameter.COMPONENT_TYPE);
-        parameter.setId(id + "_param");
-        parameter.setTransient(true);
-        parameter.setName(scroller.getClientId(facesContext));
-        parameter.setValue(facetName);
-        //getChildren doesn't need any check for the childCount
-        List children = link.getChildren();
-        children.add(parameter);
+			String id = scroller.getId() + facetName;
+	        
+			button.setAttribute(HTML.ID_ATTR, id);
+			button.setAttribute(HTML.NAME_ATTR,	scroller.getClientId(facesContext));
+			button.setAttribute(HTML.VALUE_ATTR, facetName); 					
+	        if (scroller.isDisabled()) {
+	            button.setAttribute(HTML.TYPE_ATTR, "hidden");
+	        } else {
+	            button.setAttribute(HTML.TYPE_ATTR, "submit");
+	        }				
+			return button;
+			/*						
+			HtmlCommandButton button = (HtmlCommandButton) application.createComponent(HtmlCommandButton.COMPONENT_TYPE);
+			
+			String id = scroller.getId() + facetName;
+	        button.setId(id);
+	        button.setTransient(true);
+
+	        button.getAttributes().put(HTML.ID_ATTR, id);
+	        button.getAttributes().put(HTML.VALUE_ATTR, facetName); 			
+			
+	        HtmlOutputText display = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
+	        display.setTransient(true);			
+	        display.setValue(noJsLabelMap.get(facetName));
+	        //getChildren doesn't need any check for the childCount
+	        List children = button.getChildren();
+	        children.add(display);
+       
+	        // For some reason, these components being marked transient isn't 
+	        // resulting in them going away, so we'll explicitly remove old ones
+	        for(int i = 0; i < scroller.getChildCount(); i++) {
+	            UIComponent comp = (UIComponent) scroller.getChildren().get(i);
+	            if (comp.getId().equals(id)) {
+	                scroller.getChildren().remove(i);
+	                break;
+	            }
+	        }
         
-        // For some reason, these components being marked transient isn't 
-        // resulting in them going away, so we'll explicitly remove old ones
-        for(int i = 0; i < scroller.getChildCount(); i++) {
-            UIComponent comp = (UIComponent) scroller.getChildren().get(i);
-            if (comp.getId().equals(id)) {
-                scroller.getChildren().remove(i);
-                break;
-            }
-        }
-        
-        scroller.getChildren().add(link);
-        return link;
+	        scroller.getChildren().add(button);				
+			return button;	*/		
+		}
     }
 }
