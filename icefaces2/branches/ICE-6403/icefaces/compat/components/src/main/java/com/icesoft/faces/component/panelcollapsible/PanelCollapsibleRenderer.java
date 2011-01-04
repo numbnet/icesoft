@@ -89,12 +89,6 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
         if (panelCollapsible.isToggleOnClick() &&
                 !panelCollapsible.isDisabled()) {
 			if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
-	            //Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
-	            //hiddenField.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
-	            //hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
-				//hiddenField.setAttribute(HTML.VALUE_ATTR, panelCollapsible.isExpanded() ? "true" : "false" ); 				
-	            //root.appendChild(hiddenField);
-	
 	            UIComponent form = findForm(uiComponent);
 	            if (form == null) {
 	                throw new FacesException("PanelCollapsible must be contained within a form");
@@ -106,7 +100,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
 	            header.appendChild(div);
 	            //this anchor should be known by the component only, so we are defining style to the component level
 	            Element button = domContext.createElement(HTML.BUTTON_ELEM);
-	            button.setAttribute(HTML.STYLE_ATTR, "width:100%; height:100%; border:1px solid black; background-color:transparent; margin:0px;");
+	            button.setAttribute(HTML.STYLE_ATTR, "border:0px; width:100%; height:100%; background-color:transparent; margin:0; padding:0;");
 	            button.setAttribute(HTML.TYPE_ATTR, "submit");
 				button.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
 				button.setAttribute(HTML.VALUE_ATTR, panelCollapsible.isExpanded() ? "true" : "false" ); 				
@@ -167,6 +161,11 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
                 header = (Element) domContext.getRootNode().getFirstChild();
             }
             domContext.setCursorParent(header);
+
+			if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
+				headerFacet.getAttributes().put(HTML.STYLE_ATTR, "float:left; position:relative; top:-17px; left:2px;");
+			}
+			
             CustomComponentUtils.renderChild(facesContext, headerFacet);
         }
 
