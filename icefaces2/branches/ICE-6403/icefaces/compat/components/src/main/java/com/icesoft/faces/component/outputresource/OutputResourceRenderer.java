@@ -29,6 +29,7 @@ import javax.faces.context.FacesContext;
 
 import org.w3c.dom.Element;
 
+import com.icesoft.util.CoreComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -61,7 +62,7 @@ public class OutputResourceRenderer extends DomBasicInputRenderer {
 			
 			Element resource = null;
 		        		
-			if( OutputResource.TYPE_BUTTON.equals(outputResource.getType())){
+			if( OutputResource.TYPE_BUTTON.equals(outputResource.getType()) && !CoreComponentUtils.isJavaScriptDisabled(facesContext)){
 				resource = domContext.createElement(HTML.INPUT_ELEM);
 				resource.setAttribute(HTML.TYPE_ATTR, "button");
 				resource.setAttribute(HTML.VALUE_ATTR, outputResource.getLabel());
