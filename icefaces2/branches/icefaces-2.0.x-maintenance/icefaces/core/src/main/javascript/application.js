@@ -65,9 +65,10 @@ if (!window.ice.icefaces) {
         };
 
         function configurationOf(element) {
-            return detect(parents(element), function(e) {
-                return e.configuration;
-            }).configuration;
+            return detect(parents(element),
+                         function(e) {
+                             return e.configuration;
+                         }).configuration;
         }
 
         function deltaSubmit(element) {
@@ -76,6 +77,10 @@ if (!window.ice.icefaces) {
 
         function viewIDOf(element) {
             return configurationOf(element).viewID;
+        }
+
+        function formOf(element) {
+            return toLowerCase(element.nodeName) == 'form' ? element : enclosingForm(element);
         }
 
         function lookupElementById(id) {
@@ -271,7 +276,7 @@ if (!window.ice.icefaces) {
             };
         };
 
-        namespace.captureSubmit = function(id, delta) {
+        namespace.captureSubmit = function(id) {
             var f = document.getElementById(id);
             //hijack browser form submit, instead submit through an Ajax request
             f.nativeSubmit = f.submit;
@@ -282,11 +287,6 @@ if (!window.ice.icefaces) {
                 f[name] = function(e) {
                     var event = e || window.event;
                     var element = event.target || event.srcElement;
-                    var disabled = document.getElementById(id + ":ajaxDisabled");
-                    if ((disabled) &&
-                            (disabled.value.indexOf(" " + element.id + " ") >= 0)) {
-                        return true;
-                    }
                     f.onsubmit = function() {
                         submit(event, element);
                         f.onsubmit = none;
