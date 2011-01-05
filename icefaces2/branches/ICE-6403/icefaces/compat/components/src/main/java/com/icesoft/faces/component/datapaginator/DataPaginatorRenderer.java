@@ -400,8 +400,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
 		            link.getAttributes().put(HTML.STYLE_CLASS_ATTR, CSS_DEFAULT.COMMAND_LINK_DEFAULT_STYLE_CLASS+"-dis");
 				} else {
 					Element button = (Element)linkObj;
-					button.setAttribute(HTML.STYLE_ATTR, "cursor:default;");
-					button.setAttribute(HTML.STYLE_CLASS_ATTR, CSS_DEFAULT.COMMAND_LINK_DEFAULT_STYLE_CLASS+"-dis");
+					button.setAttribute(HTML.DISABLED_ATTR, "disabled");
 				}	      
         } else if (linkObj instanceof HtmlCommandLink) {
 			((HtmlCommandLink)linkObj).setDisabled(false);
