@@ -370,7 +370,7 @@ init: function(params) {
     }
     // hidden field to store date value string
     var calValueId = rootId + "_value";
-    var calValueEl = new Element(document.createElement("input"), {type:"hidden", id:calValueId, name:calValueId, value:params.dateStr});
+    var calValueEl = new Element(document.createElement("input"), {type:"hidden", id:calValueId, name:calValueId, value:params.hiddenValue});
     calValueEl.appendTo(calRootEl);
     this[rootId].calValueEl = calValueEl;
     var calendar; // IceCalendar object

@@ -84,6 +84,8 @@ public class DateTimeEntryRenderer extends Renderer {
         String pageDate = formatter.format(date);
         formatter.applyPattern("MM/dd/yyyy");
         String selectedDate = formatter.format(date);
+        formatter.applyPattern("yyyy-M-d H:m");
+        String hiddenValue = formatter.format(date);
 
 //        System.out.println("DateTimeEntry.getDateTimeConverterPattern(converter) = " + DateTimeEntry.getDateTimeConverterPattern(converter));
         formatter.applyPattern(DateTimeEntry.getDateTimeConverterPattern(converter));
@@ -140,6 +142,7 @@ public class DateTimeEntryRenderer extends Renderer {
                 JSONBuilder.create().
                 beginMap().
                     entry("dateStr", dateStr).
+                    entry("hiddenValue", hiddenValue).
                     entry("selectedHour", selectedHour).
                     entry("selectedMinute", selectedMinute).
                     entry("hourField", hourField).
