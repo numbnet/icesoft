@@ -95,7 +95,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
 	            } 
 
 	            Element div = domContext.createElement(HTML.DIV_ELEM);
-	            div.setAttribute(HTML.STYLE_ATTR, "padding:0px;background-image:none;width:100%;");
+	            div.setAttribute(HTML.STYLE_ATTR, "position:relative;padding:0px;background-image:none;width:100%;");
 	            header.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "hdr");
 	            header.appendChild(div);
 	            //this anchor should be known by the component only, so we are defining style to the component level
@@ -163,7 +163,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
             domContext.setCursorParent(header);
 
 			if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
-				headerFacet.getAttributes().put(HTML.STYLE_ATTR, "float:left; position:relative; top:-17px; left:2px;");
+				headerFacet.getAttributes().put(HTML.STYLE_ATTR, "height:26px; v-align:middle; position:absolute; top:0px; left:0px;");
 			}
 			
             CustomComponentUtils.renderChild(facesContext, headerFacet);
