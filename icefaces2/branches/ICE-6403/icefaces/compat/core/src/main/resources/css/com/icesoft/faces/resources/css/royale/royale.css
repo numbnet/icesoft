@@ -2943,3 +2943,18 @@ Disabeld classes for the calendar controls
 	color:#FFFFFF;
 	background-color:#2A6CC2;
 }
+
+.iceJSDISPnlCnf {
+	background-color: #7F7F7F;   
+	width: 100%; 
+	height: 100%; 
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+
+.iceJSDISPnlCnf table {
+	width:300px;
+	margin-top:25%;
+	margin-left:50%;			
+}
