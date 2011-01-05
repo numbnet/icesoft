@@ -24,7 +24,6 @@ package org.icefaces.impl.context;
 
 import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
 import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
-import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
 import org.w3c.dom.Attr;
@@ -117,24 +116,11 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
         try {
             String data = new String(cbuf, off, len);
 
-            //Write out the <?xml or <!DOCTYPE preamble as text rather than
-            //trying to handle them as DOM nodes, but only if it's not an
-            //Ajax request.  If it's an Ajax request, then we need to store
-            //them as view attributes and rewrite them out on partial responses
-            //that are postbacks.
+            //Handle the <?xml... and <!DOCTYPE.. preamble as text rather than
+            //trying to handle them as DOM nodes.
+            //TODO: perhaps handling them as DOM elements would be beneficial?
             if (data.startsWith(XML_MARKER) || data.startsWith(DOCTYPE_MARKER)) {
-                PartialViewContext pvc = FacesContext.getCurrentInstance().getPartialViewContext();
-                if (pvc == null || !pvc.isAjaxRequest()) {
-                    writer.write(data);
-                } else {
-                    if (data.startsWith(XML_MARKER)) {
-                        storeViewAttribute(XML_MARKER, data);
-                    }
-
-                    if (data.startsWith(DOCTYPE_MARKER)) {
-                        storeViewAttribute(DOCTYPE_MARKER, data);
-                    }
-                }
+                processXMLPreamble(data);
                 return;
             }
 
@@ -143,6 +129,33 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
             if (log.isLoggable(Level.INFO)) {
                 log.log(Level.INFO, "cannot write " + new String(cbuf, off, len), e);
             }
+        }
+    }
+
+    private void processXMLPreamble(String data) throws IOException {
+        FacesContext fc = FacesContext.getCurrentInstance();
+
+        //First check if this is a portlet as the preamble processing
+        //is not required at all in that case.
+        if( EnvUtils.instanceofPortletRequest(fc.getExternalContext().getRequest()) ) {
+            return;
+        }
+
+        PartialViewContext pvc = fc.getPartialViewContext();
+
+        //If it's an Ajax request, then we need to store the preamble
+        //as view attributes and rewrite them out for ViewRoot updates.
+        if (pvc != null && pvc.isAjaxRequest() ) {
+            if (data.startsWith(XML_MARKER)) {
+                storeViewAttribute(XML_MARKER, data);
+            }
+
+            if (data.startsWith(DOCTYPE_MARKER)) {
+                storeViewAttribute(DOCTYPE_MARKER, data);
+            }
+        } else {
+            //For non-Ajax, servlet requests simply defer to the normal processing.
+            writer.write(data);
         }
     }
 
