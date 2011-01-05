@@ -50,8 +50,17 @@ public class PanelConfirmation extends UIComponentBase {
     
     private String style = null;
     private String styleClass = null;
+    private boolean showWhenJSDisable;
     
-    public PanelConfirmation() {
+    public boolean isShowWhenJSDisable() {
+		return showWhenJSDisable;
+	}
+
+	public void setShowWhenJSDisable(boolean showWhenJSDisable) {
+		this.showWhenJSDisable = showWhenJSDisable;
+	}
+
+	public PanelConfirmation() {
         setRendererType(DEFAULT_RENDERER_TYPE);
         JavascriptContext.includeLib(JavascriptContext.ICE_EXTRAS,
                                      FacesContext.getCurrentInstance());

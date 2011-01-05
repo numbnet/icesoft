@@ -24,18 +24,23 @@ package com.icesoft.faces.component.panelconfirmation;
 
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
+import com.icesoft.faces.component.ext.renderkit.FormRenderer;
+import com.icesoft.faces.component.util.CustomComponentUtils;
 
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.util.CoreUtils;
 
 import javax.faces.context.FacesContext;
+import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
+import javax.faces.event.ActionEvent;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.Map;
 
 import com.icesoft.util.pooling.ClientIdPool;
 import com.icesoft.util.CoreComponentUtils;
@@ -77,13 +82,20 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
         String id = panelConfirmation.getClientId(facesContext);
         
         rootDiv.setAttribute(HTML.ID_ATTR, id);
-        String style = panelConfirmation.getStyle();
-        if (style != null) {
-            rootDiv.setAttribute(HTML.STYLE_ATTR, style + "display: none;");
-        } else {
-            rootDiv.setAttribute(HTML.STYLE_ATTR, "display: none;");
-        }
         rootDiv.setAttribute(HTML.CLASS_ATTR, panelConfirmation.getStyleClass());
+        String style = panelConfirmation.getStyle();
+        if (CoreComponentUtils.isJavaScriptDisabled(facesContext) && 
+        		panelConfirmation.isShowWhenJSDisable()) {
+                rootDiv.setAttribute(HTML.CLASS_ATTR, panelConfirmation.getStyleClass() + " iceJSDISPnlCnf");
+         } else {
+            if (style != null) {
+                rootDiv.setAttribute(HTML.STYLE_ATTR, style + "display: none;");
+            } else {
+                rootDiv.setAttribute(HTML.STYLE_ATTR, "display: none;");
+            }
+        }
+
+
         
         Element table = domContext.createElement(HTML.TABLE_ELEM);
         table.setAttribute(HTML.CELLPADDING_ATTR, "0");
@@ -158,11 +170,25 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
 	        rootDiv.appendChild(clientOnly);
         }
         
+        FormRenderer.addHiddenField(facesContext, uiComponent.getClientId());
+        
         domContext.stepOver();
     }
     
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
-        
+    	if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
+	        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
+	        String componentClientId = uiComponent.getClientId(facesContext);
+	        if (requestParameterMap.containsKey(componentClientId+ "-accept")) {
+	        	if (uiComponent.getAttributes().containsKey("owner")) {
+	        		String buttonId = String.valueOf(uiComponent.getAttributes().get("owner"));
+	            	UICommand button = (UICommand) CoreComponentUtils.findComponent(buttonId, 
+	            						uiComponent);
+	            	button.queueEvent(new ActionEvent(button));
+	
+	        	}
+	        } 
+    	}
         
     }
     
@@ -179,6 +205,7 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
         acceptButton.setAttribute(HTML.VALUE_ATTR, acceptLabel);
         acceptButton.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_SUBMIT);
         acceptButton.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "-accept"));
+        acceptButton.setAttribute(HTML.NAME_ATTR, ClientIdPool.get(id + "-accept"));
         acceptButton.setAttribute(HTML.ONCLICK_ATTR, "Ice.PanelConfirmation.current.accept();return false;");
         td.appendChild(acceptButton);
     }
@@ -196,17 +223,21 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
         cancelButton.setAttribute(HTML.VALUE_ATTR, cancelLabel);
         cancelButton.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_SUBMIT);
         cancelButton.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "-cancel"));
+        cancelButton.setAttribute(HTML.NAME_ATTR, ClientIdPool.get(id + "-cancel"));
         cancelButton.setAttribute(HTML.ONCLICK_ATTR, "Ice.PanelConfirmation.current.cancel();return false;");
         td.appendChild(cancelButton);
     }
     
     public static String renderOnClickString(UIComponent uiComponent, String originalOnClick) {
-    
         String panelConfirmationId = String.valueOf(uiComponent.getAttributes().get("panelConfirmation"));
         PanelConfirmation panelConfirmation = (PanelConfirmation) CoreComponentUtils
                 .findComponent(panelConfirmationId, uiComponent);
         if (panelConfirmation != null) {
-            FacesContext facesContext = FacesContext.getCurrentInstance();
+        	panelConfirmation.getAttributes().put("owner", uiComponent.getId());
+        	if (CoreComponentUtils.isJavaScriptDisabled(FacesContext.getCurrentInstance())) {
+        		return "";
+        	}
+        	FacesContext facesContext = FacesContext.getCurrentInstance();
             panelConfirmationId = panelConfirmation.getClientId(facesContext);
             String autoCentre = panelConfirmation.isAutoCentre() ? "true" : "false";
             String draggable = panelConfirmation.isDraggable() ? "true" : "false";

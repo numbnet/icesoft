@@ -26,11 +26,31 @@ import com.icesoft.faces.component.ext.HtmlCommandButton;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
+import com.icesoft.faces.component.panelconfirmation.PanelConfirmation;
 import com.icesoft.faces.component.panelconfirmation.PanelConfirmationRenderer;
+import com.icesoft.faces.component.util.CustomComponentUtils;
+import com.icesoft.util.CoreComponentUtils;
 
 public class ButtonRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.ButtonRenderer {
 
+    public void decode(FacesContext facesContext, UIComponent uiComponent) {
+        super.decode(facesContext, uiComponent);
+    	if (didThisButtonInvokeSubmit(facesContext, uiComponent)) {
+        	if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
+                String panelConfirmationId = String.valueOf(uiComponent.getAttributes().get("panelConfirmation"));
+                PanelConfirmation panelConfirmation = (PanelConfirmation) CoreComponentUtils
+                        .findComponent(panelConfirmationId, uiComponent);
+                if (panelConfirmation != null) {   
+                	panelConfirmation.setShowWhenJSDisable(true);
+                	facesContext.renderResponse();
+                }
+        	}
+        }    	
+    }
+    
     protected void renderOnClick(UIComponent uiComponent, Element root) {
         HtmlCommandButton button = (HtmlCommandButton) uiComponent;
         String onclick = (String) uiComponent.getAttributes().get("onclick");
