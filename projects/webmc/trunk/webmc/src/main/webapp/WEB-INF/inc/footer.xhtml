@@ -31,6 +31,7 @@
   ~
 -->
 <table xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:ice="http://www.icesoft.com/icefaces/component"
        class="height100" 
        width="100%"
        border="0" 
@@ -38,11 +39,11 @@
        cellpadding="0">
     <tr>
         <td align="left" class="footerText" style="padding: 36px 0 0 30px;">
-            <strong>&amp;copy; COPYRIGHT 2008</strong> 
+            <strong><ice:outputText value="&amp;copy;" escape="false" /> COPYRIGHT 2011</strong> 
             <a href="http://www.icesoft.com/" class="linkOrange">ICESOFT TECHNOLOGIES INC.</a>
         </td>
         <td align="right" class="footerText" style="padding: 36px 20px 0 0;">
-            POWERED BY &amp;nbsp;
+            POWERED BY <ice:outputText value="&amp;nbsp;" escape="false" />
             <a href="http://www.icefaces.org" class="linkOrange">
                 <strong>ICEfaces</strong>
             </a>

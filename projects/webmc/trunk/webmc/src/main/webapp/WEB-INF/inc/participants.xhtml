@@ -83,7 +83,7 @@
                                   visible="#{not empty list and not list.moderator}"
                                   value="resources/images/bullet_grey.gif"
                                   style="vertical-align: bottom; float: left;"/>
-                &amp;nbsp;
+                <ice:outputText value="&amp;nbsp;" escape="false" />
                 <ice:commandLink id="passModeratorLnk"
                                  value="#{list.firstName} #{list.lastName}"
                                  title="#{msgs['page.participants.passModeratorCommandLink.title.partOne']} #{list.firstName} #{msgs['page.participants.passModeratorCommandLink.title.partTwo']}"
