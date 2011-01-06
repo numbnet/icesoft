@@ -112,6 +112,14 @@ var renderFooter = function(html) {
     html[html.length] = "</td></tr></tfoot>";
     return html;
 };
+var doSelectCell = function(e, cal) {
+    IceCalendar.superclass.doSelectCell.call(this, e, cal);
+    var target = Event.getTarget(e),
+        tagName = target.tagName.toLowerCase();
+    if (tagName == "a") {
+        target.focus();
+    }
+};
 var getProperty = function(key) {
     if (key == "pageDate") {
         key = "pagedate";
@@ -134,7 +142,7 @@ var setProperty = function(key, value) {
     }
     this.cfg.setProperty(key, value, false);
 };
-var overrides = {renderFooter:renderFooter, get:getProperty, set:setProperty};
+var overrides = {renderFooter:renderFooter, doSelectCell:doSelectCell, get:getProperty, set:setProperty};
 lang.extend(IceCalendar, YuiCalendar, overrides);
 
 var ns = { // public functions for calendar namespace
@@ -382,8 +390,6 @@ init: function(params) {
             var dateStr = args[0][0][0] + "-" + args[0][0][1] + "-" + args[0][0][2] + " " + time.hr + ":" + time.min;
             calValueEl.set("value", dateStr, true);
             if (params.singleSubmit) {
-                YAHOO.log("Calling ice.se() with:", "info", "calendar.js");
-                YAHOO.log(Dom.get(rootId), "info", "calendar.js");
                 ice.se(null, rootId);
             }
         }
@@ -532,18 +538,16 @@ init: function(params) {
     Event.onDOMReady(domReady);
 },
 initialize: function(clientId, jsProps, jsfProps, bindYUI) {
-    YAHOO.log("In initialize()", "info", "calendar.js");
     this[clientId] = this[clientId] || {};
     var params = lang.merge({clientId:clientId}, jsProps, jsfProps);
-    YAHOO.log("params = " + lang.dump(params), "info", "calendar.js");
+//    console.log("params =", lang.dump(params));
     this.init(params);
     bindYUI(this[clientId].yuiComponent);
 },
 updateProperties: function(clientId, jsProps, jsfProps, events) {
     Event.onContentReady(clientId, function(){
-    YAHOO.log("In updateProperties()", "info", "calendar.js");
-    YAHOO.log("jsProps = " + JSON.stringify(jsProps, null, 4), "info", "calendar.js");
-    YAHOO.log("jsfProps = " + JSON.stringify(jsfProps, null, 4), "info", "calendar.js");
+//    console.log("jsProps =", JSON.stringify(jsProps, null, 4));
+//    console.log("jsfProps =", JSON.stringify(jsfProps, null, 4));
 //    logger.log("In updateProperties()");
 //    logger.log("renderAsPopup = " + jsfProps.renderAsPopup);
     var context = ice.component.getJSContext(clientId);
