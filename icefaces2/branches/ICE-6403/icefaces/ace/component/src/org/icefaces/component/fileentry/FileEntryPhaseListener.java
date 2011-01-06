@@ -29,6 +29,7 @@ import org.icefaces.apache.commons.fileupload.FileItemStream;
 import org.icefaces.apache.commons.fileupload.FileItemIterator;
 import org.icefaces.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.icefaces.apache.commons.fileupload.util.Streams;
+import com.icesoft.util.CoreComponentUtils;
 
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
@@ -167,7 +168,6 @@ public class FileEntryPhaseListener implements PhaseListener {
             FileEntry.storeResultsForLaterInLifecycle(phaseEvent.getFacesContext(), clientId2Results);
             progressListenerResourcePusher.clear();
             
-            // Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
             Map<String, String[]> parameterMap = new HashMap<String, String[]>(
                 ((parameterListMap.size() > 0) ? parameterListMap.size() : 1) );
             for(String key : parameterListMap.keySet()) {
@@ -176,19 +176,23 @@ public class FileEntryPhaseListener implements PhaseListener {
                 values = parameterList.toArray(values);
                 parameterMap.put(key, values);
             }
-            
-//            System.out.println("FileEntryPhaseListener.beforePhase()  parameterMap    : " + parameterMap);
-            Object wrapper = null;
-            if( requestObject instanceof HttpServletRequest ){
-                wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, parameterMap);
-            } else {
-                wrapper = getPortletRequestWrapper(requestObject,parameterMap);
-            }
-            phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
-            PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
-            if (pvc instanceof DOMPartialViewContext)
-                ((DOMPartialViewContext) pvc).setAjaxRequest(true);
-            pvc.setPartialRequest(true);
+	            // Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
+      
+	//            System.out.println("FileEntryPhaseListener.beforePhase()  parameterMap    : " + parameterMap);
+	            Object wrapper = null;
+	            if( requestObject instanceof HttpServletRequest ){
+	                wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, parameterMap, CoreComponentUtils.isJavaScriptDisabled(phaseEvent.getFacesContext()));
+	            } else {
+	                wrapper = getPortletRequestWrapper(requestObject,parameterMap);
+	            }
+	            phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
+
+			if (!CoreComponentUtils.isJavaScriptDisabled(phaseEvent.getFacesContext())) {
+	            PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
+	            if (pvc instanceof DOMPartialViewContext)
+	                ((DOMPartialViewContext) pvc).setAjaxRequest(true);
+	            	pvc.setPartialRequest(true);
+			}
             // Apparently not necessary, as long as we don't call
             // FacesContext.isPostback() before this point
             //phaseEvent.getFacesContext().getAttributes().remove(
@@ -206,7 +210,7 @@ public class FileEntryPhaseListener implements PhaseListener {
 //            System.out.println("FileEntryPhaseListener.beforePhase()  Temporary test of adding Faces-Request HTTP header");
             Object wrapper = null;
             if( requestObject instanceof HttpServletRequest ){
-                wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, null);
+                wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, null, CoreComponentUtils.isJavaScriptDisabled(phaseEvent.getFacesContext()));
             } else {
                 wrapper = getPortletRequestWrapper(requestObject,null);
             }
@@ -308,6 +312,7 @@ public class FileEntryPhaseListener implements PhaseListener {
 //System.out.println("File    config: " + config);
 
                 results = clientId2Results.get(config.getClientId());
+
                 if (results == null) {
                     results = new FileEntryResults(config.isViaCallback());
                     clientId2Results.put(config.getClientId(), results);
@@ -460,17 +465,20 @@ public class FileEntryPhaseListener implements PhaseListener {
         private static final String FACES_REQUEST = "Faces-Request";
         private static final String PARTIAL_AJAX = "partial/ajax";
         private static final String CONTENT_TYPE = "content-type";
+		private static boolean jsDisabled = false;
 
         private Map<String,String[]> parameterMap;
 
         public FileUploadRequestWrapper(HttpServletRequest httpServletRequest,
-                                        Map<String,String[]> parameterMap)
+                                        Map<String,String[]> parameterMap, boolean jsDisabled)
         {
             super(httpServletRequest);
+			this.jsDisabled = jsDisabled;
             this.parameterMap = parameterMap;
         }
 
         public String getHeader(String name) {
+			if (jsDisabled) return super.getHeader(name);
 //System.out.println("getHeader()  " + name);
             if (name != null) {
                 if (name.equals(FACES_REQUEST)) {
@@ -486,6 +494,7 @@ public class FileEntryPhaseListener implements PhaseListener {
         }
 
         public java.util.Enumeration<String> getHeaders(java.lang.String name) {
+			if (jsDisabled) return super.getHeaders(name);
 //System.out.println("getHeaders()  " + name);
             if (name != null) {
                 if (name.equals(FACES_REQUEST)) {
