@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package org.icefaces.fileentry;
 
 import org.icefaces.component.fileentry.FileEntryResults;

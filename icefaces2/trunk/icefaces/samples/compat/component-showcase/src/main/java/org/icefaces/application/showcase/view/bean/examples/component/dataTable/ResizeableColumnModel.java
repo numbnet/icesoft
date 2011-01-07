@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package org.icefaces.application.showcase.view.bean.examples.component.dataTable;
 
 import javax.faces.bean.ManagedBean;

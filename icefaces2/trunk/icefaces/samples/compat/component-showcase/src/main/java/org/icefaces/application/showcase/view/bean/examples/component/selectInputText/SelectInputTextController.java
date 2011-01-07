@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package org.icefaces.application.showcase.view.bean.examples.component.selectInputText;
 
 import com.icesoft.faces.component.selectinputtext.SelectInputText;

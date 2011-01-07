@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package org.icefaces.application.showcase.view.bean.examples.component.progressBar;
 
 import com.icesoft.faces.async.render.SessionRenderer;

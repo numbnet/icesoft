@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelToolTip;
 
 import com.icesoft.faces.component.DisplayEvent;

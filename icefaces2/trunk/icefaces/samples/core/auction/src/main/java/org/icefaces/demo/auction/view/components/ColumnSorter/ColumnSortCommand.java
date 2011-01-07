@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package org.icefaces.demo.auction.view.components.ColumnSorter;
 
 import org.icefaces.demo.auction.view.beans.AuctionBean;

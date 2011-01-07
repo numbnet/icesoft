@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 (function() {
     var off = operator();
 

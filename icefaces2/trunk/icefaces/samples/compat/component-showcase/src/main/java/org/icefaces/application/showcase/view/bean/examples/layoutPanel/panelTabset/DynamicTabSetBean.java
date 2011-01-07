@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelTabset;
 
 import org.icefaces.application.showcase.util.MessageBundleLoader;
