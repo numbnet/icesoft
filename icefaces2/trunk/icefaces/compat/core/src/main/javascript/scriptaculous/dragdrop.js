@@ -1,7 +1,7 @@
 /*
  * Version: MPL 1.1
  *
- * "The contents of this file are subject to the Mozilla Public License
+ * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * http://www.mozilla.org/MPL/
@@ -14,17 +14,10 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
- *
  */
-
-// Copyright (c) 2005-2007 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
-//           (c) 2005-2007 Sammi Williams (http://www.oriontransfer.co.nz, sammi@oriontransfer.co.nz)
-// 
-// script.aculo.us is freely distributable under the terms of an MIT-style license.
-// For details, see the script.aculo.us web site: http://script.aculo.us/
 
 if (Object.isUndefined(Effect))
     throw("dragdrop.js requires including script.aculo.us' effects.js library");
