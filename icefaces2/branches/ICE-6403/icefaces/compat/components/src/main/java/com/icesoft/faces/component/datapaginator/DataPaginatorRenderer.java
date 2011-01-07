@@ -541,7 +541,9 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
 	        
 			button.setAttribute(HTML.ID_ATTR, linkid);
 			button.setAttribute(HTML.NAME_ATTR,	scroller.getClientId(facesContext));
-			button.setAttribute(HTML.VALUE_ATTR, DataPaginatorRenderer.PAGE_NAVIGATION + text); 					
+			button.setAttribute(HTML.CLASS_ATTR, "iceCmdLnkJSDis");
+			button.setAttribute(HTML.VALUE_ATTR, DataPaginatorRenderer.PAGE_NAVIGATION + text);
+			//if (scroller.getPageIndex() == Integer.parseInt(text)) button.setAttribute(HTML.STYLE_ATTR, "color:#F; background-color:#2A6CC2;");					
 	        if (scroller.isDisabled()) {
 	            button.setAttribute(HTML.TYPE_ATTR, "hidden");
 	        } else {
@@ -592,42 +594,14 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
 	        
 			button.setAttribute(HTML.ID_ATTR, id);
 			button.setAttribute(HTML.NAME_ATTR,	scroller.getClientId(facesContext));
-			button.setAttribute(HTML.VALUE_ATTR, facetName); 					
+			button.setAttribute(HTML.VALUE_ATTR, facetName); 
+			button.setAttribute(HTML.CLASS_ATTR, "iceCmdLnkJSDis");								
 	        if (scroller.isDisabled()) {
 	            button.setAttribute(HTML.TYPE_ATTR, "hidden");
 	        } else {
 	            button.setAttribute(HTML.TYPE_ATTR, "submit");
 	        }				
-			return button;
-			/*						
-			HtmlCommandButton button = (HtmlCommandButton) application.createComponent(HtmlCommandButton.COMPONENT_TYPE);
-			
-			String id = scroller.getId() + facetName;
-	        button.setId(id);
-	        button.setTransient(true);
-
-	        button.getAttributes().put(HTML.ID_ATTR, id);
-	        button.getAttributes().put(HTML.VALUE_ATTR, facetName); 			
-			
-	        HtmlOutputText display = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
-	        display.setTransient(true);			
-	        display.setValue(noJsLabelMap.get(facetName));
-	        //getChildren doesn't need any check for the childCount
-	        List children = button.getChildren();
-	        children.add(display);
-       
-	        // For some reason, these components being marked transient isn't 
-	        // resulting in them going away, so we'll explicitly remove old ones
-	        for(int i = 0; i < scroller.getChildCount(); i++) {
-	            UIComponent comp = (UIComponent) scroller.getChildren().get(i);
-	            if (comp.getId().equals(id)) {
-	                scroller.getChildren().remove(i);
-	                break;
-	            }
-	        }
-        
-	        scroller.getChildren().add(button);				
-			return button;	*/		
+			return button;	
 		}
     }
 }

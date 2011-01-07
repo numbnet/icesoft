@@ -546,12 +546,28 @@ table.iceSelInpDate tbody tr td table{
     border: 1px solid #DBDBDB;
 }
 
+/* set the common attributes for the pagination numbers */
+.iceDatPgrScrCol button, .iceDatPgrCol button, .iceDatPgrScrBtn button {
+    text-decoration: none;
+    font-weight: normal;
+    background-color: #FFFFFF;
+    color: #656565;
+    display: block;
+    border: 1px solid #DBDBDB;
+}
+
 /** html .iceDatPgrCol a {*/
     /*width: 1%;*/
 /*}*/
 
 /* override the attributes for the currently selected page */
 .iceDatPgrScrCol a {
+    color: #FFFFFF;
+    border: 1px solid #DBDBDB;
+    background-color: #FFA600;
+}
+
+.iceDatPgrScrCol button {
     color: #FFFFFF;
     border: 1px solid #DBDBDB;
     background-color: #FFA600;
@@ -569,6 +585,20 @@ table.iceSelInpDate tbody tr td table{
     padding-bottom: 1px;
 }
 .iceDatPgrScrCol a:hover {
+    color: #000000;
+    border: 1px solid #DBDBDB;
+    text-decoration: none;
+    padding-bottom: 1px;
+}
+
+
+.iceDatPgrCol button:hover, .iceDatPgrScrBtn button:hover {
+    color: #000000;
+    border: 1px solid #FFA600;
+    text-decoration: none;
+    padding-bottom: 1px;
+}
+.iceDatPgrScrCol button:hover {
     color: #000000;
     border: 1px solid #DBDBDB;
     text-decoration: none;
