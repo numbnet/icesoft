@@ -72,6 +72,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
     private final String sessionIdDelimiter;
 
     private ServletContext context;
+    private static boolean strictSessionTimeout = false;
 
     public SessionDispatcher(final ServletContext context, final Configuration configuration) {
         associateSessionDispatcher(context);
@@ -274,6 +275,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 return;
             }
             System.out.println("org.icefaces.strictSessionTimeout TRUE: sessions will be invalidated by ICEfaces Session Monitor");
+            strictSessionTimeout = true;
             try {
                 Thread monitor = new Thread("Session Monitor") {
                     public void run() {
@@ -357,22 +359,23 @@ public abstract class SessionDispatcher implements PseudoServlet {
             long elapsedInterval = System.currentTimeMillis() - lastAccess;
             try {
                 int maxInterval = session.getMaxInactiveInterval();
-                // 4496 return true if session is already expired
-                Object o = session.getAttribute(POSITIVE_SESSION_TIMEOUT);
+                if (strictSessionTimeout)  {
+                    // 4496 return true if session is already expired
+                    Object o = session.getAttribute(POSITIVE_SESSION_TIMEOUT);
 
-                // Try to reset the max session timeout if it is -1 from a Failover on Tomcat...
-                // But if it was originally negative, it should stay that way.
-                if (maxInterval > 0) {
-                    if (o == null) {
-                        session.setAttribute(POSITIVE_SESSION_TIMEOUT, new Integer(maxInterval));
-                    }
-                } else {
-                    if (o != null) {
-                        maxInterval = ((Integer) o).intValue();
-                        session.setMaxInactiveInterval(maxInterval);
+                    // Try to reset the max session timeout if it is -1 from a Failover on Tomcat...
+                    // But if it was originally negative, it should stay that way.
+                    if (maxInterval > 0) {
+                        if (o == null) {
+                            session.setAttribute(POSITIVE_SESSION_TIMEOUT, new Integer(maxInterval));
+                        }
+                    } else {
+                        if (o != null) {
+                            maxInterval = ((Integer) o).intValue();
+                            session.setMaxInactiveInterval(maxInterval);
+                        }
                     }
                 }
-
                 //a negative time indicates the session should never timeout
                 if (maxInterval < 0) {
                     return false;
