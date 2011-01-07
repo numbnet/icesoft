@@ -2995,3 +2995,23 @@ Disabled classes for the calendar controls
 	margin-top:25%;
 	margin-left:50%;			
 }
+
+.JSDISPnlPnlpopBg{
+	position:absolute;
+	top:0px;
+	background-color:#7F7F7F;
+	width:100%;
+	height:100%;
+	opacity:0.2;
+	filter: alpha(opacity = 20);
+	z-index:10000;
+}
+
+.JSDISPnlPop {
+	position:absolute;
+	margin-top:15%;
+	margin-left:35%;
+	*margin-top:0%;
+	*margin-left:0%;
+	z-index:11000;	
+}

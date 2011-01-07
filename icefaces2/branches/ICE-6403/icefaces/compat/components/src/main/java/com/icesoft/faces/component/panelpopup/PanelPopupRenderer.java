@@ -122,7 +122,14 @@ public class PanelPopupRenderer extends GroupRenderer {
         PanelPopup panelPopup = (PanelPopup) uiComponent;
 
         String clientId = uiComponent.getClientId(facesContext);
-
+        
+        if (CoreComponentUtils.isJavaScriptDisabled(facesContext) && 
+        		visible.booleanValue()) {
+        	Element bg = domContext.createRootElement(HTML.DIV_ELEM);
+        	bg.setAttribute("class", "JSDISPnlPnlpopBg");
+        	domContext.getCursorParent().appendChild(bg);
+        	styleClass+= " JSDISPnlPop";
+        }
         Element rootDiv = domContext.createRootElement(HTML.DIV_ELEM);
         setRootElementId(facesContext, rootDiv, uiComponent);
         rootDiv.setAttribute(HTML.NAME_ATTR, clientId);
