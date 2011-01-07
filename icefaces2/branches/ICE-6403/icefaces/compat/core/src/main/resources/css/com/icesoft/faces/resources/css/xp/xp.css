@@ -450,6 +450,15 @@ fieldset {
     border: 1px solid #FFFFFF;
 }
 
+.iceDatPgrScrCol button, .iceDatPgrCol button, .iceDatPgrScrBtn button {
+    text-decoration: none;
+    font-weight: normal;
+    background-color: #FFFFFF;
+    color: #666666;
+    display: block;
+    border: 1px solid #FFFFFF;
+}
+
 * html .iceDatPgrCol a {
     width: 1%;
 }
@@ -461,12 +470,24 @@ fieldset {
     background-color: #2A6CC2;
 }
 
+.iceDatPgrScrCol button {
+    color: #FFFFFF;
+    border: 1px solid #2A6CC2;
+    background-color: #2A6CC2;
+}
+
 * html .iceDatPgrScrCol a {
     width: 1%;
 }
 
 /* set the attributes for the mouseover on none-current pages */
 .iceDatPgrCol a:hover {
+    color: #000000;
+    border: 1px solid #2A6CC2;
+}
+
+/* set the attributes for the mouseover on none-current pages */
+.iceDatPgrCol button:hover, .iceDatPgrScrBtn button:hover {
     color: #000000;
     border: 1px solid #2A6CC2;
 }
