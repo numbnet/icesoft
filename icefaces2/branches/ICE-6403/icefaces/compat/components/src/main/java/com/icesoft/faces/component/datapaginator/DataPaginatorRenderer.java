@@ -50,13 +50,13 @@ package com.icesoft.faces.component.datapaginator;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
+import java.lang.Character;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
-
+import java.util.Map.Entry;
 import java.util.HashMap;
 import org.w3c.dom.Element;
 import javax.faces.component.UICommand;
@@ -89,6 +89,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             ExtendedAttributeConstants.ICE_DATAPAGINATOR,
             PASSTHRU_EXCLUDE);
 
+	//really should change to a bidirectional map
 	private static final Map<String, String> noJsLabelMap = new HashMap<String,String>() {{
 		  put("fastf", ">>");   
 		  put("fastr", "<<"); 
@@ -106,21 +107,18 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         validateParameters(context, component, DataPaginator.class);
         Map parameter = context.getExternalContext().getRequestParameterMap();
         String param = (String) parameter.get(component.getClientId(context));
-        if (param != null && param.length() >= PAGE_NAVIGATION.length()) {
-            if (param.startsWith(PAGE_NAVIGATION)) {
+        if (param != null) {
+            if (Character.isDigit(param.charAt(0))) {
                 // queue a navigation event that results from the user pressing
                 // on one of the page indexes
-                component.queueEvent(new PaginatorActionEvent(component,
-                                                              Integer.parseInt(
-                                                                      param
-                                                                              .substring(
-                                                                              PAGE_NAVIGATION.length(),
-                                                                              param.length()))));
+                component.queueEvent(new PaginatorActionEvent(component, Integer.parseInt(param)));
             } else {
                 // queue a navigation event that results from the user pressing
                 // on the navigation buttons
-                component
-                        .queueEvent(new PaginatorActionEvent(component, param));
+				for (Entry<String,String> e : noJsLabelMap.entrySet()) {
+					if (e.getValue().equals(param)) param = e.getKey();
+				}
+                component.queueEvent(new PaginatorActionEvent(component, param));
             }
         }
     }
@@ -513,8 +511,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
 	                        Integer.toString(pageIndex));
 	        String onClick = /*"document.forms['"+ formId + "']" + "['"+ formId +":_idcl']" + ".value='" +  linkid  + "'"+ 
 	        		";*/"document.forms['" + formId + "']['" +
-	              scroller.getClientId(facesContext) + "'].value='" +
-	              DataPaginatorRenderer.PAGE_NAVIGATION + text + "'" +
+	              scroller.getClientId(facesContext) + "'].value='" + text + "'" +
 	              ";iceSubmit(" + " document.forms['" + formId + "']," +
 	              " this,event); " + "return false;";
 	        link.setAttribute(HTML.ID_ATTR, linkid);
@@ -528,9 +525,9 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
 	        PassThruAttributeRenderer.renderOnBlur(link);
 	        return link;
 		} else {
-			Element button = domContext.createElement(HTML.BUTTON_ELEM);
+			Element button = domContext.createElement(HTML.INPUT_ELEM);
 	        if (text != null) {
-	            button.appendChild(domContext.createTextNode(text));
+	            //button.appendChild(domContext.createTextNode(text));
 	        }
 			String linkid;
 			if (text != "idx") linkid = 
@@ -542,7 +539,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
 			button.setAttribute(HTML.ID_ATTR, linkid);
 			button.setAttribute(HTML.NAME_ATTR,	scroller.getClientId(facesContext));
 			button.setAttribute(HTML.CLASS_ATTR, "iceCmdLnkJSDis");
-			button.setAttribute(HTML.VALUE_ATTR, DataPaginatorRenderer.PAGE_NAVIGATION + text);
+			button.setAttribute(HTML.VALUE_ATTR, text);
 			//if (scroller.getPageIndex() == Integer.parseInt(text)) button.setAttribute(HTML.STYLE_ATTR, "color:#F; background-color:#2A6CC2;");					
 	        if (scroller.isDisabled()) {
 	            button.setAttribute(HTML.TYPE_ATTR, "hidden");
@@ -587,14 +584,14 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
 	        scroller.getChildren().add(link);
 	        return link;
 		} else {
-			Element button = domContext.createElement(HTML.BUTTON_ELEM);
-	        button.appendChild(domContext.createTextNode(noJsLabelMap.get(facetName)));
+			Element button = domContext.createElement(HTML.INPUT_ELEM);
+	        //button.appendChild(domContext.createTextNode(noJsLabelMap.get(facetName)));
 
 			String id = scroller.getId() + facetName;
 	        
 			button.setAttribute(HTML.ID_ATTR, id);
 			button.setAttribute(HTML.NAME_ATTR,	scroller.getClientId(facesContext));
-			button.setAttribute(HTML.VALUE_ATTR, facetName); 
+			button.setAttribute(HTML.VALUE_ATTR, noJsLabelMap.get(facetName)); 
 			button.setAttribute(HTML.CLASS_ATTR, "iceCmdLnkJSDis");								
 	        if (scroller.isDisabled()) {
 	            button.setAttribute(HTML.TYPE_ATTR, "hidden");
