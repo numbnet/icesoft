@@ -450,7 +450,7 @@ fieldset {
     border: 1px solid #FFFFFF;
 }
 
-.iceDatPgrScrCol button, .iceDatPgrCol button, .iceDatPgrScrBtn button {
+.iceDatPgrScrCol input, .iceDatPgrCol input, .iceDatPgrScrBtn input {
     text-decoration: none;
     font-weight: normal;
     background-color: #FFFFFF;
@@ -470,7 +470,7 @@ fieldset {
     background-color: #2A6CC2;
 }
 
-.iceDatPgrScrCol button {
+.iceDatPgrScrCol input {
     color: #FFFFFF;
     border: 1px solid #2A6CC2;
     background-color: #2A6CC2;
@@ -487,7 +487,7 @@ fieldset {
 }
 
 /* set the attributes for the mouseover on none-current pages */
-.iceDatPgrCol button:hover, .iceDatPgrScrBtn button:hover {
+.iceDatPgrCol input:hover, .iceDatPgrScrBtn input:hover {
     color: #000000;
     border: 1px solid #2A6CC2;
 }
