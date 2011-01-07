@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package org.icefaces.demo.auction.view.names;
 
 import javax.faces.bean.ApplicationScoped;

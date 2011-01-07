@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package org.icefaces.demo.auction.view.converters;
 
 import org.icefaces.demo.auction.view.beans.AuctionItemBean;

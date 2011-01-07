@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package org.icefaces.application.showcase.model.service.impl;
 
 import org.apache.commons.beanutils.BeanUtils;

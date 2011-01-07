@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package com.icesoft.faces.component.outputprogress;
 
 import com.icesoft.faces.component.CSS_DEFAULT;

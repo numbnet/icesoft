@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package org.icefaces.demo.auction.services.Comparator;
 
 import org.icefaces.demo.auction.services.beans.AuctionItem;

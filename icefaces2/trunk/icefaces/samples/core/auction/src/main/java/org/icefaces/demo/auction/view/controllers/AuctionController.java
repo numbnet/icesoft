@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package org.icefaces.demo.auction.view.controllers;
 
 import org.icefaces.application.PushRenderer;

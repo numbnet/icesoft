@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package org.icefaces.application.showcase.view.bean.examples.component.tree;
 
 import com.icesoft.faces.component.dragdrop.DropEvent;

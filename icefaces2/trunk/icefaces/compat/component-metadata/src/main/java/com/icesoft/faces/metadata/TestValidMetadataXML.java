@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package com.icesoft.faces.metadata;
 
 import java.io.File;

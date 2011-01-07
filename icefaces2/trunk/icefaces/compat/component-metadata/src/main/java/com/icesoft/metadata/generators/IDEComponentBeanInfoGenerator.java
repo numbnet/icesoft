@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package com.icesoft.metadata.generators;
 
 import com.icesoft.jsfmeta.util.AbstractGenerator;

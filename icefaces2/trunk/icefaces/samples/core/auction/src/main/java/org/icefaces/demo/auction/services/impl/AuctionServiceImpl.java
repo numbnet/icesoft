@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package org.icefaces.demo.auction.services.impl;
 
 import org.icefaces.demo.auction.services.AuctionService;

@@ -18,6 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
+
 package com.icesoft.jsfmeta.templates;
 
 import com.icesoft.jsfmeta.util.GeneratorUtil;
