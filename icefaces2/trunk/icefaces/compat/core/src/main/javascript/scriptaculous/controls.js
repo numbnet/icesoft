@@ -1,7 +1,7 @@
 /*
  * Version: MPL 1.1
  *
- * "The contents of this file are subject to the Mozilla Public License
+ * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * http://www.mozilla.org/MPL/
@@ -14,24 +14,12 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
- *
  */
 
-// Copyright (c) 2005-2007 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
-//           (c) 2005-2007 Ivan Krstic (http://blogs.law.harvard.edu/ivan)
-//           (c) 2005-2007 Jon Tirsen (http://www.tirsen.com)
-// Contributors:
-//  Richard Livsey
-//  Rahul Bhargava
-//  Rob Wills
-// 
-// script.aculo.us is freely distributable under the terms of an MIT-style license.
-// For details, see the script.aculo.us web site: http://script.aculo.us/
-
-// Autocompleter.Base handles all the autocompletion functionality 
+// Autocompleter.Base handles all the autocompletion functionality
 // that's independent of the data source for autocompletion. This
 // includes drawing the autocompletion menu, observing keyboard
 // and mouse events, and similar.
