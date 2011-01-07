@@ -32,7 +32,7 @@
     <url>http://www.icefaces.org/</url>
     <version>2.0.0</version>
     <properties>
-        <jsf.version>2.0.3-FCS</jsf.version>
+        <jsf.version>2.1.0-FCS</jsf.version>
         <icefaces.version>2.0.0</icefaces.version>
     </properties>
     <repositories>

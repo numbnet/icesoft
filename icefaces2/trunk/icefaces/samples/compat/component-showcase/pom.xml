@@ -30,7 +30,7 @@
   <version>2.0.0</version>
   <description />
   <properties>
-    <jsf.version>2.0.3-FCS</jsf.version>
+    <jsf.version>2.1.0-FCS</jsf.version>
   </properties>
   <repositories>
      <repository>
