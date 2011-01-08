@@ -493,12 +493,12 @@ input {
 }
 
 /* set the attributes for the mouseover on none-current pages */
-.iceDatPgrCol input:hover {
+.iceDatPgrCol a:hover {
     color: #000000;
     border: 1px solid #2A6CC2;
 }
 
-.iceDatPgrCol input:hover, .iceDatPgrScrBtn input:hover {
+.iceDatPgrCol input.iceCmdLnkJSDis:hover, .iceDatPgrScrBtn input.iceCmdLnkJSDis:hover {
     color: #000000;
     border: 1px solid #2A6CC2;
 }
