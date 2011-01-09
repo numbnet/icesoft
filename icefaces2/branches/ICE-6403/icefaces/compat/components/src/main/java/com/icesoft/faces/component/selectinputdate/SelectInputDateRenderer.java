@@ -1641,6 +1641,8 @@ public class SelectInputDateRenderer
 	        String param = "";
 	        while (it.hasNext()) {
 	        	param = String.valueOf(it.next());
+	        	//since javascript is disabled commandLink hidden field (idcl) will never be set by the client so just ignore it.
+	        	if (param.equals(linkId)) continue;
 	        	dateSelect.getParameterMap().put(param, requestParameterMap.get(param));
 	        	if (param.startsWith(clientId)) {
 	        		if (param.equals(clientId + NEXT_MONTH) ||
