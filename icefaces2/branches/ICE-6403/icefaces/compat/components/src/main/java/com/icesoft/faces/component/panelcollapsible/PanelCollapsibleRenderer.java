@@ -102,7 +102,10 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
 	            header.appendChild(div);
 	            //this anchor should be known by the component only, so we are defining style to the component level
 	            Element button = domContext.createElement(HTML.INPUT_ELEM);
-	            button.setAttribute(HTML.STYLE_ATTR, "cursor:pointer; border:0px; width:100%; height:16px; background-color:transparent; margin:0; padding:0; font-size: 0; line-height: 0;");
+	            button.setAttribute(HTML.STYLE_ATTR, 
+                    "cursor:pointer; border:0px; width:100%; height:16px; background-color:transparent; background:url(" + 
+                    CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/css/xp/css-images/spacer.gif") +
+                    "); margin:0; padding:0; font-size: 0; line-height: 0;");
 	            button.setAttribute(HTML.TYPE_ATTR, "submit");
 				button.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
 				button.setAttribute(HTML.VALUE_ATTR, panelCollapsible.isExpanded() ? "true" : "false" ); 				
