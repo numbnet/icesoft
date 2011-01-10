@@ -56,11 +56,29 @@
         </h:panelGroup>
     </h:form>
 
+     <h:form id="form2a">
+        <h:panelGroup>
+            <h2>This link invalidates session with implicit navigation to login.html</h2>
+            <div class="yui-skin-sam yui3-skin-sam">
+                <ace:linkButton  value="Logout with navigation rule outcome" action="#{logoutBean.logoutViaNavigationOutcome}" />
+                 <ace:linkButton  value="Logout with implicit navigation outcome" action="#{logoutBean.logoutWithImplicitNavigation}" />
+            </div>
+        </h:panelGroup>
+    </h:form>
+
      <h:form id="form3">
         <h:panelGroup>
-            <h2>This link will add a group to the push renderer</h2>
+            <h2>This link will add the current View to the render Group</h2>
             <div class="yui-skin-sam yui3-skin-sam">
-                <ace:linkButton  value="Add CurrentSession to group" action="#{logoutBean.addToGroup}" />
+                <ace:linkButton  value="Add Current View to group" action="#{logoutBean.addViewToGroup}" />
+            </div>
+        </h:panelGroup>
+    </h:form>
+     <h:form id="form3a">
+        <h:panelGroup>
+            <h2>This link will add the current Session to the render Group</h2>
+            <div class="yui-skin-sam yui3-skin-sam">
+                <ace:linkButton  value="Add Current Session to group" action="#{logoutBean.addSessionToGroup}" />
             </div>
         </h:panelGroup>
     </h:form>
