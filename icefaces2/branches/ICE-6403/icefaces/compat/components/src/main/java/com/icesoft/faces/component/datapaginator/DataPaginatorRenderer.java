@@ -108,6 +108,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         Map parameter = context.getExternalContext().getRequestParameterMap();
         String param = (String) parameter.get(component.getClientId(context));
         if (param != null) {
+			if (!param.equals("")) {
             if (Character.isDigit(param.charAt(0))) {
                 // queue a navigation event that results from the user pressing
                 // on one of the page indexes
@@ -119,7 +120,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
 					if (e.getValue().equals(param)) param = e.getKey();
 				}
                 component.queueEvent(new PaginatorActionEvent(component, param));
-            }
+            }}
         }
     }
 
