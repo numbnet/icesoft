@@ -46,6 +46,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
 
+import javax.faces.application.Application;
+import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -163,7 +165,11 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
             domContext.setCursorParent(header);
 
 			if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
-				headerFacet.getAttributes().put(HTML.STYLE_ATTR, "background-color:transparent; height:26px; v-align:middle; position:absolute; top:0px; left:0px;");
+				Application application = facesContext.getApplication();
+				HtmlPanelGroup headerWrapper = (HtmlPanelGroup) application.createComponent(HtmlPanelGroup.COMPONENT_TYPE);
+				headerWrapper.getAttributes().put(HTML.STYLE_ATTR, "background-color:transparent; height:26px; v-align:middle; position:absolute; top:0px; left:0px;");
+				headerWrapper.getChildren().add(headerFacet);
+				headerFacet = headerWrapper;
 			}
 			
             CustomComponentUtils.renderChild(facesContext, headerFacet);
