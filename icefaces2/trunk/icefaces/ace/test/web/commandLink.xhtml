@@ -164,6 +164,16 @@
             </h:form>
             <p></p>
 
+            <h:form id="frmActionOnly">
+                14) Action attribute only <br></br>
+                <ann:linkButton value="Alternate Image state with action handler" action="#{linkBean.singleSubmitAction}"
+                        singleSubmit="true">
+                    <f:param name="firstActionParam" value="first Action Value" />
+                    <f:param name="secondActionParam" value="secondActionValue" />
+                </ann:linkButton>
+            </h:form>
+            <p></p>
+
         </div>
     </h:panelGroup>
 
