@@ -163,7 +163,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
             domContext.setCursorParent(header);
 
 			if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
-				headerFacet.getAttributes().put(HTML.STYLE_ATTR, "height:26px; v-align:middle; position:absolute; top:0px; left:0px;");
+				headerFacet.getAttributes().put(HTML.STYLE_ATTR, "background-color:transparent; height:26px; v-align:middle; position:absolute; top:0px; left:0px;");
 			}
 			
             CustomComponentUtils.renderChild(facesContext, headerFacet);
