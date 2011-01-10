@@ -36,6 +36,8 @@
                 <fileset dir="${icefaces2.lib.dir}">
                     <include name="jsf-api.jar"/>
                     <include name="el-api-2.2.1-b03.jar"/>
+                    <include name="javax.servlet.jar"/>
+		    <include name="icefaces.jar" />
                 </fileset>
                 <fileset dir="../component/dist">
                     <include name="icefaces-ace.jar"/>
