@@ -95,6 +95,12 @@ public class LinkButtonBean implements Serializable {
          } 
     }
 
+    public String singleSubmitAction() {
+        System.out.println("___----- SingleSubmit ACTION ");
+        rendered=!rendered;
+        return "";
+    }
+
 
     public void hrefAndActionMethod(ActionEvent e) {
         System.out.println("-----> hrefAndActionMethod called");

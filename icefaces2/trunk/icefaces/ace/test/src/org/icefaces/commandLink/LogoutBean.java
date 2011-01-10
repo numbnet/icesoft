@@ -38,6 +38,8 @@ import javax.servlet.http.HttpSession;
 public class LogoutBean implements Serializable {
 
 
+    final String myGroup = "myGroup"; 
+
     public LogoutBean() {
     }
 
@@ -50,13 +52,37 @@ public class LogoutBean implements Serializable {
         return "logout";
     }
 
-    public String addToGroup() {
-        PushRenderer.addCurrentView("myGroup");
+     public String logoutViaNavigationOutcome() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+
+        HttpSession sess = (HttpSession) ec.getSession(false);
+        sess.invalidate();
+        return "logout";
+    }
+
+    public String logoutViaImplicitNavigation() {
+           FacesContext fc = FacesContext.getCurrentInstance();
+           ExternalContext ec = fc.getExternalContext();
+
+           HttpSession sess = (HttpSession) ec.getSession(false);
+           sess.invalidate();
+           return "login.html";
+       }
+
+
+    public String addViewToGroup() {
+        PushRenderer.addCurrentView(myGroup);
         return "";
     }
 
+    public String addSessionToGroup() {
+        PushRenderer.addCurrentSession(myGroup);
+        return "";
+    }
+
+
     public String renderGroup() {
-        PushRenderer.render( "myGroup" );
 
         final PortableRenderer pr = PushRenderer.getPortableRenderer();
 
@@ -71,7 +97,7 @@ public class LogoutBean implements Serializable {
                     System.out.println("e");
                 }
                 System.out.println("RENDERING");
-                pr.render("myGroup");
+                pr.render(myGroup);
                 System.out.println("DONE");                
             }
         }).start(); 
