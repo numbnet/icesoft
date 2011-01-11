@@ -24,26 +24,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.icefaces.samples</groupId>
+    <parent>
+      <groupId>org.icefaces.samples</groupId>
+      <artifactId>compat</artifactId>
+      <version>2.0.1</version>
+    </parent> 
     <artifactId>component-showcase-portlets</artifactId>
     <packaging>war</packaging>
     <name>ICEfaces Compat Component Showcase Portlets</name>
-    <version>2.0.0</version>
     <description/>
     <properties>
-        <jsf.version>2.1.0-b10</jsf.version>
         <parent.root>../component-showcase</parent.root>
     </properties>
-    <repositories>
-        <repository>
-            <id>snapshots</id>
-            <url>http://anonsvn.icefaces.org/repo/maven2/snapshots</url>
-        </repository>
-        <repository>
-            <id>java.net</id>
-            <url>http://download.java.net/maven/2</url>
-        </repository>
-    </repositories>
+ 
     <build>
         <finalName>${artifactId}</finalName>
         <plugins>
@@ -68,15 +61,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <webResources>
@@ -94,22 +78,6 @@
         </resources>
     </build>
     <dependencies>
-        <!--  transitory nature of maven has icefaces poms defining all dependencies -->
-        <dependency>
-            <groupId>org.icefaces</groupId>
-            <artifactId>icefaces-compat</artifactId>
-            <version>${version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.el</groupId>
-                    <artifactId>el-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <dependency>
             <groupId>net.sourceforge.jexcelapi</groupId>
             <artifactId>jxl</artifactId>
@@ -133,21 +101,9 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>jsr250-api</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.icepush</groupId>
             <artifactId>icepush</artifactId>
-            <version>${version}</version>
+            <version>${ice.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.portlet</groupId>
