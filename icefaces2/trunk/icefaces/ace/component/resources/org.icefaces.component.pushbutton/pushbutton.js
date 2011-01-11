@@ -105,6 +105,15 @@ ice.component.pushbutton = {
 	
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
    updateProperties:function(clientId, jsProps, jsfProps, events) {
+       var context = ice.component.getJSContext(clientId);
+       if (context && context.isAttached()) {
+           var prevJSFProps = context.getJSFProps();
+           if (prevJSFProps.hashCode != jsfProps.hashCode) {
+               context.getComponent().destroy();
+               document.getElementById(clientId)['JSContext'] = null;
+               JSContext[clientId] = null;
+           }
+       }
        ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
    },
  
