@@ -19,10 +19,7 @@
   ~ Contributor(s): _____________________.
   -->
 
-<project name="component-showcase" default="servlet-profile">
-
-    <property name="lib.compile.compat.includes" value="commons-beanutils.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
-    <property name="lib.distribute.compat.includes" value="commons-beanutils.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
+<project name="component-showcase" default="clean">
 
     <property file="./build.properties"/>
     <import file="../build/common.xml"/>
