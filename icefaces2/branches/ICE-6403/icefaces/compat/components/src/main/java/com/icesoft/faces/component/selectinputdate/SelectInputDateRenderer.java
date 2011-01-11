@@ -336,7 +336,15 @@ public class SelectInputDateRenderer
                         .setAttribute(HTML.ID_ATTR, clientId + CALENDAR_BUTTON);
                 calendarButton.setAttribute(HTML.NAME_ATTR,
                         clientId + CALENDAR_BUTTON);
-                calendarButton.setAttribute(HTML.TYPE_ATTR, "image");
+
+                if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
+                	calendarButton.setAttribute(HTML.TYPE_ATTR, "submit");
+                	calendarButton.setAttribute(HTML.VALUE_ATTR, "");
+                } else {
+                	calendarButton.setAttribute(HTML.TYPE_ATTR, "image");	
+                }
+                
+                
                 calendarButton.setAttribute(HTML.ONFOCUS_ATTR, "setFocus('');");
                 // render onclick to set value of hidden field to true
                 String formClientId = parentForm.getClientId(facesContext);
@@ -1680,6 +1688,11 @@ public class SelectInputDateRenderer
         Object clickedLink = requestParameterMap.get(linkId);
         Object eventCapturedId = requestParameterMap.get(linkId);
 
+        if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
+        	if (requestParameterMap.containsKey(clientId + CALENDAR_BUTTON)) {
+        		clickedLink = clientId + CALENDAR_BUTTON;
+        	}
+        }
         if (requestParameterMap.containsKey(hoursClientId)) {
 //System.out.println("SIDR.decode()    Hours: " + requestParameterMap.get(hoursClientId));
             dateSelect.setHoursSubmittedValue(requestParameterMap.get(hoursClientId));
