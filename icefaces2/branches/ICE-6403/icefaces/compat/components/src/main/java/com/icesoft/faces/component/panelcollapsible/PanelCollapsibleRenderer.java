@@ -170,12 +170,14 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
 			if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
 				Application application = facesContext.getApplication();
 				HtmlPanelGroup headerWrapper = (HtmlPanelGroup) application.createComponent(HtmlPanelGroup.COMPONENT_TYPE);
-				headerWrapper.getAttributes().put(HTML.STYLE_ATTR, "background-color:transparent; height:26px; v-align:middle; position:absolute; top:0px; left:0px;");
+				headerWrapper.setLayout("block");
+				headerWrapper.getAttributes().put(HTML.STYLE_ATTR, "background-color:transparent; line-height:18px; position:absolute; top:0px; left:0px;");
 				headerWrapper.getChildren().add(headerFacet);
-				headerFacet = headerWrapper;
+				CustomComponentUtils.renderChild(facesContext, headerWrapper);
+			} else {
+				CustomComponentUtils.renderChild(facesContext, headerFacet);
 			}
 			
-            CustomComponentUtils.renderChild(facesContext, headerFacet);
         }
 
         //if expanded get the content div and render all its children 
