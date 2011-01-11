@@ -95,8 +95,9 @@ public class PushButtonRenderer extends Renderer {
 		// button element
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
 		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
-		writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
-		writer.writeAttribute(HTML.ID_ATTR, clientId+"_button", null);		
+        // ICE-6418 Write the id out to be the same as the eventual munged YUI id.
+		writer.writeAttribute(HTML.NAME_ATTR, clientId+"_span-button", null);
+		writer.writeAttribute(HTML.ID_ATTR, clientId+"_span-button", null);
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
 		Object oVal = pushButton.getValue();
 		if (null!=oVal) writer.writeText(String.valueOf(oVal), null);
@@ -139,11 +140,16 @@ public class PushButtonRenderer extends Renderer {
         entry("tabindex", pushButton.getTabindex()).
 	    entry("label", yuiLabel).endMap().toString();
 
+        StringBuilder sb = new StringBuilder();
+        sb.append( pushButton.getValue() ).
+                append(pushButton.getStyleClass()).
+                append(pushButton.getStyle());
 
         JSONBuilder jBuild = JSONBuilder.create().
                                 beginMap().
                 entry("singleSubmit", pushButton.isSingleSubmit()).
                 entry("ariaLabel", ariaLabel).
+                entry("hashCode",  sb.toString().hashCode()).
                 entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
 
         if (uiParamChildren != null) {
