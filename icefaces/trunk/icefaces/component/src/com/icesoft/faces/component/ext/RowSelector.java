@@ -465,7 +465,9 @@ public class RowSelector extends UIPanel {
                     if (!getMultiple().booleanValue()) {
                         if (oldRow != null && oldRow.intValue() >= 0 && oldRow.intValue() != rowIndex) {
                             dataTable.setRowIndex(oldRow.intValue());
-                            setValue(Boolean.FALSE);
+                            if (dataTable.isRowAvailable()) {
+                                setValue(Boolean.FALSE);
+                            }
                             dataTable.setRowIndex(rowIndex);
                         }
                     }
@@ -481,7 +483,9 @@ public class RowSelector extends UIPanel {
         currentSelection.toArray(selection);
         for (int i=0; i<selection.length; i++) {
             uiData.setRowIndex((selection[i]).intValue());
-            setValue(Boolean.FALSE);
+            if (uiData.isRowAvailable()) {
+                setValue(Boolean.FALSE);
+            }
         }
         uiData.setRowIndex(rowindex);
     }
