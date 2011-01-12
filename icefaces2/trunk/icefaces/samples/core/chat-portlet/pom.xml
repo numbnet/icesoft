@@ -31,7 +31,7 @@
     </parent>
     <artifactId>chat-portlet</artifactId>
     <packaging>war</packaging>
-    <name>ICEfaces 2 Auction sample</name>
+    <name>ICEfaces 2 Chat Portlet sample</name>
    <properties>
         <parent.root>../chat</parent.root>
     </properties>
