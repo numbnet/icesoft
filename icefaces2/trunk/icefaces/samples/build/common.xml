@@ -30,6 +30,8 @@
     <property name="lib.compat.dir" location="${lib.dir}/compat"/>
     <property name="lib.compat.dir.includes" value=""/>
 
+    <property name="lib.portlet.dir" location="${lib.dir}/portlets"/>
+
     <property name="java.dir" location="./src/main/java"/>
     <property name="res.dir" location="./src/main/resources"/>
     <property name="web.dir" location="./src/main/webapp"/>
@@ -68,6 +70,12 @@
 
     <patternset id="lib.distribute.compat" includes="commons-logging.jar ${lib.distribute.compat.includes}">
         <exclude name="*.jar"                   unless="compat"/>
+    </patternset>
+
+    <patternset id="lib.distribute.portlet">
+        <include name="portletfaces*.jar"/>
+        <include name="slf4j*.jar"/>
+        <exclude name="*.jar" unless="portlet"/>
     </patternset>
 
     <target name="clean">
@@ -121,6 +129,11 @@
             <lib dir="${lib.compat.dir}">
                 <patternset refid="lib.distribute.compat"/>
             </lib>
+
+            <lib dir="${lib.portlet.dir}">
+                <patternset refid="lib.distribute.portlet"/>
+            </lib>
+
             <classes dir="${classes.dir}"/>
         </war>
         <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
