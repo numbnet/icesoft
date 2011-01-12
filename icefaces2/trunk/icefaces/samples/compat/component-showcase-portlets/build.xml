@@ -19,57 +19,17 @@
   ~ Contributor(s): _____________________.
   -->
 
-<project name="component-showcase" default="clean">
+<project name="component-showcase-portlets" default="liferay6.servlet-profile">
 
     <property file="./build.properties"/>
+    <import file="../build/common-portlet.xml"/>
     <import file="../build/common.xml"/>
 
-    <property name="portlet.dir" location="./portlets"/>
-    <property name="portlet.build.dir" location="./portlets/build"/>
-    <property name="portlet.lib.dir" location="${lib.dir}/portlets"/>
-
-    <patternset id="portlet.jars">
-        <include name="jsf*.jar"/>
-        <include name="portletfaces*.jar"/>
-        <include name="slf4j*.jar"/>
+    <patternset id="portlet.files">
+        <exclude name="**/*PortletUtil.java"/>
+        <exclude name="**/*view.xhtml"/>
+        <exclude name="**/*liferay*"/>
+        <exclude name="**/*portlet.xml"/>
     </patternset>
-
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-        <delete file="${samples.dist.dir}/${ant.project.name}.war"/>
-        <delete dir="${portlet.build.dir}"/>
-    </target>
-
-    <target name="portletize.war" depends="servlet-profile" description="Adds portlet content to the .war file">
-        <mkdir dir="${portlet.build.dir}/exploded"/>
-        <unzip src="${dist.dir}/${ant.project.name}.war" dest="${portlet.build.dir}/exploded"/>
-
-        <copy todir="${portlet.build.dir}/exploded">
-          <fileset dir="${portlet.dir}/web">
-            <include name="view.xhtml"/>
-          </fileset>
-        </copy>
-
-        <copy todir="${portlet.build.dir}/exploded/WEB-INF" overwrite="true">
-          <fileset dir="${portlet.dir}/web/WEB-INF">
-              <include name="*.xml"/>
-              <include name="*.properties"/>
-          </fileset>
-        </copy>
-
-        <delete>
-            <fileset dir="${portlet.build.dir}/exploded/WEB-INF/lib">
-                <patternset refid="portlet.jars"/>
-            </fileset>
-        </delete>
-
-        <copy todir="${portlet.build.dir}/exploded/WEB-INF/lib" overwrite="true">
-          <fileset dir="${portlet.lib.dir}">
-              <patternset refid="portlet.jars"/>
-          </fileset>
-        </copy>
-
-        <zip destfile="${portlet.build.dir}/${ant.project.name}-portlet.war" basedir="${portlet.build.dir}/exploded"/>
-    </target>
 
 </project>

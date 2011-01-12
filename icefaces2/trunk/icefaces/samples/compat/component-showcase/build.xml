@@ -21,16 +21,7 @@
 
 <project name="component-showcase" default="servlet-profile">
 
-    <property name="lib.compile.compat.includes" value="commons-beanutils.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
-    <property name="lib.distribute.compat.includes" value="commons-beanutils.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
-
     <property file="./build.properties"/>
     <import file="../build/common.xml"/>
-
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-        <delete file="${samples.dist.dir}/${ant.project.name}.war"/>
-        <delete dir="${portlet.build.dir}"/>
-    </target>
 
 </project>
