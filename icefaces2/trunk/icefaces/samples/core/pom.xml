@@ -35,7 +35,7 @@
         <module>auction</module>
         <module>basic</module>
         <module>chat</module>
-        <module>portlet-chat</module>
+        <module>chat-portlet</module>
   </modules>
   <dependencies>
    <!--  transitory nature of maven has icefaces poms defining all dependencies -->
