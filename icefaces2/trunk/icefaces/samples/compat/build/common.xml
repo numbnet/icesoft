@@ -24,9 +24,6 @@
     <property name="icefaces.base.dir" location="../../.." />
     <property name="compat"            value="true" />
 
-    <property name="lib.compile.compat.includes" value="commons-beanutils.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
-    <property name="lib.distribute.compat.includes" value="commons-beanutils.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
-
     <import file="../../build/common.xml" />
 
 </project>
