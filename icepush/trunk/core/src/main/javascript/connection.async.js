@@ -125,7 +125,8 @@ var AsyncConnection;
                     offerCandidature();
                 } else {
                     debug(logger, 'connect...');
-                    var listenURI = applyURIPattern('listen.icepush');
+                    var configuredURI = namespace.push.configuration.blockingConnectionURI;
+                    var listenURI = configuredURI ? configuredURI : applyURIPattern('listen.icepush');
                     listener = postAsynchronously(channel, listenURI, function(q) {
                         each(lastSentPushIds, curry(addNameValue, q, 'ice.pushid'));
                         askForConfiguration(q);

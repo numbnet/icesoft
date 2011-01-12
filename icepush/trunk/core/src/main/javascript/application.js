@@ -66,6 +66,7 @@ if (!window.ice.icepush) {
         var PushIDs = 'ice.pushids';
         var BrowserIDCookieName = 'ice.push.browser';
         var NotifiedPushIDs = 'ice.notified.pushids';
+        var CommandMarker = '{{command}}';
 
         var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
         namespace.windowID = namespace.windowID || substring(Math.random().toString(16), 2, 7);
@@ -111,7 +112,7 @@ if (!window.ice.icepush) {
         }
 
         function applyURIPattern(commandName) {
-            return replace(namespace.push.configuration.uriPattern, '{{command}}', commandName);
+            return replace(namespace.push.configuration.uriPattern, CommandMarker, commandName);
         }
 
         var currentNotifications = [];
@@ -220,7 +221,8 @@ if (!window.ice.icepush) {
 
             configuration: {
                 contextPath: '.',
-                uriPattern: './{{command}}'
+                uriPattern: './{{command}}',
+                blockingConnectionURI: null
             }
         };
 
@@ -242,7 +244,7 @@ if (!window.ice.icepush) {
                 configurationElement = message;
                 //update public values
                 publicConfiguration.contextPath = attributeAsString(configuration, 'contextPath', publicConfiguration.contextPath);
-                publicConfiguration.uriPattern = attributeAsString(configuration, 'uriPattern', publicConfiguration.uriPattern);
+                publicConfiguration.blockingConnectionURI = attributeAsString(configuration, 'blockingConnectionURI', publicConfiguration.blockingConnectionURI);
             });
             register(commandDispatcher, 'browser', function(message) {
                 document.cookie = BrowserIDCookieName + '=' + message.getAttribute('id');
