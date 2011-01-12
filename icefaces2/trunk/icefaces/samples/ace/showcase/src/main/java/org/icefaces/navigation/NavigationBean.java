@@ -19,7 +19,7 @@
  * Contributor(s): _____________________.
  */
 
-package icefaces.ace.samples.showcase.src.main.java.org.icefaces.navigation;
+package org.icefaces.navigation;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.bean.ManagedBean;
