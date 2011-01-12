@@ -24,33 +24,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.icefaces.samples</groupId>
+    <parent>
+       <groupId>org.icefaces.samples</groupId>
+       <artifactId>core</artifactId>
+       <version>2.0.1</version>
+    </parent>
     <artifactId>auction</artifactId>
     <packaging>war</packaging>
     <name>ICEfaces 2 Auction sample</name>
-    <url>http://www.icefaces.org/</url>
-    <version>2.0.0</version>
-    <properties>
-        <jsf.version>2.1.0-FCS</jsf.version>
-        <icefaces.version>2.0.0</icefaces.version>
-    </properties>
-    <repositories>
-        <repository>
-            <id>snapshots</id>
-            <url>http://anonsvn.icefaces.org/repo/maven2/snapshots/</url>
-        </repository>
-    </repositories>
+ 
     <dependencies>
-        <dependency>
-            <groupId>org.icefaces</groupId>
-            <artifactId>icefaces</artifactId>
-            <version>${icefaces.version}</version>
-            <scope>compile</scope>
-        </dependency>
         <dependency>
             <groupId>org.icepush</groupId>
             <artifactId>icepush</artifactId>
-            <version>${icefaces.version}</version>
+            <version>${ice.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -71,58 +58,7 @@
             <scope>provided</scope>
         </dependency>              
     </dependencies>
-    <profiles>
-        <profile>
-            <id>tomcat6</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-impl</artifactId>
-                    <version>${jsf.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-api</artifactId>
-                    <version>${jsf.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>glassfish3</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-impl</artifactId>
-                    <version>${jsf.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-                <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-api</artifactId>
-                    <version>${jsf.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
     <build>
         <finalName>${artifactId}</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 </project>
