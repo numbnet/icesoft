@@ -19,10 +19,12 @@
   ~ Contributor(s): _____________________.
   -->
 
-<project name="ace-showcase" default="servlet-profile">
-    
-    <property file="./build.properties"/>
-    <property file="../build/build.properties"/>
-    <import file="../build/common.xml"/>
+<project name="ace-common-portlet">
+
+    <property name="icefaces.base.dir" location="../../.." />
+    <property name="ace"               value="true" />
+
+    <import file="../../build/common-portlet.xml" />
+    <import file="../../build/common.xml" />
 
 </project>
