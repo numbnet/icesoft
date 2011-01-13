@@ -32,8 +32,9 @@
     <artifactId>chat-portlet</artifactId>
     <packaging>war</packaging>
     <name>ICEfaces 2 Chat Portlet sample</name>
-   <properties>
+    <properties>
         <parent.root>../chat</parent.root>
+        <pluto.version>2.0.2</pluto.version>
     </properties>
     <build>
         <finalName>${artifactId}</finalName>
@@ -122,25 +123,80 @@
                 </dependency>
             </dependencies>
         </profile>
-        <profile>
-            <id>liferay6.web-profile</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-impl</artifactId>
-                    <version>${jsf.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-                <dependency>
-                    <groupId>com.sun.faces</groupId>
-                    <artifactId>jsf-api</artifactId>
-                    <version>${jsf.version}</version>
-                    <scope>provided</scope>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>  
+       <profile>
+           <id>liferay6.web-profile</id>
+           <activation>
+               <activeByDefault>false</activeByDefault>
+           </activation>
+           <dependencies>
+               <dependency>
+                   <groupId>com.sun.faces</groupId>
+                   <artifactId>jsf-impl</artifactId>
+                   <version>${jsf.version}</version>
+                   <scope>provided</scope>
+               </dependency>
+               <dependency>
+                   <groupId>com.sun.faces</groupId>
+                   <artifactId>jsf-api</artifactId>
+                   <version>${jsf.version}</version>
+                   <scope>provided</scope>
+               </dependency>
+           </dependencies>
+       </profile>
+       <profile>
+           <id>pluto.servlet-profile</id>
+           <activation>
+               <activeByDefault>false</activeByDefault>
+           </activation>
+           <build>
+               <plugins>
+                   <plugin>
+                       <artifactId>maven-war-plugin</artifactId>
+                       <configuration>
+                           <webXml>${project.build.directory}/pluto-resources/web.xml</webXml>
+                           <webResources>
+                               <resource>
+                                   <directory>${parent.root}/src/main/webapp</directory>
+                               </resource>
+                           </webResources>
+                       </configuration>
+                   </plugin>
+                   <plugin>
+                       <groupId>org.apache.portals.pluto</groupId>
+                       <artifactId>maven-pluto-plugin</artifactId>
+                       <version>${pluto.version}</version>
+                       <configuration>
+                           <webXml>${parent.root}/src/main/webapp/WEB-INF/web.xml</webXml>
+                       </configuration>
+                       <executions>
+                           <execution>
+                               <phase>generate-resources</phase>
+                               <goals>
+                                   <goal>assemble</goal>
+                               </goals>
+                           </execution>
+                       </executions>
+                   </plugin>
+               </plugins>
+           </build>
+           <dependencies>
+               <dependency>
+                   <groupId>com.sun.faces</groupId>
+                   <artifactId>jsf-impl</artifactId>
+                   <version>${jsf.version}</version>
+               </dependency>
+               <dependency>
+                   <groupId>com.sun.faces</groupId>
+                   <artifactId>jsf-api</artifactId>
+                   <version>${jsf.version}</version>
+               </dependency>
+               <dependency>
+                 <groupId>org.apache.portals.pluto</groupId>
+                 <artifactId>pluto-util</artifactId>
+                 <version>${pluto.version}</version>
+                 <scope>provided</scope>
+               </dependency>
+           </dependencies>
+       </profile>
+    </profiles>
 </project>
