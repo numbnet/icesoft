@@ -35,48 +35,6 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<!-- File Upload Dialog -->
-<ice:panelPopup id="fileUploadPopup"
-                rendered="#{!participant.mobile and participant.moderator}"
-                visible="#{participant.uploadDialog}" 
-                modal="false"
-                styleClass="fileUploadPopup">
-    <f:facet name="header">
-        <ice:panelGroup styleClass="cellBGglossyDARK">
-            <strong>#{msgs['page.popup.fileUpload.text']}</strong>
-        </ice:panelGroup>
-    </f:facet>
-    <f:facet name="body">
-        <ice:panelGrid columns="1">
-            <center>
-                <div style="text-align: left; 
-                            padding: 7px;">
-                    <ice:outputText
-                            value="#{msgs['page.popup.fileUpload.body.text']}"/>
-                </div>
-                <br />
-<!--
-                <ice:inputFile uniqueFolder="true"
-                               width="500"
-                               actionListener="#{participant.presentation.load}"
-                               progressListener="#{participant.presentation.progressChange}"
-                               buttonClass="none"
-                               action="#{participant.presentation.closeUploadDialog}" />
--->
-                <ice:panelGroup>
-                    <ice:outputText value="#{msgs['page.popup.fileUpload.body.progress.text']}"
-                                    style="font-size: smaller;"/>
-                    <ice:outputProgress
-                            value="#{participant.presentation.progress}"/>
-                </ice:panelGroup>
-                <ice:commandButton image="resources/images/butt_cancel.gif"
-                                   action="#{participant.presentation.closeUploadDialog}"
-                                   alt="#{msgs['page.popup.fileUpload.body.cancelButton.alt']}"/>
-            </center>
-        </ice:panelGrid>
-    </f:facet>
-</ice:panelPopup>
-
 <!-- Switch Moderator Dialog -->
 <ice:panelPopup id="switchModeratorPopup"
                 visible="#{participant.moderatorDialog}" 

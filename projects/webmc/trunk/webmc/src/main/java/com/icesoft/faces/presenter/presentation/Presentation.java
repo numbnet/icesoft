@@ -46,6 +46,8 @@ import com.icesoft.faces.presenter.timer.SlideshowTimerBean;
 import com.icesoft.faces.presenter.util.MessageBundleLoader;
 import com.icesoft.faces.presenter.util.StringResource;
 
+import org.icefaces.component.fileentry.*;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -468,6 +470,19 @@ public class Presentation extends PresentationInfo {
         }
     }
 
+	public void loadFile(FileEntryEvent event) {
+		System.out.println("*** file event ***");
+		
+        FileEntry fileEntry = (FileEntry) event.getSource();
+        FileEntryResults results = fileEntry.getResults();
+		FileEntryResults.FileInfo fileInfo = results.getFiles().get(0);
+		if (fileInfo != null) {
+			if (fileInfo.isSaved()) {
+				load(fileInfo.getFile(), false);
+			}
+		}
+	}
+	
     /**
      * Method called when a new presentation is loaded through the front page
      * parentFile upload component. This basically ensures that a valid
