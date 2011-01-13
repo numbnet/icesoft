@@ -34,6 +34,7 @@
     <name>ICEfaces 2 ace portlet sample</name>
    <properties>
         <parent.root>../showcase</parent.root>
+        <pluto.version>2.0.2</pluto.version>
     </properties>
     <build>
         <finalName>${artifactId}</finalName>
@@ -143,5 +144,57 @@
                 </dependency>
             </dependencies>
         </profile>
-    </profiles>  
+       <profile>
+           <id>pluto.servlet-profile</id>
+           <activation>
+               <activeByDefault>false</activeByDefault>
+           </activation>
+           <build>
+               <plugins>
+                   <plugin>
+                       <artifactId>maven-war-plugin</artifactId>
+                       <configuration>
+                           <webXml>${project.build.directory}/pluto-resources/web.xml</webXml>
+                           <webResources>
+                               <resource>
+                                   <directory>${parent.root}/src/main/webapp</directory>
+                               </resource>
+                           </webResources>
+                       </configuration>
+                   </plugin>
+                   <plugin>
+                       <groupId>org.apache.portals.pluto</groupId>
+                       <artifactId>maven-pluto-plugin</artifactId>
+                       <version>${pluto.version}</version>
+                       <executions>
+                           <execution>
+                               <phase>generate-resources</phase>
+                               <goals>
+                                   <goal>assemble</goal>
+                               </goals>
+                           </execution>
+                       </executions>
+                   </plugin>
+               </plugins>
+           </build>
+           <dependencies>
+               <dependency>
+                   <groupId>com.sun.faces</groupId>
+                   <artifactId>jsf-impl</artifactId>
+                   <version>${jsf.version}</version>
+               </dependency>
+               <dependency>
+                   <groupId>com.sun.faces</groupId>
+                   <artifactId>jsf-api</artifactId>
+                   <version>${jsf.version}</version>
+               </dependency>
+               <dependency>
+                 <groupId>org.apache.portals.pluto</groupId>
+                 <artifactId>pluto-util</artifactId>
+                 <version>${pluto.version}</version>
+                 <scope>provided</scope>
+               </dependency>
+           </dependencies>
+       </profile>
+    </profiles>
 </project>
