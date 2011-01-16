@@ -39,9 +39,9 @@ Ice.DnD.StyleReader = {
         //Ice.DnD.logger.debug("Building Style");
         var result = '';
         Ice.DnD.StyleReader.styles.split(',').each(
-                function(style) {
-                    result += style + ':' + Ice.DnD.StyleReader.getStyle(ele, style) + ';';
-                });
+                                                  function(style) {
+                                                      result += style + ':' + Ice.DnD.StyleReader.getStyle(ele, style) + ';';
+                                                  });
         return result;
     },
     getStyle: function(x, styleProp) {
@@ -103,14 +103,14 @@ Ice.modal = {
 
     //caller Ice.modal.stop()
     stopRunning:function(target) {
-        if (this.running.last() == target) {
-            //de-register modal popup
-            this.running.pop();
-            //if there are more than one modal popups then this will enable the focus on
-            //last opened modal popup and if there is no modal popup left then it will
-            //enable the focus on the document.
-            this.restoreTabindex(this.getRunning());
-        }
+        //de-register modal popup
+        this.running = this.running.reject(function(e) {
+            return e == target;
+        });
+        //if there are more than one modal popups then this will enable the focus on
+        //last opened modal popup and if there is no modal popup left then it will
+        //enable the focus on the document.
+        this.restoreTabindex(this.getRunning());
     },
 
     //returns last modal popup on the stack, null if there isn't any    
@@ -249,15 +249,16 @@ Ice.modal = {
     },
 
     stop:function(target) {
-        if (Ice.modal.getRunning() == target) {
+        var isRunning = Ice.modal.getRunning() == target;
+        //de-register modal popup
+        Ice.modal.stopRunning(target);
+        Ice.modal.zIndexCount -= 3;
+        if (isRunning) {
             var iframe = document.getElementById('iceModalFrame' + target);
             if (iframe) {
                 iframe.parentNode.removeChild(iframe.nextSibling);
                 iframe.parentNode.removeChild(iframe);
             }
-            //de-register modal popup
-            Ice.modal.stopRunning(target);
-            Ice.modal.zIndexCount -= 3;
             if (Ice.modal.trigger) {
                 Ice.Focus.setFocus(Ice.modal.trigger);
                 Ice.modal.trigger = '';
@@ -275,6 +276,9 @@ Ice.modal = {
         var targetElement = null;
         if (target) {
             targetElement = $(target);
+            if (!targetElement) {
+                targetElement = document;
+            }
         } else {
             targetElement = document;
         }
