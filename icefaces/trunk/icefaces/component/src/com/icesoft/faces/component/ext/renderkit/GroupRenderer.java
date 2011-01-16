@@ -38,7 +38,6 @@ import com.icesoft.faces.component.dragdrop.DragEvent;
 import com.icesoft.faces.component.dragdrop.DropEvent;
 import com.icesoft.faces.component.ext.HtmlPanelGroup;
 import com.icesoft.faces.component.menupopup.MenuPopupHelper;
-import com.icesoft.faces.component.panelpopup.PanelPopup;
 import com.icesoft.faces.component.util.DelimitedProperties;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
@@ -353,16 +352,16 @@ public class GroupRenderer
                 }
             }
         }
-        if (component instanceof PanelPopup) {
-            PanelPopup popup = (PanelPopup) component;
-            if (popup.isModal()) {
-//                printParams();
-                Map requestMap = context.getExternalContext().getRequestParameterMap();
-                if (requestMap.containsKey(clientId + "_rendered") && popup.isVisibilityChanged()) {
-                    JavascriptContext.addJavascriptCall(context, "Ice.modal.stop('" + clientId + "');");
-                }
-            }
-        }
+//        if (component instanceof PanelPopup) {
+//            PanelPopup popup = (PanelPopup) component;
+//            if (popup.isModal()) {
+////                printParams();
+//                Map requestMap = context.getExternalContext().getRequestParameterMap();
+//                if (requestMap.containsKey(clientId + "_rendered") && popup.isVisibilityChanged()) {
+//                    JavascriptContext.addJavascriptCall(context, "Ice.modal.stop('" + clientId + "');");
+//                }
+//            }
+//        }
     }
 
     public static void printParams() {
