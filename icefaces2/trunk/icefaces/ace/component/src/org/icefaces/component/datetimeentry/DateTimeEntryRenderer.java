@@ -153,6 +153,11 @@ public class DateTimeEntryRenderer extends Renderer {
         }
         unicodeShortWeekdays.replace(0, 1, "[").append("]");
 
+        String currentFocus = paramMap.get("ice.focus");
+        if (currentFocus == null) {
+            currentFocus = "";
+        }
+
         String params = "'" + clientId + "'," +
                 JSONBuilder.create().
                 beginMap().
@@ -177,6 +182,7 @@ public class DateTimeEntryRenderer extends Renderer {
                     entry("disabled", dateTimeEntry.isDisabled()).
                     entry("longMonths", unicodeLongMonths.toString(), true).
                     entry("shortWeekdays", unicodeShortWeekdays.toString(), true).
+                    entry("currentFocus", currentFocus).
                 endMap().toString();
 //        System.out.println("params = " + params);
         final UIComponent cal = component;
