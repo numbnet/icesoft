@@ -470,19 +470,6 @@ public class Presentation extends PresentationInfo {
         }
     }
 
-	public void loadFile(FileEntryEvent event) {
-		System.out.println("*** file event ***");
-		
-        FileEntry fileEntry = (FileEntry) event.getSource();
-        FileEntryResults results = fileEntry.getResults();
-		FileEntryResults.FileInfo fileInfo = results.getFiles().get(0);
-		if (fileInfo != null) {
-			if (fileInfo.isSaved()) {
-				load(fileInfo.getFile(), false);
-			}
-		}
-	}
-	
     /**
      * Method called when a new presentation is loaded through the front page
      * parentFile upload component. This basically ensures that a valid
@@ -491,43 +478,34 @@ public class Presentation extends PresentationInfo {
      *
      * @param event of the load
      */
-    public void load(ActionEvent event) {
-System.out.println("Update to new FileEntry component");
-//commenting out InputFile related
-/*
+	public void loadFile(FileEntryEvent event) {
         getModerator()
                 .updateStatus(MessageBundleLoader.getMessage("bean.presentation.load.moderatorStatus"));
-        // Get a valid input file component that triggered the event
-        InputFile inputFileComponent;
-        if (event != null) {
-            inputFileComponent = (InputFile) event.getSource();
-        } else {
+		
+		if (event != null) {		
+			FileEntry fileEntry = (FileEntry) event.getSource();
+			FileEntryResults results = fileEntry.getResults();
+			FileEntryResults.FileInfo fileInfo = results.getFiles().get(0);
+			if (fileInfo != null) {
+				if (fileInfo.isSaved()) {
+					load(fileInfo.getFile(), false);
+				} else if (fileInfo.getStatus() == FileEntryStatuses.MAX_FILE_SIZE_EXCEEDED) {
+					closeUploadDialog();
+					getModerator().updateStatus(
+							MessageBundleLoader.getMessage("bean.presentation.load.moderatorStatus.sizeLimitExceeded"));				
+				} else {
+					closeUploadDialog();
+					getModerator().updateStatus(
+							MessageBundleLoader.getMessage("bean.presentation.load.moderatorStatus.invalidFile"));				
+				}
+			}
+		} else {
             if (log.isErrorEnabled()) {
                 log.error("Load failed because the event was null");
             }
-            closeUploadDialog();
-            return;
-        }
-        // Determine what to do based on the input file component status
-        // Ideally the status is InputFile.SAVED, in which case the file will
-        //  be set, and the list of uploadedFiles increased
-        switch (inputFileComponent.getStatus()) {
-            case InputFile.SAVED:
-                load(inputFileComponent.getFile(), false);
-                break;
-            case InputFile.SIZE_LIMIT_EXCEEDED:
-                closeUploadDialog();
-                getModerator().updateStatus(
-                		MessageBundleLoader.getMessage("bean.presentation.load.moderatorStatus.sizeLimitExceeded"));
-                break;
-            default:
-                closeUploadDialog();
-                getModerator().updateStatus(
-                		MessageBundleLoader.getMessage("bean.presentation.load.moderatorStatus.invalidFile"));
-                break;
-        }
-*/
-    }
+            closeUploadDialog();		
+		}
+	}
 
     /**
      * Generic load method that can be called externally to force load a file
@@ -732,7 +710,6 @@ System.out.println("Update to new FileEntry component");
      * @param event of the change
      */
     public void progressChange(EventObject event) {
-System.out.println("file upload not supported yet");
 //commenting out upload pending FileEntry
 /*
         if (event != null) {
