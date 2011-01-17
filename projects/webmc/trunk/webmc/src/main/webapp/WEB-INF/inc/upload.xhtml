@@ -60,11 +60,13 @@
 						<ace:fileEntry id="fileEntryComp"
 						relativePath="uploadDirectory"
 						fileEntryListener="#{participant.presentation.loadFile}"
+						useOriginalFilename="true"
 						/>
 						<h:commandButton id="fileUploadButton" value="Upload"/>
 					</h:form>
 
                 <ice:form>
+				<br />
 				<ice:commandButton image="resources/images/butt_cancel.gif"
                                    action="#{participant.presentation.closeUploadDialog}"
                                    alt="#{msgs['page.popup.fileUpload.body.cancelButton.alt']}"/>
