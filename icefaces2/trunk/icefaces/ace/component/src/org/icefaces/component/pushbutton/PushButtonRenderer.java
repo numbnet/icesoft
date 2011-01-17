@@ -96,8 +96,9 @@ public class PushButtonRenderer extends Renderer {
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
 		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
         // ICE-6418 Write the id out to be the same as the eventual munged YUI id.
-		writer.writeAttribute(HTML.NAME_ATTR, clientId+"_span-button", null);
-		writer.writeAttribute(HTML.ID_ATTR, clientId+"_span-button", null);
+		writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
+        // ICE-6418 Don't define id's where unnecessary
+//		writer.writeAttribute(HTML.ID_ATTR, clientId+"_span-button", null);
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
 		Object oVal = pushButton.getValue();
 		if (null!=oVal) writer.writeText(String.valueOf(oVal), null);
