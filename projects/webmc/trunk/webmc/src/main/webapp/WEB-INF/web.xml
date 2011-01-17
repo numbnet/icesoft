@@ -59,6 +59,17 @@
         <url-pattern>/icefaces/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Chatlog Servlet</servlet-name>
+        <servlet-class>com.icesoft.faces.presenter.chat.ChatLogServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+	
+    <servlet-mapping>
+        <servlet-name>Chatlog Servlet</servlet-name>
+        <url-pattern>/chatlog.html</url-pattern>
+    </servlet-mapping>
+	
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
