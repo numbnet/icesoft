@@ -460,16 +460,19 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     }
 
     public static Document getOldDocument(FacesContext facesContext) {
+        Object oldDOMObject = facesContext.getViewRoot()
+                .getViewMap().get(OLD_DOM);
+        if (null == oldDOMObject)  {
+            return null;
+        }
         if (!EnvUtils.isCompressDOM(facesContext)) {
-            return (Document) facesContext.getViewRoot()
-                    .getViewMap().get(OLD_DOM);
+            return (Document) oldDOMObject;
         }
         Document document = DOMUtils.getNewDocument();
         //FastInfoset does not tolerate stray xmlns declarations
         document.setStrictErrorChecking(false);
         try {
-            byte[] data = (byte[]) facesContext.getViewRoot()
-                    .getViewMap().get(OLD_DOM);
+            byte[] data = (byte[]) oldDOMObject;
             DOMDocumentParser parser = new DOMDocumentParser();
             ByteArrayInputStream in = new ByteArrayInputStream(data);
             parser.parse(document, in);
