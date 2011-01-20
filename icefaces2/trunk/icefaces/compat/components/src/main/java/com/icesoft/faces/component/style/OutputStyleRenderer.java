@@ -34,6 +34,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import java.beans.Beans;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -108,7 +109,10 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                             ieStyleEle.setAttribute(HTML.TITLE_ATTR, extention);
                             String hrefURL = CoreUtils.resolveResourceURL(facesContext, start + extention + CSS_EXTENTION);
                             ieStyleEle.setAttribute(HTML.HREF_ATTR, hrefURL);
-                            styleEle.getParentNode().appendChild(ieStyleEle);
+                            String realPath = facesContext.getExternalContext().getRealPath(hrefURL);
+                            if (realPath != null && new File(realPath).exists()) {
+                                styleEle.getParentNode().appendChild(ieStyleEle);
+                            }
                         } else {
                             throw new RuntimeException(
                                     "OutputStyle file attribute is too short. " +
