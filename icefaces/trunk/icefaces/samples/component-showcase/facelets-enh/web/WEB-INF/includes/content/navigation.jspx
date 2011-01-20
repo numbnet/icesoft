@@ -84,7 +84,7 @@
     </ice:panelSeries>
     <ice:panelGroup style="border: 1px solid #D9D9D9; border-bottom: 0; text-align: center; padding-top: 5px; padding-bottom: 5px;">
         <a href="http://composite-component-showcase.icefaces.org/" target="_blank">
-            <ice:outputText value="Demo our Composite Components"
+            <ice:outputText value="Demo our Enterprise Components"
                             style="font-weight: bold; font-size: 10px; color: #F78208;"/>
         </a>
     </ice:panelGroup>
