@@ -22,6 +22,7 @@
 
 package com.icesoft.faces.component.ext.renderkit;
 
+import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.component.ext.HtmlCommandButton;
 import org.w3c.dom.Element;
 
@@ -52,10 +53,19 @@ public class ButtonRenderer
     }
     
     protected void renderOnClick(UIComponent uiComponent, Element root) {
-        HtmlCommandButton button = (HtmlCommandButton) uiComponent;
+        
+		UIComponent button = (UIComponent) uiComponent;
         String onclick = (String) uiComponent.getAttributes().get("onclick");
         String submitCode;
-        if (button.getPartialSubmit()) {
+		                        
+		boolean isPartialSubmit = false;
+		try {
+			isPartialSubmit = (boolean)((HtmlCommandButton)button).getPartialSubmit(); 
+		} catch (ClassCastException e) {
+			isPartialSubmit = (boolean)((HtmlCommandLink)button).getPartialSubmit();
+		}
+
+        if (isPartialSubmit) {
             submitCode = this.ICESUBMITPARTIAL + "return false;";
         } else {
             submitCode = this.ICESUBMIT + "return false;";
