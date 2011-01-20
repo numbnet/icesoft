@@ -90,20 +90,20 @@ public class CommandLinkRenderer extends DomBasicRenderer {
     }
 
     private Renderer getButtonRenderer(FacesContext facesContext) {
-    	return facesContext.getRenderKit().getRenderer(HtmlCommandButton.COMPONENT_FAMILY,
-                "javax.faces.Button");
+    	return facesContext.getRenderKit().getRenderer("javax.faces.Command", "com.icesoft.faces.Button");
     }
     
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-        validateParameters(facesContext, uiComponent, UICommand.class);
+        validateParameters(facesContext, uiComponent, UICommand.class);             
         if ("HtmlCommandLink".equals(uiComponent.getClass().getSimpleName()) &&
         		CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
+	
         	Object styleClass = uiComponent.getAttributes().get("styleClass");
         	boolean disClassAdded = false;
         	String iceCmdLnkJSDis = "iceCmdLnkJSDis";
         	if (styleClass != null) {
-        		disClassAdded  = styleClass.toString().indexOf(iceCmdLnkJSDis) > 0? true: false ;
+        		disClassAdded  = styleClass.toString().indexOf(iceCmdLnkJSDis) > 0 ? true: false;
         	}
         	if (!disClassAdded) {
             	if (styleClass != null) {
@@ -111,20 +111,19 @@ public class CommandLinkRenderer extends DomBasicRenderer {
             	} else {
             		uiComponent.getAttributes().put("styleClass", iceCmdLnkJSDis);
             	}            	
-        	}              	
+        	} 
         	getButtonRenderer(facesContext).encodeBegin(facesContext, uiComponent);
         	return;
         }
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         
-
-        
         boolean disabled = false;
         try {
             disabled = Boolean.valueOf(String.valueOf(uiComponent.getAttributes().get("disabled"))).booleanValue();
         } catch (Exception e) {
         }
+   	
 
         if (!domContext.isInitialized()) {
             Element root;
