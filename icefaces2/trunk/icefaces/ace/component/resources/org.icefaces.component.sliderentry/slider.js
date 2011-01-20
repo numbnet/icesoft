@@ -99,10 +99,13 @@ ice.component.slider = {
 							eventName = "";
 						});
 						
+						obj.before("railMouseDown", function() {
+                            root.firstChild.focus();
+						});
 						obj.after("railMouseDown", function() {
 						  eventName = "railMouseDown";
 						});
-						
+
 						obj.after("slideEnd", function(event) {
 							invokeSubmit(event);
 						});						
@@ -171,7 +174,7 @@ ice.component.slider = {
 
 						Yui.on("click", function(event) {
 							root.firstChild.focus();
-						}, root);		                
+						}, root);
 						//bind the initilized js component, so it can be reused for later calls
 		                bindYUI(obj);
 		          });
