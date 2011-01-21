@@ -96,12 +96,11 @@
 
                 </div>
             </div>
-
-        </div>
-
          <ui:insert name="footer">
             <ui:include src="/WEB-INF/includes/content/footer.jspx"/>
          </ui:insert>
+        </div>
+
           <!--
           PRELOAD IMAGES need for roleovers and layout in general, javascript is only
           loaded once per refresh which is good enough.  This improves overall user
