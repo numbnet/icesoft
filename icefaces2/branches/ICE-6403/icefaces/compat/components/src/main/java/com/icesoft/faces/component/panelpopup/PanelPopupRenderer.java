@@ -140,11 +140,9 @@ public class PanelPopupRenderer extends GroupRenderer {
                 return;
             }
         }
-        Element table = domContext.createElement(HTML.TABLE_ELEM);
-        table.setAttribute(HTML.CELLPADDING_ATTR, "0");
-        table.setAttribute(HTML.CELLSPACING_ATTR, "0");
+        Element rootDiv2 = domContext.createElement(HTML.DIV_ELEM);
 //			table.setAttribute(HTML.WIDTH_ATTR, "100%");
-        rootDiv.appendChild(table);
+        rootDiv.appendChild(rootDiv2);
 /*
         Text iframe = domContext.createTextNode("<!--[if lte IE 6.5]><iframe src=\"" +
                 CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(), "/xmlhttp/blank") +
@@ -183,34 +181,26 @@ public class PanelPopupRenderer extends GroupRenderer {
         JavascriptContext.fireEffect(uiComponent, facesContext);
 
         // get tables , our table is the first and only one
-        NodeList tables = root.getElementsByTagName(HTML.TABLE_ELEM);
+        NodeList divs = root.getElementsByTagName(HTML.DIV_ELEM);
         // assumption we want the first table in tables. there should only be
         // one
-        Element t = (Element) tables.item(0);
+        Element t = (Element) divs.item(0);
         // clean out child nodes and build a fresh selectinputdate
         DOMContext.removeChildrenByTagName(t, HTML.TR_ELEM);
 
         doPassThru(facesContext, uiComponent, root);
         String handleId = null;
         if (panelPopup.getHeader() != null) {
-            Element headerTr = domContext.createElement(HTML.TR_ELEM);
-            Element headerTd = domContext.createElement(HTML.TD_ELEM);
-            headerTd.setAttribute(HTML.CLASS_ATTR, headerClass);
+            Element headerDiv = domContext.createElement(HTML.DIV_ELEM);
+            headerDiv.setAttribute(HTML.CLASS_ATTR, headerClass);
             handleId = ClientIdPool.get(uiComponent.getClientId(facesContext) + "Handle");
-            headerTd.setAttribute(HTML.ID_ATTR, handleId);
+            headerDiv.setAttribute(HTML.ID_ATTR, handleId);
 //            headerTd.setAttribute(HTML.STYLE_ATTR, "width:100%;");
-            headerTr.appendChild(headerTd);
-            Element headerTdSpacer = domContext.createElement(HTML.TD_ELEM);
-            Element headerDiv = domContext.createElement("div");
-            headerDiv.setAttribute(HTML.STYLE_ATTR, "width:1px;");
-            headerTdSpacer.setAttribute(HTML.CLASS_ATTR, headerClass);
-            headerTdSpacer.appendChild(headerDiv);
-            headerTr.appendChild(headerTdSpacer);
             // add header facet to header tr and add to table
-            t.appendChild(headerTr);
+            t.appendChild(headerDiv);
             // set the cursor parent to the new table row Element
             // to the new table row Element
-            domContext.setCursorParent(headerTd);
+            domContext.setCursorParent(headerDiv);
 
             UIComponent header = panelPopup.getHeader();
             CustomComponentUtils.renderChild(facesContext, header);
@@ -218,19 +208,15 @@ public class PanelPopupRenderer extends GroupRenderer {
 
         if (panelPopup.getBody() != null) {
 
-            Element bodyTr = domContext.createElement(HTML.TR_ELEM);
-            Element bodyTd = domContext.createElement(HTML.TD_ELEM);
+            Element bodyDiv = domContext.createElement(HTML.DIV_ELEM);
 
-            bodyTd.setAttribute(HTML.CLASS_ATTR, bodyClass);
-            bodyTr.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "-tr"));
-            bodyTr.appendChild(bodyTd);
-            bodyTd.setAttribute(HTML.COLSPAN_ATTR, "2");
+            bodyDiv.setAttribute(HTML.CLASS_ATTR, bodyClass);
             // add body facet to body tr then add to table
-            t.appendChild(bodyTr);
+            t.appendChild(bodyDiv);
             // set the cursor parent to the new table row Element
             // this will cause the renderChild method to append the child nodes
             // to the new table row Element
-            domContext.setCursorParent(bodyTd);
+            domContext.setCursorParent(bodyDiv);
 
             UIComponent body = panelPopup.getBody();
 
@@ -238,20 +224,17 @@ public class PanelPopupRenderer extends GroupRenderer {
         }
         // if the popup is resizable render a resize handle
         if (resizable != null && resizable.booleanValue()) {
-            Element footerTr = domContext.createElement(HTML.TR_ELEM);
-            footerTr.setAttribute(HTML.HEIGHT_ATTR, "15px");
-            footerTr.setAttribute(HTML.STYLE_ATTR,
+            Element footerDiv = domContext.createElement(HTML.DIV_ELEM);
+            footerDiv.setAttribute(HTML.HEIGHT_ATTR, "15px");
+            footerDiv.setAttribute(HTML.STYLE_ATTR,
                     "text-align: right; float: right;");
-            Element footerTd = domContext.createElement(HTML.TD_ELEM);
-            footerTd.setAttribute(HTML.STYLE_CLASS_ATTR, "panelPopupFooter");
-            footerTd.setAttribute(HTML.COLSPAN_ATTR, "2");
+            footerDiv.setAttribute(HTML.STYLE_CLASS_ATTR, "panelPopupFooter");
             Element img = domContext.createElement(HTML.IMG_ELEM);
             img.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(
                     facesContext, "/xmlhttp/css/xp/css-images/resize.gif"));
             img.setAttribute(HTML.STYLE_ATTR, "cursor: se-resize");
-            footerTd.appendChild(img);
-            footerTr.appendChild(footerTd);
-            t.appendChild(footerTr);
+            footerDiv.appendChild(img);
+            t.appendChild(footerDiv);
         }
 
         panelPopup.applyStyle(facesContext, root);
