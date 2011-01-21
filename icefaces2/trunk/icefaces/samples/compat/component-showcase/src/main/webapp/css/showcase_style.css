@@ -1,20 +1,24 @@
 /*
- * ICESOFT COMMERCIAL SOURCE CODE LICENSE V 1.0
+ * Version: MPL 1.1
  *
- * The contents of this file are subject to the ICEsoft Commercial Source
- * Code License Agreement V1.0 (the "License"); you may not use this file
- * except in compliance with the License. You may obtain a copy of the
- * License at
- * http://www.icesoft.com/license/commercial-source-v1.0.html
+ * The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
  *
  * Software distributed under the License is distributed on an "AS IS"
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
  * License for the specific language governing rights and limitations under
  * the License.
  *
- * Copyright 2009-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
+ * Contributor(s): _____________________.
  */
+
 div.clearer {
     clear:both;
 	height:0px;
@@ -34,8 +38,6 @@ div.header_container {
     background-repeat: repeat-x;
     background-position: left top;
     float:left;
-	position:relative;
-	z-index:5;
     width:100%;
 }
 div.header_content{
@@ -54,10 +56,8 @@ div.header_content{
 /* provides a continer to center a child div in */
 div.body_container{
    float:left;
+   margin-top:-80px;
    width:100%;
-   position:relative;
-   top:-80px;
-   background-color:white;
 }
 /* centers in parent as long as parent is larger then child*/
 div.body_content {
@@ -100,6 +100,7 @@ div.footer_container {
 }
 div.footer_content{
     height: 95px;
+    background-image: url( './images/footer_faces.jpg' );
     background-repeat: no-repeat;
     background-position: bottom right;
 }
@@ -125,6 +126,8 @@ div.footer_content a:hover{
 
 /* controls the appearance of links throughout the application */
 a:link, a:hover, a:visited, a:active {
+    font-family: Tahoma, Helvetica, sans-serif;
+    font-weight: normal;
     text-decoration: none;
     color: #000;
 }
@@ -144,18 +147,18 @@ a:active{
     float:left;
 }
 .docViewNavigation, .docViewContent{
-    height: 580px;
+    height: 500px;
 }
 .docViewNavigation{
-    width: 120px;
+    width: 150px;
     overflow: scroll;
 }
 .docViewContent{
-    width: 588px;
+    width: 514px;
     border: 1px solid #D9D9D9;
 }
 .docViewContainer{
-    width: 710px;
+    width: 670px;
 }
 .docViewContainer a{
     color: #444444;
@@ -204,17 +207,6 @@ a.docViewNodeSelectedtrue{
     border: 1px solid #d9d9d9;
     display: block;
     float:left;
-}
-
-.noteBox {
-    margin: 15px 0 0 0;
-    padding: 7px;
-    background: #FFF;
-    border: 1px solid #d9d9d9;    
-}
-
-.noteBox a, .noteBox a:hover, .noteBox a:visited, .noteBox a:active {
-    color: #F78208;
 }
 
 .synopsisBox .iceOutTxt {
@@ -273,8 +265,6 @@ h3 {
     /*float:left;*/
     border:1px solid #D9D9D9;
     height:28px;
-	position:relative;
-	z-index:6;
     margin-bottom:7px;
     padding: 7px 5px 5px 5px;
     text-align:left;
@@ -301,7 +291,7 @@ h3 {
     margin-top:5px;
     border: 1px solid #d9d9d9;
     /*padding-top: 2px;*/
-    width: 120px;
+    width: 90px;
 }
 
 .themeControlContainer a {
@@ -444,7 +434,7 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
     text-decoration: none;
 }
 .effectsDemoContainer{
-    float:left;
+    /*float:left;*/
     width: 125px;
     height: 80px;
     vertical-align: middle;
@@ -454,7 +444,7 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
     background:url('../images/effect_gradient.gif') bottom left repeat-x;
 }
 .effectsDemoContainer > div{
-    float:left;
+    /*float:left;*/
     width:100%;
     font: 11px tahoma;
     vertical-align: middle;
@@ -509,8 +499,18 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
     color: yellow;
 }
 
+.exampleBox a, .synopsisBox a, .exampleBox a:visited, .synopsisBox a:visited,
+    .exampleBox a:hover, .synopsisBox a:hover {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}
+
 .exampleBox a, .synopsisBox a, .exampleBox a:visited, .synopsisBox a:visited {
     text-decoration: none;
+}
+
+.exampleBox a:hover, .synopsisBox a:hover {
+    text-decoration: underline;
 }
 
 .exampleBox .iceMnuItm a:hover {
@@ -534,7 +534,7 @@ div.verticalAlignMdl{
 .navConnectionStatus {
     left:900px;
     position:relative;
-    top:30px;
+    top:33px;
 }
 
 
@@ -550,7 +550,7 @@ div.verticalAlignMdl{
 .navPnlClpsblHdr {
     font: 11px tahoma;
     color: #484848;
-    padding: 6px 0 0 8px;
+    padding: 3px 0 1px 4px;
     font-weight: bold;
     height: 20px;
     background: #FFF url( '../xmlhttp/css/rime/css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
@@ -614,7 +614,7 @@ div.verticalAlignMdl{
 .navPnlClpsblColpsdHdr {
     font: 11px tahoma;
     color: #484848;
-    padding: 6px 0 0 8px;
+    padding: 3px 0 1px 4px;
     font-weight: bold;
     height: 20px;
     background: #FFF url( '../xmlhttp/css/rime/css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
@@ -676,9 +676,15 @@ div.verticalAlignMdl{
 
 .navPnlClpsblHdr div, .navPnlClpsblHdr-dis div  {
     background: url( './images/navigation_tree/tree_folder_open.gif' ) no-repeat 0 3px;
+    margin:0 0 0 -2px;  
+    padding:1px 0 0 5px;
+    background-position: 3px 2px;      
 }
 .navPnlClpsblColpsdHdr div, .navPnlClpsblColpsdHdr-dis div {
     background: url( './images/navigation_tree/tree_folder_closed.gif' ) no-repeat 0 3px;
+    margin:0 0 0 -2px;  
+    padding:1px 0 0 5px;
+    background-position: 3px 2px;  
 }
 /* end of navigation panel collapsible */
 
@@ -822,6 +828,10 @@ div.verticalAlignMdl{
     left: 40%;
 }
 
+.corePopup table {
+    width: 100%;
+}
+
 .popupBody {
     margin-top: 25px;
     width: 100%;
@@ -934,6 +944,9 @@ div.verticalAlignMdl{
     border: 1px solid #DADADA;
     text-align: center;
 }
+.icePnlTlTip table {
+    width: 100%;
+}
 /* END PANEL TOOLTIP  */
 
 /* START OUTPUT PROGRESS */
@@ -992,259 +1005,4 @@ div.verticalAlignMdl{
     text-align:left;
     vertical-align:top;
 }
-
-html, body, div, table, img, fieldset {
-    border: 0;
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    overflow: scroll;
-
-}
- 
-body {
-	background-color:#054572 !important;
-}
-
-body, pre, PRE {
-    font-family: Tahoma, Sans-Serif;
-    font-size: 11px;
-    color: #484848;
-    background-color: #ffffff;
-}
-
-/* for some reson IE things a form should have dimensions, */
-form {
-    padding: 0;
-    margin: 0;
-}
-
-table {
-    font-size: 11px;
-}
-
-ul {
-    margin-left: 15px;
-    padding: 0;
-}
-
-.featureList li, .splashContainer li {
-    list-style: none;
-    background: url( '../xmlhttp/css/rime/css-images/bullet.gif' ) no-repeat 0 3px;
-    padding-left: 22px;
-    padding-bottom: 3px;
-}
-
-h2 {
-    font: 18px tahoma;
-    color: #646464;
-}
-
-.iceOutTxt{
-	font-family: inherit;
-}
-
-.splashContainer{
-    width:681px;
-}
-.buttonsAndLinksContainer{
-    width:500px;
-}
-.textEntryContainer{
-    width:500px;
-}
-.selectionContainer{
-    width:500px;
-}
-.selectInputTextContainer{
-    width:500px;
-}
-.selectInputDateContainer{
-    width:475px;
-}
-.chartsContainer{
-    width:635px;
-}
-.gmapContainer {
-    width: 550px;
-}
-.outputConnectionStatusContainer{
-    width:500px;
-}
-.dragDropContainer{
-    width:500px;
-}
-.effectsContainer{
-    width:500px;
-}
-.inputFileContainer{
-    width:500px;
-}
-.outputMediaContainer{
-    width:500px;
-}
-.outputProgressContainer{
-    width:625px;
-}
-.menuBarContainer{
-    width:500px;
-}
-.menuPopupContainer{
-    width:500px;
-}
-.inputRichTextContainer{
-    width:600px;
-}
-.dataScrollingContainer{
-    width:500px;
-}
-.commandSortHeaderContainer{
-    width:500px;
-}
-.rowSelectorContainer{
-    width:500px;
-}
-.columnsTableContainer{
-    width:500px;
-}
-.expandableTableContainer{
-    width:500px;
-}
-.groupingContainer{
-    width:500px;
-}
-.resizableContainer{
-    width:500px;
-}
-
-.panelBorderContainer{
-    width:500px;
-}
-.panelCollapsible{
-    width:500px;
-}
-.panelTabSetContainer{
-    width: 610px;
-}
-.panelPopupContainer{
-    width:600px;
-}
-.panelPopupExampleContainer{
-    width:250px;
-}
-.panelPositionedContainer{
-    width:500px;
-}
-.panelDividerContainer{
-    width:500px;
-}
-.panelSeriesContainer{
-    width:500px;
-}
-.panelStackContainer{
-    width:600px;
-}
-.panelToolTipContainer{
-    width:500px;
-}
-.demoWidth {
-    width: 615px;
-    overflow-x: auto;
-}
-
-.splashContainer {
-    border: thick solid #FFFFFF;
-    width: 680px;
-}
-
-.bold {
-    font-weight: bold;
-}
-
-.faceletInstr {
-    padding-left: 0;
-    list-style-type: lower-alpha;
-    background: none;
-}
-
-.attrTable {
-    margin: 1em 0;
-    text-align: left;
-}
-
-.borderAndBackground {
-    border: thin solid #D9D9D9;
-    padding: 5px;
-    background-color: #F7F7F7;
-}
-
-.hidden{
-    display:none;
-}
-
-/*
------------ Dialog styles.
-*/
-/* basic style for add notes. */
-.applicationErrorDialog, .basicOptionDialog{
-    z-index: 1000;
-    top: 5%;
-    left: 30%;
-    position: absolute;
-    padding: 0;
-    border: 1px solid black;
-    background-color: white;
-}
-
-.applicationErrorDialogHdr, .basicOptionDialogHdr{
-    background-color: #666699;
-    border-bottom: 1px solid black;
-    background-position: bottom;
-    background-repeat: repeat-x;
-    height: 25px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.0em;
-}
-
-.applicationErrorDialogBody, .basicOptionDialogBody{
-    text-align: center;
-    /*font-size: 0.8em;*/
-}
-
-.basicOptionDialog{
-    z-index: 1002;
-    top: 30%;
-    height: 100px
-}
-
-.applicationErrorDialog{
-    top: 30%;
-    z-index: 1001;
-    height: 270px;
-}
-
-div.errorOutput{
-    background-image: url(./images/dialogs/form_textarea.png);
-    background-repeat: repeat-x;
-    background-color: #f9f9f9;
-    border: 1px solid #afafaf;
-    font-family: Arial, sans-serif;
-    font-size: 11px;
-    color: #5f5f5f;
-}
-
-/*
------------ ExpandableTable
-*/
-.dateColumn {
-    width: 90px;
-}
-
-.componentTabSetContainerCnt{
-	padding: 14px 0 0 5px;
-}
-
 
