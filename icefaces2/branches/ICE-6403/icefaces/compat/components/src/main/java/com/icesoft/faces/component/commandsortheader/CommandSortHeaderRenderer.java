@@ -108,24 +108,30 @@ public class CommandSortHeaderRenderer extends CommandLinkRenderer {
                 } else {
                     headerClass += "Desc";
                 }
-                Element arrowDiv = domContext.createElement(HTML.DIV_ELEM);
-                arrowDiv.setAttribute(HTML.CLASS_ATTR, headerClass);
-                arrowDiv.setAttribute("valign", "middle");   
-	        	Element table = domContext.createElement(HTML.TABLE_ELEM);
-	            Element tr = domContext.createElement(HTML.TR_ELEM);
-	            table.appendChild(tr);
-	            Element textTd = domContext.createElement(HTML.TD_ELEM);
-	            if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {	
-	             	textTd.appendChild(btn); 
-	            } else {
-	              	textTd.appendChild(domContext.createTextNode(value));  	
-	            }
-	            Element arrowTd = domContext.createElement(HTML.TD_ELEM);
-	            tr.appendChild(textTd);
-	            tr.appendChild(arrowTd);
-	            arrowTd.appendChild(arrowDiv);
-	            child.setNodeValue("");
-	            root.appendChild(table);    
+  
+                if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
+                	headerClass += " iceCmdSrtHdrJSDIS";
+                	root.setAttribute(HTML.CLASS_ATTR, headerClass);
+                } else {
+                    Element arrowDiv = domContext.createElement(HTML.DIV_ELEM);
+                    arrowDiv.setAttribute(HTML.CLASS_ATTR, headerClass);
+                    arrowDiv.setAttribute("valign", "middle"); 
+                	Element table = domContext.createElement(HTML.TABLE_ELEM);
+		            Element tr = domContext.createElement(HTML.TR_ELEM);
+		            table.appendChild(tr);
+		            Element textTd = domContext.createElement(HTML.TD_ELEM);
+		            if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {	
+		             	textTd.appendChild(btn); 
+		            } else {
+		              	textTd.appendChild(domContext.createTextNode(value));  	
+		            }
+		            Element arrowTd = domContext.createElement(HTML.TD_ELEM);
+		            tr.appendChild(textTd);
+		            tr.appendChild(arrowTd);
+		            arrowTd.appendChild(arrowDiv);
+		            child.setNodeValue("");
+		            root.appendChild(table);    
+                }
             }
         }
         super.encodeEnd(facesContext, uiComponent);

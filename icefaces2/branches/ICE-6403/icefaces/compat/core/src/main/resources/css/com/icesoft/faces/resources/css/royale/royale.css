@@ -2996,3 +2996,9 @@ Disabeld classes for the calendar controls
 	margin-left:300px;
 	z-index:11000;	
 }
+
+.iceCmdSrtHdrJSDIS {
+	background-position:right center;
+	width:100%;
+	height:auto;
+}
