@@ -97,19 +97,15 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
 
 
         
-        Element table = domContext.createElement(HTML.TABLE_ELEM);
-        table.setAttribute(HTML.CELLPADDING_ATTR, "0");
-        table.setAttribute(HTML.CELLSPACING_ATTR, "0");
-        table.setAttribute(HTML.WIDTH_ATTR, "100%");
-        rootDiv.appendChild(table);
+        Element rootDiv2 = domContext.createElement(HTML.DIV_ELEM);
+        rootDiv2.setAttribute(HTML.WIDTH_ATTR, "100%");
+        rootDiv.appendChild(rootDiv2);
         
         // Header
-        Element headerTr = domContext.createElement(HTML.TR_ELEM);
-        table.appendChild(headerTr);
-        Element headerTd = domContext.createElement(HTML.TD_ELEM);
-        headerTd.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "-handle"));
-        headerTd.setAttribute(HTML.CLASS_ATTR, panelConfirmation.getHeaderClass());
-        headerTr.appendChild(headerTd);
+        Element headerDiv = domContext.createElement(HTML.DIV_ELEM);
+        headerDiv.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "-handle"));
+        headerDiv.setAttribute(HTML.CLASS_ATTR, panelConfirmation.getHeaderClass());
+        rootDiv2.appendChild(headerDiv);
         
         String title = panelConfirmation.getTitle();
         if (title == null) {
@@ -120,47 +116,43 @@ public class PanelConfirmationRenderer extends DomBasicRenderer {
         }
         Element titleSpan = domContext.createElement(HTML.SPAN_ELEM);
         titleSpan.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "-title"));
-        headerTd.appendChild(titleSpan);
+        headerDiv.appendChild(titleSpan);
         Text titleText = domContext.createTextNode(title);
         titleSpan.appendChild(titleText);
         
         // Body
-        Element bodyTr = domContext.createElement(HTML.TR_ELEM);
-        table.appendChild(bodyTr);
-        Element bodyTd = domContext.createElement(HTML.TD_ELEM);
-        bodyTd.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "-message"));
-        bodyTd.setAttribute(HTML.CLASS_ATTR, panelConfirmation.getBodyClass());
-        bodyTr.appendChild(bodyTd);
+        Element bodyDiv = domContext.createElement(HTML.DIV_ELEM);
+        bodyDiv.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id + "-message"));
+        bodyDiv.setAttribute(HTML.CLASS_ATTR, panelConfirmation.getBodyClass());
+        rootDiv2.appendChild(bodyDiv);
         
         String message = panelConfirmation.getMessage();
         if (message == null) {
             message = "";
         }
         Element messageSpan = domContext.createElement(HTML.SPAN_ELEM);
-        bodyTd.appendChild(messageSpan);
+        bodyDiv.appendChild(messageSpan);
         Text messageText = domContext.createTextNode(message);
         messageSpan.appendChild(messageText);
         
         // Buttons
-        Element buttonsTr = domContext.createElement(HTML.TR_ELEM);
-        table.appendChild(buttonsTr);
-        Element buttonsTd = domContext.createElement(HTML.TD_ELEM);
-        buttonsTd.setAttribute(HTML.CLASS_ATTR, panelConfirmation.getButtonsClass());
-        buttonsTr.appendChild(buttonsTd);
+        Element buttonsDiv = domContext.createElement(HTML.DIV_ELEM);
+        buttonsDiv.setAttribute(HTML.CLASS_ATTR, panelConfirmation.getButtonsClass());
+        rootDiv2.appendChild(buttonsDiv);
         
         String type = panelConfirmation.getType();
         if (type != null) {
             if (type.equalsIgnoreCase("acceptOnly")) {
-                renderAcceptButton(panelConfirmation, domContext, id, buttonsTd);
+                renderAcceptButton(panelConfirmation, domContext, id, buttonsDiv);
             } else if (type.equalsIgnoreCase("cancelOnly")) {
-                renderCancelButton(panelConfirmation, domContext, id, buttonsTd);
+                renderCancelButton(panelConfirmation, domContext, id, buttonsDiv);
             } else {
-                renderAcceptButton(panelConfirmation, domContext, id, buttonsTd);
-                renderCancelButton(panelConfirmation, domContext, id, buttonsTd);
+                renderAcceptButton(panelConfirmation, domContext, id, buttonsDiv);
+                renderCancelButton(panelConfirmation, domContext, id, buttonsDiv);
             }
         } else {
-            renderAcceptButton(panelConfirmation, domContext, id, buttonsTd);
-            renderCancelButton(panelConfirmation, domContext, id, buttonsTd);
+            renderAcceptButton(panelConfirmation, domContext, id, buttonsDiv);
+            renderCancelButton(panelConfirmation, domContext, id, buttonsDiv);
         }
         
         if (panelConfirmation.isDraggable()) {
