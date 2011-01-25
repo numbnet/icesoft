@@ -22,12 +22,7 @@
 
 package org.icepush.servlet;
 
-import org.icepush.CodeServer;
-import org.icepush.Configuration;
-import org.icepush.ProductInfo;
-import org.icepush.PushContext;
-import org.icepush.PushGroupManager;
-import org.icepush.PushGroupManagerFactory;
+import org.icepush.*;
 import org.icepush.http.standard.CacheControlledServer;
 import org.icepush.http.standard.CompressingServer;
 
@@ -40,13 +35,16 @@ import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MainServlet
-        implements PseudoServlet {
+public class MainServlet implements PseudoServlet {
     private static Logger log = Logger.getLogger(MainServlet.class.getName());
     private PseudoServlet dispatcher;
     private Timer timer;
 
     public MainServlet(final ServletContext context) {
+        this(context, true);
+    }
+
+    public MainServlet(final ServletContext context, final boolean terminateBlockingConnectionOnShutdown) {
         log.info(new ProductInfo().toString());
 
         timer = new Timer(true);
@@ -57,7 +55,7 @@ public class MainServlet
         pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer()))));
         pathDispatcher.dispatchOn(".*", new BrowserDispatcher(configuration) {
             protected PseudoServlet newServer(String browserID) {
-                return new BrowserBoundServlet(pushContext, context, pushGroupManager, timer, configuration);
+                return new BrowserBoundServlet(pushContext, context, pushGroupManager, timer, configuration, terminateBlockingConnectionOnShutdown);
             }
         });
 
