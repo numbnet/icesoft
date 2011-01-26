@@ -36,7 +36,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MainServlet implements PseudoServlet {
-    private static Logger log = Logger.getLogger(MainServlet.class.getName());
+    private static final Logger log = Logger.getLogger(MainServlet.class.getName());
+    private final PushGroupManager pushGroupManager;
     private PseudoServlet dispatcher;
     private Timer timer;
 
@@ -49,7 +50,7 @@ public class MainServlet implements PseudoServlet {
 
         timer = new Timer(true);
         final Configuration configuration = new ServletContextConfiguration("org.icepush", context);
-        final PushGroupManager pushGroupManager = PushGroupManagerFactory.newPushGroupManager(context);
+        pushGroupManager = PushGroupManagerFactory.newPushGroupManager(context);
         final PushContext pushContext = new PushContext(context, pushGroupManager);
         PathDispatcher pathDispatcher = new PathDispatcher();
         pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer()))));
@@ -60,6 +61,10 @@ public class MainServlet implements PseudoServlet {
         });
 
         dispatcher = pathDispatcher;
+    }
+
+    public PushGroupManager getPushGroupManager() {
+        return pushGroupManager;
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
