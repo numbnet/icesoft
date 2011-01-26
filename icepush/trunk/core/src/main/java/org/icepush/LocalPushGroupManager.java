@@ -98,6 +98,14 @@ implements PushGroupManager {
         outboundNotifier.deleteObserver(observer);
     }
 
+    public Map<String, String[]> getGroupMap() {
+        Map<String, String[]> groupMap = new HashMap<String, String[]>();
+        for (String groupName : this.groupMap.keySet()) {
+            groupMap.put(groupName, this.groupMap.get(groupName).getPushIDs());
+        }
+        return groupMap;
+    }
+
     public void notifyObservers(final List pushIdList) {
         inboundNotifier.notifyObservers(pushIdList);
     }
