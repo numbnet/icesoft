@@ -281,70 +281,78 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, scroller);
         if (!domContext.isInitialized()) {
-            Element table = domContext.createRootElement(HTML.TABLE_ELEM);
-            setRootElementId(facesContext, table, scroller);
+            Element rootDiv = domContext.createRootElement(HTML.DIV_ELEM);
+            setRootElementId(facesContext, rootDiv, scroller);
             PassThruAttributeRenderer
                         .renderHtmlAttributes(facesContext, scroller, PASSTHRU);
         }
-        Element table = (Element) domContext.getRootNode();
-        DOMContext.removeChildren(table);
+        Element rootDiv = (Element) domContext.getRootNode();
+        DOMContext.removeChildren(rootDiv);
         if (scroller.isKeyboardNavigationEnabled()) {
-            table.setAttribute(HTML.ONKEYDOWN_ATTR, "Ice.DatPagKybrd(this.id, event);");
+            rootDiv.setAttribute(HTML.ONKEYDOWN_ATTR, "Ice.DatPagKybrd(this.id, event);");
         }
-        table.setAttribute(HTML.NAME_ATTR, scroller.getUIData().getClientId(facesContext));
-        Element tr = domContext.createElement(HTML.TR_ELEM);
-        table.appendChild(tr);
+        rootDiv.setAttribute(HTML.NAME_ATTR, scroller.getUIData().getClientId(facesContext));
+        Element div = domContext.createElement(HTML.DIV_ELEM);
+        rootDiv.appendChild(div);
 
         String styleClass = scroller.getStyleClass();
-        table.setAttribute(HTML.CLASS_ATTR, styleClass);
+        rootDiv.setAttribute(HTML.CLASS_ATTR, styleClass);
 
         String style = scroller.getStyle();
         if(style != null && style.length() > 0)
-            table.setAttribute(HTML.STYLE_ATTR, style);
+            rootDiv.setAttribute(HTML.STYLE_ATTR, style);
         else
-            table.removeAttribute(HTML.STYLE_ATTR);
+            rootDiv.removeAttribute(HTML.STYLE_ATTR);
         String scrollButtonCellClass = scroller.getscrollButtonCellClass();
 
-        handleFacet(facesContext, scroller, domContext, table, tr,
+        handleFacet(facesContext, scroller, domContext, rootDiv, div,
                     scrollButtonCellClass, scroller.getFirst(),
                     DataPaginator.FACET_FIRST);
         
         // Horizontal shares a table row, but for vertical,
         // have them each auto-create their own table row
         if (scroller.isVertical()) {
-            tr = null;
+            div = null;
         }
         
-        handleFacet(facesContext, scroller, domContext, table, tr,
+        handleFacet(facesContext, scroller, domContext, rootDiv, div,
                     scrollButtonCellClass, scroller.getFastRewind(),
                     DataPaginator.FACET_FAST_REWIND);
         
-        handleFacet(facesContext, scroller, domContext, table, tr,
+        handleFacet(facesContext, scroller, domContext, rootDiv, div,
                     scrollButtonCellClass, scroller.getPrevious(),
                     DataPaginator.FACET_PREVIOUS);
         
         if (!scroller.isModelResultSet() && scroller.isPaginator()) {
             if (scroller.isVertical()) {
-                tr = domContext.createElement(HTML.TR_ELEM);
-                table.appendChild(tr);
+                div = domContext.createElement(HTML.DIV_ELEM);
+                rootDiv.appendChild(div);
             }
-            Element td = domContext.createElement(HTML.TD_ELEM);
-            tr.appendChild(td);
-            Element paginatorTable = domContext.createElement(HTML.TABLE_ELEM);
-            td.appendChild(paginatorTable);
+            Element paginatorTable;
+            if (scroller.isVertical()) {
+                Element paginatorDiv = domContext.createElement(HTML.DIV_ELEM);
+                div.appendChild(paginatorDiv);
+                paginatorTable = domContext.createElement(HTML.DIV_ELEM);
+                paginatorDiv.appendChild(paginatorTable);
+            } else {
+                Element paginatorSpan = domContext.createElement(HTML.SPAN_ELEM);
+                div.appendChild(paginatorSpan);
+                paginatorTable = domContext.createElement(HTML.SPAN_ELEM);
+                paginatorSpan.appendChild(paginatorTable);
+            }
             renderPaginator(facesContext, uiComponent, paginatorTable,
                             domContext);
         }
         
-        handleFacet(facesContext, scroller, domContext, table, tr,
+        handleFacet(facesContext, scroller, domContext, rootDiv, div,
                     scrollButtonCellClass, scroller.getNext(),
                     DataPaginator.FACET_NEXT);
         
-        handleFacet(facesContext, scroller, domContext, table, tr,
+        handleFacet(facesContext, scroller, domContext, rootDiv, div,
                     scrollButtonCellClass, scroller.getFastForward(),
                     DataPaginator.FACET_FAST_FORWARD);
         
-        handleFacet(facesContext, scroller, domContext, table, tr,
+        handleFacet(facesContext, scroller, domContext, rootDiv, div,
                     scrollButtonCellClass, scroller.getLast(),
                     DataPaginator.FACET_LAST);
         
@@ -354,24 +362,24 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
     protected void handleFacet(FacesContext facesContext,
                                DataPaginator scroller,
                                DOMContext domContext,
-                               Element table,
-                               Element tr,
+                               Element rootDiv,
+                               Element div,
                                String scrollButtonCellClass,
                                UIComponent facetComp,
                                String facetName)
             throws IOException {
         if (facetComp != null) {
             // tr is null when scroller.isVertical()
-            if (tr == null) {
-                tr = domContext.createElement(HTML.TR_ELEM);
-                table.appendChild(tr);
+            if (div == null) {
+                div = domContext.createElement(HTML.DIV_ELEM);
+                rootDiv.appendChild(div);
             }
-            Element td = domContext.createElement(HTML.TD_ELEM);
-            td.setAttribute(HTML.CLASS_ATTR, scrollButtonCellClass);
-            tr.appendChild(td);
-            domContext.setCursorParent(td);
+            Element span = domContext.createElement(HTML.SPAN_ELEM);
+            span.setAttribute(HTML.CLASS_ATTR, scrollButtonCellClass);
+            div.appendChild(span);
+            domContext.setCursorParent(span);
             Element e = renderFacet(facesContext, domContext, scroller, facetComp, facetName);
-			if (e != null) td.appendChild(e);
+			if (e != null) span.appendChild(e);
         }
     }
     
@@ -451,12 +459,12 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         String styleClass = scroller.getPaginatorTableClass();
         paginatorTable.setAttribute(HTML.CLASS_ATTR, styleClass);
 
-        Element tr = null;
+        Element divOrSpan = null;
         if (!scroller.isVertical()) {
-            tr = domContext.createElement(HTML.TR_ELEM);
-            paginatorTable.appendChild(tr);
+            divOrSpan = domContext.createElement(HTML.SPAN_ELEM);
+            paginatorTable.appendChild(divOrSpan);
         }
-        Element td;
+        Element span;
         UIComponent form = findForm(scroller);
         String formId = null;
         if (form == null) {
@@ -467,12 +475,12 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         for (int i = start, size = start + pages; i < size; i++) {
             int idx = i + 1;
             if (scroller.isVertical()) {
-                tr = domContext.createElement(HTML.TR_ELEM);
-                paginatorTable.appendChild(tr);
+                divOrSpan = domContext.createElement(HTML.DIV_ELEM);
+                paginatorTable.appendChild(divOrSpan);
             }
-            td = domContext.createElement(HTML.TD_ELEM);
-            tr.appendChild(td);
-            domContext.setCursorParent(td);
+            span = domContext.createElement(HTML.SPAN_ELEM);
+            divOrSpan.appendChild(span);
+            domContext.setCursorParent(span);
             String cStyleClass;
 
             Element link = getLink(facesContext, domContext, scroller,
@@ -493,11 +501,11 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
 
             }
             if (cStyleClass != null) {
-                td.setAttribute(HTML.CLASS_ATTR, cStyleClass);
+                span.setAttribute(HTML.CLASS_ATTR, cStyleClass);
             }
 
 
-            td.appendChild(link);
+            span.appendChild(link);
         }
     }
 
