@@ -39,6 +39,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BlockingConnectionServer extends TimerTask implements Server, Observer {
+    private static final long initialHeartbeat = 5000;
+    private static final long minHeartbeat = 1000;
+    private static final long maxHeartbeat = 20000;
     private static final Logger log = Logger.getLogger(BlockingConnectionServer.class.getName());
     private static final ResponseHandler CloseResponse = new ResponseHandler() {
         public void respond(Response response) throws Exception {
@@ -64,7 +67,8 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     private static final Server AfterShutdown = new ResponseHandlerServer(CloseResponse);
 
     private final BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
-    private final long timeoutInterval;
+    private long heartbeat;
+    private long heartbeatUpdateTime = System.currentTimeMillis();
     private long responseTimeoutTime;
     private Server activeServer;
     private ConcurrentLinkedQueue notifiedPushIDs = new ConcurrentLinkedQueue();
@@ -73,9 +77,10 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
 
     private String lastWindow = "";
     private String[] lastNotifications = new String[]{};
+    private int sequenceNo = 0;
 
     public BlockingConnectionServer(final PushGroupManager pushGroupManager, final Timer monitorRunner, final Configuration configuration, final boolean terminateBlockingConnectionOnShutdown) {
-        this.timeoutInterval = configuration.getAttributeAsLong("heartbeatTimeout", 50000);
+        this.heartbeat = configuration.getAttributeAsLong("heartbeatTimeout", initialHeartbeat);
         this.pushGroupManager = pushGroupManager;
         //add monitor
         monitorRunner.scheduleAtFixedRate(this, 0, 1000);
@@ -173,19 +178,20 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     }
 
     private void resetTimeout() {
-        responseTimeoutTime = System.currentTimeMillis() + timeoutInterval;
+        responseTimeoutTime = System.currentTimeMillis() + heartbeat;
     }
 
-    private void respondIfPendingRequest(ResponseHandler handler) {
-        Request previousRequest = (Request) pendingRequest.poll();
+    private void respondIfPendingRequest(final ResponseHandler handler) {
+        final Request previousRequest = (Request) pendingRequest.poll();
         if (previousRequest != null) {
             try {
-                previousRequest.respondWith(handler);
+                previousRequest.respondWith(new AdjustHeartbeat(previousRequest, handler));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
     }
+
 
     private class NotificationHandler extends FixedXMLContentHandler {
         private String[] pushIDs;
@@ -204,6 +210,52 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
                 writer.write(id);
             }
             writer.write("</notified-pushids>");
+        }
+    }
+
+    private class AdjustHeartbeat implements ResponseHandler {
+        private final Request request;
+        private final ResponseHandler handler;
+
+        public AdjustHeartbeat(Request request, ResponseHandler handler) {
+            this.request = request;
+            this.handler = handler;
+        }
+
+        public void respond(Response response) throws Exception {
+            long previousSequenceNo;
+            try {
+                previousSequenceNo = request.getHeaderAsInteger("ice.push.sequence");
+            } catch (RuntimeException e) {
+                previousSequenceNo = 0;
+            }
+            //if sequence number sent by the client is different than the one
+            //on the server it can be assumed that at least one heartbeat response was lost at some point
+            boolean matchingSequenceNo = previousSequenceNo == sequenceNo;
+            if (matchingSequenceNo) {
+                //increase interval since heartbeat still runs great
+                //increase interval only after the previous interval has elapsed to avoid increasing the value too rapidly
+                if (updateHeartbeat()) {
+                    heartbeat = Math.min(maxHeartbeat, Math.round(heartbeat * 1.1));
+                }
+            } else {
+                //decrease interval since heartbeat was lost
+                heartbeat = Math.max(minHeartbeat, Math.round(heartbeat * 0.75));
+            }
+            ++sequenceNo;
+
+            //send heartbeat only when current heartbeat interval has elapsed, this avoids
+            //oscillations or rapid changes in the heartbeat interval
+            if (!matchingSequenceNo || updateHeartbeat()) {
+                response.setHeader("ice.push.heartbeat", heartbeat);
+                heartbeatUpdateTime = System.currentTimeMillis();
+            }
+            response.setHeader("ice.push.sequence", sequenceNo);
+            handler.respond(response);
+        }
+
+        private boolean updateHeartbeat() {
+            return System.currentTimeMillis() > heartbeat + heartbeatUpdateTime;
         }
     }
 }
