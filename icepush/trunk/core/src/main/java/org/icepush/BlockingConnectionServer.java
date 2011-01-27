@@ -39,9 +39,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BlockingConnectionServer extends TimerTask implements Server, Observer {
-    private static final long initialHeartbeat = 5000;
-    private static final long minHeartbeat = 1000;
-    private static final long maxHeartbeat = 20000;
     private static final Logger log = Logger.getLogger(BlockingConnectionServer.class.getName());
     private static final ResponseHandler CloseResponse = new ResponseHandler() {
         public void respond(Response response) throws Exception {
@@ -68,6 +65,9 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
 
     private final BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
     private long heartbeat;
+    private long minHeartbeat = 5000;
+    private long maxHeartbeat = 45000;
+
     private long heartbeatUpdateTime = System.currentTimeMillis();
     private long responseTimeoutTime;
     private Server activeServer;
@@ -80,7 +80,10 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     private int sequenceNo = 0;
 
     public BlockingConnectionServer(final PushGroupManager pushGroupManager, final Timer monitorRunner, final Configuration configuration, final boolean terminateBlockingConnectionOnShutdown) {
-        this.heartbeat = configuration.getAttributeAsLong("heartbeatTimeout", initialHeartbeat);
+        this.heartbeat = configuration.getAttributeAsLong("heartbeatTimeout", 15000);
+        this.minHeartbeat = configuration.getAttributeAsLong("minHeartbeatInterval", heartbeat / 3);
+        this.maxHeartbeat = configuration.getAttributeAsLong("maxHeartbeatInterval", Math.round(3 * heartbeat));
+
         this.pushGroupManager = pushGroupManager;
         //add monitor
         monitorRunner.scheduleAtFixedRate(this, 0, 1000);
@@ -214,6 +217,8 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     }
 
     private class AdjustHeartbeat implements ResponseHandler {
+        private static final double IntervalExpansionFactor = 1.1;
+        private static final double IntervalReductionFactor = 0.75;
         private final Request request;
         private final ResponseHandler handler;
 
@@ -236,11 +241,11 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
                 //increase interval since heartbeat still runs great
                 //increase interval only after the previous interval has elapsed to avoid increasing the value too rapidly
                 if (updateHeartbeat()) {
-                    heartbeat = Math.min(maxHeartbeat, Math.round(heartbeat * 1.1));
+                    heartbeat = Math.min(maxHeartbeat, Math.round(heartbeat * IntervalExpansionFactor));
                 }
             } else {
                 //decrease interval since heartbeat was lost
-                heartbeat = Math.max(minHeartbeat, Math.round(heartbeat * 0.75));
+                heartbeat = Math.max(minHeartbeat, Math.round(heartbeat * IntervalReductionFactor));
             }
             ++sequenceNo;
 
