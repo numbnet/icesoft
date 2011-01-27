@@ -40,27 +40,9 @@ import java.util.logging.Logger;
 
 public class BlockingConnectionServer extends TimerTask implements Server, Observer {
     private static final Logger log = Logger.getLogger(BlockingConnectionServer.class.getName());
-    private static final ResponseHandler CloseResponse = new ResponseHandler() {
-        public void respond(Response response) throws Exception {
-            //let the bridge know that this blocking connection should not be re-initialized
-            response.setHeader("X-Connection", "close");
-            response.setHeader("Content-Length", 0);
-
-            if (log.isLoggable(Level.FINEST)) {
-                log.finest("Close current blocking connection.");
-            }
-        }
-    };
+    private static final ResponseHandler CloseResponse = new CloseConnectionResponseHandler();
     //Define here to avoid classloading problems after application exit
-    private static final ResponseHandler NoopHandler = new FixedXMLContentHandler() {
-        public void writeTo(Writer writer) throws IOException {
-            writer.write("<noop/>");
-
-            if (log.isLoggable(Level.FINEST)) {
-                log.finest("Sending NoOp.");
-            }
-        }
-    };
+    private static final ResponseHandler NoopResponse = new NoopResponseHandler();
     private static final Server AfterShutdown = new ResponseHandlerServer(CloseResponse);
 
     private final BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
@@ -90,42 +72,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
         this.pushGroupManager.addObserver(this);
 
         //define blocking server
-        activeServer = new Server() {
-            public void service(final Request request) throws Exception {
-                resetTimeout();
-                respondIfPendingRequest(CloseResponse);
-
-                //resend notifications if the window owning the blocking connection has changed
-                String currentWindow = request.getHeader("ice.push.window");
-                currentWindow = currentWindow == null ? "" : currentWindow;
-                boolean resend = !lastWindow.equals(currentWindow);
-                lastWindow = currentWindow;
-
-                pendingRequest.put(request);
-                try {
-                    participatingPushIDs = Arrays.asList(request.getParameterAsStrings("ice.pushid"));
-                    if (log.isLoggable(Level.FINEST)) {
-                        log.finest("Participating pushIds: " + participatingPushIDs + ".");
-                    }
-
-                    if (resend) {
-                        resendLastNotifications();
-                    } else {
-                        respondIfNotificationsAvailable();
-                    }
-                    pushGroupManager.notifyObservers(new ArrayList(participatingPushIDs));
-                } catch (RuntimeException e) {
-                    log.fine("Request does not contain pushIDs.");
-                    respondIfPendingRequest(NoopHandler);
-                }
-            }
-
-            public void shutdown() {
-                //avoid creating new blocking connections after shutdown
-                activeServer = AfterShutdown;
-                respondIfPendingRequest(terminateBlockingConnectionOnShutdown ? CloseResponse : NoopHandler);
-            }
-        };
+        activeServer = new RunningServer(pushGroupManager, terminateBlockingConnectionOnShutdown);
     }
 
     public void update(Observable observable, Object o) {
@@ -144,7 +91,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
 
     public void run() {
         if ((System.currentTimeMillis() > responseTimeoutTime) && (!pendingRequest.isEmpty())) {
-            respondIfPendingRequest(NoopHandler);
+            respondIfPendingRequest(NoopResponse);
         }
     }
 
@@ -195,6 +142,27 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
         }
     }
 
+    private static class NoopResponseHandler extends FixedXMLContentHandler {
+        public void writeTo(Writer writer) throws IOException {
+            writer.write("<noop/>");
+
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest("Sending NoOp.");
+            }
+        }
+    }
+
+    private static class CloseConnectionResponseHandler implements ResponseHandler {
+        public void respond(Response response) throws Exception {
+            //let the bridge know that this blocking connection should not be re-initialized
+            response.setHeader("X-Connection", "close");
+            response.setHeader("Content-Length", 0);
+
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest("Close current blocking connection.");
+            }
+        }
+    }
 
     private class NotificationHandler extends FixedXMLContentHandler {
         private String[] pushIDs;
@@ -261,6 +229,51 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
 
         private boolean updateHeartbeat() {
             return System.currentTimeMillis() > heartbeat + heartbeatUpdateTime;
+        }
+    }
+
+    private class RunningServer implements Server {
+        private final PushGroupManager pushGroupManager;
+        private final boolean terminateBlockingConnectionOnShutdown;
+
+        public RunningServer(PushGroupManager pushGroupManager, boolean terminateBlockingConnectionOnShutdown) {
+            this.pushGroupManager = pushGroupManager;
+            this.terminateBlockingConnectionOnShutdown = terminateBlockingConnectionOnShutdown;
+        }
+
+        public void service(final Request request) throws Exception {
+            resetTimeout();
+            respondIfPendingRequest(CloseResponse);
+
+            //resend notifications if the window owning the blocking connection has changed
+            String currentWindow = request.getHeader("ice.push.window");
+            currentWindow = currentWindow == null ? "" : currentWindow;
+            boolean resend = !lastWindow.equals(currentWindow);
+            lastWindow = currentWindow;
+
+            pendingRequest.put(request);
+            try {
+                participatingPushIDs = Arrays.asList(request.getParameterAsStrings("ice.pushid"));
+                if (log.isLoggable(Level.FINEST)) {
+                    log.finest("Participating pushIds: " + participatingPushIDs + ".");
+                }
+
+                if (resend) {
+                    resendLastNotifications();
+                } else {
+                    respondIfNotificationsAvailable();
+                }
+                pushGroupManager.notifyObservers(new ArrayList(participatingPushIDs));
+            } catch (RuntimeException e) {
+                log.fine("Request does not contain pushIDs.");
+                respondIfPendingRequest(NoopResponse);
+            }
+        }
+
+        public void shutdown() {
+            //avoid creating new blocking connections after shutdown
+            activeServer = AfterShutdown;
+            respondIfPendingRequest(terminateBlockingConnectionOnShutdown ? CloseResponse : NoopResponse);
         }
     }
 }
