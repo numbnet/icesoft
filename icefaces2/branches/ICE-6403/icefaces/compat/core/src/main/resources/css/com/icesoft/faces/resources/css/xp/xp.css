@@ -455,7 +455,7 @@ fieldset {
     font-weight: normal;
     background-color: #FFFFFF;
     color: #666666;
-    display: block;
+    /*display: block;*/
     border: 1px solid #FFFFFF;
 }
 

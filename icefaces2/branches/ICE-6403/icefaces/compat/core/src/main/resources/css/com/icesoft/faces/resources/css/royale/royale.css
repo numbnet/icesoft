@@ -467,7 +467,7 @@ input {
     font-weight: normal;
     background-color: #CCCCCC;
     color: #666666;
-    display: block;
+    /*display: block;*/
     border: 1px solid #CCCCCC;
 }
 
