@@ -61,7 +61,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseListener {
+public class WindowScopeManager extends ResourceHandlerWrapper {
     public static final String ScopeName = "window";
     private static final Logger log = Logger.getLogger(WindowScopeManager.class.getName());
     private static final String seed = Integer.toString(new Random().nextInt(1000), 36);
@@ -84,7 +84,64 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
         //may not be necessary
         LifecycleFactory factory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
         Lifecycle lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
-        lifecycle.addPhaseListener(this);
+        lifecycle.addPhaseListener(
+            new PhaseListener() {
+                public void afterPhase(final PhaseEvent event) {
+                }
+
+                public void beforePhase(final PhaseEvent event) {
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    try {
+                        ExternalContext externalContext = context.getExternalContext();
+                        //ICE-5281:  We require that a session be available at this point and it may not have
+                        //           been created otherwise.
+                        //WindowScope should not cause session creation until the time objects need to be stored
+                        //in window scope
+                        //Object session = externalContext.getSession(true);
+                        WindowScopeManager.determineWindowID(context);
+                    } catch (Exception e) {
+                        log.log(Level.FINE, "Unable to set up WindowScope ", e);
+                    }
+                }
+
+                public PhaseId getPhaseId() {
+                    return PhaseId.RESTORE_VIEW;
+                }
+            });
+        lifecycle.addPhaseListener(
+            new PhaseListener() {
+                public void afterPhase(final PhaseEvent event) {
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    try {
+                        ExternalContext externalContext = context.getExternalContext();
+                        Object session = externalContext.getSession(false);
+                        if (session != null) {
+                            if (EnvUtils.instanceofPortletSession(session)) {
+                                javax.portlet.PortletSession portletSession = (javax.portlet.PortletSession)session;
+                                Object state = portletSession.getAttribute(WindowScopeManager.class.getName(), javax.portlet.PortletSession.APPLICATION_SCOPE);
+                                if (state != null) {
+                                    portletSession.setAttribute(WindowScopeManager.class.getName(), state, javax.portlet.PortletSession.APPLICATION_SCOPE);
+                                }
+                            } else {
+                                HttpSession servletSession = (HttpSession)session;
+                                Object state = servletSession.getAttribute(WindowScopeManager.class.getName());
+                                if (state != null) {
+                                    servletSession.setAttribute(WindowScopeManager.class.getName(), state);
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        log.log(Level.FINE, "Unable to reset WindowScope", e);
+                    }
+                }
+
+                public void beforePhase(final PhaseEvent event) {
+                }
+
+                public PhaseId getPhaseId() {
+                    return PhaseId.RENDER_RESPONSE;
+                }
+            });
     }
 
     public ResourceHandler getWrapped() {
@@ -126,29 +183,6 @@ public class WindowScopeManager extends ResourceHandlerWrapper implements PhaseL
             return true;
         }
         return wrapped.isResourceRequest(facesContext);
-    }
-
-    public PhaseId getPhaseId() {
-        return PhaseId.RESTORE_VIEW;
-    }
-
-    public void beforePhase(PhaseEvent event) {
-        final FacesContext context = FacesContext.getCurrentInstance();
-
-        try {
-            ExternalContext externalContext = context.getExternalContext();
-            //ICE-5281:  We require that a session be available at this point and it may not have
-            //           been created otherwise.
-            //WindowScope should not cause session creation until the time objects need to be stored
-            //in window scope
-            //Object session = externalContext.getSession(true);
-            WindowScopeManager.determineWindowID(context);
-        } catch (Exception e) {
-            log.log(Level.FINE, "Unable to set up WindowScope ", e);
-        }
-    }
-
-    public void afterPhase(PhaseEvent event) {
     }
 
     public static ScopeMap lookupWindowScope(FacesContext context) {
