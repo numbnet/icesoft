@@ -636,9 +636,34 @@ public class MenuRenderer extends DomBasicInputRenderer {
                         	if (item instanceof SelectItem) {
                         		selectItems.add(item);
                         	} else {
+
+                        		if (nextSelectItemChild.getAttributes().containsKey("var")) {
+                        			String var = nextSelectItemChild.getAttributes().get("var").toString();
+                        			Map<String, Object> map = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+                        			Object oldValue = map.put(var, item);
+
+	                        		String itemLabel = String.valueOf(nextSelectItemChild.getAttributes().get("itemLabel"));
+                           			Object itemValue = nextSelectItemChild.getAttributes().get("itemValue");
+	                        		selectItems.add(new SelectItem((itemValue != null)? itemValue: item, itemLabel));
+	                        		continue;
+                        		}
+                        		
                         		selectItems.add(new SelectItem(item));
                         	}
-                        }
+                        } 
+                    } else if (selectItemsValue instanceof Object[]) {
+            			Map<String, Object> map = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+                    	for (Object item: (Object[])selectItemsValue) {                    	
+	                		if (nextSelectItemChild.getAttributes().containsKey("var")) {                    	
+		            					String var = nextSelectItemChild.getAttributes().get("var").toString();
+			                			Object oldValue = map.put(var, item);
+			                    		String itemLabel = String.valueOf(nextSelectItemChild.getAttributes().get("itemLabel"));
+			                   			Object itemValue = nextSelectItemChild.getAttributes().get("itemValue");
+			                    		selectItems.add(new SelectItem((itemValue != null)? itemValue: item, itemLabel));
+	                    	} else {
+	                    		selectItems.add(new SelectItem(item));
+	                    	}
+                		}
                     } else if (selectItemsValue instanceof SelectItem[]) {
                         SelectItem selectItemArray[] =
                                 (SelectItem[]) selectItemsValue;
