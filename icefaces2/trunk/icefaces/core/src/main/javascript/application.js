@@ -363,15 +363,21 @@ if (!window.ice.icefaces) {
             f.previousParameters = HashSet(jsf.getViewState(f).split('&'));
         };
 
+        function isComponentRendered(form) {
+            return form['javax.faces.encodedURL'] || form['javax.faces.ViewState'] || form['ice.window'] || form['ice.view'];
+        }
+
         function findUpdatedForms(updates) {
             return inject(updates.getElementsByTagName('update'), [], function(result, update) {
                 var id = update.getAttribute('id');
                 var e = lookupElementById(id);
                 if (e) {
                     if (toLowerCase(e.nodeName) == 'form') {
-                        append(result, e);//the form is the updated element
+                        if (isComponentRendered(e)) {
+                            append(result, e);//the form is the updated element
+                        }
                     } else {
-                        var updatedForms = asArray(e.getElementsByTagName('form'));//find the enclosed forms
+                        var updatedForms = asArray(select(e.getElementsByTagName('form'), isComponentRendered));//find the enclosed forms
                         result = concatenate(result, updatedForms);
                     }
                 }
