@@ -167,7 +167,7 @@ var ComponentIndicators;
             method(on, function(self) {
                 if (isIEBrowser) {
                     overlay = document.createElement('iframe');
-                    overlay.setAttribute('src', 'javascript:"<html><body style=\"cursor: wait;\"></body><html>');
+                    overlay.setAttribute('src', 'javascript:document.write(\'<html><body style="cursor: wait;"></body><html>\');');
                     overlay.setAttribute('frameborder', '0');
                     document.body.appendChild(overlay);
                 } else {
@@ -191,7 +191,7 @@ var ComponentIndicators;
                 if (overlay) {
                     if (isIEBrowser) {
                         var blankOverlay = document.createElement('iframe');
-                        blankOverlay.setAttribute('src', "javascript:'<html></html>'");
+                        blankOverlay.setAttribute('src', 'javascript:document.write("<html></html>");');
                         blankOverlay.setAttribute('frameborder', '0');
                         document.body.replaceChild(blankOverlay, overlay);
                         document.body.removeChild(blankOverlay);
@@ -304,14 +304,14 @@ var ComponentIndicators;
                 container.appendChild(overlay);
 
                 var resize = container.tagName.toLowerCase() == 'body' ?
-                        function() {
-                            overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-                            overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
-                        } :
-                        function() {
-                            overlayStyle.width = container.offsetWidth + 'px';
-                            overlayStyle.height = container.offsetHeight + 'px';
-                        };
+                             function() {
+                                 overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
+                                 overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+                             } :
+                             function() {
+                                 overlayStyle.width = container.offsetWidth + 'px';
+                                 overlayStyle.height = container.offsetHeight + 'px';
+                             };
                 resize();
                 onResize(window, resize);
             });
@@ -320,7 +320,6 @@ var ComponentIndicators;
         });
 
         indctrs = {
-            blockUI: configuration.blockUI,
             busy: busyIndicator,
             sessionExpired: sessionExpiredRedirect ? sessionExpiredRedirect : PopupIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, overlay),
             connectionLost: connectionLostRedirect ? connectionLostRedirect : PopupIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, overlay),
@@ -336,7 +335,7 @@ var ComponentIndicators;
         var connectionLost = ElementIndicator(lostID, indicators);
         var busyElementIndicator = ToggleIndicator(connectionWorking, connectionIdle);
         //avoid displaying the overlay twice
-        var busyIndicator = indctrs.blockUI && !displayHourglassWhenActive ? MuxIndicator(busyElementIndicator, OverlayIndicator()) : busyElementIndicator;
+        var busyIndicator = displayHourglassWhenActive ? busyElementIndicator : MuxIndicator(busyElementIndicator, OverlayIndicator());
 
         var busy = OverlappingStateProtector(displayHourglassWhenActive ? MuxIndicator(indctrs.busy, busyIndicator) : busyIndicator);
         var connectionTrouble = ElementIndicator(troubleID, indicators);

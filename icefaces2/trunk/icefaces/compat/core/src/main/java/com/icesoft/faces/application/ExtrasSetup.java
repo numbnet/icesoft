@@ -38,11 +38,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.ListResourceBundle;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ExtrasSetup implements SystemEventListener {
     private static final ResourceBundle defaultBridgeMessages = new ListResourceBundle() {
@@ -100,14 +96,10 @@ public class ExtrasSetup implements SystemEventListener {
                     }
 
                     final String contextPath = CoreUtils.resolveResourceURL(context, "/");
-                    final boolean blockUI = EnvUtils.isBlockUIOnSubmit(context);
 
                     writer.startElement("script", this);
                     writer.writeAttribute("type", "text/javascript", null);
                     writer.write("ice.DefaultIndicators({");
-                    writer.write("blockUI: ");
-                    writer.write(Boolean.toString(blockUI));
-                    writer.write(",");
                     writer.write("connectionLostRedirectURI: ");
                     writer.write(connectionLostRedirectURI);
                     writer.write(",");
