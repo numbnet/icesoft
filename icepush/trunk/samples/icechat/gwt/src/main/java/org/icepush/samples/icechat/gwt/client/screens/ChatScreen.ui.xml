@@ -30,8 +30,6 @@
         text-align: center;
         }
 
-
-
         .fillHeightAndWidth{
         height: 100%;
         width: 100%;
@@ -40,6 +38,7 @@
         .boldBlueText{
         color: #0F65B8;
         font-weight: bold;
+        padding: 2px;
         }
     </ui:style>
     <gwt:HTMLPanel gwt:visible="false" height="450px">
@@ -50,7 +49,7 @@
             </div>
             <gwt:HorizontalPanel ui:field="horizontalLayoutPanel" gwt:spacing="10" stylePrimaryName="{style.fillWidth}">
                 <gwt:HTMLPanel ui:field="chatUsersPanel">
-                    <div class="chatRoomUsers" style="width: 100%;">
+                    <div class="chatRoomUsers" style="width: 100%;overflow:visible;padding:0;">
                         <div class="chatViewSubHeader">Who's Here?</div>
                         <gwt:ScrollPanel height="300px">
                             <gwt:VerticalPanel ui:field="roomUserList" stylePrimaryName="{style.boldBlueText}">
@@ -60,17 +59,15 @@
 
                 </gwt:HTMLPanel>
                 <gwt:HTMLPanel width="100%">
-                    <div class="chatRoomMessages" style="width: 100%;">
+                	 <div class="chatRoomMessages" style="width: 100%;padding:0;overflow:visible;">
                         <div class="chatViewSubHeader">Messages</div>
-                        <gwt:ScrollPanel height="300px" ui:field="messagesScrollingPanel">
+                        <gwt:ScrollPanel height="270px" ui:field="messagesScrollingPanel">
                             <gwt:VerticalPanel ui:field="messagesList" stylePrimaryName="{style.boldBlueText}">
 
                             </gwt:VerticalPanel>
                         </gwt:ScrollPanel>
-                    </div>
-
-
-
+                    </div>               	
+				  
                 </gwt:HTMLPanel>
             </gwt:HorizontalPanel>
             <center>
