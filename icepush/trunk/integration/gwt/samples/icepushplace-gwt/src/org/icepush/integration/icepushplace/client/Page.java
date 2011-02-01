@@ -42,6 +42,7 @@ import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Image;
@@ -52,6 +53,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 
 /**
  * UI class to create and back our page level code
@@ -256,6 +258,12 @@ public class Page implements EntryPoint, ClosingHandler {
 							}
 							userTable.setWidget(0, userTable.getCellCount(0),
 									           new Label("says '" + currentUser.getMessage() + "'"));
+						}
+						
+						// Set all cells to have a vertical align of middle
+						FlexCellFormatter format = userTable.getFlexCellFormatter();
+						for (int i = 0, max = userTable.getCellCount(0); i < max; i++) {
+						    format.setVerticalAlignment(0, i, HasVerticalAlignment.ALIGN_MIDDLE);
 						}
 						
 						base.add(userTable);
