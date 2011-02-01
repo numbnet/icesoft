@@ -42,8 +42,20 @@ public class PersonController {
 	
 	public void update(ActionEvent event) {
 		PersonType personModel = (PersonType)FacesUtil.getManagedBean("personModel");
+		PersonRegion personRegion = (PersonRegion)FacesUtil.getManagedBean("personRegion");
 		
-		personService.updatePerson(personModel);
+		// Perform a move as needed
+		if ((personRegion.getOldRegion() > -1) &&
+		    (personRegion.getOldRegion() != personModel.getRegion())) {
+		    personService.movePerson(personRegion.getOldRegion(), personModel);
+		    
+		    // Update the old region now that we've performed the move
+		    personRegion.setOldRegion(personModel.getRegion());
+		}
+		// Update the user
+		else {
+		    personService.updatePerson(personModel);
+		}
 	}
 
 	public PersonServiceImpl getPersonService() {

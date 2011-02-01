@@ -38,7 +38,7 @@
 		
 		<h:outputLabel for="region" value="Region:" styleClass="regionLabel"/>
 		<h:selectOneMenu id="region" styleClass="regionInput" required="true"
-		                 value="#{personModel.region}">
+		                 value="#{personModel.region}" valueChangeListener="#{personRegion.changed}">
 			<f:selectItem itemValue="4" itemLabel="North America"/>
 			<f:selectItem itemValue="3" itemLabel="Europe"/>
 			<f:selectItem itemValue="5" itemLabel="South America"/>
