@@ -26,6 +26,7 @@
     <head>
         <title>Welcome to Grails</title>
 		<meta name="layout" content="main" />
+		<meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE8 mode -->		
 		<style type="text/css" media="screen">
 
 			#nav {

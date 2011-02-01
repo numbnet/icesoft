@@ -26,6 +26,7 @@
   <title>ICEpush ICEchat (Grails)</title>
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="-1">
+  <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE8 mode -->
   <link rel='stylesheet' type='text/css' href='${resource(dir: "css", file: "style-common.css")}'/>
   <script type="text/javascript">
     function getXmlHttpRequest() {
