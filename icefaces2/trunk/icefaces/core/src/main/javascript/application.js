@@ -321,6 +321,9 @@ if (!window.ice.icefaces) {
                 }
                 elementType = toLowerCase(elementType);
 
+                if (elementType == 'image') {
+                    return;
+                }
                 if (elementType == 'submit') {
                     return;
                 }
@@ -336,7 +339,7 @@ if (!window.ice.icefaces) {
                     return;
                 }
 
-                if ("select-one" == elementType) {
+                if (0 == elementType.indexOf("select-")) {
                     if (element.selectedIndex == element.previousSelectedIndex) {
                         //ignore clicks that do not change state
                         return;
