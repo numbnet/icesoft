@@ -54,7 +54,7 @@ public class TouchSessionFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         try {
             HttpServletRequest request = (HttpServletRequest) servletRequest;
-            HttpSession session = request.getSession();
+            HttpSession session = request.getSession(false);
             if (session != null) {
                 SessionDispatcher.Monitor mon = SessionDispatcher.Monitor.lookupSessionMonitor(session);
                 //If the first request is not an ICEfaces request, there will not be a monitor yet
