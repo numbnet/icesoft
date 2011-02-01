@@ -58,8 +58,8 @@
     </target>
     
     <target name="-pre.war.replace">
-        <replace file="${replace.file}" token="${replace.token.app}" value="${replace.value.app}"/>
-        <replace file="${replace.file}" token="${replace.token.ser}" value="${replace.value.ser}"/>
+        <replace file="${replace.file}" token="${replace.token.app}" value="${replace.value.app}" summary="true"/>
+        <replace file="${replace.file}" token="${replace.token.ser}" value="${replace.value.ser}" summary="true"/>
     </target>
     
 </project>

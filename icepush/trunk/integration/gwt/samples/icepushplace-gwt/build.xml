@@ -25,19 +25,15 @@
 	</path>
 
 	<target name="libs" description="Copy libs to WEB-INF/lib">
-		<mkdir dir="./war/WEB-INF/lib" />
-		<copy todir="./war/WEB-INF/lib" file="${gwt.sdk}/gwt-servlet.jar" />
-		
-        <icepush.available/>
+		<icepush.available/>
         <icepush.gwt.available/>
-        <copy todir="./war/WEB-INF/lib" preservelastmodified="true" verbose="true">
+		<mkdir dir="./war/WEB-INF/lib" />
+		<copy todir="./war/WEB-INF/lib" preservelastmodified="true">
+        	<fileset file="${gwt.sdk}/gwt-servlet.jar"/>
             <fileset refid="icepush.dist"/>
             <fileset refid="icepush.gwt.dist" />
-        </copy>
-		
-        <copy todir="./war/WEB-INF/lib">
 			<fileset dir="./lib" includes="**/*.jar"/>
-		</copy>
+        </copy>
 	</target>
 
 	<target name="javac" depends="libs" description="Compile java source">
