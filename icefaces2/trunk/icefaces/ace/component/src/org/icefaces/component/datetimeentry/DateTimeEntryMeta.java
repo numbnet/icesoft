@@ -77,7 +77,7 @@ import org.icefaces.component.baseMeta.UIInputMeta;
         @ResourceDependency(library = "yui/2_8_1", name = "json/json-min.js"),
         @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.datetimeentry")
 })
-@ClientBehaviorHolder 
+@ClientBehaviorHolder (events={"transition"}, defaultEvent="transition")
 public class DateTimeEntryMeta extends UIInputMeta {
     @Property(defaultValue = "false", tlddoc = "When rendered as a popup, you can allow entering the date/time in " +
             "a text input field as well. This attribute flags whether text input is allowed. Format of input is " +

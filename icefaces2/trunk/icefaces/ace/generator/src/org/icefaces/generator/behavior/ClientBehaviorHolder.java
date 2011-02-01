@@ -24,6 +24,8 @@ package org.icefaces.generator.behavior;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.icefaces.generator.context.GeneratorContext;
+
  
 public class ClientBehaviorHolder extends Behavior {
 
@@ -51,18 +53,21 @@ public class ClientBehaviorHolder extends Behavior {
 	}	
 	
 	public void addCodeToComponent(StringBuilder output) {
+		org.icefaces.component.annotation.ClientBehaviorHolder anno = (org.icefaces.component.annotation.ClientBehaviorHolder)
+			GeneratorContext.getInstance().getActiveComponentContext().getActiveClass().getAnnotation(org.icefaces.component.annotation.ClientBehaviorHolder.class);
 		output.append("\n\tCollection<String> eventNames = null;");
 		output.append("\n\tpublic Collection<String> getEventNames() {");
 		output.append("\n\tif (eventNames == null) {");
 		output.append("\n\t\teventNames = new ArrayList<String>();");
-		output.append("\n\t\teventNames.add(\"transition\");");
-		output.append("\n\t\teventNames.add(\"click\");");			
+		for (String event: anno.events()) {
+			output.append("\n\t\teventNames.add(\""+ event +"\");");
+		}			
 		output.append("\n\t}");
 		output.append("\n\t\treturn eventNames;");
 		output.append("\n\t}\n");
 		
 		output.append("\n\tpublic String getDefaultEventName() {");
-		output.append("\n\t\treturn \"click\";");		
+		output.append("\n\t\treturn \""+ anno.defaultEvent() +"\";");		
 		output.append("\n\t}\n");
 	}
 }
