@@ -95,8 +95,6 @@ public class ChatScreen extends Composite {
         horizontalLayoutPanel.setCellWidth(chatUsersPanel, "250px");
         horizontalLayoutPanel.setCellHeight(chatUsersPanel, "100%");
         chatControlsPanel.setCellWidth(newMessageButton, "60px");
-
-
     }
 
 
@@ -174,8 +172,6 @@ public class ChatScreen extends Composite {
         this.show();
 
         JoinChatRoomCallback joinCallback = new JoinChatRoomCallback(handle);
-
-        
 
         //first stop listening to push events for the old chat room.
         /*
