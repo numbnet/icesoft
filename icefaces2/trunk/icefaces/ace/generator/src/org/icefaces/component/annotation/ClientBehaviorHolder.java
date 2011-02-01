@@ -29,4 +29,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ClientBehaviorHolder {}
+public @interface ClientBehaviorHolder {
+	String[] events();
+	
+	String defaultEvent();
+}

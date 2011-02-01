@@ -97,7 +97,7 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
     @ResourceDependency(name="tabset.js",library="org.icefaces.component.tab"),
     @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab")    
 })
-@ClientBehaviorHolder 
+@ClientBehaviorHolder (events={"transition"}, defaultEvent="transition")
 public class TabSetMeta extends UIComponentBaseMeta {
     
     @Property(defaultValue="false", tlddoc="The default value of this attribute is fals. If true then tab change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")    
