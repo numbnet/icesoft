@@ -129,10 +129,16 @@ div.login {
     background-color: #B9D6E8;
     color: #FFF;
     font-weight: bold;
+    -moz-border-radius: 20px 20px 20px 20px;
+    -webkit-border-radius: 20px 20px 20px 20px;
+    border-radius: 20px 20px 20px 20px;
+    -moz-box-shadow: 5px 6px 7px #CCCCCC;
+    -webkit-box-shadow: 5px 6px 7px #CCCCCC;
+    box-shadow: 5px 6px 7px #CCCCCC;
 }
 
 .login h2 {
-    color: #0F65B8;
+    color: #005D9A;
 }
 
 div.footer_content a:hover {
@@ -224,7 +230,6 @@ div.footer_content a:hover {
     float: left;
     margin: 0 1%;
     height: 300px;
-    padding: 1%;
     width: 20%;
     overflow: auto;
     _margin: 0 0.5%;//ie6
@@ -236,13 +241,11 @@ div.footer_content a:hover {
     float: left;
     margin: 0 1% 0 0;
     height: 300px;
-    padding: 1%;
     width: 72%; 
     overflow:auto;
 }
 
 #chatRoomMessages{
-    overflow:auto;
     height: 280px;
 }
 
@@ -274,6 +277,7 @@ div.footer_content a:hover {
     font-size: 12pt;
     margin-bottom: 8px;
     text-align: center;
+    padding: 2px;
 }
 
 .hidden{
