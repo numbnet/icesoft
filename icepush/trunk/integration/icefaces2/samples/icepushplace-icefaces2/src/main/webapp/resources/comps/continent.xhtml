@@ -36,30 +36,27 @@
 							<table>
 				            <tbody>
 				                <tr>
-				                    <td>
+				                    <td style="vertical-align: middle;">
 				                    	<h:graphicImage library="images"
 				                    					name="mood-#{occupant.mood}.png"
 				                    					style="width: 26px; height: 29px;"/>
 				                    </td>
-				                    <td>
+				                    <td style="vertical-align: middle;">
 				                    	#{occupant.name}
 				                    </td>
-				                    <h:panelGroup rendered="#{!empty occupant.technology}">
-					                    <td>
-					                    	using #{occupant.technology}
-					                    </td>
-				                    </h:panelGroup>
-				                    <td>
+                                    <td style="vertical-align: middle;">
+                                        <h:outputText value="using #{occupant.technology}" rendered="#{!empty occupant.technology}"/>
+                                    </td>
+				                    
+				                    <td style="vertical-align: middle;">
 				                    	thinks '#{occupant.comment}'
 				                    </td>
-				                    <h:panelGroup rendered="#{!empty occupant.messageIn}">
-				                    <td>
-				                    	and
+				                    <td style="vertical-align: middle;">
+				                        <h:outputText value="and" rendered="#{!empty occupant.messageIn}"/>
 				                    </td>
-				                    <td>
-				                    	says '#{occupant.messageIn}'
+				                    <td style="vertical-align: middle;">
+				                        <h:outputText value="says '#{occupant.messageIn}'" rendered="#{!empty occupant.messageIn}"/>
 				                    </td>
-				                    </h:panelGroup>
 				                </tr>
 				            </tbody>
 				            </table>
