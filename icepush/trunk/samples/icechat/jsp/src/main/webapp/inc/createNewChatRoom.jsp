@@ -33,7 +33,7 @@
 <jsp:useBean id="chatService" class="org.icepush.samples.icechat.jsp.beans.SynchronizedChatServiceBean" scope="application"/>
 <jsp:useBean id="user" class="org.icepush.samples.icechat.model.User" scope="session"/>
 <jsp:useBean id="newRoom" class="org.icepush.samples.icechat.model.ChatRoom" scope="request"/>
-<jsp:setProperty name="newRoom" property="name" value="<%=request.getParameter("roomName")%>"/>
+<jsp:setProperty name="newRoom" property="name" value="<%=request.getParameter(\"roomName\")%>"/>
 <%
 if (user != null) {
 	chatService.createNewChatRoom( request.getParameter("roomName"));	
