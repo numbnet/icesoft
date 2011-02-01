@@ -1,0 +1,77 @@
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <title id="title"><ui:insert name="title"/></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <h:outputStylesheet library="css" name="demo_template.css"/>
+    <h:outputStylesheet library="css" name="auction_styles.css"/>
+    <link href="./resources/css/images/favicon.ico" rel="shortcut icon"
+          type="image/x-icon"/>
+    <link href="./resources/css/images/favicon.ico" rel="icon"
+          type="image/x-icon"/>
+</h:head>
+
+<h:body>
+    <div>
+        <div class="header_right">
+            <h:graphicImage library="css/images" name="banner_logo.jpg"
+                            alt="ICEfaces"
+                            width="267" height="159"/>
+        </div>
+        <div class="header_container">
+            <div class="header_left">
+                <ui:insert name="sampleGraphic"/>
+            </div>
+            <div class="clearer"/>
+        </div>
+    </div>
+    <div>
+        <!-- main body insert -->
+        <ui:insert name="body"/>
+    </div>
+    <!-- Readme End -->
+    <div class="footer_container">
+        <div class="footer_left">
+            <div style="display:inline;float:left">&#160; Copyright 2010
+                <a href="http://www.icesoft.com/"
+                   target="_blank">ICEsoft Technologies Inc.</a></div>
+            <div style="display:inline;float:right"><i>Powered By
+                <a href="http://www.icefaces.org/" target="_blank">ICEfaces</a></i>
+            </div>
+
+        </div>
+        <div class="footer_right">
+            <h:graphicImage library="css/images" name="footer_faces.jpg"
+                            alt="ICEfaces" width="121"
+                            height="95" border="0"/></div>
+    </div>
+
+
+</h:body>
+</html>
