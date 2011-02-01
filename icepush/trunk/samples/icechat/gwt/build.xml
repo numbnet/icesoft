@@ -94,11 +94,11 @@
 	</target>
 
 	<target name="devmode" depends="javac" description="Run development mode">
-		<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true" verbose="true">
+		<copy todir="${build.dir}/webapp/WEB-INF/lib" preservelastmodified="true">
 			<fileset refid="icepush.dist"/>
 			<fileset refid="api"/>
 		</copy>
-		<copy todir="${build.dir}/webapp/common" preservelastmodified="false" verbose="true">
+		<copy todir="${build.dir}/webapp/common" preservelastmodified="false">
 			<fileset dir="../common">
 				<include name="**/*" />
 			</fileset>
