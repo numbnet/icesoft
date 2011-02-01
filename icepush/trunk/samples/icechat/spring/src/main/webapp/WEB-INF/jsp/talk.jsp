@@ -96,7 +96,7 @@
 						<div id="chatRoomsPanel" class="chatRooms chatRooms_pos">
 							<h3>Chat Rooms</h3>
 							<div id="chatRooms">
-								<icep:region group="CHAT_ROOMS" page="/roomlist"></icep:region>
+								<icep:region group="CHAT_ROOMS" page="/roomlist"/>
 							</div>
 					         <table width="99%" cellspacing="0" cellpadding="0">
 		                        <tr>

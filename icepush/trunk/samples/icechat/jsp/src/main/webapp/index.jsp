@@ -37,6 +37,7 @@
     <head>
         <title>ICEpush ICEchat (JSP)</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE8 mode -->
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Expires" content="-1">
         <link rel='stylesheet' type='text/css' href='./css/style-common.css'/>
@@ -185,15 +186,13 @@
 								<div class="chatRoomContainer">
 									<div class="chatRoomUsers">
 										<div class="chatViewSubHeader">Who's Here?</div>
-										<icep:region group="${sessionScope['currentChatRoom'].name}_users" page="/inc/chatRoomUsers.jsp">
-										</icep:region>
+										<icep:region group="${sessionScope['currentChatRoom'].name}_users" page="/inc/chatRoomUsers.jsp"/>
 									</div>
 									<div class="chatRoomMessages">
 										<div class="chatViewSubHeader">Messages</div>
 										<div>
 										<icep:region group="${sessionScope['currentChatRoom'].name}_messages" page="/inc/chatRoomMessages.jsp"
-											evalJS="false">
-										</icep:region>
+											evalJS="false"/>
 										</div>
 									</div>
 								</div>
