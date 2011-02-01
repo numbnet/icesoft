@@ -27,7 +27,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.icepush.PushContext;
 
 /**
  * The listener that initializes the ICEpush Command Queue framework.

@@ -23,8 +23,6 @@
  */
 package org.icepush.gwt.client;
 
-import java.util.List;
-
 public class GWTPushContext {
 
 	private static GWTPushContext instance;
