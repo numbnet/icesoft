@@ -42,8 +42,7 @@
 			<div id="${chatSession.user.name}">
 				${chatSession.user.name}&nbsp; 
 				<icep:region page="/inc/messageDraft.jsp?user=${chatSession.user.name}" 
-					group="${chatSession.room.name}_${chatSession.user.name}_draft">
-				</icep:region>
+					group="${chatSession.room.name}_${chatSession.user.name}_draft"/>
 			</div>
 		</c:forEach>
 	</c:if>
