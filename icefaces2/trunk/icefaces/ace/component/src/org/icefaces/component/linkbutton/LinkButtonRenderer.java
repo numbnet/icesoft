@@ -80,6 +80,9 @@ public class LinkButtonRenderer extends Renderer {
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);
         String styleClass = "yui-button yui-link-button";
+        if (linkButton.isDisabled()) {
+            styleClass += " yui-button-disabled yui-link-button-disabled";
+        }
         String myStyleClass = linkButton.getStyleClass();
         if ((myStyleClass != null) && (!"".equals(myStyleClass) )) {
             styleClass += " " + myStyleClass;
@@ -98,6 +101,11 @@ public class LinkButtonRenderer extends Renderer {
             styleClass += " " + myStyleClass;
         }
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+
+        if (linkButton.isDisabled()) {
+//            writer.write((String) linkButton.getValue());
+            return;
+        }
 
         // button element
         writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
@@ -136,7 +144,9 @@ public class LinkButtonRenderer extends Renderer {
         String value = (String) linkButton.getValue();
         // put the value here to minimize impact in rendering
         writer.writeText(value, null);
-        writer.endElement(HTML.ANCHOR_ELEM);
+        if (!linkButton.isDisabled()) {
+            writer.endElement(HTML.ANCHOR_ELEM);
+        }
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
 
