@@ -27,14 +27,9 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
-import org.apache.commons.logging.LogFactory;
 
 import javax.faces.component.*;
-import javax.faces.component.html.HtmlSelectManyCheckbox;
-import javax.faces.component.html.HtmlSelectManyListbox;
-import javax.faces.component.html.HtmlSelectManyMenu;
-import javax.faces.component.html.HtmlSelectOneListbox;
-import javax.faces.component.html.HtmlSelectOneMenu;
+import javax.faces.component.html.*;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
@@ -45,16 +40,15 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.logging.Logger;
-import java.util.logging.Level;
 
 public class MenuRenderer extends DomBasicInputRenderer {
 
-    private static Logger log =  Logger.getLogger(MenuRenderer.class.getName());
+    private static Logger log = Logger.getLogger(MenuRenderer.class.getName());
     private static final String[] selectOneMenuPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTONEMENU);
     private static final String[] selectManyMenuPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTMANYMENU);
     private static final String[] selectOneListboxPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTONELISTBOX);
     private static final String[] selectManyListboxPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTMANYLISTBOX);
-    
+
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         validateParameters(facesContext, uiComponent, null);
         if (isStatic(uiComponent)) {
@@ -117,13 +111,13 @@ public class MenuRenderer extends DomBasicInputRenderer {
                 return null;
             } else {
                 return super.getConvertedValue(facesContext,
-                                               (UISelectOne) uiComponent,
-                                               newSubmittedValue);
+                        (UISelectOne) uiComponent,
+                        newSubmittedValue);
             }
         } else {
             return convertSelectValue(facesContext,
-                                      ((UISelectMany) uiComponent),
-                                      (String[]) newSubmittedValue);
+                    ((UISelectMany) uiComponent),
+                    (String[]) newSubmittedValue);
         }
     }
 
@@ -136,13 +130,13 @@ public class MenuRenderer extends DomBasicInputRenderer {
                 return null;
             } else {
                 return super.getConvertedValue(facesContext,
-                                               (UISelectOne) uiComponent,
-                                               newSubmittedValue);
+                        (UISelectOne) uiComponent,
+                        newSubmittedValue);
             }
         } else {
             return convertSelectValue(facesContext,
-                                      ((UISelectMany) uiComponent),
-                                      (String[]) newSubmittedValue);
+                    ((UISelectMany) uiComponent),
+                    (String[]) newSubmittedValue);
         }
     }
 
@@ -155,7 +149,7 @@ public class MenuRenderer extends DomBasicInputRenderer {
         if (valueBinding == null) {
             Class componentType = (new Object[1]).getClass().getComponentType();
             return convertArray(facesContext, uiSelectMany, componentType,
-                                newSubmittedValues);
+                    newSubmittedValues);
         }
         Class valueBindingClass = valueBinding.getType(facesContext);
         if (valueBindingClass == null) {
@@ -167,14 +161,14 @@ public class MenuRenderer extends DomBasicInputRenderer {
                 // Determine if there is a default converter for the class
                 converter = getConverterForClass(valueBindingClass);
             }
-            
+
             ArrayList submittedValuesAsList = new ArrayList(
                     newSubmittedValues.length);
             for (int index = 0; index < newSubmittedValues.length; index++) {
                 Object convertedValue = newSubmittedValues[index];
                 if (converter != null) {
                     convertedValue = converter.getAsObject(
-                        facesContext, uiSelectMany, newSubmittedValues[index]);
+                            facesContext, uiSelectMany, newSubmittedValues[index]);
                 }
                 submittedValuesAsList.add(convertedValue);
             }
@@ -183,7 +177,7 @@ public class MenuRenderer extends DomBasicInputRenderer {
         if (valueBindingClass.isArray()) {
             Class componentType = valueBindingClass.getComponentType();
             return convertArray(facesContext, uiSelectMany, componentType,
-                                newSubmittedValues);
+                    newSubmittedValues);
         }
         throw new ConverterException(
                 "Non-list and Non-array values are inconvertible");
@@ -208,7 +202,7 @@ public class MenuRenderer extends DomBasicInputRenderer {
         // create the array with specified component length
         int numberOfValues = newSubmittedValues.length;
         Object convertedValues = Array.newInstance(componentType,
-                                                   numberOfValues);
+                numberOfValues);
 
         // Determine if a converter is explicitly registered with the component
         Converter converter = uiSelectMany.getConverter();
@@ -229,50 +223,50 @@ public class MenuRenderer extends DomBasicInputRenderer {
 
             // convert the next element
             Object nextConvertedElement = converter.getAsObject(facesContext,
-                                                                uiSelectMany,
-                                                                newSubmittedValues[index]);
+                    uiSelectMany,
+                    newSubmittedValues[index]);
 
             if (!componentType.isPrimitive()) {
                 Array.set(convertedValues, index, nextConvertedElement);
             } else if (componentType.equals(Boolean.TYPE)) {
 
                 Array.setBoolean(convertedValues, index,
-                                 ((Boolean) nextConvertedElement).booleanValue());
+                        ((Boolean) nextConvertedElement).booleanValue());
 
             } else if (componentType.equals(Integer.TYPE)) {
 
                 Array.setInt(convertedValues, index,
-                             ((Integer) nextConvertedElement).intValue());
+                        ((Integer) nextConvertedElement).intValue());
 
             } else if (componentType.equals(Long.TYPE)) {
 
                 Array.setLong(convertedValues, index,
-                              ((Long) nextConvertedElement).longValue());
+                        ((Long) nextConvertedElement).longValue());
 
             } else if (componentType.equals(Short.TYPE)) {
 
                 Array.setShort(convertedValues, index,
-                               ((Short) nextConvertedElement).shortValue());
+                        ((Short) nextConvertedElement).shortValue());
 
             } else if (componentType.equals(Byte.TYPE)) {
 
                 Array.setByte(convertedValues, index,
-                              ((Byte) nextConvertedElement).byteValue());
+                        ((Byte) nextConvertedElement).byteValue());
 
             } else if (componentType.equals(Float.TYPE)) {
 
                 Array.setFloat(convertedValues, index,
-                               ((Float) nextConvertedElement).floatValue());
+                        ((Float) nextConvertedElement).floatValue());
 
             } else if (componentType.equals(Double.TYPE)) {
 
                 Array.setDouble(convertedValues, index,
-                                ((Double) nextConvertedElement).doubleValue());
+                        ((Double) nextConvertedElement).doubleValue());
 
             } else if (componentType.equals(Character.TYPE)) {
 
                 Array.setChar(convertedValues, index,
-                              ((Character) nextConvertedElement).charValue());
+                        ((Character) nextConvertedElement).charValue());
 
             }
         }
@@ -298,17 +292,17 @@ public class MenuRenderer extends DomBasicInputRenderer {
         }
 
         String valueString = formatComponentValue(facesContext, uiComponent,
-                                                  selectItem.getValue());
+                selectItem.getValue());
         option.setAttribute("value", valueString);
 
         boolean selected = isValueSelected(facesContext, selectItem, uiComponent,
                 submittedValues, selectedValues);
         if (uiComponent instanceof HtmlSelectOneMenu) {
-            if (submittedValues == null && selectedValues== null && 
+            if (submittedValues == null && selectedValues == null &&
                     (selectItem.getValue() == "" || selectItem.getValue() == null))
                 selected = true;
         }
-        
+
         if (selected) {
             option.setAttribute("selected", "selected");
         }
@@ -323,12 +317,11 @@ public class MenuRenderer extends DomBasicInputRenderer {
     }
 
     protected boolean isValueSelected(
-        FacesContext facesContext,
-        SelectItem selectItem,
-        UIComponent uiComponent,
-        Object[] submittedValues,
-        Object selectedValues)
-    {
+            FacesContext facesContext,
+            SelectItem selectItem,
+            UIComponent uiComponent,
+            Object[] submittedValues,
+            Object selectedValues) {
         if (submittedValues != null) {
             String valueString = formatComponentValue(facesContext, uiComponent, selectItem.getValue());
             return isSelected(valueString, submittedValues);
@@ -366,9 +359,9 @@ public class MenuRenderer extends DomBasicInputRenderer {
         // If "size" is *not* set explicitly, we have to default it correctly
         Object size = uiComponent.getAttributes().get("size");
         if ((null == size)
-            || (  ( size instanceof Integer) &&
-                (  ((Integer) size).intValue() == Integer.MIN_VALUE ||
-                 ((Integer) size).intValue() == 0) ) ) {
+                || ((size instanceof Integer) &&
+                (((Integer) size).intValue() == Integer.MIN_VALUE ||
+                        ((Integer) size).intValue() == 0))) {
             renderSizeAttribute(root, itemCount);
             excludes.add("size");
         } else {
@@ -377,21 +370,21 @@ public class MenuRenderer extends DomBasicInputRenderer {
 
         Object currentValue = null;
         if (null ==
-            (currentValue = ((UIInput) uiComponent).getSubmittedValue())) {
+                (currentValue = ((UIInput) uiComponent).getSubmittedValue())) {
             currentValue = "";
         }
 
         addJavaScript(facesContext, uiComponent, root, currentValue.toString(),
-                      excludes);
+                excludes);
 
         if (uiComponent instanceof HtmlSelectOneMenu) {
-            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent,selectOneMenuPassThruAttributes);
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, selectOneMenuPassThruAttributes);
         } else if (uiComponent instanceof HtmlSelectManyMenu) {
-            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent,selectManyMenuPassThruAttributes);
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, selectManyMenuPassThruAttributes);
         } else if (uiComponent instanceof HtmlSelectOneListbox) {
-            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent,selectOneListboxPassThruAttributes);
-        } else if (uiComponent instanceof HtmlSelectManyListbox) { 
-            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent,selectManyListboxPassThruAttributes);
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, selectOneListboxPassThruAttributes);
+        } else if (uiComponent instanceof HtmlSelectManyListbox) {
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, selectManyListboxPassThruAttributes);
         }
         String[] attributes = new String[]{HTML.DISABLED_ATTR, HTML.READONLY_ATTR};
         Object attribute;
@@ -409,20 +402,13 @@ public class MenuRenderer extends DomBasicInputRenderer {
     }
 
     public String getEventType(UIComponent uiComponent) {
-        if (uiComponent instanceof javax.faces.component.html.HtmlSelectOneListbox)
-        {
+        if (uiComponent instanceof javax.faces.component.html.HtmlSelectOneListbox) {
             return "onchange";
-        } else
-        if (uiComponent instanceof javax.faces.component.html.HtmlSelectOneMenu)
-        {
+        } else if (uiComponent instanceof javax.faces.component.html.HtmlSelectOneMenu) {
             return "onchange";
-        } else
-        if (uiComponent instanceof javax.faces.component.html.HtmlSelectManyListbox)
-        {
+        } else if (uiComponent instanceof javax.faces.component.html.HtmlSelectManyListbox) {
             return "onchange";
-        } else
-        if (uiComponent instanceof javax.faces.component.html.HtmlSelectManyMenu)
-        {
+        } else if (uiComponent instanceof javax.faces.component.html.HtmlSelectManyMenu) {
             return "onchange";
         } else if (uiComponent instanceof HtmlSelectManyCheckbox) {
             return "onclick";
@@ -475,18 +461,18 @@ public class MenuRenderer extends DomBasicInputRenderer {
                         ((SelectItemGroup) nextSelectItem).getSelectItems();
                 for (int i = 0; i < selectItemsArray.length; ++i) {
                     renderOption(facesContext, uiComponent, selectItemsArray[i],
-                                 optGroup, submittedValues, selectedValues);
+                            optGroup, submittedValues, selectedValues);
                 }
             } else {
                 renderOption(facesContext, uiComponent, nextSelectItem, null,
-                             submittedValues, selectedValues);
+                        submittedValues, selectedValues);
             }
         }
     }
 
     boolean isSelected(Object sentinel, Object selectedValues, FacesContext facesContext, UIComponent uiComponent) {
         boolean isSelected = false;
-         if (selectedValues == null || sentinel == null) {
+        if (selectedValues == null || sentinel == null) {
             return isSelected;
         }
         String formattedSelectedValue;
@@ -501,11 +487,11 @@ public class MenuRenderer extends DomBasicInputRenderer {
             } else if (nextSelectedValue != null && nextSelectedValue.equals(sentinel)) {
                 isSelected = true;
                 break;
-            }else if (sentinel instanceof String) {
-            	if (isConversionMatched(sentinel.toString(), nextSelectedValue)) {
-	            	isSelected = true;
-	            	break;
-            	}
+            } else if (sentinel instanceof String) {
+                if (isConversionMatched(sentinel.toString(), nextSelectedValue)) {
+                    isSelected = true;
+                    break;
+                }
                 if (formattedSelectedValue.equals(sentinel)) {
                     isSelected = true;
                     break;
@@ -599,14 +585,14 @@ public class MenuRenderer extends DomBasicInputRenderer {
         List selectItems = new ArrayList();
         if (uiComponent.getChildCount() == 0) return selectItems.iterator();
         Iterator children = uiComponent.getChildren().iterator();
-        
+
         while (children.hasNext()) {
             UIComponent nextSelectItemChild = (UIComponent) children.next();
             if (nextSelectItemChild instanceof UISelectItem) {
                 Object selectItemValue =
                         ((UISelectItem) nextSelectItemChild).getValue();
                 if (selectItemValue != null &&
-                    selectItemValue instanceof SelectItem) {
+                        selectItemValue instanceof SelectItem) {
                     selectItems.add(selectItemValue);
                 } else {
                     //If user defines only one member, either itemValue or itemLabel
@@ -632,43 +618,43 @@ public class MenuRenderer extends DomBasicInputRenderer {
                         Iterator selectItemsIterator =
                                 ((Collection) selectItemsValue).iterator();
                         while (selectItemsIterator.hasNext()) {
-                        	Object item = selectItemsIterator.next();
-                        	if (item instanceof SelectItem) {
-                        		selectItems.add(item);
-                        	} else {
+                            Object item = selectItemsIterator.next();
+                            if (item instanceof SelectItem) {
+                                selectItems.add(item);
+                            } else {
 
-                        		if (nextSelectItemChild.getAttributes().containsKey("var")) {
-                        			String var = nextSelectItemChild.getAttributes().get("var").toString();
-                        			Map<String, Object> map = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
-                        			Object oldValue = map.put(var, item);
+                                if (nextSelectItemChild.getAttributes().containsKey("var")) {
+                                    String var = nextSelectItemChild.getAttributes().get("var").toString();
+                                    Map<String, Object> map = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+                                    Object oldValue = map.put(var, item);
 
-	                        		String itemLabel = String.valueOf(nextSelectItemChild.getAttributes().get("itemLabel"));
-                           			Object itemValue = nextSelectItemChild.getAttributes().get("itemValue");
-	                        		selectItems.add(new SelectItem((itemValue != null)? itemValue: item, itemLabel));
-	                        		continue;
-                        		}
-                        		
-                        		selectItems.add(new SelectItem(item));
-                        	}
-                        } 
-                    } else if (selectItemsValue instanceof Object[]) {
-            			Map<String, Object> map = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
-                    	for (Object item: (Object[])selectItemsValue) {                    	
-	                		if (nextSelectItemChild.getAttributes().containsKey("var")) {                    	
-		            					String var = nextSelectItemChild.getAttributes().get("var").toString();
-			                			Object oldValue = map.put(var, item);
-			                    		String itemLabel = String.valueOf(nextSelectItemChild.getAttributes().get("itemLabel"));
-			                   			Object itemValue = nextSelectItemChild.getAttributes().get("itemValue");
-			                    		selectItems.add(new SelectItem((itemValue != null)? itemValue: item, itemLabel));
-	                    	} else {
-	                    		selectItems.add(new SelectItem(item));
-	                    	}
-                		}
+                                    String itemLabel = String.valueOf(nextSelectItemChild.getAttributes().get("itemLabel"));
+                                    Object itemValue = nextSelectItemChild.getAttributes().get("itemValue");
+                                    selectItems.add(new SelectItem((itemValue != null) ? itemValue : item, itemLabel));
+                                    continue;
+                                }
+
+                                selectItems.add(new SelectItem(item));
+                            }
+                        }
                     } else if (selectItemsValue instanceof SelectItem[]) {
                         SelectItem selectItemArray[] =
                                 (SelectItem[]) selectItemsValue;
                         for (int i = 0; i < selectItemArray.length; i++) {
                             selectItems.add(selectItemArray[i]);
+                        }
+                    } else if (selectItemsValue instanceof Object[]) {
+                        Map<String, Object> map = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+                        for (Object item : (Object[]) selectItemsValue) {
+                            if (nextSelectItemChild.getAttributes().containsKey("var")) {
+                                String var = nextSelectItemChild.getAttributes().get("var").toString();
+                                Object oldValue = map.put(var, item);
+                                String itemLabel = String.valueOf(nextSelectItemChild.getAttributes().get("itemLabel"));
+                                Object itemValue = nextSelectItemChild.getAttributes().get("itemValue");
+                                selectItems.add(new SelectItem((itemValue != null) ? itemValue : item, itemLabel));
+                            } else {
+                                selectItems.add(new SelectItem(item));
+                            }
                         }
                     } else if (selectItemsValue instanceof Map) {
                         Iterator selectItemIterator =
@@ -692,10 +678,10 @@ public class MenuRenderer extends DomBasicInputRenderer {
                             selectItems.add(new SelectItem(stringItemArray[i]));
                         }
                     } else if (selectItemsValue instanceof Enum[]) {
-                    	Enum[] enumArray = ((Enum[])selectItemsValue);
-                    	for (int i = 0; i < enumArray.length; i++) {
-                    		selectItems.add(new SelectItem(enumArray[i]));
-                    	}
+                        Enum[] enumArray = ((Enum[]) selectItemsValue);
+                        for (int i = 0; i < enumArray.length; i++) {
+                            selectItems.add(new SelectItem(enumArray[i]));
+                        }
                     }
                 }
             }
@@ -723,43 +709,42 @@ public class MenuRenderer extends DomBasicInputRenderer {
                                  String currentValue,
                                  Set excludes) {
     }
-    
-    private boolean isConversionMatched(String sentinel, Object selectedValue){
-    	boolean match = false;
-        if (sentinel.length() == 0){
+
+    private boolean isConversionMatched(String sentinel, Object selectedValue) {
+        boolean match = false;
+        if (sentinel.length() == 0) {
             if (selectedValue == null) {
                 match = true;
             }
+        } else if (selectedValue instanceof Long) {
+            if (selectedValue.equals(Long.valueOf(sentinel))) {
+                match = true;
+            }
+        } else if (selectedValue instanceof Byte) {
+            if (selectedValue.equals(Byte.valueOf(sentinel))) {
+                match = true;
+            }
+        } else if (selectedValue instanceof Integer) {
+            if (selectedValue.equals(Integer.valueOf(sentinel))) {
+                match = true;
+            }
+        } else if (selectedValue instanceof Short) {
+            if (selectedValue.equals(Short.valueOf(sentinel))) {
+                match = true;
+            }
+        } else if (selectedValue instanceof Double) {
+            if (selectedValue.equals(Double.valueOf(sentinel))) {
+                match = true;
+            }
+        } else if (selectedValue instanceof Float) {
+            if (selectedValue.equals(Float.valueOf(sentinel))) {
+                match = true;
+            }
+        } else if (selectedValue instanceof Boolean) {
+            if (selectedValue.equals(Boolean.valueOf(sentinel))) {
+                match = true;
+            }
         }
-        else if (selectedValue instanceof Long){
-    		if (selectedValue.equals(Long.valueOf(sentinel))) {
-    			match = true;
-    		}
-    	} else if (selectedValue instanceof Byte) {
-    		if (selectedValue.equals(Byte.valueOf(sentinel))) {
-    			match = true;
-    		}
-    	} else if (selectedValue instanceof Integer) {
-    		if (selectedValue.equals(Integer.valueOf(sentinel))) {
-    			match = true;
-    		}    		
-    	} else if (selectedValue instanceof Short) {
-    		if (selectedValue.equals(Short.valueOf(sentinel))) {
-    			match = true;
-    		}
-    	} else if (selectedValue instanceof Double) {
-    		if (selectedValue.equals(Double.valueOf(sentinel))) {
-    			match = true;
-    		}
-    	} else if (selectedValue instanceof Float) {
-    		if (selectedValue.equals(Float.valueOf(sentinel))) {
-    			match = true;
-    		}
-    	} else if (selectedValue instanceof Boolean) {
-    		if (selectedValue.equals(Boolean.valueOf(sentinel))) {
-    			match = true;
-    		}
-    	}
-    	return match;
+        return match;
     }
 }
