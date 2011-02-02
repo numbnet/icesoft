@@ -11,6 +11,7 @@
     <head>
         <title>ICEpush ICEchat (Spring MVC)</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=100" /> <!-- IE8 mode -->
         <link rel="stylesheet" type="text/css" href="./css/style-common.css"/>
         <script type="text/javascript" src="code.icepush"></script>
         <script type="text/javascript" src="./javascript/jquery-1.4.1.js"></script>
