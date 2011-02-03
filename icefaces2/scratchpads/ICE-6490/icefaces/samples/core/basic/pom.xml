@@ -31,6 +31,7 @@
   <artifactId>basic</artifactId>
   <packaging>war</packaging>
   <name>@{artifactId}</name>
+
   <description />
   <build>
     <finalName>${artifactId}</finalName>

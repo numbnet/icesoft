@@ -37,10 +37,10 @@
         <module>ace</module>
     </modules>
     <properties>
-        <ice.version>2.0.0</ice.version>
+        <ice.version>2.0.1</ice.version>
         <compiler.plugins.version>2.0.2</compiler.plugins.version>
-        <jsf.version>2.1.0-b10</jsf.version>
-        <jsf.portlet.version>2.1.0.b10</jsf.portlet.version>
+        <jsf.version>2.1.0-b11</jsf.version>
+        <jsf.portlet.version>2.1.0.b11</jsf.portlet.version>
     </properties>
    <dependencies>
         <dependency>

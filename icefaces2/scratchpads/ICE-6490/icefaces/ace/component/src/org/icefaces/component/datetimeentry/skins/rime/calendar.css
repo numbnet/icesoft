@@ -520,6 +520,10 @@ p#clear {
     background-color: #000;
 }
 
+.ice-skin-rime .yui-calendar td.calcell.today.selected.disabled {
+    background-color: #FAA620;
+}
+
 .ice-skin-rime .ice-calcontainer .text-input {
     width: 160px;
     margin-top: 0;
