@@ -47,9 +47,11 @@ ice.component.slider = {
 			            } catch(e){alert(e)}
 						
 						var invokeSubmit = function (event) {
-		                    if (jsfProps.singleSubmit) {
+                            var context = ice.component.getJSContext(clientId);
+                            var sJSFProps = context.getJSFProps();
+		                    if (sJSFProps.singleSubmit) {
 
-                                var postParameters = jsfProps.postParameters;
+                                var postParameters = sJSFProps.postParameters;
 		                        ice.se(event, root, function(param) {
 									param(hiddenField.id, obj.get('value'));
 									param('ice.focus', ice.focus);
@@ -82,7 +84,9 @@ ice.component.slider = {
 						obj.after("valueChange", function(event) {
 						   var sliderValue = obj.get('value');
 		                    //if aria is enabled, then set aria property so screen reader can pick it
-		                    if (jsfProps.aria) {
+                            var context = ice.component.getJSContext(clientId);
+                            var vcJSFProps = context.getJSFProps();
+                            if (vcJSFProps.aria) {
 		                        // Because we're in a callback, to be safe we'll lookup
 		                        //  the current root element again, instead of using
 		                        //  the old root reference, which might be stale.
@@ -128,8 +132,14 @@ ice.component.slider = {
 		                    //react on left, right, up, down, home and end key 
 		                    Yui.on("keydown", function(event) {
 		                        //get the current value of the slider
-		                        var valuebefore = valuenow = parseInt(root.firstChild.getAttribute("aria-valuenow"));
-		                          
+                                var valuenow = parseInt(root.firstChild.getAttribute("aria-valuenow"));
+		                        var valuebefore = valuenow;
+
+                                var context = ice.component.getJSContext(clientId);
+                                var kdYuiProps = context.getJSProps();
+                                var kdMin = kdYuiProps.min;
+                                var kdMax = kdYuiProps.max;
+
 		                        var isLeft = event.keyCode == 37;
 		                        var isUp = event.keyCode == 38;
 		                        var isRight = event.keyCode == 39;
@@ -137,22 +147,24 @@ ice.component.slider = {
 		                        var isHome = event.keyCode == 36;
 		                        var isEnd = event.keyCode == 35;
 
-		                        if (isLeft || isDown) {
-		                           //decrease slider value
-		                           if ((valuenow - step) >= yuiProps.min) {
-		                              valuenow -= step;
-		                           }
+                                if (isLeft || isDown) {
+                                    //decrease slider value
+                                    valuenow -= step;
+                                    if (valuenow < kdMin) {
+                                        valuenow = kdMin;
+                                    }
 		                        } else if (isRight || isUp) {
-		                           //increase slider value
-		                           if (yuiProps.max >= valuenow + step) {
-		                              valuenow += step;
-		                           }
+		                            //increase slider value
+                                    valuenow += step;
+		                            if (valuenow > kdMax) {
+		                                valuenow = kdMax;
+		                            }
 		                        } else if (isHome) {
 		                           //get the min value of slider 
-		                           valuenow = yuiProps.min;
+		                           valuenow = kdMin;
 		                        } else if (isEnd) {
 		                           //get the max value of slider 
-		                           valuenow = yuiProps.max;		
+		                           valuenow = kdMax;		
 		                        }
 
 		                        //if value changed?
