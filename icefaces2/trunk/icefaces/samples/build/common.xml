@@ -29,6 +29,9 @@
 -->
     <property name="lib.compat.dir" location="${lib.dir}/compat"/>
     <property name="lib.compat.dir.includes" value=""/>
+    <property name="lib.application.dir" location="./lib"/>
+    <property name="lib.compile.application.includes" value=""/>
+    <property name="lib.distribute.application.includes" value=""/>
 
     <property name="lib.portlet.dir" location="${lib.dir}/portlets"/>
 
@@ -77,6 +80,9 @@
         <include name="slf4j*.jar"/>
         <exclude name="*.jar" unless="portlet"/>
     </patternset>
+    <patternset id="lib.compile.application" includes="${lib.compile.application.includes}"/>
+
+    <patternset id="lib.distribute.application" includes="${lib.distribute.application.includes}"/>
 
     <target name="clean">
         <delete dir="${build.dir}"/>
@@ -98,6 +104,9 @@
                includeantruntime="false">
 
             <classpath>
+                <fileset dir="${lib.application.dir}" erroronmissingdir="false">
+                    <patternset refid="lib.compile.application"/>
+                </fileset>
                 <fileset dir="${lib.compat.dir}">
                     <patternset refid="lib.compile.compat"/>
                 </fileset>
@@ -129,11 +138,12 @@
             <lib dir="${lib.compat.dir}">
                 <patternset refid="lib.distribute.compat"/>
             </lib>
-
             <lib dir="${lib.portlet.dir}">
                 <patternset refid="lib.distribute.portlet"/>
             </lib>
-
+            <lib dir="${lib.application.dir}" erroronmissingdir="false">
+                <patternset refid="lib.distribute.application"/>
+            </lib>
             <classes dir="${classes.dir}"/>
         </war>
         <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
