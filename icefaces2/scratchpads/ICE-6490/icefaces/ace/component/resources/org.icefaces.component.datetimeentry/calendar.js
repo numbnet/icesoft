@@ -44,6 +44,7 @@ var logger = new YAHOO.widget.LogWriter("Calendar 4");
 var YuiCalendar = YAHOO.widget.Calendar,
            lang = YAHOO.lang,
            JSON = lang.JSON,
+            Dom = YAHOO.util.Dom,
           Event = YAHOO.util.Event;
 var IceCalendar = function(container, config, params) { // ICE calendar constructor
     IceCalendar.superclass.constructor.call(this, container, config);
@@ -64,6 +65,7 @@ var renderFooter = function(html) {
     var selHrId = this.containerId + "_selHr";
     var selMinId = this.containerId + "_selMin";
     var selAmPmId = this.containerId + "_selAmPm";
+    var disabled = this.params.disabled ? " disabled='disabled'" : "";
     var Event = YAHOO.util.Event;
     var Dom = YAHOO.util.Dom;
     var calendar = this;
@@ -90,8 +92,12 @@ var renderFooter = function(html) {
     var j = parseInt(hourField.charAt(hourField.length - 1), 10);
     var k = hourField.match(/^HOUR_OF_DAY[01]$/) ? j + 23 : j + 11;
     var i, temp;
-    html[html.length] = "<tfoot><tr><td align='center' colspan='7'>";
-    html[html.length] = "<select" + " id='" + selHrId + "' name='" + selHrId + "'>";
+    html[html.length] = "<tfoot><tr><td align='center' colspan='7'";
+    if (this.params.disabled) {
+        html[html.length] = " class='disabled'";
+    }
+    html[html.length] = ">";
+    html[html.length] = "<select" + " id='" + selHrId + "' name='" + selHrId + "'" + disabled + ">";
     for (i = j; i <= k; i++) {
         temp = "<option value='" + i + "'";
         if (i == selectedHour) {
@@ -103,7 +109,7 @@ var renderFooter = function(html) {
     html[html.length] = "</select>";
     Event.onAvailable(selHrId, selAvailable, selHrId);
     html[html.length] = ": ";
-    html[html.length] = "<select" + " id='" + selMinId + "' name='" + selMinId + "'>";
+    html[html.length] = "<select" + " id='" + selMinId + "' name='" + selMinId + "'" + disabled + ">";
     for (i = 0; i <= 59; i++) {
         temp = "<option value='" + i + "'";
         if (i == selectedMinute) {
@@ -115,7 +121,7 @@ var renderFooter = function(html) {
     html[html.length] = "</select>";
     Event.onAvailable(selMinId, selAvailable, selMinId);
     if (hourField.match(/^HOUR[01]$/)) {
-        html[html.length] = "<select" + " id='" + selAmPmId + "' name='" + selAmPmId + "'>";
+        html[html.length] = "<select" + " id='" + selAmPmId + "' name='" + selAmPmId + "'" + disabled + ">";
         temp = "<option value='" + amStr + "'";
         if (amStr == amPmStr) {
             temp += " selected='selected'";
@@ -137,6 +143,20 @@ var renderFooter = function(html) {
 var selectCell = function(cellIndex) {
     this.currentFocus = this.cells[cellIndex].id;
     IceCalendar.superclass.selectCell.call(this, cellIndex);
+};
+var styleCellDefault = function(workingDate, cell) {
+    if (this.params.disabled) {
+        Dom.addClass(cell, "disabled");
+    } else {
+        Dom.addClass(cell, this.Style.CSS_CELL_SELECTABLE);
+    }
+};
+var renderCellDefault = function(workingDate, cell) {
+    if (this.params.disabled) {
+        cell.innerHTML = workingDate.getDate();
+    } else {
+        cell.innerHTML = '<a href="#" class="' + this.Style.CSS_CELL_SELECTOR + '">' + this.buildDayLabel(workingDate) + "</a>";
+    }
 };
 var getProperty = function(key) {
     if (key == "pageDate") {
@@ -160,7 +180,8 @@ var setProperty = function(key, value) {
     }
     this.cfg.setProperty(key, value, false);
 };
-var overrides = {renderFooter:renderFooter, selectCell:selectCell, get:getProperty, set:setProperty};
+var overrides = {renderFooter:renderFooter, selectCell:selectCell, styleCellDefault:styleCellDefault,
+                 renderCellDefault:renderCellDefault, get:getProperty, set:setProperty};
 lang.extend(IceCalendar, YuiCalendar, overrides);
 
 var ns = { // public functions for calendar namespace
@@ -488,25 +509,25 @@ init: function(params) {
     this.configCal(calendar, params);
     calendar.selectEvent.subscribe(popupDateSelectHandler, calendar, true);
     calendar.render();
-	
+
 //   thiz = this;
    var toggleClick = null;
 	ice.yui3.use(function(Y) {
-	
+
     var animation = ice.animation.getAnimation(params.clientId, "transition");
 
 	if (animation) {
-			animation.chain.set('node', '#'+ dialog.id+'_c');	
+			animation.chain.set('node', '#'+ dialog.id+'_c');
 			animation.chain.on('end', function() {
 				if (animation.get('reverse')) {
 					dialog.show();
 					toggleBtnEl.replaceClass("open-popup", "close-popup");
 				} else {
 					dialog.hide();
-					toggleBtnEl.replaceClass("close-popup", "open-popup");				
+					toggleBtnEl.replaceClass("close-popup", "open-popup");
 				}
-			});			
-	} 
+			});
+	}
      toggleClick = function() {
 
 	     thix = this;
@@ -524,12 +545,12 @@ init: function(params) {
 				animation.chain.run();
 			} else {
 				dialog.hide();
-				this.replaceClass("close-popup", "open-popup");			
+				this.replaceClass("close-popup", "open-popup");
 			}
         }
     };
-	
-	
+
+
 	});
 
     var inputEnter = function(evType, fireArgs, subscribeObj) {

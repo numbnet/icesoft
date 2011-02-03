@@ -533,6 +533,10 @@ p#clear {
     background-color: #000;
 }
 
+.ice-skin-sam .yui-calendar td.calcell.today.selected.disabled {
+    background-color: #B3D4FF;
+}
+
 .ice-skin-sam .ice-calcontainer .text-input {
     width: 160px;
     margin-top: 0;
