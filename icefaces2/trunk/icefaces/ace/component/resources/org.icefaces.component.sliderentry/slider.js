@@ -41,9 +41,9 @@ ice.component.slider = {
 			            obj = new Yui.Slider({
 							//following two properties has to be set when initializing componnent
 							axis: yuiProps.axis,
-							thumbUrl: jsfProps.thumbUrl,
-                            disabled:yuiProps.disabled
+							thumbUrl: jsfProps.thumbUrl
 							}).render(root);
+                        obj.set('disabled', yuiProps.disabled);
 			            } catch(e){alert(e)}
 						
 						var invokeSubmit = function (event) {
