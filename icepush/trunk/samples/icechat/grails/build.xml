@@ -22,7 +22,7 @@
  *
  *
 -->
-<project name="icechat-jsp" default="war">
+<project name="icechat-grails" default="war">
 
     <property environment="ENV" />
     <import file="${ENV.GRAILS_HOME}/src/grails/grails-macros.xml" />
