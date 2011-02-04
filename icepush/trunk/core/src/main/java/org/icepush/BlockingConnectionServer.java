@@ -39,18 +39,32 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BlockingConnectionServer extends TimerTask implements Server, Observer {
-    private static final long initialHeartbeat = 5000;
-    private static final long minHeartbeat = 1000;
-    private static final long maxHeartbeat = 20000;
     private static final Logger log = Logger.getLogger(BlockingConnectionServer.class.getName());
-    private static final ResponseHandler CloseResponse = new CloseConnectionResponseHandler();
+    private static final ResponseHandler CloseResponse = new ResponseHandler() {
+        public void respond(Response response) throws Exception {
+            //let the bridge know that this blocking connection should not be re-initialized
+            response.setHeader("X-Connection", "close");
+            response.setHeader("Content-Length", 0);
+
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest("Close current blocking connection.");
+            }
+        }
+    };
     //Define here to avoid classloading problems after application exit
-    private static final ResponseHandler NoopResponse = new NoopResponseHandler();
+    private static final ResponseHandler NoopHandler = new FixedXMLContentHandler() {
+        public void writeTo(Writer writer) throws IOException {
+            writer.write("<noop/>");
+
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest("Sending NoOp.");
+            }
+        }
+    };
     private static final Server AfterShutdown = new ResponseHandlerServer(CloseResponse);
 
     private final BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
-    private long heartbeat;
-    private long heartbeatUpdateTime = System.currentTimeMillis();
+    private final long timeoutInterval;
     private long responseTimeoutTime;
     private Server activeServer;
     private ConcurrentLinkedQueue notifiedPushIDs = new ConcurrentLinkedQueue();
@@ -59,17 +73,51 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
 
     private String lastWindow = "";
     private String[] lastNotifications = new String[]{};
-    private int sequenceNo = 0;
 
     public BlockingConnectionServer(final PushGroupManager pushGroupManager, final Timer monitorRunner, final Configuration configuration, final boolean terminateBlockingConnectionOnShutdown) {
-        this.heartbeat = configuration.getAttributeAsLong("heartbeatTimeout", initialHeartbeat);
+        this.timeoutInterval = configuration.getAttributeAsLong("heartbeatTimeout", 50000);
         this.pushGroupManager = pushGroupManager;
         //add monitor
         monitorRunner.scheduleAtFixedRate(this, 0, 1000);
         this.pushGroupManager.addObserver(this);
 
         //define blocking server
-        activeServer = new RunningServer(pushGroupManager, terminateBlockingConnectionOnShutdown);
+        activeServer = new Server() {
+            public void service(final Request request) throws Exception {
+                resetTimeout();
+                respondIfPendingRequest(CloseResponse);
+
+                //resend notifications if the window owning the blocking connection has changed
+                String currentWindow = request.getHeader("ice.push.window");
+                currentWindow = currentWindow == null ? "" : currentWindow;
+                boolean resend = !lastWindow.equals(currentWindow);
+                lastWindow = currentWindow;
+
+                pendingRequest.put(request);
+                try {
+                    participatingPushIDs = Arrays.asList(request.getParameterAsStrings("ice.pushid"));
+                    if (log.isLoggable(Level.FINEST)) {
+                        log.finest("Participating pushIds: " + participatingPushIDs + ".");
+                    }
+
+                    if (resend) {
+                        resendLastNotifications();
+                    } else {
+                        respondIfNotificationsAvailable();
+                    }
+                    pushGroupManager.notifyObservers(new ArrayList(participatingPushIDs));
+                } catch (RuntimeException e) {
+                    log.fine("Request does not contain pushIDs.");
+                    respondIfPendingRequest(NoopHandler);
+                }
+            }
+
+            public void shutdown() {
+                //avoid creating new blocking connections after shutdown
+                activeServer = AfterShutdown;
+                respondIfPendingRequest(terminateBlockingConnectionOnShutdown ? CloseResponse : NoopHandler);
+            }
+        };
     }
 
     public void update(Observable observable, Object o) {
@@ -88,7 +136,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
 
     public void run() {
         if ((System.currentTimeMillis() > responseTimeoutTime) && (!pendingRequest.isEmpty())) {
-            respondIfPendingRequest(NoopResponse);
+            respondIfPendingRequest(NoopHandler);
         }
     }
 
@@ -125,38 +173,16 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     }
 
     private void resetTimeout() {
-        responseTimeoutTime = System.currentTimeMillis() + heartbeat;
+        responseTimeoutTime = System.currentTimeMillis() + timeoutInterval;
     }
 
-    private void respondIfPendingRequest(final ResponseHandler handler) {
-        final Request previousRequest = (Request) pendingRequest.poll();
+    private void respondIfPendingRequest(ResponseHandler handler) {
+        Request previousRequest = (Request) pendingRequest.poll();
         if (previousRequest != null) {
             try {
-                previousRequest.respondWith(new AdjustHeartbeat(previousRequest, handler));
+                previousRequest.respondWith(handler);
             } catch (Exception e) {
                 throw new RuntimeException(e);
-            }
-        }
-    }
-
-    private static class NoopResponseHandler extends FixedXMLContentHandler {
-        public void writeTo(Writer writer) throws IOException {
-            writer.write("<noop/>");
-
-            if (log.isLoggable(Level.FINEST)) {
-                log.finest("Sending NoOp.");
-            }
-        }
-    }
-
-    private static class CloseConnectionResponseHandler implements ResponseHandler {
-        public void respond(Response response) throws Exception {
-            //let the bridge know that this blocking connection should not be re-initialized
-            response.setHeader("X-Connection", "close");
-            response.setHeader("Content-Length", 0);
-
-            if (log.isLoggable(Level.FINEST)) {
-                log.finest("Close current blocking connection.");
             }
         }
     }
@@ -178,97 +204,6 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
                 writer.write(id);
             }
             writer.write("</notified-pushids>");
-        }
-    }
-
-    private class AdjustHeartbeat implements ResponseHandler {
-        private final Request request;
-        private final ResponseHandler handler;
-
-        public AdjustHeartbeat(Request request, ResponseHandler handler) {
-            this.request = request;
-            this.handler = handler;
-        }
-
-        public void respond(Response response) throws Exception {
-            long previousSequenceNo;
-            try {
-                previousSequenceNo = request.getHeaderAsInteger("ice.push.sequence");
-            } catch (RuntimeException e) {
-                previousSequenceNo = 0;
-            }
-            //if sequence number sent by the client is different than the one
-            //on the server it can be assumed that at least one heartbeat response was lost at some point
-            boolean matchingSequenceNo = previousSequenceNo == sequenceNo;
-            if (matchingSequenceNo) {
-                //increase interval since heartbeat still runs great
-                //increase interval only after the previous interval has elapsed to avoid increasing the value too rapidly
-                if (updateHeartbeat()) {
-                    heartbeat = Math.min(maxHeartbeat, Math.round(heartbeat * 1.1));
-                }
-            } else {
-                //decrease interval since heartbeat was lost
-                heartbeat = Math.max(minHeartbeat, Math.round(heartbeat * 0.75));
-            }
-            ++sequenceNo;
-
-            //send heartbeat only when current heartbeat interval has elapsed, this avoids
-            //oscillations or rapid changes in the heartbeat interval
-            if (!matchingSequenceNo || updateHeartbeat()) {
-                response.setHeader("ice.push.heartbeat", heartbeat);
-                heartbeatUpdateTime = System.currentTimeMillis();
-            }
-            response.setHeader("ice.push.sequence", sequenceNo);
-            handler.respond(response);
-        }
-
-        private boolean updateHeartbeat() {
-            return System.currentTimeMillis() > heartbeat + heartbeatUpdateTime;
-        }
-    }
-
-    private class RunningServer implements Server {
-        private final PushGroupManager pushGroupManager;
-        private final boolean terminateBlockingConnectionOnShutdown;
-
-        public RunningServer(PushGroupManager pushGroupManager, boolean terminateBlockingConnectionOnShutdown) {
-            this.pushGroupManager = pushGroupManager;
-            this.terminateBlockingConnectionOnShutdown = terminateBlockingConnectionOnShutdown;
-        }
-
-        public void service(final Request request) throws Exception {
-            resetTimeout();
-            respondIfPendingRequest(CloseResponse);
-
-            //resend notifications if the window owning the blocking connection has changed
-            String currentWindow = request.getHeader("ice.push.window");
-            currentWindow = currentWindow == null ? "" : currentWindow;
-            boolean resend = !lastWindow.equals(currentWindow);
-            lastWindow = currentWindow;
-
-            pendingRequest.put(request);
-            try {
-                participatingPushIDs = Arrays.asList(request.getParameterAsStrings("ice.pushid"));
-                if (log.isLoggable(Level.FINEST)) {
-                    log.finest("Participating pushIds: " + participatingPushIDs + ".");
-                }
-
-                if (resend) {
-                    resendLastNotifications();
-                } else {
-                    respondIfNotificationsAvailable();
-                }
-                pushGroupManager.notifyObservers(new ArrayList(participatingPushIDs));
-            } catch (RuntimeException e) {
-                log.fine("Request does not contain pushIDs.");
-                respondIfPendingRequest(NoopResponse);
-            }
-        }
-
-        public void shutdown() {
-            //avoid creating new blocking connections after shutdown
-            activeServer = AfterShutdown;
-            respondIfPendingRequest(terminateBlockingConnectionOnShutdown ? CloseResponse : NoopResponse);
         }
     }
 }
