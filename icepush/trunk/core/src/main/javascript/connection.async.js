@@ -113,8 +113,6 @@ var AsyncConnection;
             askForConfiguration = noop;
         }
 
-        var sequenceNo = 0;
-
         function connect() {
             try {
                 debug(logger, "closing previous connection...");
@@ -136,7 +134,6 @@ var AsyncConnection;
                         FormPost(request);
                         sendXWindowCookie(request);
                         setHeader(request, 'ice.push.window', namespace.windowID);
-                        setHeader(request, 'ice.push.sequence', sequenceNo);
                     }, $witch(function (condition) {
                         condition(OK, function(response) {
                             var reconnect = getHeader(response, 'X-Connection') != 'close';
@@ -148,12 +145,6 @@ var AsyncConnection;
                                 info(logger, 'blocking connection stopped at server\'s request...');
                             }
                             if (nonEmptyResponse) {
-                                //set new heartbeat interval
-                                if (hasHeader(response, 'ice.push.heartbeat')) {
-                                    heartbeatTimeout = Number(getHeader(response, 'ice.push.heartbeat'));
-                                }
-                                //echo the sequence number
-                                sequenceNo = Number(getHeader(response, 'ice.push.sequence'));
                                 broadcast(onReceiveListeners, [response]);
                             }
                             receiveXWindowCookie(response);
