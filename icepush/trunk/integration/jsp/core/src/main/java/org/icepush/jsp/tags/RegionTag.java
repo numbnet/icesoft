@@ -58,7 +58,7 @@ public class RegionTag extends BaseTag {
 					+ "');} , ");
 			w.write("function(statusCode, responseText) {\n");
 			w.write("var container = document.getElementById('" + id + "');\n");
-			w.write("container.innerHTML = responseText;");
+			w.write("if( container ) container.innerHTML = responseText;");
 			if( evalJS ){
 				w.write("ice.push.searchAndEvaluateScripts(container);");
 			}			

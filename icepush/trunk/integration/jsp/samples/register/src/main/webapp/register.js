@@ -24,7 +24,7 @@
 
 function replaceDiv(divID, content) {
 	var container = document.getElementById(divID);
-	container.innerHTML = content;
+	if( container ) container.innerHTML = content;
 }
 
 var windowCount=0;
