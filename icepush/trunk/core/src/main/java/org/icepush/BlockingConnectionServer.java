@@ -47,8 +47,8 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
 
     private final BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
     private long heartbeat;
-    private long minHeartbeat;
-    private long maxHeartbeat;
+    private long minHeartbeat = 5000;
+    private long maxHeartbeat = 45000;
 
     private long heartbeatUpdateTime = System.currentTimeMillis();
     private long responseTimeoutTime;
