@@ -144,7 +144,6 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	/**
 	 * @see org.icepush.integration.icepushplace.client.WorldService.addUser
 	 */
-	@Override
 	public User addUser(String name, String mood, String mind, String region, String message) throws IllegalArgumentException {
 		if (getWorld() != null) {
 			// Construct the user object based on the passed values
@@ -171,7 +170,6 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	/**
 	 * @see org.icepush.integration.icepushplace.client.WorldService.updateUser
 	 */
-	@Override
 	public Boolean updateUser(User user) throws IllegalArgumentException {
 		if (getWorld() != null) {
 			if (user != null) {
@@ -189,7 +187,6 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	/**
 	 * @see org.icepush.integration.icepushplace.client.WorldService.smartUpdateUser
 	 */
-	@Override
 	public User smartUpdateUser(boolean needUpdate, String oldRegion, User user) throws IllegalArgumentException {
 		if (user != null) {
 		    Boolean returnStatus = Boolean.TRUE;
@@ -218,7 +215,6 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	/**
 	 * @see org.icepush.integration.icepushplace.client.WorldService.moveUser
 	 */
-	@Override
 	public User moveUser(String oldRegion, User user) throws IllegalArgumentException {
 		if (getWorld() != null) {
 			if (user != null) {
@@ -238,7 +234,6 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	/**
 	 * @see org.icepush.integration.icepushplace.client.WorldService.removeUser
 	 */	
-	@Override
 	public Boolean removeUser(User user) throws IllegalArgumentException {
 		if (getWorld() != null) {
 			// Ensure we have a valid user to remove
@@ -258,7 +253,6 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	/**
 	 * @see org.icepush.integration.icepushplace.client.WorldService.getUser
 	 */	
-	@Override
 	public User getUser(String name) throws IllegalArgumentException {
 		if (getWorld() != null) {
 			User toReturn = null;
@@ -284,7 +278,6 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	/**
 	 * @see org.icepush.integration.icepushplace.client.WorldService.getUserInRegion
 	 */
-	@Override
 	public User getUserInRegion(String name, String region) throws IllegalArgumentException {
 		if (getWorld() != null) {
 			// Get a list of all users in the passed region
@@ -310,7 +303,6 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	/**
 	 * @see org.icepush.integration.icepushplace.client.WorldService.getUsersByRegion
 	 */
-	@Override
 	public List<User> getUsersByRegion(String region) throws IllegalArgumentException {
 		if (getWorld() != null) {
 			// Get a list of all the users in the passed region
@@ -334,7 +326,6 @@ public class WorldServiceImpl extends RemoteServiceServlet implements WorldServi
 	/**
 	 * @see org.icepush.integration.icepushplace.client.WorldService.getAllRegions
 	 */
-	@Override
 	public String[] getAllRegions() throws IllegalArgumentException {
 		return REGIONS;
 	}

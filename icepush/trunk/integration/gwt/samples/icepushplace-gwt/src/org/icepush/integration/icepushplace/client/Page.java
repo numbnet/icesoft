@@ -556,7 +556,6 @@ public class Page implements EntryPoint, ClosingHandler {
 	 *
 	 *@param event of the close
 	 */
-	@Override
 	public void onWindowClosing(ClosingEvent event) {
 		// Attempt to remove our user from the world
 		worldService.removeUser(ourUser, new AsyncCallback<Boolean>() {
