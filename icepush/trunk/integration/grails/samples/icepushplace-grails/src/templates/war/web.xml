@@ -52,7 +52,7 @@
     </listener>
     
     <listener>
-	    <listener-class>org.icepush.integration.icepushplace.listener.SessionListener</listener-class>
+	    <listener-class>org.icepush.integration.grails.icepushplace.listener.SessionListener</listener-class>
     </listener>
 
     <!-- Grails dispatcher servlet -->
