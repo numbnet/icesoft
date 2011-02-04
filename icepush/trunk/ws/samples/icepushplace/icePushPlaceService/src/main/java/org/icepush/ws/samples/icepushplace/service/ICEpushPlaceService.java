@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.Comparator;
 import java.util.TreeSet;
 import java.util.Enumeration;
-import java.math.BigInteger;
 
 import org.icepush.ws.samples.icepushplace.*;
 import org.icepush.PushClient;
@@ -233,9 +232,9 @@ public class ICEpushPlaceService {
 	    addWorlds(newWorlds);
 	    lastSequenceNo = startingSequenceNo;
 	    try {
-		pushClient = new PushClient(appURL);
-	    } catch (PushClientException e) {
-		System.out.println("Could not establish PushClient to: " + url 
+	    	pushClient = new PushClient(appURL);
+	    } catch (Exception e) {
+	    	System.out.println("Could not establish PushClient to: " + url 
 				  + " : " + e.toString());
 	    }
 	}
