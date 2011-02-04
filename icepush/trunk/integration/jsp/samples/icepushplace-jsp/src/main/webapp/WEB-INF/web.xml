@@ -34,7 +34,7 @@
     </description>
     
     <listener>
-	    <listener-class>org.icepush.integration.icepushplace.listener.SessionListener</listener-class>
+	    <listener-class>org.icepush.integration.jsp.icepushplace.listener.SessionListener</listener-class>
     </listener>
     
     <servlet>
