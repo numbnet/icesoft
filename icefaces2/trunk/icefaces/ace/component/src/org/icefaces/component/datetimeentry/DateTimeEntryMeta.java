@@ -101,8 +101,7 @@ public class DateTimeEntryMeta extends UIInputMeta {
     @Property (defaultValue = "", tlddoc="style class will be rendered on a root element of this component")
     private String styleClass;
 
-    @Property (tlddoc="If true then this date time entry will be disabled and can not be entered." +
-            " Currently only works with input field and toggle button of popup calendar.") 
+    @Property (tlddoc="If true then this date time entry will be disabled and can not be entered.")
     private boolean disabled;
 
     @Property (tlddoc="tabindex of the component")
