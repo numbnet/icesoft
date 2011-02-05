@@ -158,7 +158,6 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
             "is, but this can be useful in cases where a notification is needed that \"this value changed\".")
     private MethodExpression valueChangeListener;
 
-    @Property (tlddoc="Boolean indicating if the component should be disabled. Currently just adds a disabled style " +
-            "class (\"yui3-slider-disabled\") to the containing span element.") 
+    @Property (tlddoc="Boolean indicating if the component should be disabled.")
     private boolean disabled;
 }
