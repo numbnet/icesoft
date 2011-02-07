@@ -205,6 +205,8 @@ public class TabSetRenderer extends Renderer{
         UIComponent labelFacet = ((TabPane)tab).getLabelFacet();
         if (tabSet.getSelectedIndex() == index) {
             writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
+        } else if (tabSet.isDisabled() || ((TabPane) tab).isDisabled()) {
+            writer.writeAttribute(HTML.CLASS_ATTR, "disabled", HTML.CLASS_ATTR);
         }
         writer.startElement(HTML.DIV_ELEM, tab);  
         if (EnvUtils.isAriaEnabled(facesContext)) {

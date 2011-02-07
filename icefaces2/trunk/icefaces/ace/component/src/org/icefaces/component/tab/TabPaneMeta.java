@@ -44,7 +44,7 @@ public class TabPaneMeta extends UIComponentBaseMeta {
     @Property (tlddoc="This attribute represents Label of the tab")  
     private String label;
     
-    @Property (tlddoc="If true then this tab will be disabled and can not be selected. Currently not supported.") 
+    @Property (tlddoc="If true then this tab will be disabled and can not be selected.")
     private boolean disabled;    
 
     
