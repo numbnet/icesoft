@@ -127,7 +127,10 @@ public class TabSetMeta extends UIComponentBaseMeta {
     @Property(expression=Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
             tlddoc="on tabchange value change event can be captured using this listener")
     private MethodExpression tabChangeListener;
-    
+
+    @Property(tlddoc = "If true then all tabs except the active one will be disabled and can not be selected.")
+    private boolean disabled;
+
     @Facets
     class FacetsMeta{
         @Facet
