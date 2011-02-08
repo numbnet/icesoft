@@ -39,16 +39,16 @@
                 </h:panelGroup>
 
                 <h:panelGroup id="toggleTextGroupNotVisible">
-                    <h:outputText value="!Visible" rendered="#{!ajaxBean.visible}"/>
+                    <h:outputText id="vOut" value="!Visible" rendered="#{!ajaxBean.visible}"/>
                 </h:panelGroup>
                 <br/>
 
                 <h:panelGrid id="toggleGrid" columns="2">
                     <h:outputText value="Response writer: "/>
-                    <h:outputText value="#{ajaxBean.responseWriter}"/>
+                    <h:outputText id="rwriter" value="#{ajaxBean.responseWriter}"/>
 
                     <h:outputText value="Toggle counts for this view: "/>
-                    <h:outputText value="#{ajaxBean.toggleCount}"/>
+                    <h:outputText id="count" value="#{ajaxBean.toggleCount}"/>
 
                     <h:outputText value="Loaded ICEfaces bridge.js: "/>
                     <h:panelGroup>
