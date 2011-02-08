@@ -935,8 +935,9 @@ Ice.modal = {
             iframe.style.backgroundColor = 'black';
             iframe.style.borderWidth = "0";
 
-            iframe.style.top = '0';
-            iframe.style.left = '0';
+            var modalParentOffset = $(target).getOffsetParent().cumulativeOffset();
+            iframe.style.top = "-" +  modalParentOffset.top + "px";
+            iframe.style.left = "-" + modalParentOffset.left + "px";
             //trick to avoid bug in IE, see http://support.microsoft.com/kb/927917
             modal.parentNode.insertBefore(iframe, modal);
             var modalDiv = document.createElement('div');
@@ -971,8 +972,8 @@ Ice.modal = {
                     modalWidth = parseInt(modalWidth) / 2;
                     modalHeight = parseInt(modalHeight) / 2;
                     if (!manualPosition && !Ice.autoCentre.ids.include(target)) {
-                        modal.style.top = (parseInt(height) / 2) - modalHeight + "px";
-                        modal.style.left = (parseInt(width) / 2 ) - modalWidth + "px";
+                        modal.style.top = (parseInt(height) / 2) - modalHeight - modalParentOffset.top + "px";
+                        modal.style.left = (parseInt(width) / 2 ) - modalWidth - modalParentOffset.left + "px";
                     }
                     frame.style.display = frameDisp;
                     $(frame.nextSibling).clonePosition(frame);
