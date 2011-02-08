@@ -41,7 +41,7 @@
         <ice:panelGroup style="float:left">
             <ice:inputText id="confirmationDataIn"
                            value="#{confirmation.dataIn}"
-                           size="42" maxlength="90" style="font-size:12px"/>
+                           size="42" maxlength="90" style="font-size:12px; width:200px; height:14px;"/>
             <ice:commandButton panelConfirmation="#{confirmation.withConfirmation ? 'saveConfirmPanel' : null}"
                                value="#{msgs['page.panelConfirmation.saveButtonLabel']}"
                                style="font-size:12px"
@@ -54,13 +54,15 @@
 
         <ice:panelGroup styleClass="clearer"/>
         <ice:panelGroup style="float:left">
-            <ice:inputText id="confirmationDataOut" disabled="true" 
-                           value="#{confirmation.dataOut}"
-                           size="42" maxlength="90" style="font-size:12px"/>
-            <ice:commandLink panelConfirmation="#{confirmation.withConfirmation ? 'deleteConfirmPanel' : null}"
-                               value="#{msgs['page.panelConfirmation.deleteButtonLabel']}"
-                               style="font-size:12px"
-                               actionListener="#{confirmation.delete}"/>
+            <ice:panelGroup style="width:200px; height:14px; float:left; text-align:left;" styleClass="iceInpTxt">
+                <ice:outputText id="confirmationDataOut" value="#{confirmation.dataOut}" style="font-size:12px"/>
+            </ice:panelGroup>
+            <ice:panelGroup style="float:left; padding-top:6px;">
+                <ice:commandLink panelConfirmation="#{confirmation.withConfirmation ? 'deleteConfirmPanel' : null}"
+                                 value="#{msgs['page.panelConfirmation.deleteButtonLabel']}"
+                                 style="font-size:12px"
+                                 actionListener="#{confirmation.delete}"/>
+            </ice:panelGroup>
         </ice:panelGroup>
         <ice:panelGroup styleClass="clearer"/>
         <ice:panelGrid style="float:left" columns="2" cellspacing="2" cellpadding="3">
