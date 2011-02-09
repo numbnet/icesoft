@@ -58,16 +58,13 @@ public class PageNotifier extends HttpServlet {
         w.write("</body></html>");
         response.setContentType("text/html");
 
+        pushContext.addGroupMember("A", idA);
+        pushContext.addGroupMember("A", idB);
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                pushContext.push(idA);
+                pushContext.push("A");
             }
         }, 0, 5000);
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                pushContext.push(idB);
-            }
-        }, 1000, 5000);
     }
 
     public void destroy() {
