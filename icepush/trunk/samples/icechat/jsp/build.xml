@@ -37,6 +37,7 @@
 				<fileset refid="auth" />
 				<fileset file="${root.offset}/integration/jsp/core/${dist.dir}/icepush-jsp.jar"/>
 				<fileset file="${root.offset}/lib/jstl-1.2.jar"/>
+				<fileset file="${root.offset}/lib/jaxb*.jar"/>
 			</add.libs>
 		</build.war>
 	</target>
@@ -46,6 +47,7 @@
 			<add.classpath.elements>
 				<fileset refid="api"/>
 				<fileset refid="auth"/>
+				<fileset file="${root.offset}/lib/jaxb*.jar"/>
 			</add.classpath.elements>
 		</compile>
 	</target>
