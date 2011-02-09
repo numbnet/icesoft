@@ -236,8 +236,9 @@ if (!window.ice.icefaces) {
         //notify errors captured by JSF bridge
         jsf.ajax.addOnError(function(e) {
             if (e.status == 'serverError') {
-                if (e.responseXML) {
-                    var errorName = e.responseXML.getElementsByTagName("error-name")[0].firstChild.nodeValue;
+                var xmlContent = e.responseXML;
+                if (containsXMLData(xmlContent)) {
+                    var errorName = xmlContent.getElementsByTagName("error-name")[0].firstChild.nodeValue;
                     if (errorName && contains(errorName, 'org.icefaces.application.SessionExpiredException')) {
                         info(logger, 'received session expired message');
                         sessionExpired();
@@ -246,7 +247,7 @@ if (!window.ice.icefaces) {
                 }
 
                 info(logger, 'received error message [code: ' + e.responseCode + ']: ' + e.responseText);
-                broadcast(serverErrorListeners, [ e.responseCode, e.responseText, isXMLResponse ? xmlContent : null]);
+                broadcast(serverErrorListeners, [ e.responseCode, e.responseText, containsXMLData(xmlContent) ? xmlContent : null]);
             } else if (e.status == 'httpError') {
                 warn(logger, 'HTTP error [code: ' + e.responseCode + ']: ' + e.description);
                 broadcast(networkErrorListeners, [ e.responseCode, e.description]);
