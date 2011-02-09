@@ -56,6 +56,10 @@ public class AsyncAdaptingServlet implements PseudoServlet {
 
         public AsyncRequestResponse(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
             super(request, response);
+
+            //set default content type to workaround Tomcat's limitation (headers are sent only when added on the request thread)
+            response.setContentType("text/xml");
+
             asyncContext = request.isAsyncStarted() ? request.getAsyncContext() : request.startAsync();
         }
 
