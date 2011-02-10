@@ -40,6 +40,10 @@
         font-weight: bold;
         padding: 2px;
         }
+        
+        .messageInput{
+        	z-index: 100;
+        }
     </ui:style>
     <gwt:HTMLPanel gwt:visible="false" height="450px">
 
@@ -70,12 +74,12 @@
 				  
                 </gwt:HTMLPanel>
             </gwt:HorizontalPanel>
-            <center>
+            <div style="margin-top:20px;">
                 <gwt:HorizontalPanel ui:field="chatControlsPanel" stylePrimaryName="{style.fillWidth}">
-                    <gwt:TextBox ui:field="newMessageTextbox" width="100%"/>
+                    <gwt:TextBox ui:field="newMessageTextbox" width="100%" stylePrimaryName="{style.messageInput}" />
                     <gwt:Button ui:field="newMessageButton" width="100%" gwt:text="Send"/>
                 </gwt:HorizontalPanel>
-            </center>
+            </div>
         </div>
     </gwt:HTMLPanel>
 </ui:UiBinder>
