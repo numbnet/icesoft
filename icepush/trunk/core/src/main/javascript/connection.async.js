@@ -143,6 +143,8 @@ var AsyncConnection;
                                 if (not(nonEmptyResponse)) warn(logger, 'empty response received');
                             } else {
                                 info(logger, 'blocking connection stopped at server\'s request...');
+                                //avoid to reconnect
+                                stop(timeoutBomb);
                             }
                             if (nonEmptyResponse) {
                                 broadcast(onReceiveListeners, [response]);
