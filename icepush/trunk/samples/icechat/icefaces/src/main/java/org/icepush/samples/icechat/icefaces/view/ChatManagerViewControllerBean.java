@@ -21,9 +21,12 @@
 package org.icepush.samples.icechat.icefaces.view;
 
 
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ActionEvent;
 
 import org.icefaces.application.PushRenderer;
 import org.icepush.samples.icechat.icefaces.LoginController;
@@ -35,7 +38,7 @@ import org.icepush.samples.icechat.service.exception.UnauthorizedException;
 
 @ManagedBean(name="chatManagerVC")
 @SessionScoped
-public class ChatManagerViewControllerBean{
+public class ChatManagerViewControllerBean implements Serializable{
 	
 	
 	@ManagedProperty(value = "#{loginController}")
@@ -80,6 +83,13 @@ public class ChatManagerViewControllerBean{
 
 	public void setNewChatRoomName(String newChatRoomName) {
 		this.newChatRoomName = newChatRoomName;
+	}
+	
+	public void openChatSession(ActionEvent evt){
+		String roomName = (String)evt.getComponent().getAttributes().get("room");
+		if( roomName != null && roomName.length() > 0 ){
+			session = openChatSession(roomName, loginController.getCurrentUser());
+		}
 	}
 
 	public void openChatSession(String chatRoom){
