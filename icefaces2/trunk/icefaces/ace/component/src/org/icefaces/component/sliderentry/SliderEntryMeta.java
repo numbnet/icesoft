@@ -113,13 +113,23 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
     @Property (defaultValue="100",
             tlddoc="The maximum value of slider, default is 100.")
     private int max;
+
+    @Property (defaultValue="10.0f",
+            tlddoc="The percentage of the range (max-min) to shift the " +
+                    "value by when the up, down, left or right arrow keys " +
+                    "are pressed. Expressed as a percentage from 0 to 100.")
+    private float stepPercent;
     
     @Property (defaultValue="0",
             tlddoc="The value of slider, default is 0.")
     private int value;    
     
     @Property (defaultValue="150px",
-            tlddoc="The length of slider, default is 150px.")
+            tlddoc="The physical length of slider, in pixels, default is 150px. " +
+            "Note: If the range of the slider (max-min) is greater than the length, " +
+            "then the slider can not accurately represent every value in the range. " +
+            "If the discrepancy is too great, then arrow key stepping will not " +
+            "precisely reflect the stepPercent property.")
     private String length;
     
     @Property(defaultValue="false",
