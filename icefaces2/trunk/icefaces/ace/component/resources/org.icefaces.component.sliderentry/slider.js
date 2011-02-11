@@ -29,16 +29,15 @@ ice.component.slider = {
         //var super = ice.yui3;
 
         var Dom = YAHOO.util.Dom;
-   
-        var hiddenField = Dom.get(clientId+"_hidden");
-        
+
+        var hiddenFieldId = clientId+"_hidden";
+
         //set a callback to create slider component 
         ice.yui3.use(function(Y){ 
         	Y.on('domready', function(){
-			   var obj = null;
 		       YUI({bootstrap:false}).use('slider', function(Yui) {
 					try {
-			            obj = new Yui.Slider({
+			            var obj = new Yui.Slider({
 							//following two properties has to be set when initializing componnent
 							axis: yuiProps.axis,
 							thumbUrl: jsfProps.thumbUrl
@@ -50,10 +49,10 @@ ice.component.slider = {
                             var context = ice.component.getJSContext(clientId);
                             var sJSFProps = context.getJSFProps();
 		                    if (sJSFProps.singleSubmit) {
-
+                                var sObj = context.getComponent();
                                 var postParameters = sJSFProps.postParameters;
 		                        ice.se(event, root, function(param) {
-									param(hiddenField.id, obj.get('value'));
+									param(hiddenFieldId, sObj.get('value'));
 									param('ice.focus', ice.focus);
 									param('onevent', function(data) { 
 										if (data.status == 'success') {
@@ -82,9 +81,10 @@ ice.component.slider = {
 						
 					    var eventName;
 						obj.after("valueChange", function(event) {
-						   var sliderValue = obj.get('value');
-		                    //if aria is enabled, then set aria property so screen reader can pick it
                             var context = ice.component.getJSContext(clientId);
+                            var vcObj = context.getComponent();
+						    var sliderValue = vcObj.get('value');
+		                    //if aria is enabled, then set aria property so screen reader can pick it
                             var vcJSFProps = context.getJSFProps();
                             if (vcJSFProps.aria) {
 		                        // Because we're in a callback, to be safe we'll lookup
@@ -96,11 +96,13 @@ ice.component.slider = {
 		                    // Strategy is now to use hidden field rather than
 		                    // request map value
 
-		                    hiddenField.value=sliderValue;		
-							if (eventName == 'railMouseDown') {
+                            var hiddenField = Dom.get(hiddenFieldId);
+		                    hiddenField.value=sliderValue;
+                            var shouldSubmit = (eventName == 'railMouseDown');
+                            eventName = "";
+							if (shouldSubmit) {
 								invokeSubmit(event);
 							}
-							eventName = "";
 						});
 						
 						obj.before("railMouseDown", function() {
@@ -126,19 +128,25 @@ ice.component.slider = {
 		                    root.firstChild.setAttribute("tabindex",jsfProps.tabindex);
 
 		                    //TODO shouldn't it be configurable?
-		                    var step = 5;
 							var keydownTimeoutHandler = null;
 		                    //listen for keydown event, to provide short-cut key support.
 		                    //react on left, right, up, down, home and end key 
 		                    Yui.on("keydown", function(event) {
 		                        //get the current value of the slider
-                                var valuenow = parseInt(root.firstChild.getAttribute("aria-valuenow"));
+                                var context = ice.component.getJSContext(clientId);
+                                var kbObj = context.getComponent();
+                                var valuenow = kbObj.get('value');
+//                                var valuenow = parseInt(root.firstChild.getAttribute("aria-valuenow"));
 		                        var valuebefore = valuenow;
 
-                                var context = ice.component.getJSContext(clientId);
                                 var kdYuiProps = context.getJSProps();
                                 var kdMin = kdYuiProps.min;
                                 var kdMax = kdYuiProps.max;
+
+                                var kdJsfProps = context.getJSFProps();
+                                var stepPercent = kdJsfProps.stepPercent;
+                                var step = Math.round(
+                                    Math.abs(kdMax - kdMin) * stepPercent / 100);
 
 		                        var isLeft = event.keyCode == 37;
 		                        var isUp = event.keyCode == 38;
@@ -169,8 +177,9 @@ ice.component.slider = {
 
 		                        //if value changed?
 		                        if (valuebefore != valuenow)  { 
-		                            //update slider value on client                       
-		                            obj.set('value', valuenow);
+		                            //update slider value on client
+//                                    var kbObj = context.getComponent();
+		                            kbObj.set('value', valuenow);
 		                            //notify server
 							        clearTimeout(keydownTimeoutHandler);	
 							        keydownTimeoutHandler = setTimeout (function(){
@@ -179,8 +188,10 @@ ice.component.slider = {
 											keydownTimeoutHandler = null;
 										},  300);									
 		                            //cancel event
-		                            event.halt();
 		                        }
+                                if (isLeft || isUp || isRight || isDown || isHome || isEnd) {
+                                    event.halt();
+                                }
 		                    }, root);
 		                } 
 
