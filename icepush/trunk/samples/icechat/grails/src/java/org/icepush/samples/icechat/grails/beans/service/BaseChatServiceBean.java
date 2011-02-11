@@ -182,6 +182,7 @@ public abstract class BaseChatServiceBean implements IChatService{
 					session.setUser(user);
 					room.getUserChatSessions().add(session);
 					user.getChatSessions().add(session);
+					
 				}
 				else{
 					for( UserChatSession existingSession : user.getChatSessions() ){
@@ -309,5 +310,9 @@ public abstract class BaseChatServiceBean implements IChatService{
     	}
 		this.users.remove(user.getSessionToken());
 	}
+	
+	private String getUserDraftGroupName(UserChatSession session){
+    	return Long.toString(session.getRoom().getId())+"_"+Long.toString(session.getUser().getId())+"_draft";
+    }
 
 }
