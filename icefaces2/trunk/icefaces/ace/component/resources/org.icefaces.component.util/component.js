@@ -63,11 +63,11 @@ JSContext.prototype = {
     },
 
     setJSProps:function(props) {
-        this.jsPorps = props;
+        this.jsProps = props;
     },
 
     getJSProps:function() {
-        return this.jsPorps;
+        return this.jsProps;
     },
     setJSFProps:function(props) {
         this.jsfProps = props;
