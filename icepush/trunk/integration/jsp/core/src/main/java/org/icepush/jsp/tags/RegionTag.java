@@ -60,7 +60,7 @@ public class RegionTag extends BaseTag {
 			w.write("var container = document.getElementById('" + id + "');\n");
 			w.write("if( container ) container.innerHTML = responseText;");
 			if( evalJS ){
-				w.write("ice.push.searchAndEvaluateScripts(container);");
+				w.write("if( container ) ice.push.searchAndEvaluateScripts(container);");
 			}			
 			w.write("});});");
 			w.write("</script>");
