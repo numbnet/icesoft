@@ -57,13 +57,6 @@ function loadChatLogin(parent){
 
 /****************** RESOURCES ***********************************/
 
-function updateDraft(roomName,msg){
-	new Ajax.Request('updatedraft', { 
-		method:'post',
-		parameters: {roomName:roomName,msg:msg}
-	});
-}
-
 function loginToChatRoom(roomName){
 	new Ajax.Request('logintoroom', { 
 		method:'post',
@@ -98,13 +91,6 @@ function click_sendMessage(){
 	
 }
 
-function kp_updateDraft(event){
-	if( event.charCode == 32 ){ //space bar key
-		updateDraft(getCurrentRoomName(),$("newChatRoomMessage").getValue());
-	}
-	return false;
-}
-
 function getCurrentRoomName(){
 	return $('roomName').getValue();
 }
@@ -126,25 +112,6 @@ function refreshChatRoomUsers(){
 		parameters: {roomName: getCurrentRoomName()},
 		onSuccess: function(req){
 			$("users").innerHTML = req.responseText;
-			$$("#users div[id]").each( 
-				function (elem){
-					Push.listenToGroup($(elem).childElements()[0].id, function(){ 
-						window.refreshUserDraft(elem.id); 
-					});		    		
-				}
-			);
-		}
-	});
-}
-
-function refreshUserDraft(userName){
-	new Ajax.Request('./messagedraft', { 
-		method:'get',
-		parameters: {roomName: getCurrentRoomName(), userName: userName},
-		onSuccess: function(req){
-			$(getCurrentRoomName()+"_"+userName+"_draft").innerHTML = req.responseText;
-			$$('#' + getCurrentRoomName()+"_"+userName+"_draft .typing")[0].fade({ duration: 10.0, to: 0.01 });
-
 		}
 	});
 }
@@ -205,7 +172,6 @@ function openChatRoom(roomName){
 				click_sendMessage();
 				event.preventDefault();
 			}
-			window.updateDraft(getCurrentRoomName(),$("newChatRoomMessage").getValue());
 		});
 	}
 	

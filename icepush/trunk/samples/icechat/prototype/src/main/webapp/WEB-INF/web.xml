@@ -67,10 +67,6 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>chatServlet</servlet-name>
-        <url-pattern>/updatedraft</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>chatServlet</servlet-name>
         <url-pattern>/logintoroom</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
@@ -88,10 +84,6 @@
     <servlet-mapping>
         <servlet-name>chatServlet</servlet-name>
         <url-pattern>/messages</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>chatServlet</servlet-name>
-        <url-pattern>/messagedraft</url-pattern>
     </servlet-mapping>
  
 	
