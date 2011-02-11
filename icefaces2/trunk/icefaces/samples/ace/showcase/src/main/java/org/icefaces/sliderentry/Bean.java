@@ -42,6 +42,7 @@ public class Bean implements Serializable {
     private int value7;
     private int minValue = 0;
     private int maxValue = 100;
+    private float stepPercent = 10.0f;
     private int value = 50;
     private String valueChangeString = "Event: ";
     private String submitOn = "slideEnd";
@@ -118,6 +119,14 @@ public class Bean implements Serializable {
         this.maxValue = maxValue;
     }
 
+    public float getStepPercent() {
+        return stepPercent;
+    }
+
+    public void setStepPercent(float stepPercent) {
+        this.stepPercent = stepPercent;
+    }
+
     public int getValue() {
         return value;
     }
@@ -157,6 +166,12 @@ public class Bean implements Serializable {
     public void validateMaxValue(FacesContext context, UIComponent component, java.lang.Object newValue) {
         if (!((Integer) newValue - minValue > 3)) {
             throw new ValidatorException(new FacesMessage("Max must be > min by at least 3 units."));
+        }
+    }
+    public void validateStepPercent(FacesContext context, UIComponent component, java.lang.Object newValue) {
+        float stepPercent = ((Number) newValue).floatValue();
+        if (stepPercent < 0.0f || stepPercent > 100.0f) {
+            throw new ValidatorException(new FacesMessage("Step Percent must be between 0 and 100 inclusive, as it is a percent."));
         }
     }
 }
