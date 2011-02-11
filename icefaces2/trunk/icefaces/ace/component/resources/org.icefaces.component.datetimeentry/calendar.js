@@ -431,7 +431,9 @@ init: function(params) {
             var time = calendarns.getTime(calendar);
             var dateStr = args[0][0][0] + "-" + args[0][0][1] + "-" + args[0][0][2] + " " + time.hr + ":" + time.min;
             calValueEl.set("value", dateStr, true);
-            if (params.singleSubmit) {
+            var context = ice.component.getJSContext(params.clientId);
+            var sJSFProps = context.getJSFProps();
+            if (sJSFProps.singleSubmit) {
                 ice.se(null, rootId);
             }
         }
@@ -458,7 +460,9 @@ init: function(params) {
     }
     var inputChange = function(evt) {
         calValueEl.setAttributes({value:this.get("value")}, true);
-        if (params.singleSubmit) {
+        var context = ice.component.getJSContext(params.clientId);
+        var sJSFProps = context.getJSFProps();
+        if (sJSFProps.singleSubmit) {
             ice.se(evt, rootId);
         }
     };
@@ -475,12 +479,15 @@ init: function(params) {
     var okClick = function(evt, dialog) {
         this.hide();
         toggleBtnEl.replaceClass("close-popup", "open-popup");
+        var context = ice.component.getJSContext(params.clientId);
+        var calendar = context.getComponent();
         if (calendar.getSelectedDates().length <= 0) return;
         var date = calendar.getSelectedDates()[0];
         var time = calendarns.getTime(calendar);
         var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
         calValueEl.setAttributes({value:dateStr}, true);
-        var submit = params.singleSubmit ? ice.se : (params.renderInputField ? ice.ser : null);
+        var sJSFProps = context.getJSFProps();
+        var submit = sJSFProps.singleSubmit ? ice.se : (sJSFProps.renderInputField ? ice.ser : null);
         if (submit) submit(evt, rootId);
     };
     var popupDateSelectHandler = function(type, args, calendar) {
