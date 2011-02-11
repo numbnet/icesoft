@@ -53,8 +53,10 @@ ice.component.pushbutton = {
             button.set("disabled", false);
         }
 
-        var postParameters = jsfProps.postParameters;
         var params = function(parameter) {
+            var context = ice.component.getJSContext(clientId);
+            var sJSFProps = context.getJSFProps();
+            var postParameters = sJSFProps.postParameters;
             if (postParameters != null) {
                  var argCount = postParameters.length / 2;
                  for (var idx =0; idx < argCount; idx ++ ) {
