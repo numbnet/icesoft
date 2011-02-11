@@ -58,10 +58,6 @@ function loadChatRoomTemplate(parent){
 
 /****************** RESOURCES ***********************************/
 
-function updateDraft(roomName,msg){
-	$.post("updatedraft",{roomName:roomName,msg:msg});
-}
-
 function loginToChatRoom(roomName){
 	$.post("logintoroom",{roomName: roomName});
 }
@@ -89,13 +85,6 @@ function click_sendMessage(){
 	
 }
 
-function kp_updateDraft(event){
-	if( event.charCode == 32 ){ //space bar key
-		updateDraft(getCurrentRoomName(),$("#newChatRoomMessage").val());
-	}
-	return false;
-}
-
 function getCurrentRoomName(){
 	return $('#roomName').val();
 }
@@ -110,23 +99,7 @@ function refreshChatRoomsList(){
 
 function refreshChatRoomUsers(){
 	loading(document.getElementById("users"));
-	$("#users").load("chatroomusers?roomName=" + getCurrentRoomName(), function(){
-		$("#users div[id]").each( 
-				function (idx, elem){
-					$.push.listenToGroup($(elem).children()[0].id, function(){ 
-						window.refreshUserDraft(elem.id); 
-					});		    		
-				}
-			);
-	});
-}
-
-function refreshUserDraft(userName){
-	$("#"+getCurrentRoomName()+"_"+userName+"_draft").load("messagedraft?roomName="+getCurrentRoomName()+"&userName="+userName,
-			function(){
-				$("#"+getCurrentRoomName()+"_"+userName+"_draft .typing").fadeTo(10000,0.001);
-			}
-	);
+	$("#users").load("chatroomusers?roomName=" + getCurrentRoomName());
 }
 
 function refreshChatRoomsPanel(){
@@ -182,7 +155,6 @@ function openChatRoom(roomName){
 				click_sendMessage();
 				event.preventDefault();
 			}
-			window.updateDraft(getCurrentRoomName(),$("#newChatRoomMessage").val());
 		});
 	}	
 }
