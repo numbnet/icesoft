@@ -41,6 +41,7 @@
 					<exclude name="**/index.html"/>
 					<exclude name="**/login.html"/>
 					<exclude name="**/icechat.js"/>
+					<exclude name="**/web.xml"/>
 				</fileset>
 				<fileset dir="../../../integration/jquery/core/src/main"/>
 			</add.filesets>
