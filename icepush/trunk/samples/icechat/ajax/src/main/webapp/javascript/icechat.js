@@ -133,15 +133,6 @@ function sendMessage(roomName,msg) {
 	xmlHttp.send(params);
 }
 
-function updateDraft(roomName,msg){
-	var xmlHttp = getXmlHttpRequest();
-	var params = "roomName=" + roomName + "&msg=" + msg;
-	xmlHttp.open("POST", "updatedraft", false);
-	xmlHttp.setRequestHeader("Content-type",
-			"application/x-www-form-urlencoded");
-	xmlHttp.send(params);
-}
-
 function loginToChatRoom(roomName){
 	var xmlHttp = getXmlHttpRequest();
 	var params = "roomName=" + roomName;
@@ -159,29 +150,15 @@ function click_createChatRoom(){
 	var roomName = getNewChatRoomName();
 	createChatRoom(roomName);
 	refreshChatRoomsList();
-	//document.forms['createNewChatRoom'].newChatRoomName.value = ""; ff
 	document.getElementById("createNewChatRoom").elements["newChatRoomName"].value = '';
 	openChatRoom(roomName);
 }
 
 function click_sendMessage(){
 	sendMessage(getCurrentRoomName(),getNewMessage());
-	//sendMessage(document.forms['chatRoomForm'].roomName.value, //ff
-	//		document.forms['chatRoomForm'].newChatRoomMessage.value);
-	//document.forms['chatRoomForm'].newChatRoomMessage.value = "";
 	document.getElementById("chatRoomForm").elements["newChatRoomMessage"].value = '';
 	refreshChatRoomMessages();
 	refreshChatRoomUsers();
-}
-
-function kp_updateDraft(event){
-	if( event.charCode == 32 ){ //space bar key
-		//updateDraft(document.forms['chatRoomForm'].roomName.value,
-		//		document.forms['chatRoomForm'].newChatRoomMessage.value);
-		updateDraft(getCurrentRoomName(),getNewMessage());
-		refreshChatRoomUsers();
-	}
-	return false;
 }
 
 function getCurrentRoomName(){

@@ -46,11 +46,9 @@ public class ChatServlet extends HttpServlet {
 	public static final String GET_CHAT_ROOMS = "/chatrooms";
 	public static final String GET_CHAT_ROOM_USERS = "/chatroomusers";
 	public static final String GET_MESSAGES = "/messages";
-	public static final String GET_MESSAGE_DRAFT = "/messagedraft";
-
+	
 	public static final String POST_CREATE_CHAT_ROOM = "/createroom";
 	public static final String POST_CREATE_MESSAGE = "/createmessage";
-	public static final String POST_UPDATE_DRAFT = "/updatedraft";
 	public static final String POST_LOGIN_TO_ROOM = "/logintoroom";
 	public static final String POST_LOGOUT_OF_ROOM = "/logoutofroom";
 
@@ -91,11 +89,7 @@ public class ChatServlet extends HttpServlet {
 			resp.getWriter().print(
 					getChatRoomMessages(getRoomNameParam(req), req
 							.getParameter(INDEX)));
-		} else if (GET_MESSAGE_DRAFT.equals(url)) {
-			resp.getWriter().print(
-					getMessageDraft(getRoomNameParam(req), req
-							.getParameter(USER_NAME)));
-		}
+		} 
 	}
 
 	private String getRoomNameParam(HttpServletRequest req) {
@@ -115,8 +109,6 @@ public class ChatServlet extends HttpServlet {
 			createNewChatRoom(req, resp);
 		} else if (POST_CREATE_MESSAGE.equals(url)) {
 			createNewChatMessage(req, resp);
-		} else if (POST_UPDATE_DRAFT.equals(url)) {
-			updateMessageDraft(req, resp);
 		} else if (POST_LOGIN_TO_ROOM.equals(url)) {
 			loginToRoom(req, resp);
 		} else if (POST_LOGOUT_OF_ROOM.equals(url)) {
@@ -158,26 +150,9 @@ public class ChatServlet extends HttpServlet {
 					buff.append(s.getUser().getName());
 					buff.append("'>");
 					buff.append(s.getUser().getName());
-					buff.append("&nbsp;<span id='");
-					buff.append(s.getRoom().getName() + "_"
-							+ s.getUser().getName());
-					buff.append("_draft' class='draft'>");
-					buff.append(getMessageDraft(s));
-					buff.append("</span></div>");
+					buff.append("</div>");
 				}
 			}
-		}
-		return buff.toString();
-	}
-
-	private String getMessageDraft(UserChatSession s) {
-		StringBuffer buff = new StringBuffer();
-		if (s.getCurrentDraft() != null) {
-			int draftLength = s.getCurrentDraft().length();
-			buff.append(draftLength > 20 ? "..."
-					+ s.getCurrentDraft().substring(draftLength - 20) : s
-					.getCurrentDraft());
-			buff.append("...");
 		}
 		return buff.toString();
 	}
@@ -215,24 +190,6 @@ public class ChatServlet extends HttpServlet {
 		return buff.toString();
 	}
 
-	private String getMessageDraft(String roomName, String userName) {
-		String result = "";
-		ChatRoom room = getChatService().getChatRoom(roomName);
-		if (room != null) {
-			Collection<UserChatSession> sessions = room.getUserChatSessions();
-			for (UserChatSession s : sessions) {
-				if (s.getUser().getName().equals(userName)
-						&& s.getCurrentDraft() != null) {
-					result = getMessageDraft(s);
-					if (s.getCurrentDraft() != null)
-						result += "<div class='typing'>&nbsp;&nbsp;&nbsp;</div>";
-					break;
-				}
-			}
-		}
-		return result;
-	}
-
 	private void createNewChatRoom(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 		User user = (User) req.getSession(true).getAttribute("user");
@@ -261,23 +218,9 @@ public class ChatServlet extends HttpServlet {
 			PushContext pushContext = PushContext.getInstance(req.getSession()
 					.getServletContext());
 			pushContext.push(roomName + "_messages");
-			pushContext.push(roomName + "_" + user.getName() + "_draft");
 		}
 	}
 
-	private void updateMessageDraft(HttpServletRequest req,
-			HttpServletResponse resp) throws ServletException, IOException {
-		String roomName = req.getParameter(ROOM_NAME);
-		User user = (User) req.getSession(true).getAttribute("user");
-		if (user != null) {
-			String msg = req.getParameter(MESSAGE);
-			getChatService().updateCurrentDraft(msg, roomName, user);
-			PushContext pushContext = PushContext.getInstance(req.getSession()
-					.getServletContext());
-			pushContext.push(roomName + "_" + user.getName() + "_draft");
-
-		}
-	}
 
 	private void loginToRoom(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
