@@ -590,6 +590,8 @@ public class TableRenderer
         }
         DOMContext.removeChildrenByTagName(root, HTML.TBODY_ELEM);
         Element tBody = (Element) domContext.createElement(HTML.TBODY_ELEM);
+        tBody.setAttribute(HTML.ID_ATTR, ClientIdPool.get
+                (clientId + NamingContainer.SEPARATOR_CHAR + HTML.TBODY_ELEM));
 /*
         if (CoreUtils.getPortletStyleClass(PORTLET_CSS_DEFAULT.
         							PORTLET_SECTION_BODY).length() > 1) {
