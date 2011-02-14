@@ -58,6 +58,18 @@
         return configurationOf(source).blockUIOnSubmit;
     }
 
+    function eventSink(element) {
+        return function(e) {
+            var ev = $event(e, element);
+            var evenType = type(ev);
+            var triggeringElement = triggeredBy(ev);
+            var capturingElement = capturedBy(ev);
+            debug(logger, 'event [type: ' + evenType +
+                    ', triggered by: ' + identifier(triggeringElement) || triggeringElement +
+                    ', captured in: ' + identifier(capturingElement) || capturingElement + '] was discarded.');
+        }
+    }
+
     var stopBlockingUI = noop;
     namespace.onBeforeSubmit(function(source) {
         //don't block UI for the retrieveUpdate requests
@@ -66,14 +78,15 @@
             var blockUIOverlay = Overlay();
             var rollbacks = inject(['input', 'select', 'textarea', 'button', 'a'], [], function(result, type) {
                 return concatenate(result, asArray(collect(document.body.getElementsByTagName(type), function(e) {
+                    var sink = eventSink(e);
                     var onkeypress = e.onkeypress;
                     var onkeyup = e.onkeyup;
                     var onkeydown = e.onkeydown;
                     var onclick = e.onclick;
-                    e.onkeypress = none;
-                    e.onkeyup = none;
-                    e.onkeydown = none;
-                    e.onclick = none;
+                    e.onkeypress = sink;
+                    e.onkeyup = sink;
+                    e.onkeydown = sink;
+                    e.onclick = sink;
 
                     return function() {
                         try {
