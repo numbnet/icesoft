@@ -70,9 +70,9 @@ if (!window.ice.icefaces) {
 
         function configurationOf(element) {
             return detect(parents(element),
-                         function(e) {
-                             return e.configuration;
-                         }).configuration;
+                    function(e) {
+                        return e.configuration;
+                    }).configuration;
         }
 
         function deltaSubmit(element) {
@@ -368,7 +368,7 @@ if (!window.ice.icefaces) {
         };
 
         function isComponentRendered(form) {
-            return form['javax.faces.encodedURL'] || form['javax.faces.ViewState'] || form['ice.window'] || form['ice.view'];
+            return form['javax.faces.encodedURL'] || form['javax.faces.ViewState'] || form['ice.window'] || form['ice.view'] || form[form.id].value == form.id;
         }
 
         function findUpdatedForms(updates) {
