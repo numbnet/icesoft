@@ -76,13 +76,18 @@ ice.component.tabset = {
                
        //logger.info('3. tabset initialize');
        var tabChange=function(event) {
+            var context = ice.component.getJSContext(clientId);
+            var tabview = context.getComponent();
+            var sJSFProps = context.getJSFProps();
             event.target = document.getElementById(clientId);
             tbset = document.getElementById(clientId);
             currentIndex = tabview.getTabIndex(event.newValue);
             tabIndexInfo = clientId + '='+ currentIndex;
             var params = function(parameter) {
 							parameter('ice.focus', event.newValue.get('element').firstChild.id);
-                            parameter('onevent', function(data) { 
+                            parameter('onevent', function(data) {
+                                var context = ice.component.getJSContext(clientId);
+                                var tabview = context.getComponent();
                                 if (data.status == 'success') {
                                         var lastKnownSelectedIndex = ice.component.getJSContext(clientId).getJSFProps().selectedIndex;   
 	                                    if (lastKnownSelectedIndex != currentIndex) {
@@ -101,7 +106,7 @@ ice.component.tabset = {
                                 }
                             });
                         };
-            if (jsfProps.isClientSide){
+            if (sJSFProps.isClientSide){
             	ice.component.clientState.set(clientId, currentIndex);
                 //console.info('Client side tab ');
             } else {
@@ -111,7 +116,7 @@ ice.component.tabset = {
                 }            	
                 //logger.info('Server side tab '+ event);
                 try {
-                    if (jsfProps.isSingleSubmit) {
+                    if (sJSFProps.isSingleSubmit) {
                     	//backup id
                     	var elementId = targetElement.id;
                     	//replace id with the id of tabset component, so the "execute" property can be set to tabset id
@@ -187,6 +192,8 @@ ice.component.tabset = {
            }
        }
        var onKeyPress = function(event, index) {
+            var context = ice.component.getJSContext(clientId);
+            var tabview = context.getComponent();
             var target = Event.getTarget(event).parentNode;
 			if(Ice.isEventSourceInputElement(event)) {
 				return true ;
@@ -218,19 +225,23 @@ ice.component.tabset = {
 		   //console.info('effect found... length ='+ jsfProps.effect.length + 'value = '+ jsfProps.effect);
 		//   var effect = eval(jsfProps.effect);
 		   tabview.contentTransition = function(newTab, oldTab) {	//console.info('1. server side tab ');
-		        var currentIndex = tabview.getTabIndex(newTab);
+               var context = ice.component.getJSContext(clientId);
+               var tabview = context.getComponent();
+               var currentIndex = tabview.getTabIndex(newTab);
 
 					var callback = function(_effect) {
 					    //console.info('_EFFEFEFEF '+ _effect);
-						
-						var tbset = document.getElementById(clientId);
+
+                        var context = ice.component.getJSContext(clientId);
+                        var sJSFProps = context.getJSFProps();
+                        var tbset = document.getElementById(clientId);
 					    //console.info('3. onend server side tab ');
 						oldTab.set('contentVisible', false);
 						YAHOO.util.Dom.setStyle(newTab.get('contentEl').id, 'opacity', 0);
 						newTab.set('contentVisible', true);
 						//console.info('3.a onend server side tab ');
 						 
-						if (jsfProps.isClientSide){
+						if (sJSFProps.isClientSide){
 							
 							ice.component.clientState.set(clientId, currentIndex);
 							var Effect = new ice.yui3.effects['Appear'](newTab.get('contentEl').id);
@@ -290,7 +301,7 @@ ele.focus();
                         };
 								
 											try {
-												if (jsfProps.isSingleSubmit) {
+												if (sJSFProps.isSingleSubmit) {
 													//backup id
 													var elementId = targetElement.id;
 													//replace id with the id of tabset component, so the "execute" property can be set to tabset id
