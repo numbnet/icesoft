@@ -23,14 +23,22 @@ ice.component.tabset = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
        //logger.info('1. tabset initialize');
      var Dom = YAHOO.util.Dom;
-     YAHOO.util.Event.onDOMReady(function() {    
+     YAHOO.util.Event.onDOMReady(function() {  
+	    if (YAHOO.widget.Logger) {
+		        YAHOO.widget.Logger.enableBrowserConsole();
+		}
        var tabview = new YAHOO.widget.TabView(clientId);  
        tabview.set('orientation', jsProps.orientation);
        var thiz = this;
        
        //if tabset is client side, lets find out if the state is already stored.
-       if (jsfProps.isClientSide && ice.component.clientState.has(clientId)){
-    	   tabview.set('activeIndex', ice.component.clientState.get(clientId));    	   
+       if (jsfProps.isClientSide) {
+    	   if(ice.component.clientState.has(clientId)){
+    		   tabview.set('activeIndex', ice.component.clientState.get(clientId));      
+    	   }
+    	   else {
+    		   tabview.set('activeIndex', jsfProps.selectedIndex);      
+    	   }
        }
        
        /*
@@ -82,6 +90,7 @@ ice.component.tabset = {
             event.target = document.getElementById(clientId);
             tbset = document.getElementById(clientId);
             currentIndex = tabview.getTabIndex(event.newValue);
+            YAHOO.log(" currentIndex="+currentIndex);
             tabIndexInfo = clientId + '='+ currentIndex;
             var params = function(parameter) {
 							parameter('ice.focus', event.newValue.get('element').firstChild.id);
@@ -92,7 +101,8 @@ ice.component.tabset = {
                                         var lastKnownSelectedIndex = ice.component.getJSContext(clientId).getJSFProps().selectedIndex;   
 	                                    if (lastKnownSelectedIndex != currentIndex) {
 	                                            tabview.removeListener('activeTabChange'); 
-	                                            tabview.set('activeIndex', lastKnownSelectedIndex);
+	                                        //    tabview.set('activeIndex', lastKnownSelectedIndex);
+	                                  	    	tabview.selectTab(currentIndex);
 	                                            tabview.addListener('activeTabChange', tabChange); 
 	                                            currentIndex = lastKnownSelectedIndex; 
 	                                    }
@@ -107,6 +117,7 @@ ice.component.tabset = {
                             });
                         };
             if (sJSFProps.isClientSide){
+            	YAHOO.log(" clientSide and currentIndex="+currentIndex);
             	ice.component.clientState.set(clientId, currentIndex);
                 //console.info('Client side tab ');
             } else {
@@ -350,6 +361,7 @@ ele.focus();
    //this function is responsible to provide an element that keeps tab index
    //only one field will be used per form element.
    getTabIndexField:function(tabset) {
+	   YAHOO.log("in getTabIndexField");
 	   var _form = null;
 	   try {
 		   //see if the tabset is enclosed inside a form
@@ -390,10 +402,27 @@ ele.focus();
 	   parent.appendChild(field);
 	   return field;
    },
-   
+ 
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
    updateProperties:function(clientId, jsProps, jsfProps, events) {
+	   if (jsfProps.isClientSide){
+		   var index = jsfProps.selectedIndex;
+	       var lastKnownIndex = 0;
+	       if (index) YAHOO.log("updateProperties index="+index);
+	       var context = ice.component.getJSContext(clientId);
+	       if (context){
+	    	   YAHOO.log("updateProperties has context");
+	    	   var tabviewObj = context.getComponent();	
+	    	   lastKnownIndex = context.getJSFProps().selectedIndex;
+	    	   YAHOO.log("last know index is="+lastKnownIndex)
+	           if (index != lastKnownIndex) {
+	    		    YAHOO.log("must switch indices");
+	    	    	tabviewObj.selectTab(index);
+	           }
+    	   }
+       }
        ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
+       
    },
  
    //delegate call to ice.yui.getInstance(..) with the reference of this lib 
