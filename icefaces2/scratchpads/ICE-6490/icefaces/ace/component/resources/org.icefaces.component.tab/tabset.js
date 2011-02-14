@@ -22,8 +22,45 @@
 ice.component.tabset = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
        //logger.info('1. tabset initialize');
-     var Dom = YAHOO.util.Dom;
-     YAHOO.util.Event.onDOMReady(function() {    
+	 
+	 ice.yui3.use(function(Y){ 
+	 Y.on('domready', function(){
+		
+		var thisYUI = YUI({combine: false, base: '/ace-test/javax.faces.resource/yui/3_1_1/',
+		
+		/*
+			groups: {
+				yui2: {
+				    combine: false,
+					base: '/ace-test/javax.faces.resource/yui/2_8_1/',
+					patterns:  {
+						'yui2-': {
+							configFn: function(me) {
+								if(/-skin|reset|fonts|grids|base/.test(me.name)) {
+									me.type = 'css';
+									me.path = me.path.replace(/\.js/, '.css');
+									me.path = me.path.replace(/\/yui2-skin/, '/assets/skins/sam/yui2-skin');
+								}
+								me.path = me.path.replace(/yui2-/, '');
+								me.path = me.path.replace(/\/yui2-/, '/');
+							}
+						}
+					}
+				}
+			}
+		*/
+
+		
+		
+		}); // , base: '/ace-test/javax.faces.resource/yui/3_1_1/'
+		var old = thisYUI.Loader.prototype._url;
+		thisYUI.Loader.prototype._url = function(path, name, base) {
+		 return old.call(this, path, name, base);// + '.jsf';
+		};
+		thisYUI.use('yui2-tabview', function(Yui) {
+	     var YAHOO = Yui.YUI2;
+		 var Dom = YAHOO.util.Dom;
+
        var tabview = new YAHOO.widget.TabView(clientId);  
        tabview.set('orientation', jsProps.orientation);
        var thiz = this;
@@ -333,7 +370,10 @@ ele.focus();
 		   tabview.addListener('activeTabChange', tabChange);
 	   }
        bindYUI(tabview);
-     });
+
+	 }); // *** end of thisYUI
+	 }); // *** end of ondomready
+	 }); // *** end of function(Y)
    },
    
    //this function is responsible to provide an element that keeps tab index
@@ -382,7 +422,18 @@ ele.focus();
    
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
    updateProperties:function(clientId, jsProps, jsfProps, events) {
-       ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
+
+      var context = ice.component.getJSContext(clientId);
+      if (context && context.isAttached()) {
+          var prevJSFProps = context.getJSFProps();
+          if (prevJSFProps.hashCode != jsfProps.hashCode) {
+              context.getComponent().destroy();
+              document.getElementById(clientId)['JSContext'] = null;
+              JSContext[clientId] = null;
+          }
+      }
+
+	   ice.yui3.updateProperties(clientId, jsProps, jsfProps, events, this);
    },
  
    //delegate call to ice.yui.getInstance(..) with the reference of this lib 

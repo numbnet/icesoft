@@ -54,7 +54,7 @@ import org.icefaces.render.MandatoryResourceComponent;
  *   In addition to the rendering the renderer performs decode as well. This component
  *   doesn't use a hidden field for it value instead takes advantage of param support of JSF2
  */
-@MandatoryResourceComponent("org.icefaces.component.sliderentry.SliderEntry")
+//@MandatoryResourceComponent("org.icefaces.component.sliderentry.SliderEntry")
 public class SliderEntryRenderer extends Renderer{
 
      List<UIParameter> uiParamChildren;

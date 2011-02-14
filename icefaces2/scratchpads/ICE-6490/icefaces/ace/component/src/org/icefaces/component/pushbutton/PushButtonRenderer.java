@@ -40,7 +40,7 @@ import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 
 
-@MandatoryResourceComponent("org.icefaces.component.pushbutton.PushButton")
+//@MandatoryResourceComponent("org.icefaces.component.pushbutton.PushButton")
 public class PushButtonRenderer extends Renderer {
 
     List <UIParameter> uiParamChildren;
