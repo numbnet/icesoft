@@ -41,7 +41,7 @@ import org.icefaces.component.utils.Utils;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.component.tab.TabSet")
+//@MandatoryResourceComponent("org.icefaces.component.tab.TabSet")
 public class TabSetRenderer extends Renderer{
     private static String YUI_TABSET_INDEX = "yti";
     public boolean getRendersChildren() {

@@ -29,7 +29,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
 import java.io.Serializable;
 import java.util.Map;
-import org.icefaces.component.testComponent.TestComponent;
 
 @ManagedBean(name="fParamBean")
 @ViewScoped

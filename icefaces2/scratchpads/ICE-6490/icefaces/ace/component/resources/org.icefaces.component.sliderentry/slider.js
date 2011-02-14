@@ -36,7 +36,12 @@ ice.component.slider = {
         ice.yui3.use(function(Y){ 
         	Y.on('domready', function(){
 			   var obj = null;
-		       YUI({bootstrap:false}).use('slider', function(Yui) {
+			   var thisYUI = YUI({combine: false, base: '/ace-test/javax.faces.resource/yui/3_1_1/'}); // base: '/ace-test/javax.faces.resource/yui/3_1_1/'
+			   var old = thisYUI.Loader.prototype._url;
+			   thisYUI.Loader.prototype._url = function(path, name, base) {
+			     return old.call(this, path, name, base) + '.jsf';
+			   };
+		       thisYUI.use('slider', function(Yui) {
 					try {
 			            obj = new Yui.Slider({
 							//following two properties has to be set when initializing componnent
