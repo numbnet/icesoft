@@ -244,12 +244,13 @@ if (!window.ice.icefaces) {
 
 
         namespace.setupBridge = function(setupID, viewID, windowID, configuration) {
-            var container = document.getElementById(setupID).parentNode;
-            container.configuration = configuration;
-            container.configuration.viewID = viewID;
-            namespace.window = windowID;
-            onBeforeUnload(window, disposeWindow(viewID));
-        };
+          var container = document.getElementById(setupID).parentNode;
+          container.configuration = configuration;
+          container.configuration.viewID = viewID;
+          namespace.window = windowID;
+//            onBeforeUnload(window, disposeWindow(viewID));
+      };
+
 
         namespace.setupPush = function(viewID) {
             ice.push.register([viewID], retrieveUpdate(viewID));
