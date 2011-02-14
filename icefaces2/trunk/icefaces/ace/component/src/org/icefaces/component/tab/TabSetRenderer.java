@@ -147,8 +147,10 @@ public class TabSetRenderer extends Renderer{
         		styleClass+= userDefinedClass.toString() ;
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
         boolean isClientSide = tabSet.isClientSide();
-        boolean singleSubmit = tabSet.isSingleSubmit();        
+        boolean singleSubmit = tabSet.isSingleSubmit(); 
+
         int selectedIndex = tabSet.getSelectedIndex();
+        //see what the selectedIndex is
         if (selectedIndex >= getRenderedChildCount(tabSet)) {
         	selectedIndex = 0;
         }
@@ -195,7 +197,8 @@ public class TabSetRenderer extends Renderer{
 
     
     private void renderTabNav(FacesContext facesContext, TabSet tabSet, UIComponent tab, int index) throws IOException {
-        String clientId = tab.getClientId(facesContext);
+
+    	String clientId = tab.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.LI_ELEM, tab);
         if (EnvUtils.isAriaEnabled(facesContext)) {
@@ -203,9 +206,12 @@ public class TabSetRenderer extends Renderer{
         }
         writer.writeAttribute(HTML.ID_ATTR, clientId+ "li"+ index, HTML.ID_ATTR);
         UIComponent labelFacet = ((TabPane)tab).getLabelFacet();
-        if (tabSet.getSelectedIndex() == index) {
-            writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
-        } else if (tabSet.isDisabled() || ((TabPane) tab).isDisabled()) {
+        if (!tabSet.isClientSide()) {
+	        if (tabSet.getSelectedIndex() == index) {
+	            writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
+	        } 
+        }
+        if (tabSet.isDisabled() || ((TabPane) tab).isDisabled()) {
             writer.writeAttribute(HTML.CLASS_ATTR, "disabled", HTML.CLASS_ATTR);
         }
         writer.startElement(HTML.DIV_ELEM, tab);  
@@ -272,7 +278,7 @@ public class TabSetRenderer extends Renderer{
     }
     
     private void renderTab(FacesContext facesContext, UIComponent uiComponent, boolean isLabel) throws IOException{
-        TabSet tabSet = (TabSet) uiComponent;
+    	TabSet tabSet = (TabSet) uiComponent;
         Iterator children = tabSet.getChildren().iterator();
         int index = -1;
         while (children.hasNext()) {
