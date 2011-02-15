@@ -22,7 +22,6 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.context.DOMContext;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
@@ -55,10 +54,10 @@ public class MessagesRenderer extends DomBasicRenderer {
         DOMContext domContext = null;
         if (!renderLater) {
             domContext =
-                DOMContext.attachDOMContext(facesContext, uiComponent);
+                    DOMContext.attachDOMContext(facesContext, uiComponent);
         } else {
             domContext =
-                DOMContext.reattachDOMContext(facesContext, uiComponent); 
+                    DOMContext.reattachDOMContext(facesContext, uiComponent);
         }
 
         // retrieve the messages
@@ -70,10 +69,10 @@ public class MessagesRenderer extends DomBasicRenderer {
         } else {
             messagesIterator = facesContext.getMessages();
         }
-        
+
         // the target element to which messages are appended; either td or span
         Element parentTarget = null;
-        
+
         // layout
         boolean tableLayout = false; // default layout is list
         String layout = (String) uiComponent.getAttributes().get("layout");
@@ -89,17 +88,17 @@ public class MessagesRenderer extends DomBasicRenderer {
         }
 
         //dir lang
-        String dir = (String)uiComponent.getAttributes().get("dir");
-        if(dir != null){
+        String dir = (String) uiComponent.getAttributes().get("dir");
+        if (dir != null) {
             parentTarget.setAttribute(HTML.DIR_ATTR, dir);
         }
-        String lang = (String)uiComponent.getAttributes().get("lang");
-        if(lang != null){
+        String lang = (String) uiComponent.getAttributes().get("lang");
+        if (lang != null) {
             parentTarget.setAttribute(HTML.LANG_ATTR, lang);
         }
         // ICE-2174
         Boolean visible = (Boolean) uiComponent.getAttributes().get("visible");
-        boolean isVisible = visible == null || visible.booleanValue() ;
+        boolean isVisible = visible == null || visible.booleanValue();
         if (!isVisible || !messagesIterator.hasNext()) parentTarget.setAttribute(HTML.STYLE_ATTR, "display:none;");
 
         if (renderLater) {
@@ -108,14 +107,14 @@ public class MessagesRenderer extends DomBasicRenderer {
             if (uiform != null) {
                 uiform.getAttributes().remove("$ice-msgs$");
                 uiComponent.getAttributes().remove("$render-later$");
-            }                
+            }
         }
-        
+
         if (!messagesIterator.hasNext()) {
             Element emptyChild = null;
             if (tableLayout) {
                 emptyChild = (Element) domContext.createElement(HTML.TR_ELEM)
-                            .appendChild( domContext.createElement(HTML.TD_ELEM));
+                        .appendChild(domContext.createElement(HTML.TD_ELEM));
             } else {
                 emptyChild = (Element) domContext.createElement(HTML.LI_ELEM);
             }
@@ -130,12 +129,12 @@ public class MessagesRenderer extends DomBasicRenderer {
             domContext.stepOver();
             return;
         }
-        
+
         FacesMessage nextFacesMessage = null;
         while (messagesIterator.hasNext()) {
 
             nextFacesMessage = (FacesMessage) messagesIterator.next();
-            if(nextFacesMessage.isRendered() && !((UIMessages)uiComponent).isRedisplay()){
+            if (nextFacesMessage.isRendered() && !((UIMessages) uiComponent).isRedisplay()) {
                 return;
             }
             nextFacesMessage.rendered();
@@ -174,8 +173,7 @@ public class MessagesRenderer extends DomBasicRenderer {
             }
             if (style != null && style.length() > 0) {
                 nextMessageSpan.setAttribute("style", style);
-            }
-            else {
+            } else {
                 nextMessageSpan.removeAttribute("style");
             }
 
@@ -195,12 +193,12 @@ public class MessagesRenderer extends DomBasicRenderer {
             } else {
                 if (showSummary) {
                     Text textNode =
-                            domContext.getDocument().createTextNode(summary);
+                            domContext.createTextNode(summary);
                     nextMessageSpan.appendChild(textNode);
                 }
                 if (showDetail) {
                     Text textNode =
-                            domContext.getDocument().createTextNode(detail);
+                            domContext.createTextNode(detail);
                     nextMessageSpan.appendChild(textNode);
                 }
             }
@@ -216,11 +214,10 @@ public class MessagesRenderer extends DomBasicRenderer {
         Element root = domContext.createRootElement(HTML.SPAN_ELEM);
         Text text = domContext.createTextNode("List of Messages");
         Object style = uiComponent.getAttributes().get("style");
-        String sstyle = ( (style == null) ? null : style.toString() );
+        String sstyle = ((style == null) ? null : style.toString());
         if (sstyle != null && sstyle.length() > 0) {
             root.setAttribute(HTML.STYLE_ATTR, sstyle);
-        }
-        else {
+        } else {
             root.removeAttribute(HTML.STYLE_ATTR);
         }
         root.appendChild(text);
