@@ -50,8 +50,9 @@ public class MainServlet implements PseudoServlet {
 
         timer = new Timer(true);
         final Configuration configuration = new ServletContextConfiguration("org.icepush", context);
+        final PushContext pushContext = new PushContext(context);
         pushGroupManager = PushGroupManagerFactory.newPushGroupManager(context);
-        final PushContext pushContext = new PushContext(context, pushGroupManager);
+        pushContext.setPushGroupManager(pushGroupManager);
         PathDispatcher pathDispatcher = new PathDispatcher();
         pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer()))));
         pathDispatcher.dispatchOn(".*", new BrowserDispatcher(configuration) {
@@ -59,7 +60,6 @@ public class MainServlet implements PseudoServlet {
                 return new BrowserBoundServlet(pushContext, context, pushGroupManager, timer, configuration, terminateBlockingConnectionOnShutdown);
             }
         });
-
         dispatcher = pathDispatcher;
     }
 
