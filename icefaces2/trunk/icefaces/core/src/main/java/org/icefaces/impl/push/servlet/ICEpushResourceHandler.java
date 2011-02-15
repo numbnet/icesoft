@@ -39,6 +39,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.faces.lifecycle.LifecycleFactory;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
