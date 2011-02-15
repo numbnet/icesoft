@@ -33,13 +33,12 @@ public class PushContext {
     private static final Logger log = Logger.getLogger(PushContext.class.getName());
     private static final String BrowserIDCookieName = "ice.push.browser";
 
-    private final PushGroupManager pushGroupManager;
+    private PushGroupManager pushGroupManager;
 
     private int browserCounter = 0;
     private int subCounter = 0;
 
-    public PushContext(final ServletContext context, final PushGroupManager pushGroupManager) {
-        this.pushGroupManager = pushGroupManager;
+    public PushContext(final ServletContext context) {
         context.setAttribute(PushContext.class.getName(), this);
     }
 
@@ -76,6 +75,10 @@ public class PushContext {
 
     public void removeGroupMember(final String groupName, final String pushId) {
         pushGroupManager.removeMember(groupName, pushId);
+    }
+
+    public void setPushGroupManager(final PushGroupManager pushGroupManager) {
+        this.pushGroupManager = pushGroupManager;
     }
 
     public static synchronized PushContext getInstance(ServletContext context) {
