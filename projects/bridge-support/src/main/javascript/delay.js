@@ -22,13 +22,15 @@
 var run = operator();
 var runOnce = operator();
 var stop = operator();
+var cancelExecution = operator();
 function Delay(f, milliseconds) {
     return object(function(method) {
         var id = null;
+        var canceled = false;
 
         method(run, function(self, times) {
             //avoid starting a new process
-            if (id) return;
+            if (id || canceled) return;
 
             var call = times ? function() {
                 try {
@@ -53,6 +55,10 @@ function Delay(f, milliseconds) {
 
             clearInterval(id);
             id = null;
+        });
+
+        method(cancelExecution, function(self) {
+            canceled = true;
         });
     });
 }

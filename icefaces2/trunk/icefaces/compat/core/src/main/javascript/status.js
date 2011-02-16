@@ -164,7 +164,8 @@ var ComponentIndicators;
         return object(function(method) {
             var isIEBrowser = /MSIE/.test(navigator.userAgent);
             var overlay;
-            method(on, function(self) {
+            //prepare the delayed rendering of the overlay
+            var delayedRender = Delay(function() {
                 if (isIEBrowser) {
                     overlay = document.createElement('iframe');
                     overlay.setAttribute('src', 'javascript:document.write(\'<html><body style="cursor: wait;"></body><html>\');');
@@ -185,10 +186,15 @@ var ComponentIndicators;
                 overlayStyle.filter = 'alpha(opacity=0)';
                 overlayStyle.width = (Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - 20) + 'px';
                 overlayStyle.height = (Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) - 20) + 'px';
+            }, 3000);
+
+            method(on, function(self) {
+                runOnce(delayedRender);
             });
 
             method(off, function(self) {
                 if (overlay) {
+                    stop(delayedRender);
                     if (isIEBrowser) {
                         var blankOverlay = document.createElement('iframe');
                         blankOverlay.setAttribute('src', 'javascript:document.write("<html></html>");');
@@ -199,6 +205,8 @@ var ComponentIndicators;
                         document.body.removeChild(overlay);
                     }
                     overlay = null;
+                } else {
+                    cancelExecution(delayedRender);
                 }
             });
         });
@@ -304,14 +312,14 @@ var ComponentIndicators;
                 container.appendChild(overlay);
 
                 var resize = container.tagName.toLowerCase() == 'body' ?
-                             function() {
-                                 overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-                                 overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
-                             } :
-                             function() {
-                                 overlayStyle.width = container.offsetWidth + 'px';
-                                 overlayStyle.height = container.offsetHeight + 'px';
-                             };
+                        function() {
+                            overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
+                            overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+                        } :
+                        function() {
+                            overlayStyle.width = container.offsetWidth + 'px';
+                            overlayStyle.height = container.offsetHeight + 'px';
+                        };
                 resize();
                 onResize(window, resize);
             });
