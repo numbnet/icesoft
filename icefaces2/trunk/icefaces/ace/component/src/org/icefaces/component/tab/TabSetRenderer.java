@@ -50,12 +50,16 @@ public class TabSetRenderer extends Renderer{
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
+        //one field per form will be use to send tabindex info
         if (requestParameterMap.containsKey(YUI_TABSET_INDEX)) {
+        	//the value of yti should look something like this "clientId=tabindex"
             String[] info = String.valueOf(requestParameterMap.get(YUI_TABSET_INDEX)).split("=");
             String clientId = uiComponent.getClientId(facesContext);
             TabSet tabSet = (TabSet) uiComponent;
+            //info[0] is containing a clientId of a tabset
             if (clientId.equals(info[0])) {
                 try {
+                	//info[1] is containing a tabindex
                     Integer index = new Integer(info[1]);
                     if (tabSet.getSelectedIndex()!= index.intValue()) { 
                         uiComponent.queueEvent(new ValueChangeEvent (uiComponent, 
@@ -64,6 +68,7 @@ public class TabSetRenderer extends Renderer{
                 } catch (Exception e) {}
             }
         }
+        //The decode of the component's behavior should be invoked by the component's decode
         Utils.iterateEffects(new AnimationBehavior.Iterator(uiComponent) {
 			public void next(String name, AnimationBehavior effectBehavior) {
 				effectBehavior.decode(FacesContext.getCurrentInstance(), this.getUIComponent());				
@@ -76,6 +81,7 @@ public class TabSetRenderer extends Renderer{
         ResponseWriter writer = facesContext.getResponseWriter();
         TabSet tabSet = (TabSet) uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
+        //tabset's toot div
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         String style = tabSet.getStyle();
@@ -91,6 +97,8 @@ public class TabSetRenderer extends Renderer{
         TabSet tabSet = (TabSet) uiComponent;   
         boolean isBottom = "bottom".equals(tabSet.getOrientation());
         
+        //As per YUI's contract if the orientation is set to bottom, the contents of the tab
+        //should ger rendered first, and then tabs
         if (isBottom) {
             writer.startElement(HTML.DIV_ELEM, uiComponent);
                 writer.writeAttribute(HTML.TABINDEX_ATTR, 0, HTML.TABINDEX_ATTR);
@@ -173,29 +181,33 @@ public class TabSetRenderer extends Renderer{
 	        .entry("selectedIndex", selectedIndex).endMap().toString())
         .append(");");
        
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId + "call", HTML.ID_ATTR); 
-        writer.writeAttribute(HTML.STYLE_ATTR, "display:none", HTML.STYLE_ATTR);         
-        writer.write(call.toString());
-        writer.endElement(HTML.DIV_ELEM);
-     
+        //Initialize client side tab as soon as they inserted to the DOM
         if (isClientSide) {
             ScriptWriter.insertScript(facesContext, uiComponent, call.toString());
         } else {
+        	//initialize server side tab lazily
             writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, call.toString(), HTML.ONMOUSEOVER_ATTR); 
         }
+        
+        //encode animation if any 
         final StringBuilder effect = new StringBuilder();
         Utils.iterateEffects(new AnimationBehavior.Iterator(uiComponent) {
 			public void next(String event, AnimationBehavior effectBehavior) {
 				effectBehavior.encodeBegin(FacesContext.getCurrentInstance(), tabSet);
 				effect.append(effectBehavior.getScript(new ClientBehaviorContextImpl(this.getUIComponent(), "transition"), false));	
 			}
-		});        
-        ScriptWriter.insertScript(facesContext, uiComponent, effect.toString()); 
+		});
+        
+        //encode animation call if any
+        if (effect.toString().length()> 0) {
+        	ScriptWriter.insertScript(facesContext, uiComponent, effect.toString());
+        }
         writer.endElement(HTML.DIV_ELEM);  
     }    
 
-    
+   /*
+    * renders tab headers 
+    */
     private void renderTabNav(FacesContext facesContext, TabSet tabSet, UIComponent tab, int index) throws IOException {
 
     	String clientId = tab.getClientId(facesContext);
@@ -206,6 +218,7 @@ public class TabSetRenderer extends Renderer{
         }
         writer.writeAttribute(HTML.ID_ATTR, clientId+ "li"+ index, HTML.ID_ATTR);
         UIComponent labelFacet = ((TabPane)tab).getLabelFacet();
+        //if a server side tabset? then apply selected tab class
         if (!tabSet.isClientSide()) {
 	        if (tabSet.getSelectedIndex() == index) {
 	            writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
@@ -218,6 +231,7 @@ public class TabSetRenderer extends Renderer{
         if (EnvUtils.isAriaEnabled(facesContext)) {
             writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TAB_ROLE, ARIA.ROLE_ATTR);  
         }
+        //Server side tab initializes lazily on mouse hover, here we are covering lazy initialization on focus
         if (!tabSet.isClientSide()) {
         	writer.writeAttribute(HTML.ONFOCUS_ATTR, "this.parentNode.parentNode.parentNode.onmouseover()", HTML.ONFOCUS_ATTR);
         }
@@ -226,6 +240,7 @@ public class TabSetRenderer extends Renderer{
         writer.writeAttribute(HTML.CLASS_ATTR, "yui-navdiv", HTML.CLASS_ATTR);           
         writer.startElement("em", tab);
         writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.ID_ATTR); 
+        //tab header can have input elements, we don't want tab to consume any event that was initiated by an input 
         writer.writeAttribute(HTML.ONCLICK_ATTR, "if(Ice.isEventSourceInputElement(event)) event.cancelBubble = true;", HTML.ONCLICK_ATTR);            
         
         if (labelFacet!= null)
@@ -235,14 +250,17 @@ public class TabSetRenderer extends Renderer{
         writer.endElement("em");
         writer.endElement(HTML.DIV_ELEM);        
    
+        //this is to making a tab focusable.
         writer.startElement(HTML.ANCHOR_ELEM, tab);
         writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", HTML.STYLE_ATTR); 
         writer.endElement(HTML.ANCHOR_ELEM);               
-               
-
         
         writer.endElement(HTML.LI_ELEM);
     }    
+    
+    /*
+     * Renders tab contents/body
+     */
     private void renderTabBody(FacesContext facesContext, 
             TabSet tabSet, UIComponent tab, int index) throws IOException {
         String clientId = tab.getClientId(facesContext);
@@ -254,11 +272,14 @@ public class TabSetRenderer extends Renderer{
             writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABPANEL_ROLE, ARIA.ROLE_ATTR);  
         }        
         boolean isClientSide = tabSet.isClientSide();
+        //Render all tabs and their contents for clientSide tabset 
         if (isClientSide) {
             Utils.renderChild(facesContext, tab);
         } else {
+        	//Render selected tab only for server side tab
             if (tabSet.getSelectedIndex() == index) {
                 final StringBuilder style = new StringBuilder();
+                //apply style on a tab body if it was modified by an animation 
                 Utils.iterateEffects(new AnimationBehavior.Iterator(tabSet) {
         			public void next(String name, AnimationBehavior effectBehavior) {
         		        if (effectBehavior.getStyle() != null) {
@@ -267,9 +288,12 @@ public class TabSetRenderer extends Renderer{
         		        }
         			}
         		});
-                writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+                if (style.toString().length() > 0) {
+                	writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+                }
                 Utils.renderChild(facesContext, tab);
             } else {
+            	//add hidden class to tabs that are not selected. 
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-hidden iceOutConStatActv", HTML.CLASS_ATTR);
                 writer.write("&nbsp;");
             }
@@ -277,12 +301,16 @@ public class TabSetRenderer extends Renderer{
         writer.endElement(HTML.DIV_ELEM);
     }
     
+    /*
+     * Render children of tabset component
+     */
     private void renderTab(FacesContext facesContext, UIComponent uiComponent, boolean isLabel) throws IOException{
     	TabSet tabSet = (TabSet) uiComponent;
         Iterator children = tabSet.getChildren().iterator();
         int index = -1;
         while (children.hasNext()) {
             UIComponent child = (UIComponent)children.next();
+            //render tabpane component
             if (child instanceof TabPane) {
                 if (child.isRendered()) {
                     index++;
@@ -295,6 +323,8 @@ public class TabSetRenderer extends Renderer{
                 } else {
                     //write script node to remove this tab
                 }
+                
+                //if tabs component found, iterate through its modal and render all child. 
             } else if (child instanceof Tabs) {
                 Tabs uiList = (Tabs) child;
                 int rowIndex = uiList.getFirst();
