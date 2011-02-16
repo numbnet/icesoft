@@ -186,7 +186,7 @@ var ComponentIndicators;
                 overlayStyle.filter = 'alpha(opacity=0)';
                 overlayStyle.width = (Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - 20) + 'px';
                 overlayStyle.height = (Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) - 20) + 'px';
-            }, 3000);
+            }, 750);
 
             method(on, function(self) {
                 runOnce(delayedRender);
