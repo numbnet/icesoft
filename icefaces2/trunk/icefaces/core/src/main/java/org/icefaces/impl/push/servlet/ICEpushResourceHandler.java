@@ -47,33 +47,29 @@ import org.icepush.PushContext;
 import org.icepush.servlet.MainServlet;
 
 public class ICEpushResourceHandler extends ResourceHandlerWrapper implements PhaseListener  {
-    private static Logger log = Logger.getLogger(ICEpushResourceHandler.class.getName());
-    private static final Pattern ICEpushRequestPattern = Pattern.compile(".*listen\\.icepush");
-    private static final String RESOURCE_KEY = "javax.faces.resource";
-    private static final String BROWSERID_COOKIE = "ice.push.browser";
+    private static final Logger log = Logger.getLogger(ICEpushResourceHandler.class.getName());
+
     private static final ReentrantLock lock = new ReentrantLock();
     private static final Condition condition = lock.newCondition();
-    private ResourceHandler handler;
-    private MainServlet mainServlet;
 
-    private ICEpushResourceHandlerImpl resourceHandler;
+    private AbstractICEpushResourceHandler resourceHandler;
 
-    public ICEpushResourceHandler(final ResourceHandler handler) {
-        this.handler = handler;
+    public ICEpushResourceHandler(final ResourceHandler resourceHandler) {
         try {
             final ServletContext servletContext =
                 (ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext();
             String serverInfo = servletContext.getServerInfo();
             if (!serverInfo.startsWith("JBossWeb") && !serverInfo.startsWith("JBoss Web")) {
-                resourceHandler = new ICEpushResourceHandlerImpl();
-                initialize(servletContext);
+                this.resourceHandler = new ICEpushResourceHandlerImpl();
+                this.resourceHandler.initialize(resourceHandler, servletContext, this);
             } else {
-                resourceHandler = new BlockingICEpushResourceHandlerWrapper(new ICEpushResourceHandlerImpl());
+                final ICEpushResourceHandlerImpl impl = new ICEpushResourceHandlerImpl();
+                this.resourceHandler = new BlockingICEpushResourceHandlerWrapper(impl);
                 new Thread(
                     new Runnable() {
                         public void run() {
-                            initialize(servletContext);
-                            resourceHandler = new ICEpushResourceHandlerImpl();
+                            ICEpushResourceHandler.this.resourceHandler.initialize(resourceHandler, servletContext, ICEpushResourceHandler.this);
+                            ICEpushResourceHandler.this.resourceHandler = impl;
                             lock.lock();
                             try {
                                 condition.signalAll();
@@ -119,13 +115,13 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         return resourceHandler.isResourceRequest(facesContext);
     }
 
-    public void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+    public void service(final HttpServletRequest request, final HttpServletResponse response) throws IOException, ServletException {
         resourceHandler.service(request, response);
     }
 
     public static void notifyContextShutdown(ServletContext context) {
         try {
-            ((ICEpushResourceHandler) context.getAttribute(ICEpushResourceHandler.class.getName())).shutdownMainServlet();
+            ((ICEpushResourceHandler)context.getAttribute(ICEpushResourceHandler.class.getName())).shutdownMainServlet();
         } catch (Throwable t) {
             //no need to log this exception for optional Ajax Push, but may be
             //useful for diagnosing other failures
@@ -133,22 +129,26 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         }
     }
 
-    private void initialize(final ServletContext servletContext) {
-        mainServlet = new MainServlet(servletContext);
-        servletContext.setAttribute(ICEpushResourceHandler.class.getName(), ICEpushResourceHandler.this);
-        ((LifecycleFactory)FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY)).
-            getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE).addPhaseListener(ICEpushResourceHandler.this);
-    }
-
-    private void setMainServlet(final MainServlet mainServlet) {
-        this.mainServlet = mainServlet;
-    }
-
     private void shutdownMainServlet() {
         resourceHandler.shutdownMainServlet();
     }
 
-    private class ICEpushResourceHandlerImpl extends ResourceHandlerWrapper implements PhaseListener {
+    private static abstract class AbstractICEpushResourceHandler extends ResourceHandlerWrapper implements PhaseListener {
+        abstract void initialize(ResourceHandler resourceHandler, ServletContext servletContext, ICEpushResourceHandler icePushResourceHandler);
+
+        abstract void service(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
+
+        abstract void shutdownMainServlet();
+    }
+
+    private static class ICEpushResourceHandlerImpl extends AbstractICEpushResourceHandler {
+        private static final Pattern ICEpushRequestPattern = Pattern.compile(".*listen\\.icepush");
+        private static final String RESOURCE_KEY = "javax.faces.resource";
+        private static final String BROWSERID_COOKIE = "ice.push.browser";
+
+        private ResourceHandler resourceHandler;
+        private MainServlet mainServlet;
+
         public void afterPhase(final PhaseEvent event) {
             // Do nothing.
         }
@@ -190,13 +190,13 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         }
 
         public ResourceHandler getWrapped() {
-            return handler;
+            return resourceHandler;
         }
 
         @Override
         public void handleResourceRequest(final FacesContext facesContext) throws IOException {
             if (null == mainServlet)  {
-                handler.handleResourceRequest(facesContext);
+                resourceHandler.handleResourceRequest(facesContext);
                 return;
             }
             ExternalContext externalContext = facesContext.getExternalContext();
@@ -213,7 +213,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
                 return;
             }
             if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
-                handler.handleResourceRequest(facesContext);
+                resourceHandler.handleResourceRequest(facesContext);
                 return;
             }
             HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
@@ -226,7 +226,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
                     throw new RuntimeException(e);
                 }
             } else {
-                handler.handleResourceRequest(facesContext);
+                resourceHandler.handleResourceRequest(facesContext);
             }
         }
 
@@ -239,14 +239,14 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
             }
             ExternalContext externalContext = facesContext.getExternalContext();
             if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
-                return handler.isResourceRequest(facesContext);
+                return resourceHandler.isResourceRequest(facesContext);
             }
             HttpServletRequest servletRequest = (HttpServletRequest) externalContext.getRequest();
             String requestURI = servletRequest.getRequestURI();
-            return handler.isResourceRequest(facesContext) || ICEpushRequestPattern.matcher(requestURI).find();
+            return resourceHandler.isResourceRequest(facesContext) || ICEpushRequestPattern.matcher(requestURI).find();
         }
 
-        public void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        void service(final HttpServletRequest request, final HttpServletResponse response) throws IOException, ServletException {
             try {
                 mainServlet.service(request, response);
             } catch (Exception e) {
@@ -254,23 +254,30 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
             }
         }
 
-        private void shutdownMainServlet() {
+        void initialize(final ResourceHandler resourceHandler, final ServletContext servletContext, final ICEpushResourceHandler icePushResourceHandler) {
+            this.resourceHandler = resourceHandler;
+            mainServlet = new MainServlet(servletContext);
+            servletContext.setAttribute(ICEpushResourceHandler.class.getName(), icePushResourceHandler);
+            ((LifecycleFactory)FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY)).
+                getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE).addPhaseListener(icePushResourceHandler);
+        }
+
+        void shutdownMainServlet() {
             mainServlet.shutdown();
         }
     }
 
-    private class BlockingICEpushResourceHandlerWrapper extends ICEpushResourceHandlerImpl {
+    private static class BlockingICEpushResourceHandlerWrapper extends AbstractICEpushResourceHandler {
         private final ICEpushResourceHandlerImpl resourceHandler;
 
         private BlockingICEpushResourceHandlerWrapper(final ICEpushResourceHandlerImpl resourceHandler) {
             this.resourceHandler = resourceHandler;
         }
 
-        @Override
         public void afterPhase(final PhaseEvent event) {
             lock.lock();
             try {
-                if (mainServlet == null) {
+                if (resourceHandler.mainServlet == null) {
                     condition.awaitUninterruptibly();
                 }
                 resourceHandler.afterPhase(event);
@@ -279,11 +286,10 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
             }
         }
 
-        @Override
         public void beforePhase(final PhaseEvent event) {
             lock.lock();
             try {
-                if (mainServlet == null) {
+                if (resourceHandler.mainServlet == null) {
                     condition.awaitUninterruptibly();
                 }
                 resourceHandler.beforePhase(event);
@@ -296,7 +302,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         public Resource createResource(final String resourceName) {
             lock.lock();
             try {
-                if (mainServlet == null) {
+                if (resourceHandler.mainServlet == null) {
                     condition.awaitUninterruptibly();
                 }
                 return resourceHandler.createResource(resourceName);
@@ -309,7 +315,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         public Resource createResource(final String resourceName, final String libraryName) {
             lock.lock();
             try {
-                if (mainServlet == null) {
+                if (resourceHandler.mainServlet == null) {
                     condition.awaitUninterruptibly();
                 }
                 return resourceHandler.createResource(resourceName, libraryName);
@@ -322,7 +328,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         public Resource createResource(final String resourceName, final String libraryName, final String contentType) {
             lock.lock();
             try {
-                if (mainServlet == null) {
+                if (resourceHandler.mainServlet == null) {
                     condition.awaitUninterruptibly();
                 }
                 return resourceHandler.createResource(resourceName, libraryName, contentType);
@@ -331,11 +337,10 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
             }
         }
 
-        @Override
         public PhaseId getPhaseId() {
             lock.lock();
             try {
-                if (mainServlet == null) {
+                if (resourceHandler.mainServlet == null) {
                     condition.awaitUninterruptibly();
                 }
                 return resourceHandler.getPhaseId();
@@ -348,7 +353,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         public String getRendererTypeForResourceName(final String resourceName) {
             lock.lock();
             try {
-                if (mainServlet == null) {
+                if (resourceHandler.mainServlet == null) {
                     condition.awaitUninterruptibly();
                 }
                 return resourceHandler.getRendererTypeForResourceName(resourceName);
@@ -357,11 +362,10 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
             }
         }
 
-        @Override
         public ResourceHandler getWrapped() {
             lock.lock();
             try {
-                if (mainServlet == null) {
+                if (resourceHandler.mainServlet == null) {
                     condition.awaitUninterruptibly();
                 }
                 return resourceHandler.getWrapped();
@@ -374,7 +378,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         public void handleResourceRequest(final FacesContext facesContext) throws IOException {
             lock.lock();
             try {
-                if (mainServlet == null) {
+                if (resourceHandler.mainServlet == null) {
                     condition.awaitUninterruptibly();
                 }
                 resourceHandler.handleResourceRequest(facesContext);
@@ -387,7 +391,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         public boolean isResourceRequest(final FacesContext facesContext) {
             lock.lock();
             try {
-                if (mainServlet == null) {
+                if (resourceHandler.mainServlet == null) {
                     condition.awaitUninterruptibly();
                 }
                 return resourceHandler.isResourceRequest(facesContext);
@@ -400,7 +404,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         public boolean libraryExists(final String libraryName) {
             lock.lock();
             try {
-                if (mainServlet == null) {
+                if (resourceHandler.mainServlet == null) {
                     condition.awaitUninterruptibly();
                 }
                 return resourceHandler.libraryExists(libraryName);
@@ -409,11 +413,10 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
             }
         }
 
-        @Override
-        public void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        void service(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
             lock.lock();
             try {
-                if (mainServlet == null) {
+                if (resourceHandler.mainServlet == null) {
                     condition.awaitUninterruptibly();
                 }
                 resourceHandler.service(request, response);
@@ -422,10 +425,14 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
             }
         }
 
-        private void shutdownMainServlet() {
+        void initialize(final ResourceHandler resourceHandler, final ServletContext servletContext, final ICEpushResourceHandler icePushResourceHandler) {
+            this.resourceHandler.initialize(resourceHandler, servletContext, icePushResourceHandler);
+        }
+
+        void shutdownMainServlet() {
             lock.lock();
             try {
-                if (mainServlet == null) {
+                if (resourceHandler.mainServlet == null) {
                     condition.awaitUninterruptibly();
                 }
                 resourceHandler.shutdownMainServlet();
