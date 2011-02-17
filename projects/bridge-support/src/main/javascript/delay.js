@@ -22,7 +22,7 @@
 var run = operator();
 var runOnce = operator();
 var stop = operator();
-var cancelExecution = operator();
+
 function Delay(f, milliseconds) {
     return object(function(method) {
         var id = null;
@@ -51,14 +51,13 @@ function Delay(f, milliseconds) {
 
         method(stop, function(self) {
             //stop only an active process
-            if (!id) return;
-
-            clearInterval(id);
-            id = null;
-        });
-
-        method(cancelExecution, function(self) {
-            canceled = true;
+            if (id) {
+                clearInterval(id);
+                id = null;
+                //cancel execution completely if run* was not called
+            } else {
+                canceled = true;
+            }
         });
     });
 }
