@@ -78,7 +78,10 @@ var Prototype = {
 };
 
 //make public so Prototype reload can be detected
-window.Prototype = { BrowserFeatures: Prototype.BrowserFeatures };
+if (!window.Prototype) {
+    window.Prototype = Prototype;
+}
+
 
 if (Prototype.Browser.MobileSafari)
     Prototype.BrowserFeatures.SpecificElementExtensions = false;
@@ -906,15 +909,17 @@ var Enumerable = (function() {
     }
 
     function sortBy(iterator, context) {
-        return this.map(function(value, index) {
-            return {
-                value: value,
-                criteria: iterator.call(context, value, index)
-            };
-        }).sort(function(left, right) {
-            var a = left.criteria, b = right.criteria;
-            return a < b ? -1 : a > b ? 1 : 0;
-        }).pluck('value');
+        return this.map(
+                function(value, index) {
+                    return {
+                        value: value,
+                        criteria: iterator.call(context, value, index)
+                    };
+                }).sort(
+                function(left, right) {
+                    var a = left.criteria, b = right.criteria;
+                    return a < b ? -1 : a > b ? 1 : 0;
+                }).pluck('value');
     }
 
     function toArray() {
@@ -1211,21 +1216,23 @@ var Hashtable = Class.create(Enumerable, (function() {
     }
 
     function toQueryString() {
-        return this.inject([], function(results, pair) {
-            var key = encodeURIComponent(pair.key), values = pair.value;
+        return this.inject([],
+                function(results, pair) {
+                    var key = encodeURIComponent(pair.key), values = pair.value;
 
-            if (values && typeof values == 'object') {
-                if (Object.isArray(values))
-                    return results.concat(values.map(toQueryPair.curry(key)));
-            } else results.push(toQueryPair(key, values));
-            return results;
-        }).join('&');
+                    if (values && typeof values == 'object') {
+                        if (Object.isArray(values))
+                            return results.concat(values.map(toQueryPair.curry(key)));
+                    } else results.push(toQueryPair(key, values));
+                    return results;
+                }).join('&');
     }
 
     function inspect() {
-        return '#<Hash:{' + this.map(function(pair) {
-            return pair.map(Object.inspect).join(': ');
-        }).join(', ') + '}>';
+        return '#<Hash:{' + this.map(
+                function(pair) {
+                    return pair.map(Object.inspect).join(': ');
+                }).join(', ') + '}>';
     }
 
     function toJSON() {
@@ -4122,11 +4129,13 @@ Form.Methods = {
         var elements = $(form).getElements().findAll(function(element) {
             return 'hidden' != element.type && !element.disabled;
         });
-        var firstByIndex = elements.findAll(function(element) {
-            return element.hasAttribute('tabIndex') && element.tabIndex >= 0;
-        }).sortBy(function(element) {
-            return element.tabIndex
-        }).first();
+        var firstByIndex = elements.findAll(
+                function(element) {
+                    return element.hasAttribute('tabIndex') && element.tabIndex >= 0;
+                }).sortBy(
+                function(element) {
+                    return element.tabIndex
+                }).first();
 
         return firstByIndex ? firstByIndex : elements.find(function(element) {
             return /^(?:input|select|textarea)$/i.test(element.tagName);
@@ -4962,22 +4971,22 @@ if (!document.getElementsByClassName) document.getElementsByClassName = function
                 var cond = /\s/.test(className) ? $w(className).map(iter).join('') : iter(className);
                 return cond ? document._getElementsByXPath('.//*' + cond, element) : [];
             } : function(element, className) {
-        className = className.toString().strip();
-        var elements = [], classNames = (/\s/.test(className) ? $w(className) : null);
-        if (!classNames && !className) return elements;
+                className = className.toString().strip();
+                var elements = [], classNames = (/\s/.test(className) ? $w(className) : null);
+                if (!classNames && !className) return elements;
 
-        var nodes = $(element).getElementsByTagName('*');
-        className = ' ' + className + ' ';
+                var nodes = $(element).getElementsByTagName('*');
+                className = ' ' + className + ' ';
 
-        for (var i = 0, child, cn; child = nodes[i]; i++) {
-            if (child.className && (cn = ' ' + child.className + ' ') && (cn.include(className) ||
-                    (classNames && classNames.all(function(name) {
-                        return !name.toString().blank() && cn.include(' ' + name + ' ');
-                    }))))
-                elements.push(Element.extend(child));
-        }
-        return elements;
-    };
+                for (var i = 0, child, cn; child = nodes[i]; i++) {
+                    if (child.className && (cn = ' ' + child.className + ' ') && (cn.include(className) ||
+                            (classNames && classNames.all(function(name) {
+                                return !name.toString().blank() && cn.include(' ' + name + ' ');
+                            }))))
+                        elements.push(Element.extend(child));
+                }
+                return elements;
+            };
 
     return function(className, parentElement) {
         return $(parentElement || document.body).getElementsByClassName(className);
@@ -4993,9 +5002,10 @@ Element.ClassNames.prototype = {
     },
 
     _each: function(iterator) {
-        this.element.className.split(/\s+/).select(function(name) {
-            return name.length > 0;
-        })._each(iterator);
+        this.element.className.split(/\s+/).select(
+                function(name) {
+                    return name.length > 0;
+                })._each(iterator);
     },
 
     set: function(className) {
