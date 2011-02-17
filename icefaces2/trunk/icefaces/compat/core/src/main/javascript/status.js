@@ -164,8 +164,9 @@ var ComponentIndicators;
         return object(function(method) {
             var isIEBrowser = /MSIE/.test(navigator.userAgent);
             var overlay;
-            //prepare the delayed rendering of the overlay
-            var delayedRender = Delay(function() {
+            var delayedOverlayRender;
+
+            function createOverlay() {
                 if (isIEBrowser) {
                     overlay = document.createElement('iframe');
                     overlay.setAttribute('src', 'javascript:document.write(\'<html><body style="cursor: wait;"></body><html>\');');
@@ -186,27 +187,31 @@ var ComponentIndicators;
                 overlayStyle.filter = 'alpha(opacity=0)';
                 overlayStyle.width = (Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - 20) + 'px';
                 overlayStyle.height = (Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) - 20) + 'px';
-            }, 750);
+            }
+
+            function deleteOverlay() {
+                if (isIEBrowser) {
+                    var blankOverlay = document.createElement('iframe');
+                    blankOverlay.setAttribute('src', 'javascript:document.write("<html></html>");');
+                    blankOverlay.setAttribute('frameborder', '0');
+                    document.body.replaceChild(blankOverlay, overlay);
+                    document.body.removeChild(blankOverlay);
+                } else {
+                    document.body.removeChild(overlay);
+                }
+                overlay = null;
+            }
 
             method(on, function(self) {
-                runOnce(delayedRender);
+                delayedOverlayRender = runOnce(Delay(createOverlay, 750));
             });
 
             method(off, function(self) {
+                if (delayedOverlayRender) {
+                    stop(delayedOverlayRender);
+                }
                 if (overlay) {
-                    stop(delayedRender);
-                    if (isIEBrowser) {
-                        var blankOverlay = document.createElement('iframe');
-                        blankOverlay.setAttribute('src', 'javascript:document.write("<html></html>");');
-                        blankOverlay.setAttribute('frameborder', '0');
-                        document.body.replaceChild(blankOverlay, overlay);
-                        document.body.removeChild(blankOverlay);
-                    } else {
-                        document.body.removeChild(overlay);
-                    }
-                    overlay = null;
-                } else {
-                    cancelExecution(delayedRender);
+                    deleteOverlay();
                 }
             });
         });
