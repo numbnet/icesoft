@@ -33,7 +33,7 @@
   <description>ICEfaces core framework library.</description> 
    
   <properties>
-    <jsf.version>2.1.0.b11</jsf.version>
+    <jsf.version>2.1.0-b08</jsf.version>
   </properties>
    <repositories>
         <repository>
