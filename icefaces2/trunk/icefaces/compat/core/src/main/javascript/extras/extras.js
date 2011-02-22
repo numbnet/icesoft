@@ -440,15 +440,15 @@ Ice.util = {
 };
 
 var IE = (Try.these(
-                   function() {
-                       new ActiveXObject('Msxml2.XMLHTTP');
-                       return true;
-                   },
+        function() {
+            new ActiveXObject('Msxml2.XMLHTTP');
+            return true;
+        },
 
-                   function() {
-                       new ActiveXObject('Microsoft.XMLHTTP');
-                       return true;
-                   }
+        function() {
+            new ActiveXObject('Microsoft.XMLHTTP');
+            return true;
+        }
 
         ) || false);
 
@@ -833,9 +833,9 @@ Ice.DnD.StyleReader = {
         //Ice.DnD.logger.debug("Building Style");
         var result = '';
         Ice.DnD.StyleReader.styles.split(',').each(
-                                                  function(style) {
-                                                      result += style + ':' + Ice.DnD.StyleReader.getStyle(ele, style) + ';';
-                                                  });
+                function(style) {
+                    result += style + ':' + Ice.DnD.StyleReader.getStyle(ele, style) + ';';
+                });
         return result;
     },
     getStyle: function(x, styleProp) {
@@ -936,7 +936,7 @@ Ice.modal = {
             iframe.style.borderWidth = "0";
 
             var modalParentOffset = $(target).getOffsetParent().cumulativeOffset();
-            iframe.style.top = "-" +  modalParentOffset.top + "px";
+            iframe.style.top = "-" + modalParentOffset.top + "px";
             iframe.style.left = "-" + modalParentOffset.left + "px";
             //trick to avoid bug in IE, see http://support.microsoft.com/kb/927917
             modal.parentNode.insertBefore(iframe, modal);
@@ -945,7 +945,7 @@ Ice.modal = {
             modalDiv.style.zIndex = parseInt(iframe.style.zIndex) + 1;
             modalDiv.style.backgroundColor = 'transparent';
             modal.parentNode.insertBefore(modalDiv, modal);
-            var resize = function() {
+            iframe.resize = function() {
                 //lookup element again because 'resize' closure is registered only once
                 var frame = document.getElementById('iceModalFrame' + target);
                 if (frame) {
@@ -979,9 +979,9 @@ Ice.modal = {
                     $(frame.nextSibling).clonePosition(frame);
                 }
             };
-            resize();
-            Event.observe(window, "resize", resize);
-            Event.observe(window, "scroll", resize);
+            iframe.resize();
+            Event.observe(window, "resize", iframe.resize);
+            Event.observe(window, "scroll", iframe.resize);
         }
 
         var modal = document.getElementById(target);
@@ -1054,6 +1054,9 @@ Ice.modal = {
         if (Ice.modal.getRunning() == target) {
             var iframe = document.getElementById('iceModalFrame' + target);
             if (iframe) {
+                Event.stopObserving(window, "resize", iframe.resize);
+                Event.stopObserving(window, "scroll", iframe.resize);
+                iframe.resize = null;
                 iframe.parentNode.removeChild(iframe.nextSibling);
                 iframe.parentNode.removeChild(iframe);
                 logger.debug('removed modal iframe for : ' + target);
@@ -2139,9 +2142,9 @@ var Sortable = {
         }, arguments[1] || {});
         //alert("Last Drag [" + sortableOptions.lastDrag + "]");
         return "first;" + sortableOptions.lastDrag + ";changed;" + $(this.findElements(element, options) || []).map(
-                                                                                                                   function(item) {
-                                                                                                                       return item.id;
-                                                                                                                   }).join(";");
+                function(item) {
+                    return item.id;
+                }).join(";");
     }
 }
 /*
@@ -2224,45 +2227,45 @@ Autocompleter.Base.prototype = {
         this.options.frequency = this.options.frequency || 0.4;
         this.options.minChars = this.options.minChars || 1;
         this.options.onShow = this.options.onShow ||
-                              function(element, update) {
-                                  // Based on code from MSDN
-                                  var ieEngine = null;
-                                  if (window.navigator.appName == "Microsoft Internet Explorer") {
-                                      if (document.documentMode) {
-                                          ieEngine = document.documentMode;
-                                      } else if (document.compatMode && document.compatMode == "CSS1Compat") {
-                                          ieEngine = 7;
-                                      } else {
-                                          ieEngine = 5;
-                                      }
-                                  }
-                                  try {
-                                      if (update["style"] && (!update.style.position || update.style.position == 'absolute')) {
-                                          update.style.position = 'absolute';
-                                          Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
-                                          update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
-                                              offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
-                                          if (ieEngine == 7 || ieEngine == 8) {
-                                              var savedPos = element.style.position;
-                                              element.style.position = "relative";
-                                              update.style.left = element.offsetLeft + "px";
-                                              if (ieEngine == 7) {
-                                                  update.style.top = (element.offsetTop + element.offsetHeight) + "px";
-                                              } else if (ieEngine == 8) {
-                                                  update.style.top = (element.offsetTop - element.cumulativeScrollOffset().top + element.offsetHeight) + "px";
-                                              }
-                                              element.style.position = savedPos;
-                                          }
-                                      }
-                                      Effect.Appear(update, {duration:0.15});
-                                  } catch(e) {
-                                      logger.info(e);
-                                  }
-                              };
+                function(element, update) {
+                    // Based on code from MSDN
+                    var ieEngine = null;
+                    if (window.navigator.appName == "Microsoft Internet Explorer") {
+                        if (document.documentMode) {
+                            ieEngine = document.documentMode;
+                        } else if (document.compatMode && document.compatMode == "CSS1Compat") {
+                            ieEngine = 7;
+                        } else {
+                            ieEngine = 5;
+                        }
+                    }
+                    try {
+                        if (update["style"] && (!update.style.position || update.style.position == 'absolute')) {
+                            update.style.position = 'absolute';
+                            Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
+                            update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
+                                offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
+                            if (ieEngine == 7 || ieEngine == 8) {
+                                var savedPos = element.style.position;
+                                element.style.position = "relative";
+                                update.style.left = element.offsetLeft + "px";
+                                if (ieEngine == 7) {
+                                    update.style.top = (element.offsetTop + element.offsetHeight) + "px";
+                                } else if (ieEngine == 8) {
+                                    update.style.top = (element.offsetTop - element.cumulativeScrollOffset().top + element.offsetHeight) + "px";
+                                }
+                                element.style.position = savedPos;
+                            }
+                        }
+                        Effect.Appear(update, {duration:0.15});
+                    } catch(e) {
+                        logger.info(e);
+                    }
+                };
         this.options.onHide = this.options.onHide ||
-                              function(element, update) {
-                                  new Effect.Fade(update, {duration:0.15})
-                              };
+                function(element, update) {
+                    new Effect.Fade(update, {duration:0.15})
+                };
 
         if (typeof(this.options.tokens) == 'string')
             this.options.tokens = new Array(this.options.tokens);
