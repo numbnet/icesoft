@@ -21,6 +21,10 @@
 
 <project name="icefaces" default="lib">
 	
+    <!-- This property file is only used for EE builds and overrides various
+         property values if it is available. -->
+    <property file="../../ee-bundle.properties"/>
+
 	<property file="./build.properties"/>
     <property file="../build.properties"/>
 
