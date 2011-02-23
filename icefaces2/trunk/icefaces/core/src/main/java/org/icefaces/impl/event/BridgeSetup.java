@@ -159,8 +159,7 @@ public class BridgeSetup implements SystemEventListener {
                         addMandatoryResourceDependency(context, root,
                                 compClassName, addedResDeps, resDep);
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     if (log.isLoggable(Level.WARNING)) {
                         log.log(Level.WARNING, "When processing mandatory " +
                                 "resource components, could not create instance " +
@@ -185,7 +184,7 @@ public class BridgeSetup implements SystemEventListener {
 
         try {
             String tempWindowID = "unknownWindow";
-            WindowScopeManager.ScopeMap windowScope =
+            final WindowScopeManager.ScopeMap windowScope =
                     WindowScopeManager.lookupWindowScope(context);
             if (null != windowScope) {
                 tempWindowID = windowScope.getId();
@@ -216,6 +215,9 @@ public class BridgeSetup implements SystemEventListener {
                     writer.write(",");
                     writer.write("standardFormSerialization: ");
                     writer.write(Boolean.toString(standardFormSerialization));
+                    writer.write(",");
+                    writer.write("sendDisposeWindow: ");
+                    writer.write(Boolean.toString(windowScope != null && !windowScope.isEmpty()));
                     writer.write(",");
                     writer.write("blockUIOnSubmit: ");
                     writer.write(Boolean.toString(EnvUtils.isBlockUIOnSubmit(context)));

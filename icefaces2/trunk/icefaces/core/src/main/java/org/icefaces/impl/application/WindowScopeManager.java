@@ -30,18 +30,11 @@ import javax.faces.FactoryFinder;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.component.UIViewRoot;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.ExceptionQueuedEvent;
-import javax.faces.event.PhaseEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PhaseListener;
-import javax.faces.event.PostConstructCustomScopeEvent;
-import javax.faces.event.PreDestroyCustomScopeEvent;
-import javax.faces.event.ScopeContext;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.*;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
 import javax.servlet.http.HttpServletRequest;
@@ -52,12 +45,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,6 +54,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper {
     private static final Logger log = Logger.getLogger(WindowScopeManager.class.getName());
     private static final String seed = Integer.toString(new Random().nextInt(1000), 36);
     private static SharedMapLookupStrategy sharedMapLookupStrategy;
+    private static ScopeMap UnusedScopeMap;
 
     static {
         try {
@@ -85,63 +74,63 @@ public class WindowScopeManager extends ResourceHandlerWrapper {
         LifecycleFactory factory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
         Lifecycle lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
         lifecycle.addPhaseListener(
-            new PhaseListener() {
-                public void afterPhase(final PhaseEvent event) {
-                }
-
-                public void beforePhase(final PhaseEvent event) {
-                    FacesContext context = FacesContext.getCurrentInstance();
-                    try {
-                        ExternalContext externalContext = context.getExternalContext();
-                        //ICE-5281:  We require that a session be available at this point and it may not have
-                        //           been created otherwise.
-                        //WindowScope should not cause session creation until the time objects need to be stored
-                        //in window scope
-                        //Object session = externalContext.getSession(true);
-                        WindowScopeManager.determineWindowID(context);
-                    } catch (Exception e) {
-                        log.log(Level.FINE, "Unable to set up WindowScope ", e);
+                new PhaseListener() {
+                    public void afterPhase(final PhaseEvent event) {
                     }
-                }
 
-                public PhaseId getPhaseId() {
-                    return PhaseId.RESTORE_VIEW;
-                }
-            });
+                    public void beforePhase(final PhaseEvent event) {
+                        FacesContext context = FacesContext.getCurrentInstance();
+                        try {
+                            ExternalContext externalContext = context.getExternalContext();
+                            //ICE-5281:  We require that a session be available at this point and it may not have
+                            //           been created otherwise.
+                            //WindowScope should not cause session creation until the time objects need to be stored
+                            //in window scope
+                            //Object session = externalContext.getSession(true);
+                            WindowScopeManager.determineWindowID(context);
+                        } catch (Exception e) {
+                            log.log(Level.FINE, "Unable to set up WindowScope ", e);
+                        }
+                    }
+
+                    public PhaseId getPhaseId() {
+                        return PhaseId.RESTORE_VIEW;
+                    }
+                });
         lifecycle.addPhaseListener(
-            new PhaseListener() {
-                public void afterPhase(final PhaseEvent event) {
-                    FacesContext context = FacesContext.getCurrentInstance();
-                    try {
-                        ExternalContext externalContext = context.getExternalContext();
-                        Object session = externalContext.getSession(false);
-                        if (session != null) {
-                            if (EnvUtils.instanceofPortletSession(session)) {
-                                javax.portlet.PortletSession portletSession = (javax.portlet.PortletSession)session;
-                                Object state = portletSession.getAttribute(WindowScopeManager.class.getName(), javax.portlet.PortletSession.APPLICATION_SCOPE);
-                                if (state != null) {
-                                    portletSession.setAttribute(WindowScopeManager.class.getName(), state, javax.portlet.PortletSession.APPLICATION_SCOPE);
-                                }
-                            } else {
-                                HttpSession servletSession = (HttpSession)session;
-                                Object state = servletSession.getAttribute(WindowScopeManager.class.getName());
-                                if (state != null) {
-                                    servletSession.setAttribute(WindowScopeManager.class.getName(), state);
+                new PhaseListener() {
+                    public void afterPhase(final PhaseEvent event) {
+                        FacesContext context = FacesContext.getCurrentInstance();
+                        try {
+                            ExternalContext externalContext = context.getExternalContext();
+                            Object session = externalContext.getSession(false);
+                            if (session != null) {
+                                if (EnvUtils.instanceofPortletSession(session)) {
+                                    javax.portlet.PortletSession portletSession = (javax.portlet.PortletSession) session;
+                                    Object state = portletSession.getAttribute(WindowScopeManager.class.getName(), javax.portlet.PortletSession.APPLICATION_SCOPE);
+                                    if (state != null) {
+                                        portletSession.setAttribute(WindowScopeManager.class.getName(), state, javax.portlet.PortletSession.APPLICATION_SCOPE);
+                                    }
+                                } else {
+                                    HttpSession servletSession = (HttpSession) session;
+                                    Object state = servletSession.getAttribute(WindowScopeManager.class.getName());
+                                    if (state != null) {
+                                        servletSession.setAttribute(WindowScopeManager.class.getName(), state);
+                                    }
                                 }
                             }
+                        } catch (Exception e) {
+                            log.log(Level.FINE, "Unable to reset WindowScope", e);
                         }
-                    } catch (Exception e) {
-                        log.log(Level.FINE, "Unable to reset WindowScope", e);
                     }
-                }
 
-                public void beforePhase(final PhaseEvent event) {
-                }
+                    public void beforePhase(final PhaseEvent event) {
+                    }
 
-                public PhaseId getPhaseId() {
-                    return PhaseId.RENDER_RESPONSE;
-                }
-            });
+                    public PhaseId getPhaseId() {
+                        return PhaseId.RENDER_RESPONSE;
+                    }
+                });
     }
 
     public ResourceHandler getWrapped() {
@@ -196,6 +185,16 @@ public class WindowScopeManager extends ResourceHandlerWrapper {
         ExternalContext externalContext = context.getExternalContext();
         String id = externalContext.getRequestParameterMap().get("ice.window");
         try {
+            for (Object scopeMap : new ArrayList(state.windowScopedMaps.values())) {
+                ScopeMap map = (ScopeMap) scopeMap;
+                if (!map.getId().equals(id)) {
+                    map.disactivateIfUnused(context);
+                }
+            }
+        } catch (Throwable e) {
+            log.log(Level.FINE, "Failed to remove window scope map", e);
+        }
+        try {
             for (Object scopeMap : new ArrayList(state.disposedWindowScopedMaps)) {
                 ScopeMap map = (ScopeMap) scopeMap;
                 if (!map.getId().equals(id)) {
@@ -235,7 +234,18 @@ public class WindowScopeManager extends ResourceHandlerWrapper {
                         return id;
                     }
                 }
-                throw new RuntimeException("Unknown window scope ID: " + id);
+
+                //unknown window scope, corresponding ScopeMap might have been erased when not used (no beans stored in it)
+                //use No-Op ScopeMap to avoid throwing exceptions
+                UnusedScopeMap = UnusedScopeMap == null ? new ScopeMap(context) : UnusedScopeMap;
+                id = UnusedScopeMap.getId();
+                //put something into the map to avoid beeing discarded
+                if (UnusedScopeMap.isEmpty()) {
+                    UnusedScopeMap.put("dummy-bean", new Object());
+                }
+                UnusedScopeMap.activate(state);
+                associateWindowID(id, requestMap);
+                return id;
             }
         }
     }
@@ -268,8 +278,8 @@ public class WindowScopeManager extends ResourceHandlerWrapper {
         ExceptionHandler oldHandler = facesContext.getExceptionHandler();
         //all Exceptions will be ignored since no further action can be taken
         //during window disposal
-        facesContext.setExceptionHandler( 
-                new DiscardingExceptionHandler(oldHandler) );
+        facesContext.setExceptionHandler(
+                new DiscardingExceptionHandler(oldHandler));
         lifecycle.execute(facesContext);
 
         UIViewRoot viewRoot = facesContext.getViewRoot();
@@ -329,6 +339,12 @@ public class WindowScopeManager extends ResourceHandlerWrapper {
             } finally {
                 facesContext.setProcessingEvents(processingEvents);
                 sharedMapLookupStrategy.associate(facesContext, id);
+            }
+        }
+
+        private void disactivateIfUnused(FacesContext facesContext) {
+            if (isEmpty()) {
+                disactivate(getState(facesContext));
             }
         }
 
@@ -491,22 +507,22 @@ public class WindowScopeManager extends ResourceHandlerWrapper {
         }
     }
 
-    static class DiscardingExceptionHandler extends ExceptionHandlerWrapper  {
+    static class DiscardingExceptionHandler extends ExceptionHandlerWrapper {
         ExceptionHandler wrapped;
 
-        public DiscardingExceptionHandler(ExceptionHandler wrapped)  {
+        public DiscardingExceptionHandler(ExceptionHandler wrapped) {
             this.wrapped = wrapped;
         }
 
-        public void processEvent(SystemEvent exceptionQueuedEvent)  {
-            Throwable throwable = ((ExceptionQueuedEvent)exceptionQueuedEvent)
+        public void processEvent(SystemEvent exceptionQueuedEvent) {
+            Throwable throwable = ((ExceptionQueuedEvent) exceptionQueuedEvent)
                     .getContext().getException();
             if (log.isLoggable(Level.FINE)) {
                 log.log(Level.FINE, "Exception during window disposal " + throwable);
             }
         }
 
-        public javax.faces.context.ExceptionHandler getWrapped()  {
+        public javax.faces.context.ExceptionHandler getWrapped() {
             return wrapped;
         }
     }
