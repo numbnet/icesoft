@@ -50,6 +50,7 @@ public class EnvUtils {
     public static String WINDOW_SCOPE_EXPIRATION = "org.icefaces.windowScopeExpiration";
     public static String MANDATORY_RESOURCE_CONFIG = "org.icefaces.mandatoryResourceConfiguration";
     public static String UNIQUE_RESOURCE_URLS = "org.icefaces.uniqueResourceURLs";
+    public static String LAZY_WINDOW_SCOPE = "org.icefaces.lazyWindowScope";
 
     //Parameters configurable using context parameters but only in compatibility mode
     public static String CONNECTION_LOST_REDIRECT_URI = "org.icefaces.connectionLostRedirectURI";
@@ -239,16 +240,17 @@ public class EnvUtils {
         return (Boolean.TRUE.equals(lazyPush));
     }
 
-    
+
     /**
      * Returns true if JSF Partial State Saving is active.
+     *
      * @param facesContext The current FacesContext instance.
      * @return Returns the current state of JSF Partial State Saving.  The default is true.
      */
     public static boolean isPartialStateSaving(FacesContext facesContext) {
-        return !( "false".equalsIgnoreCase(
+        return !("false".equalsIgnoreCase(
                 FacesContext.getCurrentInstance().getExternalContext()
-                .getInitParameter("javax.faces.PARTIAL_STATE_SAVING")) );
+                        .getInitParameter("javax.faces.PARTIAL_STATE_SAVING")));
     }
 
     /**
@@ -401,6 +403,10 @@ public class EnvUtils {
         }
         return false;
     }
+
+    public static boolean isLazyWindowScope(FacesContext facesContext) {
+        return EnvConfig.getEnvConfig(facesContext).lazyWindowScope;
+    }
 }
 
 class EnvConfig {
@@ -422,6 +428,7 @@ class EnvConfig {
     long windowScopeExpiration;
     String mandatoryResourceConfig;
     boolean uniqueResourceURLs;
+    boolean lazyWindowScope;
 
     public EnvConfig(Map initMap) {
         init(initMap);
@@ -445,6 +452,7 @@ class EnvConfig {
         windowScopeExpiration = decodeLong(initMap, EnvUtils.WINDOW_SCOPE_EXPIRATION, 1000, info);
         mandatoryResourceConfig = decodeString(initMap, EnvUtils.MANDATORY_RESOURCE_CONFIG, null, info);
         uniqueResourceURLs = decodeBoolean(initMap, EnvUtils.UNIQUE_RESOURCE_URLS, true, info);
+        lazyWindowScope = decodeBoolean(initMap, EnvUtils.LAZY_WINDOW_SCOPE, true, info);
 
         log.info("ICEfaces Configuration: \n" + info);
     }

@@ -194,8 +194,7 @@ public class BridgeSetup implements SystemEventListener {
             }
             final String windowID = tempWindowID;
             final String viewID = assignViewID(externalContext);
-
-
+            final boolean sendDisposeWindow = !EnvUtils.isLazyWindowScope(context) || (windowScope != null && !windowScope.isEmpty());
             UIOutput icefacesSetup = new UIOutputWriter() {
                 public void encode(ResponseWriter writer, FacesContext context) throws IOException {
                     String clientID = getClientId(context);
@@ -217,7 +216,7 @@ public class BridgeSetup implements SystemEventListener {
                     writer.write(Boolean.toString(standardFormSerialization));
                     writer.write(",");
                     writer.write("sendDisposeWindow: ");
-                    writer.write(Boolean.toString(windowScope != null && !windowScope.isEmpty()));
+                    writer.write(Boolean.toString(sendDisposeWindow));
                     writer.write(",");
                     writer.write("blockUIOnSubmit: ");
                     writer.write(Boolean.toString(EnvUtils.isBlockUIOnSubmit(context)));
