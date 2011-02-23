@@ -25,8 +25,8 @@
     <property file="local.properties"/>
     <property file="build.properties"/>
     <property name="root.offset" value=".."/>
-    <property name="product" value="ICEpush"/>
-    <property name="version.primary" value="1"/>
+    <property name="push.product" value="ICEpush"/>
+    <property name="version.primary" value="2"/>
     <property name="version.secondary" value="0"/>
     <property name="version.tertiary" value="0"/>
     <property file="${root.offset}/build.properties"/>
@@ -60,7 +60,7 @@
                 <filterchain>
                     <replacetokens>
                         <token key="company" value="${company}"/>
-                        <token key="product" value="${product}"/>
+                        <token key="product" value="${push.product}"/>
                         <token key="release.type" value="${release.type}"/>
                         <token key="version.primary" value="${version.primary}"/>
                         <token key="version.secondary" value="${version.secondary}"/>
