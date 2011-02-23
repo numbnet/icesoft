@@ -379,7 +379,11 @@ if (!window.ice.icefaces) {
         };
 
         function isComponentRendered(form) {
-            return form['javax.faces.encodedURL'] || form['javax.faces.ViewState'] || form['ice.window'] || form['ice.view'] || form[form.id].value == form.id;
+            return form['javax.faces.encodedURL'] ||
+                    form['javax.faces.ViewState'] ||
+                    form['ice.window'] ||
+                    form['ice.view'] ||
+                    (form.id && form.id == form[form.id].value);
         }
 
         function findUpdatedForms(updates) {
