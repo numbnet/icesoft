@@ -260,7 +260,9 @@ if (!window.ice.icefaces) {
             container.configuration = configuration;
             container.configuration.viewID = viewID;
             namespace.window = windowID;
-            onBeforeUnload(window, disposeWindow(viewID));
+            if (configuration.sendDisposeWindow) {
+                onBeforeUnload(window, disposeWindow(viewID));
+            }
         };
 
         namespace.setupPush = function(viewID) {
