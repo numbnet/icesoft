@@ -103,22 +103,6 @@
                 <file file="${sources}"/>
                 <fileset dir="${build.dir}/javascript"/>
             </add.filesets>
-            <manifest>
-                <section name="org.icepush">
-                    <attribute name="Implementation-Title"
-                               value="${push.product} ${product.lib}"/>
-                    <attribute name="Implementation-Version"
-                               value="${version.string}"/>
-                    <attribute name="Build-Number"
-                               value="${build.number}"/>
-                    <attribute name="Build-Time"
-                               value="${build.time}"/>
-                    <attribute name="Implementation-Vendor"
-                               value="${company}"/>
-                </section>
-            </manifest>
-                <add.metainfs/>
-
         </build.jar>
         <delete file="${sources}"/>
     </target>
