@@ -60,7 +60,7 @@
                 <filterchain>
                     <replacetokens>
                         <token key="company" value="${company}"/>
-                        <token key="product" value="${push.product}"/>
+                        <token key="product" value="${product}"/>
                         <token key="release.type" value="${release.type}"/>
                         <token key="version.primary" value="${version.primary}"/>
                         <token key="version.secondary" value="${version.secondary}"/>
@@ -103,6 +103,22 @@
                 <file file="${sources}"/>
                 <fileset dir="${build.dir}/javascript"/>
             </add.filesets>
+            <manifest>
+                <section name="org.icepush">
+                    <attribute name="Implementation-Title"
+                               value="${push.product} ${product.lib}"/>
+                    <attribute name="Implementation-Version"
+                               value="${version.string}"/>
+                    <attribute name="Build-Number"
+                               value="${build.number}"/>
+                    <attribute name="Build-Time"
+                               value="${build.time}"/>
+                    <attribute name="Implementation-Vendor"
+                               value="${company}"/>
+                </section>
+            </manifest>
+                <add.metainfs/>
+
         </build.jar>
         <delete file="${sources}"/>
     </target>
