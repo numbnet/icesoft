@@ -153,7 +153,7 @@ public class MenuItems extends MenuItemBase {
         List list = prepareChildren();
         if(list != null) {
             for (int j = 0; j < list.size(); j++) {
-                MenuItem item = (MenuItem) list.get(j);
+                MenuItemBase item = (MenuItemBase) list.get(j);
                 item.processDecodes(context);
             }
         }
