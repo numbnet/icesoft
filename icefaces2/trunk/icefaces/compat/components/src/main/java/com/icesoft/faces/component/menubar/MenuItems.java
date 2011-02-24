@@ -113,9 +113,10 @@ public class MenuItems extends MenuItemBase {
 
             // here's where we attach the action and actionlistener methodBindings to the MenuItem
             MenuItemBase nextChildMenuItemBase = (MenuItemBase) nextChild;
-            if (null != als) {
+            ActionListener[] listeners = nextChildMenuItemBase.getActionListeners();
+            if (null != als && listeners.length == 0) {
                 for(int j = 0; j < als.length; j++) {
-                    nextChildMenuItemBase.removeActionListener(als[j]);
+//                    nextChildMenuItemBase.removeActionListener(als[j]);
                     nextChildMenuItemBase.addActionListener(als[j]);
                 }
             }
