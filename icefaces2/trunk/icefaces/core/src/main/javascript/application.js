@@ -383,7 +383,7 @@ if (!window.ice.icefaces) {
                     form['javax.faces.ViewState'] ||
                     form['ice.window'] ||
                     form['ice.view'] ||
-                    (form.id && form.id == form[form.id].value);
+                    (form.id && form[form.id] && form.id == form[form.id].value);
         }
 
         function findUpdatedForms(updates) {
