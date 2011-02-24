@@ -39,15 +39,13 @@ import javax.faces.event.PhaseId;
  */
 @ManagedBean
 @ViewScoped
-public class SortHeaderModel extends DataTableBase implements PhaseListener {
+public class SortHeaderModel extends DataTableBase {
 
     private static final Log logger =
             LogFactory.getLog(SortHeaderModel.class);
 
     private boolean descending = true;
-    private boolean oldDescending = descending;
     private String columnName = Employee.DEPARTMENT_NAME_COLUMN;
-    private String oldColumnName = columnName;
 
 
     protected void init() {
@@ -56,43 +54,8 @@ public class SortHeaderModel extends DataTableBase implements PhaseListener {
                 columnName);
     }
 
-    /**
-     * <p>Handle a notification that the processing for a particular
-     * phase of the request processing lifecycle is about to begin.</p>
-     * <p>Checks if data model flags are dirty and call service layer to
-     * refresh data if necessary.</p>
-     */
-    public void beforePhase(PhaseEvent event) {
-
-        SortHeaderModel sortHeaderModel =
-                (SortHeaderModel)FacesUtils.getManagedBean(
-                        BeanNames.SORT_HEADER_MODEL);
-
-        if ((sortHeaderModel.descending != sortHeaderModel.oldDescending) ||
-                (!sortHeaderModel.columnName.equals(sortHeaderModel.oldColumnName))){
-            sortHeaderModel.init();
-            logger.debug("SortHeaderModel - dataRefresh ");
-            // reset dirty flags.
-            sortHeaderModel.oldDescending = sortHeaderModel.descending;
-            sortHeaderModel.oldColumnName = sortHeaderModel.columnName;
-        }
-    }
-
-    /**
-     * <p>Handle a notification that the processing for a particular
-     * phase has just been completed.</p>
-     */
-    public void afterPhase(PhaseEvent event) {}
-
-    /**
-     * <p>Return the identifier of the request processing phase during
-     * which this listener is interested in processing {@link javax.faces.event.PhaseEvent}
-     * events.  Legal values are the singleton instances defined by the
-     * {@link javax.faces.event.PhaseId} class, including <code>PhaseId.ANY_PHASE</code>
-     * to indicate an interest in being notified for all standard phases.</p>
-     */
-    public PhaseId getPhaseId() {
-        return PhaseId.RENDER_RESPONSE;
+    public void sort() {
+        init();
     }
 
     public boolean isDescending() {
@@ -100,7 +63,6 @@ public class SortHeaderModel extends DataTableBase implements PhaseListener {
     }
 
     public void setDescending(boolean descending) {
-        oldDescending = this.descending;
         this.descending = descending;
     }
 
@@ -109,7 +71,6 @@ public class SortHeaderModel extends DataTableBase implements PhaseListener {
     }
 
     public void setColumnName(String columnName) {
-        oldColumnName = this.columnName;
         this.columnName = columnName;
     }
 }

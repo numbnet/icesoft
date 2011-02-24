@@ -35,11 +35,4 @@
         <message-bundle>org.icefaces.application.showcase.view.resources.messages</message-bundle>
     </application>
 
-    <!-- commandSortHeader bean -->
-    <lifecycle>
-        <phase-listener>
-            org.icefaces.application.showcase.view.bean.examples.component.commandSortHeader.SortHeaderModel
-        </phase-listener>
-    </lifecycle>
-
 </faces-config>
