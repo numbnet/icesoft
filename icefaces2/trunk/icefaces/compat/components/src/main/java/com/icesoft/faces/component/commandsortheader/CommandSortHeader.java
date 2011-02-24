@@ -38,8 +38,6 @@ public class CommandSortHeader
      * @see javax.faces.component.UIComponent#broadcast(javax.faces.event.FacesEvent)
      */
     public void broadcast(FacesEvent event) throws AbortProcessingException {
-        super.broadcast(event);
-
         if (event instanceof ActionEvent) {
             HtmlDataTable dataTable = findParentDataTable();
             if (dataTable == null) {
@@ -49,14 +47,15 @@ public class CommandSortHeader
                 String currentSortColumn = dataTable.getSortColumn();
                 boolean currentAscending = dataTable.isSortAscending();
                 if (colName.equals(currentSortColumn)) {
-                    dataTable.setSortColumn(getColumnName());
                     dataTable.setSortAscending(!currentAscending);
                 } else {
-                    dataTable.setSortColumn(getColumnName());
+                    dataTable.setSortColumn(colName);
                     dataTable.setSortAscending(true);
                 }
             }
         }
+        
+        super.broadcast(event);
     }
 
 
