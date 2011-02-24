@@ -58,7 +58,8 @@ clicking the column header.
             <ice:column>
                 <f:facet name="header">
                     <ice:commandSortHeader id="regionHeader"
-                                           columnName="departmentName" >
+                                           columnName="departmentName"
+                                           actionListener="#{sortHeaderModel.sort}" >
                         <ice:outputText value="#{msgs['page.dataTable.column5']}"/>
                     </ice:commandSortHeader>
                 </f:facet>
@@ -69,7 +70,8 @@ clicking the column header.
             <ice:column>
                 <f:facet name="header">
                     <ice:commandSortHeader id="officeHeader"
-                                           columnName="subDepartmentName" >
+                                           columnName="subDepartmentName"
+                                           actionListener="#{sortHeaderModel.sort}" >
                         <ice:outputText value="#{msgs['page.dataTable.column6']}"/>
                     </ice:commandSortHeader>
                 </f:facet>
@@ -80,7 +82,8 @@ clicking the column header.
             <ice:column>
                 <f:facet name="header">
                     <ice:commandSortHeader id="firstNameHeader" 
-                                           columnName="firstName">
+                                           columnName="firstName"
+                                           actionListener="#{sortHeaderModel.sort}" >
                         <ice:outputText value="#{msgs['page.dataTable.column2']}"/>
                     </ice:commandSortHeader>
                 </f:facet>
@@ -91,7 +94,8 @@ clicking the column header.
             <ice:column>
                 <f:facet name="header">
                     <ice:commandSortHeader id="lastNameHeader"
-                                           columnName="lastName" >
+                                           columnName="lastName"
+                                           actionListener="#{sortHeaderModel.sort}" >
                         <ice:outputText value="#{msgs['page.dataTable.column3']}"/>
                     </ice:commandSortHeader>
                 </f:facet>
@@ -102,7 +106,8 @@ clicking the column header.
             <ice:column>
                 <f:facet name="header">
                     <ice:commandSortHeader id="phoneNoHeader" 
-                                           columnName="phone" >
+                                           columnName="phone"
+                                           actionListener="#{sortHeaderModel.sort}" >
                         <ice:outputText value="#{msgs['page.dataTable.column4']}"/>
                     </ice:commandSortHeader>
                 </f:facet>
