@@ -69,8 +69,10 @@ public class MenuItems extends MenuItemBase {
         return "com.icesoft.faces.MenuNodes";
     }
 
-    /* (non-Javadoc)
-     * @see javax.faces.component.UICommand#getValue()
+    /**
+     * A java.util.List of MenuItem objects. Use explicit ids with the MenuItem components you create with for ice:menuItems,
+     * and create them in your bean constructor, so that each call to the bean getter method will return the same components.
+     * @return java.util.List of MenuItem objects
      */
     public Object getValue() {
 
