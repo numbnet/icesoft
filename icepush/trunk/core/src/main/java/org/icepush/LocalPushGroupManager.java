@@ -22,71 +22,75 @@
 
 package org.icepush;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.servlet.ServletContext;
-
 import org.icepush.servlet.ReadyObservable;
 import org.icepush.servlet.ServletContextConfiguration;
 
-public class LocalPushGroupManager
-implements PushGroupManager {
-    private static final Logger LOGGER = Logger.getLogger(LocalPushGroupManager.class.getName());
+import javax.servlet.ServletContext;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+public class LocalPushGroupManager implements PushGroupManager {
+    private static final Logger LOGGER = Logger.getLogger(LocalPushGroupManager.class.getName());
     private static final int GROUP_SCANNING_TIME_RESOLUTION = 3000; // ms
 
+    private final Map<String, PushID> pushIDMap = new HashMap<String, PushID>();
     private final Map<String, Group> groupMap = new HashMap<String, Group>();
     private final Observable inboundNotifier = new ReadyObservable();
     private final Observable outboundNotifier = new ReadyObservable();
-
     private final long groupTimeout;
+    private final long pushIdTimeout;
 
     public LocalPushGroupManager(final ServletContext servletContext) {
         Configuration configuration = new ServletContextConfiguration("org.icepush", servletContext);
         this.groupTimeout = configuration.getAttributeAsLong("groupTimeout", 2 * 60 * 1000);
+        this.pushIdTimeout = configuration.getAttributeAsLong("pushIdTimeout", 2 * 60 * 1000);
         inboundNotifier.addObserver(
-            new Observer() {
-                private long lastScan = System.currentTimeMillis();
-                private Set pushIDs = new HashSet();
+                new Observer() {
+                    private long lastScan = System.currentTimeMillis();
+                    private Set<String> pushIDs = new HashSet<String>();
 
-                public void update(final Observable observable, final Object object) {
-                    long now = System.currentTimeMillis();
-                    //accumulate pushIDs
-                    pushIDs.addAll((List)object);
-                    //avoid to scan/touch the groups on each notification
-                    if (lastScan + GROUP_SCANNING_TIME_RESOLUTION < now) {
-                        try {
-                            for (Group group : groupMap.values()) {
-                                group.touchIfMatching(pushIDs);
-                                group.discardIfExpired();
+                    public void update(final Observable observable, final Object object) {
+                        long now = System.currentTimeMillis();
+                        //accumulate pushIDs
+                        pushIDs.addAll((List) object);
+                        //avoid to scan/touch the groups on each notification
+                        if (lastScan + GROUP_SCANNING_TIME_RESOLUTION < now) {
+                            try {
+                                for (Group group : new ArrayList<Group>(groupMap.values())) {
+                                    group.touchIfMatching(pushIDs);
+                                    group.discardIfExpired();
+                                }
+                                for (PushID pushID : new ArrayList<PushID>(pushIDMap.values())) {
+                                    pushID.touchIfMatching(pushIDs);
+                                    pushID.discardIfExpired();
+                                }
+                            } finally {
+                                lastScan = now;
+                                pushIDs = new HashSet();
                             }
-                        } finally {
-                            lastScan = now;
-                            pushIDs = new HashSet();
                         }
                     }
-                }
-            });
+                });
     }
 
-    public void addMember(final String groupName, final String pushId) {
-        if (groupMap.containsKey(groupName)) {
-            groupMap.get(groupName).addPushID(pushId);
+    public void addMember(final String groupName, final String id) {
+        PushID pushID = pushIDMap.get(id);
+        if (pushID == null) {
+            pushIDMap.put(id, new PushID(id, groupName));
         } else {
-            groupMap.put(groupName, new Group(groupName, pushId));
+            pushID.addToGroup(groupName);
         }
+
+        Group group = groupMap.get(groupName);
+        if (group == null) {
+            groupMap.put(groupName, new Group(groupName, id));
+        } else {
+            group.addPushID(id);
+        }
+
         if (LOGGER.isLoggable(Level.FINEST)) {
-            LOGGER.log(Level.FINEST, "Added pushId '" + pushId + "' to group '" + groupName + "'.");
+            LOGGER.log(Level.FINEST, "Added pushId '" + id + "' to group '" + groupName + "'.");
         }
     }
 
@@ -100,8 +104,8 @@ implements PushGroupManager {
 
     public Map<String, String[]> getGroupMap() {
         Map<String, String[]> groupMap = new HashMap<String, String[]>();
-        for (String groupName : this.groupMap.keySet()) {
-            groupMap.put(groupName, this.groupMap.get(groupName).getPushIDs());
+        for (Group group : new ArrayList<Group>(this.groupMap.values())) {
+            groupMap.put(group.name, group.getPushIDs());
         }
         return groupMap;
     }
@@ -111,17 +115,25 @@ implements PushGroupManager {
     }
 
     public void push(final String groupName) {
-        if (groupMap.containsKey(groupName)) {
+        Group group = groupMap.get(groupName);
+        if (group != null) {
             if (LOGGER.isLoggable(Level.FINEST)) {
                 LOGGER.log(Level.FINEST, "Push notification triggered for '" + groupName + "' group.");
             }
-            outboundNotifier.notifyObservers(groupMap.get(groupName).getPushIDs());
+            outboundNotifier.notifyObservers(group.getPushIDs());
         }
     }
 
     public void removeMember(final String groupName, final String pushId) {
-        if (groupMap.containsKey(groupName)) {
-            groupMap.get(groupName).removePushID(pushId);
+        Group group = groupMap.get(groupName);
+        if (group != null) {
+            group.removePushID(pushId);
+
+            PushID id = pushIDMap.get(pushId);
+            if (id != null) {
+                id.removeFromGroup(groupName);
+            }
+
             if (LOGGER.isLoggable(Level.FINEST)) {
                 LOGGER.log(Level.FINEST, "Removed pushId '" + pushId + "' from group '" + groupName + "'.");
             }
@@ -134,9 +146,7 @@ implements PushGroupManager {
 
     private class Group {
         private final Set<String> pushIdList = new HashSet<String>();
-
         private final String name;
-
         private long lastAccess = System.currentTimeMillis();
 
         private Group(final String name, final String firstPushId) {
@@ -158,6 +168,12 @@ implements PushGroupManager {
                     LOGGER.log(Level.FINEST, "'" + name + "' push group expired.");
                 }
                 groupMap.remove(name);
+                for (String id : pushIdList) {
+                    PushID pushID = pushIDMap.get(id);
+                    if (pushID != null) {
+                        pushID.removeFromGroup(name);
+                    }
+                }
             }
         }
 
@@ -170,7 +186,7 @@ implements PushGroupManager {
             if (pushIdList.isEmpty()) {
                 if (LOGGER.isLoggable(Level.FINEST)) {
                     LOGGER.log(
-                        Level.FINEST, "Disposed '" + name + "' push group since it no longer contains any pushIds.");
+                            Level.FINEST, "Disposed '" + name + "' push group since it no longer contains any pushIds.");
                 }
                 groupMap.remove(name);
             }
@@ -179,12 +195,59 @@ implements PushGroupManager {
         private void touchIfMatching(final Collection pushIds) {
             Iterator i = pushIds.iterator();
             while (i.hasNext()) {
-                String pushId = (String)i.next();
+                String pushId = (String) i.next();
                 if (pushIdList.contains(pushId)) {
                     lastAccess = System.currentTimeMillis();
-                    //no need to touch again
+                    //no need to touchIfMatching again
                     //return right away without checking the expiration
                     return;
+                }
+            }
+        }
+    }
+
+    private class PushID {
+        private final String id;
+        private final Set<String> groups = new HashSet<String>();
+        private long lastAccess = System.currentTimeMillis();
+
+        private PushID(String id, String group) {
+            this.id = id;
+            addToGroup(group);
+        }
+
+        private void addToGroup(String group) {
+            groups.add(group);
+        }
+
+        private void removeFromGroup(String group) {
+            groups.remove(group);
+            if (groups.isEmpty()) {
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.log(Level.FINEST, "Disposed '" + id + "' pushId since it no longer belongs to any group.");
+                }
+                pushIDMap.remove(id);
+            }
+        }
+
+        public void touchIfMatching(Set pushIDs) {
+            if (pushIDs.contains(id)) {
+                lastAccess = System.currentTimeMillis();
+            }
+        }
+
+        public void discardIfExpired() {
+            //expire pushId
+            if (lastAccess + pushIdTimeout < System.currentTimeMillis()) {
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.log(Level.FINEST, "'" + id + "' pushId expired.");
+                }
+                pushIDMap.remove(id);
+                for (String groupName : groups) {
+                    Group group = groupMap.get(groupName);
+                    if (group != null) {
+                        group.removePushID(id);
+                    }
                 }
             }
         }
