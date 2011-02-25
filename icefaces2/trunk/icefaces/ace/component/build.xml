@@ -212,7 +212,55 @@
                 </section>
             </manifest>
 
-        <fileset dir="${exploded}"/>
+        <fileset dir="${exploded}">
+            <include name="org/"/>
+            <include name="META-INF/*"/>
+            <include name="META-INF/resources/org*/**"/>
+            <include unless="exclude.unused.yui" name="META-INF/resources/yui/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/animation/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/assets/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/base/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/button/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/calendar/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/connection/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/container/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/datasource/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/dom/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/element/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/event/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/fonts/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/json/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/logger/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/selector/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/tabview/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/yahoo/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/yahoo-dom-event/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/anim/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/assets/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/attribute/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/base/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/classnamemanager/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/dd/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/dom/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/dump/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/event/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/event-custom/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/intl/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/loader/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/node/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/oop/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/plugin/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/pluginhost/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/slider/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/substitute/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/widget/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/yui/**"/>
+            <!-- Instead of building the include list, we could build an exclude list, but that'd be even longer
+            <exclude if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/paginator/**"/>
+            <exclude if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/profiler/**"/>
+            <exclude if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/profilerviewer/**"/>
+            -->
+        </fileset>
         <fileset dir="${src}" includes="org/icefaces/component/resources/"/>
     </jar>
     <copy file="${dist}/${icefaces-ace.lib.name}.jar" todir="${lib.dir}" overwrite="true"/>
