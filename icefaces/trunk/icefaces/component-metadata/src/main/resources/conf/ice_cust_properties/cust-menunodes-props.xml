@@ -35,7 +35,9 @@
 &ice-att-immediate-props;
 
 <property>
-	<description>A java.util.List of MenuItem objects.</description>
+	<description>A java.util.List of MenuItem objects. Use explicit ids with the MenuItem components you create with for
+        ice:menuItems, and create them in your bean constructor, so that each call to the bean getter method will return
+        the same components.</description>
 	<property-name>value</property-name>
 	<property-class>java.lang.String</property-class>
 	<property-extension>
