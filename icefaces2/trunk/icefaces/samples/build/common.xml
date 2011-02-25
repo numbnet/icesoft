@@ -23,9 +23,8 @@
 
     <!-- This property file is only used for EE builds and overrides various
          property values if it is available. -->
-    <property file="../../../ee-bundle.properties"/>
-
-    <property file="../../build.properties"/>
+    <property file="../../../../ee-bundle.properties"/>
+    <property file="../../../build.properties"/>
 
     <property name="icefaces.base.dir" location="../.."/>
     <property name="samples.dist.dir" location="${icefaces.base.dir}/samples/dist"/>
