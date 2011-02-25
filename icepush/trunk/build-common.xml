@@ -145,7 +145,13 @@
 	            	<include name="*.*"/>
 	            </fileset>
 			</copy>
-			
+
+			<!-- Check if core.groupId is set, and if so use it instead of default groupId -->
+			<condition property="jar.groupId" value="${core.groupId}">
+				<isset property="core.groupId"/>
+			</condition>
+			<property name="jar.groupId" value="${groupId}"/>
+   		
 			<jar destfile="${dist.dir}/@{jar.file.name}" duplicate="fail">
 				<fileset dir="${build.dir}/jar">
 					<include name="**/*"></include>
@@ -153,7 +159,7 @@
 				<fileset dir="${java.dir}" includes="**/*.java"/>
 				<add.filesets/>
 	            <manifest>
-	                <section name="org.icepush">
+	                <section name="${jar.groupId}">
 	                    <attribute name="Implementation-Title"
 	                               value="${product}"/>
 	                    <attribute name="Implementation-Version"
