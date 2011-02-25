@@ -22,6 +22,8 @@
 <project name="core-common">
 
     <property name="icefaces.base.dir" location="../../../.." />
+    <property file="${icefaces.base.dir}/../ee-bundle.properties"/>
+    <property file="${icefaces.base.dir}/build.properties"/>
     <import file="../../../build/common.xml" />
 
 </project>
