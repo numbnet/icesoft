@@ -21,6 +21,12 @@
 
 <project name="icefaces-compat" default="all" >
 	
+    <!-- This property file is only used for EE builds and overrides various
+         property values if it is available. -->
+    <property file="../../ee-bundle.properties"/>
+
+    <property file="../build.properties"/>
+
     <property file="../core/build.properties"/>
     <property name="lib.dir" location="../lib"/>
     
@@ -39,7 +45,7 @@
     </target>
 
     <target name="allclean">
-        <delete file="lib/icefaces-compat.jar"/>
+        <delete file="lib/${icefaces-compat.lib.name}.jar"/>
         <delete file="lib/icefaces-comps-compat.jar"/>
         <subant target="clean">
             <fileset dir="." includes="*/build.xml">

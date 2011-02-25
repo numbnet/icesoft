@@ -21,6 +21,12 @@
 
 <project name="common"> 
 
+    <!-- This property file is only used for EE builds and overrides various
+         property values if it is available. -->
+    <property file="../../../ee-bundle.properties"/>
+
+    <property file="../../build.properties"/>
+
     <property name="icefaces.base.dir" location="../.."/>
     <property name="samples.dist.dir" location="${icefaces.base.dir}/samples/dist"/>
     <property name="lib.dir" location="${icefaces.base.dir}/lib"/>
@@ -53,17 +59,17 @@
             <exclude name="jsf-impl.jar"        unless="jsf"/>
         </patternset>
 
-        <patternset id="lib.distribute.ice" includes="icefaces.jar icefaces-ace.jar icefaces-compat.jar icepush.jar">
-            <exclude name="icefaces.jar"        if="no-icefaces"/>
+        <patternset id="lib.distribute.ice" includes="${icefaces.lib.name}.jar ${icefaces-ace.lib.name}.jar ${icefaces-compat.lib.name}.jar ${icepush.lib.name}.jar">
+            <exclude name="${icefaces.lib.name}.jar"        if="no-icefaces"/>
 
-            <exclude name="icefaces-ace.jar"    if="no-icefaces"/>
-            <exclude name="icefaces-ace.jar"    unless="ace"/>
+            <exclude name="${icefaces-ace.lib.name}.jar"    if="no-icefaces"/>
+            <exclude name="${icefaces-ace.lib.name}.jar"    unless="ace"/>
 
-            <exclude name="icefaces-compat.jar" if="no-icefaces"/>
-            <exclude name="icefaces-compat.jar" unless="compat"/>
+            <exclude name="${icefaces-compat.lib.name}.jar" if="no-icefaces"/>
+            <exclude name="${icefaces-compat.lib.name}.jar" unless="compat"/>
 
-            <exclude name="icepush.jar"         if="no-icefaces"/>
-            <exclude name="icepush.jar"         if="no-icepush"/>
+            <exclude name=" ${icepush.lib.name}.jar"         if="no-icefaces"/>
+            <exclude name=" ${icepush.lib.name}.jar"         if="no-icepush"/>
         </patternset>
     </patternset>
 

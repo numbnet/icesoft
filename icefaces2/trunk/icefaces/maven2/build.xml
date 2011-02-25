@@ -22,6 +22,7 @@
 <project name="icefaces-maven" default="install" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 
     <property file="../../ee-build.properties"/>
+    <property file="../build.properties"/>
     <property file="./build.properties"/>
     <property name="lib.dir" location="../lib"/>
 
@@ -39,7 +40,7 @@
      	 <localRepository refid="local.repository"/>
       </artifact:pom>
       	<echo> installing icepush-${icepushPom.version} to local repository</echo>
-      <artifact:install file="${lib.dir}/icepush.jar" >
+      <artifact:install file="${lib.dir}/${icepush.lib.name}.jar" >
       	 <localRepository refid="local.repository"/>      	
          	  <pom refid="icepushPom"/>
       </artifact:install>	
@@ -47,7 +48,7 @@
     	 <localRepository refid="local.repository"/>
       </artifact:pom>
        <echo>installing icefaces-${glimmerPom.version} to local repository</echo>
-      <artifact:install file="${lib.dir}/icefaces.jar" >
+      <artifact:install file="${lib.dir}/${icefaces.lib.name}.jar" >
       	 <localRepository refid="local.repository"/>      	
     	  <pom refid="glimmerPom"/>
       </artifact:install>
@@ -55,7 +56,7 @@
 	     	 <localRepository refid="local.repository"/>
 	  </artifact:pom>
 	      	<echo> installing icefaces-compat-${compatPom.version} to local repository</echo>
-	  <artifact:install file="${lib.dir}/icefaces-compat.jar" >
+	  <artifact:install file="${lib.dir}/${icefaces-compat.lib.name}.jar" >
 	      	 <localRepository refid="local.repository"/>      	
 	         	  <pom refid="compatPom"/>
 	  </artifact:install>	
@@ -63,7 +64,7 @@
   	     	 <localRepository refid="local.repository"/>
   	  </artifact:pom>
   	      	<echo> installing icefaces-ace-${acePom.version} to local repository</echo>
-  	  <artifact:install file="${lib.dir}/icefaces-ace.jar" >
+  	  <artifact:install file="${lib.dir}/${icefaces-ace.lib.name}.jar" >
   	      	 <localRepository refid="local.repository"/>      	
   	         	  <pom refid="acePom"/>
   	  </artifact:install>	  

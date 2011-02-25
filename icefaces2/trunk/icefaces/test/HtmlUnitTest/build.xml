@@ -21,6 +21,12 @@
 
 <project name="htmlunit-test" default="test.unit">
 
+    <!-- This property file is only used for EE builds and overrides various
+         property values if it is available. -->
+    <property file="../../../ee-bundle.properties"/>
+
+    <property file="../../build.properties"/>
+
     <import file="../../core/build.xml"/>
 
     <property file="htmlunit.properties"/>
@@ -30,7 +36,7 @@
     <property name="test.lib.dir" location="../../lib"/>
 
     <patternset id="test.lib.compile">
-        <include name="icefaces.jar"/>
+        <include name="${icefaces.lib.name}.jar"/>
         <include name="junit-4.5.jar"/> 
     </patternset>
 

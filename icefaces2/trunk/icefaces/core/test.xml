@@ -29,7 +29,7 @@
     <property name="test.classes.dir" location="${test.build.dir}/classes"/>
 
     <patternset id="test.lib.compile">
-        <include name="icefaces.jar"/>
+        <include name="${icefaces.lib.name}.jar"/>
         <include name="junit-4.5.jar"/>
     </patternset>
 

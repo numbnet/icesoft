@@ -21,6 +21,12 @@
 
 <project name="ace-test" default="war">
 
+    <!-- This property file is only used for EE builds and overrides various
+         property values if it is available. -->
+    <property file="../../../ee-bundle.properties"/>
+
+    <property file="../../build.properties"/>
+
     <property name="classes.dir" value="web/WEB-INF/classes"/>
     <property name="icefaces2.lib.dir" location="../../lib"/>
 
@@ -40,7 +46,7 @@
 		    <include name="icefaces.jar" />
                 </fileset>
                 <fileset dir="../component/dist">
-                    <include name="icefaces-ace.jar"/>
+                    <include name="${icefaces-ace.lib.name}.jar"/>
                 </fileset>
             </classpath>
         </javac>
@@ -54,11 +60,11 @@
         <war basedir="web" destfile="dist/${ant.project.name}.war">
             <!--<war basedir="web" destfile="dist/${ant.project.name}.war" webxml="web/WEB-INF/web.xml">-->
             <lib dir="${icefaces2.lib.dir}">
-                <include name="icefaces.jar"/>
-                <include name="icefaces-ace.jar"/>
+                <include name="${icefaces.lib.name}.jar"/>
+                <include name="${icefaces-ace.lib.name}.jar"/>
                 <include name="jsf-api.jar"/>
                 <include name="jsf-impl.jar"/>
-                <include name="icepush.jar"/>
+                <include name="${icepush.lib.name}.jar"/>
             </lib>
 <!--
             <lib dir="../../../glimmer/compat/lib">

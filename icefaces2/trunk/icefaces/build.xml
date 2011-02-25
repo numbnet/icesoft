@@ -83,9 +83,9 @@
         <subant target="allclean">
             <fileset file="samples/build.xml" />
         </subant>
-        <delete file="lib/icefaces.jar"/>
-        <delete file="lib/icefaces-compat.jar"/>
-        <delete file="lib/icefaces-ace.jar"/>
+        <delete file="lib/${icefaces.lib.name}.jar"/>
+        <delete file="lib/${icefaces-compat.lib.name}.jar"/>
+        <delete file="lib/${icefaces-ace.lib.name}.jar"/>
     </target>
 
     <target name="bundle.clean">
