@@ -111,7 +111,7 @@
         <copy todir="${build.dir}/resources/META-INF">
             <fileset dir="${components.dir}/build/generate/src/" includes="*.tld"/>
         </copy>
-        <jar destfile="${dist.dir}/${ant.project.name}.jar">
+        <jar destfile="${dist.dir}/${icefaces-compat.lib.name}.jar">
             <metainf dir="${build.dir}/resources/META-INF"/>
 
             <manifest>
@@ -138,7 +138,7 @@
     </target>
 
     <target name="lib" depends="jar" description="copy icefaces.jar to main lib directory">
-        <copy file="${dist.dir}/${ant.project.name}.jar"
+        <copy file="${dist.dir}/${icefaces-compat.lib.name}.jar"
               todir="${lib.dir}"
               overwrite="true"/>
     </target>

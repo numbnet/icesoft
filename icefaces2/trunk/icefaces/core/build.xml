@@ -105,7 +105,7 @@
     </target>
 
     <target name="jar" depends="compile, build.bridge" description="assemble icefaces.jar">
-        <jar destfile="${dist.dir}/${ant.project.name}.jar">
+        <jar destfile="${dist.dir}/${icefaces.lib.name}.jar">
             <metainf dir="${meta.dir}"/>
             <metainf dir="${build.dir}/javascript"/>
 
@@ -128,7 +128,7 @@
     </target>
 
     <target name="lib" depends="jar" description="copy icefaces.jar to main lib directory">
-        <copy file="${dist.dir}/${ant.project.name}.jar"
+        <copy file="${dist.dir}/${icefaces.lib.name}.jar"
               todir="${lib.dir}"
               overwrite="true"/>
     </target>

@@ -194,7 +194,7 @@
     <mkdir dir="${dist}"/>
 
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-    <jar destfile="${dist}/${ant.project.name}.jar" duplicate="fail">
+    <jar destfile="${dist}/${icefaces-ace.lib.name}.jar" duplicate="fail">
             <metainf dir="${build}/resources/META-INF"/>
 
             <manifest>
@@ -215,7 +215,7 @@
         <fileset dir="${exploded}"/>
         <fileset dir="${src}" includes="org/icefaces/component/resources/"/>
     </jar>
-    <copy file="${dist}/${ant.project.name}.jar" todir="${lib.dir}" overwrite="true"/>
+    <copy file="${dist}/${icefaces-ace.lib.name}.jar" todir="${lib.dir}" overwrite="true"/>
   </target>
 
   <target name="dist" depends="lib,tlddoc,javadoc"
