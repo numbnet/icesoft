@@ -22,8 +22,11 @@
 <project name="common"> 
 
     <!-- This property file is only used for EE builds and overrides various
-         property values if it is available. -->
+         property values if it is available. It's possible for it to be in
+         different locations (src vs binary build) so we attempt to load it
+         from both places. -->
     <property file="../../../../ee-bundle.properties"/>
+    <property file="../../../ee-bundle.properties"/>
     <property file="../../../build.properties"/>
 
     <property name="icefaces.base.dir" location="../.."/>
