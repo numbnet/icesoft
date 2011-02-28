@@ -194,7 +194,10 @@ public class BridgeSetup implements SystemEventListener {
             }
             final String windowID = tempWindowID;
             final String viewID = assignViewID(externalContext);
-            final boolean sendDisposeWindow = !EnvUtils.isLazyWindowScope(context) || (windowScope != null && !windowScope.isEmpty());
+
+            final Map viewScope = root.getViewMap();
+            final boolean sendDisposeWindow = !EnvUtils.isLazyWindowScope(context) ||
+                    (windowScope != null && containsBeans(windowScope)) || (viewScope != null && containsBeans(viewScope));
             UIOutput icefacesSetup = new UIOutputWriter() {
                 public void encode(ResponseWriter writer, FacesContext context) throws IOException {
                     String clientID = getClientId(context);
@@ -273,6 +276,16 @@ public class BridgeSetup implements SystemEventListener {
             //not be fatal to the application
             log.log(Level.WARNING, "Failed to generate JS bridge setup.", e);
         }
+    }
+
+    private static boolean containsBeans(Map<String, Object> scopeMap) {
+        //skip the objects saved in the map by ICEfaces framework while testing for the existence of beans
+        for (String value : scopeMap.keySet()) {
+            if (!value.startsWith("org.icefaces")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static String stripHostInfo(String uriString) {
