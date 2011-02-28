@@ -26,37 +26,41 @@ ice.component.tabset = {
 	 ice.yui3.use(function(Y){ 
 	 Y.on('domready', function(){
 		
+		/*
 		var thisYUI = YUI({combine: false, base: '/ace-test/javax.faces.resource/yui/3_1_1/',
 		
-		/*
 			groups: {
 				yui2: {
 				    combine: false,
-					base: '/ace-test/javax.faces.resource/yui/2_8_1/',
+					base: '/ace-test/javax.faces.resource/yui/2in3/',
 					patterns:  {
 						'yui2-': {
 							configFn: function(me) {
 								if(/-skin|reset|fonts|grids|base/.test(me.name)) {
 									me.type = 'css';
 									me.path = me.path.replace(/\.js/, '.css');
-									me.path = me.path.replace(/\/yui2-skin/, '/assets/skins/sam/yui2-skin');
+									//me.path = me.path.replace(/\/yui2-skin/, '/assets/skins/sam/yui2-skin');
 								}
-								me.path = me.path.replace(/yui2-/, '');
-								me.path = me.path.replace(/\/yui2-/, '/');
+								//me.path = me.path.replace(/yui2-/, '');
+								//me.path = me.path.replace(/\/yui2-/, '/');
 							}
 						}
 					}
 				}
 			}
-		*/
 
 		
 		
 		}); // , base: '/ace-test/javax.faces.resource/yui/3_1_1/'
 		var old = thisYUI.Loader.prototype._url;
 		thisYUI.Loader.prototype._url = function(path, name, base) {
-		 return old.call(this, path, name, base);// + '.jsf';
+		 return old.call(this, path, name, base) + '.jsf';
 		};
+		*/
+		
+		
+		
+		var thisYUI = ice.yui3.getNewInstance();
 		thisYUI.use('yui2-tabview', function(Yui) {
 	     var YAHOO = Yui.YUI2;
 		 var Dom = YAHOO.util.Dom;
