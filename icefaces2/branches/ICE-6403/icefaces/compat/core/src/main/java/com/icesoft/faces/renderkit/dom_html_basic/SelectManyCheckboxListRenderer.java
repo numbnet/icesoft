@@ -72,7 +72,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
 
-        Element rootTR = null;
+        Element childDiv = null;
         // remove all existing table rows from the root table
         if (!domContext.isInitialized()) {
             Element rootNode = createRootNode(domContext);
@@ -80,19 +80,19 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
             addJavaScript(facesContext, uiComponent, rootNode, new HashSet());            
         }
         Element rootNode = (Element) domContext.getRootNode();
-        Element rootTable = getTableElement(domContext);
+        Element rootDiv = getTableElement(domContext);
         String styleClass =
                 (String) uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {
             rootNode.setAttribute("class", styleClass);
-            rootTable.setAttribute("class", styleClass);
+            rootDiv.setAttribute("class", styleClass);
         }
 
-        rootTable.setAttribute("border", new Integer(border).toString());
+        rootDiv.setAttribute("style", "border:" + border + "px solid black");
 
         if (!renderVertically) {
-            rootTR = domContext.createElement("tr");
-            rootTable.appendChild(rootTR);
+            childDiv = domContext.createElement("div");
+            rootDiv.appendChild(childDiv);
         }
 
         Iterator options = getSelectItems(uiComponent);
@@ -115,38 +115,38 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
             // render a SelectItemGroup in a nested table
             if (nextSelectItem instanceof SelectItemGroup) {
 
-                Element nextTR = domContext.createElement("tr");
-                Element nextTD = null;
+                Element nextChildDiv = domContext.createElement("div");
+                Element nextSpan = null;
 
                 if (nextSelectItem.getLabel() != null) {
                     if (renderVertically) {
-                        rootTable.appendChild(nextTR);
+                        rootDiv.appendChild(nextChildDiv);
                     }
-                    nextTD = domContext.createElement("td");
-                    nextTR.appendChild(nextTD);
+                    nextSpan = domContext.createElement("span");
+                    nextChildDiv.appendChild(nextSpan);
                     Text label = domContext.getDocument()
                             .createTextNode(nextSelectItem.getLabel());
-                    nextTD.appendChild(label);
+                    nextSpan.appendChild(label);
                 }
                 if (renderVertically) {
-                    nextTR = domContext.createElement("tr");
-                    rootTable.appendChild(nextTR);
+                    nextChildDiv = domContext.createElement("div");
+                    rootDiv.appendChild(nextChildDiv);
                 } else {
-                    rootTable.appendChild(nextTR);
+                    rootDiv.appendChild(nextChildDiv);
                 }
-                nextTD = domContext.createElement("td");
-                nextTR.appendChild(nextTD);
+                nextSpan = domContext.createElement("span");
+                nextChildDiv.appendChild(nextSpan);
 
                 SelectItem[] selectItemsArray =
                         ((SelectItemGroup) nextSelectItem).getSelectItems();
                 for (int i = 0; i < selectItemsArray.length; ++i) {
                     renderOption(facesContext, uiComponent, selectItemsArray[i],
-                                 renderVertically, rootTable, nextTR, counter,
+                                 renderVertically, rootDiv, nextChildDiv, counter,
                                  submittedValue, componentValue);
                 }
             } else {
                 renderOption(facesContext, uiComponent, nextSelectItem,
-                             renderVertically, rootTable, rootTR, counter,
+                             renderVertically, rootDiv, childDiv, counter,
                              submittedValue, componentValue);
             }
         }
@@ -178,7 +178,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
     protected void renderOption(FacesContext facesContext,
                                 UIComponent uiComponent,
                                 SelectItem selectItem, boolean renderVertically,
-                                Element rootTable, Element rootTR, int counter,
+                                Element rootDiv, Element childDiv, int counter,
                                 Object[] submittedValue, Object componentValue)
             throws IOException {
 
@@ -196,11 +196,11 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         }
 
         if (renderVertically) {
-            rootTR = domContext.createElement("tr");
-            rootTable.appendChild(rootTR);
+            childDiv = domContext.createElement("div");
+            rootDiv.appendChild(childDiv);
         }
-        Element td = domContext.createElement("td");
-        rootTR.appendChild(td);
+        Element span = domContext.createElement("span");
+        childDiv.appendChild(span);
         
         String clientId = uiComponent.getClientId(facesContext);
         String itemId = ClientIdPool.get(clientId + UINamingContainer.getSeparatorChar(facesContext) + "_" + counter);
@@ -209,7 +209,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         inputElement
                 .setAttribute("name", clientId);
         inputElement.setAttribute("id", itemId);
-        td.appendChild(inputElement);
+        span.appendChild(inputElement);
         
         if( selectItem.getLabel() != null ){
         	Element label = domContext.createElement("label");
@@ -217,7 +217,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
             Text textNode =
                 domContext.createTextNode(selectItem.getLabel());
             label.appendChild(textNode);            
-            td.appendChild(label);
+            span.appendChild(label);
         }
         
         HashSet excludes = new HashSet();
@@ -261,7 +261,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         excludesStringArray = (String[]) excludes.toArray(excludesStringArray);
         PassThruAttributeRenderer.renderHtmlAttributes(
                 facesContext, uiComponent,
-                inputElement, rootTable,
+                inputElement, rootDiv,
                 selectManyCheckboxPassThruAttributes);
 
         inputElement.setAttribute("onkeypress", combinedPassThru((String) uiComponent.getAttributes().get("onkeypress"),

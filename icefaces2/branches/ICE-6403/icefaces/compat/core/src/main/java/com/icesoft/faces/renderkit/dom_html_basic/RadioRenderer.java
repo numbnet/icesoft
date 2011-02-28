@@ -45,7 +45,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
     protected void renderOption(FacesContext facesContext,
                                 UIComponent uiComponent,
                                 SelectItem selectItem, boolean renderVertically,
-                                Element rootTable, Element rootTR, int counter,
+                                Element rootDiv, Element childDiv, int counter,
                                 Object[] submittedValue, Object componentValue)
             throws IOException {
         UISelectOne uiSelectOne = (UISelectOne) uiComponent;
@@ -53,8 +53,8 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
                 DOMContext.getDOMContext(facesContext, uiSelectOne);
 
         if (renderVertically) {
-            rootTR = domContext.createElement("tr");
-            rootTable.appendChild(rootTR);
+            childDiv = domContext.createElement("div");
+            rootDiv.appendChild(childDiv);
         }
         String labelClass = null;
         boolean disabled = false;
@@ -73,11 +73,11 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         }
 
 
-        Element td = domContext.createElement("td");
-        rootTR.appendChild(td);
+        Element span = domContext.createElement("span");
+        childDiv.appendChild(span);
 
         Element input = domContext.createElement("input");
-        td.appendChild(input);
+        span.appendChild(input);
         input.setAttribute("type", "radio");
 
         if (disabled) {
@@ -124,7 +124,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         input.setAttribute("onkeypress", combinedPassThru((String) uiSelectOne.getAttributes().get("onkeypress"),
                 "Ice.util.radioCheckboxEnter(form,this,event);"));
         Element label = domContext.createElement("label");
-        td.appendChild(label);
+        span.appendChild(label);
         label.setAttribute("for", inputID);
 
         if (labelClass != null) {
