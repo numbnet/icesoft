@@ -56,22 +56,19 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
                 DOMContext.attachDOMContext(facesContext, uiComponent);
 
         if (!domContext.isInitialized()) {
-            Element table = domContext.createRootElement(HTML.TABLE_ELEM);
-            setRootElementId(facesContext, table, uiComponent);
-            table.setAttribute(HTML.CELLPADDING_ATTR, "0");
-            table.setAttribute(HTML.CELLSPACING_ATTR, "0");
-            table.setAttribute(HTML.BORDER_ATTR, "0");
+            Element div = domContext.createRootElement(HTML.DIV_ELEM);
+            setRootElementId(facesContext, div, uiComponent);
         }
-        Element table = (Element) domContext.getRootNode();
+        Element rootDiv = (Element) domContext.getRootNode();
         String style = ((OutputProgress) uiComponent).getStyle();
-        if(style != null && style.length() > 0)
-            table.setAttribute(HTML.STYLE_ATTR, style);
+        if (style != null && style.length() > 0)
+            rootDiv.setAttribute(HTML.STYLE_ATTR, style);
         else
-            table.removeAttribute(HTML.STYLE_ATTR);
+            rootDiv.removeAttribute(HTML.STYLE_ATTR);
         //In order to fix IRAPtor Bug 291, we took out buildLayout() from the intialized block, 
         //Because of variouse text position, layout could have different combination of tr and td
         //therefore we are storing nodes to the component itself.
-        buildLayout(table, uiComponent, domContext);
+        buildLayout(rootDiv, uiComponent, domContext);
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
 
         domContext.stepOver();
@@ -106,14 +103,14 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
             //following if block is for Indeterminate mode only
             if (progressBar.getIndeterminate()) {
                 if (percentValue < 1) {
-                    fillBar.setAttribute(HTML.CLASS_ATTR, 
+                    fillBar.setAttribute(HTML.CLASS_ATTR,
                             progressBar.getIndeterminateInactiveClass());
                     percentageText.setData(NBSP);
                 } else {
-                    fillBar.setAttribute(HTML.CLASS_ATTR, 
+                    fillBar.setAttribute(HTML.CLASS_ATTR,
                             progressBar.getIndeterminateActiveClass());
                     fillBar.setAttribute(HTML.STYLE_ATTR,
-                                         "position:absolute;width:100%");
+                            "position:absolute;width:100%");
 
                     if (progressLabel != null && progressLabel.length() > 0) {
                         percentageText.setData(progressLabel);
@@ -125,10 +122,10 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
 
         } else {
             if (progressBar.getIndeterminate()) {
-                fillBar.setAttribute(HTML.CLASS_ATTR, 
+                fillBar.setAttribute(HTML.CLASS_ATTR,
                         progressBar.getIndeterminateInactiveClass());
                 fillBar.setAttribute(HTML.STYLE_ATTR,
-                                     "position:absolute;width:100%;");
+                        "position:absolute;width:100%;");
             }
             String progressCompleteLabel = progressBar.getProgressLabelComplete();
             if (progressCompleteLabel != null && progressCompleteLabel.length() > 0) {
@@ -157,30 +154,30 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
         //set the percent value for determinate mode only
         if (progressBar.getIndeterminate() == false) {
             fillBar.setAttribute(HTML.STYLE_ATTR, "position:absolute;width:" +
-                                                  percentValue + "%;");
+                    percentValue + "%;");
         }
     }
 
-    private void buildLayout(Element table, UIComponent uiComponent,
+    private void buildLayout(Element rootDiv, UIComponent uiComponent,
                              DOMContext domContext) {
-        Node node = table.getFirstChild();
-        Element tbody = domContext.createElement(HTML.TBODY_ELEM);
+        Node node = rootDiv.getFirstChild();
+        Element firstChildDiv = domContext.createElement(HTML.DIV_ELEM);
         if (node != null) {
-            table.replaceChild(tbody, node);
+            rootDiv.replaceChild(firstChildDiv, node);
         } else {
-            table.appendChild(tbody);
+            rootDiv.appendChild(firstChildDiv);
         }
 
 
         OutputProgress progressBar = (OutputProgress) uiComponent;
-        table.setAttribute(HTML.CLASS_ATTR, progressBar.getStyleClass());
+        rootDiv.setAttribute(HTML.CLASS_ATTR, progressBar.getStyleClass());
 
-        Element row = domContext.createElement(HTML.TR_ELEM);
-        Element textTd = domContext.createElement(HTML.TD_ELEM);
+        Element row = domContext.createElement(HTML.DIV_ELEM);
+        Element textTd = domContext.createElement(HTML.DIV_ELEM);
         textTd.setAttribute(HTML.CLASS_ATTR, progressBar.getTextClass());
 
-        Element barTd = domContext.createElement(HTML.TD_ELEM);
-        tbody.appendChild(row);
+        Element barTd = domContext.createElement(HTML.DIV_ELEM);
+        firstChildDiv.appendChild(row);
         Text percentageText = null;
         if (progressBar.getProgressLabel() != null) {
             //add the blank label initially
@@ -192,7 +189,7 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
         textTd.appendChild(percentageText);
         textTd.setAttribute("id", ClientIdPool.get(uiComponent
                 .getClientId(FacesContext.getCurrentInstance()) +
-                                                                "percentageText"));
+                "percentageText"));
 
         Element bgBar = domContext.createElement(HTML.DIV_ELEM);
         bgBar.setAttribute(HTML.CLASS_ATTR, progressBar.getBackgroundClass());
@@ -206,10 +203,10 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
             fillBar.setAttribute(HTML.CLASS_ATTR, progressBar.getFillClass());
             fillBar.setAttribute(HTML.STYLE_ATTR, "position:absolute;width:0%");
         } else {// indeterminate mode
-            fillBar.setAttribute(HTML.CLASS_ATTR, 
+            fillBar.setAttribute(HTML.CLASS_ATTR,
                     progressBar.getIndeterminateInactiveClass());
             fillBar.setAttribute(HTML.STYLE_ATTR,
-                                 "position:absolute;width:100%;");
+                    "position:absolute;width:100%;");
         }
 
 
@@ -226,21 +223,23 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
         }
 
         if (textPosition.toString().equalsIgnoreCase("left")) {
-            textTd.setAttribute("style", "vertical-align: middle;");
+            textTd.setAttribute("style", "vertical-align: middle; float: left;");
+            barTd.setAttribute("style", "float: right;");
             row.appendChild(textTd);
             row.appendChild(barTd);
         }
         if (textPosition.toString().equalsIgnoreCase("right")) {
-            textTd.setAttribute("style", "vertical-align: middle;");
+            textTd.setAttribute("style", "vertical-align: middle; float: right;");
+            barTd.setAttribute("style", "float: left;");
             row.appendChild(barTd);
             row.appendChild(textTd);
         }
 
         if (textPosition.toString().toLowerCase().startsWith("top")) {
-            Element row2 = domContext.createElement(HTML.TR_ELEM);
+            Element row2 = domContext.createElement(HTML.DIV_ELEM);
             row.appendChild(textTd);
             row2.appendChild(barTd);
-            tbody.appendChild(row2);
+            firstChildDiv.appendChild(row2);
             if (textPosition.toString().equalsIgnoreCase("topcenter")) {
                 textTd.setAttribute("align", "center");
             }
@@ -250,10 +249,10 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
         }
 
         if (textPosition.toString().toLowerCase().startsWith("bottom")) {
-            Element row2 = domContext.createElement(HTML.TR_ELEM);
+            Element row2 = domContext.createElement(HTML.DIV_ELEM);
             row.appendChild(barTd);
             row2.appendChild(textTd);
-            tbody.appendChild(row2);
+            firstChildDiv.appendChild(row2);
             if (textPosition.toString().equalsIgnoreCase("bottomcenter")) {
                 textTd.setAttribute("align", "center");
             }
@@ -264,10 +263,10 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
 
         if (textPosition.toString().equalsIgnoreCase("embed")) {
             Element embedDiv = domContext.createElement(HTML.DIV_ELEM);
-            embedDiv.setAttribute(HTML.CLASS_ATTR, 
+            embedDiv.setAttribute(HTML.CLASS_ATTR,
                     progressBar.getTextClass());
             embedDiv.setAttribute(HTML.STYLE_ATTR,
-                                  "text-align:center;position:relative;background-color:transparent;width:100%;z-index:1;");
+                    "text-align:center;position:relative;background-color:transparent;width:100%;z-index:1;");
             embedDiv.appendChild(percentageText);
 
             if (progressBar.getIndeterminate() == false) {//determinate mode
@@ -283,14 +282,14 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
             fillBar.appendChild(nbsp4opera);
             bgBar.appendChild(nbsp4mozila);
         }
-        
+
         setPercentage(uiComponent, domContext, percentageText, fillBar);
     }
 
     private boolean isValidTextPosition(String textPosition) {
         String[] validPosition = {"top", "bottom", "left", "right", "topcenter",
-                                  "bottomcenter", "topright", "bottomright",
-                                  "embed"};
+                "bottomcenter", "topright", "bottomright",
+                "embed"};
         for (int i = 0; i < validPosition.length; i++) {
             if (validPosition[i].equals(textPosition)) {
                 return true;
