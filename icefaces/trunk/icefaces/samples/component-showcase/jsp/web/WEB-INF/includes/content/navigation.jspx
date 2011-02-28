@@ -148,6 +148,11 @@
                 value="#{msgs['node.menuBar.label']}"/>
     </ice:commandLink>
     <br/>
+    <ice:commandLink id="menuBar2ContentPanel" actionListener="#{navigation.navigationStackChange}">
+        <f:param name="stackName" value="menuBar2ContentPanel" />
+        <ice:outputText value="#{msgs['node.menuBar2.label']}"/>
+    </ice:commandLink>
+    <br/>
     <ice:commandLink id="menuPopupContentPanel"
                      actionListener="#{navigation.navigationStackChange}">
         <f:param name="stackName" value="menuPopupContentPanel" />
