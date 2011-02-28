@@ -45,7 +45,58 @@ ice.yui3 = {
         for (module in this.modules)
             modules += module + ',';
         return modules.substring(0, modules.length - 1);
-    }
+    },
+	basePathPattern: /^.*\:\/+(.*)\/javax\.faces\.resource.*yui\/yui[\.\-].*js\.jsf\?ln=(.*)?$/,
+	getBasePath: function() {
+		var nodes, i, src, match;
+		nodes = document.getElementsByTagName('script') || [];
+		for (i = 0; i < nodes.length; i++) {
+			src = nodes[i].src;
+			if (src) {
+				match = src.match(ice.yui3.basePathPattern);
+				if (match) {
+					return match;
+				}
+			}
+		}
+		return '';
+    },
+	getNewInstance: function() {
+		var match = ice.yui3.getBasePath();
+		var basePath = match[1]
+		if (basePath.indexOf(':') != -1) { // check if domain contains port number and extract base path
+			basePath = basePath.substring(basePath.indexOf('/', basePath.indexOf(':')) + 1);
+		}
+		var yui3Base = '/' + basePath + '/javax.faces.resource/' + match[2] + '/';
+		var _2in3Base = '/' + basePath + '/javax.faces.resource/' + 'yui/2in3/';
+		
+		var Y = YUI({combine: false, base: yui3Base,
+			groups: {
+				yui2: {
+				    combine: false,
+					base: _2in3Base,
+					patterns:  {
+						'yui2-': {
+							configFn: function(me) {
+								if (/-skin|reset|fonts|grids|base/.test(me.name)) {
+									me.type = 'css';
+									me.path = me.path.replace(/\.js/, '.css');
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+		
+		//alert(yui3Base + '\n' + _2in3Base);
+		// create URLs with '.jsf' at the end
+		var oldUrlFn = Y.Loader.prototype._url;
+		Y.Loader.prototype._url = function(path, name, base) {
+			return oldUrlFn.call(this, path, name, base) + '.jsf';
+		};
+		return Y;
+	}
 };
 
 
