@@ -161,6 +161,12 @@
                              </f:subview>
                          </ice:panelGroup>
 
+                         <ice:panelGroup id="menuBar2ContentPanel">
+                             <f:subview id="mb2Sub">
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/menuBar2.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
                          <ice:panelGroup id="menuPopupContentPanel">
                              <f:subview id="mpSub">
                                  <!-- Menu Popup Component include -->

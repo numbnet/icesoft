@@ -104,6 +104,10 @@
                       label="node.menuBar.label"
                       leaf="true" link="true"
                       contentRef="menuBarContentDesc"/>
+                <node id="menuBar2Node"
+                      label="node.menuBar2.label"
+                      leaf="true" link="true"
+                      contentRef="menuBar2ContentDesc"/>
                 <node id="menuPopupNode"
                       label="node.menuPopup.label"
                       leaf="true" link="true"
@@ -949,6 +953,43 @@
                     <resource-reference
                             label="menuBar.jspx"
                             resourceRef="menuBarExplResc"/>
+                </jspx-pages>
+                <beans>
+                    <resource-reference
+                            label="MenuBarBean.java"
+                            resourceRef="org.icefaces.application.showcase.view.bean.examples.component.menuBar.MenuBarBean"/>
+                </beans>
+            </source-code>
+            <documentation templateRef="documentationContainer">
+                <documents>
+                    <resource-reference
+                            label="Menu Bar"
+                            resourceRef="menuBarDoc"/>
+                </documents>
+                <tlds>
+                    <resource-reference
+                            label="menuBar"
+                            resourceRef="menuBarTld"/>
+                </tlds>
+                <tutorials>
+                    <resource-reference
+                            label="Tutorials"
+                            resourceRef="generalTutorial"/>
+                </tutorials>
+            </documentation>
+        </content-descriptor>
+        <content-descriptor
+                id="menuBar2ContentDesc" title="node.menuBar2.title"
+                templateRef="tabbedContainer">
+            <example>
+                <resource-reference
+                        resourceRef="menuBar2ExplResc"/>
+            </example>
+            <source-code templateRef="documentationContainer">
+                 <jspx-pages>
+                    <resource-reference
+                            label="menuBar2.jspx"
+                            resourceRef="menuBar2ExplResc"/>
                 </jspx-pages>
                 <beans>
                     <resource-reference
@@ -1862,6 +1903,8 @@
                       path="/WEB-INF/includes/examples/custom/inputRichText.jspx"/>
             <resource id="menuBarExplResc"
                       path="/WEB-INF/includes/examples/custom/menuBar.jspx"/>
+            <resource id="menuBar2ExplResc"
+                      path="/WEB-INF/includes/examples/custom/menuBar2.jspx"/>
             <resource id="menuPopupExplResc"
                       path="/WEB-INF/includes/examples/custom/menuPopup.jspx"/>
             <resource id="outputProgressExplResc"
