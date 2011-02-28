@@ -41,8 +41,8 @@ public class SelectManyCheckboxListRenderer extends
     
     protected Element createRootNode(DOMContext domContext) {
         Element rootElement = domContext.createRootElement(HTML.FIELDSET_ELEM);
-        Element tableElement = domContext.createElement(HTML.TABLE_ELEM);
-        rootElement.appendChild(tableElement);
+        Element divElement = domContext.createElement(HTML.DIV_ELEM);
+        rootElement.appendChild(divElement);
         return rootElement;
     }
 
