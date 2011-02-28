@@ -1,0 +1,255 @@
+/*
+ * Version: MPL 1.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ */
+
+package org.icepush;
+
+import org.icepush.servlet.ReadyObservable;
+import org.icepush.servlet.ServletContextConfiguration;
+
+import javax.servlet.ServletContext;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class LocalPushGroupManager implements PushGroupManager {
+    private static final Logger LOGGER = Logger.getLogger(LocalPushGroupManager.class.getName());
+    private static final int GROUP_SCANNING_TIME_RESOLUTION = 3000; // ms
+
+    private final Map<String, PushID> pushIDMap = new HashMap<String, PushID>();
+    private final Map<String, Group> groupMap = new HashMap<String, Group>();
+    private final Observable inboundNotifier = new ReadyObservable();
+    private final Observable outboundNotifier = new ReadyObservable();
+    private final long groupTimeout;
+    private final long pushIdTimeout;
+
+    public LocalPushGroupManager(final ServletContext servletContext) {
+        Configuration configuration = new ServletContextConfiguration("org.icepush", servletContext);
+        this.groupTimeout = configuration.getAttributeAsLong("groupTimeout", 2 * 60 * 1000);
+        this.pushIdTimeout = configuration.getAttributeAsLong("pushIdTimeout", 2 * 60 * 1000);
+        inboundNotifier.addObserver(
+                new Observer() {
+                    private long lastScan = System.currentTimeMillis();
+                    private Set<String> pushIDs = new HashSet<String>();
+
+                    public void update(final Observable observable, final Object object) {
+                        long now = System.currentTimeMillis();
+                        //accumulate pushIDs
+                        pushIDs.addAll((List) object);
+                        //avoid to scan/touch the groups on each notification
+                        if (lastScan + GROUP_SCANNING_TIME_RESOLUTION < now) {
+                            try {
+                                for (Group group : new ArrayList<Group>(groupMap.values())) {
+                                    group.touchIfMatching(pushIDs);
+                                    group.discardIfExpired();
+                                }
+                                for (PushID pushID : new ArrayList<PushID>(pushIDMap.values())) {
+                                    pushID.touchIfMatching(pushIDs);
+                                    pushID.discardIfExpired();
+                                }
+                            } finally {
+                                lastScan = now;
+                                pushIDs = new HashSet();
+                            }
+                        }
+                    }
+                });
+    }
+
+    public void addMember(final String groupName, final String id) {
+        PushID pushID = pushIDMap.get(id);
+        if (pushID == null) {
+            pushIDMap.put(id, new PushID(id, groupName));
+        } else {
+            pushID.addToGroup(groupName);
+        }
+
+        Group group = groupMap.get(groupName);
+        if (group == null) {
+            groupMap.put(groupName, new Group(groupName, id));
+        } else {
+            group.addPushID(id);
+        }
+
+        if (LOGGER.isLoggable(Level.FINEST)) {
+            LOGGER.log(Level.FINEST, "Added pushId '" + id + "' to group '" + groupName + "'.");
+        }
+    }
+
+    public void addObserver(final Observer observer) {
+        outboundNotifier.addObserver(observer);
+    }
+
+    public void deleteObserver(final Observer observer) {
+        outboundNotifier.deleteObserver(observer);
+    }
+
+    public Map<String, String[]> getGroupMap() {
+        Map<String, String[]> groupMap = new HashMap<String, String[]>();
+        for (Group group : new ArrayList<Group>(this.groupMap.values())) {
+            groupMap.put(group.name, group.getPushIDs());
+        }
+        return groupMap;
+    }
+
+    public void notifyObservers(final List pushIdList) {
+        inboundNotifier.notifyObservers(pushIdList);
+    }
+
+    public void push(final String groupName) {
+        Group group = groupMap.get(groupName);
+        if (group != null) {
+            if (LOGGER.isLoggable(Level.FINEST)) {
+                LOGGER.log(Level.FINEST, "Push notification triggered for '" + groupName + "' group.");
+            }
+            outboundNotifier.notifyObservers(group.getPushIDs());
+        }
+    }
+
+    public void removeMember(final String groupName, final String pushId) {
+        Group group = groupMap.get(groupName);
+        if (group != null) {
+            group.removePushID(pushId);
+
+            PushID id = pushIDMap.get(pushId);
+            if (id != null) {
+                id.removeFromGroup(groupName);
+            }
+
+            if (LOGGER.isLoggable(Level.FINEST)) {
+                LOGGER.log(Level.FINEST, "Removed pushId '" + pushId + "' from group '" + groupName + "'.");
+            }
+        }
+    }
+
+    public void shutdown() {
+        // Do nothing.
+    }
+
+    private class Group {
+        private final Set<String> pushIdList = new HashSet<String>();
+        private final String name;
+        private long lastAccess = System.currentTimeMillis();
+
+        private Group(final String name, final String firstPushId) {
+            this.name = name;
+            if (LOGGER.isLoggable(Level.FINEST)) {
+                LOGGER.log(Level.FINEST, "'" + this.name + "' push group created.");
+            }
+            addPushID(firstPushId);
+        }
+
+        private void addPushID(final String pushId) {
+            pushIdList.add(pushId);
+        }
+
+        private void discardIfExpired() {
+            //expire group
+            if (lastAccess + groupTimeout < System.currentTimeMillis()) {
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.log(Level.FINEST, "'" + name + "' push group expired.");
+                }
+                groupMap.remove(name);
+                for (String id : pushIdList) {
+                    PushID pushID = pushIDMap.get(id);
+                    if (pushID != null) {
+                        pushID.removeFromGroup(name);
+                    }
+                }
+            }
+        }
+
+        private String[] getPushIDs() {
+            return pushIdList.toArray(new String[pushIdList.size()]);
+        }
+
+        private void removePushID(final String pushId) {
+            pushIdList.remove(pushId);
+            if (pushIdList.isEmpty()) {
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.log(
+                            Level.FINEST, "Disposed '" + name + "' push group since it no longer contains any pushIds.");
+                }
+                groupMap.remove(name);
+            }
+        }
+
+        private void touchIfMatching(final Collection pushIds) {
+            Iterator i = pushIds.iterator();
+            while (i.hasNext()) {
+                String pushId = (String) i.next();
+                if (pushIdList.contains(pushId)) {
+                    lastAccess = System.currentTimeMillis();
+                    //no need to touchIfMatching again
+                    //return right away without checking the expiration
+                    return;
+                }
+            }
+        }
+    }
+
+    private class PushID {
+        private final String id;
+        private final Set<String> groups = new HashSet<String>();
+        private long lastAccess = System.currentTimeMillis();
+
+        private PushID(String id, String group) {
+            this.id = id;
+            addToGroup(group);
+        }
+
+        private void addToGroup(String group) {
+            groups.add(group);
+        }
+
+        private void removeFromGroup(String group) {
+            groups.remove(group);
+            if (groups.isEmpty()) {
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.log(Level.FINEST, "Disposed '" + id + "' pushId since it no longer belongs to any group.");
+                }
+                pushIDMap.remove(id);
+            }
+        }
+
+        public void touchIfMatching(Set pushIDs) {
+            if (pushIDs.contains(id)) {
+                lastAccess = System.currentTimeMillis();
+            }
+        }
+
+        public void discardIfExpired() {
+            //expire pushId
+            if (lastAccess + pushIdTimeout < System.currentTimeMillis()) {
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.log(Level.FINEST, "'" + id + "' pushId expired.");
+                }
+                pushIDMap.remove(id);
+                for (String groupName : groups) {
+                    Group group = groupMap.get(groupName);
+                    if (group != null) {
+                        group.removePushID(id);
+                    }
+                }
+            }
+        }
+    }
+}
