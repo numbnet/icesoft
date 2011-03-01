@@ -62,11 +62,19 @@ var ice_fileEntry = {
     },
     
     captureFormOnsubmit : function(formId, iframeId, progressPushId, progressResourcePath) {
-        var f = document.getElementById(formId);
+        var f = document.getElementById(formId);      
         var encodedURL = f.elements['javax.faces.encodedURL'];
         if(encodedURL){
             f.action = encodedURL.value;
-        }
+        }                                                                
+
+        var ajaxResponse = document.createElement("input");
+        ajaxResponse.setAttribute('type','hidden');
+        ajaxResponse.setAttribute('name','ice.fileEntry.ajaxResponse');
+        ajaxResponse.value = "true"; 
+
+        f.appendChild(ajaxResponse);
+            
         f.onsubmit = function(event) {
             ice_fileEntry.formOnsubmit(event, f, iframeId, progressPushId, progressResourcePath);
         };
