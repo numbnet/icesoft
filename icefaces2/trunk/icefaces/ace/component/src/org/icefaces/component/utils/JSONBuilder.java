@@ -21,6 +21,8 @@
 
 package org.icefaces.component.utils;
 
+import java.util.ArrayList;
+
 /**
  * Utility API that builds the parameter strings, performs param escaping.
  * Output is a JSON string as specified at <a href="http://www.json.org/">json.org</a>.
@@ -198,18 +200,43 @@ public class JSONBuilder {
         return this;
     }
 
-    private String escapeString(String value) {
-        value = value.replace("\\", "\\\\");
-        value = value.replace("\"", "\\\"");
-        value = value.replace("/", "\\/");
-        value = value.replace("\b", "\\b");
-        value = value.replace("\f", "\\f");
-        value = value.replace("\n", "\\n");
-        value = value.replace("\r", "\\r");
-        value = value.replace("\t", "\\t");
-        return value;
-    }
 
+    private String escapeString(String value) {
+        StringBuilder sb = new StringBuilder();
+        char c;
+        for (int idx = 0; idx < value.length(); idx++) {
+            c = value.charAt(idx);
+            switch (c) {
+                case '\\':
+                    sb.append("\\\\");
+                    break;
+                case '\"':
+                    sb.append("\\\"");
+                    break;
+                case '/':
+                    sb.append("\\/");
+                    break;
+                case '\b':
+                    sb.append("\\b");
+                    break;
+                case '\f':
+                    sb.append("\\f");
+                    break;
+                case '\n':
+                    sb.append("\\n");
+                    break;
+                case '\r':
+                    sb.append("\\r");
+                    break;
+                case '\t':
+                    sb.append("\\t");
+                    break;
+                default:
+                    sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
 
     /**
      * Outputs the JSON string.
