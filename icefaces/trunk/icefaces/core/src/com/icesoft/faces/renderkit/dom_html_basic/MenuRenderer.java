@@ -314,7 +314,7 @@ public class MenuRenderer extends DomBasicInputRenderer {
 
         boolean selected = isValueSelected(facesContext, selectItem, uiComponent,
                 submittedValues, selectedValues);
-        if (uiComponent instanceof HtmlSelectOneMenu) {
+        if (uiComponent instanceof HtmlSelectOneMenu || uiComponent instanceof HtmlSelectOneListbox) {
             if (submittedValues == null && selectedValues== null && 
                     (selectItem.getValue() == "" || selectItem.getValue() == null))
                 selected = true;
