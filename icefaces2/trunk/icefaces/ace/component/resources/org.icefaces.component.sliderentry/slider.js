@@ -41,35 +41,91 @@ ice.component.slider = {
 							//following two properties has to be set when initializing componnent
 							axis: yuiProps.axis,
 							thumbUrl: jsfProps.thumbUrl
-							}).render(root);
-                        obj.set('disabled', yuiProps.disabled);
-			            } catch(e){alert(e)}
-						
-						var invokeSubmit = function (event) {
-                            var context = ice.component.getJSContext(clientId);
-                            var sJSFProps = context.getJSFProps();
-		                    if (sJSFProps.singleSubmit) {
-                                var sObj = context.getComponent();
-                                var postParameters = sJSFProps.postParameters;
-		                        ice.se(event, root, function(param) {
-									param(hiddenFieldId, sObj.get('value'));
-									param('ice.focus', ice.focus);
-									param('onevent', function(data) { 
-										if (data.status == 'success') {
-											if (ice.focus == clientId) {
-												root.firstChild.focus();
-											}
-										}
-									});
-									if (postParameters != null) {
-                                        var argCount = postParameters.length / 2;
-                                        for (var idx =0; idx < argCount; idx ++ ) {
-                                            param( postParameters[idx*2], postParameters[(idx*2)+1] );
-                                        }
-                                    }
-								});
-		                    }  						
+							});
+	 
+						obj.updateLabels = function() {
+							obj.updateMinLabel();
+							obj.updateMaxLabel();
+							obj.updateMidLabel();
+						}	
+						obj.updateMinLabel = function(min) {
+							var nodes = obj.get('railRef').get('children');
+				 			nodes.item(0).setContent("<div class='sldrLblMn'>"+ yuiProps.min + '</div>');
 						}
+						
+						obj.updateMaxLabel = function(max) {
+							var nodes = obj.get('railRef').get('children');
+							nodes.item(1).setContent("<div class='sldrLblMx'>"+ yuiProps.max+ '</div>');
+						}
+						
+						obj.updateMidLabel = function(mid) {
+							if (!obj.get('midLblNode')) {
+							    if (yuiProps.axis == 'y') {
+									obj.get('railRef').append("<div class='sldrLblMid'></div>");	
+									obj.set('midLblNode', obj.get('railRef').get('children').item(3));								
+								} else {
+									obj.get('railRef').append("<center><div class='sldrLblMid'></div></center>");	
+									obj.set('midLblNode', obj.get('railRef').get('children').item(3).get('children').item(0));
+								}
+							}
+							obj.get('midLblNode').setContent(parseInt(((yuiProps.max - yuiProps.min)/2)+yuiProps.min));
+						}
+						if (jsfProps.showLabels) {						
+							obj.renderRail_ = obj.renderRail;
+							obj.renderRail = function() {
+								var railNode = obj.renderRail_();
+			
+							    if (!railNode.hasClass("sldrLbl")) {
+									railNode.addClass("sldrLbl");
+								}
+							 						
+	
+								obj.set('railRef', railNode);
+								return railNode;
+							}
+						}
+						
+						obj.render(root);
+                        obj.set('disabled', yuiProps.disabled);
+                        if (jsfProps.showLabels) {
+							obj.updateLabels();
+	                        obj.on('minChange', function(prop) {
+								yuiProps.min = prop.newVal;
+								obj.updateLabels();
+							});
+				            obj.on('maxChange', function(prop) {
+								yuiProps.max = prop.newVal;
+								obj.updateLabels();
+							});						
+                        }
+				
+					} catch(e){alert(e)}
+						
+					var invokeSubmit = function (event) {
+						var context = ice.component.getJSContext(clientId);
+						var sJSFProps = context.getJSFProps();
+						if (sJSFProps.singleSubmit) {
+							var sObj = context.getComponent();
+							var postParameters = sJSFProps.postParameters;
+							ice.se(event, root, function(param) {
+								param(hiddenFieldId, sObj.get('value'));
+								param('ice.focus', ice.focus);
+								param('onevent', function(data) { 
+									if (data.status == 'success') {
+										if (ice.focus == clientId) {
+											root.firstChild.focus();
+										}
+									}
+								});
+								if (postParameters != null) {
+									var argCount = postParameters.length / 2;
+									for (var idx =0; idx < argCount; idx ++ ) {
+										param( postParameters[idx*2], postParameters[(idx*2)+1] );
+									}
+								}
+							});
+						}  						
+					}
 						
 						obj.after("focus", function() {
 							ice.focus = clientId;

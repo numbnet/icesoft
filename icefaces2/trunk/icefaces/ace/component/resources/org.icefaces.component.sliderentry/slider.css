@@ -22,3 +22,36 @@
 
 /* load core styling from YUI library */
 @import url('#{resource['yui/3_1_1/slider/assets/slider-core.css']}');
+.yui3-slider .sldrLbl {
+	margin-top:12px;
+}
+
+.sldrLbl .sldrLblMn, .sldrLbl .sldrLblMx{ 
+	position:absolute;
+	top:-14px;
+} 
+.sldrLbl .sldrLblMid {
+	top:-14px;
+	position:relative;
+}
+
+.yui3-slider-y .sldrLbl{
+	margin-left:12px;
+}
+	
+.yui3-slider-y .sldrLbl .sldrLblMn {
+	margin-left:18px;
+	top:-7px;
+}
+
+.yui3-slider-y .sldrLbl .sldrLblMx {
+	 margin-left:18px; 
+	top:-7px;
+	
+}
+
+.yui3-slider-y .sldrLbl .sldrLblMid {
+	 margin-left:18px; 
+	top:41%;
+	position:relative;
+}

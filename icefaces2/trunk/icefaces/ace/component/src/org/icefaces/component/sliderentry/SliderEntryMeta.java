@@ -170,4 +170,8 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
 
     @Property (tlddoc="Boolean indicating if the component should be disabled.")
     private boolean disabled;
+    
+    @Property(defaultValue="false",
+            tlddoc="If set to true, it will show min, mid and max value labels. The default value is false.")
+    private boolean showLabels;    
 }
