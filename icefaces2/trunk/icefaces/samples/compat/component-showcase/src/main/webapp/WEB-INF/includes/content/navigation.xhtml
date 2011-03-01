@@ -139,6 +139,11 @@
                 value="#{msgs['node.menuBar.label']}"/>
     </ice:commandLink>
     <br/>
+    <ice:commandLink id="menuBar2ContentPanel" actionListener="#{navigation.navigationPathChange}">
+        <f:param name="includePath" value="/WEB-INF/includes/examples/custom/menuBar2.xhtml"/>
+        <ice:outputText value="#{msgs['node.menuBar2.label']}"/>
+    </ice:commandLink>
+    <br/>
     <ice:commandLink id="menuPopupContentPanel"
                      actionListener="#{navigation.navigationPathChange}">
         <f:param name="includePath" value="/WEB-INF/includes/examples/custom/menuPopup.xhtml" />
