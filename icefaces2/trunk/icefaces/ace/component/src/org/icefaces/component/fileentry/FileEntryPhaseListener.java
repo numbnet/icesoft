@@ -168,14 +168,17 @@ public class FileEntryPhaseListener implements PhaseListener {
             
             // Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
             Map<String, String[]> parameterMap = new HashMap<String, String[]>(
-                ((parameterListMap.size() > 0) ? parameterListMap.size() : 1) );
-            for(String key : parameterListMap.keySet()) {
+                ((parameterListMap.size() > 0) ? parameterListMap.size() : 1) );            
+            boolean ajaxResponse = false;
+            for(String key : parameterListMap.keySet()) {  
+                if (key.equals("ice.fileEntry.ajaxResponse")) ajaxResponse = true;
                 List<String> parameterList = parameterListMap.get(key);
                 String[] values = new String[parameterList.size()];
                 values = parameterList.toArray(values);
                 parameterMap.put(key, values);
             }
-            
+              
+
 //            System.out.println("FileEntryPhaseListener.beforePhase()  parameterMap    : " + parameterMap);
             Object wrapper = null;
             if( requestObject instanceof HttpServletRequest ){
@@ -184,10 +187,13 @@ public class FileEntryPhaseListener implements PhaseListener {
                 wrapper = getPortletRequestWrapper(requestObject,parameterMap);
             }
             phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
-            PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
-            if (pvc instanceof DOMPartialViewContext)
-                ((DOMPartialViewContext) pvc).setAjaxRequest(true);
-            pvc.setPartialRequest(true);
+            
+            if (ajaxResponse) {
+                PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
+                if (pvc instanceof DOMPartialViewContext)
+                    ((DOMPartialViewContext) pvc).setAjaxRequest(true);
+                pvc.setPartialRequest(true);                
+            }
             // Apparently not necessary, as long as we don't call
             // FacesContext.isPostback() before this point
             //phaseEvent.getFacesContext().getAttributes().remove(
@@ -196,7 +202,7 @@ public class FileEntryPhaseListener implements PhaseListener {
 //            System.out.println("FileEntryPhaseListener.beforePhase()  old    : " + request);
 //            System.out.println("FileEntryPhaseListener.beforePhase()  wrapper: " + wrapper);
 //            System.out.println("FileEntryPhaseListener.beforePhase()  set    : " + phaseEvent.getFacesContext().getExternalContext().getRequest());
-        }
+        }        
         else if (false && phaseEvent.getFacesContext().isPostback()) {
             //TODO
             // This is only for testing with non-file-upload, regular postback,
@@ -204,7 +210,7 @@ public class FileEntryPhaseListener implements PhaseListener {
             // be disabled
 //            System.out.println("FileEntryPhaseListener.beforePhase()  Temporary test of adding Faces-Request HTTP header");
             Object wrapper = null;
-            if( requestObject instanceof HttpServletRequest ){
+            if(requestObject instanceof HttpServletRequest){
                 wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, null);
             } else {
                 wrapper = getPortletRequestWrapper(requestObject,null);
