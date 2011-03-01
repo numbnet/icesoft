@@ -191,7 +191,8 @@ public class SliderEntryRenderer extends Renderer{
                 entry("aria", EnvUtils.isAriaEnabled(facesContext)).
                 entry("hashCode", sb.toString().hashCode()).
                 entry("tabindex", slider.getTabindex()).
-                entry("stepPercent", slider.getStepPercent());
+                entry("stepPercent", slider.getStepPercent()).
+                entry("showLabels", slider.isShowLabels());
 
 
         if (thumbUrl != null && thumbUrl.trim().length() > 0) {
