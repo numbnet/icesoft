@@ -49,6 +49,7 @@
         <loadfile property="focus.js" srcFile="${src.dir}/focus.js"/>
         <loadfile property="submit.js" srcFile="${src.dir}/submit.js"/>
         <loadfile property="blockui.js" srcFile="${src.dir}/blockui.js"/>
+        <loadfile property="fixjsf.js" srcFile="${src.dir}/fixjsf.js"/>
         <copy file="${src.dir}/application.js" tofile="${tmp}" overwrite="yes">
             <filterset begintoken="//include " endtoken=".js">
                 <filter token="functional" value="${functional.js}"/>
@@ -67,6 +68,7 @@
                 <filter token="focus" value="${focus.js}"/>
                 <filter token="submit" value="${submit.js}"/>
                 <filter token="blockui" value="${blockui.js}"/>
+                <filter token="fixjsf" value="${fixjsf.js}"/>
             </filterset>
         </copy>
     </target>
