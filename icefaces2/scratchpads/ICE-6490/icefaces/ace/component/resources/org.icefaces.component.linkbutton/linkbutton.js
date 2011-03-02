@@ -26,7 +26,12 @@ ice.component.linkButton = {
 //	 	  YAHOO.widget.Logger.enableBrowserConsole();
 //       }
 
-	  YAHOO.util.Event.onDOMReady(function() {
+	  //YAHOO.util.Event.onDOMReady(function() {
+	 ice.yui3.use(function(Y){ 
+	 Y.on('domready', function(){
+		var thisYUI = ice.yui3.getNewInstance();
+		thisYUI.use('yui2-button', function(Yui) {
+		var YAHOO = Yui.YUI2;
 
         var spanId = clientId + "_span";
 	    var oLinkButton = new YAHOO.widget.Button(spanId,{ label: jsProps.label }, {type: jsProps.type});
@@ -47,7 +52,10 @@ ice.component.linkButton = {
         } 
 
 		bindYUI(oLinkButton);
-      });
+	 }); // *** end of thisYUI
+	 }); // *** end of ondomready
+	 }); // *** end of function(Y)
+      //});
 	},
 	
     //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
