@@ -28,7 +28,17 @@ ice.yui3 = {
     modules: {},
     use :function(callback) {
         if (ice.yui3.y == null) {
-            YUI({combine: true, timeout: 10000, bootstrap: false}).use('*', function(Y) {
+            var Yui = YUI({combine: false, timeout: 10000, base: '/ace-test/javax.faces.resource/yui/3_1_1/'});
+			/*
+			var oldUrlFn = Yui.Loader.prototype._url;
+			Yui.Loader.prototype._url = function(path, name, base) {
+				return oldUrlFn.call(this, path, name, base) + '.jsf';
+			};
+			*/
+			/*
+			var Yui = ice.yui3.getNewInstance();
+			*/
+			Yui.use('*', function(Y) {
                 ice.yui3.y = Y;
                 callback(ice.yui3.y);
             });
@@ -61,20 +71,24 @@ ice.yui3 = {
 		}
 		return '';
     },
+	yui3Base: '',
+	yui2in3Base: '',
 	getNewInstance: function() {
-		var match = ice.yui3.getBasePath();
-		var basePath = match[1]
-		if (basePath.indexOf(':') != -1) { // check if domain contains port number and extract base path
-			basePath = basePath.substring(basePath.indexOf('/', basePath.indexOf(':')) + 1);
+		if (!(ice.yui3.yui3Base && ice.yui3.yui2in3Base)) {
+			var match = ice.yui3.getBasePath();
+			var basePath = match[1]
+			if (basePath.indexOf(':') != -1) { // check if domain contains port number and extract base path
+				basePath = basePath.substring(basePath.indexOf('/', basePath.indexOf(':')) + 1);
+			}
+			ice.yui3.yui3Base = '/' + basePath + '/javax.faces.resource/' + match[2] + '/';
+			ice.yui3.yui2in3Base = '/' + basePath + '/javax.faces.resource/' + 'yui/2in3/';
 		}
-		var yui3Base = '/' + basePath + '/javax.faces.resource/' + match[2] + '/';
-		var _2in3Base = '/' + basePath + '/javax.faces.resource/' + 'yui/2in3/';
 		
-		var Y = YUI({combine: false, base: yui3Base,
+		var Y = YUI({combine: false, base: ice.yui3.yui3Base,
 			groups: {
 				yui2: {
 				    combine: false,
-					base: _2in3Base,
+					base: ice.yui3.yui2in3Base,
 					patterns:  {
 						'yui2-': {
 							configFn: function(me) {
