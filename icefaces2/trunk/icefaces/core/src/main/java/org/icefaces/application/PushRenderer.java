@@ -21,10 +21,10 @@
 
 package org.icefaces.application;
 
+import org.icefaces.impl.application.LazyPushManager;
 import org.icefaces.impl.event.BridgeSetup;
 import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
-import org.icefaces.impl.application.LazyPushManager;
 import org.icepush.PushContext;
 
 import javax.faces.context.FacesContext;
@@ -32,11 +32,11 @@ import java.util.logging.Logger;
 
 /**
  * <p>
- *   The <code>PushRenderer</code>  allows an application to initiate
- *   rendering asynchronously and independently of user interaction for a
- *   group of sessions or views.  When a session is rendered, all windows or
- *   views that a particular user has open in their session will be updated via
- *   Ajax Push with the current application state.
+ * The <code>PushRenderer</code>  allows an application to initiate
+ * rendering asynchronously and independently of user interaction for a
+ * group of sessions or views.  When a session is rendered, all windows or
+ * views that a particular user has open in their session will be updated via
+ * Ajax Push with the current application state.
  * </p>
  */
 public class PushRenderer {
@@ -94,7 +94,7 @@ public class PushRenderer {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
             LazyPushManager.enablePushForSessionViews(context);
-            SessionViewManager.addCurrentViewsToGroup(context, groupName);
+            SessionViewManager.startAddingNewViewsToGroup(context, groupName);
         } else {
             log.warning(MissingICEpushMessage);
         }
@@ -111,7 +111,7 @@ public class PushRenderer {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
             LazyPushManager.disablePushForSessionViews(context);
-            SessionViewManager.removeCurrentViewsFromGroup(context, groupName);
+            SessionViewManager.stopAddingNewViewsToGroup(context, groupName);
         } else {
             log.warning(MissingICEpushMessage);
         }

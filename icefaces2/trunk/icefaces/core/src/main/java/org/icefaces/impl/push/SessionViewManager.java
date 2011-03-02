@@ -21,63 +21,46 @@
 
 package org.icefaces.impl.push;
 
+import org.icepush.PushContext;
+
+import javax.faces.context.FacesContext;
+import javax.portlet.PortletSession;
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.faces.context.FacesContext;
-import javax.portlet.PortletSession;
-import javax.servlet.http.HttpSession;
-
-import org.icepush.PushContext;
-
 public class SessionViewManager {
-    public static String addView(FacesContext context, String id) {
+
+    public static void addView(FacesContext context, String id) {
         PushContext pushContext = getPushContext(context);
         State state = getState(context);
-        if (!state.viewIDs.contains(id)) {
-            state.viewIDs.add(id);
-            pushContext.addGroupMember(state.groupName, id);
-            Iterator i = state.groups.iterator();
-            while (i.hasNext()) {
-                pushContext.addGroupMember((String) i.next(), id);
-            }
+        pushContext.addGroupMember(state.groupName, id);
+        Iterator i = state.groups.iterator();
+        while (i.hasNext()) {
+            pushContext.addGroupMember((String) i.next(), id);
         }
-        return id;
     }
 
     public static void removeView(FacesContext context, String id) {
         PushContext pushContext = getPushContext(context);
         State state = getState(context);
-        if (state.viewIDs.contains(id)) {
-            state.viewIDs.remove(id);
-            pushContext.removeGroupMember(state.groupName, id);
-            Iterator i = state.groups.iterator();
-            while (i.hasNext()) {
-                pushContext.removeGroupMember((String) i.next(), id);
-            }
+        pushContext.removeGroupMember(state.groupName, id);
+        Iterator i = state.groups.iterator();
+        while (i.hasNext()) {
+            pushContext.removeGroupMember((String) i.next(), id);
         }
     }
 
-    public static void addCurrentViewsToGroup(FacesContext context, String groupName) {
-        PushContext pushContext = getPushContext(context);
+    public static void startAddingNewViewsToGroup(FacesContext context, String groupName) {
         State state = getState(context);
         state.groups.add(groupName);
-        Iterator i = state.viewIDs.iterator();
-        while (i.hasNext()) {
-            pushContext.addGroupMember(groupName, (String) i.next());
-        }
     }
 
-    public static void removeCurrentViewsFromGroup(FacesContext context, String groupName) {
-        PushContext pushContext = getPushContext(context);
+    public static void stopAddingNewViewsToGroup(FacesContext context, String groupName) {
         State state = getState(context);
         state.groups.remove(groupName);
-        Iterator i = state.viewIDs.iterator();
-        while (i.hasNext()) {
-            pushContext.removeGroupMember(groupName, (String) i.next());
-        }
     }
 
     private static PushContext getPushContext(FacesContext facesContext) {
@@ -105,7 +88,6 @@ public class SessionViewManager {
     //it is okay to serialize *static* inner classes: http://java.sun.com/javase/6/docs/platform/serialization/spec/serial-arch.html#7182 
     private static class State implements Serializable {
         private String groupName;
-        private HashSet viewIDs = new HashSet();
         private HashSet groups = new HashSet();
 
         private State(String groupName) {
