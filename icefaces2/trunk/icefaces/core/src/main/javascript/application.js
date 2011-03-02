@@ -471,7 +471,8 @@ if (!window.ice.icefaces) {
         });
 
         //include status.js
-        //include blockui.js        
+        //include blockui.js
+        //include fixjsf.js
     })(window.ice);
 }
 
