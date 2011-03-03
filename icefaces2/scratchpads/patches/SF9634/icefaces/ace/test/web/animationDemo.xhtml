@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icefaces.org/icefaces/components">
+<h:head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Animation test page. </title>
+</h:head>
+<h:body class="ice-skin-rime">
+<!--<h:body class="ice-skin-rime yui-skin-sam">-->
+    
+
+    Here's an example of a highlight effect onclick: 
+<h:inputText>
+    <ice:animation event="click" name="highlight" easing="easeBoth" />
+</h:inputText>
+
+    <br/>
+<h:inputText>
+ Here's a highlight example onclick   <ice:animation event="click" name="highlight" />
+</h:inputText>
+
+    <br/>
+
+    Here's an example on highlight on focus and fade on blur
+    <h:inputText>
+        <ice:animation event="focus" name="highlight" />
+        <ice:animation event="blur" name="fade" />
+    </h:inputText>
+
+    <br/>
+    <hr/>
+
+    Does this work at all?
+    <h:inputText>
+        <ice:animation event="change" from="{color:'black'}" to="{color:'red'}" />
+   </h:inputText>    <p/>
+
+    Here's the full set of custom transitions <p/>
+
+  <ol>
+    <li> backIn example
+    <h:inputTextarea>
+        <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="backIn" duration="2000"/>
+        <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="backIn" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+
+    <li> backOut example
+    <h:inputTextarea>
+        <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="backOut" duration="2000"/>
+        <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="backOut" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+
+    <li> backBoth example
+    <h:inputTextarea>
+       <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="backBoth" duration="2000"/>
+       <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="backBoth" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+
+
+    <li> bounceIn example
+    <h:inputTextarea>
+       <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="bounceIn" duration="2000"/>
+       <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="bounceIn" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+
+
+    <li> bounceOut example
+    <h:inputTextarea>
+       <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="bounceOut" duration="2000"/>
+       <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="bounceOut" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+
+
+    <li> bounceBoth example
+    <h:inputTextarea>
+       <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="bounceBoth" duration="2000"/>
+       <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="bounceBoth" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+
+
+    <li> easeIn example
+    <h:inputTextarea>
+       <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="easeIn" duration="2000"/>
+       <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="easeIn" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+
+
+    <li> easeInStrong example
+    <h:inputTextarea>
+       <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="easeInStrong" duration="2000"/>
+       <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="easeInStrong" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+
+
+    <li>  easeNone example
+    <h:inputTextarea>
+       <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="easeNone" duration="2000"/>
+       <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="easeNone" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+
+
+    <li>  easeBoth example
+    <h:inputTextarea>
+       <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="easeBoth" duration="2000"/>
+       <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="easeBoth" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+
+
+    <li>  easeOut example
+    <h:inputTextarea>
+       <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="easeOut" duration="2000"/>
+       <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="easeOut" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+
+
+    <li>  easeOutStrong example
+    <h:inputTextarea>
+       <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="easeOutStrong" duration="2000"/>
+       <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="easeOutStrong" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+
+
+    <li> elasticIn example
+    <h:inputTextarea>
+       <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="elasticIn" duration="2000"/>
+       <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="elasticIn" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+
+
+    <li>  elasticOut example
+    <h:inputTextarea>
+       <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="elasticOut" duration="2000"/>
+       <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="elasticOut" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+
+    <li>  elasticBoth example
+    <h:inputTextarea>
+       <ice:animation event="focus" to="{ height:100 }" from="{  height:20 }" easeing="elasticBoth" duration="2000"/>
+       <ice:animation event="blur" to="{ height:20 }" from="{  height:100 }" easeing="elasticBoth" duration="2000"/>
+    </h:inputTextarea>
+    </li>
+  </ol>
+
+</h:body>
+<h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
+</html>
+
