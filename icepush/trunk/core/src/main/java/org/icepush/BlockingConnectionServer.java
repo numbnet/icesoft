@@ -40,10 +40,11 @@ import java.util.logging.Logger;
 
 public class BlockingConnectionServer extends TimerTask implements Server, Observer {
     private static final Logger log = Logger.getLogger(BlockingConnectionServer.class.getName());
-    private static final ResponseHandler CloseResponse = new CloseConnectionResponseHandler();
+    private static final ResponseHandler CloseResponseDup = new CloseConnectionResponseHandler("duplicate");
+    private static final ResponseHandler CloseResponseDown = new CloseConnectionResponseHandler("shutdown");
     //Define here to avoid classloading problems after application exit
     private static final ResponseHandler NoopResponse = new NoopResponseHandler();
-    private static final Server AfterShutdown = new ResponseHandlerServer(CloseResponse);
+    private static final Server AfterShutdown = new ResponseHandlerServer(CloseResponseDown);
 
     private final BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
     private final long timeoutInterval;
@@ -145,9 +146,16 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     }
 
     private static class CloseConnectionResponseHandler implements ResponseHandler {
+        private String reason = "undefined";
+
+        public CloseConnectionResponseHandler(String reason)  {
+            this.reason = reason;
+        }
+
         public void respond(Response response) throws Exception {
             //let the bridge know that this blocking connection should not be re-initialized
             response.setHeader("X-Connection", "close");
+            response.setHeader("X-Connection-reason", reason);
             response.setHeader("Content-Length", 0);
 
             if (log.isLoggable(Level.FINEST)) {
@@ -187,7 +195,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
 
         public void service(final Request request) throws Exception {
             resetTimeout();
-            respondIfPendingRequest(CloseResponse);
+            respondIfPendingRequest(CloseResponseDup);
 
             //resend notifications if the window owning the blocking connection has changed
             String currentWindow = request.getHeader("ice.push.window");
@@ -217,7 +225,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
         public void shutdown() {
             //avoid creating new blocking connections after shutdown
             activeServer = AfterShutdown;
-            respondIfPendingRequest(terminateBlockingConnectionOnShutdown ? CloseResponse : NoopResponse);
+            respondIfPendingRequest(terminateBlockingConnectionOnShutdown ? CloseResponseDown : NoopResponse);
         }
     }
 }
