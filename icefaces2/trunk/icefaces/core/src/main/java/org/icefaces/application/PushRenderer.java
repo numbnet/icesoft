@@ -120,7 +120,6 @@ public class PushRenderer {
     /**
      * Render the specified group of sessions by performing the JavaServer Faces
      * execute and render lifecycle phases.
-     * For more fine-grained control use the RenderManager API.
      *
      * @param groupName the name of the group of sessions to render.
      */
