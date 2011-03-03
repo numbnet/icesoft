@@ -130,11 +130,15 @@ public class DOMRenderKit extends RenderKitWrapper {
     }
 
     public ResponseWriter createResponseWriter(Writer writer, String contentTypeList, String encoding) {
-        ResponseWriter parentWriter = delegate.createResponseWriter(writer, contentTypeList, encoding);
-        if (!EnvUtils.isICEfacesView(FacesContext.getCurrentInstance())) {
-            return parentWriter;
+        Renderer renderer = delegate.getRenderer(family, type);
+        String className = renderer.getClass().getName();
+        if (className.equals("com.sun.faces.renderkit.html_basic.MessageRenderer"))  {
+            return modifiedMessageRenderer;
         }
-        return new DOMResponseWriter(parentWriter, parentWriter.getCharacterEncoding(), parentWriter.getContentType());
+        if (className.equals("com.sun.faces.renderkit.html_basic.MessagesRenderer"))  {
+            return modifiedMessagesRenderer;
+        }
+        return renderer;
     }
 
     public List<ExternalScript> getCustomRenderScripts() {
