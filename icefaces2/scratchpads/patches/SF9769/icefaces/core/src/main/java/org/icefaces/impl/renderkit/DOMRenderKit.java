@@ -123,13 +123,6 @@ public class DOMRenderKit extends RenderKitWrapper {
     }
 
     public Renderer getRenderer(String family, String type)  {
-        if ((null != modifiedMessagesRenderer) && MESSAGES.equals(family) && MESSAGES.equals(type))  {
-            return modifiedMessagesRenderer;
-        }
-        return delegate.getRenderer(family, type);
-    }
-
-    public ResponseWriter createResponseWriter(Writer writer, String contentTypeList, String encoding) {
         Renderer renderer = delegate.getRenderer(family, type);
         String className = renderer.getClass().getName();
         if (className.equals("com.sun.faces.renderkit.html_basic.MessageRenderer"))  {
@@ -139,6 +132,14 @@ public class DOMRenderKit extends RenderKitWrapper {
             return modifiedMessagesRenderer;
         }
         return renderer;
+    }
+
+    public ResponseWriter createResponseWriter(Writer writer, String contentTypeList, String encoding) {
+        ResponseWriter parentWriter = delegate.createResponseWriter(writer, contentTypeList, encoding);
+        if (!EnvUtils.isICEfacesView(FacesContext.getCurrentInstance())) {
+            return parentWriter;
+        }
+        return new DOMResponseWriter(parentWriter, parentWriter.getCharacterEncoding(), parentWriter.getContentType());
     }
 
     public List<ExternalScript> getCustomRenderScripts() {
