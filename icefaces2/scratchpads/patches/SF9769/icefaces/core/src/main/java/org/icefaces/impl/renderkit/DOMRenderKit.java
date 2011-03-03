@@ -50,6 +50,10 @@ public class DOMRenderKit extends RenderKitWrapper {
     private RenderKit delegate;
     private boolean deltaSubmit;
     private List mandatoryResourceConfig = null;
+	private Renderer modifiedMessageRenderer = null;
+    private static final String MESSAGE = "javax.faces.Message";
+    private static final String MESSAGE_CLASS = 
+            "org.icefaces.impl.renderkit.html_basic.MessageRenderer";
     private Renderer modifiedMessagesRenderer = null;
     private static final String MESSAGES = "javax.faces.Messages";
     private static final String MESSAGES_CLASS = 
@@ -73,6 +77,12 @@ public class DOMRenderKit extends RenderKitWrapper {
         if (null != mandatoryResourceConfigString)  {
             mandatoryResourceConfig = Arrays.asList(
                 mandatoryResourceConfigString.split("\\s+") );
+        }
+		try {
+            modifiedMessageRenderer = 
+                    (Renderer) Class.forName(MESSAGE_CLASS).newInstance();
+        } catch (Throwable t)  {
+            log.fine("No override for Message Renderer " + t.toString());
         }
         try {
             modifiedMessagesRenderer = 
