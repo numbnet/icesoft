@@ -19,7 +19,14 @@
  * Contributor(s): _____________________.
  */
 
-(function(){
+var examine = function(o) {
+	var str = '';
+	for (p in o) {
+		str += p + '\n';
+	}
+	alert(str);
+}
+//(function(){
 /*
 //YAHOO.namespace("icefaces.calendar");
 var calendarns = this, i, ns;
@@ -31,7 +38,7 @@ for (i = 0; i < ns.length; i++) {
     calendarns = calendarns[ns[i]];
 }
 */
-var calendarns = ice.component.calendar = {}; // namespace creation as in tabset.js
+//var calendarns = ice.component.calendar; // namespace creation as in tabset.js
 /*
 YAHOO.util.Event.onDOMReady(function() {
     var calLogReader = new YAHOO.widget.LogReader(null, {newestOnTop:false});
@@ -41,17 +48,25 @@ YAHOO.util.Event.onDOMReady(function() {
 });
 var logger = new YAHOO.widget.LogWriter("Calendar 4");
 */
+ice.component.calendar = { // public functions for calendar namespace
+IceCalendar: function(container, config, params) { // ICE calendar constructor
+    ice.component.calendar.IceCalendar.superclass.constructor.call(this, container, config);
+    this.params = params;
+},
+isReady: false,
+setupLib: function() {
+		var thisYUI = ice.yui3.getNewInstance();
+		thisYUI.use('yui2-yahoo', 'yui2-yahoo-dom-event', 'yui2-dom', 'yui2-event', 'yui2-element', 'yui2-json', 'yui2-selector', 'yui2-datasource', 'yui2-calendar', function(Yui) {
+			var YAHOO = Yui.YUI2;
+//var YAHOO = ice.component.calendar.getUtilYUI();
 var YuiCalendar = YAHOO.widget.Calendar,
            lang = YAHOO.lang,
            JSON = lang.JSON,
             Dom = YAHOO.util.Dom,
           Event = YAHOO.util.Event;
-var IceCalendar = function(container, config, params) { // ICE calendar constructor
-    IceCalendar.superclass.constructor.call(this, container, config);
-    this.params = params;
-};
+
 var renderFooter = function(html) {
-    html = IceCalendar.superclass.renderFooter.call(this, html);
+    html = ice.component.calendar.IceCalendar.superclass.renderFooter.call(this, html);
     var cfg = this.cfg;
     var hourField = cfg.getProperty("hourField");
     if (!hourField) return html;
@@ -82,7 +97,7 @@ var renderFooter = function(html) {
         }
         ice.setFocus(selId);
         if (!renderAsPopup) {
-            calendarns.timeSelectHandler(this, evt);
+            ice.component.calendar.timeSelectHandler(this, evt);
         }
     };
     var selAvailable = function (selId) {
@@ -142,7 +157,7 @@ var renderFooter = function(html) {
 };
 var selectCell = function(cellIndex) {
     this.currentFocus = this.cells[cellIndex].id;
-    IceCalendar.superclass.selectCell.call(this, cellIndex);
+    ice.component.calendar.IceCalendar.superclass.selectCell.call(this, cellIndex);
 };
 var styleCellDefault = function(workingDate, cell) {
     if (this.params.disabled) {
@@ -182,9 +197,10 @@ var setProperty = function(key, value) {
 };
 var overrides = {renderFooter:renderFooter, selectCell:selectCell, styleCellDefault:styleCellDefault,
                  renderCellDefault:renderCellDefault, get:getProperty, set:setProperty};
-lang.extend(IceCalendar, YuiCalendar, overrides);
+lang.extend(ice.component.calendar.IceCalendar, YuiCalendar, overrides);
 
-var ns = { // public functions for calendar namespace
+});
+},
 getTime: function(calendar) {
     var hr = 0, min = 0;
     var cfg = calendar.cfg;
@@ -228,6 +244,10 @@ configCal: function (calendar, params) {
     this[params.clientId].yuiComponent = calendar;
 },
 aria: function() {
+	//var YAHOO = ice.component.calendar.getUtilYUI();
+		var thisYUI = ice.yui3.getNewInstance();
+		thisYUI.use('yui2-yahoo', 'yui2-yahoo-dom-event', 'yui2-dom', 'yui2-event', 'yui2-element', 'yui2-json', 'yui2-selector', 'yui2-datasource', 'yui2-calendar', function(Yui) {
+			var YAHOO = Yui.YUI2;
     var Event = YAHOO.util.Event,
         Dom = YAHOO.util.Dom,
         KeyListener = YAHOO.util.KeyListener,
@@ -394,8 +414,19 @@ aria: function() {
     {keys:[keys.SPACE,keys.LEFT,keys.RIGHT,keys.UP,keys.DOWN,keys.PAGE_UP,keys.PAGE_DOWN,keys.HOME,keys.END]},
     {fn:kl1Handler, correctScope:this});
     kl1.enable();
+	});
 },
 init: function(params) {
+
+		var thisYUI = ice.yui3.getNewInstance();
+		thisYUI.use('yui2-yahoo', 'yui2-yahoo-dom-event', 'yui2-dom', 'yui2-event', 'yui2-element', 'yui2-json', 'yui2-selector', 'yui2-datasource', 'yui2-calendar', function(Yui) {
+			var YAHOO = Yui.YUI2;
+			
+	if (!ice.component.calendar.isReady) {
+		ice.component.calendar.setupLib();
+		ice.component.calendar.isReady = true;
+	}
+
     var Element = YAHOO.util.Element,
         Event = YAHOO.util.Event,
         Dom = YAHOO.util.Dom,
@@ -428,14 +459,14 @@ init: function(params) {
 //            console.log("calendar.currentFocus =", calendar.currentFocus);
             ice.setFocus(calendar.currentFocus);
             Dom.getFirstChild(calendar.currentFocus).focus();
-            var time = calendarns.getTime(calendar);
+            var time = ice.component.calendar.getTime(calendar);
             var dateStr = args[0][0][0] + "-" + args[0][0][1] + "-" + args[0][0][2] + " " + time.hr + ":" + time.min;
             calValueEl.set("value", dateStr, true);
             if (params.singleSubmit) {
                 ice.se(null, rootId);
             }
         }
-        calendar = new IceCalendar(calContainerEl, {
+        calendar = new ice.component.calendar.IceCalendar(calContainerEl, {
             pagedate:params.pageDate,
             selected:params.selectedDate,
             hide_blank_weeks:true
@@ -477,7 +508,7 @@ init: function(params) {
         toggleBtnEl.replaceClass("close-popup", "open-popup");
         if (calendar.getSelectedDates().length <= 0) return;
         var date = calendar.getSelectedDates()[0];
-        var time = calendarns.getTime(calendar);
+        var time = ice.component.calendar.getTime(calendar);
         var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
         calValueEl.setAttributes({value:dateStr}, true);
         var submit = params.singleSubmit ? ice.se : (params.renderInputField ? ice.ser : null);
@@ -499,7 +530,7 @@ init: function(params) {
     dialog.setBody("<div id='" + calContainerId + "'/>");
     dialog.render(calRootEl);
 
-    calendar = new IceCalendar(calContainerId, {
+    calendar = new ice.component.calendar.IceCalendar(calContainerId, {
         pagedate:params.pageDate,
         selected:params.selectedDate,
         iframe:false,
@@ -586,15 +617,28 @@ init: function(params) {
     };
 
     Event.onDOMReady(domReady);
+	});
 },
 initialize: function(clientId, jsProps, jsfProps, bindYUI) {
-    this[clientId] = this[clientId] || {};
+	//var YAHOO = ice.component.calendar.getUtilYUI();
+		var thisYUI = ice.yui3.getNewInstance();
+		thisYUI.use('yui2-yahoo', 'yui2-yahoo-dom-event', 'yui2-dom', 'yui2-event', 'yui2-element', 'yui2-json', 'yui2-selector', 'yui2-datasource', 'yui2-calendar', function(Yui) {
+			var YAHOO = Yui.YUI2;
+	var lang = YAHOO.lang;
+    ice.component.calendar[clientId] = ice.component.calendar[clientId] || {};
     var params = lang.merge({clientId:clientId}, jsProps, jsfProps);
 //    console.log("params =", lang.dump(params));
-    this.init(params);
-    bindYUI(this[clientId].yuiComponent);
+    ice.component.calendar.init(params);
+	});
+	bindYUI(this[clientId].yuiComponent);
 },
 updateProperties: function(clientId, jsProps, jsfProps, events) {
+	//var YAHOO = ice.component.calendar.getUtilYUI();
+		var thisYUI = ice.yui3.getNewInstance();
+		thisYUI.use('yui2-yahoo', 'yui2-yahoo-dom-event', 'yui2-dom', 'yui2-event', 'yui2-element', 'yui2-json', 'yui2-selector', 'yui2-datasource', 'yui2-calendar', function(Yui) {
+			var YAHOO = Yui.YUI2;
+	var lang = YAHOO.lang;
+	var Event = YAHOO.util.Event;
     Event.onContentReady(clientId, function(){
 //    console.log("jsProps =", JSON.stringify(jsProps, null, 4));
 //    console.log("jsfProps =", JSON.stringify(jsfProps, null, 4));
@@ -612,13 +656,30 @@ updateProperties: function(clientId, jsProps, jsfProps, events) {
             break;
         }
     }
-    ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
+    ice.component.updateProperties(clientId, jsProps, jsfProps, events, ice.component.calendar);
     }, this, true);
+	});	
 },
 getInstance: function(clientId, callback) {
     ice.component.getInstance(clientId, callback, this);
+},
+utilYUI: null,
+getUtilYUI: function() {
+    if (ice.component.calendar.utilYUI == null) {
+		var thisYUI = ice.yui3.getNewInstance();
+		thisYUI.use('yui2-yahoo', 'yui2-yahoo-dom-event', 'yui2-dom', 'yui2-event', 'yui2-element', 'yui2-json', 'yui2-selector', 'yui2-datasource', 'yui2-calendar', function(Yui) {
+			var is = Yui.YUI2 == null;
+			alert('B ' + is);
+	        ice.component.calendar.utilYUI = Yui.YUI2;
+		});
+		examine(ice.component.calendar.utilYUI);
+		var is1 = ice.component.calendar.utilYUI == null;
+		alert('A ' + is1);
+	}
+	alert('2');
+	return ice.component.calendar.utilYUI;
 }
 };
-lang.augmentObject(calendarns, ns, true);
-})();
+//lang.augmentObject(calendarns, ns, true);
+//})();
     

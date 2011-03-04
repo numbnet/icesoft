@@ -45,7 +45,6 @@ import org.icefaces.component.baseMeta.UIInputMeta;
 
 @ResourceDependencies({
         @ResourceDependency(name = "container.css", library = "org.icefaces.component.datetimeentry"),
-        @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
     	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
     	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
 		@ResourceDependency(name="oop/oop-min.js",library="yui/3_1_1"),
@@ -68,6 +67,7 @@ import org.icefaces.component.baseMeta.UIInputMeta;
 //        @ResourceDependency(library = "yui/2_8_1", name = "yahoo/yahoo-debug.js"),
 //        @ResourceDependency(library = "yui/2_8_1", name = "dom/dom-debug.js"),
 //        @ResourceDependency(library = "yui/2_8_1", name = "event/event-debug.js"),
+		@ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
         @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
         @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
         @ResourceDependency(library = "yui/2_8_1", name = "calendar/calendar-min.js"),
