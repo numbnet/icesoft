@@ -435,7 +435,8 @@ public class TableRenderer
                 tr.appendChild(handlerTd);
             }
             Element columnHeaderDiv = domContext.createElement(HTML.DIV_ELEM);
-            columnHeaderDiv.setAttribute(HTML.ID_ATTR, "hdrDv"+ columnIndex);
+            columnHeaderDiv.setAttribute(HTML.ID_ATTR, ClientIdPool.get(htmlDataTable.getClientId(facesContext)+
+				UINamingContainer.getSeparatorChar(facesContext)+"hdrDv"+ columnIndex)); 
             th.appendChild(columnHeaderDiv);
             if (htmlDataTable.isResizable()) {
                 String nextWidth = htmlDataTable.getNextResizableTblColumnWidth();
@@ -511,7 +512,8 @@ public class TableRenderer
                 Element cursorParent = th;
                 if (htmlDataTable.isResizable()) {
                     Element columnHeaderDiv = domContext.createElement(HTML.DIV_ELEM);
-                    columnHeaderDiv.setAttribute(HTML.ID_ATTR, "hdrDv"+ columnIndex);
+                    columnHeaderDiv.setAttribute(HTML.ID_ATTR, ClientIdPool.get(htmlDataTable.getClientId(facesContext)+
+						UINamingContainer.getSeparatorChar(facesContext)+"hdrDv"+ columnIndex)); 
                     th.appendChild(columnHeaderDiv);
                     width = htmlDataTable.getNextResizableTblColumnWidth();
                     if (width != null) {
