@@ -41,7 +41,7 @@ are shown but could easily be made to invoke application logic.
 <!-- main menu declaration  -->
 <ice:panelGroup styleClass="exampleBox menuBarContainer">
     <ice:menuBar id="menuBar2">
-        <ice:menuItems value="#{menuBar.menuItems}" actionListener="#{menuBar.primaryListener}"/>
+        <ice:menuItems id="mItem" value="#{menuBar.menuItems}" actionListener="#{menuBar.primaryListener}"/>
     </ice:menuBar>
 </ice:panelGroup>
 
