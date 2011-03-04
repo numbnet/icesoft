@@ -60,20 +60,21 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
         if (Ice.Cookie.exists('ice.sessions')) {
             var sessionsCookie = Ice.Cookie.lookup('ice.sessions');
             var sessions = sessionsCookie.loadValue().split(' ');
-            sessionsCookie.saveValue(sessions.inject([], function(tally, s) {
-                if (s) {
-                    var entry = s.split('#');
-                    var id = entry[0];
-                    var occurences = entry[1].asNumber();
-                    if (id == sessionID) {
-                        --occurences;
-                    }
-                    if (occurences > 0) {
-                        tally.push(entry[0] + '#' + occurences);
-                    }
-                }
-                return tally;
-            }).join(' '));
+            sessionsCookie.saveValue(sessions.inject([],
+                    function(tally, s) {
+                        if (s) {
+                            var entry = s.split('#');
+                            var id = entry[0];
+                            var occurences = entry[1].asNumber();
+                            if (id == sessionID) {
+                                --occurences;
+                            }
+                            if (occurences > 0) {
+                                tally.push(entry[0] + '#' + occurences);
+                            }
+                        }
+                        return tally;
+                    }).join(' '));
         }
     };
 
@@ -249,18 +250,30 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                     blockUIOverlay.on();
                     var rollbacks = ['input', 'select', 'textarea', 'button', 'a'].inject([], function(result, type) {
                         return result.concat($enumerate(container.getElementsByTagName(type)).collect(function(e) {
-                            var onkeypress = e.onkeypress;
-                            var onkeyup = e.onkeyup;
-                            var onkeydown = e.onkeydown;
-                            e.onkeypress = cancelEventCallback;
-                            e.onkeyup = cancelEventCallback;
-                            e.onkeydown = cancelEventCallback;
+                            if (e.hasCallbacksDisabled) {
+                                //return No-Op rollback function when the callbacks are already disabled
+                                return Function.NOOP;
+                            } else {
+                                e.hasCallbacksDisabled = true;
 
-                            return function() {
-                                e.onkeypress = onkeypress;
-                                e.onkeyup = onkeyup;
-                                e.onkeydown = onkeydown;
-                            };
+                                var onkeypress = e.onkeypress;
+                                var onkeyup = e.onkeyup;
+                                var onkeydown = e.onkeydown;
+                                var onclick = e.onclick;
+                                e.onkeypress = cancelEventCallback;
+                                e.onkeyup = cancelEventCallback;
+                                e.onkeydown = cancelEventCallback;
+                                e.onclick = cancelEventCallback;
+
+                                return function() {
+                                    e.onkeypress = onkeypress;
+                                    e.onkeyup = onkeyup;
+                                    e.onkeydown = onkeydown;
+                                    e.onclick = onclick;
+
+                                    e.hasCallbacksDisabled = null;
+                                };
+                            }
                         }));
                     });
 
