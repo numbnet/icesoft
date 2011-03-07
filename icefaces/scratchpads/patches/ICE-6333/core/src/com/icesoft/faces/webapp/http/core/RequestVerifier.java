@@ -1,0 +1,104 @@
+/*
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
+ */
+
+package com.icesoft.faces.webapp.http.core;
+
+import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.standard.EmptyResponse;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.util.Arrays;
+
+import javax.servlet.http.Cookie;
+
+public class RequestVerifier implements Server {
+    private final static Log log = LogFactory.getLog(RequestVerifier.class);
+    private Configuration configuration;
+    private String sessionID;
+    private Server server;
+
+    public RequestVerifier(Configuration configuration, String sessionID, Server server) {
+        this.configuration = configuration;
+        this.sessionID = sessionID;
+        this.server = server;
+    }
+
+    public void service(Request request) throws Exception {
+        if ("GET".equalsIgnoreCase(request.getMethod())) {
+            log.info("'POST' request expected. Dropping connection...");
+            request.respondWith(EmptyResponse.Handler);
+        } else {
+            if (request.containsParameter("ice.session") && !"".equals(request.getParameter("ice.session"))) {
+                if (Arrays.asList(request.getParameterAsStrings("ice.session")).contains(sessionID)) {
+                    server.service(request);
+                } else {
+                    if (log.isDebugEnabled()) {
+                        String JSESSIONID = null;
+                        Cookie[] cookies = request.getCookies();
+                        for (int i = 0; JSESSIONID == null && i < cookies.length; i++) {
+                            if (cookies[i].getName().equalsIgnoreCase("JSESSIONID")) {
+                                JSESSIONID = cookies[i].getValue();
+                            }
+                        }
+                        log.debug(
+                            "Missmatched 'ice.session' value. Session has expired. (" +
+                                "Server's ice.session: '" + sessionID + "', " +
+                                "Client's ice.session(s): " +
+                                    "'" + Arrays.asList(request.getParameterAsStrings("ice.session")) + "', " +
+                                "Client's JSESSIONID: '" + JSESSIONID + "')");
+                    }
+                    if ( "true".equalsIgnoreCase(configuration
+                            .getAttribute("sessionExpiredServerRedirect", 
+                                          "false")) )  {
+                        request.respondWith( SessionExpiredResponse
+                                .getRedirectingHandler(configuration
+                                .getAttribute("sessionExpiredRedirectURI")) );
+                    } else {
+                        request.respondWith(SessionExpiredResponse.Handler);
+                    }
+                }
+            } else {
+                if( log.isDebugEnabled() ){
+                    log.debug("Request missing 'ice.session' required parameter. Dropping connection...");
+                }
+                request.respondWith(EmptyResponse.Handler);
+            }
+        }
+    }
+
+    public void shutdown() {
+        server.shutdown();
+    }
+}
