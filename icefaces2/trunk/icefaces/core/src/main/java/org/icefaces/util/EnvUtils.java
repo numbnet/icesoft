@@ -51,6 +51,8 @@ public class EnvUtils {
     public static String MANDATORY_RESOURCE_CONFIG = "org.icefaces.mandatoryResourceConfiguration";
     public static String UNIQUE_RESOURCE_URLS = "org.icefaces.uniqueResourceURLs";
     public static String LAZY_WINDOW_SCOPE = "org.icefaces.lazyWindowScope";
+    public static String DISABLE_DEFAULT_INDICATORS = "org.icefaces.disableDefaultIndicators";
+
 
     //Parameters configurable using context parameters but only in compatibility mode
     public static String CONNECTION_LOST_REDIRECT_URI = "org.icefaces.connectionLostRedirectURI";
@@ -407,6 +409,10 @@ public class EnvUtils {
     public static boolean isLazyWindowScope(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).lazyWindowScope;
     }
+
+    public static boolean disableDefaultIndicators(FacesContext facesContext) {
+        return EnvConfig.getEnvConfig(facesContext).disableDefaultIndicators;
+    }
 }
 
 class EnvConfig {
@@ -429,6 +435,7 @@ class EnvConfig {
     String mandatoryResourceConfig;
     boolean uniqueResourceURLs;
     boolean lazyWindowScope;
+    public boolean disableDefaultIndicators;
 
     public EnvConfig(Map initMap) {
         init(initMap);
@@ -453,6 +460,7 @@ class EnvConfig {
         mandatoryResourceConfig = decodeString(initMap, EnvUtils.MANDATORY_RESOURCE_CONFIG, null, info);
         uniqueResourceURLs = decodeBoolean(initMap, EnvUtils.UNIQUE_RESOURCE_URLS, true, info);
         lazyWindowScope = decodeBoolean(initMap, EnvUtils.LAZY_WINDOW_SCOPE, true, info);
+        disableDefaultIndicators = decodeBoolean(initMap, EnvUtils.DISABLE_DEFAULT_INDICATORS, false, info);
 
         log.info("ICEfaces Configuration: \n" + info);
     }

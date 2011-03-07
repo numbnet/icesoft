@@ -59,11 +59,13 @@ public class BridgeSetup implements SystemEventListener {
     private int seed = 0;
     private boolean standardFormSerialization;
     private boolean deltaSubmit;
+    private boolean disableDefaultIndicators;
 
     public BridgeSetup() {
         FacesContext fc = FacesContext.getCurrentInstance();
         deltaSubmit = EnvUtils.isDeltaSubmit(fc);
         standardFormSerialization = EnvUtils.isStandardFormSerialization(fc);
+        disableDefaultIndicators = EnvUtils.disableDefaultIndicators(fc);
     }
 
     public boolean isListenerForSource(Object source) {
@@ -214,6 +216,9 @@ public class BridgeSetup implements SystemEventListener {
                     writer.write("', {");
                     writer.write("deltaSubmit: ");
                     writer.write(Boolean.toString(deltaSubmit));
+                    writer.write(",");
+                    writer.write("disableDefaultIndicators: ");
+                    writer.write(Boolean.toString(disableDefaultIndicators));
                     writer.write(",");
                     writer.write("standardFormSerialization: ");
                     writer.write(Boolean.toString(standardFormSerialization));

@@ -43,7 +43,7 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
-    
+
     <context-param>
         <param-name>javax.faces.VALIDATE_EMPTY_FIELDS</param-name>
         <param-value>false</param-value>
@@ -54,12 +54,12 @@
         <param-value>ABQIAAAADlu0ZiSTam64EKaCQr9eTRTOTuQNzJNXRlYRLknj4cQ89tFfpxTEqxQnVWL4k55OPICgF5_SOZE06A
         </param-value>
     </context-param>
-    
+
     <context-param>
         <param-name>org.icefaces.uniqueResourceURLs</param-name>
         <param-value>false</param-value>
     </context-param>
-    
+
     <context-param>
         <param-name>com.icesoft.faces.uploadDirectory</param-name>
         <param-value>upload</param-value>
@@ -69,7 +69,12 @@
         <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
         <param-value>true</param-value>
     </context-param>
- 
+
+    <context-param>
+        <param-name>org.icefaces.disableDefaultIndicators</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -104,5 +109,5 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
-    
+
 </web-app>

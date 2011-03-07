@@ -19,6 +19,7 @@
  * Contributor(s): _____________________.
  */
 
+var setupDefaultIndicators;
 (function() {
     function PopupIndicator(message, description, panel) {
         panel();
@@ -64,34 +65,35 @@
         onResize(window, resize);
     }
 
-    function BackgroundOverlay() {
-        var container = window.document.body;
-        var overlay = container.ownerDocument.createElement('iframe');
-        overlay.setAttribute('src', 'about:blank');
-        overlay.setAttribute('frameborder', '0');
-        var overlayStyle = overlay.style;
-        overlayStyle.position = 'absolute';
-        overlayStyle.display = 'block';
-        overlayStyle.visibility = 'visible';
-        overlayStyle.backgroundColor = 'white';
-        overlayStyle.zIndex = '28000';
-        overlayStyle.top = '0';
-        overlayStyle.left = '0';
-        overlayStyle.opacity = 0.22;
-        overlayStyle.filter = 'alpha(opacity=22)';
-        container.appendChild(overlay);
+    function BackgroundOverlay(container) {
+        return function() {
+            var overlay = container.ownerDocument.createElement('iframe');
+            overlay.setAttribute('src', 'about:blank');
+            overlay.setAttribute('frameborder', '0');
+            var overlayStyle = overlay.style;
+            overlayStyle.position = 'absolute';
+            overlayStyle.display = 'block';
+            overlayStyle.visibility = 'visible';
+            overlayStyle.backgroundColor = 'white';
+            overlayStyle.zIndex = '28000';
+            overlayStyle.top = '0';
+            overlayStyle.left = '0';
+            overlayStyle.opacity = 0.22;
+            overlayStyle.filter = 'alpha(opacity=22)';
+            container.appendChild(overlay);
 
-        var resize = container.tagName.toLowerCase() == 'body' ?
-                function() {
-                    overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-                    overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
-                } :
-                function() {
-                    overlayStyle.width = container.offsetWidth + 'px';
-                    overlayStyle.height = container.offsetHeight + 'px';
-                };
-        resize();
-        onResize(window, resize);
+            var resize = container.tagName.toLowerCase() == 'body' ?
+                    function() {
+                        overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
+                        overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+                    } :
+                    function() {
+                        overlayStyle.width = container.offsetWidth + 'px';
+                        overlayStyle.height = container.offsetHeight + 'px';
+                    };
+            resize();
+            onResize(window, resize);
+        };
     }
 
     function extractTagContent(tag, html) {
@@ -101,11 +103,10 @@
         return tagWithContent.substring(tagWithContent.indexOf('>') + 1, tagWithContent.lastIndexOf('<'));
     }
 
-    onLoad(window, function() {
+    setupDefaultIndicators = function(container) {
+        var overlay = BackgroundOverlay(container);
+
         namespace.onServerError(function(code, html, xmlContent) {
-            if (namespace.configuration.disableDefaultIndicators) {
-                return;
-            }
             //test if server error message is formatted in XML
             var message;
             var description;
@@ -116,21 +117,15 @@
                 message = extractTagContent('title', html);
                 description = extractTagContent('body', html);
             }
-            PopupIndicator(message, description, BackgroundOverlay);
+            PopupIndicator(message, description, overlay);
         });
 
         namespace.onNetworkError(function() {
-            if (namespace.configuration.disableDefaultIndicators) {
-                return;
-            }
-            PopupIndicator("Network Connection Interrupted", "Reload this page to try to reconnect.", BackgroundOverlay);
+            PopupIndicator("Network Connection Interrupted", "Reload this page to try to reconnect.", overlay);
         });
 
         namespace.onSessionExpiry(function() {
-            if (namespace.configuration.disableDefaultIndicators) {
-                return;
-            }
-            PopupIndicator("User Session Expired", "Reload this page to start a new user session.", BackgroundOverlay);
+            PopupIndicator("User Session Expired", "Reload this page to start a new user session.", overlay);
         });
-    });
+    }
 })();
