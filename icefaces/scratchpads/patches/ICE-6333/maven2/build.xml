@@ -1,0 +1,75 @@
+<project name="icefacesEE" default="install-local" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+    <property file="build.properties"/>
+    <property name="lib.dir" location="../lib"/>
+
+	 <path id="maven-ant-tasks.classpath" path="${lib.dir}/maven-ant-tasks-2.1.10.jar" />
+	  <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+	           uri="antlib:org.apache.maven.artifact.ant"
+	           classpathref="maven-ant-tasks.classpath" />
+
+  <target name="install-local" description="install jars from icefaces project into local repository">
+    <artifact:localRepository id="local.repository" path="${local.repository}" layout="default" />
+    	
+    <artifact:pom id="icefacesPom" file="poms/icefaces.pom"> 
+    	 <localRepository refid="local.repository"/>
+    </artifact:pom>
+    <artifact:pom id="icefacesCompsPom" file="poms/icefaces-comps.pom"> 
+    	 <localRepository refid="local.repository"/>
+    </artifact:pom>
+    <artifact:pom id="icefacesFaceletsPom" file="poms/icefaces-facelets.pom"> 
+    	 <localRepository refid="local.repository"/>
+    </artifact:pom>
+    <artifact:pom id="justIcePom" file="poms/just-ice.pom"> 
+    	 <localRepository refid="local.repository"/>
+    </artifact:pom>
+ 
+
+    	<echo> Installing icefaces-${icefacesPom.version} to local repository"</echo>
+      <artifact:install file="${lib.dir}/icefaces.jar" >
+      	 <localRepository refid="local.repository"/>      	
+    	  <pom refid="icefacesPom"/>
+      </artifact:install>      
+    	<echo> Installing icefaces-${icefacesCompsPom.version} to local repository"</echo>
+      <artifact:install file="${lib.dir}/icefaces-comps.jar" >
+      	 <localRepository refid="local.repository"/>      	
+    	  <pom refid="icefacesCompsPom"/>
+      </artifact:install> 
+    	<echo> Installing icefaces-${icefacesFaceletsPom.version} to local repository"</echo>
+      <artifact:install file="${lib.dir}/icefaces-facelets.jar" >
+      	 <localRepository refid="local.repository"/>      	
+    	  <pom refid="icefacesFaceletsPom"/>
+      </artifact:install> 
+    	<echo> Installing just-ice${justIcePom.version} to local repository"</echo>
+      <artifact:install file="${lib.dir}/just-ice.jar" >
+      	 <localRepository refid="local.repository"/>      	
+    	  <pom refid="justIcePom"/>
+      </artifact:install>                
+    </target>
+
+    <target name="install-jsf-local" description="Install distributed jsf version to local repository">
+    	<artifact:localRepository id="local.repository" path="${local.repository}" layout="default" />
+    	   <artifact:pom id="apiPom" file="poms/jsf-api-1.2.pom"> 
+    	     	 <localRepository refid="local.repository"/>
+    	     </artifact:pom>
+    	     <artifact:pom id="implPom" file="poms/jsf-impl-1.2.pom"> 
+    	     	 <localRepository refid="local.repository"/>
+    	     </artifact:pom>
+    	<echo> Installing jsf-api${apiPom.version} to local repository"</echo>
+        <artifact:install file="${lib.dir}/jsf-api-1.2.jar" >
+         	 <localRepository refid="local.repository"/>      	
+       	  <pom refid="apiPom"/>
+         </artifact:install> 
+       	<echo> Installing jsf-impl${implPom.version} to local repository"</echo>
+         <artifact:install file="${lib.dir}/jsf-impl-1.2.jar" >
+         	 <localRepository refid="local.repository"/>      	
+       	  <pom refid="implPom"/>
+         </artifact:install>      
+    
+    </target>
+	
+	<target name="get-maven">
+      <get src="http://repo1.maven.org/maven2/org/apache/maven/maven-ant-tasks/2.0.10/maven-ant-tasks-2.0.10.jar" dest="${lib.dir}/maven-ant-tasks-2.1.10.jar"/>
+    </target>
+</project>
+
