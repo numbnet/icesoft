@@ -295,7 +295,7 @@ public class TabSetRenderer extends Renderer{
             } else {
             	//add hidden class to tabs that are not selected. 
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-hidden iceOutConStatActv", HTML.CLASS_ATTR);
-                writer.write("&nbsp;");
+                writer.write(HTML.NBSP_ENTITY);
             }
         }
         writer.endElement(HTML.DIV_ELEM);
