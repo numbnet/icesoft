@@ -43,6 +43,20 @@ import org.icefaces.component.baseMeta.UIInputMeta;
                 "<a href=\"http://wiki.icefaces.org/display/facesDev/DateTime+Entry\">Wiki doc</a>."
 )
 
+//        @ResourceDependency(library = "yui/2_8_1", name = "yahoo/yahoo-debug.js"),
+//        @ResourceDependency(library = "yui/2_8_1", name = "dom/dom-debug.js"),
+//        @ResourceDependency(library = "yui/2_8_1", name = "event/event-debug.js"),
+/*
+		@ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
+        @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
+        @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
+        @ResourceDependency(library = "yui/2_8_1", name = "calendar/calendar-min.js"),
+        @ResourceDependency(library = "yui/2_8_1", name = "container/container-min.js"),
+        @ResourceDependency(library = "yui/2_8_1", name = "selector/selector-min.js"),
+        @ResourceDependency(library = "yui/2_8_1", name = "datasource/datasource-min.js"),
+        @ResourceDependency(library = "yui/2_8_1", name = "json/json-min.js"),
+*/
+
 @ResourceDependencies({
         @ResourceDependency(name = "container.css", library = "org.icefaces.component.datetimeentry"),
     	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
@@ -63,10 +77,10 @@ import org.icefaces.component.baseMeta.UIInputMeta;
         @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),   
         @ResourceDependency(name="animation.js",library="org.icefaces.component.animation"),
         @ResourceDependency(name="animation.css",library="org.icefaces.component.animation"),          
-        
 //        @ResourceDependency(library = "yui/2_8_1", name = "yahoo/yahoo-debug.js"),
 //        @ResourceDependency(library = "yui/2_8_1", name = "dom/dom-debug.js"),
 //        @ResourceDependency(library = "yui/2_8_1", name = "event/event-debug.js"),
+
 		@ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
         @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
         @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
@@ -75,6 +89,7 @@ import org.icefaces.component.baseMeta.UIInputMeta;
         @ResourceDependency(library = "yui/2_8_1", name = "selector/selector-min.js"),
         @ResourceDependency(library = "yui/2_8_1", name = "datasource/datasource-min.js"),
         @ResourceDependency(library = "yui/2_8_1", name = "json/json-min.js"),
+        
         @ResourceDependency(name = "calendar.js", library = "org.icefaces.component.datetimeentry")
 })
 @ClientBehaviorHolder (events={"transition"}, defaultEvent="transition")
