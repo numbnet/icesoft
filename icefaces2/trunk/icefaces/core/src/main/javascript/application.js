@@ -251,6 +251,9 @@ if (!window.ice.icefaces) {
             } else if (e.status == 'httpError') {
                 warn(logger, 'HTTP error [code: ' + e.responseCode + ']: ' + e.description);
                 broadcast(networkErrorListeners, [ e.responseCode, e.description]);
+            } else {
+                //If the error falls through the other conditions, just log it.
+                error(logger, 'Error [status: ' + e.status + ' code: ' + e.responseCode + ']: ' + e.description);
             }
         });
 
