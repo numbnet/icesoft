@@ -285,7 +285,7 @@ var ComponentIndicators;
         var container = document.getElementById(setupID).parentNode;
 
         //disable core's default indicators/popups
-        container.configuration.disableDefaultIndicators = true;
+        container.configuration.disableDefaultErrorPopups = true;
 
         var connectionLostURI = configuration.connectionLostRedirectURI;
         if (connectionLostURI == "null") {

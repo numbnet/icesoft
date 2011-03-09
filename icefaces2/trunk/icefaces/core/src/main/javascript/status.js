@@ -107,7 +107,7 @@ var setupDefaultIndicators;
         var overlay = BackgroundOverlay(container);
 
         namespace.onServerError(function(code, html, xmlContent) {
-            if (!configuration.disableDefaultIndicators) {
+            if (!configuration.disableDefaultErrorPopups) {
                 //test if server error message is formatted in XML
                 var message;
                 var description;
@@ -123,13 +123,13 @@ var setupDefaultIndicators;
         });
 
         namespace.onNetworkError(function() {
-            if (!configuration.disableDefaultIndicators) {
+            if (!configuration.disableDefaultErrorPopups) {
                 PopupIndicator("Network Connection Interrupted", "Reload this page to try to reconnect.", overlay);
             }
         });
 
         namespace.onSessionExpiry(function() {
-            if (!configuration.disableDefaultIndicators) {
+            if (!configuration.disableDefaultErrorPopups) {
                 PopupIndicator("User Session Expired", "Reload this page to start a new user session.", overlay);
             }
         });
