@@ -59,8 +59,6 @@ public class PushClient {
      */
     public void addGroupMember(final String groupName, final String pushId)
     throws PushClientException {
-        // todo: Remove this logging.
-        LOGGER.log(Level.INFO, "[Jack] addGroupMember(groupName: '" + groupName + "', pushId: '" + pushId + "')");
         try {
             // throws URISyntaxException, MalformedURLException, IOException
             sendNow(new AddGroupMemberRequest(groupName, pushId, contextURI));
@@ -77,8 +75,6 @@ public class PushClient {
      */
     public String createPushId()
     throws PushClientException {
-        // todo: Remove this logging.
-        LOGGER.log(Level.INFO, "[Jack] createPushId()");
         try {
             // throws URISyntaxException
             CreatePushIdRequest _request = new CreatePushIdRequest(contextURI);
@@ -95,8 +91,6 @@ public class PushClient {
      * @param      pushId
      */
     public void deregister(final String pushId) {
-        // todo: Remove this logging.
-        LOGGER.log(Level.INFO, "[Jack] deregister(pushId: '" + pushId + "')");
         synchronized (pushIdCallbackMap) {
             pushIdCallbackMap.remove(pushId);
             /*
@@ -126,8 +120,6 @@ public class PushClient {
      */
     public void notify(final String groupName)
     throws PushClientException {
-        // todo: Remove this logging.
-        LOGGER.log(Level.INFO, "[Jack] notify(groupName: '" + groupName + "')");
         try {
             // throws URISyntaxException, MalformedURLException, IOException
             sendNow(new NotifyRequest(groupName, contextURI));
@@ -142,8 +134,6 @@ public class PushClient {
      * @param      callback
      */
     public void register(final String pushId, final Runnable callback) {
-        // todo: Remove this logging.
-        LOGGER.log(Level.INFO, "[Jack] register(pushId: '" + pushId + "', callback: '" + callback + "')");
         synchronized (pushIdCallbackMap) {
             if (pushIdCallbackMap.containsKey(pushId)) {
                 pushIdCallbackMap.get(pushId).add(callback);
@@ -181,8 +171,6 @@ public class PushClient {
      */
     public void removeGroupMember(final String groupName, final String pushId)
     throws PushClientException {
-        // todo: Remove this logging.
-        LOGGER.log(Level.INFO, "[Jack] removeGroupMember(groupName: '" + groupName + "', pushId: '" + pushId + "')");
         try {
             // throws URISyntaxException, MalformedURLException, IOException
             sendNow(new RemoveGroupMemberRequest(groupName, pushId, contextURI));
@@ -194,7 +182,6 @@ public class PushClient {
     public void shutdown() {
         listenRequestLock.lock();
         try {
-            LOGGER.log(Level.INFO, "[Jack] Initiating shutdown...");
             cancelListenRequest();
             client.shutdown();
         } finally {
@@ -207,7 +194,6 @@ public class PushClient {
             listenRequestLock.lock();
             try {
                 if (listenRequest != null) {
-                    LOGGER.log(Level.INFO, "[Jack] Cancelling the ListenRequest...");
                     client.cancel(listenRequest);
                     listenRequest = null;
                 }
@@ -238,27 +224,9 @@ public class PushClient {
                                     } else if (_currentNodeName.equalsIgnoreCase("notified-pushids")) {
                                         StringTokenizer _pushIds =
                                             new StringTokenizer(_currentNode.getFirstChild().getNodeValue());
-                                        // todo: Remove this logging.
-                                        if (LOGGER.isLoggable(Level.INFO)) {
-                                            LOGGER.log(
-                                                Level.INFO,
-                                                "[Jack] Current Node Value: " +
-                                                    _currentNode.getFirstChild().getNodeValue());
-                                        }
-                                        // todo: Remove this logging.
-                                        if (LOGGER.isLoggable(Level.INFO)) {
-                                            LOGGER.log(
-                                                Level.INFO,
-                                                "[Jack] Token Count: " +
-                                                    _pushIds.countTokens());
-                                        }
                                         synchronized (pushIdCallbackMap) {
                                             while (_pushIds.hasMoreTokens()) {
                                                 String _pushId = _pushIds.nextToken();
-                                                // todo: Remove this logging.
-                                                if (LOGGER.isLoggable(Level.INFO)) {
-                                                    LOGGER.log(Level.INFO, "[Jack] Notify Push-ID: " + _pushId);
-                                                }
                                                 if (pushIdCallbackMap.containsKey(_pushId)) {
                                                     for (Runnable _callback : pushIdCallbackMap.get(_pushId)) {
                                                         _callback.run();

@@ -15,11 +15,5 @@ extends HttpRequest {
             Method.GET,                                                                                        // Method
             // throws URISyntaxException
             new URI(contextURI + "/create-push-id.icepush").normalize());                                 // Request-URI
-        // todo: Remove this logging.
-        LOGGER.log(
-            Level.INFO,
-            "[Jack] " +
-                "CreatePushIdRequest(" +
-                    "contextURI: '" + contextURI + "')");
     }
 }
