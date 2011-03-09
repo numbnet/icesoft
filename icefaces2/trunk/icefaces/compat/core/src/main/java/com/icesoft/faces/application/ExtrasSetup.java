@@ -24,6 +24,7 @@ package com.icesoft.faces.application;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.util.CoreUtils;
+import org.icefaces.impl.event.BridgeSetup;
 import org.icefaces.impl.event.UIOutputWriter;
 import org.icefaces.impl.util.FormEndRenderer;
 import org.icefaces.impl.util.FormEndRendering;
@@ -97,6 +98,8 @@ public class ExtrasSetup implements SystemEventListener {
 
                     final String contextPath = CoreUtils.resolveResourceURL(context, "/");
 
+                    writer.startElement("span", this);
+                    writer.writeAttribute("id", getClientId(context), null);
                     writer.startElement("script", this);
                     writer.writeAttribute("type", "text/javascript", null);
                     writer.write("ice.DefaultIndicators({");
@@ -125,11 +128,15 @@ public class ExtrasSetup implements SystemEventListener {
                     writer.write("buttonText: '");
                     writer.write(localizedBundle.getString("button-text"));
                     writer.write("'");
-                    writer.write("}}, document.body);");
+                    writer.write("}},'");
+                    writer.write(getClientId(context));
+                    writer.write("');");
                     writer.endElement("script");
+                    writer.endElement("span");
                 }
             };
             output.setTransient(true);
+            output.setId(BridgeSetup.getViewID(context.getExternalContext()) + "_icefaces_compat_config");
             root.addComponentResource(context, output, "body");
 
             FormEndRendering.addRenderer(context, FormHiddenInputFields);

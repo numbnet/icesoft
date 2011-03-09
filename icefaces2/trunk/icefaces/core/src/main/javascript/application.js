@@ -266,9 +266,7 @@ if (!window.ice.icefaces) {
             if (configuration.sendDisposeWindow) {
                 onBeforeUnload(window, disposeWindow(viewID));
             }
-            if (!configuration.disableDefaultIndicators) {
-                setupDefaultIndicators(container);
-            }
+            setupDefaultIndicators(container, configuration);
         };
 
         namespace.setupPush = function(viewID) {
