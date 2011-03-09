@@ -25,12 +25,22 @@ package org.icepush;
 import org.icepush.servlet.ReadyObservable;
 import org.icepush.servlet.ServletContextConfiguration;
 
-import javax.servlet.ServletContext;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class LocalPushGroupManager implements PushGroupManager {
+import javax.servlet.ServletContext;
+
+public class LocalPushGroupManager extends AbstractPushGroupManager implements PushGroupManager {
     private static final Logger LOGGER = Logger.getLogger(LocalPushGroupManager.class.getName());
     private static final int GROUP_SCANNING_TIME_RESOLUTION = 3000; // ms
 
@@ -81,14 +91,13 @@ public class LocalPushGroupManager implements PushGroupManager {
         } else {
             pushID.addToGroup(groupName);
         }
-
         Group group = groupMap.get(groupName);
         if (group == null) {
             groupMap.put(groupName, new Group(groupName, id));
         } else {
             group.addPushID(id);
         }
-
+        memberAdded(groupName, id);
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.log(Level.FINEST, "Added pushId '" + id + "' to group '" + groupName + "'.");
         }
@@ -121,6 +130,7 @@ public class LocalPushGroupManager implements PushGroupManager {
                 LOGGER.log(Level.FINEST, "Push notification triggered for '" + groupName + "' group.");
             }
             outboundNotifier.notifyObservers(group.getPushIDs());
+            pushed(groupName);
         }
     }
 
@@ -128,12 +138,11 @@ public class LocalPushGroupManager implements PushGroupManager {
         Group group = groupMap.get(groupName);
         if (group != null) {
             group.removePushID(pushId);
-
             PushID id = pushIDMap.get(pushId);
             if (id != null) {
                 id.removeFromGroup(groupName);
             }
-
+            memberRemoved(groupName, pushId);
             if (LOGGER.isLoggable(Level.FINEST)) {
                 LOGGER.log(Level.FINEST, "Removed pushId '" + pushId + "' from group '" + groupName + "'.");
             }
@@ -142,6 +151,13 @@ public class LocalPushGroupManager implements PushGroupManager {
 
     public void shutdown() {
         // Do nothing.
+    }
+
+    public void touchPushID(final String id, final Long timestamp) {
+        PushID pushID = pushIDMap.get(id);
+        if (pushID != null) {
+            pushID.touch(timestamp);
+        }
     }
 
     private class Group {
@@ -192,12 +208,21 @@ public class LocalPushGroupManager implements PushGroupManager {
             }
         }
 
+        private void touch() {
+            touch(System.currentTimeMillis());
+        }
+
+        private void touch(final Long timestamp) {
+            lastAccess = timestamp;
+        }
+
         private void touchIfMatching(final Collection pushIds) {
             Iterator i = pushIds.iterator();
             while (i.hasNext()) {
                 String pushId = (String) i.next();
                 if (pushIdList.contains(pushId)) {
-                    lastAccess = System.currentTimeMillis();
+                    touch();
+                    groupTouched(name, lastAccess);
                     //no need to touchIfMatching again
                     //return right away without checking the expiration
                     return;
@@ -230,13 +255,22 @@ public class LocalPushGroupManager implements PushGroupManager {
             }
         }
 
-        public void touchIfMatching(Set pushIDs) {
+        private void touch() {
+            touch(System.currentTimeMillis());
+        }
+
+        private void touch(final Long timestamp) {
+            lastAccess = timestamp;
+        }
+
+        private void touchIfMatching(Set pushIDs) {
             if (pushIDs.contains(id)) {
-                lastAccess = System.currentTimeMillis();
+                touch();
+                pushIDTouched(id, lastAccess);
             }
         }
 
-        public void discardIfExpired() {
+        private void discardIfExpired() {
             //expire pushId
             if (lastAccess + pushIdTimeout < System.currentTimeMillis()) {
                 if (LOGGER.isLoggable(Level.FINEST)) {

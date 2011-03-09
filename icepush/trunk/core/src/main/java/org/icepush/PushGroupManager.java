@@ -31,6 +31,8 @@ public interface PushGroupManager {
 
     void addObserver(Observer observer);
 
+    void addPushGroupListener(PushGroupListener listener);
+
     void deleteObserver(Observer observer);
 
     Map<String, String[]> getGroupMap();
@@ -40,6 +42,8 @@ public interface PushGroupManager {
     void push(String groupName);
 
     void removeMember(String groupName, String pushId);
+
+    void removePushGroupListener(PushGroupListener listener);
 
     void shutdown();
 }
