@@ -53,7 +53,6 @@ public class HttpClient {
             try {
                 if (!shutdown) {
                     if (pendingRequestMap.containsKey(request)) {
-                        LOGGER.log(Level.INFO, "[Jack] Closing previous connection.");
                         pendingRequestMap.remove(request).cancel(true);
                         if (connectionMap.containsKey(request)) {
                             HttpConnection _connection = connectionMap.remove(request);

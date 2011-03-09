@@ -25,14 +25,6 @@ extends HttpRequest {
                 // throws URISyntaxException
             new URI(contextURI + "/remove-group-member.icepush").normalize(),                             // Request-URI
             toForm(groupName, pushId).getBytes());                                                        // Entity-Body
-        // todo: Remove this logging.
-        LOGGER.log(
-            Level.INFO,
-            "[Jack] " +
-                "RemoveGroupMemberRequest(" +
-                    "groupName: '" + groupName + "', " +
-                    "pushId: '" + pushId + "', " +
-                    "contextURI: '" + contextURI + "')");
     }
 
     private static String toForm(final String groupName, final String pushId) {

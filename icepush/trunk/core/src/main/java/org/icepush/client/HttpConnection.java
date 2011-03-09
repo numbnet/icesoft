@@ -32,10 +32,6 @@ public class HttpConnection {
 
     public synchronized void send(final HttpRequest request)
     throws IOException, MalformedURLException {
-        // todo: Remove this logging.
-        if (LOGGER.isLoggable(Level.INFO)) {
-            LOGGER.log(Level.INFO, "[Jack] Sending " + request.getRequestURI());
-        }
         // throws MalformedURLException, IOException
         connection = (HttpURLConnection)request.getRequestURI().toURL().openConnection();
         try {
