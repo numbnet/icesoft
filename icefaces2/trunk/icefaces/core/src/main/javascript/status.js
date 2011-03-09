@@ -103,29 +103,35 @@ var setupDefaultIndicators;
         return tagWithContent.substring(tagWithContent.indexOf('>') + 1, tagWithContent.lastIndexOf('<'));
     }
 
-    setupDefaultIndicators = function(container) {
+    setupDefaultIndicators = function(container, configuration) {
         var overlay = BackgroundOverlay(container);
 
         namespace.onServerError(function(code, html, xmlContent) {
-            //test if server error message is formatted in XML
-            var message;
-            var description;
-            if (xmlContent) {
-                message = xmlContent.getElementsByTagName("error-message")[0].firstChild.nodeValue;
-                description = xmlContent.getElementsByTagName("error-name")[0].firstChild.nodeValue;
-            } else {
-                message = extractTagContent('title', html);
-                description = extractTagContent('body', html);
+            if (!configuration.disableDefaultIndicators) {
+                //test if server error message is formatted in XML
+                var message;
+                var description;
+                if (xmlContent) {
+                    message = xmlContent.getElementsByTagName("error-message")[0].firstChild.nodeValue;
+                    description = xmlContent.getElementsByTagName("error-name")[0].firstChild.nodeValue;
+                } else {
+                    message = extractTagContent('title', html);
+                    description = extractTagContent('body', html);
+                }
+                PopupIndicator(message, description, overlay);
             }
-            PopupIndicator(message, description, overlay);
         });
 
         namespace.onNetworkError(function() {
-            PopupIndicator("Network Connection Interrupted", "Reload this page to try to reconnect.", overlay);
+            if (!configuration.disableDefaultIndicators) {
+                PopupIndicator("Network Connection Interrupted", "Reload this page to try to reconnect.", overlay);
+            }
         });
 
         namespace.onSessionExpiry(function() {
-            PopupIndicator("User Session Expired", "Reload this page to start a new user session.", overlay);
+            if (!configuration.disableDefaultIndicators) {
+                PopupIndicator("User Session Expired", "Reload this page to start a new user session.", overlay);
+            }
         });
     }
 })();
