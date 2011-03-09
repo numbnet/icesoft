@@ -51,7 +51,7 @@ public class EnvUtils {
     public static String MANDATORY_RESOURCE_CONFIG = "org.icefaces.mandatoryResourceConfiguration";
     public static String UNIQUE_RESOURCE_URLS = "org.icefaces.uniqueResourceURLs";
     public static String LAZY_WINDOW_SCOPE = "org.icefaces.lazyWindowScope";
-    public static String DISABLE_DEFAULT_INDICATORS = "org.icefaces.disableDefaultIndicators";
+    public static String DISABLE_DEFAULT_ERROR_POPUPS = "org.icefaces.disableDefaultErrorPopups";
 
 
     //Parameters configurable using context parameters but only in compatibility mode
@@ -410,8 +410,8 @@ public class EnvUtils {
         return EnvConfig.getEnvConfig(facesContext).lazyWindowScope;
     }
 
-    public static boolean disableDefaultIndicators(FacesContext facesContext) {
-        return EnvConfig.getEnvConfig(facesContext).disableDefaultIndicators;
+    public static boolean disableDefaultErrorPopups(FacesContext facesContext) {
+        return EnvConfig.getEnvConfig(facesContext).disableDefaultErrorPopups;
     }
 }
 
@@ -435,7 +435,7 @@ class EnvConfig {
     String mandatoryResourceConfig;
     boolean uniqueResourceURLs;
     boolean lazyWindowScope;
-    public boolean disableDefaultIndicators;
+    public boolean disableDefaultErrorPopups;
 
     public EnvConfig(Map initMap) {
         init(initMap);
@@ -460,7 +460,7 @@ class EnvConfig {
         mandatoryResourceConfig = decodeString(initMap, EnvUtils.MANDATORY_RESOURCE_CONFIG, null, info);
         uniqueResourceURLs = decodeBoolean(initMap, EnvUtils.UNIQUE_RESOURCE_URLS, true, info);
         lazyWindowScope = decodeBoolean(initMap, EnvUtils.LAZY_WINDOW_SCOPE, true, info);
-        disableDefaultIndicators = decodeBoolean(initMap, EnvUtils.DISABLE_DEFAULT_INDICATORS, false, info);
+        disableDefaultErrorPopups = decodeBoolean(initMap, EnvUtils.DISABLE_DEFAULT_ERROR_POPUPS, false, info);
 
         log.info("ICEfaces Configuration: \n" + info);
     }

@@ -21,7 +21,8 @@
 
 if (!window.console) {
     console = {};
-    console.log = function() {};
+    console.log = function() {
+    };
 }
 
 var jsfErrorCallback = function handleError(error) {
@@ -64,14 +65,14 @@ var iceErrorCallback = function iceHandleError(statusCode, responseTxt, response
     console.log("response code: " + statusCode);
     console.log("response text: " + responseTxt);
     console.log("response xml: " + responseDOM);
-    
-    if(responseTxt.indexOf("ViewExpiredException") >= 0 ){
+
+    if (responseTxt.indexOf("ViewExpiredException") >= 0) {
         window.location.href = "./viewExpired.xhtml";
     }
 }
 
 if (ice) {
-    ice.configuration.disableDefaultIndicators = true;
+    document.body.configuration.disableDefaultErrorPopups = true;
     ice.onServerError(iceErrorCallback);
 } else {
     jsf.ajax.addOnError(jsfErrorCallback);
