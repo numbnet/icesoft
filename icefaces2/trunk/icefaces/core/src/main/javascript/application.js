@@ -118,7 +118,7 @@ if (!window.ice.icefaces) {
         //include event.js
         //include element.js
         //include logger.js
-        var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
+        var handler = window.console && window.console.log ? ConsoleLogHandler(debug) : WindowLogHandler(debug, window.location.href);
         var logger = Logger([ 'window' ], handler);
         namespace.log = logger;
         namespace.log.debug = debug;
