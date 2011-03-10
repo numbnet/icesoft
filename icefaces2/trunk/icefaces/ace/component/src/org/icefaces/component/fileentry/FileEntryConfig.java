@@ -37,7 +37,7 @@ public class FileEntryConfig implements Serializable {
     private String relativePath;
     private boolean useSessionSubdir;
     private boolean useOriginalFilename;
-    private FileEntryCallback callback;
+    private String callbackEL;
     private long maxTotalSize;
     private long maxFileSize;
     private int maxFileCount;
@@ -56,7 +56,7 @@ public class FileEntryConfig implements Serializable {
         String relativePath,
         boolean useSessionSubdir,
         boolean useOriginalFilename,
-        FileEntryCallback callback,
+        String callbackEL,
         long maxTotalSize,
         long maxFileSize,
         int maxFileCount,
@@ -70,7 +70,7 @@ public class FileEntryConfig implements Serializable {
         this.relativePath = relativePath;
         this.useSessionSubdir = useSessionSubdir;
         this.useOriginalFilename = useOriginalFilename;
-        this.callback = callback;
+        this.callbackEL = callbackEL;
         this.maxTotalSize = maxTotalSize;
         this.maxFileSize = maxFileSize;
         this.maxFileCount = maxFileCount;
@@ -104,12 +104,12 @@ public class FileEntryConfig implements Serializable {
         return useOriginalFilename;
     }
     
-    public FileEntryCallback getCallback() {
-        return callback;
+    public String getCallbackEL() {
+        return callbackEL;
     }
     
     public boolean isViaCallback() {
-        return callback != null;
+        return callbackEL != null;
     }
     
     public long getMaxTotalSize() {
@@ -145,7 +145,7 @@ public class FileEntryConfig implements Serializable {
             ",\n  relativePath=" + relativePath +
             ",\n  useSessionSubdir=" + useSessionSubdir +
             ",\n  useOriginalFilename=" + useOriginalFilename +
-            ",\n  callback=" + callback +
+            ",\n  callbackEL=" + callbackEL +
             ",\n  maxTotalSize=" + maxTotalSize +
             ",\n  maxFileSize=" + maxFileSize +
             ",\n  maxFileCount=" + maxFileCount +

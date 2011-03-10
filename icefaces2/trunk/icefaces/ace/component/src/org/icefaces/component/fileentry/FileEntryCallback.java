@@ -25,13 +25,10 @@ import java.io.Serializable;
 
 /**
  * When files are being uploaded, they will be saved into the file-system
- * unless an FileEntryCallback is provided, in which case the application
+ * unless a FileEntryCallback is provided, in which case the application
  * may take responsibility for the process of saving the files. This is
  * useful in cases where the files should be saved into a database, or
  * processed in memory before being written to the file-system, etc.
- * 
- * Implementors will be stored in the session, and so must be Serializable,
- * and should not reference large amounts of memory, when not in use.
  * 
  * Each call to begin(-) can be followed by any number of calls to the write(-)
  * methods, and then a call to end(-). Even if the begin(-) call shows that the
@@ -41,22 +38,29 @@ import java.io.Serializable;
 public interface FileEntryCallback extends Serializable {
     /**
      * Notify the callback of another file that has been uploaded
-     * @param fileName The file name, as given by the user's browser
-     * @param fileSize -1 for unknown, else the number of known bytes
-     * @param status 
+     * Check fileInfo.getStatus() to determine if the file has pre-failed
+     * uploading, due to too many files uploaded, an invalid file extension,
+     * or content type.
+     * @param fileInfo Contains all of the information known about the file, before downloading the contents
      */
-    // Not sure if we can guarantee that we'll always know the file size, with all browsers
-    // After writing the end method, I realised that we might know that a file has failed upload, before even commencing.
-    // QUESTION: For files that have failed upload, before event beginning, should we simply not call begin at all, or inform the callback?
-    public void begin(String fileName, long fileSize, FileEntryStatus status);
+    public void begin(FileEntryResults.FileInfo fileInfo);
 
-    // We write in chunks, as we read them in
+    /**
+     * We write in chunks, as we read them in
+     */
     public void write(byte[] buffer, int offset, int length);
 
-    // This can be helpfull for debugging
-    public void write(int buffer);
+    /**
+     * We write in chunks, as we read them in
+     */
+    public void write(int data);
 
-    // If we detect that a file failed, say because it's over quota, then we'll tell the callback, and it might massage the result, to still accept the file, or possibly to fail the file that we thought was ok.
-    // They can even return a custom status, with its own message format for the faces message.
-    public FileEntryStatus end(FileEntryStatus status);
+    /**
+     * If we detect that a file failed, say because it's over quota, then
+     * we'll tell the callback, and it might massage the result, to still
+     * accept the file, or possibly to fail the file that we thought was ok,
+     * by calling FileEntryResults.FileInfo.updateStatus(FileEntryStatus, boolean).
+     * @param fileInfo The same object that was passed into begin(FileInfo)
+     */
+    public void end(FileEntryResults.FileInfo fileInfo);
 }

@@ -29,6 +29,7 @@ import org.icefaces.apache.commons.fileupload.FileItemIterator;
 import org.icefaces.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.icefaces.apache.commons.fileupload.util.Streams;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
@@ -44,22 +45,18 @@ import javax.faces.application.FacesMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.lang.reflect.Constructor;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Vector;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Set;
+import java.util.*;
 import java.io.InputStream;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FileEntryPhaseListener implements PhaseListener {
+    private static Logger log = Logger.getLogger(FileEntryPhaseListener.class.getName());
+
     public void afterPhase(PhaseEvent phaseEvent) {
 //        System.out.println("FileEntryPhaseListener.afterPhase()   " + phaseEvent.getPhaseId());
 //        System.out.println("FileEntryPhaseListener.afterPhase()     renderResponse  : " + phaseEvent.getFacesContext().getRenderResponse());
@@ -130,11 +127,15 @@ public class FileEntryPhaseListener implements PhaseListener {
 //        System.out.println("FileEntryPhaseListener.beforePhase()  isMultipart: " + isMultipart);
         if (isMultipart) {
             final ServletFileUpload uploader = new ServletFileUpload();
-            Map<String, FileEntryResults> clientId2Results = new HashMap<String, FileEntryResults>(6);
+            Map<String, FileEntryResults> clientId2Results =
+                    new HashMap<String, FileEntryResults>(6);
             ProgressListenerResourcePusher progressListenerResourcePusher =
                     new ProgressListenerResourcePusher(clientId2Results);
             uploader.setProgressListener(progressListenerResourcePusher);
-            Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
+            Map<String, FileEntryCallback> clientId2Callbacks =
+                    new HashMap<String, FileEntryCallback>(6);
+            Map<String, List<String>> parameterListMap =
+                    new HashMap<String, List<String>>();
             byte[] buffer = new byte[16*1024];
             try {
                 FileItemIterator iter = uploader.getItemIterator(request);
@@ -152,7 +153,9 @@ public class FileEntryPhaseListener implements PhaseListener {
                         }
                         parameterList.add(value);
                     } else {
-                        uploadFile(item, clientId2Results, progressListenerResourcePusher, buffer);
+                        uploadFile(phaseEvent.getFacesContext(), item,
+                                clientId2Results, clientId2Callbacks,
+                                progressListenerResourcePusher, buffer);
                     }
                 }
             }
@@ -165,6 +168,9 @@ public class FileEntryPhaseListener implements PhaseListener {
             }
             FileEntry.storeResultsForLaterInLifecycle(phaseEvent.getFacesContext(), clientId2Results);
             progressListenerResourcePusher.clear();
+            clientId2Callbacks.clear();
+            Arrays.fill(buffer, (byte) 0);
+            buffer = null;
             
             // Map<String, List<String>> parameterListMap = new HashMap<String, List<String>>();
             Map<String, String[]> parameterMap = new HashMap<String, String[]>(
@@ -274,13 +280,17 @@ public class FileEntryPhaseListener implements PhaseListener {
     }
     
     private static void uploadFile(
+            FacesContext facesContext,
             FileItemStream item,
             Map<String, FileEntryResults> clientId2Results,
+            Map<String, FileEntryCallback> clientId2Callbacks,
             ProgressListenerResourcePusher progressListenerResourcePusher,
             byte[] buffer) {
         FileEntryResults results = null;
+        FileEntryCallback callback = null;
         FileEntryResults.FileInfo fileInfo = null;
-        
+        FileEntryConfig config = null;
+
         File file = null;
         long fileSizeRead = 0L;
         FileEntryStatus status = FileEntryStatuses.UPLOADING;
@@ -306,9 +316,8 @@ public class FileEntryPhaseListener implements PhaseListener {
             // When no file name is given, that means the user did
             // not upload a file
             if (fileName != null && fileName.length() > 0) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
                 String identifier = fieldName;
-                FileEntryConfig config = FileEntry.retrieveConfigFromPreviousLifecycle(facesContext, identifier);
+                config = FileEntry.retrieveConfigFromPreviousLifecycle(facesContext, identifier);
                 // config being null might be indicative of a non-ICEfaces' file upload component in the form
 //System.out.println("File    config: " + config);
 
@@ -318,7 +327,7 @@ public class FileEntryPhaseListener implements PhaseListener {
                     clientId2Results.put(config.getClientId(), results);
                 }
 //System.out.println("File    results: " + results);
-                
+
                 fileInfo = new FileEntryResults.FileInfo();
                 fileInfo.begin(fileName, contentType);
 
@@ -326,6 +335,19 @@ public class FileEntryPhaseListener implements PhaseListener {
                         facesContext, config.getProgressResourcePath(),
                         config.getProgressGroupName());
                 
+                if (config.isViaCallback()) {
+                    callback = clientId2Callbacks.get(config.getClientId());
+                    if (callback == null) {
+                        try {
+                            callback = evaluateCallback(facesContext, config);
+                        } catch(javax.el.ELException e) {
+                            status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
+                            throw e;
+                        }
+                    }
+                }
+//System.out.println("File    callback: " + callback);
+
                 long availableTotalSize = results.getAvailableTotalSize(config.getMaxTotalSize());
 //System.out.println("File    availableTotalSize: " + availableTotalSize);
                 long availableFileSize = config.getMaxFileSize();
@@ -334,13 +356,41 @@ public class FileEntryPhaseListener implements PhaseListener {
 //System.out.println("File    maxFileCount: " + maxFileCount);
                 if (results.getFiles().size() >= maxFileCount) {
                     status = FileEntryStatuses.MAX_FILE_COUNT_EXCEEDED;
+                    fileInfo.prefail(status);
+                    InputStream in = item.openStream();
+                    while (in.read(buffer) >= 0) {}
+                    if (callback != null) {
+                        try {
+                            callback.begin(fileInfo);
+                            callback.end(fileInfo);
+                        } catch(RuntimeException e) {
+                            status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
+                            handleCallbackException(
+                                    facesContext, config.getClientId(), e);
+                            throw e;
+                        }
+                    }
                 }
                 else {
-                    String folder = calculateFolder(facesContext, config);
-                    file = makeFile(config, folder, fileName);
+                    OutputStream output = null;
+                    if (callback != null) {
+                        try {
+                            callback.begin(fileInfo);
+                        } catch(RuntimeException e) {
+                            status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
+                            handleCallbackException(
+                                    facesContext, config.getClientId(), e);
+                            throw e;
+                        }
+                    }
+                    else {
+                        String folder = calculateFolder(facesContext, config);
+                        file = makeFile(config, folder, fileName);
 //System.out.println("File    file: " + file);
+                        output = new FileOutputStream(file);
+                    }
+
                     InputStream in = item.openStream();
-                    OutputStream output = new FileOutputStream(file);
                     try {
                         boolean overQuota = false;
                         while (true) {
@@ -359,7 +409,19 @@ public class FileEntryPhaseListener implements PhaseListener {
                                     status = FileEntryStatuses.MAX_TOTAL_SIZE_EXCEEDED;
                                 }
                                 if (!overQuota) {
-                                    output.write(buffer, 0, read);
+                                    if (callback != null) {
+                                        try {
+                                            callback.write(buffer, 0, read);
+                                        } catch(RuntimeException e) {
+                                            status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
+                                            handleCallbackException(
+                                                    facesContext, config.getClientId(), e);
+                                            throw e;
+                                        }
+                                    }
+                                    else if (output != null) {
+                                        output.write(buffer, 0, read);
+                                    }
                                 }
                             }
                         }
@@ -371,8 +433,10 @@ public class FileEntryPhaseListener implements PhaseListener {
                         }
                     }
                     finally {
-                        output.flush();
-                        output.close();
+                        if (output != null) {
+                            output.flush();
+                            output.close();
+                        }
                     }
                 }
             }
@@ -385,9 +449,13 @@ public class FileEntryPhaseListener implements PhaseListener {
         }
         catch(Exception e) {
 //System.out.println("File    Exception: " + e);
-            status = FileEntryStatuses.INVALID;
-            //TODO Put e.getMessage() into status somehow
-            e.printStackTrace();
+            if (status == FileEntryStatuses.UPLOADING ||
+                    status == FileEntryStatuses.SUCCESS) {
+                status = FileEntryStatuses.INVALID;
+            }
+            if (facesContext.isProjectStage(ProjectStage.Development)) {
+                log.log(Level.SEVERE, "Problem processing uploaded file", e);
+            }
         }
         
         if (file != null && !status.isSuccess()) {
@@ -400,11 +468,57 @@ public class FileEntryPhaseListener implements PhaseListener {
         if (results != null && fileInfo != null) {
             fileInfo.finish(file, fileSizeRead, status);
             results.addCompletedFile(fileInfo);
+            if (callback != null) {
+                try {
+                    callback.end(fileInfo);
+                } catch(RuntimeException e) {
+                    status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
+                    fileInfo.postfail(status);
+                    handleCallbackException(
+                            facesContext, config.getClientId(), e);
+                }
+            }
 //System.out.println("File    Added completed file");
         }
 //System.out.println("^^^^^^^^^^^^^^^");
     }
-    
+
+    protected static FileEntryCallback evaluateCallback(
+            FacesContext facesContext, FileEntryConfig config) {
+        String callbackEL = config.getCallbackEL();
+//System.out.println("File    evaluateCallback()  callbackEL: " + callbackEL);
+        FileEntryCallback callback = null;
+        try {
+            callback = facesContext.getApplication().evaluateExpressionGet(
+                    facesContext, callbackEL, FileEntryCallback.class);
+//System.out.println("File    evaluateCallback()  callback: " + callback);
+            if (callbackEL != null && callback == null &&
+                    facesContext.isProjectStage(ProjectStage.Development)) {
+                log.warning("For the fileEntry component with the clientId " +
+                        "of '" + config.getClientId() + "', the callback " +
+                        "property is set but resolves to null. This might " +
+                        "indicate an application error. The uploaded file " +
+                        "will be saved to the server file-system.");
+            }
+        } catch(javax.el.ELException e) {
+            if (facesContext.isProjectStage(ProjectStage.Development)) {
+                log.log(Level.SEVERE, "For the fileEntry component with the " +
+                        "clientId of '" + config.getClientId() + "'", e);
+            }
+            throw e;
+        }
+        return callback;
+    }
+
+    protected static void handleCallbackException(FacesContext facesContext,
+            String clientId, RuntimeException e) {
+        if (facesContext.isProjectStage(ProjectStage.Development)) {
+            log.log(Level.SEVERE, "An exception was thrown by the callback " +
+                    "for the fileEntry component with clientId of '" +
+                    clientId + "'", e);
+        }
+    }
+
     protected static String calculateFolder(
             FacesContext facesContext, FileEntryConfig config) {
         String folder = null;

@@ -119,6 +119,10 @@ public class FileEntry extends FileEntryBase {
 
         String identifier = getGloballyUniqueComponentIdentifier(
                 facesContext, clientId);
+        javax.el.ValueExpression callbackExpression =
+                getValueExpression("callback");
+        String callbackEL = callbackExpression == null ? null :
+                callbackExpression.getExpressionString();
         FileEntryConfig config = new FileEntryConfig(
             identifier,
             clientId,
@@ -126,7 +130,7 @@ public class FileEntry extends FileEntryBase {
             getRelativePath(),
             isUseSessionSubdir(),
             isUseOriginalFilename(),
-            null,//TODO getCallback(),
+            callbackEL,
             getMaxTotalSize(),
             getMaxFileSize(),
             getMaxFileCount(),
