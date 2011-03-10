@@ -108,6 +108,18 @@ public class FileEntryResults implements Serializable, Cloneable {
         return Math.max(0, maxTotalSize - totalSize);
     }
 
+    boolean isLifecycleAndUploadsSuccessful(FacesContext context) {
+        if (context.isValidationFailed()) {
+            return false;
+        }
+        for (FileEntryResults.FileInfo fi : fileInfos) {
+            if (!fi.isSaved()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     public static class FileInfo implements Serializable, Cloneable {
         private String fileName;
