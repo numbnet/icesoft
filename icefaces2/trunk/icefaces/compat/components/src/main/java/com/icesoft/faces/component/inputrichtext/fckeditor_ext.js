@@ -144,9 +144,14 @@ function FCKeditor_OnComplete(editorInstance) {
     }
     if (onCompleteInvoked)onCompleteInvoked.value = true;
     Ice.FCKeditorUtility.updateValue(editorInstance.Name);
+    editorInstance.Commands.GetCommand("Save").Execute = function() {
+        return FCKeditorSave(editorInstance);
+    };
+/*
     editorInstance.LinkedField.form.onsubmit = function() {
         return FCKeditorSave(editorInstance);
     }
+*/
     if (fieldWithClientId["AppfocusRequested"]) {
         try {
             editorInstance.Focus();
