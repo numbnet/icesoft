@@ -21,8 +21,11 @@
 
 package org.icefaces.component.fileentry;
 
+import org.icefaces.component.utils.JSONBuilder;
 import org.icefaces.component.utils.Utils;
 import org.icefaces.impl.event.BridgeSetup;
+import org.icefaces.util.JavaScriptRunner;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ProjectStage;
 import javax.faces.context.FacesContext;
@@ -310,6 +313,15 @@ public class FileEntry extends FileEntryBase {
                             throw new AbortProcessingException(ee.getMessage(),
                                     ee.getCause());
                         }
+                    }
+
+                    // If every file succeeded uploading, and the lifecycle is
+                    // valid, then clear the file selection in the browser
+                    if (getResults().isLifecycleAndUploadsSuccessful(context)){
+                        String script = "ice_fileEntry.clearFileSelection(\"" +
+                                JSONBuilder.escapeString(getClientId(context))+
+                                "\")";
+                        JavaScriptRunner.runScript(context, script);
                     }
                 }
             } finally {

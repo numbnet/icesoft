@@ -201,7 +201,7 @@ public class JSONBuilder {
     }
 
 
-    private String escapeString(String value) {
+    public static String escapeString(String value) {
         StringBuilder sb = new StringBuilder();
         char c;
         for (int idx = 0; idx < value.length(); idx++) {

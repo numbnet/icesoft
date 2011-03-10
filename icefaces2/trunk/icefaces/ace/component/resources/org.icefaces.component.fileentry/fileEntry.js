@@ -281,5 +281,12 @@ var ice_fileEntry = {
             }
         }
         return classElements;
+    },
+
+    clearFileSelection : function(clientId) {
+        var root = document.getElementById(clientId);
+        if (root) {
+            root.innerHTML = root.innerHTML;
+        }
     }
 };
