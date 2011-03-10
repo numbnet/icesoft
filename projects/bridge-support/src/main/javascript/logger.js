@@ -48,26 +48,41 @@ function Logger(category, handler) {
     });
 }
 
-function FirebugLogHandler(priority) {
+function ConsoleLogHandler(priority) {
     function formatOutput(category, message) {
         return join(['[', join(category, '.'), '] ', message], '');
     }
 
-    function debugPrimitive(self, category, message, exception) {
-        exception ? console.debug(formatOutput(category, message), exception) : console.debug(formatOutput(category, message));
-    }
+    var ieConsole = !window.console.debug;
 
-    function infoPrimitive(self, category, message, exception) {
-        exception ? console.info(formatOutput(category, message), exception) : console.info(formatOutput(category, message));
-    }
-
-    function warnPrimitive(self, category, message, exception) {
-        exception ? console.warn(formatOutput(category, message), exception) : console.warn(formatOutput(category, message));
-    }
-
-    function errorPrimitive(self, category, message, exception) {
-        exception ? console.error(formatOutput(category, message), exception) : console.error(formatOutput(category, message));
-    }
+    var debugPrimitive = ieConsole ?
+            function(self, category, message, exception) {
+                exception ? console.log(formatOutput(category, message), '\n', exception) : console.log(formatOutput(category, message));
+            } :
+            function(self, category, message, exception) {
+                exception ? console.debug(formatOutput(category, message), exception) : console.debug(formatOutput(category, message));
+            };
+    var infoPrimitive = ieConsole ?
+            function(self, category, message, exception) {
+                exception ? console.info(formatOutput(category, message), '\n', exception) : console.info(formatOutput(category, message));
+            } :
+            function(self, category, message, exception) {
+                exception ? console.info(formatOutput(category, message), exception) : console.info(formatOutput(category, message));
+            };
+    var warnPrimitive = ieConsole ?
+            function(self, category, message, exception) {
+                exception ? console.warn(formatOutput(category, message), '\n', exception) : console.warn(formatOutput(category, message));
+            } :
+            function(self, category, message, exception) {
+                exception ? console.warn(formatOutput(category, message), exception) : console.warn(formatOutput(category, message));
+            };
+    var errorPrimitive = ieConsole ?
+            function(self, category, message, exception) {
+                exception ? console.error(formatOutput(category, message), '\n', exception) : console.error(formatOutput(category, message));
+            } :
+            function(self, category, message, exception) {
+                exception ? console.error(formatOutput(category, message), exception) : console.error(formatOutput(category, message));
+            };
 
     var handlers = [
         Cell(debug, object(function(method) {
@@ -115,6 +130,9 @@ function FirebugLogHandler(priority) {
         });
     });
 }
+
+//keep an alias for backward compatibility
+var FirebugLogHandler = ConsoleLogHandler;
 
 function WindowLogHandler(thresholdPriority, name) {
     var lineOptions = [25, 50, 100, 200, 400];
