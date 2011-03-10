@@ -24,6 +24,7 @@ package org.icefaces.component.fileentry;
 import org.icefaces.component.utils.Utils;
 import org.icefaces.render.MandatoryResourceComponent;
 
+import javax.faces.FacesException;
 import javax.faces.render.Renderer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -35,6 +36,11 @@ public class FileEntryRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
+        UIComponent form = Utils.findParentForm(uiComponent);
+        if (form == null) {
+            throw new FacesException("FileEntry component must be contained in a form.");
+        }
+
         FileEntry fileEntry = (FileEntry) uiComponent;
         String clientId = uiComponent.getClientId(facesContext);
 //System.out.println("FileEntryRenderer.encode  clientId: " + clientId);
