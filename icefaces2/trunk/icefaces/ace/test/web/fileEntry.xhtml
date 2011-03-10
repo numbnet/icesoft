@@ -218,14 +218,14 @@
                 </h:column>
             </h:dataTable>
             
-    	    <h:outputText value="Form13  DataTable of FileEntry Info ValueExpression" />
+    	    <h:outputText value="Form13  DataTable of FileEntry Results ValueExpression" />
             <h:dataTable value="#{fileBean.tableList2}" var="tblItm2">
                 <h:column>
                     <f:facet name="header">
                         <h:outputText value="Upload"/>
                     </f:facet>
                     <ice:fileEntry id="upload"
-                                    info="#{tblItm2.info}"
+                                    results="#{tblItm2.results}"
                                     immediate="#{tblItm2.immediate}"
                                     fileEntryListener="#{tblItm2.listener}"/>
                 </h:column>
@@ -243,9 +243,9 @@
                 </h:column>
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="InfosEqual"/>
+                        <h:outputText value="ResultsEqual"/>
                     </f:facet>
-                    <h:outputText value="#{tblItm2.infosEqual}"/>
+                    <h:outputText value="#{tblItm2.resultsEqual}"/>
                 </h:column>
                 <h:column>
                     <f:facet name="header">
@@ -490,6 +490,125 @@ D TEST.    immediate=false, file failed (too large)
             <h:commandButton id="btnTA" value="f:ajax  exec: this  render: all" actionListener="#{fileBean.mixed}">
                 <f:ajax execute="@this" render="@all"/>
             </h:commandButton>
+        </h:panelGrid>
+    </h:form>
+
+    <h:form id="form18">
+        <h:panelGrid columns="2">
+    	    <h:outputText value="Form18  Callback" />
+            <h:panelGroup>
+                <h:messages id="theMessages"/>
+            </h:panelGroup>
+
+    	    <ice:fileEntry label="file_callback_immed_true_18"
+                           id="file_callback_immed_true_18"
+                           immediate="true"
+                           callback="#{fileBean.callback}"
+                           fileEntryListener="#{fileBean.fileEntryListener}"/>
+            <ice:fileEntry label="file_callback_immed_false_18"
+                           id="file_callback_immed_false_18"
+                           immediate="false"
+                           callback="#{fileBean.callback}"
+                           fileEntryListener="#{fileBean.fileEntryListener}"/>
+
+            <h:commandButton id="btnReg" value="Submit Reg"/>
+        </h:panelGrid>
+    </h:form>
+
+    <h:form id="form19">
+        <h:panelGrid columns="2">
+    	    <h:outputText value="Form19  Callback Fail Invalid Bean EL" />
+            <h:panelGroup>
+                <h:messages id="theMessages"/>
+            </h:panelGroup>
+
+    	    <ice:fileEntry label="file_callback_fail_bean_el_19"
+                           id="file_callback_fail_bean_el_19"
+                           callback="#{fileBeanish.callback}"
+                           fileEntryListener="#{fileBean.fileEntryListener}"/>
+
+            <h:commandButton id="btnReg" value="Submit Reg"/>
+        </h:panelGrid>
+    </h:form>
+
+    <h:form id="form20">
+        <h:panelGrid columns="2">
+    	    <h:outputText value="Form20  Callback Fail Invalid Getter EL" />
+            <h:panelGroup>
+                <h:messages id="theMessages"/>
+            </h:panelGroup>
+
+    	    <ice:fileEntry label="file_callback_fail_getter_el_20"
+                           id="file_callback_fail_getter_el_20"
+                           callback="#{fileBean.callbackish}"
+                           fileEntryListener="#{fileBean.fileEntryListener}"/>
+
+            <h:commandButton id="btnReg" value="Submit Reg"/>
+        </h:panelGrid>
+    </h:form>
+
+    <h:form id="form21">
+        <h:panelGrid columns="2">
+    	    <h:outputText value="Form21  Callback Fail prefail begin Exception" />
+            <h:panelGroup>
+                <h:messages id="theMessages"/>
+            </h:panelGroup>
+
+    	    <ice:fileEntry label="file_callback_fail_prefail_begin_RE_21"
+                           id="file_callback_fail_prefail_begin_RE_21"
+                           maxFileSize="2"
+                           callback="#{fileBean.callbackBeginRE}"
+                           fileEntryListener="#{fileBean.fileEntryListener}"/>
+
+            <h:commandButton id="btnReg" value="Submit Reg"/>
+        </h:panelGrid>
+    </h:form>
+
+    <h:form id="form22">
+        <h:panelGrid columns="2">
+    	    <h:outputText value="Form22  Callback Fail begin Exception" />
+            <h:panelGroup>
+                <h:messages id="theMessages"/>
+            </h:panelGroup>
+
+    	    <ice:fileEntry label="file_callback_fail_begin_RE_22"
+                           id="file_callback_fail_begin_RE_22"
+                           callback="#{fileBean.callbackBeginRE}"
+                           fileEntryListener="#{fileBean.fileEntryListener}"/>
+
+            <h:commandButton id="btnReg" value="Submit Reg"/>
+        </h:panelGrid>
+    </h:form>
+
+    <h:form id="form23">
+        <h:panelGrid columns="2">
+    	    <h:outputText value="Form23  Callback Fail write Exception" />
+            <h:panelGroup>
+                <h:messages id="theMessages"/>
+            </h:panelGroup>
+
+    	    <ice:fileEntry label="file_callback_fail_write_RE_23"
+                           id="file_callback_fail_write_RE_23"
+                           callback="#{fileBean.callbackWriteRE}"
+                           fileEntryListener="#{fileBean.fileEntryListener}"/>
+
+            <h:commandButton id="btnReg" value="Submit Reg"/>
+        </h:panelGrid>
+    </h:form>
+
+    <h:form id="form24">
+        <h:panelGrid columns="2">
+    	    <h:outputText value="Form24  Callback Fail end Exception" />
+            <h:panelGroup>
+                <h:messages id="theMessages"/>
+            </h:panelGroup>
+
+    	    <ice:fileEntry label="file_callback_fail_end_RE_24"
+                           id="file_callback_fail_end_RE_24"
+                           callback="#{fileBean.callbackEndRE}"
+                           fileEntryListener="#{fileBean.fileEntryListener}"/>
+
+            <h:commandButton id="btnReg" value="Submit Reg"/>
         </h:panelGrid>
     </h:form>
 
