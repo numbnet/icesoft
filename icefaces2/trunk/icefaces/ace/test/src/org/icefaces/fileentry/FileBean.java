@@ -21,10 +21,7 @@
 
 package org.icefaces.fileentry;
 
-import org.icefaces.component.fileentry.FileEntryEvent;
-import org.icefaces.component.fileentry.FileEntryResults;
-import org.icefaces.component.fileentry.FileEntry;
-import org.icefaces.component.fileentry.FileEntryStatuses;
+import org.icefaces.component.fileentry.*;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.bean.ManagedBean;
@@ -32,6 +29,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -40,7 +38,7 @@ import java.util.Iterator;
 
 @ManagedBean(name="fileBean")
 @SessionScoped
-public class FileBean {
+public class FileBean implements Serializable {
     
     private String locale;
     public String getLocale() {
@@ -121,6 +119,29 @@ public class FileBean {
         }
     }
 
+    public FileEntryCallback getCallback() {
+        System.out.println("getCallback()");
+        return new ByteArrayCallback();
+    }
+
+    public FileEntryCallback getCallbackBeginRE() {
+        return new RuntimeExceptionCallback(
+                new RuntimeException("RuntimeException for callback"),
+                true, false, false);
+    }
+
+    public FileEntryCallback getCallbackWriteRE() {
+        return new RuntimeExceptionCallback(
+                new RuntimeException("RuntimeException for callback"),
+                false, true, false);
+    }
+
+    public FileEntryCallback getCallbackEndRE() {
+        return new RuntimeExceptionCallback(
+                new RuntimeException("RuntimeException for callback"),
+                false, false, true);
+    }
+
     private boolean immediate;
     public boolean isImmediate() { return immediate; }
     public void setImmediate(boolean imm) { immediate = imm; }
@@ -154,11 +175,11 @@ public class FileBean {
     private List tableList2;
 
     
-    public static class Item {
+    public static class Item implements Serializable {
         private boolean immediate;
         private FileEntryResults results;
         
-        private boolean infosEqual;
+        private boolean resultsEqual;
         private boolean saved;
         private String fileName;
         private String clientId;
@@ -172,7 +193,7 @@ public class FileBean {
             System.out.println("Item.listener()  e: " + e);
             FileEntry fileEntry = (FileEntry) e.getComponent();
             FileEntryResults results = fileEntry.getResults();
-            infosEqual = results.equals(this.results); // this.results can be null
+            resultsEqual = results.equals(this.results); // this.results can be null
             if (results.getFiles().size() > 0) {
                 saved = results.getFiles().get(0).isSaved();
                 fileName = results.getFiles().get(0).getFileName();
@@ -185,14 +206,14 @@ public class FileBean {
             phase = e.getPhaseId().toString();
         }
         
-        public FileEntryResults getInfo() { return results; } 
-        public void setInfo(FileEntryResults results) {
+        public FileEntryResults getResults() { return results; }
+        public void setResults(FileEntryResults results) {
             System.out.println("Item.setResults()  results: " + results);
             this.results = results;
         }
         
         public boolean isImmediate() { return immediate; }
-        public boolean isInfosEqual() { return infosEqual; }
+        public boolean isResultsEqual() { return resultsEqual; }
         public boolean isSaved() { return saved; }
         public String getFileName() { return fileName; }
         public String getClientId() { return clientId; }
