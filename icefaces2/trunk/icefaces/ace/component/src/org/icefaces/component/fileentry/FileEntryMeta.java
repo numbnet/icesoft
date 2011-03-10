@@ -136,8 +136,20 @@ public class FileEntryMeta extends UIComponentBaseMeta {
         "a clone of the objects, instead.")
     private FileEntryResults results;
 
-    //TODO
-    //private FileEntryCallback callback;
+    //TODO Only generate getter that accesses ValueExpression
+    // Right now, we'll use EXISTS_IN_SUPERCLASS to keep from generating
+    // methods, even though this is not from any super class
+    @Property(tlddoc="Specify a reference to a FileEntryCallback instance " +
+        "using a ValueExpression. Using this will result in the uploaded " +
+        "files not being written to the file system, and so precludes the " +
+        "absolutePath, relativePath, useSessionSubdir, and " +
+        "useOriginalFilename properties. This property supports scenarios " +
+        "where the uploaded files will be stored in a database, or streamed " +
+        "through to elsewhere, or virus scanned, or otherwise processed " +
+        "before being saved.",
+        expression=Expression.VALUE_EXPRESSION,
+        implementation=Implementation.EXISTS_IN_SUPERCLASS)
+    private FileEntryCallback callback;
 
     @Property(defaultValue="Long.MAX_VALUE", tlddoc="The maximum amount of " +
         "bytes allowed, in total, for all of the files uploaded, together. " +

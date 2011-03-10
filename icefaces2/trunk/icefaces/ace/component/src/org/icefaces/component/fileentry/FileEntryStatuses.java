@@ -108,6 +108,13 @@ public enum FileEntryStatuses implements FileEntryStatus {
     INVALID_CONTENT_TYPE(false),
 
     /**
+     * If there's a RuntimeException thrown by the FileEntryCallback, this
+     * will be the status. Ideally, any FileEntryCallback will trap its
+     * Exceptions, and return a custom status.
+     */
+    PROBLEM_WITH_CALLBACK(false),
+
+    /**
      * This one message is for when we have problems reading the multipart
      * form submit, and so do not know which file or other form field has
      * caused the postback to fail. 

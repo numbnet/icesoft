@@ -123,7 +123,25 @@ public class FileEntryResults implements Serializable, Cloneable {
             this.fileName = fileName;
             this.contentType = contentType;
         }
-        
+
+        /**
+         * When a file fails uploading, before even processing the contents
+         * @param status The failed status
+         */
+        void prefail(FileEntryStatus status) {
+            this.status = status;
+        }
+
+        /**
+         * When a file fails uploading, after the upload is complete, which
+         * can only happen when the FileEntryCallback's end method throws a
+         * RuntimeException.
+         * @param status The failed status
+         */
+        void postfail(FileEntryStatus status) {
+            this.status = status;
+        }
+
         void finish(File file, long size, FileEntryStatus status) {
             this.file = file;
             this.size = size;
@@ -133,7 +151,8 @@ public class FileEntryResults implements Serializable, Cloneable {
         /**
          * In the fileEntryListener, applications may override the uploaded
          * files' statuses, if the files fail the application's custom
-         * validation, by using this method.
+         * validation, by using this method. They can even set a custom status,
+         * with its own message format for the faces message.
          *
          * @param newStatus The new status for the uploaded file
          * @param invalidate If should invalidate the component, and the form.
@@ -144,6 +163,22 @@ public class FileEntryResults implements Serializable, Cloneable {
          */
         public void updateStatus(FileEntryStatus newStatus, boolean invalidate,
                 boolean deleteFile) {
+            updateStatus(newStatus, invalidate);
+            if (deleteFile && file != null && file.exists()) {
+                file.delete();
+            }
+        }
+
+        /**
+         * In the callback, applications may override the uploaded
+         * files' statuses, if the files fail the application's custom
+         * validation, by using this method. They can even set a custom status,
+         * with its own message format for the faces message.
+         *
+         * @param newStatus The new status for the uploaded file
+         * @param invalidate If should invalidate the component, and the form.
+         */
+        public void updateStatus(FileEntryStatus newStatus, boolean invalidate) {
             if (newStatus != null) {
                 status = newStatus;
             }
@@ -152,11 +187,8 @@ public class FileEntryResults implements Serializable, Cloneable {
                 context.validationFailed();
                 context.renderResponse();
             }
-            if (deleteFile && file != null && file.exists()) {
-                file.delete();
-            }
         }
-        
+
         public String getFileName() { return fileName; }
         public String getContentType() { return contentType; }
         public File getFile() { return file; }
@@ -166,18 +198,30 @@ public class FileEntryResults implements Serializable, Cloneable {
         public boolean isSaved() { return status.isSuccess(); }
 
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             FileInfo fileInfo = (FileInfo) o;
 
-            if (fileName != null ? !fileName.equals(fileInfo.fileName) : fileInfo.fileName != null) return false;
-            if (contentType != null ? !contentType.equals(fileInfo.contentType) : fileInfo.contentType != null)
+            if (fileName != null ? !fileName.equals(fileInfo.fileName) : fileInfo.fileName != null) {
                 return false;
-            if (file != null ? !file.equals(fileInfo.file) : fileInfo.file != null)
+            }
+            if (contentType != null ? !contentType.equals(fileInfo.contentType) : fileInfo.contentType != null) {
                 return false;
-            if (size != fileInfo.size) return false;
-            if (status != fileInfo.status) return false;
+            }
+            if (file != null ? !file.equals(fileInfo.file) : fileInfo.file != null) {
+                return false;
+            }
+            if (size != fileInfo.size) {
+                return false;
+            }
+            if (status != fileInfo.status) {
+                return false;
+            }
             
             return true;
         }
