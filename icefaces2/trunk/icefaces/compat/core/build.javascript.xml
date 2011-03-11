@@ -71,12 +71,12 @@
                 <file name="prototype.js"/>
             </filelist>
             <filelist dir="${scriptaculous.dir}">
-                <file name="builder.js"/>
+                <!--<file name="builder.js"/>-->
                 <file name="effects.js"/>
                 <file name="dragdrop.js"/>
-                <file name="controls.js"/>
-                <file name="slider.js"/>
-                <file name="sound.js"/>
+                <!--<file name="controls.js"/>-->
+                <!--<file name="slider.js"/>-->
+                <!--<file name="sound.js"/>-->
             </filelist>
             <filelist dir="${extras.dir}">
                 <file name="extras.js"/>
