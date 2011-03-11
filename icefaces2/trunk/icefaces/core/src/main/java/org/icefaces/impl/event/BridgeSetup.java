@@ -251,9 +251,9 @@ public class BridgeSetup implements SystemEventListener {
             root.addComponentResource(context, retrieveUpdateSetup, "body");
 
             if (EnvUtils.isICEpushPresent()) {
-                SessionViewManager.addView(context, viewID);
                 UIOutputWriter icepushSetup = new UIOutputWriter() {
                     public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+                        SessionViewManager.addView(context, viewID);
                         //need a span to make sure JSF bridge evaluates included script properly
                         writer.startElement("span", this);
                         writer.writeAttribute("id", this.getClientId(context), null);
