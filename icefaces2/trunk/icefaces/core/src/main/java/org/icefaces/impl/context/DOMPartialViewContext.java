@@ -91,29 +91,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         this.isAjaxRequest = isAjaxRequest;
     }
 
-    @Override
-    public PartialResponseWriter getPartialResponseWriter() {
-        PartialResponseWriter defaultWriter = wrapped.getPartialResponseWriter();
-
-        if (!EnvUtils.isICEfacesView(facesContext)) {
-            return defaultWriter;
-        }
-
-        if (null == partialWriter) {
-            try {
-                //TODO: need to revisit the strategy for getting the "raw" output writer directly
-                Writer outputWriter = getResponseOutputWriter();
-                ResponseWriter basicWriter = new BasicResponseWriter(outputWriter,
-                        defaultWriter.getCharacterEncoding(),
-                        defaultWriter.getContentType());
-                partialWriter = new PartialResponseWriter(basicWriter);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return partialWriter;
-    }
-
 
     @Override
     public void processPartial(PhaseId phaseId) {
