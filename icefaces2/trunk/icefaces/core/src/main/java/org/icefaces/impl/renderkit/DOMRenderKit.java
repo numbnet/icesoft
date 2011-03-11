@@ -145,10 +145,15 @@ public class DOMRenderKit extends RenderKitWrapper {
     }
 
     public ResponseWriter createResponseWriter(Writer writer, String contentTypeList, String encoding) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
         ResponseWriter parentWriter = delegate.createResponseWriter(writer, contentTypeList, encoding);
-        if (!EnvUtils.isICEfacesView(FacesContext.getCurrentInstance())) {
+        if (facesContext.getPartialViewContext().isPartialRequest())  {
             return parentWriter;
         }
+        if (!EnvUtils.isICEfacesView(facesContext)) {
+            return parentWriter;
+        }
+
         return new DOMResponseWriter(parentWriter, parentWriter.getCharacterEncoding(), parentWriter.getContentType());
     }
 
