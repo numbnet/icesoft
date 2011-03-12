@@ -227,12 +227,12 @@
                 <file name="deprecated.js"/>
             </filelist>
             <filelist dir="${build.dir}/lib/scriptaculous">
-                <file name="builder.js"/>
+                <!--<file name="builder.js"/>-->
                 <file name="effects.js"/>
                 <file name="dragdrop.js"/>
-                <file name="controls.js"/>
-                <file name="slider.js"/>
-                <file name="sound.js"/>
+                <!--<file name="controls.js"/>-->
+                <!--<file name="slider.js"/>-->
+                <!--<file name="sound.js"/>-->
             </filelist>
             <filelist dir="${build.dir}/lib/extras">
                 <file name="extras.js"/>
