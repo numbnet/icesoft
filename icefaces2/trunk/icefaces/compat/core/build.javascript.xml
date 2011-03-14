@@ -29,9 +29,11 @@
     <property name="scriptaculous.dir" location="${src.dir}/scriptaculous"/>
     <property name="lib.dir" location="${basedir}/src/main/javascript/lib"/>
     <property name="build.dir" location="${basedir}/build/resources/META-INF/resources"/>
-    <property name="script" location="${build.dir}/compat.js"/>
     <property name="icefaces-compat.js" location="${build.dir}/icefaces-compat.js"/>
+    <property name="script" location="${build.dir}/compat.js"/>
+    <property name="script.extra" location="${icefaces-compat.js}"/>
     <property name="tmp" value="${build.dir}/tmp.js"/>
+    <property name="tmp.extra" value="${build.dir}/tmp.extra.js"/>
 
     <target name="prepare" depends="build.icefaces.compat" description="Collate bridge code">
         <tstamp/>
@@ -82,12 +84,35 @@
                 <file name="extras.js"/>
             </filelist>
         </concat>
+        <copy file="${icefaces-compat.js}" tofile="${tmp.extra}" overwrite="yes"/>
     </target>
 
+    <target name="build.bridge.compressed" depends="prepare" unless="no-compress">
+        <echo message="Compressing Javascript code..."/>
+        <java jar="../../lib/yui-compressor.jar" fork="yes">
+            <arg line="--preserve-semi"/>
+            <arg value="-o"/>
+            <arg value="${script}"/>
+            <arg value="${tmp}"/>
+        </java>
+        <java jar="../../lib/yui-compressor.jar" fork="yes">
+            <arg line="--preserve-semi"/>
+            <arg value="-o"/>
+            <arg value="${script.extra}"/>
+            <arg value="${tmp.extra}"/>
+        </java>
+    </target>
 
-    <target name="build.bridge.uncompressed" depends="prepare">
+    <target name="build.bridge.uncompressed" depends="prepare" if="no-compress">
         <touch file="${script}"/>
         <move file="${tmp}" tofile="${script}" overwrite="yes">
+            <filterchain>
+                <stripjavacomments/>
+                <ignoreblank/>
+            </filterchain>
+        </move>
+        <touch file="${script.extra}"/>
+        <move file="${tmp.extra}" tofile="${script.extra}" overwrite="yes">
             <filterchain>
                 <stripjavacomments/>
                 <ignoreblank/>
@@ -96,10 +121,13 @@
     </target>
 
     <target name="build.cleanup">
+        <delete file="${script}"/>
+        <delete file="${script.extra}"/>
         <delete file="${tmp}"/>
+        <delete file="${tmp.extra}"/>
     </target>
 
-    <target name="build" depends="build.bridge.uncompressed, build.cleanup"
+    <target name="build" depends="build.cleanup, build.bridge.uncompressed, build.bridge.compressed"
             description="Build bridge"/>
 
     <target name="clean">
