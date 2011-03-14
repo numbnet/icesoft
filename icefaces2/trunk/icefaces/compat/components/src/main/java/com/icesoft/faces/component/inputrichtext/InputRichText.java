@@ -53,6 +53,7 @@ public class InputRichText extends UIInput {
     private static final String FCK_EDITOR_ZIP = "com/icesoft/faces/component/inputrichtext/fckeditor.zip";
     private static final Date lastModified = new Date();
     private static final Map ZipEntryCache = new HashMap();
+    private Boolean partialSubmit = null;
 
     private static void loadZipEntryCache() {
         try {
@@ -376,8 +377,23 @@ public class InputRichText extends UIInput {
                 .booleanValue() : false;
     }
 
+    public void setPartialSubmit(boolean partialSubmit) {
+        this.partialSubmit = Boolean.valueOf(partialSubmit);
+    }
+
+    public boolean getPartialSubmit() {
+        if (partialSubmit != null) {
+            return partialSubmit.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("partialSubmit");
+        Boolean boolVal =
+                vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() :
+                Util.isParentPartialSubmit(this);
+    }
+
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[12];
+        Object values[] = new Object[13];
         values[0] = super.saveState(context);
         values[1] = customConfigPath;
         values[2] = disabled;
@@ -390,6 +406,7 @@ public class InputRichText extends UIInput {
         values[9] = style;
         values[10] = toolbar;
         values[11] = width;
+        values[12] = partialSubmit;
         return values;
     }
 
@@ -407,6 +424,7 @@ public class InputRichText extends UIInput {
         style = (String) values[9];
         toolbar = (String) values[10];
         width = (String) values[11];
+        partialSubmit = (Boolean) values[12];
     }
 }
 

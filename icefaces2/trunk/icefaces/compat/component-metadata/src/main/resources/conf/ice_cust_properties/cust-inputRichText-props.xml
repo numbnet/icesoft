@@ -211,3 +211,14 @@
         <category>ADVANCED</category>
     </property-extension>
 </property>
+<property>
+<description>
+    Whether a full or partialSubmit is used by the save button on the toolbar. partialSubmit won't be used when
+    saveOnSubmit=true. Default value is false.
+</description>
+<property-name>partialSubmit</property-name>
+<property-class>boolean</property-class>
+<property-extension>
+    <category>ICE_COMPONENT</category>
+</property-extension>
+</property>

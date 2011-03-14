@@ -67,11 +67,12 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             root.appendChild(div);
             div.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "editor"));
             StringBuffer call = new StringBuffer();
-
+            boolean partialSubmit = inputRichText.getPartialSubmit();
+            if (inputRichText.isSaveOnSubmit()) partialSubmit = false;
             call.append("Ice.FCKeditor.register ('" + clientId + "', new Ice.FCKeditor('" + clientId + "', '" + inputRichText.getLanguage()
                     + "', '" + inputRichText.getFor() + "', '" + CoreUtils.resolveResourceURL(facesContext, inputRichText.getBaseURI().getPath()) + "','" + inputRichText.getWidth() +
                     "', '" + inputRichText.getHeight() + "', '" + inputRichText.getToolbar() + "', '" + inputRichText.getCustomConfigPath() +
-                    "', '" + inputRichText.getSkin() + "'));");
+                    "', '" + inputRichText.getSkin() + "'," + partialSubmit + "));");
             //ICE-4760    
             call.append("Ice.Prototype.$('" + clientId + "')[\"focus\"]= function(){handleApplicationFocus('" + clientId + "');};");
 
