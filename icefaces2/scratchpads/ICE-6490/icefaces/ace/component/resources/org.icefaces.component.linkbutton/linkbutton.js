@@ -83,7 +83,7 @@ ice.component.linkButton = {
         var JSContext = ice.component.getJSContext(clientId);
         var singleSubmit = JSContext.getJSFProps().singleSubmit;
         var doAction = JSContext.getJSFProps().doAction;
-        YAHOO.log("--> Button.doAction = " + doAction);
+        //YAHOO.log("--> Button.doAction = " + doAction);
 
         var divRoot = document.getElementById(clientId);
 
@@ -97,10 +97,10 @@ ice.component.linkButton = {
             }
         };
         if (singleSubmit) {
-            YAHOO.log("Single Submit on element: " + divRoot);
+            //YAHOO.log("Single Submit on element: " + divRoot);
             ice.se(e, divRoot, params );
         } else {
-            YAHOO.log("Full Submit on element: " + divRoot);
+            //YAHOO.log("Full Submit on element: " + divRoot);
             ice.s(e, divRoot, params );
         }
         // If there are actionListeners, don't do default behaviour
@@ -117,7 +117,7 @@ ice.component.linkButton = {
         var JSContext = ice.component.getJSContext(clientId);
         var singleSubmit = JSContext.getJSFProps().singleSubmit;
         var doAction = JSContext.getJSFProps().doAction;
-        YAHOO.log("--> Button.doAction = " + doAction);
+        //YAHOO.log("--> Button.doAction = " + doAction);
 
         var divRoot = document.getElementById(clientId);
 
@@ -131,10 +131,10 @@ ice.component.linkButton = {
             }
         };
         if (singleSubmit) {
-            YAHOO.log("Single Submit on element: " + divRoot);
+            //YAHOO.log("Single Submit on element: " + divRoot);
             ice.se(e, divRoot, params );
         } else {
-            YAHOO.log("Full Submit on element: " + divRoot);
+            //YAHOO.log("Full Submit on element: " + divRoot);
             ice.s(e, divRoot, params );
         }
         // If there are actionListeners, don't do default behaviour

@@ -126,7 +126,7 @@ ice.component.checkboxbutton = {
 	
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
    updateProperties:function(clientId, jsProps, jsfProps, events) {        		
-        YAHOO.log("updateProperties...checking jsfProps.singleSubmit="+jsfProps.singleSubmit);
+        //YAHOO.log("updateProperties...checking jsfProps.singleSubmit="+jsfProps.singleSubmit);
 
         var context = ice.component.getJSContext(clientId);
         if (context && context.isAttached()) {

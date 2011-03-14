@@ -50,12 +50,6 @@ import org.icefaces.component.baseMeta.UICommandMeta;
     @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
     @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
     @ResourceDependency(library = "yui/2_8_1", name = "button/button-min.js"),
-*/
-	
-@ResourceDependencies({
-    @ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),    
-	
-	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="oop/oop-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="event-custom/event-custom-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="attribute/attribute-base-min.js",library="yui/3_1_1"),
@@ -66,6 +60,12 @@ import org.icefaces.component.baseMeta.UICommandMeta;
 	@ResourceDependency(name="event/event-delegate-min.js",library="yui/3_1_1"),
     @ResourceDependency(name ="plugin/plugin-min.js",library = "yui/3_1_1"),    
     @ResourceDependency(name ="pluginhost/pluginhost-min.js",library = "yui/3_1_1"),      
+*/
+	
+@ResourceDependencies({
+    @ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),    
+	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
+	
     @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),   
 	
 	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
