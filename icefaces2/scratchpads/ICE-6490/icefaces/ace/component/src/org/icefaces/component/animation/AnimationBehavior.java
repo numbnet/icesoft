@@ -36,7 +36,6 @@ import javax.faces.component.behavior.FacesBehavior;
 import javax.faces.context.FacesContext;
 
 /*
-                              @ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
                               @ResourceDependency(name="oop/oop-min.js",library="yui/3_1_1"),
                               @ResourceDependency(name="event-custom/event-custom-min.js",library="yui/3_1_1"),
                               @ResourceDependency(name="attribute/attribute-base-min.js",library="yui/3_1_1"),
@@ -53,6 +52,7 @@ import javax.faces.context.FacesContext;
 @FacesBehavior("org.icefaces.animation.Animation")
 @ResourceDependencies({
                               @ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
+                              @ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
                               @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
                               @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
                               @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),

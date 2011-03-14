@@ -28,17 +28,9 @@ ice.yui3 = {
     modules: {},
     use :function(callback) {
         if (ice.yui3.y == null) {
-            var Yui = YUI({combine: false, timeout: 10000, base: '/ace-test/javax.faces.resource/yui/3_1_1/'});
-			/*
-			var oldUrlFn = Yui.Loader.prototype._url;
-			Yui.Loader.prototype._url = function(path, name, base) {
-				return oldUrlFn.call(this, path, name, base) + '.jsf';
-			};
-			*/
-			/*
 			var Yui = ice.yui3.getNewInstance();
-			*/
-			Yui.use('*', function(Y) {
+			//Yui.use('*', function(Y) {
+			Yui.use('anim', 'plugin', 'pluginhost', function(Y) { // load modules required by the animation library
                 ice.yui3.y = Y;
                 callback(ice.yui3.y);
             });
@@ -109,6 +101,8 @@ ice.yui3 = {
 		Y.Loader.prototype._url = function(path, name, base) {
 			return oldUrlFn.call(this, path, name, base) + '.jsf';
 		};
+		
+		Y.use('loader', 'oop', 'event-custom', 'attribute', 'base', 'event', 'dom', 'node', 'event-delegate'); // load base modules
 		return Y;
 	}
 };
