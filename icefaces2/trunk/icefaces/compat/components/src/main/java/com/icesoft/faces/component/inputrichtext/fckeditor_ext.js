@@ -22,7 +22,7 @@
 Ice.FCKeditor = Ice.Prototype.Class.create();
 
 Ice.FCKeditor.prototype = {
-    initialize:function(ele, lang, _for, basePath, width, height, toolbar, custConPath, skin) {
+    initialize:function(ele, lang, _for, basePath, width, height, toolbar, custConPath, skin, partialSubmit) {
         this._for = _for;
         if (lang == "" || lang == null) {
             lang = "en";
@@ -46,6 +46,7 @@ Ice.FCKeditor.prototype = {
         this.thirdPartyObject.Config["DefaultLanguage"] = lang;
         this.thirdPartyObject.Config["FloatingPanelsZIndex"] = 28000;
         this.thirdPartyObject.Config['SkinPath'] = basePath + 'editor/skins/' + skin + '/';
+        this.thirdPartyObject.Config['partialSubmit'] = partialSubmit;
         this.thirdPartyObject.ToolbarSet = toolbar;
         if (custConPath != "null") {
             this.thirdPartyObject.Config["CustomConfigurationsPath"] = custConPath;
@@ -244,7 +245,11 @@ function FCKeditorSave(editorInstance) {
     valueHolder.value = element.value;
     Ice.FCKeditorUtility.saveClicked = true;
     var form = Ice.util.findForm(element);
-    iceSubmit(form, element, new Object());
+    if (editIns.Config['partialSubmit']) {
+        iceSubmitPartial(form, element, new Object());
+    } else {
+        iceSubmit(form, element, new Object());
+    }
     Ice.FCKeditorUtility.saveClicked = false;
     return false;
 }
