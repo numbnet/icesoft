@@ -27,6 +27,7 @@ if (!window.ice.icefaces) {
     (function(namespace) {
         namespace.icefaces = true;
         namespace.configuration = new Object();
+        namespace.disableDefaultErrorPopups = false;
 
         var sessionExpiryListeners = [];
         namespace.onSessionExpiry = function(callback) {
