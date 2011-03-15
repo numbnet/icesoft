@@ -1,0 +1,72 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>DataTable Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        </h:head>    <h:body>        <ice:form>
+        <!--
+            This is a very basic table comprising four columns. Each
+            row represents an inventory item.  Each column represents a
+            inventory item property.  commandSortHeader components have been
+            added ot the table headers.
+
+            The sortAscending and sortColumn attributes are set when a command
+            sortColumnName header is activated.  The sortColumn and sortAscending
+            data can then be sortColumnName by a sortColumnName algorithm if a
+            change is detected.
+        -->
+
+        <ice:dataTable id="dataSortData" sortColumn="#{inventoryList.sortColumnName}" sortAscending="#{inventoryList.ascending}" value="#{inventoryList.carInventory}" var="item">
+
+            <!-- Stock number -->
+            <ice:column>
+                <f:facet name="header">
+                    <ice:commandSortHeader columnName="#{inventoryList.stockColumnName}" arrow="true">
+                        <ice:outputText value="#{inventoryList.stockColumnName}"></ice:outputText>
+                    </ice:commandSortHeader>
+                </f:facet>
+                <ice:outputText value="#{item.stock}"></ice:outputText>
+            </ice:column>
+
+            <!-- Model number -->
+            <ice:column>
+                <f:facet name="header">
+                    <ice:commandSortHeader columnName="#{inventoryList.modelColumnName}" arrow="true">
+                        <ice:outputText value="#{inventoryList.modelColumnName}"></ice:outputText>
+                    </ice:commandSortHeader>
+                </f:facet>
+                <ice:outputText value="#{item.model}"></ice:outputText>
+            </ice:column>
+
+            <!-- Description  -->
+            <ice:column>
+                <f:facet name="header">
+                    <ice:commandSortHeader columnName="#{inventoryList.descriptionColumnName}" arrow="true">
+                        <ice:outputText value="#{inventoryList.descriptionColumnName}"></ice:outputText>
+                    </ice:commandSortHeader>
+                </f:facet>
+                <ice:outputText value="#{item.description}"></ice:outputText>
+            </ice:column>
+
+            <!-- Odometer reading -->
+            <ice:column>
+                <f:facet name="header">
+                    <ice:commandSortHeader columnName="#{inventoryList.odometerColumnName}" arrow="true">
+                        <ice:outputText value="#{inventoryList.odometerColumnName}"></ice:outputText>
+                    </ice:commandSortHeader>
+                </f:facet>
+                <ice:outputText value="#{item.odometer}"></ice:outputText>
+            </ice:column>
+
+            <!-- Price number -->
+            <ice:column>
+                <f:facet name="header">
+                    <ice:commandSortHeader columnName="#{inventoryList.priceColumnName}" arrow="true">
+                        <ice:outputText value="#{inventoryList.priceColumnName}"></ice:outputText>
+                    </ice:commandSortHeader>
+                </f:facet>
+                <ice:outputText value="#{item.price}"></ice:outputText>
+            </ice:column>
+
+        </ice:dataTable>
+
+    		</ice:form>	</h:body></f:view></html>
