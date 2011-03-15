@@ -119,6 +119,32 @@ public class MenuBarRenderer extends DomBasicRenderer {
             writer.write(call);
             writer.endElement(HTML.SCRIPT_ELEM);
         }
+
+        recursivelyRemoveTransientChildren(uiComponent.getParent(), uiComponent);
     }
 
+    /**
+     * It's not sufficient to merely not state save the transient
+     * components, like the built links and the MenuItems children,
+     * we have to actually disconnect them all, so that next
+     * lifecycle we won't be adding duplicates to the MenuItems,
+     * since its list of MenuItem children is scoped to live as
+     * long as the bean, so it outlives typical components.
+     */
+    protected void recursivelyRemoveTransientChildren(
+            UIComponent parent, UIComponent uiComponent) {
+        int size = uiComponent.getChildCount();
+        if (size > 0) {
+            for (int i = size-1; i >= 0; i--) {
+                recursivelyRemoveTransientChildren(
+                        uiComponent, uiComponent.getChildren().get(i));
+            }
+        }
+        if (uiComponent.isTransient()) {
+            if (parent != null) {
+                parent.getChildren().remove(uiComponent);
+            }
+            uiComponent.setParent(null);
+        }
+    }
 }

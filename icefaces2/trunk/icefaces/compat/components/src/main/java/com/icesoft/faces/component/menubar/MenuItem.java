@@ -295,8 +295,10 @@ public class MenuItem extends MenuItemBase {
             if (nextChild instanceof UIParameter) {
                 UIParameter templateParam = (UIParameter) nextChild;
                 UIParameter param = new UIParameter();
+                param.setId(templateParam.getId()+"_lp");
                 param.setName(templateParam.getName());
                 param.setValue(templateParam.getValue());
+                param.setTransient(true);
                 link.getChildren().add(param);
             }
         }

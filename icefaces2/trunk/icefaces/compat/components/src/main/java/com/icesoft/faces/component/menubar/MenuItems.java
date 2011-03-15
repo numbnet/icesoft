@@ -91,6 +91,9 @@ public class MenuItems extends MenuItemBase {
     }
     
     public List prepareChildren() {
+        if (getChildCount() > 0) {
+            getChildren().clear();
+        }
         List children = (List) getValue();
         if(children != null && children.size() > 0) {
             // extract the actionListener and action methodBindings from the MenuItems
@@ -98,20 +101,36 @@ public class MenuItems extends MenuItemBase {
             ActionListener[] als = getActionListeners();
             MethodBinding almb = getActionListener();
             MethodBinding amb = getAction();
-            setParentsRecursive(this, children, als, almb, amb);
+            setParentsRecursive(this, children, als, almb, amb, true);
         }
         return children;
     }
     
     private void setParentsRecursive(UIComponent parent, List children,
                                      ActionListener[] als,
-                                     MethodBinding almb, MethodBinding amb) {
+                                     MethodBinding almb, MethodBinding amb,
+                                     boolean reparent) {
         for (int i = 0; i < children.size(); i++) {
             UIComponent nextChild = (UIComponent) children.get(i);
             if( !(nextChild instanceof MenuItemBase) ) {
                 continue;
             }
-            nextChild.setParent(parent);
+            if (reparent) {
+                // If it's the initial lifecycle, then we're just rendering,
+                // and the parent is null. If it's a postback, then we do
+                // this twice, on decode and on render, so it's either after
+                // restore view and the MenuItem components might have last
+                // been wired to the previous component tree, or it's render
+                // and everything is probably correctly wired up, so this
+                // will be a no-op.
+                nextChild.setTransient(true);
+                UIComponent oldParent = nextChild.getParent();
+                if (oldParent != null) {
+                    oldParent.getChildren().remove(nextChild);
+                }
+                nextChild.setParent(null);
+                parent.getChildren().add(nextChild);
+            }
 
             // here's where we attach the action and actionlistener methodBindings to the MenuItem
             MenuItemBase nextChildMenuItemBase = (MenuItemBase) nextChild;
@@ -131,7 +150,8 @@ public class MenuItems extends MenuItemBase {
             
             if (nextChild.getChildCount() > 0) {
                 List grandChildren = nextChild.getChildren();
-                setParentsRecursive(nextChild, grandChildren, als, almb, amb);
+                setParentsRecursive(
+                        nextChild, grandChildren, als, almb, amb, false);
             }
         }
     }
