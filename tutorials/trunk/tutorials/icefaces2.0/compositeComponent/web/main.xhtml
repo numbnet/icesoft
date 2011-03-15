@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ourComp="http://java.sun.com/jsf/composite/components/example">
+<h:head>
+	<title>Composite Component - Main</title>
+</h:head>
+<h:body>
+	<h:form>
+		<h:panelGrid>
+			<f:facet name="header">
+				Hello, what is your name?
+			</f:facet>
+			
+			<ourComp:fieldSet label="First Name" value="#{nameBean.firstName}" required="true"/>
+			
+			<ourComp:fieldSet label="Middle Name" value="#{nameBean.middleName}" required="true"/>
+			
+			<ourComp:fieldSet label="Last Name" value="#{nameBean.lastName}" required="true"/>
+			
+			<f:facet name="footer">
+				<h:commandButton value="Submit"/><br/>
+			</f:facet>
+		</h:panelGrid>
+		
+		<h:outputText value="Greetings '#{nameBean.firstName} #{nameBean.middleName} #{nameBean.lastName}'."
+		  		      rendered="#{nameBean.hasName}"/>
+	</h:form>
+</h:body>
+</html>
