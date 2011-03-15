@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
+               <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+               <title>MenuBar Component Tutorial - Styled</title>
+               <link href="css/menuStyle.css" rel="stylesheet" type="text/css" />
+               </h:head>    <h:body>        <ice:form>
+                   <ice:menuBar id="mainMenuBar" noIcons="true">
+                       <ice:menuItem id="myHome" value="My Home" styleClass="myHomeMenu">
+                           <ice:menuItem id="profile" value="My Profile"></ice:menuItem>
+                           <ice:menuItem id="tasks" value="My Tasks"></ice:menuItem>
+                           <ice:menuItem id="orders" value="My Orders"></ice:menuItem>
+                       </ice:menuItem>
+                       <ice:menuItem id="userManagemet" value="User Management">
+                           <ice:menuItem id="createUser" value="Create User"></ice:menuItem>
+                           <ice:menuItem id="findUsers" value="Find Users"></ice:menuItem>
+                           <ice:menuItem id="userReports" value="User Reports"></ice:menuItem>
+                       </ice:menuItem>
+                       <ice:menuItem id="orderManagement" value="Order Management">
+                           <ice:menuItem id="createOrder" value="Create Order"></ice:menuItem>
+                           <ice:menuItem id="findOrder" value="Find Order"></ice:menuItem>
+                           <ice:menuItem id="approveOrder" value="Approve Order"></ice:menuItem>
+                           <ice:menuItem id="closeOrder" value="Close Order"></ice:menuItem>
+                       </ice:menuItem>
+                       <ice:menuItem id="tastManagment" value="Task Managment">
+                           <ice:menuItem id="createTask" value="Create Task"></ice:menuItem>
+                           <ice:menuItem id="findTask" value="Find Task"></ice:menuItem>
+                           <ice:menuItem id="assignTask" value="Assign Task"></ice:menuItem>
+                           <ice:menuItem id="closeTask" value="Close Task"></ice:menuItem>
+                       </ice:menuItem>
+                   </ice:menuBar>
+               		</ice:form>	</h:body></f:view></html>

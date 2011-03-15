@@ -1,0 +1,37 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+                           doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+                           doctypeSystem="http://www.w3.org/TR/html4/loose.dtd"/>
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type"
+              content="text/html; charset=iso-8859-1"></meta>
+        <title>OutputChart Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css"/>
+    </head>
+
+    <body>
+    
+    <ice:form>
+            <h3>
+                <ice:outputText id="combinedChartTitle"
+                                value="Combine Different Chart Types:"/>
+            </h3>
+            <ice:outputText
+                    value="This demonstration combines a bar chart with a line chart."/>
+            <br />
+            <ice:outputText value="Click image map for chart value: #{combinedChartBean.clickedValue}"/>
+        <br/>                
+        <ice:outputChart type="custom"
+                         renderOnSubmit="#{combinedChartBean.newChart}"
+                         actionListener="#{combinedChartBean.action}"/>
+        
+    </ice:form>
+
+    </body>
+    </html>
+</f:view>
