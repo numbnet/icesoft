@@ -689,8 +689,9 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 }
                 link.setOnclick(nextSubMenuItem.getOnclick());
                 link.setValue(nextSubMenuItem.getValue());
-                link.setParent(nextSubMenuItem);
+                link.setTransient(true);
                 link.setId(LINK_SUFFIX);
+                nextSubMenuItem.getChildren().add(link);
                 //link.setStyleClass("");
                 Node lastCursorParent = domContext.getCursorParent();
                 domContext.setCursorParent(subMenuItemDiv);
@@ -733,8 +734,9 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             }
             link.setOnclick(nextSubMenuItem.getOnclick());
             link.setValue(nextSubMenuItem.getValue());
-            link.setParent(nextSubMenuItem);
+            link.setTransient(true);
             link.setId(LINK_SUFFIX);
+            nextSubMenuItem.getChildren().add(link);
 
             Node lastCursorParent = domContext.getCursorParent();
             domContext.setCursorParent(subMenuItemDiv);
@@ -776,6 +778,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 image.setUrl(getSubMenuImage(menuComponent));
                 image.setStyle("border:none;");
                 image.setStyleClass(menuComponent.getSubMenuIndicatorStyleClass());
+                image.setTransient(true);
                 link.getChildren().add(image);
             }
         }
@@ -798,6 +801,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 String alt = nextSubMenuItem.getAlt();
                 if(alt != null && alt.length() > 0)
                     image.setAlt(alt);
+                image.setTransient(true);
                 link.getChildren().add(image);
             }
         }
@@ -812,6 +816,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 //        }
         outputText.setStyleClass(nextSubMenuItem.getLabelStyleClass());
         link.setValue("");
+        outputText.setTransient(true);
         link.getChildren().add(outputText);
     }
     
