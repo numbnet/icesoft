@@ -40,7 +40,7 @@ import java.io.IOException;
 import java.text.*;
 import java.util.*;
 
-//@MandatoryResourceComponent("org.icefaces.component.datetimeentry.DateTimeEntry")
+@MandatoryResourceComponent("org.icefaces.component.datetimeentry.DateTimeEntry")
 public class DateTimeEntryRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {

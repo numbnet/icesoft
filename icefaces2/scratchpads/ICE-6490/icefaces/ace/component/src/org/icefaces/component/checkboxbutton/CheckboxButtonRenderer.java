@@ -43,7 +43,7 @@ import org.icefaces.component.utils.Utils;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 
-//@MandatoryResourceComponent("org.icefaces.component.checkboxbutton.CheckboxButton")
+@MandatoryResourceComponent("org.icefaces.component.checkboxbutton.CheckboxButton")
 public class CheckboxButtonRenderer extends Renderer {
 
      List <UIParameter> uiParamChildren;

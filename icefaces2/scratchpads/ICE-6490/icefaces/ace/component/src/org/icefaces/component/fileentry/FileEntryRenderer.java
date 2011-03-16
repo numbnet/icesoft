@@ -30,7 +30,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIComponent;
 import java.io.IOException;
 
-//@MandatoryResourceComponent("org.icefaces.component.fileentry.FileEntry")
+@MandatoryResourceComponent("org.icefaces.component.fileentry.FileEntry")
 public class FileEntryRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
