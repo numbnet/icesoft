@@ -34,7 +34,7 @@ import org.icefaces.component.utils.HTML;
 import org.icefaces.render.MandatoryResourceComponent;
 
 
-//@MandatoryResourceComponent("org.icefaces.component.logger.Logger")
+@MandatoryResourceComponent("org.icefaces.component.logger.Logger")
 public class LoggerRenderer extends Renderer {
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {

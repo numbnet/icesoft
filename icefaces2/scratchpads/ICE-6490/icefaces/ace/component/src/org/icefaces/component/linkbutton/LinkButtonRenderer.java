@@ -42,7 +42,7 @@ import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 
 
-//@MandatoryResourceComponent("org.icefaces.component.linkbutton.LinkButton")
+@MandatoryResourceComponent("org.icefaces.component.linkbutton.LinkButton")
 public class LinkButtonRenderer extends Renderer {
 
     List <UIParameter> uiParamChildren;
