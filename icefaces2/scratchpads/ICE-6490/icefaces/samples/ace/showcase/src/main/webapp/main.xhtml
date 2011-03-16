@@ -31,7 +31,7 @@
   
       <ui:define name="page-content">
            <h:panelGroup id="iceMaincontent">
-                 <ui:include src="content/splash.xhtml"/> 
+                 <ui:include src="#{navigation.selectedIncludePath}" />
            </h:panelGroup>
    </ui:define>
 </ui:composition>
