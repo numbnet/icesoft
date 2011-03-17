@@ -54,12 +54,12 @@ public class WindowAndViewIDSetup implements SystemEventListener {
             return;
         }
 
-//        if( context.getCurrentPhaseId() != PhaseId.RENDER_RESPONSE ){
-//            //ICE-6643: In certain circumstances, it's possible that the PostAddToViewEvent is
-//            //          triggered more than once in the same lifecycle.  We only want it added
-//            //          during the render phase.
-//            return;
-//        }
+        if( context.getCurrentPhaseId() != PhaseId.RENDER_RESPONSE ){
+            //ICE-6643: In certain circumstances, it's possible that the PostAddToViewEvent is
+            //          triggered more than once in the same lifecycle.  We only want it added
+            //          during the render phase.
+            return;
+        }
 
         HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
         String componentId = form.getId() + ID_SUFFIX;

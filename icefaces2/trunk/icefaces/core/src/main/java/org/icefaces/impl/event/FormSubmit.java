@@ -55,12 +55,12 @@ public class FormSubmit implements SystemEventListener {
             return;
         }
 
-//        if( context.getCurrentPhaseId() != PhaseId.RENDER_RESPONSE ){
-//            //ICE-6643: In certain circumstances, it's possible that the PostAddToViewEvent is
-//            //          triggered more than once in the same lifecycle.  We only want it added
-//            //          during the render phase.
-//            return;
-//        }
+        if( context.getCurrentPhaseId() != PhaseId.RENDER_RESPONSE ){
+            //ICE-6643: In certain circumstances, it's possible that the PostAddToViewEvent is
+            //          triggered more than once in the same lifecycle.  We only want it added
+            //          during the render phase.
+            return;
+        }
 
         //using PostAddToViewEvent ensures that the component resource is added to the view only once
         final HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
