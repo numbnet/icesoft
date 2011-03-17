@@ -91,6 +91,8 @@ public class D2DViewHandler extends ViewHandler {
             "com.icesoft.faces.actionURLSuffix";
     private final static String RELOAD_INTERVAL =
             "com.icesoft.faces.reloadInterval";
+    private final static String FORCE_JSF12 =
+            "com.icesoft.faces.forceJSF12";
 
     private final static String LAST_LOADED_KEY = "_lastLoaded";
     private final static String LAST_CHECKED_KEY = "_lastChecked";
@@ -871,6 +873,21 @@ public class D2DViewHandler extends ViewHandler {
         ExternalContext ec = context.getExternalContext();
         String reloadIntervalParameter = ec.getInitParameter(RELOAD_INTERVAL);
         String stateManagementServerSide = ec.getInitParameter(StateManager.STATE_SAVING_METHOD_PARAM_NAME);
+
+        // ICE-6617 Allow forcing of JSF detection
+        boolean isJSF12 = false;
+        try {
+            String value = ec.getInitParameter(FORCE_JSF12);
+            if (value != null && !"".equals(value)) {
+                isJSF12 = Boolean.parseBoolean( value );
+                log.debug("JSF12 force parameter detected: " + isJSF12);
+                ImplementationUtil.setJSF12( isJSF12 );
+            } else {
+                log.debug("JSF12 force parameter not detected: " + value);
+            }
+        } catch (Exception e) {
+
+        }
 
         // #3980 This enables state saving to work in jsf1.1 environment with the default settings
         // (since state saving is always on now)
