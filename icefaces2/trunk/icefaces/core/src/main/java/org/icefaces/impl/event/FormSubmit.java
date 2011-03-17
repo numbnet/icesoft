@@ -31,6 +31,7 @@ import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
+import javax.faces.event.PhaseId;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
@@ -51,6 +52,13 @@ public class FormSubmit implements SystemEventListener {
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         if (!EnvUtils.isICEfacesView(context)) {
+            return;
+        }
+
+        if( context.getCurrentPhaseId() != PhaseId.RENDER_RESPONSE ){
+            //ICE-6643: In certain circumstances, it's possible that the PostAddToViewEvent is
+            //          triggered more than once in the same lifecycle.  We only want it added
+            //          during the render phase.
             return;
         }
 
