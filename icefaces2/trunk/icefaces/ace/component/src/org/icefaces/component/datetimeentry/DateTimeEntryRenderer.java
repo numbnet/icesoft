@@ -58,7 +58,7 @@ public class DateTimeEntryRenderer extends Renderer {
         if (styleClass != null && styleClass.trim().length() != 0) {
             writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
         }
-        writer.writeAttribute(HTML.TABINDEX_ATTR, dateTimeEntry.getTabindex(), HTML.TABINDEX_ATTR);
+//        writer.writeAttribute(HTML.TABINDEX_ATTR, dateTimeEntry.getTabindex(), HTML.TABINDEX_ATTR);
     }
 
     @Override
@@ -157,6 +157,16 @@ public class DateTimeEntryRenderer extends Renderer {
         if (currentFocus == null) {
             currentFocus = "";
         }
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
+//        ariaEnabled = false;
+        Integer dateTimeEntryTabindex = dateTimeEntry.getTabindex();
+        String tabIndex = "";
+        if (ariaEnabled) {
+            tabIndex = "0";
+        }
+        if (dateTimeEntryTabindex != null) {
+            tabIndex = dateTimeEntryTabindex.toString();
+        }
 
         String params = "'" + clientId + "'," +
                 JSONBuilder.create().
@@ -178,11 +188,12 @@ public class DateTimeEntryRenderer extends Renderer {
                     entry("renderAsPopup", dateTimeEntry.isRenderAsPopup()).
                     entry("renderInputField", dateTimeEntry.isRenderInputField()).
                     entry("singleSubmit", dateTimeEntry.isSingleSubmit()).
-                    entry("ariaEnabled", EnvUtils.isAriaEnabled(context)).
+                    entry("ariaEnabled", ariaEnabled).
                     entry("disabled", dateTimeEntry.isDisabled()).
                     entry("longMonths", unicodeLongMonths.toString(), true).
                     entry("shortWeekdays", unicodeShortWeekdays.toString(), true).
                     entry("currentFocus", currentFocus).
+                    entry("tabIndex", tabIndex).
                 endMap().toString();
 //        System.out.println("params = " + params);
         final UIComponent cal = component;

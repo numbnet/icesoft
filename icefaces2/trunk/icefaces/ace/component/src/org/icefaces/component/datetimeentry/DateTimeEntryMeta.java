@@ -105,5 +105,5 @@ public class DateTimeEntryMeta extends UIInputMeta {
     private boolean disabled;
 
     @Property (tlddoc="tabindex of the component")
-    private int tabindex;
+    private Integer tabindex;
 }

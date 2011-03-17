@@ -242,11 +242,13 @@ aria: function() {
         weeks[i].setAttribute("aria-label", "week " + (i + 1));
         //            Dom.setAttribute(weeks[i], "aria-label", "week " + (i + 1));
     }
+/*
     var mthYr = Dom.getElementsByClassName("calnav", null, this.id)[0];
     mthYr.setAttribute("role", "heading");
     mthYr.setAttribute("aria-label", mthYr.text);
     mthYr.setAttribute("aria-live", "assertive");
     mthYr.setAttribute("aria-atomic", "true");
+*/
     Dom.getElementsByClassName("calweekdaycell", null, this.id, function(el) {
         el.setAttribute("role", "columnheader");
     });
@@ -256,10 +258,16 @@ aria: function() {
     Dom.getElementsByClassName("selected", null, tbody, function(el) {
         el.setAttribute("aria-selected", "true");
     });
+    var tabIndex = this.params.tabIndex;
+    var selectedCell = Dom.getElementsByClassName(this.Style.CSS_CELL_SELECTED, "td", this.id)[0];
     Dom.batch(this.oDomContainer.getElementsByTagName("a"), function(el) {
         Dom.setAttribute(el, "tabindex", "-1");
     });
-    Dom.setAttribute(this.oDomContainer.getElementsByTagName("a")[0], "tabindex", "0");
+    if (selectedCell) {
+        Dom.setAttribute(Dom.getFirstChild(selectedCell), "tabindex", tabIndex);
+    } else {
+        Dom.setAttribute(this.oDomContainer.getElementsByTagName("a")[0], "tabindex", tabIndex);
+    }
 
     var keys = KeyListener.KEY;
     var kl1Handler = function(evType, fireArgs, subscribeObj) {
@@ -283,11 +291,13 @@ aria: function() {
                 } else if (Dom.hasClass(target, this.Style.CSS_NAV)) {
                     newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV_LEFT, "a", this.id)[0];
                 } else if (Dom.hasClass(target, this.Style.CSS_NAV_RIGHT)) {
-                    newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV, "a", this.id)[0];
+//                    newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV, "a", this.id)[0];
+                    newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV_LEFT, "a", this.id)[0];
                 } else if (Dom.hasClass(target, this.Style.CSS_CELL_SELECTOR)) {
                     i = this.getIndexFromId(target.parentNode.id) - 1;
                     if (i < 0) {
-                        this.doPreviousMonthNav(evt, this);
+                        newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV_RIGHT, "a", this.id)[0];
+//                        this.doPreviousMonthNav(evt, this);
                     } else {
                         for (; i >= 0; i--) {
                             if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_SELECTABLE)) {
@@ -295,7 +305,8 @@ aria: function() {
                                 break;
                             }
                             if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_OOM)) {
-                                this.doPreviousMonthNav(evt, this);
+                                newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV_RIGHT, "a", this.id)[0];
+//                                this.doPreviousMonthNav(evt, this);
                                 break;
                             }
                         }
@@ -304,8 +315,8 @@ aria: function() {
                 break;
             case keys.RIGHT:
                 if (Dom.hasClass(target, this.Style.CSS_NAV_LEFT)) {
-                    newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV, "a", this.id)[0];
-                } else if (Dom.hasClass(target, this.Style.CSS_NAV)) {
+//                    newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV, "a", this.id)[0];
+//                } else if (Dom.hasClass(target, this.Style.CSS_NAV)) {
                     newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV_RIGHT, "a", this.id)[0];
                 } else if (Dom.hasClass(target, this.Style.CSS_NAV_RIGHT)) {
                     for (i = 0; i < this.cells.length; i++) {
@@ -317,7 +328,8 @@ aria: function() {
                 } else if (Dom.hasClass(target, this.Style.CSS_CELL_SELECTOR)) {
                     i = this.getIndexFromId(target.parentNode.id) + 1;
                     if (i >= this.cells.length) {
-                        this.doNextMonthNav(evt, this);
+                        newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV_LEFT, "a", this.id)[0];
+//                        this.doNextMonthNav(evt, this);
                     } else {
                         for (; i < this.cells.length; i++) {
                             if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_SELECTABLE)) {
@@ -325,7 +337,8 @@ aria: function() {
                                 break;
                             }
                             if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_OOM)) {
-                                this.doNextMonthNav(evt, this);
+                                newTarget = Dom.getElementsByClassName(this.Style.CSS_NAV_LEFT, "a", this.id)[0];
+//                                this.doNextMonthNav(evt, this);
                                 break;
                             }
                         }
@@ -336,7 +349,7 @@ aria: function() {
                 if (Dom.hasClass(target, this.Style.CSS_CELL_SELECTOR)) {
                     i = this.getIndexFromId(target.parentNode.id) - 7;
                     if (i < 0) {
-                        this.doPreviousMonthNav(evt, this);
+//                        this.doPreviousMonthNav(evt, this);
                     } else {
                         for (; i >= 0; i -= 7) {
                             if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_SELECTABLE)) {
@@ -344,7 +357,7 @@ aria: function() {
                                 break;
                             }
                             if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_OOM)) {
-                                this.doPreviousMonthNav(evt, this);
+//                                this.doPreviousMonthNav(evt, this);
                                 break;
                             }
                         }
@@ -355,7 +368,7 @@ aria: function() {
                 if (Dom.hasClass(target, this.Style.CSS_CELL_SELECTOR)) {
                     i = this.getIndexFromId(target.parentNode.id) + 7;
                     if (i >= this.cells.length) {
-                        this.doNextMonthNav(evt, this);
+//                        this.doNextMonthNav(evt, this);
                     } else {
                         for (; i < this.cells.length; i += 7) {
                             if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_SELECTABLE)) {
@@ -363,7 +376,7 @@ aria: function() {
                                 break;
                             }
                             if (Dom.hasClass(this.cells[i], this.Style.CSS_CELL_OOM)) {
-                                this.doNextMonthNav(evt, this);
+//                                this.doNextMonthNav(evt, this);
                                 break;
                             }
                         }
@@ -384,14 +397,15 @@ aria: function() {
                 break;
         }
         if (newTarget) {
-            newTarget.focus();
             Dom.setAttribute(target, "tabindex", "-1");
-            Dom.setAttribute(newTarget, "tabindex", "0");
+            Dom.setAttribute(newTarget, "tabindex", tabIndex);
+            newTarget.focus();
         }
         Event.stopEvent(evt);
     };
     var kl1 = new KeyListener(this.oDomContainer,
-    {keys:[keys.SPACE,keys.LEFT,keys.RIGHT,keys.UP,keys.DOWN,keys.PAGE_UP,keys.PAGE_DOWN,keys.HOME,keys.END]},
+    {keys:[keys.SPACE,keys.LEFT,keys.RIGHT,keys.UP,keys.DOWN,keys.HOME,keys.END]},
+//    {keys:[keys.SPACE,keys.LEFT,keys.RIGHT,keys.UP,keys.DOWN,keys.PAGE_UP,keys.PAGE_DOWN,keys.HOME,keys.END]},
     {fn:kl1Handler, correctScope:this});
     kl1.enable();
 },
@@ -449,6 +463,9 @@ init: function(params) {
         if (Dom.isAncestor(rootId, params.currentFocus)) {
             Dom.getFirstChild(params.currentFocus).focus();
         }
+        if (params.tabIndex && !params.ariaEnabled) {
+            calContainerEl.set("tabIndex", params.tabIndex, true);
+        }
         return;
     }
     var inputId = rootId + "_input";
@@ -457,6 +474,10 @@ init: function(params) {
     if (params.disabled) {
         inputEl.setAttributes({disabled:"disabled", "aria-disabled":true}, true);
         toggleBtnEl.setAttributes({disabled:"disabled", "aria-disabled":true}, true);
+    }
+    if (params.tabIndex) {
+        inputEl.set("tabIndex", params.tabIndex, true);
+        toggleBtnEl.set("tabIndex", params.tabIndex, true);
     }
     var inputChange = function(evt) {
         calValueEl.setAttributes({value:this.get("value")}, true);
@@ -505,6 +526,9 @@ init: function(params) {
     });
     dialog.setBody("<div id='" + calContainerId + "'/>");
     dialog.render(calRootEl);
+    if (params.tabIndex && !params.ariaEnabled) {
+        Dom.setAttribute(dialog.id, "tabindex", params.tabIndex);
+    }
 
     calendar = new IceCalendar(calContainerId, {
         pagedate:params.pageDate,
@@ -628,4 +652,3 @@ getInstance: function(clientId, callback) {
 };
 lang.augmentObject(calendarns, ns, true);
 })();
-    
