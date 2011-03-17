@@ -300,6 +300,11 @@ if (!window.ice.icefaces) {
                 f[name] = function(e) {
                     var event = e || window.event;
                     var element = event.target || event.srcElement;
+                    var disabled = document.getElementById(id + ":ajaxDisabled");
+                    if ((disabled) &&
+                            (disabled.value.indexOf(" " + element.id + " ") >= 0)) {
+                        return true;
+                    }
                     f.onsubmit = function() {
                         submit(event, element);
                         f.onsubmit = none;
