@@ -119,6 +119,7 @@ public class ImplementationUtil {
 
         if (log.isTraceEnabled()) {
             log.trace("JSF-12: " + isJSF12);
+            System.out.println(" __ JSF 12 NOT DETECTED via CODE");
         }
 
         //Test for JSF 2
@@ -226,6 +227,14 @@ public class ImplementationUtil {
      */
     public static boolean isJSF12() {
         return isJSF12;
+    }
+
+    /**
+     * Allow externals to override the default setup via class loading.
+     * @param isJSF12
+     */
+    public static void setJSF12(boolean isJSF12) {
+        isJSF12 = isJSF2;
     }
 
     /**
