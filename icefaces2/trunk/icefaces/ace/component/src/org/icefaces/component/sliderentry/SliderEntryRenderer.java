@@ -158,12 +158,13 @@ public class SliderEntryRenderer extends Renderer{
             writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
         }
         writer.endElement(HTML.DIV_ELEM);
+        int value=slider.getValue();
 
         writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("name",clientId+"_hidden", null);
         writer.writeAttribute("id",clientId+"_hidden", null);
-        writer.writeAttribute("value",slider.getValue(), null);
+        writer.writeAttribute("value", value, null);
         writer.endElement("input");
 
         StringBuilder sb = new StringBuilder();
@@ -175,7 +176,7 @@ public class SliderEntryRenderer extends Renderer{
         JSONBuilder jsBuilder = JSONBuilder.create().beginMap().
                 entry("min", slider.getMin()).
                 entry("max", slider.getMax()).
-                entry("value", slider.getValue()).
+                entry("value", value ).
                 entry("axis", slider.getAxis()).
                 entry("length", slider.getLength()).
                 entry("clickableRail", slider.isClickableRail()).
