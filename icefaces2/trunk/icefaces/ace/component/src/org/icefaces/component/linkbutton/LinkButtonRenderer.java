@@ -80,7 +80,8 @@ public class LinkButtonRenderer extends Renderer {
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);
         String styleClass = "yui-button yui-link-button";
-        if (linkButton.isDisabled()) {
+        boolean disabled = linkButton.isDisabled();
+        if (disabled) {
             styleClass += " yui-button-disabled yui-link-button-disabled";
         }
         String myStyleClass = linkButton.getStyleClass();
@@ -102,7 +103,7 @@ public class LinkButtonRenderer extends Renderer {
         }
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
 
-        if (linkButton.isDisabled()) {
+        if (disabled) {
 //            writer.write((String) linkButton.getValue());
             return;
         }
@@ -144,7 +145,8 @@ public class LinkButtonRenderer extends Renderer {
         String value = (String) linkButton.getValue();
         // put the value here to minimize impact in rendering
         writer.writeText(value, null);
-        if (!linkButton.isDisabled()) {
+        boolean disabled = linkButton.isDisabled();
+        if (!disabled) {
             writer.endElement(HTML.ANCHOR_ELEM);
         }
         writer.endElement(HTML.SPAN_ELEM);
@@ -166,7 +168,7 @@ public class LinkButtonRenderer extends Renderer {
                 entry("type", "link").
                 entry("tabindex", linkButton.getTabindex()).
                 entry("label", (String) linkButton.getValue() ).
-                entry("disabled", linkButton.isDisabled()).endMap().toString();
+                entry("disabled", disabled).endMap().toString();
 
         JSONBuilder jBuild = JSONBuilder.create().
                                 beginMap().
