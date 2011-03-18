@@ -65,6 +65,12 @@ public class WindowAndViewIDSetup implements SystemEventListener {
             }
         }
 
+        //guard against duplicates within the same JSF lifecycle
+        if (null != context.getAttributes().get(componentId)) {
+            return;
+        }
+        context.getAttributes().put(componentId, componentId);
+
         UIOutput output = new UIOutputWriter() {
             public void encode(ResponseWriter writer, FacesContext context) throws IOException {
                 Map requestMap = context.getExternalContext().getRequestMap();
