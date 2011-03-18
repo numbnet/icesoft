@@ -29,7 +29,7 @@ ice.component.linkButton = {
 	  YAHOO.util.Event.onDOMReady(function() {
 
         var spanId = clientId + "_span";
-	    var oLinkButton = new YAHOO.widget.Button(spanId,{ label: jsProps.label }, {type: jsProps.type});
+	    var oLinkButton = new YAHOO.widget.Button(spanId,{ label: jsProps.label, tabindex: null }, {type: jsProps.type});
 
         root = document.getElementById(spanId);
 
