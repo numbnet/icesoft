@@ -104,9 +104,11 @@ public class OutputMessageRenderer extends DomBasicRenderer {
 
         // escape
         boolean escape = DOMUtils.escapeIsRequired(uiComponent);
+/*
         if (escape && uiComponentValue != null) {
             uiComponentValue = DOMUtils.escapeAnsi(uiComponentValue);
         }
+*/
 
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
@@ -114,7 +116,13 @@ public class OutputMessageRenderer extends DomBasicRenderer {
         if (!domContext.isInitialized()) {
             // create the text message
             Document document = domContext.getDocument();
-            Text textNode = (Text) domContext.createTextNode(uiComponentValue);
+            Text textNode;
+            String text = uiComponentValue == null ? "" : uiComponentValue;
+            if (escape) {
+                textNode = domContext.createTextNode(text);
+            } else {
+                textNode = domContext.createTextNodeUnescaped(text);
+            }
             // create a parent span, if required, otherwise set the root node
             // to the text node
             if (spanIsRequired) {
