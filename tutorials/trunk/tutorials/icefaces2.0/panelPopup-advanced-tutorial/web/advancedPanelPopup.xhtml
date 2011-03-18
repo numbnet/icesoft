@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+        <title>Panel Popup Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+    </h:head>
+    <h:body>
+        <h2>Advanced Panel Popup Component</h2>
+        <p>Left click anywhere on the dialog to drag the panelPopup around.</p>
+        <p>Notice that this draggable panelPopup has several advanced components inside the body.</p>
+        <p>The <ice:graphicImage url="images/close.gif"/> button in the header closes the popup dialog.</p>
+        <p>Once closed, a "Open a Popup" button will appear which can create a new dialog.</p>
+        <!--
+        This demo shows an advanced draggable panelPopup with a variety components in the body
+        -->
+        <ice:form style="width: 45%;">
+        <ice:commandButton value="Open a Popup" action="#{popup.openPopup}" rendered="#{not popup.visible}"/>
+            <ice:panelPopup draggable="true" visible="#{popup.visible}" style="z-index: 1000; top: 30%; left: 10%; position: absolute; width: 300px;">
+                <f:facet name="header">
+                    <ice:panelGrid width="100%" cellpadding="0" cellspacing="0" columns="2" style="text-align: center;">
+                        <ice:outputText style="color: #FFFFFF;" value="Draggable Panel Popup"/>
+                        <ice:commandButton image="images/close.gif" action="#{popup.closePopup}" title="Close this draggable popup"/>
+                    </ice:panelGrid>
+                </f:facet>
+                
+                <f:facet name="body">
+                    <ice:panelGrid width="100%" cellpadding="0" cellspacing="0">
+                        <ice:inputText value="Input Text"/><br/>
+                        <ice:selectBooleanCheckbox value="true"/><br/>
+                        <ice:outputLink value="">
+                            <ice:outputText value="Output Link"/>
+                        </ice:outputLink><br/>
+                        <ice:selectInputDate/><br/>
+                    </ice:panelGrid>
+                </f:facet>
+                
+            </ice:panelPopup>
+        </ice:form>
+    </h:body>
+</html>
+
