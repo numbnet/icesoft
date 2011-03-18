@@ -29,7 +29,7 @@ ice.component.checkboxbutton = {
 //      }
       YAHOO.util.Event.onDOMReady(function() {    
        var spanId = clientId+"_span";
-	   var button = new YAHOO.widget.Button(spanId, {type: jsProps.type});
+	   var button = new YAHOO.widget.Button(spanId, {type: jsProps.type, tabindex: null});
 
 		var hiddenField = Dom.get(clientId+"_hidden");
 
