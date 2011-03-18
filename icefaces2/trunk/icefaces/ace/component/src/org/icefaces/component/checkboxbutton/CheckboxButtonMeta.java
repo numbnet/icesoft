@@ -81,8 +81,8 @@ public class CheckboxButtonMeta extends UISelectBooleanMeta {
     @Property(tlddoc="style class of the component, rendered on the root div of the component.")
 	private String styleClass;     
  
-    @Property (defaultValue="0", tlddoc="tabindex of the component")
-    private int tabindex;  
+    @Property (tlddoc="tabindex of the component")
+    private Integer tabindex;
     
     @Property (defaultValue="false",
     		tlddoc="disabled property. If true no input may be submitted via this" +

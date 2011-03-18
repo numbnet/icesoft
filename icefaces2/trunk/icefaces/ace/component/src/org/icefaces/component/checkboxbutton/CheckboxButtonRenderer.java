@@ -144,22 +144,29 @@ public class CheckboxButtonRenderer extends Renderer {
         sb.append(checkbox.getStyle()).
            append(checkbox.getStyleClass());
 
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
+        Integer tabindex = checkbox.getTabindex();
+        if (ariaEnabled && tabindex == null) tabindex = 0;
+
+        JSONBuilder jsonBuilder = JSONBuilder.create().beginMap();
         String builder="";
 	    JSONBuilder.create().beginMap().entry("nothing", label).toString();
 
-	        builder = JSONBuilder.create().beginMap().
-	        entry("type", "checkbox").
-	        entry("checked", isChecked).
-            entry("disabled", checkbox.isDisabled()).
-            entry("tabindex", checkbox.getTabindex()).
-	        entry("label", label).endMap().toString();
-	
+        jsonBuilder.
+                entry("type", "checkbox").
+                entry("checked", isChecked).
+                entry("disabled", checkbox.isDisabled());
+        if (tabindex != null) {
+            jsonBuilder.entry("tabindex", tabindex);
+        }
+        builder = jsonBuilder.entry("label", label).endMap().toString();
+
 
         JSONBuilder jBuild = JSONBuilder.create().
            beginMap().
                entry("singleSubmit", checkbox.isSingleSubmit()).
                entry("hashCode", sb.toString().hashCode()).
-               entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
+               entry("ariaEnabled", ariaEnabled);
 
         if (uiParamChildren != null) {
             jBuild.entry("postParameters",  Utils.asStringArray(uiParamChildren) );
@@ -168,7 +175,7 @@ public class CheckboxButtonRenderer extends Renderer {
 	    String params = "'" + clientId + "'," +
         builder
            + "," + jBuild.endMap().toString();
-  //        System.out.println("params = " + params);	    
+  //        System.out.println("params = " + params);
 
         String finalScript = "ice.component.checkboxbutton.updateProperties(" + params + ");";
         ScriptWriter.insertScript(facesContext, uiComponent,finalScript);        		  
