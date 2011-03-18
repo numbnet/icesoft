@@ -70,6 +70,13 @@ public class FormSubmit implements SystemEventListener {
             }
         }
 
+        //guard against duplicates within the same JSF lifecycle
+        if (null != context.getAttributes().get(componentId)) {
+            return;
+        }
+        context.getAttributes().put(componentId, componentId);
+
+
         UIOutput scriptWriter = new UIOutputWriter() {
             public void encode(ResponseWriter writer, FacesContext context) throws IOException {
                 if (form.getAttributes().get(DISABLE_CAPTURE_SUBMIT) != null) {
