@@ -164,18 +164,24 @@ public class LinkButtonRenderer extends Renderer {
                 append(linkButton.getStyle()).
                 append(linkButton.getTarget());
 
-        String jsProps = JSONBuilder.create().beginMap().
-                entry("type", "link").
-                entry("tabindex", linkButton.getTabindex()).
-                entry("label", (String) linkButton.getValue() ).
-                entry("disabled", disabled).endMap().toString();
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
+        Integer tabindex = linkButton.getTabindex();
+        if (ariaEnabled && tabindex == null) tabindex = 0;
+
+        JSONBuilder jsonBuilder = JSONBuilder.create().beginMap();
+        jsonBuilder.entry("type", "link");
+        if (tabindex != null) {
+            jsonBuilder.entry("tabindex", tabindex);
+        }
+        jsonBuilder.entry("label", (String) linkButton.getValue());
+        String jsProps = jsonBuilder.entry("disabled", disabled).endMap().toString();
 
         JSONBuilder jBuild = JSONBuilder.create().
                                 beginMap().
                                 entry("singleSubmit", linkButton.isSingleSubmit()).
                                 entry("doAction", doAction).
                                 entry("hashCode",  sb.toString().hashCode()).
-                                entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
+                                entry("ariaEnabled", ariaEnabled);
         
         if (doAction && uiParamChildren != null) {
             jBuild.entry("postParameters",  Utils.asStringArray(uiParamChildren) );

@@ -75,8 +75,8 @@ public class LinkButtonMeta extends UICommandMeta {
     defaultValue="Default Anchor Label")
     private Object value; 
 
-    @Property (defaultValue="0", tlddoc="tabindex of the component")
-    private int tabindex;
+    @Property (tlddoc="tabindex of the component")
+    private Integer tabindex;
 
     @Property(tlddoc="The CSS style class of the component")
     private String styleClass;
