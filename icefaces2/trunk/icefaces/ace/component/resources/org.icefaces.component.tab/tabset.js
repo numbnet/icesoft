@@ -22,11 +22,50 @@
 ice.component.tabset = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
        //logger.info('1. tabset initialize');
-     var Dom = YAHOO.util.Dom;
-     YAHOO.util.Event.onDOMReady(function() {  
-	    if (YAHOO.widget.Logger) {
-		        YAHOO.widget.Logger.enableBrowserConsole();
-		}
+	 
+	 ice.yui3.use(function(Y){ 
+	 Y.on('domready', function(){
+		
+		/*
+		var thisYUI = YUI({combine: false, base: '/ace-test/javax.faces.resource/yui/3_1_1/',
+		
+			groups: {
+				yui2: {
+				    combine: false,
+					base: '/ace-test/javax.faces.resource/yui/2in3/',
+					patterns:  {
+						'yui2-': {
+							configFn: function(me) {
+								if(/-skin|reset|fonts|grids|base/.test(me.name)) {
+									me.type = 'css';
+									me.path = me.path.replace(/\.js/, '.css');
+									//me.path = me.path.replace(/\/yui2-skin/, '/assets/skins/sam/yui2-skin');
+								}
+								//me.path = me.path.replace(/yui2-/, '');
+								//me.path = me.path.replace(/\/yui2-/, '/');
+							}
+						}
+					}
+				}
+			}
+
+		
+		
+		}); // , base: '/ace-test/javax.faces.resource/yui/3_1_1/'
+		var old = thisYUI.Loader.prototype._url;
+		thisYUI.Loader.prototype._url = function(path, name, base) {
+		 return old.call(this, path, name, base) + '.jsf';
+		};
+		*/
+		
+		
+		
+		var thisYUI = ice.yui3.getNewInstance();
+         //'yui2-fonts', 'yui2-yahoo-dom-event', 'yui2-connection', 'yui2-element', 
+		thisYUI.use('yui2-tabview', function(Yui) {
+	     var YAHOO = Yui.YUI2;
+		 var Dom = YAHOO.util.Dom;
+
        var tabview = new YAHOO.widget.TabView(clientId);  
        tabview.set('orientation', jsProps.orientation);
        var thiz = this;
@@ -90,7 +129,7 @@ ice.component.tabset = {
             event.target = document.getElementById(clientId);
             tbset = document.getElementById(clientId);
             currentIndex = tabview.getTabIndex(event.newValue);
-            YAHOO.log(" currentIndex="+currentIndex);
+            //YAHOO.log(" currentIndex="+currentIndex);
             tabIndexInfo = clientId + '='+ currentIndex;
             var params = function(parameter) {
 							parameter('ice.focus', event.newValue.get('element').firstChild.id);
@@ -117,7 +156,7 @@ ice.component.tabset = {
                             });
                         };
             if (sJSFProps.isClientSide){
-            	YAHOO.log(" clientSide and currentIndex="+currentIndex);
+            	//YAHOO.log(" clientSide and currentIndex="+currentIndex);
             	ice.component.clientState.set(clientId, currentIndex);
                 //console.info('Client side tab ');
             } else {
@@ -200,7 +239,7 @@ ice.component.tabset = {
                      goLast(target);
                      break;    
                 }
-           }
+           };
        }
        var onKeyPress = function(event, index) {
             var context = ice.component.getJSContext(clientId);
@@ -216,7 +255,7 @@ ice.component.tabset = {
                tabview.set('activeIndex', index);
 			   event.cancelBubble = true;
             }
-       }
+       };
        
        var tabs = tabview.get('tabs');
        for (i=0; i<tabs.length; i++) {
@@ -226,7 +265,7 @@ ice.component.tabset = {
            //support enter key regardless of keyboard or aria support 
            tabs[i].on('keypress', onKeyPress, i); 
        }
-       
+
     
 	   //console.info('effect >>> '+ jsfProps.effect );
  
@@ -282,8 +321,8 @@ ice.component.tabset = {
 									animation.chain.set('node', '#'+  newTab.get('contentEl').id);
                                         //set the focus back to the selected tab
                                        // var selectedTab = tabview.getTab(currentIndex);
-var ele = document.getElementById(newTab.get('element').id).firstChild;									   
-ele.focus();
+                                                var ele = document.getElementById(newTab.get('element').id).firstChild;
+                                                ele.focus();
  										//ele.parentNode.focus();
                                                                   									
 											// _effect.set('node', '#'+ newTab.get('contentEl').id);
@@ -355,13 +394,16 @@ ele.focus();
 		   tabview.addListener('activeTabChange', tabChange);
 	   }
        bindYUI(tabview);
-     });
+
+	 }); // *** end of thisYUI
+	 }); // *** end of ondomready
+	 }); // *** end of function(Y)
    },
    
    //this function is responsible to provide an element that keeps tab index
    //only one field will be used per form element.
    getTabIndexField:function(tabset) {
-	   YAHOO.log("in getTabIndexField");
+	   //YAHOO.log("in getTabIndexField");
 	   var _form = null;
 	   try {
 		   //see if the tabset is enclosed inside a form
@@ -408,20 +450,20 @@ ele.focus();
 	   if (jsfProps.isClientSide){
 		   var index = jsfProps.selectedIndex;
 	       var lastKnownIndex = 0;
-	       if (index) YAHOO.log("updateProperties index="+index);
+	       //if (index) YAHOO.log("updateProperties index="+index);
 	       var context = ice.component.getJSContext(clientId);
 	       if (context){
-	    	   YAHOO.log("updateProperties has context");
+	    	   //YAHOO.log("updateProperties has context");
 	    	   var tabviewObj = context.getComponent();	
 	    	   lastKnownIndex = context.getJSFProps().selectedIndex;
-	    	   YAHOO.log("last know index is="+lastKnownIndex)
+	    	   //YAHOO.log("last know index is="+lastKnownIndex)
 	           if (index != lastKnownIndex) {
-	    		    YAHOO.log("must switch indices");
+	    		    //YAHOO.log("must switch indices");
 	    	    	tabviewObj.selectTab(index);
 	           }
     	   }
        }
-       ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
+       ice.yui3.updateProperties(clientId, jsProps, jsfProps, events, this);
        
    },
  

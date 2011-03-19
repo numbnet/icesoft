@@ -24,7 +24,14 @@ ice.component.pushbutton = {
 //      if (YAHOO.widget.Logger) {
 //            YAHOO.widget.Logger.enableBrowserConsole();
 //      }
-      YAHOO.util.Event.onDOMReady(function() {
+
+	 ice.yui3.use(function(Y){ 
+	 Y.on('domready', function(){
+		var thisYUI = ice.yui3.getNewInstance();
+		thisYUI.use('yui2-button', function(Yui) {
+	    var YAHOO = Yui.YUI2;
+	 
+      //YAHOO.util.Event.onDOMReady(function() {
         //want the span id
         var spanId = clientId + "_span";
         YAHOO.log("clientId=" + clientId + " spanId=" + spanId);
@@ -102,7 +109,10 @@ ice.component.pushbutton = {
 
 
         bindYUI(button);
-      });
+	 }); // *** end of thisYUI
+	 }); // *** end of ondomready
+	 }); // *** end of function(Y)
+      //});
     },
 	
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
@@ -116,7 +126,8 @@ ice.component.pushbutton = {
                JSContext[clientId] = null;
            }
        }
-       ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
+	   ice.yui3.updateProperties(clientId, jsProps, jsfProps, events, this);
+       //ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
    },
  
    //delegate call to ice.yui.getInstance(..) with the reference of this lib 

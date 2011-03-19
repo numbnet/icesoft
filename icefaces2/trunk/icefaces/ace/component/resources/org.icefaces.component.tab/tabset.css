@@ -6,7 +6,7 @@ version: 2.7.0
 */
 
 /* load core styling from YUI library */
-@import url('#{resource['yui/2_8_1/tabview/assets/tabview-core.css']}');
+@import url('#{resource['yui/2in3/yui2-skin-sam-tabview/assets/tabview-core.css']}');
 
 /* .yui-navset defaults to .yui-navset-top */
 

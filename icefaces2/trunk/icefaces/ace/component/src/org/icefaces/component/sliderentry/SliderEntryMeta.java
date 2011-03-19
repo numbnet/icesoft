@@ -55,8 +55,7 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
                 "<a href=\"http://wiki.icefaces.org/display/facesDev/Slider\">Wiki doc</a>."
     )
 	
-@ResourceDependencies({
-    @ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
+/*
 	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="oop/oop-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="yui/yui-later-min.js",library="yui/3_1_1"),
@@ -82,6 +81,11 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 	@ResourceDependency(name="intl/intl-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="widget/assets/skins/sam/widget.css",library="yui/3_1_1"),
 	@ResourceDependency(name="yahoo-dom-event/yahoo-dom-event.js",library="yui/2_8_1"),
+*/
+
+@ResourceDependencies({
+    @ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
+	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
 	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="slider.js",library="org.icefaces.component.sliderentry"),

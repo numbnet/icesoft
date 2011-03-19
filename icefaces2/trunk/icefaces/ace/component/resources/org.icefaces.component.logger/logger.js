@@ -21,6 +21,10 @@
 
 ice.component.logger = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
+	
+	var thisYUI = ice.yui3.getNewInstance();
+	thisYUI.use('yui2-logger', function(Yui) {
+		var YAHOO = Yui.YUI2;
 	//setup Yahoo logger for either global/page or particular component
 
 	YAHOO.util.Event.onDOMReady(function() {
@@ -49,6 +53,7 @@ ice.component.logger = {
 //		} 
 //		
 //		bindYUI(button);
+	});
 	},
 	
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib

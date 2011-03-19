@@ -21,4 +21,4 @@
  */
 
 /* load core styling from YUI library */
-@import url('#{resource['yui/2_8_1/button/assets/button-core.css']}');
+@import url('#{resource['yui/2in3/yui2-skin-sam-button/assets/button-core.css']}');
