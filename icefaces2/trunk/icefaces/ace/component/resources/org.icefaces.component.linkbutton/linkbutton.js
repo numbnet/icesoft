@@ -26,7 +26,12 @@ ice.component.linkButton = {
 //	 	  YAHOO.widget.Logger.enableBrowserConsole();
 //       }
 
-	  YAHOO.util.Event.onDOMReady(function() {
+	  //YAHOO.util.Event.onDOMReady(function() {
+	 ice.yui3.use(function(Y){ 
+	 Y.on('domready', function(){
+		var thisYUI = ice.yui3.getNewInstance();
+		thisYUI.use('yui2-button', function(Yui) {
+		var YAHOO = Yui.YUI2;
 
         var spanId = clientId + "_span";
 	    var oLinkButton = new YAHOO.widget.Button(spanId,{ label: jsProps.label, tabindex: null }, {type: jsProps.type});
@@ -47,7 +52,10 @@ ice.component.linkButton = {
         } 
 
 		bindYUI(oLinkButton);
-      });
+	 }); // *** end of thisYUI
+	 }); // *** end of ondomready
+	 }); // *** end of function(Y)
+      //});
 	},
 	
     //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
@@ -75,7 +83,7 @@ ice.component.linkButton = {
         var JSContext = ice.component.getJSContext(clientId);
         var singleSubmit = JSContext.getJSFProps().singleSubmit;
         var doAction = JSContext.getJSFProps().doAction;
-        YAHOO.log("--> Button.doAction = " + doAction);
+        //YAHOO.log("--> Button.doAction = " + doAction);
 
         var divRoot = document.getElementById(clientId);
 
@@ -89,10 +97,10 @@ ice.component.linkButton = {
             }
         };
         if (singleSubmit) {
-            YAHOO.log("Single Submit on element: " + divRoot);
+            //YAHOO.log("Single Submit on element: " + divRoot);
             ice.se(e, divRoot, params );
         } else {
-            YAHOO.log("Full Submit on element: " + divRoot);
+            //YAHOO.log("Full Submit on element: " + divRoot);
             ice.s(e, divRoot, params );
         }
         // If there are actionListeners, don't do default behaviour
@@ -109,7 +117,7 @@ ice.component.linkButton = {
         var JSContext = ice.component.getJSContext(clientId);
         var singleSubmit = JSContext.getJSFProps().singleSubmit;
         var doAction = JSContext.getJSFProps().doAction;
-        YAHOO.log("--> Button.doAction = " + doAction);
+        //YAHOO.log("--> Button.doAction = " + doAction);
 
         var divRoot = document.getElementById(clientId);
 
@@ -123,10 +131,10 @@ ice.component.linkButton = {
             }
         };
         if (singleSubmit) {
-            YAHOO.log("Single Submit on element: " + divRoot);
+            //YAHOO.log("Single Submit on element: " + divRoot);
             ice.se(e, divRoot, params );
         } else {
-            YAHOO.log("Full Submit on element: " + divRoot);
+            //YAHOO.log("Full Submit on element: " + divRoot);
             ice.s(e, divRoot, params );
         }
         // If there are actionListeners, don't do default behaviour

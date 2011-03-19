@@ -43,11 +43,13 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 		componentFamily="org.icefaces.Logger"
         )
         
-@ResourceDependencies({
+/*
     @ResourceDependency(library = "yui/2_8_1", name = "logger/assets/skins/sam/logger.css"),
     @ResourceDependency(library = "yui/2_8_1", name = "yahoo-dom-event/yahoo-dom-event.js"),
     @ResourceDependency(library = "yui/2_8_1", name = "element/element-min.js"),
     @ResourceDependency(library = "yui/2_8_1", name = "logger/logger-min.js"),
+*/
+@ResourceDependencies({
 	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
     @ResourceDependency(name="component.js",library="org.icefaces.component.util"),	
     @ResourceDependency(name="logger.js",library="org.icefaces.component.logger")

@@ -56,8 +56,10 @@ public class NavigationBean {
         String requestedPath = (String) map.get("includePath");
         if ((null != requestedPath) && (requestedPath.length() > 0))  {
             selectedIncludePath = requestedPath;    
-        }else selectedIncludePath="content/splash.xhtml";
-            return selectedIncludePath;
+        } else if (selectedIncludePath == null) {
+            selectedIncludePath="content/splash.xhtml";
+        }
+        return selectedIncludePath;
     }
 
     /**

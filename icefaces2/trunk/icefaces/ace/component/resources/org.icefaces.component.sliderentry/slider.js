@@ -28,14 +28,26 @@ ice.component.slider = {
         //for short cut and to make it more like OOP
         //var super = ice.yui3;
 
-        var Dom = YAHOO.util.Dom;
-
         var hiddenFieldId = clientId+"_hidden";
 
         //set a callback to create slider component 
         ice.yui3.use(function(Y){ 
         	Y.on('domready', function(){
-		       YUI({bootstrap:false}).use('slider', function(Yui) {
+			   
+			   /*
+			   var thisYUI = YUI({combine: false, base: '/ace-test/javax.faces.resource/yui/3_1_1/'}); // base: '/ace-test/javax.faces.resource/yui/3_1_1/'
+			   var old = thisYUI.Loader.prototype._url;
+			   thisYUI.Loader.prototype._url = function(path, name, base) {
+			     return old.call(this, path, name, base) + '.jsf';
+			   };
+			   */
+			   var thisYUI = ice.yui3.getNewInstance();
+		       thisYUI.use('slider', 'yui2-dom', function(Yui) {
+			   
+				var Dom = Yui.YUI2.util.Dom;
+		   
+				var hiddenField = Dom.get(clientId+"_hidden");
+				
 					try {
 			            var obj = new Yui.Slider({
 							//following two properties has to be set when initializing componnent

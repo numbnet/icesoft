@@ -28,7 +28,9 @@ ice.yui3 = {
     modules: {},
     use :function(callback) {
         if (ice.yui3.y == null) {
-            YUI({combine: true, timeout: 10000, bootstrap: false}).use('*', function(Y) {
+			var Yui = ice.yui3.getNewInstance();
+			//Yui.use('*', function(Y) {
+			Yui.use('anim', 'plugin', 'pluginhost', function(Y) { // load modules required by the animation library
                 ice.yui3.y = Y;
                 callback(ice.yui3.y);
             });
@@ -45,7 +47,69 @@ ice.yui3 = {
         for (module in this.modules)
             modules += module + ',';
         return modules.substring(0, modules.length - 1);
-    }
+    },
+	basePathPattern: /^.*\:\/+(.*)\/javax\.faces\.resource.*yui\/yui[\.\-].*js\.jsf\?ln=(.*)?$/,
+	getBasePath: function() {
+		var nodes, i, src, match;
+		nodes = document.getElementsByTagName('script') || [];
+		for (i = 0; i < nodes.length; i++) {
+			src = nodes[i].src;
+			if (src) {
+				match = src.match(ice.yui3.basePathPattern);
+				if (match) {
+					return match;
+				}
+			}
+		}
+		return null;
+    },
+	yui3Base: '',
+	yui2in3Base: '',
+	getNewInstance: function() {
+		if (!(ice.yui3.yui3Base && ice.yui3.yui2in3Base)) {
+			var match = ice.yui3.getBasePath();
+            //TODO Fix the regex to work with jsessionid being appended
+            if (!match) {
+                //<script src="/ace-showcase/javax.faces.resource/loader/loader-min.js.jsf;jsessionid=7504960029A3ABD939D5642234582789?ln=yui/3_1_1" type="text/javascript"></script>
+                match = ["", "ace-showcase", "yui/3_1_1"];
+            }
+			var basePath = match[1];
+			if (basePath.indexOf(':') != -1) { // check if domain contains port number and extract base path
+				basePath = basePath.substring(basePath.indexOf('/', basePath.indexOf(':')) + 1);
+			}
+			ice.yui3.yui3Base = '/' + basePath + '/javax.faces.resource/' + match[2] + '/';
+			ice.yui3.yui2in3Base = '/' + basePath + '/javax.faces.resource/' + 'yui/2in3/';
+		}
+		
+		var Y = YUI({combine: false, base: ice.yui3.yui3Base,
+			groups: {
+				yui2: {
+				    combine: false,
+					base: ice.yui3.yui2in3Base,
+					patterns:  {
+						'yui2-': {
+							configFn: function(me) {
+								if (/-skin|reset|fonts|grids|base/.test(me.name)) {
+									me.type = 'css';
+									me.path = me.path.replace(/\.js/, '.css');
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+		
+		//alert(yui3Base + '\n' + _2in3Base);
+		// create URLs with '.jsf' at the end
+		var oldUrlFn = Y.Loader.prototype._url;
+		Y.Loader.prototype._url = function(path, name, base) {
+			return oldUrlFn.call(this, path, name, base) + '.jsf';
+		};
+		
+		Y.use('loader', 'oop', 'event-custom', 'attribute', 'base', 'event', 'dom', 'node', 'event-delegate'); // load base modules
+		return Y;
+	}
 };
 
 
@@ -86,6 +150,10 @@ ice.component = {
     updateProperties:function(clientId, jsProps, jsfProps, events, lib) {
         ice.yui3.use(function() {
             ice.component.getInstance(clientId, function(yuiComp) {
+                // TODO Why is yuiComp undefined
+                if (!yuiComp) {
+                    return;
+                }
                 for (prop in jsProps) {
                     var propValue = yuiComp.get(prop);
                     if (propValue != jsProps[prop]) {
