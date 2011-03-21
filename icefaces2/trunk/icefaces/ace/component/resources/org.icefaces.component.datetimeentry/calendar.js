@@ -272,7 +272,7 @@ aria: function() {
     Dom.getElementsByClassName("selected", null, tbody, function(el) {
         el.setAttribute("aria-selected", "true");
     });
-    var tabIndex = this.params.tabIndex;
+    var tabIndex = thiz.params.tabIndex;
     var selectedCell = Dom.getElementsByClassName(thiz.Style.CSS_CELL_SELECTED, "td", thiz.id)[0];
     Dom.batch(thiz.oDomContainer.getElementsByTagName("a"), function(el) {
         Dom.setAttribute(el, "tabindex", "-1");
