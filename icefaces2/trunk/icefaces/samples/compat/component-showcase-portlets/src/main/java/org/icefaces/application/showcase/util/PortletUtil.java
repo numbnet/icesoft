@@ -33,7 +33,6 @@ import java.util.Map;
 @ManagedBean(name = "portletUtil")
 @RequestScoped
 public class PortletUtil {
-    public static final String PORTLET_CONFIG_KEY = "javax.portlet.faces.PortletConfig";
     public static final String VIEW_PATH_KEY = "org.icefaces.demo.viewPath";
 
     public PortletUtil() {
@@ -57,16 +56,13 @@ public class PortletUtil {
      * @return The value for the init-param
      */
     private static String getInitParam(String key){
-        String initParam = null;
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext ec = fc.getExternalContext();
-        Object objReq = ec.getRequest();
-        if( objReq instanceof PortletRequest){
-            PortletRequest pr = (PortletRequest)objReq;
-            PortletConfig portletConfig = (PortletConfig) pr.getAttribute(PORTLET_CONFIG_KEY);
-            initParam = portletConfig.getInitParameter(key);
-        }
-        return initParam;
+
+        //With the PortletFaces bridge, calling getInitParameter is smart enough to provide
+        //the web.xml or portlet.xml values which allows us to use intuitive JSF code to get
+        //the parameter value we are interested in.
+        return ec.getInitParameter(key);
     }
 
     private static void dumpMap(String msg, Map map){
