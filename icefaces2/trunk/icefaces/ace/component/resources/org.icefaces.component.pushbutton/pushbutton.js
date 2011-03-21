@@ -39,7 +39,7 @@ ice.component.pushbutton = {
         var buttonNode = document.getElementById(spanId);
 
         var button = new YAHOO.widget.Button(spanId,
-            {label: jsProps.label,
+            {label: jsProps.label, tabindex: null,
             type: jsProps.type});
 
 
@@ -50,9 +50,11 @@ ice.component.pushbutton = {
         if (jsProps.type) {
             button.set('button', jsProps.type);
         }
+/*
         if (!jsProps.tabindex) {
             button.set('tabindex', jsProps.tabindex);
         }
+*/
 
         if (jsfProps.disabled) {
             button.set("disabled", true);
