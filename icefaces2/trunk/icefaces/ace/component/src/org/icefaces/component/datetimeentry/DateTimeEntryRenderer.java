@@ -135,7 +135,9 @@ public class DateTimeEntryRenderer extends Renderer {
         if (!hourField.equals("")) {
             selectedHour = stringBuffer.substring(savedBeginIndex, savedEndIndex);
         }
-        String selectedMinute = String.valueOf(date.getMinutes());
+        Calendar calendar = Calendar.getInstance(tz, currentLocale);
+        calendar.setTime(date);
+        String selectedMinute = String.valueOf(calendar.get(Calendar.MINUTE));
 
         formatter.applyPattern("a");
         String amPmStr = formatter.format(date);
