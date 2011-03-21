@@ -48,7 +48,8 @@ ice.yui3 = {
             modules += module + ',';
         return modules.substring(0, modules.length - 1);
     },
-	basePathPattern: /^.*\:\/+(.*)\/javax\.faces\.resource.*yui\/yui[\.\-].*js\.jsf\?ln=(.*)?$/,
+	//basePathPattern: /^.*\:\/+(.*)\/javax\.faces\.resource.*yui\/yui[\.\-].*js\.jsf\?ln=(.*)?$/,
+    basePathPattern: /^.*\:\/+(.*)\/javax\.faces\.resource.*yui\/yui-min\.js(.*)\?ln=(.*)?$/,
 	getBasePath: function() {
 		var nodes, i, src, match;
 		nodes = document.getElementsByTagName('script') || [];
@@ -65,19 +66,22 @@ ice.yui3 = {
     },
 	yui3Base: '',
 	yui2in3Base: '',
+	facesServletExtension: '',
 	getNewInstance: function() {
 		if (!(ice.yui3.yui3Base && ice.yui3.yui2in3Base)) {
 			var match = ice.yui3.getBasePath();
-            //TODO Fix the regex to work with jsessionid being appended
-            if (!match) {
-                //<script src="/ace-showcase/javax.faces.resource/loader/loader-min.js.jsf;jsessionid=7504960029A3ABD939D5642234582789?ln=yui/3_1_1" type="text/javascript"></script>
-                match = ["", "ace-showcase", "yui/3_1_1"];
-            }
 			var basePath = match[1];
 			if (basePath.indexOf(':') != -1) { // check if domain contains port number and extract base path
 				basePath = basePath.substring(basePath.indexOf('/', basePath.indexOf(':')) + 1);
 			}
-			ice.yui3.yui3Base = '/' + basePath + '/javax.faces.resource/' + match[2] + '/';
+			// determine the Faces Servlet extension (usually .jsf), also consider the case when the jsessionid is in the url
+			var jsessionidIndex = match[2].indexOf(';jsessionid=');
+			if (jsessionidIndex != -1) {
+				ice.yui3.facesServletExtension = match[2].substring(0, jsessionidIndex);
+			} else {
+				ice.yui3.facesServletExtension = match[2]
+			}
+			ice.yui3.yui3Base = '/' + basePath + '/javax.faces.resource/' + match[3] + '/';
 			ice.yui3.yui2in3Base = '/' + basePath + '/javax.faces.resource/' + 'yui/2in3/';
 		}
 		
@@ -100,11 +104,10 @@ ice.yui3 = {
 			}
 		});
 		
-		//alert(yui3Base + '\n' + _2in3Base);
-		// create URLs with '.jsf' at the end
+		// create URLs with the Faces Servlet extension at the end (e.g. '.jsf')
 		var oldUrlFn = Y.Loader.prototype._url;
 		Y.Loader.prototype._url = function(path, name, base) {
-			return oldUrlFn.call(this, path, name, base) + '.jsf';
+			return oldUrlFn.call(this, path, name, base) + ice.yui3.facesServletExtension;
 		};
 		
 		Y.use('loader', 'oop', 'event-custom', 'attribute', 'base', 'event', 'dom', 'node', 'event-delegate'); // load base modules

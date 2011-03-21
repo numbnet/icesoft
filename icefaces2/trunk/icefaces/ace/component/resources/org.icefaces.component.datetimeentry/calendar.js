@@ -19,13 +19,6 @@
  * Contributor(s): _____________________.
  */
 
-var examine = function(o) {
-	var str = '';
-	for (p in o) {
-		str += p + '\n';
-	}
-	alert(str);
-}
 //(function(){
 /*
 //YAHOO.namespace("icefaces.calendar");
