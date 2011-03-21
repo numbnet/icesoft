@@ -58,8 +58,8 @@ public class FileEntryMeta extends UIComponentBaseMeta {
         tlddoc="When disabled, files are not selectable for upload.")
     private boolean disabled;
     
-    @Property(defaultValue="0", tlddoc="tabindex of the component")
-    private int tabindex;
+    @Property(tlddoc="tabindex of the component")
+    private Integer tabindex;
     
     @Property(tlddoc="style will be rendered on the root element of this " +
         "component.")

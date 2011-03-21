@@ -23,6 +23,7 @@ package org.icefaces.component.fileentry;
 
 import org.icefaces.component.utils.Utils;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.FacesException;
 import javax.faces.render.Renderer;
@@ -63,7 +64,12 @@ public class FileEntryRenderer extends Renderer {
         if (disabled) {
             writer.writeAttribute("disabled", "true", "disabled");
         }
-        writer.writeAttribute("tabindex", fileEntry.getTabindex(), "tabindex");
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
+        Integer tabindex = fileEntry.getTabindex();
+        if (ariaEnabled && tabindex == null) tabindex = 0;
+        if (tabindex != null) {
+            writer.writeAttribute("tabindex", tabindex, "tabindex");
+        }
         writer.endElement("input");
 
         writer.startElement("div", uiComponent);
