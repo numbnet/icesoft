@@ -217,7 +217,24 @@
             <include name="META-INF/*"/>
             <include name="META-INF/resources/org*/**"/>
             <include unless="exclude.unused.yui" name="META-INF/resources/yui/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/**"/>
+			
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-yahoo/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-yahoo-dom-event/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-dom/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-event/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-element/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-json/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-container/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-selector/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-datasource/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-logger/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-button/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-calendar/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-tabview/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-skin-sam-button/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-skin-sam-container/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-skin-sam-logger/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-skin-sam-tabview/**"/>
 <!--
             'yui2-yahoo',
             'yui2-yahoo-dom-event',
