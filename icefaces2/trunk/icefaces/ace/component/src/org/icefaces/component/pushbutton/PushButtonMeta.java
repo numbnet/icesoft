@@ -92,8 +92,8 @@ public class PushButtonMeta extends UICommandMeta {
     				"component.  Is required by aria specs")
     private boolean disabled;
     
-    @Property (defaultValue="0", tlddoc="tabindex of the component")
-    private int tabindex;  
+    @Property (tlddoc="tabindex of the component")
+    private Integer tabindex;
   
     @Property(tlddoc="style class of the component, rendered on the div root of the component")
     private String styleClass;  

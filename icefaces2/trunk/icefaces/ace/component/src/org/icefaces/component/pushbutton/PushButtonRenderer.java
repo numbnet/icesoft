@@ -133,25 +133,32 @@ public class PushButtonRenderer extends Renderer {
 	    if (null!=oLab) ariaLabel=String.valueOf(oLab);
 	    if (yuiLabel.equals(""))yuiLabel=ariaLabel;
 	    if (ariaLabel.equals(""))ariaLabel=yuiLabel;
-	    	    
-	   // need to worry if label isn't set?
-	    builder = JSONBuilder.create().beginMap().
+
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
+        Integer tabindex = pushButton.getTabindex();
+        if (ariaEnabled && tabindex == null) tabindex = 0;
+
+        JSONBuilder jBuild = JSONBuilder.create().beginMap();
+        // need to worry if label isn't set?
+	    jBuild.
 	    entry("type", "button").
-        entry("disabled", pushButton.isDisabled()).
-        entry("tabindex", pushButton.getTabindex()).
-	    entry("label", yuiLabel).endMap().toString();
+        entry("disabled", pushButton.isDisabled());
+        if (tabindex != null) {
+            jBuild.entry("tabindex", tabindex);
+        }
+        builder = jBuild.entry("label", yuiLabel).endMap().toString();
 
         StringBuilder sb = new StringBuilder();
         sb.append( pushButton.getValue() ).
                 append(pushButton.getStyleClass()).
                 append(pushButton.getStyle());
 
-        JSONBuilder jBuild = JSONBuilder.create().
+        jBuild = JSONBuilder.create().
                                 beginMap().
                 entry("singleSubmit", pushButton.isSingleSubmit()).
                 entry("ariaLabel", ariaLabel).
                 entry("hashCode",  sb.toString().hashCode()).
-                entry("ariaEnabled", EnvUtils.isAriaEnabled(facesContext));
+                entry("ariaEnabled", ariaEnabled);
 
         if (uiParamChildren != null) {
             jBuild.entry("postParameters",  Utils.asStringArray(uiParamChildren) );
