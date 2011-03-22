@@ -182,9 +182,12 @@ ice.component.slider = {
 
 						obj.after("slideEnd", function(event) {
 							invokeSubmit(event);
-						});						
-						
+						});
 
+
+                        if (Yui.Lang.isValue(jsfProps.tabindex)) {
+                            root.firstChild.setAttribute("tabindex", jsfProps.tabindex);
+                        }
 		                //add aria support
 		                if (jsfProps.aria) {
 		                    //add roles and attributes to the YUI slider widget
@@ -193,7 +196,6 @@ ice.component.slider = {
 		                    root.firstChild.setAttribute("aria-valuemin", yuiProps.min);
 		                    root.firstChild.setAttribute("aria-valuemax", yuiProps.max);
 		                    root.firstChild.setAttribute("aria-valuenow",yuiProps.value );
-		                    root.firstChild.setAttribute("tabindex",jsfProps.tabindex);
 
 		                    //TODO shouldn't it be configurable?
 							var keydownTimeoutHandler = null;
