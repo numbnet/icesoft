@@ -48,6 +48,7 @@ public class Bean implements Serializable {
     private String submitOn = "slideEnd";
     private String axis = "x";
     private boolean clickableRail = true;
+    private boolean showLabels = false;
 
     public int getValue1() {
         return value1;
@@ -173,5 +174,13 @@ public class Bean implements Serializable {
         if (stepPercent < 0.0f || stepPercent > 100.0f) {
             throw new ValidatorException(new FacesMessage("Step Percent must be between 0 and 100 inclusive, as it is a percent."));
         }
+    }
+
+    public boolean isShowLabels() {
+        return showLabels;
+    }
+
+    public void setShowLabels(boolean showLabels) {
+        this.showLabels = showLabels;
     }
 }
