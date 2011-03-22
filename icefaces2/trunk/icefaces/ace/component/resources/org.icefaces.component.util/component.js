@@ -48,8 +48,7 @@ ice.yui3 = {
             modules += module + ',';
         return modules.substring(0, modules.length - 1);
     },
-	//basePathPattern: /^.*\:\/+(.*)\/javax\.faces\.resource.*yui\/yui[\.\-].*js\.jsf\?ln=(.*)?$/,
-    basePathPattern: /^.*\:\/+(.*)\/javax\.faces\.resource.*yui\/yui-min\.js(.*)\?ln=(.*)?$/,
+    basePathPattern: /^.*\/+(.*)\/javax\.faces\.resource.*yui\/yui-min\.js(.*)\?ln=(.*)?$/,
 	getBasePath: function() {
 		var nodes, i, src, match;
 		nodes = document.getElementsByTagName('script') || [];
