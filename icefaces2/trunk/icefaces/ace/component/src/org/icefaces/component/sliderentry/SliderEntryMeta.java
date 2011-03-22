@@ -151,8 +151,8 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Path to the thumb image.")
     private String thumbUrl; 
 
-    @Property (defaultValue="0", tlddoc="tabindex of the component")
-    private int tabindex;  
+    @Property (tlddoc="tabindex of the component")
+    private Integer tabindex;
     
     @Property(defaultValue="false", tlddoc="A flag indicating that conversion and validation of this component's value " +
             "should occur during Apply Request Values phase instead of Process Validations phase.")

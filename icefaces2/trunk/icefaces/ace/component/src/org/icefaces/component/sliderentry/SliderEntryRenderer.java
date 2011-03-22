@@ -187,15 +187,20 @@ public class SliderEntryRenderer extends Renderer{
             jsBuilder.entry("thumbUrl", thumbUrl);
         }
 
+        boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
+        Integer tabindex = slider.getTabindex();
+        if (ariaEnabled && tabindex == null) tabindex = 0;
+
         JSONBuilder jb = JSONBuilder.create().beginMap().
                 entry("singleSubmit", slider.isSingleSubmit()).
-                entry("aria", EnvUtils.isAriaEnabled(facesContext)).
+                entry("aria", ariaEnabled).
                 entry("hashCode", sb.toString().hashCode()).
-                entry("tabindex", slider.getTabindex()).
                 entry("stepPercent", slider.getStepPercent()).
                 entry("showLabels", slider.isShowLabels());
 
-
+        if (tabindex != null) {
+            jb.entry("tabindex", tabindex);
+        }
         if (thumbUrl != null && thumbUrl.trim().length() > 0) {
                 jb.entry("thumbUrl", thumbUrl);
         }
