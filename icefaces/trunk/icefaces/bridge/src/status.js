@@ -135,9 +135,10 @@
                 //block any other action from triggering the indicator before being in 'off' state again
                 this.on = Function.NOOP;
                 //prepare cursor shape rollback 
-                var cursorRollbacks = ['input', 'select', 'textarea', 'button', 'a'].inject([ element ], function(result, type) {
-                    return result.concat($enumerate(element.getElementsByTagName(type)).toArray());
-                }).collect(function(e) {
+                var cursorRollbacks = ['input', 'select', 'textarea', 'button', 'a'].inject([ element ],
+                        function(result, type) {
+                            return result.concat($enumerate(element.getElementsByTagName(type)).toArray());
+                        }).collect(function(e) {
                     var c = e.style.cursor;
                     e.style.cursor = 'wait';
                     return function() {
@@ -166,7 +167,7 @@
         on: function() {
             if (/MSIE/.test(navigator.userAgent)) {
                 this.overlay = document.createElement('iframe');
-                this.overlay.setAttribute('src', this.configuration.connection.context + "xmlhttp/wait-cursor");
+                this.overlay.setAttribute('src', 'javascript:document.write(\'<html><body style="cursor: wait;"></body><html>\');');
                 this.overlay.setAttribute('frameborder', '0');
                 document.body.appendChild(this.overlay);
             } else {
@@ -190,7 +191,7 @@
             if (this.overlay) {
                 if (/MSIE/.test(navigator.userAgent)) {
                     var overlay = document.createElement('iframe');
-                    overlay.setAttribute('src', this.configuration.connection.context + "xmlhttp/blank");
+                    overlay.setAttribute('src', 'javascript:document.write("<html></html>");');
                     overlay.setAttribute('frameborder', '0');
                     document.body.replaceChild(overlay, this.overlay);
                     document.body.removeChild(overlay);
@@ -302,7 +303,7 @@
 
         on: function() {
             var overlay = this.container.ownerDocument.createElement('iframe');
-            overlay.setAttribute('src', this.configuration.connection.context + "xmlhttp/blank");
+            overlay.setAttribute('src', 'javascript:document.write("<html></html>");');
             overlay.setAttribute('frameborder', '0');
             var overlayStyle = overlay.style;
             overlayStyle.position = 'absolute';
@@ -317,14 +318,14 @@
             this.container.appendChild(overlay);
 
             var resize = this.container.tagName.toLowerCase() == 'body' ?
-                         function() {
-                             overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-                             overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
-                         } :
-                         function() {
-                             overlayStyle.width = this.container.offsetWidth + 'px';
-                             overlayStyle.height = this.container.offsetHeight + 'px';
-                         };
+                    function() {
+                        overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
+                        overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+                    } :
+                    function() {
+                        overlayStyle.width = this.container.offsetWidth + 'px';
+                        overlayStyle.height = this.container.offsetHeight + 'px';
+                    };
             resize();
             window.onResize(resize);
         },

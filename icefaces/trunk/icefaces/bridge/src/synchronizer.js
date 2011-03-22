@@ -45,7 +45,6 @@
     This.Synchronizer = Object.subclass({
         initialize: function(logger, sessionID, viewID, optimizedJSListenerCleanup) {
             this.logger = logger.child('synchronizer');
-            this.ajax = new Ajax.Client(this.logger);
             this.optimizedJSListenerCleanup = optimizedJSListenerCleanup;
             var id = 'history-frame:' + sessionID + ':' + viewID;
             try {
@@ -56,10 +55,20 @@
                 //alternative way of looking up the frame
                 this.historyFrame = id.asElement().contentWindow;
             }
-            try {
-                if (this.historyFrame.location.hash.length > 0) this.reload();
-            } catch (e) {
-                this.logger.error("History frame reload failed: " + e);
+
+            //disable history tracking if the 'src' of the frame does not point to a real URL
+            if (this.historyFrame.location == 'about:blank') {
+                this.synchronize = Function.NOOP;
+                this.reload = Function.NOOP;
+                this.shutdown = Function.NOOP;
+                this.logger.info("Browser history tracking is disabled.");
+            } else {
+                this.ajax = new Ajax.Client(this.logger);
+                try {
+                    if (this.historyFrame.location.hash.length > 0) this.reload();
+                } catch (e) {
+                    this.logger.error("History frame reload failed: " + e);
+                }
             }
         },
 

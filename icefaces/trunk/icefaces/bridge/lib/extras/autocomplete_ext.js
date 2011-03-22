@@ -77,42 +77,42 @@ Autocompleter.Base.prototype = {
         this.options.frequency = this.options.frequency || 0.4;
         this.options.minChars = this.options.minChars || 1;
         this.options.onShow = this.options.onShow ||
-                              function(element, update) {
-                                  // Based on code from MSDN
-                                  var ieEngine = null;
-                                  if (window.navigator.appName == "Microsoft Internet Explorer") {
-                                      if (document.documentMode) {
-                                          ieEngine = document.documentMode;
-                                      } else if (document.compatMode && document.compatMode == "CSS1Compat") {
-                                          ieEngine = 7;
-                                      } else {
-                                          ieEngine = 5;
-                                      }
-                                  }
-                                  if (!update.style.position || update.style.position == 'absolute') {
-                                      update.style.position = 'absolute';
-                                      Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
-                                      update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
-                                          offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
-                                      if (ieEngine == 7 || ieEngine == 8) {
-                                          var savedPos = element.style.position;
-                                          element.style.position = "relative";
-                                          update.style.left = element.offsetLeft + "px";
-                                          if (ieEngine == 7) {
-                                              update.style.top = (element.offsetTop + element.offsetHeight) + "px";
-                                          } else if (ieEngine == 8) {
-                                              var scrollTop = element.cumulativeScrollOffset().top - document.documentElement.scrollTop;
-                                              update.style.top = (element.offsetTop - scrollTop + element.offsetHeight) + "px";
-                                          }
-                                          element.style.position = savedPos;
-                                      }
-                                  }
-                                  Effect.Appear(update, {duration:0.15});
-                              };
+                function(element, update) {
+                    // Based on code from MSDN
+                    var ieEngine = null;
+                    if (window.navigator.appName == "Microsoft Internet Explorer") {
+                        if (document.documentMode) {
+                            ieEngine = document.documentMode;
+                        } else if (document.compatMode && document.compatMode == "CSS1Compat") {
+                            ieEngine = 7;
+                        } else {
+                            ieEngine = 5;
+                        }
+                    }
+                    if (!update.style.position || update.style.position == 'absolute') {
+                        update.style.position = 'absolute';
+                        Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
+                        update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
+                            offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
+                        if (ieEngine == 7 || ieEngine == 8) {
+                            var savedPos = element.style.position;
+                            element.style.position = "relative";
+                            update.style.left = element.offsetLeft + "px";
+                            if (ieEngine == 7) {
+                                update.style.top = (element.offsetTop + element.offsetHeight) + "px";
+                            } else if (ieEngine == 8) {
+                                var scrollTop = element.cumulativeScrollOffset().top - document.documentElement.scrollTop;
+                                update.style.top = (element.offsetTop - scrollTop + element.offsetHeight) + "px";
+                            }
+                            element.style.position = savedPos;
+                        }
+                    }
+                    Effect.Appear(update, {duration:0.15});
+                };
         this.options.onHide = this.options.onHide ||
-                              function(element, update) {
-                                  new Effect.Fade(update, {duration:0.15})
-                              };
+                function(element, update) {
+                    new Effect.Fade(update, {duration:0.15})
+                };
 
         if (typeof(this.options.tokens) == 'string')
             this.options.tokens = new Array(this.options.tokens);
@@ -132,19 +132,17 @@ Autocompleter.Base.prototype = {
     show: function() {
         if (Element.getStyle(this.update, 'display') == 'none')this.options.onShow(this.element, this.update);
         if (!this.iefix &&
-            (navigator.appVersion.indexOf('MSIE') > 0) &&
-            (navigator.userAgent.indexOf('Opera') < 0) &&
-            (Element.getStyle(this.update, 'position') == 'absolute')) {
-            var sendURI = Ice.ElementModel.Element.adaptToElement(this.element).findConnection().sendURI;
-            var webappContext = sendURI.substring(0, sendURI.indexOf("block/send-receive-updates"));
+                (navigator.appVersion.indexOf('MSIE') > 0) &&
+                (navigator.userAgent.indexOf('Opera') < 0) &&
+                (Element.getStyle(this.update, 'position') == 'absolute')) {
             new Insertion.After(this.update,
                     '<iframe id="' + this.update.id + '_iefix" title="IE6_Fix" ' +
-                    'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
-                    'src="' + webappContext + 'xmlhttp/blank" frameborder="0" scrolling="no"></iframe>');
+                            'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
+                            'src="javascript:document.write(\'<html></html>\');" frameborder="0" scrolling="no"></iframe>');
             this.iefix = $(this.update.id + '_iefix');
         }
         if (this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
-        this.element.focus();        
+        this.element.focus();
     },
 
     fixIEOverlapping: function() {
@@ -187,8 +185,8 @@ Autocompleter.Base.prototype = {
             switch (event.keyCode) {
                 case Event.KEY_TAB:
                 case Event.KEY_RETURN:
-                //this.selectEntry();
-                //Event.stop(event);
+                    //this.selectEntry();
+                    //Event.stop(event);
 
                     this.hidden = true; // Hack to fix before beta. Was popup up the list after a selection was made
                     var idx = this.selectEntry();
@@ -207,16 +205,16 @@ Autocompleter.Base.prototype = {
                     return;
                 case Event.KEY_UP:
                     //ICE-4549 (the KEY_UP and KEY_DOWN would be handled by the onkeydown event for IE and WebKit)
-                    if (!(Prototype.Browser.IE || Prototype.Browser.WebKit)) {                      
+                    if (!(Prototype.Browser.IE || Prototype.Browser.WebKit)) {
                         this.markPrevious();
                         this.render();
                         //if(navigator.appVersion.indexOf('AppleWebKit')>0)
                         Event.stop(event);
                         return;
-	                }
+                    }
                 case Event.KEY_DOWN:
                     //ICE-4549 
-                    if (!(Prototype.Browser.IE || Prototype.Browser.WebKit)) {                 
+                    if (!(Prototype.Browser.IE || Prototype.Browser.WebKit)) {
                         this.markNext();
                         this.render();
                         //if(navigator.appVersion.indexOf('AppleWebKit')>0)
@@ -321,7 +319,7 @@ Autocompleter.Base.prototype = {
             // Right or bottom border, if any, will be treated as scrollbar.
             // No way to determine their width or scrollbar width accurately.
             if (event.clientX > docBody.clientLeft + docBody.clientWidth ||
-                event.clientY > docBody.clientTop + docBody.clientHeight) {
+                    event.clientY > docBody.clientTop + docBody.clientHeight) {
                 this.element.focus();
                 return;
             }
@@ -331,7 +329,7 @@ Autocompleter.Base.prototype = {
         this.hasFocus = false;
         this.active = false;
     },
-    
+
     // ICE-3830
     onPaste: function(event) {
         this.changed = true;
@@ -446,7 +444,7 @@ Autocompleter.Base.prototype = {
 
             if (this.update.firstChild && this.update.firstChild.childNodes) {
                 this.entryCount =
-                this.update.firstChild.childNodes.length;
+                        this.update.firstChild.childNodes.length;
                 for (var i = 0; i < this.entryCount; i++) {
                     var entry = this.getEntry(i);
                     entry.autocompleteIndex = i;
@@ -537,7 +535,7 @@ Object.extend(Object.extend(Ajax.Autocompleter.prototype, Autocompleter.Base.pro
                 encodeURIComponent(this.getToken());
 
         this.options.parameters = this.options.callback ?
-                                  this.options.callback(this.element, entry) : entry;
+                this.options.callback(this.element, entry) : entry;
 
         if (this.options.defaultParams)
             this.options.parameters += '&' + this.options.defaultParams;
@@ -633,7 +631,7 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
                 encodeURIComponent(this.getToken());
 
         this.options.parameters = this.options.callback ?
-                                  this.options.callback(this.element, entry) : entry;
+                this.options.callback(this.element, entry) : entry;
 
         if (this.options.defaultParams)
             this.options.parameters += '&' + this.options.defaultParams;
@@ -643,7 +641,7 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
             var indexName = this.element.id + "_idx";
             form[indexName].value = idx;
         }
-        
+
         //     form.focus_hidden_field.value=this.element.id;
         if (isEnterKey) {
             Ice.Autocompleter.logger.debug("Sending submit");
