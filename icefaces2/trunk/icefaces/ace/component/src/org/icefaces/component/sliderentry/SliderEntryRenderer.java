@@ -169,7 +169,7 @@ public class SliderEntryRenderer extends Renderer{
 
         StringBuilder sb = new StringBuilder();
         sb.append(styleClass).
-           append(style);
+           append(style).append(slider.isShowLabels());
 
         
         // pass jsProps through to YUI, pass jsfProps to custom javascript. 
