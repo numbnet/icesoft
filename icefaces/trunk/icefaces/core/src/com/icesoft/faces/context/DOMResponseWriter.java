@@ -41,12 +41,7 @@ import com.icesoft.faces.webapp.http.common.ConfigurationException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Attr;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 
 import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
@@ -62,15 +57,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListResourceBundle;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * <p><strong>DOMResponseWriter</strong> is a DOM specific implementation of
@@ -138,6 +125,7 @@ public class DOMResponseWriter extends ResponseWriter {
     private Node cursor = document;
     private Node savedJSFStateCursor;
     private boolean checkJavaScript;
+    private boolean disableBrowserHistoryTracking;
 
     public DOMResponseWriter(final FacesContext context, final DOMSerializer serializer, final Configuration configuration, final Collection jsCode, final Collection cssCode, final String blockingRequestHandlerContext) {
         this.serializer = serializer;
@@ -147,6 +135,8 @@ public class DOMResponseWriter extends ResponseWriter {
         this.blockingRequestHandlerContext = blockingRequestHandlerContext;
         this.checkJavaScript = configuration
                 .getAttributeAsBoolean("checkJavaScript", true);
+        this.disableBrowserHistoryTracking = configuration
+                .getAttributeAsBoolean("disableBrowserHistoryTracking", false);
         try {
             this.context = (BridgeFacesContext) context;
         } catch (ClassCastException e) {
@@ -447,18 +437,23 @@ public class DOMResponseWriter extends ResponseWriter {
         Object request = externalContext.getRequest();
 
         final String frameURI;
-        //another "workaround" to resolve the iframe URI
-        if (request instanceof HttpServletRequest) {
-            HttpServletRequest httpRequest = (HttpServletRequest) request;
-            if (httpRequest.getRequestURI() == null) {
-                frameURI = "about:blank";
-            } else {
-                frameURI = CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(),
-                        "/xmlhttp/blank");
-            }
+        if (disableBrowserHistoryTracking) {
+            frameURI = "about:blank";
         } else {
-            frameURI = CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(), "/xmlhttp/blank"); // ICE-2553
+            //another "workaround" to resolve the iframe URI
+            if (request instanceof HttpServletRequest) {
+                HttpServletRequest httpRequest = (HttpServletRequest) request;
+                if (httpRequest.getRequestURI() == null) {
+                    frameURI = "about:blank";
+                } else {
+                    frameURI = CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(),
+                            "/xmlhttp/blank");
+                }
+            } else {
+                frameURI = CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(), "/xmlhttp/blank"); // ICE-2553
+            }
         }
+
         iframe.setAttribute("title", "Icefaces Redirect");
         iframe.setAttribute("src", frameURI);
         iframe.setAttribute("frameborder", "0");
@@ -509,7 +504,7 @@ public class DOMResponseWriter extends ResponseWriter {
         //load libraries
         Collection libs = new ArrayList();
         if (configuration.getAttributeAsBoolean("openAjaxHub", false)) {
-        	libs.add("/xmlhttp" + StartupTime.getStartupInc() + "openajax.js"); 
+            libs.add("/xmlhttp" + StartupTime.getStartupInc() + "openajax.js");
         }
         libs.add("/xmlhttp" + StartupTime.getStartupInc() + "icefaces-d2d.js");
         //todo: refactor how external libraries are loaded into the bridge; always include extra libraries for now
