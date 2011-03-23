@@ -24,46 +24,14 @@ ice.component.tabset = {
        //logger.info('1. tabset initialize');
 	 
 	 ice.yui3.use(function(Y){ 
+     Y.use('yui2-tabview', function(Yui/*, result*/) {
+         /*
+         if (!result.success) {
+             alert("Load failure: " + result.msg);
+         }
+         */
 	 Y.on('domready', function(){
-		
-		/*
-		var thisYUI = YUI({combine: false, base: '/ace-test/javax.faces.resource/yui/3_1_1/',
-		
-			groups: {
-				yui2: {
-				    combine: false,
-					base: '/ace-test/javax.faces.resource/yui/2in3/',
-					patterns:  {
-						'yui2-': {
-							configFn: function(me) {
-								if(/-skin|reset|fonts|grids|base/.test(me.name)) {
-									me.type = 'css';
-									me.path = me.path.replace(/\.js/, '.css');
-									//me.path = me.path.replace(/\/yui2-skin/, '/assets/skins/sam/yui2-skin');
-								}
-								//me.path = me.path.replace(/yui2-/, '');
-								//me.path = me.path.replace(/\/yui2-/, '/');
-							}
-						}
-					}
-				}
-			}
-
-		
-		
-		}); // , base: '/ace-test/javax.faces.resource/yui/3_1_1/'
-		var old = thisYUI.Loader.prototype._url;
-		thisYUI.Loader.prototype._url = function(path, name, base) {
-		 return old.call(this, path, name, base) + '.jsf';
-		};
-		*/
-		
-		
-		
-		var thisYUI = ice.yui3.getNewInstance();
-         //'yui2-fonts', 'yui2-yahoo-dom-event', 'yui2-connection', 'yui2-element', 
-		thisYUI.use('yui2-tabview', function(Yui) {
-	     var YAHOO = Yui.YUI2;
+	     var YAHOO = Y.YUI2;//TODO Yui.YUI2 ?
 		 var Dom = YAHOO.util.Dom;
 
        var tabview = new YAHOO.widget.TabView(clientId);  
@@ -398,9 +366,9 @@ ice.component.tabset = {
 	   }
        bindYUI(tabview);
 
-	 }); // *** end of thisYUI
-	 }); // *** end of ondomready
-	 }); // *** end of function(Y)
+	 }); // *** end of domready
+	 }); // *** end of Y.use
+	 }); // *** end of ice.yui3.use
    },
    
    //this function is responsible to provide an element that keeps tab index

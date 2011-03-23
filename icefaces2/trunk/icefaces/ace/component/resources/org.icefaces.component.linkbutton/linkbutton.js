@@ -28,10 +28,9 @@ ice.component.linkButton = {
 
 	  //YAHOO.util.Event.onDOMReady(function() {
 	 ice.yui3.use(function(Y){ 
+     Y.use('yui2-button', function(Yui) {
 	 Y.on('domready', function(){
-		var thisYUI = ice.yui3.getNewInstance();
-		thisYUI.use('yui2-button', function(Yui) {
-		var YAHOO = Yui.YUI2;
+		var YAHOO = Y.YUI2;
 
         var spanId = clientId + "_span";
 	    var oLinkButton = new YAHOO.widget.Button(spanId,{ label: jsProps.label, tabindex: null }, {type: jsProps.type});
@@ -52,10 +51,9 @@ ice.component.linkButton = {
         } 
 
 		bindYUI(oLinkButton);
-	 }); // *** end of thisYUI
-	 }); // *** end of ondomready
-	 }); // *** end of function(Y)
-      //});
+	 }); // *** end of domready
+	 }); // *** end of Y.use
+	 }); // *** end of ice.yui3.use
 	},
 	
     //delegate call to ice.yui.updateProperties(..)  with the reference of this lib

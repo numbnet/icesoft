@@ -31,25 +31,13 @@ ice.component.slider = {
         var hiddenFieldId = clientId+"_hidden";
 
         //set a callback to create slider component 
-        ice.yui3.use(function(Y){ 
-        	Y.on('domready', function(){
-			   
-			   /*
-			   var thisYUI = YUI({combine: false, base: '/ace-test/javax.faces.resource/yui/3_1_1/'}); // base: '/ace-test/javax.faces.resource/yui/3_1_1/'
-			   var old = thisYUI.Loader.prototype._url;
-			   thisYUI.Loader.prototype._url = function(path, name, base) {
-			     return old.call(this, path, name, base) + '.jsf';
-			   };
-			   */
-			   var thisYUI = ice.yui3.getNewInstance();
-		       thisYUI.use('slider', 'yui2-dom', function(Yui) {
-			   
-				var Dom = Yui.YUI2.util.Dom;
-		   
-				var hiddenField = Dom.get(clientId+"_hidden");
+        ice.yui3.use(function(Y){
+            Y.use('slider', function(Yui) {
+        	    Y.on('domready', function(){
+				    var hiddenField = document.getElementById(clientId+"_hidden");
 				
 					try {
-			            var obj = new Yui.Slider({
+			            var obj = new Y.Slider({
 							//following two properties has to be set when initializing componnent
 							axis: yuiProps.axis,
 							thumbUrl: jsfProps.thumbUrl
@@ -164,7 +152,7 @@ ice.component.slider = {
 		                    // Strategy is now to use hidden field rather than
 		                    // request map value
 
-                            var hiddenField = Dom.get(hiddenFieldId);
+                            var hiddenField = document.getElementById(hiddenFieldId);
 		                    hiddenField.value=sliderValue;
                             var shouldSubmit = (eventName == 'railMouseDown');
                             eventName = "";
@@ -201,7 +189,7 @@ ice.component.slider = {
 							var keydownTimeoutHandler = null;
 		                    //listen for keydown event, to provide short-cut key support.
 		                    //react on left, right, up, down, home and end key 
-		                    Yui.on("keydown", function(event) {
+		                    Y.on("keydown", function(event) {
 		                        //get the current value of the slider
                                 var context = ice.component.getJSContext(clientId);
                                 var kbObj = context.getComponent();
@@ -265,14 +253,14 @@ ice.component.slider = {
 		                    }, root);
 		                } 
 
-						Yui.on("click", function(event) {
+						Y.on("click", function(event) {
 							root.firstChild.focus();
 						}, root);
 						//bind the initilized js component, so it can be reused for later calls
 		                bindYUI(obj);
-		          });
- 			   });
-            });
+		        });
+ 			});
+        });
    },
    
    //delegate call to ice.yui3.updateProperties(..)  with the reference of this lib
