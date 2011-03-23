@@ -496,9 +496,11 @@ p#clear {
 }
 */
 
+/*
 .ice-skin-sam .ice-calcontainer .yui-button button {
     margin: 0.25em 0 0 0.25em;
 }
+*/
 
 .ice-skin-sam .ice-calcontainer .yui-button button {
     font-size: 11px;
@@ -631,4 +633,12 @@ p#clear {
 
 .ice-skin-sam .ice-calcontainer .yui-button .first-child {
     border-style: none;
+}
+
+.ice-skin-sam .ice-calcontainer .yui-dialog .ft .yui-button {
+    margin: auto 0.25em;
+}
+
+.ice-skin-sam .ice-calcontainer .yui-dialog .ft .yui-button button {
+    padding: 0 10px;
 }
