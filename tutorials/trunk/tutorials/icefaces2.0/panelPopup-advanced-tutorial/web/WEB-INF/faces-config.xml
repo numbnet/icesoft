@@ -3,26 +3,5 @@
     <locale-config>
       <default-locale>en_US</default-locale>
     </locale-config>
-  </application>
-  
-  <managed-bean>
-    <managed-bean-name>autoCompleteDictionary</managed-bean-name>
-    <managed-bean-class>
-            com.icesoft.icefaces.tutorial.component.autocomplete.AutoCompleteDictionary
-        </managed-bean-class>
-    <managed-bean-scope>application</managed-bean-scope>
-  </managed-bean>
-  <managed-bean>
-    <managed-bean-name>autoCompleteBean</managed-bean-name>
-    <managed-bean-class>
-            com.icesoft.icefaces.tutorial.component.autocomplete.AutoCompleteBean
-        </managed-bean-class>
-    <managed-bean-scope>request</managed-bean-scope>
-    <managed-property>
-      <property-name>dictionary</property-name>
-      <value>#{autoCompleteDictionary.dictionary}</value>
-    </managed-property>
-  </managed-bean>
-    
-  
+  </application>  
 </faces-config>
