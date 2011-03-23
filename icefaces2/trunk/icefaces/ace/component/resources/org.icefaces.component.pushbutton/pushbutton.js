@@ -26,10 +26,9 @@ ice.component.pushbutton = {
 //      }
 
 	 ice.yui3.use(function(Y){ 
+     Y.use('yui2-button', function(Yui) {
 	 Y.on('domready', function(){
-		var thisYUI = ice.yui3.getNewInstance();
-		thisYUI.use('yui2-button', function(Yui) {
-	    var YAHOO = Yui.YUI2;
+	    var YAHOO = Y.YUI2;
 	 
       //YAHOO.util.Event.onDOMReady(function() {
         //want the span id
@@ -111,10 +110,9 @@ ice.component.pushbutton = {
 
 
         bindYUI(button);
-	 }); // *** end of thisYUI
-	 }); // *** end of ondomready
-	 }); // *** end of function(Y)
-      //});
+	 }); // *** end of domready
+	 }); // *** end of Y.use
+	 }); // *** end of ice.yui3.use
     },
 	
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib

@@ -22,10 +22,9 @@
 ice.component.checkboxbutton = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
 	 ice.yui3.use(function(Y){ 
+     Y.use('yui2-button', function(Yui) {
 	 Y.on('domready', function(){
-		var thisYUI = ice.yui3.getNewInstance();
-		thisYUI.use('yui2-button', function(Yui) {
-		var YAHOO = Yui.YUI2;
+		var YAHOO = Y.YUI2;
 	
 	  var Dom = YAHOO.util.Dom;
       var divNode = document.getElementById(clientId);
@@ -118,10 +117,9 @@ ice.component.checkboxbutton = {
 	            }, divNode);
 	    }
 		bindYUI(button);
-	 }); // *** end of thisYUI
 	 }); // *** end of ondomready
-	 }); // *** end of function(Y)
-      //});
+	 }); // *** end of Y.use
+	 }); // *** end of ice.yui3.use
 	},
 	
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
