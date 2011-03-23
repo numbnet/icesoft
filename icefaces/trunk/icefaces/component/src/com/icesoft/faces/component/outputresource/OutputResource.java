@@ -82,8 +82,9 @@ public class OutputResource extends UIComponentBase {
 	public static final String TYPE_IMAGE = "image";
 	public static final String TYPE_BUTTON = "button";
 	private transient Map  resources;
+    private Boolean disabled = null;
 
-	/*
+    /*
 	 * (non-Javadoc)
 	 * 
 	 * @see javax.faces.component.UIComponent#getFamily()
@@ -327,7 +328,7 @@ public class OutputResource extends UIComponentBase {
 	 * </p>
 	 */
 	public Object saveState(FacesContext context) {
-		Object values[] = new Object[15];
+		Object values[] = new Object[16];
 		values[0] = super.saveState(context);
 		values[1] = resource;
 		values[2] = mimeType;
@@ -343,7 +344,8 @@ public class OutputResource extends UIComponentBase {
 		values[12] = shared;
 		values[13] = target;
 		values[14] = UIDataChild;
-		return ((Object) (values));
+        values[15] = disabled;
+        return ((Object) (values));
 	}
 
 	/**
@@ -368,7 +370,8 @@ public class OutputResource extends UIComponentBase {
 		attachment = (Boolean) values[11];
 		shared = (Boolean)values[12];
         target = (String) values[13];
-        UIDataChild = (Boolean) values[14];        
+        UIDataChild = (Boolean) values[14];
+        disabled = (Boolean) values[15];
     }
 
 	public boolean getAttachment() {
@@ -425,7 +428,29 @@ public class OutputResource extends UIComponentBase {
             }
         }
         return UIDataChild.booleanValue();
-    }    
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = new Boolean(disabled);
+        ValueBinding vb = getValueBinding("disabled");
+        if (vb != null) {
+            vb.setValue(getFacesContext(), this.disabled);
+            this.disabled = null;
+        }
+    }
+
+    public boolean isDisabled() {
+        if (!Util.isEnabledOnUserRole(this)) {
+            return true;
+        }
+        if (disabled != null) {
+            return disabled.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("disabled");
+        Boolean v =
+                vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : false;
+    }
 }
 
 class RegisteredResource implements Resource {
