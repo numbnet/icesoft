@@ -25,8 +25,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletRequest;
 import java.util.Iterator;
 import java.util.Map;
 
