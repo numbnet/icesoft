@@ -35,11 +35,23 @@
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.jsf</url-pattern>
+        <url-pattern>*.iface</url-pattern>
+        <url-pattern>/icefaces/*</url-pattern>
     </servlet-mapping>
 
-    <servlet><servlet-name>Resource Servlet</servlet-name><servlet-class>com.icesoft.faces.webapp.CompatResourceServlet</servlet-class><load-on-startup>1</load-on-startup></servlet><servlet-mapping><servlet-name>Resource Servlet</servlet-name><url-pattern>/xmlhttp/*</url-pattern></servlet-mapping><session-config>
-      <session-timeout>1</session-timeout>
-    </session-config>
+    <servlet>
+      <servlet-name>Resource Servlet</servlet-name>
+      <servlet-class>com.icesoft.faces.webapp.CompatResourceServlet</servlet-class>
+      <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Resource Servlet</servlet-name>
+        <url-pattern>/xmlhttp/*</url-pattern>
+        <url-pattern>/resources/*</url-pattern>
+     </servlet-mapping>
+     <session-config>
+       <session-timeout>1</session-timeout>
+     </session-config>
     
     <!-- Welcome files -->
     <welcome-file-list>
