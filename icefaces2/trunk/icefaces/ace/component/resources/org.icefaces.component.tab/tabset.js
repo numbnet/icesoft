@@ -139,9 +139,12 @@ ice.component.tabset = {
                                 if (data.status == 'success') {
                                         var lastKnownSelectedIndex = ice.component.getJSContext(clientId).getJSFProps().selectedIndex;   
 	                                    if (lastKnownSelectedIndex != currentIndex) {
-	                                            tabview.removeListener('activeTabChange'); 
-	                                        //    tabview.set('activeIndex', lastKnownSelectedIndex);
-	                                  	    	tabview.selectTab(currentIndex);
+	                                            tabview.removeListener('activeTabChange');
+	                                            if (!jsfProps.isClientSide){
+	                                                tabview.set('activeIndex', lastKnownSelectedIndex);
+	                                            }else {
+		                                  	    	tabview.selectTab(currentIndex);
+	                                            }
 	                                            tabview.addListener('activeTabChange', tabChange); 
 	                                            currentIndex = lastKnownSelectedIndex; 
 	                                    }
