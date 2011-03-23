@@ -23,6 +23,7 @@
 &ice-att-userrole-rendered-props;
 &core-props;
 &base-props;
+&pass-thru-disabled-props;
 <property>
 	<description>
 		The label to be displayed for the resource. The label will be used for the text of the link or button. 

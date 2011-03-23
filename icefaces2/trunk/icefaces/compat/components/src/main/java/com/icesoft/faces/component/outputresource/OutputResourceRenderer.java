@@ -43,7 +43,8 @@ public class OutputResourceRenderer extends DomBasicInputRenderer {
 
 		String clientId = uiComponent.getClientId(facesContext);
 		OutputResource outputResource = (OutputResource) uiComponent;
-		if( outputResource.getResource() != null ){
+        boolean disabled = outputResource.isDisabled();
+        if( outputResource.getResource() != null ){
 			DOMContext domContext = DOMContext.attachDOMContext(facesContext,
 					uiComponent);
 			if (!domContext.isInitialized()) {
@@ -61,17 +62,24 @@ public class OutputResourceRenderer extends DomBasicInputRenderer {
 			Element resource = null;
 		        		
 			if( OutputResource.TYPE_BUTTON.equals(outputResource.getType())){
-				resource = domContext.createElement(HTML.INPUT_ELEM);
-				resource.setAttribute(HTML.TYPE_ATTR, "button");
+                resource = domContext.createElement(HTML.INPUT_ELEM);
+                if (disabled) {
+                    resource.setAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR);
+                }
+                resource.setAttribute(HTML.TYPE_ATTR, "button");
 				resource.setAttribute(HTML.VALUE_ATTR, outputResource.getLabel());
 				resource.setAttribute(HTML.ONCLICK_ATTR, "window.open('" + outputResource.getPath() + "');");
 			}
 			else{
-				resource = domContext.createElement(HTML.ANCHOR_ELEM);
-				resource.setAttribute(HTML.HREF_ATTR, outputResource.getPath());
-                PassThruAttributeRenderer.renderNonBooleanHtmlAttributes(uiComponent, resource, new String[]{"target"});
+                if (disabled) {
+                    resource = domContext.createElement(HTML.SPAN_ELEM);
+                } else {
+                    resource = domContext.createElement(HTML.ANCHOR_ELEM);
+                    resource.setAttribute(HTML.HREF_ATTR, outputResource.getPath());
+                    PassThruAttributeRenderer.renderNonBooleanHtmlAttributes(uiComponent, resource, new String[]{"target"});
+                }
 
-				if( outputResource.getImage() != null ){
+                if( outputResource.getImage() != null ){
 					Element img = domContext.createElement(HTML.IMG_ELEM);
 					String image = outputResource.getImage();
 					if (image != null) {
