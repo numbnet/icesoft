@@ -55,7 +55,8 @@ public class FileEntryRenderer extends Renderer {
         Utils.writeConcatenatedStyleClasses(writer, "ice-file-entry",
             fileEntry.getStyleClass());
 		writer.writeAttribute("style", fileEntry.getStyle(), "style");
-        
+
+        writer.startElement("div", uiComponent);
         writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "file", "type");
         writer.writeAttribute("id", config.getIdentifier(), "clientId");
@@ -71,6 +72,7 @@ public class FileEntryRenderer extends Renderer {
             writer.writeAttribute("tabindex", tabindex, "tabindex");
         }
         writer.endElement("input");
+        writer.endElement("div");
 
         writer.startElement("div", uiComponent);
         writer.writeAttribute("class", "inactive", null);

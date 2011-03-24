@@ -282,8 +282,8 @@ var ice_fileEntry = {
 
     clearFileSelection : function(clientId) {
         var root = document.getElementById(clientId);
-        if (root) {
-            root.innerHTML = root.innerHTML;
+        if (root && root.firstChild) {
+            root.firstChild.innerHTML = root.firstChild.innerHTML;
         }
     }
 };
