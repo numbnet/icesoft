@@ -438,7 +438,7 @@ public class DOMResponseWriter extends ResponseWriter {
 
         final String frameURI;
         if (disableBrowserHistoryTracking) {
-            frameURI = "about:blank";
+            frameURI = "javascript:document.write('<html></html>');";
         } else {
             //another "workaround" to resolve the iframe URI
             if (request instanceof HttpServletRequest) {

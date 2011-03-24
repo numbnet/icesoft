@@ -57,7 +57,8 @@
             }
 
             //disable history tracking if the 'src' of the frame does not point to a real URL
-            if (this.historyFrame.location == 'about:blank') {
+            var protocol = this.historyFrame.location.protocol;
+            if (protocol.startsWith('about') || protocol.startsWith('javascript')) {
                 this.synchronize = Function.NOOP;
                 this.reload = Function.NOOP;
                 this.shutdown = Function.NOOP;
