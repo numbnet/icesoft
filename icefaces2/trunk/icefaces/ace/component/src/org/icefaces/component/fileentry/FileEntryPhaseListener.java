@@ -183,7 +183,7 @@ public class FileEntryPhaseListener implements PhaseListener {
                 values = parameterList.toArray(values);
                 parameterMap.put(key, values);
             }
-              
+//System.out.println("FileEntryPhaseListener.beforePhase()  Our ajaxResponse: " + ajaxResponse);
 
 //            System.out.println("FileEntryPhaseListener.beforePhase()  parameterMap    : " + parameterMap);
             Object wrapper = null;
@@ -308,8 +308,7 @@ public class FileEntryPhaseListener implements PhaseListener {
             //  want the client end file name, not the path
             String fileName = null;
             if (name != null && name.length() > 0) {
-                File tempFileName = new File(name);
-                fileName = tempFileName.getName();
+                fileName = trimInternetExplorerPath(name);
             }
 //System.out.println("File    IE adjusted fileName: " + fileName);
             
@@ -566,6 +565,25 @@ public class FileEntryPhaseListener implements PhaseListener {
 //System.out.println("File    sanitise  file: " + file);
         }
         return file;
+    }
+
+    protected static String trimInternetExplorerPath(String path) {
+        String[] seps = new String[] {File.separator, "/", "\\"};
+        for (String sep : seps) {
+            String ret = afterLast(path, sep);
+            if (!path.equals(ret)) {
+                return ret;
+            }
+        }
+        return path;
+    }
+
+    protected static String afterLast(String str, String seek) {
+        int index = str.lastIndexOf(seek);
+        if (index >= 0) {
+            return str.substring(index + seek.length());
+        }
+        return str;
     }
 
     public PhaseId getPhaseId() {
