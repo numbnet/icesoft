@@ -416,12 +416,22 @@ aria: function() {
     {fn:kl1Handler, correctScope:thiz});
     kl1.enable();
 },
-init: function(params) {
-
+initialize: function(clientId, jsProps, jsfProps, bindYUI) {
+	var thiz = this;
+	 ice.yui3.use(function(Y){ 
+	 Y.on('domready', function(){
 		var thisYUI = ice.component.calendar.getUtilYUI();
-		var thiz = this;
 			var YAHOO = thisYUI.YUI2;
-			
+	var lang = YAHOO.lang;
+    thiz[clientId] = thiz[clientId] || {};
+    var params = lang.merge({clientId:clientId}, jsProps, jsfProps);
+//    console.log("params =", lang.dump(params));
+
+
+
+
+
+
 	if (!ice.component.calendar.isReady) {
 		ice.component.calendar.setupLib();
 		ice.component.calendar.isReady = true;
@@ -635,18 +645,14 @@ init: function(params) {
     };
 
     Event.onDOMReady(domReady);
-},
-initialize: function(clientId, jsProps, jsfProps, bindYUI) {
-	var thiz = this;
-	 ice.yui3.use(function(Y){ 
-	 Y.on('domready', function(){
-		var thisYUI = ice.component.calendar.getUtilYUI();
-			var YAHOO = thisYUI.YUI2;
-	var lang = YAHOO.lang;
-    thiz[clientId] = thiz[clientId] || {};
-    var params = lang.merge({clientId:clientId}, jsProps, jsfProps);
-//    console.log("params =", lang.dump(params));
-    thiz.init(params);
+
+
+
+
+
+
+
+	
 	bindYUI(thiz[clientId].yuiComponent);
 	});
 	});
