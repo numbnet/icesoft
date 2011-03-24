@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+     <groupId>org.icefaces.samples</groupId>
+     <artifactId>samples-parent</artifactId>
+     <version>2.0.1</version>
+  </parent>
+  <artifactId>ace</artifactId>
+  <packaging>pom</packaging>
+  <name>ICEfaces ACE sample Parent</name>
+  <description />
+  <modules>
+        <module>showcase</module>
+        <module>showcase-portlet</module>
+  </modules>
+  <dependencies>
+   <!--  transitory nature of maven has icefaces poms defining all dependencies -->
+      <dependency>
+    	<groupId>org.icefaces</groupId>
+    	<artifactId>icefaces-ace</artifactId>
+    	<version>${ice.version}</version>
+    	<scope>compile</scope>
+       </dependency>
+      <dependency>
+      	<groupId>javax.annotation</groupId>
+      	<artifactId>jsr250-api</artifactId>
+      	<version>1.0</version>
+      	<scope>provided</scope>
+        </dependency>
+     <dependency>
+      	<groupId>javax.servlet</groupId>
+      	<artifactId>servlet-api</artifactId>
+      	<version>2.5</version>
+      	<scope>provided</scope>
+      </dependency>
+        <dependency>
+           <groupId>org.glassfish.web</groupId>
+           <artifactId>el-impl</artifactId>
+           <version>2.2.1-b04</version>
+           <scope>provided</scope>
+        </dependency>
+  </dependencies> 
+</project>
