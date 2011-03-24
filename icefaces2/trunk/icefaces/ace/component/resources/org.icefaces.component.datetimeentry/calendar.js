@@ -673,7 +673,10 @@ updateProperties: function(clientId, jsProps, jsfProps, events) {
         for (var prop in currProps) {
             if (!lang.hasOwnProperty(currProps, prop)) continue;
             if (currProps[prop] == prevProps[prop]) continue;
-            context.getComponent().destroy();
+            var component = context.getComponent();
+            if (component) {
+                component.destroy();
+            }
             document.getElementById(clientId)['JSContext'] = null;
             JSContext[clientId] = null;
             break;
