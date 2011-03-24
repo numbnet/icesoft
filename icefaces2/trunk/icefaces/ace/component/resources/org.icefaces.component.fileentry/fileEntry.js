@@ -40,11 +40,15 @@ var ice_fileEntry = {
 			var d = i.contentWindow.document.XMLDocument ?
                 i.contentWindow.document.XMLDocument :
                 i.contentWindow.document;
+            var responseText;
             if (d.xml) {
-                var responseText = d.xml;
+                responseText = d.xml;
                 //i.contentWindow.document.body?ii.contentWindow.document.body.innerHTML:null;
-                ice_fileEntry.response(d, responseText, context);
+            } else {
+                var serializer = new XMLSerializer();
+                responseText = serializer.serializeToString(d);
             }
+            ice_fileEntry.response(d, responseText, context);
         }
         
         //alert("iframeLoaded()  end");
