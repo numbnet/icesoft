@@ -165,7 +165,7 @@
                                                 title="#{msgs['auction.bid.showBid']}"/>
                             </h:commandLink>
                             <!-- panel group to wrap the visibility of the bid control buttons.  -->
-                            <ui:fragment
+                            <h:panelGroup
                                     rendered="#{auctionItem.showBidInput}">
                                 <!-- input for making a bid, id must match h:messsages for attribute -->
                                 <h:inputText id="bid" size="7"
@@ -193,7 +193,7 @@
                                 </h:commandLink>
                                 <br/>
                                 <h:message for="bid"/>
-                            </ui:fragment>
+                            </h:panelGroup>
                         </td>
                     </tr>
                     <!-- if expanded show detailed view fragement for an auction item. -->
