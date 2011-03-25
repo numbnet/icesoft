@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+       <groupId>org.icefaces.samples</groupId>
+       <artifactId>core</artifactId>
+       <version>2.0.1</version>
+    </parent>
+    <artifactId>chat-portlet</artifactId>
+    <packaging>war</packaging>
+    <name>ICEfaces 2 Chat Portlet sample</name>
+    <properties>
+        <parent.root>../chat</parent.root>
+        <pluto.version>2.0.2</pluto.version>
+    </properties>
+    <build>
+        <finalName>${artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${parent.root}/src/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>${parent.root}/src/main/webapp</directory>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>${parent.root}/src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
+    <dependencies>
+          <dependency>
+            <groupId>org.icepush</groupId>
+            <artifactId>icepush</artifactId>
+            <version>${ice.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.portlet</groupId>
+            <artifactId>portlet-api</artifactId>
+            <version>2.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+           <groupId>org.portletfaces</groupId>
+           <artifactId>portletfaces-bridge</artifactId>
+           <version>2.0.0-BETA3a</version>
+        </dependency>
+        <dependency>
+           <groupId>org.slf4j</groupId>
+           <artifactId>slf4j-api</artifactId>
+           <version>1.6.1</version>
+        </dependency>
+        <dependency>
+           <groupId>org.slf4j</groupId>
+           <artifactId>slf4j-jdk14</artifactId>
+           <version>1.6.1</version>
+        </dependency>   
+    </dependencies>
+   <profiles>
+        <profile>
+            <id>liferay6.servlet-profile</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.sun.faces</groupId>
+                    <artifactId>jsf-impl</artifactId>
+                    <version>${jsf.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.sun.faces</groupId>
+                    <artifactId>jsf-api</artifactId>
+                    <version>${jsf.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+       <profile>
+           <id>liferay6.web-profile</id>
+           <activation>
+               <activeByDefault>false</activeByDefault>
+           </activation>
+           <dependencies>
+               <dependency>
+                   <groupId>com.sun.faces</groupId>
+                   <artifactId>jsf-impl</artifactId>
+                   <version>${jsf.version}</version>
+                   <scope>provided</scope>
+               </dependency>
+               <dependency>
+                   <groupId>com.sun.faces</groupId>
+                   <artifactId>jsf-api</artifactId>
+                   <version>${jsf.version}</version>
+                   <scope>provided</scope>
+               </dependency>
+           </dependencies>
+       </profile>
+       <profile>
+           <id>pluto.servlet-profile</id>
+           <activation>
+               <activeByDefault>false</activeByDefault>
+           </activation>
+           <build>
+               <plugins>
+                   <plugin>
+                       <artifactId>maven-war-plugin</artifactId>
+                       <configuration>
+                           <webXml>${project.build.directory}/pluto-resources/web.xml</webXml>
+                           <webResources>
+                               <resource>
+                                   <directory>${parent.root}/src/main/webapp</directory>
+                               </resource>
+                           </webResources>
+                       </configuration>
+                   </plugin>
+                   <plugin>
+                       <groupId>org.apache.portals.pluto</groupId>
+                       <artifactId>maven-pluto-plugin</artifactId>
+                       <version>${pluto.version}</version>
+                       <configuration>
+                           <webXml>${parent.root}/src/main/webapp/WEB-INF/web.xml</webXml>
+                       </configuration>
+                       <executions>
+                           <execution>
+                               <phase>generate-resources</phase>
+                               <goals>
+                                   <goal>assemble</goal>
+                               </goals>
+                           </execution>
+                       </executions>
+                   </plugin>
+               </plugins>
+           </build>
+           <dependencies>
+               <dependency>
+                   <groupId>com.sun.faces</groupId>
+                   <artifactId>jsf-impl</artifactId>
+                   <version>${jsf.version}</version>
+               </dependency>
+               <dependency>
+                   <groupId>com.sun.faces</groupId>
+                   <artifactId>jsf-api</artifactId>
+                   <version>${jsf.version}</version>
+               </dependency>
+               <dependency>
+                 <groupId>org.apache.portals.pluto</groupId>
+                 <artifactId>pluto-util</artifactId>
+                 <version>${pluto.version}</version>
+                 <scope>provided</scope>
+               </dependency>
+           </dependencies>
+       </profile>
+    </profiles>
+</project>
