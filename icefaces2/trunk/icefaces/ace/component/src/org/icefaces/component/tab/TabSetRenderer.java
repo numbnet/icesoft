@@ -138,12 +138,10 @@ public class TabSetRenderer extends Renderer{
         ResponseWriter writer = facesContext.getResponseWriter();
         final TabSet tabSet = (TabSet) uiComponent;        
         String clientId = uiComponent.getClientId(facesContext);
-        String styleClass = "yui-naveset";
+        String styleClass = "yui-navset yui-navset-top ";
         
         String orientation = tabSet.getOrientation();
-        if ("top".equalsIgnoreCase(orientation)) {
-            styleClass= "yui-navset yui-navset-top ";
-        } else if ("left".equalsIgnoreCase(orientation)) {
+        if ("left".equalsIgnoreCase(orientation)) {
             styleClass= "yui-navset yui-navset-left ";
         } else if ("right".equalsIgnoreCase(orientation)) {
             styleClass= "yui-navset yui-navset-right ";
@@ -186,7 +184,7 @@ public class TabSetRenderer extends Renderer{
             ScriptWriter.insertScript(facesContext, uiComponent, call.toString());
         } else {
         	//initialize server side tab lazily
-            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, call.toString(), HTML.ONMOUSEOVER_ATTR); 
+            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, call.toString(), HTML.ONMOUSEOVER_ATTR);
         }
         
         //encode animation if any 
