@@ -261,9 +261,9 @@ Ice.modal = {
     stop:function(target) {
         var isRunning = Ice.modal.getRunning() == target;
         //de-register modal popup
-        Ice.modal.stopRunning(target);
-        Ice.modal.zIndexCount -= 3;
         if (isRunning) {
+            Ice.modal.stopRunning(target);
+            Ice.modal.zIndexCount -= 3;
             var iframe = document.getElementById('iceModalFrame' + target);
             if (iframe) {
                 iframe.parentNode.removeChild(iframe.nextSibling);
