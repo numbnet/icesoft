@@ -128,7 +128,7 @@
  
 .ice-skin-sam .yui3-slider-y .yui3-slider-rail .yui3-slider-thumb {
 	background-position: 0 0;
-	background-image: url(thumb-y.png); /** sprite-ref: sprite; */
+	background-image: url(thumb-y.png); /** sprite-ref: sprite; sprite-margin-left: 4px */
 	background-repeat: no-repeat;
     height: 14px;
     width: 30px;
