@@ -138,9 +138,11 @@ public class TabSetRenderer extends Renderer{
         ResponseWriter writer = facesContext.getResponseWriter();
         final TabSet tabSet = (TabSet) uiComponent;        
         String clientId = uiComponent.getClientId(facesContext);
+        // ICE-6703: default style classes should be for the top orientation of tabs. (Plus space at the end.)
         String styleClass = "yui-navset yui-navset-top ";
         
         String orientation = tabSet.getOrientation();
+        // ICE-6703: top, invalid or unspecified orientation should all use default style classes defined above.
         if ("left".equalsIgnoreCase(orientation)) {
             styleClass= "yui-navset yui-navset-left ";
         } else if ("right".equalsIgnoreCase(orientation)) {
