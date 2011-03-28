@@ -322,7 +322,11 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             renderPaginator(facesContext, uiComponent, paginatorTable,
                             domContext);
         }
-        
+
+        if (scroller.isVertical()) {
+            tr = null;
+        }
+
         handleFacet(facesContext, scroller, domContext, table, tr,
                     scrollButtonCellClass, scroller.getNext(),
                     DataPaginator.FACET_NEXT);
