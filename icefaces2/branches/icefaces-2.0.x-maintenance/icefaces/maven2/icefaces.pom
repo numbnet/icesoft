@@ -33,7 +33,7 @@
   <description>ICEfaces core framework library.</description> 
    
   <properties>
-    <jsf.version>2.1.1-20110322</jsf.version>
+    <jsf.version>2.1.1-b03</jsf.version>
   </properties>
    <repositories>
         <repository>
@@ -41,8 +41,8 @@
           <url>http://download.java.net/maven/2</url>
         </repository>
         <repository>
-          <id>snapshots</id>
-          <url>http://anonsvn.icefaces.org/repo/maven2/snapshots</url>
+          <id>releases</id>
+          <url>http://anonsvn.icefaces.org/repo/maven2/releases</url>
         </repository>
     </repositories>
   <dependencies>
