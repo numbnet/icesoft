@@ -38,7 +38,7 @@
 
     <target name="clean" depends="clean.parent.resources">
         <delete dir="${build.dir}"/>
-        <delete file="${samples.dist.dir}/${ant.project.name}.war"/>
+        <!-- delete file="${samples.dist.dir}/${ant.project.name}.war"/ -->
     </target>
 
     <target name="clean.parent.resources">
