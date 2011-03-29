@@ -69,8 +69,8 @@
     </build>
    <repositories>
      <repository>
-        <id>snapshots</id>
-        <url>http://anonsvn.icefaces.org/repo/maven2/snapshots</url>
+        <id>releases</id>
+        <url>http://anonsvn.icefaces.org/repo/maven2/releases</url>
      </repository>
        <repository>
           <id>java.net</id>
