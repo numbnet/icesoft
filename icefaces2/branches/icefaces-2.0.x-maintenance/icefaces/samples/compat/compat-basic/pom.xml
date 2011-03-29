@@ -36,38 +36,6 @@
 
   <build>
     <finalName>${artifactId}</finalName>
-    <sourceDirectory>${basedir}/src</sourceDirectory>
-    <outputDirectory>${basedir}/web/WEB-INF/classes</outputDirectory>
-    <resources>
-      <resource>
-        <directory>${basedir}/src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-          <exclude>**/.svn/*</exclude>
-        </excludes>
-      </resource>
-    </resources>
-    
-    <plugins>
-      <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <webResources>
-              <resource>
-                 <directory>${basedir}/web</directory>
-                 <excludes>
-                    <exclude>**/.svn/</exclude>
-                    <exclude>**/.svn/*</exclude>
-                    <exclude>**/.svn</exclude>
-                    <exclude>.svn/*</exclude>
-                 </excludes>
-              </resource>
-          </webResources>
-          <packagingExcludes>**/.svn/*</packagingExcludes> 
-        </configuration>
-      </plugin>
-  
-    </plugins>
   </build>
   <dependencies>
      <dependency>
