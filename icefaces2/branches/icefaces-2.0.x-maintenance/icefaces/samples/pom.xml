@@ -39,8 +39,8 @@
     <properties>
         <ice.version>2.0.1</ice.version>
         <compiler.plugins.version>2.0.2</compiler.plugins.version>
-        <jsf.version>2.1.1-20110322</jsf.version>
-        <jsf.portlet.version>2.1.1-20110322</jsf.portlet.version>
+        <jsf.version>2.1.1-b03</jsf.version>
+        <jsf.portlet.version>2.1.1-b03</jsf.portlet.version>
     </properties>
    <dependencies>
         <dependency>
@@ -75,6 +75,10 @@
        <repository>
           <id>java.net</id>
           <url>http://download.java.net/maven/2</url>
+       </repository>
+              <repository>
+          <id>portletfaces.org</id>
+          <url>http://repository.portletfaces.org/content/repositories/portletfaces-releases</url>
        </repository>
        <repository>
           <id>maven.org</id>
