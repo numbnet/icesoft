@@ -28,6 +28,7 @@ import org.icepush.http.ResponseHandler;
 import org.icepush.http.Server;
 import org.icepush.http.standard.FixedXMLContentHandler;
 import org.icepush.http.standard.ResponseHandlerServer;
+import org.icepush.util.Slot;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -47,18 +48,18 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     private static final Server AfterShutdown = new ResponseHandlerServer(CloseResponseDown);
 
     private final BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
-    private final long timeoutInterval;
+    private final Slot heartbeatInterval;
+    private final PushGroupManager pushGroupManager;
     private long responseTimeoutTime;
     private Server activeServer;
     private ConcurrentLinkedQueue notifiedPushIDs = new ConcurrentLinkedQueue();
     private List participatingPushIDs = Collections.emptyList();
-    private PushGroupManager pushGroupManager;
 
     private String lastWindow = "";
     private String[] lastNotifications = new String[]{};
 
-    public BlockingConnectionServer(final PushGroupManager pushGroupManager, final Timer monitorRunner, final Configuration configuration, final boolean terminateBlockingConnectionOnShutdown) {
-        this.timeoutInterval = configuration.getAttributeAsLong("heartbeatTimeout", 50000);
+    public BlockingConnectionServer(final PushGroupManager pushGroupManager, final Timer monitorRunner, Slot heartbeat, final boolean terminateBlockingConnectionOnShutdown) {
+        this.heartbeatInterval = heartbeat;
         this.pushGroupManager = pushGroupManager;
         //add monitor
         monitorRunner.scheduleAtFixedRate(this, 0, 1000);
@@ -121,7 +122,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     }
 
     private void resetTimeout() {
-        responseTimeoutTime = System.currentTimeMillis() + timeoutInterval;
+        responseTimeoutTime = System.currentTimeMillis() + heartbeatInterval.getLongValue();
     }
 
     private void respondIfPendingRequest(ResponseHandler handler) {
@@ -148,7 +149,7 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
     private static class CloseConnectionResponseHandler implements ResponseHandler {
         private String reason = "undefined";
 
-        public CloseConnectionResponseHandler(String reason)  {
+        public CloseConnectionResponseHandler(String reason) {
             this.reason = reason;
         }
 
