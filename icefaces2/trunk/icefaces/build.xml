@@ -198,13 +198,19 @@
 
         <delete dir="${bundle.dir.bin}/samples/ace/showcase/build"/>
         <delete dir="${bundle.dir.bin}/samples/core/auction/build"/>
-        <delete dir="${bundle.dir.bin}/samples/core/portlets/chat/build"/>
+        <delete dir="${bundle.dir.bin}/samples/core/chat/build"/>
         <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/build"/>
         <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/lib"/>
         <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/classes"/>
         <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/build"/>
         <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/src/main/webapp/WEB-INF/lib"/>
         <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/src/main/webapp/WEB-INF/classes"/>
+
+        <subant target="clean">
+            <fileset dir="${bundle.dir.bin}/samples/ace/showcase-portlet" includes="build.xml"/>
+            <fileset dir="${bundle.dir.bin}/samples/core/chat-portlet" includes="build.xml"/>
+            <fileset dir="${bundle.dir.bin}/samples/compat/component-showcase-portlets" includes="build.xml"/>
+        </subant>
 
     </target>
 
