@@ -172,6 +172,8 @@
                 <include name="junit*.jar"/>
                 <include name="commons-fileupload.jar"/>
                 <include name="tlddoc.jar"/>                
+                <include name="yui-compressor.jar"/>                
+
             </fileset>
             <fileset dir="${bundle.dir.bin}/lib/compat">
                 <include name="freemarker*.jar"/>
