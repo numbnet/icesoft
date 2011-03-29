@@ -32,7 +32,6 @@
   <name>ICEfaces Compat sample Parent</name>
   <description />
   <modules>
-        <module>compat-basic</module>
         <module>component-showcase</module>
         <module>auctionMonitor</module>
         <module>component-showcase-portlets</module>

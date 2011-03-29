@@ -33,7 +33,6 @@
   <description />
   <modules>
         <module>auction</module>
-        <module>basic</module>
         <module>chat</module>
         <module>chat-portlet</module>
   </modules>
