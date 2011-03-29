@@ -206,6 +206,12 @@
         <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/src/main/webapp/WEB-INF/lib"/>
         <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/src/main/webapp/WEB-INF/classes"/>
 
+        <subant target="clean">
+            <fileset dir="${bundle.dir.bin}/samples/ace/showcase-portlet" includes="build.xml"/>
+            <fileset dir="${bundle.dir.bin}/samples/core/chat-portlet" includes="build.xml"/>
+            <fileset dir="${bundle.dir.bin}/samples/compat/component-showcase-portlets" includes="build.xml"/>
+        </subant>
+
     </target>
 
     <target name="bundle.src">
