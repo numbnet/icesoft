@@ -30,7 +30,7 @@
   <packaging>jar</packaging>
   <name>ICEfaces Advanced Components</name>
   <url>http://www.icefaces.org</url> 
-  <description>ICEfaces Advanced Components Evironment library.</description> 
+  <description>ICEfaces Advanced Components Environment library.</description> 
    
    <dependencies>
      <dependency>
