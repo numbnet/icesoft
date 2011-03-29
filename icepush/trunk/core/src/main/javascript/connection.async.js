@@ -26,8 +26,11 @@ var onReceive = operator();
 var onServerError = operator();
 var whenDown = operator();
 var whenTrouble = operator();
+var resumeConnection = operator();
+var pauseConnection = operator();
+var controlRequest = operator();
+var changeHeartbeatInterval = operator();
 var shutdown = operator();
-var resetConnection = operator();
 var AsyncConnection;
 
 (function() {
@@ -36,6 +39,7 @@ var AsyncConnection;
     var ConnectionLease = 'ice.connection.lease';
     var ConnectionContextPath = 'ice.connection.contextpath';
     var AcquiredMarker = ':acquired';
+    var NetworkDelay = 5000;//5s of delay, possibly introduced by network
 
     //build up retry actions
     function timedRetryAbort(retryAction, abortAction, timeouts) {
@@ -62,6 +66,7 @@ var AsyncConnection;
     AsyncConnection = function(logger, windowID, configuration) {
         var logger = childLogger(logger, 'async-connection');
         var channel = Client(false);
+        var onSendListeners = [];
         var onReceiveListeners = [];
         var onServerErrorListeners = [];
         var connectionDownListeners = [];
@@ -113,6 +118,9 @@ var AsyncConnection;
             askForConfiguration = noop;
         }
 
+        var configuredURI = namespace.push.configuration.blockingConnectionURI;
+        var listenURI = configuredURI ? configuredURI : applyURIPattern('listen.icepush');
+
         function connect() {
             try {
                 debug(logger, "closing previous connection...");
@@ -125,8 +133,6 @@ var AsyncConnection;
                     offerCandidature();
                 } else {
                     debug(logger, 'connect...');
-                    var configuredURI = namespace.push.configuration.blockingConnectionURI;
-                    var listenURI = configuredURI ? configuredURI : applyURIPattern('listen.icepush');
                     listener = postAsynchronously(channel, listenURI, function(q) {
                         each(lastSentPushIds, curry(addNameValue, q, 'ice.pushid'));
                         askForConfiguration(q);
@@ -134,6 +140,7 @@ var AsyncConnection;
                         FormPost(request);
                         sendXWindowCookie(request);
                         setHeader(request, 'ice.push.window', namespace.windowID);
+                        broadcast(onSendListeners, [request]);
                     }, $witch(function (condition) {
                         condition(OK, function(response) {
                             var reconnect = getHeader(response, 'X-Connection') != 'close';
@@ -166,7 +173,8 @@ var AsyncConnection;
         //build callbacks only after 'connection' function was defined
         var retryTimeouts = collect(split(attributeAsString(configuration, 'serverErrorRetryTimeouts', '1000 2000 4000'), ' '), Number);
         var retryOnServerError = timedRetryAbort(connect, broadcaster(onServerErrorListeners), retryTimeouts);
-        var heartbeatTimeout = attributeAsNumber(configuration, 'heartbeatTimeout', 50000) + 5000;//allow max 5s of delay, possibly introduced by network
+        var heartbeatTimeout = attributeAsNumber(configuration, 'heartbeatTimeout', 50000) + NetworkDelay;
+
         var timeoutBomb = object(function(method) {
             method(stop, noop);
         });
@@ -250,46 +258,58 @@ var AsyncConnection;
             offerCandidature();
             info(logger, 'Blocking connection cannot be shared among multiple web-contexts.\nInitiating blocking connection for "' + contextPath() + '"  web-context...');
         }
-        var blockingConnectionMonitor = run(Delay(function() {
-            if (shouldEstablishBlockingConnection()) {
-                offerCandidature();
-                info(logger, 'blocking connection not initialized...candidate for its creation');
-            } else {
-                if (isWinningCandidate()) {
-                    if (!hasOwner()) {
-                        markAsOwned();
-                        //start blocking connection since no other window has started it
-                        //but only when at least one pushId is registered
-                        if (notEmpty(registeredPushIds())) {
-                            initializeConnection();
-                        }
-                    }
-                    updateLease();
-                }
-                if (hasOwner() && isLeaseExpired()) {
-                    offerCandidature();
-                    info(logger, 'blocking connection lease expired...candidate for its creation');
-                }
-            }
 
-            if (isOwner()) {
-                var ids = registeredPushIds();
-                if ((size(ids) != size(lastSentPushIds)) || notEmpty(complement(ids, lastSentPushIds))) {
-                    //reconnect to send the current list of pushIDs
-                    //abort the previous blocking connection in case is still alive
-                    abort(listener);
-                    connect();
+        var paused = false;
+        var blockingConnectionMonitor;
+
+        function createBlockingConnectionMonitor() {
+            blockingConnectionMonitor = run(Delay(function() {
+                if (shouldEstablishBlockingConnection()) {
+                    offerCandidature();
+                    info(logger, 'blocking connection not initialized...candidate for its creation');
+                } else {
+                    if (isWinningCandidate()) {
+                        if (!hasOwner()) {
+                            markAsOwned();
+                            //start blocking connection since no other window has started it
+                            //but only when at least one pushId is registered
+                            if (notEmpty(registeredPushIds())) {
+                                initializeConnection();
+                            }
+                        }
+                        updateLease();
+                    }
+                    if (hasOwner() && isLeaseExpired()) {
+                        offerCandidature();
+                        info(logger, 'blocking connection lease expired...candidate for its creation');
+                    }
                 }
-            } else {
-                //ensure that only one blocking connection exists
-                stop(timeoutBomb);
-                abort(listener);
-            }
-        }, pollingPeriod));
+
+                if (isOwner()) {
+                    var ids = registeredPushIds();
+                    if ((size(ids) != size(lastSentPushIds)) || notEmpty(complement(ids, lastSentPushIds))) {
+                        //reconnect to send the current list of pushIDs
+                        //abort the previous blocking connection in case is still alive
+                        abort(listener);
+                        connect();
+                    }
+                } else {
+                    //ensure that only one blocking connection exists
+                    stop(timeoutBomb);
+                    abort(listener);
+                }
+            }, pollingPeriod));
+        }
+
+        createBlockingConnectionMonitor();
 
         info(logger, 'connection monitoring started within window ' + namespace.windowID);
 
         return object(function(method) {
+            method(onSend, function(self, callback) {
+                append(onSendListeners, callback);
+            });
+
             method(onReceive, function(self, callback) {
                 append(onReceiveListeners, callback);
             });
@@ -306,6 +326,51 @@ var AsyncConnection;
                 append(connectionTroubleListeners, callback);
             });
 
+            method(resumeConnection, function(self) {
+                if (paused) {
+                    initializeConnection();
+                    createBlockingConnectionMonitor();
+                    paused = false;
+                }
+            });
+
+            method(pauseConnection, function(self) {
+                if (not(paused)) {
+                    abort(listener);
+                    stop(blockingConnectionMonitor);
+                    stop(timeoutBomb);
+                    paused = true;
+                }
+            });
+
+            method(controlRequest, function(self, parameterCallback, headerCallback, responseCallback) {
+                if (paused) {
+                    postAsynchronously(channel, listenURI, function(q) {
+                        each(lastSentPushIds, curry(addNameValue, q, 'ice.pushid'));
+                        parameterCallback(curry(addNameValue, q));
+                    }, function(request) {
+                        FormPost(request);
+                        setHeader(request, 'ice.push.window', namespace.windowID);
+                        headerCallback(curry(setHeader, request));
+                    }, $witch(function (condition) {
+                        condition(OK, function(response) {
+                            responseCallback(curry(getHeader, response), contentAsText(response), contentAsDOM(response));
+                        });
+                        condition(ServerInternalError, function() {
+                            throw statusText(response);
+                        });
+                    }));
+                } else {
+                    throw 'Cannot make a request while the blocking connection is running.';
+                }
+            });
+
+            method(changeHeartbeatInterval, function(self, interval) {
+                heartbeatTimeout = interval + NetworkDelay;
+                //reset bomb to adjust the timeout delay
+                resetTimeoutBomb();
+            });
+
             method(shutdown, function(self) {
                 try {
                     //shutdown once
@@ -317,6 +382,7 @@ var AsyncConnection;
                 } finally {
                     onReceiveListeners = connectionDownListeners = onServerErrorListeners = [];
                     abort(listener);
+                    stop(timeoutBomb);
                     stop(blockingConnectionMonitor);
                     remove(listening);
                 }

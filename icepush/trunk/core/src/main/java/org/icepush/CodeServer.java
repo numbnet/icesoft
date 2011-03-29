@@ -29,11 +29,11 @@ import org.icepush.http.standard.ResponseHandlerServer;
 import java.io.InputStream;
 
 public class CodeServer extends ResponseHandlerServer {
-    public CodeServer() {
+    public CodeServer(final String resourceName) {
         super(new ResponseHandler() {
             public void respond(Response response) throws Exception {
                 response.setHeader("Content-Type", "text/javascript");
-                InputStream code = CodeServer.class.getResourceAsStream("/META-INF/resources/icepush.js");
+                InputStream code = CodeServer.class.getResourceAsStream("/META-INF/resources/" + resourceName);
                 response.writeBodyFrom(code);
             }
         });

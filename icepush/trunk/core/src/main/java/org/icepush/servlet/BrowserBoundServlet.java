@@ -23,6 +23,8 @@
 package org.icepush.servlet;
 
 import org.icepush.*;
+import org.icepush.http.Server;
+import org.icepush.util.Slot;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -30,19 +32,32 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Timer;
 
 public class BrowserBoundServlet extends PathDispatcher {
-    private PushContext pushContext;
+    protected PushContext pushContext;
+    protected ServletContext context;
+    protected PushGroupManager pushGroupManager;
+    protected Timer monitorRunner;
+    protected Configuration configuration;
+    protected boolean terminateBlockingConnectionOnShutdown;
 
     public BrowserBoundServlet(PushContext pushContext, ServletContext context, final PushGroupManager pushGroupManager, final Timer monitorRunner, Configuration configuration, boolean terminateBlockingConnectionOnShutdown) {
         this.pushContext = pushContext;
+        this.context = context;
+        this.pushGroupManager = pushGroupManager;
+        this.monitorRunner = monitorRunner;
+        this.configuration = configuration;
+        this.terminateBlockingConnectionOnShutdown = terminateBlockingConnectionOnShutdown;
 
-        dispatchOn(".*listen\\.icepush",
-                new EnvironmentAdaptingServlet(
-                        new ConfigurationServer(pushContext, context, configuration,
-                                new BlockingConnectionServer(pushGroupManager, monitorRunner, configuration, terminateBlockingConnectionOnShutdown)), configuration));
+        dispatchOn(".*listen\\.icepush", new EnvironmentAdaptingServlet(createBlockingConnectionServer(), configuration));
         dispatchOn(".*create-push-id\\.icepush", new CreatePushID());
         dispatchOn(".*notify\\.icepush", new NotifyPushID());
         dispatchOn(".*add-group-member\\.icepush", new AddGroupMember());
         dispatchOn(".*remove-group-member\\.icepush", new RemoveGroupMember());
+    }
+
+    protected Server createBlockingConnectionServer() {
+        Slot heartbeatInterval = new Slot(configuration.getAttributeAsLong("heartbeatTimeout", 15000));
+        return new ConfigurationServer(pushContext, context, configuration,
+                new BlockingConnectionServer(pushGroupManager, monitorRunner, heartbeatInterval, terminateBlockingConnectionOnShutdown));
     }
 
     private class CreatePushID extends AbstractPseudoServlet {

@@ -37,30 +37,48 @@ import java.util.logging.Logger;
 
 public class MainServlet implements PseudoServlet {
     private static final Logger log = Logger.getLogger(MainServlet.class.getName());
-    private final PushGroupManager pushGroupManager;
-    private PseudoServlet dispatcher;
-    private Timer timer;
+    protected final PushGroupManager pushGroupManager;
+    protected final PathDispatcher dispatcher;
+    protected final Timer timer;
+    protected final PushContext pushContext;
+    protected final ServletContext context;
+    protected final Configuration configuration;
+    protected final boolean terminateConnectionOnShutdown;
 
     public MainServlet(final ServletContext context) {
         this(context, true);
     }
 
-    public MainServlet(final ServletContext context, final boolean terminateBlockingConnectionOnShutdown) {
+    public MainServlet(final ServletContext servletContext, final boolean terminateBlockingConnectionOnShutdown) {
         log.info(new ProductInfo().toString());
 
+        context = servletContext;
+        terminateConnectionOnShutdown = terminateBlockingConnectionOnShutdown;
         timer = new Timer(true);
-        final Configuration configuration = new ServletContextConfiguration("org.icepush", context);
-        final PushContext pushContext = new PushContext(context);
+        configuration = new ServletContextConfiguration("org.icepush", context);
+        pushContext = new PushContext(context);
         pushGroupManager = PushGroupManagerFactory.newPushGroupManager(context);
         pushContext.setPushGroupManager(pushGroupManager);
-        PathDispatcher pathDispatcher = new PathDispatcher();
-        pathDispatcher.dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer()))));
-        pathDispatcher.dispatchOn(".*", new BrowserDispatcher(configuration) {
+        dispatcher = new PathDispatcher();
+
+        addDefaultDispatches();
+    }
+
+    protected void addDefaultDispatches() {
+        dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer("icepush.js")))));
+        dispatchOn(".*", new BrowserDispatcher(configuration) {
             protected PseudoServlet newServer(String browserID) {
-                return new BrowserBoundServlet(pushContext, context, pushGroupManager, timer, configuration, terminateBlockingConnectionOnShutdown);
+                return createBrowserBoundServlet();
             }
         });
-        dispatcher = pathDispatcher;
+    }
+
+    protected PseudoServlet createBrowserBoundServlet() {
+        return new BrowserBoundServlet(pushContext, context, pushGroupManager, timer, configuration, terminateConnectionOnShutdown);
+    }
+
+    public void dispatchOn(String pattern, PseudoServlet servlet) {
+        dispatcher.dispatchOn(pattern, servlet);
     }
 
     public PushGroupManager getPushGroupManager() {

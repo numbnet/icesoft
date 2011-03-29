@@ -335,6 +335,43 @@ if (!window.ice.icepush) {
                 broadcast(blockingConnectionUnstableListeners);
             });
 
+            //make some connection functionality public
+            namespace.push.connection = {
+                resumeConnection: function() {
+                    resumeConnection(asyncConnection);
+                },
+
+                pauseConnection: function() {
+                    pauseConnection(asyncConnection);
+                },
+
+                changeHeartbeatInterval: function(interval) {
+                    changeHeartbeatInterval(asyncConnection, interval);
+                },
+
+                onSend: function(callback) {
+                    onSend(asyncConnection, function(request) {
+                        //the callback parameters: function(addHeader) {...; addHeader('A', '123'); ...}
+                        callback(function(name, value) {
+                            setHeader(request, name, value);
+                        });
+                    });
+                },
+
+                onReceive: function(callback) {
+                    onReceive(asyncConnection, function(response) {
+                        //the callback parameters: function(addHeader, contentAsText, contentAsXML) {...}
+                        callback(function(name) {
+                            return getHeader(response, name);
+                        }, contentAsText(response), contentAsDOM(response));
+                    });
+                },
+
+                controlRequest: function(addParameter, addHeader, responseCallback) {
+                    controlRequest(asyncConnection, addParameter, addHeader, responseCallback);
+                }
+            };
+
             info(logger, 'bridge loaded!');
         }
 

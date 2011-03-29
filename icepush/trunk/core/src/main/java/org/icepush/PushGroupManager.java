@@ -23,8 +23,8 @@
 package org.icepush;
 
 import java.util.List;
-import java.util.Observer;
 import java.util.Map;
+import java.util.Observer;
 
 public interface PushGroupManager {
     void addMember(String groupName, String pushId);
@@ -40,6 +40,8 @@ public interface PushGroupManager {
     void notifyObservers(List pushIdList);
 
     void push(String groupName);
+
+    void park(String[] pushIds);
 
     void removeMember(String groupName, String pushId);
 

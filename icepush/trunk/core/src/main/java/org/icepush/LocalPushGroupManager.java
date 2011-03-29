@@ -25,20 +25,10 @@ package org.icepush;
 import org.icepush.servlet.ReadyObservable;
 import org.icepush.servlet.ServletContextConfiguration;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Set;
+import javax.servlet.ServletContext;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.servlet.ServletContext;
 
 public class LocalPushGroupManager extends AbstractPushGroupManager implements PushGroupManager {
     private static final Logger LOGGER = Logger.getLogger(LocalPushGroupManager.class.getName());
@@ -46,6 +36,7 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
 
     private final Map<String, PushID> pushIDMap = new HashMap<String, PushID>();
     private final Map<String, Group> groupMap = new HashMap<String, Group>();
+    private final Set parkedPushIDs = new HashSet();
     private final Observable inboundNotifier = new ReadyObservable();
     private final Observable outboundNotifier = new ReadyObservable();
     private final long groupTimeout;
@@ -120,6 +111,8 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
     }
 
     public void notifyObservers(final List pushIdList) {
+        //unpark pushIds that become active again
+        parkedPushIDs.removeAll(pushIdList);
         inboundNotifier.notifyObservers(pushIdList);
     }
 
@@ -147,6 +140,10 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
                 LOGGER.log(Level.FINEST, "Removed pushId '" + pushId + "' from group '" + groupName + "'.");
             }
         }
+    }
+
+    public void park(String[] pushIds) {
+        parkedPushIDs.addAll(Arrays.asList(pushIds));
     }
 
     public void shutdown() {
@@ -272,7 +269,7 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
 
         private void discardIfExpired() {
             //expire pushId
-            if (lastAccess + pushIdTimeout < System.currentTimeMillis()) {
+            if (!parkedPushIDs.contains(id) && lastAccess + pushIdTimeout < System.currentTimeMillis()) {
                 if (LOGGER.isLoggable(Level.FINEST)) {
                     LOGGER.log(Level.FINEST, "'" + id + "' pushId expired.");
                 }
