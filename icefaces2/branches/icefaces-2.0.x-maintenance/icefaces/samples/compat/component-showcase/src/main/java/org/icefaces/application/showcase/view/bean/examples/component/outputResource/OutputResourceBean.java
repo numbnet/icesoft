@@ -119,6 +119,8 @@ class MyResource implements Resource, Serializable {
             InputStream stream = extContext.getResourceAsStream(OutputResourceBean.RESOURCE_PATH + resourceName);
             byte[] byteArray = OutputResourceBean.toByteArray(stream);
             inputStream = new ByteArrayInputStream(byteArray);
+        } else {
+            inputStream.reset();
         }
         return inputStream;
     }
