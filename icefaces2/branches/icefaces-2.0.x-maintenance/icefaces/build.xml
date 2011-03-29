@@ -198,7 +198,7 @@
 
         <delete dir="${bundle.dir.bin}/samples/ace/showcase/build"/>
         <delete dir="${bundle.dir.bin}/samples/core/auction/build"/>
-        <delete dir="${bundle.dir.bin}/samples/core/portlets/chat/build"/>
+        <delete dir="${bundle.dir.bin}/samples/core/chat/build"/>
         <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/build"/>
         <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/lib"/>
         <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/classes"/>
