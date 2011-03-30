@@ -174,7 +174,7 @@ ice.component.slider = {
 
 
                         if (Yui.Lang.isValue(jsfProps.tabindex)) {
-                            root.firstChild.setAttribute("tabindex", jsfProps.tabindex);
+                            Yui.one(root).one(".yui3-slider-thumb").set("tabIndex", jsfProps.tabindex);
                         }
 		                //add aria support
 		                if (jsfProps.aria) {
