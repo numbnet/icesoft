@@ -64,7 +64,7 @@
 
 
   <tstamp>
-      <format property="build.time" pattern="yyyy-mm-dd hh:mm:ss"/>
+      <format property="build.time" pattern="yyyy-MM-dd hh:mm:ss"/>
   </tstamp>
 
   
