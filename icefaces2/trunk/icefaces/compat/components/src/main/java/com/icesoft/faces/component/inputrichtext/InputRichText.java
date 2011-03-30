@@ -1,7 +1,7 @@
 /*
  * Version: MPL 1.1
  *
- * The contents of this file are subject to the Mozilla Public License
+ * "The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
  * http://www.mozilla.org/MPL/
@@ -14,9 +14,10 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
+ *
  */
 
 package com.icesoft.faces.component.inputrichtext;
@@ -48,41 +49,45 @@ import java.util.zip.ZipInputStream;
 public class InputRichText extends UIInput {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.InputRichText";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.InputRichTextRenderer";
-    public static final Resource ICE_FCK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/fckeditor_ext.js");
-    private static final Resource FCK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/fckeditor.js");
-    private static final String FCK_EDITOR_ZIP = "com/icesoft/faces/component/inputrichtext/fckeditor.zip";
+    public static final Resource ICE_CK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/ckeditor_ext.js");
+    private static final String CK_EDITOR_ZIP = "com/icesoft/faces/component/inputrichtext/ckeditor.zip";
     private static final Date lastModified = new Date();
-    private static final Map ZipEntryCache = new HashMap();
+    private static final Map ZipEntryCacheCK = new HashMap();    
     private Boolean partialSubmit = null;
 
     private static void loadZipEntryCache() {
         try {
-            InputStream in = InputRichText.class.getClassLoader().getResourceAsStream(FCK_EDITOR_ZIP);
-            ZipInputStream zip = new ZipInputStream(in);
-            ZipEntry entry;
-            while ((entry = zip.getNextEntry()) != null) {
-                if (!entry.isDirectory()) {
-                    ZipEntryCache.put(entry.getName(), toByteArray(zip));
+
+            
+            InputStream inCK = InputRichText.class.getClassLoader().getResourceAsStream(CK_EDITOR_ZIP);
+            ZipInputStream zipCK = new ZipInputStream(inCK);
+            ZipEntry entryCK;
+            while ((entryCK = zipCK.getNextEntry()) != null) {
+                if (!entryCK.isDirectory()) {
+                	ZipEntryCacheCK.put(entryCK.getName(), toByteArray(zipCK));
                 }
-            }
+            }            
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static final ResourceLinker.Handler FCK_LINKED_BASE = new ResourceLinker.Handler() {
+ 
+
+    
+    private static final ResourceLinker.Handler CK_LINKED_BASE = new ResourceLinker.Handler() {
         public void linkWith(ResourceLinker linker) {
-            synchronized (ZipEntryCache) {
-                if (ZipEntryCache.isEmpty()) {
+            synchronized (ZipEntryCacheCK) {
+                if (ZipEntryCacheCK.isEmpty()) {
                     loadZipEntryCache();
                 }
             }
-            Iterator i = ZipEntryCache.keySet().iterator();
+            Iterator i = ZipEntryCacheCK.keySet().iterator();
             while (i.hasNext()) {
                 final String entryName = (String) i.next();
                 linker.registerRelativeResource(entryName, new Resource() {
                     public String calculateDigest() {
-                        return String.valueOf(FCK_EDITOR_ZIP + entryName);
+                        return String.valueOf(CK_EDITOR_ZIP + entryName);
                     }
 
                     public Date lastModified() {
@@ -90,7 +95,7 @@ public class InputRichText extends UIInput {
                     }
 
                     public InputStream open() throws IOException {
-                        return new ByteArrayInputStream((byte[]) ZipEntryCache.get(entryName));
+                        return new ByteArrayInputStream((byte[]) ZipEntryCacheCK.get(entryName));
                     }
 
                     public void withOptions(Resource.Options options) {
@@ -101,18 +106,22 @@ public class InputRichText extends UIInput {
             }
         }
     };
-
+    
     public static void loadFCKJSIfRequired() {
         if (FacesContext.getCurrentInstance() != null && baseURI == null && exist.booleanValue()) {
             ResourceRegistry registry =
                     ResourceRegistryLocator.locate(FacesContext.getCurrentInstance());
             if (registry != null) {
-                baseURI = registry.loadJavascriptCode(FCK_EDITOR_JS, FCK_LINKED_BASE);
-                registry.loadJavascriptCode(ICE_FCK_EDITOR_JS);
+      
+                ckBaseURI = registry.loadJavascriptCode(ICE_CK_EDITOR_JS, CK_LINKED_BASE);
+              
+                registry.loadJavascriptCode(ICE_CK_EDITOR_JS);
             } else {
                 //LOG fckeditor's library has not loaded, component will not work as desired
             }
         }
+       
+        
     }
 
     private String language;
@@ -128,7 +137,15 @@ public class InputRichText extends UIInput {
     private Boolean disabled = null;
     private String skin = null;
     private Boolean saveOnSubmit = null;
+    private static URI ckBaseURI = null;
+    public static URI getCkBaseURI() {
+		return ckBaseURI;
+	}
 
+	public static void setCkBaseURI(URI ckBaseURI) {
+		InputRichText.ckBaseURI = ckBaseURI;
+	}
+	
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
     }
