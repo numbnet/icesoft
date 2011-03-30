@@ -165,7 +165,6 @@
         <delete>
             <fileset dir="${bundle.dir.bin}">
                 <include name="build.xml"/>
-                <include name="build.properties"/>
             </fileset>
             <fileset dir="${bundle.dir.bin}/lib">
                 <include name="junit*.jar"/>
