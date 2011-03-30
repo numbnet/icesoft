@@ -236,26 +236,26 @@
 			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-skin-sam-container/**"/>
 			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-skin-sam-logger/**"/>
 			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-skin-sam-tabview/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/anim/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/assets/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/attribute/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/base/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/classnamemanager/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/dd/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/dom/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/dump/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/event/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/event-custom/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/intl/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/loader/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/node/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/oop/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/plugin/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/pluginhost/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/slider/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/substitute/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/widget/**"/>
-            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_1_1/yui/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/anim/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/assets/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/attribute/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/base/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/classnamemanager/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/dd/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/dom/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/dump/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/event/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/event-custom/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/intl/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/loader/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/node/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/oop/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/plugin/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/pluginhost/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/slider/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/substitute/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/widget/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/yui/**"/>
             <!-- Instead of building the include list, we could build an exclude list, but that'd be even longer
             <exclude if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/paginator/**"/>
             <exclude if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/profiler/**"/>
