@@ -51,8 +51,8 @@ import javax.faces.context.FacesContext;
 
 @FacesBehavior("org.icefaces.animation.Animation")
 @ResourceDependencies({
-                              @ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
-                              @ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
+                              @ResourceDependency(name="yui/yui-min.js",library="yui/3_3_0"),
+                              @ResourceDependency(name="loader/loader-min.js",library="yui/3_3_0"),
                               @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
                               @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
                               @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),

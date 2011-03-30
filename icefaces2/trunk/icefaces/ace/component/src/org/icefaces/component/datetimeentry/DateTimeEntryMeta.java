@@ -71,8 +71,8 @@ import org.icefaces.component.baseMeta.UIInputMeta;
 
 @ResourceDependencies({
         @ResourceDependency(name = "container.css", library = "org.icefaces.component.datetimeentry"),
-    	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
-    	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
+    	@ResourceDependency(name="yui/yui-min.js",library="yui/3_3_0"),
+    	@ResourceDependency(name="loader/loader-min.js",library="yui/3_3_0"),
 
         @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
         @ResourceDependency(name="component.js",library="org.icefaces.component.util"),    
