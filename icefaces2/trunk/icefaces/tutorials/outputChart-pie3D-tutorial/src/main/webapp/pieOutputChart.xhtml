@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>OutputChart Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        </h:head>    <h:body>        <ice:form>
+            <ice:panelGrid columns="2" style="float:left;">
+                <ice:outputText value="Add Chart Item"></ice:outputText>
+                <ice:outputText value=""></ice:outputText>
+
+                <ice:outputText value="Color :"></ice:outputText>
+                <ice:selectOneMenu valueChangeListener="#{pieChartBean.paintChangeListener}">
+                    <f:selectItems value="#{pieChartBean.availablePaints}"></f:selectItems>
+                </ice:selectOneMenu>
+
+                <ice:outputText value="Label :"></ice:outputText>
+                <ice:inputText value="#{pieChartBean.label}" required="false"></ice:inputText>
+
+                <ice:outputText value="Data "></ice:outputText>
+                <ice:inputText value="#{pieChartBean.value}"></ice:inputText>
+
+                <ice:outputText value=""></ice:outputText>
+                <ice:commandButton value="Add" actionListener="#{pieChartBean.addToChart}"></ice:commandButton>
+            </ice:panelGrid>                              
+            
+            <ice:panelGrid columns="1" style="float:left;">
+                <!-- remove chart -->
+                <ice:outputText value="Remove Chart Item"></ice:outputText>
+
+                <!-- chart to remove -->
+                <ice:selectOneMenu valueChangeListener="#{pieChartBean.deleteListValueChangeListener}" partialSubmit="true" disabled="#{not pieChartBean.deleteAllowed}">
+                    <f:selectItems value="#{pieChartBean.deleteList}"></f:selectItems>
+                </ice:selectOneMenu>
+
+                <!-- remove command button -->
+                <ice:commandButton value="Remove" actionListener="#{pieChartBean.deleteChart}" rendered="#{pieChartBean.deleteAllowed}"></ice:commandButton>
+                <ice:outputText value="Minimum 2 pieces of data" rendered="#{not pieChartBean.deleteAllowed}"></ice:outputText>
+            </ice:panelGrid>
+        <ice:outputChart style="clear:left;" id="pieOutputChart" type="pie3D" chartTitle="Pie3D Chart" width="350" height="350" labels="#{pieChartBean.labels}" colors="#{pieChartBean.paints}" data="#{pieChartBean.data}" renderOnSubmit="#{pieChartBean.newChart}"></ice:outputChart>
+        
+    		</ice:form>	</h:body></f:view></html>
