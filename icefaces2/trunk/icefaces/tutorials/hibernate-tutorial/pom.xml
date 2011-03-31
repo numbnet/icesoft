@@ -19,10 +19,7 @@
   ~
   ~ Contributor(s): _____________________.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.icefaces.tutorial</groupId>
     <artifactId>hibernate-tutorial</artifactId>
@@ -30,48 +27,45 @@
     <packaging>war</packaging>
     <name>ICEfaces Tutorial Template</name>
     <url>http://www.icefaces.org</url>
-    
     <properties>
         <ice.version>2.0.1</ice.version>
         <compiler.plugins.version>2.0.2</compiler.plugins.version>
         <jsf.version>2.1.0-b08</jsf.version>
     </properties>
-    
     <repositories>
         <repository>
-            <id>snapshots</id>
-            <url>http://anonsvn.icefaces.org/repo/maven2/snapshots</url>
+            <id>ICEsoft Releases</id>
+            <url>http://anonsvn.icefaces.org/repo/maven2/releases</url>
         </repository>
         <repository>
-          <id>jboss-public-repository-group</id>
-          <name>JBoss Public Maven Repository Group</name>
-          <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
-        </repository>       
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Maven Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
         <repository>
             <id>kore</id>
             <url>http://kore.fi.muni.cz:9999/repository/</url>
         </repository>
     </repositories>
     <pluginRepositories>
-      <pluginRepository>
-        <id>jboss-public-repository-group</id>
-        <name>JBoss Public Maven Repository Group</name>
-        <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-        <releases>
-          <enabled>true</enabled>
-        </releases>
-        <snapshots>
-          <enabled>true</enabled>
-        </snapshots>
-      </pluginRepository>
+        <pluginRepository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Maven Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
     </pluginRepositories>
-        
     <dependencies>
         <dependency>
             <groupId>org.icefaces</groupId>
@@ -115,45 +109,44 @@
             <artifactId>jxl</artifactId>
             <version>2.6.8</version>
             <exclusions>
-              <exclusion>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-              </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
             </exclusions>
-        </dependency>                
+        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.1.2</version>
-        </dependency>  
+        </dependency>
         <dependency>
-          <groupId>org.hibernate</groupId>
-          <artifactId>hibernate-entitymanager</artifactId>
-          <version>3.6.2.Final</version>          
-        </dependency>             
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>3.6.2.Final</version>
+        </dependency>
         <dependency>
             <groupId>javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.11.0.GA</version>          
+            <version>3.11.0.GA</version>
         </dependency>
         <dependency>
             <groupId>hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>1.8.0.10</version>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>javax.el</groupId>
             <artifactId>el-api</artifactId>
-            <version>1.0</version> 
+            <version>1.0</version>
             <scope>provided</scope>
-        </dependency> 
+        </dependency>
         <dependency>
-     	    <groupId>net.sf.jcharts</groupId>
-     	    <artifactId>krysalis-jCharts</artifactId>
-     	    <version>1.0.0-alpha-1</version>
-        </dependency>        
+            <groupId>net.sf.jcharts</groupId>
+            <artifactId>krysalis-jCharts</artifactId>
+            <version>1.0.0-alpha-1</version>
+        </dependency>
     </dependencies>
-    
     <profiles>
         <profile>
             <id>servlet</id>
@@ -194,8 +187,6 @@
             </dependencies>
         </profile>
     </profiles>
-    
-    
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>

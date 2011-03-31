@@ -39,17 +39,13 @@
     
     <repositories>
         <repository>
-            <id>snapshots</id>
-            <url>http://anonsvn.icefaces.org/repo/maven2/snapshots</url>
+            <id>ICEsoft Release Repository</id>
+            <url>http://anonsvn.icefaces.org/repo/maven2/releases</url>
         </repository>
         <repository>
             <id>java.net</id>
             <url>http://download.java.net/maven/2</url>
-        </repository>
-        <repository>
-            <id>maven.org</id>
-            <url>http://repo1.maven.org/maven2</url>
-        </repository>       
+        </repository>  
         <repository>
             <id>kore</id>
             <url>http://kore.fi.muni.cz:9999/repository/</url>
