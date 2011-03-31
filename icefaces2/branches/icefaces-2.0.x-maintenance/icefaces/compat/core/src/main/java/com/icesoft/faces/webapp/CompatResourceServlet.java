@@ -86,6 +86,9 @@ public class CompatResourceServlet extends HttpServlet {
             return;
         }
         String mimeType = servletContext.getMimeType(path);
+        if ("/blank".equalsIgnoreCase(path)) {
+            mimeType = "text/html";
+        }
         httpServletResponse.setHeader("Content-Type", mimeType);
         httpServletResponse.setHeader("Last-Modified", STARTUP_TIME);
 
