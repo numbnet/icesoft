@@ -20,6 +20,8 @@
   -->
 
 <project name="hibernate-tutorial" default="war.basic">
-    <property file="./build.properties"/>
+    <property file="./build.properties"/>                    
+    <property name="lib.compile.application.includes" value="antlr-2.7.6.jar jta-1.1.jar javassist-3.11.0.GA.jar slf4j-api-1.6.1.jar dom4j-1.6.1.jar asm-3.1.jar cglib-2.2.jar hibernate-commons-annotations-3.2.0.Final.jar hibernate-core-3.6.2.Final.jar hibernate-entitymanager-3.6.2.Final.jar hibernate-jpa-2.0-api-1.0.0.Final.jar hsqldb-1.8.0.10.jar javassist-3.11.0.GA.jar"/>
+    <property name="lib.distribute.application.includes" value="antlr-2.7.6.jar jta-1.1.jar javassist-3.11.0.GA.jar slf4j-api-1.6.1.jar dom4j-1.6.1.jar asm-3.1.jar cglib-2.2.jar hibernate-commons-annotations-3.2.0.Final.jar hibernate-core-3.6.2.Final.jar hibernate-entitymanager-3.6.2.Final.jar hibernate-jpa-2.0-api-1.0.0.Final.jar hsqldb-1.8.0.10.jar javassist-3.11.0.GA.jar"/>
     <import file="../common.xml"/>
 </project>
