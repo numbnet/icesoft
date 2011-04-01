@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">
+<h:head>
+        <title>Successful Registration</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+</h:head>
+<h:body>
+    <ice:form>
+        <p>
+            Welcome <h:outputText value="#{user.firstName}" />
+            you have successfully registered with the following
+            information:
+        </p>
+
+        <p>Name: <h:outputText value="#{user.firstName} #{user.lastName}" /></p>
+
+        <p>Address: <h:outputText value="#{user.address}" /></p>
+
+        <p>City: <h:outputText value="#{user.city}" /></p>
+
+        <p>Age: <h:outputText value="#{user.age}" /></p>
+
+        <p>Birth Date: 
+        <h:outputText value="#{user.birthDate}">
+            <f:convertDateTime dateStyle="short"></f:convertDateTime>
+        </h:outputText>
+        </p>
+
+        <p>Salary: 
+        <h:outputText value="#{user.salary}">
+            <f:convertNumber maxFractionDigits="2" groupingUsed="true" currencySymbol="$" maxIntegerDigits="7" type="currency"></f:convertNumber>
+        </h:outputText>
+        </p>
+    </ice:form>
+</h:body>
+</html>

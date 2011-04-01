@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">
+<h:head>
+    <title>ICEfaces Converter Example - Basic</title>
+    <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+</h:head>
+<h:body>
+    <ice:form>
+        <h1>ICEfaces Converter Example - Basic</h1>
+        <p>The following example uses standard JSF converters to convert
+           the input data to the appropriate data types.</p>
+        First Name:
+        <ice:inputText id="firstname" value="#{user.firstName}" /><br/>
+
+        Last Name:
+        <ice:inputText id="lastname" value="#{user.lastName}" /><br/>
+
+        Address:
+        <ice:inputText id="address" value="#{user.address}" /><br/>
+
+        City:
+        <ice:inputText id="city" value="#{user.city}" /><br/>
+
+        Age:
+        <ice:inputText id="age" value="#{user.age}">
+            <f:converter converterId="javax.faces.Integer"></f:converter>
+        </ice:inputText><br/>
+
+        Birth Date:
+        <ice:inputText id="birthdate" value="#{user.birthDate}">
+            <f:convertDateTime dateStyle="short"></f:convertDateTime>
+        </ice:inputText><br/>
+
+        Salary:
+        <ice:inputText id="salary" value="#{user.salary}">
+            <f:convertNumber maxFractionDigits="2" groupingUsed="true" currencySymbol="$" maxIntegerDigits="7" type="currency"></f:convertNumber>
+        </ice:inputText><br/>
+            
+        <ice:messages />
+        <ice:commandButton id="registercommand" type="submit" value="Register" action="#{registerBean.register}" />
+    </ice:form>
+</h:body>
+</html>
