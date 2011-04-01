@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:place="http://java.sun.com/jsf/composite/comps">
+	<h:head>
+		<title>ICEfaces 2.0 ICEpush Place</title>
+		<h:outputStylesheet library="css" name="style.css"/>
+	</h:head>
+	<h:body>
+	<center>
+		<h1>ICEfaces 2.0 - ICEpush Place View</h1>
+		<h4><h:outputLink value="map.jsf">Map View</h:outputLink></h4>
+		
+		<h:form>
+		    <div style="width: 35%;">
+			    <ui:include src="/WEB-INF/includes/person-input.xhtml"/>
+			</div>
+			
+			<h:commandButton value="Update" actionListener="#{personController.update}"/>
+		</h:form>
+		
+		<table class="worldPanel" cellspacing="0" cellpadding="0">
+		<tbody>
+		    <tr><td>
+		    	<place:continent name="Africa" list="#{personServiceImpl.world.africa}"/>
+		    </td></tr>
+		    <tr><td>
+		    	<place:continent name="Antarctica" list="#{personServiceImpl.world.antarctica}"/>
+		    </td></tr>
+		    <tr><td>
+		    	<place:continent name="Asia" list="#{personServiceImpl.world.asia}"/>
+		    </td></tr>
+		    <tr><td>
+		    	<place:continent name="Europe" list="#{personServiceImpl.world.europe}"/>
+		    </td></tr>
+		    <tr><td>
+		    	<place:continent name="North America" list="#{personServiceImpl.world.northAmerica}"/>
+		    </td></tr>
+		    <tr><td>
+		    	<place:continent name="South America" list="#{personServiceImpl.world.southAmerica}"/>
+		    </td></tr>
+		</tbody>
+		</table>
+	</center>
+	</h:body>
+</html>
