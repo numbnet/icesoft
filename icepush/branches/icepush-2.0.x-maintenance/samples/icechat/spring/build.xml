@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="icechat-spring" default="war">
+
+	<property name="root.offset" value="../../.." />
+	<property file="${root.offset}/build.properties" />
+
+	<import file="${root.offset}/build-common.xml" />
+	<import file="../build-common.xml" />
+
+
+	<target name="war" depends="compile">
+		<build.war>
+			<add.libs>
+				<fileset id="jsppush" dir="${root.offset}/integration/jsp/core/dist">
+                    <include name="icepush-jsp.jar"/>
+                </fileset>
+				<fileset dir="${root.offset}/integration/spring/lib"/>
+				<fileset file="${root.offset}/lib/jstl-1.2.jar"/>
+            </add.libs>
+		</build.war>
+	</target>
+
+
+	<target name="compile" depends="clean">
+		<compile>
+			<add.classpath.elements>
+				<fileset refid="api" />
+				<fileset dir="${web.dir}/WEB-INF/lib" />
+				<fileset dir="${root.offset}/integration/spring/lib"/>
+			</add.classpath.elements>
+		</compile>
+	</target>
+
+
+</project>
