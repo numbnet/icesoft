@@ -78,8 +78,10 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             textarea.setAttribute(HTML.NAME_ATTR,  ClientIdPool.get(clientId));
             textarea.setAttribute(HTML.ID_ATTR,  ClientIdPool.get(clientId));
             textarea.setAttribute(HTML.STYLE_ATTR,  "display:none;");
-            textarea.appendChild(domContext.createTextNode(String.valueOf(inputRichText.getValue())));
-            
+            Object value = inputRichText.getValue();
+            if (value != null) {
+            	textarea.appendChild(domContext.createTextNode(String.valueOf(value)));
+            }
             root.appendChild(textarea);
             
             Element scrptWrpr = domContext.createElement(HTML.DIV_ELEM);
