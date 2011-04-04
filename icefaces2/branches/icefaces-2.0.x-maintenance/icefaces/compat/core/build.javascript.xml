@@ -114,7 +114,9 @@
         <touch file="${script.extra}"/>
         <move file="${tmp.extra}" tofile="${script.extra}" overwrite="yes">
             <filterchain>
-                <stripjavacomments/>
+                <!-- using built in 'stripjavacomments' for removing comments breaks Prototype code, one of
+                the regular expressions contains '/*' characters which are mistakenly interpreted as JS comments -->
+                <!--stripjavacomments/-->
                 <ignoreblank/>
             </filterchain>
         </move>
