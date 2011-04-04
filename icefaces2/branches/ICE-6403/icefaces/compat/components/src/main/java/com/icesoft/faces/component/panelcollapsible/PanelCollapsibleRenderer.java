@@ -99,17 +99,23 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
 	            Element div = domContext.createElement(HTML.DIV_ELEM);
 	            div.setAttribute(HTML.STYLE_ATTR, "position:relative;padding:0px;background-image:none;width:100%;");
 	            header.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "hdr");
-	            header.appendChild(div);
+//	            header.appendChild(div);
 	            //this anchor should be known by the component only, so we are defining style to the component level
 	            Element button = domContext.createElement(HTML.INPUT_ELEM);
 	            button.setAttribute(HTML.STYLE_ATTR, 
-                    "position:relative; z-index:5; cursor:pointer; border:0px; width:100%; height:16px; background-color:transparent; background:url(" + 
+                    "cursor:pointer; border:0px; width:100%; height:16px; background-color:transparent; background:url(" +
                     CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/css/xp/css-images/spacer.gif") +
-                    "); margin:0; padding:0; font-size: 0; line-height: 0;");
+                    "); margin:0; padding:0;");
 	            button.setAttribute(HTML.TYPE_ATTR, "submit");
 				button.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
-				button.setAttribute(HTML.VALUE_ATTR, panelCollapsible.isExpanded() ? "true" : "false" ); 				
-	            div.appendChild(button);	               				
+                String headerText = panelCollapsible.getHeaderText();
+                if (headerText == null) {
+                    headerText = " ";
+                }
+				button.setAttribute(HTML.VALUE_ATTR, headerText);
+	            header.appendChild(button);
+//				button.setAttribute(HTML.VALUE_ATTR, panelCollapsible.isExpanded() ? "true" : "false" );
+//              div.appendChild(button);
 			} else {
 	            Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
 	            hiddenField.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext) + "Expanded");
@@ -168,12 +174,14 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
             domContext.setCursorParent(header);
 
 			if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
+/*
 				Application application = facesContext.getApplication();
 				HtmlPanelGroup headerWrapper = (HtmlPanelGroup) application.createComponent(HtmlPanelGroup.COMPONENT_TYPE);
 				headerWrapper.setLayout("block");
 				headerWrapper.getAttributes().put(HTML.STYLE_ATTR, "background-color:transparent; line-height:18px; position:absolute; top:0px; left:0px;");
 				headerWrapper.getChildren().add(headerFacet);
 				CustomComponentUtils.renderChild(facesContext, headerWrapper);
+*/
 			} else {
 				CustomComponentUtils.renderChild(facesContext, headerFacet);
 			}
