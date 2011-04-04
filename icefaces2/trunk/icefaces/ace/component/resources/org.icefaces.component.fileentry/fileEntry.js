@@ -29,7 +29,7 @@ var ice_fileEntry = {
             //    i.contentDocument.document.XMLDocument :
             //    i.contentDocument.document;
             var d = i.contentDocument;
-            if (d instanceof XMLDocument || d.xmlEncoding) {
+            if (d instanceof XMLDocument || "xmlEncoding" in d) {
                 var serializer = new XMLSerializer();
                 var responseText = serializer.serializeToString(d);
                 //i.contentDocument.document.body?i.contentDocument.document.body.innerHTML:null;
