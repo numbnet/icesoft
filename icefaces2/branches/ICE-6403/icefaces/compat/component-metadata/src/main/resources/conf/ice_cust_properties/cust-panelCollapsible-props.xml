@@ -120,3 +120,16 @@
         <default-value>true</default-value>
      </property-extension>
 </property>
+<property>
+<description>
+    <![CDATA[Header text when header is rendered as button, e.g when "org.icefaces.JavaScriptDisabled" is set.]]>
+</description>
+<property-name>headerText</property-name>
+<property-class>java.lang.String</property-class>
+<property-extension>
+    <category>ADVANCED</category>
+    <editor-class>
+        &stringEditor;
+    </editor-class>
+</property-extension>
+</property>

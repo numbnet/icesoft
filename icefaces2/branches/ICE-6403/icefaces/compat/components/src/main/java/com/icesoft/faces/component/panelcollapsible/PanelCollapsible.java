@@ -36,6 +36,7 @@ import javax.faces.event.FacesEvent;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.util.CoreComponentUtils;
 
 public class PanelCollapsible extends UICommand {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.PanelCollapsible";
@@ -47,7 +48,8 @@ public class PanelCollapsible extends UICommand {
     private boolean disabledSet = false;
     private String enabledOnUserRole = null;
     private String renderedOnUserRole = null;
-    private Boolean toggleOnClick = null; 
+    private Boolean toggleOnClick = null;
+    private String headerText;
 
     public PanelCollapsible(){
         setRendererType(DEFAULT_RENDERER_TYPE);
@@ -64,8 +66,13 @@ public class PanelCollapsible extends UICommand {
     	String clientId = getClientId(context)+"Expanded";
     	if (map.containsKey(clientId) && !map.get(clientId).toString().equals("")) {
             getAttributes().put(getMatureClientId()+"changedByDecode", "true");
-    		boolean exp = Boolean.valueOf(map.get(clientId).toString()).booleanValue();
-    		setExpanded(!exp);
+            boolean exp;
+            if (CoreComponentUtils.isJavaScriptDisabled(context)) {
+                exp = isExpanded();
+            } else {
+                exp = Boolean.valueOf(map.get(clientId).toString()).booleanValue();
+            }
+            setExpanded(!exp);
     		queueEvent(new ActionEvent(this));
     	}
     }
@@ -232,6 +239,22 @@ public class PanelCollapsible extends UICommand {
         }
         return super.isRendered();
     }
+
+    public String getHeaderText() {
+        if (headerText != null) {
+            return headerText;
+        }
+        ValueBinding vb = getValueBinding("headerText");
+        if (vb != null) {
+            return (String) vb.getValue(getFacesContext());
+        }
+        return null;
+    }
+
+    public void setHeaderText(String headerText) {
+        this.headerText = headerText;
+    }
+
     /* (non-Javadoc)
      * @see javax.faces.component.UIComponent#processDecodes(javax.faces.context.FacesContext)
      */
@@ -317,7 +340,7 @@ public class PanelCollapsible extends UICommand {
     
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[9];
+        Object[] state = new Object[10];
         state[0] = super.saveState(context);
         state[1] = style;
         state[2] = styleClass;
@@ -331,7 +354,8 @@ public class PanelCollapsible extends UICommand {
         } else {
             state[8] = (Boolean)getAttributes().get(getMatureClientId()) ;
         }
-        
+        state[9] = headerText;
+
         return state;
     }
 
@@ -346,6 +370,7 @@ public class PanelCollapsible extends UICommand {
         toggleOnClick = (Boolean)state[6];        
         disabledSet = ((Boolean) state[7]).booleanValue();
         getAttributes().put(getMatureClientId(), state[8]);
+        headerText = (String) state[9];
     }
     
     //At the time of the creation of the component both JSP and facelets
