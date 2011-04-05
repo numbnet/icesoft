@@ -121,7 +121,7 @@ var AsyncConnection;
         var configuredURI = namespace.push.configuration.blockingConnectionURI;
         var listenURI = configuredURI ? configuredURI : applyURIPattern('listen.icepush');
 
-        function connect() {
+        function requestForBlockingResponse() {
             try {
                 debug(logger, "closing previous connection...");
                 close(listener);
@@ -170,32 +170,58 @@ var AsyncConnection;
             }
         }
 
+        var connect = requestForBlockingResponse;
+
         //build callbacks only after 'connection' function was defined
         var retryTimeouts = collect(split(attributeAsString(configuration, 'serverErrorRetryTimeouts', '1000 2000 4000'), ' '), Number);
         var retryOnServerError = timedRetryAbort(connect, broadcaster(onServerErrorListeners), retryTimeouts);
         var heartbeatTimeout = attributeAsNumber(configuration, 'heartbeatTimeout', 50000) + NetworkDelay;
 
-        var timeoutBomb = object(function(method) {
+        var NoopDelay = object(function(method) {
+            method(runOnce, function(self) {
+                return self;
+            });
             method(stop, noop);
         });
-
-        function resetTimeoutBomb() {
-            stop(timeoutBomb);
-            timeoutBomb = runOnce(Delay(function() {
-                warn(logger, 'failed to connect, first retry...');
-                broadcast(connectionTroubleListeners);
-                connect();
-
-                timeoutBomb = runOnce(Delay(function() {
+        var timeoutBomb = NoopDelay;
+        var pendingTimeoutBombs = [];
+        var timeoutThunks = [
+                function() {
+                    warn(logger, 'failed to connect, first retry...');
+                    broadcast(connectionTroubleListeners);
+                    connect();
+                },
+                function() {
                     warn(logger, 'failed to connect, second retry...');
                     broadcast(connectionTroubleListeners);
                     connect();
+                },
+                function() {
+                    broadcast(connectionDownListeners);
+                }
+        ];
 
-                    timeoutBomb = runOnce(Delay(function() {
-                        broadcast(connectionDownListeners);
-                    }, heartbeatTimeout));
-                }, heartbeatTimeout));
-            }, heartbeatTimeout));
+        function chainTimeoutBombs(thunks, interval) {
+            stop(timeoutBomb);
+            var remainingThunks = copy(thunks);
+            timeoutBomb = runOnce(inject(reverse(thunks), NoopDelay, function(result, thunk) {
+                return Delay(function() {
+                    remainingThunks = reject(remainingThunks, function(i) {
+                        return i == thunk;
+                    });
+                    thunk();
+                    timeoutBomb = runOnce(result);
+                }, interval);
+            }));
+            return remainingThunks;
+        }
+
+        function resetTimeoutBomb() {
+            pendingTimeoutBombs = chainTimeoutBombs(timeoutThunks, heartbeatTimeout);
+        }
+
+        function adjustTimeoutInterval() {
+            pendingTimeoutBombs = chainTimeoutBombs(pendingTimeoutBombs, heartbeatTimeout);
         }
 
         function initializeConnection() {
@@ -328,6 +354,7 @@ var AsyncConnection;
 
             method(resumeConnection, function(self) {
                 if (paused) {
+                    connect = requestForBlockingResponse;
                     initializeConnection();
                     createBlockingConnectionMonitor();
                     paused = false;
@@ -339,6 +366,7 @@ var AsyncConnection;
                     abort(listener);
                     stop(blockingConnectionMonitor);
                     stop(timeoutBomb);
+                    connect = noop;
                     paused = true;
                 }
             });
@@ -368,7 +396,7 @@ var AsyncConnection;
             method(changeHeartbeatInterval, function(self, interval) {
                 heartbeatTimeout = interval + NetworkDelay;
                 //reset bomb to adjust the timeout delay
-                resetTimeoutBomb();
+                adjustTimeoutInterval();
             });
 
             method(shutdown, function(self) {
