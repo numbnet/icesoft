@@ -29,7 +29,6 @@ ice.yui3 = {
     use :function(callback) {
         if (ice.yui3.y == null) {
 			var Yui = ice.yui3.getNewInstance();
-			//Yui.use('*', function(Y) {
 			Yui.use('anim', 'plugin', 'pluginhost', function(Y) { // load modules required by the animation library
                 ice.yui3.y = Y;
                 callback(ice.yui3.y);
@@ -48,14 +47,18 @@ ice.yui3 = {
             modules += module + ',';
         return modules.substring(0, modules.length - 1);
     },
-    basePathPattern: /^.*\/+(.*)\/javax\.faces\.resource.*yui\/yui-min\.js(.*)\?ln=(.*)?$/,
-	getBasePath: function() {
+    //basePathPattern: /^.*\/+(.*)\/javax\.faces\.resource.*yui\/yui-min\.js(.*)\?ln=(.*)?$/,
+	basePathPattern: /^(.*)javax\.faces\.resource([\/\=])yui\/yui-min\.js(.*)$/,
+	basePathPatternPortlets: /^(.*)javax\.faces\.resource([\/\=])yui%2Fyui-min\.js(.*)$/,
+	libraryPattern: /^(.*[\_\-\.\&\?])ln\=yui\/[0-9a-zA-Z_\.]+(.*)$/,
+	libraryPatternPortlets: /^(.*[\_\-\.\&\?])ln\=yui%2F[0-9a-zA-Z_\.]+(.*)$/,
+	getBasePath: function(pattern) {
 		var nodes, i, src, match;
 		nodes = document.getElementsByTagName('script') || [];
 		for (i = 0; i < nodes.length; i++) {
 			src = nodes[i].src;
 			if (src) {
-				match = src.match(ice.yui3.basePathPattern);
+				match = src.match(pattern);
 				if (match) {
 					return match;
 				}
@@ -66,14 +69,19 @@ ice.yui3 = {
 	yui3Base: '',
 	yui2in3Base: '',
 	facesServletExtension: '',
+	yui3TrailingPath: '',
+	yui2in3TrailingPath: '',
 	getNewInstance: function() {
 		if (!(ice.yui3.yui3Base && ice.yui3.yui2in3Base)) {
-			var match = ice.yui3.getBasePath();
+			//alert('1' + match[1] + '\n' + '2' + match[2] + '\n' + '3' + match[3]);
+			/*
 			var basePath = match[1];
 			if (basePath.indexOf(':') != -1) { // check if domain contains port number and extract base path
 				basePath = basePath.substring(basePath.indexOf('/', basePath.indexOf(':')) + 1);
 			}
+			*/
 			// determine the Faces Servlet extension (usually .jsf), also consider the case when the jsessionid is in the url
+			/*
 			var jsessionidIndex = match[2].indexOf(';jsessionid=');
 			if (jsessionidIndex != -1) {
 				ice.yui3.facesServletExtension = match[2].substring(0, jsessionidIndex);
@@ -82,6 +90,23 @@ ice.yui3 = {
 			}
 			ice.yui3.yui3Base = '/' + basePath + '/javax.faces.resource/' + match[3] + '/';
 			ice.yui3.yui2in3Base = '/' + basePath + '/javax.faces.resource/' + 'yui/2in3/';
+			*/
+			var isPortlet = false;
+			var whole = ice.yui3.getBasePath(ice.yui3.basePathPattern);
+			if (!whole) {
+				whole = ice.yui3.getBasePath(ice.yui3.basePathPatternPortlets);
+				isPortlet = true;
+			}
+			var library;
+			if (isPortlet) {
+				library = whole[3].match(ice.yui3.libraryPatternPortlets);
+			} else {
+				library = whole[3].match(ice.yui3.libraryPattern);
+			}
+			ice.yui3.yui3Base = whole[1] + "javax.faces.resource" + whole[2];
+			ice.yui3.yui2in3Base = whole[1] + "javax.faces.resource" + whole[2];
+			ice.yui3.yui3TrailingPath = whole[3];
+			ice.yui3.yui2in3TrailingPath = library[1] + "ln=yui/2in3" + library[2];
 		}
 		
 		var Y = YUI({combine: false, base: ice.yui3.yui3Base,
@@ -106,8 +131,14 @@ ice.yui3 = {
 		// create URLs with the Faces Servlet extension at the end (e.g. '.jsf')
 		var oldUrlFn = Y.Loader.prototype._url;
 		Y.Loader.prototype._url = function(path, name, base) {
-			return oldUrlFn.call(this, path, name, base) + ice.yui3.facesServletExtension;
-		};
+			var trailingPath;
+			if (name.indexOf('yui2-') == -1) {
+				trailingPath = ice.yui3.yui3TrailingPath;
+			} else {
+				trailingPath = ice.yui3.yui2in3TrailingPath;
+			}
+			return oldUrlFn.call(this, path, name, base) + trailingPath;
+		};		
 		
 		Y.use('loader', 'oop', 'event-custom', 'attribute', 'base', 'event', 'dom', 'node', 'event-delegate'); // load base modules
 		return Y;
