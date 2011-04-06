@@ -2759,7 +2759,7 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
     initialize: function(id, updateId, options, rowClass, selectedRowClass) {
         Ice.Autocompleter.logger.debug("Building Ice Autocompleter ID [" + id + "]");
         var existing = Autocompleter.Finder.list[id];
-        if (existing && !existing.monitor.changeDetected()) {
+        if (!Prototype.Browser.IE && existing && !existing.monitor.changeDetected()) {
             return;
         }
 
@@ -2775,7 +2775,9 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
         this.options.defaultParams = this.options.parameters || null;
         this.monitor = new Ice.AutocompleterMonitor(element, ue, options, rowClass, selectedRowClass);
         this.monitor.object = this;
-        Ice.StateMon.add(this.monitor);
+        if (!Prototype.Browser.IE) {
+            Ice.StateMon.add(this.monitor);
+        }
         Autocompleter.Finder.add(this.element, this);
         Ice.Autocompleter.logger.debug("Done building Ice Autocompleter");
         if (this.monitor.changeDetected()) {
