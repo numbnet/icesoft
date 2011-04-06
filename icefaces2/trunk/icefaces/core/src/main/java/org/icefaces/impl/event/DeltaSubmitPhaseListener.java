@@ -39,17 +39,11 @@ import javax.portlet.ActionRequest;
 import javax.portlet.filter.ActionRequestWrapper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class DeltaSubmitPhaseListener implements PhaseListener {
-    private static final String PreviousParameters = "previous-parameters";
+    public static final String PreviousParameters = "previous-parameters";
     private static final String[] StringArray = new String[0];
     private static final Logger log = Logger.getLogger("org.icefaces.event");
     private static final String Append = "patch+";
@@ -88,9 +82,17 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
         Map formAttributes = formComponent.getAttributes();
         Map previousParameters = (Map) formAttributes.get(PreviousParameters);
         if (previousParameters == null) {
-            //todo: use a public constant to lookup old DOM document
-            Document oldDOM = DOMResponseWriter.getOldDocument(facesContext);
-            previousParameters = calculateParametersFromDOM(externalContext, oldDOM);
+            //see if the previous parameters where propagated during a forward navigation
+            Map idToPreviousParameterMapping = (Map) viewRoot.getViewMap().get(PreviousParameters);
+            if (idToPreviousParameterMapping != null) {
+                previousParameters = (Map) idToPreviousParameterMapping.get(formComponent.getId());
+            }
+            //construct previous parameters from the old document
+            if (previousParameters == null) {
+                //todo: use a public constant to lookup old DOM document
+                Document oldDOM = DOMResponseWriter.getOldDocument(facesContext);
+                previousParameters = calculateParametersFromDOM(externalContext, oldDOM);
+            }
         }
         final Map parameterValuesMap = new HashMap(previousParameters);
         final ArrayList directParameters = new ArrayList();
