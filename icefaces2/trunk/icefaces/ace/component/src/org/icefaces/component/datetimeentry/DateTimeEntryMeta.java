@@ -40,7 +40,7 @@ import org.icefaces.component.baseMeta.UIInputMeta;
                 "you can enter a date/time by clicking. In popup mode you have the additional option of entering in " +
                 "a text input field. The format of the input is determined by the nested &lt;f:convertDateTime&gt; " +
                 "tag. For more information, see the " +
-                "<a href=\"http://wiki.icefaces.org/display/facesDev/DateTime+Entry\">Wiki doc</a>."
+                "<a href=\"http://wiki.icefaces.org/display/ICE/DateTimeEntry\">Wiki doc</a>."
 )
 
 //        @ResourceDependency(library = "yui/2_8_1", name = "yahoo/yahoo-debug.js"),

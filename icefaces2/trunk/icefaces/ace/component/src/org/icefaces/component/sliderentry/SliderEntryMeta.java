@@ -52,7 +52,7 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
         tlddoc="The Slider Entry is a component that enables the user to adjust values in a finite range along a " +
                 "horizontal or vertical axis. It can be used as a visual replacement for an input box that takes a " +
                 "number as input. For more information, see the " +
-                "<a href=\"http://wiki.icefaces.org/display/facesDev/Slider\">Wiki doc</a>."
+                "<a href=\"http://wiki.icefaces.org/display/ICE/SliderEntry\">Wiki doc</a>."
     )
 	
 /*
