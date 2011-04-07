@@ -193,7 +193,14 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                     if ("checkbox".equalsIgnoreCase(type)) {
                         String name = input.getAttribute("name");
                         String value = input.getAttribute("value");
-                        multiParameters.put(name, new String[]{"".equals(value) ? "on" : value});
+                        String[] values = (String[]) multiParameters.get(name);
+                        if (values == null) {
+                            multiParameters.put(name, new String[]{value});
+                        } else {
+                            ArrayList list = new ArrayList(Arrays.asList(values));
+                            list.add(value);
+                            multiParameters.put(name, list.toArray(StringArray));
+                        }
                     }
                 }
                 NodeList selects = form.getElementsByTagName("select");
