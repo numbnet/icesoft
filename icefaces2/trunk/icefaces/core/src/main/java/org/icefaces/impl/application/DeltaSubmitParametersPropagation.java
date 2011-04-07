@@ -51,7 +51,7 @@ public class DeltaSubmitParametersPropagation extends ConfigurableNavigationHand
 
     public void handleNavigation(FacesContext context, String fromAction, String outcome) {
         NavigationCase navigationCase = getNavigationCase(context, fromAction, outcome);
-        if (navigationCase.isRedirect()) {
+        if (navigationCase == null || navigationCase.isRedirect()) {
             handler.handleNavigation(context, fromAction, outcome);
         } else {
             UIViewRoot viewRoot = context.getViewRoot();
@@ -63,7 +63,10 @@ public class DeltaSubmitParametersPropagation extends ConfigurableNavigationHand
                 viewAttributes.put(DeltaSubmitPhaseListener.PreviousParameters, idToPreviousParametersMapping);
             }
             for (UIForm form : forms) {
-                idToPreviousParametersMapping.put(form.getId(), new HashMap((Map) form.getAttributes().get(DeltaSubmitPhaseListener.PreviousParameters)));
+                Map previousParameters = (Map) form.getAttributes().get(DeltaSubmitPhaseListener.PreviousParameters);
+                if (previousParameters != null) {
+                    idToPreviousParametersMapping.put(form.getId(), new HashMap(previousParameters));
+                }
             }
             handler.handleNavigation(context, fromAction, outcome);
             //propagate previously calculated submit parameters
