@@ -138,6 +138,7 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
             }
         }
 
+        orderMultiValueParameters(parameterValuesMap, externalContext, DOMResponseWriter.getOldDocument(facesContext));
         //remove parameters that don't participate in the parameter diffing
         Map newPreviousParameters = new HashMap(parameterValuesMap);
         Iterator directParameterIterator = directParameters.iterator();
@@ -157,6 +158,63 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
         } else {
             externalContext.setRequest(new DeltaHttpServletRequest((HttpServletRequest) request, parameterValuesMap));
         }
+    }
+
+    private void orderMultiValueParameters(Map parameterValuesMap, ExternalContext externalContext, Document doc) {
+        Map orderedParameters = calculateMultiValueParameterOrder(externalContext, doc);
+        Iterator i = parameterValuesMap.entrySet().iterator();
+        while (i.hasNext()) {
+            Map.Entry entry = (Map.Entry) i.next();
+            String name = (String) entry.getKey();
+            String[] unorderedValues = (String[]) entry.getValue();
+            String[] orderedValues = (String[]) orderedParameters.get(name);
+            if (unorderedValues.length > 1 && orderedValues != null) {
+                //sort array in place (the reference remains the same)
+                Arrays.sort(unorderedValues, new ParameterOrderComparator(Arrays.asList(orderedValues)));
+            }
+        }
+    }
+
+    private Map calculateMultiValueParameterOrder(ExternalContext externalContext, Document doc) {
+        Map multiParameters = new HashMap();
+        Map parameters = externalContext.getRequestParameterMap();
+
+        NodeList forms = doc.getElementsByTagName("form");
+        for (int i = 0; i < forms.getLength(); i++) {
+            Element form = (Element) forms.item(i);
+            String formID = form.getAttribute("id");
+            if (parameters.containsKey(formID)) {
+                NodeList inputs = form.getElementsByTagName("input");
+                for (int j = 0; j < inputs.getLength(); j++) {
+                    Element input = (Element) inputs.item(j);
+                    //submitting type elements are present in the form only if they triggered the submission
+                    //ignore radio/checkbox buttons
+                    String type = input.getAttribute("type");
+                    if ("checkbox".equalsIgnoreCase(type)) {
+                        String name = input.getAttribute("name");
+                        String value = input.getAttribute("value");
+                        multiParameters.put(name, new String[]{"".equals(value) ? "on" : value});
+                    }
+                }
+                NodeList selects = form.getElementsByTagName("select");
+                for (int j = 0; j < selects.getLength(); j++) {
+                    Element select = (Element) selects.item(j);
+                    String name = select.getAttribute("name");
+                    NodeList options = select.getElementsByTagName("option");
+                    ArrayList values = new ArrayList();
+                    for (int k = 0; k < options.getLength(); k++) {
+                        Element option = (Element) options.item(k);
+                        values.add(option.getAttribute("value"));
+                    }
+                    if (!values.isEmpty()) {
+                        multiParameters.put(name, values.toArray(StringArray));
+                    }
+                }
+                break;
+            }
+        }
+
+        return multiParameters;
     }
 
     private Map calculateParametersFromDOM(ExternalContext externalContext, Document doc) {
@@ -281,6 +339,18 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
 
         public Map getParameterMap() {
             return Collections.unmodifiableMap(parameterValuesMap);
+        }
+    }
+
+    private static class ParameterOrderComparator implements Comparator<String> {
+        private final List orderedValueList;
+
+        public ParameterOrderComparator(List orderedValueList) {
+            this.orderedValueList = orderedValueList;
+        }
+
+        public int compare(String a, String b) {
+            return orderedValueList.indexOf(a) - orderedValueList.indexOf(b);
         }
     }
 }
