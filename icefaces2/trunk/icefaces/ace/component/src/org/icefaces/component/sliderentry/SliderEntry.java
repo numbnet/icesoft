@@ -29,6 +29,9 @@ import java.io.IOException;
 import javax.el.ELException;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
+import javax.faces.application.Application;
+import javax.faces.application.Resource;
+import javax.faces.application.ResourceHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
@@ -87,11 +90,18 @@ public class SliderEntry extends SliderEntryBase{
     public String getThumbUrl() {
     	String thumbUrl = super.getThumbUrl();
     	if (null == thumbUrl) {
-    		if ("x".equals(getAxis())) {
-    			thumbUrl =  "javax.faces.resource/assets/skins/sam/thumb-x.png.jsf?ln=yui/3_3_0";
-    		} else {
-    			thumbUrl = "javax.faces.resource/assets/skins/sam/thumb-y.png.jsf?ln=yui/3_3_0";
-    		}
+
+            //ICE-6782: proper use of the ResourceHandler ensures resource URLs work in
+            //both servlet and portlet environments.  This may be a good candidate for
+            //a more generic utility method if we do this often in the ACE components.
+            FacesContext fc = FacesContext.getCurrentInstance();
+            Application app = fc.getApplication();
+            ResourceHandler resourceHandler = app.getResourceHandler();
+            Resource res = resourceHandler.createResource("assets/skins/sam/thumb-" + getAxis() + ".png","yui/3_1_1", "image/png");
+
+            //The requestPath of the resource should be properly encoded for the
+            //platform that it's running on.
+            thumbUrl = res.getRequestPath();
     	}
     	return thumbUrl;
     }
