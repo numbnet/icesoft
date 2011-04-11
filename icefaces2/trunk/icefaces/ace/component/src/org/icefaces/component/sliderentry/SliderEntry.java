@@ -97,7 +97,7 @@ public class SliderEntry extends SliderEntryBase{
             FacesContext fc = FacesContext.getCurrentInstance();
             Application app = fc.getApplication();
             ResourceHandler resourceHandler = app.getResourceHandler();
-            Resource res = resourceHandler.createResource("assets/skins/sam/thumb-" + getAxis() + ".png","yui/3_1_1", "image/png");
+            Resource res = resourceHandler.createResource("assets/skins/sam/thumb-" + getAxis() + ".png","yui/3_3_0", "image/png");
 
             //The requestPath of the resource should be properly encoded for the
             //platform that it's running on.
