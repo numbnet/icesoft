@@ -57,10 +57,6 @@
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>
-            <system-event-listener-class>org.icefaces.impl.event.AjaxDisabledList</system-event-listener-class>
-            <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
-        </system-event-listener>
-        <system-event-listener>
             <system-event-listener-class>org.icefaces.impl.event.BridgeSetup</system-event-listener-class>
             <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
         </system-event-listener>
@@ -76,6 +72,7 @@
             <system-event-listener-class>org.icefaces.impl.event.DebugTagListener</system-event-listener-class>
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
         </system-event-listener>
+        <!-- MainEventListener and AjaxDisabledList are added programatically -->
     </application>
     <render-kit>
         <renderer>

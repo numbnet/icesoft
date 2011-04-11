@@ -41,6 +41,9 @@ public class MainEventListener implements SystemEventListener  {
             facesContext.getApplication()
                 .subscribeToEvent(PostAddToViewEvent.class, this);
         }
+        AjaxDisabledList disabledList = new AjaxDisabledList();
+        facesContext.getApplication()
+            .subscribeToEvent(PostAddToViewEvent.class, disabledList);
     }
 
     public void processEvent(SystemEvent event)  {
