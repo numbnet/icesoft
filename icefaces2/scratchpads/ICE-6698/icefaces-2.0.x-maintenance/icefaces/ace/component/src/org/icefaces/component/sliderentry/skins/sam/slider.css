@@ -1,0 +1,135 @@
+/*
+ * Version: MPL 1.1
+ *
+ * The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ */
+
+/* Horizontal Slider */
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-rail {
+	background-position: 0 9px;
+    background-image: url(rail-x.png); /** sprite-ref: sprite-x; sprite-alignment: repeat; sprite-margin-top: 9px; sprite-margin-bottom: 14px; */
+    background-repeat: repeat-x;
+    height: 26px;
+}
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-rail-cap-left {
+	background-position: 0 9px;
+	background-image: url(rail-cap-left.png); /** sprite-ref: sprite; sprite-margin-top: 9px; sprite-margin-bottom: 14px; */
+	background-repeat: no-repeat;
+    height: 20px;
+    left: -2px;
+    width: 5px;
+}
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-rail-cap-right {
+	background-position: 0 9px;
+	background-image: url(rail-cap-right.png); /** sprite-ref: sprite; sprite-margin-top: 9px; sprite-margin-bottom: 14px; */
+	background-repeat: no-repeat;
+    height: 20px;
+    right: -2px;
+    width: 5px;
+}
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-thumb {
+    height: 26px;
+    width: 15px;
+}
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-thumb-image {
+    left: 0;
+    top: -10px;
+}
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-thumb-shadow {
+    left: 0;
+    opacity: 0.15;
+    filter: alpha(opacity=15);
+    top: -50px;
+}
+
+.ice-skin-sam .yui3-slider-x .yui3-slider-rail .yui3-slider-thumb img {
+    top: -225px;		
+	
+}
+ 
+.ice-skin-sam .yui3-slider-x .yui3-slider-rail .yui3-slider-thumb {
+	background-position: 0 0;
+	background-image: url(thumb-x.png); /** sprite-ref: sprite; */
+	background-repeat: no-repeat;
+    height: 18px;
+    width: 13px; 
+}
+
+
+/* Vertical Slider */
+
+.ice-skin-sam .yui3-slider-y .yui3-slider-rail {
+	background-position: 9px 0;
+    background-image: url(rail-y.png); /** sprite-ref: sprite-y; sprite-alignment: repeat; sprite-margin-left: 9px; sprite-margin-right: 14px; */
+    background-repeat: repeat-y;
+    width: 26px;
+}
+
+.ice-skin-sam .yui3-slider-y .yui3-slider-rail-cap-top {
+	background-position: 9px 0;
+	background-image: url(rail-cap-top.png); /** sprite-ref: sprite; sprite-margin-left: 9px; sprite-margin-right: 14px; */
+	background-repeat: no-repeat;
+    width: 20px;
+    top: -2px;
+    height: 5px;
+}
+
+.ice-skin-sam .yui3-slider-y .yui3-slider-rail-cap-bottom {
+	background-position: 9px 0;
+	background-image: url(rail-cap-bottom.png); /** sprite-ref: sprite; sprite-margin-left: 9px; sprite-margin-right: 14px; */
+	background-repeat: no-repeat;
+    width: 20px;
+    bottom: -2px;
+    height: 5px;
+}
+
+.ice-skin-sam .yui3-slider-y .yui3-slider-thumb {
+    width: 26px;
+    height: 15px;
+}
+
+.ice-skin-sam .yui3-slider-y .yui3-slider-thumb-image {
+    top: 0;
+    left: -10px;
+}
+
+.ice-skin-sam .yui3-slider-y .yui3-slider-thumb-shadow {
+    top: 0;
+    left: -50px;
+    opacity: 0.15;
+    filter: alpha(opacity=15);
+
+}
+
+.ice-skin-sam .yui3-slider-y .yui3-slider-rail .yui3-slider-thumb img {
+    top: -225px;
+} 
+ 
+.ice-skin-sam .yui3-slider-y .yui3-slider-rail .yui3-slider-thumb {
+	background-position: 0 0;
+	background-image: url(thumb-y.png); /** sprite-ref: sprite; sprite-margin-left: 4px */
+	background-repeat: no-repeat;
+    height: 14px;
+    width: 30px;
+}
