@@ -140,6 +140,15 @@ ice.yui3 = {
 			return oldUrlFn.call(this, path, name, base) + trailingPath;
 		};		
 		
+		// make Y.one support ':'s in IDs
+		var _one = Y.one;
+		Y.one = function(id) { 
+			if (Y.Lang.isString(id)) {
+				id = id.replace(':', '\\:');
+			}
+			return _one(id);
+		}
+		
 		Y.use('loader', 'oop', 'event-custom', 'attribute', 'base', 'event', 'dom', 'node', 'event-delegate'); // load base modules
 		return Y;
 	}
