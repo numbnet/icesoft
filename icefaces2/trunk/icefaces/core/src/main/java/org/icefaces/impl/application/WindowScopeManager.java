@@ -43,6 +43,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -241,7 +242,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper {
                 id = UnusedScopeMap.getId();
                 //put something into the map to avoid beeing discarded
                 if (UnusedScopeMap.isEmpty()) {
-                    UnusedScopeMap.put("dummy-bean", new Object());
+                    UnusedScopeMap.put("dummy-bean", new Serializable() {});
                 }
                 UnusedScopeMap.activate(state);
                 associateWindowID(id, requestMap);
