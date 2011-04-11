@@ -30,7 +30,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PreRenderComponentEvent;
+import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import javax.faces.component.UIComponentBase;
@@ -53,7 +53,7 @@ public class AjaxDisabledList implements SystemEventListener {
             return;
         }
         UIComponentBase component = (UIComponentBase) 
-                ((PreRenderComponentEvent) event).getComponent();
+                ((PostAddToViewEvent) event).getComponent();
 
         Map behaviors = component.getClientBehaviors(); 
         if (null == behaviors)  {
