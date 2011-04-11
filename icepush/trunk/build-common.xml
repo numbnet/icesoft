@@ -38,7 +38,7 @@
 	</fileset>
 	
 	<tstamp>
-		<format property="build.time" pattern="yyyy-mm-dd hh:mm:ss" />
+		<format property="build.time" pattern="yyyy-mm-dd hh:mm:ss aa" />
 	</tstamp>
 
 	<macrodef name="clean">
