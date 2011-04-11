@@ -187,7 +187,14 @@ var submit;
         if (isAjaxDisabled(element)) {
             var f = formOf(element);
             //use native submit function saved by namespace.captureSubmit
-            if (f && f.nativeSubmit) f.nativeSubmit();
+            if (f && f.nativeSubmit) {
+                var fakeClick = document.createElement("input");
+                fakeClick.setAttribute("type", "hidden");
+                fakeClick.setAttribute("name", element.name);
+                fakeClick.setAttribute("value", element.value);
+                f.appendChild(fakeClick);
+                f.nativeSubmit();
+            }
         } else {
             event = event || null;
 
