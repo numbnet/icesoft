@@ -37,8 +37,8 @@ import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.component.html.HtmlSelectManyListbox;
+import javax.faces.component.html.HtmlSelectOneListbox;
 import javax.faces.context.FacesContext;
 import java.util.Set;
 
@@ -51,16 +51,15 @@ public class ListboxRenderer
         if (((IceExtended) uiComponent).getPartialSubmit()) {
             boolean isSelectListbox =
                     (uiComponent instanceof HtmlSelectOneListbox) ||
-                    (uiComponent instanceof HtmlSelectManyListbox);
+                            (uiComponent instanceof HtmlSelectManyListbox);
             if (isSelectListbox) {
                 Number partialSubmitDelay = (Number)
                         uiComponent.getAttributes().get("partialSubmitDelay");
                 root.setAttribute(getEventType(uiComponent),
-                        "Ice.selectChange(form,this,event,"+
-                        partialSubmitDelay+");");
-            }
-            else {
-                root.setAttribute(getEventType(uiComponent), ICESUBMITPARTIAL);
+                        "setFocus('');Ice.selectChange(form,this,event," +
+                                partialSubmitDelay + ");");
+            } else {
+                root.setAttribute(getEventType(uiComponent), "setFocus('');" + ICESUBMITPARTIAL);
             }
             excludes.add(getEventType(uiComponent));
             //bug 419
