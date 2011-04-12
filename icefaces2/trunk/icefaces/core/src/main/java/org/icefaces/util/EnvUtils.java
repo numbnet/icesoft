@@ -47,6 +47,7 @@ public class EnvUtils {
     public static String LAZY_PUSH = "org.icefaces.lazyPush";
     public static String STANDARD_FORM_SERIALIZATION = "org.icefaces.standardFormSerialization";
     public static String STRICT_SESSION_TIMEOUT = "org.icefaces.strictSessionTimeout";
+    public static String SUBTREE_DIFF = "org.icefaces.subtreeDiff";
     public static String WINDOW_SCOPE_EXPIRATION = "org.icefaces.windowScopeExpiration";
     public static String MANDATORY_RESOURCE_CONFIG = "org.icefaces.mandatoryResourceConfiguration";
     public static String UNIQUE_RESOURCE_URLS = "org.icefaces.uniqueResourceURLs";
@@ -295,6 +296,23 @@ public class EnvUtils {
     }
 
     /**
+     * Returns the value of the context parameter org.icefaces.subtreeDiff.  The default value is true and indicates
+     * that diffs will be calculated for subtree rendering.
+     *
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.subtreeDiff.  The default is true.
+     */
+    public static boolean isSubtreeDiff(FacesContext facesContext) {
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        Map viewMap = viewRoot.getViewMap();
+        Object subtreeDiff = viewMap.get(SUBTREE_DIFF);
+        if (null == subtreeDiff) {
+            return EnvConfig.getEnvConfig(facesContext).subtreeDiff;
+        }
+        return (Boolean.TRUE.equals(subtreeDiff));
+    }
+
+    /**
      * Returns the value of the context parameter org.icefaces.windowScopeExpiration.  The default value is 1000 milliseconds
      * and indicates the length of time window-scoped values remain valid in the session after a reload or redirect occurs.
      * This allows for postbacks that might occur quickly after a reload or redirect to successfully retrieve the relevant
@@ -431,6 +449,7 @@ class EnvConfig {
     String sessionExpiredRedirectURI;
     boolean standardFormSerialization;
     boolean strictSessionTimeout;
+    boolean subtreeDiff;
     long windowScopeExpiration;
     String mandatoryResourceConfig;
     boolean uniqueResourceURLs;
@@ -456,6 +475,7 @@ class EnvConfig {
         sessionExpiredRedirectURI = decodeString(initMap, EnvUtils.SESSION_EXPIRED_REDIRECT_URI, null, info);
         standardFormSerialization = decodeBoolean(initMap, EnvUtils.STANDARD_FORM_SERIALIZATION, false, info);
         strictSessionTimeout = decodeBoolean(initMap, EnvUtils.STRICT_SESSION_TIMEOUT, false, info);
+        subtreeDiff = decodeBoolean(initMap, EnvUtils.SUBTREE_DIFF, true, info);
         windowScopeExpiration = decodeLong(initMap, EnvUtils.WINDOW_SCOPE_EXPIRATION, 1000, info);
         mandatoryResourceConfig = decodeString(initMap, EnvUtils.MANDATORY_RESOURCE_CONFIG, null, info);
         uniqueResourceURLs = decodeBoolean(initMap, EnvUtils.UNIQUE_RESOURCE_URLS, true, info);
