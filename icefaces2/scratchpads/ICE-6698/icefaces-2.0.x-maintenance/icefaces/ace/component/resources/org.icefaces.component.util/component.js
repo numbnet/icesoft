@@ -25,11 +25,20 @@ String.prototype.trim = function () {
 
 ice.yui3 = {
     y : null,
+    getY: function() {
+        return ice.yui3.y;
+    },
     modules: {},
     use :function(callback) {
         if (ice.yui3.y == null) {
 			var Yui = ice.yui3.getNewInstance();
-			Yui.use('anim', 'plugin', 'pluginhost', function(Y) { // load modules required by the animation library
+			Yui.use('loader', 'oop', 'event-custom', 'attribute', 'base',
+                    'event', 'dom', 'node', 'event-delegate',
+                    // load modules required by the animation library
+                    'anim', 'plugin', 'pluginhost',
+                    // Specified by animation-v2.js
+                    //'json',
+                    function(Y) {
                 ice.yui3.y = Y;
                 callback(ice.yui3.y);
             });
@@ -69,9 +78,9 @@ ice.yui3 = {
 	yui3Base: '',
 	yui2in3Base: '',
 	facesServletExtension: '',
-	yui3TrailingPath: '',
-	yui2in3TrailingPath: '',
-	getNewInstance: function() {
+    yui3TrailingPath: '',
+    yui2in3TrailingPath: '',
+	getNewInstance: function() { // Private, only for use()
 		if (!(ice.yui3.yui3Base && ice.yui3.yui2in3Base)) {
 			//alert('1' + match[1] + '\n' + '2' + match[2] + '\n' + '3' + match[3]);
 			/*
@@ -108,7 +117,8 @@ ice.yui3 = {
 			ice.yui3.yui3TrailingPath = whole[3];
 			ice.yui3.yui2in3TrailingPath = library[1] + "ln=yui/2in3" + library[2];
 		}
-		
+
+        //filter:"raw"
 		var Y = YUI({combine: false, base: ice.yui3.yui3Base,
 			groups: {
 				yui2: {
@@ -149,7 +159,6 @@ ice.yui3 = {
 			return _one(id);
 		}
 		
-		Y.use('loader', 'oop', 'event-custom', 'attribute', 'base', 'event', 'dom', 'node', 'event-delegate'); // load base modules
 		return Y;
 	}
 };
