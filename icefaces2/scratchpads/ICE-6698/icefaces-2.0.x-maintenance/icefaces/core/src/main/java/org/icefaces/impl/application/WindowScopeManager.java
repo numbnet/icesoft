@@ -241,7 +241,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper {
                 id = UnusedScopeMap.getId();
                 //put something into the map to avoid beeing discarded
                 if (UnusedScopeMap.isEmpty()) {
-                    UnusedScopeMap.put("dummy-bean", new Serializable() {});
+                    UnusedScopeMap.put("dummy-bean", new java.io.Serializable() {});
                 }
                 UnusedScopeMap.activate(state);
                 associateWindowID(id, requestMap);
