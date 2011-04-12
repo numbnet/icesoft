@@ -98,6 +98,10 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
             wrapped.processPartial(phaseId);
             return;
         }
+        if (!isRenderAll() && !EnvUtils.isSubtreeDiff(facesContext))  {
+            wrapped.processPartial(phaseId);
+            return;
+        }
 
         if (phaseId == PhaseId.RENDER_RESPONSE) {
             try {
