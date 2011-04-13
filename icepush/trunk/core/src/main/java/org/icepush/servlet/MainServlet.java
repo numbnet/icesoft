@@ -37,13 +37,13 @@ import java.util.logging.Logger;
 
 public class MainServlet implements PseudoServlet {
     private static final Logger log = Logger.getLogger(MainServlet.class.getName());
-    protected final PushGroupManager pushGroupManager;
-    protected final PathDispatcher dispatcher;
-    protected final Timer timer;
-    protected final PushContext pushContext;
-    protected final ServletContext context;
-    protected final Configuration configuration;
-    protected final boolean terminateConnectionOnShutdown;
+    protected PushGroupManager pushGroupManager;
+    protected PathDispatcher dispatcher;
+    protected Timer timer;
+    protected PushContext pushContext;
+    protected ServletContext context;
+    protected Configuration configuration;
+    protected boolean terminateConnectionOnShutdown;
 
     public MainServlet(final ServletContext context) {
         this(context, true);
@@ -61,19 +61,19 @@ public class MainServlet implements PseudoServlet {
         pushContext.setPushGroupManager(pushGroupManager);
         dispatcher = new PathDispatcher();
 
-        addDefaultDispatches();
+        addDispatches();
     }
 
-    protected void addDefaultDispatches() {
+    protected void addDispatches() {
         dispatchOn(".*code\\.icepush", new BasicAdaptingServlet(new CacheControlledServer(new CompressingServer(new CodeServer("icepush.js")))));
         dispatchOn(".*", new BrowserDispatcher(configuration) {
             protected PseudoServlet newServer(String browserID) {
-                return createBrowserBoundServlet();
+                return createBrowserBoundServlet(browserID);
             }
         });
     }
 
-    protected PseudoServlet createBrowserBoundServlet() {
+    protected PseudoServlet createBrowserBoundServlet(String browserID) {
         return new BrowserBoundServlet(pushContext, context, pushGroupManager, timer, configuration, terminateConnectionOnShutdown);
     }
 
