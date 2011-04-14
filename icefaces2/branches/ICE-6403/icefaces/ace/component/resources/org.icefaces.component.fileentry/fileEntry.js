@@ -123,7 +123,10 @@ var ice_fileEntry = {
             formElem, 'javax.faces.partial.render', context.render);
         var hParAjax = ice_fileEntry.addHiddenInput(
             formElem, 'javax.faces.partial.ajax', 'true');
-        
+        // Flag specifying javascript, to differentiate our non-javascript mode
+        var hIceAjax = ice_fileEntry.addHiddenInput(
+            formElem, 'ice.fileEntry.ajaxResponse', 'true');
+			
         formElem.target = iframeId;
         var iframeElem = document.getElementById(iframeId);
         var iframeOnloadHandler = function() {
@@ -144,6 +147,7 @@ var ice_fileEntry = {
             formElem.removeChild( hParEx );
             formElem.removeChild( hParRend );
             formElem.removeChild( hParAjax );
+			formElem.removeChild( hIceAjax );
 
             // Set every fileEntry component in the form into the indeterminate
             // state, before progress notifications arrive, if icepush is present
