@@ -45,11 +45,11 @@ public class ListboxRenderer
                 Number partialSubmitDelay = (Number)
                         uiComponent.getAttributes().get("partialSubmitDelay");
                 root.setAttribute(getEventType(uiComponent),
-                        "Ice.selectChange(form,this,event,"+
+                        "setFocus('');Ice.selectChange(form,this,event,"+
                         partialSubmitDelay+");");
             }
             else {
-                root.setAttribute(getEventType(uiComponent), ICESUBMITPARTIAL);
+                root.setAttribute(getEventType(uiComponent), "setFocus('');" + ICESUBMITPARTIAL);
             }
             excludes.add(getEventType(uiComponent));
             //bug 419
