@@ -239,13 +239,11 @@ var ice_fileEntry = {
     setFormFileEntryStates : function(formElem, className) {
         var fileEntryDivs = ice_fileEntry.getElementsByClass(
                 "ice-file-entry",formElem,"div");
-        /*
+        
         var fileEntryLen = fileEntryDivs.length;
         var fileEntryIndex;
         for (fileEntryIndex = 0; fileEntryIndex < fileEntryLen; fileEntryIndex++) {
-         */
-        var fileEntryIndex;
-        for (fileEntryIndex in fileEntryDivs) {
+        
             var fileDiv = fileEntryDivs[fileEntryIndex];
             if (fileDiv) {
                 var outerDiv = fileDiv.childNodes[1];
