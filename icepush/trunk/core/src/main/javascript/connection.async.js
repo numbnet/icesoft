@@ -217,6 +217,7 @@ var AsyncConnection;
         }
 
         function resetTimeoutBomb() {
+            heartbeatTimeout = attributeAsNumber(configuration, 'heartbeatTimeout', 50000) + NetworkDelay;
             pendingTimeoutBombs = chainTimeoutBombs(timeoutThunks, heartbeatTimeout);
         }
 
