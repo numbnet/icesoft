@@ -49,12 +49,12 @@ public class ConfigurationServer implements Server {
     public ConfigurationServer(final PushContext context, final ServletContext servletContext, Configuration configuration, final Server server) {
         blockingConnectionServer = server;
         String contextPath = configuration.getAttribute("contextPath", (String) servletContext.getAttribute("contextPath"));
-        long blockingConnectionTimeout = configuration.getAttributeAsLong("blockingConnectionTimeout", defaultBlockingConnectionTimeout);
+        long heartbeatTimeout = configuration.getAttributeAsLong("heartbeatTimeout", defaultBlockingConnectionTimeout);
         int serverErrorRetries = configuration.getAttributeAsInteger("serverErrorRetryTimeouts", defaultServerErrorRetries);
 
         String configurationMessage = "<configuration" +
-                (blockingConnectionTimeout != defaultBlockingConnectionTimeout ?
-                        " heartbeatTimeout=\"" + blockingConnectionTimeout + "\"" : "") +
+                (heartbeatTimeout != defaultBlockingConnectionTimeout ?
+                        " heartbeatTimeout=\"" + heartbeatTimeout + "\"" : "") +
                 (serverErrorRetries != defaultServerErrorRetries ?
                         " serverErrorRetryTimeouts=\"" + serverErrorRetries + "\"" : "") +
                 (contextPath != null ?
