@@ -166,12 +166,12 @@ var AsyncConnection;
         //build callbacks only after 'connection' function was defined
         var retryTimeouts = collect(split(attributeAsString(configuration, 'serverErrorRetryTimeouts', '1000 2000 4000'), ' '), Number);
         var retryOnServerError = timedRetryAbort(connect, broadcaster(onServerErrorListeners), retryTimeouts);
-        var heartbeatTimeout = attributeAsNumber(configuration, 'heartbeatTimeout', 50000) + 5000;//allow max 5s of delay, possibly introduced by network
         var timeoutBomb = object(function(method) {
             method(stop, noop);
         });
 
         function resetTimeoutBomb() {
+            var heartbeatTimeout = attributeAsNumber(configuration, 'heartbeatTimeout', 50000) + 5000;//allow max 5s of delay, possibly introduced by network
             stop(timeoutBomb);
             timeoutBomb = runOnce(Delay(function() {
                 warn(logger, 'failed to connect, first retry...');
