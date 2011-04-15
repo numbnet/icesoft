@@ -27,6 +27,7 @@ import javax.faces.application.Resource;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.Cookie;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,6 +71,8 @@ public class EnvUtils {
     private static String RESOURCE_PREFIX = "/javax.faces.resource/";
     private static String PATH_TEMPLATE = "org.icefaces.resource.pathTemplate";
     private static String DUMMY_RESOURCE = "bridge.js";
+    private static String USER_AGENT_COOKIE = "com.icesoft.user-agent";
+    private static String HYPERBROWSER = "HyperBrowser";
     private static String[] DEFAULT_TEMPLATE = new String[]{RESOURCE_PREFIX, ".jsf"};
 
     //Use reflection to identify if the Portlet classes are available.
@@ -331,6 +334,21 @@ public class EnvUtils {
 
     public static boolean isUniqueResourceURLs(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).uniqueResourceURLs;
+    }
+
+    /**
+     * Returns true if the browser is enhanced with additional features.
+     *
+     * @param facesContext The current FacesContext.
+     * @return true if browser is enhanced.
+     */
+    public static boolean isEnhancedBrowser(FacesContext facesContext)  {
+        Cookie cookie = (Cookie) facesContext.getExternalContext()
+            .getRequestCookieMap().get(USER_AGENT_COOKIE);
+        if (null != cookie)  {
+            return cookie.getValue().startsWith(HYPERBROWSER);
+        }
+        return false;
     }
 
     public static boolean isICEfacesView(FacesContext facesContext) {
