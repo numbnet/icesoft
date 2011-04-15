@@ -244,7 +244,7 @@ if (!window.ice.icepush) {
                 configurationElement = message;
                 //update public values
                 publicConfiguration.contextPath = attributeAsString(configuration, 'contextPath', publicConfiguration.contextPath);
-                publicConfiguration.blockingConnectionURI = attributeAsString(configuration, 'blockingConnectionURI', publicConfiguration.blockingConnectionURI);
+                publicConfiguration.blockingConnectionURI = attributeAsString(configuration, 'blockingConnectionURI', publicConfiguration.blockingConnectionURI || applyURIPattern('listen.icepush'));
             });
             register(commandDispatcher, 'browser', function(message) {
                 document.cookie = BrowserIDCookieName + '=' + message.getAttribute('id');
