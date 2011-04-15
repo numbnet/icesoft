@@ -74,8 +74,8 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 	@ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),
     @ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
     @ResourceDependency(name="combined.js",library="org.icefaces.component.util"),
-    @ResourceDependency(name="animation.css",library="org.icefaces.component.animation"),	
-    @ResourceDependency(name="tabset.css",library="org.icefaces.component.tab")    
+    @ResourceDependency(name="yui2-skin-sam-tabview/assets/tabview-core.css",library="yui/2in3"),
+    @ResourceDependency(name="combined.css",library="org.icefaces.component.util")    
 })
 @ClientBehaviorHolder (events={"transition"}, defaultEvent="transition")
 public class TabSetMeta extends UIComponentBaseMeta {
