@@ -22,24 +22,16 @@
 package com.icesoft.faces.component.inputrichtext;
 
 import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.ResourceRegistryLocator;
-import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
-import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.util.pooling.ClientIdPool;
-
-
 import org.w3c.dom.Element;
-
-import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.net.URI;
 
 public class InputRichTextRenderer extends DomBasicInputRenderer {
-
+	
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         String clientId = uiComponent.getClientId(facesContext);
@@ -54,25 +46,6 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             if (inputRichText.getStyle() != null) {
                 root.setAttribute(HTML.STYLE_ATTR, inputRichText.getStyle());
             }
-        	Element wrap = domContext.createElement(HTML.DIV_ELEM);
-        	wrap.setAttribute(HTML.ID_ATTR, clientId + "wr");
-
-            if (!facesContext.getViewRoot().getAttributes().containsKey("richScript")) {
-                  facesContext.getViewRoot().getAttributes().put("richScript", "true");
-                Element cklib = domContext.createElement(HTML.SCRIPT_ELEM);
-                cklib.setAttribute(HTML.TYPE_ATTR, "text/javascript");
-                cklib.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, inputRichText.getCkBaseURI().toString()+ "/ckeditor.js"));
-                cklib.appendChild(domContext.createTextNodeUnescaped("alert('loaded')"));
-                wrap.appendChild(cklib);
-              
-                Element scrlib = domContext.createElement(HTML.SCRIPT_ELEM);
-                scrlib.setAttribute(HTML.TYPE_ATTR, "text/javascript");
-                scrlib.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, inputRichText.getCkBaseURI().toString()));
-                wrap.appendChild(scrlib);
-            }
-            root.getParentNode().appendChild(wrap);                  
-
-            
             
             Element textarea= domContext.createElement(HTML.TEXTAREA_ELEM);
             textarea.setAttribute(HTML.NAME_ATTR,  ClientIdPool.get(clientId));
@@ -96,17 +69,4 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             domContext.stepOver();
         }
     }
-
-    private void addHiddenField(DOMContext domContext, Element root,
-                                String fieldName, String value) {
-        Element hiddenFld = (Element) domContext.createElement(HTML.INPUT_ELEM);
-        hiddenFld.setAttribute(HTML.TYPE_ATTR, "hidden");
-        hiddenFld.setAttribute(HTML.ID_ATTR, fieldName);
-        hiddenFld.setAttribute(HTML.NAME_ATTR, fieldName);
-        if (value != null) {
-            hiddenFld.setAttribute(HTML.VALUE_ATTR, value);
-        }
-        root.appendChild(hiddenFld);
-    }
-
 }

@@ -24,105 +24,23 @@ package com.icesoft.faces.component.inputrichtext;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
-import com.icesoft.faces.context.JarResource;
-import com.icesoft.faces.context.Resource;
-import com.icesoft.faces.context.ResourceLinker;
-import com.icesoft.faces.context.ResourceRegistry;
-import com.icesoft.faces.context.ResourceRegistryLocator;
 import com.icesoft.faces.util.CoreUtils;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import java.io.ByteArrayInputStream;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public class InputRichText extends UIInput {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.InputRichText";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.InputRichTextRenderer";
-    public static final Resource ICE_CK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/ckeditor_ext.js");
-    private static final String CK_EDITOR_ZIP = "com/icesoft/faces/component/inputrichtext/ckeditor.zip";
-    private static final Date lastModified = new Date();
-    private static final Map ZipEntryCacheCK = new HashMap();    
+ 
     private Boolean partialSubmit = null;
 
-    private static void loadZipEntryCache() {
-        try {
-
-            
-            InputStream inCK = InputRichText.class.getClassLoader().getResourceAsStream(CK_EDITOR_ZIP);
-            ZipInputStream zipCK = new ZipInputStream(inCK);
-            ZipEntry entryCK;
-            while ((entryCK = zipCK.getNextEntry()) != null) {
-                if (!entryCK.isDirectory()) {
-                	ZipEntryCacheCK.put(entryCK.getName(), toByteArray(zipCK));
-                }
-            }            
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
- 
-
-    
-    private static final ResourceLinker.Handler CK_LINKED_BASE = new ResourceLinker.Handler() {
-        public void linkWith(ResourceLinker linker) {
-            synchronized (ZipEntryCacheCK) {
-                if (ZipEntryCacheCK.isEmpty()) {
-                    loadZipEntryCache();
-                }
-            }
-            Iterator i = ZipEntryCacheCK.keySet().iterator();
-            while (i.hasNext()) {
-                final String entryName = (String) i.next();
-                linker.registerRelativeResource(entryName, new Resource() {
-                    public String calculateDigest() {
-                        return String.valueOf(CK_EDITOR_ZIP + entryName);
-                    }
-
-                    public Date lastModified() {
-                        return lastModified;
-                    }
-
-                    public InputStream open() throws IOException {
-                        return new ByteArrayInputStream((byte[]) ZipEntryCacheCK.get(entryName));
-                    }
-
-                    public void withOptions(Resource.Options options) {
-                        options.setFileName(entryName);
-                        options.setLastModified(lastModified);
-                    }
-                });
-            }
-        }
-    };
-    
-    public static void loadFCKJSIfRequired() {
-        if (FacesContext.getCurrentInstance() != null && baseURI == null && exist.booleanValue()) {
-            ResourceRegistry registry =
-                    ResourceRegistryLocator.locate(FacesContext.getCurrentInstance());
-            if (registry != null) {
-      
-                ckBaseURI = registry.loadJavascriptCode(ICE_CK_EDITOR_JS, CK_LINKED_BASE);
-              
-                registry.loadJavascriptCode(ICE_CK_EDITOR_JS);
-            } else {
-                //LOG fckeditor's library has not loaded, component will not work as desired
-            }
-        }
-       
-        
-    }
 
     private String language;
     private String _for;
@@ -130,21 +48,14 @@ public class InputRichText extends UIInput {
     private String styleClass;
     private String width;
     private String height;
-    private static URI baseURI = null;
-    private static Boolean exist = Boolean.FALSE;
+ 
+ 
     private String toolbar;
     private String customConfigPath;
     private Boolean disabled = null;
     private String skin = null;
     private Boolean saveOnSubmit = null;
-    private static URI ckBaseURI = null;
-    public static URI getCkBaseURI() {
-		return ckBaseURI;
-	}
-
-	public static void setCkBaseURI(URI ckBaseURI) {
-		InputRichText.ckBaseURI = ckBaseURI;
-	}
+ 
 	
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
@@ -152,13 +63,6 @@ public class InputRichText extends UIInput {
 
     public String getComponentType() {
         return COMPONENT_TYPE;
-    }
-
-    public InputRichText() {
-        //the following static variables are used, so the library can be load 
-        //for each separate views 
-        baseURI = null;
-        exist = Boolean.TRUE;
     }
 
     public void decode(FacesContext facesContext) {
@@ -213,12 +117,6 @@ public class InputRichText extends UIInput {
 
     boolean isToolbarOnly() {
         return false;
-    }
-
-    public URI getBaseURI() {
-        if (baseURI == null)
-            loadFCKJSIfRequired();
-        return baseURI;
     }
 
     /**
@@ -445,13 +343,4 @@ public class InputRichText extends UIInput {
     }
 }
 
-class FCKJarResource extends JarResource {
 
-    public FCKJarResource(String path) {
-        super(path);
-    }
-
-    public void withOptions(Options options) throws IOException {
-
-    }
-}

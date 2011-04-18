@@ -21,24 +21,11 @@
 
 package com.icesoft.faces.component.ext.renderkit;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
-import com.icesoft.faces.component.inputrichtext.InputRichText;
-
 public class FormRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.FormRenderer {
     static private final String FOCUS_HIDDEN_FIELD = "ice.focus";
 
     static public String getFocusElementId() {
         return FOCUS_HIDDEN_FIELD;
-    }
-    
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
-    throws IOException {
-        super.encodeBegin(facesContext, uiComponent);
-        InputRichText.loadFCKJSIfRequired();
     }
 }
