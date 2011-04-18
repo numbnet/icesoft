@@ -391,34 +391,23 @@ if (!window.ice.icefaces) {
                     (form.id && form[form.id] && form.id == form[form.id].value);
         }
 
-        function findUpdatedForms(updates) {
-            return inject(updates.getElementsByTagName('update'), [], function(result, update) {
+        function collectUpdatedForms(updates, iterator) {
+            each(updates.getElementsByTagName('update'), function(update) {
                 var id = update.getAttribute('id');
                 var e = lookupElementById(id);
                 if (e) {
                     if (toLowerCase(e.nodeName) == 'form') {
                         if (isComponentRendered(e)) {
-                            append(result, e);//the form is the updated element
+                            iterator(e, true);//the form is the updated element
                         }
                     } else {
-                        var updatedForms = asArray(select(e.getElementsByTagName('form'), isComponentRendered));//find the enclosed forms
-                        result = concatenate(result, updatedForms);
+                        each(select(e.getElementsByTagName('form'), isComponentRendered), function(form) {
+                            iterator(form, false);
+                        });//find the enclosed forms
                     }
                 }
-
-                return result;
             });
         }
-
-        //store form parameters in case the form will be updated (and thus parameters lost)
-        var previousFormParameters = HashTable();
-        namespace.onBeforeUpdate(function(updates) {
-            each(findUpdatedForms(updates), function(form) {
-                if (deltaSubmit(form)) {
-                    putAt(previousFormParameters, form.id, form.previousParameters);
-                }
-            });
-        });
 
         //fix JSF issue: http://jira.icefaces.org/browse/ICE-5691 
         namespace.onAfterUpdate(function(updates) {
@@ -428,26 +417,19 @@ if (!window.ice.icefaces) {
 
             if (viewStateUpdate) {
                 var viewState = viewStateUpdate.firstChild.data;
-                var forms = findUpdatedForms(updates);
-                each(forms, function(form) {
+                collectUpdatedForms(updates, function(form, directUpdate) {
                     //add hidden input field to the updated forms that don't have it
                     if (!form['javax.faces.ViewState']) {
                         appendHiddenInputElement(form, 'javax.faces.ViewState', viewState, viewState);
                         debug(logger, 'append missing "javax.faces.ViewState" input element to form["' + form.id + '"]');
                     }
 
-                    //recalculate previous parameters for the updated forms if necessary
+                    //recalculate previous parameters for the updated forms
                     if (deltaSubmit(form)) {
-                        var previousParameters = at(previousFormParameters, form.id);
-                        if (previousParameters) {
-                            form.previousParameters = previousParameters;
-                        } else {
-                            debug(logger, 'recalculate initial parameters for updated form["' + form.id + '"]');
-                            form.previousParameters = HashSet(jsf.getViewState(form).split('&'));
-                        }
+                        debug(logger, 'recalculate initial parameters for updated form["' + form.id + '"]');
+                        form.previousParameters = HashSet(jsf.getViewState(form).split('&'));
                     }
                 });
-                previousFormParameters = HashTable();
             }
         });
 
