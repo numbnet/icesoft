@@ -49,7 +49,7 @@ import org.icefaces.component.baseMeta.UICommandMeta;
     @ResourceDependency(name="yui/yui-min.js",library="yui/3_1_1"),    
 	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
     @ResourceDependency(name="combined.js",library="org.icefaces.component.util"),
-	@ResourceDependency(name="pushbutton.css",library="org.icefaces.component.pushbutton")
+	@ResourceDependency(name="yui2-skin-sam-button/assets/button-core.css",library="yui/2in3")
 })
         
 public class PushButtonMeta extends UICommandMeta {
