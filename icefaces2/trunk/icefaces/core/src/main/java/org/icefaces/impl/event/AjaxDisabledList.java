@@ -55,22 +55,16 @@ public class AjaxDisabledList implements SystemEventListener {
         UIComponentBase component = (UIComponentBase) 
                 ((PostAddToViewEvent) event).getComponent();
 
-        Map behaviors = component.getClientBehaviors(); 
-        if (null == behaviors)  {
-            return;
-        }
-        boolean isDisabled = false;
-        Iterator theBehaviors = behaviors.values().iterator();
-        while (theBehaviors.hasNext())  {
-        	ClientBehavior behavior =   (ClientBehavior)((List) theBehaviors.next()).get(0);
-        	if(!(behavior instanceof AjaxBehavior)) continue;
-            if (((AjaxBehavior)behavior).isDisabled())  {
-                isDisabled = true;
-                break;
-            }
-        }
+        boolean isDisabled = isAjaxDisabled(component);
         if (isDisabled)  {
             UIForm theForm = getContainingForm(component);
+            if ((component instanceof UIForm) || isAjaxDisabled(theForm))  {
+                theForm.getAttributes().put(
+                        FormSubmit.DISABLE_CAPTURE_SUBMIT, "true");
+                //no need to list components if the form is ajaxDisabled
+                return;
+            }
+
             if (null != theForm)  {
                 String disabledList = (String) theForm.getAttributes()
                     .get(DISABLED_LIST);
@@ -86,10 +80,15 @@ public class AjaxDisabledList implements SystemEventListener {
     }
 
     public boolean isListenerForSource(Object source) {
-        return ( (source instanceof UIInput) || (source instanceof UICommand) );
+        return ( (source instanceof UIInput) || 
+                 (source instanceof UIForm) ||
+                 (source instanceof UICommand) );
     }
 
     public static UIForm getContainingForm(UIComponent component)  {
+        if (component instanceof UIForm)  {
+            return (UIForm) component;
+        }
         UIComponent parent = component.getParent();
         while ( (!(parent instanceof UIForm)) &&
                 (!(parent instanceof UIViewRoot)) )  {
@@ -101,5 +100,23 @@ public class AjaxDisabledList implements SystemEventListener {
         return null;
     }
 
+    public static boolean isAjaxDisabled(UIComponentBase component)  {
+        Map behaviors = component.getClientBehaviors(); 
+        if (null == behaviors)  {
+            return false;
+        }
+        boolean isDisabled = false;
+        Iterator theBehaviors = behaviors.values().iterator();
+        while (theBehaviors.hasNext())  {
+        	ClientBehavior behavior = (ClientBehavior)(
+                (List) theBehaviors.next() ).get(0);
+        	if(!(behavior instanceof AjaxBehavior)) continue;
+            if (((AjaxBehavior)behavior).isDisabled())  {
+                isDisabled = true;
+                break;
+            }
+        }
+        return isDisabled;
+    }
 }
 
