@@ -30,7 +30,6 @@ ice.component.pushbutton = {
 	 Y.on('domready', function(){
 	    var YAHOO = Y.YUI2;
 	 
-      //YAHOO.util.Event.onDOMReady(function() {
         //want the span id
         var spanId = clientId + "_span";
         YAHOO.log("clientId=" + clientId + " spanId=" + spanId);
