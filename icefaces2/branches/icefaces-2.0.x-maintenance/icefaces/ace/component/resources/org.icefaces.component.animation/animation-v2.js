@@ -19,26 +19,10 @@
  * Contributor(s): _____________________.
  */
 
-//----- Set global Y
-var Y = null;
-function setY(y) {
-	Y = y;
-}
+ice.yui3.use(function(Y) {
 
+    var anim;
 
-var anim;
-YUI({bootstrap:false}).use("plugin", "anim", "json",  function(Y) {
-
-	setY(Y);
-	
-	//------ Escape client ID
-	var _one = Y.one;
-	Y.one = function(id) {
-		id = id.replace(':', '\\:');
-		return _one(id);
-	}
-
-		
     function chain(ref) {
 		this.anim = ref;
 		this.anim.on("chainend", function() {

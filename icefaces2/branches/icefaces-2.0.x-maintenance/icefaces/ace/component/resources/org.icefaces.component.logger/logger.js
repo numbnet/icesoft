@@ -22,24 +22,23 @@
 ice.component.logger = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
 	
-	var thisYUI = ice.yui3.getNewInstance();
-	thisYUI.use('yui2-logger', function(Yui) {
-		var YAHOO = Yui.YUI2;
-	//setup Yahoo logger for either global/page or particular component
+        ice.yui3.use(function(Y){
+        Y.use('yui2-logger', function(Yui) {
+        Y.on('domready', function(){
 
-	YAHOO.util.Event.onDOMReady(function() {
+        //setup Yahoo logger for either global/page or particular component
+        var YAHOO = Yui.YUI2;
 	    var calLogReader = new YAHOO.widget.LogReader(null, {newestOnTop:false});
 	    calLogReader.setTitle("Yui Logger");
 	    calLogReader.hideSource("global");
 	    calLogReader.hideSource("LogReader");
-});
-	if (jsProps.debugElement){
-		var logger = new YAHOO.widget.LogReader("jsfProps.debugElement");
-	}
-	else{
-	  var logger = new YAHOO.widget.LogWriter("Page Console");
-	}
-	YAHOO.widget.Logger.enableBrowserConsole();
+        if (jsProps.debugElement){
+            var logger = new YAHOO.widget.LogReader("jsfProps.debugElement");
+        }
+        else{
+            var logger = new YAHOO.widget.LogWriter("Page Console");
+        }
+        YAHOO.widget.Logger.enableBrowserConsole();
 
 //		logger.log("params id"+clientId);
 
@@ -53,7 +52,9 @@ ice.component.logger = {
 //		} 
 //		
 //		bindYUI(button);
-	});
+        });
+	    });
+        });
 	},
 	
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
