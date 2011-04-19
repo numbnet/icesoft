@@ -93,6 +93,7 @@
     width: 20px;
     top: -2px;
     height: 5px;
+    left: 0;
 }
 
 .ice-skin-sam .yui3-slider-y .yui3-slider-rail-cap-bottom {
@@ -102,6 +103,7 @@
     width: 20px;
     bottom: -2px;
     height: 5px;
+    left: 0;
 }
 
 .ice-skin-sam .yui3-slider-y .yui3-slider-thumb {
@@ -132,4 +134,5 @@
 	background-repeat: no-repeat;
     height: 14px;
     width: 30px;
+    left: 0;
 }
