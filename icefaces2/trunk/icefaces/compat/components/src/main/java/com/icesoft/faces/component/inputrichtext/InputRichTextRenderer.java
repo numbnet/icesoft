@@ -46,7 +46,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             if (inputRichText.getStyle() != null) {
                 root.setAttribute(HTML.STYLE_ATTR, inputRichText.getStyle());
             }
-            
+
             Element textarea= domContext.createElement(HTML.TEXTAREA_ELEM);
             textarea.setAttribute(HTML.NAME_ATTR,  ClientIdPool.get(clientId));
             textarea.setAttribute(HTML.ID_ATTR,  ClientIdPool.get(clientId));
@@ -56,13 +56,12 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             	textarea.appendChild(domContext.createTextNode(String.valueOf(value)));
             }
             root.appendChild(textarea);
-            
-            Element scrptWrpr = domContext.createElement(HTML.DIV_ELEM);
-            scrptWrpr.setAttribute(HTML.ID_ATTR, clientId+ "scrptWrpr");
+
+            Element scrptWrpr = domContext.createElement(HTML.SPAN_ELEM);
+            scrptWrpr.setAttribute(HTML.ID_ATTR, clientId+ "scrpt");
             root.getParentNode().appendChild(scrptWrpr);
             Element scrpt = domContext.createElement(HTML.SCRIPT_ELEM);
             scrpt.setAttribute(HTML.TYPE_ATTR, "text/javascript");
-            scrpt.setAttribute(HTML.ID_ATTR, clientId+ "scrpt");
             scrpt.appendChild(domContext.createTextNodeUnescaped("renderEditor('"+ ClientIdPool.get(clientId) +"', '"+ inputRichText.getToolbar() +"')"));
             scrptWrpr.appendChild(scrpt);
 
