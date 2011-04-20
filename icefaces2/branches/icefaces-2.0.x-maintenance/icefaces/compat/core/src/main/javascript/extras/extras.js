@@ -5267,6 +5267,17 @@ Ice.Menu = {
 //modified version of Prototype's Element.clonePosition for IE
 Ice.clonePositionIE = function(element, source, options, sourceVOS) {
     logger.info('Using clonePosition() optimized for IE');
+    // Based on code from MSDN
+    var ieEngine = null;
+    if (window.navigator.appName == "Microsoft Internet Explorer") {
+        if (document.documentMode) {
+            ieEngine = document.documentMode;
+        } else if (document.compatMode && document.compatMode == "CSS1Compat") {
+            ieEngine = 7;
+        } else {
+            ieEngine = 5;
+        }
+    }
     var options = Object.extend({
         setLeft:    true,
         setTop:     true,
@@ -5320,7 +5331,11 @@ Ice.clonePositionIE = function(element, source, options, sourceVOS) {
             delta = parent.viewportOffset();
             parent['_viewportOffset'] = delta;
         } else {
-            delta = parent['_viewportOffset'];
+            if (ieEngine && ieEngine <= 7 && parent.nodeName.toLowerCase() == "html") {
+                delta = $(document.body).viewportOffset();
+            } else {
+                delta = parent['_viewportOffset'];
+            }
         }
     }
 
