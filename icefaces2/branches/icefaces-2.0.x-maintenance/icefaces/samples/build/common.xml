@@ -157,6 +157,22 @@
             <lib dir="${lib.application.dir}" erroronmissingdir="false">
                 <patternset refid="lib.distribute.application"/>
             </lib>
+            
+            <!-- Add the icefaces-ee-ext.jar only if it exists.  There are
+                 two possible locations depending on the EE distribution
+                 (src vs bin) so we look in both places.  In the src 
+                 distribution, the icefaces-ee project needs to be built first
+                 so that the .jar file is available. In non-EE builds we simply
+                 ignore the missing dir and do a normal build.
+            -->
+            <lib dir="../../../lib" erroronmissingdir="false">
+                <include name="icefaces-ee-ext.jar"/>
+            </lib>
+            
+            <lib dir="../../../../icefaces-ee/lib" erroronmissingdir="false">
+                <include name="icefaces-ee-ext.jar"/>
+            </lib>
+            
             <classes dir="${classes.dir}"/>
         </war>
         <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
