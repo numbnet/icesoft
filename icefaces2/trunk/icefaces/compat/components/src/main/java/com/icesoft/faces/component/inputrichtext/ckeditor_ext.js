@@ -1,10 +1,9 @@
 CKEDITOR.plugins.add('iceSave',{
     init:function(a){
-        var cmd = a.addCommand('iceSave',{exec:CKsaveAjax})
+        var cmd = a.addCommand('save',{exec:CKsaveAjax})
         a.ui.addButton('IceSave',{
             label:'Save',
-            command:'iceSave',
-            icon:this.path+"images/save.png"
+            command:'save'
         })
     }
 })
