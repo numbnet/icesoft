@@ -26,8 +26,7 @@ ice.component.linkButton = {
 //	 	  YAHOO.widget.Logger.enableBrowserConsole();
 //       }
 
-	  //YAHOO.util.Event.onDOMReady(function() {
-	 ice.yui3.use(function(Y){ 
+	 ice.yui3.use(function(Y){
      Y.use('yui2-button', function(Yui) {
 	 Y.on('domready', function(){
 		var YAHOO = Y.YUI2;

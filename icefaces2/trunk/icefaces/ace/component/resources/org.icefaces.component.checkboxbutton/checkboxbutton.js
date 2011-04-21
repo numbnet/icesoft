@@ -32,7 +32,6 @@ ice.component.checkboxbutton = {
 //      if (YAHOO.widget.Logger){
 //	 	  YAHOO.widget.Logger.enableBrowserConsole();
 //      }
-      //YAHOO.util.Event.onDOMReady(function() {    
        var spanId = clientId+"_span";
 	   var button = new YAHOO.widget.Button(spanId, {type: jsProps.type, tabindex: null});
 
