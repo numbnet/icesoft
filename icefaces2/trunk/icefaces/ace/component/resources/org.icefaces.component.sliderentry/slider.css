@@ -21,7 +21,9 @@
  */
 
 /* load core styling from YUI library */
+/*
 @import url('#{resource['yui/3_3_0/slider/assets/slider-core.css']}');
+*/
 .yui3-slider .sldrLbl {
 	margin-top:12px;
 }

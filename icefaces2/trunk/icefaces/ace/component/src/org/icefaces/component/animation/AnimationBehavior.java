@@ -40,7 +40,7 @@ import javax.faces.context.FacesContext;
                               @ResourceDependency(name="yui/yui-min.js",library="yui/3_3_0"),
                               @ResourceDependency(name="loader/loader-min.js",library="yui/3_3_0"),
                               @ResourceDependency(name="combined.js",library="org.icefaces.component.util"),
-                              @ResourceDependency(name="animation.css",library="org.icefaces.component.animation")
+                              @ResourceDependency(name="combined.css",library="org.icefaces.component.util")
                       })
 public class AnimationBehavior extends BehaviorBase {
     public final static String BEHAVIOR_ID = "org.icefaces.animation.Animation";
