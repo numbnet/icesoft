@@ -54,41 +54,10 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
                 "number as input. For more information, see the " +
                 "<a href=\"http://wiki.icefaces.org/display/ICE/SliderEntry\">Wiki doc</a>."
     )
-	
-/*
-	@ResourceDependency(name="loader/loader-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="oop/oop-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="yui/yui-later-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="event-custom/event-custom-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="attribute/attribute-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="event/event-base-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="pluginhost/pluginhost-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="dom/dom-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="node/node-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="event/event-delegate-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="event/event-focus-min.js",library="yui/3_1_1"),
-//	@ResourceDependency(name="event/event-synthetic-min.js",library="yui/3_2_0"),
-	@ResourceDependency(name="base/base-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="classnamemanager/classnamemanager-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="widget/widget-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="yui/yui-throttle-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="dd/dd-ddm-base-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="dd/dd-drag-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="dd/dd-constrain-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="dump/dump-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="substitute/substitute-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="slider/slider-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="intl/intl-min.js",library="yui/3_1_1"),
-	@ResourceDependency(name="widget/assets/skins/sam/widget.css",library="yui/3_1_1"),
-	@ResourceDependency(name="yahoo-dom-event/yahoo-dom-event.js",library="yui/2_8_1"),
-*/
-
 @ResourceDependencies({
     @ResourceDependency(name="yui/yui-min.js",library="yui/3_3_0"),
 	@ResourceDependency(name="loader/loader-min.js",library="yui/3_3_0"),
-	@ResourceDependency(name="util.js",library="org.icefaces.component.util"),
-    @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
-    @ResourceDependency(name="slider.js",library="org.icefaces.component.sliderentry"),
+    @ResourceDependency(name="combined.js",library="org.icefaces.component.util"),
 	@ResourceDependency(name="slider.css",library="org.icefaces.component.sliderentry")
 })
 
