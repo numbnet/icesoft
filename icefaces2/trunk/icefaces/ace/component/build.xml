@@ -47,7 +47,9 @@
   <property name="tld.file"   location="${build}/exploded/META-INF/components.tld"/>
   <property name="tld.jar"  location="${lib.dir}"/>
   <property name="smartsprites.basedir" location="../tools/smartsprites" />
-  
+  <property name="combined.js" location="${resources}/org.icefaces.component.util/combined.js"/>
+  <property name="combined.js.tmp" location="${combined.js}.tmp.js"/>
+
   <property name="root.dir.path" location="${build}/skins/in" />
   <property name="output.dir.path" location="${build}/skins/out" />
 
@@ -133,14 +135,13 @@
 		</sequential>
 	</macrodef>
 
-  <target name="compile" depends="prepare, generator-dist, compile-meta, generate, compile-base, compile-manual, compile-support, res-js-combine, res-copy"
+  <target name="compile" depends="prepare, generator-dist, compile-meta, generate, compile-base, compile-manual, compile-support, res-js-compress, res-js-no-compress, res-copy"
         description="compile the source " >
   </target>
 
-  <target name="res-js-combine"
-        description="Combine ACE javascript into a single file " >
-      <delete file="${resources}/org.icefaces.component.util/combined.js" verbose="true"/>
-      <concat destfile="${resources}/org.icefaces.component.util/combined.js" force="true" fixlastline="true">
+  <target name="res-js-combine">
+      <delete file="${combined.js.tmp}" verbose="true"/>
+      <concat destfile="${combined.js.tmp}" force="true" fixlastline="true">
           <filelist dir="${resources}/org.icefaces.component.util">
               <file name="util.js"/>
               <file name="component.js"/>
@@ -148,12 +149,34 @@
           <fileset dir="${resources}">
                <include name="org.icefaces.component.*/*.js"/>
                <exclude name="org.icefaces.component.util/*.js"/>
+               <!-- Nothing uses this -->
                <exclude name="org.icefaces.component.animation/animation-v2.js"/>
+               <!-- Special case, since want to work without YUI dependency -->
                <exclude name="org.icefaces.component.fileentry/fileEntry.js"/>
           </fileset>
       </concat>
   </target>
-  
+
+  <target name="res-js-compress" depends="res-js-combine" unless="no-compress">
+      <echo message="Compressing combined javascript code"/>
+      <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
+          <arg line="--preserve-semi"/>
+          <arg value="-o"/>
+          <arg value="${combined.js}"/>
+          <arg value="${combined.js.tmp}"/>
+      </java>
+  </target>
+
+  <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
+      <echo message="Not compressing combined javascript code"/>
+      <move file="${combined.js.tmp}" tofile="${combined.js}" overwrite="yes">
+          <filterchain>
+              <stripjavacomments/>
+              <ignoreblank/>
+          </filterchain>
+      </move>
+  </target>
+
   <target name="res-copy"
           description="Copy the resources into the exploded dir " >
     <copy todir="${exploded}/META-INF/resources">
