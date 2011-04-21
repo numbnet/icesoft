@@ -35,28 +35,11 @@ import javax.faces.component.behavior.FacesBehavior;
 
 import javax.faces.context.FacesContext;
 
-/*
-                              @ResourceDependency(name="oop/oop-min.js",library="yui/3_1_1"),
-                              @ResourceDependency(name="event-custom/event-custom-min.js",library="yui/3_1_1"),
-                              @ResourceDependency(name="attribute/attribute-base-min.js",library="yui/3_1_1"),
-                              @ResourceDependency(name="base/base-base-min.js",library="yui/3_1_1"),
-                              @ResourceDependency(name="event/event-base-min.js",library="yui/3_1_1"),
-                              @ResourceDependency(name="dom/dom-min.js",library="yui/3_1_1"),
-                              @ResourceDependency(name="node/node-min.js",library="yui/3_1_1"),
-                              @ResourceDependency(name="event/event-delegate-min.js",library="yui/3_1_1"),
-                              @ResourceDependency(name ="anim/anim-min.js",library = "yui/3_1_1"),
-                              @ResourceDependency(name ="plugin/plugin-min.js",library = "yui/3_1_1"),
-                              @ResourceDependency(name ="pluginhost/pluginhost-min.js",library = "yui/3_1_1"),
-*/
-
 @FacesBehavior("org.icefaces.animation.Animation")
 @ResourceDependencies({
                               @ResourceDependency(name="yui/yui-min.js",library="yui/3_3_0"),
                               @ResourceDependency(name="loader/loader-min.js",library="yui/3_3_0"),
-                              @ResourceDependency(name="util.js",library="org.icefaces.component.util"),
-                              @ResourceDependency(name="component.js",library="org.icefaces.component.util"),
-                              @ResourceDependency(name="yui3.js",library="org.icefaces.component.util"),
-                              @ResourceDependency(name="animation.js",library="org.icefaces.component.animation"),
+                              @ResourceDependency(name="combined.js",library="org.icefaces.component.util"),
                               @ResourceDependency(name="animation.css",library="org.icefaces.component.animation")
                       })
 public class AnimationBehavior extends BehaviorBase {

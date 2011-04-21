@@ -133,13 +133,34 @@
 		</sequential>
 	</macrodef>
 
-  <target name="compile" depends="prepare, generator-dist, compile-meta, generate, compile-base, compile-manual, compile-support" 
+  <target name="compile" depends="prepare, generator-dist, compile-meta, generate, compile-base, compile-manual, compile-support, res-js-combine, res-copy"
         description="compile the source " >
-    <copy todir="${exploded}/META-INF/resources">
-	    <fileset dir="${resources}"/>
-    </copy>    
+  </target>
+
+  <target name="res-js-combine"
+        description="Combine ACE javascript into a single file " >
+      <delete file="${resources}/org.icefaces.component.util/combined.js" verbose="true"/>
+      <concat destfile="${resources}/org.icefaces.component.util/combined.js" force="true" fixlastline="true">
+          <filelist dir="${resources}/org.icefaces.component.util">
+              <file name="util.js"/>
+              <file name="component.js"/>
+          </filelist>
+          <fileset dir="${resources}">
+               <include name="org.icefaces.component.*/*.js"/>
+               <exclude name="org.icefaces.component.util/*.js"/>
+               <exclude name="org.icefaces.component.animation/animation-v2.js"/>
+               <exclude name="org.icefaces.component.fileentry/fileEntry.js"/>
+          </fileset>
+      </concat>
   </target>
   
+  <target name="res-copy"
+          description="Copy the resources into the exploded dir " >
+    <copy todir="${exploded}/META-INF/resources">
+	    <fileset dir="${resources}"/>
+    </copy>
+  </target>
+
   <target name="compile-base">
     <javac srcdir="${build}/generated/base" destdir="${exploded}" debug="true" verbose="true" includeantruntime="false">
         <classpath refid="compile.run.classpath"/>
