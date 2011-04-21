@@ -33,19 +33,29 @@ import java.util.logging.Logger;
 public class LocalPushGroupManager extends AbstractPushGroupManager implements PushGroupManager {
     private static final Logger LOGGER = Logger.getLogger(LocalPushGroupManager.class.getName());
     private static final int GROUP_SCANNING_TIME_RESOLUTION = 3000; // ms
+    private static final OutOfBandNotifier NOOPOutOfBandNotifier = new OutOfBandNotifier() {
+        public void broadcast(PushMessage message, String[] uris) {
+            System.out.println("message send " + message + " to " + Arrays.asList(uris));
+        }
+
+        public void registerProvider(String protocol, NotificationProvider provider) {
+        }
+    };
 
     private final Map<String, PushID> pushIDMap = new HashMap<String, PushID>();
     private final Map<String, Group> groupMap = new HashMap<String, Group>();
-    private final Set parkedPushIDs = new HashSet();
+    private final HashMap parkedPushIDs = new HashMap();
     private final Observable inboundNotifier = new ReadyObservable();
     private final Observable outboundNotifier = new ReadyObservable();
     private final long groupTimeout;
     private final long pushIdTimeout;
+    private final ServletContext context;
 
     public LocalPushGroupManager(final ServletContext servletContext) {
         Configuration configuration = new ServletContextConfiguration("org.icepush", servletContext);
         this.groupTimeout = configuration.getAttributeAsLong("groupTimeout", 2 * 60 * 1000);
         this.pushIdTimeout = configuration.getAttributeAsLong("pushIdTimeout", 2 * 60 * 1000);
+        context = servletContext;
         inboundNotifier.addObserver(
                 new Observer() {
                     private long lastScan = System.currentTimeMillis();
@@ -73,6 +83,11 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
                         }
                     }
                 });
+    }
+
+    private OutOfBandNotifier getOutOfBandNotifier() {
+        Object attribute = context.getAttribute(OutOfBandNotifier.class.getName());
+        return attribute == null ? NOOPOutOfBandNotifier : (OutOfBandNotifier) attribute;
     }
 
     public void addMember(final String groupName, final String id) {
@@ -112,7 +127,10 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
 
     public void notifyObservers(final List pushIdList) {
         //unpark pushIds that become active again
-        parkedPushIDs.removeAll(pushIdList);
+        Iterator i = pushIdList.iterator();
+        while (i.hasNext()) {
+            parkedPushIDs.remove(i.next());
+        }
         inboundNotifier.notifyObservers(pushIdList);
     }
 
@@ -124,6 +142,23 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
             }
             outboundNotifier.notifyObservers(group.getPushIDs());
             pushed(groupName);
+        }
+    }
+
+    public void push(String groupName, PushMessage message) {
+        Group group = groupMap.get(groupName);
+        String[] pushIDs = group.getPushIDs();
+        HashSet uris = new HashSet();
+        for (int i = 0; i < pushIDs.length; i++) {
+            String pushID = pushIDs[i];
+            String uri = (String) parkedPushIDs.get(pushID);
+            if (uri != null) {
+                uris.add(uri);
+            }
+        }
+
+        if (!uris.isEmpty()) {
+            getOutOfBandNotifier().broadcast(message, (String[]) uris.toArray(new String[0]));
         }
     }
 
@@ -142,8 +177,10 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
         }
     }
 
-    public void park(String[] pushIds) {
-        parkedPushIDs.addAll(Arrays.asList(pushIds));
+    public void park(String[] pushIds, String notifyBackURI) {
+        for (int i = 0; i < pushIds.length; i++) {
+            parkedPushIDs.put(pushIds[i], notifyBackURI);
+        }
     }
 
     public void shutdown() {
@@ -269,7 +306,7 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
 
         private void discardIfExpired() {
             //expire pushId
-            if (!parkedPushIDs.contains(id) && lastAccess + pushIdTimeout < System.currentTimeMillis()) {
+            if (!parkedPushIDs.containsKey(id) && lastAccess + pushIdTimeout < System.currentTimeMillis()) {
                 if (LOGGER.isLoggable(Level.FINEST)) {
                     LOGGER.log(Level.FINEST, "'" + id + "' pushId expired.");
                 }

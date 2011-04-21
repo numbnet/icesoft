@@ -22,33 +22,7 @@
 
 package org.icepush;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Observer;
+public interface NotificationProvider {
 
-public interface PushGroupManager {
-    void addMember(String groupName, String pushId);
-
-    void addObserver(Observer observer);
-
-    void addPushGroupListener(PushGroupListener listener);
-
-    void deleteObserver(Observer observer);
-
-    Map<String, String[]> getGroupMap();
-
-    void notifyObservers(List pushIdList);
-
-    void push(String groupName);
-
-    void push(String groupName, PushMessage message);
-
-    void park(String[] pushIds, String notifyBackURI);
-
-    void removeMember(String groupName, String pushId);
-
-    void removePushGroupListener(PushGroupListener listener);
-
-    void shutdown();
-
+    void send(String uri, PushMessage message);
 }
