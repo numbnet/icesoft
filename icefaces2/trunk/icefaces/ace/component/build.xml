@@ -135,7 +135,7 @@
 		</sequential>
 	</macrodef>
 
-  <target name="compile" depends="prepare, generator-dist, compile-meta, generate, compile-base, compile-manual, compile-support, res-js-compress, res-js-no-compress, res-copy"
+  <target name="compile" depends="prepare, generator-dist, compile-meta, generate, compile-base, compile-manual, compile-support, res-js-compress, res-js-no-compress, res-css-combine, res-copy"
         description="compile the source " >
   </target>
 
@@ -175,6 +175,17 @@
               <ignoreblank/>
           </filterchain>
       </move>
+  </target>
+
+  <target name="res-css-combine">
+      <delete file="${resources}/org.icefaces.component.util/combined.css" verbose="true"/>
+      <concat destfile="${resources}/org.icefaces.component.util/combined.css" force="true" fixlastline="true">
+          <fileset dir="${resources}">
+              <include name="org.icefaces.component.*/*.css"/>
+              <exclude name="org.icefaces.component.util/*.css"/>
+              <exclude name="org.icefaces.component.skins/*.css"/>
+          </fileset>
+      </concat>
   </target>
 
   <target name="res-copy"
