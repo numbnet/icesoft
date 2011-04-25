@@ -122,7 +122,7 @@ public class MessagesRenderer extends HtmlBasicRenderer {
         }
 
         //Render "table" or "ul" level attributes.
-        writeIdAttributeIfNecessary(context, writer, component);
+//        writeIdAttributeIfNecessary(context, writer, component);
         if (null != styleClass) {
             writer.writeAttribute("class", styleClass, "styleClass");
         }
