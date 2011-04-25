@@ -53,7 +53,7 @@ function getToolbar(toolbar) {
 function renderEditor(editor, defaultToolbar) {
 	try {
 		if (CKEDITOR.instances[editor]) { 
-			CKEDITOR.remove(CKEDITOR.instances[editor]);
+			CKEDITOR.instances[editor].destroy();
 		} 
  
 		var editorInstance = CKEDITOR.replace(editor, {
