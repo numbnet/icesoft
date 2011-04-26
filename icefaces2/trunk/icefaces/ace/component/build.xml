@@ -129,6 +129,7 @@
 	<macrodef name="concatskin">
 		<attribute name="name"/>
 		<sequential>
+			<delete file="${resources}/${skins.lib}/@{name}.css" />
 			<concat destfile="${resources}/${skins.lib}/@{name}.css" append="true">
 				<fileset dir="${resources}/${skins.lib}/@{name}" includes="**/*.css"/>
 			</concat>
@@ -387,10 +388,6 @@
 		<!-- Map all URLs to the JSF format, CSS files already in the skins resource library will be overwritten -->
 		<cssurlmapper libraryname="${skins.lib}" inputdir="${output.dir.path}" outputdir="${resources}/${skins.lib}" />
 		
-		<!-- Generate a single CSS file per skin -->
-		<concatskin name="rime" />
-		<concatskin name="sam" />
-		
 		<!-- add files from the YUI library to the concatenated sam skin -->
 		<antcall target="concatyuisam" />
 		
@@ -399,6 +396,10 @@
 		<copy todir="${resources}/${skins.lib}/sam/sam_renamed">
 			<fileset dir="src/org/icefaces/component/skins/sam_renamed" includes="**" />
 		</copy>
+		
+		<!-- Generate a single CSS file per skin -->
+		<concatskin name="rime" />
+		<concatskin name="sam" />
 		
 	</target>
 	
