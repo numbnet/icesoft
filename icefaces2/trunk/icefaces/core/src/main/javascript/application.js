@@ -468,6 +468,11 @@ if (!window.ice.icefaces) {
             });
         });
 
+        //clear network listeners just before reloading or navigating away to avoid falsely notified errors
+        onBeforeUnload(window, function() {
+            networkErrorListeners = [];
+        });
+
         onKeyPress(document, function(ev) {
             var e = $event(ev);
             if (isEscKey(e)) cancelDefaultAction(e);
