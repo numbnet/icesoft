@@ -25,8 +25,11 @@ package org.icepush.servlet;
 import org.icepush.*;
 import org.icepush.http.standard.CacheControlledServer;
 import org.icepush.http.standard.CompressingServer;
+import org.icepush.util.ExtensionRegistry;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -115,5 +118,14 @@ public class MainServlet implements PseudoServlet {
     public void shutdown() {
         dispatcher.shutdown();
         timer.cancel();
+    }
+
+    public static class ExtensionRegistration implements ServletContextListener {
+        public void contextInitialized(ServletContextEvent servletContextEvent) {
+            ExtensionRegistry.addExtension(servletContextEvent.getServletContext(), 1, "org.icepush.MainServlet", MainServlet.class);
+        }
+
+        public void contextDestroyed(ServletContextEvent servletContextEvent) {
+        }
     }
 }
