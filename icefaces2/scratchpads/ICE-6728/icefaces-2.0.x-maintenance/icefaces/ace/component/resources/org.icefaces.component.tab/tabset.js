@@ -47,6 +47,18 @@ ice.component.tabset = {
     		   tabview.set('activeIndex', jsfProps.selectedIndex);      
     	   }
        }
+       else {
+           //alert("server side init");
+           if(!ice.component.clientState.has(clientId)) {
+               //alert("server side init - no context");
+               tabview.set('activeIndex', jsfProps.selectedIndex);
+               /*
+                       tabview.removeListener('activeTabChange');
+                       tabview.selectTab(currentIndex);
+                       tabview.addListener('activeTabChange', tabChange);
+               */
+           }
+       }
        
        /*
         if (!Ice.component.registeredComponents[clientId]) {
