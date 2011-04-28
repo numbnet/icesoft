@@ -181,13 +181,13 @@ public class TabSetRenderer extends Renderer{
 	        .entry("selectedIndex", selectedIndex).endMap().toString())
         .append(");");
        
-        //Initialize client side tab as soon as they inserted to the DOM
-        if (isClientSide) {
+////        //Initialize client side tab as soon as they inserted to the DOM
+////        if (isClientSide) {
             ScriptWriter.insertScript(facesContext, uiComponent, call.toString());
-        } else {
-        	//initialize server side tab lazily
-            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, call.toString(), HTML.ONMOUSEOVER_ATTR);
-        }
+////        } else {
+////        	//initialize server side tab lazily
+////            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, call.toString(), HTML.ONMOUSEOVER_ATTR);
+////        }
         
         //encode animation if any 
         final StringBuilder effect = new StringBuilder();
@@ -218,12 +218,12 @@ public class TabSetRenderer extends Renderer{
         }
         writer.writeAttribute(HTML.ID_ATTR, clientId+ "li"+ index, HTML.ID_ATTR);
         UIComponent labelFacet = ((TabPane)tab).getLabelFacet();
-        //if a server side tabset? then apply selected tab class
-        if (!tabSet.isClientSide()) {
-	        if (tabSet.getSelectedIndex() == index) {
-	            writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
-	        } 
-        }
+////        //if a server side tabset? then apply selected tab class
+////        if (!tabSet.isClientSide()) {
+////	        if (tabSet.getSelectedIndex() == index) {
+////	            writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
+////	        }
+////        }
         if (tabSet.isDisabled() || ((TabPane) tab).isDisabled()) {
             writer.writeAttribute(HTML.CLASS_ATTR, "disabled", HTML.CLASS_ATTR);
         }
@@ -232,9 +232,9 @@ public class TabSetRenderer extends Renderer{
             writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TAB_ROLE, ARIA.ROLE_ATTR);  
         }
         //Server side tab initializes lazily on mouse hover, here we are covering lazy initialization on focus
-        if (!tabSet.isClientSide()) {
-        	writer.writeAttribute(HTML.ONFOCUS_ATTR, "this.parentNode.parentNode.parentNode.onmouseover()", HTML.ONFOCUS_ATTR);
-        }
+////        if (!tabSet.isClientSide()) {
+////        	writer.writeAttribute(HTML.ONFOCUS_ATTR, "this.parentNode.parentNode.parentNode.onmouseover()", HTML.ONFOCUS_ATTR);
+////        }
         writer.writeAttribute(HTML.ID_ATTR, clientId+ "tab"+ index, HTML.ID_ATTR); 
         writer.writeAttribute(HTML.TABINDEX_ATTR, "0", HTML.TABINDEX_ATTR);
         writer.writeAttribute(HTML.CLASS_ATTR, "yui-navdiv", HTML.CLASS_ATTR);           
