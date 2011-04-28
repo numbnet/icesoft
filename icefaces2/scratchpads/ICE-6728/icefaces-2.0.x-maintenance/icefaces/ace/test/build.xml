@@ -1,0 +1,81 @@
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<project name="ace-test" default="war">
+
+    <!-- This property file is only used for EE builds and overrides various
+         property values if it is available. -->
+    <property file="../../../ee-bundle.properties"/>
+
+    <property file="../../build.properties"/>
+
+    <property name="classes.dir" value="web/WEB-INF/classes"/>
+    <property name="icefaces2.lib.dir" location="../../lib"/>
+
+    <target name="clean">
+        <delete dir="dist"/>
+        <delete dir="${classes.dir}"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="src" destdir="${classes.dir}">
+            <classpath>
+                <fileset dir="${icefaces2.lib.dir}">
+                    <include name="jsf-api.jar"/>
+                    <include name="el-api-2.2.1-b03.jar"/>
+                    <include name="javax.servlet.jar"/>
+		    <include name="icefaces.jar" />
+                </fileset>
+                <fileset dir="../component/dist">
+                    <include name="${icefaces-ace.lib.name}.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+        <copy todir="${classes.dir}/org/icefaces/demo/resources">
+            <fileset dir="src/org/icefaces/demo/resources" />
+        </copy>
+    </target>
+
+    <target name="war" depends="compile">
+        <mkdir dir="dist"/>
+        <war basedir="web" destfile="dist/${ant.project.name}.war">
+            <!--<war basedir="web" destfile="dist/${ant.project.name}.war" webxml="web/WEB-INF/web.xml">-->
+            <lib dir="${icefaces2.lib.dir}">
+                <include name="${icefaces.lib.name}.jar"/>
+                <include name="${icefaces-ace.lib.name}.jar"/>
+                <include name="jsf-api.jar"/>
+                <include name="jsf-impl.jar"/>
+                <include name="${icepush.lib.name}.jar"/>
+            </lib>
+<!--
+            <lib dir="../../../glimmer/compat/lib">
+                <include name="jstl.jar"/>
+            </lib>
+-->
+        </war>
+    </target>
+
+    <target name="intellij" depends="war">
+        <delete dir="C:/IdeaProjects/sparkle-showcase/out/exploded/testWeb"/>
+        <unwar src="dist/${ant.project.name}.war" dest="C:/IdeaProjects/sparkle-showcase/out/exploded/testWeb"/>
+    </target>
+</project>
