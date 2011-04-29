@@ -40,6 +40,7 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
+import com.icesoft.faces.utils.MessageUtils;
 import com.icesoft.util.CoreComponentUtils;
 
 import org.apache.commons.logging.Log;
@@ -60,6 +61,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
 
     private static Log log = LogFactory.getLog(PanelCollapsibleRenderer.class);
 
+    private static final String FOCUS_ANCHOR_TITLE = "com.icesoft.faces.component.panelcollapsible.FOCUS_ANCHOR_TITLE";
 
     public boolean getRendersChildren() {
         return true;
@@ -147,6 +149,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
 	            anchor.setAttribute(HTML.ONBLUR_ATTR, "Ice.pnlClpBlur(this);");
 	            anchor.setAttribute(HTML.STYLE_ATTR, "float:left;border:none;margin:0px;");
 	            anchor.setAttribute(HTML.HREF_ATTR, "#");
+	            anchor.setAttribute(HTML.TITLE_ATTR, MessageUtils.getResource(facesContext, FOCUS_ANCHOR_TITLE));
 	            anchor.appendChild(domContext.createTextNodeUnescaped("<img src=\"" + CoreUtils.resolveResourceURL(facesContext,
 	                    "/xmlhttp/css/xp/css-images/spacer.gif") + "\"/>"));
 	            div.appendChild(anchor);
@@ -173,18 +176,18 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
             }
             domContext.setCursorParent(header);
 
-			if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
 /*
+			if (CoreComponentUtils.isJavaScriptDisabled(facesContext)) {
 				Application application = facesContext.getApplication();
 				HtmlPanelGroup headerWrapper = (HtmlPanelGroup) application.createComponent(HtmlPanelGroup.COMPONENT_TYPE);
 				headerWrapper.setLayout("block");
 				headerWrapper.getAttributes().put(HTML.STYLE_ATTR, "background-color:transparent; line-height:18px; position:absolute; top:0px; left:0px;");
 				headerWrapper.getChildren().add(headerFacet);
 				CustomComponentUtils.renderChild(facesContext, headerWrapper);
-*/
 			} else {
+*/
 				CustomComponentUtils.renderChild(facesContext, headerFacet);
-			}
+//			}
 			
         }
 
