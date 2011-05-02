@@ -1,0 +1,167 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:icefacelets="http://www.icesoft.com/icefaces/facelet/tag">
+
+<ui:composition>
+
+<ice:panelGroup styleClass="requestsContainer">
+<table border="0" cellpadding="0" cellspacing="0" class="requestsTable">
+    <tr>
+        <th class="requestStatusHeader">Status</th>
+        <th class="requestDistHeader">Dist.</th>
+        <th class="requestLocationHeader">Pickup Location</th>
+    </tr>
+    <tr>
+    <!-- taxi status column -->
+        <td class="requestStatusColumn">
+
+        <ice:panelGroup styleClass="statusRow_#{taxicabmediator.currentRequest.relativeStatus}">
+            <!-- fair yet to be selected by a drivers -->
+            <ice:graphicImage
+                    value="./css/images/taxi_status_1.png"
+                    
+                    alt="Fair" title="Fair"
+                    width="56" height="35"
+                    rendered="#{taxicabmediator.currentRequest.relativeStatus eq 1}"/>
+
+            <!-- fair owned by this taxi driver -->
+            <ice:graphicImage
+                    value="./css/images/taxi_status_0.png"
+                    
+                    alt="Possible Fair" title="Possible Fair"
+                    width="56" height="35"
+                    rendered="#{taxicabmediator.currentRequest.relativeStatus eq 0}"/>
+
+            <!-- fiar completed -->
+            <ice:graphicImage
+                    value="./css/images/taxi_status_3.png"
+                    
+                    alt="Completed Fair" title="Completed Fair"
+                    width="56" height="35"
+                    rendered="#{taxicabmediator.currentRequest.relativeStatus eq 3}"/>
+        </ice:panelGroup>
+        </td>
+
+	    <td class="requestDistColumn">
+	    <ice:panelGroup styleClass="statusRow_#{taxicabmediator.currentRequest.relativeStatus}">
+	        <ice:outputText value="#{taxicabmediator.currentRequest.taxiRequest.distance}"/>
+	    </ice:panelGroup>
+	    </td>
+
+	    <td class="requestLocationColumn">
+	    <ice:panelGroup styleClass="statusRow_#{taxicabmediator.currentRequest.relativeStatus}">
+	        <table border="0" cellpadding="0" cellspacing="0"
+	               width="100%">
+	            <tr>
+	                <td>
+	                    <ice:commandLink styleClass="noLink"
+	                                     actionListener="#{taxicabmediator.currentRequest.toggleMap}" >
+	                        <ice:outputText value="#{taxicabmediator.currentRequest.taxiRequest.name} - #{taxicabmediator.currentRequest.taxiRequest.address} #{taxicabmediator.currentRequest.taxiRequest.city}"/>
+	                    </ice:commandLink>
+	                </td>
+	                <td align="right" valign="middle"
+	                    style="display: table-cell; line-height: normal; height: 22px;">
+	                    <ice:commandButton title="Close/Unselect Request"
+	                                       actionListener="#{taxicabmediator.unselectTaxiClientRequest}"
+	                                       alt="Close/Unselect Request"
+	                                       image="./css/images/button_close_request_#{taxicabmediator.currentRequest.relativeStatus}.png"/>
+	                </td>
+	            </tr>
+	        </table>
+	    </ice:panelGroup>
+	    </td>
+    </tr>
+
+    <tr>
+	    <!-- taxi status column --> 
+	    <td class="requestETAColumn" colspan="2">
+	        <ice:panelGroup styleClass="statusRow_#{taxicabmediator.currentRequest.relativeStatus}" >
+                                <ice:outputLabel for="eta" 
+                                                 rendered="#{not taxicabmediator.acceptableTaxiClientPickup and taxicabmediator.currentRequest.relativeStatus eq 1}"
+                                                 value="ETA:"/>
+                                <ice:outputText id="eta"
+                                                rendered="#{not taxicabmediator.acceptableTaxiClientPickup and taxicabmediator.currentRequest.relativeStatus eq 1}"
+                                                value="#{taxicabmediator.currentRequest.taxiRequest.eta} min."/>
+            </ice:panelGroup>
+	    </td>
+
+
+	    <td class="requestLocationColumn">
+	        <ice:panelGroup styleClass="statusRow_#{taxicabmediator.currentRequest.relativeStatus}">
+	        <table border="0" cellpadding="0" cellspacing="0"
+	               width="100%">
+	            <tr>
+	                <td>
+	                    <ice:panelGrid  columns="2"
+	                                    rendered="#{not taxicabmediator.acceptableTaxiClientPickup and taxicabmediator.currentRequest.relativeStatus eq 1}"
+	                                    columnClasses="requestAcceptedColumns"
+	                                    border="0" cellpadding="0" cellspacing="0" >
+
+	                        <ice:commandLink title="Early"
+	                                         actionListener="#{taxicabmediator.subtractETATime}" >
+	                            <f:param value="5" name="etaParam" />
+	                            <img src="./css/images/button_decrease_eta.png"
+	                                 alt="Accept Request"
+	                                 title="5 Min Late" />
+	                        </ice:commandLink>
+	                        <ice:commandLink title="Late"
+	                                         actionListener="#{taxicabmediator.addETATime}" >
+	                            <f:param value="5" name="etaParam" />
+	                            <img src="./css/images/button_increase_eta.png"
+	                                 alt="Accept Request"
+	                                 title="10 Min Late" />
+	                        </ice:commandLink>
+	                    </ice:panelGrid>
+	                    <ice:panelGroup rendered="#{taxicabmediator.currentRequest.relativeStatus eq 2}" >
+	                        <ice:outputText value="Request Cancelled by client." style="font-weight: bold;"/>
+	                    </ice:panelGroup>
+	                    <ice:panelGroup rendered="#{taxicabmediator.currentRequest.relativeStatus eq 3}" >
+	                        <ice:outputText value="Client has been picked up." style="font-weight: bold;"/>
+	                    </ice:panelGroup>
+	                </td>
+	                <td align="right" valign="middle"
+	                    style="display: table-cell; line-height: normal; height: 22px;">
+	                   <ice:commandButton rendered="#{not taxicabmediator.acceptableTaxiClientPickup and taxicabmediator.currentRequest.relativeStatus eq 1}"
+	                                      title="Arrived"
+	                                      actionListener="#{taxicabmediator.arrived}"
+	                                      alt="Arrived"
+	                                      image="./css/images/button_arrived.png"/>
+	                   <ice:commandButton rendered="#{taxicabmediator.acceptableTaxiClientPickup}"
+	                                      title="Accept Request"
+	                                      actionListener="#{taxicabmediator.acceptTaxiClientPickup}"
+	                                      alt="Accept Request"
+	                                      image="./css/images/button_accept_request.png"/>
+	
+	                </td>
+	            </tr>
+	        </table>
+	    </ice:panelGroup>    
+	    </td>
+    </tr>
+    <tr>
+    <td colspan="3">
+        <div>    
+            <ice:gMap id="gmap"
+                      address="#{taxicabmediator.currentRequest.taxiRequest.address},#{taxicabmediator.currentRequest.taxiRequest.city}"
+                      styleClass="googleMapsCell"
+                      rendered="#{taxicabmediator.currentRequest.mapRendered}" >
+                <ice:gMapControl id="largectrl" 
+                                 name="GSmallMapControl" />
+                <ice:gMapControl id="typectrl" 
+                                 name="GMapTypeControl" />
+            </ice:gMap>
+        </div>
+    </td>
+    </tr>
+</table>
+
+</ice:panelGroup>
+
+
+
+</ui:composition>
+
+</f:view>

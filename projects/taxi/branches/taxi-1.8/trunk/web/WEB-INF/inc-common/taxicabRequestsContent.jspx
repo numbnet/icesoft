@@ -1,0 +1,84 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+<ui:composition>
+
+        <ice:panelGroup styleClass="requestsContainer">
+            <ice:dataTable border="0" cellpadding="0" cellspacing="0"
+                           styleClass="requestsTable"
+                           headerClasses="requestStatusHeader, requestDistHeader, requestLocationHeader"
+                           columnClasses="requestStatusColumn, requestDistColumn, requestLocationColumn"
+                           value="#{taxicabmediator.taxiPickupRequests}"
+                           rows="6"
+                           var="wrappedTaxiRequest">
+                <!-- status column -->
+                <ice:column>
+                    <!--
+                        row slecect decloration for selecting rows, also used
+                        to lock a record based on selected boolean value.
+                    -->
+                      <ice:rowSelector
+                            multiple="false"
+                            selectedClass="selectedRequestSelector"
+                            mouseOverClass="selectedRequestRolloverSelector"
+                            value="#{wrappedTaxiRequest.taxiRequest.selected}"
+                            selectionListener="#{taxicabmediator.selectTaxiClientRequest}"/>
+                    <f:facet name="header">
+                        Status
+                    </f:facet>
+
+                    <div class="statusRow_#{wrappedTaxiRequest.relativeStatus}"
+                            style="cursor: pointer;">
+                        <!-- fair yet to be selected by a drivers-->
+                        <ice:graphicImage value="./css/images/taxi_status_1.png"
+                        
+                             alt="Fair" title="Fair"
+                             width="56" height="35"
+                             rendered="#{wrappedTaxiRequest.relativeStatus eq 1}" />
+
+                        <!-- fair owned by this taxi driver -->
+                        <ice:graphicImage value="./css/images/taxi_status_0.png"
+                        
+                             alt="Possible Fair" title="Possible Fair"
+                             width="56" height="35"
+                             rendered="#{wrappedTaxiRequest.relativeStatus eq 0}" />
+
+                        <!-- fiar completed -->
+                        <ice:graphicImage value="./css/images/taxi_status_3.png"
+                        
+                             alt="Completed Fair" title="Completed Fair"
+                             width="56" height="35"
+                             rendered="#{wrappedTaxiRequest.relativeStatus eq 3}" />
+                   </div> 
+                </ice:column>
+
+                <!-- distance column -->
+                <ice:column >
+                    <f:facet name="header">
+                        Dist.
+                    </f:facet>
+                    <ice:outputText
+                            styleClass="statusRow_#{wrappedTaxiRequest.relativeStatus}"
+                            style="cursor: pointer;"
+                            value="#{wrappedTaxiRequest.taxiRequest.distance}" />
+                </ice:column>
+
+                <!-- location column -->
+                <ice:column>
+                    <f:facet name="header">
+                        Pickup Location
+                    </f:facet>
+                        <ice:outputText
+                                styleClass="statusRow_#{wrappedTaxiRequest.relativeStatus}"
+                                style="cursor: pointer;"
+                                value="#{wrappedTaxiRequest.taxiRequest.address} #{wrappedTaxiRequest.taxiRequest.coords} #{wrappedTaxiRequest.taxiRequest.city} - #{wrappedTaxiRequest.taxiRequest.statusLabel}" />
+                </ice:column>
+            </ice:dataTable>
+        </ice:panelGroup>
+
+</ui:composition>
+
+</f:view>

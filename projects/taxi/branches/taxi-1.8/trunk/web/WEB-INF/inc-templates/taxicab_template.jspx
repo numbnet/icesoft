@@ -1,0 +1,49 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+<ice:outputDeclaration doctypeRoot="HTML"
+                       doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
+                       doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+<html>
+<head>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8"></meta>
+    <meta name="viewport" content="width=480; initial-scale=1.0; maximum-scale=1.0;" />
+    <title>
+        ICEfaces Taxi Demo - Taxi Cab
+    </title>
+    <ice:outputStyle href="css/mobile_ajax.css" />
+</head>
+<body>
+<ice:form>
+        
+<div class="taxicabContainer">
+
+    <!-- header-->
+    <div class="smHeaderMobile">
+        <!--<ice:commandLink actionListener="#{mediator.logout}">-->
+            <div class="headerLogo" />
+        <!--</ice:commandLink>-->
+    </div>
+    <div class="headerTile" />
+
+    <!-- body -->
+    <div class="smBodyMobile">
+        <div>
+            <!-- Page content insert -->
+            <ui:insert name="pageContent">
+                Default cabbie template page body content.
+            </ui:insert>
+        </div>
+    </div>
+
+</div>
+
+</ice:form>
+
+</body>
+</html>
+</f:view>

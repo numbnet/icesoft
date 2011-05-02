@@ -1,0 +1,23 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ice="http://www.icesoft.com/icefaces/component"
+     class="pickupRequestMesssage">
+
+    <p class="pickupRequestName" >
+        <ice:outputText value="#{clientmediator.currentRequest.taxiRequest.name}" />
+    </p>
+
+
+    <p>Are you sure you want to order <br/>
+    a taxi at this address?</p>
+
+
+    <ice:outputText value="#{clientmediator.currentRequest.taxiRequest.address}"
+                    styleClass="pickupRequestAddress"/>
+
+    <br />
+    <br />
+</div>
+

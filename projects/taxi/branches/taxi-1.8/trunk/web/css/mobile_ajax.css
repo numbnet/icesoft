@@ -1,0 +1,351 @@
+body, div{
+    margin: 0;
+    padding: 0;
+    /* remove scroll bars 
+    overflow:hidden;*/
+}
+body {
+    font-size: 0.9em;
+    font-family: sans-serif;
+}
+
+img{
+    border: none;
+}
+
+/* main layout panels for the mobile screen */
+.clientContainer, .taxicabContainer {
+    height: 100%;
+    border: 1px solid gray;
+    width: 100%;
+}
+
+/* template styles for small mobile template */
+.smHeaderMobile, .lgHeaderMobile {
+    height: /*11%;*/37px;
+    display: block;
+    background-image: url( './images/sm_header_gradient.gif' );
+    background-position: top left;
+    background-repeat: repeat-x;
+}
+
+.smHeaderMobile .headerLogo {
+	/*z-index: 1000;*/
+    /*top: 14px;*/
+    margin: 0 auto;
+    height: /*17%;*/57px;
+    width: 98px;
+    position: relative;
+    background-image: url( './images/sm_header_logo.png' );
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.lgHeaderMobile .headerLogo {
+    top: 14px;
+    left: 357px;
+    height: 57px;
+    width: 98px;
+    position: relative;
+    background-image: url( './images/sm_header_logo.png' );
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.headerTile {
+    height: /*4%;*/14px;
+    background-image: url( './images/checker_tile.gif' );
+    background-position: left;
+    background-repeat: repeat-x;
+}
+
+.smBodyMobile, .lgBodyMobile {
+    height: /*61%;*/ 245px;
+    background-image: url( './images/lg_body_gradient.png' );
+    background-position: top;
+    background-repeat: repeat-x;
+}
+
+.lgBodyMobile {
+    background-image: url( './images/lg_body_gradient.png' );
+    height: 268px;
+}
+
+.smBodyMobile > div {
+    padding-top: 15px;
+}
+
+.smFooterMobile {
+    text-align: center;
+    vertical-align: middle;
+    /*border: 1px solid;*/
+    height: /*14%;*/46px;
+    display: block;
+    background-image: url( './images/sm_footer_gradient.png' );
+    background-position: bottom;
+    background-repeat: repeat-x;
+}
+
+.pageContent {
+
+}
+/* end of small mobile template */
+
+
+/* Styles specific to login screen */
+.loginContainer {
+    margin: 0 auto;
+    width: 275px;
+    padding-top: 0;
+}
+
+.loginContainer p {
+    font-weight: bold;
+    padding-top: 0;
+}
+
+.loginControl {
+    padding-left: 25px;
+}/*
+.loginControl {
+    text-align: right;
+}
+ end  login screen */
+
+
+/* style specific to client request a taxi */
+.clientRequestContainer{
+    margin: 0 auto;
+    width: 210px;
+    padding-top: 0;
+}
+.clientPickupTitle{
+    font-weight: bold;
+    font-size: 0.8em;
+    margin: 10px;
+    margin-left: 1px;
+}
+
+/* request dialog */
+.clientRequestDialog {
+    z-index: 1000;
+    top: 60px;/*16%;*/
+    left: 16%;/*15%;*/
+    position: absolute;
+    width: 68%;/*220px;*/
+    height: 230px;/*175px;*/
+    padding: 1px;
+    border: 1px solid #dcdcdc;
+    background-color: white;
+}
+.clientRequestDialogHdr {
+    background-color: #EFEFEF;
+    background-image: url( './images/dialog_gray_gradient.png' );
+    background-position: bottom;
+    background-repeat: repeat-x;
+    height: 25px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.clientRequestDialogBody, .clientRequestStatusDialogBody {
+    text-align: center;
+    font-size: 0.8em;
+}
+
+.clientRequestDialogBody .pickupRequestName{
+    font-weight: bold;
+}
+.clientRequestDialogBody .pickupRequestAddress{
+    color: #fd7f00;
+}
+/* status spsecific lables and staus colors */
+.clientRequestDialogBody .pickUpRequestLabel{
+    font-weight: bold;
+}
+.clientRequestDialogBody .pickupRequestRequest{
+    color: #61a55c;
+}
+.clientRequestDialogBody .pickupRequestStatus0{
+    color: #ff7b01;
+}
+.clientRequestDialogBody .pickupRequestStatus1{
+    color: red;
+}
+.clientRequestDialogBody .pickupRequestStatus2{
+    color: #61a55c;
+}
+.clientRequestDialogBody .pickupRequestStatus3{
+    color: #61a55c;
+}
+
+input.mobile, textarea.mobile{
+   border: 1px solid #cccccc;
+   width: 200px;
+   padding: 4px;
+   margin: 1px;
+
+}
+/*
+input.mobile:focus, textarea.mobile:focus {
+    background-color:#DEEFFF;
+}
+*/
+input.mobile{
+    font-size: 0.8em;
+}
+textarea.mobile{
+    font-size: 0.8em;
+    font-family: sans-serif;
+}
+.verticalAlign{
+    vertical-align: middle;
+    padding-top: 10px;
+}
+/* end request a taxi */
+
+/*  requests taxi cab view screen. */
+.requestsContainer{
+    padding: 10px;
+}
+.requestsTable{
+    width: 100%; /*460px*/
+    border: 1px solid #dcdcdc;
+    background-color: white;
+    /*font-size: 0.8em;*/
+    font-weight: normal;
+}
+
+.requestsTableColHdr3{
+    text-align: left;
+    border-left: 1px solid white;
+}
+.requestStatusHeader, .requestDistHeader, .requestLocationHeader{
+    background-image: url( './images/request_header_gradient.png' );
+    /*height: 25px;*/
+    font-size: 0.8em;
+    font-weight: bold;
+    background-position: bottom;
+    background-repeat: repeat-x;
+    border-left: 1px solid white;
+    border-bottom: 1px solid white;
+}
+.requestStatusHeader{
+
+}
+.requestDistHeader{
+
+}
+.requestLocationHeader{
+    text-align: left;
+    border-right: 1px solid white;
+}
+.requestStatusColumn, .requestDistColumn, .requestLocationColumn, .requestETAColumn{
+    text-align: center;
+    /*border-left: 1px solid white;*/
+    /*border-bottom: 1px solid white;*/
+    vertical-align: middle;
+    /*height: 35px;*/
+}
+.requestStatusColumn{
+    width: 12%;/*56px;*/
+    text-align: center;
+}
+.requestDistColumn{
+    width: 9%;/*40px;*/
+}
+.requestLocationColumn{
+    width: 79%;/*364px;*/
+    text-align: left;
+    /*border-right: 1px solid white;*/
+}
+
+.requestAcceptedColumns{
+	width: 111px;
+	vertical-align: middle;
+	display: table-cell;
+	line-height: normal;
+	height: 22px;
+}
+
+.taxiStatusUserFair{
+    background-color: #c6e1f6;
+}
+.taxiStatusOtherFair{
+    background-color: #ffeab3;
+}
+.taxiStatusPending{
+    background-color: #e6e6e6;
+}
+
+.selectedRequestSelector{
+    background-color: #dedede;
+}
+.selectedRequestRolloverSelector{
+    background-color: #94cbff;
+}
+
+.statusRow_0, .statusRow_1, .statusRow_2, .statusRow_3{
+    display: block;
+    height: /*100%;*/35px;
+    line-height: /*100%;*/35px;
+    vertical-align: middle;
+}
+/* status 0 = pending pickup*/
+.statusRow_0{
+    background-color: #f2f2f2;
+}
+/* status 1 = dispatched pickup*/
+.statusRow_1{
+    background-color: #c6e1f6;
+}
+/* status 2 = canceled pickup*/
+.statusRow_2{
+    background-color: #ffeab3;
+
+}
+/* status 3 = completed pickup*/
+.statusRow_3{
+    background-color: #ffeab3;
+
+}
+
+/* end of request taxi cab view screen */
+.requestDetails{
+    background-color: white;
+}
+
+/* taxi request details page */
+
+.iceGmp{}
+.iceGmpMapTd {
+    vertical-align: top;
+}
+
+.iceGmpMapTd div.gmap{
+    width:300px;
+    height:300px;
+}
+
+.noLink{
+    text-decoration: none;
+    color: #000000;
+    
+}
+
+.dispatchedStatusHeader{
+    background-image: url( './images/request_details_gradient.png' );
+    height: 25px;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-align: center;
+    background-position: bottom;
+    background-repeat: repeat-x;
+    border-left: 1px solid white;
+    border-bottom: 1px solid white;
+}
+.dispatchedStatusBody{
+    background-color: white;
+    font-size: 0.9em;
+}
+/* end of taxi request details page*/

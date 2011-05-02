@@ -1,0 +1,28 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+<ui:composition>
+
+        <ice:panelGroup styleClass="loginContainer">
+            <ice:panelGroup styleClass="loginControl">
+                <p style="background-color: transparent;">Pick Your Login Preference:</p>
+                <!-- Demo Purposes, only two ways to get in, driver or client -->
+                <ice:selectOneRadio
+                        value="#{mediator.userFactory.loginType}"
+                        partialSubmit="true">
+                    <f:selectItems
+                            value="#{mediator.userFactory.loginTypeItems}"/>
+                </ice:selectOneRadio>
+                <br/>
+                <ice:commandButton actionListener="#{mediator.login}"
+                                   title="Login" alt="Login"
+                                   image="./css/images/button_login.png"/>
+            </ice:panelGroup>
+        </ice:panelGroup>
+
+</ui:composition>
+
+</f:view>
