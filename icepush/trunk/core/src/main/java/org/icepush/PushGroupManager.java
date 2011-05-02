@@ -35,6 +35,8 @@ public interface PushGroupManager {
 
     void deleteObserver(Observer observer);
 
+    String[] getPendingNotifications();
+
     Map<String, String[]> getGroupMap();
 
     void notifyObservers(List pushIdList);
