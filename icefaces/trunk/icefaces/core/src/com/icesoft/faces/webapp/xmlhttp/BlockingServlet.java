@@ -39,7 +39,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 
 //todo: deprecate this class
 public class BlockingServlet extends HttpServlet {
@@ -52,6 +55,12 @@ public class BlockingServlet extends HttpServlet {
 
     public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
         Servlet servlet = (PersistentFacesServlet) context.getAttribute(PersistentFacesServlet.class.getName());
-        servlet.service(servletRequest, servletResponse);
+        try {
+            servlet.service(servletRequest, servletResponse);
+        } catch (SessionExpiredException e)  {
+            //Look at moving this into MainServlet instead
+            ((HttpServletResponse) servletResponse)
+                    .sendError(500, e.getMessage());
+        }
     }
 }

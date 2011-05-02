@@ -34,6 +34,7 @@ package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 import com.icesoft.util.ThreadLocalUtility;
 
 import java.io.Externalizable;
@@ -111,32 +112,36 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
     protected abstract PseudoServlet newServer(HttpSession session, Monitor sessionMonitor, Authorization authorization) throws Exception;
 
-    protected void checkSession(HttpSession session) throws Exception {
-        final String id = getId(session);
-        final Monitor monitor;
-        synchronized (SessionMonitors) {
-            if (!SessionMonitors.containsKey(id)) {
-                monitor = new Monitor(session);
-                SessionMonitors.put(id, monitor);
-            } else {
-                monitor = (Monitor) SessionMonitors.get(id);
+    protected void checkSession(HttpSession session) throws SessionExpiredException {
+        try {
+            final String id = getId(session);
+            final Monitor monitor;
+            synchronized (SessionMonitors) {
+                if (!SessionMonitors.containsKey(id)) {
+                    monitor = new Monitor(session);
+                    SessionMonitors.put(id, monitor);
+                } else {
+                    monitor = (Monitor) SessionMonitors.get(id);
+                }
+                //it is possible to have multiple web-app contexts associated with the same session ID
+                monitor.addInSessionContext(context);
             }
-            //it is possible to have multiple web-app contexts associated with the same session ID
-            monitor.addInSessionContext(context);
-        }
 
-        synchronized (sessionBoundServers) {
-            if (!sessionBoundServers.containsKey(id)) {
-                PseudoServlet pservlet = this.newServer(session, monitor, new Authorization() {
-                    public boolean isUserInRole(String role) {
-                        return inRole(id, role);
-                    }
-                });
-                //add to the session so that our WeakHashMap does not ignore the
-                //reference
-                session.setAttribute(id + ":sessionboundserver", new KeepAliveHolder(pservlet));
-                sessionBoundServers.put(id, new WeakReference(pservlet));
+            synchronized (sessionBoundServers) {
+                if (!sessionBoundServers.containsKey(id)) {
+                    PseudoServlet pservlet = this.newServer(session, monitor, new Authorization() {
+                        public boolean isUserInRole(String role) {
+                            return inRole(id, role);
+                        }
+                    });
+                    //add to the session so that our WeakHashMap does not ignore the
+                    //reference
+                    session.setAttribute(id + ":sessionboundserver", new KeepAliveHolder(pservlet));
+                    sessionBoundServers.put(id, new WeakReference(pservlet));
+                }
             }
+        } catch (Exception e)  {
+            throw new SessionExpiredException(e);
         }
     }
 
@@ -231,13 +236,13 @@ public abstract class SessionDispatcher implements PseudoServlet {
         try {
             sessionShutdown(sessionId);
         } catch (Exception e) {
-            Log.error(e);
+            Log.debug(e);
         }
         synchronized (SessionMonitors) {
             try {
                 sessionDestroy(sessionId);
             } catch (Exception e) {
-                Log.error(e);
+                Log.debug(e);
             }
             //ICE-3189 - do this before invalidating the session
             SessionMonitors.remove(sessionId);
@@ -396,7 +401,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
             try {
                 session.invalidate();
             } catch (IllegalStateException e) {
-                Log.info("Session already invalidated.");
+                Log.debug("Session already invalidated.");
             }
         }
 

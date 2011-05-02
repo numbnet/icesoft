@@ -45,6 +45,7 @@ import com.icesoft.faces.webapp.http.common.standard.NoCacheContentHandler;
 import com.icesoft.faces.webapp.http.core.LifecycleExecutor;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
+import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
@@ -323,7 +324,11 @@ public class View implements CommandQueue {
                 m.remove(facesContext.getViewNumber());
             }
         } catch (Exception e) {
-            Log.error("Exception cleaning up State Saving Map: " + e);
+            if (e instanceof SessionExpiredException)  {
+                //nothing more to clean up if session is expired
+            } else {
+                Log.error("Exception cleaning up State Saving Map: " + e);
+            }
         }
     }
 
