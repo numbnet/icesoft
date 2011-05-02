@@ -1,0 +1,12 @@
+/* main layout panels for the mobile screen */
+.clientContainer, .taxicabContainer {
+    max-width: 240px;
+    max-height: 320px;
+}
+
+.clientRequestDialog {
+	top: 0%;
+    left: 0%;
+    width: 240px;
+    height: 334px;
+}

@@ -1,0 +1,58 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ice="http://www.icesoft.com/icefaces/component"
+     class="pickupRequestMesssage">
+
+
+    <p>Thank you for choosing <br/>
+        Online Taxi Service</p>
+
+    <ice:panelGrid
+            style="margin: 0 auto;"
+            columns="2" border="0" cellpadding="0"
+            cellspacing="10" width="100">
+
+        <!-- Request, actually a static value, no change here... -->
+        <ice:outputText value="Request:" styleClass="pickUpRequestLabel"/>
+        <ice:outputText value="Processed"
+                        styleClass="pickupRequestRequest"/>
+
+        <!-- Status is dynamic, changes a request controller updates
+             request status.-->
+        <ice:outputText value="Status:" styleClass="pickUpRequestLabel"/>
+
+        <ice:outputText value="#{clientmediator.currentRequest.taxiRequest.statusLabel}"
+                        styleClass="pickupRequestStatus#{clientmediator.currentRequest.taxiRequest.status}"/>
+
+        <!-- ETA will be available after the request has been made -->
+        <ice:outputText value="ETA:"
+                        rendered="#{clientmediator.currentRequest.taxiRequest.status gt 0 and clientmediator.currentRequest.taxiRequest.status lt 3}"
+                        styleClass="pickUpRequestLabel"/>
+
+        <ice:outputText value="#{clientmediator.currentRequest.taxiRequest.eta} min."
+                        rendered="#{clientmediator.currentRequest.taxiRequest.status gt 0 and clientmediator.currentRequest.taxiRequest.status lt 3}"
+                        styleClass="pickupRequestStatus#{clientmediator.currentRequest.taxiRequest.status}"/>
+
+    </ice:panelGrid>
+
+    <!-- only render button if request status is pending(0), user can't cancel
+         if the request has been processed by a taxi driver. -->
+    <ice:commandButton
+            value="Cancel Pickup"
+            title="Cancel Pickup" alt="Cancel Pickup"
+            image="./css/images/button_cancel_pickup.png"
+            actionListener="#{clientmediator.dialogManager.pickupRequestStatusDialog.cancelButtonAction}"
+            rendered="#{clientmediator.currentRequest.taxiRequest.status eq 0}"/>
+
+    <!-- if the request has been completed (a pickup) allow the user to close the popop -->
+    <ice:commandButton
+            value="Close"
+            title="Close" alt="Close"
+            image="./css/images/button_close_arrived.png"
+            actionListener="#{clientmediator.dialogManager.pickupRequestStatusDialog.noButtonAction}"
+            rendered="#{clientmediator.currentRequest.taxiRequest.status eq 3}"/>
+
+</div>
+

@@ -1,0 +1,87 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:icefacelets="http://www.icesoft.com/icefaces/facelet/tag">
+
+<ui:composition>
+        <ice:panelGroup styleClass="clientRequestContainer">
+            <ice:panelGrid columns="1" cellpadding="0" cellspacing="2"
+                           border="0">
+                <ice:outputText value="First Name"
+                                styleClass="clientPickupTitle"/>
+                <ice:inputText value="#{clientmediator.currentRequest.taxiRequest.name}"
+                               tabindex="1"
+                               partialSubmit="true"
+                               maxlength="50" title="First Name"
+                               styleClass="mobile"/>
+                <ice:outputText value="Street Address"
+                                styleClass="clientPickupTitle"/>
+                <ice:inputText value="#{clientmediator.currentRequest.taxiRequest.address}"
+                               tabindex="2"
+                               partialSubmit="true"
+                               maxlength="50"
+                               title="Street Address"
+                               alt="Street Address"
+                               styleClass="mobile"/>
+                <ice:outputText value="Coordinates"
+                                styleClass="clientPickupTitle"  />
+                <ice:outputText value="#{clientmediator.currentRequest.taxiRequest.coords}"
+                               tabindex="3"
+                               maxlength="50"
+                               title="Intersection"
+                               alt="Intersection"
+                               styleClass="mobile" effect="#{clientmediator.currentRequest.taxiRequest.effect}"/>
+                <ice:inputHidden id="geo" value="#{clientmediator.currentRequest.taxiRequest.coords}" />
+                <ice:outputText value="City"
+                                styleClass="clientPickupTitle"/>
+                <ice:inputText value="#{clientmediator.currentRequest.taxiRequest.city}"
+                               tabindex="4"
+                               partialSubmit="true"
+                               maxlength="50"
+                               title="City"
+                               alt="City"
+                               styleClass="mobile"/>
+<!--
+                <ice:outputText value="Comments"
+                                styleClass="clientPickupTitle"/>
+
+                <ice:inputTextarea value="#{clientmediator.currentRequest.taxiRequest.comments}"
+                                   tabindex="5"
+                                   partialSubmit="true"
+                                   cols="20" rows="2"
+                                   title="Comments"
+                                   styleClass="mobile"/>  -->
+        </ice:panelGrid>        
+        <!--  get the mediator to setup a new pickup request -->
+        <ice:commandButton actionListener="#{clientmediator.requestTaxiDriverPickup}"
+                           title="Request Taxi" alt="Request Taxi"
+                           styleClass="verticalAlign"
+                           image="./css/images/button_request_pickup.png"/>
+            <script>
+                function updatePosition(position)  {
+                    coordstore = document.getElementById("iceform:geo");
+                    theform = document.getElementById("iceform");
+                    latitude = position.coords.latitude;
+                    latitude = Math.round(latitude*1000000)/1000000;
+                    longitude = position.coords.longitude;
+                    longitude = Math.round(longitude*1000000)/1000000;
+                    packedPos = latitude + " " + longitude;
+                    if (packedPos !== coordstore.value)  {
+//alert("coords " + packedPos);
+                        coordstore.value = latitude + " " + longitude;
+                        iceSubmitPartial(theform, coordstore, null);
+                    }
+                }
+                var watchId = navigator.geolocation.watchPosition(updatePosition);
+            </script>
+        </ice:panelGroup>
+        <icefacelets:optionPane
+                modal="false"
+                optionPaneBean="#{clientmediator.dialogManager.currentDialog}"
+                styleClass="#{clientmediator.dialogManager.currentDialog.cssStyle}"/>
+
+</ui:composition>
+
+</f:view>
