@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 
 public class LocalPushGroupManager extends AbstractPushGroupManager implements PushGroupManager {
     private static final Logger LOGGER = Logger.getLogger(LocalPushGroupManager.class.getName());
+    private static final String[] STRINGS = new String[0];
     private static final int GROUP_SCANNING_TIME_RESOLUTION = 3000; // ms
     private static final OutOfBandNotifier NOOPOutOfBandNotifier = new OutOfBandNotifier() {
         public void broadcast(PushMessage message, String[] uris) {
@@ -44,6 +45,7 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
 
     private final Map<String, PushID> pushIDMap = new HashMap<String, PushID>();
     private final Map<String, Group> groupMap = new HashMap<String, Group>();
+    private final HashSet<String> pendingNotifications = new HashSet();
     private final HashMap parkedPushIDs = new HashMap();
     private final Observable inboundNotifier = new ReadyObservable();
     private final Observable outboundNotifier = new ReadyObservable();
@@ -51,43 +53,45 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
     private final long pushIdTimeout;
     private final ServletContext context;
 
+    private final Observer confirmNotifications = new Observer() {
+        public void update(Observable observable, Object o) {
+            pendingNotifications.removeAll((List) o);
+        }
+    };
+    private final Observer timeoutScanner = new Observer() {
+        private long lastScan = System.currentTimeMillis();
+        private Set<String> pushIDs = new HashSet<String>();
+
+        public void update(final Observable observable, final Object object) {
+            long now = System.currentTimeMillis();
+            //accumulate pushIDs
+            pushIDs.addAll((List) object);
+            //avoid to scan/touch the groups on each notification
+            if (lastScan + GROUP_SCANNING_TIME_RESOLUTION < now) {
+                try {
+                    for (Group group : new ArrayList<Group>(groupMap.values())) {
+                        group.touchIfMatching(pushIDs);
+                        group.discardIfExpired();
+                    }
+                    for (PushID pushID : new ArrayList<PushID>(pushIDMap.values())) {
+                        pushID.touchIfMatching(pushIDs);
+                        pushID.discardIfExpired();
+                    }
+                } finally {
+                    lastScan = now;
+                    pushIDs = new HashSet();
+                }
+            }
+        }
+    };
+
     public LocalPushGroupManager(final ServletContext servletContext) {
         Configuration configuration = new ServletContextConfiguration("org.icepush", servletContext);
         this.groupTimeout = configuration.getAttributeAsLong("groupTimeout", 2 * 60 * 1000);
         this.pushIdTimeout = configuration.getAttributeAsLong("pushIdTimeout", 2 * 60 * 1000);
         context = servletContext;
-        inboundNotifier.addObserver(
-                new Observer() {
-                    private long lastScan = System.currentTimeMillis();
-                    private Set<String> pushIDs = new HashSet<String>();
-
-                    public void update(final Observable observable, final Object object) {
-                        long now = System.currentTimeMillis();
-                        //accumulate pushIDs
-                        pushIDs.addAll((List) object);
-                        //avoid to scan/touch the groups on each notification
-                        if (lastScan + GROUP_SCANNING_TIME_RESOLUTION < now) {
-                            try {
-                                for (Group group : new ArrayList<Group>(groupMap.values())) {
-                                    group.touchIfMatching(pushIDs);
-                                    group.discardIfExpired();
-                                }
-                                for (PushID pushID : new ArrayList<PushID>(pushIDMap.values())) {
-                                    pushID.touchIfMatching(pushIDs);
-                                    pushID.discardIfExpired();
-                                }
-                            } finally {
-                                lastScan = now;
-                                pushIDs = new HashSet();
-                            }
-                        }
-                    }
-                });
-    }
-
-    private OutOfBandNotifier getOutOfBandNotifier() {
-        Object attribute = context.getAttribute(OutOfBandNotifier.class.getName());
-        return attribute == null ? NOOPOutOfBandNotifier : (OutOfBandNotifier) attribute;
+        inboundNotifier.addObserver(timeoutScanner);
+        inboundNotifier.addObserver(confirmNotifications);
     }
 
     public void addMember(final String groupName, final String id) {
@@ -117,6 +121,10 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
         outboundNotifier.deleteObserver(observer);
     }
 
+    public String[] getPendingNotifications() {
+        return pendingNotifications.toArray(STRINGS);
+    }
+
     public Map<String, String[]> getGroupMap() {
         Map<String, String[]> groupMap = new HashMap<String, String[]>();
         for (Group group : new ArrayList<Group>(this.groupMap.values())) {
@@ -140,7 +148,9 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
             if (LOGGER.isLoggable(Level.FINEST)) {
                 LOGGER.log(Level.FINEST, "Push notification triggered for '" + groupName + "' group.");
             }
-            outboundNotifier.notifyObservers(group.getPushIDs());
+            String[] pushIDs = group.getPushIDs();
+            pendingNotifications.addAll(Arrays.asList(pushIDs));
+            outboundNotifier.notifyObservers(pushIDs);
             pushed(groupName);
         }
     }
@@ -158,7 +168,7 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
         }
 
         if (!uris.isEmpty()) {
-            getOutOfBandNotifier().broadcast(message, (String[]) uris.toArray(new String[0]));
+            getOutOfBandNotifier().broadcast(message, (String[]) uris.toArray(STRINGS));
         }
     }
 
@@ -194,6 +204,11 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
         }
     }
 
+    private OutOfBandNotifier getOutOfBandNotifier() {
+        Object attribute = context.getAttribute(OutOfBandNotifier.class.getName());
+        return attribute == null ? NOOPOutOfBandNotifier : (OutOfBandNotifier) attribute;
+    }
+
     private class Group {
         private final Set<String> pushIdList = new HashSet<String>();
         private final String name;
@@ -218,6 +233,7 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
                     LOGGER.log(Level.FINEST, "'" + name + "' push group expired.");
                 }
                 groupMap.remove(name);
+                pendingNotifications.removeAll(pushIdList);
                 for (String id : pushIdList) {
                     PushID pushID = pushIDMap.get(id);
                     if (pushID != null) {
@@ -311,6 +327,7 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
                     LOGGER.log(Level.FINEST, "'" + id + "' pushId expired.");
                 }
                 pushIDMap.remove(id);
+                pendingNotifications.remove(id);
                 for (String groupName : groups) {
                     Group group = groupMap.get(groupName);
                     if (group != null) {

@@ -89,15 +89,19 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
         }
     }
 
-    private void sendNotifications(String[] ids) {
+    private boolean sendNotifications(String[] ids) {
         //stop sending notifications if pushID are not used anymore by the browser
         List pushIDs = new ArrayList(Arrays.asList(ids));
         pushIDs.retainAll(participatingPushIDs);
-        if (!pushIDs.isEmpty()) {
+        boolean anyNotifications = !pushIDs.isEmpty();
+
+        if (anyNotifications) {
             notifiedPushIDs.addAll(pushIDs);
             resetTimeout();
             respondIfNotificationsAvailable();
         }
+
+        return anyNotifications;
     }
 
     private void resendLastNotifications() {
@@ -211,10 +215,12 @@ public class BlockingConnectionServer extends TimerTask implements Server, Obser
                     log.finest("Participating pushIds: " + participatingPushIDs + ".");
                 }
 
-                if (resend) {
-                    resendLastNotifications();
-                } else {
-                    respondIfNotificationsAvailable();
+                if (!sendNotifications(pushGroupManager.getPendingNotifications())) {
+                    if (resend) {
+                        resendLastNotifications();
+                    } else {
+                        respondIfNotificationsAvailable();
+                    }
                 }
                 pushGroupManager.notifyObservers(new ArrayList(participatingPushIDs));
             } catch (RuntimeException e) {
