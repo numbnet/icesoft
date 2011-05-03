@@ -1608,7 +1608,10 @@ public class MessageServiceClient {
     }
 
     private void publishTo(final String topicName, final Message message) {
-        String _messagePipelineId = topicName + "/" + message.getStringProperty(Message.MESSAGE_TYPE);
+        String _messagePipelineId =
+            topicName + "/" +
+                message.getStringProperty(Message.MESSAGE_TYPE) + "/" +
+                message.getStringProperty(Message.DESTINATION_SERVLET_CONTEXT_PATH);
         MessagePipeline _messagePipeline;
         if (messagePipelineMap.containsKey(_messagePipelineId)) {
             _messagePipeline = (MessagePipeline)messagePipelineMap.get(_messagePipelineId);
