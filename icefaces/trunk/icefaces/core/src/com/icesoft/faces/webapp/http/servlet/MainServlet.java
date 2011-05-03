@@ -144,23 +144,21 @@ public class MainServlet extends HttpServlet {
             }
             //don't create new session for resources belonging to expired user sessions
             dispatcher.dispatchOn(".*(block\\/resource\\/)", new SessionVerifier(sessionDispatcher, false));
-            if (!configuration.getAttributeAsBoolean("synchronousUpdate", false)) {
-                dispatcher.dispatchOn(".*(block\\/message)",
-                        new PseudoServlet() {
-                            public void service(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-                                CoreMessageService coreMessageService = getCoreMessageService(configuration);
-                                if (coreMessageService != null && coreMessageService.getMessageServiceClient().getMessageServiceAdapter() instanceof HttpAdapter) {
-                                    ((HttpAdapter)coreMessageService.getMessageServiceClient().getMessageServiceAdapter()).getHttpMessagingDispatcher().service(request, response);
-                                } else {
-                                    NotFound.service(request, response);
-                                }
+            dispatcher.dispatchOn(".*(block\\/message)",
+                    new PseudoServlet() {
+                        public void service(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                            CoreMessageService coreMessageService = getCoreMessageService(configuration);
+                            if (coreMessageService != null && coreMessageService.getMessageServiceClient().getMessageServiceAdapter() instanceof HttpAdapter) {
+                                ((HttpAdapter)coreMessageService.getMessageServiceClient().getMessageServiceAdapter()).getHttpMessagingDispatcher().service(request, response);
+                            } else {
+                                NotFound.service(request, response);
                             }
+                        }
 
-                            public void shutdown() {
-                                // do nothing.
-                            }
-                        });
-            }
+                        public void shutdown() {
+                            // do nothing.
+                        }
+                    });
             //don't create new session for XMLHTTPRequests identified by "block/*" prefixed paths
             dispatcher.dispatchOn(".*(block\\/)", new SessionVerifier(sessionDispatcher, true));
             dispatcher.dispatchOn(".*/ice-static/.*", resourceServer);
@@ -252,9 +250,7 @@ public class MainServlet extends HttpServlet {
 
     private synchronized CoreMessageService getCoreMessageService(final Configuration configuration) {
         if (!detectionDone) {
-            if (!configuration.getAttributeAsBoolean("synchronousUpdate", false)) {
-                setUpCoreMessageService(configuration);
-            }
+            setUpCoreMessageService(configuration);
             detectionDone = true;
         }
         return coreMessageService;
