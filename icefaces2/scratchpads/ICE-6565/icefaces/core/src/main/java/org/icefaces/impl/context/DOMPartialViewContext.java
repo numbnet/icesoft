@@ -122,7 +122,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 applyBrowserChanges(ec.getRequestParameterValuesMap(), oldDOM);
 
                 UIViewRoot viewRoot = facesContext.getViewRoot();
-                Node[] diffs = new Node[0];
+                List<DOMUtils.EditOperation> diffs = null;
                 Document newDOM = null;
                 writer.startDocument();
 
@@ -160,15 +160,26 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     renderState();
                     renderExtensions();
                 } else {
-                    for (int i = 0; i < diffs.length; i++) {
-                        Element element = (Element) diffs[i];
+                    for (DOMUtils.EditOperation op : diffs)  {
 
                         //client throws error on receving an update for the 'head' element
                         //avoid sending 'head' tag to not compromise the other updates
                         //todo: remove this test once the 'head' updates are applied by the client
-                        if (!"head".equalsIgnoreCase(element.getTagName())) {
-                            partialWriter.startUpdate(getUpdateId(element));
-                            DOMUtils.printNodeCDATA(element, outputWriter);
+                        String tagName = (null == op.element) 
+                                ? "" : ((Element) op.element).getTagName();
+                        if ( ("head".equalsIgnoreCase(tagName)) ||
+                            (JAVAX_FACES_VIEW_HEAD.equals(op.id)) )  {
+                            continue;
+                        }
+                        if (op instanceof DOMUtils.InsertOperation)  {
+                            partialWriter.startInsertAfter(op.id);
+                            DOMUtils.printNodeCDATA(op.element, outputWriter);
+                            partialWriter.endInsert();
+                        } else if (op instanceof DOMUtils.DeleteOperation)  {
+                            partialWriter.delete(op.id);
+                        } else if (op instanceof DOMUtils.ReplaceOperation)  {
+                            partialWriter.startUpdate(getUpdateId((Element) op.element));
+                            DOMUtils.printNodeCDATA(op.element, outputWriter);
                             partialWriter.endUpdate();
                         }
                     }
@@ -221,7 +232,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         }
     }
 
-    private static Node[] domDiff(Document oldDOM, Document newDOM) {
+    private static List<DOMUtils.EditOperation> domDiff(Document oldDOM, Document newDOM) {
         final Runnable oldHeadRollback = setHeadID(oldDOM);
         final Runnable oldBodyRollback = setBodyID(oldDOM);
         final Runnable newHeadRollback = setHeadID(newDOM);
@@ -275,7 +286,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         return NOOP;
     }
 
-    private Node[] renderSubtrees(UIViewRoot viewRoot, Collection<String> renderIds) {
+    private List<DOMUtils.EditOperation> renderSubtrees(UIViewRoot viewRoot, Collection<String> renderIds) {
         EnumSet<VisitHint> hints = EnumSet.of(VisitHint.SKIP_UNRENDERED);
         VisitContext visitContext =
                 VisitContext.createVisitContext(facesContext, renderIds, hints);
@@ -442,13 +453,13 @@ class DOMPartialRenderCallback implements VisitCallback {
     private static Logger log = Logger.getLogger(DOMPartialRenderCallback.class.getName());
     private FacesContext facesContext;
     //keep track of all diffs
-    private ArrayList<Node> diffs;
+    private ArrayList<DOMUtils.EditOperation> diffs;
     private boolean exception;
 
 
     public DOMPartialRenderCallback(FacesContext facesContext) {
         this.facesContext = facesContext;
-        this.diffs = new ArrayList<Node>();
+        this.diffs = new ArrayList<DOMUtils.EditOperation>();
         this.exception = false;
     }
 
@@ -462,9 +473,9 @@ class DOMPartialRenderCallback implements VisitCallback {
             Node newSubtree = domWriter.getDocument().getElementById(clientId);
             //these should be non-overlapping by application design
             if (null == oldSubtree) {
-                diffs.add(newSubtree);
+                diffs.add(new DOMUtils.ReplaceOperation(newSubtree));
             } else {
-                diffs.addAll(Arrays.asList(DOMUtils.nodeDiff(oldSubtree, newSubtree)));
+                diffs.addAll((DOMUtils.nodeDiff(oldSubtree, newSubtree)));
             }
         } catch (Exception e) {
             //if errors occur in any of the subtrees, we likely should perform
@@ -480,8 +491,8 @@ class DOMPartialRenderCallback implements VisitCallback {
         return VisitResult.REJECT;
     }
 
-    public Node[] getDiffs() {
-        return (Node[]) diffs.toArray(new Node[0]);
+    public List<DOMUtils.EditOperation> getDiffs() {
+        return diffs;
     }
 
     public boolean didFail() {
