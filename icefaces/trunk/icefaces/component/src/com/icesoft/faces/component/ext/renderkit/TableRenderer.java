@@ -33,6 +33,7 @@
 package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
 import com.icesoft.faces.component.commandsortheader.CommandSortHeader;
 import com.icesoft.faces.component.ext.HeaderRow;
@@ -46,6 +47,7 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
+import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeWriter;
 import com.icesoft.faces.util.CoreUtils;
 
 import org.w3c.dom.Element;
@@ -69,6 +71,7 @@ public class TableRenderer
     
     private static final String CLICKED_ROW = "click_row";
     private static final String CLICK_COUNT = "click_count";
+    private static final String[] passThruAttributes = ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_ROWSELECTOR);
 
     public String getComponentStyleClass(UIComponent uiComponent) {
         return (String) uiComponent.getAttributes().get("styleClass");
@@ -786,9 +789,13 @@ public class TableRenderer
                             anchor.appendChild(domContext.createTextNode("<img src='"+ CoreUtils.resolveResourceURL(facesContext,
                                         "/xmlhttp/css/xp/css-images/spacer.gif") + "'/>"));
                             anchor.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.tblRowFocus(this, "+ singleSelection +");");
-                            anchor.setAttribute(HTML.ONBLUR_ATTR, "return Ice.tblRowBlur(this);");                                   
-                            td.appendChild(anchor);                            
-                        }                        
+                            anchor.setAttribute(HTML.ONBLUR_ATTR, "return Ice.tblRowBlur(this);");
+                            td.appendChild(anchor);
+                            Node oldCursorParent = domContext.getCursorParent();
+                            domContext.setCursorParent(anchor);
+                            PassThruAttributeWriter.renderHtmlAttributes(facesContext.getResponseWriter(), rowSelector, passThruAttributes);
+                            domContext.setCursorParent(oldCursorParent);
+                        }
                         String iceColumnStyle = null;
                         String iceColumnStyleClass = null;
                         //we want to perform this operation on ice:column only

@@ -397,7 +397,7 @@ public class ExtendedAttributeConstants {
                new String[]{ HTML.STYLE_ATTR };                        
            attributes[65] = (ICE_OUTPUTPROGRESS);
            final String[] ICE_ROWSELECTOR = 
-               new String[]{};
+               new String[]{HTML.TABINDEX_ATTR};
            attributes[66] = (ICE_ROWSELECTOR);
            final String[] ICE_SELECTINPUTDATE = 
                new String[]{ HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
