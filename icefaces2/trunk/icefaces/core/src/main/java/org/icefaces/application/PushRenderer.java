@@ -28,6 +28,7 @@ import org.icefaces.util.EnvUtils;
 import org.icepush.PushContext;
 
 import javax.faces.context.FacesContext;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -154,10 +155,16 @@ public class PushRenderer {
      */
     public static PortableRenderer getPortableRenderer(FacesContext context) {
         if (EnvUtils.isICEpushPresent()) {
-            final PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
+            final Map<String,Object> applicationMap = context.getExternalContext().getApplicationMap();
             return new PortableRenderer() {
                 public void render(String group) {
-                    pushContext.push(group);
+                    //delay PushContext lookup until is needed
+                    PushContext pushContext = (PushContext) applicationMap.get(PushContext.class.getName());
+                    if (pushContext == null) {
+                        log.fine("PushContext not initialized yet.");
+                    } else {
+                        pushContext.push(group);
+                    }
                 }
             };
         } else {
