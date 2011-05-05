@@ -23,6 +23,7 @@
 <!--  TODO: -->
 &base-props;
 &ice-att-userrole-rendered-props;
+&pass-thru-tabindex-props;
 <property>
 	<description>
 		<![CDATA[<p> When true, more then one row can be selected. Default is false.
