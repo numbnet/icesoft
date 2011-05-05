@@ -68,7 +68,8 @@ public class RowSelector extends UIPanel {
     private Boolean enhancedMultiple;
     private String mouseOverClass;
     private String selectedClass;
-    private String selectedMouseOverClass;    
+    private String selectedMouseOverClass;
+    private String tabindex;
     private MethodBinding selectionListener;
     private MethodBinding selectionAction;
     private MethodBinding clickListener;
@@ -577,7 +578,7 @@ public class RowSelector extends UIPanel {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[22];
+        Object[] state = new Object[23];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
@@ -600,6 +601,7 @@ public class RowSelector extends UIPanel {
         state[19] = keyboardNavigationEnabled;    
         state[20] = singleRowAutoSelect;    
         state[21] = currentSelection;
+        state[22] = tabindex;
         return state;
     }
 
@@ -630,7 +632,8 @@ public class RowSelector extends UIPanel {
         renderedOnUserRole = (String) state[18];
         keyboardNavigationEnabled = (Boolean) state[19];      
         singleRowAutoSelect = (Boolean) state[20];
-        currentSelection = (List)state[21]; 
+        currentSelection = (List)state[21];
+        tabindex = (String) state[22];
     }
     
     private String styleClass;
@@ -753,5 +756,17 @@ public class RowSelector extends UIPanel {
 
     public void setSingleRowAutoSelect(boolean singleRowAutoSelect) {
         this.singleRowAutoSelect = new Boolean(singleRowAutoSelect);
-    }     
+    }
+
+    public void setTabindex(String tabindex) {
+        this.tabindex = tabindex;
+    }
+
+    public String getTabindex() {
+        if (tabindex != null) {
+            return tabindex;
+        }
+        ValueBinding vb = getValueBinding("tabindex");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
 }
