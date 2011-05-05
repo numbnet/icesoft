@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+ *
+ * Version: MPL 1.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ *
+  -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:icecore="http://www.icefaces.org/icefaces/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:head>
+		<title>ICEpush ICEchat (ICEFaces 2)</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+		<meta http-equiv="X-UA-Compatible" content="IE=100" /> <!-- IE8 mode -->
+		<h:outputScript name="jsf.js" library="javax.faces" />
+		<link rel='stylesheet' type='text/css' href='./css/style-common.css' />
+	</h:head>
+	<h:body>	
+		<h:form>
+			<icecore:singleSubmit/>
+		   	<div class="header_container" id="headerContainer">
+				<div class="header_content" id="headerContent">
+					<div style="font-size: 20pt; color: #0F65B8; margin-top: 15px;">
+						<img src="./img/ICEpush-ICEfaces.png" title="ICEpush with ICEfaces"/>
+						<img src="./img/icefaces.png" style="float: right;margin-right:18px;"/>   
+					</div>
+				</div>
+			</div>
+	        
+	        <div class="body_container body_container_pos" id="content"> 
+	        	
+	            <h:panelGroup rendered="#{not empty loginController.currentUser}">
+					<div id="chatPanel">
+					<div class="chatSession chatSession_pos" id="chatSessionPanel">
+				     You are logged in as #{loginController.currentUser.name}
+				     <h:commandButton id="logoutBtn" value="Logout" actionListener="#{loginController.logout}" />
+					</div>
+					
+					<div class="clearer"></div>
+				
+					<div class="mainPanel_pos">
+					
+						<div id="chatRoomsPanel" class="chatRooms chatRooms_pos" style="height:auto;">
+							<h3>Chat Rooms</h3>
+							<div id="chatRooms">
+								<ui:repeat value="#{chatService.chatRooms}" var="room">
+									<div>
+										<h:commandButton id="openRoomBtn" value="#{room.name}" style="width:100%;"
+											actionListener="#{chatManagerVC.openChatSession}">
+											<f:attribute name="room" value="#{room.name}"/>
+										</h:commandButton>
+									</div>
+								</ui:repeat>
+							</div>
+							<div class="createNewChatRoom">
+								Create New Chat Room
+								<br />
+								<h:outputLabel for="newChatRoomName" value="Name" />
+								<h:inputText id="newChatRoomName" value="#{chatManagerVC.newChatRoomName}"
+									required="true" style="width: 100px;margin-top:5px;" /> 
+								<h:commandButton id="createNewRoomBtn" value="Create" style="margin-top:5px;"
+									actionListener="#{chatManagerVC.createNewChatRoom}" />
+							</div>
+						</div>
+					
+						<div id="currentChatRoom" class="currentChatRoom_pos">
+						
+							<h:panelGroup styleClass="chatRoom" style="display:block;" 
+								id="chatRoom" rendered="#{not empty chatManagerVC.session}">
+								<div class="chatRoomHeader">
+									Chat Room '#{chatManagerVC.session.room.name}'
+								</div>
+								<div class="chatRoomContainer">
+									<div class="chatRoomUsers">
+										<div class="chatViewSubHeader">Who's Here?</div>
+										<div id="users">
+											<ui:repeat value="#{chatManagerVC.session.room.userChatSessions}"
+												var="chatSession">
+												<div>#{chatSession.user.name}</div>
+											</ui:repeat>
+										</div>
+									</div>
+									<div class="chatRoomMessages">
+										<div class="chatViewSubHeader">Messages</div>
+										<div id="chatRoomMessages">
+											<ui:repeat value="#{chatManagerVC.session.room.messages}" var="msg">
+												<div>
+													<h:outputText value="#{msg.created}">
+														<f:convertDateTime type="both" dateStyle="short" timeStyle="short" />
+													</h:outputText> 
+													 #{msg.userChatSession.user.name} said '#{msg.message}'
+												</div>
+											</ui:repeat>
+										</div>
+									</div>
+								</div>
+								<div class="clearer"></div>
+								<div class="addNewMessage">
+									New Message
+									<h:inputText style="width:40%;" id="newMessage"
+										value="#{chatManagerVC.newChatRoomMessage}" />
+									<h:commandButton value="Send" id="newMessageBtn"
+										actionListener="#{chatManagerVC.sendNewMessage}" />
+								</div>
+							</h:panelGroup>       
+						</div>					
+					</div>
+					</div>
+				</h:panelGroup>
+				
+				<h:panelGroup rendered="#{empty loginController.currentUser}">
+					<div class="login">
+						<h2>ICEchat Login</h2>
+						<div style="text-align: right;"><h:outputLabel
+							value="Name " for="userName" /> <h:inputText id="userName"
+							value="#{loginController.userName}" required="true" />
+						</div>
+						<div style="text-align: right; margin-top: 20px;">
+							<h:commandButton id="login" value="Login" 
+							actionListener="#{loginController.login}" />
+						</div>
+						<div id="loginMessages"><h:messages globalOnly="true" /></div>
+			
+					</div>
+				</h:panelGroup>
+	        </div>
+		</h:form>
+	</h:body>
+</html>
+
