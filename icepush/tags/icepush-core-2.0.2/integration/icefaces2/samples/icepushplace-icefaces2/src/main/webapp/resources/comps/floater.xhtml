@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+			  xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+		      xmlns:ice="http://www.icesoft.com/icefaces/component"
+              xmlns:composite="http://java.sun.com/jsf/composite">
+    <composite:interface>
+        <composite:attribute name="list" required="true"/>
+        <composite:attribute name="startX" required="true"/>
+        <composite:attribute name="startY" required="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <ice:panelSeries value="#{cc.attrs.list}" var="occupant" varStatus="status">
+            <ice:panelPopup styleClass="occupantPopup"
+                            style="z-index: #{1999+status.index*-1};"
+                            autoPosition="#{cc.attrs.startX+status.index*5},#{cc.attrs.startY+status.index*18}">
+                <f:facet name="body">
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td align="center" valign="middle">
+                                <h:graphicImage library="images" name="mood-#{occupant.mood}.png"
+                                                style="width: 26px; height: 29px;"
+                                                title="using #{occupant.technology}"/>
+                            </td>
+                            <td>
+                                <h:outputText value="#{occupant.name}" title="thinking '#{occupant.comment}'"/>
+                            </td>
+                        </tr>
+                    </table>
+                </f:facet>
+            </ice:panelPopup>
+        </ice:panelSeries>
+    </composite:implementation>
+</ui:component>
