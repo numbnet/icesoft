@@ -22,6 +22,7 @@
 package org.icefaces.impl.push.servlet;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -32,11 +33,10 @@ import javax.faces.FactoryFinder;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PhaseListener;
+import javax.faces.event.*;
 import javax.faces.lifecycle.LifecycleFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -46,6 +46,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.icefaces.util.EnvUtils;
 import org.icepush.PushContext;
 import org.icepush.servlet.MainServlet;
+import org.icepush.servlet.PseudoServlet;
+import org.icepush.util.ExtensionRegistry;
 
 public class ICEpushResourceHandler extends ResourceHandlerWrapper implements PhaseListener  {
     private static final Logger log = Logger.getLogger(ICEpushResourceHandler.class.getName());
@@ -252,7 +254,8 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
 
         void initialize(final ResourceHandler resourceHandler, final ServletContext servletContext, final ICEpushResourceHandler icePushResourceHandler) {
             this.resourceHandler = resourceHandler;
-            mainServlet = new MainServlet(servletContext);
+            //delay MainServlet creation so that extensions have time to register
+            FacesContext.getCurrentInstance().getApplication().subscribeToEvent(PreRenderViewEvent.class, new MainServerCreator(servletContext));
             servletContext.setAttribute(ICEpushResourceHandler.class.getName(), icePushResourceHandler);
             ((LifecycleFactory)FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY)).
                 getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE).addPhaseListener(icePushResourceHandler);
@@ -260,6 +263,31 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
 
         void shutdownMainServlet() {
             mainServlet.shutdown();
+        }
+
+        private class MainServerCreator implements SystemEventListener {
+            private final ServletContext servletContext;
+
+            public MainServerCreator(ServletContext servletContext) {
+                this.servletContext = servletContext;
+            }
+
+            public void processEvent(SystemEvent event) throws AbortProcessingException {
+                if (mainServlet == null) {
+                    Class mainServletClass = (Class) ExtensionRegistry.getBestExtension(servletContext, "org.icepush.MainServlet");
+                    try {
+                        Constructor mainServletConstructor = mainServletClass.getConstructor(new Class[]{ServletContext.class});
+                        mainServlet = (MainServlet) mainServletConstructor.newInstance(servletContext);
+                    } catch (Exception e) {
+                        log.log(Level.SEVERE, "Cannot instantiate extension org.icepush.MainServlet.", e);
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            public boolean isListenerForSource(Object source) {
+                return true;
+            }
         }
     }
 
