@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Drag and Drop Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        </h:head>    <h:body>        <ice:form>
+        	<!-- Draggable Panel -->
+           	<ice:panelGroup style="z-index:10; width:100px; height: 100px; background-color:silver; cursor:move;" draggable="true" dragListener="#{dragDrop.dragListener}">
+				<h3>Drag Me</h3>
+			</ice:panelGroup>
+			
+			<!-- Drop Target 1 -->
+			<ice:panelGroup style="margin:10px; padding:10px; width:300px; height:200px; background-color:orange; color:white;" dropTarget="true">
+				<em>Drop Target 1</em>
+				</ice:panelGroup>
+				
+			<!-- Drop Target 2 -->	
+			<ice:panelGroup style="margin:10px; padding:10px; width:300px; height:200px; background-color:blue; color:white;" dropTarget="true">
+				<em>Drop Target 2</em>
+				</ice:panelGroup>
+			
+			<!-- DragEvent's -->	
+			<ice:outputText value="#{dragDrop.dragMessage}"></ice:outputText>
+        		</ice:form>	</h:body></f:view></html>
