@@ -165,9 +165,13 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
             if (null == BrowserID)  {
                 //Need better integration with ICEpush to assign ice.push.browser
                 //without createPushId()
+try {
                 ((PushContext) externalContext.getApplicationMap()
                         .get(PushContext.class.getName()))
                         .createPushId(request, response);
+} catch (Exception e)  {
+    e.printStackTrace();
+}
             }
         }
 
