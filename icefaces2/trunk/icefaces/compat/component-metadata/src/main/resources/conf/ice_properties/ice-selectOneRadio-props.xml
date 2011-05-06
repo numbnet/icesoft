@@ -74,3 +74,15 @@
     <default-value>lineDirection</default-value>
 </property-extension>
 </property>
+<property>
+<description>
+    Legend for the field set grouping the radio buttons.
+</description>
+<property-name>legend</property-name>
+<property-extension>
+    <category>APPEARANCE</category>
+    <editor-class>
+        &stringEditor;
+    </editor-class>
+</property-extension>
+</property>

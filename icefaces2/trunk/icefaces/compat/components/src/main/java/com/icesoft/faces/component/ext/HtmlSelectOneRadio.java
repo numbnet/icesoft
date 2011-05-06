@@ -51,6 +51,7 @@ public class HtmlSelectOneRadio
     public static final String RENDERER_TYPE = "com.icesoft.faces.Radio";
     private static final boolean DEFAULT_VISIBLE = true;
     private String styleClass = null;
+    private String legend = null;
     private Boolean partialSubmit = null;
     private String enabledOnUserRole = null;
     private String renderedOnUserRole = null;
@@ -505,7 +506,7 @@ public class HtmlSelectOneRadio
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[22];
+        Object values[] = new Object[23];
         values[0] = super.saveState(context);
         values[1] = partialSubmit;
         values[2] = enabledOnUserRole;
@@ -526,6 +527,7 @@ public class HtmlSelectOneRadio
         values[19] = currentStyle;
         values[20] = visible;
         values[21] = autocomplete;
+        values[22] = legend;
         return ((Object) (values));
     }
 
@@ -555,6 +557,7 @@ public class HtmlSelectOneRadio
         currentStyle = (CurrentStyle) values[19];
         visible = (Boolean) values[20];
         autocomplete = (String) values[21];
+        legend = (String) values[22];
     }
 
     public String getOnclick() {
@@ -567,6 +570,18 @@ public class HtmlSelectOneRadio
             }
         }
         return onclick;
+    }
+
+    public String getLegend() {
+        if (legend != null) {
+            return legend;
+        }
+        ValueBinding vb = getValueBinding("legend");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setLegend(String legend) {
+        this.legend = legend;
     }
 }
 
