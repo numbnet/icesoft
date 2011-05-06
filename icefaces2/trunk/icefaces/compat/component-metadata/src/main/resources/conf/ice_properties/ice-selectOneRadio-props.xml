@@ -76,7 +76,8 @@
 </property>
 <property>
 <description>
-    Legend for the field set grouping the radio buttons.
+    Legend for the fieldset grouping the radio buttons. Note: fieldset border set to none in theme stylesheets.
+    You need to override the CSS border property for the fieldset to display the border normally seen with a legend.
 </description>
 <property-name>legend</property-name>
 <property-extension>
