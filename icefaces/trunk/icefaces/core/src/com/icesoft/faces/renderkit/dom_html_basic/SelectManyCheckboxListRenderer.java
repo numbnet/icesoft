@@ -162,6 +162,12 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         if (uiComponent.getClass().getName().equals("com.icesoft.faces.component.ext.HtmlSelectOneRadio")) {
             rootNode.removeAttribute(HTML.TABINDEX_ATTR);
             rootNode.removeAttribute(HTML.ONCLICK_ATTR);
+            String legend = (String) uiComponent.getAttributes().get("legend");
+            if (legend != null) {
+                Element legendElement = domContext.createElement("legend");
+                legendElement.appendChild(domContext.createTextNode(legend));
+                rootNode.insertBefore(legendElement, rootTable);
+            }
         }
 
         domContext.stepOver();
