@@ -73,6 +73,10 @@ public class DOMUtils {
         public String id;
         //will be Element once pruning is integrated
         public Node element;
+        
+        public String toString()  {
+            return this.getClass().getName() + ":" + id + ":" + element;
+        }
     }
     
     public static class InsertOperation extends EditOperation {
@@ -83,12 +87,9 @@ public class DOMUtils {
     }
 
     public static class DeleteOperation extends EditOperation {
-        public DeleteOperation(String id, Node element)  {
-            this.id = id;
-            this.element = element;
-        }
         public DeleteOperation(String id)  {
-            this(id, null);
+            this.id = id;
+            this.element = null;
         }
     }
 
@@ -359,6 +360,7 @@ public class DOMUtils {
         List<Node> justNodes = new ArrayList<Node>();
         for (EditOperation op : nodeDiffs)  {
             if (op instanceof ReplaceOperation)  {
+                op.element = ascendToNodeWithID(op.element);
                 justNodes.add(op.element);
             }
         }
@@ -370,10 +372,8 @@ public class DOMUtils {
             e.printStackTrace();
         }
 
-        for (EditOperation op : nodeDiffs)  {
-            if (op instanceof ReplaceOperation)  {
-                justNodes.add(op.element);
-            }
+        if (null == prunedDiff)  {
+            prunedDiff = new Node[0];
         }
 
         List<Node> prunedList = Arrays.asList(prunedDiff);
@@ -522,13 +522,21 @@ public class DOMUtils {
                     if (newIndex > 0)  {
                         insertAnchor = paddedGet(newList, newIndex - 1);
                     } else {
+//TODO Implement InsertBefore
                         //this case is properly handled by an insert "before"
                         nodeDiffs.add(new ReplaceOperation(newNode));
                         ops = null;
                         break;
                     }
-                    operation = new InsertOperation(insertAnchor, 
-                            newChildNodes.item(newIndex) );
+                    if (insertAnchor.startsWith("?"))  {
+                        //anchor is not valid so we must replace parent
+                        nodeDiffs.add(new ReplaceOperation(newNode));
+                        ops = null;
+                        break;
+                    } else {
+                        operation = new InsertOperation(insertAnchor, 
+                                newChildNodes.item(newIndex) );
+                    }
                     newIndex++;
                 }
                 if (!newInOld && !oldInNew)  {
@@ -545,8 +553,15 @@ public class DOMUtils {
                             ops = null;
                             break;
                         }
-                        operation = new InsertOperation(insertAnchor, 
-                                newChildNodes.item(newIndex) );
+                        if (insertAnchor.startsWith("?"))  {
+                            //anchor is not valid so we must replace parent
+                            nodeDiffs.add(new ReplaceOperation(newNode));
+                            ops = null;
+                            break;
+                        } else {
+                            operation = new InsertOperation(insertAnchor, 
+                                    newChildNodes.item(newIndex) );
+                        }
                     } else {
                         //two completely different IDs at this location
                         //cancel and let parent handle
@@ -618,7 +633,7 @@ public class DOMUtils {
         List<String> listOfIds = new ArrayList<String>(length);
         for (int i = 0; i < length; i++) {
             Node node = nodeList.item(i);
-            String id = "undefined" + i;
+            String id = "?" + i;
             if (node instanceof Element) {
                 String tempId = ((Element) node).getAttribute("id");
                 if ((null != tempId) && (!"".equals(tempId))) {
