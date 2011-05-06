@@ -102,6 +102,11 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.icepush</groupId>
             <artifactId>icepush</artifactId>
             <version>${ice.version}</version>
