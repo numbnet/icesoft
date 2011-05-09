@@ -273,7 +273,7 @@ public class PanelPopupRenderer extends GroupRenderer {
                 String x = positions.substring(0, positions.indexOf(','));
                 String y = positions.substring(positions.indexOf(',') + 1);
                 autoPositionJS = "Ice.autoPosition.start('" + clientId + "'," + x
-                        + "," + y + ");";
+                        + "," + y + "," + positionOnLoadOnly + ");";
             }
 
         } else {
@@ -285,7 +285,7 @@ public class PanelPopupRenderer extends GroupRenderer {
         boolean autoCentre = panelPopup.isAutoCentre();
         String centreJS;
         if (autoCentre && (!positionOnLoadOnly || (positionOnLoadOnly && !dragged))) {
-            centreJS = "Ice.autoCentre.start('" + clientId + "');";
+            centreJS = "Ice.autoCentre.start('" + clientId + "'," + positionOnLoadOnly + ");";
         } else {
             centreJS = "Ice.autoCentre.stop('" + clientId + "');";
         }
@@ -327,8 +327,9 @@ public class PanelPopupRenderer extends GroupRenderer {
                 }
 
                 String autoPosition = (String) uiComponent.getAttributes().get("autoPosition");
+                boolean positionOnLoadOnly = ((Boolean) uiComponent.getAttributes().get("positionOnLoadOnly")).booleanValue();
                 call = "Ice.modal.start('" + clientId + "', '" + iframeUrl
-                        + "', '" + trigger + "'," + "manual".equalsIgnoreCase(autoPosition) + ");" +
+                        + "', '" + trigger + "'," + "manual".equalsIgnoreCase(autoPosition) + "," + positionOnLoadOnly + ");" +
                         "ice.onElementRemove('" + clientId + "',function() {Ice.modal.stop('" +
                         clientId + "');});";
 
