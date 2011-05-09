@@ -24,7 +24,7 @@
     <property file="../../../ee-bundle.properties"/>
     <property file="../../../build.properties"/>
 
-    <property name="icefaces.base.dir" location="../"/>
+    <property name="icefaces.base.dir" location="../../"/>
     <property name="samples.dist.dir" location="${icefaces.base.dir}/samples/dist"/>
     <property name="lib.dir" location="${icefaces.base.dir}/lib"/>
     <property name="lib.compat.dir" location="${lib.dir}/compat"/>
