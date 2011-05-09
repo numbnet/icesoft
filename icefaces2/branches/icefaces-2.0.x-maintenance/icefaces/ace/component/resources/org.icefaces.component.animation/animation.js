@@ -79,7 +79,8 @@ ice.animation = {
 	},
 	
 	getAnimation: function (clientId, eventName) {
-	    var node = ice.yui3.y.one('#'+ clientId);
+	    //var node = ice.yui3.y.one('#'+ clientId);
+		var node = ice.yui3.y.one(document.getElementById(clientId));
  	   
         var animation = null;
 	    if (node) {
@@ -473,8 +474,12 @@ ice.animation.register = function(args, callback) {
 				effect = new ice.yui3.effects[args.name.toLowerCase()](args); 
 				
 	//---- Animation plugin
-				var node = Y.one(args.node);
-				 
+				// (this is done for portlets; for some reason ':'s aren't escaped at this point)
+				var _node = document.getElementById(args.node.substring(1));
+
+				//var node = Y.one(args.node);
+				var node = Y.one(_node);
+	
 				if (!node["animation"]) { 
 					node.plug(ice.animation.AnimPlugin);
 				}
