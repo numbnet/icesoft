@@ -159,7 +159,7 @@
 </property>
 <property>
 <description>
-    Centre or position popup once on load only. Any drag and drop will disable autoCentre and autoPosition.
+    Centre or position popup once on load only. Any drag and drop or scroll will disable autoCentre and autoPosition.
 </description>
 <property-name>positionOnLoadOnly</property-name>
 <property-class>boolean</property-class>
