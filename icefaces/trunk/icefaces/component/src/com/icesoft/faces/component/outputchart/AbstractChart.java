@@ -47,12 +47,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractChart {
+public abstract class AbstractChart implements Serializable {
     private final Log log = LogFactory.getLog(AbstractChart.class);
     protected Chart chart = null;
     private Chart userDefinedChart = null;
@@ -60,6 +61,9 @@ public abstract class AbstractChart {
     private static ShapeMap shapeMap = new ShapeMap();
     private static LegendPlacementMap legendPlacementMap = new LegendPlacementMap();
     private ImageMapArea clickedImageMapArea;
+
+    public AbstractChart() {
+    }
 
     public AbstractChart(UIComponent uiComponent) throws Throwable {
     }
