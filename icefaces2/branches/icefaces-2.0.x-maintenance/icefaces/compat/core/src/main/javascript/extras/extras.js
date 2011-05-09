@@ -914,7 +914,7 @@ Ice.modal = {
     },
     target:null,
     zIndexCount: 25000,
-    start:function(target, iframeUrl, trigger, manualPosition) {
+    start:function(target, iframeUrl, trigger, manualPosition, positionOnLoadOnly) {
         var modal = document.getElementById(target);
         modal.style.visibility = 'hidden';
         modal.style.position = 'absolute';
@@ -981,7 +981,9 @@ Ice.modal = {
             };
             iframe.resize();
             Event.observe(window, "resize", iframe.resize);
-            Event.observe(window, "scroll", iframe.resize);
+            if (!positionOnLoadOnly) {
+                Event.observe(window, "scroll", iframe.resize);
+            }
         }
 
         var modal = document.getElementById(target);
@@ -1153,13 +1155,15 @@ Ice.autoCentre = {
             Element.setStyle(div, {top:y});
         }
     },
-    start:function(target) {
+    start:function(target, positionOnLoadOnly) {
         Ice.autoCentre.keepCentred(target);
         if (Ice.autoCentre.ids.size() == 0) {
             Event.observe(window, 'resize', Ice.autoCentre.centerAll);
-            Event.observe(window, 'scroll', Ice.autoCentre.centerAll);
+            if (!positionOnLoadOnly) {
+                Event.observe(window, 'scroll', Ice.autoCentre.centerAll);
+            }
         }
-        if (Ice.autoCentre.ids.indexOf(target) < 0) {
+        if (Ice.autoCentre.ids.indexOf(target) < 0 && !positionOnLoadOnly) {
             Ice.autoCentre.ids.push(target);
         }
     },
@@ -1189,7 +1193,7 @@ Ice.autoPosition = {
             Element.setStyle(div, {top:y});
         }
     },
-    start:function(target, x, y) {
+    start:function(target, x, y, positionOnLoadOnly) {
         Ice.autoPosition.id = target;
         Ice.autoPosition.xPos = x;
         Ice.autoPosition.yPos = y;
@@ -1197,7 +1201,9 @@ Ice.autoPosition = {
         if (!Prototype.Browser.IE) s.visibility = 'hidden';
         Ice.autoPosition.keepPositioned();
         if (!Prototype.Browser.IE) s.visibility = 'visible';
-        Event.observe(window, 'scroll', Ice.autoPosition.keepPositioned);
+        if (!positionOnLoadOnly) {
+            Event.observe(window, 'scroll', Ice.autoPosition.keepPositioned);
+        }
     },
     stop:function(target) {
         if (Ice.autoPosition.id == target) {
