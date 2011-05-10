@@ -22,7 +22,9 @@
 package org.icefaces.component.tab;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -49,23 +51,13 @@ public class TabSetRenderer extends Renderer{
     }
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
-        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
-        //one field per form will be use to send tabindex info
-        if (requestParameterMap.containsKey(YUI_TABSET_INDEX)) {
-        	//the value of yti should look something like this "clientId=tabindex"
-            String[] info = String.valueOf(requestParameterMap.get(YUI_TABSET_INDEX)).split("=");
-            String clientId = uiComponent.getClientId(facesContext);
+        Integer index = decodeSelectedIndex(facesContext, uiComponent);
+        if (index != null) {
             TabSet tabSet = (TabSet) uiComponent;
-            //info[0] is containing a clientId of a tabset
-            if (clientId.equals(info[0])) {
-                try {
-                	//info[1] is containing a tabindex
-                    Integer index = new Integer(info[1]);
-                    if (tabSet.getSelectedIndex()!= index.intValue()) { 
-                        uiComponent.queueEvent(new ValueChangeEvent (uiComponent, 
-                                       new Integer(tabSet.getSelectedIndex()), index));
-                    }
-                } catch (Exception e) {}
+            int old = tabSet.getSelectedIndex();
+            if (old != index.intValue()) {
+                uiComponent.queueEvent(new ValueChangeEvent (uiComponent,
+                        new Integer(old), index));
             }
         }
         //The decode of the component's behavior should be invoked by the component's decode
@@ -74,6 +66,32 @@ public class TabSetRenderer extends Renderer{
 				effectBehavior.decode(FacesContext.getCurrentInstance(), this.getUIComponent());				
 			}
 		});
+    }
+
+    /**
+     * @return Integer if TabSet's selectedIndex has been sent, otherwise null
+     */
+    protected Integer decodeSelectedIndex(FacesContext facesContext,
+            UIComponent uiComponent) {
+        Integer index = null;
+        Map requestParameterMap = facesContext.getExternalContext().
+                getRequestParameterMap();
+        //one field per form will be use to send tabindex info
+        if (requestParameterMap.containsKey(YUI_TABSET_INDEX)) {
+        	//the value of yti should look something like this "clientId=tabindex"
+            String param = String.valueOf(requestParameterMap.get(
+                    YUI_TABSET_INDEX));
+            String[] info = param.split("=");
+            String clientId = uiComponent.getClientId(facesContext);
+            //info[0] is containing a clientId of a tabset
+            if (clientId.equals(info[0])) {
+                try {
+                	//info[1] is containing a tabindex
+                    index = Integer.parseInt(info[1]);
+                } catch(NumberFormatException e) {}
+            }
+        }
+        return index;
     }
     
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
@@ -104,34 +122,34 @@ public class TabSetRenderer extends Renderer{
                 writer.writeAttribute(HTML.TABINDEX_ATTR, 0, HTML.TABINDEX_ATTR);
                 writer.writeAttribute(HTML.ID_ATTR, clientId+"cnt", HTML.ID_ATTR);
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-content", HTML.CLASS_ATTR);
-                renderTab(facesContext, uiComponent, false);
-            writer.endElement(HTML.DIV_ELEM); 
+            writer.endElement(HTML.DIV_ELEM);
         
             writer.startElement(HTML.UL_ELEM, uiComponent);
+                writer.writeAttribute(HTML.ID_ATTR, clientId+"_nav", HTML.ID_ATTR);
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-nav", HTML.CLASS_ATTR);
                 if (EnvUtils.isAriaEnabled(facesContext)) {
                     writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABLIST_ROLE, ARIA.ROLE_ATTR);  
                 }
-                renderTab(facesContext, uiComponent, true);
+                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null);
             writer.endElement(HTML.UL_ELEM);
                 
         } else {
             writer.startElement(HTML.UL_ELEM, uiComponent);
+                writer.writeAttribute(HTML.ID_ATTR, clientId+"_nav", HTML.ID_ATTR);
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-nav", HTML.CLASS_ATTR);
                 if (EnvUtils.isAriaEnabled(facesContext)) {
                     writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABLIST_ROLE, ARIA.ROLE_ATTR);  
                 }                
-                renderTab(facesContext, uiComponent, true);
+                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null);
             writer.endElement(HTML.UL_ELEM);
             
             
             writer.startElement(HTML.DIV_ELEM, uiComponent);
                 writer.writeAttribute(HTML.ID_ATTR, clientId+"cnt", HTML.ID_ATTR);
                 writer.writeAttribute(HTML.CLASS_ATTR, "yui-content", HTML.CLASS_ATTR);
-                renderTab(facesContext, uiComponent, false);
             writer.endElement(HTML.DIV_ELEM);
         }
-    }  
+    }
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
@@ -163,7 +181,75 @@ public class TabSetRenderer extends Renderer{
         	selectedIndex = 0;
         }
 
+        // The tabs that are depicted as clickable by the user
+        List<String> clickableTabs = new ArrayList<String>();
+        doTabs(facesContext, uiComponent, Do.GET_CLIENT_IDS, clickableTabs);
+
+        // The tabs whose contents we need to render. Subset of clickableTabs,
+        // where the order has a different meaning: [safeIndex] -> tabClientId
+        List visitedTabClientIds = tabSet.getVisitedTabClientIds();
+        if (visitedTabClientIds == null) {
+            visitedTabClientIds = new ArrayList();
+            tabSet.setVisitedTabClientIds(visitedTabClientIds);
+        }
         
+        // Used to detect changes from last lifecycle
+        List<String> toRender = new ArrayList<String>();
+        if (isClientSide) {
+            toRender.addAll(clickableTabs);
+        }
+        else {
+            for (int i = 0; i < clickableTabs.size(); i++) {
+                String tabClientId = clickableTabs.get(i);
+                if (visitedTabClientIds.contains(tabClientId)) {
+                    toRender.add(tabClientId);
+                }
+                else if(selectedIndex == i) {
+                    toRender.add(tabClientId);
+                }
+            }
+        }
+
+        for (int i = 0; i < visitedTabClientIds.size(); i++) {
+            String tabClientId = (String) visitedTabClientIds.get(i);
+            if (tabClientId != null) {
+                if (!toRender.contains(tabClientId)) {
+                    visitedTabClientIds.set(i, null);
+                }
+            }
+        }
+        for (String tabClientId : toRender) {
+            if (!visitedTabClientIds.contains(tabClientId)) {
+                visitedTabClientIds.add(tabClientId);
+            }
+        }
+
+        final String safeIdPrefix = clientId+"_safe_";
+        int clickableLen = clickableTabs.size();
+        String[] safeIds = new String[clickableLen];
+        for (int i = 0; i < clickableLen; i++) {
+            int safeIndex = visitedTabClientIds.indexOf(clickableTabs.get(i));
+            if (safeIndex >= 0) {
+                safeIds[i] = safeIdPrefix + safeIndex;
+            }
+            // null for clickable tabs we're not rendering
+        }
+        
+        // Write out the safe
+        writer.startElement(HTML.DIV_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_safe", HTML.ID_ATTR);
+        writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", HTML.STYLE_ATTR);
+        recursivelyRenderSafe(facesContext, writer, tabSet, safeIdPrefix,
+                visitedTabClientIds, 0);
+        writer.endElement(HTML.DIV_ELEM);
+
+        // If the server is trumping the browser's selectedIndex, by reverting
+        // it to the previous value, then the dom diff won't know to tell the
+        // browser, so we need to induce a script update
+        Integer decSelIdx = decodeSelectedIndex(facesContext, uiComponent);
+        boolean unexpected = (decSelIdx != null) &&
+                (decSelIdx.intValue() != selectedIndex);
+
         StringBuilder call = new StringBuilder();
         call.append("ice.component.tabset.updateProperties('")
         .append(clientId)
@@ -178,16 +264,20 @@ public class TabSetRenderer extends Renderer{
 	        .entry("isSingleSubmit", singleSubmit)
 	        .entry("isClientSide", isClientSide)
 	        .entry("aria", EnvUtils.isAriaEnabled(facesContext))
-	        .entry("selectedIndex", selectedIndex).endMap().toString())
+	        .entry("selectedIndex", selectedIndex)
+            .entry("safeIds", safeIds)
+            .entry("overrideSelectedIndex",
+                    (unexpected ? System.currentTimeMillis() : 0))
+            .endMap().toString())
         .append(");");
        
-        //Initialize client side tab as soon as they inserted to the DOM
-        if (isClientSide) {
+////        //Initialize client side tab as soon as they inserted to the DOM
+////        if (isClientSide) {
             ScriptWriter.insertScript(facesContext, uiComponent, call.toString());
-        } else {
-        	//initialize server side tab lazily
-            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, call.toString(), HTML.ONMOUSEOVER_ATTR);
-        }
+////        } else {
+////        	//initialize server side tab lazily
+////            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, call.toString(), HTML.ONMOUSEOVER_ATTR);
+////        }
         
         //encode animation if any 
         final StringBuilder effect = new StringBuilder();
@@ -203,7 +293,52 @@ public class TabSetRenderer extends Renderer{
         	ScriptWriter.insertScript(facesContext, uiComponent, effect.toString());
         }
         writer.endElement(HTML.DIV_ELEM);  
-    }    
+    }
+
+    private void recursivelyRenderSafe(FacesContext facesContext,
+            ResponseWriter writer, TabSet tabSet, String idPrefix,
+            List visitedTabClientIds, int index) throws IOException {
+        if (index >= visitedTabClientIds.size()) {
+            return;
+        }
+
+        writer.startElement(HTML.DIV_ELEM, tabSet);
+        writer.writeAttribute(HTML.ID_ATTR, idPrefix+index, HTML.ID_ATTR);
+        String tabClientId = (String) visitedTabClientIds.get(index);
+        if (tabClientId != null) {
+            doTabs(facesContext, tabSet, Do.RENDER_CONTENTS_BY_CLIENT_ID,
+                    visitedTabClientIds.subList(index, index+1));
+        }
+        writer.endElement(HTML.DIV_ELEM);
+
+        writer.startElement(HTML.DIV_ELEM, tabSet);
+        writer.writeAttribute(HTML.ID_ATTR, idPrefix+index+"_nxt", HTML.ID_ATTR);
+        recursivelyRenderSafe(facesContext, writer, tabSet, idPrefix,
+                visitedTabClientIds, index+1);
+        writer.endElement(HTML.DIV_ELEM);
+
+        /*
+<div id="tabSetForm:tabSetExample_safe" style="display:none;">
+	<div id="tabSetForm:tabSetExample_safe_1"/>
+	<div id="tabSetForm:tabSetExample_safe_1_nxt">
+		<div id="tabSetForm:tabSetExample_safe_2">
+			<div id="tabSetForm:paneTwo" role="tabpanel" tabindex="0">
+				Tab contents 2 TWO
+            			<iframe src="http://www.icefaces.org"/>
+			</div>
+		</div>
+		<div id="tabSetForm:tabSetExample_safe_2_nxt">
+			<div id="tabSetForm:tabSetExample_safe_3">
+				<div id="tabSetForm:paneThree" role="tabpanel" tabindex="0">
+					Tab contents 3 THREE
+				</div>
+			</div>
+			<div id="tabSetForm:tabSetExample_safe_3_nxt"/>
+		</div>
+	</div>
+</div>
+        */
+    }
 
    /*
     * renders tab headers 
@@ -218,12 +353,12 @@ public class TabSetRenderer extends Renderer{
         }
         writer.writeAttribute(HTML.ID_ATTR, clientId+ "li"+ index, HTML.ID_ATTR);
         UIComponent labelFacet = ((TabPane)tab).getLabelFacet();
-        //if a server side tabset? then apply selected tab class
-        if (!tabSet.isClientSide()) {
-	        if (tabSet.getSelectedIndex() == index) {
-	            writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
-	        } 
-        }
+////        //if a server side tabset? then apply selected tab class
+////        if (!tabSet.isClientSide()) {
+////	        if (tabSet.getSelectedIndex() == index) {
+////	            writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
+////	        }
+////        }
         if (tabSet.isDisabled() || ((TabPane) tab).isDisabled()) {
             writer.writeAttribute(HTML.CLASS_ATTR, "disabled", HTML.CLASS_ATTR);
         }
@@ -232,16 +367,16 @@ public class TabSetRenderer extends Renderer{
             writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TAB_ROLE, ARIA.ROLE_ATTR);  
         }
         //Server side tab initializes lazily on mouse hover, here we are covering lazy initialization on focus
-        if (!tabSet.isClientSide()) {
-        	writer.writeAttribute(HTML.ONFOCUS_ATTR, "this.parentNode.parentNode.parentNode.onmouseover()", HTML.ONFOCUS_ATTR);
-        }
+////        if (!tabSet.isClientSide()) {
+////        	writer.writeAttribute(HTML.ONFOCUS_ATTR, "this.parentNode.parentNode.parentNode.onmouseover()", HTML.ONFOCUS_ATTR);
+////        }
         writer.writeAttribute(HTML.ID_ATTR, clientId+ "tab"+ index, HTML.ID_ATTR); 
         writer.writeAttribute(HTML.TABINDEX_ATTR, "0", HTML.TABINDEX_ATTR);
         writer.writeAttribute(HTML.CLASS_ATTR, "yui-navdiv", HTML.CLASS_ATTR);           
         writer.startElement("em", tab);
         writer.writeAttribute(HTML.ID_ATTR, clientId+ "Lbl", HTML.ID_ATTR); 
         //tab header can have input elements, we don't want tab to consume any event that was initiated by an input 
-        writer.writeAttribute(HTML.ONCLICK_ATTR, "if(Ice.isEventSourceInputElement(event)) event.cancelBubble = true;", HTML.ONCLICK_ATTR);            
+        writer.writeAttribute(HTML.ONCLICK_ATTR, "if(ice.component_util.isEventSourceInputElement(event)) event.cancelBubble = true;", HTML.ONCLICK_ATTR);            
         
         if (labelFacet!= null)
             Utils.renderChild(facesContext, ((TabPane)tab).getLabelFacet());
@@ -270,14 +405,15 @@ public class TabSetRenderer extends Renderer{
         writer.writeAttribute(HTML.TABINDEX_ATTR, 0, HTML.TABINDEX_ATTR);
         if (EnvUtils.isAriaEnabled(facesContext)) {
             writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABPANEL_ROLE, ARIA.ROLE_ATTR);  
-        }        
+        }
+        //TODO Render out the tab appropriately
         boolean isClientSide = tabSet.isClientSide();
         //Render all tabs and their contents for clientSide tabset 
         if (isClientSide) {
             Utils.renderChild(facesContext, tab);
         } else {
         	//Render selected tab only for server side tab
-            if (tabSet.getSelectedIndex() == index) {
+///            if (tabSet.getSelectedIndex() == index) {
                 final StringBuilder style = new StringBuilder();
                 //apply style on a tab body if it was modified by an animation 
                 Utils.iterateEffects(new AnimationBehavior.Iterator(tabSet) {
@@ -292,11 +428,11 @@ public class TabSetRenderer extends Renderer{
                 	writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
                 }
                 Utils.renderChild(facesContext, tab);
-            } else {
-            	//add hidden class to tabs that are not selected. 
-                writer.writeAttribute(HTML.CLASS_ATTR, "yui-hidden iceOutConStatActv", HTML.CLASS_ATTR);
-                writer.write(HTML.NBSP_ENTITY);
-            }
+///            } else {
+///            	//add hidden class to tabs that are not selected.
+///                writer.writeAttribute(HTML.CLASS_ATTR, "yui-hidden iceOutConStatActv", HTML.CLASS_ATTR);
+///                writer.write(HTML.NBSP_ENTITY);
+///            }
         }
         writer.endElement(HTML.DIV_ELEM);
     }
@@ -304,7 +440,8 @@ public class TabSetRenderer extends Renderer{
     /*
      * Render children of tabset component
      */
-    private void renderTab(FacesContext facesContext, UIComponent uiComponent, boolean isLabel) throws IOException{
+    private void doTabs(FacesContext facesContext, UIComponent uiComponent,
+            Do d, List<String> clickableTabs) throws IOException{
     	TabSet tabSet = (TabSet) uiComponent;
         Iterator children = tabSet.getChildren().iterator();
         int index = -1;
@@ -314,10 +451,16 @@ public class TabSetRenderer extends Renderer{
             if (child instanceof TabPane) {
                 if (child.isRendered()) {
                     index++;
-                    if(isLabel) {
+                    if(Do.RENDER_LABEL.equals(d)) {
                         renderTabNav(facesContext, tabSet, child, index);                        
-                    } else {
+                    } else if(Do.RENDER_CONTENTS.equals(d)) {
                         renderTabBody(facesContext, tabSet, child, index);
+                    } else if(Do.GET_CLIENT_IDS.equals(d)) {
+                        clickableTabs.add(child.getClientId(facesContext));
+                    } else if(Do.RENDER_CONTENTS_BY_CLIENT_ID.equals(d)) {
+                        if (clickableTabs.contains(child.getClientId(facesContext))) {
+                            renderTabBody(facesContext, tabSet, child, index);
+                        }
                     }
 
                 } else {
@@ -345,10 +488,16 @@ public class TabSetRenderer extends Renderer{
                             UIComponent nextChild = (UIComponent) childs.next();
                             if (nextChild.isRendered()) {
                                 index++;
-                                if(isLabel) {
+                                if(Do.RENDER_LABEL.equals(d)) {
                                     renderTabNav(facesContext, tabSet, nextChild, index);                        
-                                } else {
+                                } else if(Do.RENDER_CONTENTS.equals(d)) {
                                     renderTabBody(facesContext, tabSet, nextChild, index);
+                                } else if(Do.GET_CLIENT_IDS.equals(d)) {
+                                    clickableTabs.add(child.getClientId(facesContext));
+                                } else if(Do.RENDER_CONTENTS_BY_CLIENT_ID.equals(d)) {
+                                    if (clickableTabs.contains(child.getClientId(facesContext))) {
+                                        renderTabBody(facesContext, tabSet, child, index);
+                                    }
                                 }
                             }
                         }
@@ -369,5 +518,12 @@ public class TabSetRenderer extends Renderer{
     		}
     	}
     	return count;
+    }
+
+    private static enum Do {
+        RENDER_LABEL,
+        RENDER_CONTENTS,
+        RENDER_CONTENTS_BY_CLIENT_ID,
+        GET_CLIENT_IDS
     }
 }   
