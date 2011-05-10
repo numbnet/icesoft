@@ -43,7 +43,9 @@ import javax.faces.component.UIData;
 import javax.faces.component.UISelectBoolean;
 import javax.faces.component.UISelectMany;
 import javax.faces.component.UISelectOne;
+import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
@@ -362,19 +364,34 @@ public class DataExporter extends OutputResource {
             UIComponent uic) {
         StringBuffer str = new StringBuffer();
         Object value = uic.getAttributes().get("value");
-        if (!uic.isRendered()) return str.toString();
-        if (value != null)
-            str.append(value);
-        else {
+        if (value == null) {
             ValueBinding vb = uic.getValueBinding("value");
-            if (vb != null)
-                str.append(vb.getValue(fc));
+            if (vb != null) {
+                value = vb.getValue(fc);
+            }
         }
+        if (value == null) {
+        	return str.toString();
+        }
+        Converter converter = null;
+        if(uic instanceof ValueHolder) {
+        	converter = ((ValueHolder)uic).getConverter();
+        }
+        if(converter == null) {
+        	converter = FacesContext.getCurrentInstance().getApplication().createConverter(value.getClass());
+        }
+        if(converter != null) {
+        	str.append(converter.getAsString(FacesContext.getCurrentInstance(), uic, value));
+        } else {
+        	str.append(value);
+        }
+
         if (uic instanceof UISelectBoolean || 
         		uic instanceof UISelectMany || 
         		uic instanceof UISelectOne){
         	return str.toString();
-        }
+        }        
+        
         if (uic.getChildCount() > 0) {
             Iterator iter = uic.getChildren().iterator();
             while (iter.hasNext()) {
