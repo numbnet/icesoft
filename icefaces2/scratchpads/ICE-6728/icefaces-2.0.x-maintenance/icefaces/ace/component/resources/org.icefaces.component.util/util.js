@@ -28,10 +28,16 @@ function formOf(element) {
 
     throw 'Cannot find enclosing form.';
 }
-if (!window['Ice'])
-var Ice = {};
-Ice.isEventSourceInputElement = function(event) {
-    var elem = Ice.eventTarget(event);
+
+if (!window['ice']) {
+    window.ice = {};
+}
+if (!window['ice']['component_util']) {
+    window.ice.component_util = {};
+}
+
+ice.component_util.isEventSourceInputElement = function(event) {
+    var elem = ice.component_util.eventTarget(event);
     var tag = elem.tagName.toLowerCase();
     if (tag == 'input' || tag == 'select' || tag == 'option' || tag == 'a' || tag == 'textarea') {
         return true;
@@ -40,18 +46,18 @@ Ice.isEventSourceInputElement = function(event) {
     }
 };
 
-Ice.eventTarget = function(event) {
+ice.component_util.eventTarget = function(event) {
        event = event || window.event;           
        return(event.target || event.srcElement);
 };
 
-Ice.printArguments = function() {
+ice.component_util.printArguments = function() {
     logger.info('-= Printing arguments =-');
     for(var i=0; i<arguments.length; i++) 
        logger.info(arguments[i]);
 };
 
-Ice.insertElementAtIndex = function(parentElem, insertElem, index) {
+ice.component_util.insertElementAtIndex = function(parentElem, insertElem, index) {
 	if (!parentElem.hasChildNodes()) {
 		parentElem.appendChild(insertElem);
 	}
@@ -61,7 +67,7 @@ Ice.insertElementAtIndex = function(parentElem, insertElem, index) {
 	}
 };
 
-Ice.arrayIndexOf = function(arr, elem, fromIndex) {
+ice.component_util.arrayIndexOf = function(arr, elem, fromIndex) {
 	if (arr.indexOf) {
 		return arr.indexOf(elem, fromIndex);
 	}
@@ -80,7 +86,7 @@ Ice.arrayIndexOf = function(arr, elem, fromIndex) {
 };
 
 // One level deep comparison, not deep recursive
-Ice.arraysEqual = function(arr1, arr2) {
+ice.component_util.arraysEqual = function(arr1, arr2) {
     if (!arr1 && !arr2) {
         return true;
     }
@@ -99,7 +105,3 @@ Ice.arraysEqual = function(arr1, arr2) {
     }
     return true;
 };
-
-if (!window['ice']) {
-    window.ice = {};
-}
