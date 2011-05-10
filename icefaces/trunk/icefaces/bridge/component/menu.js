@@ -159,6 +159,7 @@ Ice.Menu = {
 
                 }
             }
+            submVPO.top = submenu.viewportOffset().top;
             if (scrollableDivMode) {
                 submVPO.top = submenu.cumulativeOffset().top - document.viewport.getScrollOffsets().top; // ICE-5251
             }
