@@ -438,6 +438,13 @@ if (!window.ice.icefaces) {
                     if (deltaSubmit(form)) {
                         var previousParameters = at(previousFormParameters, form.id);
                         if (previousParameters) {
+                            var recalculatedParameters = jsf.getViewState(form).split('&');
+                            //add parameters corresponding to newly inserted form elements
+                            each(recalculatedParameters, function(p) {
+                                if (!contains(previousParameters, p)) {
+                                    append(previousParameters, p);
+                                }
+                            });
                             form.previousParameters = previousParameters;
                         } else {
                             debug(logger, 'recalculate initial parameters for updated form["' + form.id + '"]');
