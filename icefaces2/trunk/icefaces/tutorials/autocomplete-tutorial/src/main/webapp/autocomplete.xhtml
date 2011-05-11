@@ -1,12 +1,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
         <title>ICEfaces Auto Complete Tutorial</title>
         <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
-        </h:head>    <h:body>        <ice:form>
+        </h:head>    <h:body>        <ice:form id="frm">
             <ice:panelGrid columns="1">
                 <h1>ICEfaces Auto Complete Tutorial</h1>
                 <ice:panelGroup>
                     <ice:outputText value="Enter some text to start the Auto Complete component:"></ice:outputText><br /><br />
-                    <ice:selectInputText rows="10" width="300" valueChangeListener="#{autoCompleteBean.updateList}">
+                    <ice:selectInputText id="selectin" rows="10" width="300" valueChangeListener="#{autoCompleteBean.updateList}">
                         <f:selectItems value="#{autoCompleteBean.list}"></f:selectItems>
                     </ice:selectInputText>
                 </ice:panelGroup>
