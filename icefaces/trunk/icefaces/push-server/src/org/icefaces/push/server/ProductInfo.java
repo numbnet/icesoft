@@ -14,7 +14,7 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
  *
@@ -50,7 +50,7 @@ public class ProductInfo {
     /**
      * The release type of the product (alpha, beta, production).
      */
-    public static String RELEASE_TYPE = "";
+    public static String RELEASE_TYPE = "x";
     /**
      * The build number.  Typically this would be tracked and maintained
      * by the build system (i.e. Ant).
