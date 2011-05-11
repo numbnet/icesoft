@@ -2258,7 +2258,8 @@ Autocompleter.Base.prototype = {
                                 if (ieEngine == 7) {
                                     update.style.top = (element.offsetTop + element.offsetHeight) + "px";
                                 } else if (ieEngine == 8) {
-                                    update.style.top = (element.offsetTop - element.cumulativeScrollOffset().top + element.offsetHeight) + "px";
+                                    var scrollTop = element.cumulativeScrollOffset().top - document.documentElement.scrollTop;
+                                    update.style.top = (element.offsetTop - scrollTop + element.offsetHeight) + "px";
                                 }
                                 element.style.position = savedPos;
                             }
