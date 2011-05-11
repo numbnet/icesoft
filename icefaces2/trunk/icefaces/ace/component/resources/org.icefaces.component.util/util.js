@@ -28,80 +28,29 @@ function formOf(element) {
 
     throw 'Cannot find enclosing form.';
 }
-
-if (!window['ice']) {
-    window.ice = {};
-}
-if (!window['ice']['component_util']) {
-    window.ice.component_util = {};
-}
-
-ice.component_util.isEventSourceInputElement = function(event) {
-    var elem = ice.component_util.eventTarget(event);
+if (!window['Ice'])
+var Ice = {};
+Ice.isEventSourceInputElement = function(event) {
+    var elem = Ice.eventTarget(event);
     var tag = elem.tagName.toLowerCase();
     if (tag == 'input' || tag == 'select' || tag == 'option' || tag == 'a' || tag == 'textarea') {
         return true;
     } else {
         return false;
     }
-};
+}
 
-ice.component_util.eventTarget = function(event) {
+Ice.eventTarget = function(event) {
        event = event || window.event;           
        return(event.target || event.srcElement);
-};
+}
 
-ice.component_util.printArguments = function() {
+Ice.printArguments = function() {
     logger.info('-= Printing arguments =-');
     for(var i=0; i<arguments.length; i++) 
        logger.info(arguments[i]);
-};
+}
 
-ice.component_util.insertElementAtIndex = function(parentElem, insertElem, index) {
-	if (!parentElem.hasChildNodes()) {
-		parentElem.appendChild(insertElem);
-	}
-	else {
-		var afterElem = parentElem.childNodes[index];
-		parentElem.insertBefore(insertElem, afterElem);
-	}
-};
-
-ice.component_util.arrayIndexOf = function(arr, elem, fromIndex) {
-	if (arr.indexOf) {
-		return arr.indexOf(elem, fromIndex);
-	}
-	var len = arr.length;
-	if (fromIndex == null) {
-		fromIndex = 0;
-	} else if (fromIndex < 0) {
-		fromIndex = Math.max(0, len + fromIndex);
-	}
-	for (var i = fromIndex; i < len; i++) {
-		if (arr[i] === elem) {
-			return i;
-		}
-	}
-	return -1;
-};
-
-// One level deep comparison, not deep recursive
-ice.component_util.arraysEqual = function(arr1, arr2) {
-    if (!arr1 && !arr2) {
-        return true;
-    }
-    else if (!arr1 || !arr2) {
-        return false;
-    }
-    var len1 = arr1.length;
-    var len2 = arr2.length;
-    if (len1 != len2) {
-        return false;
-    }
-    for (var i = 0; i < len1; i++) {
-        if (arr1[i] !== arr2[i]) {
-            return false;
-        }
-    }
-    return true;
-};
+if (!window['ice']) {
+    window.ice = {};
+}
