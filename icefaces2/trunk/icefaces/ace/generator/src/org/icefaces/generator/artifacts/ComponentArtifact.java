@@ -62,10 +62,6 @@ public class ComponentArtifact extends Artifact{
 		// add entry to faces-config
 		GeneratorContext.getInstance().getFacesConfigBuilder().addEntry(clazz, component);
 		GeneratorContext.getInstance().getFaceletTagLibBuilder().addTagInfo(clazz, component);
-		GeneratorContext.getInstance().getEclipseAttributeMDBuilder().addTagInfo(component);
-		GeneratorContext.getInstance().getEclipsePIMDBuilder().addTagInfo(component);
-		GeneratorContext.getInstance().getEclipsedtiMDBuilder().addTagInfo(component);
-		GeneratorContext.getInstance().getRADBuilder().addTagInfo(component);
 
 		int classIndicator =  Utility.getClassName(component).lastIndexOf(".");
 
@@ -223,9 +219,6 @@ public class ComponentArtifact extends Artifact{
 		while (iterator.hasNext()){
 			Field field = getComponentContext().getFieldsForTagClass().get(iterator.next());
 			GeneratorContext.getInstance().getFaceletTagLibBuilder().addAttributeInfo(field);
-			GeneratorContext.getInstance().getEclipseAttributeMDBuilder().addAttributeInfo(field);
-			GeneratorContext.getInstance().getRADBuilder().addAttributeInfo(field);
-
 		}
 
 	}
