@@ -63,7 +63,7 @@ ice.component.tabset = {
        //add hover effect 
        if (jsfProps.hover) {
            hoverEffect = function(event, attributes) {  
-               target = Ice.eventTarget(event);
+               target = ice.component_util.eventTarget(event);
                target = target.parentNode;
                if ("selected" == target.parentNode.className) return;         
                anim = new YAHOO.util.ColorAnim(target, attributes); 
@@ -216,7 +216,7 @@ ice.component.tabset = {
             var context = ice.component.getJSContext(clientId);
             var tabview = context.getComponent();
             var target = Event.getTarget(event).parentNode;
-			if(Ice.isEventSourceInputElement(event)) {
+			if(ice.component_util.isEventSourceInputElement(event)) {
 				return true ;
 			}
 			//check for enter or space key
@@ -441,6 +441,6 @@ ice.component.tabset = {
    //delegate call to ice.yui.getInstance(..) with the reference of this lib 
    getInstance:function(clientId, callback) {
        ice.component.getInstance(clientId, callback, this);
-   }   
+   }
 };
 
