@@ -3535,7 +3535,10 @@ ToolTipPanelPopup = Class.create({
 
     hidePopupOnMouseOut: function(event) {
         if (!this.isTooltipVisible()) return;
-        if (Position.within($(this.tooltipCompId), Event.pointerX(event), Event.pointerY(event))) return; //ICE-3521
+        var x = Event.pointerX(event);
+        var y = Event.pointerY(event);
+        if (Position.within($(this.tooltipCompId), x, y)) return; //ICE-3521
+        if (Position.within(this.src, x, y)) return; //ICE-6285
         this.hidePopup(event);
         this.state = "hide";
         this.populateFields();
