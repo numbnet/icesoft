@@ -35,12 +35,8 @@ import org.icefaces.generator.behavior.ActionSourceBehavior;
 import org.icefaces.generator.behavior.Behavior;
 import org.icefaces.generator.behavior.ClientBehaviorHolder;
 import org.icefaces.generator.utils.FileWriter;
-import org.icefaces.generator.xmlbuilder.EclipseAttributeMDBuilder;
-import org.icefaces.generator.xmlbuilder.EclipsePIMDBuilder;
-import org.icefaces.generator.xmlbuilder.EclipsedtiMDBuilder;
 import org.icefaces.generator.xmlbuilder.FaceletTagLibBuilder;
 import org.icefaces.generator.xmlbuilder.FacesConfigBuilder;
-import org.icefaces.generator.xmlbuilder.RADJLDBuilder;
 import org.icefaces.generator.xmlbuilder.TLDBuilder;
 
 public class GeneratorContext{
@@ -58,27 +54,7 @@ public class GeneratorContext{
      public static final Map<String,String> SpecialReturnSignatures = new HashMap<String,String>();
      public static final Map<String,String> PrimitiveDefaults = new HashMap<String,String>();
 
-     private RADJLDBuilder radBuilder = new RADJLDBuilder();
-  	public RADJLDBuilder getRADBuilder() {
- 		return radBuilder;
- 	}
-  	
-    
- private EclipseAttributeMDBuilder eclipseBuilder = new EclipseAttributeMDBuilder();
- 	public EclipseAttributeMDBuilder getEclipseAttributeMDBuilder() {
-		return eclipseBuilder;
-	}
- 	
- 	private EclipsePIMDBuilder piBuilder = new EclipsePIMDBuilder();
- 	public EclipsePIMDBuilder getEclipsePIMDBuilder() {
-		return piBuilder;
-	}
- 	
- 	private EclipsedtiMDBuilder dtiBuilder = new EclipsedtiMDBuilder();
- 	public EclipsedtiMDBuilder getEclipsedtiMDBuilder() {
-		return dtiBuilder;
-	}
-    public static String getDisplayName() {
+     public static String getDisplayName() {
         String ret = System.getProperty("generator.tld.doc.display.name");
         if (ret == null) {
             ret = "";
@@ -199,9 +175,5 @@ public class GeneratorContext{
         getTldBuilder().write();
         getFacesConfigBuilder().write();
         getFaceletTagLibBuilder().write();
-        getEclipseAttributeMDBuilder().write();
-        getEclipsePIMDBuilder().write();
-        getEclipsedtiMDBuilder().write();
-		getRADBuilder().write();
     }    
 }
