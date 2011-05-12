@@ -79,6 +79,11 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
         String formClientID = deltaSubmitFormValues[0];
         UIComponent formComponent = viewRoot.findComponent(formClientID);
 
+        //todo: use a public constant to lookup old DOM document
+        //construct previous parameters from the rendered document
+        Document oldDOM = DOMResponseWriter.getOldDocument(facesContext);
+        Map recalculatedParameters = calculateParametersFromDOM(externalContext, oldDOM);
+
         Map formAttributes = formComponent.getAttributes();
         Map previousParameters = (Map) formAttributes.get(PreviousParameters);
         if (previousParameters == null) {
@@ -87,13 +92,20 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
             if (idToPreviousParameterMapping != null) {
                 previousParameters = (Map) idToPreviousParameterMapping.get(formComponent.getId());
             }
-            //construct previous parameters from the old document
             if (previousParameters == null) {
-                //todo: use a public constant to lookup old DOM document
-                Document oldDOM = DOMResponseWriter.getOldDocument(facesContext);
-                previousParameters = calculateParametersFromDOM(externalContext, oldDOM);
+                previousParameters = recalculatedParameters;
             }
         }
+        //add parameters corresponding to newly inserted form elements - ICE-6848
+        Iterator recalculatedParameterIterator = recalculatedParameters.entrySet().iterator();
+        while (recalculatedParameterIterator.hasNext()) {
+            Map.Entry entry = (Map.Entry) recalculatedParameterIterator.next();
+            Object name = entry.getKey();
+            if (!previousParameters.containsKey(name)) {
+                previousParameters.put(name, entry.getValue());
+            }
+        }
+
         final Map parameterValuesMap = new HashMap(previousParameters);
         final ArrayList directParameters = new ArrayList();
 
@@ -118,7 +130,7 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                 String key = patchKey.substring(6);
                 String[] previousValues = (String[]) parameterValuesMap.get(key);
                 if (previousValues == null) {
-                    log.warning("Missing previous parameters: " + key);
+                    log.fine("Missing previous parameters: " + key);
                 } else {
                     ArrayList allValues = new ArrayList();
                     allValues.addAll(Arrays.asList(previousValues));
