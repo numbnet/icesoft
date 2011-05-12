@@ -375,11 +375,13 @@ public class DataExporter extends OutputResource {
         	str.append(value);
         }
 
+        //don't process selectItems or f:param for uiCommand)
         if (uic instanceof UISelectBoolean || 
         		uic instanceof UISelectMany || 
-        		uic instanceof UISelectOne){
+        		uic instanceof UISelectOne||
+        		uic instanceof UICommand){
         	return str.toString();
-        }        
+        }         
         
         if (uic.getChildCount() > 0) {
             Iterator iter = uic.getChildren().iterator();
