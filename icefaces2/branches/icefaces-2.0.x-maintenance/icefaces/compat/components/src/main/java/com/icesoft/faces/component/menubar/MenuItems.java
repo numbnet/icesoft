@@ -172,7 +172,7 @@ public class MenuItems extends MenuItemBase {
             }
         }
         
-        super.processDecodes(context);
+//        super.processDecodes(context);
     }
 
     public Object saveState(FacesContext context) {
