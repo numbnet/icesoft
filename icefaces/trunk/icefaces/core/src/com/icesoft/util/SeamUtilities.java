@@ -36,7 +36,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Field;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
 
@@ -45,7 +44,6 @@ import javax.faces.lifecycle.Lifecycle;
 import javax.faces.context.FacesContext;
 
 import org.springframework.webflow.execution.RequestContextHolder;
-import com.icesoft.faces.env.SpringWebFlowInstantiationServlet;
 
 /**
  * Purpose of this class is to localize Seam Introspection code
@@ -103,7 +101,7 @@ public class SeamUtilities {
 
     static {
         loadSeamEnvironment();
-        loadSpringEnvironment();
+        loadSpringWebflowEnvironment();
         loadSpringSecurityEnvironment();
     }
     
@@ -473,7 +471,7 @@ public class SeamUtilities {
     /**
      * Perform any needed Spring initialization.
      */
-    private static void loadSpringEnvironment() {
+    private static void loadSpringWebflowEnvironment() {
         Class springClass = null;
         try {
             springClass = Class.forName(SPRING_CLASS_NAME);
@@ -500,30 +498,47 @@ public class SeamUtilities {
             if (log.isDebugEnabled()) {
                 log.debug("Spring webflow 2.x not detected: " + t);
             }
+
         }
         if (null != springClass && springWebFlowConfigured() ) {
             springLoaded = 2;
             if (log.isDebugEnabled()) {
                 log.debug("Spring webflow detected: " + springClass);
+
             }
         } else {
             if (log.isDebugEnabled()) {
                 log.debug("Spring Web Flow 2.x detected but not configured");
             }
         }
-
     }
 
     /**
+     * This method is called by the SpringWebflowInstantiationServlet when
+     * it loads. If it loads. ICE-6617
+     * @param isConfigured
+     */
+    public static void setSpringWebflowConfigured( boolean isConfigured ) {
+
+        springWebflowConfigured = isConfigured;
+        log.debug("Setting isSpringWebflowConfigured to: " + isConfigured);
+        loadSpringWebflowEnvironment();
+    }
+
+    private static boolean springWebflowConfigured;
+
+    /**
      * ICE-5586: It's possible for Spring Web Flow to be loadable from the
-     * classpath but not configured to be used. This method checks to see
-     * if our special servlet has been declared and initialized, something
-     * we require for running with Spring Web Flow.
+     * classpath but not configured to be used. This method returns the flag
+     * set by the SpringWebflowInstantiationServlet (See ICE-6617) rather
+     * than calling into a possibly not yet instantiated Servlet (WebSphere).
+     * This method will return true if Webflow is configured (SpringWebflowInstantiationServlet)
+     * and present (presence of spring classes)
      * 
-     * @return
+     * @return true if the Webflow configured and preset.
      */
     public static boolean springWebFlowConfigured(){
-        return (SpringWebFlowInstantiationServlet.getFlowExecutor() != null);
+        return springWebflowConfigured;
     }
 
     /**
