@@ -43,6 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
+import com.icesoft.util.SeamUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -63,6 +64,9 @@ public class SpringWebFlowInstantiationServlet extends HttpServlet {
         super.init(servletConfig);
         try {
             initFlowExecutor(servletConfig);
+            // ICE-6617 set the flags in the common location once we're running
+            SeamUtilities.setSpringWebflowConfigured( flowExecutor != null );
+
         } catch (Throwable t)  {
             if (log.isErrorEnabled()) {
                 log.error("Unable to initialize SpringWebFlowInstantiationServlet ", t );
