@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.UISelectBoolean;
@@ -385,10 +386,11 @@ public class DataExporter extends OutputResource {
         } else {
         	str.append(value);
         }
-
+        //don't process selectItems or f:param for uiCommand)
         if (uic instanceof UISelectBoolean || 
         		uic instanceof UISelectMany || 
-        		uic instanceof UISelectOne){
+        		uic instanceof UISelectOne||
+        		uic instanceof UICommand){
         	return str.toString();
         }        
         
