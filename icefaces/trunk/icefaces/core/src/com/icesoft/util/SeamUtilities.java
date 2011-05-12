@@ -617,8 +617,13 @@ public class SeamUtilities {
                 flowIdParameterName = "_flowExecutionKey";
             }
         } else if (2 == springLoaded) {
-            value = RequestContextHolder.getRequestContext()
-                    .getFlowExecutionContext().getKey().toString();
+            try {
+                value = RequestContextHolder.getRequestContext()
+                        .getFlowExecutionContext().getKey().toString();
+            } catch (NullPointerException e)  {
+                //SWF is not initialized
+                value = null;
+            }
             if (null != value)  {
                 //Spring Web Flow 2.x confirmed
                 flowIdParameterName = 
