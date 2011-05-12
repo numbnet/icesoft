@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UICommand;
 import javax.faces.component.UIData;
 import javax.faces.component.UISelectBoolean;
 import javax.faces.component.UISelectMany;
