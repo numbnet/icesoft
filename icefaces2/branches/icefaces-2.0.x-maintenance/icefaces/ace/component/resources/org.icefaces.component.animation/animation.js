@@ -150,7 +150,7 @@ ice.yui3.use(function(Y) {
 	var _one = Y.one;
 	Y.one = function(id) { 
 		if (Y.Lang.isString(id)) {
-			id = id.replace(':', '\\:');
+			id = id.replace(/:/g, '\\:');
 		}
 		return _one(id);
 	}
