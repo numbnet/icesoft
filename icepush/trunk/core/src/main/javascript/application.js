@@ -66,7 +66,6 @@ if (!window.ice.icepush) {
         var PushIDs = 'ice.pushids';
         var BrowserIDCookieName = 'ice.push.browser';
         var NotifiedPushIDs = 'ice.notified.pushids';
-        var CommandMarker = '{{command}}';
 
         var handler = window.console && window.console.firebug ? FirebugLogHandler(debug) : WindowLogHandler(debug, window.location.href);
         namespace.windowID = namespace.windowID || substring(Math.random().toString(16), 2, 7);
@@ -111,10 +110,6 @@ if (!window.ice.icepush) {
             throw 'Server internal error: ' + contentAsText(response);
         }
 
-        function applyURIPattern(commandName) {
-            return replace(namespace.push.configuration.uriPattern, CommandMarker, commandName);
-        }
-
         var currentNotifications = [];
         var apiChannel = Client(true);
         //public API
@@ -146,7 +141,7 @@ if (!window.ice.icepush) {
 
             createPushId: function() {
                 var id;
-                postSynchronously(apiChannel, applyURIPattern('create-push-id.icepush'), noop, FormPost, $witch(function (condition) {
+                postSynchronously(apiChannel, namespace.push.configuration.createPushIdURI || 'create-push-id.icepush', noop, FormPost, $witch(function (condition) {
                     condition(OK, function(response) {
                         id = contentAsText(response);
                     });
@@ -156,7 +151,7 @@ if (!window.ice.icepush) {
             },
 
             notify: function(group) {
-                postAsynchronously(apiChannel, applyURIPattern('notify.icepush'), function(q) {
+                postAsynchronously(apiChannel, namespace.push.configuration.notifyURI || 'notify.icepush', function(q) {
                     addNameValue(q, 'group', group);
                 }, FormPost, $witch(function(condition) {
                     condition(ServerInternalError, throwServerError);
@@ -164,7 +159,7 @@ if (!window.ice.icepush) {
             },
 
             addGroupMember: function(group, id) {
-                postAsynchronously(apiChannel, applyURIPattern('add-group-member.icepush'), function(q) {
+                postAsynchronously(apiChannel, namespace.push.configuration.addGroupMemberURI || 'add-group-member.icepush', function(q) {
                     addNameValue(q, 'group', group);
                     addNameValue(q, 'id', id);
                 }, FormPost, $witch(function(condition) {
@@ -173,7 +168,7 @@ if (!window.ice.icepush) {
             },
 
             removeGroupMember: function(group, id) {
-                postAsynchronously(apiChannel, applyURIPattern('remove-group-member.icepush'), function(q) {
+                postAsynchronously(apiChannel, namespace.push.configuration.removeGroupMemberURI || 'remove-group-member.icepush', function(q) {
                     addNameValue(q, 'group', group);
                     addNameValue(q, 'id', id);
                 }, FormPost, $witch(function(condition) {
@@ -221,7 +216,6 @@ if (!window.ice.icepush) {
 
             configuration: {
                 contextPath: '.',
-                uriPattern: './{{command}}',
                 blockingConnectionURI: null
             }
         };
@@ -244,7 +238,7 @@ if (!window.ice.icepush) {
                 configurationElement = message;
                 //update public values
                 publicConfiguration.contextPath = attributeAsString(configuration, 'contextPath', publicConfiguration.contextPath);
-                publicConfiguration.blockingConnectionURI = attributeAsString(configuration, 'blockingConnectionURI', publicConfiguration.blockingConnectionURI || applyURIPattern('listen.icepush'));
+                publicConfiguration.blockingConnectionURI = attributeAsString(configuration, 'blockingConnectionURI', publicConfiguration.blockingConnectionURI || 'listen.icepush');
                 changeHeartbeatInterval(asyncConnection, attributeAsNumber(configuration, 'heartbeatTimeout', 50000));
             });
             register(commandDispatcher, 'browser', function(message) {
