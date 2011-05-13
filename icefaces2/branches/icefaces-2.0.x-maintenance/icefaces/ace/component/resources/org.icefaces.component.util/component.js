@@ -40,6 +40,16 @@ ice.yui3 = {
                     //'json',
                     function(Y) {
                 ice.yui3.y = Y;
+				
+				// make Y.one support ':'s in IDs
+				var _one = ice.yui3.y.one;
+				ice.yui3.y.one = function(id) { 
+					if (ice.yui3.y.Lang.isString(id)) {
+						id = id.replace(/:/g, '\\:');
+					}
+					return _one(id);
+				}
+				
                 callback(ice.yui3.y);
             });
         } else {
@@ -82,24 +92,6 @@ ice.yui3 = {
     yui2in3TrailingPath: '',
 	getNewInstance: function() { // Private, only for use()
 		if (!(ice.yui3.yui3Base && ice.yui3.yui2in3Base)) {
-			//alert('1' + match[1] + '\n' + '2' + match[2] + '\n' + '3' + match[3]);
-			/*
-			var basePath = match[1];
-			if (basePath.indexOf(':') != -1) { // check if domain contains port number and extract base path
-				basePath = basePath.substring(basePath.indexOf('/', basePath.indexOf(':')) + 1);
-			}
-			*/
-			// determine the Faces Servlet extension (usually .jsf), also consider the case when the jsessionid is in the url
-			/*
-			var jsessionidIndex = match[2].indexOf(';jsessionid=');
-			if (jsessionidIndex != -1) {
-				ice.yui3.facesServletExtension = match[2].substring(0, jsessionidIndex);
-			} else {
-				ice.yui3.facesServletExtension = match[2]
-			}
-			ice.yui3.yui3Base = '/' + basePath + '/javax.faces.resource/' + match[3] + '/';
-			ice.yui3.yui2in3Base = '/' + basePath + '/javax.faces.resource/' + 'yui/2in3/';
-			*/
 			var isPortlet = false;
 			var whole = ice.yui3.getBasePath(ice.yui3.basePathPattern);
 			if (!whole) {
@@ -149,15 +141,6 @@ ice.yui3 = {
 			}
 			return oldUrlFn.call(this, path, name, base) + trailingPath;
 		};		
-		
-		// make Y.one support ':'s in IDs
-		var _one = Y.one;
-		Y.one = function(id) { 
-			if (Y.Lang.isString(id)) {
-				id = id.replace(/:/g, '\\:');
-			}
-			return _one(id);
-		}
 		
 		return Y;
 	}

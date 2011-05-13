@@ -79,8 +79,7 @@ ice.animation = {
 	},
 	
 	getAnimation: function (clientId, eventName) {
-	    //var node = ice.yui3.y.one('#'+ clientId);
-		var node = ice.yui3.y.one(document.getElementById(clientId));
+	    var node = ice.yui3.y.one('#'+ clientId);
  	   
         var animation = null;
 	    if (node) {
@@ -146,15 +145,6 @@ ice.yui3.use(function(Y) {
 		});	
 	ice.animation.AnimPlugin = AnimPlugin;
 	ice.animation.loadDefaultAnims(Y);
-	
-	var _one = Y.one;
-	Y.one = function(id) { 
-		if (Y.Lang.isString(id)) {
-			id = id.replace(/:/g, '\\:');
-		}
-		return _one(id);
-	}
-
 		
     function chain(ref) {
 		this.anim = ref;
@@ -474,11 +464,7 @@ ice.animation.register = function(args, callback) {
 				effect = new ice.yui3.effects[args.name.toLowerCase()](args); 
 				
 	//---- Animation plugin
-				// (this is done for portlets; for some reason ':'s aren't escaped at this point)
-				var _node = document.getElementById(args.node.substring(1));
-
-				//var node = Y.one(args.node);
-				var node = Y.one(_node);
+				var node = Y.one(args.node);
 	
 				if (!node["animation"]) { 
 					node.plug(ice.animation.AnimPlugin);
