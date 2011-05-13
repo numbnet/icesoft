@@ -22,12 +22,12 @@
 package org.icefaces.component.fileentry;
 
 import org.icefaces.impl.context.DOMPartialViewContext;
-import org.icefaces.impl.push.servlet.ProxyHttpServletRequest;
 import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.apache.commons.fileupload.FileItemStream;
 import org.icefaces.apache.commons.fileupload.FileItemIterator;
 import org.icefaces.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.icefaces.apache.commons.fileupload.util.Streams;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.event.PhaseEvent;
@@ -112,17 +112,8 @@ public class FileEntryPhaseListener implements PhaseListener {
             return;
             
         Object requestObject = phaseEvent.getFacesContext().getExternalContext().getRequest();
-        HttpServletRequest request = null;
-        if (!(requestObject instanceof HttpServletRequest)) {
-//            System.out.println("FileEntryPhaseListener.beforePhase()  requestObject: " + requestObject);
-//            if (requestObject != null)
-//                System.out.println("FileEntryPhaseListener.beforePhase()  requestObject.class: " + requestObject.getClass().getName());
-            request = new ProxyHttpServletRequest(phaseEvent.getFacesContext());
-//            return;
-        } else {
-            request = (HttpServletRequest) requestObject;
-        }
-//        System.out.println("FileEntryPhaseListener.beforePhase()  contentType: " + request.getContentType());
+        HttpServletRequest request = EnvUtils.getSafeRequest(phaseEvent.getFacesContext());
+        boolean isPortlet = EnvUtils.instanceofPortletRequest(requestObject);
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 //        System.out.println("FileEntryPhaseListener.beforePhase()  isMultipart: " + isMultipart);
         if (isMultipart) {
@@ -187,10 +178,10 @@ public class FileEntryPhaseListener implements PhaseListener {
 
 //            System.out.println("FileEntryPhaseListener.beforePhase()  parameterMap    : " + parameterMap);
             Object wrapper = null;
-            if( requestObject instanceof HttpServletRequest ){
-                wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, parameterMap);
-            } else {
+            if( isPortlet ){
                 wrapper = getPortletRequestWrapper(requestObject,parameterMap);
+            } else {
+                wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, parameterMap);
             }
             phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
             
@@ -216,10 +207,10 @@ public class FileEntryPhaseListener implements PhaseListener {
             // be disabled
 //            System.out.println("FileEntryPhaseListener.beforePhase()  Temporary test of adding Faces-Request HTTP header");
             Object wrapper = null;
-            if(requestObject instanceof HttpServletRequest){
-                wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, null);
-            } else {
+            if(isPortlet){
                 wrapper = getPortletRequestWrapper(requestObject,null);
+            } else {
+                wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, null);
             }
             phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
             PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();

@@ -28,6 +28,7 @@ import com.icesoft.faces.util.CoreUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icefaces.util.EnvUtils;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
@@ -149,7 +150,7 @@ public class OutputStyleRenderer extends DomBasicRenderer {
 
         Object o = facesContext.getExternalContext().getRequest();
         if (o != null) {
-            if (o instanceof HttpServletRequest) {
+            if (!EnvUtils.instanceofPortletRequest(o)) {
                 HttpServletRequest request = (HttpServletRequest) o;
                 useragent = request.getHeader("user-agent");
                 if(useragent == null){
