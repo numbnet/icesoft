@@ -35,8 +35,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import javax.portlet.ActionRequest;
-import javax.portlet.filter.ActionRequestWrapper;
+import javax.portlet.PortletRequest;
+import javax.portlet.filter.PortletRequestWrapper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.*;
@@ -166,7 +166,7 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
 
         Object request = externalContext.getRequest();
         if (EnvUtils.instanceofPortletRequest(request)) {
-            externalContext.setRequest(new DeltaActionPortletRequest((ActionRequest) request, parameterValuesMap));
+            externalContext.setRequest(new DeltaPortletRequest((PortletRequest) request, parameterValuesMap));
         } else {
             externalContext.setRequest(new DeltaHttpServletRequest((HttpServletRequest) request, parameterValuesMap));
         }
@@ -335,10 +335,10 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
         }
     }
 
-    private static class DeltaActionPortletRequest extends ActionRequestWrapper {
+    private static class DeltaPortletRequest extends PortletRequestWrapper {
         private final Map parameterValuesMap;
 
-        public DeltaActionPortletRequest(ActionRequest originalRequest, Map parameterValuesMap) {
+        public DeltaPortletRequest(PortletRequest originalRequest, Map parameterValuesMap) {
             super(originalRequest);
             this.parameterValuesMap = parameterValuesMap;
         }
