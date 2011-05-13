@@ -43,6 +43,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.icefaces.util.EnvUtils;
 import org.icepush.PushContext;
 import org.icepush.servlet.MainServlet;
 
@@ -157,15 +158,8 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ExternalContext externalContext = facesContext.getExternalContext();
             Object BrowserID = externalContext.getRequestCookieMap().get(BROWSERID_COOKIE);
-            HttpServletRequest request;
-            HttpServletResponse response;
-            if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
-                request = new ProxyHttpServletRequest(facesContext);
-                response = new ProxyHttpServletResponse(facesContext);
-            } else {
-                request = (HttpServletRequest) externalContext.getRequest();
-                response = (HttpServletResponse) externalContext.getResponse();
-            }
+            HttpServletRequest request = EnvUtils.getSafeRequest(facesContext);
+            HttpServletResponse response = EnvUtils.getSafeResponse(facesContext);
             if (null == BrowserID)  {
                 //Need better integration with ICEpush to assign ice.push.browser
                 //without createPushId()
@@ -202,22 +196,24 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
             ExternalContext externalContext = facesContext.getExternalContext();
             String resourceName = facesContext.getExternalContext()
                 .getRequestParameterMap().get(RESOURCE_KEY);
-            //special proxied code path for portlets
+
+            //Return safe, proxied versions of the request and response if we are
+            //running in a portlet environment.
+            HttpServletRequest request = EnvUtils.getSafeRequest(facesContext);
+            HttpServletResponse response = EnvUtils.getSafeResponse(facesContext);
+
             if (ICEpushListenResource.RESOURCE_NAME.equals(resourceName))  {
                 try {
-                    mainServlet.service(new ProxyHttpServletRequest(facesContext),
-                            new ProxyHttpServletResponse(facesContext));
+                    mainServlet.service(request,response);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
                 return;
             }
-            if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
+            if (request instanceof ProxyHttpServletRequest)  {
                 resourceHandler.handleResourceRequest(facesContext);
                 return;
             }
-            HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-            HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
             String requestURI = request.getRequestURI();
             if (ICEpushRequestPattern.matcher(requestURI).find()) {
                 try {
@@ -238,7 +234,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
                 return true;
             }
             ExternalContext externalContext = facesContext.getExternalContext();
-            if (!(externalContext.getRequest() instanceof HttpServletRequest))  {
+            if (EnvUtils.instanceofPortletRequest(externalContext.getRequest()))  {
                 return resourceHandler.isResourceRequest(facesContext);
             }
             HttpServletRequest servletRequest = (HttpServletRequest) externalContext.getRequest();

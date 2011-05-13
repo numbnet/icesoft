@@ -22,11 +22,15 @@
 package org.icefaces.util;
 
 import org.icefaces.impl.push.servlet.ICEpushListenResource;
+import org.icefaces.impl.push.servlet.ProxyHttpServletRequest;
+import org.icefaces.impl.push.servlet.ProxyHttpServletResponse;
 
 import javax.faces.application.Resource;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,11 +78,13 @@ public class EnvUtils {
     //Use reflection to identify if the Portlet classes are available.
     private static Class PortletSessionClass;
     private static Class PortletRequestClass;
+    private static Class PortletResponseClass;
 
     static {
         try {
             PortletSessionClass = Class.forName("javax.portlet.PortletSession");
             PortletRequestClass = Class.forName("javax.portlet.PortletRequest");
+            PortletResponseClass = Class.forName("javax.portlet.PortletResponse");
         } catch (Throwable t) {
             log.log(Level.FINE, "Portlet classes not available: ", t);
         }
@@ -390,6 +396,28 @@ public class EnvUtils {
 
     public static boolean instanceofPortletRequest(Object request) {
         return PortletRequestClass != null && PortletRequestClass.isInstance(request);
+    }
+
+    public static boolean instanceofPortletResponse(Object response) {
+        return PortletResponseClass != null && PortletResponseClass.isInstance(response);
+    }
+
+    public static HttpServletRequest getSafeRequest(FacesContext fc){
+        ExternalContext ec = fc.getExternalContext();
+        Object rawReq = ec.getRequest();
+        if(instanceofPortletRequest(rawReq)){
+            return new ProxyHttpServletRequest(fc);
+        }
+        return (HttpServletRequest)rawReq;
+    }
+
+    public static HttpServletResponse getSafeResponse(FacesContext fc){
+        ExternalContext ec = fc.getExternalContext();
+        Object rawRes = ec.getResponse();
+        if(instanceofPortletResponse(rawRes)){
+            return new ProxyHttpServletResponse(fc);
+        }
+        return (HttpServletResponse)rawRes;
     }
 
     public static boolean isPushRequest(FacesContext facesContext) {
