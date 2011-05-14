@@ -22,6 +22,8 @@
 package org.icefaces.impl.push.servlet;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -49,6 +51,18 @@ import org.icepush.servlet.MainServlet;
 
 public class ICEpushResourceHandler extends ResourceHandlerWrapper implements PhaseListener  {
     private static final Logger log = Logger.getLogger(ICEpushResourceHandler.class.getName());
+    public static final String BLOCKING_CONNECTION_RESOURCE_NAME = "listen.icepush";
+    public static final String CREATE_PUSH_ID_RESOURCE_NAME = "create-push-id.icepush";
+    public static final String NOTIFY_RESOURCE_NAME = "notify.icepush";
+    public static final String ADD_GROUP_MEMBER_RESOURCE_NAME = "add-group-member.icepush";
+    public static final String REMOVE_GROUP_MEMBER_RESOURCE_NAME = "remove-group-member.icepush";
+    private static final Collection RESOURCES = Arrays.asList(
+            BLOCKING_CONNECTION_RESOURCE_NAME,
+            NOTIFY_RESOURCE_NAME,
+            CREATE_PUSH_ID_RESOURCE_NAME,
+            ADD_GROUP_MEMBER_RESOURCE_NAME,
+            REMOVE_GROUP_MEMBER_RESOURCE_NAME
+    );
 
     private static final ReentrantLock lock = new ReentrantLock();
     private static final Condition condition = lock.newCondition();
@@ -143,7 +157,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
     }
 
     private static class ICEpushResourceHandlerImpl extends AbstractICEpushResourceHandler {
-        private static final Pattern ICEpushRequestPattern = Pattern.compile(".*listen\\.icepush");
+        private static final Pattern ICEpushRequestPattern = Pattern.compile(".*\\.icepush");
         private static final String RESOURCE_KEY = "javax.faces.resource";
         private static final String BROWSERID_COOKIE = "ice.push.browser";
 
@@ -166,16 +180,6 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
                 ((PushContext) externalContext.getApplicationMap()
                         .get(PushContext.class.getName()))
                         .createPushId(request, response);
-            }
-        }
-
-        @Override
-        public Resource createResource(final String resourceName) {
-            if (ICEpushListenResource.RESOURCE_NAME.equals(resourceName)) {
-                return new ICEpushListenResource(this);
-            }
-            else {
-                return super.createResource(resourceName);
             }
         }
 
@@ -202,7 +206,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
             HttpServletRequest request = EnvUtils.getSafeRequest(facesContext);
             HttpServletResponse response = EnvUtils.getSafeResponse(facesContext);
 
-            if (ICEpushListenResource.RESOURCE_NAME.equals(resourceName))  {
+            if (RESOURCES.contains(resourceName))  {
                 try {
                     mainServlet.service(request,response);
                 } catch (Exception e) {
@@ -230,7 +234,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         public boolean isResourceRequest(final FacesContext facesContext) {
             String resourceName = facesContext.getExternalContext()
                 .getRequestParameterMap().get(RESOURCE_KEY);
-            if (ICEpushListenResource.RESOURCE_NAME.equals(resourceName))  {
+            if (RESOURCES.contains(resourceName))  {
                 return true;
             }
             ExternalContext externalContext = facesContext.getExternalContext();

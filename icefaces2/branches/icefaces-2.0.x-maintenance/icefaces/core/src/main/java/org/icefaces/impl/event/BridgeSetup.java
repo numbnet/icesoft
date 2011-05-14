@@ -24,7 +24,7 @@ package org.icefaces.impl.event;
 import org.icefaces.impl.application.LazyPushManager;
 import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.impl.push.SessionViewManager;
-import org.icefaces.impl.push.servlet.ICEpushListenResource;
+import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
 import org.icefaces.impl.renderkit.DOMRenderKit;
 import org.icefaces.render.ExternalScript;
 import org.icefaces.util.EnvUtils;
@@ -32,6 +32,7 @@ import org.icefaces.util.EnvUtils;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIOutput;
@@ -260,14 +261,21 @@ public class BridgeSetup implements SystemEventListener {
                         writer.startElement("script", this);
                         writer.writeAttribute("type", "text/javascript", null);
                         writer.write(LazyPushManager.enablePush(context, viewID) ? "ice.setupPush('" + viewID + "');" : "");
-                        Resource icepushListenResource = context.getApplication()
-                                .getResourceHandler().createResource(ICEpushListenResource.RESOURCE_NAME);
-                        String path = stripHostInfo(icepushListenResource.getRequestPath());
+                        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
+                        Resource blockingConnectionResource = resourceHandler.createResource(ICEpushResourceHandler.BLOCKING_CONNECTION_RESOURCE_NAME);
+                        Resource createPushIdResource = resourceHandler.createResource(ICEpushResourceHandler.CREATE_PUSH_ID_RESOURCE_NAME);
+                        Resource notifyResource = resourceHandler.createResource(ICEpushResourceHandler.NOTIFY_RESOURCE_NAME);
+                        Resource addGroupMemberResource = resourceHandler.createResource(ICEpushResourceHandler.ADD_GROUP_MEMBER_RESOURCE_NAME);
+                        Resource removeGroupMemberResource = resourceHandler.createResource(ICEpushResourceHandler.REMOVE_GROUP_MEMBER_RESOURCE_NAME);
+
                         boolean isPortalEnvironment = EnvUtils.instanceofPortletRequest(externalContext.getRequest());
                         String contextPath = isPortalEnvironment ? "/" : externalContext.getRequestContextPath();
                         writer.write("ice.push.configuration.contextPath=\"" + contextPath + "\";");
-                        String uriPattern = path.replace(ICEpushListenResource.RESOURCE_NAME, "{{command}}");
-                        writer.write("ice.push.configuration.uriPattern=\"" + uriPattern + "\";");
+                        writer.write("ice.push.configuration.blockingConnectionURI=\"" + blockingConnectionResource.getRequestPath() + "\";");
+                        writer.write("ice.push.configuration.createPushIdURI=\"" + createPushIdResource.getRequestPath() + "\";");
+                        writer.write("ice.push.configuration.notifyURI=\"" + notifyResource.getRequestPath() + "\";");
+                        writer.write("ice.push.configuration.addGroupMemberURI=\"" + addGroupMemberResource.getRequestPath() + "\";");
+                        writer.write("ice.push.configuration.removeGroupMemberURI=\"" + removeGroupMemberResource.getRequestPath() + "\";");
                         writer.endElement("script");
                         writer.endElement("span");
                     }
@@ -411,14 +419,8 @@ public class BridgeSetup implements SystemEventListener {
 
         //Convince PortletFaces Bridge that this is a valid script for
         //inserting into the Portal head
-
         public String getRendererType() {
             return "javax.faces.resource.Script";
         }
-        //Provide a script value for PortletFaces Bridge
-        //requires fix to bridge
-//        public Object getValue()  {
-//            return script;
-//        }
     }
 }
