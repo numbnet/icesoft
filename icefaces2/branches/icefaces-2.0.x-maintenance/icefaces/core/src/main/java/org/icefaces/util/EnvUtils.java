@@ -21,7 +21,7 @@
 
 package org.icefaces.util;
 
-import org.icefaces.impl.push.servlet.ICEpushListenResource;
+import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
 import org.icefaces.impl.push.servlet.ProxyHttpServletRequest;
 import org.icefaces.impl.push.servlet.ProxyHttpServletResponse;
 
@@ -426,8 +426,8 @@ public class EnvUtils {
         String pathInfo = ec.getRequestPathInfo();
         String reqParam = ec.getRequestParameterMap().get("ice.submit.type");
 
-        if (reqPath != null && reqPath.contains(ICEpushListenResource.RESOURCE_NAME) ||
-                pathInfo != null && pathInfo.contains(ICEpushListenResource.RESOURCE_NAME) ||
+        if (reqPath != null && reqPath.contains(ICEpushResourceHandler.BLOCKING_CONNECTION_RESOURCE_NAME) ||
+                pathInfo != null && pathInfo.contains(ICEpushResourceHandler.BLOCKING_CONNECTION_RESOURCE_NAME) ||
                 "ice.push".equals(reqParam)) {
             return true;
         }
