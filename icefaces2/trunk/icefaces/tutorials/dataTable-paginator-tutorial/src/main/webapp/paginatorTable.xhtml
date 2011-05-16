@@ -2,7 +2,7 @@
             <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
             <title>DataTable Component Tutorial</title>
             <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
-            </h:head>    <h:body>        <ice:form>
+            </h:head>    <h:body>        <ice:form id="frm">
                 
                 <!--
     This is a very basic table comprising four columns. Each
@@ -12,43 +12,43 @@
                 <ice:dataTable rows="5" id="inventoryList" value="#{inventoryList.carInventory}" var="item">
                     
                     <!-- Stock number -->
-                    <ice:column>
+                    <ice:column id="hrd0">
                         <f:facet name="header">
                             <ice:outputText value="Stock #"></ice:outputText>
                         </f:facet>
-                        <ice:outputText value="#{item.stock}"></ice:outputText>
+                        <ice:outputText id="clmn0" value="#{item.stock}"></ice:outputText>
                     </ice:column>
                     
                     <!-- Model number -->
-                    <ice:column>
+                    <ice:column id="hrd1">
                         <f:facet name="header">
                             <ice:outputText value="Model"></ice:outputText>
                         </f:facet>
-                        <ice:outputText value="#{item.model}"></ice:outputText>
+                        <ice:outputText id="clmn1" value="#{item.model}"></ice:outputText>
                     </ice:column>
                     
                     <!-- Description  -->
-                    <ice:column>
+                    <ice:column id="hrd2">
                         <f:facet name="header">
                             <ice:outputText value="Description"></ice:outputText>
                         </f:facet>
-                        <ice:outputText value="#{item.description}"></ice:outputText>
+                        <ice:outputText id="clmn2" value="#{item.description}"></ice:outputText>
                     </ice:column>
                     
                     <!-- Odometer reading -->
-                    <ice:column>
+                    <ice:column id="hrd3">
                         <f:facet name="header">
                             <ice:outputText value="Odometer"></ice:outputText>
                         </f:facet>
-                        <ice:outputText value="#{item.odometer}"></ice:outputText>
+                        <ice:outputText id="clmn3" value="#{item.odometer}"></ice:outputText>
                     </ice:column>
                     
                     <!-- Price number -->
-                    <ice:column>
+                    <ice:column id="hrd4">
                         <f:facet name="header">
                             <ice:outputText value="Price"></ice:outputText>
                         </f:facet>
-                        <ice:outputText value="#{item.price}"></ice:outputText>
+                        <ice:outputText id="clmn4" value="#{item.price}"></ice:outputText>
                     </ice:column>
                     
                 </ice:dataTable>
@@ -56,22 +56,22 @@
                 <!-- Paginator with page controls -->
                 <ice:dataPaginator id="dataScroll_3" for="inventoryList" paginator="true" fastStep="3" paginatorMaxPages="4">
                     <f:facet name="first">
-                        <ice:graphicImage url="./xmlhttp/css/xp/css-images/arrow-first.gif" style="border:none;" title="First Page"></ice:graphicImage>
+                        <ice:graphicImage id="imgFirst" url="./xmlhttp/css/xp/css-images/arrow-first.gif" style="border:none;" title="First Page"></ice:graphicImage>
                     </f:facet>
                     <f:facet name="last">
-                        <ice:graphicImage url="./xmlhttp/css/xp/css-images/arrow-last.gif" style="border:none;" title="Last Page"></ice:graphicImage>
+                        <ice:graphicImage id="imgLast" url="./xmlhttp/css/xp/css-images/arrow-last.gif" style="border:none;" title="Last Page"></ice:graphicImage>
                     </f:facet>
                     <f:facet name="previous">
-                        <ice:graphicImage url="./xmlhttp/css/xp/css-images/arrow-previous.gif" style="border:none;" title="Previous Page"></ice:graphicImage>
+                        <ice:graphicImage id="imgprev" url="./xmlhttp/css/xp/css-images/arrow-previous.gif" style="border:none;" title="Previous Page"></ice:graphicImage>
                     </f:facet>
                     <f:facet name="next">
-                        <ice:graphicImage url="./xmlhttp/css/xp/css-images/arrow-next.gif" style="border:none;" title="Next Page"></ice:graphicImage>
+                        <ice:graphicImage id="imgNext" url="./xmlhttp/css/xp/css-images/arrow-next.gif" style="border:none;" title="Next Page"></ice:graphicImage>
                     </f:facet>
                     <f:facet name="fastforward">
-                        <ice:graphicImage url="./xmlhttp/css/xp/css-images/arrow-ff.gif" style="border:none;" title="Fast Forward"></ice:graphicImage>
+                        <ice:graphicImage id="imgFfwd" url="./xmlhttp/css/xp/css-images/arrow-ff.gif" style="border:none;" title="Fast Forward"></ice:graphicImage>
                     </f:facet>
                     <f:facet name="fastrewind">
-                        <ice:graphicImage url="./xmlhttp/css/xp/css-images/arrow-fr.gif" style="border:none;" title="Fast Backwards"></ice:graphicImage>
+                        <ice:graphicImage id="imgrewind" url="./xmlhttp/css/xp/css-images/arrow-fr.gif" style="border:none;" title="Fast Backwards"></ice:graphicImage>
                     </f:facet>
                 </ice:dataPaginator>
                 
