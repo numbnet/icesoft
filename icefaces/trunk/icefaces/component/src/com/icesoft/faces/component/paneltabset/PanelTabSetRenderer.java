@@ -643,6 +643,8 @@ public class PanelTabSetRenderer
                 Element div = domContext.createElement(HTML.DIV_ELEM); 
                 td_mid_mid.appendChild(div);
                 div.setAttribute(HTML.ONCLICK_ATTR, "if(!Ice.isEventSourceInputElement(event)) document.getElementById('"+ linkId+"').onclick();");
+                div.setAttribute(HTML.ONFOCUS_ATTR, "document.getElementById('"+ linkId+"').onclick();");
+                
                 div.setAttribute(HTML.CLASS_ATTR, "ptfd");
                 if (active) {
                     renderAttribute(tabSet, div, HTML.TABINDEX_ATTR, HTML.TABINDEX_ATTR);
