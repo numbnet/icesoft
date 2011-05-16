@@ -57,7 +57,7 @@ ice.component_util.printArguments = function() {
        logger.info(arguments[i]);
 };
 
-Ice.insertElementAtIndex = function(parentElem, insertElem, index) {
+ice.component_util.insertElementAtIndex = function(parentElem, insertElem, index) {
 	if (!parentElem.hasChildNodes()) {
 		parentElem.appendChild(insertElem);
 	}
@@ -67,7 +67,7 @@ Ice.insertElementAtIndex = function(parentElem, insertElem, index) {
 	}
 };
 
-Ice.arrayIndexOf = function(arr, elem, fromIndex) {
+ice.component_util.arrayIndexOf = function(arr, elem, fromIndex) {
 	if (arr.indexOf) {
 		return arr.indexOf(elem, fromIndex);
 	}
@@ -86,7 +86,7 @@ Ice.arrayIndexOf = function(arr, elem, fromIndex) {
 };
 
 // One level deep comparison, not deep recursive
-Ice.arraysEqual = function(arr1, arr2) {
+ice.component_util.arraysEqual = function(arr1, arr2) {
     if (!arr1 && !arr2) {
         return true;
     }

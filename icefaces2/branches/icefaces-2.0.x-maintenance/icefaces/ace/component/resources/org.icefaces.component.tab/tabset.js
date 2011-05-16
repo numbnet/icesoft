@@ -494,7 +494,7 @@ ice.component.tabset = {
 
         var ret = false;
 
-        if (Ice.arraysEqual(oldSafeIds, newSafeIds)) {
+        if (ice.component_util.arraysEqual(oldSafeIds, newSafeIds)) {
             // We can have a scenario where the [client-side] tabSet is
             // completely updated by the dom-diff, and nothing has changed
             // with the tabs, but now the tab content is stored in the safe,
@@ -539,7 +539,7 @@ ice.component.tabset = {
             }
 
             // (3.5 skip) Skip past newSafeIndex if in skip list
-            if (Ice.arrayIndexOf(skipNewIndexes, newSafeIndex, 0) >= 0) {
+            if (ice.component_util.arrayIndexOf(skipNewIndexes, newSafeIndex, 0) >= 0) {
                 newSafeIndex++;
                 continue;
             }
@@ -583,12 +583,12 @@ ice.component.tabset = {
                 // ?? Search from newSafeIndex onwards or beginning?? Just use beginning
                 var foundInNewIndex;
                 if (oldsid !== null &&
-                    (foundInNewIndex = Ice.arrayIndexOf(newSafeIds, oldsid, 0)) >= 0)
+                    (foundInNewIndex = ice.component_util.arrayIndexOf(newSafeIds, oldsid, 0)) >= 0)
                 {
                     // Detect if newsid is unvisited/visiting insert
                     var foundInOldIndex;
                     if (newsid === null ||
-                        ( ((foundInOldIndex = Ice.arrayIndexOf(oldSafeIds, newsid, 0)) < 0) &&
+                        ( ((foundInOldIndex = ice.component_util.arrayIndexOf(oldSafeIds, newsid, 0)) < 0) &&
                           document.getElementById(newsid).hasChildNodes()
                         )) {
                         var newDiv = document.createElement('div');
@@ -714,7 +714,7 @@ ice.component.tabset = {
             var insertDiv = fromTo[0];
             var toIndex = fromTo[1];
             if (toIndex >= 0) {
-                Ice.insertElementAtIndex(contentDiv, insertDiv, toIndex);
+                ice.component_util.insertElementAtIndex(contentDiv, insertDiv, toIndex);
             }
         }
 
