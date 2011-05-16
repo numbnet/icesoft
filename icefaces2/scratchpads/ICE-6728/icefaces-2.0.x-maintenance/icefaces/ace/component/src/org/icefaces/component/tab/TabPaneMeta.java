@@ -45,7 +45,18 @@ public class TabPaneMeta extends UIComponentBaseMeta {
     private String label;
     
     @Property (tlddoc="If true then this tab will be disabled and can not be selected.")
-    private boolean disabled;    
+    private boolean disabled;
+
+    @Property(tlddoc="If true, then when the tabSet has clientSide=false, " +
+            "this tabPane will be lazily loaded and cached on the client. " +
+            "That is, once this tabPane has been visited, and rendered into " +
+            "the client, it will remain rendered onto the client. As long " +
+            "as its contents do not change on the server, they will remain " +
+            "intact on the client. But, if its contents do change on the " +
+            "server, then they will be reflected in the client via standard " +
+            "ICEfaces mechanisms. When clientSide=true, all tabPane " +
+            "components are always cached on the client.")
+    private boolean cacheOnClient;
 
     
     @Facets
