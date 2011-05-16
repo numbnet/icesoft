@@ -168,21 +168,20 @@ public class MainSessionBoundServlet extends PathDispatcher implements PageTest 
         Server receiveSendUpdates = new RequestVerifier(configuration, sessionID, new ReceiveSendUpdates(views, synchronouslyUpdatedViews, sessionMonitor, this));
 
         //end match expressions with ($|;) to match end of URL or start of ;jsessionid
-        dispatchOn(".*block\\/receive\\-updated\\-views($|;)", new EnvironmentAdaptingServlet(sendUpdatedViews, configuration, session.getServletContext()));
-        PathDispatcherServer dispatcherServer = new PathDispatcherServer();
-        dispatcherServer.dispatchOn(".*block\\/send\\-receive\\-updates($|;)", receiveSendUpdates);
-        dispatcherServer.dispatchOn(".*block\\/receive\\-updates($|;)", sendUpdates);
-        dispatcherServer.dispatchOn(".*block\\/ping($|;)", receivePing);
-        dispatcherServer.dispatchOn(".*block\\/dispose\\-views($|;)", disposeViews);
-        dispatcherServer.dispatchOn(ResourceRegex, resourceDispatcher);
-        dispatcherServer.dispatchOn(".*uploadHtml", upload);
-        dispatcherServer.dispatchOn(".*", new ServerProxy(viewServlet) {
+        dispatchOn(".*block\\/receive\\-updated\\-views($|;)", new SessionVerifier(new EnvironmentAdaptingServlet(sendUpdatedViews, configuration, session.getServletContext()), true));
+        dispatchOn(".*block\\/send\\-receive\\-updates($|;)", new SessionVerifier(new BasicAdaptingServlet(receiveSendUpdates), true));
+        dispatchOn(".*block\\/receive\\-updates($|;)", new SessionVerifier(new BasicAdaptingServlet(sendUpdates), true));
+        dispatchOn(".*block\\/ping($|;)", new SessionVerifier(new BasicAdaptingServlet(receivePing), true));
+        dispatchOn(".*block\\/dispose\\-views($|;)", new SessionVerifier(new BasicAdaptingServlet(disposeViews), true));
+        dispatchOn(ResourceRegex, new SessionVerifier(new BasicAdaptingServlet(resourceDispatcher), false));
+        dispatchOn(".*block\\/", new BasicAdaptingServlet(new NotFoundServer()));
+        dispatchOn(".*uploadHtml", new SessionVerifier(new BasicAdaptingServlet(upload), true));
+        dispatchOn(".*", new SessionVerifier(new BasicAdaptingServlet(new ServerProxy(viewServlet) {
             public void service(Request request) throws Exception {
                 pageLoaded = true;
                 super.service(request);
             }
-        });
-        dispatchOn(".*", new BasicAdaptingServlet(dispatcherServer));
+        }), true));
         shutdown = new Runnable() {
             public void run() {
                 //avoid running shutdown more than once
