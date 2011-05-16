@@ -492,11 +492,35 @@ ice.component.tabset = {
             newSafeIds = new Array();
         }
 
-        if (Ice.arraysEqual(oldSafeIds, newSafeIds)) {
-            return false;
-        }
-
         var ret = false;
+
+        if (Ice.arraysEqual(oldSafeIds, newSafeIds)) {
+            // We can have a scenario where the [client-side] tabSet is
+            // completely updated by the dom-diff, and nothing has changed
+            // with the tabs, but now the tab content is stored in the safe,
+            // but the old safeIds list is not null, and is exactly equal to
+            // the new safeIds list, so we don't know to re-parent the content
+            // into the content area. So we'll need to scan through the new
+            // safeIds list and see if the content is there, and handle it.
+            var contentDiv = document.getElementById(clientId + 'cnt');
+            if (contentDiv && !contentDiv.hasChildNodes()) {
+                var index;
+                for (index = 0; index < newSafeIds.length; index++) {
+                    var safeDiv = document.getElementById(newSafeIds[index]);
+                    if (safeDiv && safeDiv.hasChildNodes()) {
+                        var appendedDiv = document.createElement('div');
+                        contentDiv.appendChild(appendedDiv);
+
+                        // Reparent new safe-house entry into content area
+                        ice.component.tabset.moveSafeToContent(safeDiv, appendedDiv);
+
+                        ret = true;
+                    }
+                }
+            }
+
+            return ret;
+        }
 
         var appendNewContent = new Array();
         // [ [oldContent, newIndex where it should go or -1 for delete], É ]
