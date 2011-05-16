@@ -143,7 +143,7 @@ public class MainServlet extends HttpServlet {
                 dispatcher.dispatchOn("/spring/resources/", resourceServer);
             }
             //don't create new session for resources belonging to expired user sessions
-            dispatcher.dispatchOn(".*(block\\/resource\\/)", new SessionVerifier(sessionDispatcher, false));
+            dispatcher.dispatchOn(".*(block\\/resource\\/)", sessionDispatcher);
             dispatcher.dispatchOn(".*(block\\/message)",
                     new PseudoServlet() {
                         public void service(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
@@ -160,7 +160,7 @@ public class MainServlet extends HttpServlet {
                         }
                     });
             //don't create new session for XMLHTTPRequests identified by "block/*" prefixed paths
-            dispatcher.dispatchOn(".*(block\\/)", new SessionVerifier(sessionDispatcher, true));
+            dispatcher.dispatchOn(".*(block\\/)", sessionDispatcher);
             dispatcher.dispatchOn(".*/ice-static/.*", resourceServer);
             dispatcher.dispatchOn(".*(\\/$|\\.iface$|\\.jsf|\\.faces$|\\.jsp$|\\.jspx$|\\.html$|\\.xhtml$|\\.seam$|uploadHtml$|/spring/)", sessionDispatcher);
             dispatcher.dispatchOn(".*", resourceServer);
