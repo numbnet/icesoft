@@ -38,6 +38,8 @@ import org.icefaces.component.annotation.*;
 
 import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 
+import java.util.List;
+
 @Component(
     tagName = "tabSet",
     componentClass  = "org.icefaces.component.tab.TabSet",
@@ -110,6 +112,9 @@ public class TabSetMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "If true then all tabs except the active one will be disabled and can not be selected.")
     private boolean disabled;
+
+    @Property(tlddoc="Maintains the record of which tabs have been visited")
+    private List visitedTabClientIds;
 
     @Facets
     class FacetsMeta{
