@@ -149,17 +149,19 @@ public class JSONBuilder {
      */
     public JSONBuilder entry (String key, String[] keyValuePairs) {
         beginArray(key);
-        int argCount = keyValuePairs.length /2;
-        StringBuilder localCopy = new StringBuilder();
-        for (int idx = 0; idx < argCount; idx ++ ) {
-            localCopy.append('"').append( escapeString(keyValuePairs[2*idx])).append('"').
-                    append(",").append('"').append( escapeString(keyValuePairs[(2*idx)+1] )).append('"'); 
-            localCopy.append(",");
+        int len = keyValuePairs.length;
+        for (int idx = 0; idx < len; idx ++) {
+            String curr = keyValuePairs[idx];
+            if (curr == null) {
+                params.append("null");
+            }
+            else {
+                params.append('"').append(escapeString(curr)).append('"');
+            }
+            if (idx < (len-1)) {
+                params.append(',');
+            }
         }
-        if (localCopy.length() > 0) {
-            localCopy.setLength( localCopy.length() - 1 );
-        }
-        params.append( localCopy.toString() );
         endArray();
         return this; 
     }
