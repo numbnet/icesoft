@@ -146,15 +146,6 @@ ice.yui3.use(function(Y) {
 	ice.animation.AnimPlugin = AnimPlugin;
 	ice.animation.loadDefaultAnims(Y);
 	
-	var _one = Y.one;
-	Y.one = function(id) { 
-		if (Y.Lang.isString(id)) {
-			id = id.replace(':', '\\:');
-		}
-		return _one(id);
-	}
-
-		
     function chain(ref) {
 		this.anim = ref;
 		this.anim.on("chainend", function() {
