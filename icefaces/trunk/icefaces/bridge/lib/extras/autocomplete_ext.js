@@ -644,8 +644,8 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
 
         //     form.focus_hidden_field.value=this.element.id;
         if (isEnterKey) {
-            Ice.Autocompleter.logger.debug("Sending submit");
-            iceSubmit(form, this.element, event);
+            Ice.Autocompleter.logger.debug("Sending partial submit for enter key");
+            iceSubmitPartial(form, this.element, event);
         }
         else {
             Ice.Autocompleter.logger.debug("Sending partial submit");
