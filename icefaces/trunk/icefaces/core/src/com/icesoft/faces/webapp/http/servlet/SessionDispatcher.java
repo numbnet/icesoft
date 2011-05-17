@@ -36,35 +36,16 @@ import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 import com.icesoft.util.ThreadLocalUtility;
-
-import java.io.Externalizable;
-import java.io.Serializable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.WeakHashMap;
-import java.lang.ref.WeakReference;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import javax.servlet.http.*;
+import java.io.*;
+import java.lang.ref.WeakReference;
+import java.util.*;
 
 public abstract class SessionDispatcher implements PseudoServlet {
     private final static Log Log = LogFactory.getLog(SessionDispatcher.class);
@@ -140,7 +121,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
                     sessionBoundServers.put(id, new WeakReference(pservlet));
                 }
             }
-        } catch (Exception e)  {
+        } catch (Exception e) {
             throw new SessionExpiredException(e);
         }
     }
@@ -288,12 +269,14 @@ public abstract class SessionDispatcher implements PseudoServlet {
                     public void run() {
                         while (run) {
                             try {
-                                // Iterate over the session monitors using a copying iterator
-                                Iterator iterator = new ArrayList(SessionMonitors.values()).iterator();
-                                while (iterator.hasNext()) {
-                                    final Monitor sessionMonitor = (Monitor) iterator.next();
-                                    sessionMonitor.shutdownIfExpired();
-                                    ThreadLocalUtility.checkThreadLocals(ThreadLocalUtility.EXITING_SESSION_MONITOR);
+                                synchronized (SessionMonitors) {
+                                    // Iterate over the session monitors using a copying iterator
+                                    Iterator iterator = new ArrayList(SessionMonitors.values()).iterator();
+                                    while (iterator.hasNext()) {
+                                        final Monitor sessionMonitor = (Monitor) iterator.next();
+                                        sessionMonitor.shutdownIfExpired();
+                                        ThreadLocalUtility.checkThreadLocals(ThreadLocalUtility.EXITING_SESSION_MONITOR);
+                                    }
                                 }
 
                                 Thread.sleep(10000);
@@ -431,8 +414,8 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
 class KeepAliveHolder implements Serializable {
     transient Object held = null;
-    
-    public KeepAliveHolder(Object object)  {
+
+    public KeepAliveHolder(Object object) {
         held = object;
     }
 }
