@@ -141,10 +141,11 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
             Element scriptEle = domContext.createElement(HTML.SCRIPT_ELEM);
             scriptEle.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));
             scriptEle.setAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT);
+            boolean partialSubmit = component.getPartialSubmit();
             if (!component.isDisabled() && !component.isReadonly()) {
                 Node node = domContext.createTextNode("new Ice.Autocompleter('" + clientId + "','" + divId +
                       "', " + component.getOptions() + " ,'" + component.getRowClass() + "','" +
-                      component.getSelectedRowClass() + "');");
+                      component.getSelectedRowClass() + "'," + partialSubmit + ");");
                 scriptEle.appendChild(node);
             }
             root.appendChild(scriptEle);
