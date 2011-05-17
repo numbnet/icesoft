@@ -168,6 +168,7 @@ public class MainSessionBoundServlet extends PathDispatcher implements PageTest 
         Server receiveSendUpdates = new RequestVerifier(configuration, sessionID, new ReceiveSendUpdates(views, synchronouslyUpdatedViews, sessionMonitor, this));
 
         //end match expressions with ($|;) to match end of URL or start of ;jsessionid
+        //don't create new session for XMLHTTPRequests identified by "block/*" prefixed paths
         dispatchOn(".*block\\/receive\\-updated\\-views($|;)", new SessionVerifier(new EnvironmentAdaptingServlet(sendUpdatedViews, configuration, session.getServletContext()), true));
         dispatchOn(".*block\\/send\\-receive\\-updates($|;)", new SessionVerifier(new BasicAdaptingServlet(receiveSendUpdates), true));
         dispatchOn(".*block\\/receive\\-updates($|;)", new SessionVerifier(new BasicAdaptingServlet(sendUpdates), true));
@@ -175,13 +176,13 @@ public class MainSessionBoundServlet extends PathDispatcher implements PageTest 
         dispatchOn(".*block\\/dispose\\-views($|;)", new SessionVerifier(new BasicAdaptingServlet(disposeViews), true));
         dispatchOn(ResourceRegex, new SessionVerifier(new BasicAdaptingServlet(resourceDispatcher), false));
         dispatchOn(".*block\\/", new BasicAdaptingServlet(new NotFoundServer()));
-        dispatchOn(".*uploadHtml", new SessionVerifier(new BasicAdaptingServlet(upload), true));
-        dispatchOn(".*", new SessionVerifier(new BasicAdaptingServlet(new ServerProxy(viewServlet) {
+        dispatchOn(".*uploadHtml", new BasicAdaptingServlet(upload));
+        dispatchOn(".*", new BasicAdaptingServlet(new ServerProxy(viewServlet) {
             public void service(Request request) throws Exception {
                 pageLoaded = true;
                 super.service(request);
             }
-        }), true));
+        }));
         shutdown = new Runnable() {
             public void run() {
                 //avoid running shutdown more than once
