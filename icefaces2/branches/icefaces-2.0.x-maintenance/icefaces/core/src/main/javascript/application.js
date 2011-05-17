@@ -70,10 +70,18 @@ if (!window.ice.icefaces) {
         };
 
         function configurationOf(element) {
-            return detect(parents(element),
+            configParent = detect(parents(element),
                     function(e) {
-                        return e.configuration;
-                    }).configuration;
+                        if (null != e)  {
+                            return e.configuration;
+                        }
+                        return {};
+                    });
+            if (null != configParent)  {
+                return configParent.configuration;
+            }
+            debug(logger, 'configuration not found for ' + element.nodeName);
+            return {};
         }
 
         function deltaSubmit(element) {

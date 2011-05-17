@@ -26,6 +26,7 @@ import org.icefaces.impl.context.DOMResponseWriter;
 import org.icefaces.impl.event.MainEventListener;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.impl.util.FormEndRendering;
+import org.icefaces.impl.event.BridgeSetup;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -171,18 +172,43 @@ public class DOMRenderKit extends RenderKitWrapper {
         }
 
         public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        
+            if (component instanceof BridgeSetup.ShortIdForm)  {
+                //do not augment BridgeSetup form
+                super.encodeEnd(context, component);
+                return;
+            }
+
             FormEndRendering.renderIntoForm(context, component);
 
-            if (deltaSubmit && EnvUtils.isICEfacesView(context)) {
+            if (EnvUtils.isICEfacesView(context)) {
                 ResponseWriter writer = context.getResponseWriter();
-                writer.startElement("script", component);
-                writer.writeAttribute("type", "text/javascript", null);
-                writer.writeText("ice.calculateInitialParameters('", null);
-                writer.writeText(component.getClientId(context), null);
-                writer.writeText("');", null);
-                writer.endElement("script");
+
+                if (deltaSubmit) {
+                    writer.startElement("script", component);
+                    writer.writeAttribute("type", "text/javascript", null);
+                    writer.writeText("ice.calculateInitialParameters('", null);
+                    writer.writeText(component.getClientId(context), null);
+                    writer.writeText("');", null);
+                    writer.endElement("script");
+                }
+
+                super.encodeEnd(context, component);
+
+                //render BridgeSetup immediately after form if missing body
+                if (!EnvUtils.hasHeadAndBodyComponents(context)) {
+                    BridgeSetup bridgeSetup = BridgeSetup.getBridgeSetup(context);
+                    List<UIComponent> bodyResources = bridgeSetup.getBodyResources(context);
+                    for (UIComponent bodyResource : bodyResources)  {
+                        bodyResource.encodeBegin(context);
+                        bodyResource.encodeEnd(context);
+                    }
+                }
+    
+            } else {
+                super.encodeEnd(context, component);
             }
-            super.encodeEnd(context, component);
+
         }
     }
 }
