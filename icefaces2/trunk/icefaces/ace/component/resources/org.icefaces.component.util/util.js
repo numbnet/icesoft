@@ -105,7 +105,3 @@ ice.component_util.arraysEqual = function(arr1, arr2) {
     }
     return true;
 };
-
-if (!window['ice']) {
-    window.ice = {};
-}
