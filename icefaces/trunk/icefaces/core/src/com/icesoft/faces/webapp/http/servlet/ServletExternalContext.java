@@ -217,7 +217,11 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public String encodeActionURL(String url) {
-        return url;
+        try {
+            return response.encodeURL(url);
+        } catch (Exception e) {
+            return url;
+        }
     }
 
     public String encodeResourceURL(String url) {
