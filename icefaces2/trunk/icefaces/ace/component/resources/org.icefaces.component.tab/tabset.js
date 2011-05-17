@@ -551,13 +551,39 @@ ice.component.tabset = {
             var oldsid = oldSafeIds[oldSafeIndex];
             var newsid = newSafeIds[newSafeIndex];
             if (oldsid !== newsid) {
-                // (3.5) Detect if moved. Also covers unvisited inserts, which inadvertently move the pre-existing sections
+                // (3.5) Detect if old moved. Also covers unvisited inserts,
+                // which inadvertently move the pre-existing sections, which
+                // we'll try to avoid, since moving a section involves
+                // refreshing iframe content, which we need to avoid
                 // oldsid not null and in new list
                 // ?? Search from newSafeIndex onwards or beginning?? Just use beginning
                 var foundInNewIndex;
                 if (oldsid !== null &&
                     (foundInNewIndex = ice.component_util.arrayIndexOf(newSafeIds, oldsid, 0)) >= 0)
                 {
+                    // Detect if newsid is unvisited/visiting insert
+                    var foundInOldIndex;
+                    if (newsid === null ||
+                        ( ((foundInOldIndex = Ice.arrayIndexOf(oldSafeIds, newsid, 0)) < 0) &&
+                          document.getElementById(newsid).hasChildNodes()
+                        )) {
+                        var newDiv = document.createElement('div');
+                        var newIndex = contentDiv.childNodes.length;
+                        contentDiv.appendChild(newDiv);
+
+                        // Reparent new safe-house entry into content area
+                        // if newsid is not null
+                        ice.component.tabset.moveSafeIdToContent(newsid, newDiv);
+
+                        // Mark the new content div to be moved to it's proper insertion point
+                        appendNewContent.push( [newIndex, newSafeIndex] );
+
+                        // Increment newSafeIndex, but not oldSafeIndex, and continue looping
+                        newSafeIndex++;
+                        ret = true;
+                        continue;
+                    }
+
                     // Mark the location in new list as something to skip over
                     skipNewIndexes.push(foundInNewIndex);
 
