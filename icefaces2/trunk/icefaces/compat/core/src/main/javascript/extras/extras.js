@@ -2763,8 +2763,9 @@ Ice.Autocompleter = Class.create();
 
 
 Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prototype), {
-    initialize: function(id, updateId, options, rowClass, selectedRowClass) {
+    initialize: function(id, updateId, options, rowClass, selectedRowClass, partialSubmit) {
         Ice.Autocompleter.logger.debug("Building Ice Autocompleter ID [" + id + "]");
+        this.partialSubmit = partialSubmit;
         var existing = Autocompleter.Finder.list[id];
         if (!Prototype.Browser.IE && existing && !existing.monitor.changeDetected()) {
             return;
@@ -2812,9 +2813,9 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
         }
 
         //     form.focus_hidden_field.value=this.element.id;
-        if (isEnterKey) {
-            Ice.Autocompleter.logger.debug("Sending partial submit for enter key");
-            iceSubmitPartial(form, this.element, event);
+        if (isEnterKey && !this.partialSubmit) {
+            Ice.Autocompleter.logger.debug("Sending submit");
+            iceSubmit(form, this.element, event);
         }
         else {
             Ice.Autocompleter.logger.debug("Sending partial submit");
