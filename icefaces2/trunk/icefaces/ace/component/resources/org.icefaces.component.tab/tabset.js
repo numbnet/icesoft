@@ -36,9 +36,10 @@ ice.component.tabset = {
 
        var tabview = new YAHOO.widget.TabView(clientId);  
        tabview.set('orientation', jsProps.orientation);
-       var thiz = this;
-       
+
        //if tabset is client side, lets find out if the state is already stored.
+       var initElem = document.getElementById(clientId);
+       initElem.setAttribute('suppressTabChange', true);
        if (jsfProps.isClientSide) {
     	   if(ice.component.clientState.has(clientId)){
     		   tabview.set('activeIndex', ice.component.clientState.get(clientId));      
@@ -59,6 +60,7 @@ ice.component.tabset = {
                */
            }
        }
+       initElem.removeAttribute('suppressTabChange');
        
        /*
         if (!Ice.component.registeredComponents[clientId]) {
@@ -111,15 +113,15 @@ ice.component.tabset = {
             var tabview = context.getComponent();
             var sJSFProps = context.getJSFProps();
             event.target = rootElem;
-            tbset = document.getElementById(clientId);
-            currentIndex = tabview.getTabIndex(event.newValue);
+            var currentIndex = tabview.getTabIndex(event.newValue);
+            if (currentIndex == null) {
+                return;
+            }
             //YAHOO.log(" currentIndex="+currentIndex);
-            tabIndexInfo = clientId + '='+ currentIndex;
+            var tabIndexInfo = clientId + '='+ currentIndex;
             var params = function(parameter) {
 							parameter('ice.focus', event.newValue.get('element').firstChild.id);
                             parameter('onevent', function(data) {
-                                var context = ice.component.getJSContext(clientId);
-                                var tabview = context.getComponent();
                                 if (data.status == 'success') {
                                     //TODO
                                    try {
@@ -133,7 +135,7 @@ ice.component.tabset = {
             	ice.component.clientState.set(clientId, currentIndex);
                 //console.info('Client side tab ');
             } else {
-                var targetElement = ice.component.tabset.getTabIndexField(tbset);
+                var targetElement = ice.component.tabset.getTabIndexField(rootElem);
                 if(targetElement) {
                 	targetElement.value = tabIndexInfo;
                 }            	
@@ -154,7 +156,7 @@ ice.component.tabset = {
                     logger.info(e);
                 }                
             }//end if    
-       }//tabchange; 
+       };//tabchange;
        
        //Check for aria support
 
@@ -244,7 +246,7 @@ ice.component.tabset = {
  
 	   var animation = ice.animation.getAnimation(clientId, "transition");
 	   
-	   if (animation) {
+	   if (false && animation) {
 		   //console.info('effect found... length ='+ jsfProps.effect.length + 'value = '+ jsfProps.effect);
 		//   var effect = eval(jsfProps.effect);
 		   tabview.contentTransition = function(newTab, oldTab) {	//console.info('1. server side tab ');
@@ -275,7 +277,8 @@ ice.component.tabset = {
 							
 						} else {
 
-						        tabIndexInfo = clientId + '='+ currentIndex;
+						        var tabIndexInfo = clientId + '='+ currentIndex;
+//alert("animation  tabIndexInfo: " + tabIndexInfo);//TODO
 
 							    var targetElement = ice.component.tabset.getTabIndexField(tbset);
 
@@ -617,6 +620,21 @@ ice.component.tabset = {
                     // Increment oldSafeIndex, but not newSafeIndex, and continue looping
                     oldSafeIndex++;
                     ret = true;
+                    continue;
+                }
+
+                // Unvisited tab. old goes to null and isn't in new list anymore
+                if (oldsid !== null &&
+                         newsid === null &&
+                         (foundInNewIndex = ice.component_util.arrayIndexOf(newSafeIds, oldsid, 0)) < 0) {
+                    // Clear out / un-cache that tab's contents
+                    var unvisitedDiv = contentDiv.childNodes[oldSafeIndex];
+                    while (unvisitedDiv.hasChildNodes()) {
+                        unvisitedDiv.removeChild(unvisitedDiv.firstChild);
+                    }
+
+                    oldSafeIndex++;
+                    newSafeIndex++;
                     continue;
                 }
 

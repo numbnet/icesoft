@@ -22,10 +22,7 @@
 package org.icefaces.component.tab;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -130,7 +127,7 @@ public class TabSetRenderer extends Renderer{
                 if (EnvUtils.isAriaEnabled(facesContext)) {
                     writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABLIST_ROLE, ARIA.ROLE_ATTR);  
                 }
-                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null);
+                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null, null);
             writer.endElement(HTML.UL_ELEM);
                 
         } else {
@@ -140,7 +137,7 @@ public class TabSetRenderer extends Renderer{
                 if (EnvUtils.isAriaEnabled(facesContext)) {
                     writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABLIST_ROLE, ARIA.ROLE_ATTR);  
                 }                
-                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null);
+                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null, null);
             writer.endElement(HTML.UL_ELEM);
             
             
@@ -156,6 +153,7 @@ public class TabSetRenderer extends Renderer{
         ResponseWriter writer = facesContext.getResponseWriter();
         final TabSet tabSet = (TabSet) uiComponent;        
         String clientId = uiComponent.getClientId(facesContext);
+//System.out.println("TabSetRenderer.encodeEnd  clientId: " + clientId);
         // ICE-6703: default style classes should be for the top orientation of tabs. (Plus space at the end.)
         String styleClass = "yui-navset yui-navset-top ";
         
@@ -183,7 +181,9 @@ public class TabSetRenderer extends Renderer{
 
         // The tabs that are depicted as clickable by the user
         List<String> clickableTabs = new ArrayList<String>();
-        doTabs(facesContext, uiComponent, Do.GET_CLIENT_IDS, clickableTabs);
+        Set<String> cacheOnClient = new HashSet<String>();
+        doTabs(facesContext, uiComponent, Do.GET_CLIENT_IDS, clickableTabs,
+                cacheOnClient);
 
         // The tabs whose contents we need to render. Subset of clickableTabs,
         // where the order has a different meaning: [safeIndex] -> tabClientId
@@ -201,10 +201,13 @@ public class TabSetRenderer extends Renderer{
         else {
             for (int i = 0; i < clickableTabs.size(); i++) {
                 String tabClientId = clickableTabs.get(i);
-                if (visitedTabClientIds.contains(tabClientId)) {
+                boolean cache = cacheOnClient.contains(tabClientId);
+                if (cache && visitedTabClientIds.contains(tabClientId)) {
+//System.out.println("toRender  cached prev  tabClientId: " + tabClientId);
                     toRender.add(tabClientId);
                 }
                 else if(selectedIndex == i) {
+//System.out.println("toRender  selectedIndex="+selectedIndex+"  tabClientId: " + tabClientId);
                     toRender.add(tabClientId);
                 }
             }
@@ -307,7 +310,7 @@ public class TabSetRenderer extends Renderer{
         String tabClientId = (String) visitedTabClientIds.get(index);
         if (tabClientId != null) {
             doTabs(facesContext, tabSet, Do.RENDER_CONTENTS_BY_CLIENT_ID,
-                    visitedTabClientIds.subList(index, index+1));
+                    visitedTabClientIds.subList(index, index+1), null);
         }
         writer.endElement(HTML.DIV_ELEM);
 
@@ -441,7 +444,7 @@ public class TabSetRenderer extends Renderer{
      * Render children of tabset component
      */
     private void doTabs(FacesContext facesContext, UIComponent uiComponent,
-            Do d, List<String> clickableTabs) throws IOException{
+            Do d, List<String> clickableTabs, Set<String> cacheOnClient) throws IOException{
     	TabSet tabSet = (TabSet) uiComponent;
         Iterator children = tabSet.getChildren().iterator();
         int index = -1;
@@ -456,7 +459,11 @@ public class TabSetRenderer extends Renderer{
                     } else if(Do.RENDER_CONTENTS.equals(d)) {
                         renderTabBody(facesContext, tabSet, child, index);
                     } else if(Do.GET_CLIENT_IDS.equals(d)) {
-                        clickableTabs.add(child.getClientId(facesContext));
+                        String clientId = child.getClientId(facesContext);
+                        clickableTabs.add(clientId);
+                        if (((TabPane) child).isCacheOnClient()) {
+                            cacheOnClient.add(clientId);
+                        }
                     } else if(Do.RENDER_CONTENTS_BY_CLIENT_ID.equals(d)) {
                         if (clickableTabs.contains(child.getClientId(facesContext))) {
                             renderTabBody(facesContext, tabSet, child, index);
@@ -486,14 +493,18 @@ public class TabSetRenderer extends Renderer{
                         childs = uiList.getChildren().iterator();
                         while (childs.hasNext()) {
                             UIComponent nextChild = (UIComponent) childs.next();
-                            if (nextChild.isRendered()) {
+                            if (nextChild instanceof TabPane && nextChild.isRendered()) {
                                 index++;
                                 if(Do.RENDER_LABEL.equals(d)) {
                                     renderTabNav(facesContext, tabSet, nextChild, index);                        
                                 } else if(Do.RENDER_CONTENTS.equals(d)) {
                                     renderTabBody(facesContext, tabSet, nextChild, index);
                                 } else if(Do.GET_CLIENT_IDS.equals(d)) {
-                                    clickableTabs.add(child.getClientId(facesContext));
+                                    String clientId = child.getClientId(facesContext);
+                                    clickableTabs.add(clientId);
+                                    if (((TabPane) child).isCacheOnClient()) {
+                                        cacheOnClient.add(clientId);
+                                    }
                                 } else if(Do.RENDER_CONTENTS_BY_CLIENT_ID.equals(d)) {
                                     if (clickableTabs.contains(child.getClientId(facesContext))) {
                                         renderTabBody(facesContext, tabSet, child, index);
