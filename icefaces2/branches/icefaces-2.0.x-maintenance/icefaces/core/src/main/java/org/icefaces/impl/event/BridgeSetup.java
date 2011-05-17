@@ -49,6 +49,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -56,6 +57,7 @@ import java.util.logging.Logger;
 
 public class BridgeSetup implements SystemEventListener {
     public final static String ViewState = BridgeSetup.class.getName() + "::ViewState";
+    public final static String BRIDGE_SETUP = BridgeSetup.class.getName();
     private final static Logger log = Logger.getLogger(BridgeSetup.class.getName());
     private int seed = 0;
     private boolean standardFormSerialization;
@@ -67,6 +69,7 @@ public class BridgeSetup implements SystemEventListener {
         deltaSubmit = EnvUtils.isDeltaSubmit(fc);
         standardFormSerialization = EnvUtils.isStandardFormSerialization(fc);
         disableDefaultErrorPopups = EnvUtils.disableDefaultErrorPopups(fc);
+        fc.getExternalContext().getApplicationMap().put(BRIDGE_SETUP, this);
     }
 
     public boolean isListenerForSource(Object source) {
@@ -184,7 +187,60 @@ public class BridgeSetup implements SystemEventListener {
             }
             */
         }
+        
+        List<UIComponent> bodyResources = getBodyResources(context);
+        for (UIComponent bodyResource : bodyResources)  {
+            root.addComponentResource(context, bodyResource, "body");
+        }
 
+    }
+
+    private static boolean containsBeans(Map<String, Object> scopeMap) {
+        //skip the objects saved in the map by ICEfaces framework while testing for the existence of beans
+        for (String value : scopeMap.keySet()) {
+            if (!value.startsWith("org.icefaces")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static String stripHostInfo(String uriString) {
+        try {
+            URI uri = URI.create(uriString);
+            return (new URI(null, null, uri.getPath(), uri.getQuery(), uri.getFragment())).toString();
+        } catch (URISyntaxException e) {
+            return uriString;
+        }
+    }
+
+    private String assignViewID(ExternalContext externalContext) {
+        final String viewIDParameter = externalContext.getRequestParameterMap().get("ice.view");
+        //keep viewID sticky until page is unloaded
+        final String viewID = viewIDParameter == null ? generateViewID() : viewIDParameter;
+        //save the calculated view state key so that other parts of the framework will use the same key
+        externalContext.getRequestMap().put(ViewState, viewID);
+        return viewID;
+    }
+
+    private String generateViewID() {
+        return "v" + Integer.toString(hashCode(), 36) + Integer.toString(++seed, 36);
+    }
+
+    /**
+     * Return the current BridgeSetup instance for use in non-body contexts.
+     *
+     * @return current BridgeSetup instance
+     */
+    public static BridgeSetup getBridgeSetup(FacesContext facesContext)  {
+        return (BridgeSetup) facesContext.getExternalContext().
+                getApplicationMap().get(BRIDGE_SETUP);
+    }
+
+    public List<UIComponent> getBodyResources(FacesContext context)  {
+        final ExternalContext externalContext = context.getExternalContext();
+        UIViewRoot root = context.getViewRoot();
+        List<UIComponent> bodyResources = new ArrayList();
         try {
             String tempWindowID = "unknownWindow";
             final WindowScopeManager.ScopeMap windowScope =
@@ -236,20 +292,15 @@ public class BridgeSetup implements SystemEventListener {
             };
             icefacesSetup.setTransient(true);
             icefacesSetup.setId(viewID + "_icefaces_config");
-            root.addComponentResource(context, icefacesSetup, "body");
+            bodyResources.add(icefacesSetup);
 
             //make sure there's always a form so that ice.singleSubmit and ice.retrieveUpdate can do their job
-            UIForm retrieveUpdateSetup = new UIForm() {
-                //ID is assigned uniquely by ICEpush so no need to prepend
-                public String getClientId(FacesContext context) {
-                    return getId();
-                }
-            };
+            UIForm retrieveUpdateSetup = new ShortIdForm();
             retrieveUpdateSetup.setTransient(true);
             //use viewID as element ID so that ice.singleSubmit and ice.receiveUpdate can easily lookup
             //the corresponding view state key (javax.faces.ViewState) 
             retrieveUpdateSetup.setId(viewID);
-            root.addComponentResource(context, retrieveUpdateSetup, "body");
+            bodyResources.add(retrieveUpdateSetup);
 
             if (EnvUtils.isICEpushPresent()) {
                 UIOutputWriter icepushSetup = new UIOutputWriter() {
@@ -282,45 +333,14 @@ public class BridgeSetup implements SystemEventListener {
                 };
                 icepushSetup.setTransient(true);
                 icepushSetup.setId(viewID + "_icepush");
-                root.addComponentResource(context, icepushSetup, "body");
+                bodyResources.add(icepushSetup);
             }
         } catch (Exception e) {
             //could re-throw as a FacesException, but WindowScope failure should
             //not be fatal to the application
             log.log(Level.WARNING, "Failed to generate JS bridge setup.", e);
         }
-    }
-
-    private static boolean containsBeans(Map<String, Object> scopeMap) {
-        //skip the objects saved in the map by ICEfaces framework while testing for the existence of beans
-        for (String value : scopeMap.keySet()) {
-            if (!value.startsWith("org.icefaces")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static String stripHostInfo(String uriString) {
-        try {
-            URI uri = URI.create(uriString);
-            return (new URI(null, null, uri.getPath(), uri.getQuery(), uri.getFragment())).toString();
-        } catch (URISyntaxException e) {
-            return uriString;
-        }
-    }
-
-    private String assignViewID(ExternalContext externalContext) {
-        final String viewIDParameter = externalContext.getRequestParameterMap().get("ice.view");
-        //keep viewID sticky until page is unloaded
-        final String viewID = viewIDParameter == null ? generateViewID() : viewIDParameter;
-        //save the calculated view state key so that other parts of the framework will use the same key
-        externalContext.getRequestMap().put(ViewState, viewID);
-        return viewID;
-    }
-
-    private String generateViewID() {
-        return "v" + Integer.toString(hashCode(), 36) + Integer.toString(++seed, 36);
+        return bodyResources;
     }
 
     /**
@@ -363,6 +383,13 @@ public class BridgeSetup implements SystemEventListener {
         } else {
             root.addComponentResource(facesContext, new ResourceOutput(
                     rendererType, name, library), target);
+        }
+    }
+
+    public static class ShortIdForm extends UIForm  {
+        //ID is assigned uniquely by ICEpush so no need to prepend
+        public String getClientId(FacesContext context) {
+            return getId();
         }
     }
 
