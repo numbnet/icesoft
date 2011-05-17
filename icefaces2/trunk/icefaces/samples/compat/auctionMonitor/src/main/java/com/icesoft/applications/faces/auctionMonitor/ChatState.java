@@ -158,6 +158,16 @@ public class ChatState {
      * @return String hex value (to be used directly in HTML tags)
      */
     private String generateColorCode() {
-        return "#" + colorList.remove(generator.nextInt(colorList.size())).toString();
+        // Try to regenerate the color list if it's empty
+        if (colorList.isEmpty()) {
+            colorList = new Vector(Arrays.asList(ALL_COLORS));
+        }
+        
+        // Return a generated color
+        try{
+            return "#" + colorList.remove(generator.nextInt(colorList.size())).toString();
+        }catch (Exception failed) { }
+        
+        return DEFAULT_COLOR;
     }
 }
