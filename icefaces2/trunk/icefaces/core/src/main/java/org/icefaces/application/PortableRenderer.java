@@ -21,6 +21,8 @@
 
 package org.icefaces.application;
 
+import org.icepush.PushMessage;
+
 /**
  * PortableRenderer can trigger asynchronous rendering outside of a JSF lifecycle.
  */
@@ -32,7 +34,13 @@ public interface PortableRenderer {
      * scope of the current thread scope, the current view will not be
      * asynchronously rendered
      * (it is already rendered as a result of the user event being
-     * processed).  
-    */
+     * processed).
+     */
     void render(String group);
+
+    /**
+     * Render message to the specified group of sessions but only to the clients
+     * that have their blocking connection paused.
+     */
+    void render(String group, PushMessage message);
 }

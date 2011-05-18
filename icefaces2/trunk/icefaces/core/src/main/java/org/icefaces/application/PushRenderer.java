@@ -26,6 +26,7 @@ import org.icefaces.impl.event.BridgeSetup;
 import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
 import org.icepush.PushContext;
+import org.icepush.PushMessage;
 
 import javax.faces.context.FacesContext;
 import java.util.Map;
@@ -136,6 +137,24 @@ public class PushRenderer {
     }
 
     /**
+     * Render message to the specified group of sessions but only to the clients
+     * that have their blocking connection paused.
+     *
+     * @param groupName the name of the group of sessions to render.
+     * @param message   the message to be sent
+     */
+    public static void render(String groupName, PushMessage message) {
+        if (EnvUtils.isICEpushPresent()) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            missingFacesContext(context);
+            PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
+            pushContext.push(groupName, message);
+        } else {
+            log.warning(MissingICEpushMessage);
+        }
+    }
+
+    /**
      * Create a PortableRenderer instance. PortableRenderer can trigger renderings in the context of the application.
      * Once acquired it does not need a current FacesContext in order to function.
      *
@@ -155,7 +174,7 @@ public class PushRenderer {
      */
     public static PortableRenderer getPortableRenderer(FacesContext context) {
         if (EnvUtils.isICEpushPresent()) {
-            final Map<String,Object> applicationMap = context.getExternalContext().getApplicationMap();
+            final Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
             return new PortableRenderer() {
                 public void render(String group) {
                     //delay PushContext lookup until is needed
@@ -166,12 +185,26 @@ public class PushRenderer {
                         pushContext.push(group);
                     }
                 }
+
+                public void render(String group, PushMessage message) {
+                    //delay PushContext lookup until is needed
+                    PushContext pushContext = (PushContext) applicationMap.get(PushContext.class.getName());
+                    if (pushContext == null) {
+                        log.fine("PushContext not initialized yet.");
+                    } else {
+                        pushContext.push(group, message);
+                    }
+                }
             };
         } else {
             log.warning(MissingICEpushMessage);
 
             return new PortableRenderer() {
                 public void render(String group) {
+                    log.warning(MissingICEpushMessage);
+                }
+
+                public void render(String group, PushMessage message) {
                     log.warning(MissingICEpushMessage);
                 }
             };
