@@ -47,11 +47,7 @@ import javax.faces.render.RenderKit;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -187,9 +183,9 @@ public class BridgeSetup implements SystemEventListener {
             }
             */
         }
-        
+
         List<UIComponent> bodyResources = getBodyResources(context);
-        for (UIComponent bodyResource : bodyResources)  {
+        for (UIComponent bodyResource : bodyResources) {
             root.addComponentResource(context, bodyResource, "body");
         }
 
@@ -232,12 +228,12 @@ public class BridgeSetup implements SystemEventListener {
      *
      * @return current BridgeSetup instance
      */
-    public static BridgeSetup getBridgeSetup(FacesContext facesContext)  {
+    public static BridgeSetup getBridgeSetup(FacesContext facesContext) {
         return (BridgeSetup) facesContext.getExternalContext().
                 getApplicationMap().get(BRIDGE_SETUP);
     }
 
-    public List<UIComponent> getBodyResources(FacesContext context)  {
+    public List<UIComponent> getBodyResources(FacesContext context) {
         final ExternalContext externalContext = context.getExternalContext();
         UIViewRoot root = context.getViewRoot();
         List<UIComponent> bodyResources = new ArrayList();
@@ -313,11 +309,11 @@ public class BridgeSetup implements SystemEventListener {
                         writer.writeAttribute("type", "text/javascript", null);
                         writer.write(LazyPushManager.enablePush(context, viewID) ? "ice.setupPush('" + viewID + "');" : "");
                         ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-                        Resource blockingConnectionResource = resourceHandler.createResource(ICEpushResourceHandler.BLOCKING_CONNECTION_RESOURCE_NAME);
-                        Resource createPushIdResource = resourceHandler.createResource(ICEpushResourceHandler.CREATE_PUSH_ID_RESOURCE_NAME);
-                        Resource notifyResource = resourceHandler.createResource(ICEpushResourceHandler.NOTIFY_RESOURCE_NAME);
-                        Resource addGroupMemberResource = resourceHandler.createResource(ICEpushResourceHandler.ADD_GROUP_MEMBER_RESOURCE_NAME);
-                        Resource removeGroupMemberResource = resourceHandler.createResource(ICEpushResourceHandler.REMOVE_GROUP_MEMBER_RESOURCE_NAME);
+                        Resource blockingConnectionResource = resourceHandler.createResource(ICEpushResourceHandler.BLOCKING_CONNECTION_RESOURCE_NAME, null, "text/xml");
+                        Resource createPushIdResource = resourceHandler.createResource(ICEpushResourceHandler.CREATE_PUSH_ID_RESOURCE_NAME, null, "text/plain");
+                        Resource notifyResource = resourceHandler.createResource(ICEpushResourceHandler.NOTIFY_RESOURCE_NAME, null, "text/plain");
+                        Resource addGroupMemberResource = resourceHandler.createResource(ICEpushResourceHandler.ADD_GROUP_MEMBER_RESOURCE_NAME, null, "text/plain");
+                        Resource removeGroupMemberResource = resourceHandler.createResource(ICEpushResourceHandler.REMOVE_GROUP_MEMBER_RESOURCE_NAME, null, "text/plain");
 
                         boolean isPortalEnvironment = EnvUtils.instanceofPortletRequest(externalContext.getRequest());
                         String contextPath = isPortalEnvironment ? "/" : externalContext.getRequestContextPath();
@@ -386,7 +382,7 @@ public class BridgeSetup implements SystemEventListener {
         }
     }
 
-    public static class ShortIdForm extends UIForm  {
+    public static class ShortIdForm extends UIForm {
         //ID is assigned uniquely by ICEpush so no need to prepend
         public String getClientId(FacesContext context) {
             return getId();
