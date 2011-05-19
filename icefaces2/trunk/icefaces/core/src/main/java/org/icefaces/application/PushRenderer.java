@@ -186,13 +186,14 @@ public class PushRenderer {
                     }
                 }
 
-                public void render(String group, PushMessage message) {
+                public void render(String group, PushRendererMessage message) {
                     //delay PushContext lookup until is needed
                     PushContext pushContext = (PushContext) applicationMap.get(PushContext.class.getName());
                     if (pushContext == null) {
                         log.fine("PushContext not initialized yet.");
                     } else {
-                        pushContext.push(group, message);
+
+                        pushContext.push(group, message.toPushMessage());
                     }
                 }
             };
@@ -204,7 +205,7 @@ public class PushRenderer {
                     log.warning(MissingICEpushMessage);
                 }
 
-                public void render(String group, PushMessage message) {
+                public void render(String group, PushRendererMessage message) {
                     log.warning(MissingICEpushMessage);
                 }
             };

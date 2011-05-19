@@ -42,5 +42,5 @@ public interface PortableRenderer {
      * Render message to the specified group of sessions but only to the clients
      * that have their blocking connection paused.
      */
-    void render(String group, PushMessage message);
+    void render(String group, PushRendererMessage message);
 }
