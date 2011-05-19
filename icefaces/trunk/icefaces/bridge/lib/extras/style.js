@@ -262,6 +262,7 @@ Ice.modal = {
 
     stop:function(target) {
         var isRunning = Ice.modal.running.include(target);
+
         //de-register modal popup
         if (isRunning) {
             Ice.modal.stopRunning(target);
