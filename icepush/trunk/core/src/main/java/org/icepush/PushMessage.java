@@ -24,9 +24,18 @@ package org.icepush;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class PushMessage {
-    private HashMap properties = new HashMap();
+    private Map properties;
+
+    public PushMessage() {
+        this.properties = new HashMap();
+    }
+
+    public PushMessage(Map properties) {
+        this.properties = properties;
+    }
 
     public Iterator getPropertyNames() {
         return properties.keySet().iterator();
