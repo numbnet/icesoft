@@ -79,10 +79,10 @@ var Position = {
         if (!mode) return 0;
         if (mode == 'vertical')
             return ((this.offset[1] + element.offsetHeight) - this.ycomp) /
-                   element.offsetHeight;
+                    element.offsetHeight;
         if (mode == 'horizontal')
             return ((this.offset[0] + element.offsetWidth) - this.xcomp) /
-                   element.offsetWidth;
+                    element.offsetWidth;
     },
 
     // Deprecation layer -- use newer Element methods now (1.5.2).
@@ -121,11 +121,11 @@ if (!document.getElementsByClassName) document.getElementsByClassName = function
     }
 
     instanceMethods.getElementsByClassName = Prototype.BrowserFeatures.XPath ?
-                                             function(element, className) {
-                                                 className = className.toString().strip();
-                                                 var cond = /\s/.test(className) ? $w(className).map(iter).join('') : iter(className);
-                                                 return cond ? document._getElementsByXPath('.//*' + cond, element) : [];
-                                             } : function(element, className) {
+            function(element, className) {
+                className = className.toString().strip();
+                var cond = /\s/.test(className) ? $w(className).map(iter).join('') : iter(className);
+                return cond ? document._getElementsByXPath('.//*' + cond, element) : [];
+            } : function(element, className) {
         className = className.toString().strip();
         var elements = [], classNames = (/\s/.test(className) ? $w(className) : null);
         if (!classNames && !className) return elements;
@@ -135,9 +135,9 @@ if (!document.getElementsByClassName) document.getElementsByClassName = function
 
         for (var i = 0, child, cn; child = nodes[i]; i++) {
             if (child.className && (cn = ' ' + child.className + ' ') && (cn.include(className) ||
-                                                                          (classNames && classNames.all(function(name) {
-                                                                              return !name.toString().blank() && cn.include(' ' + name + ' ');
-                                                                          }))))
+                    (classNames && classNames.all(function(name) {
+                        return !name.toString().blank() && cn.include(' ' + name + ' ');
+                    }))))
                 elements.push(Element.extend(child));
         }
         return elements;
@@ -157,9 +157,10 @@ Element.ClassNames.prototype = {
     },
 
     _each: function(iterator) {
-        this.element.className.split(/\s+/).select(function(name) {
-            return name.length > 0;
-        })._each(iterator);
+        this.element.className.split(/\s+/).select(
+                function(name) {
+                    return name.length > 0;
+                })._each(iterator);
     },
 
     set: function(className) {
@@ -185,6 +186,105 @@ Object.extend(Element.ClassNames.prototype, Enumerable);
 
 /*--------------------------------------------------------------------------*/
 
-Element.addMethods();
+/** deprecated, section: DOM
+ *  class Selector
+ *
+ *  A class that queries the document for elements that match a given CSS
+ *  selector.
+ **/
+(function() {
+    window.Selector = Class.create({
+                /** deprecated
+                 *  new Selector(expression)
+                 *  - expression (String): A CSS selector.
+                 *
+                 *  Creates a `Selector` with the given CSS selector.
+                 **/
+                initialize: function(expression) {
+                    this.expression = expression.strip();
+                },
 
+                /** deprecated
+                 *  Selector#findElements(root) -> [Element...]
+                 *  - root (Element | document): A "scope" to search within. All results will
+                 *    be descendants of this node.
+                 *
+                 *  Searches the document for elements that match the instance's CSS
+                 *  selector.
+                 **/
+                findElements: function(rootElement) {
+                    return Prototype.Selector.select(this.expression, rootElement);
+                },
 
+                /** deprecated
+                 *  Selector#match(element) -> Boolean
+                 *
+                 *  Tests whether a `element` matches the instance's CSS selector.
+                 **/
+                match: function(element) {
+                    return Prototype.Selector.match(element, this.expression);
+                },
+
+                toString: function() {
+                    return this.expression;
+                },
+
+                inspect: function() {
+                    return "#<Selector: " + this.expression + ">";
+                }
+            });
+
+    Object.extend(Selector, {
+                /** deprecated
+                 *  Selector.matchElements(elements, expression) -> [Element...]
+                 *
+                 *  Filters the given collection of elements with `expression`.
+                 *
+                 *  The only nodes returned will be those that match the given CSS selector.
+                 **/
+                matchElements: function(elements, expression) {
+                    var match = Prototype.Selector.match,
+                            results = [];
+
+                    for (var i = 0, length = elements.length; i < length; i++) {
+                        var element = elements[i];
+                        if (match(element, expression)) {
+                            results.push(Element.extend(element));
+                        }
+                    }
+                    return results;
+                },
+
+                /** deprecated
+                 *  Selector.findElement(elements, expression[, index = 0]) -> Element
+                 *  Selector.findElement(elements[, index = 0]) -> Element
+                 *
+                 *  Returns the `index`th element in the collection that matches
+                 *  `expression`.
+                 *
+                 *  Returns the `index`th element overall if `expression` is not given.
+                 **/
+                findElement: function(elements, expression, index) {
+                    index = index || 0;
+                    var matchIndex = 0, element;
+                    // Match each element individually, since Sizzle.matches does not preserve order
+                    for (var i = 0, length = elements.length; i < length; i++) {
+                        element = elements[i];
+                        if (Prototype.Selector.match(element, expression) && index === matchIndex++) {
+                            return Element.extend(element);
+                        }
+                    }
+                },
+
+                /** deprecated
+                 *  Selector.findChildElements(element, expressions) -> [Element...]
+                 *
+                 *  Searches beneath `element` for any elements that match the selector
+                 *  (or selectors) specified in `expressions`.
+                 **/
+                findChildElements: function(element, expressions) {
+                    var selector = expressions.toArray().join(', ');
+                    return Prototype.Selector.select(selector, element || document);
+                }
+            });
+})();
