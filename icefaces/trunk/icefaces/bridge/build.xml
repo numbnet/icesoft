@@ -107,8 +107,8 @@
         <exclude name="component/keyboardNavigator.js"/>
         <exclude name="component/resizblePanelGrid.js"/>
         <exclude name="lib/prototype/ajax.js"/>
-        <exclude name="lib/prototype/base.js"/>
-        <exclude name="lib/prototype/form.js"/>
+        <exclude name="lib/prototype/lang.js"/>
+        <exclude name="lib/prototype/dom.js"/>
         <exclude name="lib/scriptaculous/controls.js"/>
     </fileset>
 
@@ -116,8 +116,8 @@
         <include name="component/keyboardNavigator.js"/>
         <include name="component/resizblePanelGrid.js"/>
         <include name="lib/prototype/ajax.js"/>
-        <include name="lib/prototype/base.js"/>
-        <include name="lib/prototype/form.js"/>
+        <include name="lib/prototype/lang.js"/>
+        <include name="lib/prototype/dom.js"/>
         <include name="lib/scriptaculous/controls.js"/>
     </fileset>
     <fileset id="just-copy.js.files" dir=".">
@@ -163,13 +163,7 @@
         <concat destfile="${script}" append="yes" fixlastline="yes" force="no">
             <filelist dir="${build.dir}/lib/prototype">
                 <file name="prototype.js"/>
-                <file name="base.js"/>
-                <file name="string.js"/>
-                <file name="enumerable.js"/>
-                <file name="array.js"/>
-                <file name="number.js"/>
-                <file name="hash.js"/>
-                <file name="range.js"/>
+                <file name="lang.js"/>
             </filelist>
             <filelist dir="${build.dir}/src">
                 <file name="header.js"/>
@@ -221,9 +215,6 @@
             <filelist dir="${build.dir}/lib/prototype">
                 <file name="ajax.js"/>
                 <file name="dom.js"/>
-                <file name="selector.js"/>
-                <file name="event.js"/>
-                <file name="form.js"/>
                 <file name="deprecated.js"/>
             </filelist>
             <filelist dir="${build.dir}/lib/scriptaculous">
