@@ -3890,7 +3890,7 @@ Element.addMethods({
      *  `top|bottom|left|right`.
      *
      **/
-    Element.Layout = Class.create(Hash, {
+    Element.Layout = Class.create(Hashtable, {
                 /**
                  *  new Element.Layout(element[, preCompute = false])
                  *  - element (Element): The element to be measured.
@@ -3927,7 +3927,7 @@ Element.addMethods({
                 },
 
                 _set: function(property, value) {
-                    return Hash.prototype.set.call(this, property, value);
+                    return Hashtable.prototype.set.call(this, property, value);
                 },
 
                 // TODO: Investigate.
@@ -4095,7 +4095,7 @@ Element.addMethods({
                  **/
                 toHash: function() {
                     var obj = this.toObject.apply(this, arguments);
-                    return new Hash(obj);
+                    return new Hashtable(obj);
                 },
 
                 /**
