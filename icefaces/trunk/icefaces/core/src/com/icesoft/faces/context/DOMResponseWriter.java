@@ -438,7 +438,10 @@ public class DOMResponseWriter extends ResponseWriter {
 
         final String frameURI;
         if (disableBrowserHistoryTracking) {
-            frameURI = "javascript:document.write('<html></html>');";
+            //ICE-6893: Setting the iframe src to a javascript: URI ensures that no request is made to the
+            //server.  Doing it this way also avoids security related complaints when running this over SSL
+            //in IE.
+            frameURI = "javascript:false;";
         } else {
             //another "workaround" to resolve the iframe URI
             if (request instanceof HttpServletRequest) {
