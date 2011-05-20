@@ -207,8 +207,9 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                 log.trace("populateList");
             }
             component.populateItemList();
-            Iterator matchs = component.getItemList();
+            Iterator matches = component.getItemList();
             int rows = component.getRows();
+            if (rows == 0) rows = Integer.MAX_VALUE;
             int rowCounter = 0;             
             if (component.getSelectFacet() != null) {
                 if (log.isDebugEnabled()) {
@@ -224,9 +225,9 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                         facesContext.getExternalContext().getRequestMap();
                 //set index to 0, so child components can get client id from autoComplete component
                 component.setIndex(0);
-                while (matchs.hasNext() && (rowCounter++ < rows || rows == 0)) {
+                while (matches.hasNext() && rowCounter++ < rows) {
                     Element div = domContext.createElement(HTML.DIV_ELEM);
-                    SelectItem item = (SelectItem) matchs.next();
+                    SelectItem item = (SelectItem) matches.next();
                     requestMap.put(component.getListVar(), item.getValue());
                     listDiv.appendChild(div);
                     // When HTML is display we still need a selected value. Hidding the value in a hidden span
@@ -265,11 +266,11 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                     log.debug(
                             "SelectInputText:populateList(): \"selectItem(s)\" found, generate plain-text for list");
                 }
-                if (matchs.hasNext()) {
+                if (matches.hasNext()) {
                     StringBuffer sb = new StringBuffer("<div>");
                     SelectItem item = null;
-                    while (matchs.hasNext() && (rowCounter++ < rows || rows == 0)) {
-                        item = (SelectItem) matchs.next();
+                    while (matches.hasNext() && rowCounter++ < rows) {
+                        item = (SelectItem) matches.next();
                         String itemLabel = item.getLabel();
                         if(itemLabel == null) {
                             itemLabel = converterGetAsString(
