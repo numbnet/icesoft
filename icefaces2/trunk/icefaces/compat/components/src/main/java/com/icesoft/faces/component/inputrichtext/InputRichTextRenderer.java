@@ -62,7 +62,8 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             root.getParentNode().appendChild(scrptWrpr);
             Element scrpt = domContext.createElement(HTML.SCRIPT_ELEM);
             scrpt.setAttribute(HTML.TYPE_ATTR, "text/javascript");
-            scrpt.appendChild(domContext.createTextNodeUnescaped("renderEditor('"+ ClientIdPool.get(clientId) +"', '"+ inputRichText.getToolbar() +"')"));
+            scrpt.appendChild(domContext.createTextNodeUnescaped("renderEditor('"+ ClientIdPool.get(clientId) +"', '"+ inputRichText.getToolbar() +"'," +
+            		"'"+ inputRichText.getLanguage()+"')"));
             scrptWrpr.appendChild(scrpt);
 
             domContext.stepOver();

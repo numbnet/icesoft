@@ -50,7 +50,8 @@ function getToolbar(toolbar) {
 }
 
 
-function renderEditor(editor, defaultToolbar) {
+function renderEditor(editor, defaultToolbar, lang) {
+	CKEDITOR.config.defaultLanguage = lang;
 	try {
 		if (CKEDITOR.instances[editor]) { 
 			CKEDITOR.instances[editor].destroy();
