@@ -230,10 +230,10 @@ public class InputRichText extends UIInput {
      */
     public String getCustomConfigPath() {
         if (customConfigPath != null) {
-            return CoreUtils.resolveResourceURL(getFacesContext(), customConfigPath);
+            return CoreUtils.resolveResourceURL(getFacesContext(), "/"+ customConfigPath);
         }
         ValueBinding vb = getValueBinding("customConfigPath");
-        return vb != null ? CoreUtils.resolveResourceURL(getFacesContext(), (String) vb.getValue(getFacesContext())) : null;
+        return vb != null ? CoreUtils.resolveResourceURL(getFacesContext(), "/"+ (String) vb.getValue(getFacesContext())) : null;
     }
 
     /**
