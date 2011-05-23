@@ -50,8 +50,18 @@ function getToolbar(toolbar) {
 }
 
 
-function renderEditor(editor, defaultToolbar, lang) {
+function renderEditor(editor, defaultToolbar, lang, _skin) {
 	CKEDITOR.config.defaultLanguage = lang;
+	if (_skin == 'default' || _skin == 'silver') {
+		_skin = 'v2'
+	}
+	if (_skin!= 'v2' &&
+			_skin!= 'office2003' &&			
+				_skin!= 'kama') {
+		alert('invalid skin name '+ _skin);
+		_skin = 'v2'
+	} 
+	CKEDITOR.config.skin = _skin;
 	try {
 		if (CKEDITOR.instances[editor]) { 
 			CKEDITOR.instances[editor].destroy();
