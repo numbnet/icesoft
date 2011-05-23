@@ -33,6 +33,7 @@
 package com.icesoft.faces.context;
 
 import com.icesoft.faces.env.Authorization;
+import com.icesoft.faces.facelets.FaceletsUIDebug;
 import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.command.Command;
 import com.icesoft.faces.webapp.command.CommandQueue;
@@ -42,20 +43,22 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.standard.NoCacheContentHandler;
+import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
 import com.icesoft.faces.webapp.http.core.LifecycleExecutor;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
-import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
+import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
-import com.icesoft.faces.facelets.FaceletsUIDebug;
 import com.icesoft.util.SeamUtilities;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.faces.FacesException;
 import javax.servlet.http.HttpSession;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -102,7 +105,7 @@ public class View implements CommandQueue {
                         Class bfc2Class = Class.forName("org.icefaces.x.context.BridgeFacesContext2");
                         Constructor bfc2Constructor = bfc2Class.getConstructors()[0];
                         facesContext = (BridgeFacesContext) bfc2Constructor.newInstance(new Object[]{request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, blockingRequestHandlerContext, authorization});
-                    } catch (Throwable t)  {
+                    } catch (Throwable t) {
                         //JSF 2.0 found but instantiation failed
                         facesContext = new BridgeFacesContext(request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor, blockingRequestHandlerContext, authorization);
                     }
@@ -113,12 +116,13 @@ public class View implements CommandQueue {
             makeCurrent();
             try {
                 request.respondWith(lifecycleResponseHandler);
-            } catch (Exception e)  {
-                String viewID = "Unknown View"; 
+            } catch (Exception e) {
+                String viewID = "Unknown View";
                 try {
                     viewID = facesContext.getViewRoot().getViewId();
-                } catch (NullPointerException npe)  { }
-                Log.error("Exception occured during rendering on " + 
+                } catch (NullPointerException npe) {
+                }
+                Log.error("Exception occured during rendering on " +
                         request.getURI() + " [" + viewID + "]", e);
                 throw e;
             }
@@ -185,9 +189,14 @@ public class View implements CommandQueue {
         try {
             acquireLifecycleLock();
             page.serve(request);
-        } catch (Throwable t)  {
-            Log.error("Problem encountered during View.servePage ", t);
-            throw new Exception(t);
+        } catch (FacesException e) {
+            if (e.getCause() instanceof FileNotFoundException) {
+                request.respondWith(new NotFoundHandler(e.getCause().getMessage()));
+            } else {
+                reportException(e);
+            }
+        } catch (Throwable t) {
+            reportException(t);
         }
     }
 
@@ -299,6 +308,11 @@ public class View implements CommandQueue {
         };
     }
 
+    private void reportException(Throwable t) throws Exception {
+        Log.error("Problem encountered during View.servePage ", t);
+        throw new Exception(t);
+    }
+
     private void makeCurrent() throws Exception {
         acquireLifecycleLock();
         installThreadLocals();
@@ -324,7 +338,7 @@ public class View implements CommandQueue {
                 m.remove(facesContext.getViewNumber());
             }
         } catch (Exception e) {
-            if (e instanceof SessionExpiredException)  {
+            if (e instanceof SessionExpiredException) {
                 //nothing more to clean up if session is expired
             } else {
                 Log.error("Exception cleaning up State Saving Map: " + e);
