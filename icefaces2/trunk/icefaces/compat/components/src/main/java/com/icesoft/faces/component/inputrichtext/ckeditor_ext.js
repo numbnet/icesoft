@@ -50,7 +50,7 @@ function getToolbar(toolbar) {
 }
 
 
-function renderEditor(editor, defaultToolbar, lang, _skin) {
+function renderEditor(editor, defaultToolbar, lang, _skin, _height, _width) {
 	CKEDITOR.config.defaultLanguage = lang;
 	if (_skin == 'default' || _skin == 'silver') {
 		_skin = 'v2'
@@ -68,7 +68,9 @@ function renderEditor(editor, defaultToolbar, lang, _skin) {
 		} 
  
 		var editorInstance = CKEDITOR.replace(editor, {
-				toolbar : getToolbar(defaultToolbar)
+				toolbar : getToolbar(defaultToolbar),
+				height: _height,
+				width: _width
 		});
 		editorInstance.setData(document.getElementById(editor).value);
 	} catch(e) {

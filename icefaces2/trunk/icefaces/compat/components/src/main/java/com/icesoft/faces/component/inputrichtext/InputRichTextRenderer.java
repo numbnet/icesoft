@@ -64,7 +64,9 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             scrpt.setAttribute(HTML.TYPE_ATTR, "text/javascript");
             scrpt.appendChild(domContext.createTextNodeUnescaped("renderEditor('"+ ClientIdPool.get(clientId) +"', '"+ inputRichText.getToolbar() +"'," +
             		"'"+ inputRichText.getLanguage()+"'," +
-            		"'"+ inputRichText.getSkin().toLowerCase()+"')"));
+            		"'"+ inputRichText.getSkin().toLowerCase()+"'," +
+            		"'"+ inputRichText.getHeight() + "'," +
+            		"'"+ inputRichText.getWidth() +"')"));
             scrptWrpr.appendChild(scrpt);
 
             domContext.stepOver();
