@@ -47,19 +47,12 @@ import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.StateManager;
 import javax.faces.application.ViewHandler;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.StateHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.component.UIViewRoot;
+import javax.faces.component.*;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKitFactory;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
@@ -117,8 +110,7 @@ public class D2DViewHandler extends ViewHandler {
             parser = new Parser(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-        catch (Throwable te) {
+        } catch (Throwable te) {
             //this allows us to use facelets & jsf1.2 impl on J2EE AS  see ICE-2356
             log.info("ICEfaces JSP parser disabled. This is a Facelets-only configuration.");
         }
@@ -403,7 +395,7 @@ public class D2DViewHandler extends ViewHandler {
                 }
 
             } catch (Exception e) {
-                throw new FacesException("Can't find stream for " + viewId, e);
+                throw new FileNotFoundException("Can't find stream for " + viewId);
             }
         }
 
@@ -879,9 +871,9 @@ public class D2DViewHandler extends ViewHandler {
         try {
             String value = ec.getInitParameter(FORCE_JSF12);
             if (value != null && !"".equals(value)) {
-                isJSF12 = Boolean.parseBoolean( value );
+                isJSF12 = Boolean.parseBoolean(value);
                 log.debug("JSF12 force parameter detected: " + isJSF12);
-                ImplementationUtil.setJSF12( isJSF12 );
+                ImplementationUtil.setJSF12(isJSF12);
             } else {
                 log.debug("JSF12 force parameter not detected: " + value);
             }
