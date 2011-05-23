@@ -1,3 +1,5 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
@@ -15,7 +17,7 @@
         -->
         <ice:form style="width: 45%;">
         <ice:commandButton value="Open a Popup" action="#{popup.openPopup}" rendered="#{not popup.visible}"/>
-            <ice:panelPopup draggable="true" visible="#{popup.visible}" style="z-index: 1000; top: 30%; left: 10%; position: absolute; width: 300px;">
+            <ice:panelPopup draggable="true" visible="#{popup.visible}" style="z-index: 1000; width: 300px;">
                 <f:facet name="header">
                     <ice:panelGrid width="100%" cellpadding="0" cellspacing="0" columns="2" style="text-align: center;">
                         <ice:outputText style="color: #FFFFFF;" value="Draggable Panel Popup"/>
