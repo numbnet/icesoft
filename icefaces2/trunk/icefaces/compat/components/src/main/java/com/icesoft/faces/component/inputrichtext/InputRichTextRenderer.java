@@ -68,7 +68,8 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             		"'"+ inputRichText.getSkin().toLowerCase()+"'," +
             		"'"+ inputRichText.getHeight() + "'," +
             		"'"+ inputRichText.getWidth() +"'," +
-            		"'"+ customConfig + "')"));
+            		"'"+ customConfig + "'," +
+            		inputRichText.isSaveOnSubmit()+ ")"));
             scrptWrpr.appendChild(scrpt);
 
             domContext.stepOver();
