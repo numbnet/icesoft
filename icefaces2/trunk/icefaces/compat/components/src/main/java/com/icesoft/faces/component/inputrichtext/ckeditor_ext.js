@@ -26,7 +26,7 @@ function getToolbar(toolbar) {
 	            ['IceSave', 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','About']
 	            ];
 	    
-	} else {
+	} else if (toolbar == 'Default'){
 		return [
 		        ['Source','-','IceSave','NewPage','Preview','-','Templates'],
 		        ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
@@ -46,7 +46,9 @@ function getToolbar(toolbar) {
 		        
 		        ];	
 
-	}	
+	} else { 
+		return toolbar;
+	}
 }
 
 
