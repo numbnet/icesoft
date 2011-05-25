@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!--
+  ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  ~ Alternatively, the contents of this file may be used under the terms of
+  ~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+  ~ License), in which case the provisions of the LGPL License are
+  ~ applicable instead of those above. If you wish to allow use of your
+  ~ version of this file only under the terms of the LGPL License and not to
+  ~ allow others to use your version of this file under the MPL, indicate
+  ~ your decision by deleting the provisions above and replace them with
+  ~ the notice and other provisions required by the LGPL License. If you do
+  ~ not delete the provisions above, a recipient may use your version of
+  ~ this file under either the MPL or the LGPL License."
+  -->
+
+<!DOCTYPE display PUBLIC "-//Liferay//DTD Display 4.0.0//EN" "http://www.liferay.com/dtd/liferay-display_4_0_0.dtd">
+
+<display>
+
+    <category name="ICEfaces">
+
+        <portlet id="components_autocomplete"/>
+        <portlet id="components_buttonsAndLinks"/>
+        <portlet id="components_calendar"/>
+        <portlet id="components_charts"/>
+        <portlet id="components_connectionStatus"/>
+        <portlet id="components_dragAndDrop"/>
+        <portlet id="components_effects"/>
+        <portlet id="components_fileUpload"/>
+        <portlet id="components_gmap"/>
+        <portlet id="components_media_player"/>
+        <portlet id="components_menubar"/>
+        <portlet id="components_panel_border"/>
+        <portlet id="components_panel_collapsible"/>
+        <portlet id="components_panel_divider"/>
+        <portlet id="components_panel_popup"/>
+        <portlet id="components_panel_positioned"/>
+        <portlet id="components_panel_series"/>
+        <portlet id="components_panel_stack"/>
+        <portlet id="components_panel_tabset_dynamic"/>
+        <portlet id="components_panel_tabset_static"/>
+        <portlet id="components_panel_tooltip"/>
+        <portlet id="components_progressBar"/>
+        <portlet id="components_rich_text_editor"/>
+        <portlet id="components_selection"/>
+        <portlet id="components_setEventPhase"/>
+        <portlet id="components_table_columns"/>
+        <portlet id="components_table_dataPaging"/>
+        <portlet id="components_table_expandable"/>
+        <portlet id="components_table_grouping"/>
+        <portlet id="components_table_resizableColumns"/>
+        <portlet id="components_table_rowSelection"/>
+        <portlet id="components_table_sortableHeader"/>
+        <portlet id="components_textEntry"/>
+        <portlet id="components_tree"/>
+        <portlet id="components_output_resource"/>
+        
+    </category>
+
+</display>
