@@ -52,7 +52,10 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKitFactory;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
@@ -395,7 +398,7 @@ public class D2DViewHandler extends ViewHandler {
                 }
 
             } catch (Exception e) {
-                throw new FileNotFoundException("Can't find stream for " + viewId);
+                throw new TemplateNotFound("Can't find stream for " + viewId);
             }
         }
 
