@@ -216,7 +216,7 @@ if (!window.ice.icepush) {
 
             configuration: {
                 contextPath: '.',
-                blockingConnectionURI: null
+                blockingConnectionURI: 'listen.icepush'
             }
         };
 
