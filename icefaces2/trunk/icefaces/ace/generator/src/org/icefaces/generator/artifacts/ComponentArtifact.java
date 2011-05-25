@@ -735,7 +735,7 @@ public class ComponentArtifact extends Artifact{
 			writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
 			writer.append("\n\t\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_rowValues\";");
 			writer.append("\n\t\t\tMap clientValues = (Map) sh.get(valuesKey);");
-            writer.append("\n\t\t\tboolean mapNoValue = false;");
+            // [Art] writer.append("\n\t\t\tboolean mapNoValue = false;");
 			// differentiate between the case where the map has clientId and it's value is null
 			// verses it not existing in the map at all.
             writer.append("\n\t\t\tif (clientValues != null) { ");
@@ -743,12 +743,16 @@ public class ComponentArtifact extends Artifact{
 			writer.append("\n\t\t\t\tString clientId = getClientId();");
 			writer.append("\n\t\t\t\tif (clientValues.containsKey( clientId ) ) { ");
 			writer.append("\n\t\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(clientId); ");
-            writer.append("\n\t\t\t\t} else { ");
+			writer.append("\n\t\t\t\t}"); // [Art]
+            /* [Art]
+			writer.append("\n\t\t\t\t} else { ");
             writer.append("\n\t\t\t\t\tmapNoValue=true;");
             writer.append("\n\t\t\t\t}");
+			*/
             writer.append("\n\t\t\t}");
 
 
+			/* [Art]
 			writer.append("\n\t\t\tif (mapNoValue || clientValues == null ) { ");
             writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_defaultValues\";");
             writer.append("\n\t\t\t\tMap defaultValues = (Map) sh.get(defaultKey); ");
@@ -758,7 +762,8 @@ public class ComponentArtifact extends Artifact{
             writer.append("\n\t\t\t\t\t}");
             writer.append("\n\t\t\t\t}");
 			writer.append("\n\t\t\t}");
-			// [Art] writer.append("\n\t\t}");
+			writer.append("\n\t\t}");
+			*/
 			writer.append("\n\t\treturn retVal;");
 		/* [Art]
 		} else {
