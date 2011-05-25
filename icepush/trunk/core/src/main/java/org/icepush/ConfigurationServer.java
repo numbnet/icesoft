@@ -70,7 +70,11 @@ public class ConfigurationServer implements Server {
     }
 
     private static String normalizeContextPath(String path) {
-        return path.startsWith("/") ? path : "/" + path;
+        if (path == null) {
+            return null;
+        } else {
+            return path.startsWith("/") ? path : "/" + path;
+        }
     }
 
     public void service(Request request) throws Exception {
