@@ -75,7 +75,7 @@ function renderEditor(editor, defaultToolbar, lang, _skin, _height, _width, _cus
 				height: _height,
 				width: _width,
 				customConfig : _customConfig,
-				htmlEncodeOutput : true
+				htmlEncodeOutput : false
 		});
 		editorInstance.setData(document.getElementById(editor).value);
 		if (saveOnSubmit) {
