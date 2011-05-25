@@ -58,7 +58,7 @@ public class ConfigurationServer implements Server {
                 (serverErrorRetries != defaultServerErrorRetries ?
                         " serverErrorRetryTimeouts=\"" + serverErrorRetries + "\"" : "") +
                 (contextPath != null ?
-                        " blockingConnectionURI=\"" + contextPath + "/listen.icepush\"" : "") +
+                        " blockingConnectionURI=\"/" + contextPath + "/listen.icepush\"" : "") +
                 (contextPath != null ?
                         " contextPath=\"" + contextPath + "\"" : "") +
                 "/>";
