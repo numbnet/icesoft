@@ -32,6 +32,7 @@
 
 package com.icesoft.faces.context;
 
+import com.icesoft.faces.application.TemplateNotFound;
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.facelets.FaceletsUIDebug;
 import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
@@ -58,7 +59,6 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
 import javax.servlet.http.HttpSession;
-import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -122,8 +122,8 @@ public class View implements CommandQueue {
                     viewID = facesContext.getViewRoot().getViewId();
                 } catch (NullPointerException npe) {
                 }
-                Log.error("Exception occured during rendering on " +
-                        request.getURI() + " [" + viewID + "]", e);
+                Log.error("Failed to render page for " +
+                        request.getURI() + " [" + viewID + "]");
                 throw e;
             }
         }
@@ -190,7 +190,7 @@ public class View implements CommandQueue {
             acquireLifecycleLock();
             page.serve(request);
         } catch (FacesException e) {
-            if (e.getCause() instanceof FileNotFoundException) {
+            if (e.getCause() instanceof TemplateNotFound) {
                 request.respondWith(new NotFoundHandler(e.getCause().getMessage()));
             } else {
                 reportException(e);
