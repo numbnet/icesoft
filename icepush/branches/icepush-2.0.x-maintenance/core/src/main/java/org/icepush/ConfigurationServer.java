@@ -48,7 +48,7 @@ public class ConfigurationServer implements Server {
 
     public ConfigurationServer(final PushContext context, final ServletContext servletContext, Configuration configuration, final Server server) {
         blockingConnectionServer = server;
-        String contextPath = configuration.getAttribute("contextPath", (String) servletContext.getAttribute("contextPath"));
+        String contextPath = normalizeContextPath(configuration.getAttribute("contextPath", (String) servletContext.getAttribute("contextPath")));
         long heartbeatTimeout = configuration.getAttributeAsLong("heartbeatTimeout", defaultBlockingConnectionTimeout);
         int serverErrorRetries = configuration.getAttributeAsInteger("serverErrorRetryTimeouts", defaultServerErrorRetries);
 
@@ -58,7 +58,7 @@ public class ConfigurationServer implements Server {
                 (serverErrorRetries != defaultServerErrorRetries ?
                         " serverErrorRetryTimeouts=\"" + serverErrorRetries + "\"" : "") +
                 (contextPath != null ?
-                        " blockingConnectionURI=\"/" + contextPath + "/listen.icepush\"" : "") +
+                        " blockingConnectionURI=\"" + contextPath + "/listen.icepush\"" : "") +
                 (contextPath != null ?
                         " contextPath=\"" + contextPath + "\"" : "") +
                 "/>";
@@ -67,6 +67,10 @@ public class ConfigurationServer implements Server {
         configureBridge = new ConfigureBridge(configurationMessage);
         setBrowserID = new SetBrowserID(context);
         setBrowserIDAndConfigureBridgeMacro = new SetBrowserIDAndConfigureBridgeMacro();
+    }
+
+    private static String normalizeContextPath(String path) {
+        return path.startsWith("/") ? path : "/" + path;
     }
 
     public void service(Request request) throws Exception {
