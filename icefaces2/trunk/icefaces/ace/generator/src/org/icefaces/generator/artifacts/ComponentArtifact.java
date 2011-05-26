@@ -536,7 +536,6 @@ public class ComponentArtifact extends Artifact{
 	}
 
 	public void addFieldGetterSetter(Field field, org.icefaces.component.annotation.Field fieldAnnotation) {
-		// [Art] PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field);
 
 		boolean isBoolean = field.getType().getName().endsWith("boolean")||
 		field.getType().getName().endsWith("Boolean");
@@ -566,22 +565,15 @@ public class ComponentArtifact extends Artifact{
         // if the field name is a java keyword
 		String pseudoFieldName;
         String camlCaseMethodName;
-		/* [Art]
-        if (!"null".equals(prop.name) ) {
-            methodName = prop.name;
-            pseudoFieldName = methodName + "Val";
-        } else {
-		*/
-            methodName = field.getName();
-            pseudoFieldName = methodName;
-        // [Art] }
+        methodName = field.getName();
+        pseudoFieldName = methodName;
         camlCaseMethodName = methodName.substring(0,1).toUpperCase() + methodName.substring(1);
 
 		//-------------------------------------
 		// writing Setter
         //-------------------------------------
 
-		// [Art] addJavaDoc(pseudoFieldName, true, prop.javadocSet);
+		addJavaDoc(pseudoFieldName, true, fieldAnnotation.javadoc());
 		writer.append("\tpublic void set");
 		writer.append(camlCaseMethodName);
 
@@ -593,81 +585,30 @@ public class ComponentArtifact extends Artifact{
 		writer.append(field.getName());
 		writer.append(") {");
 
-		/* [Art]
-		if (!prop.isDelegatingProperty) {
-			writer.append("\n\t\tValueExpression ve = getValueExpression(PropertyKeys.");
-			writer.append(pseudoFieldName);
-			writer.append(".name() );");
-//			writer.append("\n\t\tMap clientValues = null;");
-			writer.append("\n\t\tif (ve != null) {");
-			writer.append("\n\t\t\t// map of style values per clientId");
-			writer.append("\n\t\t\tve.setValue(getFacesContext().getELContext(), ");
-			writer.append( field.getName() );
-			writer.append(" );");
+		writer.append("\n\t\tStateHelper sh = getStateHelper(); ");
+		writer.append("\n\t\tString clientId = getClientId();");
+		writer.append("\n\t\tString valuesKey = PropertyKeys.").append( pseudoFieldName ).
+				append(".name() + \"_rowValues\"; ");
+		writer.append("\n\t\tMap clientValues = (Map) sh.get(valuesKey); ");
+		writer.append("\n\t\tif (clientValues == null) {");
+		writer.append("\n\t\t\tclientValues = new HashMap(); ");
+		writer.append("\n\t\t}");
+		writer.append("\n\t\tclientValues.put(clientId, " ).append( field.getName().toString()).
+				append(");");
 
-			writer.append("\n\t\t} else { ");
+		writer.append("\n\t\t//Always re-add the delta values to the map. JSF merges the values into the main map" );
+		writer.append("\n\t\t//and values are not state saved unless they're in the delta map. " );
 
-//		    writer.append("\n\t\t\tMap clientValues = (Map) sh.get(valuesKey); ");
-//
-//			writer.append("\n\t\t\tif (clientValues == null) {" );
-//            writer.append("\n\t\t\t\tclientValues = new HashMap(); ");
-////            writer.append("\n\t\t\t\tmarkInitialState();");
-//            writer.append("\n\t\t\t\tsh.put(PropertyKeys.");
-//			writer.append(field.getName());
-//			writer.append(", clientValues ); ");
-//			writer.append("\n\t\t\t}");
-			writer.append("\n\t\t\tPhaseId pi = getFacesContext().getCurrentPhaseId();");
-			*/
-            writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
-            
-			/* [Art]
-			writer.append("\n\t\t\tif (pi.equals(PhaseId.RENDER_RESPONSE) || pi.equals(PhaseId.RESTORE_VIEW))  {");
-            // Here,
+		writer.append("\n\t\tsh.put(valuesKey, clientValues);" );
 
-            writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append( pseudoFieldName ).
-                                append(".name() + \"_defaultValues\";" );
-            writer.append("\n\t\t\t\tMap clientDefaults = (Map) sh.get(defaultKey);");
-
-            writer.append("\n\t\t\t\tif (clientDefaults == null) { ");
-            writer.append("\n\t\t\t\t\tclientDefaults = new HashMap(); ");
-            writer.append("\n\t\t\t\t\tclientDefaults.put(\"defValue\"," ).append( field.getName().toString() ).append(");");
-            writer.append("\n\t\t\t\t\tsh.put(defaultKey, clientDefaults); "); 
-            writer.append("\n\t\t\t\t} "); 
-
-
-			writer.append("\n\t\t\t} else {");
-			*/
-			writer.append("\n\t\t\t\tString clientId = getClientId();");
-            writer.append("\n\t\t\t\tString valuesKey = PropertyKeys.").append( pseudoFieldName ).
-                    append(".name() + \"_rowValues\"; ");
-            writer.append("\n\t\t\t\tMap clientValues = (Map) sh.get(valuesKey); ");
-            writer.append("\n\t\t\t\tif (clientValues == null) {");
-            writer.append("\n\t\t\t\t\tclientValues = new HashMap(); ");
-            writer.append("\n\t\t\t\t}");
-            writer.append("\n\t\t\t\tclientValues.put(clientId, " ).append( field.getName().toString()).
-                    append(");");
-
-            writer.append("\n\t\t\t\t//Always re-add the delta values to the map. JSF merges the values into the main map" );
-            writer.append("\n\t\t\t\t//and values are not state saved unless they're in the delta map. " );
-
-            writer.append("\n\t\t\t\tsh.put(valuesKey, clientValues);" );
-
-		/* [Art]
-			writer.append("\n\t\t\t}" );
-			writer.append("\n\t\t}" );
-		} else {
-			writer.append("\n\t\tsuper.set" + methodName + "(" + field.getName() + ");");
-		}
-		*/
         writer.append("\n\t}\n" );
 
         //-----------------
 		//getter
         //-----------------
 
-		// [Art] addJavaDoc(pseudoFieldName, false, prop.javadocGet);
-
-        // Internal value representation is always Wrapper type
+        addJavaDoc(pseudoFieldName, false, fieldAnnotation.javadoc());
+		// Internal value representation is always Wrapper type
         String internalType = returnAndArgumentType;
         if (GeneratorContext.InvWrapperTypes.containsKey( returnAndArgumentType ) ) {
             internalType = GeneratorContext.InvWrapperTypes.get( returnAndArgumentType );
@@ -685,97 +626,43 @@ public class ComponentArtifact extends Artifact{
 		writer.append(camlCaseMethodName);
 		writer.append("() {");
 
-		// [Art] if (!prop.isDelegatingProperty) {
-			// start of the code
-			writer.append("\n\t\t").append(internalType).append(" retVal = ");
-						
-			// No defined default value is returned as the string "null". This has to
-			// be handled for various cases. primitives must have a default of some kind
-			// and Strings have to return null (not "null") to work.
-			String defaultValue = fieldAnnotation.defaultValue(); // [Art] prop.defaultValue;
-			Log.fine("Evaluating field name: " + field.getName().toString().trim() + ", isPRIMITIVE " +
-							   isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
+		// start of the code
+		writer.append("\n\t\t").append(internalType).append(" retVal = ");
+					
+		// No defined default value is returned as the string "null". This has to
+		// be handled for various cases. primitives must have a default of some kind
+		// and Strings have to return null (not "null") to work.
+		String defaultValue = fieldAnnotation.defaultValue();
+		Log.fine("Evaluating field name: " + field.getName().toString().trim() + ", isPRIMITIVE " +
+						   isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
 
-			if (isPrimitive && (defaultValue == null || defaultValue.equals("") || defaultValue.equals("null"))) {
-				defaultValue = GeneratorContext.PrimitiveDefaults.get( field.getType().toString().trim() );
-			}
-
-            boolean needsQuotes = ((internalType.indexOf("String") > -1) || (internalType.indexOf("Object") > -1));
-			if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
-				writer.append("\"");
-			}
-			writer.append( defaultValue );
-			if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
-				writer.append("\"");
-			}
-			writer.append(";");
-
-			/* [Art]
-			// Start of Value Expression code
-			writer.append("\n\t\tValueExpression ve = getValueExpression( PropertyKeys.");
-			writer.append( pseudoFieldName );
-			writer.append(".name() );");
-
-			writer.append("\n\t\tif (ve != null) {" );
-			// For primitives, don't overwrite a default value with a null value obtained from
-			// the value expression. For the stateHelper, we're the ones putting those values
-			// into the map, hence a value wont be found there.
-			if (isPrimitive) {
-				writer.append("\n\t\t\tObject o = ve.getValue( getFacesContext().getELContext() );");
-				writer.append("\n\t\t\tif (o != null) { " );
-				writer.append("\n\t\t\t\tretVal = (").append( internalType ).append
-										   (") o; ");
-				writer.append("\n\t\t\t}"); 
-			} else {
-				writer.append("\n\t\t\t\tretVal = (").append( internalType ).append
-										   (") ve.getValue( getFacesContext().getELContext() ); ");
-			}
-			writer.append("\n\t\t} else {");
-			*/
-			writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
-			writer.append("\n\t\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_rowValues\";");
-			writer.append("\n\t\t\tMap clientValues = (Map) sh.get(valuesKey);");
-            // [Art] writer.append("\n\t\t\tboolean mapNoValue = false;");
-			// differentiate between the case where the map has clientId and it's value is null
-			// verses it not existing in the map at all.
-            writer.append("\n\t\t\tif (clientValues != null) { ");
-
-			writer.append("\n\t\t\t\tString clientId = getClientId();");
-			writer.append("\n\t\t\t\tif (clientValues.containsKey( clientId ) ) { ");
-			writer.append("\n\t\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(clientId); ");
-			writer.append("\n\t\t\t\t}"); // [Art]
-            /* [Art]
-			writer.append("\n\t\t\t\t} else { ");
-            writer.append("\n\t\t\t\t\tmapNoValue=true;");
-            writer.append("\n\t\t\t\t}");
-			*/
-            writer.append("\n\t\t\t}");
-
-
-			/* [Art]
-			writer.append("\n\t\t\tif (mapNoValue || clientValues == null ) { ");
-            writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_defaultValues\";");
-            writer.append("\n\t\t\t\tMap defaultValues = (Map) sh.get(defaultKey); ");
-            writer.append("\n\t\t\t\tif (defaultValues != null) { ");
-            writer.append("\n\t\t\t\t\tif (defaultValues.containsKey(\"defValue\" )) {");
-            writer.append("\n\t\t\t\t\t\tretVal = (").append(internalType).append(") defaultValues.get(\"defValue\"); ");
-            writer.append("\n\t\t\t\t\t}");
-            writer.append("\n\t\t\t\t}");
-			writer.append("\n\t\t\t}");
-			writer.append("\n\t\t}");
-			*/
-			writer.append("\n\t\treturn retVal;");
-		/* [Art]
-		} else {
-			writer.append("\n\t\treturn super.");
-			if (isBoolean) {
-				writer.append("is");
-			} else {
-				writer.append("get");
-			}
-			writer.append(methodName + "();");
+		if (isPrimitive && (defaultValue == null || defaultValue.equals("") || defaultValue.equals("null"))) {
+			defaultValue = GeneratorContext.PrimitiveDefaults.get( field.getType().toString().trim() );
 		}
-		*/
+
+		boolean needsQuotes = ((internalType.indexOf("String") > -1) || (internalType.indexOf("Object") > -1));
+		if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
+			writer.append("\"");
+		}
+		writer.append( defaultValue );
+		if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
+			writer.append("\"");
+		}
+		writer.append(";");
+
+		writer.append("\n\t\tStateHelper sh = getStateHelper(); ");
+		writer.append("\n\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_rowValues\";");
+		writer.append("\n\t\tMap clientValues = (Map) sh.get(valuesKey);");
+		writer.append("\n\t\tif (clientValues != null) { ");
+
+		writer.append("\n\t\t\tString clientId = getClientId();");
+		writer.append("\n\t\t\tif (clientValues.containsKey( clientId ) ) { ");
+		writer.append("\n\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(clientId); ");
+		writer.append("\n\t\t\t}");
+		writer.append("\n\t\t}");
+
+		writer.append("\n\t\treturn retVal;");
+
         writer.append("\n\t}\n");
 	}
 
