@@ -196,6 +196,13 @@ public class ComponentArtifact extends Artifact{
 				writer.append(",\n");
 			}
 		}
+		Iterator<Field> fields = getComponentContext().getInternalFieldsForComponentClass().values().iterator();
+		while (fields.hasNext()) {
+			Field field = fields.next();
+			writer.append("\t\t");
+			writer.append( field.getName() );
+			writer.append(",\n");
+		}
 		writer.append("\t\t;\n");
 		writer.append("\t\tString toString;\n");
 		writer.append("\t\tPropertyKeys(String toString) { this.toString = toString; }\n");
@@ -528,8 +535,146 @@ public class ComponentArtifact extends Artifact{
 
 	}
 
-	private void addInternalFields() {
+	public void addFieldGetterSetter(Field field, org.icefaces.component.annotation.Field fieldAnnotation) {
 
+		boolean isBoolean = field.getType().getName().endsWith("boolean")||
+		field.getType().getName().endsWith("Boolean");
+
+        
+        // primitive properties are supported (ones with values
+        // even if no default is specified in the Meta). Wrapper properties
+        // (null default and settable values) are also supported
+        // There are four property names which must be forced to be primitive                                L
+        // or else the generated signiture clashes with the property names in
+        // EditableValueHolder
+        boolean isPrimitive = field.getType().isPrimitive() ||
+                              GeneratorContext.SpecialReturnSignatures.containsKey( field.getName().toString().trim() );
+
+          String returnAndArgumentType = field.getType().getName();
+
+        // If primitive property, get the primitive return type
+        // otherwise leave it as is.
+        if (isPrimitive) {
+            if (GeneratorContext.WrapperTypes.containsKey( field.getType().getName() )) {
+                returnAndArgumentType = GeneratorContext.WrapperTypes.get( field.getType().getName() );
+            }
+        }
+
+		String methodName;
+        // The publicly exposed property name. Will differ from the field name
+        // if the field name is a java keyword
+		String pseudoFieldName;
+        String camlCaseMethodName;
+        methodName = field.getName();
+        pseudoFieldName = methodName;
+        camlCaseMethodName = methodName.substring(0,1).toUpperCase() + methodName.substring(1);
+
+		//-------------------------------------
+		// writing Setter
+        //-------------------------------------
+
+		addJavaDoc(pseudoFieldName, true, fieldAnnotation.javadoc());
+		writer.append("\tpublic void set");
+		writer.append(camlCaseMethodName);
+
+        // Allow java autoconversion to deal with most of the conversion between
+        // primitive types and Wrapper classes
+		writer.append("(");
+        writer.append( returnAndArgumentType );
+		writer.append(" ");
+		writer.append(field.getName());
+		writer.append(") {");
+
+		writer.append("\n\t\tStateHelper sh = getStateHelper(); ");
+		writer.append("\n\t\tString clientId = getClientId();");
+		writer.append("\n\t\tString valuesKey = PropertyKeys.").append( pseudoFieldName ).
+				append(".name() + \"_rowValues\"; ");
+		writer.append("\n\t\tMap clientValues = (Map) sh.get(valuesKey); ");
+		writer.append("\n\t\tif (clientValues == null) {");
+		writer.append("\n\t\t\tclientValues = new HashMap(); ");
+		writer.append("\n\t\t}");
+		writer.append("\n\t\tclientValues.put(clientId, " ).append( field.getName().toString()).
+				append(");");
+
+		writer.append("\n\t\t//Always re-add the delta values to the map. JSF merges the values into the main map" );
+		writer.append("\n\t\t//and values are not state saved unless they're in the delta map. " );
+
+		writer.append("\n\t\tsh.put(valuesKey, clientValues);" );
+
+        writer.append("\n\t}\n" );
+
+        //-----------------
+		//getter
+        //-----------------
+
+        addJavaDoc(pseudoFieldName, false, fieldAnnotation.javadoc());
+		// Internal value representation is always Wrapper type
+        String internalType = returnAndArgumentType;
+        if (GeneratorContext.InvWrapperTypes.containsKey( returnAndArgumentType ) ) {
+            internalType = GeneratorContext.InvWrapperTypes.get( returnAndArgumentType );
+        }
+
+		writer.append("\tpublic ");
+        writer.append( returnAndArgumentType );
+		writer.append(" ");
+
+		if (isBoolean) {
+			writer.append("is");
+		} else {
+			writer.append("get");
+		}
+		writer.append(camlCaseMethodName);
+		writer.append("() {");
+
+		// start of the code
+		writer.append("\n\t\t").append(internalType).append(" retVal = ");
+					
+		// No defined default value is returned as the string "null". This has to
+		// be handled for various cases. primitives must have a default of some kind
+		// and Strings have to return null (not "null") to work.
+		String defaultValue = fieldAnnotation.defaultValue();
+		Log.fine("Evaluating field name: " + field.getName().toString().trim() + ", isPRIMITIVE " +
+						   isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
+
+		if (isPrimitive && (defaultValue == null || defaultValue.equals("") || defaultValue.equals("null"))) {
+			defaultValue = GeneratorContext.PrimitiveDefaults.get( field.getType().toString().trim() );
+		}
+
+		boolean needsQuotes = ((internalType.indexOf("String") > -1) || (internalType.indexOf("Object") > -1));
+		if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
+			writer.append("\"");
+		}
+		writer.append( defaultValue );
+		if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
+			writer.append("\"");
+		}
+		writer.append(";");
+
+		writer.append("\n\t\tStateHelper sh = getStateHelper(); ");
+		writer.append("\n\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_rowValues\";");
+		writer.append("\n\t\tMap clientValues = (Map) sh.get(valuesKey);");
+		writer.append("\n\t\tif (clientValues != null) { ");
+
+		writer.append("\n\t\t\tString clientId = getClientId();");
+		writer.append("\n\t\t\tif (clientValues.containsKey( clientId ) ) { ");
+		writer.append("\n\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(clientId); ");
+		writer.append("\n\t\t\t}");
+		writer.append("\n\t\t}");
+
+		writer.append("\n\t\treturn retVal;");
+
+        writer.append("\n\t}\n");
+	}
+
+	
+	private void addInternalFields() {
+		Iterator<Field> fields = getComponentContext().getInternalFieldsForComponentClass().values().iterator();
+		while (fields.hasNext()) {
+			Field field = fields.next();
+			org.icefaces.component.annotation.Field fieldAnnotation = (org.icefaces.component.annotation.Field)field.getAnnotation(org.icefaces.component.annotation.Field.class);
+			addFieldGetterSetter(field, fieldAnnotation);
+		}
+/*
 		Map<String, Field> nonTransientProperties = new HashMap<String, Field>();
 		//write properties
 		Iterator<Field> fields = getComponentContext().getInternalFieldsForComponentClass().values().iterator();
@@ -613,7 +758,7 @@ public class ComponentArtifact extends Artifact{
 			writer.append("];\n");
 		}
 		writer.append("\t}\n");
-
+*/
 	}
 
 	private void handleAttribute() {
