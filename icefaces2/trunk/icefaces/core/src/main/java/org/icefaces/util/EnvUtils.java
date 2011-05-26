@@ -94,6 +94,17 @@ public class EnvUtils {
         }
     }
 
+    //Use reflection to identify if the Portlet classes are on a specific platform.
+    private static Class LiferayClass;
+
+    static {
+        try {
+            LiferayClass = Class.forName("com.liferay.portal.theme.ThemeDisplay");
+        } catch (Throwable t) {
+            log.log(Level.FINE, "Liferay class not available: ", t);
+        }
+    }
+
     //Use reflection to identify if ICEpush is available.
     private static boolean icepushPresent;
 
@@ -250,6 +261,16 @@ public class EnvUtils {
             return EnvConfig.getEnvConfig(facesContext).lazyPush;
         }
         return (Boolean.TRUE.equals(lazyPush));
+    }
+
+
+    /**
+     * Returns true if Liferay classes are detected via reflection.
+     *
+     * @return Returns true if Liferay classes are detected via reflection.
+     */
+    public static boolean isLiferay() {
+        return LiferayClass != null;
     }
 
 

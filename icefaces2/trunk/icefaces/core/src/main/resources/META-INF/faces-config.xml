@@ -61,6 +61,10 @@
             <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>
+            <system-event-listener-class>org.icefaces.impl.event.PortletListener</system-event-listener-class>
+            <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
+        </system-event-listener>
+        <system-event-listener>
             <system-event-listener-class>org.icefaces.impl.event.WindowAndViewIDSetup</system-event-listener-class>
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
         </system-event-listener>
