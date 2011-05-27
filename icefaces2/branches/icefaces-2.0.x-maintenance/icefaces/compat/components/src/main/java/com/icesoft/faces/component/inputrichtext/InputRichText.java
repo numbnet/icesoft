@@ -23,97 +23,23 @@ package com.icesoft.faces.component.inputrichtext;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
-import com.icesoft.faces.context.JarResource;
-import com.icesoft.faces.context.Resource;
-import com.icesoft.faces.context.ResourceLinker;
-import com.icesoft.faces.context.ResourceRegistry;
-import com.icesoft.faces.context.ResourceRegistryLocator;
 import com.icesoft.faces.util.CoreUtils;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import java.io.ByteArrayInputStream;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public class InputRichText extends UIInput {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.InputRichText";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.InputRichTextRenderer";
-    public static final Resource ICE_FCK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/fckeditor_ext.js");
-    private static final Resource FCK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/fckeditor.js");
-    private static final String FCK_EDITOR_ZIP = "com/icesoft/faces/component/inputrichtext/fckeditor.zip";
-    private static final Date lastModified = new Date();
-    private static final Map ZipEntryCache = new HashMap();
+ 
     private Boolean partialSubmit = null;
 
-    private static void loadZipEntryCache() {
-        try {
-            InputStream in = InputRichText.class.getClassLoader().getResourceAsStream(FCK_EDITOR_ZIP);
-            ZipInputStream zip = new ZipInputStream(in);
-            ZipEntry entry;
-            while ((entry = zip.getNextEntry()) != null) {
-                if (!entry.isDirectory()) {
-                    ZipEntryCache.put(entry.getName(), toByteArray(zip));
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static final ResourceLinker.Handler FCK_LINKED_BASE = new ResourceLinker.Handler() {
-        public void linkWith(ResourceLinker linker) {
-            synchronized (ZipEntryCache) {
-                if (ZipEntryCache.isEmpty()) {
-                    loadZipEntryCache();
-                }
-            }
-            Iterator i = ZipEntryCache.keySet().iterator();
-            while (i.hasNext()) {
-                final String entryName = (String) i.next();
-                linker.registerRelativeResource(entryName, new Resource() {
-                    public String calculateDigest() {
-                        return String.valueOf(FCK_EDITOR_ZIP + entryName);
-                    }
-
-                    public Date lastModified() {
-                        return lastModified;
-                    }
-
-                    public InputStream open() throws IOException {
-                        return new ByteArrayInputStream((byte[]) ZipEntryCache.get(entryName));
-                    }
-
-                    public void withOptions(Resource.Options options) {
-                        options.setFileName(entryName);
-                        options.setLastModified(lastModified);
-                    }
-                });
-            }
-        }
-    };
-
-    public static void loadFCKJSIfRequired() {
-        if (FacesContext.getCurrentInstance() != null && baseURI == null && exist.booleanValue()) {
-            ResourceRegistry registry =
-                    ResourceRegistryLocator.locate(FacesContext.getCurrentInstance());
-            if (registry != null) {
-                baseURI = registry.loadJavascriptCode(FCK_EDITOR_JS, FCK_LINKED_BASE);
-                registry.loadJavascriptCode(ICE_FCK_EDITOR_JS);
-            } else {
-                //LOG fckeditor's library has not loaded, component will not work as desired
-            }
-        }
-    }
 
     private String language;
     private String _for;
@@ -121,27 +47,21 @@ public class InputRichText extends UIInput {
     private String styleClass;
     private String width;
     private String height;
-    private static URI baseURI = null;
-    private static Boolean exist = Boolean.FALSE;
+ 
+ 
     private String toolbar;
     private String customConfigPath;
     private Boolean disabled = null;
     private String skin = null;
     private Boolean saveOnSubmit = null;
-
+ 
+	
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
     }
 
     public String getComponentType() {
         return COMPONENT_TYPE;
-    }
-
-    public InputRichText() {
-        //the following static variables are used, so the library can be load 
-        //for each separate views 
-        baseURI = null;
-        exist = Boolean.TRUE;
     }
 
     public void decode(FacesContext facesContext) {
@@ -196,12 +116,6 @@ public class InputRichText extends UIInput {
 
     boolean isToolbarOnly() {
         return false;
-    }
-
-    public URI getBaseURI() {
-        if (baseURI == null)
-            loadFCKJSIfRequired();
-        return baseURI;
     }
 
     /**
@@ -315,10 +229,10 @@ public class InputRichText extends UIInput {
      */
     public String getCustomConfigPath() {
         if (customConfigPath != null) {
-            return CoreUtils.resolveResourceURL(getFacesContext(), customConfigPath);
+            return CoreUtils.resolveResourceURL(getFacesContext(), "/"+ customConfigPath);
         }
         ValueBinding vb = getValueBinding("customConfigPath");
-        return vb != null ? CoreUtils.resolveResourceURL(getFacesContext(), (String) vb.getValue(getFacesContext())) : null;
+        return vb != null ? CoreUtils.resolveResourceURL(getFacesContext(), "/"+ (String) vb.getValue(getFacesContext())) : null;
     }
 
     /**
@@ -428,13 +342,4 @@ public class InputRichText extends UIInput {
     }
 }
 
-class FCKJarResource extends JarResource {
 
-    public FCKJarResource(String path) {
-        super(path);
-    }
-
-    public void withOptions(Options options) throws IOException {
-
-    }
-}

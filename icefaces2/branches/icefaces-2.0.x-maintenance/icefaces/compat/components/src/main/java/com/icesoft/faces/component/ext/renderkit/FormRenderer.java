@@ -24,9 +24,7 @@ package com.icesoft.faces.component.ext.renderkit;
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
-import com.icesoft.faces.component.inputrichtext.InputRichText;
+import javax.faces.context.FacesContext; 
 
 public class FormRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.FormRenderer {
@@ -39,6 +37,5 @@ public class FormRenderer
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
         super.encodeBegin(facesContext, uiComponent);
-        InputRichText.loadFCKJSIfRequired();
     }
 }
