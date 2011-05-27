@@ -3516,7 +3516,7 @@ document.viewport = {
             return document;
 
         // Older versions of Opera.
-        if (B.Opera && window.parseFloat(window.opera.version()) < 9.5)
+        if (B.Opera && window.parseFloat(window.opera.version()) < 9.5 || !document.compatMode || document.compatMode != "CSS1Compat")
             return document.body;
 
         return document.documentElement;
@@ -3525,7 +3525,7 @@ document.viewport = {
     function define(D) {
         if (!element) element = getRootElement();
 
-        property[D] = 'client' + D;
+        property[D] = (B.WebKit && !doc.evaluate ? 'inner' : 'client') + D;
 
         viewport['get' + D] = function() {
             return element[property[D]]
