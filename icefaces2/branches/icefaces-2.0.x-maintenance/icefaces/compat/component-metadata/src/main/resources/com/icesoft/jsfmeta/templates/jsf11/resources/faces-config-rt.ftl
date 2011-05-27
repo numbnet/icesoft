@@ -39,6 +39,10 @@
             <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>
+            <system-event-listener-class>com.icesoft.faces.component.inputrichtext.InputRichTextSetup</system-event-listener-class>
+            <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
+        </system-event-listener>        
+        <system-event-listener>
             <system-event-listener-class>com.icesoft.faces.async.render.SessionRenderer$StartupListener
             </system-event-listener-class>
             <system-event-class>javax.faces.event.PostConstructApplicationEvent</system-event-class>

@@ -22,22 +22,16 @@
 package com.icesoft.faces.component.inputrichtext;
 
 import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.ResourceRegistryLocator;
-import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
-import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.util.pooling.ClientIdPool;
 import org.w3c.dom.Element;
-
-import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.net.URI;
 
 public class InputRichTextRenderer extends DomBasicInputRenderer {
-
+	
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         String clientId = uiComponent.getClientId(facesContext);
@@ -47,82 +41,38 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
         if (!domContext.isInitialized()) {
             Element root = domContext.createRootElement(HTML.DIV_ELEM);
             root.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "container"));
-            Element div = domContext.createElement(HTML.DIV_ELEM);
+
             root.setAttribute(HTML.CLASS_ATTR, inputRichText.getStyleClass());
             if (inputRichText.getStyle() != null) {
                 root.setAttribute(HTML.STYLE_ATTR, inputRichText.getStyle());
             }
-            ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
-            Element lib = domContext.createElement(HTML.SCRIPT_ELEM);
-            lib.setAttribute(HTML.TYPE_ATTR, "text/javascript");
-            lib.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, inputRichText.getBaseURI().toString()));
-            root.appendChild(lib);
 
-            URI icelibURI = ResourceRegistryLocator.locate(facesContext).loadJavascriptCode(InputRichText.ICE_FCK_EDITOR_JS);
-            Element icelib = domContext.createElement(HTML.SCRIPT_ELEM);
-            icelib.setAttribute(HTML.TYPE_ATTR, "text/javascript");
-            icelib.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, icelibURI.toString()));
-            root.appendChild(icelib);
-
-            root.appendChild(div);
-            div.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "editor"));
-            StringBuffer call = new StringBuffer();
-            boolean partialSubmit = inputRichText.getPartialSubmit();
-            if (inputRichText.isSaveOnSubmit()) partialSubmit = false;
-            call.append("Ice.FCKeditor.register ('" + clientId + "', new Ice.FCKeditor('" + clientId + "', '" + inputRichText.getLanguage()
-                    + "', '" + inputRichText.getFor() + "', '" + CoreUtils.resolveResourceURL(facesContext, inputRichText.getBaseURI().getPath()) + "','" + inputRichText.getWidth() +
-                    "', '" + inputRichText.getHeight() + "', '" + inputRichText.getToolbar() + "', '" + inputRichText.getCustomConfigPath() +
-                    "', '" + inputRichText.getSkin() + "'," + partialSubmit + "));");
-            //ICE-4760    
-            call.append("Ice.Prototype.$('" + clientId + "')[\"focus\"]= function(){handleApplicationFocus('" + clientId + "');};");
-
-            String value = "";
-            if (inputRichText.getValue() != null) {
-                value = inputRichText.getValue().toString();
+            Element textarea= domContext.createElement(HTML.TEXTAREA_ELEM);
+            textarea.setAttribute(HTML.NAME_ATTR,  ClientIdPool.get(clientId));
+            textarea.setAttribute(HTML.ID_ATTR,  ClientIdPool.get(clientId));
+            textarea.setAttribute(HTML.STYLE_ATTR,  "display:none;");
+            Object value = inputRichText.getValue();
+            if (value != null) {
+            	textarea.appendChild(domContext.createTextNode(String.valueOf(value)));
             }
-            addHiddenField(domContext, root, ClientIdPool.get(clientId + "valueHolder"),
-                    value);
-            addHiddenField(domContext, root, ClientIdPool.get(clientId + "Disabled"),
-                    String.valueOf(inputRichText.isDisabled()));
-            Element scriptHolder = domContext.createElement(HTML.DIV_ELEM);
-            scriptHolder.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "script"));
-            scriptHolder.setAttribute(HTML.STYLE_ATTR, "display:none");
-            Element script = domContext.createElement(HTML.SCRIPT_ELEM);
-            script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
-            script.appendChild(domContext.createTextNodeUnescaped(call.toString()));
-            scriptHolder.appendChild(script);
-            root.appendChild(scriptHolder);
-            if (inputRichText.isSaveOnSubmit()) {
-                Element saveOnSubmit = domContext.createElement(HTML.INPUT_ELEM);
-                saveOnSubmit.setAttribute(HTML.ID_ATTR, clientId + "saveOnSubmit");
-                saveOnSubmit.setAttribute(HTML.NAME_ATTR, clientId + "saveOnSubmit");
-                saveOnSubmit.setAttribute(HTML.TYPE_ATTR, "hidden");
-                root.appendChild(saveOnSubmit);
-            }
-            Element onCompleteInvoked = domContext.createElement(HTML.INPUT_ELEM);
-            onCompleteInvoked.setAttribute(HTML.ID_ATTR, clientId + "onCompleteInvoked");
-            onCompleteInvoked.setAttribute(HTML.NAME_ATTR, clientId + "onCompleteInvoked");
-            onCompleteInvoked.setAttribute(HTML.TYPE_ATTR, "hidden");
-            root.appendChild(onCompleteInvoked);
+            root.appendChild(textarea);
 
-            div.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.FCKeditorUtility.updateFields('" + clientId + "');");
-            div.setAttribute(HTML.ONMOUSEOVER_ATTR, "Ice.FCKeditorUtility.activeEditor ='" + clientId + "';");
-            JavascriptContext.addJavascriptCall(facesContext, "Ice.FCKeditorUtility && Ice.FCKeditorUtility.updateValue ('" + clientId + "');");
+            Element scrptWrpr = domContext.createElement(HTML.SPAN_ELEM);
+            scrptWrpr.setAttribute(HTML.ID_ATTR, clientId+ "scrpt");
+            root.getParentNode().appendChild(scrptWrpr);
+            Element scrpt = domContext.createElement(HTML.SCRIPT_ELEM);
+            scrpt.setAttribute(HTML.TYPE_ATTR, "text/javascript");
+            String customConfig =  (inputRichText.getCustomConfigPath() == null)? "": inputRichText.getCustomConfigPath();
+            scrpt.appendChild(domContext.createTextNodeUnescaped("renderEditor('"+ ClientIdPool.get(clientId) +"', '"+ inputRichText.getToolbar() +"'," +
+            		"'"+ inputRichText.getLanguage()+"'," +
+            		"'"+ inputRichText.getSkin().toLowerCase()+"'," +
+            		"'"+ inputRichText.getHeight() + "'," +
+            		"'"+ inputRichText.getWidth() +"'," +
+            		"'"+ customConfig + "'," +
+            		inputRichText.isSaveOnSubmit()+ ")"));
+            scrptWrpr.appendChild(scrpt);
 
             domContext.stepOver();
         }
     }
-
-    private void addHiddenField(DOMContext domContext, Element root,
-                                String fieldName, String value) {
-        Element hiddenFld = (Element) domContext.createElement(HTML.INPUT_ELEM);
-        hiddenFld.setAttribute(HTML.TYPE_ATTR, "hidden");
-        hiddenFld.setAttribute(HTML.ID_ATTR, fieldName);
-        hiddenFld.setAttribute(HTML.NAME_ATTR, fieldName);
-        if (value != null) {
-            hiddenFld.setAttribute(HTML.VALUE_ATTR, value);
-        }
-        root.appendChild(hiddenFld);
-    }
-
 }
