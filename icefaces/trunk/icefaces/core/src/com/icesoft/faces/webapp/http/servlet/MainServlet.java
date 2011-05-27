@@ -96,6 +96,7 @@ public class MainServlet extends HttpServlet {
     private int localPort;
     private String blockingRequestHandlerContext;
     private boolean detectionDone = false;
+    static ThreadLocal currentResponse = new ThreadLocal();
 
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
@@ -225,12 +226,14 @@ public class MainServlet extends HttpServlet {
         if( portletRes != null ){
             originalResponse = portletRes;
         }
+        currentResponse.set(res);
         req.setAttribute(Constants.ORIG_RESPONSE_KEY, originalResponse);
     }
 
     private void removeOriginalRequestResponse(HttpServletRequest req, HttpServletResponse res){
         req.removeAttribute(Constants.ORIG_REQUEST_KEY);
         req.removeAttribute(Constants.ORIG_RESPONSE_KEY);
+        currentResponse.set(null);
     }
 
     public void destroy() {
