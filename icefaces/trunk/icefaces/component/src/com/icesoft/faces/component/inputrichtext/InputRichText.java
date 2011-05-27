@@ -231,7 +231,7 @@ public class InputRichText extends UIInput {
             return height;
         }
         ValueBinding vb = getValueBinding("height");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : "200";
+        return vb != null ? (String) vb.getValue(getFacesContext()) : "100";
     }
 
     private static byte[] toByteArray(InputStream input) throws IOException {
