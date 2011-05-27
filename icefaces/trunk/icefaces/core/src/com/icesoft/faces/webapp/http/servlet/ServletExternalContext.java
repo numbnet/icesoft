@@ -217,6 +217,14 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public String encodeActionURL(String url) {
+        HttpServletResponse currentResponse = 
+                (HttpServletResponse) MainServlet.currentResponse.get();
+        if (null != currentResponse)  {
+            try {
+                return currentResponse.encodeURL(url);
+            } catch (Exception e)  {
+            }
+        }
         try {
             return response.encodeURL(url);
         } catch (Exception e) {
@@ -225,6 +233,14 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public String encodeResourceURL(String url) {
+        HttpServletResponse currentResponse = 
+                (HttpServletResponse) MainServlet.currentResponse.get();
+        if (null != currentResponse)  {
+            try {
+                return currentResponse.encodeURL(url);
+            } catch (Exception e)  {
+            }
+        }
         try {
             return response.encodeURL(url);
         } catch (Exception e) {
