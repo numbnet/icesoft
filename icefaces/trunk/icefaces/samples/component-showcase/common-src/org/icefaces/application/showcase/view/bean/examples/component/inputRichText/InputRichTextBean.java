@@ -32,6 +32,10 @@
 
 package org.icefaces.application.showcase.view.bean.examples.component.inputRichText;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
 /**
@@ -48,6 +52,23 @@ public class InputRichTextBean extends BaseBean {
     public String getToolbarModeBasic() { return "Basic"; }
     
     private String toolbarMode = getToolbarModeDefault();
+    private Map skinMapping = new HashMap();
+    
+    public InputRichTextBean() {
+    	skinMapping.put("rime", "kama");
+    	skinMapping.put("xp", "v2");
+    	skinMapping.put("royale", "office2003");    	
+    }
+    
+    
+    
+    public Map getSkinMapping() {
+		return skinMapping;
+	}
+	public void setSkinMapping(Map skinMapping) {
+		this.skinMapping = skinMapping;
+	}
+	
 
     private String value = "";
 
