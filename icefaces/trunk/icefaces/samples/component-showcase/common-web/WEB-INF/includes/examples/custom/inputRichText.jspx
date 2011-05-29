@@ -73,7 +73,7 @@
                            toolbar="#{inputRichTextBean.toolbarMode}"
                            value="#{inputRichTextBean.value}"
                            language="en"
-                           skin="silver"
+                           skin="#{inputRichTextBean.skinMapping[styleBean.currentStyle]}"
                            />
     </ice:panelGroup>
 
