@@ -2620,7 +2620,7 @@ Element.Methods = {
 
         // find page position of source
         source = $(source);
-        var p = Element.viewportOffset(source), delta = [0, 0], parent = null;
+        var p = Element.viewportOffset(source).toArray(), delta = [0, 0], parent = null;
 
         // find coordinate system to use
         element = $(element);
@@ -2629,7 +2629,7 @@ Element.Methods = {
         // position:absolute needs offsetParent deltas
         if (Element.getStyle(element, 'position') == 'absolute') {
             parent = Element.getOffsetParent(element);
-            delta = Element.viewportOffset(parent);
+            delta = Element.viewportOffset(parent).toArray();
         }
 
         // correct by body offsets (fixes Safari)
@@ -4851,26 +4851,6 @@ Element.addMethods({
     function isDetached(element) {
         return element !== document.body &&
                 !Element.descendantOf(element, document.body);
-    }
-
-    // If the browser supports the nonstandard `getBoundingClientRect`
-    // (currently only IE and Firefox), it becomes far easier to obtain
-    // true offsets.
-    if ('getBoundingClientRect' in document.documentElement) {
-        Element.addMethods({
-                    viewportOffset: function(element) {
-                        element = $(element);
-                        if (isDetached(element)) return new Element.Offset(0, 0);
-
-                        var rect = element.getBoundingClientRect(),
-                                docEl = document.documentElement;
-                        // The HTML element on IE < 8 has a 2px border by default, giving
-                        // an incorrect offset. We correct this by subtracting clientTop
-                        // and clientLeft.
-                        return new Element.Offset(rect.left - docEl.clientLeft,
-                                rect.top - docEl.clientTop);
-                    }
-                });
     }
 })();
 
