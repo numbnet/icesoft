@@ -40,7 +40,7 @@
     <ice:outputText value="#{msgs['page.tree.explanation']}"/>
 </ice:panelGroup>
 
-<ice:panelGroup styleClass="exampleBox">
+<ice:panelGroup styleClass="exampleBox" scrollHeight="300px" id="scroll_id">
     <ice:tree id="tree"
               value="#{treeController.model}"
               var="node"
@@ -58,7 +58,8 @@
             <f:facet name="content">
                 <ice:panelGroup
                         styleClass="selectedNode#{node.userObject eq treeController.selectedUserObject}"
-                        style="display: inline" >
+                        style="display: inline"
+						draggable="true" dragOptions="ghosting" dropTargetScrollerId="scroll_id" >
                     <ice:commandLink
                             actionListener="#{treeController.employeeNodeSelected}">
                         <f:param name="employeeId" value="#{node.userObject.employee.id}" />

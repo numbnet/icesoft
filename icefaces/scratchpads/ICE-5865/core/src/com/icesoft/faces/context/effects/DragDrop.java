@@ -119,6 +119,95 @@ public class DragDrop {
         String call = "new Draggable('" + id + "'" + ea.toString();
         return call;
     }
+	
+    /**
+     * Make an HTML element draggable
+     * @param id
+     * @param handleId
+     * @param options
+     * @param mask
+     * @param facesContext
+     * @return
+     */
+    public static String addDragable(UIComponent uiComponent, String id, String handleId, String options,
+                                     String mask,
+                                     FacesContext facesContext) {
+        boolean revert = false;
+        boolean ghosting = false;
+        boolean solid = false;
+        boolean dragGhost = false;
+        boolean pointerDraw = false;
+        if (options != null) {
+            StringTokenizer st = new StringTokenizer(options, ",");
+            while (st.hasMoreTokens()) {
+                String token = st.nextToken();
+                token = token.trim();
+                if ("revert".equalsIgnoreCase(token)) {
+                    revert = true;
+                } else if ("ghosting".equalsIgnoreCase(token)) {
+                    ghosting = true;
+                }
+                if ("solid".equalsIgnoreCase(token)) {
+                    solid = true;
+                }
+                if ("dragGhost".equalsIgnoreCase(token)) {
+                    dragGhost = true;
+                }
+                if ("pointerDraw".equalsIgnoreCase(token)) {
+                    pointerDraw = true;
+                }
+            }
+        }
+        return addDragable(uiComponent, id, handleId, revert, ghosting, solid, dragGhost,
+                           pointerDraw, mask, facesContext);
+    }
+
+    /**
+     * make an HTML element draggable
+     * @param id
+     * @param handleId
+     * @param revert
+     * @param ghosting
+     * @param solid
+     * @param dragGhost
+     * @param pointerDraw
+     * @param mask
+     * @param facesContext
+     * @return
+     */
+    public static String addDragable(UIComponent uiComponent, String id, String handleId, boolean revert,
+                                     boolean ghosting, boolean solid,
+                                     boolean dragGhost, boolean pointerDraw,
+                                     String mask, FacesContext facesContext) {
+
+        EffectsArguments ea = new EffectsArguments();
+        ea.add("handle", handleId);
+        ea.add("revert", revert);
+        ea.add("ghosting", ghosting);
+        ea.add("mask", mask);
+        ea.add("dragGhost", dragGhost);
+        ea.add("dragCursor", pointerDraw);
+		
+		String scrollid = (String) uiComponent.getAttributes().get("dropTargetScrollerId"); 
+         if (scrollid != null && scrollid.trim().length() > 0) { 
+             UIComponent scroller = D2DViewHandler.findComponentInView(facesContext.getViewRoot(), scrollid); 
+             if (scroller != null) { 
+                 scrollid = scroller.getClientId(facesContext); 
+             } 
+         } 
+		if (scrollid != null && scrollid.trim().length() > 0) { 
+          		  ea.add("scroll", scrollid); 
+         }
+		
+        if (solid) {
+            //Setting start and end effect functions to blank to remove transparency while dragging.
+            ea.addFunction("starteffect", "function(){}");
+            ea.addFunction("endeffect", "function(){}");
+        }
+        String call = "new Draggable('" + id + "'" + ea.toString();
+        return call;
+    }
+
 
     /**
      * Make an HTML element droppable

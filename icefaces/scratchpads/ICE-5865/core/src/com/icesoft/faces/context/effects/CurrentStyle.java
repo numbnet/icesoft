@@ -164,10 +164,18 @@ public class CurrentStyle implements Serializable {
         CurrentStyle currentStyle =
                 (CurrentStyle) uiComponent.getAttributes().get("currentStyle");
         if (currentStyle != null) {
+		
+			boolean applyUpdate = false;
+			if (targetElement != null) {
+				String clientId = targetElement.getAttribute("id");
+				Map map = (Map) facesContext.getExternalContext().getSessionMap().get(CurrentStyle.class.getName());
+				applyUpdate = map != null && map.get(clientId) != null;
+			}
+		
             String appendedStyle = currentStyle.cssString;
 
             currentStyle.lastCssString = currentStyle.cssString;
-            if (appendedStyle != null) {
+            if (applyUpdate && appendedStyle != null) {
                 if (jspStyle == null) {
                     jspStyle = appendedStyle;
                 } else {
