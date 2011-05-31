@@ -66,9 +66,9 @@ function renderEditor(editor, defaultToolbar, lang, _skin, _height, _width, _cus
 	CKEDITOR.config.skin = _skin;
 
 	try {
-		if (CKEDITOR.instances[editor]) { 
-			CKEDITOR.instances[editor].destroy();
-		} 
+		if (CKEDITOR.instances[editor]) {
+			CKEDITOR.instances[editor].destroy(true);
+		}
  
 		var editorInstance = CKEDITOR.replace(editor, {
 				toolbar : getToolbar(defaultToolbar),
