@@ -78,16 +78,7 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class
@@ -371,11 +362,11 @@ public class
     //a stale response
     String startupScript = null;
 
-    void setStartupScript(String script)  {
+    void setStartupScript(String script) {
         this.startupScript = script;
     }
 
-    String getStartupScript()  {
+    String getStartupScript() {
         return startupScript;
     }
 
@@ -672,10 +663,10 @@ public class
 
     public URI registerResource(final String mimeType, final Resource resource, ResourceLinker.Handler linkerHandler) {
         return registerResource(new ProxyResource(resource) {
-            public void withOptions(Options options) throws IOException {
-                options.setMimeType(mimeType);
-            }
-        }, linkerHandler);
+                    public void withOptions(Options options) throws IOException {
+                        options.setMimeType(mimeType);
+                    }
+                }, linkerHandler);
     }
 
     public URI registerNamedResource(final String name, Resource resource) {
@@ -688,10 +679,10 @@ public class
 
     public URI registerNamedResource(final String name, Resource resource, ResourceLinker.Handler linkerHandler) {
         return registerResource(new ProxyResource(resource) {
-            public void withOptions(Options options) throws IOException {
-                options.setFileName(name);
-            }
-        }, linkerHandler);
+                    public void withOptions(Options options) throws IOException {
+                        options.setFileName(name);
+                    }
+                }, linkerHandler);
     }
 
     private URI resolve(String uri) {
@@ -801,8 +792,20 @@ public class
         }
 
         public void renderView(FacesContext context, UIViewRoot viewToRender) throws IOException, FacesException {
-            application.setViewHandler(new DispatchingViewHandler(handler, path));
-            handler.renderView(context, viewToRender);
+            try {
+                handler.renderView(context, viewToRender);
+                application.setViewHandler(new DispatchingViewHandler(handler, path));
+            } catch (IOException e) {
+                //reset to D2DViewHandler
+                application.setViewHandler(handler);
+                //let exception bubble to eventually be caught
+                throw e;
+            } catch (RuntimeException e) {
+                //reset to D2DViewHandler
+                application.setViewHandler(handler);
+                //let exception bubble to eventually be caught
+                throw e;
+            }
         }
     }
 
