@@ -43,6 +43,8 @@ import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 		componentFamily="org.icefaces.Logger"
         )
 @ResourceDependencies({
+	@ResourceDependency(name="yui/yui-min.js",library="yui/3_3_0"),
+    @ResourceDependency(name="loader/loader-min.js",library="yui/3_3_0"),
     @ResourceDependency(name="combined.js",library="org.icefaces.component.util")
 })
 
