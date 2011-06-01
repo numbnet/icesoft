@@ -194,20 +194,28 @@ public class GroupRenderer
             dropMask = DndEvent.MASK_ALL;
         }
         if ("DRAG".equalsIgnoreCase(dndType)) {
-
-            calls += DragDrop.addDragable(uiComponent.getClientId(facesContext),
-                    handleId, dragOptions, dragMask,
-                    facesContext);
-
+			String scrollid = (String) uiComponent.getAttributes().get("dropTargetScrollerId"); 
+             if (scrollid != null && scrollid.trim().length() > 0) { 
+                 calls += DragDrop.addDragable(uiComponent, uiComponent.getClientId(facesContext), handleId, 
+                         dragOptions, dragMask, facesContext); 
+             } else { 
+                 calls += DragDrop.addDragable(uiComponent.getClientId(facesContext), handleId, dragOptions, dragMask, 
+                         facesContext); 
+             }
+			 
         } else if ("drop".equalsIgnoreCase(dndType)) {
             dropCall.append(DragDrop.addDroptarget(
                     uiComponent, null, facesContext,
                     dropMask, hoverClass));
         } else if ("dragdrop".equalsIgnoreCase(dndType)) {
-
-            calls += DragDrop.addDragable(uiComponent.getClientId(facesContext),
-                    handleId, dragOptions, dragMask,
-                    facesContext);
+			String scrollid = (String) uiComponent.getAttributes().get("dropTargetScrollerId"); 
+             if (scrollid != null && scrollid.trim().length() > 0) { 
+                 calls += DragDrop.addDragable(uiComponent, uiComponent.getClientId(facesContext), handleId, 
+                         dragOptions, dragMask, facesContext); 
+             } else { 
+                 calls += DragDrop.addDragable(uiComponent.getClientId(facesContext), handleId, dragOptions, dragMask, 
+                         facesContext); 
+             }
             dropCall.append(DragDrop.addDroptarget(
                     uiComponent, null, facesContext,
                     dropMask, hoverClass));
