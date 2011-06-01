@@ -76,7 +76,7 @@ div.header_content{
 /* provides a continer to center a child div in */
 div.body_container{
    float:left;
-   margin-top:-30px;
+   /*margin-top:-30px;*/
    background-color:white;
    width:100%;
 }
@@ -85,6 +85,9 @@ div.body_content {
    margin:0 auto;
    width:980px;
    padding-left: 25px;
+    position: relative;
+    top: -80px;
+    z-index: 6;
 }
 div.body_content div{
    /*height: 100px;*/
