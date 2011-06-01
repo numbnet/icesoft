@@ -24,7 +24,7 @@
 	<property name="build" location="build"/>
 	<property name="dist" location="dist"/>
 	<property name="lib" location="lib"/>
-	<property name="src" location="src/org/icefaces/util/cssurlmapper"/>
+	<property name="src" location="src/org/icefaces/ace/util/cssurlmapper"/>
 
 	<path id="compile.run.classpath">
 		<fileset dir="${lib}" includes="*.jar"/>

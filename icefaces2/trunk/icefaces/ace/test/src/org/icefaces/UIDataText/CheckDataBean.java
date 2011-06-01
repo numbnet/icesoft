@@ -21,7 +21,7 @@
 
 package showcase.test.src.org.icefaces.UIDataText;
 
-import org.icefaces.component.checkboxbutton.CheckboxButton;
+import org.icefaces.ace.component.checkboxbutton.CheckboxButton;
 
 import java.io.Serializable;
 import java.util.ArrayList;

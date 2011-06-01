@@ -21,7 +21,7 @@
 
 package org.icefaces.fileentry;
 
-import org.icefaces.component.fileentry.*;
+import org.icefaces.ace.component.fileentry.*;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.bean.ManagedBean;

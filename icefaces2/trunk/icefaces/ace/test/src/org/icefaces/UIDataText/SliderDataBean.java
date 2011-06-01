@@ -1,6 +1,6 @@
 package org.icefaces.UIDataText;
 
-import org.icefaces.component.sliderentry.SliderEntry;
+import org.icefaces.ace.component.sliderentry.SliderEntry;
 
 import java.io.Serializable;
 import java.util.ArrayList;
