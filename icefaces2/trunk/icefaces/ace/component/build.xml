@@ -47,7 +47,7 @@
   <property name="tld.file"   location="${build}/exploded/META-INF/components.tld"/>
   <property name="tld.jar"  location="${lib.dir}"/>
   <property name="smartsprites.basedir" location="../tools/smartsprites" />
-  <property name="combined.js" location="${resources}/org.icefaces.component.util/combined.js"/>
+  <property name="combined.js" location="${resources}/icefaces.ace/util/combined.js"/>
   <property name="combined.js.tmp" location="${combined.js}.tmp.js"/>
 
   <property name="root.dir.path" location="${build}/skins/in" />
@@ -143,17 +143,17 @@
   <target name="res-js-combine">
       <delete file="${combined.js.tmp}" verbose="true"/>
       <concat destfile="${combined.js.tmp}" force="true" fixlastline="true">
-          <filelist dir="${resources}/org.icefaces.component.util">
+          <filelist dir="${resources}/icefaces.ace/util">
               <file name="util.js"/>
               <file name="component.js"/>
           </filelist>
           <fileset dir="${resources}">
-               <include name="org.icefaces.component.*/*.js"/>
-               <exclude name="org.icefaces.component.util/*.js"/>
+               <include name="icefaces.ace/*/*.js"/>
+               <exclude name="icefaces.ace/util/*.js"/>
                <!-- Nothing uses this -->
-               <exclude name="org.icefaces.component.animation/animation-v2.js"/>
+               <exclude name="icefaces.ace/animation/animation-v2.js"/>
                <!-- Special case, since want to work without YUI dependency -->
-               <exclude name="org.icefaces.component.fileentry/fileEntry.js"/>
+               <exclude name="icefaces.ace/fileentry/fileEntry.js"/>
           </fileset>
       </concat>
   </target>
@@ -179,12 +179,12 @@
   </target>
 
   <target name="res-css-combine">
-      <delete file="${resources}/org.icefaces.component.util/combined.css" verbose="true"/>
-      <concat destfile="${resources}/org.icefaces.component.util/combined.css" force="true" fixlastline="true">
+      <delete file="${resources}/icefaces.ace/util/combined.css" verbose="true"/>
+      <concat destfile="${resources}/icefaces.ace/util/combined.css" force="true" fixlastline="true">
           <fileset dir="${resources}">
-              <include name="org.icefaces.component.*/*.css"/>
-              <exclude name="org.icefaces.component.util/*.css"/>
-              <exclude name="org.icefaces.component.skins/*.css"/>
+              <include name="icefaces.ace/*/*.css"/>
+              <exclude name="icefaces.ace/util/*.css"/>
+              <exclude name="${skins.lib}/*.css"/>
           </fileset>
       </concat>
   </target>
@@ -272,6 +272,7 @@
             <include name="org/"/>
             <include name="META-INF/*"/>
             <include name="META-INF/resources/org*/**"/>
+            <include name="META-INF/resources/icefaces.ace/**"/>
             <include unless="exclude.unused.yui" name="META-INF/resources/yui/**"/>
 			
 			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-yahoo/**"/>
@@ -318,7 +319,7 @@
             <exclude if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/profilerviewer/**"/>
             -->
         </fileset>
-        <fileset dir="${src}" includes="org/icefaces/component/resources/"/>
+        <fileset dir="${src}" includes="org/icefaces/ace/resources/"/>
     </jar>
     <copy file="${dist}/${icefaces-ace.lib.name}.jar" todir="${lib.dir}" overwrite="true"/>
   </target>
@@ -361,21 +362,21 @@
 		<!-- 'dir' is the actual directory that contains the resources -->
 		<!-- 'name' is just a working name for these resources; they will be placed under a directory with this name -->
 		<!-- 'skin' is the name of the skin these resources will be part of -->
-		<includeresources dir="src/org/icefaces/component/pushbutton/skins/sam" name="button" skin="sam" />
-		<includeresources dir="src/org/icefaces/component/checkboxbutton/skins/sam" name="checkboxbutton" skin="sam" />
- 		<includeresources dir="src/org/icefaces/component/linkbutton/skins/sam" name="linkbutton" skin="sam" />
-		<includeresources dir="src/org/icefaces/component/datetimeentry/skins/sam" name="calendar" skin="sam" />
-		<includeresources dir="src/org/icefaces/component/sliderentry/skins/sam" name="slider" skin="sam" />
-		<includeresources dir="src/org/icefaces/component/tab/skins/sam" name="tabset" skin="sam" />
-		<includeresources dir="src/org/icefaces/component/fileentry/skins/sam" name="fileEntry" skin="sam" />
+		<includeresources dir="src/org/icefaces/ace/component/pushbutton/skins/sam" name="button" skin="sam" />
+		<includeresources dir="src/org/icefaces/ace/component/checkboxbutton/skins/sam" name="checkboxbutton" skin="sam" />
+ 		<includeresources dir="src/org/icefaces/ace/component/linkbutton/skins/sam" name="linkbutton" skin="sam" />
+		<includeresources dir="src/org/icefaces/ace/component/datetimeentry/skins/sam" name="calendar" skin="sam" />
+		<includeresources dir="src/org/icefaces/ace/component/sliderentry/skins/sam" name="slider" skin="sam" />
+		<includeresources dir="src/org/icefaces/ace/component/tab/skins/sam" name="tabset" skin="sam" />
+		<includeresources dir="src/org/icefaces/ace/component/fileentry/skins/sam" name="fileEntry" skin="sam" />
 		
-		<includeresources dir="src/org/icefaces/component/datetimeentry/skins/rime" name="calendar" skin="rime" />
-		<includeresources dir="src/org/icefaces/component/tab/skins/rime" name="tabset" skin="rime" />
-		<includeresources dir="src/org/icefaces/component/fileentry/skins/rime" name="fileEntry" skin="rime" />
-		<includeresources dir="src/org/icefaces/component/checkboxbutton/skins/rime" name="checkboxbutton" skin="rime" />
-		<includeresources dir="src/org/icefaces/component/sliderentry/skins/rime" name="slider" skin="rime" />
-		<includeresources dir="src/org/icefaces/component/pushbutton/skins/rime" name="button" skin="rime" />
- 		<includeresources dir="src/org/icefaces/component/linkbutton/skins/rime" name="linkbutton" skin="rime" />
+		<includeresources dir="src/org/icefaces/ace/component/datetimeentry/skins/rime" name="calendar" skin="rime" />
+		<includeresources dir="src/org/icefaces/ace/component/tab/skins/rime" name="tabset" skin="rime" />
+		<includeresources dir="src/org/icefaces/ace/component/fileentry/skins/rime" name="fileEntry" skin="rime" />
+		<includeresources dir="src/org/icefaces/ace/component/checkboxbutton/skins/rime" name="checkboxbutton" skin="rime" />
+		<includeresources dir="src/org/icefaces/ace/component/sliderentry/skins/rime" name="slider" skin="rime" />
+		<includeresources dir="src/org/icefaces/ace/component/pushbutton/skins/rime" name="button" skin="rime" />
+ 		<includeresources dir="src/org/icefaces/ace/component/linkbutton/skins/rime" name="linkbutton" skin="rime" />
 		
 		<!-- Process sprites, if use.sprites is set -->
 		<antcall target="sprites" />
@@ -394,7 +395,7 @@
 		<!-- Copy the original Sam CSS files with class names renamed to ice-skin-sam -->
 		<mkdir dir="${resources}/${skins.lib}/sam/sam_renamed" />
 		<copy todir="${resources}/${skins.lib}/sam/sam_renamed">
-			<fileset dir="src/org/icefaces/component/skins/sam_renamed" includes="**" />
+			<fileset dir="src/org/icefaces/ace/skins/sam_renamed" includes="**" />
 		</copy>
 		
 		<!-- Generate a single CSS file per skin -->
@@ -457,8 +458,8 @@
 		<!-- concatenate yui files in a temporary file -->
 		<concat destfile="${resources}/${skins.lib}/temp.css" append="true">
 			<filelist>
-				<file name="${src}/org/icefaces/component/skins/sam_renamed/calendar-skin.css" />
-				<file name="${src}/org/icefaces/component/skins/sam_renamed/tabview-skin.css" />
+				<file name="${src}/org/icefaces/ace/skins/sam_renamed/calendar-skin.css" />
+				<file name="${src}/org/icefaces/ace/skins/sam_renamed/tabview-skin.css" />
 			</filelist>
 		</concat>
 		

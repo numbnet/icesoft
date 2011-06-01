@@ -21,9 +21,9 @@
 
 package org.icefaces.fileentry;
 
-import org.icefaces.component.fileentry.FileEntryCallback;
-import org.icefaces.component.fileentry.FileEntryResults;
-import org.icefaces.component.fileentry.FileEntryStatus;
+import org.icefaces.ace.component.fileentry.FileEntryCallback;
+import org.icefaces.ace.component.fileentry.FileEntryResults;
+import org.icefaces.ace.component.fileentry.FileEntryStatus;
 
 import java.io.ByteArrayOutputStream;
 

@@ -21,8 +21,8 @@
 
 package showcase.test.src.org.icefaces.UIDataText;
 
-import org.icefaces.component.pushbutton.PushButton;
-import org.icefaces.component.linkbutton.LinkButton;
+import org.icefaces.ace.component.pushbutton.PushButton;
+import org.icefaces.ace.component.linkbutton.LinkButton;
 
 import java.io.Serializable;
 import java.util.ArrayList;

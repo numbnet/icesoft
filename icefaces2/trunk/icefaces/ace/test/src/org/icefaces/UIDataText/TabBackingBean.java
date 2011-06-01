@@ -21,7 +21,7 @@
 
 package org.icefaces.UIDataText;
 
-import org.icefaces.component.tab.TabSet;
+import org.icefaces.ace.component.tab.TabSet;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;

@@ -10,4 +10,4 @@ shift
 goto setupArgs
 :doneStart
 
-java -Djava.ext.dirs=lib;dist org.icefaces.util.cssurlmapper.Main %CMD_LINE_ARGS%
+java -Djava.ext.dirs=lib;dist org.icefaces.ace.util.cssurlmapper.Main %CMD_LINE_ARGS%

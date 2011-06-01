@@ -42,7 +42,7 @@
     
   <target name="generate">
     <tstamp/>
-    <java classname="org.icefaces.generator.Generator"  classpathref="compile.run.classpath" fork="true"
+    <java classname="org.icefaces.ace.generator.Generator"  classpathref="compile.run.classpath" fork="true"
     	classpath="${build}">
         <sysproperty key="generator.tld.doc.display.name"
                      value="${generator.tld.doc.display.name}"/>
@@ -50,7 +50,7 @@
                      value="${generator.tld.doc.version}"/>
     </java>
 
-    <java classname="org.icefaces.generator.TaglibMerge" classpathref="compile.run.classpath" fork="true" classpath="${build}" >
+    <java classname="org.icefaces.ace.generator.TaglibMerge" classpathref="compile.run.classpath" fork="true" classpath="${build}" >
       <arg value="../component/build/exploded/META-INF/icefaces.taglib.xml" /> 
       <arg value="../../icefaces/compat/core/build/resources/META-INF/icefaces.taglib.xml" />
       <arg value="../component/build/exploded/META-INF/icefaces.taglib.xml" /> 
