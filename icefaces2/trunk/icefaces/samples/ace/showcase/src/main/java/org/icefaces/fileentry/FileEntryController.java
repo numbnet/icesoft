@@ -28,9 +28,9 @@ import javax.faces.bean.SessionScoped;
 import java.util.*;
 import java.io.Serializable;
 
-import org.icefaces.component.fileentry.FileEntry;
-import org.icefaces.component.fileentry.FileEntryResults;
-import org.icefaces.component.fileentry.FileEntryEvent;
+import org.icefaces.ace.component.fileentry.FileEntry;
+import org.icefaces.ace.component.fileentry.FileEntryResults;
+import org.icefaces.ace.component.fileentry.FileEntryEvent;
 
 /**
  * <p>The FileEntryController is responsible for the file upload

@@ -21,7 +21,7 @@
 
 package org.icefaces.fileentry;
 
-import org.icefaces.component.fileentry.FileEntryResults;
+import org.icefaces.ace.component.fileentry.FileEntryResults;
 
 import java.io.Serializable;
 
