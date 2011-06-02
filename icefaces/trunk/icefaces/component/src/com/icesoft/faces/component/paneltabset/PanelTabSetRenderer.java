@@ -614,7 +614,8 @@ public class PanelTabSetRenderer
             link.setAttribute(HTML.ID_ATTR, linkId);
             link.setAttribute(HTML.HREF_ATTR, "javascript:;");
             link.setAttribute(HTML.CLASS_ATTR, "icePnlTbLblLnk");
-            
+            renderAttribute(tabSet, link, HTML.TABINDEX_ATTR, HTML.TABINDEX_ATTR);
+
             if (labelFacet == null) {
                 td_mid_mid.appendChild(link);
                 // set focus handler
@@ -639,16 +640,17 @@ public class PanelTabSetRenderer
                     link.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.pnlTabOnFocus(this, true, false);");
                     link.setAttribute(HTML.ONBLUR_ATTR, "return Ice.pnlTabOnBlur(this, true, false);");
                 }
-                link.setAttribute(HTML.STYLE_ELEM, "position:relative; top:0px;");                
+                link.setAttribute(HTML.STYLE_ELEM, "position:relative; top:0px;");
                 Element div = domContext.createElement(HTML.DIV_ELEM); 
                 td_mid_mid.appendChild(div);
                 div.setAttribute(HTML.ONCLICK_ATTR, "if(!Ice.isEventSourceInputElement(event)) document.getElementById('"+ linkId+"').onclick();");
-                div.setAttribute(HTML.ONFOCUS_ATTR, "document.getElementById('"+ linkId+"').onclick();");
-                
+//                div.setAttribute(HTML.ONFOCUS_ATTR, "document.getElementById('"+ linkId+"').onclick();");
                 div.setAttribute(HTML.CLASS_ATTR, "ptfd");
+/*
                 if (active) {
                     renderAttribute(tabSet, div, HTML.TABINDEX_ATTR, HTML.TABINDEX_ATTR);
                 }
+*/
                 div.appendChild(link);
                 Node cursor = domContext.getCursorParent();
                 domContext.setCursorParent(div);
