@@ -244,13 +244,12 @@ if (!window.ice.icefaces) {
 
 
         namespace.setupBridge = function(setupID, viewID, windowID, configuration) {
-          var container = document.getElementById(setupID).parentNode;
-          container.configuration = configuration;
-          container.configuration.viewID = viewID;
-          namespace.window = windowID;
-//            onBeforeUnload(window, disposeWindow(viewID));
-      };
-
+            var container = document.getElementById(setupID).parentNode;
+            container.configuration = configuration;
+            container.configuration.viewID = viewID;
+            namespace.window = windowID;
+            onBeforeUnload(window, disposeWindow(viewID));
+        };
 
         namespace.setupPush = function(viewID) {
             ice.push.register([viewID], retrieveUpdate(viewID));
@@ -307,6 +306,10 @@ if (!window.ice.icefaces) {
                 } else {
                     eType = ev.type;
                 }
+				if (0 == eType.indexOf("on")) {
+                    //strip "on" from front of event name
+                    eType = eType.substr(2);
+                }
                 var e = $event(ev, f);
                 var element = triggeredBy(e);
 
@@ -326,9 +329,12 @@ if (!window.ice.icefaces) {
                 var isText = ( (elementType == "text") ||
                         (elementType == "password") ||
                         (elementType == "textarea") );
-                if (isText && (eType == "click")) {
-                    //click events should not trigger text box submit
-                    return;
+                if (isText) {
+                    if ((eType == "click") || (eType == "blur")) {
+                        //click events should not trigger text box submit
+                        //blur events are mostly redundant with change events
+                        return;
+                    }
                 }
 
                 if ("select-one" == elementType) {
@@ -345,9 +351,11 @@ if (!window.ice.icefaces) {
             }
 
             if (f.addEventListener) {
+				//events for most browsers
                 f.addEventListener('blur', submitForm, true);
                 f.addEventListener('change', submitForm, true);
             } else {
+				//events for IE
                 f.attachEvent('onfocusout', submitForm);
                 f.attachEvent('onclick', submitForm);
             }
