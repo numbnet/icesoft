@@ -866,7 +866,7 @@ public class TableRenderer
                         }
 
                         Object isRowIdentifier = nextChild.getAttributes().get("rowIdentifier");
-                        if (((Boolean)isRowIdentifier).booleanValue()) {
+                        if (isRowIdentifier instanceof Boolean && ((Boolean)isRowIdentifier).booleanValue()) {
                             td.setAttribute("scope", "row");
                         }
 
