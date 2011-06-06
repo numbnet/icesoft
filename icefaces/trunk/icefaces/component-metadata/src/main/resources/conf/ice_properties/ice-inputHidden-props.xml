@@ -35,7 +35,8 @@
 &base-props;
 &ice-att-immediate-props;  
 &validator-props;
-&required-props;  
+&required-props;
+&required-message-props; 
 &input-value-props;
 &converter-props;
 &valuechangelistener-props;

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml encoding='UTF-8'?>
 <!--
   ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
   ~
@@ -30,31 +30,16 @@
   ~ not delete the provisions above, a recipient may use your version of
   ~ this file under either the MPL or the LGPL License."
   -->
-  
-&ice-ext-core-styled-props;
-&ice-effects-props;
-&converter-props;
-&required-props;
-&required-message-props;
-&validator-props;
-&events-props;
-&pass-thru-accesskey-props;
-&pass-thru-dir-props;
-&pass-thru-lang-props;
-&pass-thru-readonly-props;
-&pass-thru-tabindex-props;
-&pass-thru-title-props;
-&pass-thru-onblur-props;
-&pass-thru-onchange-props;
-&pass-thru-onfocus-props;
-&ice-att-userrole-enabled-props;
-&ice-att-partialsubmit-props;
-&ice-att-autoComplete-props;
-<property>
-	<description>The Javascript Effect</description>
-	<property-name>effect</property-name>
-	<property-class>com.icesoft.faces.context.effects.Effect</property-class>
-	<property-extension>
-		<category>ICE_LAYOUT</category>		
-	</property-extension>
-</property>
+  <property>
+     <description>
+       <![CDATA[A ValueExpression enabled attribute that, if present, will be used as the text of the validation message for the "required" facility, if the "required" facility is used.]]>
+     </description>
+     <property-name>requiredMessage</property-name>
+     <property-class>java.lang.String</property-class>
+     <property-extension>
+        <category>ICE_COMPONENT</category>
+            <editor-class>
+               &stringEditor;
+            </editor-class>
+    </property-extension>
+  </property>
