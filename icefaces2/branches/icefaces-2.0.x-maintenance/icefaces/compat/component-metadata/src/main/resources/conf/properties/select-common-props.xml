@@ -24,6 +24,7 @@
 &ice-effects-props;
 &converter-props;
 &required-props;
+&required-message-props;
 &validator-props;
 &events-props;
 &pass-thru-accesskey-props;

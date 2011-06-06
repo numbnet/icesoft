@@ -35,6 +35,7 @@
 
   <!ENTITY converter-props        SYSTEM "properties/converter-props.xml">
   <!ENTITY required-props        SYSTEM "properties/required-props.xml">
+  <!ENTITY required-message-props   SYSTEM "properties/required-message-props.xml">  
   <!ENTITY validator-props        SYSTEM "properties/validator-props.xml">
   <!ENTITY valuechangelistener-props        SYSTEM "properties/valuechangelistener-props.xml">
   <!ENTITY input-common-props       SYSTEM "properties/input-common-props.xml">
