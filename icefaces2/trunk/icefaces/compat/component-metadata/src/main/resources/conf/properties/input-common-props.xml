@@ -29,7 +29,8 @@
 &ice-att-partialsubmit-props;
 &converter-props;
 &base-props;
-&required-props; 
+&required-props;
+&required-message-props; 
 &validator-props;
 &input-value-props;
 &valuechangelistener-props;
