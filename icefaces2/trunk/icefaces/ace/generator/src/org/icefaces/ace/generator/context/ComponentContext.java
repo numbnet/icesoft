@@ -232,7 +232,9 @@ public class ComponentContext {
 							}
 							// if only javadocGet or javadocSet were specified, then simply create delegating getter/setter and do not include in save state
 							if (modifiesDefaultValueOrMethodExpression == false && modifiesJavadoc == true) {
-								propertyValues.isDelegatingProperty = true;
+								if (propertyValues.overrides) { // ...as long as the property exists in ancestor class
+									propertyValues.isDelegatingProperty = true;
+								}
 							}
 						}
                         if (!fieldsForTagClass.containsKey(field.getName())) {                       
