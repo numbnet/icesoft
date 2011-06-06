@@ -28,6 +28,7 @@
 &ice-att-immediate-props;
 &ice-att-partialsubmit-true-props;
 &required-props;
+&required-message-props;
 &validator-props;
 &valuechangelistener-props;
 &events-props;

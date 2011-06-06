@@ -24,6 +24,7 @@
 &input-value-props;
 &ice-att-immediate-props;
 &required-props;
+&required-message-props;
 <property>
     <description>
         CSS style(s) to be applied when this component is rendered.

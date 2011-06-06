@@ -1,6 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-
-
+<?xml encoding='UTF-8'?>
 <!--
   ~ Version: MPL 1.1
   ~
@@ -21,26 +19,16 @@
   ~
   ~ Contributor(s): _____________________.
   -->
-  
-&ice-ext-core-styled-props;
-&ice-effects-props;
-&ice-att-autoComplete-props;
-&ice-att-userrole-enabled-props;
-&ice-att-partialsubmit-props;
-&converter-props;
-&base-props;
-&required-props; 
-&required-message-props; 
-&validator-props;
-&input-value-props;
-&valuechangelistener-props;
-&pass-thru-dir-props;
-&pass-thru-accesskey-props;
-&pass-thru-lang-props;
-&events-props;
-&pass-thru-readonly-props;
-&pass-thru-title-props;
-&pass-thru-tabindex-props;
-&pass-thru-onselect-props;
-&pass-thru-onfocus-props;
-&pass-thru-onchange-props;
+  <property>
+     <description>
+       <![CDATA[A ValueExpression enabled attribute that, if present, will be used as the text of the validation message for the "required" facility, if the "required" facility is used.]]>
+     </description>
+     <property-name>requiredMessage</property-name>
+     <property-class>java.lang.String</property-class>
+     <property-extension>
+        <category>ICE_COMPONENT</category>
+            <editor-class>
+               &stringEditor;
+            </editor-class>
+    </property-extension>
+  </property>
