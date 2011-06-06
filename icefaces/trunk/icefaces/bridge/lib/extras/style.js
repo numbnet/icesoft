@@ -177,8 +177,10 @@ Ice.modal = {
                     modalWidth = parseInt(modalWidth) / 2;
                     modalHeight = parseInt(modalHeight) / 2;
                     if (!manualPosition && !Ice.autoCentre.ids.include(target)) {
-                        modal.style.top = (parseInt(height) / 2) - modalHeight - modalParentOffset.top + "px";
-                        modal.style.left = (parseInt(width) / 2 ) - modalWidth - modalParentOffset.left + "px";
+                        var viewportWidth = document.viewport.getWidth();
+                        var scrollOffset = document.viewport.getScrollOffsets();
+                        modal.style.top = (parseInt(viewportHeight) / 2) - modalHeight - modalParentOffset.top + scrollOffset.top + "px";
+                        modal.style.left = (parseInt(viewportWidth) / 2 ) - modalWidth - modalParentOffset.left + scrollOffset.left + "px";
                     }
                     frame.style.display = frameDisp;
                     $(frame.nextSibling).clonePosition(frame);
