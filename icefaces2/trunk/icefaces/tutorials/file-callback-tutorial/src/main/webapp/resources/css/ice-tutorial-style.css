@@ -1,0 +1,94 @@
+.ib { display:inline-block; }
+
+body {
+    min-width:900px;
+}
+
+#header {
+    position: relative;
+    background-color: #03436A;
+    color: white;
+    padding: 5px;
+    font-size:20pt;
+}
+#header .main, #header .subtitle {
+    display:block;
+    margin-right:200px;
+}
+#header .main {
+    padding-left:1em;
+    font-size:20pt;
+}
+#header .subtitle {
+    padding-left:5em;
+    font-size:10pt;
+}
+#header .nav {
+    position:absolute;
+    right:15px;
+    top:8px;
+    width: 20em;
+    width: 20em;
+	font-size: 10pt;
+    line-height:1.5em;
+    padding-left:10px;
+    border-left:1px solid white;
+}
+#header .nav ul { margin:0px; }
+
+#footer {
+    direction:rtl;
+    position: relative;
+    color:white;
+    background-color: #0969A3;
+    padding: 5px 8px 8px 5px;
+    margin: 10px 0px 0px 0px;
+    clear: both;
+    height: 14px;
+}
+#footer .powered {
+    direction:ltr;
+    position:relative;
+    font-style:italic;
+}
+
+.nav li a:link, .nav li a:visited  {
+    color:#3D9AD1;
+}
+.nav li a:hover {
+    color:#64A8D1;
+}
+
+#content {
+    border:1px solid #03436A;
+    background-color: #dddddd;
+    margin-top:10px;
+    padding: 5px;
+}
+#content p {
+    font-weight:lighter;
+    margin:0.5em 1em;
+    font-size:11pt;
+}
+
+#example {
+    position:relative;
+    border:1px solid #0969A3;
+    background-color: #dddddd;
+    margin-top:10px;
+}
+#example .messages-holder, #example .messages-holder div { display:inline; }
+#example .messages {
+    padding:5px;
+    width:400px;
+    font-size:11pt;
+    float:right;
+    margin:0;
+}
+#example .messages li { font-size:12px; }
+
+/* Tutorial Specific Styling */
+/* Progress Bar */
+.ice-file-entry div, .ice-file-entry div div {
+    display:inline-block !important;
+}
