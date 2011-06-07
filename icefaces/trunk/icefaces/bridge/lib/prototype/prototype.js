@@ -50,7 +50,8 @@
  *  blazing fast). The quintessential empty function sits, unsurprisingly,
  *  at [[Prototype.emptyFunction]] (note the lowercase first letter).
  **/
-var Prototype = {
+
+var Prototype = window.Prototype ? window.Prototype : {
 
     /**
      *  Prototype.Version -> String
@@ -180,6 +181,11 @@ var Prototype = {
         return x
     }
 };
+
+//make public so Prototype reload can be detected
+if (!window.Prototype) {
+    window.Prototype = Prototype;
+}
 
 if (Prototype.Browser.MobileSafari)
     Prototype.BrowserFeatures.SpecificElementExtensions = false;
