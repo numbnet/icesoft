@@ -183,19 +183,19 @@ var AsyncConnection;
         var timeoutBomb = NoopDelay;
         var pendingTimeoutBombs = [];
         var timeoutThunks = [
-                function() {
-                    warn(logger, 'failed to connect, first retry...');
-                    broadcast(connectionTroubleListeners);
-                    connect();
-                },
-                function() {
-                    warn(logger, 'failed to connect, second retry...');
-                    broadcast(connectionTroubleListeners);
-                    connect();
-                },
-                function() {
-                    broadcast(connectionDownListeners);
-                }
+            function() {
+                warn(logger, 'failed to connect, first retry...');
+                broadcast(connectionTroubleListeners);
+                connect();
+            },
+            function() {
+                warn(logger, 'failed to connect, second retry...');
+                broadcast(connectionTroubleListeners);
+                connect();
+            },
+            function() {
+                broadcast(connectionDownListeners);
+            }
         ];
 
         function chainTimeoutBombs(thunks, interval) {
@@ -370,7 +370,7 @@ var AsyncConnection;
 
             method(controlRequest, function(self, parameterCallback, headerCallback, responseCallback) {
                 if (paused) {
-                    postAsynchronously(channel, listenURI, function(q) {
+                    postAsynchronously(channel, namespace.push.configuration.blockingConnectionURI, function(q) {
                         each(lastSentPushIds, curry(addNameValue, q, 'ice.pushid'));
                         parameterCallback(curry(addNameValue, q));
                     }, function(request) {
