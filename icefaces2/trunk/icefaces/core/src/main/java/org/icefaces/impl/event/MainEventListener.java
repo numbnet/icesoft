@@ -25,6 +25,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import javax.faces.event.PostAddToViewEvent;
+import javax.faces.event.PreRenderViewEvent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UICommand;
@@ -34,12 +36,16 @@ import javax.faces.component.html.HtmlPanelGroup;
 import org.icefaces.util.EnvUtils;
 
 public class MainEventListener implements SystemEventListener  {
+    private static String RENDER_STARTED = 
+            MainEventListener.class.getName() + "-RENDER_STARTED"; 
 
     public MainEventListener()  {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (EnvUtils.isAutoId(facesContext))  {
             facesContext.getApplication()
                 .subscribeToEvent(PostAddToViewEvent.class, this);
+            facesContext.getApplication()
+                .subscribeToEvent(PreRenderViewEvent.class, this);
         }
         AjaxDisabledList disabledList = new AjaxDisabledList();
         facesContext.getApplication()
@@ -49,6 +55,14 @@ public class MainEventListener implements SystemEventListener  {
     public void processEvent(SystemEvent event)  {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (!EnvUtils.isICEfacesView(facesContext)) {
+            return;
+        }
+        if (event instanceof PreRenderViewEvent)  {
+            facesContext.getAttributes().put(RENDER_STARTED, RENDER_STARTED);
+            return;
+        }
+        if (null != facesContext.getAttributes().get(RENDER_STARTED))  {
+            //do not modify component IDs after rendering has begun
             return;
         }
         UIComponent component = ((PostAddToViewEvent)event).getComponent();
@@ -64,6 +78,9 @@ public class MainEventListener implements SystemEventListener  {
     }
 
     public boolean isListenerForSource(Object source)  {
+        if (source instanceof UIViewRoot)  {
+            return true;
+        }
         return shouldModifyId(source);
     }
 
