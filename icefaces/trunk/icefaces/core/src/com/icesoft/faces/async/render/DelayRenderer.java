@@ -45,7 +45,8 @@ import org.apache.commons.logging.LogFactory;
  * used directly but it is recommended to use the RenderManager to create and
  * managed named render groups.
  *
- * @see RenderManager, GroupAsyncRenderer
+ * @see RenderManager
+ * @see GroupAsyncRenderer
  */
 public class DelayRenderer extends OnDemandRenderer implements Runnable {
 

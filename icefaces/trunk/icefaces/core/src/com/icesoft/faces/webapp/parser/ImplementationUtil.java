@@ -310,10 +310,22 @@ public class ImplementationUtil {
 
     }
 
+    /**
+     * Allow externals to override the default state saving value.  Intended
+     * for internal usage to enable JSF compability between 1.1 and higher
+     * versions.
+     *
+     * @param isJSFStateSaved
+     */
     public static void setJSFStateSaving(boolean isJSFStateSaved) {
         jsfStateSaving = isJSFStateSaved;
     }
 
+    /**
+     * Identifies if JSF state saving is active.
+     *
+     * @return true if JSF state saving is active
+     */
     public static boolean isJSFStateSaving() {
         return jsfStateSaving;
     }

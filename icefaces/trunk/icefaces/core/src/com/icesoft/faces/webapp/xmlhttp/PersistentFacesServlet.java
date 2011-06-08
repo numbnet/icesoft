@@ -37,7 +37,15 @@ import com.icesoft.faces.webapp.http.servlet.MainServlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 
-//todo: deprecate this class
+/**
+ * The PersistentFacesServlet was the original entry point for ICEfaces-based
+ * applications.   It is now deprecated in favour of
+ * {@link com.icesoft.faces.webapp.http.servlet.MainServlet}.
+ * <p/>
+ * <b>Note: </b>The API of this class is is not intended for general usage by developers
+ * but is included in the JavaDocs to provide visibility as it is an external entry point
+ * into the ICEfaces Core framework.
+ */
 public class PersistentFacesServlet extends MainServlet {
 
     public void init(ServletConfig servletConfig) throws ServletException {
