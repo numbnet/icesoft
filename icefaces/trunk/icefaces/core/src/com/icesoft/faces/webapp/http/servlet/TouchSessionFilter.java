@@ -45,6 +45,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * The TouchSessionFilter is a standard Filter of the Servlet API and is
+ * designed to allow non-ICEfaces requests to touch the ICEfaces session
+ * monitors to ensure that sessions do not time out prematurely.
+ * <p/>
+ * <b>Note: </b>The API of this class is is not intended for general usage by developers
+ * but is included in the JavaDocs to provide visibility as it is an external
+ * utility of ICEfaces Core framework.
+ */
 public class TouchSessionFilter implements Filter {
     private static final Log LOG = LogFactory.getLog(TouchSessionFilter.class);
 

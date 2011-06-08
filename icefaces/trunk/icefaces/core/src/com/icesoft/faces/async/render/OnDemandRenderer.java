@@ -39,7 +39,8 @@ package com.icesoft.faces.async.render;
  * recommended to use the RenderManager to create and managed named render
  * groups.
  *
- * @see RenderManager, GroupAsyncRenderer
+ * @see RenderManager
+ * @see GroupAsyncRenderer
  */
 public class OnDemandRenderer extends GroupAsyncRenderer {
 }

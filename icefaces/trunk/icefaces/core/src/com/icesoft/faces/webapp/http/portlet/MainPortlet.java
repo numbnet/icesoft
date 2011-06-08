@@ -52,6 +52,10 @@ import java.io.IOException;
  * basically only the initial page load that we care about.  The rest of the
  * processing is handled between the ICEfaces JavaScript bridge and the
  * MainServlet via AJAX mechanisms.
+ * <p/>
+ * <b>Note: </b>The API of this class is is not intended for general usage by developers
+ * but is included in the JavaDocs to provide visibility as it is an external entry point
+ * into the ICEfaces Core framework.
  */
 public class MainPortlet extends GenericPortlet {
 

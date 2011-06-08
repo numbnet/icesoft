@@ -61,7 +61,12 @@ public class FileResource implements Resource {
         options.setLastModified(new Date(file.lastModified()));
         options.setFileName(file.getName());
     }
-    
+
+    /**
+     * A reference to the File that this resource represents.
+     *
+     * @return A reference to the File object
+     */
     public File getFile(){
     	return file;
     }

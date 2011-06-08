@@ -59,7 +59,7 @@ import java.util.Map;
  * GroupAsyncRenderer} and add a Renderable implementation to request and
  * receive render calls as part of a group.
  * <p/>
- * The RenderManager contains a reference to a single {@link RenderHub} that
+ * The RenderManager contains a reference to a single RenderHub that
  * uses a special queue and thread pool to optimize render calls for reliability
  * and scalability.
  */
@@ -83,7 +83,7 @@ public class RenderManager implements Disposable {
      * This is typically called when the application is shutting down and we
      * need to dispose of all the RenderManager's resources.  It iterates
      * through all of the named {@link GroupAsyncRenderer}s, calling dispose on
-     * each of them in turn.  It then calls dispose on the {@link RenderHub}.
+     * each of them in turn.  It then calls dispose on the RenderHub.
      * Once the RenderManager has been disposed, it can no longer be used.
      *
      * @deprecated

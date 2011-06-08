@@ -261,17 +261,6 @@
         <javadoc destdir="${build.dir}/javadocs" windowtitle="ICEfaces API" failonerror="true">
             <classpath refid="compile.run.classpath"/>
             <fileset dir="${src.dir}">
-                <include name="com/icesoft/faces/context/DOMContext.java"/>
-                <include name="com/icesoft/faces/context/Resource.java"/>
-                <include name="com/icesoft/faces/context/ViewListener.java"/>
-                <include name="com/icesoft/faces/renderkit/dom_html_basic/HTML.java"/>
-                <include name="com/icesoft/faces/renderkit/dom_html_basic/DomBasicInputRenderer.java"/>
-                <include name="com/icesoft/faces/renderkit/dom_html_basic/DomBasicRenderer.java"/>
-                <include name="com/icesoft/faces/renderkit/dom_html_basic/PassThruAttributeRenderer.java"/>
-                <include name="com/icesoft/faces/webapp/xmlhttp/PersistentFacesState.java"/>
-                <include name="com/icesoft/faces/webapp/xmlhttp/RenderingException.java"/>
-                <include name="com/icesoft/faces/webapp/xmlhttp/FatalRenderingException.java"/>
-                <include name="com/icesoft/faces/webapp/xmlhttp/TransientRenderingException.java"/>
                 <include name="com/icesoft/faces/async/render/AsyncRenderer.java"/>
                 <include name="com/icesoft/faces/async/render/DelayRenderer.java"/>
                 <include name="com/icesoft/faces/async/render/GroupAsyncRenderer.java"/>
@@ -279,10 +268,30 @@
                 <include name="com/icesoft/faces/async/render/OnDemandRenderer.java"/>
                 <include name="com/icesoft/faces/async/render/Renderable.java"/>
                 <include name="com/icesoft/faces/async/render/RenderManager.java"/>
-                <include name="com/icesoft/faces/context/DisposableBean.java"/>
-                <include name="org/icefaces/x/core/push/SessionRenderer.java"/>
-                <include name="com/icesoft/faces/context/effects/"/>
                 <include name="com/icesoft/faces/async/render/SessionRenderer.java"/>
+                <include name="com/icesoft/faces/context/DisposableBean.java"/>
+                <include name="com/icesoft/faces/context/DOMContext.java"/>
+                <include name="com/icesoft/faces/context/effects/"/>
+                <include name="com/icesoft/faces/context/FileResource.java"/>
+                <include name="com/icesoft/faces/context/JarResource.java"/>
+                <include name="com/icesoft/faces/context/Resource.java"/>
+                <include name="com/icesoft/faces/context/ResourceRegistry.java"/>
+                <include name="com/icesoft/faces/context/StringResource.java"/>
+                <include name="com/icesoft/faces/context/ViewListener.java"/>
+                <include name="com/icesoft/faces/renderkit/dom_html_basic/DomBasicInputRenderer.java"/>
+                <include name="com/icesoft/faces/renderkit/dom_html_basic/DomBasicRenderer.java"/>
+                <include name="com/icesoft/faces/renderkit/dom_html_basic/HTML.java"/>
+                <include name="com/icesoft/faces/renderkit/dom_html_basic/PassThruAttributeRenderer.java"/>
+                <include name="com/icesoft/faces/webapp/http/portlet/MainPortlet.java"/>
+                <include name="com/icesoft/faces/webapp/http/servlet/MainServlet.java"/>
+                <include name="com/icesoft/faces/webapp/http/servlet/TouchSessionFilter.java"/>
+                <include name="com/icesoft/faces/webapp/parser/ImplementationUtil.java"/>
+                <include name="com/icesoft/faces/webapp/xmlhttp/BlockingServlet.java"/>
+                <include name="com/icesoft/faces/webapp/xmlhttp/FatalRenderingException.java"/>
+                <include name="com/icesoft/faces/webapp/xmlhttp/PersistentFacesServlet.java"/>
+                <include name="com/icesoft/faces/webapp/xmlhttp/PersistentFacesState.java"/>
+                <include name="com/icesoft/faces/webapp/xmlhttp/RenderingException.java"/>
+                <include name="com/icesoft/faces/webapp/xmlhttp/TransientRenderingException.java"/>
             </fileset>
             <doctitle><![CDATA[<h2>ICEfaces API</h2>]]></doctitle>
         </javadoc>

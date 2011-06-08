@@ -71,6 +71,16 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * The MainServlet is the entry point for ICEfaces-based applications.  Its
+ * purpose is to set up the environment as required and then dispatch the
+ * request to the appropriate part of the framework for additional processing.
+ * let the framework do all the normal processing.
+ * <p/>
+ * <b>Note: </b>The API of this class is is not intended for general usage by developers
+ * but is included in the JavaDocs to provide visibility as it is an external entry point
+ * into the ICEfaces Core framework.
+ */
 public class MainServlet extends HttpServlet {
     private static final Log LOG = LogFactory.getLog(MainServlet.class);
 
