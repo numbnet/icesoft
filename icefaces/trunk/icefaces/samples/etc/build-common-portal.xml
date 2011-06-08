@@ -43,6 +43,7 @@
             <param name="conf.xml" value="./conf/${general.xml}"/>
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
+            <param name="noelapi" value=""/>
         </antcall>
     </target>
 
