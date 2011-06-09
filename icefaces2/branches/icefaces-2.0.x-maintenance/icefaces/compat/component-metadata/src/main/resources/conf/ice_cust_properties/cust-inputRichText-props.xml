@@ -177,16 +177,16 @@
 </property>
 <property>
     <description>
-       <![CDATA[
+   <![CDATA[
         <p>
         The following skins can be set to the component.
         <ul>
-        <li> default </li>
+        <li> default (other synonyms silver, v2)</li>
         <li> office2003 </li>
-        <li> silver </li>
+        <li> kama </li>
         </ul>
         </p>
-        ]]>        
+        ]]>         
     </description>
     <property-name>skin</property-name>
     <property-class>java.lang.String</property-class>
