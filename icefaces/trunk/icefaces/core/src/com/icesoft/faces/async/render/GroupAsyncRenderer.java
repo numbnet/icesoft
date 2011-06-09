@@ -63,7 +63,10 @@ import java.util.Set;
  * are advised to use the {@link RenderManager} to create and use named render
  * groups.
  *
- * @see RenderManager, OnDemandRenderer, IntervalRenderer, DelayRenderer
+ * @see RenderManager
+ * @see OnDemandRenderer
+ * @see IntervalRenderer
+ * @see DelayRenderer
  */
 public class GroupAsyncRenderer
 implements AsyncRenderer {
@@ -259,7 +262,7 @@ implements AsyncRenderer {
      * Request a render pass on all the Renderables and session ids in the group.  Render calls
      * that generate exceptions are passed back to the Renderable.renderException if applicable.
      *
-     * @throws IllegalStateException If a reference to a {@link RenderHub} has
+     * @throws IllegalStateException If a reference to a RenderHub has
      *                               not yet been set.
      */
     public void requestRender() {
