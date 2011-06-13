@@ -655,7 +655,7 @@ public class TableRenderer
                 rowSelector.getToggleOnInput().booleanValue();
             rowSelectionUseEvent = toggleOnInput ? "false" : "true";
 
-            //rowSelectedField.setAttribute(HTML.ID_ATTR, paramId);
+            rowSelectedField.setAttribute(HTML.ID_ATTR, paramId);
             rowSelectedField.setAttribute(HTML.NAME_ATTR, paramId);
             rowSelectedField.setAttribute(HTML.TYPE_ATTR, "hidden");
             hiddenInputNode = rowSelectedField;
