@@ -140,6 +140,8 @@
         <zipfileset dir="${dist.dir}/samples" includes="address.war, auctionMonitor.war, component-showcase.war" prefix="${bin.bundle.prefix}/samples"/>
 
         <zipfileset dir="push-server" includes="push-server.war" prefix="${bin.bundle.prefix}/push-server"/>
+        
+        <zipfileset dir="maven2" prefix="${bin.bundle.prefix}/maven2"/>
     </ice:zip>
 
     <!--delete dir="${build.dir}/${bin.bundle.name}"/>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.icefaces</groupId>
+  <artifactId>icefaces</artifactId>
+  <version>1.8.3</version>
+  <packaging>jar</packaging>
+  <name>ICEfaces Core</name>
+  <url>http://www.icefaces.org</url> 
+  <description>ICEfaces is an Ajax extension for JavaServer Faces.</description> 
+   <properties>
+    <jsf.version>1.2_15-b01-FCS</jsf.version>
+  </properties>
+   <repositories>
+        <repository>
+        <id>java.net</id>
+        <url>http://download.java.net/maven/2</url>
+        </repository>
+    </repositories> 
+  <dependencies>
+    <dependency>
+       <groupId>javax.faces</groupId>
+       <artifactId>jsf-impl</artifactId>
+      <version>${jsf.version}</version>
+    </dependency>
+    <dependency>
+       <groupId>javax.faces</groupId>
+       <artifactId>jsf-api</artifactId>
+      <version>${jsf.version}</version>
+    </dependency>
+ 
+    <dependency>
+      <groupId>backport-util-concurrent</groupId>
+      <artifactId>backport-util-concurrent</artifactId>
+      <version>2.2</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.8.1</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>commons-digester</groupId>
+      <artifactId>commons-digester</artifactId>
+      <version>1.8</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>1.2.1</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1</version>
+      <exclusions>
+       <exclusion>
+           <groupId>logkit</groupId>
+           <artifactId>logkit</artifactId>
+       </exclusion>
+       <exclusion>
+           <groupId>avalon-framework</groupId>
+           <artifactId>avalon-framework</artifactId>
+       </exclusion>
+       <exclusion>
+           <artifactId>log4j</artifactId>
+           <groupId>log4j</groupId>
+       </exclusion>
+      </exclusions>
+    </dependency>
+    
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging-api</artifactId>
+      <version>1.1</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>javax.el</groupId>
+      <artifactId>el-api</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <!-- the next library is only required if context param com.icesoft.faces.copmressDOM set to true -->
+    <!-- <dependency>
+       <groupId>com.sun.xml.fastinfoset</groupId>
+       <artifactId>FastInfoset</artifactId>
+       <version>1.2.2</version>
+    </dependency> -->
+  </dependencies>
+  
+</project>
