@@ -33,10 +33,16 @@ public class ExtensionRegistry implements ServletContextListener {
     private static final String NAME = ExtensionRegistry.class.getName();
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        servletContextEvent.getServletContext().setAttribute(NAME, new HashMap());
+        addExtensionsMapIfNeeded(servletContextEvent.getServletContext());
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
+    }
+
+    private static void addExtensionsMapIfNeeded(ServletContext context) {
+        if (context.getAttribute(NAME) == null) {
+            context.setAttribute(NAME, new HashMap());
+        }
     }
 
     /**
@@ -48,6 +54,7 @@ public class ExtensionRegistry implements ServletContextListener {
      * @param extension
      */
     public static void addExtension(ServletContext context, int quality, String name, Object extension) {
+        addExtensionsMapIfNeeded(context);
         Map extensions = (Map) context.getAttribute(NAME);
         TreeSet namedExtensions = (TreeSet) extensions.get(name);
         if (namedExtensions == null) {
