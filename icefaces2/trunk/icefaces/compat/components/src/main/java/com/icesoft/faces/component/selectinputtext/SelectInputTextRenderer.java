@@ -245,7 +245,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                     DOMUtils.nodeToString(listDiv).replaceAll("\n", "");
             String call = "Ice.Scriptaculous.Autocompleter.Finder.find('" +
                     component.getClientId(facesContext) +
-                    "').updateNOW('" + nodeValue + "');";
+                    "').updateNOW('" + escapeSingleQuote(nodeValue) + "');";
             JavascriptContext.addJavascriptCall(facesContext, call);
 
         } else {
@@ -269,9 +269,27 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                 sb.append("</div>");
                 String call = "Ice.Scriptaculous.Autocompleter.Finder.find('" +
                         component.getClientId(facesContext) +
-                        "').updateNOW('" + sb.toString() + "');";
+                        "').updateNOW('" + escapeSingleQuote(sb.toString()) + "');";
                 JavascriptContext.addJavascriptCall(facesContext, call);
             }
         }
+    }
+
+    private static String escapeSingleQuote(String text) {
+        if (null == text) {
+            return "";
+        }
+        char[] chars = text.toCharArray();
+        StringBuilder buffer = new StringBuilder(chars.length);
+        for (int index = 0; index < chars.length; index++) {
+            char ch = chars[index];
+            if (ch == '\'') {
+                buffer.append("&#39;");
+            } else {
+                buffer.append(ch);
+            }
+        }
+
+        return buffer.toString();
     }
 }
