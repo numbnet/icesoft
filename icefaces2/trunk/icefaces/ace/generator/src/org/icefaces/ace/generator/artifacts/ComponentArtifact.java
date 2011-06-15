@@ -535,7 +535,7 @@ public class ComponentArtifact extends Artifact{
 
 	}
 
-	public void addFieldGetterSetter(Field field, org.icefaces.component.annotation.Field fieldAnnotation) {
+	public void addFieldGetterSetter(Field field, org.icefaces.ace.meta.annotation.Field fieldAnnotation) {
 
 		boolean isBoolean = field.getType().getName().endsWith("boolean")||
 		field.getType().getName().endsWith("Boolean");
@@ -671,7 +671,7 @@ public class ComponentArtifact extends Artifact{
 		Iterator<Field> fields = getComponentContext().getInternalFieldsForComponentClass().values().iterator();
 		while (fields.hasNext()) {
 			Field field = fields.next();
-			org.icefaces.component.annotation.Field fieldAnnotation = (org.icefaces.component.annotation.Field)field.getAnnotation(org.icefaces.component.annotation.Field.class);
+			org.icefaces.ace.meta.annotation.Field fieldAnnotation = (org.icefaces.ace.meta.annotation.Field)field.getAnnotation(org.icefaces.ace.meta.annotation.Field.class);
 			addFieldGetterSetter(field, fieldAnnotation);
 		}
 /*
