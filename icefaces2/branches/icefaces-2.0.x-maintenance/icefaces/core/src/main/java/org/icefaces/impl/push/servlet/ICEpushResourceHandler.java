@@ -49,11 +49,11 @@ import java.util.regex.Pattern;
 
 public class ICEpushResourceHandler extends ResourceHandlerWrapper implements PhaseListener {
     private static final Logger log = Logger.getLogger(ICEpushResourceHandler.class.getName());
-    public static final String BLOCKING_CONNECTION_RESOURCE_NAME = "listen.icepush";
-    public static final String CREATE_PUSH_ID_RESOURCE_NAME = "create-push-id.icepush";
-    public static final String NOTIFY_RESOURCE_NAME = "notify.icepush";
-    public static final String ADD_GROUP_MEMBER_RESOURCE_NAME = "add-group-member.icepush";
-    public static final String REMOVE_GROUP_MEMBER_RESOURCE_NAME = "remove-group-member.icepush";
+    public static final String BLOCKING_CONNECTION_RESOURCE_NAME = "listen.icepush.xml";
+    public static final String CREATE_PUSH_ID_RESOURCE_NAME = "create-push-id.icepush.txt";
+    public static final String NOTIFY_RESOURCE_NAME = "notify.icepush.txt";
+    public static final String ADD_GROUP_MEMBER_RESOURCE_NAME = "add-group-member.icepush.txt";
+    public static final String REMOVE_GROUP_MEMBER_RESOURCE_NAME = "remove-group-member.icepush.txt";
     private static final Collection RESOURCES = Arrays.asList(
             BLOCKING_CONNECTION_RESOURCE_NAME,
             NOTIFY_RESOURCE_NAME,
@@ -106,9 +106,8 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         resourceHandler.beforePhase(event);
     }
 
-    @Override
-    public Resource createResource(final String resourceName) {
-        return resourceHandler.createResource(resourceName);
+    public Resource createResource(final String resourceName, String libraryName, final String contentType) {
+        return resourceHandler.createResource(resourceName, libraryName, contentType);
     }
 
     public PhaseId getPhaseId() {
@@ -441,4 +440,5 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
             return resourceHandler;
         }
     }
+
 }
