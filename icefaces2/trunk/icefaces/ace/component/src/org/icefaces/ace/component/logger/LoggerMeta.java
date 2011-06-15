@@ -39,6 +39,8 @@ import org.icefaces.ace.meta.annotation.Property;
 		componentFamily = "org.icefaces.ace.Logger"
         )
 @ResourceDependencies({
+    @ResourceDependency(name="yui/yui-min.js",library="yui/3_3_0"),
+    @ResourceDependency(name="loader/loader-min.js",library="yui/3_3_0"),
     @ResourceDependency(name="util/combined.js",library="icefaces.ace")
 })
 
