@@ -58,9 +58,13 @@ public class CheckboxButtonRenderer extends Renderer {
 	        String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
 	        String clientId = uiComponent.getClientId();
 	        //update with hidden field
-		    String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
-			boolean submittedValue = isChecked(hiddenValue);
-			checkbox.setSubmittedValue(submittedValue);           	
+	        String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
+	        if (null==hiddenValue || hiddenValue.equals("null")){
+	        	return;
+	        }else {
+			    boolean submittedValue = isChecked(hiddenValue);
+			    checkbox.setSubmittedValue(submittedValue);  
+	        }
     }
 
 
@@ -127,7 +131,6 @@ public class CheckboxButtonRenderer extends Renderer {
 	    
 		writer.endElement(HTML.SPAN_ELEM);			
 		//hidden input for single submit=false
-		
 	    writer.startElement("input", uiComponent);
 	    writer.writeAttribute("type", "hidden", null);
 	    writer.writeAttribute("name",clientId+"_hidden", null);
