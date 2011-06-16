@@ -511,7 +511,8 @@ ice.component.tabset = {
                 for (index = 0; index < newSafeIds.length; index++) {
                     var safeDiv = document.getElementById(newSafeIds[index]);
                     if (safeDiv && safeDiv.hasChildNodes()) {
-                        var appendedDiv = document.createElement('div');
+                        var isSelectedTab = (newJSFProps.selectedIndex == index);
+                        var appendedDiv = ice.component.tabset.createDiv(Y, !isSelectedTab);
                         contentDiv.appendChild(appendedDiv);
 
                         // Reparent new safe-house entry into content area
@@ -562,7 +563,8 @@ ice.component.tabset = {
             if (oldSafeIndex >= oldSafeIds.length && newSafeIndex < newSafeIds.length) {
                 // Current entry in new is appended
                 // Create new div and append it to content area.
-                var appendedDiv = document.createElement('div');
+                var isSelectedTab = (newJSFProps.selectedIndex == newSafeIndex);
+                var appendedDiv = ice.component.tabset.createDiv(Y, !isSelectedTab);
                 contentDiv.appendChild(appendedDiv);
 
                 // Reparent new safe-house entry into content area
@@ -594,7 +596,8 @@ ice.component.tabset = {
                         ( ((foundInOldIndex = ice.component_util.arrayIndexOf(oldSafeIds, newsid, 0)) < 0) &&
                           document.getElementById(newsid).hasChildNodes()
                         )) {
-                        var newDiv = document.createElement('div');
+                        var isSelectedTab = (newJSFProps.selectedIndex == newSafeIndex);
+                        var newDiv = ice.component.tabset.createDiv(Y, !isSelectedTab);
                         var newIndex = contentDiv.childNodes.length;
                         contentDiv.appendChild(newDiv);
 
@@ -680,7 +683,8 @@ ice.component.tabset = {
                     // append, where we'll subsequently move it to the
                     // insertion point
                     // Create new div and append it to content area.
-                    var newDiv = document.createElement('div');
+                    var isSelectedTab = (newJSFProps.selectedIndex == newSafeIndex);
+                    var newDiv = ice.component.tabset.createDiv(Y, !isSelectedTab);
                     var newIndex = contentDiv.childNodes.length;
                     contentDiv.appendChild(newDiv);
 
@@ -737,6 +741,16 @@ ice.component.tabset = {
         }
 
         return ret;
+    },
+
+    createDiv : function(Y, preStyleHidden) {
+        var theDiv = document.createElement('div');
+        if (preStyleHidden) {
+            Y.YUI2.util.Dom.addClass(theDiv, 'yui-hidden');
+            // Y.YUI2.util.Dom.hasClass(theDiv, 'yui-hidden');
+            // Y.YUI2.util.Dom.removeClass(theDiv, 'yui-hidden');
+        }
+        return theDiv;
     },
 
     moveSafeIdToContent : function(safeId, tabContentDiv) {
