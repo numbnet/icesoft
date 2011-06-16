@@ -41,6 +41,7 @@ if (!window.ice.icepush) {
         //include configuration.js
         //include command.js
         //include connection.async.js
+        //include inter.window.notification.js
 
         var notificationListeners = [];
         namespace.onNotification = function(callback) {
@@ -252,45 +253,40 @@ if (!window.ice.icepush) {
                 return intersect(ids, registeredIDs);
             }
 
-            //todo: factor out cookie & monitor into a communication bus abstraction
-            //todo: move notifiedPushIDs out of the bridge to help removing deregistered pushIds from the list of notified pushIds
-            //read/create cookie that contains the notified pushID
-            var notifiedPushIDs = lookupCookie(NotifiedPushIDs, function() {
-                return Cookie(NotifiedPushIDs, '');
-            });
+            function selectWindowNotifications(ids) {
+                try {
+                    var windowPushIDs = asArray(intersect(ids, pushIdentifiers));
+                    if (notEmpty(windowPushIDs)) {
+                        broadcast(notificationListeners, [ windowPushIDs ]);
+                        debug(logger, 'picked up notifications for this window: ' + windowPushIDs);
+                        return windowPushIDs;
+                    }
+                } catch (e) {
+                    warn(logger, 'failed to listen for updates', e);
+                    return [];
+                }
+            }
+
+            //choose between localStorage or cookie based inter-window communication
+            var notificationBroadcaster = window.localStorage ?
+                    LocalStorageNotificationBroadcaster(NotifiedPushIDs, selectWindowNotifications) : CookieBasedNotificationBroadcaster(NotifiedPushIDs, selectWindowNotifications);
 
             //register command that handles the notified-pushids message
             register(commandDispatcher, 'notified-pushids', function(message) {
                 var text = message.firstChild;
                 if (text && !blank(text.data)) {
-                    var ids = split(value(notifiedPushIDs), ' ');
                     var receivedPushIDs = split(text.data, ' ');
                     debug(logger, 'received notifications: ' + receivedPushIDs);
-                    update(notifiedPushIDs, join(purgeUnusedPushIDs(asSet(concatenate(ids, receivedPushIDs))), ' '));
+                    notifyWindows(notificationBroadcaster, purgeUnusedPushIDs(asSet(receivedPushIDs)));
                 } else {
                     warn(logger, "No notification was received.");
                 }
             });
 
-            //monitor & pick updates for this window
-            var notificationMonitor = run(Delay(function() {
-                try {
-                    var ids = split(value(notifiedPushIDs), ' ');
-                    if (notEmpty(ids)) {
-                        broadcast(notificationListeners, [ ids ]);
-                        debug(logger, 'picked up notifications for this window: ' + ids);
-                        //remove only the pushIDs contained by this page since notificationListeners can only contain listeners from the current page
-                        update(notifiedPushIDs, join(purgeUnusedPushIDs(complement(ids, pushIdentifiers)), ' '));
-                    }
-                } catch (e) {
-                    warn(logger, 'failed to listen for updates', e);
-                }
-            }, 300));
-
             function dispose() {
                 try {
                     dispose = noop;
-                    stop(notificationMonitor);
+                    disposeBroadcast(notificationBroadcaster);
                 } finally {
                     shutdown(asyncConnection);
                 }
