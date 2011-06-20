@@ -237,7 +237,7 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
         var nothingEvent = new Object();
         iceSubmitPartial(form, fld, event);
         setFocus('');
-        fld.id = ""; //preserve ICE-2874
+        //fld.id = ""; //preserve ICE-2874
         fld.value = ""; //ICE-5492
         if (ctrlKyFld && event) {
             ctrlKyFld.value = "";
