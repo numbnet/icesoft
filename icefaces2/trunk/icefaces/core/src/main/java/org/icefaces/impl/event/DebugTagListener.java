@@ -21,75 +21,47 @@
 
 package org.icefaces.impl.event;
 
-import java.util.logging.Logger;
-
-
-import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PostAddToViewEvent;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
 import org.icefaces.util.EnvUtils;
 
-import javax.faces.component.UIComponent;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 
-import java.util.Iterator;
-
-import com.sun.faces.facelets.tag.ui.UIDebug;
-
-/* ICE-5717 the <ui:debug> tag was causing full page refreshes so wrap it with 
- *   a panelGroup in order to contain the updated*/
-
+/**
+ * As per ICE-5717, the <ui:debug> tag was causing full page refreshes so we wrap it with
+ * a panelGroup in order to contain the updated region and prevent it from searching farther
+ * up the tree.  Because this is a Mojarra-specific issue and uses internal Mojarra classes,
+ * we adopt a mini-factory approach and delegate the handling of the issue to a class
+ * specifically designed for it.  We need to do this in order to allow us to register the
+ * SystemEventListener in a way that's independent of the JSF implementation.
+ */
 public class DebugTagListener implements SystemEventListener {
-    private final static Logger log = Logger.getLogger(DebugTagListener.class.getName());
-	
+
+    private SystemEventListener wrapped;
+
+    public DebugTagListener() {
+        if (EnvUtils.isMojarra()) {
+            try {
+                Class clazz = Class.forName("org.icefaces.impl.event.MojarraDebugTagListener");
+                Object obj = clazz.newInstance();
+                wrapped = (SystemEventListener) obj;
+            } catch (Exception e) {
+                //If anything bad happens, the fix will simply not be applied.
+//                e.printStackTrace();
+            }
+        }
+    }
+
     public boolean isListenerForSource(Object source) {
-		 return source.getClass().getName().equals("com.sun.faces.facelets.tag.ui.UIDebug");
-	}
-
-	public void processEvent(SystemEvent event) throws AbortProcessingException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (!EnvUtils.isICEfacesView(context)) {
-            return;
+        if (wrapped != null) {
+            return wrapped.isListenerForSource(source);
         }
+        return false;
+    }
 
-        if (event instanceof PostAddToViewEvent){
-            final UIDebug debugTag = (UIDebug) ((PostAddToViewEvent) event).getComponent();
-            String debugId = debugTag.getId();
-            UIComponent parent = (UIComponent)debugTag.getParent();
-            //We can pretend the following hack is legitimate because the
-            //UIDebug component should be transient and is not useful during
-            //restore view
-            if (context.getCurrentPhaseId().equals(PhaseId.RESTORE_VIEW))  {
-                   parent.getChildren().remove(debugTag);
-                   return;
-            }
-
-            if (parent instanceof javax.faces.component.html.HtmlPanelGroup)
-               return; //do nothing as it's already contained in panelGroup
-            else{
-	           //find debug in the list of children to know where to re-insert
-	           Iterator<UIComponent> kids = parent.getChildren().iterator();
-	           int debugLocation = 0;
-	           int counter = 0;
-	           while (kids.hasNext()) {
-	                if (kids.next().getId().equals(debugId)){
-	                	debugLocation=counter;
-	                }
-	                counter++;
-	           }
-	           parent.getChildren().remove(debugTag);
-               //create a panelGroup to enclose the debug tag
-	           UIComponent enclosingPanel = new javax.faces.component.html.HtmlPanelGroup();
-	           enclosingPanel.setId("debugPanel");
-	           enclosingPanel.setInView(true);
-	           enclosingPanel.setTransient(true);
-	           //set parent of debug to this enclosingPanel 
-	           enclosingPanel.getChildren().add(debugTag);	            
-	           parent.getChildren().add(debugLocation,enclosingPanel);
-            }
-
+    public void processEvent(SystemEvent event) throws AbortProcessingException {
+        if (wrapped != null) {
+            wrapped.processEvent(event);
         }
-	}
+    }
 }
