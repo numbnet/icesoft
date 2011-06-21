@@ -178,7 +178,8 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
                 int pageCount = getPageCount();
                 if (pageindex > pageCount) {
                     pageindex = pageCount;
-                } else if (pageindex <= 0) {
+                }
+                if (pageindex <= 0) {
                     pageindex = 1;
                 }
                 uiData.setFirst(uiData.getRows() * (pageindex - 1));
