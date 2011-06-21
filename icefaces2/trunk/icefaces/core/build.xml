@@ -37,6 +37,11 @@
     <property name="javadocs.dir" location="${build.dir}/javadocs"/>
     <property name="product.info" value="org/icefaces/application/ProductInfo.java"/>
 
+    <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
+    <condition property="jsf.lib.dir" value="${lib.dir}/myfaces" else="${lib.dir}/mojarra">
+        <isset property="myfaces"/>
+    </condition>
+
 	<!-- Check if release.type is set, and if so append it after the tertiary value -->
 	<condition property="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">
     	<isset property="release.type"/>
@@ -45,7 +50,6 @@
     	
     <property name="javadoc.title" value="${product} ${product.lib} Java API Documentation" />
     <property name="javadoc.header" value="${product} ${product.lib} ${version.string}&lt;br&gt;Java API Documentation" />
-    
 
     <tstamp>
         <format property="build.time" pattern="yyyy-MM-dd hh:mm:ss"/>
@@ -53,6 +57,16 @@
 
     <patternset id="lib.compile">
         <include name="*.jar"/>
+    </patternset>
+
+    <!-- We have some classes that work around issues in the Mojarra implementation and rely
+         on implementation-specific classes.  We need to ignore these when compiling against
+         MyFaces. -->
+    <patternset id="compile.classes">
+        <include name="**/*.java"/>
+        <exclude name="org/icefaces/impl/renderkit/html_basic/MessagesRenderer.java" if="myfaces"/>
+        <exclude name="org/icefaces/impl/renderkit/html_basic/MessageRenderer.java"  if="myfaces"/>
+        <exclude name="org/icefaces/impl/event/MojarraDebugTagListener.java"         if="myfaces"/>
     </patternset>
 
     <target name="clean">
@@ -97,10 +111,14 @@
                debug="true"
                includeantruntime="false">
             <classpath>
+                <fileset dir="${jsf.lib.dir}">
+                    <patternset refid="lib.compile"/>
+                </fileset>
                 <fileset dir="${lib.dir}">
                     <patternset refid="lib.compile"/>
                 </fileset>
             </classpath>
+            <patternset refid="compile.classes"/>
         </javac>
     </target>
 

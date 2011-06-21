@@ -34,6 +34,8 @@
 
 
   <property name="lib.dir" location="../../lib"/>
+  <property name="mojarra.lib.dir" location="${lib.dir}/mojarra"/>
+  <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
   <property name="src" location="src"/>
   <property name="resources" location="resources"/>  
   <property name="build" location="build"/>
@@ -53,6 +55,11 @@
   <property name="root.dir.path" location="${build}/skins/in" />
   <property name="output.dir.path" location="${build}/skins/out" />
 
+    <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
+    <condition property="jsf.lib.dir" value="${myfaces.lib.dir}" else="${mojarra.lib.dir}">
+        <isset property="myfaces"/>
+    </condition>
+
 	<!-- Check if release.type is set, and if so append it after the tertiary value -->
 	<condition property="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">
     	<isset property="release.type"/>
@@ -71,21 +78,21 @@
 
   
   <path id="compile.run.classpath">
-  	    <fileset dir="${lib.dir}" includes="*.jar"/>
-        <pathelement path="../component/src"/>
-        <pathelement path="../generator/build"/>
-        <pathelement path="../component/build/meta"/>
-
+      <fileset dir="${jsf.lib.dir}" includes="*.jar"/>
+      <fileset dir="${lib.dir}" includes="*.jar"/>
+      <pathelement path="../component/src"/>
+      <pathelement path="../generator/build"/>
+      <pathelement path="../component/build/meta"/>
   </path>
 
   <path id="javadoc.classpath">
+    <fileset dir="${jsf.lib.dir}" includes="*.jar"/>
   	<fileset dir="${lib.dir}" includes="*.jar"/>
-        <pathelement path="../component/src"/>
-        <pathelement path="../generator/build"/>
-        <pathelement path="../component/build/meta"/>
-        <pathelement path="./build/generated/base"/>
+    <pathelement path="../component/src"/>
+    <pathelement path="../generator/build"/>
+    <pathelement path="../component/build/meta"/>
+    <pathelement path="./build/generated/base"/>
 	<pathelement path="./build/exploded" /> 
-
   </path>
   
 	<!-- include source images and css for sprite generation -->

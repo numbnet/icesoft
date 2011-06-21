@@ -47,6 +47,10 @@
     <property name="build.sysclasspath" value="ignore"/>
     <property name="compile.debug" value="true"/>
 
+    <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
+    <condition property="jsf.lib.dir" value="${lib.dir}/myfaces" else="${lib.dir}/mojarra">
+        <isset property="myfaces"/>
+    </condition>
 
 	<!-- Check if release.type is set, and if so append it after the tertiary value -->
 	<condition property="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">
@@ -65,12 +69,15 @@
 
     <path id="compile.run.classpath">
         <pathelement location="${build.classes.dir}"/>
+        <fileset dir="${jsf.lib.dir}" includes="*.jar"/>
         <fileset dir="${lib.dir}" includes="*.jar" excludes="${ant.project.name}.jar"/>
         <fileset dir="${compat.lib.dir}" includes="*.jar" excludes="${ant.project.name}.jar"/>
         <pathelement location="../core/build/classes"/>
     </path>
+
     <path id="compile.test.classpath">
         <pathelement location="${build.classes.dir}"/>
+        <fileset dir="${jsf.lib.dir}" includes="*.jar"/>
         <fileset dir="../component-metadata/target" includes="*.jar"/>
         <fileset dir="${lib.dir}" includes="*.jar" excludes="${ant.project.name}.jar"/>
         <fileset dir="${compat.lib.dir}" includes="*.jar"

@@ -32,10 +32,17 @@
   <property name="conf"  location="conf"/>
   <property name="bin"  location="bin/"/>
   <property name="lib.dir" location="../../lib"/>
+  <property name="mojarra.lib.dir" location="${lib.dir}/mojarra"/>
+  <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
 
+    <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
+    <condition property="jsf.lib.dir" value="${myfaces.lib.dir}" else="${mojarra.lib.dir}">
+        <isset property="myfaces"/>
+    </condition>
 
   <path id="compile.run.classpath">
-  	    <fileset dir="${lib.dir}" includes="*.jar"/>
+      <fileset dir="${jsf.lib.dir}" includes="*.jar"/>
+      <fileset dir="${lib.dir}" includes="*.jar"/>
         <pathelement path="../generator/build"/>
       	<pathelement path="../component/build/meta"/>
   </path>

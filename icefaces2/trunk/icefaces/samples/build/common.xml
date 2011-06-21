@@ -32,9 +32,8 @@
     <property name="icefaces.base.dir" location="../.."/>
     <property name="samples.dist.dir" location="${icefaces.base.dir}/samples/dist"/>
     <property name="lib.dir" location="${icefaces.base.dir}/lib"/>
-<!--
-    <property name="lib.myfaces.dir" location="${lib.dir}/myfaces"/>
--->
+    <property name="mojarra.lib.dir" location="${lib.dir}/mojarra"/>
+    <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
     <property name="lib.compat.dir" location="${lib.dir}/compat"/>
     <property name="lib.compat.dir.includes" value=""/>
     <property name="lib.application.dir" location="./lib"/>
@@ -56,16 +55,16 @@
     <property name="icefaces-ace.lib.name" value="icefaces-ace" />
     <property name="icefaces-compat.lib.name" value="icefaces-compat" />
 
+    <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
+    <condition property="jsf.lib.dir" value="${myfaces.lib.dir}" else="${mojarra.lib.dir}">
+        <isset property="myfaces"/>
+    </condition>
+
     <patternset id="lib.compile">
         <include name="*.jar"/>
     </patternset>
 
     <patternset id="lib.distribute">
-        <patternset id="lib.distribute.jsf" includes="jsf-api.jar jsf-impl.jar">
-            <exclude name="jsf-api.jar"         unless="jsf"/>
-            <exclude name="jsf-impl.jar"        unless="jsf"/>
-        </patternset>
-
         <patternset id="lib.distribute.ice" includes="${icefaces.lib.name}.jar ${icefaces-ace.lib.name}.jar ${icefaces-compat.lib.name}.jar ${icepush.lib.name}.jar">
             <exclude name="${icefaces.lib.name}.jar"        if="no-icefaces"/>
 
@@ -90,10 +89,10 @@
 
     <patternset id="lib.distribute.portlet">
         <include name="portletfaces*.jar"/>
-        <include name="slf4j*.jar"/>
         <include name="icefaces*.jar"/>
         <exclude name="*.jar" unless="portlet"/>
     </patternset>
+
     <patternset id="lib.compile.application" includes="${lib.compile.application.includes}"/>
 
     <patternset id="lib.distribute.application" includes="${lib.distribute.application.includes}"/>
@@ -124,6 +123,9 @@
                 <fileset dir="${lib.compat.dir}">
                     <patternset refid="lib.compile.compat"/>
                 </fileset>
+                <fileset dir="${jsf.lib.dir}">
+                    <patternset refid="lib.compile"/>
+                </fileset>
                 <fileset dir="${lib.dir}" >
                     <patternset refid="lib.compile"/>
                 </fileset>
@@ -138,17 +140,12 @@
     </target>
 
     <target name="war.basic" depends="compile">
-        <war basedir="${web.dir}" 
+        <war basedir="${web.dir}"
              destfile="${dist.dir}/${ant.project.name}.war" 
              webxml="${web.dir}/WEB-INF/web.xml">
             <lib dir="${lib.dir}">
                 <patternset refid="lib.distribute"/>
             </lib>
-<!--
-            <lib dir="${lib.myfaces.dir}" erroronmissingdir="false">
-                <selector if="myfaces"/>
-            </lib>
--->
             <lib dir="${lib.compat.dir}">
                 <patternset refid="lib.distribute.compat"/>
             </lib>
@@ -158,7 +155,10 @@
             <lib dir="${lib.application.dir}" erroronmissingdir="false">
                 <patternset refid="lib.distribute.application"/>
             </lib>
-            
+            <lib dir="${jsf.lib.dir}" erroronmissingdir="false">
+                <include name="*.jar"/>
+            </lib>
+
             <!-- Add the icefaces-ee-ext.jar only if it exists.  There are
                  two possible locations depending on the EE distribution
                  (src vs bin) so we look in both places.  In the src 
@@ -182,7 +182,6 @@
 
     <target name="servlet-profile"
             description="Generate a .war file according to the servlet-profile which includes the JSF and EL libraries. (Jetty 7, Tomcat 6 and 7)">
-
         <antcall target="war.basic">
             <param name="jsf"  value="true" />
         </antcall>
@@ -190,8 +189,7 @@
 
     <target name="web-profile"
             description="Generate a .war file according to the web-profile which excludes the JSF and EL libraries. (GlassFish v3, JBoss 6)">
-
-        <antcall target="war.basic" /> 
+        <antcall target="war.basic" />
     </target>
 
 </project>
