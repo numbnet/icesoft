@@ -301,7 +301,7 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
     public  javax.servlet.http.Cookie[] getCookies() {
         Cookie[] cookies = new Cookie[0];
         Map cookieMap = facesContext.getExternalContext().getRequestCookieMap();
-        if( cookieMap == null ){
+        if( cookieMap == null  || cookieMap.values() == null ){
             return cookies;
         }
         return (Cookie[]) cookieMap.values().toArray(cookies);
