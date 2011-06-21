@@ -25,9 +25,7 @@ package org.icepush.util;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 
 public class ExtensionRegistry implements ServletContextListener {
     private static final String NAME = ExtensionRegistry.class.getName();
@@ -56,9 +54,9 @@ public class ExtensionRegistry implements ServletContextListener {
     public static void addExtension(ServletContext context, int quality, String name, Object extension) {
         addExtensionsMapIfNeeded(context);
         Map extensions = (Map) context.getAttribute(NAME);
-        TreeSet namedExtensions = (TreeSet) extensions.get(name);
+        ArrayList namedExtensions = (ArrayList) extensions.get(name);
         if (namedExtensions == null) {
-            namedExtensions = new TreeSet();
+            namedExtensions = new ArrayList();
             extensions.put(name, namedExtensions);
         }
 
@@ -74,23 +72,27 @@ public class ExtensionRegistry implements ServletContextListener {
      */
     public static Object getBestExtension(ServletContext context, String name) {
         Map extensions = (Map) context.getAttribute(NAME);
-        TreeSet namedExtensions = (TreeSet) extensions.get(name);
-        return namedExtensions == null ? null : ((ExtensionEntry) namedExtensions.last()).extension;
+        ArrayList namedExtensions = (ArrayList) extensions.get(name);
+        Collections.sort(namedExtensions);
+        return namedExtensions == null ? null : ((ExtensionEntry) namedExtensions.get(namedExtensions.size() - 1)).extension;
     }
 
     /**
-     * Return a Map keyed by "quality" of extensions with the specified name.
+     * Return an array of extensions ordered by the "quality" attribute.
      *
      * @param context
      * @param name
      * @return
      */
-    public static Map getExtensions(ServletContext context, String name) {
+    public static Object[] getExtensions(ServletContext context, String name) {
         Map extensions = (Map) context.getAttribute(NAME);
-        TreeSet<ExtensionEntry> namedExtensions = (TreeSet) extensions.get(name);
-        Map result = new HashMap();
-        for (ExtensionEntry entry : namedExtensions) {
-            result.put(entry.quality, entry.extension);
+        ArrayList<ExtensionEntry> namedExtensions = (ArrayList) extensions.get(name);
+        int size = namedExtensions.size();
+        Collections.sort(namedExtensions);
+        Iterator it = namedExtensions.iterator();
+        Object[] result = new Object[size];
+        for (int i = 0; i < size; i++) {
+            result[i] = ((ExtensionEntry) it.next()).extension;
         }
         return result;
     }
