@@ -32,6 +32,8 @@
     <property name="maven.test.reports" value="${maven.build.directory}/test-reports" />
     <property name="maven.test.output" value="target/test-classes" />
     <property name="lib.dir" location="../../lib" />
+    <property name="mojarra.lib.dir" location="${lib.dir}/mojarra" />
+    <property name="myfaces.lib.dir" location="${lib.dir}/myfaces" />
     <property name="compat.lib.dir" location="${lib.dir}/compat" />
     <property name="project.title" value="ICEfaces components" />
     <property name="project.version" value="${version.primary}.${version.secondary}.${version.tertiary}" />
@@ -45,14 +47,32 @@
     <property name="project.taglib.prefix" value="ice" />
     <property name="project.taglib.uri" value="http://www.icesoft.com/icefaces/component" />
     <property name="project.tld.fileName" value="icefaces_component" />
+
+    <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
+    <condition property="jsf.lib.dir" value="${myfaces.lib.dir}" else="${mojarra.lib.dir}">
+        <isset property="myfaces"/>
+    </condition>
+
     <path id="build.classpath">
         <pathelement location="${maven.build.output}" />
+        <fileset dir="${jsf.lib.dir}" includes="*.jar" />
         <fileset dir="${lib.dir}" includes="*.jar"  />
         <fileset dir="${compat.lib.dir}" includes="*.jar" />
     </path>
+
+    <!-- Keeping a specific set of paths for some of the generator tasks because
+         they rely on Mojarra specific files -->
+    <path id="build.generator.classpath">
+        <pathelement location="${maven.build.output}" />
+        <fileset dir="${mojarra.lib.dir}" includes="*.jar" />
+        <fileset dir="${lib.dir}" includes="*.jar"  />
+        <fileset dir="${compat.lib.dir}" includes="*.jar" />
+    </path>
+
     <target name="clean" description="Clean the output directory">
         <delete dir="${maven.build.directory}" />
     </target>
+
     <target name="conf-changed" >
         <uptodate property="conf-uptodate" targetfile="${maven.build.directory}/generated-sources/created">
             <srcfiles dir="${maven.build.directory}/classes/conf">
@@ -92,43 +112,43 @@
     <target name="generator" description="code generator" depends="conf-changed" unless="conf-uptodate">
         <!-- validate meatdata xml file -->
         <java classname="com.icesoft.faces.metadata.TestValidMetadataXML" failonerror="true" fork="true">
-            <classpath refid="build.classpath" />
+            <classpath refid="build.generator.classpath" />
         </java>
         
         <!-- generate tag class -->
         <java classname="com.icesoft.metadata.generators.MetadataGenerator" failonerror="true" fork="true">
             <arg line="--tlClass" />
-            <classpath refid="build.classpath" />
+            <classpath refid="build.generator.classpath" />
         </java>
         
         <!-- generate tld file -->
         <java classname="com.icesoft.metadata.generators.MetadataGenerator" failonerror="true" fork="true">
             <arg line="--tlDescriptor" />
-            <classpath refid="build.classpath" />
+            <classpath refid="build.generator.classpath" />
         </java>                
         
         <!-- generate test beaninfo -->
         <java classname="com.icesoft.metadata.generators.MetadataGenerator" failonerror="true" fork="true">
             <arg line="--cpTestBeanInfo" />
-            <classpath refid="build.classpath" />
+            <classpath refid="build.generator.classpath" />
         </java>
         
         <!-- generate base componenent -->
         <java classname="com.icesoft.metadata.generators.MetadataGenerator" failonerror="true" fork="true">
             <arg line="--cpClassBase" />
-            <classpath refid="build.classpath" />
+            <classpath refid="build.generator.classpath" />
         </java>
         
         <!-- generate IDE beaninfo base -->
         <java classname="com.icesoft.metadata.generators.MetadataGenerator" failonerror="true" fork="true">
             <arg line="--cpBeanInfoBase" />
-            <classpath refid="build.classpath" />
+            <classpath refid="build.generator.classpath" />
         </java>
 
         <!-- generate IDE beaninfo base -->
         <java classname="com.icesoft.jsfmeta.templates.TemplateMetadataGenerator" failonerror="true" fork="true">
             <arg line="--templateGenJsf11" />
-            <classpath refid="build.classpath" />
+            <classpath refid="build.generator.classpath" />
         </java>
 
         <touch file="${project.build.directory}/generated-sources/created" />

@@ -60,7 +60,23 @@ public class ComponentHandlerArtifact extends Artifact{
         generatedComponentHandlerClass.append("import javax.faces.view.facelets.ComponentHandler;\n");
         generatedComponentHandlerClass.append("import javax.faces.view.facelets.ComponentConfig;\n");
         generatedComponentHandlerClass.append("import javax.faces.view.facelets.MetaRuleset;\n");
-        generatedComponentHandlerClass.append("import com.sun.faces.facelets.tag.MethodRule;\n\n");
+
+        //The MethodRule class is specific to the JSF implementation in use so we check to see
+        //which version, Mojarra or MyFaces is available, to determine which we should be importing.
+        try {
+            Class.forName("com.sun.faces.facelets.tag.MethodRule");
+            generatedComponentHandlerClass.append("import com.sun.faces.facelets.tag.MethodRule;\n\n");
+            System.out.println("Mojarra version of MethodRule found");
+        } catch (ClassNotFoundException e1) {
+            try {
+                Class.forName("org.apache.myfaces.view.facelets.tag.MethodRule");
+                generatedComponentHandlerClass.append("import org.apache.myfaces.view.facelets.tag.MethodRule;\n\n");
+                System.out.println("MyFaces version of MethodRule found");
+            } catch (ClassNotFoundException e2) {
+                System.out.println("cannot find a valid (Mojarra or MyFaces) MethodRule class " + e2);
+            }
+        }
+
         generatedComponentHandlerClass.append("import java.util.EventObject;\n");
         generatedComponentHandlerClass.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
         

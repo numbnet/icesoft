@@ -54,7 +54,6 @@ public class TagArtifact extends Artifact{
 		generatedTagClass.append(Utility.getTagClassName(component).substring(0, classIndicator));
 		generatedTagClass.append(";\n\n");
 
-		generatedTagClass.append("import com.sun.faces.util.Util;\n");
 		generatedTagClass.append("import java.io.IOException;\n");
 		generatedTagClass.append("import javax.el.*;\n");
 

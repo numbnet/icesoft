@@ -39,6 +39,11 @@
     <property name="javadocs.dir" location="${build.dir}/javadocs"/>
     <property name="components.dir" value="../components"/>
 
+    <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
+    <condition property="jsf.lib.dir" value="${lib.dir}/myfaces" else="${lib.dir}/mojarra">
+        <isset property="myfaces"/>
+    </condition>
+
 	<!-- Check if release.type is set, and if so append it after the tertiary value -->
 	<condition property="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">
     	<isset property="release.type"/>
@@ -84,6 +89,9 @@
                debug="true"
                includeantruntime="false">
             <classpath>
+                <fileset dir="${jsf.lib.dir}">
+                    <patternset refid="lib.compile"/>
+                </fileset>
                 <fileset dir="${lib.dir}">
                     <patternset refid="lib.compile"/>
                 </fileset>
