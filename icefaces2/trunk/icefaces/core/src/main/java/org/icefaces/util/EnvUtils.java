@@ -79,6 +79,29 @@ public class EnvUtils {
     private static String HYPERBROWSER = "HyperBrowser";
     private static String[] DEFAULT_TEMPLATE = new String[]{RESOURCE_PREFIX, ".jsf"};
 
+    //Use reflection to identify the JSF implementation.
+    private static boolean isMojarra = false;
+    private static Class MojarraClass;
+    static {
+        try {
+            MojarraClass = Class.forName("com.sun.faces.context.FacesContextImpl");
+            isMojarra = true;
+        } catch (Throwable t) {
+            log.log(Level.FINE, "Mojarra is not available: ", t);
+        }
+    }
+
+    private static boolean isMyFaces = false;
+    private static Class MyFacesClass;
+    static {
+        try {
+            MyFacesClass = Class.forName("org.apache.myfaces.context.servlet.FacesContextImpl");
+            isMyFaces = true;
+        } catch (Throwable t) {
+            log.log(Level.FINE, "MyFaces is not available: ", t);
+        }
+    }
+
     //Use reflection to identify if the Portlet classes are available.
     private static Class PortletSessionClass;
     private static Class PortletRequestClass;
@@ -117,17 +140,6 @@ public class EnvUtils {
         }
     }
 
-    //Use reflection to identify if JSF implementation is Mojarra.
-    private static boolean mojarraPresent = false;
-
-    static {
-        try {
-            Class.forName("com.sun.faces.context.FacesContextImpl");
-            mojarraPresent = true;
-        } catch (Throwable t) {
-            mojarraPresent = false;
-        }
-    }
 
     /**
      * Returns the value of the context parameter org.icefaces.aria.enabled.  The default value is true and indicates
@@ -416,7 +428,7 @@ public class EnvUtils {
     //remove this once multi-form ViewState is addressed
 
     public static boolean needViewStateHack() {
-        return mojarraPresent;
+        return isMojarra();
     }
 
     public static String[] getPathTemplate() {
@@ -497,6 +509,14 @@ public class EnvUtils {
 
     public static boolean disableDefaultErrorPopups(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).disableDefaultErrorPopups;
+    }
+
+    public static boolean isMojarra() {
+        return isMojarra;
+    }
+
+    public static boolean isMyFaces() {
+        return isMyFaces;
     }
 }
 

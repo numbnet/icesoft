@@ -21,24 +21,18 @@
 
 package org.icefaces.application.showcase.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 
-import com.sun.faces.facelets.tag.jsf.core.LoadBundleHandler;
-import javax.faces.component.UIViewRoot;
 /**
  * <p>The LocaleBean is responsible for keeping track of the current application
  * locale.  The locale of the application can be changed using the a
@@ -53,8 +47,7 @@ import javax.faces.component.UIViewRoot;
 @SessionScoped
 public class LocaleBean implements Serializable{
 
-    private static final Log logger =
-            LogFactory.getLog(LocaleBean.class);
+    private final static Logger logger = Logger.getLogger(LocaleBean.class.getName());
 
     // current language selection
     private String currentLanguage;
