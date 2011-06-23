@@ -97,6 +97,11 @@
             //clear the flag for the next update
             document.documentElement.isHeadUpdateSuccessful = null;
         }
+
+        //fix for ICE-6916
+        if (rootUpdate) {
+            document.title = extractTagContent('title', rootUpdate.firstChild.data);
+        }
     });
 
     if (!/MSIE/.test(navigator.userAgent)) {
