@@ -38,8 +38,12 @@ import com.icesoft.util.Properties;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
 import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
+import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,13 +66,13 @@ implements MessageServiceClient.Administrator {
     private static final int DEFAULT_INTERVAL_ON_RECONNECT = 5000;
     private static final int DEFAULT_MAX_RETRIES_ON_RECONNECT = 60;
 
-    private final Object reconnectLock = new Object();
     private final Object stateLock = new Object();
 
     private final Configuration configuration;
     private final MessageServiceClient messageServiceClient;
     private final boolean retryOnFail;
     private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
+    private final TaskManager taskManager = new TaskManager();
 
     private MessagePublisher currentMessagePublisher;
     private long successTimestamp;
@@ -222,7 +226,7 @@ implements MessageServiceClient.Administrator {
             reconnectNow();
         } else {
             // non-blocking reconnect
-            new ReconnectTask().execute();
+            new ReconnectTask(scheduledThreadPoolExecutor).execute();
         }
     }
 
@@ -295,6 +299,7 @@ implements MessageServiceClient.Administrator {
 
     public final void tearDown() {
         LOG.debug("Tearing down...");
+        taskManager.cancelAll();
         if (scheduledThreadPoolExecutor == null) {
             // blocking tear down
             tearDownNow();
@@ -306,6 +311,7 @@ implements MessageServiceClient.Administrator {
 
     public final boolean tearDownNow() {
         LOG.debug("Tearing down now...");
+        taskManager.cancelAll();
         // blocking tear down
         return new TearDownTask().executeNow();
     }
@@ -337,11 +343,101 @@ implements MessageServiceClient.Administrator {
         return new SetUpTask(interval, maxRetries).executeNow();
     }
 
-    private class ReconnectTask
-    implements Runnable {
-        private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
+    private interface Task {
+        void cancel();
+
+        boolean cancelled();
+
+        void execute();
+
+        boolean executeNow();
+
+        boolean succeeded();
+    }
+
+    private abstract class AbstractTask
+    implements Runnable, Task {
+        private final ReentrantLock scheduledFutureLock = new ReentrantLock();
+
+        protected final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
+
+        protected final long interval;
+
+        private boolean cancelled = false;
 
         private ScheduledFuture scheduledFuture;
+
+        protected AbstractTask(final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor) {
+            this(scheduledThreadPoolExecutor, -1);
+        }
+
+        protected AbstractTask(final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor, final long interval) {
+            this.scheduledThreadPoolExecutor = scheduledThreadPoolExecutor;
+            this.interval = interval;
+        }
+
+        public void cancel() {
+            cancel(true);
+        }
+
+        public boolean cancelled() {
+            return cancelled;
+        }
+
+        public void execute() {
+            if (scheduledThreadPoolExecutor != null) {
+                scheduledFutureLock.lock();
+                try {
+                    if (interval == -1) {
+                        scheduledFuture =
+                            scheduledThreadPoolExecutor.scheduleAtFixedRate(this, 0, interval, TimeUnit.MILLISECONDS);
+                    } else {
+                        scheduledFuture =
+                            scheduledThreadPoolExecutor.schedule(this, 0, TimeUnit.MILLISECONDS);
+                    }
+                } finally {
+                    scheduledFutureLock.unlock();
+                }
+            } else {
+                executeNow();
+            }
+        }
+
+        public boolean executeNow() {
+            run();
+            return succeeded();
+        }
+
+        public final void run() {
+            taskManager.addTask(this);
+            try {
+                executeTask();
+            } finally {
+                taskManager.removeTask(this);
+            }
+        }
+
+        protected void cancel(final boolean mayInterruptIfRunning) {
+            scheduledFutureLock.lock();
+            try {
+                if (scheduledFuture != null) {
+                    cancelled = scheduledFuture.cancel(mayInterruptIfRunning);
+                    scheduledFuture = null;
+                } else {
+                    cancelled = true;
+                }
+            } finally {
+                scheduledFutureLock.unlock();
+            }
+        }
+
+        protected abstract void executeTask();
+    }
+
+    private class ReconnectTask
+    extends AbstractTask
+    implements Runnable, Task {
+        private ReentrantLock reconnectLock = new ReentrantLock();
 
         private boolean succeeded = false;
 
@@ -350,13 +446,18 @@ implements MessageServiceClient.Administrator {
         }
 
         private ReconnectTask(final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor) {
-            this.scheduledThreadPoolExecutor = scheduledThreadPoolExecutor;
+            super(scheduledThreadPoolExecutor);
         }
 
-        public void run() {
+        public boolean succeeded() {
+            return succeeded;
+        }
+
+        protected void executeTask() {
             LOG.debug("Executing Reconnect task...");
             long _failTimestamp = System.currentTimeMillis();
-            synchronized (reconnectLock) {
+            reconnectLock.lock();
+            try {
                 if (_failTimestamp > successTimestamp + 5000) {
                     tearDownNow();
                     if (setUpNow(
@@ -375,37 +476,19 @@ implements MessageServiceClient.Administrator {
                 } else {
                     succeeded = true;
                 }
+            } finally {
+                reconnectLock.unlock();
             }
-            if (scheduledFuture != null) {
-                scheduledFuture.cancel(false);
-                scheduledFuture = null;
-            }
+            cancel(false);
             LOG.debug("Executing Reconnect task... (succeeded: [" + succeeded + "])");
-        }
-
-        private void execute() {
-            if (scheduledThreadPoolExecutor != null) {
-                scheduledFuture = scheduledThreadPoolExecutor.schedule(this, 0, TimeUnit.MILLISECONDS);
-            } else {
-                executeNow();
-            }
-        }
-
-        private boolean executeNow() {
-            run();
-            return succeeded;
         }
     }
 
     private class SetUpTask
-    implements Runnable {
-        private final int interval;
+    extends AbstractTask
+    implements Runnable, Task {
         private final int maxRetries;
-        private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
-        private ScheduledFuture scheduledFuture;
-
-        private boolean cancelled = false;
         private int retries = 0;
         private boolean succeeded = false;
 
@@ -416,104 +499,94 @@ implements MessageServiceClient.Administrator {
         private SetUpTask(
             final int interval, final int maxRetries, final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor) {
 
-            this.interval = interval;
+            super(scheduledThreadPoolExecutor, interval);
             this.maxRetries = maxRetries;
-            this.scheduledThreadPoolExecutor = scheduledThreadPoolExecutor;
         }
 
-        public void run() {
-            LOG.debug("Executing Set Up task...");
-            try {
-                // throws InvalidDestinationException, JMSException, NamingException
-                setUpMessageServiceClient();
-                cancel();
-                succeeded = true;
-                synchronized (stateLock) {
-                    currentState = STATE_SET_UP_DONE;
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Current State: SET UP DONE");
-                    }
-                    if (requestedState == STATE_STARTED) {
-                        start();
-                    }
-                }
-            } catch (Exception exception) {
-                LOG.debug("Exception: " + exception.getClass().getName() + ": " + exception.getMessage());
-                tearDownNow();
-                if (retries++ == maxRetries) {
-                    cancel();
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Set up of the message service client failed: " + exception.getMessage());
-                    }
-                    close();
-                }
-            }
-            LOG.debug("Executing Set Up task... (succeeded: [" + succeeded + "])");
-        }
-
-        private void cancel() {
-            if (scheduledFuture != null) {
-                scheduledFuture.cancel(false);
-                scheduledFuture = null;
-            }
-            cancelled = true;
-        }
-
-        private void execute() {
+        public void execute() {
             synchronized (stateLock) {
                 currentState = STATE_SET_UP;
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Current State: SET UP");
                 }
             }
-            if (scheduledThreadPoolExecutor != null) {
-                scheduledFuture =
-                    scheduledThreadPoolExecutor.scheduleAtFixedRate(this, 0, interval, TimeUnit.MILLISECONDS);
-            } else {
-                executeNow();
-            }
+            super.execute();
         }
 
-        private boolean executeNow() {
+        public boolean executeNow() {
             synchronized (stateLock) {
                 currentState = STATE_SET_UP;
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Current State: SET UP");
                 }
             }
-            while (!cancelled) {
-                run();
-                if (!cancelled) {
-                    synchronized (stateLock) {
-                        if (requestedState == STATE_CLOSED) {
-                            cancel();
-                            break;
-                        }
-                    }
-                    try {
-                        // throws InterruptedException
-                        Thread.sleep(interval);
-                    } catch (InterruptedException exception) {
-                        // do nothing
-                    }
-                    synchronized (stateLock) {
-                        if (requestedState == STATE_CLOSED) {
-                            cancel();
-                            break;
-                        }
-                    }
-                }
-            }
+            return super.executeNow();
+        }
+
+        public boolean succeeded() {
             return succeeded;
+        }
+
+        protected void executeTask() {
+            LOG.debug("Executing Set Up task...");
+            do {
+                if (!cancelled()) {
+                    synchronized (stateLock) {
+                        if (requestedState == STATE_CLOSED) {
+                            cancel(false);
+                            break;
+                        }
+                    }
+                }
+                try {
+                    // throws InvalidDestinationException, JMSException, NamingException
+                    setUpMessageServiceClient();
+                    cancel(false);
+                    succeeded = true;
+                    synchronized (stateLock) {
+                        currentState = STATE_SET_UP_DONE;
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Current State: SET UP DONE");
+                        }
+                        if (requestedState == STATE_STARTED) {
+                            start();
+                        }
+                    }
+                } catch (Exception exception) {
+                    LOG.debug("Exception: " + exception.getClass().getName() + ": " + exception.getMessage());
+                    tearDownNow();
+                    if (retries++ == maxRetries) {
+                        cancel(false);
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Set up of the message service client failed: " + exception.getMessage());
+                        }
+                        close();
+                    }
+                }
+                if (!cancelled()) {
+                    synchronized (stateLock) {
+                        if (requestedState == STATE_CLOSED) {
+                            cancel(false);
+                            break;
+                        }
+                    }
+                    if (scheduledThreadPoolExecutor == null) {
+                        try {
+                            // throws InterruptedException
+                            Thread.sleep(interval);
+                        } catch (InterruptedException exception) {
+                            // do nothing
+                        }
+                    }
+                }
+            } while (scheduledThreadPoolExecutor == null && !cancelled());
+            LOG.debug("Executing Set Up task... (succeeded: [" + succeeded + "])");
         }
     }
 
     private class TearDownTask
-    implements Runnable {
-        private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
-
-        private ScheduledFuture scheduledFuture;
-
+    extends AbstractTask
+    implements Runnable, Task {
         private boolean succeeded = false;
 
         private TearDownTask() {
@@ -521,17 +594,38 @@ implements MessageServiceClient.Administrator {
         }
 
         private TearDownTask(final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor) {
-            this.scheduledThreadPoolExecutor = scheduledThreadPoolExecutor;
+            super(scheduledThreadPoolExecutor);
         }
 
-        public void run() {
+        public void execute() {
+            synchronized (stateLock) {
+                currentState = STATE_TEAR_DOWN;
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Current State: TEAR DOWN");
+                }
+            }
+            super.execute();
+        }
+
+        public boolean executeNow() {
+            synchronized (stateLock) {
+                currentState = STATE_TEAR_DOWN;
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Current State: TEAR DOWN");
+                }
+            }
+            return super.executeNow();
+        }
+
+        public boolean succeeded() {
+            return succeeded;
+        }
+
+        protected void executeTask() {
             LOG.debug("Executing Tear Down task...");
             try {
                 tearDownMessageServiceClient();
-                if (scheduledFuture != null) {
-                    scheduledFuture.cancel(false);
-                    scheduledFuture = null;
-                }
+                cancel(false);
                 succeeded = true;
                 synchronized (stateLock) {
                     currentState = STATE_TEAR_DOWN_DONE;
@@ -543,37 +637,49 @@ implements MessageServiceClient.Administrator {
                     }
                 }
             } catch (Exception exception) {
-                if (scheduledFuture != null) {
-                    scheduledFuture.cancel(false);
-                    scheduledFuture = null;
-                }
+                cancel(false);
             }
             LOG.debug("Executing Tear Down task... (succeeded: [" + succeeded + "])");
         }
+    }
 
-        private void execute() {
-            synchronized (stateLock) {
-                currentState = STATE_TEAR_DOWN;
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Current State: TEAR DOWN");
+    private class TaskManager {
+        private final ReentrantLock taskLock = new ReentrantLock();
+        private final Set taskSet = new HashSet();
+
+        private void addTask(final Task task) {
+            taskLock.lock();
+            try {
+                if (!taskSet.contains(task)) {
+                    taskSet.add(task);
                 }
-            }
-            if (scheduledThreadPoolExecutor != null) {
-                scheduledFuture = scheduledThreadPoolExecutor.schedule(this, 0, TimeUnit.MILLISECONDS);
-            } else {
-                executeNow();
+            } finally {
+                taskLock.unlock();
             }
         }
 
-        private boolean executeNow() {
-            synchronized (stateLock) {
-                currentState = STATE_TEAR_DOWN;
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Current State: TEAR DOWN");
+        private void cancelAll() {
+            taskLock.lock();
+            try {
+                Iterator _tasks = taskSet.iterator();
+                while (_tasks.hasNext()) {
+                    ((Task)_tasks).cancel();
                 }
+                taskSet.clear();
+            } finally {
+                taskLock.unlock();
             }
-            run();
-            return succeeded;
+        }
+
+        private void removeTask(final Task task) {
+            taskLock.lock();
+            try {
+                if (taskSet.contains(task)) {
+                    taskSet.remove(task);
+                }
+            } finally {
+                taskLock.unlock();
+            }
         }
     }
 }
