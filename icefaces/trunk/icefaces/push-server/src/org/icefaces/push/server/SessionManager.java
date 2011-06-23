@@ -59,7 +59,6 @@ implements
     private PushServerMessageService pushServerMessageService;
 
     public SessionManager(
-        final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor,
         final PushServerMessageService pushServerMessageService,
         final UpdatedViewsManager updatedViewsManager) {
 
@@ -70,7 +69,7 @@ implements
             addCallback(this);
         this.pushServerMessageService.getUpdatedViewsMessageHandler().
             addCallback(this);
-        this.requestManager = new RequestManager(scheduledThreadPoolExecutor);
+        this.requestManager = new RequestManager();
         this.updatedViewsManager = updatedViewsManager;
         this.updatedViewsManager.setSessionManager(this);
     }

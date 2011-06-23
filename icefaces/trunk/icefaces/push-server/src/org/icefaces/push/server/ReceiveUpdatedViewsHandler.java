@@ -245,6 +245,36 @@ implements Handler, Runnable {
         }
     }
 
+    public void shutdown() {
+        if (scheduledFuture != null) {
+            scheduledFuture.cancel(true);
+            scheduledFuture = null;
+        }
+        try {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(
+                    "Send Close response to request: " +
+                        "ICEfaces IDs [" + iceFacesIdSet + "], " +
+                        "Sequence Numbers [" +
+                            new SequenceNumbers(
+                                request.
+                                    getHeaderAsStrings(
+                                        "X-Window-Cookie")) +
+                        "]");
+            }
+            request.respondWith(CLOSE_RESPONSE_HANDLER);
+        } catch (Exception exception) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(
+                    "An error occurred while " +
+                        "trying to responde with: 200 OK (close)",
+                    exception);
+            }
+        }
+        state = STATE_DONE;
+        super.shutdown();
+    }
+
     private static class BlockingConnectionTimeoutTask
     implements Runnable {
         private final Set iceFacesIdSet;

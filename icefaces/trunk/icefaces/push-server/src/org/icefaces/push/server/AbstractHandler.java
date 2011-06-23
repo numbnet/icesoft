@@ -78,4 +78,10 @@ implements Handler, Runnable {
             executeQueue.execute(this);
         }
     }
+
+    public void shutdown() {
+        if (handler != null) {
+            handler.shutdown();
+        }
+    }
 }
