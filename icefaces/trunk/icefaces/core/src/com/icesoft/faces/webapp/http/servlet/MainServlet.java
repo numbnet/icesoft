@@ -54,6 +54,7 @@ import com.icesoft.util.ServerUtility;
 import com.icesoft.util.ThreadFactory;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 import java.io.File;
 import java.io.IOException;
@@ -255,7 +256,13 @@ public class MainServlet extends HttpServlet {
             coreMessageService.tearDownNow();
             coreMessageService.close();
         }
-        scheduledThreadPoolExecutor.shutdownNow();
+        scheduledThreadPoolExecutor.shutdown();
+        try {
+            scheduledThreadPoolExecutor.awaitTermination(3, TimeUnit.SECONDS);
+            Thread.sleep(3000);
+        } catch (InterruptedException exception) {
+            // Do nothing.
+        }
     }
 
     private synchronized CoreMessageService getCoreMessageService(final Configuration configuration) {
