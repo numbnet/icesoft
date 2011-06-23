@@ -259,6 +259,7 @@ public class MainServlet extends HttpServlet {
         scheduledThreadPoolExecutor.shutdown();
         try {
             scheduledThreadPoolExecutor.awaitTermination(3, TimeUnit.SECONDS);
+            // Arbitrary thread sleep to ensure clean-up of threads before finishing shutdown.
             Thread.sleep(3000);
         } catch (InterruptedException exception) {
             // Do nothing.
