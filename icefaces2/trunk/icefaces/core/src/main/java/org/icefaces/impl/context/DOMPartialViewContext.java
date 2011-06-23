@@ -102,11 +102,14 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
             wrapped.processPartial(phaseId);
             return;
         }
-
+        ExternalContext ec = facesContext.getExternalContext();
+        if (Boolean.valueOf(ec.getRequestParameterMap().get("ice.customUpdate"))) {
+            wrapped.processPartial(phaseId);
+            return;
+        }
         if (phaseId == PhaseId.RENDER_RESPONSE) {
             try {
                 PartialResponseWriter partialWriter = getPartialResponseWriter();
-                ExternalContext ec = facesContext.getExternalContext();
 
                 //TODO: need to revisit the strategy for getting the "raw" output writer directly
                 Writer outputWriter = getResponseOutputWriter();
