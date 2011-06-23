@@ -47,51 +47,8 @@ public class RequestManager {
 
     private final Map pendingRequestMap = new HashMap();
 
-    private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
-
-    public RequestManager(
-        final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor)
-    throws IllegalArgumentException {
-        if (scheduledThreadPoolExecutor == null) {
-            throw
-                new IllegalArgumentException(
-                    "scheduledThreadPoolExecutor is null");
-        }
-        this.scheduledThreadPoolExecutor = scheduledThreadPoolExecutor;
-        if (LOG.isDebugEnabled()) {
-            this.scheduledThreadPoolExecutor.execute(
-                new Runnable() {
-                    public void run() {
-                        while (true) {
-                            StringBuffer _pendingRequests = new StringBuffer();
-                            synchronized (pendingRequestMap) {
-                                Iterator _entries =
-                                    pendingRequestMap.entrySet().iterator();
-                                while (_entries.hasNext()) {
-                                    Map.Entry _entry =
-                                        (Map.Entry)_entries.next();
-                                    _pendingRequests.
-                                        append(_entry.getKey()).append(" - ").
-                                            append(_entry.getValue()).
-                                            append(" [").
-                                            append(
-                                                ((Handler)_entry.getValue()).
-                                                    getRequest().
-                                                    getRemoteAddr()).
-                                            append("]\r\n");
-                                }
-                            }
-                            LOG.debug(
-                                "Pending requests:\r\n\r\n" + _pendingRequests);
-                            try {
-                                Thread.sleep(60000);
-                            } catch (InterruptedException exception) {
-                                // do nothing.
-                            }
-                        }
-                    }
-                });
-        }
+    public RequestManager() {
+        // Do nothing.
     }
 
     /**

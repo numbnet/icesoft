@@ -64,6 +64,8 @@ implements PseudoServlet {
             ".*block\\/receive\\-updated\\-views$",
             new EnvironmentAdaptingServlet(
                 new SendUpdatedViewsServer(sessionManager, monitor) {
+                    private IDVerifier idVerifier;
+
                     public void handle(
                         final Request request, final Set iceFacesIdSet) {
 
@@ -78,12 +80,21 @@ implements PseudoServlet {
                                                     "X-Window-Cookie")) +
                                     "]");
                         }
-                        new IDVerifier(
-                            iceFacesIdSet,
-                            new ReceiveUpdatedViewsHandler(
-                                request, iceFacesIdSet, sessionManager,
-                                scheduledThreadPoolExecutor, configuration)
-                        ).handle();
+                        idVerifier =
+                            new IDVerifier(
+                                iceFacesIdSet,
+                                new ReceiveUpdatedViewsHandler(
+                                    request, iceFacesIdSet, sessionManager,
+                                    scheduledThreadPoolExecutor, configuration)
+                            );
+                        idVerifier.handle();
+                    }
+
+                    public void shutdown() {
+                        if (idVerifier != null) {
+                            idVerifier.shutdown();
+                        }
+                        super.shutdown();
                     }
                 },
                 configuration,

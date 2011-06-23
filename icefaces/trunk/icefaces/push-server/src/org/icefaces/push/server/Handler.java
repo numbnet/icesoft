@@ -46,4 +46,6 @@ extends Runnable {
     Request getRequest();
 
     void handle();
+
+    void shutdown();
 }

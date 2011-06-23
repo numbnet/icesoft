@@ -45,6 +45,7 @@ import com.icesoft.util.ServerUtility;
 import com.icesoft.util.ThreadFactory;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 import java.io.IOException;
 
@@ -85,7 +86,14 @@ extends HttpServlet {
         pushServerMessageService.tearDownNow();
         pushServerMessageService.close();
         pathDispatcher.shutdown();
-        scheduledThreadPoolExecutor.shutdownNow(); 
+        scheduledThreadPoolExecutor.shutdown();
+        try {
+            scheduledThreadPoolExecutor.awaitTermination(3, TimeUnit.SECONDS);
+            // Arbitrary thread sleep to ensure clean-up of threads before finishing shutdown.
+            Thread.sleep(3000);
+        } catch (InterruptedException exception) {
+            // Do nothing.
+        }
     }
 
     public void init(final ServletConfig servletConfig)
@@ -124,7 +132,6 @@ extends HttpServlet {
             pushServerMessageService.setUpNow();
             final SessionManager _sessionManager =
                 new SessionManager(
-                    scheduledThreadPoolExecutor,
                     pushServerMessageService,
                     new UpdatedViewsManager(
                         _servletContextConfiguration, pushServerMessageService));
