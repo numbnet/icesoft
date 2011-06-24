@@ -135,6 +135,9 @@ public class DOMRenderKit extends RenderKitWrapper {
 
     public Renderer getRenderer(String family, String type)  {
         Renderer renderer = delegate.getRenderer(family, type);
+        if (renderer == null) {
+            return renderer;
+        }
         String className = renderer.getClass().getName();
         if (className.equals("com.sun.faces.renderkit.html_basic.MessageRenderer"))  {
             return modifiedMessageRenderer;
