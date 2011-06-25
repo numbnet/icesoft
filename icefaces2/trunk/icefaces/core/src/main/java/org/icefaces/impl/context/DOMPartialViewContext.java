@@ -309,10 +309,10 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     if ("".equals(value)) {
                         inputElement.setAttribute("value", "");
                     } else {
-                        if (inputElement.hasAttribute("value")) {
-                            inputElement.setAttribute("value", value);
-                        } else if (inputElement.getAttribute("type").equals("checkbox")) {
+                        if (inputElement.getAttribute("type").equals("checkbox")) {
                             inputElement.setAttribute("checked", "checked");
+                        } else {
+                            inputElement.setAttribute("value", value);
                         }
                     }
                 } else if (!"".equals(name = inputElement.getAttribute("name")) && parameters.containsKey(name)) {
