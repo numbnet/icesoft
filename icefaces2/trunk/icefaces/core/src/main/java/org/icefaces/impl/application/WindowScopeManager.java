@@ -28,7 +28,6 @@ import org.icefaces.util.EnvUtils;
 import javax.annotation.PreDestroy;
 import javax.faces.FactoryFinder;
 import javax.faces.application.ResourceHandler;
-import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
@@ -39,18 +38,14 @@ import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-import java.io.Serializable;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class WindowScopeManager extends ResourceHandlerWrapper {
+public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
     public static final String ScopeName = "window";
     private static final Logger log = Logger.getLogger(WindowScopeManager.class.getName());
     private static final String seed = Integer.toString(new Random().nextInt(1000), 36);
@@ -138,12 +133,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper {
         return wrapped;
     }
 
-    public void handleResourceRequest(FacesContext facesContext) throws IOException {
-        //a null session cannot have any window scope beans
-        if (null == facesContext.getExternalContext().getSession(false)) {
-            wrapped.handleResourceRequest(facesContext);
-            return;
-        }
+    public void handleSessionAwareResourceRequest(FacesContext facesContext) throws IOException {
         ExternalContext externalContext = facesContext.getExternalContext();
         Map parameters = externalContext.getRequestParameterMap();
         if (isDisposeWindowRequest(parameters)) {
@@ -166,7 +156,7 @@ public class WindowScopeManager extends ResourceHandlerWrapper {
         }
     }
 
-    public boolean isResourceRequest(FacesContext facesContext) {
+    public boolean isSessionAwareResourceRequest(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
         Map parameters = externalContext.getRequestParameterMap();
         if (isDisposeWindowRequest(parameters)) {
@@ -242,7 +232,8 @@ public class WindowScopeManager extends ResourceHandlerWrapper {
                 id = UnusedScopeMap.getId();
                 //put something into the map to avoid beeing discarded
                 if (UnusedScopeMap.isEmpty()) {
-                    UnusedScopeMap.put("dummy-bean", new Serializable() {});
+                    UnusedScopeMap.put("dummy-bean", new Serializable() {
+                    });
                 }
                 UnusedScopeMap.activate(state);
                 associateWindowID(id, requestMap);

@@ -24,13 +24,13 @@ package org.icefaces.impl.application;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.ResourceHandler;
-import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class SessionTimeoutMonitor extends ResourceHandlerWrapper {
+public class SessionTimeoutMonitor extends SessionAwareResourceHandlerWrapper {
     private static final Logger Log = Logger.getLogger(SessionTimeoutMonitor.class.getName());
     private ResourceHandler handler;
 
@@ -42,20 +42,12 @@ public class SessionTimeoutMonitor extends ResourceHandlerWrapper {
         return handler;
     }
 
-    public boolean isResourceRequest(FacesContext context) {
-        final ExternalContext externalContext = context.getExternalContext();
-        //create session if non-ajax request
-        final Object session = externalContext.getSession(!context.getPartialViewContext().isAjaxRequest());
-        //if session invalid or expired block other resource handlers from running
-        if (session == null) {
-            //return false to force JSF to run and throw ViewExpiredException which eventually will be captured
-            //and re-cast in a SessionExpiredException
-            return false;
-        }
-
+    public boolean isSessionAwareResourceRequest(FacesContext context) {
         if (!EnvUtils.isStrictSessionTimeout(context)) {
             return handler.isResourceRequest(context);
         }
+
+        ExternalContext externalContext = context.getExternalContext();
         Map sessionMap = externalContext.getSessionMap();
         Long lastAccessTime = (Long) sessionMap.get(SessionTimeoutMonitor.class.getName());
         boolean isPushRelatedRequest = EnvUtils.isPushRequest(context);
@@ -64,6 +56,7 @@ public class SessionTimeoutMonitor extends ResourceHandlerWrapper {
             sessionMap.put(SessionTimeoutMonitor.class.getName(), System.currentTimeMillis());
         }
 
+        Object session = externalContext.getSession(false);
         int maxInactiveInterval;
         if (EnvUtils.instanceofPortletSession(session)) {
             maxInactiveInterval = ((javax.portlet.PortletSession) session).getMaxInactiveInterval();
@@ -76,6 +69,10 @@ public class SessionTimeoutMonitor extends ResourceHandlerWrapper {
             externalContext.invalidateSession();
         }
 
-        return super.isResourceRequest(context);
+        return handler.isResourceRequest(context);
+    }
+
+    public void handleSessionAwareResourceRequest(FacesContext context) throws IOException {
+        handler.handleResourceRequest(context);
     }
 }
