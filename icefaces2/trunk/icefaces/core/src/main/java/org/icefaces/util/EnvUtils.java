@@ -29,9 +29,9 @@ import javax.faces.application.Resource;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Cookie;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,6 +82,7 @@ public class EnvUtils {
     //Use reflection to identify the JSF implementation.
     private static boolean isMojarra = false;
     private static Class MojarraClass;
+
     static {
         try {
             MojarraClass = Class.forName("com.sun.faces.context.FacesContextImpl");
@@ -93,6 +94,7 @@ public class EnvUtils {
 
     private static boolean isMyFaces = false;
     private static Class MyFacesClass;
+
     static {
         try {
             MyFacesClass = Class.forName("org.apache.myfaces.context.servlet.FacesContextImpl");
@@ -375,16 +377,28 @@ public class EnvUtils {
         return EnvConfig.getEnvConfig(facesContext).uniqueResourceURLs;
     }
 
+    public static void createSessionOnPageLoad(FacesContext context) {
+        final ExternalContext externalContext = context.getExternalContext();
+        //create session if non-ajax request
+        externalContext.getSession(!context.getPartialViewContext().isAjaxRequest());
+    }
+
+    public static boolean isSessionInvalid(FacesContext context) {
+        final ExternalContext externalContext = context.getExternalContext();
+        //if session invalid or expired block other resource handlers from running
+        return externalContext.getSession(false) == null;
+    }
+
     /**
      * Returns true if the browser is enhanced with additional features.
      *
      * @param facesContext The current FacesContext.
      * @return true if browser is enhanced.
      */
-    public static boolean isEnhancedBrowser(FacesContext facesContext)  {
+    public static boolean isEnhancedBrowser(FacesContext facesContext) {
         Cookie cookie = (Cookie) facesContext.getExternalContext()
-            .getRequestCookieMap().get(USER_AGENT_COOKIE);
-        if (null != cookie)  {
+                .getRequestCookieMap().get(USER_AGENT_COOKIE);
+        if (null != cookie) {
             return cookie.getValue().startsWith(HYPERBROWSER);
         }
         return false;
@@ -471,22 +485,22 @@ public class EnvUtils {
         return PortletResponseClass != null && PortletResponseClass.isInstance(response);
     }
 
-    public static HttpServletRequest getSafeRequest(FacesContext fc){
+    public static HttpServletRequest getSafeRequest(FacesContext fc) {
         ExternalContext ec = fc.getExternalContext();
         Object rawReq = ec.getRequest();
-        if(instanceofPortletRequest(rawReq)){
+        if (instanceofPortletRequest(rawReq)) {
             return new ProxyHttpServletRequest(fc);
         }
-        return (HttpServletRequest)rawReq;
+        return (HttpServletRequest) rawReq;
     }
 
-    public static HttpServletResponse getSafeResponse(FacesContext fc){
+    public static HttpServletResponse getSafeResponse(FacesContext fc) {
         ExternalContext ec = fc.getExternalContext();
         Object rawRes = ec.getResponse();
-        if(instanceofPortletResponse(rawRes)){
+        if (instanceofPortletResponse(rawRes)) {
             return new ProxyHttpServletResponse(fc);
         }
-        return (HttpServletResponse)rawRes;
+        return (HttpServletResponse) rawRes;
     }
 
     public static boolean isPushRequest(FacesContext facesContext) {
