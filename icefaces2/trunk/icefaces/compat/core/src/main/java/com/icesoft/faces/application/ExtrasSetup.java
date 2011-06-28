@@ -59,7 +59,7 @@ public class ExtrasSetup implements SystemEventListener {
     }
 
     public boolean isListenerForSource(Object source) {
-        return true;
+        return source instanceof UIViewRoot;
     }
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
