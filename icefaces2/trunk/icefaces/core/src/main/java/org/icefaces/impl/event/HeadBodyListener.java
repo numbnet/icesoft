@@ -23,13 +23,13 @@ package org.icefaces.impl.event;
 
 import org.icefaces.util.EnvUtils;
 
-import javax.faces.component.UIOutput;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,13 +41,11 @@ import java.util.logging.Logger;
  * the components but this might be related to a bug in JSF.
  */
 public class HeadBodyListener implements SystemEventListener {
-
-    private static Logger log = Logger.getLogger("org.icefaces.impl.event.HeadBodyListener");
+    private final static Logger log = Logger.getLogger("org.icefaces.impl.event.HeadBodyListener");
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-
-        FacesContext fc = FacesContext.getCurrentInstance();
-        UIViewRoot viewRoot = fc.getViewRoot();
+        FacesContext context = FacesContext.getCurrentInstance();
+        UIViewRoot viewRoot = context.getViewRoot();
         Map viewMap = viewRoot.getViewMap();
 
         //TODO: improve detection of HtmlHead and HtmlBody components
@@ -55,40 +53,35 @@ public class HeadBodyListener implements SystemEventListener {
         // as UIOutput component instances, we can't rely on that to for detection.
         // Instead, we need to check the rendererType which is potentially fragile
         // as it can be overridden.
-        UIOutput comp = (UIOutput) ((PostAddToViewEvent) event).getComponent();
-        String rendererType = comp.getRendererType();
-        if (log.isLoggable(Level.FINER)) {
-            log.log(Level.FINER, "post add to view for : " + comp + ", " + rendererType);
-        }
-
-        if( rendererType == null ){
-            return;
-        }
 
         if (!viewMap.containsKey(EnvUtils.HEAD_DETECTED)) {
-            if (rendererType.equals("javax.faces.Head")) {
-                viewMap.put(EnvUtils.HEAD_DETECTED, EnvUtils.HEAD_DETECTED);
-                if (log.isLoggable(Level.FINER)) {
-                    log.log(Level.FINER, "head detected");
+            List<UIComponent> children = viewRoot.getChildren();
+            for (UIComponent c : children) {
+                String rendererType = c.getRendererType();
+                if ("javax.faces.Head".equals(rendererType)) {
+                    viewMap.put(EnvUtils.HEAD_DETECTED, EnvUtils.HEAD_DETECTED);
+                    if (log.isLoggable(Level.FINER)) {
+                        log.log(Level.FINER, "head detected");
+                    }
                 }
             }
         }
 
         if (!viewMap.containsKey(EnvUtils.BODY_DETECTED)) {
-            if (rendererType.equals("javax.faces.Body")) {
-                viewMap.put(EnvUtils.BODY_DETECTED, EnvUtils.BODY_DETECTED);
-                if (log.isLoggable(Level.FINER)) {
-                    log.log(Level.FINER, "body detected");
+            List<UIComponent> children = viewRoot.getChildren();
+            for (UIComponent c : children) {
+                String rendererType = c.getRendererType();
+                if ("javax.faces.Body".equals(rendererType)) {
+                    viewMap.put(EnvUtils.BODY_DETECTED, EnvUtils.BODY_DETECTED);
+                    if (log.isLoggable(Level.FINER)) {
+                        log.log(Level.FINER, "body detected");
+                    }
                 }
             }
         }
-
     }
 
     public boolean isListenerForSource(Object source) {
-        //HtmlHead and HtmlBody components both resolve as UIOutput for these events.  Not
-        //currently sure if this is a bug or not but it would certainly be easier and more
-        //efficient for us to listen for HtmlHead and HtmlBody components directly.
-        return source instanceof UIOutput;
+        return source instanceof UIViewRoot;
     }
 }
