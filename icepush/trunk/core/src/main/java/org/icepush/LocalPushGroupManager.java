@@ -52,6 +52,7 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
     private final long groupTimeout;
     private final long pushIdTimeout;
     private final ServletContext context;
+    private long lastScan = System.currentTimeMillis();
 
     private final Observer confirmNotifications = new Observer() {
         public void update(Observable observable, Object o) {
@@ -59,7 +60,6 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
         }
     };
     private final Observer timeoutScanner = new Observer() {
-        private long lastScan = System.currentTimeMillis();
         private Set<String> pushIDs = new HashSet<String>();
 
         public void update(final Observable observable, final Object object) {
@@ -95,21 +95,25 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
     }
 
     public void addMember(final String groupName, final String id) {
-        PushID pushID = pushIDMap.get(id);
-        if (pushID == null) {
-            pushIDMap.put(id, new PushID(id, groupName));
-        } else {
-            pushID.addToGroup(groupName);
-        }
-        Group group = groupMap.get(groupName);
-        if (group == null) {
-            groupMap.put(groupName, new Group(groupName, id));
-        } else {
-            group.addPushID(id);
-        }
-        memberAdded(groupName, id);
-        if (LOGGER.isLoggable(Level.FINEST)) {
-            LOGGER.log(Level.FINEST, "Added pushId '" + id + "' to group '" + groupName + "'.");
+        try {
+            PushID pushID = pushIDMap.get(id);
+            if (pushID == null) {
+                pushIDMap.put(id, new PushID(id, groupName));
+            } else {
+                pushID.addToGroup(groupName);
+            }
+            Group group = groupMap.get(groupName);
+            if (group == null) {
+                groupMap.put(groupName, new Group(groupName, id));
+            } else {
+                group.addPushID(id);
+            }
+            memberAdded(groupName, id);
+            if (LOGGER.isLoggable(Level.FINEST)) {
+                LOGGER.log(Level.FINEST, "Added pushId '" + id + "' to group '" + groupName + "'.");
+            }
+        } finally {
+            scanForExpiry();
         }
     }
 
@@ -143,32 +147,40 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
     }
 
     public void push(final String groupName) {
-        Group group = groupMap.get(groupName);
-        if (group != null) {
-            if (LOGGER.isLoggable(Level.FINEST)) {
-                LOGGER.log(Level.FINEST, "Push notification triggered for '" + groupName + "' group.");
+        try {
+            Group group = groupMap.get(groupName);
+            if (group != null) {
+                if (LOGGER.isLoggable(Level.FINEST)) {
+                    LOGGER.log(Level.FINEST, "Push notification triggered for '" + groupName + "' group.");
+                }
+                String[] pushIDs = group.getPushIDs();
+                pendingNotifications.addAll(Arrays.asList(pushIDs));
+                outboundNotifier.notifyObservers(pushIDs);
+                pushed(groupName);
             }
-            String[] pushIDs = group.getPushIDs();
-            pendingNotifications.addAll(Arrays.asList(pushIDs));
-            outboundNotifier.notifyObservers(pushIDs);
-            pushed(groupName);
+        } finally {
+            scanForExpiry();
         }
     }
 
     public void push(String groupName, PushMessage message) {
-        Group group = groupMap.get(groupName);
-        String[] pushIDs = group.getPushIDs();
-        HashSet uris = new HashSet();
-        for (int i = 0; i < pushIDs.length; i++) {
-            String pushID = pushIDs[i];
-            String uri = (String) parkedPushIDs.get(pushID);
-            if (uri != null) {
-                uris.add(uri);
+        try {
+            Group group = groupMap.get(groupName);
+            String[] pushIDs = group.getPushIDs();
+            HashSet uris = new HashSet();
+            for (int i = 0; i < pushIDs.length; i++) {
+                String pushID = pushIDs[i];
+                String uri = (String) parkedPushIDs.get(pushID);
+                if (uri != null) {
+                    uris.add(uri);
+                }
             }
-        }
 
-        if (!uris.isEmpty()) {
-            getOutOfBandNotifier().broadcast(message, (String[]) uris.toArray(STRINGS));
+            if (!uris.isEmpty()) {
+                getOutOfBandNotifier().broadcast(message, (String[]) uris.toArray(STRINGS));
+            }
+        } finally {
+            scanForExpiry();
         }
     }
 
@@ -195,6 +207,23 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
 
     public void shutdown() {
         // Do nothing.
+    }
+
+    private void scanForExpiry() {
+        long now = System.currentTimeMillis();
+        //avoid to scan/touch the groups on each notification
+        if (lastScan + GROUP_SCANNING_TIME_RESOLUTION < now) {
+            try {
+                for (Group group : new ArrayList<Group>(groupMap.values())) {
+                    group.discardIfExpired();
+                }
+                for (PushID pushID : new ArrayList<PushID>(pushIDMap.values())) {
+                    pushID.discardIfExpired();
+                }
+            } finally {
+                lastScan = now;
+            }
+        }
     }
 
     public void touchPushID(final String id, final Long timestamp) {
