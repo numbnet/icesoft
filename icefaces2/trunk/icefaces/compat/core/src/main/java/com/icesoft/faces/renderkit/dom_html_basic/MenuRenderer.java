@@ -312,7 +312,12 @@ public class MenuRenderer extends DomBasicInputRenderer {
 
         Document doc = domContext.getDocument();
         String label = selectItem.getLabel();
-        Text labelNode = domContext.createTextNode(label == null ? valueString : label);
+        Text labelNode;
+        if (selectItem.isEscape()) {
+            labelNode = domContext.createTextNode(label == null ? valueString : label);
+        } else {
+            labelNode = domContext.createTextNodeUnescaped(label == null ? valueString : label);
+        }
         option.appendChild(labelNode);
     }
 
@@ -612,7 +617,17 @@ public class MenuRenderer extends DomBasicInputRenderer {
                         ((UISelectItems) nextSelectItemChild).getValue();
 
                 if (selectItemsValue != null) {
+                    Object itemLabelEscaped = nextSelectItemChild.getAttributes().get("itemLabelEscaped");
+                    boolean isItemLabelEscaped = true;
+                    if (itemLabelEscaped != null) {
+                        isItemLabelEscaped = Boolean.valueOf(itemLabelEscaped.toString()).booleanValue();
+                    }
+                    SelectItem selectItem;
                     if (selectItemsValue instanceof SelectItem) {
+                        if (itemLabelEscaped != null) {
+                            selectItem = (SelectItem) selectItemsValue;
+                            selectItem.setEscape(isItemLabelEscaped);
+                        }
                         selectItems.add(selectItemsValue);
                     } else if (selectItemsValue instanceof Collection) {
                         Iterator selectItemsIterator =
@@ -620,6 +635,10 @@ public class MenuRenderer extends DomBasicInputRenderer {
                         while (selectItemsIterator.hasNext()) {
                             Object item = selectItemsIterator.next();
                             if (item instanceof SelectItem) {
+                                if (itemLabelEscaped != null) {
+                                    selectItem = (SelectItem) item;
+                                    selectItem.setEscape(isItemLabelEscaped);
+                                }
                                 selectItems.add(item);
                             } else {
 
@@ -630,17 +649,24 @@ public class MenuRenderer extends DomBasicInputRenderer {
 
                                     String itemLabel = String.valueOf(nextSelectItemChild.getAttributes().get("itemLabel"));
                                     Object itemValue = nextSelectItemChild.getAttributes().get("itemValue");
-                                    selectItems.add(new SelectItem((itemValue != null) ? itemValue : item, itemLabel));
+                                    selectItem = new SelectItem((itemValue != null) ? itemValue : item, itemLabel);
+                                    selectItem.setEscape(isItemLabelEscaped);
+                                    selectItems.add(selectItem);
                                     continue;
                                 }
 
-                                selectItems.add(new SelectItem(item));
+                                selectItem = new SelectItem(item);
+                                selectItem.setEscape(isItemLabelEscaped);
+                                selectItems.add(selectItem);
                             }
                         }
                     } else if (selectItemsValue instanceof SelectItem[]) {
                         SelectItem selectItemArray[] =
                                 (SelectItem[]) selectItemsValue;
                         for (int i = 0; i < selectItemArray.length; i++) {
+                            if (itemLabelEscaped != null) {
+                                selectItemArray[i].setEscape(isItemLabelEscaped);
+                            }
                             selectItems.add(selectItemArray[i]);
                         }
                     } else if (selectItemsValue instanceof Object[]) {
@@ -651,9 +677,13 @@ public class MenuRenderer extends DomBasicInputRenderer {
                                 Object oldValue = map.put(var, item);
                                 String itemLabel = String.valueOf(nextSelectItemChild.getAttributes().get("itemLabel"));
                                 Object itemValue = nextSelectItemChild.getAttributes().get("itemValue");
-                                selectItems.add(new SelectItem((itemValue != null) ? itemValue : item, itemLabel));
+                                selectItem = new SelectItem((itemValue != null) ? itemValue : item, itemLabel);
+                                selectItem.setEscape(isItemLabelEscaped);
+                                selectItems.add(selectItem);
                             } else {
-                                selectItems.add(new SelectItem(item));
+                                selectItem = new SelectItem(item);
+                                selectItem.setEscape(isItemLabelEscaped);
+                                selectItems.add(selectItem);
                             }
                         }
                     } else if (selectItemsValue instanceof Map) {
@@ -665,22 +695,28 @@ public class MenuRenderer extends DomBasicInputRenderer {
                                 Object nextValue =
                                         ((Map) selectItemsValue).get(nextKey);
                                 if (nextValue != null) {
+                                    selectItem = new SelectItem(
+                                            nextValue.toString(),
+                                            nextKey.toString());
+                                    selectItem.setEscape(isItemLabelEscaped);
                                     selectItems.add(
-                                            new SelectItem(
-                                                    nextValue.toString(),
-                                                    nextKey.toString()));
+                                            selectItem);
                                 }
                             }
                         }
                     } else if (selectItemsValue instanceof String[]) {
                         String stringItemArray[] = (String[]) selectItemsValue;
                         for (int i = 0; i < stringItemArray.length; i++) {
-                            selectItems.add(new SelectItem(stringItemArray[i]));
+                            selectItem = new SelectItem(stringItemArray[i]);
+                            selectItem.setEscape(isItemLabelEscaped);
+                            selectItems.add(selectItem);
                         }
                     } else if (selectItemsValue instanceof Enum[]) {
                         Enum[] enumArray = ((Enum[]) selectItemsValue);
                         for (int i = 0; i < enumArray.length; i++) {
-                            selectItems.add(new SelectItem(enumArray[i]));
+                            selectItem = new SelectItem(enumArray[i]);
+                            selectItem.setEscape(isItemLabelEscaped);
+                            selectItems.add(selectItem);
                         }
                     }
                 }
