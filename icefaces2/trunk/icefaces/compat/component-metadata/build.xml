@@ -64,7 +64,7 @@
          they rely on Mojarra specific files -->
     <path id="build.generator.classpath">
         <pathelement location="${maven.build.output}" />
-        <fileset dir="${jsf.lib.dir}" includes="*.jar" />
+        <fileset dir="${mojarra.lib.dir}" includes="*.jar" />
         <fileset dir="${lib.dir}" includes="*.jar"  />
         <fileset dir="${compat.lib.dir}" includes="*.jar" />
     </path>
