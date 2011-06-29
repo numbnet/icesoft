@@ -25,6 +25,7 @@ import org.icefaces.sample.portlet.chat.resources.ResourceUtil;
 
 import javax.annotation.PreDestroy;
 import javax.faces.event.ActionEvent;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -37,7 +38,7 @@ import java.util.logging.Logger;
  * bean.
  * <p/>
  */
-public class Participant {
+public class Participant implements Serializable {
 
     private static Logger log = Logger.getLogger(Participant.class.getName());
 
@@ -95,8 +96,12 @@ public class Participant {
         chatRoom.addMessage(this, message);
     }
 
-    @PreDestroy
     public void logout(ActionEvent event) {
+        logout(null);
+    }
+
+    @PreDestroy
+    public void logout() {
         chatRoom.removeParticipant(this);
         handle = null;
     }
