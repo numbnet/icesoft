@@ -269,14 +269,16 @@ public abstract class SessionDispatcher implements PseudoServlet {
                     public void run() {
                         while (run) {
                             try {
+                                Iterator iterator;
                                 synchronized (SessionMonitors) {
                                     // Iterate over the session monitors using a copying iterator
-                                    Iterator iterator = new ArrayList(SessionMonitors.values()).iterator();
-                                    while (iterator.hasNext()) {
-                                        final Monitor sessionMonitor = (Monitor) iterator.next();
-                                        sessionMonitor.shutdownIfExpired();
-                                        ThreadLocalUtility.checkThreadLocals(ThreadLocalUtility.EXITING_SESSION_MONITOR);
-                                    }
+                                    iterator = new ArrayList(SessionMonitors.values()).iterator();
+                                }
+
+                                while (iterator.hasNext()) {
+                                    final Monitor sessionMonitor = (Monitor) iterator.next();
+                                    sessionMonitor.shutdownIfExpired();
+                                    ThreadLocalUtility.checkThreadLocals(ThreadLocalUtility.EXITING_SESSION_MONITOR);
                                 }
 
                                 Thread.sleep(10000);
