@@ -22,25 +22,25 @@
 package com.icesoft.metadata.generators;
 
 import com.icesoft.jsfmeta.util.GeneratorUtil;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import com.icesoft.jsfmeta.MetadataXmlParser;
+//import java.io.File;
+//import java.io.IOException;
+//import java.net.MalformedURLException;
+//import java.net.URL;
+//import java.util.ArrayList;
+//import java.util.List;
+//import com.icesoft.jsfmeta.MetadataXmlParser;
 import com.icesoft.jsfmeta.util.ConfigStorage;
 import com.icesoft.jsfmeta.util.InternalConfig;
-import com.sun.rave.jsfmeta.beans.ComponentBean;
-import com.sun.rave.jsfmeta.beans.ConverterBean;
+//import com.sun.rave.jsfmeta.beans.ComponentBean;
+//import com.sun.rave.jsfmeta.beans.ConverterBean;
 import com.sun.rave.jsfmeta.beans.FacesConfigBean;
-import com.sun.rave.jsfmeta.beans.RendererBean;
-import com.sun.rave.jsfmeta.beans.ValidatorBean;
-import java.util.Enumeration;
+//import com.sun.rave.jsfmeta.beans.RendererBean;
+//import com.sun.rave.jsfmeta.beans.ValidatorBean;
+//import java.util.Enumeration;
 import java.util.Properties;
-import java.util.logging.Level;
+//import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.xml.sax.SAXException;
+//import org.xml.sax.SAXException;
 
 public final class MetadataGenerator {
     
@@ -48,26 +48,26 @@ public final class MetadataGenerator {
     
     private FacesConfigBean config;
     
-    private List excludes;
+//    private List excludes;
+//    
+//    private List includes;
+//    
+//    private List listeners;
+//    
+//    private MetadataXmlParser parser;
     
-    private List includes;
-    
-    private List listeners;
-    
-    private MetadataXmlParser parser;
-    
-    private List validators;
+//    private List validators;
     
     private InternalConfig internalConfig;
     
     public MetadataGenerator() {
         
-        parser = new MetadataXmlParser();
+//        parser = new MetadataXmlParser();
         config = new FacesConfigBean();
-        excludes = new ArrayList();
-        includes = new ArrayList();
-        listeners = new ArrayList();
-        validators = new ArrayList();
+//        excludes = new ArrayList();
+//        includes = new ArrayList();
+//        listeners = new ArrayList();
+//        validators = new ArrayList();
     }
     
     
@@ -78,60 +78,60 @@ public final class MetadataGenerator {
         main.execute(args);
     }
     
-    private void parseXML(String[] urlList){
-        
-        for(int i=0; i< urlList.length; i++){
-            String url = urlList[i];
-            try {
-                parser.parse(new URL(url), config);
-            } catch (MalformedURLException ex) {
-                System.out.println("Please check following: url="+url);
-                ex.printStackTrace();
-                System.exit(1);
-            } catch (IOException ex) {
-                System.out.println("Please check following: url="+url);
-                ex.printStackTrace();
-                System.exit(1);
-            } catch (SAXException ex) {
-                System.out.println("Please check following: url="+url);
-                ex.printStackTrace();
-                System.exit(1);
-            }
-        }
-    }
+//    private void parseXML(String[] urlList){
+//        
+//        for(int i=0; i< urlList.length; i++){
+//            String url = urlList[i];
+//            try {
+//                parser.parse(new URL(url), config);
+//            } catch (MalformedURLException ex) {
+//                System.out.println("Please check following: url="+url);
+//                ex.printStackTrace();
+//                System.exit(1);
+//            } catch (IOException ex) {
+//                System.out.println("Please check following: url="+url);
+//                ex.printStackTrace();
+//                System.exit(1);
+//            } catch (SAXException ex) {
+//                System.out.println("Please check following: url="+url);
+//                ex.printStackTrace();
+//                System.exit(1);
+//            }
+//        }
+//    }
     
     //TODO: filter version from ICEfaces core
     private void loadProps(){
         
-        init();
+//        init();
         String fileName = GeneratorUtil.getWorkingFolder()+"conf/config.properties";
         Properties props = ConfigStorage.getInstance(fileName).loadProperties();
         internalConfig = new InternalConfig(props);
     }
     
     //TODO: move to catalog
-    private void init(){
-        try {
-
-            String standard_html_renderkit = "jar:" + GeneratorUtil.getBaseLineFolder("com/sun/faces/standard-html-renderkit.xml");
-            String standard_html_renderkit_overlay = "jar:" + GeneratorUtil.getBaseLineFolder("com/sun/rave/jsfmeta/standard-html-renderkit-overlay.xml");
-            String standard_html_renderkit_fixup = "jar:" + GeneratorUtil.getBaseLineFolder("com/sun/rave/jsfmeta/standard-html-renderkit-fixups.xml");
-
-            String[] baseUrlList = new String[]{standard_html_renderkit, standard_html_renderkit_overlay, standard_html_renderkit_fixup};
-            parseXML(baseUrlList);
-
-            exclude();
-
-            String component_faces_config = "file:" + GeneratorUtil.getWorkingFolder() + "conf/faces-config-base.xml";
-            String extended_faces_config = "file:" + GeneratorUtil.getWorkingFolder() + "conf/extended-faces-config.xml";
-            String[] urlList = new String[]{component_faces_config, extended_faces_config};
-            parseXML(urlList);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(MetadataGenerator.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(1);
-        }
-        
-    }
+//    private void init(){
+//        try {
+//
+//            String standard_html_renderkit = "jar:" + GeneratorUtil.getBaseLineFolder("com/sun/faces/standard-html-renderkit.xml");
+//            String standard_html_renderkit_overlay = "jar:" + GeneratorUtil.getBaseLineFolder("com/sun/rave/jsfmeta/standard-html-renderkit-overlay.xml");
+//            String standard_html_renderkit_fixup = "jar:" + GeneratorUtil.getBaseLineFolder("com/sun/rave/jsfmeta/standard-html-renderkit-fixups.xml");
+//
+//            String[] baseUrlList = new String[]{standard_html_renderkit, standard_html_renderkit_overlay, standard_html_renderkit_fixup};
+//            parseXML(baseUrlList);
+//
+//            exclude();
+//
+//            String component_faces_config = "file:" + GeneratorUtil.getWorkingFolder() + "conf/faces-config-base.xml";
+//            String extended_faces_config = "file:" + GeneratorUtil.getWorkingFolder() + "conf/extended-faces-config.xml";
+//            String[] urlList = new String[]{component_faces_config, extended_faces_config};
+//            parseXML(urlList);
+//        } catch (MalformedURLException ex) {
+//            Logger.getLogger(MetadataGenerator.class.getName()).log(Level.SEVERE, null, ex);
+//            System.exit(1);
+//        }
+//        
+//    }
     
     
     private void execute(String args[]) throws Exception {
@@ -194,18 +194,18 @@ public final class MetadataGenerator {
     }
     
         
-    private void componentCreatorBeanInfo() throws Exception {
-                       
-        try {
-            IDEComponentBeanInfoGenerator generator = new IDEComponentBeanInfoGenerator(internalConfig);
-            generator.setDest(GeneratorUtil.getDestFolder(GeneratorUtil.getWorkingFolder()+"../generated-sources/beaninfo/main/java"));
-            generator.setConfig(config);
-            generator.generate();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.exit(1);
-        }
-    }
+//    private void componentCreatorBeanInfo() throws Exception {
+//                       
+//        try {
+//            IDEComponentBeanInfoGenerator generator = new IDEComponentBeanInfoGenerator(internalConfig);
+//            generator.setDest(GeneratorUtil.getDestFolder(GeneratorUtil.getWorkingFolder()+"../generated-sources/beaninfo/main/java"));
+//            generator.setConfig(config);
+//            generator.generate();
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            System.exit(1);
+//        }
+//    }
     
     private void componentBeanInfo() throws Exception {
         
@@ -246,30 +246,30 @@ public final class MetadataGenerator {
     }
     
     
-    private void exclude() {
-        
-        ComponentBean cpb[] = config.getComponents();
-        for (int i = 0; i < cpb.length; i++)
-            excludes.add(cpb[i].getComponentClass());
-        
-        ConverterBean cvb1[] = config.getConvertersByClass();
-        for (int i = 0; i < cvb1.length; i++)
-            excludes.add(cvb1[i].getConverterClass());
-        
-        ConverterBean cvb2[] = config.getConvertersById();
-        for (int i = 0; i < cvb2.length; i++)
-            excludes.add(cvb2[i].getConverterClass());
-        
-        RendererBean rb[] = config.getRenderKit("HTML_BASIC").getRenderers();
-        for (int i = 0; i < rb.length; i++){
-            excludes.add(rb[i].getRendererClass());
-        }
-        
-        ValidatorBean vb[] = config.getValidators();
-        for (int i = 0; i < vb.length; i++){
-            excludes.add(vb[i].getValidatorClass());
-        }
-    }
+//    private void exclude() {
+//        
+//        ComponentBean cpb[] = config.getComponents();
+//        for (int i = 0; i < cpb.length; i++)
+//            excludes.add(cpb[i].getComponentClass());
+//        
+//        ConverterBean cvb1[] = config.getConvertersByClass();
+//        for (int i = 0; i < cvb1.length; i++)
+//            excludes.add(cvb1[i].getConverterClass());
+//        
+//        ConverterBean cvb2[] = config.getConvertersById();
+//        for (int i = 0; i < cvb2.length; i++)
+//            excludes.add(cvb2[i].getConverterClass());
+//        
+//        RendererBean rb[] = config.getRenderKit("HTML_BASIC").getRenderers();
+//        for (int i = 0; i < rb.length; i++){
+//            excludes.add(rb[i].getRendererClass());
+//        }
+//        
+//        ValidatorBean vb[] = config.getValidators();
+//        for (int i = 0; i < vb.length; i++){
+//            excludes.add(vb[i].getValidatorClass());
+//        }
+//    }
     
     //TODO:
     private void usage() {
