@@ -67,6 +67,78 @@ public class DOMUtils {
     private static DocumentBuilder DOCUMENT_BUILDER;
     private static boolean isDOMChecking = true;
 
+    private static boolean simpleDOMdiff = true;
+
+    public static class EditOperation {
+        public String id;
+        //will be Element once pruning is integrated
+        public Node element;
+        
+        public String toString()  {
+            return this.getClass().getName() + ":" + id + ":" + element;
+        }
+    }
+    
+    public static class InsertOperation extends EditOperation {
+        public InsertOperation(String id, Node element)  {
+            this.id = id;
+            this.element = element;
+        }
+    }
+
+    public static class DeleteOperation extends EditOperation {
+        public DeleteOperation(String id)  {
+            this.id = id;
+            this.element = null;
+        }
+    }
+
+    public static class ReplaceOperation extends EditOperation {
+        public ReplaceOperation(String id, Node element)  {
+            this.id = id;
+            this.element = element;
+        }
+        public ReplaceOperation(Node element)  {
+            this(null, element);
+        }
+    }
+
+    public static class CursorList {
+        public int cursor;
+        public List<EditOperation> list;
+        
+        public CursorList()  {
+            list = new ArrayList<EditOperation>();
+            cursor = 0;
+        }
+        
+        boolean add(EditOperation op)  {
+            assert (null != getNodeId(op.element));
+            if (list.size() == cursor)  {
+                cursor++;
+                return list.add(op);
+            }
+            list.set(cursor++, op);
+            return true;
+        }
+
+        boolean addAll(List<EditOperation> ops)  {
+            if (list.size() == cursor)  {
+                cursor += ops.size();
+                return list.addAll(ops);
+            }
+            //we are in the middle so iterate and add
+            for (EditOperation op : ops)  {
+                add(op);
+            }
+            return true;
+        }
+
+        public List asList()  {
+            return list.subList(0, cursor);
+        }
+    }
+
     static {
         try {
             DOCUMENT_BUILDER = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -298,7 +370,7 @@ public class DOMUtils {
      * @return array of top-level nodes in newDOM that differ from oldDOM, an
      *         empty array if no nodes are different
      */
-    public static Node[] domDiff(Document oldDOM, Document newDOM) {
+    public static List<EditOperation> domDiff(Document oldDOM, Document newDOM) {
         return nodeDiff(oldDOM.getDocumentElement(), newDOM.getDocumentElement());
     }
 
@@ -313,20 +385,97 @@ public class DOMUtils {
      * @return array of top-level nodes in newNode subtree that differ from
      *         oldNode subtree, an empty array if no nodes are different
      */
-    public static Node[] nodeDiff(Node oldNode, Node newNode) {
-        List<Node> nodeDiffs = new ArrayList<Node>();
-        compareNodes(nodeDiffs, oldNode,
-                newNode);
-
-        Node[] prunedDiff = null;
+    public static List<EditOperation> nodeDiff(Node oldNode, Node newNode) {
+        CursorList nodeDiffs = new CursorList();
         try {
-            prunedDiff = pruneAncestors(nodeDiffs);
-        } catch (Exception e) {
-            e.printStackTrace();
+            compareNodes(nodeDiffs, oldNode, newNode);
+            assert checkPrunes(nodeDiffs.asList());
+        } catch (Throwable t)  {
+            //assert will not normally require a special try/catch
+            //but Throwable handling above this is not sufficient
+            log.log(Level.SEVERE, "Pruning failure", t);
+        }
+        return nodeDiffs.asList();
+    }
+
+    /**
+     * Nodes are equivalent if they have the same names, attributes, and
+     * children
+     *
+     * @param nodeDiffs
+     * @param oldNode
+     * @param newNode
+     * @return true if diff was handled fully
+     */
+    public static boolean compareNodes(CursorList nodeDiffs, 
+            Node oldNode, Node newNode) {
+
+        if (!oldNode.getNodeName().equals(newNode.getNodeName())) {
+            return false;
+        }
+        if (!compareIDs(oldNode, newNode)) {
+            return false;
+        }
+        if (!compareAttributes(oldNode, newNode)) {
+            String id = getNodeId(newNode);
+            if (null == id)  {
+                return false;
+            }
+            nodeDiffs.add(new ReplaceOperation(newNode));
+            return true;
+        }
+        if (!compareStrings(oldNode.getNodeValue(),
+                newNode.getNodeValue())) {
+            String id = getNodeId(newNode);
+            if (null == id)  {
+                return false;
+            }
+            nodeDiffs.add(new ReplaceOperation(newNode));
+            return true;
         }
 
-        return (prunedDiff == null) ? new Node[0] : prunedDiff;
+
+        if (simpleDOMdiff)  {
+            NodeList oldChildNodes = oldNode.getChildNodes();
+            NodeList newChildNodes = newNode.getChildNodes();
+
+            int oldChildLength = oldChildNodes.getLength();
+            int newChildLength = newChildNodes.getLength();
+
+            if (oldChildLength != newChildLength) {
+                String id = getNodeId(newNode);
+                if (null == id)  {
+                    return false;
+                }
+                nodeDiffs.add(new ReplaceOperation(newNode));
+                return true;
+            }
+
+            int startCursor = nodeDiffs.cursor;
+
+            for (int i = 0; i < newChildLength; i++) {
+                if (!compareNodes(nodeDiffs, oldChildNodes.item(i),
+                        newChildNodes.item(i))) {
+                    String id = getNodeId(newNode);
+                    if (null != id)  {
+                        //subtree was unable to process the diff
+                        nodeDiffs.cursor = startCursor;
+                        nodeDiffs.add(new ReplaceOperation(newNode));
+                        return true;
+                    }
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        //searching for insert/delete is enabled
+        
+        return findChildOps(nodeDiffs, oldNode, newNode);
     }
+
+    private static String PAD = "not_an_id_of_any_element";
 
     /**
      * Nodes are equivalent if they have the same names, attributes, and
@@ -337,48 +486,206 @@ public class DOMUtils {
      * @param newNode
      * @return true if oldNode and newNode are equivalent
      */
-    public static boolean compareNodes(List<Node> nodeDiffs, Node oldNode, Node newNode) {
-        if (!oldNode.getNodeName().equals(newNode.getNodeName())) {
-            //parent node needs to fix this
-            nodeDiffs.add(newNode.getParentNode());
-            return false;
-        }
-        if (!compareIDs(oldNode, newNode)) {
-            //parent node needs to fix this
-            nodeDiffs.add(newNode.getParentNode());
-            return false;
-        }
-        if (!compareAttributes(oldNode, newNode)) {
-            nodeDiffs.add(newNode);
-            return false;
-        }
-        if (!compareStrings(oldNode.getNodeValue(),
-                newNode.getNodeValue())) {
-            //might not have an id
-            nodeDiffs.add(newNode);
-            return false;
-        }
+    private static boolean findChildOps(CursorList nodeDiffs, 
+            Node oldNode, Node newNode) {
 
         NodeList oldChildNodes = oldNode.getChildNodes();
         NodeList newChildNodes = newNode.getChildNodes();
 
-        int oldChildLength = oldChildNodes.getLength();
-        int newChildLength = newChildNodes.getLength();
+        int oldChildCount = oldChildNodes.getLength();
+        int newChildCount = newChildNodes.getLength();
 
-        if (oldChildLength != newChildLength) {
-            nodeDiffs.add(newNode);
+        if ((0 == oldChildCount) && (0 == newChildCount) )  {
+            //the nodes themselves have already been compared
+            //so if they both have no children, they match
+            return true;
+        }
+        if ((0 == oldChildCount) || (0 == newChildCount) )  {
+            //the node is either newly populated or cleared
+            //simple replace is the most efficient
+            if (null == getNodeId(newNode))  {
+                return false;
+            }
+            nodeDiffs.add(new ReplaceOperation(newNode));
             return false;
         }
 
-        boolean allChildrenMatch = true;
-        for (int i = 0; i < newChildLength; i++) {
-            if (!compareNodes(nodeDiffs, oldChildNodes.item(i),
-                    newChildNodes.item(i))) {
-                allChildrenMatch = false;
+        List<String> oldList = getListOfIds(oldNode.getChildNodes());
+        List<String> newList = getListOfIds(newNode.getChildNodes());
+        List<EditOperation> ops = new ArrayList<EditOperation>();
+
+        List<Node> oldDirectCompare = new ArrayList<Node>();
+        List<Node> newDirectCompare = new ArrayList<Node>();
+
+        boolean keepRunning = true;
+        int oldListLen = oldList.size();
+        int newListLen = newList.size();
+        int oldIndex = 0;
+        int newIndex = 0;
+        while (keepRunning)  {
+            //mainly operate on IDs to detect insert and delete
+            String currentOld = paddedGet(oldList, oldIndex);
+            String currentNew = paddedGet(newList, newIndex);
+            if (!currentOld.equals(currentNew))  {
+                boolean newInOld = oldList.contains(currentNew);
+                boolean oldInNew = newList.contains(currentOld);
+                EditOperation operation = null;
+                String insertAnchor = null;
+                if (newInOld && oldInNew)  {
+                    //swap operation is not supported by jsf bridge
+                    keepRunning = false;
+                    //cancel all operations and replace oldNode with newNode
+                    if (null == getNodeId(newNode))  {
+                        return false;
+                    }
+                    nodeDiffs.add(new ReplaceOperation(newNode));
+                    ops = null;
+                    break;
+                }
+                if (newInOld && !oldInNew)  {
+                    operation = new DeleteOperation(currentOld);
+                    oldIndex++;
+                }
+                if (!newInOld && oldInNew)  {
+                    if (newIndex > 0)  {
+                        insertAnchor = paddedGet(newList, newIndex - 1);
+                    } else {
+                        //TODO Implement InsertBefore
+                        //this case is properly handled by an insert "before"
+                        if (null == getNodeId(newNode))  {
+                            return false;
+                        }
+                        nodeDiffs.add(new ReplaceOperation(newNode));
+                        ops = null;
+                        break;
+                    }
+                    if (insertAnchor.startsWith("?"))  {
+                        //anchor is not valid so we must replace parent
+                        if (null == getNodeId(newNode))  {
+                            return false;
+                        }
+                        nodeDiffs.add(new ReplaceOperation(newNode));
+                        ops = null;
+                        break;
+                    } else {
+                        operation = new InsertOperation(insertAnchor, 
+                                newChildNodes.item(newIndex) );
+                    }
+                    newIndex++;
+                }
+                if (!newInOld && !oldInNew)  {
+                    if (PAD == currentNew)  {
+                        operation = new DeleteOperation(currentOld);
+                    } else if (PAD == currentOld)  {
+                        if (newIndex > 0)  {
+                            insertAnchor = paddedGet(newList, newIndex - 1);
+                        } else {
+                            //a new child added to an empty parent
+                            //can be handled by a parent replace
+                            //this should be covered by the length test on entry
+                            if (null == getNodeId(newNode))  {
+                                return false;
+                            }
+                            nodeDiffs.add(new ReplaceOperation(newNode));
+                            ops = null;
+                            break;
+                        }
+                        if (insertAnchor.startsWith("?"))  {
+                            //anchor is not valid so we must replace parent
+                            if (null == getNodeId(newNode))  {
+                                return false;
+                            }
+                            nodeDiffs.add(new ReplaceOperation(newNode));
+                            ops = null;
+                            break;
+                        } else {
+                            operation = new InsertOperation(insertAnchor, 
+                                    newChildNodes.item(newIndex) );
+                        }
+                    } else {
+                        //two completely different IDs at this location
+                        //cancel and let parent handle
+                        if (null == getNodeId(newNode))  {
+                            return false;
+                        }
+                        nodeDiffs.add(new ReplaceOperation(newNode));
+                        ops = null;
+                        break;
+                    }
+                    oldIndex++;
+                    newIndex++;
+                }
+
+                ops.add(operation);
+
+            } else {
+                //keep going on match
+                oldDirectCompare.add(oldChildNodes.item(oldIndex));
+                newDirectCompare.add(newChildNodes.item(newIndex));
+                oldIndex++;
+                newIndex++;
+            }
+
+            if ((oldIndex >= oldListLen) && (newIndex >= newListLen) ) {
+                keepRunning = false;
             }
         }
+//TODO look at this below        
+        if (null != ops)  {
+            nodeDiffs.addAll(ops);
 
-        return allChildrenMatch;
+            int newChildLength = newDirectCompare.size();
+            boolean allChildrenMatch = true;
+            for (int i = 0; i < newChildLength; i++) {
+                if (!compareNodes(nodeDiffs, oldDirectCompare.get(i),
+                        newDirectCompare.get(i))) {
+                    allChildrenMatch = false;
+                }
+            }
+    
+            return (allChildrenMatch && (0 == ops.size()));
+        }
+        return false;
+    }
+
+    private static String paddedGet(List<String> theList, int theIndex)  {
+        if (theIndex >= theList.size())  {
+            return PAD;
+        }
+        return theList.get(theIndex);
+    }
+    
+    private static boolean paddedContains(List<String> theList, String theValue)  {
+        if (PAD == theValue)  {
+            return true;
+        }
+        return theList.contains(theValue);
+    }
+
+    private static List<Node> getListOfNodes(NodeList nodeList)  {
+        int length = nodeList.getLength();
+        List<Node> listOfNode = new ArrayList<Node>(length);
+        for (int i = 0; i < length; i++) {
+            listOfNode.add(nodeList.item(i));
+        }
+        return listOfNode;
+    }
+
+    private static List<String> getListOfIds(NodeList nodeList)  {
+        int length = nodeList.getLength();
+        List<String> listOfIds = new ArrayList<String>(length);
+        for (int i = 0; i < length; i++) {
+            Node node = nodeList.item(i);
+            String id = "?" + i;
+            if (node instanceof Element) {
+                String tempId = ((Element) node).getAttribute("id");
+                if ((null != tempId) && (!"".equals(tempId))) {
+                    id = tempId;
+                }
+            }
+            listOfIds.add(id);
+        }
+        return listOfIds;
     }
 
     private static boolean compareStrings(String oldString, String newString) {
@@ -453,6 +760,58 @@ public class DOMUtils {
 
         return true;
 
+    }
+
+    public static String getNodeId(Node node)  {
+        if (node instanceof Element) {
+            String id = ((Element) node).getAttribute("id");
+            if ((null != id) && (!"".equals(id))) {
+                return id;
+            }
+        }
+        return null;
+    }
+
+    private static boolean pruneCheckWarned = false;
+    private static boolean checkPrunes(List<EditOperation> nodeDiffs)  {
+        if (!pruneCheckWarned)  {
+            log.severe("nodeDiff assertion checking active, disable to improve performance");
+            pruneCheckWarned = true;
+        }
+
+        List<Node> justNodes = new ArrayList<Node>();
+        for (EditOperation op : nodeDiffs)  {
+            if (op instanceof ReplaceOperation)  {
+                Node startNode = op.element;
+                Node ascendNode = ascendToNodeWithID(op.element);
+                if (!startNode.equals(ascendNode))  {
+                    log.warning("ID missing " + startNode + " " + ascendNode);
+                    return false;
+                }
+                op.element = ascendNode;
+                justNodes.add(op.element);
+            }
+        }
+
+        Node[] prunedDiff = null;
+        try {
+            prunedDiff = pruneAncestors(justNodes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (null == prunedDiff)  {
+            if (0 == nodeDiffs.size()) {
+                return true;
+            }
+        }
+        
+        if (nodeDiffs.size() == prunedDiff.length)  {
+            return true;
+        }
+
+        log.warning("pruning occured " + nodeDiffs.size() + " " + prunedDiff.length);
+        return false;
     }
 
     public static Element ascendToNodeWithID(final Node start) {

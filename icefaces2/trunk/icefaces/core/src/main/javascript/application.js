@@ -234,8 +234,16 @@ if (!window.ice.icefaces) {
                     var updates = xmlContent.documentElement.firstChild.childNodes;
                     var updateDescriptions = collect(updates, function(update) {
                         var id = update.getAttribute('id');
-                        return update.nodeName + (id ? '["' + id + '"]' : '') +
-                                ': ' + substring(update.firstChild.data, 0, 40) + '....';
+                        var detail = update.nodeName + (id ? '["' + id + '"]' : '');
+                        //will require special case for insert operation
+                        if ("update" == update.nodeName)  {
+                            detail += ': ' + substring(update.firstChild.data, 0, 40) + '....';
+                        } else if ("insert" == update.nodeName)  {
+                            var location = update.firstChild.getAttribute('id');
+                            var text = update.firstChild.firstChild.data;
+                            detail += ': ' + update.firstChild.nodeName + ' ' + location + ': ' + substring(text, 0, 40) + '....';
+                        }
+                        return detail;
                     });
                     debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
                     break;
