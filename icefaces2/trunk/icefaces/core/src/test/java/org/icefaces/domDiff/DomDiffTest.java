@@ -29,6 +29,8 @@ import org.junit.Test;
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 import static org.junit.Assert.*;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.io.File;
 
 
@@ -46,7 +48,7 @@ public class DomDiffTest {
         Document test01_B = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test01_B.xml");
        File f = new File("./");
         System.out.println("Location of file is: " + f.getAbsolutePath());
-        Node[] diff = DOMUtils.domDiff( test01_A, test01_B);
+        Node[] diff = domDiffNodes( test01_A, test01_B);
         assertTrue (diff != null && diff.length == 0);
     }
 
@@ -57,7 +59,7 @@ public class DomDiffTest {
     public void test02() {
         Document test_A = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test02_A.xml");
         Document test_B = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test02_B.xml");
-        Node[] diff = DOMUtils.domDiff( test_A, test_B);
+        Node[] diff = domDiffNodes( test_A, test_B);
 
         assertTrue(diff != null);
         NamedNodeMap nnp = diff[0].getAttributes();
@@ -73,7 +75,7 @@ public class DomDiffTest {
     public void test03() {
         Document test_A = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test03_A.xml");
         Document test_B = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test03_B.xml");
-        Node[] diff = DOMUtils.domDiff( test_A, test_B);
+        Node[] diff = domDiffNodes( test_A, test_B);
 
         assertTrue(diff != null);
         NamedNodeMap nnp = diff[0].getAttributes();
@@ -90,7 +92,7 @@ public class DomDiffTest {
     public void test04() {
         Document test_A = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test04_A.xml");
         Document test_B = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test04_B.xml");
-        Node[] diff = DOMUtils.domDiff( test_A, test_B);
+        Node[] diff = domDiffNodes( test_A, test_B);
 
         assertTrue(diff != null);
         NamedNodeMap nnp = diff[0].getAttributes();
@@ -107,7 +109,7 @@ public class DomDiffTest {
     public void test05() {
         Document test_A = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test05_A.xml");
         Document test_B = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test05_B.xml");
-        Node[] diff = DOMUtils.domDiff( test_A, test_B);
+        Node[] diff = domDiffNodes( test_A, test_B);
 
         assertTrue(diff != null);
         NamedNodeMap nnp = diff[0].getAttributes();
@@ -124,7 +126,7 @@ public class DomDiffTest {
     public void test06() {
         Document test_A = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test06_A.xml");
         Document test_B = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test06_B.xml");
-        Node[] diff = DOMUtils.domDiff( test_A, test_B);
+        Node[] diff = domDiffNodes( test_A, test_B);
 
         assertTrue(diff != null);
         NamedNodeMap nnp = diff[0].getAttributes();
@@ -144,7 +146,7 @@ public class DomDiffTest {
         Document test_B = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test07_B.xml");
 
         long start = System.nanoTime();
-        Node[] diff = DOMUtils.domDiff( test_A, test_B);
+        Node[] diff = domDiffNodes( test_A, test_B);
         long delta = System.nanoTime() - start;
 
         // This assertion guarantees the full diff was run through. 
@@ -163,7 +165,7 @@ public class DomDiffTest {
         Document test_B = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test08_B.xml");
 
         long start = System.nanoTime();
-        Node[] diff = DOMUtils.domDiff( test_A, test_B);
+        Node[] diff = domDiffNodes( test_A, test_B);
         long delta = System.nanoTime() - start;
 
         // This assertion guarantees the full diff was run through.
@@ -179,7 +181,7 @@ public class DomDiffTest {
         Document test_A = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test09_A.xml");
         Document test_B = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test09_B.xml");
 
-        Node[] diff = DOMUtils.domDiff( test_A, test_B);
+        Node[] diff = domDiffNodes( test_A, test_B);
 
         assertTrue(diff != null);
         NamedNodeMap nnp = diff[0].getAttributes();
@@ -196,7 +198,7 @@ public class DomDiffTest {
         Document test_A = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test10_A.xml");
         Document test_B = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test10_B.xml");
 
-        Node[] diff = DOMUtils.domDiff( test_A, test_B);
+        Node[] diff = domDiffNodes( test_A, test_B);
 
         assertTrue(diff != null);
         NamedNodeMap nnp = diff[0].getAttributes();
@@ -213,7 +215,7 @@ public class DomDiffTest {
         Document test_A = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test11_A.xml");
         Document test_B = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test11_B.xml");
 
-        Node[] diff = DOMUtils.domDiff( test_A, test_B);
+        Node[] diff = domDiffNodes( test_A, test_B);
 
         assertTrue(diff != null);
         NamedNodeMap nnp = diff[0].getAttributes();
@@ -230,7 +232,7 @@ public class DomDiffTest {
         Document test_A = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test12_A.xml");
         Document test_B = parseFile( "src/test/java/org/icefaces/domDiff/scripts/test12_B.xml");
 
-        Node[] diff = DOMUtils.domDiff( test_A, test_B);
+        Node[] diff = domDiffNodes( test_A, test_B);
 
         assertTrue(diff != null);
         NamedNodeMap nnp = diff[0].getAttributes();
@@ -255,5 +257,17 @@ public class DomDiffTest {
             e.printStackTrace();
         }
         return returnVal;
+    }
+    
+    private Node[] domDiffNodes(Document oldDOM, Document newDOM)  {
+        List<DOMUtils.EditOperation> nodeDiffs = 
+                DOMUtils.domDiff(oldDOM, newDOM);
+        List<Node> justNodes = new ArrayList<Node>();
+        for (DOMUtils.EditOperation op : nodeDiffs)  {
+            if (op instanceof DOMUtils.ReplaceOperation)  {
+                justNodes.add(op.element);
+            }
+        }
+        return justNodes.toArray(new Node[0]);
     }
 }
