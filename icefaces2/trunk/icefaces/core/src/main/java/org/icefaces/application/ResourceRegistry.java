@@ -91,6 +91,10 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         if (contentType != null) {
             externalContext.setResponseContentType(resource.getContentType());
         }
+        Map<String,String> headers = resource.getResponseHeaders();
+        for (String header : headers.keySet())  {
+            externalContext.setResponseHeader(header, headers.get(header));
+        }
         InputStream in = resource.getInputStream();
         OutputStream out = externalContext.getResponseOutputStream();
 

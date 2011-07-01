@@ -39,10 +39,9 @@ import org.icefaces.impl.renderkit.html_basic.SingleSubmitRenderer;
 public class Util {
     private static Logger log = Logger.getLogger(Util.class.getName());
     private static List DEFAULT_EXCLUSIONS = Arrays.asList(
-            "image/gif", "image/png", "image/jpeg", "image/tiff", "application/pdf",
+            "application/pdf",
             "application/zip", "application/x-compress", "application/x-gzip ",
-            "application/java-archive", "video/x-sgi-movie", "audio/x-mpeg ",
-            "video/mp4", "video/mpeg");
+            "application/java-archive");
     public static final DateFormat HTTP_DATE =
             new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
 
@@ -72,7 +71,15 @@ public class Util {
     }
 
     public static boolean shouldCompress(String contentType) {
-        return !DEFAULT_EXCLUSIONS.contains(contentType);
+        if ( contentType.startsWith("audio/") ||
+             contentType.startsWith("video/") ||
+             contentType.startsWith("image/") ) {
+            return false;
+        }
+        if (DEFAULT_EXCLUSIONS.contains(contentType))  {
+            return false;
+        }
+        return true;
     }
 
     /**
