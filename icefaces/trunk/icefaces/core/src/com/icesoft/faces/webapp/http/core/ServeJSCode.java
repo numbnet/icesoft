@@ -54,7 +54,7 @@ public class ServeJSCode implements Server {
         final InputStream in = loader.getResourceAsStream(Package + file);
 
         if (in == null) {
-            request.respondWith(new NotFoundHandler("Cannot find JS file for " + path));
+            request.respondWith(new NotFoundHandler("Cannot find JS resource."));
         } else {
             request.respondWith(new ResponseHandler() {
                 public void respond(Response response) throws Exception {

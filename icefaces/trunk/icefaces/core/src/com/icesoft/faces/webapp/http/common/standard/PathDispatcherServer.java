@@ -50,7 +50,7 @@ public class PathDispatcherServer implements Server {
         Server server = findServer(path);
 
         if (server == null) {
-            request.respondWith(new NotFoundHandler("Could not find resource at " + path));
+            request.respondWith(new NotFoundHandler("Could not find resource."));
         } else {
             server.service(request);
         }
