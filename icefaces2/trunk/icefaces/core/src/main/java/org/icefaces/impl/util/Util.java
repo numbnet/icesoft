@@ -71,6 +71,9 @@ public class Util {
     }
 
     public static boolean shouldCompress(String contentType) {
+        if(contentType == null){
+            return false;
+        }
         if ( contentType.startsWith("audio/") ||
              contentType.startsWith("video/") ||
              contentType.startsWith("image/") ) {

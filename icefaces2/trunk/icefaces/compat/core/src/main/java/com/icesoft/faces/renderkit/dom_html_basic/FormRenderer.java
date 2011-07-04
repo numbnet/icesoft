@@ -24,7 +24,9 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.util.SeamUtilities;
+import org.icefaces.util.EnvUtils;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -115,7 +117,7 @@ public class FormRenderer extends DomBasicRenderer {
 
         //Write state so that full component state is available when marker is replaced
         //Currently we have to put the marker node in the DOM to position the marker correctly
-        domContext.getRootNode().appendChild(domContext.createTextNode(STATE_SAVING_MARKER));
+        encodeViewState(facesContext,domContext);
 
         // This has to occur outside the isInitialized test, as it has to happen
         // all the time, even if the form otherwise has not changed.
@@ -179,6 +181,31 @@ public class FormRenderer extends DomBasicRenderer {
         }
 
         domContext.stepInto(uiComponent);
+    }
+
+    private void encodeViewState(FacesContext facesContext, DOMContext domContext) {
+        //Different JSF implemenations take different strategies for inserting the ViewState
+        //into the view.  Mojarra uses a marker that it replaces later but MyFaces doesn't
+        //by default.  To ensure ice:form components are properly marked with the ViewState,
+        //we take different approaches for each implementation.
+        //Note:  Mojarra appears to work using the same approach as MyFaces and we may switch
+        //       to using a single strategy when more testing has been done.
+        Node rootNode = domContext.getRootNode();
+        Node stateMarkerNode = null;
+        if(EnvUtils.isMojarra()){
+            stateMarkerNode = domContext.createTextNode(STATE_SAVING_MARKER);
+        } else if(EnvUtils.isMyFaces()){
+            Element inputElement = domContext.createElement("input");
+            inputElement.setAttribute("type", "hidden");
+            inputElement.setAttribute("id", "javax.faces.ViewState");
+            inputElement.setAttribute("name", "javax.faces.ViewState");
+            String viewState = facesContext.getApplication().getStateManager().getViewState(facesContext);
+            inputElement.setAttribute("value", viewState);
+            stateMarkerNode = inputElement;
+        } else {
+            log.warning("could not determine JSF implementation");
+        }
+        rootNode.appendChild(stateMarkerNode);
     }
 
     public void encodeChildren(FacesContext facesContext,
