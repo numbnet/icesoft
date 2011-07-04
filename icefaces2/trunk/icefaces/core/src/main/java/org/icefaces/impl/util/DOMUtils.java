@@ -388,7 +388,11 @@ public class DOMUtils {
     public static List<EditOperation> nodeDiff(Node oldNode, Node newNode) {
         CursorList nodeDiffs = new CursorList();
         try {
-            compareNodes(nodeDiffs, oldNode, newNode);
+            boolean success;
+            success = compareNodes(nodeDiffs, oldNode, newNode);
+            if (!success)  {
+                log.severe("Diff propagated to root but no ID set " + newNode);
+            }
             assert checkPrunes(nodeDiffs.asList());
         } catch (Throwable t)  {
             //assert will not normally require a special try/catch
