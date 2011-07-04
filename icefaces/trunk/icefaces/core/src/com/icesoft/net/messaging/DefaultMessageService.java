@@ -663,7 +663,7 @@ implements MessageServiceClient.Administrator {
             try {
                 Iterator _tasks = taskSet.iterator();
                 while (_tasks.hasNext()) {
-                    ((Task)_tasks).cancel();
+                    ((Task)_tasks.next()).cancel();
                 }
                 taskSet.clear();
             } finally {
