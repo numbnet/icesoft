@@ -32,11 +32,7 @@
 
 package com.icesoft.faces.webapp.http.core;
 
-import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
-import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.Response;
-import com.icesoft.faces.webapp.http.common.ResponseHandler;
-import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.*;
 import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
 
 import java.io.InputStream;
@@ -57,7 +53,7 @@ public class ServeCSSResource implements Server {
         final InputStream in = loader.getResourceAsStream(Package + file);
 
         if (in == null) {
-            request.respondWith(new NotFoundHandler("Cannot find CSS file for " + path));
+            request.respondWith(new NotFoundHandler("Cannot find CSS resource."));
         } else {
             request.respondWith(new ResponseHandler() {
                 public void respond(Response response) throws Exception {
