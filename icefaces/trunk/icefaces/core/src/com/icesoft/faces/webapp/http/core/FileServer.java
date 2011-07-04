@@ -32,12 +32,7 @@
 
 package com.icesoft.faces.webapp.http.core;
 
-import com.icesoft.faces.webapp.http.common.FileLocator;
-import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
-import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.Response;
-import com.icesoft.faces.webapp.http.common.ResponseHandler;
-import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.*;
 import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
 
 import java.io.File;
@@ -68,7 +63,7 @@ public class FileServer implements Server {
                 }
             });
         } else {
-            request.respondWith(new NotFoundHandler("Could not find file at " + path));
+            request.respondWith(new NotFoundHandler("Could not find resource."));
         }
     }
 
