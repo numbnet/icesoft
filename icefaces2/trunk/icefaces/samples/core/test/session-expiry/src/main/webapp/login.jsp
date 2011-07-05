@@ -1,13 +1,6 @@
-<%
-    if ("POST".equals(request.getMethod())) {
-        response.setContentType("text/xml");
-%>
-<partial-response>
-    <error>
-        <error-name>class org.icefaces.application.SessionExpiredException</error-name>
-        <error-message>Session has expired</error-message>
-    </error>
-</partial-response>
+<%if ("POST".equals(request.getMethod())) {
+        response.setContentType("text/xml");%>
+<partial-response><error><error-name>class org.icefaces.application.SessionExpiredException</error-name><error-message>Session has expired</error-message></error></partial-response>
 <%} else {%>
 <head>
     <title>Login</title>
