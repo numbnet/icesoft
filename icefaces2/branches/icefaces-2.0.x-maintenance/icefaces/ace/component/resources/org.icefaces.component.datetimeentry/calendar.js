@@ -668,9 +668,7 @@ updateProperties: function(clientId, jsProps, jsfProps, events) {
 
     ice.yui3.use(function(Y){
     //Y.use('yui2-yahoo', function(Yui) {
-    Y.use('yui2-yahoo', 'yui2-yahoo-dom-event', 'yui2-dom', 'yui2-event',
-           'yui2-element', 'yui2-json', 'yui2-container', 'yui2-selector',
-           'yui2-datasource', 'yui2-calendar', 'yui2-button', function(Yui) {
+    Y.use('yui2-yahoo', function(Yui) {
     Yui.on('domready', function(){
 
     var YAHOO = Yui.YUI2;
