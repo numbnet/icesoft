@@ -918,6 +918,7 @@ public class SelectInputDateRenderer
         dropDown.setImmediate(component.isImmediate());
         dropDown.setDisabled(component.isDisabled() || component.isReadonly());
         dropDown.setStyleClass(component.getMonthYearDropdownClass());
+        component.getChildren().add(dropDown);
 
         UISelectItem selectItem;
         Calendar calendar;
@@ -933,7 +934,6 @@ public class SelectInputDateRenderer
             }
         }
 
-        component.getChildren().add(dropDown);
         dropDown.encodeBegin(facesContext);
         dropDown.encodeChildren(facesContext);
         dropDown.encodeEnd(facesContext);
@@ -965,6 +965,7 @@ public class SelectInputDateRenderer
         dropDown.setImmediate(component.isImmediate());
         dropDown.setDisabled(component.isDisabled() || component.isReadonly());
         dropDown.setStyleClass(component.getMonthYearDropdownClass());
+        component.getChildren().add(dropDown);
 
         int timeKeeperYear = timeKeeper.get(Calendar.YEAR);
         int startYear = timeKeeperYear - yearListSize / 2; // not perfectly centered if size is even
@@ -993,7 +994,6 @@ public class SelectInputDateRenderer
             }
         }
 
-        component.getChildren().add(dropDown);
         dropDown.encodeBegin(facesContext);
         dropDown.encodeChildren(facesContext);
         dropDown.encodeEnd(facesContext);
