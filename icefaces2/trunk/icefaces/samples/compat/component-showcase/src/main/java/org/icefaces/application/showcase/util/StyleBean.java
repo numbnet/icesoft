@@ -23,6 +23,7 @@ package org.icefaces.application.showcase.util;
 
 import org.icefaces.application.showcase.view.bean.NavigationNames;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.model.SelectItem;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.bean.ManagedBean;
@@ -136,7 +137,8 @@ public class StyleBean implements Serializable {
         tempStyle = (String)e.getNewValue();
         if (!currentStyle.equalsIgnoreCase(tempStyle)) {
             currentStyle = tempStyle;
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/component-showcase/index.jsp");
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(ec.getRequestContextPath() + "/index.jsp");
         }
     }
 
