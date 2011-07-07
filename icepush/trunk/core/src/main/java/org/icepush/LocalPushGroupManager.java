@@ -179,6 +179,9 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
             if (!uris.isEmpty()) {
                 getOutOfBandNotifier().broadcast(message, (String[]) uris.toArray(STRINGS));
             }
+
+            //invoke normal push after the verification for park push IDs to avoid interfering with the blocking connection
+            push(groupName);
         } finally {
             scanForExpiry();
         }
