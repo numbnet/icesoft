@@ -203,8 +203,10 @@ if (!window.ice.icefaces) {
         function sessionExpired() {
             //stop retrieving updates
             retrieveUpdate = noop;
-            //dregister pushIds to stop blocking connection
-            each(viewIDs, namespace.push.deregister);
+            //deregister pushIds to stop blocking connection, if ICEpush is present
+            if (namespace.push) {
+                each(viewIDs, namespace.push.deregister);
+            }
             //notify listeners
             broadcast(sessionExpiryListeners);
         }
