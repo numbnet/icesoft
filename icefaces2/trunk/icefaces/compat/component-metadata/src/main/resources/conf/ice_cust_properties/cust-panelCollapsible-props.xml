@@ -24,6 +24,7 @@
 &ice-att-userrole-enabled-props;
 &ice-att-userrole-rendered-props;
 &ice-att-immediate-props;
+&pass-thru-tabindex-props;
 
 <property>
 	<description>
