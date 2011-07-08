@@ -57,7 +57,8 @@ public class PanelCollapsible extends UICommand {
     private boolean disabledSet = false;
     private String enabledOnUserRole = null;
     private String renderedOnUserRole = null;
-    private Boolean toggleOnClick = null; 
+    private Boolean toggleOnClick = null;
+    private String tabindex;
 
     public PanelCollapsible(){
         setRendererType(DEFAULT_RENDERER_TYPE);
@@ -328,7 +329,7 @@ public class PanelCollapsible extends UICommand {
     
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[8];
+        Object[] state = new Object[9];
         state[0] = super.saveState(context);
         state[1] = style;
         state[2] = styleClass;
@@ -337,7 +338,8 @@ public class PanelCollapsible extends UICommand {
         state[5] = renderedOnUserRole;
         state[6] = toggleOnClick;
         state[7] = Boolean.valueOf(disabledSet);
-        
+        state[8] = tabindex;
+
         return state;
     }
 
@@ -351,6 +353,7 @@ public class PanelCollapsible extends UICommand {
         renderedOnUserRole = (String)state[5];
         toggleOnClick = (Boolean)state[6];        
         disabledSet = ((Boolean) state[7]).booleanValue();
+        tabindex = (String) state[8];
     }
     
     //At the time of the creation of the component both JSP and facelets
@@ -376,5 +379,17 @@ public class PanelCollapsible extends UICommand {
             return true;
         }
         return false;
+    }
+
+    public void setTabindex(String tabindex) {
+        this.tabindex = tabindex;
+    }
+
+    public String getTabindex() {
+        if (tabindex != null) {
+            return tabindex;
+        }
+        ValueBinding vb = getValueBinding("tabindex");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 }
