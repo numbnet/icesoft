@@ -30,6 +30,11 @@
         ICEfaces Auction Demo
     </description>
 
+    <context-param>
+        <param-name>com.sun.faces.defaultResourceMaxAge</param-name>
+        <param-value>604800000</param-value>
+    </context-param>
+
     <!-- set the polling interval for the auction IntervalPushRenderer -->
     <context-param>
         <param-name>org.icefaces.sample.auction.interval</param-name>
@@ -41,9 +46,14 @@
         <param-value>server</param-value>
     </context-param>
     
+<!--
+    Changing this context parameter to Development may be useful during 
+    development stage to detect potential issues earlier, but this results in
+    application running with lower performance settings within JSF.
+-->
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
-        <param-value>Development</param-value>
+        <param-value>Production</param-value>
     </context-param>
     
     <context-param>
