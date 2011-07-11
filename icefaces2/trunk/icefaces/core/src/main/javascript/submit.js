@@ -194,6 +194,7 @@ var submit;
                 fakeClick.setAttribute("value", element.value);
                 f.appendChild(fakeClick);
                 f.nativeSubmit();
+                f.removeChild(fakeClick);
             }
         } else {
             event = event || null;
