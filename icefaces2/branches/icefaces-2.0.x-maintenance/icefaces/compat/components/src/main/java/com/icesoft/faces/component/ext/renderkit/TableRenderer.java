@@ -223,10 +223,10 @@ public class TableRenderer
             htmlDataTable.setColNumber(-1);
             while (childColumns.hasNext()) {
                 UIComponent nextColumn = (UIComponent) childColumns.next();
-
+                htmlDataTable.setColNumber(htmlDataTable.getColNumber()+1);
                 if (!nextColumn.isRendered()) continue;
                 if (nextColumn instanceof UIColumn) {
-                    htmlDataTable.setColNumber(htmlDataTable.getColNumber()+1);
+//                    htmlDataTable.setColNumber(htmlDataTable.getColNumber()+1);
                     processUIColumnHeader(facesContext, uiComponent,
                                           (UIColumn) nextColumn, tr, domContext,
                                           facet, element,
