@@ -59,7 +59,7 @@ function CookieBasedNotificationBroadcaster(name, callback) {
                 update(notifiedPushIDs, join(complement(ids, notifiedIDs), ' '));
             }
         } catch (e) {
-            warn(logger, 'failed to listen for updates', e);
+            warn(namespace.logger, 'failed to listen for updates', e);
         }
     }, 300));
 
