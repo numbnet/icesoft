@@ -44,6 +44,15 @@ public class AjaxBean implements Serializable {
         visible = !visible;
     }
 
+    public void toggleListener(ActionEvent ae) {
+        toggle(ae);
+    }
+
+    public String toggleAction(){
+        toggle(null);
+        return null;
+    }
+
     public String getResponseWriter(){
         FacesContext fc = FacesContext.getCurrentInstance();
         ResponseWriter rw = fc.getResponseWriter();
