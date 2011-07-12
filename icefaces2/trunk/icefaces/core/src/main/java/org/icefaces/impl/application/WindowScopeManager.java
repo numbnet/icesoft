@@ -250,6 +250,17 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         return seed + Long.toString(System.currentTimeMillis(), 36);
     }
 
+    public static void disposeWindows(final HttpSession session) {
+        State state = (State)session.getAttribute(WindowScopeManager.class.getName());
+        Collection<ScopeMap> scopeMaps = state.windowScopedMaps.values();
+        for (final ScopeMap scopeMap : scopeMaps) {
+            Collection<Object> windowScopedBeans = scopeMap.values();
+            for (final Object windowScopedBean : windowScopedBeans) {
+                callPreDestroy(windowScopedBean);
+            }
+        }
+    }
+
     public static synchronized void disposeWindow(FacesContext context, String id) {
         State state = getState(context);
         ScopeMap scopeMap = (ScopeMap) state.windowScopedMaps.get(id);
