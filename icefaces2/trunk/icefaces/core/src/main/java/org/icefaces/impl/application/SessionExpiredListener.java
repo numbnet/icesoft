@@ -35,6 +35,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SessionExpiredListener implements HttpSessionListener {
@@ -62,11 +63,11 @@ public class SessionExpiredListener implements HttpSessionListener {
                     new ExceptionQueuedEventContext(fc, new SessionExpiredException("Session has expired"));
             app.publishEvent(fc, ExceptionQueuedEvent.class, ctxt);
         }
-
+        HttpSession session = httpSessionEvent.getSession();
+        WindowScopeManager.disposeWindows(session);
         //If the session is destroyed and ICEpush is available, we can request a push request immediately
         //which should result in a SessionExpiredException being sent to the client.
         if (EnvUtils.isICEpushPresent()) {
-            HttpSession session = httpSessionEvent.getSession();
             ServletContext servletContext = session.getServletContext();
             PushContext pushContext = PushContext.getInstance(servletContext);
             pushContext.push(session.getId());
