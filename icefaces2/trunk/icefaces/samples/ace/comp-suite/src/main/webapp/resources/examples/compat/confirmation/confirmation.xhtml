@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[confirmation.title]}"/>
+    <ui:param name="description" value="#{msgs[confirmation.description]}"/>
+    <ui:param name="resourceValue" value="#{confirmation.exampleResource}"/>
+    
+    <ui:define name="example">
+        <p><b>Demo Use Cases:</b></p>
+        <p><b>1.</b> Click "Generate a Random Number", which will display a confirmation component.</p>
+        <p><b>2.</b> Click "New Number!" at the resulting prompt to generate a new random number.</p>
+        <p>The confirmation component is useful for prompting a user before completing an action, which is similar to the functionality of an offline desktop application.</p>
+        <p>For example a confirmation component could block a deletion until the user confirms their choice.</p>
+        <p>Implementing the component is simple and done through customized attributes on the tag, so developers don't have to worry about layout or styling.</p>
+        <br/>
+    
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputLabel for="genOut" value="Current Number:"/>
+                <h:outputText id="genOut" value="#{confirmation.number}"/>
+            </h:panelGrid>
+                
+            <ice:commandButton value="Generate a Random Number"
+                               panelConfirmation="genConfirm"
+                               actionListener="#{confirmation.generateNumber}"/>
+            <ice:commandButton value="Clear Number"
+                               panelConfirmation="clearConfirm"
+                               actionListener="#{confirmation.clearNumber}"/>
+            
+            <ice:panelConfirmation id="genConfirm"
+                                   message="Are you sure you want to generate a new random number?"
+                                   acceptLabel="New Number!"
+                                   cancelLabel="No, Keep #{confirmation.number}"
+                                   autoCentre="true"
+                                   rendered="true"/>
+                                   
+            <ice:panelConfirmation id="clearConfirm"
+                                   message="Clear current number #{confirmation.number}?"
+                                   acceptLabel="Yes"
+                                   cancelLabel="No"
+                                   autoCentre="false"
+                                   displayAtMouse="true"
+                                   rendered="true"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[mediaQuicktime.title]}"/>
+    <ui:param name="description" value="#{msgs[mediaQuicktime.description]}"/>
+    <ui:param name="resourceValue" value="#{mediaQuicktime.exampleResource}"/>
+    
+    <ui:define name="example">
+        <h:form>
+            <ice:outputMedia id="outputMedia"
+                             player="quicktime"
+                             source="#{media.sourceDir}/ICEfaces_Quicktime.mov"
+                             style="width:300px; height:270px;">
+                <f:param name="autoplay" value="true"/>
+                <f:param name="controller" value="true"/>
+            </ice:outputMedia>
+        </h:form>
+    </ui:define>
+</ui:composition>

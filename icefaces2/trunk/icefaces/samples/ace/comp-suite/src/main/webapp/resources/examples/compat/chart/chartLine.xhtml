@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[chartLine.title]}"/>
+    <ui:param name="description" value="#{msgs[chartLine.description]}"/>
+    <ui:param name="resourceValue" value="#{chartLine.exampleResource}"/>
+    
+    <ui:define name="example">
+        <h:form>
+            <h:panelGrid columns="2" rendered="#{chartLine.model.areaMapEnabled}">
+                <h:outputLabel for="statusOut" value="Clicked:"/>
+                <h:outputText id="statusOut" value="#{chart.clickedStatus}"/>
+            </h:panelGrid>
+        
+            <ice:outputChart type="#{chartLine.type}" 
+                             chartTitle="#{chartLine.model.chartTitle} Chart"
+                             xaxisTitle="#{chartLine.model.XAxisTitle}"
+                             yaxisTitle="#{chartLine.model.YAxisTitle}"
+                             labels="#{chartLine.model.legendLabels}"
+                             legendPlacement="#{chartLine.model.legendPlacement}"
+                             colors="#{chartLine.model.colors}"
+                             xaxisLabels="#{chartLine.model.XAxisLabels}"
+                             data="#{chartLine.model.chartData}"
+                             renderOnSubmit="#{chartLine.model.renderOnSubmit}"
+                             horizontal="#{chartLine.model.barChartOrientationHorizontal}"
+                             actionListener="#{chart.chartClicked}"
+                             width="450" height="300"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

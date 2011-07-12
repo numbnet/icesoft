@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[mapType.title]}"/>
+    <ui:param name="description" value="#{msgs[mapType.description]}"/>
+    <ui:param name="resourceValue" value="#{mapType.exampleResource}"/>
+    
+    <ui:define name="example">
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputLabel for="typeSelect" value="Type:"/>
+                <h:selectOneListbox id="typeSelect"
+                                    value="#{mapType.type}">
+                    <f:selectItems value="#{mapType.availableTypes}"/>
+                </h:selectOneListbox>
+            </h:panelGrid>
+            
+            <h:commandButton value="Apply Changes"
+                             actionListener="#{mapType.applyChanges}"/>
+            
+            <ice:gMap type="#{mapType.type}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

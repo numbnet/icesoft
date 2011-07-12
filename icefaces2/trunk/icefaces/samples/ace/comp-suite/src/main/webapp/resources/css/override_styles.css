@@ -1,0 +1,94 @@
+/*
+ * Version: MPL 1.1
+ *
+ * The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ */
+
+.icePnlPop {
+    width: 300px;
+    border: 4px outset #555555;
+    background-color: white;
+    z-index: 1001;
+}
+
+.icePnlPopBody {
+    width: 100%;
+}
+
+.icePnlPopHdr {
+    text-align: center;
+    width: 100%;
+}
+
+.icePnlTlTipBody {
+    width: 100%;
+    padding: 10px;
+}
+
+.iceSelInpTxtList {
+    z-index: 500;
+}
+
+.icePnlBrdrNorth, .icePnlBrdrEast, .icePnlBrdrWest, .icePnlBrdrSouth,
+.icePnlBrdrCenter {
+    background-color: #CDCDCD;
+    border: 1px solid #555555;
+    color: black;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.icePnlBrdrNorth, .icePnlBrdrSouth {
+    height: 60px;
+}
+
+.icePnlBrdrEast, .icePnlBrdrWest, .icePnlBrdrCenter {
+    height: 100px;
+}
+
+.icePnlBrdrEast, .icePnlBrdrWest {
+    width: 100px;
+}
+
+.icePnlStk {
+    background-color: #CDCDCD;
+    border: 1px solid #555555;
+    color: black;
+}
+
+.iceMnuPopVrt {
+    z-index: 1005;
+}
+
+.icePnlClpsblColpsdHdr h2 {
+    background: url("../resources/css/images/collapsible-off.gif") no-repeat scroll 3px 2px transparent;
+    margin: -2px 0 0 -2px;
+    padding: 5px 0 0 5px;
+}
+
+.icePnlClpsblHdr h2 {
+    background: url("../resources/css/images/collapsible-on.gif") no-repeat scroll 3px 2px transparent;
+    margin: -2px 0 0 -2px;
+    padding: 5px 0 0 5px;
+}
+
+.iceRowSelSelected {
+    background-color: #999999;
+}

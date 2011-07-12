@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[fileEntry.title]}"/>
+    <ui:param name="description" value="#{msgs[fileEntry.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[fileEntry.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{fileEntry.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{fileEntry.exampleResource}"/>
+    
+    <ui:define name="example">
+        <h:form id="example-form">
+            <span class="top">
+                <ace:fileEntry id="file-entry" 
+                    style-class="top" 
+                    relativePath="/files/" 
+                    maxFileCount="10" 
+                    maxFileCountMessage="Limited to 10 files uploaded concurrantly." 
+                    fileEntryListener="#{fileEntry.sampleListener}" 
+                    maxFileSize="6291456" 
+                    maxFileSizeMessage="Submitted file is too large." 
+                    maxTotalSize="18874368" 
+                    maxTotalSizeMessage="Total size of submitted files is too large." 
+                    required="true" 
+                    requiredMessage="The file is required to submit this form." 
+                    useOriginalFilename="true" 
+                    useSessionSubdir="false" />
+            </span>
+            <span class="row">
+                <span class="top">
+                    <h:commandButton class="submit" type="submit" value="Send File"/>
+                    <br/>
+                    <h:commandButton class="submit" 
+                        actionListener="#{fileEntry.clearUploads}" 
+                        type="submit" 
+                        value="Clear &amp; Submit" />
+                </span>
+                <span class="messages top">
+                    <h:messages/>
+                </span>
+            </span>
+        </h:form>
+    </ui:define>       
+</ui:composition>

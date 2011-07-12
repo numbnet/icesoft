@@ -1,0 +1,126 @@
+package org.icefaces.samples.showcase.example.compat.menuBar;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import javax.faces.bean.CustomScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
+
+import com.icesoft.faces.component.menubar.MenuItem;
+
+import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
+import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
+import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
+import org.icefaces.samples.showcase.metadata.annotation.Menu;
+import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
+import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
+import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
+
+@ComponentExample(
+        parent = MenuBarBean.BEAN_NAME,
+        title = "example.compat.menuBar.dynamic.title",
+        description = "example.compat.menuBar.dynamic.description",
+        example = "/resources/examples/compat/menuBar/menuBarDynamic.xhtml"
+)
+@ExampleResources(
+        resources ={
+            // xhtml
+            @ExampleResource(type = ResourceType.xhtml,
+                    title="menuBarDynamic.xhtml",
+                    resource = "/resources/examples/compat/"+
+                               "menuBar/menuBarDynamic.xhtml"),
+            // Java Source
+            @ExampleResource(type = ResourceType.java,
+                    title="MenuBarDynamic.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/"+
+                               "showcase/example/compat/menuBar/MenuBarDynamic.java")
+        }
+)
+@ManagedBean(name= MenuBarDynamic.BEAN_NAME)
+@CustomScoped(value = "#{window}")
+public class MenuBarDynamic extends ComponentExampleImpl<MenuBarDynamic> implements Serializable {
+	
+	public static final String BEAN_NAME = "menuBarDynamic";
+	
+	private String LABEL_TEXT = "New Menu Item ";
+	private String ICON_PATH = "resources/css/images/menu/";
+	
+	private Random randomizer = new Random(System.nanoTime());
+	private String[] icons = new String[] {
+	    "open.gif",
+	    "print.gif",
+	    "recent.gif",
+	    "save.gif",
+	    "zoomin.gif",
+	    "fitinpage.gif"
+	};
+	private List<MenuItem> items = generateItems(5);
+	private int index = 25;
+	private String currentText;
+	private String currentIcon;
+	private int generateCount = 5;
+	
+	public MenuBarDynamic() {
+		super(MenuBarDynamic.class);
+	}
+	
+	public String[] getIcons() { return icons; }
+	public List<MenuItem> getItems() { return items; }
+	public String getCurrentText() { return currentText; }
+	public String getCurrentIcon() { return currentIcon; }
+	public int getGenerateCount() { return generateCount; }
+	
+	public void setItems(List<MenuItem> items) { this.items = items; }
+	public void setCurrentText(String currentText) { this.currentText = currentText; }
+	public void setCurrentIcon(String currentIcon) { this.currentIcon = currentIcon; }
+	public void setGenerateCount(int generateCount) { this.generateCount = generateCount; }
+	
+	private List<MenuItem> generateItems(int count) {
+	    List<MenuItem> toReturn = new ArrayList<MenuItem>(count);
+	    
+	    for (int i = index; i < (index+count); i++) {
+	        toReturn.add(makeItem((index+i)));
+	    }
+	    
+	    index += count;
+	    
+	    return toReturn;
+	}
+	
+	private MenuItem makeItem(int count) {
+	    return makeItem(LABEL_TEXT + count, makeIcon());
+	}
+	
+	private MenuItem makeItem(String text, String icon) {
+	    MenuItem toReturn = new MenuItem();
+	    
+	    toReturn.setValue(text);
+	    toReturn.setTitle(text);
+	    toReturn.setIcon(ICON_PATH + icon);
+	    
+	    return toReturn;
+	}
+	
+	private String makeIcon() {
+	    return icons[randomizer.nextInt(icons.length-1)];
+	}
+	
+	public void addItem(ActionEvent event) {
+	    items.add(makeItem(currentText, currentIcon));
+	    
+	    currentText = null;
+	    currentIcon = null;
+	}
+	
+	public void generateNewItems(ActionEvent event) {
+	    items = generateItems(generateCount);
+	    
+	    currentText = null;
+	    currentIcon = null;
+	}
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[media.title]}"/>
+    <ui:param name="description" value="#{msgs[media.description]}"/>
+    <ui:param name="resourceValue" value="#{media.exampleResource}"/>
+    
+    <ui:define name="example">
+        <p><b>Demo Use Cases:</b></p>
+        <p><b>1.</b> Observe the media file displayed in the browser through the output media component.</p>
+        <p>The media component allows rich Flash, Quicktime, WMV, and Real Player files to be easily displayed in the browser.</p>
+        <p>This is a handy and easy to use alternative to manually crafting the HTML required to display these elements.</p>
+        <p>The various controls of the player, as well as size and style can be customized.</p>
+        <br/>
+    
+        <h:form>
+            <ice:outputMedia id="outputMedia"
+                             player="flash"
+                             source="#{media.sourceDir}/ICEfaces_Flash.swf"
+                             style="width:300px; height:250px;">
+                <f:param name="play" value="true"/>
+                <f:param name="menu" value="true"/>
+            </ice:outputMedia>
+        </h:form>
+    </ui:define>
+</ui:composition>
