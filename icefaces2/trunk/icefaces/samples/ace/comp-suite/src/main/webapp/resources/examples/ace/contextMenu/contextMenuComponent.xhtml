@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[contextMenuComponent.title]}"/>
+    <ui:param name="description" value="#{msgs[contextMenuComponent.description]}"/>
+    <ui:param name="resourceValue" value="#{contextMenuComponent.exampleResource}"/>
+
+    <ui:define name="example">
+        <h:form>
+            <p><i>Note the menu items are just placeholders and do not perform any functionality.</i></p>
+            
+            <h:panelGrid columns="2" cellspacing="10">
+                <h:outputLabel for="intro" value="Clickable:"/>
+                <h:outputText id="intro" value="Right-click on this sentence or any of the widgets below to display a component specific menu."/>
+                
+                <h:outputLabel for="button" value="Clickable:"/>
+                <h:commandButton id="button" value="Submit Button"/>
+                
+                <h:outputLabel for="radio" value="Clickable:"/>
+                <h:selectOneRadio id="radio">
+                    <f:selectItem itemLabel="Red"/>
+                    <f:selectItem itemLabel="Green"/>
+                    <f:selectItem itemLabel="Blue"/>
+                </h:selectOneRadio>
+            </h:panelGrid>
+            
+            <ace:contextMenu for="intro">
+                <ace:menuitem value="Copy" icon="ui-icon ui-icon-disk"/>  
+                <ace:menuitem value="Translate" icon="ui-icon ui-icon-arrowrefresh-1-w"/>  
+            </ace:contextMenu>
+            
+            <ace:contextMenu for="button">
+                <ace:menuitem value="Click" icon="ui-icon ui-icon-disk"/>  
+                <ace:menuitem value="Status" icon="ui-icon"/>
+                <ace:menuitem value="Refresh" icon="ui-icon ui-icon-arrowrefresh-1-w"/>
+            </ace:contextMenu>
+
+            <ace:contextMenu for="radio">
+                <ace:menuitem value="Select Red" icon="ui-icon"/>
+                <ace:menuitem value="Select Green" icon="ui-icon"/>
+                <ace:menuitem value="Select Blue" icon="ui-icon"/>
+                <ace:menuitem value="Set Default" icon="ui-icon"/>
+            </ace:contextMenu>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[autocomplete.title]}"/>
+    <ui:param name="description" value="#{msgs[autocomplete.description]}"/>
+    <ui:param name="resourceValue" value="#{autocomplete.exampleResource}"/>
+    
+    <ui:define name="example">
+        <p><b>Demo Use Cases:</b></p>
+        <p><b>1.</b> Start typing a City into the provided input field.</p>
+        <p>As you type a list of available city options will be filtered and displayed. Navigation of this menu can be done using the keyboard arrows or the mouse.</p>
+        <p>Selecting a city will automatically submit it to the server, or further typing can be done to reduce the filtered results further.</p>
+        <p>The "Current Results" field displays how many cities match the currently typed text, and will narrow accordingly. If no matches are found the filter will reset to check the first letter only.</p>
+        <p>From a developer perspective the filtering of autocomplete results is done in the backend, which allows greater customization of how to match.</p>
+        <p>The displayed options can be customized to use a richer appearance of any complex components, instead of just plain text.</p>
+        <br/>
+    
+        <h:form>
+            <h:panelGrid columns="4">
+                <h:outputLabel for="autoOut" value="Submitted City:"/>
+                <h:outputText id="autoOut" value="#{autocomplete.selectedCity}"/>
+                <h:outputText value=""/><h:outputText value=""/>
+                
+                <h:outputLabel for="autoCur" value="Current Text:"/>
+                <h:outputText id="autoCur" value="#{autocomplete.selectedText}"/>
+                <h:outputText value=""/><h:outputText value=""/>
+                
+                <h:outputLabel for="autoResults" value="Current Results:"/>
+                <h:outputText id="autoResults" value="#{autocomplete.results}"/>
+                <h:outputText value=""/><h:outputText value=""/>
+            
+                <h:outputLabel for="autoIn" value="Choose a City:"/>
+                <ice:selectInputText id="autoIn"
+                                     value="#{autocomplete.selectedText}"
+                                     textChangeListener="#{autocomplete.textChanged}"
+                                     actionListener="#{autocomplete.submitText}"
+                                     rows="10" width="300">
+                    <f:selectItems value="#{autocomplete.availableCities}"/>
+                </ice:selectInputText>
+                <h:commandButton value="Submit"
+                                 actionListener="#{autocomplete.submitText}"/>
+                <h:message for="autoIn"/>
+            </h:panelGrid>
+        </h:form>    
+    </ui:define>
+</ui:composition>

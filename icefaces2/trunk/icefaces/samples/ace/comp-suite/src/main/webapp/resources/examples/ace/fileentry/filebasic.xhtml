@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[fileEntryBasic.title]}"/>
+    <ui:param name="description" value="#{msgs[fileEntryBasic.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[fileEntry.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{fileEntry.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{fileEntryBasic.exampleResource}"/>
+
+    <ui:define name="example">
+        <h:form id="example-form">
+            <span>
+                <ace:fileEntry id="file-entry" style-class="top" />
+            </span>
+            
+            <div class="row">
+                <h:commandButton class="submit top" type="submit" value="Send File" />                                  
+                <span class="messages top">
+                    <h:messages />
+                </span>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

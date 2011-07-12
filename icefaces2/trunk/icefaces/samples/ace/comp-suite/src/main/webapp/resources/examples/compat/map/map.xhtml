@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[map.title]}"/>
+    <ui:param name="description" value="#{msgs[map.description]}"/>
+    <ui:param name="resourceValue" value="#{map.exampleResource}"/>
+    
+    <ui:define name="example">
+        <p><b>Demo Use Cases:</b></p>
+        <p><b>1.</b> Enter a street address to look up into the input field.</p>
+        <p><b>2.</b> Click "Perform Lookup" to display the address using the map component below.</p>
+        <p>The map component wraps the <a href="http://code.google.com/apis/maps/" target="_blank">Google Map API</a> and allows ICEfaces developers to easily access mapping functionality in their application.</p>
+        <p>The display controls, size, map type, zoom level, etc. can be customized.</p>
+        <br/>
+    
+        <h:form>
+            <h:panelGrid columns="3">
+                <h:outputLabel for="address" value="Address:"/>
+                <h:inputText id="address"
+                             value="#{map.address}"
+                             maxlength="1024" size="50">
+                     <f:validateLength minimum="0" maximum="1024"/>
+                </h:inputText>
+                <h:message for="address"/>
+            </h:panelGrid>
+            
+            <h:commandButton value="Perform Lookup"
+                             actionListener="#{map.lookup}"/>
+        
+            <ice:gMap address="#{map.address}"
+                  locateAddress="#{map.locateAddress}">
+                <ice:gMapControl name="GLargeMapControl"/>
+                <ice:gMapControl name="GScaleControl"/>
+                <ice:gMapControl name="GMapTypeControl"/>
+                <ice:gMapControl name="GOverviewMapControl"/>
+            </ice:gMap>
+        </h:form>
+    </ui:define>
+</ui:composition>

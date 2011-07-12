@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[connectionStatusLabels.title]}"/>
+    <ui:param name="description" value="#{msgs[connectionStatusLabels.description]}"/>
+    <ui:param name="resourceValue" value="#{connectionStatusLabels.exampleResource}"/>
+    
+    <ui:define name="example">
+        <h:form>
+            <icecore:singleSubmit/>
+            <h:panelGrid columns="3">
+                <h:outputLabel for="active" value="Active Label:"/>
+                <h:inputText id="active" value="#{connectionStatusLabels.activeLabel}"
+                             required="true"/>
+                <h:message for="active"/>
+                
+                <h:outputLabel for="inactive" value="Inactive Label:"/>
+                <h:inputText id="inactive" value="#{connectionStatusLabels.inactiveLabel}"
+                             required="true"/>
+                <h:message for="inactive"/>
+
+                <h:outputLabel for="disconnect" value="Disconnect Label:"/>
+                <h:inputText id="disconnect" value="#{connectionStatusLabels.disconnectLabel}"
+                             required="true"/>
+                <h:message for="disconnect"/>
+                
+                <h:outputLabel for="status" value="Connection Status:"/>
+                <ice:outputConnectionStatus id="status"
+                                            displayHourglassWhenActive="false"
+                                            activeLabel="#{connectionStatusLabels.activeLabel}"
+                                            disconnectedLabel="#{connectionStatusLabels.disconnectLabel}"
+                                            inactiveLabel="#{connectionStatusLabels.inactiveLabel}"/>
+            </h:panelGrid>
+            
+            <h:commandButton value="Long Event"
+                             actionListener="#{connectionStatus.longEvent}"/>
+            <h:commandButton value="Disconnect Event"
+                             actionListener="#{connectionStatus.disconnectEvent}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

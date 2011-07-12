@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[menuDynamic.title]}"/>
+    <ui:param name="description" value="#{msgs[menuDynamic.description]}"/>
+    <ui:param name="resourceValue" value="#{menuDynamic.exampleResource}"/>
+
+    <ui:define name="example">
+        <h:form>
+            <h:commandButton value="Add Submenu" actionListener="#{menuDynamic.addSubmenu}"/>
+            <h:commandButton value="Add Item" actionListener="#{menuDynamic.addItem}"/>
+            <h:commandButton value="Remove Submenu" actionListener="#{menuDynamic.removeSubmenu}"/>
+            <h:commandButton value="Remove Item" actionListener="#{menuDynamic.removeItem}"/>
+            
+            <ace:menu id="mainMenu" model="#{menuDynamic.menuModel}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

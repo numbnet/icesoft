@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                xmlns:ace="http://www.icefaces.org/icefaces/components"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+<!--
+Available ui:params to pass:
+ title
+ description
+ resourceValue
+-->
+    <div class="example">        
+        <h2>#{title}</h2>
+        
+        <div class="content">
+            <div class="desc">
+                <ice:outputText value="#{description}" escape="false" nospan="true"/>
+            </div>
+            <div class="instance">
+			    <ui:insert name="example"/>
+			</div>
+        </div>
+        
+        <div class="resources">
+			<h2>#{navigationModel.componentExample} Resources</h2>
+            
+            <h:form>
+                <ace:tabSet clientSide="true" selectedIndex="0"
+                            rendered="#{not empty resourceValue}">
+                    <c:forEach items="#{resourceValue}"
+                               var="exRes">
+                        <ace:tabPane label="#{exRes.title}" styleClass="scrollx">
+                            <h:outputText escape="false" value="#{sourceCodeLoaderConnection[exRes.resource]}" />
+                        </ace:tabPane>
+                    </c:forEach>
+                </ace:tabSet>
+            </h:form>			
+        </div>
+    </div>
+</ui:composition>

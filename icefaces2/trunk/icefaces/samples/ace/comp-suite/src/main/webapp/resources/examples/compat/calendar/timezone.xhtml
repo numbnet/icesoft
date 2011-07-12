@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[calendarTimezone.title]}"/>
+    <ui:param name="description" value="#{msgs[calendarTimezone.description]}"/>
+    <ui:param name="resourceValue" value="#{calendarTimezone.exampleResource}"/>
+    
+    <ui:define name="example">
+        <h:form id="example-form">
+            <h:panelGrid columns="2">
+                <h:outputLabel for="display" value="Selected Date:"/>
+                <h:outputText id="display" value="#{calendarTimezone.date}">
+                    <f:convertDateTime pattern="#{calendarTimezone.pattern}"
+                                       timezone="#{calendarTimezone.timezoneObject}"/>
+                </h:outputText>
+                
+                <h:outputLabel for="timezones" value="Timezones:"/>
+                <h:selectOneMenu id="timezones"
+                                 value="#{calendarTimezone.timezoneId}"
+                                 valueChangeListener="#{calendarTimezone.timezoneChanged}">
+                    <f:selectItems value="#{calendarTimezone.availableZones}"/>
+                </h:selectOneMenu>
+            </h:panelGrid>
+            
+            <h:commandButton value="Apply Changes"
+                             actionListener="#{calendarTimezone.applyChanges}"/>
+            
+            <ice:selectInputDate value="#{calendarTimezone.date}" renderAsPopup="false">
+                <f:convertDateTime pattern="#{calendarTimezone.pattern}"
+                                   timezone="#{calendarTimezone.timezoneObject}"/>
+            </ice:selectInputDate>
+        </h:form>
+    </ui:define>       
+</ui:composition>

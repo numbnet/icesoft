@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[slider.title]}"/>
+    <ui:param name="description" value="#{msgs[slider.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[slider.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{slider.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{slider.exampleResource}"/>
+
+    <ui:define name="example">
+        <h:form>
+            <span class="top">
+                <ace:sliderEntry id="slide-entry"
+                    singleSubmit="true"
+                    clickableRail="true"
+                    style-class="top"
+                    length="200px"
+                    min="-30"
+                    max="150"
+                    value="#{slider.sliderValue}" />
+            </span>
+            <div class="row" style="width:200px;">
+                <span class="top" style="width:200px;">
+                    <h:panelGrid style="width:100%;" columns="2">
+                        <h:outputText value="Value:" />
+                        <ice:inputText style="width:100%;" singleSubmit="true" value="#{slider.sliderValue}" />
+                    </h:panelGrid>
+                </span>
+                <span class="messages top">
+                    <h:messages/>
+                </span>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

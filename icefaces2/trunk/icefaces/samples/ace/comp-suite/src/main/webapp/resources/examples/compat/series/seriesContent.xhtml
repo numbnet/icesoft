@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[seriesContent.title]}"/>
+    <ui:param name="description" value="#{msgs[seriesContent.description]}"/>
+    <ui:param name="resourceValue" value="#{seriesContent.exampleResource}"/>
+    
+    <ui:define name="example">
+        <h:form>
+            <icecore:singleSubmit/>
+            <h:panelGrid columns="2">
+                <h:outputLabel for="typeIn" value="Content Type:"/>
+                <h:selectOneMenu id="typeIn" value="#{seriesContent.type}"
+                                 required="true">
+                     <f:selectItems value="#{seriesContent.availableTypes}"/>
+                </h:selectOneMenu>
+            </h:panelGrid>
+        </h:form>
+        
+        <h:form>
+            <ice:panelSeries value="#{seriesContent.items}"
+                             var="item">
+                 <br/>
+                 <h2>Content Item #{item} of #{seriesContent.type} Type</h2>
+                             
+                 <h:panelGroup rendered="#{seriesContent.typeCalendar}">
+                    <ice:selectInputDate renderAsPopup="false">
+                        <f:convertDateTime pattern="MM/dd/yyyy"/>
+                    </ice:selectInputDate>
+                 </h:panelGroup>
+                 
+                 <h:panelGroup rendered="#{seriesContent.typeArea}">
+                    <h:inputTextarea rows="4" cols="40"/>
+                 </h:panelGroup>
+                 
+                 <h:panelGroup rendered="#{seriesContent.typeText}">
+                    <p>The custom Window scope is designed to fill a gap in the existing scopes available for JSF 2.0, as it exists for the life of a browser window or tab, including surviving reloads and refreshes.</p>
+                 </h:panelGroup>
+                 
+                 <h:panelGroup rendered="#{seriesContent.typeImages}">
+                    <h:graphicImage library="css/images" name="header.png"/>
+                 </h:panelGroup>
+            </ice:panelSeries>
+        </h:form>
+    </ui:define>
+</ui:composition>

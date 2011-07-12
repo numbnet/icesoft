@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[richtext.title]}"/>
+    <ui:param name="description" value="#{msgs[richtext.description]}"/>
+    <ui:param name="resourceValue" value="#{richtext.exampleResource}"/>
+    
+    <ui:define name="example">
+        <p><b>Demo Use Cases:</b></p>
+        <p><b>1.</b> Use the various features of the rich text editor such as bolding text, inserting links, adding lists, etc.</p>
+        <p><b>2.</b> Click the "Save" button (icon of a floppy disk) to submit the entered text to the server, where it will display under the "Saved Text String" field at the bottom.</p>
+        <p>The rich text component wraps the <a href="http://ckeditor.com/" target="_blank">CKEditor</a> and allows users to easily format and customize their input.</p>
+        <p>All entered text is stored as plain HTML on the server, so developers can redisplay the text, save it as a document, etc. as needed.</p>
+        <p>The appearance and language of the rich text component can be customized.</p>
+        <br/>
+    
+        <h:form>
+            <ice:inputRichText value="#{richtext.text}"
+                               language="en"
+                               saveOnSubmit="true"
+                               skin="silver"
+                               toolbar="Default"
+                               height="450"/>
+                               
+            <h:panelGrid columns="1" style="border: 1px solid black;">
+                <h:outputLabel for="textOut" value="Saved Text String:"/>
+                <h:outputText id="textOut"
+                              value="#{richtext.text}"/>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

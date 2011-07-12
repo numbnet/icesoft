@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[positioned.title]}"/>
+    <ui:param name="description" value="#{msgs[positioned.description]}"/>
+    <ui:param name="resourceValue" value="#{positioned.exampleResource}"/>
+    
+    <ui:define name="example">
+        <p><b>Demo Use Cases:</b></p>
+        <p><b>1.</b> Click and drag one of the food items below to re-order the item in the panel positioned component.</p>
+        <p>The panel positioned component allows a list to be displayed and re-ordered on the page. The orientation and constraint of the re-ordering can be customized by the developer. If needed listeners can be used to determine when an item is re-ordered.</p>
+        <br/>
+    
+        <h:form>
+            <ice:panelPositioned value="#{positionedData.availableFoods}"
+                                 var="food"
+                                 constraint="vertical"
+                                 handle="positionedElement">
+                <ice:panelGroup styleClass="positionedElement">
+                    <h:outputText value="#{food}" styleClass="moveLabel"/>
+                </ice:panelGroup>
+            </ice:panelPositioned>
+        </h:form>
+    </ui:define>
+</ui:composition>

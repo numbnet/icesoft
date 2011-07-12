@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[sliderBasic.title]}"/>
+    <ui:param name="description" value="#{msgs[sliderBasic.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[slider.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{slider.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{sliderBasic.exampleResource}"/>
+
+    <ui:define name="example">
+        <span class="row">
+            <h:form>
+                <div style="width:45%" class="top options">
+                    <ul>
+                        <li>Clickable Rail:
+                            <h:selectBooleanCheckbox value="#{sliderBasic.clickableRail}" />
+                        </li>
+                        <li>X Axis Oriented:
+                            <h:selectBooleanCheckbox value="#{sliderBasic.xAxis}" />
+                        </li>
+                        <li>Min Value:<h:inputText styleClass="full-width" value="#{sliderBasic.minValue}" /></li>
+                        <li>Max Value:<h:inputText styleClass="full-width" value="#{sliderBasic.maxValue}" /></li>
+                        <li>Length:<h:inputText styleClass="full-width" value="#{sliderBasic.length}" /></li>
+                    </ul>
+                    <h:commandButton type="submit" value="Set Options" />
+                </div>
+            </h:form>
+            <h:form>
+                <span class="top">
+                <!-- if this isn't here axis change doesn't fire asynchronously -->
+                <!-- can't be in ice:outputText either -->
+                <span style="display:none;">#{sliderBasic.xAxis}</span>
+                <ace:sliderEntry id="slide-entry"
+                    clickableRail="true"
+                    style-class="top"
+                    length="#{sliderBasic.length}"
+                    min="#{sliderBasic.minValue}"
+                    max="#{sliderBasic.maxValue}"
+                    value="#{sliderBasic.sliderValue}"
+                    axis="#{sliderBasic.xAxis ? 'x' : 'y'}"/>
+                    <h:commandButton style="width:200px;" type="submit" value="Set Slider Value" /><br />
+                    <h:outputText value="Value: " /><ice:outputText value="#{sliderBasic.sliderValue}" />
+                </span>
+                <div class="row">
+                    <span class="messages top">
+                        <h:messages/>
+                    </span>
+                </div>
+            </h:form>
+        </span>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[progressMultiple.title]}"/>
+    <ui:param name="description" value="#{msgs[progressMultiple.description]}"/>
+    <ui:param name="resourceValue" value="#{progressMultiple.exampleResource}"/>
+    
+    <ui:define name="example">
+        <h:form>
+            <h:commandButton value="Start All Tasks"
+                             actionListener="#{progressMultiple.startTask}"
+                             rendered="#{!task.taskRunning}"
+                             disabled="#{task.taskRunning}"/>
+            <h:commandButton value="Stop All Tasks"
+                             actionListener="#{task.stopTask}"
+                             rendered="#{task.taskRunning}"
+                             disabled="#{!task.taskRunning}"/>
+            <h:commandButton value="Reset All Tasks"
+                             actionListener="#{task.resetTask}"
+                             rendered="#{!task.taskRunning}"
+                             disabled="#{task.taskRunning}"/>
+            
+            <h:panelGrid columns="2">
+                <h:outputLabel for="saveOut" value="Save Progress:"/>
+                <ice:outputProgress id="saveOut"
+                                    value="#{task.progresses[0]}"/>
+                                    
+                <h:outputLabel for="moveOut" value="Move Progress:"/>
+                <ice:outputProgress id="moveOut"
+                                    value="#{task.progresses[1]}"/>
+
+                <h:outputLabel for="copyOut" value="Copy Progress:"/>
+                <ice:outputProgress id="copyOut"
+                                    value="#{task.progresses[2]}"/>
+
+                <h:outputLabel for="deleteOut" value="Delete Progress:"/>
+                <ice:outputProgress id="deleteOut"
+                                    value="#{task.progresses[3]}"/>
+                                    
+                <h:outputLabel for="completed" value="First Task Completed:"/>
+                <h:panelGroup id="completed"
+                              style="font-weight: bold;">
+                    <h:outputText value="Save" rendered="#{task.firstComplete eq 0}"/>
+                    <h:outputText value="Move" rendered="#{task.firstComplete eq 1}"/>
+                    <h:outputText value="Copy" rendered="#{task.firstComplete eq 2}"/>
+                    <h:outputText value="Delete" rendered="#{task.firstComplete eq 3}"/>
+                    <h:outputText value="None Yet" rendered="#{!task.hasFirstComplete}"/>
+                </h:panelGroup>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

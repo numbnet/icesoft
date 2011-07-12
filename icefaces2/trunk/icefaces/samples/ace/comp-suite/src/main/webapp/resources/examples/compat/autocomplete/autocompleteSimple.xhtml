@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[autocompleteSimple.title]}"/>
+    <ui:param name="description" value="#{msgs[autocompleteSimple.description]}"/>
+    <ui:param name="resourceValue" value="#{autocompleteSimple.exampleResource}"/>
+    
+    <ui:define name="example">
+        <h:form>
+            <h:panelGrid columns="4">
+                <h:outputLabel for="autoOut" value="Submitted City:"/>
+                <h:outputText id="autoOut" value="#{autocompleteSimple.selectedCity}"/>
+                <h:outputText value=""/><h:outputText value=""/>
+                
+                <h:outputLabel for="autoCur" value="Current Text:"/>
+                <h:outputText id="autoCur" value="#{autocompleteSimple.selectedText}"/>
+                <h:outputText value=""/><h:outputText value=""/>
+            
+                <h:outputLabel for="autoIn" value="Choose a City:"/>
+                <ice:selectInputText id="autoIn"
+                                     value="#{autocompleteSimple.selectedText}"
+                                     textChangeListener="#{autocompleteSimple.textChanged}"
+                                     actionListener="#{autocompleteSimple.submitText}"
+                                     rows="10" width="300">
+                    <f:selectItems value="#{autocompleteSimple.availableCities}"/>
+                </ice:selectInputText>
+                <h:commandButton value="Submit"
+                                 actionListener="#{autocompleteSimple.submitText}"/>
+                <h:message for="autoIn"/>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

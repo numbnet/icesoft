@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:ace="http://www.icefaces.org/icefaces/components" 
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    template="/resources/templates/content-template.xhtml">
+    
+    <ui:param name="title" value="#{msgs[progressStyle.title]}"/>
+    <ui:param name="description" value="#{msgs[progressStyle.description]}"/>
+    <ui:param name="resourceValue" value="#{progressStyle.exampleResource}"/>
+    
+    <ui:define name="example">
+        <h:form>
+            <icecore:singleSubmit/>
+            <h:panelGrid columns="2">
+                <h:outputLabel for="styleIn" value="Style Class:"/>
+                <h:selectOneRadio id="styleIn" value="#{progressStyle.styleClass}">
+                    <f:selectItems value="#{progressStyle.availableClasses}"/>
+                </h:selectOneRadio>
+            </h:panelGrid>
+        </h:form>
+        
+        <h:form>
+            <h:panelGrid columns="3">
+                <h:outputLabel for="progressOut" value="Progress Bar:"/>
+                <ice:outputProgress id="progressOut"
+                                    value="#{task.progress}"
+                                    styleClass="#{progressStyle.styleClass}"/>
+                
+                <h:panelGrid columns="3">
+                    <h:commandButton value="Start"
+                                     actionListener="#{progress.startTask}"
+                                     rendered="#{!task.taskRunning}"
+                                     disabled="#{task.taskRunning}"/>
+                    <h:commandButton value="Stop"
+                                     actionListener="#{task.stopTask}"
+                                     rendered="#{task.taskRunning}"
+                                     disabled="#{!task.taskRunning}"/>
+                    <h:commandButton value="Reset"
+                                     actionListener="#{task.resetTask}"
+                                     rendered="#{!task.taskRunning}"
+                                     disabled="#{task.taskRunning}"/>
+                </h:panelGrid>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
