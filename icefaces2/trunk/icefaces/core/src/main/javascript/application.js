@@ -427,16 +427,6 @@ if (!window.ice.icefaces) {
             });
         }
 
-        //store form parameters in case the form will be updated (and thus parameters lost)
-        var previousFormParameters = HashTable();
-        namespace.onBeforeUpdate(function(updates) {
-            collectUpdatedForms(updates, function(form) {
-                if (deltaSubmit(form)) {
-                    putAt(previousFormParameters, form.id, form.previousParameters);
-                }
-            });
-        });
-
         //fix JSF issue: http://jira.icefaces.org/browse/ICE-5691 
         namespace.onAfterUpdate(function(updates) {
             var viewStateUpdate = detect(updates.getElementsByTagName('update'), function(update) {
@@ -451,27 +441,29 @@ if (!window.ice.icefaces) {
                         appendHiddenInputElement(form, 'javax.faces.ViewState', viewState, viewState);
                         debug(logger, 'append missing "javax.faces.ViewState" input element to form["' + form.id + '"]');
                     }
+                });
+            }
+        });
 
-                    //recalculate previous parameters for the updated forms if necessary
-                    if (deltaSubmit(form)) {
-                        var previousParameters = at(previousFormParameters, form.id);
-                        if (previousParameters) {
-                            var recalculatedParameters = jsf.getViewState(form).split('&');
-                            //add parameters corresponding to newly inserted form elements
-                            each(recalculatedParameters, function(p) {
-                                if (!contains(previousParameters, p)) {
-                                    append(previousParameters, p);
-                                }
-                            });
-                            form.previousParameters = previousParameters;
-                        } else {
+        //recalculate delta submit previous parameters for the updated forms, if necessary
+        namespace.onAfterUpdate(function(updates) {
+            var recalculatedForms = HashSet();
+            each(updates.getElementsByTagName('update'), function(update) {
+                var id = update.getAttribute('id');
+                var e = lookupElementById(id);
+                if (e) {
+                    try {
+                        var form = formOf(e);
+                        if (not(contains(recalculatedForms, form)) && deltaSubmit(form)) {
                             debug(logger, 'recalculate initial parameters for updated form["' + form.id + '"]');
                             form.previousParameters = HashSet(jsf.getViewState(form).split('&'));
+                            append(recalculatedForms, form);
                         }
+                    } catch (ex) {
+                        //cannot find enclosing form, some updates are for elements located outside forms
                     }
-                });
-                previousFormParameters = HashTable();
-            }
+                }
+            });
         });
 
         //determine which elements are not present after an update, invoke corresponding callback when element was removed

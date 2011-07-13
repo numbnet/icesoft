@@ -67,7 +67,6 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
     }
 
     private void reconstructParametersFromDeltaSubmit(FacesContext facesContext) {
-        UIViewRoot viewRoot = facesContext.getViewRoot();
         ExternalContext externalContext = facesContext.getExternalContext();
         Map submittedParameters = externalContext.getRequestParameterValuesMap();
 
@@ -76,35 +75,11 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
             //this is not a delta form submission
             return;
         }
-        String formClientID = deltaSubmitFormValues[0];
-        UIComponent formComponent = viewRoot.findComponent(formClientID);
 
         //todo: use a public constant to lookup old DOM document
         //construct previous parameters from the rendered document
         Document oldDOM = DOMResponseWriter.getOldDocument(facesContext);
-        Map recalculatedParameters = calculateParametersFromDOM(externalContext, oldDOM);
-
-        Map formAttributes = formComponent.getAttributes();
-        Map previousParameters = (Map) formAttributes.get(PreviousParameters);
-        if (previousParameters == null) {
-            //see if the previous parameters where propagated during a forward navigation
-            Map idToPreviousParameterMapping = (Map) viewRoot.getViewMap().get(PreviousParameters);
-            if (idToPreviousParameterMapping != null) {
-                previousParameters = (Map) idToPreviousParameterMapping.get(formComponent.getId());
-            }
-            if (previousParameters == null) {
-                previousParameters = recalculatedParameters;
-            }
-        }
-        //add parameters corresponding to newly inserted form elements - ICE-6848
-        Iterator recalculatedParameterIterator = recalculatedParameters.entrySet().iterator();
-        while (recalculatedParameterIterator.hasNext()) {
-            Map.Entry entry = (Map.Entry) recalculatedParameterIterator.next();
-            Object name = entry.getKey();
-            if (!previousParameters.containsKey(name)) {
-                previousParameters.put(name, entry.getValue());
-            }
-        }
+        Map previousParameters = calculateParametersFromDOM(externalContext, oldDOM);
 
         final Map parameterValuesMap = new HashMap(previousParameters);
         final ArrayList directParameters = new ArrayList();
@@ -132,6 +107,10 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                 if (previousValues == null) {
                     log.fine("Missing previous parameters: " + key);
                 } else {
+                    if ("".equals(previousValues[0])) {
+                        //assuming this is a parameter that corresponds to a hidden input element not cleared by the JS code that controls it
+                        previousValues[0] = values[0];
+                    }
                     ArrayList allValues = new ArrayList();
                     allValues.addAll(Arrays.asList(previousValues));
                     allValues.removeAll(Arrays.asList(values));
@@ -161,8 +140,6 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                 newPreviousParameters.remove(parameterName);
             }
         }
-
-        formAttributes.put(PreviousParameters, newPreviousParameters);
 
         Object request = externalContext.getRequest();
         if (EnvUtils.instanceofPortletRequest(request)) {
@@ -260,7 +237,14 @@ public class DeltaSubmitPhaseListener implements PhaseListener {
                         if (input.hasAttribute("checked")) {
                             String value = input.getAttribute("value");
                             value = "".equals(value) ? "on" : value;
-                            multiParameters.put(name, new String[]{value});
+                            String[] values = (String[]) multiParameters.get(name);
+                            if (values == null) {
+                                multiParameters.put(name, new String[]{value});
+                            } else {
+                                ArrayList list = new ArrayList(Arrays.asList(values));
+                                list.add(value);
+                                multiParameters.put(name, list.toArray(StringArray));
+                            }
                         }
                     } else {
                         String value = input.getAttribute("value");
