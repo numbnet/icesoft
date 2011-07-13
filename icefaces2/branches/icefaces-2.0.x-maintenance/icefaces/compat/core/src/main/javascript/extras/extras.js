@@ -3482,6 +3482,8 @@ ToolTipPanelPopup = Class.create({
                     this.hideEvent = this.hidePopupOnMouseOut.bindAsEventListener(this);
                 } else {
                     this.hideOn = "none";
+                    //associate no-op callback to avoid stack overflow in IE
+                    this.hideEvent = Function.NOOP;
                 }
 
                 this.eventMouseMove = this.updateCordinate.bindAsEventListener(this);
