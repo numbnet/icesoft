@@ -47,6 +47,10 @@
             <short-title>Buttons and Links</short-title>
             <keywords>ICEfaces Component Showcase Buttons Links</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
 	<portlet>
@@ -70,6 +74,10 @@
             <short-title>Buttons and Links</short-title>
             <keywords>ICEfaces Component Showcase Buttons Links</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
     
 	<portlet>
@@ -93,6 +101,10 @@
             <short-title>Selection Components</short-title>
             <keywords>ICEfaces Component Showcase selectionTags</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -116,6 +128,10 @@
             <short-title>Dynamic Columns</short-title>
             <keywords>ICEfaces Component Showcase dataTable-columns</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -139,6 +155,10 @@
             <short-title>Sortable Columns</short-title>
             <keywords>ICEfaces Component Showcase dataTable-commandSortHeader</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -162,6 +182,10 @@
             <short-title>Datatable Data Export</short-title>
             <keywords>ICEfaces Component Showcase dataTable-dataExporter</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -185,6 +209,10 @@
             <short-title>Datatable Scroller</short-title>
             <keywords>ICEfaces Component Showcase dataTable-dataScrolling</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -208,6 +236,10 @@
             <short-title>Expandable Rows</short-title>
             <keywords>ICEfaces Component Showcase dataTable-expandable</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -231,6 +263,10 @@
             <short-title>Grouping</short-title>
             <keywords>ICEfaces Component Showcase dataTable-grouping</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -254,6 +290,10 @@
             <short-title>Resizable Columns</short-title>
             <keywords>ICEfaces Component Showcase dataTable-resizableColumns</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -277,6 +317,10 @@
             <short-title>Row Selectors</short-title>
             <keywords>ICEfaces Component Showcase dataTable-rowSelection</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -300,6 +344,10 @@
             <short-title>Drag and Drop</short-title>
             <keywords>ICEfaces Component Showcase dragDrop</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -323,6 +371,10 @@
             <short-title>Effects</short-title>
             <keywords>ICEfaces Component Showcase effects</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -346,6 +398,10 @@
             <short-title>Google Maps</short-title>
             <keywords>ICEfaces Component Showcase gmap</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
 <!-- 
@@ -370,6 +426,10 @@
             <short-title>File Upload</short-title>
             <keywords>ICEfaces Component Showcase inputFile</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
  -->
 
@@ -394,6 +454,10 @@
             <short-title>Rich Text Editor</short-title>
             <keywords>ICEfaces Component Showcase inputRichText</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -417,6 +481,10 @@
             <short-title>Menu Bar</short-title>
             <keywords>ICEfaces Component Showcase menuBar</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -440,6 +508,10 @@
             <short-title>Menu Popup</short-title>
             <keywords>ICEfaces Component Showcase menuPopup</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -463,6 +535,10 @@
             <short-title>Charts</short-title>
             <keywords>ICEfaces Component Showcase outputChart</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -486,6 +562,10 @@
             <short-title>Connection Status</short-title>
             <keywords>ICEfaces Component Showcase outputConnectionStatus</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -509,6 +589,10 @@
             <short-title>Media</short-title>
             <keywords>ICEfaces Component Showcase outputMedia</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -532,6 +616,10 @@
             <short-title>Progress Bar</short-title>
             <keywords>ICEfaces Component Showcase outputProgress</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -555,6 +643,10 @@
             <short-title>File Download</short-title>
             <keywords>ICEfaces Component Showcase outputResource</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -578,6 +670,10 @@
             <short-title>Date Picker</short-title>
             <keywords>ICEfaces Component Showcase selectInputDate</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -601,6 +697,10 @@
             <short-title>Text Input</short-title>
             <keywords>ICEfaces Component Showcase selectInputText</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -624,6 +724,10 @@
             <short-title>Set Event Phase</short-title>
             <keywords>ICEfaces Component Showcase setEventPhase</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -647,6 +751,10 @@
             <short-title>Tree</short-title>
             <keywords>ICEfaces Component Showcase tree</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -670,6 +778,10 @@
             <short-title>Panel Border</short-title>
             <keywords>ICEfaces Component Showcase panelBorder</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -693,6 +805,10 @@
             <short-title>Panel Collapsible</short-title>
             <keywords>ICEfaces Component Showcase panelCollapsible</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -716,6 +832,10 @@
             <short-title>Panel Divider</short-title>
             <keywords>ICEfaces Component Showcase panelDivider</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -739,6 +859,10 @@
             <short-title>Panel Popup</short-title>
             <keywords>ICEfaces Component Showcase panelPopup</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -762,6 +886,10 @@
             <short-title>Panel Positioned</short-title>
             <keywords>ICEfaces Component Showcase panelPositioned</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -785,6 +913,10 @@
             <short-title>Panel Series</short-title>
             <keywords>ICEfaces Component Showcase panelSeries</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -808,6 +940,10 @@
             <short-title>Panel Stack</short-title>
             <keywords>ICEfaces Component Showcase panelStack</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -831,6 +967,10 @@
             <short-title>Panel Tabset Dynamic</short-title>
             <keywords>ICEfaces Component Showcase panelTabSet-dynamic</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -854,6 +994,10 @@
             <short-title>Panel Tabset Static</short-title>
             <keywords>ICEfaces Component Showcase panelTabSet-static</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
   	<portlet>
@@ -877,6 +1021,10 @@
             <short-title>Panel Tooltip</short-title>
             <keywords>ICEfaces Component Showcase panelTooltip</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
 	</portlet>
 
 
