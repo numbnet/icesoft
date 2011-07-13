@@ -228,7 +228,7 @@ var submit;
                 var currentParameters = HashSet(jsf.getViewState(form).split('&'));
                 var addedParameters = complement(currentParameters, previousParameters);
                 var removedParameters = complement(previousParameters, currentParameters);
-                form.previousParameters = currentParameters;
+                //form.previousParameters = currentParameters;
                 function splitStringParameter(f) {
                     return function(p) {
                         var parameter = split(p, '=');
