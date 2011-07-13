@@ -39,7 +39,7 @@
 
     <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
     <condition property="jsf.lib.dir" value="${lib.dir}/myfaces" else="${lib.dir}/mojarra">
-        <isset property="myfaces"/>
+        <isset property="myfaces-core"/>
     </condition>
 
 	<!-- Check if release.type is set, and if so append it after the tertiary value -->
@@ -64,9 +64,9 @@
          MyFaces. -->
     <patternset id="compile.classes">
         <include name="**/*.java"/>
-        <exclude name="org/icefaces/impl/renderkit/html_basic/MessagesRenderer.java" if="myfaces"/>
-        <exclude name="org/icefaces/impl/renderkit/html_basic/MessageRenderer.java"  if="myfaces"/>
-        <exclude name="org/icefaces/impl/event/MojarraDebugTagListener.java"         if="myfaces"/>
+        <exclude name="org/icefaces/impl/renderkit/html_basic/MessagesRenderer.java" if="myfaces-core"/>
+        <exclude name="org/icefaces/impl/renderkit/html_basic/MessageRenderer.java"  if="myfaces-core"/>
+        <exclude name="org/icefaces/impl/event/MojarraDebugTagListener.java"         if="myfaces-core"/>
     </patternset>
 
     <target name="clean">
@@ -168,6 +168,9 @@
             </fileset>
             <classpath>
                 <fileset dir="${lib.dir}">
+                    <patternset refid="lib.compile"/>
+                </fileset>
+                <fileset dir="${jsf.lib.dir}">
                     <patternset refid="lib.compile"/>
                 </fileset>
             </classpath>
