@@ -41,6 +41,10 @@
             <short-title>ICEfaces 2 Chat</short-title>
             <keywords>icefaces portlet chat icepush</keywords>
         </portlet-info>
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
     </portlet>
 
 </portlet-app>

@@ -79,6 +79,10 @@
         </patternset>
     </patternset>
 
+    <patternset id="lib.distribute.jsf">
+        <exclude name="*.jar" unless="jsf"/>
+    </patternset>
+
     <patternset id="lib.compile.compat" includes="commons-logging.jar ${lib.compile.compat.includes}">
         <exclude name="*.jar"                   unless="compat"/>
     </patternset>
@@ -156,7 +160,7 @@
                 <patternset refid="lib.distribute.application"/>
             </lib>
             <lib dir="${jsf.lib.dir}" erroronmissingdir="false">
-                <include name="*.jar"/>
+                <patternset refid="lib.distribute.jsf"/>
             </lib>
 
             <!-- Add the icefaces-ee-ext.jar only if it exists.  There are

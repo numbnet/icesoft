@@ -57,11 +57,11 @@
 
 <!--mandatoryResourceConfiguration set to empty allows minimal resource
     pre-loading for best performance.  The risk is that a dynamically
-    added component will to have the required resources. -->
-    <context-param> 
-        <param-name>org.icefaces.mandatoryResourceConfiguration</param-name> 
-        <param-value></param-value> 
-    </context-param> 
+    added component will not have the required resources. -->
+    <!--<context-param> -->
+        <!--<param-name>org.icefaces.mandatoryResourceConfiguration</param-name> -->
+        <!--<param-value></param-value> -->
+    <!--</context-param> -->
 
     <context-param>
         <param-name>org.icefaces.uniqueResourceURLs</param-name>
