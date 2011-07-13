@@ -188,10 +188,10 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
                     break;
                 }
                 if (tname == 'input' ||
-                        tname == 'select' ||
-                        tname == 'option' ||
-                        (tname == 'a' && 'iceHdnLnk' != targ.className) ||
-                        tname == 'textarea') {
+                    tname == 'select' ||
+                    tname == 'option' ||
+                    (tname == 'a' && 'iceHdnLnk' != targ.className) ||
+                    tname == 'textarea') {
                     return;
                 }
                 // Search up to see if we're deep within an anchor
@@ -212,7 +212,7 @@ Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld, toggleCla
             //look in the dom
             var anchors = row.getElementsByTagName("a");
             if (anchors.length > 0 &&
-                    anchors[0].className == 'iceHdnLnk') {
+                anchors[0].className == 'iceHdnLnk') {
                 //found
                 focusElement = anchors[0];
                 //install on the row, so next time dom lookup will not be required.
@@ -266,44 +266,44 @@ Ice.registerDblClick = function(elem) {
 }
 
 Ice.clickEvent = Class.create({
-            initialize: function(elem, hdnClkRow, hdnClkCount, rowid, formId, delay, toggleOnClick, event, useEvent, hdnFld, toggleClassNames) {
-                this.elem = elem;
-                this.hdnClkRow = hdnClkRow;
-                this.hdnClkCount = hdnClkCount;
-                this.rowid = rowid;
-                this.formId = formId;
+    initialize: function(elem, hdnClkRow, hdnClkCount, rowid, formId, delay, toggleOnClick, event, useEvent, hdnFld, toggleClassNames) {
+        this.elem = elem;
+        this.hdnClkRow = hdnClkRow;
+        this.hdnClkCount = hdnClkCount;
+        this.rowid = rowid;
+        this.formId = formId;
 
-                if (delay < 0) this.delay = 0;
-                else if (delay > 1000) this.delay = 1000;
-                else this.delay = delay;
+        if (delay < 0) this.delay = 0;
+        else if (delay > 1000) this.delay = 1000;
+        else this.delay = delay;
 
-                this.toggleOnClick = toggleOnClick;
-                if (this.toggleOnClick) {
-                    this.event = Object.clone(event);
-                    this.useEvent = useEvent;
-                    this.hdnFld = hdnFld;
-                    this.toggleClassNames = toggleClassNames;
-                }
+        this.toggleOnClick = toggleOnClick;
+        if (this.toggleOnClick) {
+            this.event = Object.clone(event);
+            this.useEvent = useEvent;
+            this.hdnFld = hdnFld;
+            this.toggleClassNames = toggleClassNames;
+        }
 
-                this.timer = setTimeout(this.submit.bind(this, 1), this.delay);
-            },
-            submit: function(numClicks) {
-                clearTimeout(this.timer);
-                Ice.clickEvents[this.elem.id] = null;
-                var rowField = document.forms[this.formId][this.hdnClkRow];
-                rowField.value = this.rowid;
-                var countField = document.forms[this.formId][this.hdnClkCount];
-                countField.value = numClicks;
-                if (this.toggleOnClick) {
-                    Ice.tableRowClicked(this.event, this.useEvent, this.rowid, this.formId, this.hdnFld, this.toggleClassNames, this.elem);
-                } else {
-                    var nothingEvent = new Object();
-                    iceSubmitPartial(null, rowField, nothingEvent);
-                }
-                rowField.value = "";
-                countField.value = "";
-            }
-        });
+        this.timer = setTimeout(this.submit.bind(this, 1), this.delay);
+    },
+    submit: function(numClicks) {
+        clearTimeout(this.timer);
+        Ice.clickEvents[this.elem.id] = null;
+        var rowField = document.forms[this.formId][this.hdnClkRow];
+        rowField.value = this.rowid;
+        var countField = document.forms[this.formId][this.hdnClkCount];
+        countField.value = numClicks;
+        if (this.toggleOnClick) {
+            Ice.tableRowClicked(this.event, this.useEvent, this.rowid, this.formId, this.hdnFld, this.toggleClassNames, this.elem);
+        } else {
+            var nothingEvent = new Object();
+            iceSubmitPartial(null, rowField, nothingEvent);
+        }
+        rowField.value = "";
+        countField.value = "";
+    }
+});
 
 Ice.preventTextSelection = function(event) {
     if (Ice.isEventSourceInputElement(event)) {
@@ -403,8 +403,8 @@ Ice.util = {
         var newElementX = elementHeight + diff;
 
         if (documentX < elementX &&
-                newElementX < documentX &&
-                elementHeight < containerElementTop) {
+            newElementX < documentX &&
+            elementHeight < containerElementTop) {
             $(element).parentNode.style.position = "absolute";
             $(element).parentNode.style.top = "-" + newElementX + "px";
             var iframe = $(element).up().next("iframe");
@@ -422,8 +422,8 @@ Ice.util = {
         var newElementY = elementWidth + diff;
 
         if (documentY < elementY &&
-                newElementY < documentY &&
-                elementWidth < containerElementLeft) {
+            newElementY < documentY &&
+            elementWidth < containerElementLeft) {
             $(element).parentNode.style.position = "absolute";
             $(element).parentNode.style.left = "-" + (elementWidth - inputWidth) + "px";
             iframe = $(element).up().next("iframe");
@@ -440,15 +440,15 @@ Ice.util = {
 };
 
 var IE = (Try.these(
-        function() {
-            new ActiveXObject('Msxml2.XMLHTTP');
-            return true;
-        },
+    function() {
+        new ActiveXObject('Msxml2.XMLHTTP');
+        return true;
+    },
 
-        function() {
-            new ActiveXObject('Microsoft.XMLHTTP');
-            return true;
-        }
+    function() {
+        new ActiveXObject('Microsoft.XMLHTTP');
+        return true;
+    }
 
 ) || false);
 
@@ -487,36 +487,36 @@ var IE = (Try.these(
 
 //related class com.icesoft.faces.component.util.DelimitedProperties 
 Ice.delimitedProperties = Class.create({
-            initialize: function() {
-                this.props = {};
-            },
+    initialize: function() {
+        this.props = {};
+    },
 
-            set: function(key, value) {
-                this.props[key] = value;
-            },
+    set: function(key, value) {
+        this.props[key] = value;
+    },
 
-            get:function(key) {
-                this.props[key];
-            },
+    get:function(key) {
+        this.props[key];
+    },
 
-            deleteAll: function() {
-                for (p in this.props) {
-                    delete this.props[p];
-                }
-            },
+    deleteAll: function() {
+        for (p in this.props) {
+            delete this.props[p];
+        }
+    },
 
-            getPropsAsString:function() {
-                var str = "";
-                for (p in this.props) {
-                    str += p + '!' + this.props[p] + ',';
-                }
-                return str;
-            },
+    getPropsAsString:function() {
+        var str = "";
+        for (p in this.props) {
+            str += p + '!' + this.props[p] + ',';
+        }
+        return str;
+    },
 
-            getPropsAsObject:function() {
-                return this.props;
-            }
-        });
+    getPropsAsObject:function() {
+        return this.props;
+    }
+});
 
 
 Ice.StateMon = Class.create();
@@ -701,96 +701,96 @@ Ice.MonitorBase.prototype = {
 
 Ice.SortableMonitor = Class.create();
 Ice.SortableMonitor.prototype = Object.extend(new Ice.MonitorBase(), {
-            initialize:function(htmlElement, createOptions) {
-                this.type = 'Sortable';
-                this.object = null;
-                this.id = htmlElement.id;
-                this.htmlElement = htmlElement;
-                this.createOptions = createOptions;
-            },
+    initialize:function(htmlElement, createOptions) {
+        this.type = 'Sortable';
+        this.object = null;
+        this.id = htmlElement.id;
+        this.htmlElement = htmlElement;
+        this.createOptions = createOptions;
+    },
 
-            destroy:function() {
-                Sortable.destroy(this.htmlElement);
-            },
+    destroy:function() {
+        Sortable.destroy(this.htmlElement);
+    },
 
-            rebuild:function() {
-                Ice.StateMon.logger.debug('Rebuilding Sortable ID[' + this.id + '] Options[' + this.createOptions + ']');
-                Sortable.create(this.id, this.createOptions);
-            },
+    rebuild:function() {
+        Ice.StateMon.logger.debug('Rebuilding Sortable ID[' + this.id + '] Options[' + this.createOptions + ']');
+        Sortable.create(this.id, this.createOptions);
+    },
 
-            changeDetected:function(newElem) {
-                return true;
-            }
-        });
+    changeDetected:function(newElem) {
+        return true;
+    }
+});
 
 Ice.DraggableMonitor = Class.create();
 Ice.DraggableMonitor.prototype = Object.extend(new Ice.MonitorBase(), {
-            initialize:function(htmlElement, createOptions) {
-                this.type = 'Draggable';
-                this.object = null;
-                this.id = htmlElement.id;
-                this.htmlElement = htmlElement;
-                this.createOptions = createOptions;
-            },
+    initialize:function(htmlElement, createOptions) {
+        this.type = 'Draggable';
+        this.object = null;
+        this.id = htmlElement.id;
+        this.htmlElement = htmlElement;
+        this.createOptions = createOptions;
+    },
 
-            destroy:function() {
-                this.object.destroy();
-                Ice.StateMon.logger.debug('Destroyed Draggable [' + this.id + ']');
-                $A(Draggables.drags).each(function(drag) {
-                    Ice.StateMon.logger.debug('Draggable [' + drag.element.id + "] not destroyed");
-                });
-            },
-
-            rebuild:function() {
-                Ice.StateMon.logger.debug('Rebuilding Draggable ID[' + this.id + '] Options[' + this.createOptions + ']');
-                var d = new Draggable(this.id, this.createOptions);
-                Ice.StateMon.logger.debug('Rebuilding Draggable ID[' + this.id + '] Options[' + this.createOptions + '] Complete');
-            }
+    destroy:function() {
+        this.object.destroy();
+        Ice.StateMon.logger.debug('Destroyed Draggable [' + this.id + ']');
+        $A(Draggables.drags).each(function(drag) {
+            Ice.StateMon.logger.debug('Draggable [' + drag.element.id + "] not destroyed");
         });
+    },
+
+    rebuild:function() {
+        Ice.StateMon.logger.debug('Rebuilding Draggable ID[' + this.id + '] Options[' + this.createOptions + ']');
+        var d = new Draggable(this.id, this.createOptions);
+        Ice.StateMon.logger.debug('Rebuilding Draggable ID[' + this.id + '] Options[' + this.createOptions + '] Complete');
+    }
+});
 
 
 Ice.DroppableMonitor = Class.create();
 Ice.DroppableMonitor.prototype = Object.extend(new Ice.MonitorBase, {
-            initialize:function(htmlElement, createOptions) {
-                this.type = 'Droppable';
-                this.object = null;
-                this.id = htmlElement.id;
-                this.htmlElement = htmlElement;
-                this.createOptions = createOptions;
-            },
+    initialize:function(htmlElement, createOptions) {
+        this.type = 'Droppable';
+        this.object = null;
+        this.id = htmlElement.id;
+        this.htmlElement = htmlElement;
+        this.createOptions = createOptions;
+    },
 
-            destroy:function() {
-                Droppables.removeOptimised(this.id, this.htmlElement);
-            },
+    destroy:function() {
+        Droppables.removeOptimised(this.id, this.htmlElement);
+    },
 
-            rebuild:function() {
-                Ice.StateMon.logger.debug('Rebuilding Droppables ID[' + this.id + '] Options[' + this.createOptions + ']');
-                Droppables.add(this.id, this.createOptions);
-            }
-        });
+    rebuild:function() {
+        Ice.StateMon.logger.debug('Rebuilding Droppables ID[' + this.id + '] Options[' + this.createOptions + ']');
+        Droppables.add(this.id, this.createOptions);
+    }
+});
 
 Ice.AutocompleterMonitor = Class.create();
 Ice.AutocompleterMonitor.prototype = Object.extend(new Ice.MonitorBase, {
-            initialize:function(htmlElement, update, createOptions, rowClass, selectedRowClass) {
-                this.type = 'Autocompleter';
-                this.object = null;
-                this.id = htmlElement.id;
-                this.htmlElement = htmlElement;
-                this.createOptions = createOptions;
-                this.update = update;
-                this.rowClass = rowClass;
-                this.selectedRowClass = selectedRowClass;
-            },
+    initialize:function(htmlElement, update, createOptions, rowClass, selectedRowClass) {
+        this.type = 'Autocompleter';
+        this.object = null;
+        this.id = htmlElement.id;
+        this.htmlElement = htmlElement;
+        this.createOptions = createOptions;
+        this.update = update;
+        this.rowClass = rowClass;
+        this.selectedRowClass = selectedRowClass;
+    },
 
-            destroy:function() {
-                this.object.dispose();
-            },
+    destroy:function() {
+        this.object.dispose();
+    },
 
-            rebuild:function() {
-                Ice.StateMon.logger.debug('Rebuilding Autocompleter ID[' + this.id + '] Options[' + this.createOptions + ']');
-                return new Ice.Autocompleter(this.id, this.update.id, this.createOptions, this.rowClass, this.selectedRowClass);
-            }
-        });
+    rebuild:function() {
+        Ice.StateMon.logger.debug('Rebuilding Autocompleter ID[' + this.id + '] Options[' + this.createOptions + ']');
+        return new Ice.Autocompleter(this.id, this.update.id, this.createOptions, this.rowClass, this.selectedRowClass);
+    }
+});
 /*
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
@@ -833,9 +833,9 @@ Ice.DnD.StyleReader = {
         //Ice.DnD.logger.debug("Building Style");
         var result = '';
         Ice.DnD.StyleReader.styles.split(',').each(
-                function(style) {
-                    result += style + ':' + Ice.DnD.StyleReader.getStyle(ele, style) + ';';
-                });
+            function(style) {
+                result += style + ':' + Ice.DnD.StyleReader.getStyle(ele, style) + ';';
+            });
         return result;
     },
     getStyle: function(x, styleProp) {
@@ -1981,21 +1981,21 @@ var Sortable = {
         }
         var monitor = new Ice.SortableMonitor(element, o);
         var options = Object.extend({
-                    element:     element,
-                    tag:         'li',       // assumes li children, override with tag: 'tagname'
-                    dropOnEmpty: false,
+            element:     element,
+            tag:         'li',       // assumes li children, override with tag: 'tagname'
+            dropOnEmpty: false,
 
-                    overlap:     'vertical', // one of 'vertical', 'horizontal'
-                    constraint:  'vertical', // one of 'vertical', 'horizontal', false
-                    containment: element,    // also takes array of elements (or id's); or false
-                    handle:      false,      // or a CSS class
-                    only:        false,
-                    hoverclass:  null,
-                    ghosting:    false,
-                    format:      null,
-                    onChange:    Prototype.emptyFunction,
-                    onUpdate:    Prototype.emptyFunction
-                }, arguments[1] || {});
+            overlap:     'vertical', // one of 'vertical', 'horizontal'
+            constraint:  'vertical', // one of 'vertical', 'horizontal', false
+            containment: element,    // also takes array of elements (or id's); or false
+            handle:      false,      // or a CSS class
+            only:        false,
+            hoverclass:  null,
+            ghosting:    false,
+            format:      null,
+            onChange:    Prototype.emptyFunction,
+            onUpdate:    Prototype.emptyFunction
+        }, arguments[1] || {});
         // clear any old sortable with same element
         this.destroy(element);
         // build options for the draggables
@@ -2036,16 +2036,16 @@ var Sortable = {
         // drop on empty handling
         if (options.dropOnEmpty) {
             Droppables.add(element,
-                    {
-                        containment: options.containment,
-                        onHover: Sortable.onEmptyHover, greedy: false, sort:true});
+                {
+                    containment: options.containment,
+                    onHover: Sortable.onEmptyHover, greedy: false, sort:true});
             options.droppables.push(element);
         }
         (options.elements || this.findElements(element, options) || []).each(function(e, i) {
             var handle = options.handles ? $(options.handles[i]) :
-                    (options.handle ? $(e).select('.' + options.handle)[0] : e);
+                (options.handle ? $(e).select('.' + options.handle)[0] : e);
             options.draggables.push(
-                    new Draggable(e, Object.extend(options_for_draggable, { handle: handle })));
+                new Draggable(e, Object.extend(options_for_draggable, { handle: handle })));
             Droppables.add(e, options_for_droppable);
             if (options.tree) e.treeNode = element;
             options.droppables.push(e);
@@ -2067,7 +2067,7 @@ var Sortable = {
         var elements = [];
         $A(element.childNodes).each(function(e) {
             if (e.tagName && e.tagName.toUpperCase() == options.tag.toUpperCase() &&
-                    (!options.only || (Element.hasClassName(e, options.only))))
+                (!options.only || (Element.hasClassName(e, options.only))))
                 elements.push(e);
         });
         return (elements.length > 0 ? elements.flatten() : null);
@@ -2143,16 +2143,16 @@ var Sortable = {
         element = $(element);
         var sortableOptions = Sortable.options(element);
         var options = Object.extend({
-                    tag:  sortableOptions.tag,
-                    only: sortableOptions.only,
-                    name: element.id,
-                    format: sortableOptions.format || /^[^_]*_(.*)$/
-                }, arguments[1] || {});
+            tag:  sortableOptions.tag,
+            only: sortableOptions.only,
+            name: element.id,
+            format: sortableOptions.format || /^[^_]*_(.*)$/
+        }, arguments[1] || {});
         //alert("Last Drag [" + sortableOptions.lastDrag + "]");
         return "first;" + sortableOptions.lastDrag + ";changed;" + $(this.findElements(element, options) || []).map(
-                function(item) {
-                    return item.id;
-                }).join(";");
+            function(item) {
+                return item.id;
+            }).join(";");
     }
 }
 /*
@@ -2235,46 +2235,46 @@ Autocompleter.Base.prototype = {
         this.options.frequency = this.options.frequency || 0.4;
         this.options.minChars = this.options.minChars || 1;
         this.options.onShow = this.options.onShow ||
-                function(element, update) {
-                    // Based on code from MSDN
-                    var ieEngine = null;
-                    if (window.navigator.appName == "Microsoft Internet Explorer") {
-                        if (document.documentMode) {
-                            ieEngine = document.documentMode;
-                        } else if (document.compatMode && document.compatMode == "CSS1Compat") {
-                            ieEngine = 7;
-                        } else {
-                            ieEngine = 5;
-                        }
+            function(element, update) {
+                // Based on code from MSDN
+                var ieEngine = null;
+                if (window.navigator.appName == "Microsoft Internet Explorer") {
+                    if (document.documentMode) {
+                        ieEngine = document.documentMode;
+                    } else if (document.compatMode && document.compatMode == "CSS1Compat") {
+                        ieEngine = 7;
+                    } else {
+                        ieEngine = 5;
                     }
-                    try {
-                        if (update["style"] && (!update.style.position || update.style.position == 'absolute')) {
-                            update.style.position = 'absolute';
-                            Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
-                            update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
-                                        offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
-                            if (ieEngine == 7 || ieEngine == 8) {
-                                var savedPos = element.style.position;
-                                element.style.position = "relative";
-                                update.style.left = element.offsetLeft + "px";
-                                if (ieEngine == 7) {
-                                    update.style.top = (element.offsetTop + element.offsetHeight) + "px";
-                                } else if (ieEngine == 8) {
-                                    var scrollTop = element.cumulativeScrollOffset().top - document.documentElement.scrollTop;
-                                    update.style.top = (element.offsetTop - scrollTop + element.offsetHeight) + "px";
-                                }
-                                element.style.position = savedPos;
+                }
+                try {
+                    if (update["style"] && (!update.style.position || update.style.position == 'absolute')) {
+                        update.style.position = 'absolute';
+                        Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
+                        update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
+                            offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
+                        if (ieEngine == 7 || ieEngine == 8) {
+                            var savedPos = element.style.position;
+                            element.style.position = "relative";
+                            update.style.left = element.offsetLeft + "px";
+                            if (ieEngine == 7) {
+                                update.style.top = (element.offsetTop + element.offsetHeight) + "px";
+                            } else if (ieEngine == 8) {
+                                var scrollTop = element.cumulativeScrollOffset().top - document.documentElement.scrollTop;
+                                update.style.top = (element.offsetTop - scrollTop + element.offsetHeight) + "px";
                             }
+                            element.style.position = savedPos;
                         }
-                        Effect.Appear(update, {duration:0.15});
-                    } catch(e) {
-                        logger.info(e);
                     }
-                };
+                    Effect.Appear(update, {duration:0.15});
+                } catch(e) {
+                    logger.info(e);
+                }
+            };
         this.options.onHide = this.options.onHide ||
-                function(element, update) {
-                    new Effect.Fade(update, {duration:0.15})
-                };
+            function(element, update) {
+                new Effect.Fade(update, {duration:0.15})
+            };
 
         if (typeof(this.options.tokens) == 'string')
             this.options.tokens = new Array(this.options.tokens);
@@ -2295,13 +2295,13 @@ Autocompleter.Base.prototype = {
         try {
             if (Element.getStyle(this.update, 'display') == 'none')this.options.onShow(this.element, this.update);
             if (!this.iefix &&
-                    (navigator.appVersion.indexOf('MSIE') > 0) &&
-                    (navigator.userAgent.indexOf('Opera') < 0) &&
-                    (Element.getStyle(this.update, 'position') == 'absolute')) {
+                (navigator.appVersion.indexOf('MSIE') > 0) &&
+                (navigator.userAgent.indexOf('Opera') < 0) &&
+                (Element.getStyle(this.update, 'position') == 'absolute')) {
                 new Insertion.After(this.update,
-                        '<iframe id="' + this.update.id + '_iefix" title="IE6_Fix" ' +
-                                'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
-                                'src="javascript:\'<html></html>\'" frameborder="0" scrolling="no"></iframe>');
+                    '<iframe id="' + this.update.id + '_iefix" title="IE6_Fix" ' +
+                        'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
+                        'src="javascript:\'<html></html>\'" frameborder="0" scrolling="no"></iframe>');
                 this.iefix = $(this.update.id + '_iefix');
             }
             if (this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
@@ -2488,7 +2488,7 @@ Autocompleter.Base.prototype = {
             // Right or bottom border, if any, will be treated as scrollbar.
             // No way to determine their width or scrollbar width accurately.
             if (event.clientX > docBody.clientLeft + docBody.clientWidth ||
-                    event.clientY > docBody.clientTop + docBody.clientHeight) {
+                event.clientY > docBody.clientTop + docBody.clientHeight) {
                 this.element.focus();
                 return;
             }
@@ -2613,7 +2613,7 @@ Autocompleter.Base.prototype = {
 
             if (this.update.firstChild && this.update.firstChild.childNodes) {
                 this.entryCount =
-                        this.update.firstChild.childNodes.length;
+                    this.update.firstChild.childNodes.length;
                 for (var i = 0; i < this.entryCount; i++) {
                     var entry = this.getEntry(i);
                     entry.autocompleteIndex = i;
@@ -2691,31 +2691,31 @@ Autocompleter.Base.prototype = {
 
 Ajax.Autocompleter = Class.create();
 Object.extend(Object.extend(Ajax.Autocompleter.prototype, Autocompleter.Base.prototype), {
-            initialize: function(element, update, url, options) {
-                this.baseInitialize(element, update, options);
-                this.options.asynchronous = true;
-                this.options.onComplete = this.onComplete.bind(this);
-                this.options.defaultParams = this.options.parameters || null;
-                this.url = url;
-            },
+    initialize: function(element, update, url, options) {
+        this.baseInitialize(element, update, options);
+        this.options.asynchronous = true;
+        this.options.onComplete = this.onComplete.bind(this);
+        this.options.defaultParams = this.options.parameters || null;
+        this.url = url;
+    },
 
-            getUpdatedChoices: function() {
-                entry = encodeURIComponent(this.options.paramName) + '=' +
-                        encodeURIComponent(this.getToken());
+    getUpdatedChoices: function() {
+        entry = encodeURIComponent(this.options.paramName) + '=' +
+            encodeURIComponent(this.getToken());
 
-                this.options.parameters = this.options.callback ?
-                        this.options.callback(this.element, entry) : entry;
+        this.options.parameters = this.options.callback ?
+            this.options.callback(this.element, entry) : entry;
 
-                if (this.options.defaultParams)
-                    this.options.parameters += '&' + this.options.defaultParams;
+        if (this.options.defaultParams)
+            this.options.parameters += '&' + this.options.defaultParams;
 
-                new Ajax.Request(this.url, this.options);
-            },
+        new Ajax.Request(this.url, this.options);
+    },
 
-            onComplete: function(request) {
-                this.updateChoices(request.responseText);
-            }
-        });
+    onComplete: function(request) {
+        this.updateChoices(request.responseText);
+    }
+});
 
 
 /*
@@ -2765,51 +2765,51 @@ Ice.Autocompleter = Class.create();
 
 
 Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prototype), {
-            initialize: function(id, updateId, options, rowClass, selectedRowClass, partialSubmit) {
-                Ice.Autocompleter.logger.debug("Building Ice Autocompleter ID [" + id + "]");
-                this.partialSubmit = partialSubmit;
-                var existing = Autocompleter.Finder.list[id];
-                if (!Prototype.Browser.IE && existing && !existing.monitor.changeDetected()) {
-                    return;
-                }
+    initialize: function(id, updateId, options, rowClass, selectedRowClass, partialSubmit) {
+        Ice.Autocompleter.logger.debug("Building Ice Autocompleter ID [" + id + "]");
+        this.partialSubmit = partialSubmit;
+        var existing = Autocompleter.Finder.list[id];
+        if (!Prototype.Browser.IE && existing && !existing.monitor.changeDetected()) {
+            return;
+        }
 
-                if (options)
-                    options.minChars = 0;
-                else
-                    options = {minChars:0};
-                var element = $(id);
-                var ue = $(updateId);
-                this.baseInitialize(element, ue, options, rowClass, selectedRowClass);
+        if (options)
+            options.minChars = 0;
+        else
+            options = {minChars:0};
+        var element = $(id);
+        var ue = $(updateId);
+        this.baseInitialize(element, ue, options, rowClass, selectedRowClass);
 
-                this.options.onComplete = this.onComplete.bind(this);
-                this.options.defaultParams = this.options.parameters || null;
-                this.monitor = new Ice.AutocompleterMonitor(element, ue, options, rowClass, selectedRowClass);
-                this.monitor.object = this;
-                if (!Prototype.Browser.IE) {
-                    Ice.StateMon.add(this.monitor);
-                }
-                Autocompleter.Finder.add(this.element, this);
-                Ice.Autocompleter.logger.debug("Done building Ice Autocompleter");
-                if (this.monitor.changeDetected()) {
-                    Ice.Autocompleter.logger.debug("Change has been detected");
-                }
-            },
+        this.options.onComplete = this.onComplete.bind(this);
+        this.options.defaultParams = this.options.parameters || null;
+        this.monitor = new Ice.AutocompleterMonitor(element, ue, options, rowClass, selectedRowClass);
+        this.monitor.object = this;
+        if (!Prototype.Browser.IE) {
+            Ice.StateMon.add(this.monitor);
+        }
+        Autocompleter.Finder.add(this.element, this);
+        Ice.Autocompleter.logger.debug("Done building Ice Autocompleter");
+        if (this.monitor.changeDetected()) {
+            Ice.Autocompleter.logger.debug("Change has been detected");
+        }
+    },
 
-            getUpdatedChoices: function(isEnterKey, event, idx) {
-                if (!event) {
-                    event = new Object();
-                }
-                entry = encodeURIComponent(this.options.paramName) + '=' +
-                        encodeURIComponent(this.getToken());
+    getUpdatedChoices: function(isEnterKey, event, idx) {
+        if (!event) {
+            event = new Object();
+        }
+        entry = encodeURIComponent(this.options.paramName) + '=' +
+            encodeURIComponent(this.getToken());
 
-                this.options.parameters = this.options.callback ?
-                        this.options.callback(this.element, entry) : entry;
+        this.options.parameters = this.options.callback ?
+            this.options.callback(this.element, entry) : entry;
 
-                if (this.options.defaultParams)
-                    this.options.parameters += '&' + this.options.defaultParams;
+        if (this.options.defaultParams)
+            this.options.parameters += '&' + this.options.defaultParams;
 
-                var form = Ice.util.findForm(this.element);
-                if (idx > -1) {
+        var form = Ice.util.findForm(this.element);
+        if (idx > -1) {
                     var indexName = this.element.id + "_idx";
                     form[indexName].value = idx;
                 }
@@ -3482,6 +3482,8 @@ ToolTipPanelPopup = Class.create({
                     this.hideEvent = this.hidePopupOnMouseOut.bindAsEventListener(this);
                 } else {
                     this.hideOn = "none";
+                    //associate no-op callback to avoid stack overflow in IE
+                    this.hideEvent = Function.NOOP;
                 }
 
                 this.eventMouseMove = this.updateCordinate.bindAsEventListener(this);
@@ -3521,9 +3523,7 @@ ToolTipPanelPopup = Class.create({
                     tooltip.style.visibility = "visible";
                     tooltip.style.position = "absolute";
                     tooltip.style.display = "";
-                    var srcComp = $(this.srcCompId);
-                    var cumulativeOffset = srcComp.cumulativeOffset();
-                    var positionedOffset = srcComp.positionedOffset();
+                    var srcComp = $(this.srcCompId);onedOffset();
                     tooltip.style.top = this.y - tooltip.offsetHeight - 4 - cumulativeOffset.top + positionedOffset.top + "px";
                     tooltip.style.left = this.x + 4 - cumulativeOffset.left + positionedOffset.left + "px";
                     ToolTipPanelPopupUtil.adjustPosition(tooltip);
