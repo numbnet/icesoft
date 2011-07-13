@@ -1493,6 +1493,7 @@ table.iceSelInpDate tbody tr td table{
     border-right: 1px solid #666666;
     border-left: 1px solid #ABABAB;
     border-bottom: 1px solid #333333;
+    z-index:1;
 }
 
 .iceSelInpTxtRow {
