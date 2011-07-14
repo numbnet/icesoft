@@ -30,7 +30,8 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.util.CoreUtils;
-import org.icefaces.impl.util.DOMUtils;
+import com.icesoft.util.pooling.CSSNamePool;
+import com.icesoft.util.pooling.ClientIdPool;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
@@ -38,12 +39,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 import javax.faces.FacesException;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIParameter;
-import javax.faces.component.UIViewRoot;
+import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import java.beans.Beans;
 import java.io.IOException;
@@ -51,9 +47,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import com.icesoft.util.pooling.ClientIdPool;
-import com.icesoft.util.pooling.CSSNamePool;
 
 /**
  * <p>PanelTabSetRenderer extends DomBasicRenderer and is responsible for
@@ -100,7 +93,7 @@ public class PanelTabSetRenderer
         // get DOMContext using DOMContext static method getDOMContext
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
-        PanelTabSet tabSet = (PanelTabSet) uiComponent;        
+        PanelTabSet tabSet = (PanelTabSet) uiComponent;
         // if the domContext has not been initialized
         // initialize it, create the Root Element
         if (!domContext.isInitialized()) {
@@ -113,8 +106,8 @@ public class PanelTabSetRenderer
         }
 
         FormRenderer.addHiddenField(facesContext,
-                                    deriveCommonHiddenFieldName(
-                                            facesContext, uiComponent));
+                deriveCommonHiddenFieldName(
+                        facesContext, uiComponent));
 
 
         String baseClass = tabSet.getStyleClass();
@@ -140,7 +133,7 @@ public class PanelTabSetRenderer
             }
 
             if (tabSet.getChildCount() > 1 ||
-                !(tabSet.getChildren().get(0) instanceof PanelTab)) {
+                    !(tabSet.getChildren().get(0) instanceof PanelTab)) {
                 if (log.isErrorEnabled()) {
                     log.error(
                             " TabbedPane::only one panelTab element allowed when using value atttibute");
@@ -148,10 +141,10 @@ public class PanelTabSetRenderer
                 return;
             }
         }
-        
+
         if (tabSet.getWidth() != null) {
             Element divWrapper = (Element) domContext.getRootNode();
-            divWrapper.setAttribute(HTML.STYLE_ATTR, "width:"+tabSet.getWidth()+"px;overflow:hidden;");
+            divWrapper.setAttribute(HTML.STYLE_ATTR, "width:" + tabSet.getWidth() + "px;overflow:hidden;");
         }
 
         // get table
@@ -161,12 +154,12 @@ public class PanelTabSetRenderer
             if (HTML.TABLE_PASSTHROUGH_ATTRIBUTES[i]
                     .equalsIgnoreCase("styleClass")) {
                 renderAttribute(tabSet, table,
-                                HTML.TABLE_PASSTHROUGH_ATTRIBUTES[i],
-                                HTML.CLASS_ATTR);
+                        HTML.TABLE_PASSTHROUGH_ATTRIBUTES[i],
+                        HTML.CLASS_ATTR);
             } else {
                 renderAttribute(tabSet, table,
-                                HTML.TABLE_PASSTHROUGH_ATTRIBUTES[i],
-                                HTML.TABLE_PASSTHROUGH_ATTRIBUTES[i]);
+                        HTML.TABLE_PASSTHROUGH_ATTRIBUTES[i],
+                        HTML.TABLE_PASSTHROUGH_ATTRIBUTES[i]);
             }
         }
         // ICE-2337
@@ -234,17 +227,17 @@ public class PanelTabSetRenderer
             headerTd.appendChild(tabsTable);
             Element tabsTableRow = domContext.createElement(HTML.TR_ELEM);
             tabsTable.appendChild(tabsTableRow);
-            
+
             contentRow.setAttribute(HTML.HEIGHT_ATTR, "100%");
             // call the writeTabCell method
             // pass in the new table row Element tr3
             writeTabCell(domContext,
-                         facesContext,
-                         tabSet,
-                         visibleTabCount,
-                         selectedIndex,
-                         contentRow,
-                         tabSet);
+                    facesContext,
+                    tabSet,
+                    visibleTabCount,
+                    selectedIndex,
+                    contentRow,
+                    tabSet);
             if (tabSet.getValue() != null) {
                 int rowIndex = tabSet.getFirst();
                 int rowsToBeDisplayed = tabSet.getRows();
@@ -253,7 +246,7 @@ public class PanelTabSetRenderer
 
                 while (tabSet.isRowAvailable()) {
                     if (rowsToBeDisplayed > 0 &&
-                        rowsDisplayed >= rowsToBeDisplayed) {
+                            rowsDisplayed >= rowsToBeDisplayed) {
                         break;
                     }
 
@@ -266,13 +259,13 @@ public class PanelTabSetRenderer
                             // call the writeHeaderCell method
                             // pass in the new header table row Element
                             writeHeaderCell(domContext,
-                                            facesContext,
-                                            tabSet,
-                                            (PanelTab) child,
-                                            tabIdx,
-                                            tabIdx == selectedIndex,
-                                            ((PanelTab) child).isDisabled(),
-                                            tabsTableRow);
+                                    facesContext,
+                                    tabSet,
+                                    (PanelTab) child,
+                                    tabIdx,
+                                    tabIdx == selectedIndex,
+                                    ((PanelTab) child).isDisabled(),
+                                    tabsTableRow);
                             visibleTabCount++;
                         }
                         tabIdx++;
@@ -293,13 +286,13 @@ public class PanelTabSetRenderer
                             // call the writeHeaderCell method
                             // pass in the new header table row Element
                             writeHeaderCell(domContext,
-                                            facesContext,
-                                            tabSet,
-                                            (PanelTab) child,
-                                            tabIdx,
-                                            tabIdx == selectedIndex,
-                                            ((PanelTab) child).isDisabled(),
-                                            tabsTableRow);
+                                    facesContext,
+                                    tabSet,
+                                    (PanelTab) child,
+                                    tabIdx,
+                                    tabIdx == selectedIndex,
+                                    ((PanelTab) child).isDisabled(),
+                                    tabsTableRow);
                             visibleTabCount++;
                         }
                         tabIdx++;
@@ -337,7 +330,7 @@ public class PanelTabSetRenderer
 
                 while (tabSet.isRowAvailable()) {
                     if (rowsToBeDisplayed > 0 &&
-                        rowsDisplayed >= rowsToBeDisplayed) {
+                            rowsDisplayed >= rowsToBeDisplayed) {
                         break;
                     }
 
@@ -349,13 +342,13 @@ public class PanelTabSetRenderer
                             // call the writeHeaderCell method
                             // pass in the new header table row Element
                             writeHeaderCell(domContext,
-                                            facesContext,
-                                            tabSet,
-                                            (PanelTab) child,
-                                            tabIdx,
-                                            tabIdx == selectedIndex,
-                                            ((PanelTab) child).isDisabled(),
-                                            tabsTableRow);
+                                    facesContext,
+                                    tabSet,
+                                    (PanelTab) child,
+                                    tabIdx,
+                                    tabIdx == selectedIndex,
+                                    ((PanelTab) child).isDisabled(),
+                                    tabsTableRow);
                             visibleTabCount++;
                         }
                         tabIdx++;
@@ -372,16 +365,16 @@ public class PanelTabSetRenderer
                     if (child instanceof PanelTab) {
                         if (child.isRendered()) {
                             // append the header table row Element to the table
-                                  // call the writeHeaderCell method
+                            // call the writeHeaderCell method
                             // pass in the new header table row Element
                             writeHeaderCell(domContext,
-                                            facesContext,
-                                            tabSet,
-                                            (PanelTab) child,
-                                            tabIdx,
-                                            tabIdx == selectedIndex,
-                                            ((PanelTab) child).isDisabled(),
-                                            tabsTableRow);
+                                    facesContext,
+                                    tabSet,
+                                    (PanelTab) child,
+                                    tabIdx,
+                                    tabIdx == selectedIndex,
+                                    ((PanelTab) child).isDisabled(),
+                                    tabsTableRow);
                             visibleTabCount++;
                         }
                         tabIdx++;
@@ -409,12 +402,12 @@ public class PanelTabSetRenderer
             // call the writeTabCell method
             // pass in the new table row Element tr3
             writeTabCell(domContext,
-                         facesContext,
-                         tabSet,
-                         visibleTabCount,
-                         selectedIndex,
-                         contentRow,
-                         tabSet);
+                    facesContext,
+                    tabSet,
+                    visibleTabCount,
+                    selectedIndex,
+                    contentRow,
+                    tabSet);
 
             // steps to the position where the next sibling should be rendered
             domContext.stepOver();
@@ -444,7 +437,7 @@ public class PanelTabSetRenderer
                     getUIComponent((UIComponent) tabSet.getChildren().get(0));
             while (tabSet.isRowAvailable()) {
                 if (rowsToBeDisplayed > 0 &&
-                    rowsDisplayed >= rowsToBeDisplayed) {
+                        rowsDisplayed >= rowsToBeDisplayed) {
                     break;
                 }
                 if (child instanceof PanelTab) {
@@ -454,11 +447,11 @@ public class PanelTabSetRenderer
                         int oldTabIdx = tabSet.getSelectedIndex();
                         tabSet.setSubmittedSelectedIndex(tabIdx);
                         tabSet.queueEvent(new TabChangeEvent(tabSet,
-                                                             oldTabIdx,
-                                                             tabIdx));
+                                oldTabIdx,
+                                tabIdx));
                         JavascriptContext.addJavascriptCall(facesContext,
-                                "document.getElementById('"+ paramName + "').focus();");
-                        
+                                "document.getElementById('" + paramName + "').focus();");
+
                         return;
                     }
                     tabIdx++;
@@ -480,11 +473,11 @@ public class PanelTabSetRenderer
                         int oldTabIdx = tabSet.getSelectedIndex();
                         tabSet.setSubmittedSelectedIndex(tabIdx);
                         tabSet.queueEvent(new TabChangeEvent(tabSet,
-                                                             oldTabIdx,
-                                                             tabIdx));
+                                oldTabIdx,
+                                tabIdx));
                         JavascriptContext.addJavascriptCall(facesContext,
-                                "document.getElementById('"+ paramName + "').focus();");
-                        
+                                "document.getElementById('" + paramName + "').focus();");
+
                         return;
                     }
                     tabIdx++;
@@ -521,7 +514,7 @@ public class PanelTabSetRenderer
         // create a new table data Element using the DOMContext API
         Element td = domContext.createElement(HTML.TD_ELEM);
         td.setAttribute(HTML.ID_ATTR,
-                        ClientIdPool.get(tabSet.getClientId(facesContext) + "ht" + tabIndex));
+                ClientIdPool.get(tabSet.getClientId(facesContext) + "ht" + tabIndex));
         // append the td to the tr
         tr.appendChild(td);
 
@@ -581,7 +574,7 @@ public class PanelTabSetRenderer
 
         UIComponent labelFacet = tab.getLabelFacet();
         String disableStyleClassSuffix;
-        
+
         if (disabled) {
             disableStyleClassSuffix = "-dis";
             if (labelFacet == null) {
@@ -610,27 +603,27 @@ public class PanelTabSetRenderer
                 // set focus handler
                 if (tabSet.isKeyboardNavigationEnabled()) {
                     link.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.pnlTabOnFocus(this, false, true);");
-                    link.setAttribute(HTML.ONBLUR_ATTR, "return Ice.pnlTabOnBlur(this, false, true);");   
+                    link.setAttribute(HTML.ONBLUR_ATTR, "return Ice.pnlTabOnBlur(this, false, true);");
                 } else {
                     link.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.pnlTabOnFocus(this, false, false);");
                     link.setAttribute(HTML.ONBLUR_ATTR, "return Ice.pnlTabOnBlur(this, false, false);");
                 }
 
-                renderLinkText(label, domContext, link, tab, tabSet);                
+                renderLinkText(label, domContext, link, tab, tabSet);
             } else {
                 //link.setAttribute(HTML.STYLE_ATTR, "display:none;");
                 // set focus handler
                 if (tabSet.isKeyboardNavigationEnabled()) {
                     link.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.pnlTabOnFocus(this, true, true);");
-                    link.setAttribute(HTML.ONBLUR_ATTR, "return Ice.pnlTabOnBlur(this, true, true);");   
+                    link.setAttribute(HTML.ONBLUR_ATTR, "return Ice.pnlTabOnBlur(this, true, true);");
                 } else {
                     link.setAttribute(HTML.ONFOCUS_ATTR, "return Ice.pnlTabOnFocus(this, true, false);");
                     link.setAttribute(HTML.ONBLUR_ATTR, "return Ice.pnlTabOnBlur(this, true, false);");
                 }
-                link.setAttribute(HTML.STYLE_ELEM, "position:relative; top:0px;");                
-                Element div = domContext.createElement(HTML.DIV_ELEM); 
+                link.setAttribute(HTML.STYLE_ELEM, "position:relative; top:0px;");
+                Element div = domContext.createElement(HTML.DIV_ELEM);
                 td_mid_mid.appendChild(div);
-                div.setAttribute(HTML.ONCLICK_ATTR, "if(!Ice.isEventSourceInputElement(event)) document.getElementById('"+ linkId+"').onclick();");
+                div.setAttribute(HTML.ONCLICK_ATTR, "if(!Ice.isEventSourceInputElement(event)) document.getElementById('" + linkId + "').onclick(event);");
 //				div.setAttribute(HTML.ONFOCUS_ATTR, "document.getElementById('"+ linkId+"').onclick();");
                 div.setAttribute(HTML.CLASS_ATTR, "ptfd");
 /*
@@ -642,9 +635,9 @@ public class PanelTabSetRenderer
                 Node cursor = domContext.getCursorParent();
                 domContext.setCursorParent(div);
                 CustomComponentUtils.renderChild(facesContext, labelFacet);
-                domContext.setCursorParent(cursor);  
+                domContext.setCursorParent(cursor);
 
-                label = "<img src='"+ CoreUtils.resolveResourceURL(facesContext,
+                label = "<img src='" + CoreUtils.resolveResourceURL(facesContext,
                         "/xmlhttp/css/xp/css-images/spacer.gif") + "' />";
                 Text spacer = domContext.createTextNodeUnescaped(label);
                 link.appendChild(spacer);
@@ -673,9 +666,9 @@ public class PanelTabSetRenderer
             table.setAttribute(HTML.CLASS_ATTR, tabStyleClass);
             if (!disabled) {
                 table.setAttribute(HTML.ONMOUSEOVER_ATTR,
-                                   "this.className='" + tab.getTabOverClass(tabPlacement) + "';");
+                        "this.className='" + tab.getTabOverClass(tabPlacement) + "';");
                 table.setAttribute(HTML.ONMOUSEOUT_ATTR,
-                                   "this.className='" + tab.getTabOffClass(tabPlacement) + "';");
+                        "this.className='" + tab.getTabOffClass(tabPlacement) + "';");
             } else {
                 table.removeAttribute(HTML.ONMOUSEOVER_ATTR);
                 table.removeAttribute(HTML.ONMOUSEOUT_ATTR);
@@ -753,12 +746,12 @@ public class PanelTabSetRenderer
             String parentClientId =
                     parentNamingContainer.getClientId(facesContext);
             return parentClientId
-                   + NamingContainer.SEPARATOR_CHAR
-                   + UIViewRoot.UNIQUE_ID_PREFIX
-                   + HIDDEN_FIELD_NAME;
+                    + NamingContainer.SEPARATOR_CHAR
+                    + UIViewRoot.UNIQUE_ID_PREFIX
+                    + HIDDEN_FIELD_NAME;
         } catch (NullPointerException e) {
             throw new RuntimeException("Panel Tab Set must be in a <ice:form>",
-                                       e);
+                    e);
         }
     }
 
@@ -827,27 +820,27 @@ public class PanelTabSetRenderer
         String uiFormClientId = uiForm.getClientId(facesContext);
         String onclick = tab.getOnclick();
         root.setAttribute("onclick", combinedPassThru(onclick, getJavaScriptOnClickString(facesContext,
-                                                                tabSet,
-                                                                uiFormClientId,
-                                                                parameters))); // replaced command w/component
+                tabSet,
+                uiFormClientId,
+                parameters))); // replaced command w/component
     }
 
     private String getJavaScriptOnClickString(FacesContext facesContext,
                                               UIComponent uiComponent,
                                               String formClientId,
                                               Map parameters) {
-        String submit =  "iceSubmitPartial(";
-        if (!((PanelTabSet)uiComponent).isPartialSubmit()) {
-            submit =  "iceSubmit(";
+        String submit = "iceSubmitPartial(";
+        if (!((PanelTabSet) uiComponent).isPartialSubmit()) {
+            submit = "iceSubmit(";
         }
         return getJavascriptHiddenFieldSetters(facesContext,
-                                               uiComponent, formClientId,
-                                               parameters)
-               + submit              
-               + " document.forms['" + formClientId + "'],"
-               + " this,event); "
-               + getJavascriptHiddenFieldReSetters(facesContext, uiComponent, formClientId, parameters)
-               + "return false;";
+                uiComponent, formClientId,
+                parameters)
+                + submit
+                + " document.forms['" + formClientId + "'],"
+                + " this,event); "
+                + getJavascriptHiddenFieldReSetters(facesContext, uiComponent, formClientId, parameters)
+                + "return false;";
     }
 
     /**
@@ -883,10 +876,11 @@ public class PanelTabSetRenderer
         }
         return buffer.toString();
     }
+
     private String getJavascriptHiddenFieldReSetters(FacesContext facesContext,
-                                                   UIComponent uiComponent,
-                                                   String formClientId,
-                                                   Map parameters) {
+                                                     UIComponent uiComponent,
+                                                     String formClientId,
+                                                     Map parameters) {
         StringBuffer buffer;
         buffer = new StringBuffer("document.forms['" + formClientId + "']['");
         buffer.append(deriveCommonHiddenFieldName(facesContext, uiComponent));
@@ -952,7 +946,7 @@ public class PanelTabSetRenderer
         // create a new table data Element
         Element td = domContext.createElement(HTML.TD_ELEM);
         td.setAttribute(HTML.ID_ATTR,
-                        ClientIdPool.get(tabSet.getClientId(facesContext) + "td" + tabCount));
+                ClientIdPool.get(tabSet.getClientId(facesContext) + "td" + tabCount));
         // append the new table data Element to the table row
         tr.appendChild(td);
 
@@ -975,7 +969,7 @@ public class PanelTabSetRenderer
                     getUIComponent((UIComponent) tabSet.getChildren().get(0));
             while (uiList.isRowAvailable()) {
                 if (rowsToBeDisplayed > 0 &&
-                    rowsDisplayed >= rowsToBeDisplayed) {
+                        rowsDisplayed >= rowsToBeDisplayed) {
                     break;
                 }
                 if (child instanceof PanelTab) {
@@ -1008,7 +1002,7 @@ public class PanelTabSetRenderer
 
     private UIComponent getUIComponent(UIComponent uiComponent) {
         if (uiComponent instanceof UIForm ||
-            uiComponent instanceof UINamingContainer) {
+                uiComponent instanceof UINamingContainer) {
             List children = uiComponent.getChildren();
             for (int i = 0, len = children.size(); i < len; i++) {
                 uiComponent = getUIComponent((UIComponent) children.get(i));
