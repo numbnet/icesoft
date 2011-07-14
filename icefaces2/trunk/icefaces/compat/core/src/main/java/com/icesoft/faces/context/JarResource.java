@@ -23,9 +23,10 @@ package com.icesoft.faces.context;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Date;
 
-public class JarResource implements Resource {
+public class JarResource implements Resource, Serializable {
     private final Date lastModified = new Date();
     private String path;
 

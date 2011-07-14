@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ import com.icesoft.faces.context.ResourceRegistry;
 import com.icesoft.faces.context.ResourceRegistryLocator;
 
 
-public class InputRichTextSetup implements SystemEventListener{
+public class InputRichTextSetup implements Serializable, SystemEventListener {
 	public static final Resource ICE_CK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/ckeditor_ext.js");
 	private static final String CK_EDITOR_ZIP = "com/icesoft/faces/component/inputrichtext/ckeditor.zip";
 	private static final Date lastModified = new Date();
@@ -82,25 +83,8 @@ public class InputRichTextSetup implements SystemEventListener{
 						}
 						Iterator i = ZipEntryCacheCK.keySet().iterator();
 						while (i.hasNext()) {
-							final String entryName = (String) i.next();
-							linker.registerRelativeResource(entryName, new Resource() {
-								public String calculateDigest() {
-									return String.valueOf(CK_EDITOR_ZIP + entryName);
-								}
-
-								public Date lastModified() {
-									return lastModified;
-								}
-
-								public InputStream open() throws IOException {
-									return new ByteArrayInputStream((byte[]) ZipEntryCacheCK.get(entryName));
-								}
-
-								public void withOptions(Resource.Options options) {
-									options.setFileName(entryName);
-									options.setLastModified(lastModified);
-								}
-							});
+							String entryName = (String) i.next();
+							linker.registerRelativeResource(entryName, new RelativeResource(entryName));
 						}
 					}
 				};
@@ -113,7 +97,32 @@ public class InputRichTextSetup implements SystemEventListener{
 
 	}
 
+    private class RelativeResource
+    implements Resource, Serializable {
+        private final String entryName;
 
+        private RelativeResource(final String entryName) {
+            this.entryName = entryName;
+        }
+
+        public String calculateDigest() {
+            return String.valueOf(CK_EDITOR_ZIP + entryName);
+        }
+
+        public Date lastModified() {
+            return lastModified;
+        }
+
+        public InputStream open()
+        throws IOException {
+            return new ByteArrayInputStream((byte[])ZipEntryCacheCK.get(entryName));
+        }
+
+        public void withOptions(final Resource.Options options) {
+            options.setFileName(entryName);
+            options.setLastModified(lastModified);
+        }
+    }
 
 	private  void loadZipEntryCache() {
 		try {
