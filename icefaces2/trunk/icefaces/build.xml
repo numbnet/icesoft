@@ -188,7 +188,13 @@
         </delete>
         <delete dir="${bundle.dir.bin}/lib/myfaces"/>
 
-        <delete dir="${bundle.dir.bin}/ace"/>
+        <echo message="DELETING ACE EXCEPT FOR NAUGHTY JAR"/>
+        <delete includeemptydirs="true">
+          <fileset dir="${bundle.dir.bin}/ace"
+                   includes="**/*"
+                   excludes="tools/smartsprites/smartsprites-0.3.0-dev.jar"/>
+        </delete>
+
         <delete dir="${bundle.dir.bin}/compat"/>
         <delete dir="${bundle.dir.bin}/core"/>
         <delete dir="${bundle.dir.bin}/test"/>
