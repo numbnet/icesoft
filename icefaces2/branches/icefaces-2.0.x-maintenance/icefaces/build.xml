@@ -188,7 +188,12 @@
         </delete>
         <delete dir="${bundle.dir.bin}/lib/myfaces"/>
 
-        <delete dir="${bundle.dir.bin}/ace"/>
+        <!-- Due to a quirk of Ant and Windows, we can't delete a .jar file that was
+             used on the classpath to execute a task. With ACE, we use the smartsprites
+             library and then try to remove it from the binary bundle. To try and avoid
+             this we avoid failing on any error meaning it'll need to be manually removed
+             when the bundle is built on a Windows machine. -->
+        <delete dir="${bundle.dir.bin}/ace" failonerror="false"/>
         <delete dir="${bundle.dir.bin}/compat"/>
         <delete dir="${bundle.dir.bin}/core"/>
         <delete dir="${bundle.dir.bin}/test"/>
