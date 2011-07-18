@@ -32,8 +32,8 @@ import java.util.logging.Logger;
 public class PushContext {
     private static final Logger log = Logger.getLogger(PushContext.class.getName());
     private static final String BrowserIDCookieName = "ice.push.browser";
-
-    private PushGroupManager pushGroupManager;
+    //assign noop manager to avoid NPEs before the real manager is assign during startup
+    private PushGroupManager pushGroupManager = NoopPushGroupManager.Instance;
 
     private int browserCounter = 0;
     private int subCounter = 0;
