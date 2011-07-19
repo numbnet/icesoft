@@ -53,9 +53,24 @@
             <name>ariaEnabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-        </attribute>        
+        </attribute>
     </tag>
-        
+
+    <tag>
+        <tag-name>push</tag-name>
+        <component>
+            <component-type>org.icefaces.impl.component.Push</component-type>
+        </component>
+        <attribute>
+            <description>
+                The group name the current view should be added to.
+            </description>
+            <name>group</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+
     <tag>
         <tag-name>singleSubmit</tag-name>
         <component>

@@ -30,6 +30,7 @@ import org.icepush.PushMessage;
 
 import javax.faces.context.FacesContext;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
