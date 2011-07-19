@@ -40,7 +40,7 @@ import java.util.logging.Logger;
 
 public class SessionExpiredListener implements HttpSessionListener {
 
-    private static Logger log = Logger.getLogger(SessionExpiredListener.class.getName());
+    private static Logger LOGGER = Logger.getLogger(SessionExpiredListener.class.getName());
 
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
     }
@@ -64,7 +64,15 @@ public class SessionExpiredListener implements HttpSessionListener {
             app.publishEvent(fc, ExceptionQueuedEvent.class, ctxt);
         }
         HttpSession session = httpSessionEvent.getSession();
-        WindowScopeManager.disposeWindows(session);
+        try {
+            // Not everything might be available to us anymore from the session, causing a possible exception.
+            WindowScopeManager.disposeWindows(session);
+        } catch (Exception exception) {
+            LOGGER.log(
+                Level.WARNING,
+                "An exception occurred while trying to invoke @PreDestroy on window scoped beans: " +
+                    exception.getMessage());
+        }
         //If the session is destroyed and ICEpush is available, we can request a push request immediately
         //which should result in a SessionExpiredException being sent to the client.
         if (EnvUtils.isICEpushPresent()) {
