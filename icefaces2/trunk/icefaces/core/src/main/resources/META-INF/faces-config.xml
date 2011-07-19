@@ -38,6 +38,10 @@
         <render-kit-id>HTML_BASIC</render-kit-id>
         <render-kit-class>org.icefaces.impl.renderkit.DOMRenderKit</render-kit-class>
     </render-kit>
+    <component>
+        <component-type>org.icefaces.impl.component.Push</component-type>
+        <component-class>org.icefaces.impl.component.Push</component-class>
+    </component>
     <lifecycle>
         <phase-listener>org.icefaces.impl.event.DeltaSubmitPhaseListener</phase-listener>
         <phase-listener>org.icefaces.impl.event.FacesMessagesPhaseListener</phase-listener>
