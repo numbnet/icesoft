@@ -112,9 +112,19 @@ public class MessageRenderer extends DomBasicRenderer {
         // tooltip
         boolean tooltip = getToolTipAttribute(uiComponent);
 
-        String[] summaryAndDetail = getSummaryAndDetail(facesMessage);
-        String summary = DOMUtils.escapeAnsi(summaryAndDetail[0]);
-        String detail = DOMUtils.escapeAnsi(summaryAndDetail[1]);
+        Boolean escape = (Boolean) uiComponent.getAttributes().get("escape");
+        boolean isEscape = escape == null || escape.booleanValue();
+		
+		String[] summaryAndDetail = getSummaryAndDetail(facesMessage);
+		String summary;
+		String detail;
+		if (isEscape) {
+			summary = DOMUtils.escapeAnsi(summaryAndDetail[0]);
+			detail = DOMUtils.escapeAnsi(summaryAndDetail[1]);
+		} else {
+			summary = summaryAndDetail[0];
+			detail = summaryAndDetail[1];		
+		}
 
         // showSummary
         boolean showSummary = ((UIMessage) uiComponent).isShowSummary();

@@ -153,9 +153,19 @@ public class MessagesRenderer extends DomBasicRenderer {
             String style = styleAndStyleClass[0];
             String styleClass = styleAndStyleClass[1];
 
-            String[] summaryAndDetail = getSummaryAndDetail(nextFacesMessage);
-            String summary = DOMUtils.escapeAnsi(summaryAndDetail[0]);
-            String detail = DOMUtils.escapeAnsi(summaryAndDetail[1]);
+			Boolean escape = (Boolean) uiComponent.getAttributes().get("escape");
+			boolean isEscape = escape == null || escape.booleanValue();
+			
+			String[] summaryAndDetail = getSummaryAndDetail(nextFacesMessage);
+			String summary;
+			String detail;
+			if (isEscape) {
+				summary = DOMUtils.escapeAnsi(summaryAndDetail[0]);
+				detail = DOMUtils.escapeAnsi(summaryAndDetail[1]);
+			} else {
+				summary = summaryAndDetail[0];
+				detail = summaryAndDetail[1];		
+			}
 
             boolean showSummary = ((UIMessages) uiComponent).isShowSummary();
             boolean showDetail = ((UIMessages) uiComponent).isShowDetail();
