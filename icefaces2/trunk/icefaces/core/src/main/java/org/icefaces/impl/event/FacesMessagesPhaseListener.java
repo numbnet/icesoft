@@ -117,13 +117,6 @@ public class FacesMessagesPhaseListener implements PhaseListener {
         // B. Global messages, not associated to a component 
         //    A partial execute, not a full execute
         FacesContext facesContext = phaseEvent.getFacesContext();
-        Map viewMap = facesContext.getViewRoot().getViewMap();
-        Map initParameterMap = facesContext.getExternalContext().getInitParameterMap();
-        if (!EnvUtils.isMessagePersistence(facesContext) ||
-            (viewMap.containsKey(EnvUtils.MESSAGE_PERSISTENCE) && !((Boolean)viewMap.get(EnvUtils.MESSAGE_PERSISTENCE)).booleanValue())) {
-
-            return;
-        }
 //dumpMaps(facesContext);
 ////if(!phaseEvent.getPhaseId().equals(PhaseId.RENDER_RESPONSE))return;
         
