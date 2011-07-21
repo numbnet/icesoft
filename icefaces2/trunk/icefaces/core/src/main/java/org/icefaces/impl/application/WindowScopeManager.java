@@ -176,6 +176,14 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
                 callPreDestroy(windowScopedBean);
             }
         }
+        Iterator<ScopeMap> disposedScopeMaps;
+        disposedScopeMaps = state.disposedWindowScopedMaps.iterator();
+        while (disposedScopeMaps.hasNext()) {
+            Collection<Object> windowScopedBeans = disposedScopeMaps.next().values();
+            for (final Object windowScopedBean : windowScopedBeans) {
+                callPreDestroy(windowScopedBean);
+            }
+        }
     }
 
     public static synchronized void disposeWindow(FacesContext context, String id) {
