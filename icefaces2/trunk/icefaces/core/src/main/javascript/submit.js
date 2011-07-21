@@ -138,7 +138,7 @@ var submit;
                 'view ID: ' + viewID,
                 'event type: ' + type(decoratedEvent)
             ], '\n'));
-            jsf.ajax.request(clonedElement, event, options);
+            namespace.submitFunction(clonedElement, event, options);
         } finally {
             each(clonedElements, function(c) {
                 form.removeChild(c);
@@ -254,14 +254,14 @@ var submit;
                         createHiddenInputInDeltaSubmitForm(removePrefix + name, value);
                     }));
 
-                    jsf.ajax.request(deltaSubmitForm, event, options);
+                    namespace.submitFunction(deltaSubmitForm, event, options);
                 } finally {
                     each(appendedElements, function(element) {
                         deltaSubmitForm.removeChild(element);
                     });
                 }
             } else {
-                jsf.ajax.request(element, event, options);
+                namespace.submitFunction(element, event, options);
             }
         }
     }

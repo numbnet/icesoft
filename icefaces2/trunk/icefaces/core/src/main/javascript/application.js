@@ -28,6 +28,8 @@ if (!window.ice.icefaces) {
         namespace.icefaces = true;
         namespace.configuration = new Object();
         namespace.disableDefaultErrorPopups = false;
+        //define primitive submit function to allow overriding it later in special environments
+        namespace.submitFunction = jsf.ajax.request;
 
         var sessionExpiryListeners = [];
         namespace.onSessionExpiry = function(callback) {
@@ -71,13 +73,13 @@ if (!window.ice.icefaces) {
 
         function configurationOf(element) {
             configParent = detect(parents(element),
-                    function(e) {
-                        if (null != e)  {
-                            return e.configuration;
-                        }
-                        return {};
-                    });
-            if (null != configParent)  {
+                function(e) {
+                    if (null != e) {
+                        return e.configuration;
+                    }
+                    return {};
+                });
+            if (null != configParent) {
                 return configParent.configuration;
             }
             debug(logger, 'configuration not found for ' + element.nodeName);
@@ -169,7 +171,7 @@ if (!window.ice.icefaces) {
                 var form = document.getElementById(viewID);
                 try {
                     debug(logger, 'picking updates for view ' + viewID);
-                    jsf.ajax.request(form, null, {'ice.submit.type': 'ice.push', render: '@all', 'ice.view': viewID, 'ice.window': namespace.window});
+                    namespace.submitFunction(form, null, {'ice.submit.type': 'ice.push', render: '@all', 'ice.view': viewID, 'ice.window': namespace.window});
                 } catch (e) {
                     warn(logger, 'failed to pick updates', e);
                 }
@@ -238,9 +240,9 @@ if (!window.ice.icefaces) {
                         var id = update.getAttribute('id');
                         var detail = update.nodeName + (id ? '["' + id + '"]' : '');
                         //will require special case for insert operation
-                        if ("update" == update.nodeName)  {
+                        if ("update" == update.nodeName) {
                             detail += ': ' + substring(update.firstChild.data, 0, 40) + '....';
-                        } else if ("insert" == update.nodeName)  {
+                        } else if ("insert" == update.nodeName) {
                             var location = update.firstChild.getAttribute('id');
                             var text = update.firstChild.firstChild.data;
                             detail += ': ' + update.firstChild.nodeName + ' ' + location + ': ' + substring(text, 0, 40) + '....';
@@ -362,8 +364,8 @@ if (!window.ice.icefaces) {
                 }
 
                 var isText = ( (elementType == "text") ||
-                        (elementType == "password") ||
-                        (elementType == "textarea") );
+                    (elementType == "password") ||
+                    (elementType == "textarea") );
                 if (isText) {
                     if ((eType == "click") || (eType == "blur")) {
                         //click events should not trigger text box submit
@@ -403,10 +405,10 @@ if (!window.ice.icefaces) {
 
         function isComponentRendered(form) {
             return form['javax.faces.encodedURL'] ||
-                    form['javax.faces.ViewState'] ||
-                    form['ice.window'] ||
-                    form['ice.view'] ||
-                    (form.id && form[form.id] && form.id == form[form.id].value);
+                form['javax.faces.ViewState'] ||
+                form['ice.window'] ||
+                form['ice.view'] ||
+                (form.id && form[form.id] && form.id == form[form.id].value);
         }
 
         function collectUpdatedForms(updates, iterator) {
