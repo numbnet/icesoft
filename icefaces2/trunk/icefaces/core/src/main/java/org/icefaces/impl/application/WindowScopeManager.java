@@ -168,20 +168,50 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
     }
 
     public static void disposeWindows(final HttpSession session) {
+        // The strategy is to invoke @PreDestroy on as many applicable window scoped beans as possible and not to bail
+        // out on the first fail.
         State state = (State) session.getAttribute(WindowScopeManager.class.getName());
         Collection<ScopeMap> scopeMaps = state.windowScopedMaps.values();
         for (final ScopeMap scopeMap : scopeMaps) {
-            Collection<Object> windowScopedBeans = scopeMap.values();
-            for (final Object windowScopedBean : windowScopedBeans) {
-                callPreDestroy(windowScopedBean);
+            try {
+                Collection<Object> windowScopedBeans = scopeMap.values();
+                for (final Object windowScopedBean : windowScopedBeans) {
+                    try {
+                        callPreDestroy(windowScopedBean);
+                    } catch (Exception exception) {
+                        log.log(
+                            Level.FINE,
+                            "An exception occurred while trying to invoke @PreDestroy on a window scoped bean: " +
+                                exception.getMessage());
+                    }
+                }
+            } catch (Exception exception) {
+                log.log(
+                    Level.FINE,
+                    "An exception occurred while trying to invoke @PreDestroy on window scoped beans: " +
+                        exception.getMessage());
             }
         }
         Iterator<ScopeMap> disposedScopeMaps;
         disposedScopeMaps = state.disposedWindowScopedMaps.iterator();
         while (disposedScopeMaps.hasNext()) {
-            Collection<Object> windowScopedBeans = disposedScopeMaps.next().values();
-            for (final Object windowScopedBean : windowScopedBeans) {
-                callPreDestroy(windowScopedBean);
+            try {
+                Collection<Object> windowScopedBeans = disposedScopeMaps.next().values();
+                for (final Object windowScopedBean : windowScopedBeans) {
+                    try {
+                        callPreDestroy(windowScopedBean);
+                    } catch (Exception exception) {
+                        log.log(
+                            Level.FINE,
+                            "An exception occurred while trying to invoke @PreDestroy on a window scoped bean: " +
+                                exception.getMessage());
+                    }
+                }
+            } catch (Exception exception) {
+                log.log(
+                    Level.FINE,
+                    "An exception occurred while trying to invoke @PreDestroy on window scoped beans: " +
+                        exception.getMessage());
             }
         }
     }
