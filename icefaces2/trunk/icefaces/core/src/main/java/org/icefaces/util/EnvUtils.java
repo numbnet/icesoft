@@ -68,6 +68,7 @@ public class EnvUtils {
     public static String ICEFACES_RENDER = "org.icefaces.render";
     public static String ARIA_ENABLED = "org.icefaces.aria.enabled";
     public static String BLOCK_UI_ON_SUBMIT = "org.icefaces.blockUIOnSubmit";
+    public static String MESSAGE_PERSISTENCE = "org.icefaces.messagePersistence";
 
     //Other parameters used internally by ICEfaces framework.
     public static final String HEAD_DETECTED = "org.icefaces.headDetected";
@@ -525,6 +526,10 @@ public class EnvUtils {
         return EnvConfig.getEnvConfig(facesContext).disableDefaultErrorPopups;
     }
 
+    public static boolean isMessagePersistence(final FacesContext facesContext) {
+        return EnvConfig.getEnvConfig(facesContext).messagePersistence;
+    }
+
     public static boolean isMojarra() {
         return isMojarra;
     }
@@ -555,6 +560,7 @@ class EnvConfig {
     String mandatoryResourceConfig;
     boolean uniqueResourceURLs;
     boolean lazyWindowScope;
+    boolean messagePersistence;
     public boolean disableDefaultErrorPopups;
 
     public EnvConfig(Map initMap) {
@@ -581,6 +587,7 @@ class EnvConfig {
         mandatoryResourceConfig = decodeString(initMap, EnvUtils.MANDATORY_RESOURCE_CONFIG, null, info);
         uniqueResourceURLs = decodeBoolean(initMap, EnvUtils.UNIQUE_RESOURCE_URLS, true, info);
         lazyWindowScope = decodeBoolean(initMap, EnvUtils.LAZY_WINDOW_SCOPE, true, info);
+        messagePersistence = decodeBoolean(initMap, EnvUtils.MESSAGE_PERSISTENCE, true, info);
         disableDefaultErrorPopups = decodeBoolean(initMap, EnvUtils.DISABLE_DEFAULT_ERROR_POPUPS, false, info);
 
         log.info("ICEfaces Configuration: \n" + info);

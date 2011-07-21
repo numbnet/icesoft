@@ -44,6 +44,8 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
+import org.icefaces.util.EnvUtils;
+
 /**
  * The purpose of this class is to forward propogate FacesMessage objects
  * across partialSubmit, singleSubmit, server push lifecycles. The issue being 
@@ -116,12 +118,16 @@ public class FacesMessagesPhaseListener implements PhaseListener {
         //    (Possibly) Components still invalid
         // B. Global messages, not associated to a component 
         //    A partial execute, not a full execute
-        FacesContext facesContext = phaseEvent.getFacesContext();
 //dumpMaps(facesContext);
 ////if(!phaseEvent.getPhaseId().equals(PhaseId.RENDER_RESPONSE))return;
-        
-        restoreFacesMessages(facesContext);
-        saveFacesMessages(facesContext);
+        FacesContext facesContext = phaseEvent.getFacesContext();
+        Map viewMap = facesContext.getViewRoot().getViewMap();
+        if ((viewMap.containsKey(EnvUtils.MESSAGE_PERSISTENCE) && ((Boolean)viewMap.get(EnvUtils.MESSAGE_PERSISTENCE))) ||
+            (!viewMap.containsKey(EnvUtils.MESSAGE_PERSISTENCE) && EnvUtils.isMessagePersistence(facesContext))) {
+
+            restoreFacesMessages(facesContext);
+            saveFacesMessages(facesContext);
+        }
     }
     
     protected void restoreFacesMessages(FacesContext facesContext) {
