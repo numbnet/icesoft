@@ -56,6 +56,33 @@ public class Util {
         }
     }
 
+    public static int copyStream(InputStream in, OutputStream out,
+            int start, int end) throws IOException {
+        long skipped = in.skip((long) start);
+        if (start != skipped)  {
+            throw new IOException("copyStream failed range start " + start);
+        }
+        byte[] buf = new byte[1000];
+        int pos = start - 1;
+        int count = 0;
+        int l = 1;
+        while (l > 0) {
+            l = in.read(buf);
+            if (l > 0) {
+                pos = pos + l;
+                if (pos > end)  {
+                    l = l - (pos - end);
+                    out.write(buf, 0, l);
+                    count += l;
+                    break;
+                }
+                out.write(buf, 0, l);
+                count += l;
+            }
+        }
+        return count;
+    }
+
     public static void compressStream(InputStream in, OutputStream out) throws IOException {
         GZIPOutputStream gzip = new GZIPOutputStream(out);
         copyStream(in, gzip);

@@ -23,6 +23,7 @@ package org.icefaces.application;
 
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import javax.el.ELContext;
 import javax.faces.context.FacesContext;
@@ -57,6 +58,10 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
     private static String CURRENT_KEY = "org.icefaces.resourceRegistry.resourceKey";
     private static String RESOURCE_PREFIX = "/javax.faces.resource/";
     private static String MAP_PREFIX = "org.icefaces.resource-";
+    private static String BYTES_PREFIX = "bytes=";
+    private static String CONTENT_LENGTH = "Content-Length";
+    private static String CONTENT_RANGE = "Content-Range";
+    private static String RANGE = "Range";
 
     public ResourceRegistry(ResourceHandler wrapped)  {
         this.wrapped = wrapped;
@@ -71,6 +76,30 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         ExternalContext externalContext = facesContext.getExternalContext();
         Application application = facesContext.getApplication();
         String key = extractResourceId(facesContext);
+
+        boolean useRanges = false;
+        int rangeStart = 0;
+        int rangeEnd = 0; 
+        String rangeHeader = externalContext.getRequestHeaderMap()
+                .get(RANGE);
+        if (null != rangeHeader)  {
+            if (rangeHeader.startsWith(BYTES_PREFIX))  {
+                String range = rangeHeader
+                        .substring(BYTES_PREFIX.length() );
+                int splitIndex = range.indexOf("-");
+                String startString = range.substring(0, splitIndex);
+                String endString = range.substring(splitIndex + 1);
+                useRanges = true;
+                rangeStart = Integer.parseInt(startString);
+                rangeEnd = Integer.parseInt(endString);
+            }
+        }
+
+        if (log.isLoggable(Level.FINE)) {
+            log.fine("handleResourceRequest " + key + " path: " +
+                    externalContext.getRequestServletPath() + " info: " +
+                    externalContext.getRequestPathInfo() );
+        }
         if (null == key)  {
             wrapped.handleResourceRequest(facesContext);
             return;
@@ -92,19 +121,42 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
             externalContext.setResponseContentType(resource.getContentType());
         }
         Map<String,String> headers = resource.getResponseHeaders();
+        String contentLength = "";
         for (String header : headers.keySet())  {
+            if (useRanges)  {
+                if (CONTENT_LENGTH.equals(header))  {
+                    contentLength = headers.get(CONTENT_LENGTH);
+                    continue;
+                 }
+            }
             externalContext.setResponseHeader(header, headers.get(header));
         }
+
         InputStream in = resource.getInputStream();
         OutputStream out = externalContext.getResponseOutputStream();
 
         if (Util.acceptGzip(externalContext) && 
                 EnvUtils.isCompressResources(facesContext) && 
                 Util.shouldCompress(resource.getContentType()) )  {
+
             externalContext.setResponseHeader("Content-Encoding", "gzip");
             Util.compressStream(in, out);
+
         } else {
-            Util.copyStream(in, out);
+            //ranges can be used for subsequent uncompressed responses
+            externalContext.setResponseHeader("Accept-Ranges", "bytes");
+
+            if (useRanges)  {
+                externalContext.setResponseHeader(CONTENT_RANGE, 
+                        "bytes " + rangeStart + "-" + rangeEnd + "/" +
+                        contentLength );
+                externalContext.setResponseHeader(CONTENT_LENGTH, 
+                        "" + (1 + rangeEnd - rangeStart));
+                Util.copyStream(in, out, rangeStart, rangeEnd);
+            } else {
+                Util.copyStream(in, out);
+            }
+
         }
 
     }
@@ -141,14 +193,22 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
 
     private static String extractResourceId(FacesContext facesContext)  {
         ExternalContext externalContext = facesContext.getExternalContext();
+
+        int markerStart;
         String path = externalContext.getRequestServletPath();
-        if (!path.startsWith(RESOURCE_PREFIX))  {
+        markerStart = path.indexOf(RESOURCE_PREFIX);
+        if (-1 == markerStart)  {
+            path = externalContext.getRequestPathInfo();
+            markerStart = path.indexOf(RESOURCE_PREFIX);
+        }
+        if (-1 == markerStart)  {
             return null;
         }
         try {
             //strip off the javax.faces.resource prefix and remove
             //any extension found in the path template
-            String key = path.substring(RESOURCE_PREFIX.length(), 
+            String key = path.substring(
+                    markerStart + RESOURCE_PREFIX.length(), 
                     path.length() - EnvUtils.getPathTemplate()[1].length());
             return key;
         } catch (Exception e)  {
