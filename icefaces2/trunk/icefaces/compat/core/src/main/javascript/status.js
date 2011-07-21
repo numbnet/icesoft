@@ -321,14 +321,14 @@ var ComponentIndicators;
                 container.appendChild(overlay);
 
                 var resize = container.tagName.toLowerCase() == 'body' ?
-                        function() {
-                            overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-                            overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
-                        } :
-                        function() {
-                            overlayStyle.width = container.offsetWidth + 'px';
-                            overlayStyle.height = container.offsetHeight + 'px';
-                        };
+                    function() {
+                        overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
+                        overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+                    } :
+                    function() {
+                        overlayStyle.width = container.offsetWidth + 'px';
+                        overlayStyle.height = container.offsetHeight + 'px';
+                    };
                 resize();
                 onResize(window, resize);
             });
@@ -340,7 +340,7 @@ var ComponentIndicators;
             busy: busyIndicator,
             sessionExpired: sessionExpiredRedirect ? sessionExpiredRedirect : PopupIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, overlay),
             connectionLost: connectionLostRedirect ? connectionLostRedirect : PopupIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, overlay),
-            serverError: NOOPIndicator,
+            serverError: PopupIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, overlay),
             connectionTrouble: NOOPIndicator
         };
     };
