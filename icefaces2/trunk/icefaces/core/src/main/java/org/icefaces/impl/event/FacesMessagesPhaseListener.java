@@ -21,25 +21,28 @@
 
 package org.icefaces.impl.event;
 
-import javax.faces.event.PhaseListener;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitHint;
+import javax.faces.component.visit.VisitResult;
+import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitHint;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitResult;
-import java.util.List;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Set;
-import java.util.EnumSet;
+import javax.faces.event.PhaseListener;
 
 /**
  * The purpose of this class is to forward propogate FacesMessage objects
@@ -56,6 +59,8 @@ import java.util.EnumSet;
  * next lifecycle.
  */
 public class FacesMessagesPhaseListener implements PhaseListener {
+    private static final Logger LOGGER = Logger.getLogger(FacesMessagesPhaseListener.class.getName());
+
     private static final String SAVED_GLOBAL_FACES_MESSAGES_KEY =
         "org.icefaces.event.saved_global_faces_messages";
     private static final String SAVED_COMPONENT_FACES_MESSAGES_KEY =
@@ -87,11 +92,15 @@ public class FacesMessagesPhaseListener implements PhaseListener {
             components.put(clientId, msgs);
 //System.out.println("      list of FacesMessage(s): " + toStringListOfFacesMessages(msgs));
         }
-        
-        facesContext.getViewRoot().getAttributes().put(
-            SAVED_GLOBAL_FACES_MESSAGES_KEY, globals);
-        facesContext.getViewRoot().getAttributes().put(
-            SAVED_COMPONENT_FACES_MESSAGES_KEY, components);
+
+        if (!globals.isEmpty()) {
+            facesContext.getViewRoot().getAttributes().put(
+                SAVED_GLOBAL_FACES_MESSAGES_KEY, globals);
+        }
+        if (!components.isEmpty()) {
+            facesContext.getViewRoot().getAttributes().put(
+                SAVED_COMPONENT_FACES_MESSAGES_KEY, components);
+        }
 //System.out.println("  After saving away the faces messages");
 //dumpMaps(facesContext);
     }
@@ -108,6 +117,13 @@ public class FacesMessagesPhaseListener implements PhaseListener {
         // B. Global messages, not associated to a component 
         //    A partial execute, not a full execute
         FacesContext facesContext = phaseEvent.getFacesContext();
+        Map viewMap = facesContext.getViewRoot().getViewMap();
+        Map initParameterMap = facesContext.getExternalContext().getInitParameterMap();
+        if (!EnvUtils.isMessagePersistence(facesContext) ||
+            (viewMap.containsKey(EnvUtils.MESSAGE_PERSISTENCE) && !((Boolean)viewMap.get(EnvUtils.MESSAGE_PERSISTENCE)).booleanValue())) {
+
+            return;
+        }
 //dumpMaps(facesContext);
 ////if(!phaseEvent.getPhaseId().equals(PhaseId.RENDER_RESPONSE))return;
         
