@@ -51,9 +51,11 @@ public class HtmlMessage extends javax.faces.component.html.HtmlMessage {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.HtmlMessage";
     public static final String RENDERER_TYPE = "com.icesoft.faces.Message";
     private static final boolean DEFAULT_VISIBLE = true;
+	private static final boolean DEFAULT_ESCAPE = true;
     private String renderedOnUserRole = null;
     private Effect effect;
     private Boolean visible = null;
+	private Boolean escape = null;
     private String errorClass = null;
     private String fatalClass = null;
     private String infoClass = null;
@@ -114,6 +116,26 @@ public class HtmlMessage extends javax.faces.component.html.HtmlMessage {
                 vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
         return boolVal != null ? boolVal.booleanValue() : DEFAULT_VISIBLE;
     }
+	
+    /**
+     * <p>Set the value of the <code>escape</code> property.</p>
+     */
+    public void setEscape(boolean escape) {
+        this.escape = Boolean.valueOf(escape);
+    }
+
+    /**
+     * <p>Return the value of the <code>escape</code> property.</p>
+     */
+    public boolean getEscape() {
+        if (escape != null) {
+            return escape.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("escape");
+        Boolean boolVal =
+                vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : DEFAULT_ESCAPE;
+    }
 
     /**
      * <p>Set the value of the <code>renderedOnUserRole</code> property.</p>
@@ -162,7 +184,7 @@ public class HtmlMessage extends javax.faces.component.html.HtmlMessage {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[12];
+        Object values[] = new Object[13];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = effect;
@@ -174,7 +196,8 @@ public class HtmlMessage extends javax.faces.component.html.HtmlMessage {
         values[8] = fatalClass;
         values[9] = infoClass;
         values[10] = warnClass;
-        values[11] = styleClass;        
+        values[11] = styleClass; 
+		values[12] = escape;
         return ((Object) (values));
     }
 
@@ -196,6 +219,7 @@ public class HtmlMessage extends javax.faces.component.html.HtmlMessage {
         infoClass = (String)values[9];
         warnClass = (String)values[10];
         styleClass = (String)values[11];         
+		escape = (Boolean) values[12];
     }
 
 

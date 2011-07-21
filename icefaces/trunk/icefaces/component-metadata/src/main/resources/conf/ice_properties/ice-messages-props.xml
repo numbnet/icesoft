@@ -208,3 +208,14 @@
     </property-extension>
 </property>
         
+<property>
+    <description>
+		Flag indicating whether the message text should be escaped or not (e.g. for including HTML tags in the message).
+    </description>
+    <property-name>escape</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>APPEARANCE</category>
+        <default-value>true</default-value>
+    </property-extension>
+</property>
