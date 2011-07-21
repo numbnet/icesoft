@@ -54,6 +54,18 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+
+        <attribute>
+            <description>
+                A value of "true" indicates that faces messages are persisted
+                across single submits.  This attribute takes precedence over the
+                org.icefaces.messagePersistence context parameter on a per view
+                basis.
+            </description>
+            <name>messagePersistence</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
 
     <tag>

@@ -21,7 +21,10 @@
 
 package org.icefaces.impl.facelets.tag.icefaces.core;
 
-import org.icefaces.util.EnvUtils;
+import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
@@ -31,16 +34,18 @@ import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
-import java.io.IOException;
-import java.util.Map;
 
+import org.icefaces.util.EnvUtils;
 
 public class ConfigHandler extends TagHandler {
+    private static final Logger LOGGER = Logger.getLogger(ConfigHandler.class.getName());
+
     private final TagAttribute render;
     private final TagAttribute ariaEnabled;
     private final TagAttribute blockUIOnSubmit;
     private final TagAttribute lazyPush;
     private final TagAttribute subtreeDiff;
+    private final TagAttribute messagePersistence;
 
     public ConfigHandler(TagConfig config) {
         super(config);
@@ -49,6 +54,7 @@ public class ConfigHandler extends TagHandler {
         this.blockUIOnSubmit = this.getAttribute("blockUIOnSubmit");
         this.lazyPush = this.getAttribute("lazyPush");
         this.subtreeDiff = this.getAttribute("subtreeDiff");
+        this.messagePersistence = this.getAttribute("messagePersistence");
     }
 
     public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
@@ -80,6 +86,11 @@ public class ConfigHandler extends TagHandler {
         if (subtreeDiff != null) {
             viewMap.put(EnvUtils.SUBTREE_DIFF,
                     new Boolean(subtreeDiff.getValue()));
+        }
+
+        if (messagePersistence != null) {
+            viewMap.put(EnvUtils.MESSAGE_PERSISTENCE,
+                    new Boolean(messagePersistence.getValue()));
         }
 
         //TODO: ICE-5675 remove when JSF 2.0 Partial State Saving fixed
