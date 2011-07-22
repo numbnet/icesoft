@@ -102,7 +102,7 @@ public class MessageRenderer extends DomBasicRenderer {
 
         // tooltip
         boolean tooltip = getToolTipAttribute(uiComponent);
-
+		
         String[] summaryAndDetail = getSummaryAndDetail(facesMessage);
         String summary = summaryAndDetail[0];
         String detail = summaryAndDetail[1];
@@ -110,6 +110,9 @@ public class MessageRenderer extends DomBasicRenderer {
         // showSummary
         boolean showSummary = ((UIMessage) uiComponent).isShowSummary();
         boolean showDetail = ((UIMessage) uiComponent).isShowDetail();
+		
+        Boolean escape = (Boolean) uiComponent.getAttributes().get("escape");
+        boolean isEscape = escape == null || escape.booleanValue();
 
         //dir lang
         String dir = (String)uiComponent.getAttributes().get("dir");
@@ -133,12 +136,21 @@ public class MessageRenderer extends DomBasicRenderer {
 
         } else {
             if (showSummary) {
-                Text textNode =
-                        domContext.createTextNode(summary);
+                Text textNode;
+				if (isEscape) {
+					textNode = domContext.createTextNode(summary);
+				} else {
+					textNode = domContext.createTextNodeUnescaped(summary);
+				}
                 root.appendChild(textNode);
             }
             if (showDetail) {
-                Text textNode = domContext.createTextNode(detail);
+                Text textNode;
+				if (isEscape) {
+					textNode = domContext.createTextNode(detail);
+				} else {
+					textNode = domContext.createTextNodeUnescaped(detail);
+				}
                 root.appendChild(textNode);
             }
         }
