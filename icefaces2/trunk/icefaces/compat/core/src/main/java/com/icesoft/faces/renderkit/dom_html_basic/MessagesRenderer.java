@@ -142,13 +142,16 @@ public class MessagesRenderer extends DomBasicRenderer {
                     getStyleAndStyleClass(uiComponent, nextFacesMessage);
             String style = styleAndStyleClass[0];
             String styleClass = styleAndStyleClass[1];
-
+			
             String[] summaryAndDetail = getSummaryAndDetail(nextFacesMessage);
             String summary = summaryAndDetail[0];
             String detail = summaryAndDetail[1];
 
             boolean showSummary = ((UIMessages) uiComponent).isShowSummary();
             boolean showDetail = ((UIMessages) uiComponent).isShowDetail();
+			
+			Boolean escape = (Boolean) uiComponent.getAttributes().get("escape");
+			boolean isEscape = escape == null || escape.booleanValue();
 
             Element nextTableData = null;
             if (tableLayout) {
@@ -192,13 +195,21 @@ public class MessagesRenderer extends DomBasicRenderer {
                 nextMessageSpan.appendChild(textNode);
             } else {
                 if (showSummary) {
-                    Text textNode =
-                            domContext.createTextNode(summary);
+                    Text textNode;
+					if (isEscape) {
+						textNode = domContext.createTextNode(summary);
+					} else {
+						textNode = domContext.createTextNodeUnescaped(summary);
+					}
                     nextMessageSpan.appendChild(textNode);
                 }
                 if (showDetail) {
-                    Text textNode =
-                            domContext.createTextNode(detail);
+                    Text textNode;
+					if (isEscape) {
+						textNode = domContext.createTextNode(detail);
+					} else {
+						textNode = domContext.createTextNodeUnescaped(detail);
+					}
                     nextMessageSpan.appendChild(textNode);
                 }
             }
