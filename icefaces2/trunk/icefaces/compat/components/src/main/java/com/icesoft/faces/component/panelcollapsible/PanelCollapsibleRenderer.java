@@ -70,6 +70,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
         //create "contents" div and append to the parent, don't render any children yet        
         Element contents = (Element) domContext.createElement(HTML.DIV_ELEM);
         contents.setAttribute(HTML.CLASS_ATTR, panelCollapsible.getContentClass());
+		contents.setAttribute(HTML.STYLE_ATTR, "clear: both;"); // ICE-7058
         root.appendChild(contents);
 
         //add click handler if not disabled and toggleOnClick is set to true
