@@ -64,7 +64,7 @@ public class ConfigurationServer implements Server {
                         " contextPath=\"" + contextPath + "\"" : "") +
                 "/>";
         //always redirect if the request comes to this context path
-        redirect = servletContext.getContextPath().equals(contextPath);
+        redirect = context != null && !servletContext.getContextPath().equals(contextPath);
         nonDefaultConfiguration = configurationMessage.length() != "<configuration/>".length();
         configureBridge = new ConfigureBridge(configurationMessage);
         setBrowserID = new SetBrowserID(context);
