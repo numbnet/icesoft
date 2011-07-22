@@ -45,6 +45,7 @@ public class ConfigurationServer implements Server {
     private FixedXMLContentHandler configureBridge;
     private FixedXMLContentHandler setBrowserID;
     private ResponseHandler setBrowserIDAndConfigureBridgeMacro;
+    private boolean redirect;
 
     public ConfigurationServer(final PushContext context, final ServletContext servletContext, Configuration configuration, final Server server) {
         blockingConnectionServer = server;
@@ -62,7 +63,8 @@ public class ConfigurationServer implements Server {
                 (contextPath != null ?
                         " contextPath=\"" + contextPath + "\"" : "") +
                 "/>";
-
+        //always redirect if the request comes to this context path
+        redirect = servletContext.getContextPath().equals(contextPath);
         nonDefaultConfiguration = configurationMessage.length() != "<configuration/>".length();
         configureBridge = new ConfigureBridge(configurationMessage);
         setBrowserID = new SetBrowserID(context);
@@ -79,7 +81,7 @@ public class ConfigurationServer implements Server {
 
     public void service(Request request) throws Exception {
         Cookie browserIDCookie = Cookie.readCookie(request, BrowserIDCookieName);
-        if (request.containsParameter("ice.sendConfiguration")) {
+        if (redirect || request.containsParameter("ice.sendConfiguration")) {
             boolean browserIDNotSet = browserIDCookie == null;
 
             if (nonDefaultConfiguration && browserIDNotSet) {
