@@ -26,11 +26,9 @@ import org.icefaces.impl.event.BridgeSetup;
 import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
 import org.icepush.PushContext;
-import org.icepush.PushMessage;
 
 import javax.faces.context.FacesContext;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -144,12 +142,12 @@ public class PushRenderer {
      * @param groupName the name of the group of sessions to render.
      * @param message   the message to be sent
      */
-    public static void render(String groupName, PushMessage message) {
+    public static void render(String groupName, PushRendererMessage message) {
         if (EnvUtils.isICEpushPresent()) {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
             PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
-            pushContext.push(groupName, message);
+            pushContext.push(groupName, message.toPushMessage());
         } else {
             log.warning(MissingICEpushMessage);
         }
