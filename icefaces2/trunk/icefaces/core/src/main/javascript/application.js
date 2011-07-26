@@ -171,7 +171,7 @@ if (!window.ice.icefaces) {
                 var form = document.getElementById(viewID);
                 try {
                     debug(logger, 'picking updates for view ' + viewID);
-                    namespace.submitFunction(form, null, {'ice.submit.type': 'ice.push', render: '@all', 'ice.view': viewID, 'ice.window': namespace.window});
+                    jsf.ajax.request(form, null, {'ice.submit.type': 'ice.push', render: '@all', 'ice.view': viewID, 'ice.window': namespace.window});
                 } catch (e) {
                     warn(logger, 'failed to pick updates', e);
                 }
