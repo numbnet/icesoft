@@ -1,0 +1,100 @@
+/*
+ * Version: MPL 1.1
+ *
+ * The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ */
+
+#header {
+    position: relative;
+    background-color: #036fab;
+    color: white;
+    padding: 5px;
+    margin: 0px 0px 10px 0px;
+    font-size: 2em;
+}
+
+#footer {
+    position: relative;
+    background-color: #c2dfef;
+    padding: 5px;
+    margin: 10px 0px 0px 0px;
+    clear: both;
+    height: 14px;
+}
+
+#navigation {
+    float: left;
+    /*background-color: #ece3a5;*/
+    padding: 5px;
+    width: 150px;
+    /*height: 400px;*/
+	font-size: 1.25em;
+	font-style: bold;
+}
+
+#content {
+    background-color: #dddddd;
+    padding: 5px;
+    margin-left: 170px;
+    /*height: 400px;*/
+}
+
+/*
+.ice-skin-rime .yui-navset .yui-content {
+background-color:#FFFBFF;
+border-color:#D9D9D9;
+border-style:solid;
+border-width:0 1px 1px;
+}
+*/
+
+.linkButtonColumn {
+  width: 400px;
+}
+
+/* TODO: The original SAM style rules have (duplicate? redundant?) specific selectors
+   all the way down the hierarchy and to make the simple anchor tag look as an anchor,
+   we need to override all the styles at all levels
+*/ 
+.ice-skin-sam .simpleLinkButton {
+    /*background-image: none;*/
+    /*background-repeat: no-repeat;*/
+    text-decoration: underline;
+    cursor:hand;
+    /*border: none;*/
+}
+
+.ice-skin-sam .yui-button .first-child .simpleLinkButton {
+    /*background-image: none;*/
+    /*background-repeat: no-repeat;*/
+    text-decoration: underline;
+    cursor:hand;
+    /*border: none;*/
+}
+
+.ice-skin-sam .yui-button .first-child .simpleLinkButton a {
+    /*background-image: none;*/
+    /*background-repeat: no-repeat;*/
+    text-decoration: underline;
+    cursor:hand;
+    /*border: none;*/
+}
+
+.tabSetDemo .yui-content {
+    height:150px;
+}

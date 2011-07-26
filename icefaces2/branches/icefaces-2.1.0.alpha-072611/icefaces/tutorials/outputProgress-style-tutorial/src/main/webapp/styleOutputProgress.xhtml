@@ -1,0 +1,12 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Progress Bar Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        <!-- The stylesheet with the overriding classes -->
+        <link href="override.css" rel="stylesheet" type="text/css" />
+        </h:head>    <h:body>        <ice:form>
+            <ice:outputProgress value="#{style.percent}"></ice:outputProgress>
+            
+            <ice:commandButton value="Start" action="#{style.startProgress}" rendered="#{!style.isRunning}"></ice:commandButton>
+            <ice:commandButton value="Stop" action="#{style.stopProgress}" rendered="#{style.isRunning}"></ice:commandButton>
+        		</ice:form>	</h:body></f:view></html>
