@@ -133,7 +133,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                         "SelectInputText:encodeBegin():component created with the following id : " +
                         clientId);
             }
-            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, input, null, passThruAttributes);
             PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, input, null, new String[]{HTML.TABINDEX_ATTR});
             PassThruAttributeRenderer.renderBooleanAttributes(facesContext, 
                     uiComponent, input, PassThruAttributeRenderer.EMPTY_STRING_ARRAY);
