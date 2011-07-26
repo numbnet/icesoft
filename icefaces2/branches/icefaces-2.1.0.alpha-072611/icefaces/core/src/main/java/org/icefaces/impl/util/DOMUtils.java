@@ -67,7 +67,9 @@ public class DOMUtils {
     private static DocumentBuilder DOCUMENT_BUILDER;
     private static boolean isDOMChecking = true;
 
-    private static boolean simpleDOMdiff = true;
+    public static String DIFF_SUPPRESS = "data-ice-diffsuppress";
+    public static String DIFF_INSDEL = "data-ice-insdel";
+    public static String DIFF_TRUE = "true";
 
     public static class EditOperation {
         public String id;
@@ -420,6 +422,9 @@ public class DOMUtils {
         if (!compareIDs(oldNode, newNode)) {
             return false;
         }
+        if (isSuppressed(newNode))  {
+            return true;
+        }
         if (!compareAttributes(oldNode, newNode)) {
             String id = getNodeId(newNode);
             if (null == id)  {
@@ -438,8 +443,8 @@ public class DOMUtils {
             return true;
         }
 
-
-        if (simpleDOMdiff)  {
+        //if insert/delete is not enabled perform simple DOM diff below
+        if (!isInsDel(newNode))  {
             NodeList oldChildNodes = oldNode.getChildNodes();
             NodeList newChildNodes = newNode.getChildNodes();
 
@@ -764,6 +769,32 @@ public class DOMUtils {
 
         return true;
 
+    }
+
+    public static boolean isDOMDiffFeature(String feature, Node newNode)  {
+        if (!newNode.hasAttributes())  {
+            return false;
+        }
+        NamedNodeMap newMap = newNode.getAttributes();
+        Node featureMarker = newMap.getNamedItem(feature);
+        if (null != featureMarker)  {
+            String featureValue = featureMarker.getNodeValue();
+            if (DIFF_TRUE.equals(featureValue))  {
+                if (log.isLoggable(Level.FINE)) {
+                    log.fine("DOM diff " + feature + " on " + newNode);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isSuppressed(Node newNode)  {
+        return isDOMDiffFeature(DIFF_SUPPRESS, newNode);
+    }
+
+    public static boolean isInsDel(Node newNode)  {
+        return isDOMDiffFeature(DIFF_INSDEL, newNode);
     }
 
     public static String getNodeId(Node node)  {
