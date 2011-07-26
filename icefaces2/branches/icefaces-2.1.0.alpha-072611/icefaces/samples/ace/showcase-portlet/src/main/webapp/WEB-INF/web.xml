@@ -1,0 +1,224 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<web-app version="2.5"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+    <display-name>ace-showcase</display-name>
+    <description>
+        ICEfaces Advanced Components Showcase
+    </description>
+
+    <context-param>
+        <param-name>com.sun.faces.defaultResourceMaxAge</param-name>
+        <param-value>604800000</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>server</param-value>
+    </context-param>
+    
+<!--
+    Changing this context parameter to Development may be useful during 
+    development stage to detect potential issues earlier, but this results in
+    application running with lower performance settings within JSF.
+-->
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Production</param-value>
+    </context-param>
+
+   <context-param>
+        <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+<!--mandatoryResourceConfiguration set to empty allows minimal resource
+    pre-loading for best performance.  The risk is that a dynamically
+    added component will to have the required resources. -->
+    <context-param> 
+        <param-name>org.icefaces.mandatoryResourceConfiguration</param-name> 
+        <param-value></param-value> 
+    </context-param> 
+
+    <context-param>
+        <param-name>org.icefaces.uniqueResourceURLs</param-name>
+        <param-value>false</param-value>
+    </context-param>
+
+    <!-- Faces Servlet -->
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    </servlet>
+
+    <!-- Faces Servlet Mapping -->
+
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping>
+	
+	<!-- Portlet Servlets -->
+	<servlet>
+		<servlet-name>animation</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<init-param>
+			<param-name>portlet-class</param-name>
+			<param-value>org.portletfaces.bridge.GenericFacesPortlet</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>checkbox</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<init-param>
+			<param-name>portlet-class</param-name>
+			<param-value>org.portletfaces.bridge.GenericFacesPortlet</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>dateTime</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<init-param>
+			<param-name>portlet-class</param-name>
+			<param-value>org.portletfaces.bridge.GenericFacesPortlet</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>fileEntry</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<init-param>
+			<param-name>portlet-class</param-name>
+			<param-value>org.portletfaces.bridge.GenericFacesPortlet</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>linkButton</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<init-param>
+			<param-name>portlet-class</param-name>
+			<param-value>org.portletfaces.bridge.GenericFacesPortlet</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>pushButton</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<init-param>
+			<param-name>portlet-class</param-name>
+			<param-value>org.portletfaces.bridge.GenericFacesPortlet</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>slider</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<init-param>
+			<param-name>portlet-class</param-name>
+			<param-value>org.portletfaces.bridge.GenericFacesPortlet</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>tabSetClient</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<init-param>
+			<param-name>portlet-class</param-name>
+			<param-value>org.portletfaces.bridge.GenericFacesPortlet</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>tabSetProxyServer</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<init-param>
+			<param-name>portlet-class</param-name>
+			<param-value>org.portletfaces.bridge.GenericFacesPortlet</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>tabSetServer</servlet-name>
+		<servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
+		<init-param>
+			<param-name>portlet-class</param-name>
+			<param-value>org.portletfaces.bridge.GenericFacesPortlet</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	
+	<!-- Portlets Servlets Mappings -->
+	<servlet-mapping>
+		<servlet-name>animation</servlet-name>
+		<url-pattern>/animation/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>checkbox</servlet-name>
+		<url-pattern>/checkbox/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>dateTime</servlet-name>
+		<url-pattern>/dateTime/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>fileEntry</servlet-name>
+		<url-pattern>/fileEntry/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>linkButton</servlet-name>
+		<url-pattern>/linkButton/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>pushButton</servlet-name>
+		<url-pattern>/pushButton/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>slider</servlet-name>
+		<url-pattern>/slider/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>tabSetClient</servlet-name>
+		<url-pattern>/tabSetClient/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>tabSetProxyServer</servlet-name>
+		<url-pattern>/tabSetProxyServer/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>tabSetServer</servlet-name>
+		<url-pattern>/tabSetServer/*</url-pattern>
+	</servlet-mapping>
+
+    <!-- Welcome File Configuration -->
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+</web-app>

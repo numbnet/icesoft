@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ice="http://www.icesoft.com/icefaces/component"
+      xmlns:ace="http://www.icefaces.org/icefaces/components"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <f:loadBundle basename="messages" var="msgs"/>
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet library="css" name="ice-tutorial-style.css" />
+        <ice:outputStyle href="./xmlhttp/css/rime/rime.css" id="outputStyle2"/>
+        <title>${msgs["title.label"]}</title>
+    </h:head>
+
+    <h:body class="ice-skin-sam">
+        <div id="header">
+            <span class="main">${msgs["header.label"]}</span>
+            <div class="nav">
+                <ul>
+                    <ui:repeat value="${fn:split(msgs['navigation.link.index'], ',')}"
+                               var="contentName">
+                        <li>
+                            <a href="#{messageUtils.getLinkUrlMap[contentName]}">
+                                #{messageUtils.getLinkLabelMap[contentName]}
+                            </a>
+                        </li>
+                    </ui:repeat>
+                </ul>
+            </div>
+            <span class="subtitle">
+                <h:outputText value="${msgs['template.icesoft']}" escape="false"/>
+                &#160;
+                <h:outputText value="${msgs['template.copyright']}" escape="false"/>
+            </span>
+        </div>
+
+        <div id="body">
+            <div id="content">
+                <ui:insert name="content" />
+            </div>
+
+
+            <div id="example">
+                <ui:insert name="example" />
+            </div>
+        </div>
+
+        <div id="footer">
+            <span class="powered">
+                #{msgs["template.poweredBy"]}
+                #{msgs["template.icefaces"]}
+            </span>
+        </div>
+    </h:body>
+    <h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
+</html>
+
