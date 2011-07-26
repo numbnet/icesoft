@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">
+        <h:head>
+            <meta http-equiv="Content-Type"
+                  content="text/html; charset=iso-8859-1"></meta>
+            <title>Validators - Custom</title>
+        </h:head>
+        
+        <h:body>
+            <h2>Custom Validation</h2>
+            
+            <ice:form id="tutorialForm" partialSubmit="true">
+                <ice:inputText id="phoneNumber" value="#{user.phoneNumber}">
+                    <f:validator validatorId="phoneNumberValidator"/>
+                </ice:inputText>
+                <ice:message id="phoneError" for="phoneNumber"/>
+                <br/>
+                <ice:commandButton value="Submit" actionListener="#{user.submitActionPhone}"/>
+                <br/>
+                <ice:outputText value="Phone Number: "/>
+                <ice:outputText value="#{user.displayPhoneNumber}" />
+                <br/><br/>                
+            </ice:form>            
+        </h:body>        
+</html>
+

@@ -1,0 +1,71 @@
+#header {
+    position: relative;
+    background-color: #036fab;
+    color: white;
+    padding: 5px;
+    margin: 0px 0px 10px 0px;
+    font-size:20pt;
+}
+#header .main, #header .subtitle {
+    display:block;
+    margin-right:200px;
+}
+#header .main {
+    padding-left:1em;
+    font-size:20pt;
+}
+#header .subtitle {
+    padding-left:5em;
+    font-size:10pt;
+}
+#header .nav {
+    position:absolute;
+    right:0px;
+    padding: 5px;
+    width: 150px;
+	font-size: 10pt;
+    line-height:1.5;
+}
+
+
+#footer {
+    position: relative;
+    background-color: #c2dfef;
+    padding: 5px;
+    margin: 10px 0px 0px 0px;
+    clear: both;
+    height: 14px;
+}
+#footer .powered {
+    padding:5px;
+    font-style:italic;
+}
+
+
+#content {
+    background-color: #dddddd;
+    padding: 5px;
+}
+
+
+.ice-skin-sam .simpleLinkButton {
+    /*background-image: none;*/
+    /*background-repeat: no-repeat;*/
+    text-decoration: underline;
+    cursor:hand;
+    /*border: none;*/
+}
+.ice-skin-sam .yui-button .first-child .simpleLinkButton {
+    /*background-image: none;*/
+    /*background-repeat: no-repeat;*/
+    text-decoration: underline;
+    cursor:hand;
+    /*border: none;*/
+}
+.ice-skin-sam .yui-button .first-child .simpleLinkButton a {
+    /*background-image: none;*/
+    /*background-repeat: no-repeat;*/
+    text-decoration: underline;
+    cursor:hand;
+    /*border: none;*/
+}
