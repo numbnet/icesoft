@@ -537,6 +537,16 @@ public class EnvUtils {
     public static boolean isMyFaces() {
         return isMyFaces;
     }
+
+    public static boolean containsBeans(Map<String, Object> scopeMap) {
+        //skip the objects saved in the map by ICEfaces framework while testing for the existence of beans
+        for (String value : scopeMap.keySet()) {
+            if (!value.startsWith("org.icefaces.impl")) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 class EnvConfig {

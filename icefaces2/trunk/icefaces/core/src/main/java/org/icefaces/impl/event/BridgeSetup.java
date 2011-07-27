@@ -191,16 +191,6 @@ public class BridgeSetup implements SystemEventListener {
 
     }
 
-    private static boolean containsBeans(Map<String, Object> scopeMap) {
-        //skip the objects saved in the map by ICEfaces framework while testing for the existence of beans
-        for (String value : scopeMap.keySet()) {
-            if (!value.startsWith("org.icefaces")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private static String stripHostInfo(String uriString) {
         try {
             URI uri = URI.create(uriString);
@@ -252,7 +242,7 @@ public class BridgeSetup implements SystemEventListener {
 
             final Map viewScope = root.getViewMap();
             final boolean sendDisposeWindow = !EnvUtils.isLazyWindowScope(context) ||
-                    (windowScope != null && containsBeans(windowScope)) || (viewScope != null && containsBeans(viewScope));
+                    (windowScope != null && EnvUtils.containsBeans(windowScope)) || (viewScope != null && EnvUtils.containsBeans(viewScope));
             UIOutput icefacesSetup = new UIOutputWriter() {
                 public void encode(ResponseWriter writer, FacesContext context) throws IOException {
                     String clientID = getClientId(context);
