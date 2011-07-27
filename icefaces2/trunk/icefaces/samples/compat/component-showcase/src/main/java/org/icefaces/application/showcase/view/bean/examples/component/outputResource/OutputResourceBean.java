@@ -96,10 +96,8 @@ class MyResource implements Resource, Serializable {
     private String resourceName;
     private InputStream inputStream;
     private final Date lastModified;
-    private ExternalContext extContext;
 
     public MyResource(ExternalContext ec, String resourceName) {
-        this.extContext = ec;
         this.resourceName = resourceName;
         this.lastModified = new Date();
     }
@@ -116,7 +114,9 @@ class MyResource implements Resource, Serializable {
      */
     public InputStream open() throws IOException {
         if (inputStream == null) {
-            InputStream stream = extContext.getResourceAsStream(OutputResourceBean.RESOURCE_PATH + resourceName);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+            InputStream stream = ec.getResourceAsStream(OutputResourceBean.RESOURCE_PATH + resourceName);
             byte[] byteArray = OutputResourceBean.toByteArray(stream);
             inputStream = new ByteArrayInputStream(byteArray);
         } else {
