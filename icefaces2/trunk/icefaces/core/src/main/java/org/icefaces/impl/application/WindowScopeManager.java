@@ -180,16 +180,16 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
                         callPreDestroy(windowScopedBean);
                     } catch (Exception exception) {
                         log.log(
-                            Level.FINE,
-                            "An exception occurred while trying to invoke @PreDestroy on a window scoped bean: " +
-                                exception.getMessage());
+                                Level.FINE,
+                                "An exception occurred while trying to invoke @PreDestroy on a window scoped bean: " +
+                                        exception.getMessage());
                     }
                 }
             } catch (Exception exception) {
                 log.log(
-                    Level.FINE,
-                    "An exception occurred while trying to invoke @PreDestroy on window scoped beans: " +
-                        exception.getMessage());
+                        Level.FINE,
+                        "An exception occurred while trying to invoke @PreDestroy on window scoped beans: " +
+                                exception.getMessage());
             }
         }
         Iterator<ScopeMap> disposedScopeMaps;
@@ -202,16 +202,16 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
                         callPreDestroy(windowScopedBean);
                     } catch (Exception exception) {
                         log.log(
-                            Level.FINE,
-                            "An exception occurred while trying to invoke @PreDestroy on a window scoped bean: " +
-                                exception.getMessage());
+                                Level.FINE,
+                                "An exception occurred while trying to invoke @PreDestroy on a window scoped bean: " +
+                                        exception.getMessage());
                     }
                 }
             } catch (Exception exception) {
                 log.log(
-                    Level.FINE,
-                    "An exception occurred while trying to invoke @PreDestroy on window scoped beans: " +
-                        exception.getMessage());
+                        Level.FINE,
+                        "An exception occurred while trying to invoke @PreDestroy on window scoped beans: " +
+                                exception.getMessage());
             }
         }
     }
@@ -294,7 +294,8 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         }
 
         private void disactivateIfUnused(FacesContext facesContext) {
-            if (isEmpty()) {
+            if (EnvUtils.containsBeans(this)) {
+                //the map contains objects (most probably beans) other than the ones inserted by the framework
                 disactivate(getState(facesContext));
             }
         }

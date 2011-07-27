@@ -47,9 +47,11 @@
         <phase-listener>org.icefaces.impl.event.FacesMessagesPhaseListener</phase-listener>
         <phase-listener>org.icefaces.impl.application.WindowScopeManager$SaveScopeState</phase-listener>
         <phase-listener>org.icefaces.impl.application.WindowScopeManager$DetermineOrDisposeScope</phase-listener>
+        <phase-listener>org.icefaces.impl.application.ReloadAfterNavigationFix$TriggerNavigation</phase-listener>
     </lifecycle>
     <application>
         <navigation-handler>org.icefaces.impl.application.PropagatingNavigationHandler</navigation-handler>
+        <navigation-handler>org.icefaces.impl.application.ReloadAfterNavigationFix</navigation-handler>
         <resource-handler>org.icefaces.impl.push.servlet.ICEpushResourceHandler</resource-handler>
         <resource-handler>org.icefaces.impl.push.DynamicResourceDispatcher</resource-handler>
         <resource-handler>org.icefaces.application.ResourceRegistry</resource-handler>
