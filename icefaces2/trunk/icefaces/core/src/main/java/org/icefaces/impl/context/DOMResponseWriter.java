@@ -351,7 +351,12 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
             }
 
             if (cursor == null) {
-                cursor = document.getDocumentElement();
+                Element doc = document.getDocumentElement();
+                if( doc != null ){
+                    cursor = doc;
+                } else {
+                    cursor = document;
+                }
             }
 
             return cursor.appendChild(node);
