@@ -57,7 +57,7 @@ public class MonitorRunner {
                                 try {
                                     monitor.run();
                                 } catch (Throwable t) {
-                                    log.warn("Failed to run monitor: " + monitor);
+                                    log.warn("Failed to run monitor: " + monitor, t);
                                 }
                             }
                         } catch (InterruptedException e) {
