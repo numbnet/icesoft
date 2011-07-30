@@ -421,7 +421,7 @@ public class TableRenderer
         HtmlDataTable htmlDataTable = (HtmlDataTable) uiComponent;
         Element th = domContext.createElement(element);
         tr.appendChild(th);
-
+        th.setAttribute(HTML.SCOPE_ATTR, "col");
         Element cursorParent = th;
         if (htmlDataTable.isResizable()) {
             if (!lastChild) {
@@ -503,6 +503,7 @@ public class TableRenderer
                 Node oldParent = domContext.getCursorParent();
                 Element th = domContext.createElement(element);
                 tr.appendChild(th);
+                th.setAttribute(HTML.SCOPE_ATTR, "col");
                 String styleClass = getHeaderStyles(uiComponent)[styleIndex];
                 if (headerFacet instanceof CommandSortHeader) {
                     String columnName = ((CommandSortHeader) headerFacet).getColumnName();
@@ -764,8 +765,13 @@ public class TableRenderer
                 UIComponent nextChild = (UIComponent) childs.next();
                 if (nextChild.isRendered()) {
                     if (nextChild instanceof UIColumn) {
-                        uiData.setColNumber(uiData.getColNumber()+1);                        
+               
+
+                    	uiData.setColNumber(uiData.getColNumber()+1);                        
                         Element td = domContext.createElement(HTML.TD_ELEM);
+                        if (uiData.getColNumber() == 0) {
+                        	td.setAttribute(HTML.SCOPE_ATTR, "row");
+                        }                        
                         //add row focus handler for rowSelector
                         if (uiData.getColNumber() == 0 && rowSelectorFound
                                 && rowSelector.isKeyboardNavigationEnabled()) {
@@ -937,10 +943,15 @@ public class TableRenderer
                 (countOfRowsDisplayed >= numberOfRowsToDisplay)) {
                 break;
             }
+           
             table.setColNumber(table.getColNumber()+1); 
+            Element td = domContext.createElement(HTML.TD_ELEM);
+            if (table.getColNumber() == 0) {
+            	td.setAttribute(HTML.SCOPE_ATTR, "row");
+            } 
             Iterator childs;
             childs = columns.getChildren().iterator();
-            Element td = domContext.createElement(HTML.TD_ELEM);
+
             if (null != rowSelectorHiddenField)  {
                 td.appendChild(rowSelectorHiddenField);
             }
