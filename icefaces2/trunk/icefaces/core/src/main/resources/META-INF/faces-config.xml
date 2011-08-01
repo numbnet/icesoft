@@ -48,6 +48,7 @@
         <phase-listener>org.icefaces.impl.application.WindowScopeManager$SaveScopeState</phase-listener>
         <phase-listener>org.icefaces.impl.application.WindowScopeManager$DetermineOrDisposeScope</phase-listener>
         <phase-listener>org.icefaces.impl.application.ReloadAfterNavigationFix$TriggerNavigation</phase-listener>
+        <phase-listener>org.icefaces.impl.event.BridgeSetup$AssignViewID</phase-listener>
     </lifecycle>
     <application>
         <navigation-handler>org.icefaces.impl.application.PropagatingNavigationHandler</navigation-handler>
