@@ -40,18 +40,12 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
+import javax.faces.event.*;
 import javax.faces.render.RenderKit;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -187,9 +181,9 @@ public class BridgeSetup implements SystemEventListener {
             }
             */
         }
-        
+
         List<UIComponent> bodyResources = getBodyResources(context);
-        for (UIComponent bodyResource : bodyResources)  {
+        for (UIComponent bodyResource : bodyResources) {
             root.addComponentResource(context, bodyResource, "body");
         }
 
@@ -214,10 +208,11 @@ public class BridgeSetup implements SystemEventListener {
         }
     }
 
-    private String assignViewID(ExternalContext externalContext) {
+    private static String assignViewID(ExternalContext externalContext) {
         final String viewIDParameter = externalContext.getRequestParameterMap().get("ice.view");
         //keep viewID sticky until page is unloaded
-        final String viewID = viewIDParameter == null ? generateViewID() : viewIDParameter;
+        BridgeSetup bridgeSetup = (BridgeSetup) externalContext.getApplicationMap().get(BRIDGE_SETUP);
+        final String viewID = viewIDParameter == null ? bridgeSetup.generateViewID() : viewIDParameter;
         //save the calculated view state key so that other parts of the framework will use the same key
         externalContext.getRequestMap().put(ViewState, viewID);
         return viewID;
@@ -232,12 +227,12 @@ public class BridgeSetup implements SystemEventListener {
      *
      * @return current BridgeSetup instance
      */
-    public static BridgeSetup getBridgeSetup(FacesContext facesContext)  {
+    public static BridgeSetup getBridgeSetup(FacesContext facesContext) {
         return (BridgeSetup) facesContext.getExternalContext().
                 getApplicationMap().get(BRIDGE_SETUP);
     }
 
-    public List<UIComponent> getBodyResources(FacesContext context)  {
+    public List<UIComponent> getBodyResources(FacesContext context) {
         final ExternalContext externalContext = context.getExternalContext();
         UIViewRoot root = context.getViewRoot();
         List<UIComponent> bodyResources = new ArrayList();
@@ -252,7 +247,7 @@ public class BridgeSetup implements SystemEventListener {
                         context.getViewRoot().getViewId());
             }
             final String windowID = tempWindowID;
-            final String viewID = assignViewID(externalContext);
+            final String viewID = getViewID(externalContext);
 
             final Map viewScope = root.getViewMap();
             final boolean sendDisposeWindow = !EnvUtils.isLazyWindowScope(context) ||
@@ -386,7 +381,7 @@ public class BridgeSetup implements SystemEventListener {
         }
     }
 
-    public static class ShortIdForm extends UIForm  {
+    public static class ShortIdForm extends UIForm {
         //ID is assigned uniquely by ICEpush so no need to prepend
         public String getClientId(FacesContext context) {
             return getId();
@@ -448,6 +443,20 @@ public class BridgeSetup implements SystemEventListener {
         //inserting into the Portal head
         public String getRendererType() {
             return "javax.faces.resource.Script";
+        }
+    }
+
+    public static class AssignViewID implements PhaseListener {
+        public void afterPhase(PhaseEvent event) {
+        }
+
+        //assign viewId as soon as possible
+        public void beforePhase(PhaseEvent event) {
+            assignViewID(event.getFacesContext().getExternalContext());
+        }
+
+        public PhaseId getPhaseId() {
+            return PhaseId.RESTORE_VIEW;
         }
     }
 }

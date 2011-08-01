@@ -41,6 +41,7 @@
     <lifecycle>
         <phase-listener>org.icefaces.impl.event.DeltaSubmitPhaseListener</phase-listener>
         <phase-listener>org.icefaces.impl.event.FacesMessagesPhaseListener</phase-listener>
+        <phase-listener>org.icefaces.impl.event.BridgeSetup$AssignViewID</phase-listener>
     </lifecycle>
     <application>
         <navigation-handler>org.icefaces.impl.application.DeltaSubmitParametersPropagation</navigation-handler>
