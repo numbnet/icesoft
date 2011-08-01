@@ -52,6 +52,7 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,6 +60,8 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     private static final String JAVAX_FACES_VIEW_HEAD = "javax.faces.ViewHead";
     private static final String JAVAX_FACES_VIEW_BODY = "javax.faces.ViewBody";
     private static final Logger log = Logger.getLogger(DOMPartialViewContext.class.getName());
+    private static final Pattern SPACE_SEPARATED = Pattern.compile("[ ]+");
+    public static final String CUSTOM_UPDATE = "ice.customUpdate";
 
     private PartialViewContext wrapped;
     protected FacesContext facesContext;
@@ -103,7 +106,9 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
             return;
         }
         ExternalContext ec = facesContext.getExternalContext();
-        if (Boolean.valueOf(ec.getRequestParameterMap().get("ice.customUpdate"))) {
+        String customUpdate = ec.getRequestParameterMap().get(CUSTOM_UPDATE);
+        //custom update set for entire response
+        if ("true".equals(customUpdate))  {
             wrapped.processPartial(phaseId);
             return;
         }
@@ -126,6 +131,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
                 UIViewRoot viewRoot = facesContext.getViewRoot();
                 List<DOMUtils.EditOperation> diffs = null;
+                Collection<String> customIds = null;
                 Document newDOM = null;
                 writer.startDocument();
 
@@ -145,6 +151,10 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 } else {
                     writer.startSubtreeRendering();
                     Collection<String> renderIds = getRenderIds();
+                    customIds = getCustomIds(customUpdate);
+                    if (null != customIds)  {
+                        renderIds.removeAll(customIds);
+                    }
                     if (renderIds == null || renderIds.isEmpty()) {
                     } else {
                         diffs = renderSubtrees(viewRoot, renderIds);
@@ -154,6 +164,9 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 }
 
                 partialWriter.startDocument();
+                if (null != customIds)  {
+                    standardRenderSubtrees(viewRoot, customIds);
+                }
 
                 if ((null == oldDOM) && isRenderAll()) {
                     partialWriter.startUpdate(PartialResponseWriter.RENDER_ALL_MARKER);
@@ -225,6 +238,15 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         }
     }
 
+    private Collection<String> getCustomIds(String idList)  {
+        if (null == idList) {
+            return null;
+        } else {
+            String[] ids = SPACE_SEPARATED.split(idList);
+            return new ArrayList<String>(Arrays.asList(ids));
+        }
+    }
+
     private static String getUpdateId(Element element) {
         if ("head".equalsIgnoreCase(element.getTagName())) {
             return JAVAX_FACES_VIEW_HEAD;
@@ -287,6 +309,16 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         }
 
         return NOOP;
+    }
+
+    private void standardRenderSubtrees(UIViewRoot viewRoot, Collection<String> renderIds) {
+        EnumSet<VisitHint> hints = EnumSet.of(VisitHint.SKIP_UNRENDERED);
+        VisitContext visitContext =
+                VisitContext.createVisitContext(facesContext, renderIds, hints);
+        StdPartialRenderCallback renderCallback =
+                new StdPartialRenderCallback(facesContext);
+        viewRoot.visitTree(visitContext, renderCallback);
+        return;
     }
 
     private List<DOMUtils.EditOperation> renderSubtrees(UIViewRoot viewRoot, Collection<String> renderIds) {
@@ -501,4 +533,43 @@ class DOMPartialRenderCallback implements VisitCallback {
     public boolean didFail() {
         return exception;
     }
+}
+
+
+class StdPartialRenderCallback implements VisitCallback {
+    private static Logger log = Logger.getLogger(StdPartialRenderCallback.class.getName());
+    private FacesContext facesContext;
+
+    public StdPartialRenderCallback(FacesContext facesContext) {
+        this.facesContext = facesContext;
+    }
+
+    public VisitResult visit(VisitContext visitContext, UIComponent component) {
+        String clientId = component.getClientId(facesContext);
+        try {
+            PartialResponseWriter writer = facesContext
+                    .getPartialViewContext().getPartialResponseWriter();
+
+            writer.startUpdate(component.getClientId(facesContext));
+            try {
+                component.encodeAll(facesContext);
+            }
+            catch (Exception x) {
+                if (log.isLoggable(Level.SEVERE)) {
+                    log.severe("Subtree rendering failed for " + 
+                            component.getClass()
+                            + " " + clientId + x.toString());
+                }
+            }
+            writer.endUpdate();
+        } catch (Exception e) {
+            if (log.isLoggable(Level.SEVERE)) {
+                log.severe("Subtree rendering failed for " + component.getClass()
+                        + " " + clientId + e.toString());
+            }
+        }
+        //Return REJECT to skip subtree visiting
+        return VisitResult.REJECT;
+    }
+
 }
