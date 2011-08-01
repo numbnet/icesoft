@@ -65,6 +65,7 @@ import com.icesoft.faces.context.FileResource;
 import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.CoreUtils;
+import com.icesoft.faces.component.commandsortheader.CommandSortHeader;
 
 public class DataExporter extends OutputResource {
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.DataExporter";
@@ -364,6 +365,15 @@ public class DataExporter extends OutputResource {
     private String encodeParentAndChildrenAsString(FacesContext fc,
             UIComponent uic) {
         StringBuffer str = new StringBuffer();
+		if (uic instanceof CommandSortHeader) {
+			if (uic.getChildCount() > 0) {
+				Iterator iter = uic.getChildren().iterator();
+				while (iter.hasNext()) {
+					UIComponent child = (UIComponent) iter.next();
+					str.append(encodeParentAndChildrenAsString(fc, child));
+				}
+			}		
+		}
         Object value = uic.getAttributes().get("value");
         if (value == null) {
             ValueBinding vb = uic.getValueBinding("value");
