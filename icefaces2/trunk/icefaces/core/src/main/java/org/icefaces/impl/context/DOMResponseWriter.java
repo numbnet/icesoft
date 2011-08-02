@@ -219,7 +219,12 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
 
         if (null != document.getDocumentElement()) {
             for (Node stateNode : stateNodes) {
-                stateNode.getParentNode().removeChild(stateNode);
+                Node parent = stateNode.getParentNode();
+                if(parent != null){
+                    parent.removeChild(stateNode);
+                } else {
+                    log.fine("could not remove state node " + stateNode + " as it had no parent");
+                }
             }
             stateNodes.clear();
             saveOldDocument();
@@ -253,6 +258,18 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
         if (null == value) {
             return;
         }
+
+        if(EnvUtils.isMyFaces()){
+            //Similar to Mojarra, we need to track the ViewState nodes for MyFaces so that
+            //we can removed them from the DOM after they have been rendered out to the response.
+            if(name != null &&
+                    name.equalsIgnoreCase("name") &&
+                    value instanceof String &&
+                    ((String)value).equalsIgnoreCase("javax.faces.ViewState")){
+                stateNodes.add(cursor);
+            }
+        }
+
         Attr attribute = document.createAttribute(name.trim());
         attribute.setValue(String.valueOf(value));
         appendToCursor(attribute);
