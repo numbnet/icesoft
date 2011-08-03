@@ -41,7 +41,7 @@
             android:key="c2dm"
             android:summary="Use C2DM Notification"
             android:title="C2DM Notify" 
-            android:defaultValue="false"
+            android:defaultValue="true"
         />
         <EditTextPreference
             android:key="email"
