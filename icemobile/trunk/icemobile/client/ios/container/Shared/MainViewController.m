@@ -60,7 +60,7 @@
     NSLog(@"MainViewController didBecomeActive.");
     if (nil == [self getCurrentURL])  {
         [self.webView loadRequest: [NSURLRequest requestWithURL:[NSURL 
-                URLWithString:@"http://labs.icesoft.com:8080/"] ]];
+                URLWithString:@"http://www.icemobile.org/demos.html"] ]];
     } else {
         [webView stringByEvaluatingJavaScriptFromString: 
                 @"ice.push.resumeBlockingConnection()"];
