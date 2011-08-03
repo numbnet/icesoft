@@ -14,8 +14,8 @@
 	<string></string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>icefaces.png</string>
-		<string>icefaces@2x.png</string>
+		<string>icon.png</string>
+		<string>icon@2x.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
 	<string>org.icemobile.${PRODUCT_NAME:rfc1034identifier}</string>
