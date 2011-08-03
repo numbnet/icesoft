@@ -119,22 +119,28 @@ public class MediaController implements Serializable {
             mediaFile = uploadModel.getCameraFile();
             processUploadedImage(photoMessage, mediaFile);
             pushMessage.setProperty("subject", "New Photo");
+            photoMessage.setComment(processComment(uploadModel.getComment(),
+                    MediaMessage.MEDIA_TYPE_PHOTO));
             uploadModel.setCameraFile(null);
         } else if (MediaMessage.MEDIA_TYPE_VIDEO.equals(selectedMediaInput)) {
             mediaFile = uploadModel.getVideoFile();
             processUploadedVideo(photoMessage, mediaFile);
             pushMessage.setProperty("subject", "New Video");
+            photoMessage.setComment(processComment(uploadModel.getComment(),
+                    MediaMessage.MEDIA_TYPE_VIDEO));
             uploadModel.setVideoFile(null);
         } else if (MediaMessage.MEDIA_TYPE_AUDIO.equals(selectedMediaInput)) {
             mediaFile = uploadModel.getAudioFile();
             processUploadedAudio(photoMessage, mediaFile);
+            photoMessage.setComment(processComment(uploadModel.getComment(),
+                    MediaMessage.MEDIA_TYPE_AUDIO));
             pushMessage.setProperty("subject", "New Audio");
             uploadModel.setAudioFile(null);
         }
         // reset the selected input string, so the input selection buttons show up again.
         uploadModel.setSelectedMediaInput("");
-        // copy over the comments
-        photoMessage.setComment(uploadModel.getComment());
+        uploadModel.setComment("");
+
         // only add the message if the file successfully uploaded.
         if (mediaFile != null){
             mediaStore.addMedia(photoMessage);
@@ -333,4 +339,20 @@ public class MediaController implements Serializable {
         // change the algorithm, so height is always the same
         return 1 / scaleHeight;
     }
+
+    /**
+     * Utility to insure a comment is assigned to a new message.  If the specified
+     * comment is empty or null then the default comment value is used.
+     *
+     * @param comment comment value specified by user.
+     * @param defaultComment default comment
+     * @return comment value if not null or empty, otherwise default is returned.
+     */
+    private String processComment(String comment, String defaultComment){
+        if ((null != comment) && (!"".equals(comment))) {
+            return comment;
+        }
+        return defaultComment;
+    }
+
 }
