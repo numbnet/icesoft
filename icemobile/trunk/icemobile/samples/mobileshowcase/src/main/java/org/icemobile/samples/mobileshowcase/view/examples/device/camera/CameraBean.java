@@ -20,6 +20,7 @@ import org.icemobile.samples.mobileshowcase.view.examples.device.DeviceInput;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
+import javax.annotation.PreDestroy;
 import javax.faces.application.Resource;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -29,8 +30,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @Destination(
@@ -74,6 +76,7 @@ public class CameraBean extends ExampleImpl<CameraBean> implements
     public static final String CONTENT_TYPE_KEY = "contentType";
 
     private Map cameraImage = new HashMap();
+    private File cameraFile;
     // uploaded video will be stored as a resource.
     private Resource outputResource;
 
@@ -83,12 +86,16 @@ public class CameraBean extends ExampleImpl<CameraBean> implements
 
     public void processUploadedImage(ActionEvent event) {
         if (cameraImage != null) {
-            File videoUpload = (File) cameraImage.get(FILE_KEY);
-            if (videoUpload != null) {
+            // clean up previously upload file
+            if (cameraFile != null){
+                disposeResources();
+            }
+            cameraFile = (File)cameraImage.get(FILE_KEY);
+            if (cameraFile != null) {
                 // copy the bytes into the resource object.
                 try {
                     outputResource = DeviceInput.createResourceObject(
-                        videoUpload, UUID.randomUUID().toString(), 
+                        cameraFile, UUID.randomUUID().toString(),
                         (String) cameraImage.get(CONTENT_TYPE_KEY));
                 } catch (IOException ex) {
                     logger.warning("Error setting up video resource object");
@@ -99,6 +106,14 @@ public class CameraBean extends ExampleImpl<CameraBean> implements
         // a null/empty object is used in the page to hide the audio
         // component.
         outputResource = null;
+    }
+
+    @PreDestroy
+    public void disposeResources(){
+        boolean success = cameraFile.delete();
+        if (!success && logger.isLoggable(Level.FINE)){
+            logger.fine("Could not dispose of media file" + cameraFile.getAbsolutePath());
+        }
     }
 
     public void setCameraImage(Map cameraImage) {

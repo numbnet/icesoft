@@ -31,6 +31,7 @@ import org.icemobile.samples.mobileshowcase.view.examples.device.DeviceInput;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
+import javax.annotation.PreDestroy;
 import javax.faces.application.Resource;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -40,8 +41,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Destination(
         title = "example.device.camcorder.destination.title.short",
@@ -79,10 +81,10 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
     public static final String BEAN_NAME = "camcorderBean";
 
     public static final String FILE_KEY = "file";
-    public static final String FILE_NAME_KEY = "fileName";
     public static final String CONTENT_TYPE_KEY = "contentType";
 
     private Map camcorderImage = new HashMap();
+    private File camcorderFile;
     // uploaded video will be stored as a resource.
     private Resource outputResource;
 
@@ -98,12 +100,16 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
      */
     public void processUploadedVideo(ActionEvent event) {
         if (camcorderImage != null) {
-            File videoUpload = (File) camcorderImage.get(FILE_KEY);
-            if (videoUpload != null) {
+            // clean up previously upload file
+            if (camcorderFile != null){
+                disposeResources();
+            }
+            camcorderFile = (File) camcorderImage.get(FILE_KEY);
+            if (camcorderFile != null) {
                 // copy the bytes into the resource object.
                 try {
                     outputResource = DeviceInput.createResourceObject(
-                            videoUpload, UUID.randomUUID().toString(), 
+                            camcorderFile, UUID.randomUUID().toString(),
                             (String) camcorderImage.get(CONTENT_TYPE_KEY));
                 } catch (IOException ex) {
                     logger.warning("Error setting up video resource object");
@@ -114,6 +120,14 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
         // a null/empty object is used in the page to hide the audio
         // component.
         outputResource = null;
+    }
+
+    @PreDestroy
+    public void disposeResources(){
+        boolean success = camcorderFile.delete();
+        if (!success && logger.isLoggable(Level.FINE)){
+            logger.fine("Could not dispose of media file" + camcorderFile.getAbsolutePath());
+        }
     }
 
     public void setClip(Map videoInfo) {

@@ -20,6 +20,7 @@ import org.icemobile.samples.mobileshowcase.view.examples.device.DeviceInput;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
+import javax.annotation.PreDestroy;
 import javax.faces.application.Resource;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -28,8 +29,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The Microphone Bean demonstrates how a mobile device's microphone can be
@@ -76,7 +78,6 @@ public class MicrophoneBean extends ExampleImpl<MicrophoneBean> implements
     public static final String BEAN_NAME = "microphoneBean";
 
     public static final String FILE_KEY = "file";
-    public static final String RELATIVE_PATH_KEY = "relativePath";
     public static final String CONTENT_TYPE_KEY = "contentType";
 
     // uploaded video will be stored as a resource.
@@ -84,6 +85,7 @@ public class MicrophoneBean extends ExampleImpl<MicrophoneBean> implements
 
     // uploaded audio file.
     private Map audioFileMap;
+    private File audioFile;
 
     public MicrophoneBean() {
         super(MicrophoneBean.class);
@@ -91,12 +93,16 @@ public class MicrophoneBean extends ExampleImpl<MicrophoneBean> implements
 
     public void processUploadedAudio(ActionEvent event) {
         if (audioFileMap != null) {
-            File videoUpload = (File) audioFileMap.get(FILE_KEY);
-            if (videoUpload != null) {
+            // clean up previously upload file
+            if (audioFile != null){
+                disposeResources();
+            }
+            audioFile = (File) audioFileMap.get(FILE_KEY);
+            if (audioFile != null) {
                 // copy the bytes into the resource object.
                 try {
                     outputResource = DeviceInput.createResourceObject(
-                            videoUpload, UUID.randomUUID().toString(), 
+                            audioFile, UUID.randomUUID().toString(),
                             (String) audioFileMap.get(CONTENT_TYPE_KEY));
                 } catch (IOException ex) {
                     logger.warning("Error setting up video resource object");
@@ -107,6 +113,14 @@ public class MicrophoneBean extends ExampleImpl<MicrophoneBean> implements
         // a null/empty object is used in the page to hide the audio
         // component.
         outputResource = null;
+    }
+
+    @PreDestroy
+    public void disposeResources(){
+        boolean success = audioFile.delete();
+        if (!success && logger.isLoggable(Level.FINE)){
+            logger.fine("Could not dispose of media file" + audioFile.getAbsolutePath());
+        }
     }
 
     public Map getAudioFileMap() {
