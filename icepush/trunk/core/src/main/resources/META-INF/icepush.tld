@@ -34,4 +34,8 @@
     <listener>
         <listener-class>org.icepush.servlet.MainServlet$ExtensionRegistration</listener-class>
     </listener>
+    <listener>
+        <listener-class>org.icepush.EmailNotificationProvider$AutoRegister</listener-class>
+    </listener>
+
 </taglib>
