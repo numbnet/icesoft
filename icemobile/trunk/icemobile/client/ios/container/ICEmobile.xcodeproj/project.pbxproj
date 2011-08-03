@@ -15,7 +15,7 @@
 		2860E32E111B888700E27156 /* AppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E32C111B888700E27156 /* AppDelegate_iPad.m */; };
 		2860E32F111B888700E27156 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E32D111B888700E27156 /* MainWindow_iPad.xib */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
-		9C113907132ACD2E00FB7919 /* icefaces.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C113906132ACD2E00FB7919 /* icefaces.png */; };
+		9C113907132ACD2E00FB7919 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C113906132ACD2E00FB7919 /* icon.png */; };
 		9C2A9F6513B8E78F0068D894 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2A9F6413B8E78F0068D894 /* MobileCoreServices.framework */; };
 		9C31404E13200264005F0E8F /* NativeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C31404D13200264005F0E8F /* NativeInterface.m */; };
 		9C31408713201B67005F0E8F /* main.html in Resources */ = {isa = PBXBuildFile; fileRef = 9C31408613201B67005F0E8F /* main.html */; };
@@ -25,7 +25,7 @@
 		9C34261F131865700084532D /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C34261E131865700084532D /* MainViewController.m */; };
 		9C65FC2E137C9E5500530472 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C65FC2C137C9E5500530472 /* Preferences.m */; };
 		9C65FC2F137C9E5500530472 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C65FC2D137C9E5500530472 /* Preferences.xib */; };
-		9C77A01E139E9E9B00A2B1EC /* icefaces@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77A01D139E9E9B00A2B1EC /* icefaces@2x.png */; };
+		9C77A01E139E9E9B00A2B1EC /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77A01D139E9E9B00A2B1EC /* icon@2x.png */; };
 		9CE11565133BDDE80051D367 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE11564133BDDE80051D367 /* AVFoundation.framework */; };
 		9CE7A43613B92240008C4D9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE7A43513B92240008C4D9C /* MediaPlayer.framework */; };
 /* End PBXBuildFile section */
@@ -44,7 +44,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Shared/main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* ICEmobile_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICEmobile_Prefix.pch; path = Shared/ICEmobile_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ICEmobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ICEmobile-Info.plist"; path = "Shared/ICEmobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		9C113906132ACD2E00FB7919 /* icefaces.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icefaces.png; path = Shared/icefaces.png; sourceTree = "<group>"; };
+		9C113906132ACD2E00FB7919 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = Shared/icon.png; sourceTree = "<group>"; };
 		9C2A9F6413B8E78F0068D894 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		9C31404C13200264005F0E8F /* NativeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeInterface.h; path = Shared/NativeInterface.h; sourceTree = "<group>"; };
 		9C31404D13200264005F0E8F /* NativeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NativeInterface.m; path = Shared/NativeInterface.m; sourceTree = "<group>"; };
@@ -56,7 +56,7 @@
 		9C65FC2B137C9E5500530472 /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Preferences.h; path = Shared/Preferences.h; sourceTree = "<group>"; };
 		9C65FC2C137C9E5500530472 /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Preferences.m; path = Shared/Preferences.m; sourceTree = "<group>"; };
 		9C65FC2D137C9E5500530472 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = Preferences.xib; path = Shared/Preferences.xib; sourceTree = "<group>"; };
-		9C77A01D139E9E9B00A2B1EC /* icefaces@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icefaces@2x.png"; path = "Shared/icefaces@2x.png"; sourceTree = "<group>"; };
+		9C77A01D139E9E9B00A2B1EC /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "Shared/icon@2x.png"; sourceTree = "<group>"; };
 		9CE11564133BDDE80051D367 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9CE7A43513B92240008C4D9C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -112,8 +112,8 @@
 				9C65FC2B137C9E5500530472 /* Preferences.h */,
 				9C65FC2C137C9E5500530472 /* Preferences.m */,
 				9C65FC2D137C9E5500530472 /* Preferences.xib */,
-				9C113906132ACD2E00FB7919 /* icefaces.png */,
-				9C77A01D139E9E9B00A2B1EC /* icefaces@2x.png */,
+				9C113906132ACD2E00FB7919 /* icon.png */,
+				9C77A01D139E9E9B00A2B1EC /* icon@2x.png */,
 				9C31408813201C37005F0E8F /* icefaces-logo.gif */,
 				8D1107310486CEB800E47090 /* ICEmobile-Info.plist */,
 				9C34261D131865700084532D /* MainViewController.h */,
@@ -215,9 +215,9 @@
 				2860E32F111B888700E27156 /* MainWindow_iPad.xib in Resources */,
 				9C31408713201B67005F0E8F /* main.html in Resources */,
 				9C31408913201C37005F0E8F /* icefaces-logo.gif in Resources */,
-				9C113907132ACD2E00FB7919 /* icefaces.png in Resources */,
+				9C113907132ACD2E00FB7919 /* icon.png in Resources */,
 				9C65FC2F137C9E5500530472 /* Preferences.xib in Resources */,
-				9C77A01E139E9E9B00A2B1EC /* icefaces@2x.png in Resources */,
+				9C77A01E139E9E9B00A2B1EC /* icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
