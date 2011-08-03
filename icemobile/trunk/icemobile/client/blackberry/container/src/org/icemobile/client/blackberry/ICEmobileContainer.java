@@ -84,7 +84,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
 
     // Default, compile time, initial page. This value is passed to BlackberryOptionsProperties
     // during construction to be used if the Properties object is new
-    public static final String HOME_URL = "http://labs.icesoft.com:8080/";
+    public static final String HOME_URL = "http://www.icemobile.org/demos.html";
 
     public static final int HISTORY_SIZE = 10; 
     
