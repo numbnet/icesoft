@@ -1,0 +1,94 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+    <h:form style="margin-top:10px;">
+
+        <mobic:outputList inset="false">
+            <mobic:outputListItem group="true">
+                Common Link Structure
+            </mobic:outputListItem>
+            <mobic:outputListItem>
+                <h:link>Link to this page</h:link>
+            </mobic:outputListItem>
+            <mobic:outputListItem>
+                <h:commandLink action="#{navigationController.navigateBack}">
+                    Link back to main menu</h:commandLink>
+            </mobic:outputListItem>
+            <mobic:outputListItem type="default">
+                <h:link>
+                    <p class="mobi-list-item-aside"><strong>2:30</strong>AM</p>
+
+                    <h3>John Doe</h3>
+
+                    <p>
+                        <strong>You've been invited to a meeting at ICEsof in Calgary, AB</strong>
+                    </p>
+
+                    <p>Hi John, how was the Calgary Stampeed this year? I would like to discuss</p>
+                </h:link>
+            </mobic:outputListItem>
+        </mobic:outputList>
+
+        <mobic:outputList inset="true">
+            <mobic:outputListItem group="true">
+                Thumbnail display
+            </mobic:outputListItem>
+            <mobic:outputListItem type="thumb">
+                <h:link>
+                    <h:graphicImage library="images/albums" name="doors.png"/>
+
+                    <h3>The Doors</h3>
+
+                    <p>The Doors</p>
+                </h:link>
+            </mobic:outputListItem>
+            <mobic:outputListItem type="thumb">
+                <h:link>
+                    <h:graphicImage library="images/albums"
+                                    name="kt_tunstall.png"/>
+
+                    <h3>Drastic Fantastic</h3>
+
+                    <p>KT Tunstall</p>
+                </h:link>
+            </mobic:outputListItem>
+            <mobic:outputListItem type="thumb">
+                <h:link>
+                    <h:graphicImage library="images/albums"
+                                    name="sonic_youth.png"/>
+
+                    <h3>Dirty</h3>
+
+                    <p>Sonic Youth</p>
+                </h:link>
+            </mobic:outputListItem>
+            <mobic:outputListItem type="thumb">
+                <h:link>
+                    <h:graphicImage library="images/albums" name="stars.png"/>
+
+                    <h3>Do You Trust Your Friends</h3>
+
+                    <p>Stars</p>
+                </h:link>
+            </mobic:outputListItem>
+        </mobic:outputList>
+    </h:form>
+</ui:fragment>
