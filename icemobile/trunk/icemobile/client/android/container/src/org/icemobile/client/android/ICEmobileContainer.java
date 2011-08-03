@@ -143,7 +143,7 @@ public class ICEmobileContainer extends Activity
 	if (INCLUDE_CAMERA) includeCamera();
 	if (INCLUDE_AUDIO) includeAudio();
 	if (INCLUDE_VIDEO) includeVideo();
-	if (prefs.getBoolean("c2dm",false)) {
+	if (prefs.getBoolean("c2dm",true)) {
 	    includeC2dm();
 	}
 
