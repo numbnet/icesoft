@@ -29,9 +29,9 @@ import javax.faces.context.FacesContext;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.UUID;
 
 /**
  * The ImageBean shows how to use the new  <mobi:graphicImage /> component to
@@ -92,7 +92,7 @@ public class ImageBean extends ExampleImpl<ImageBean> implements
         // load the sample image file
         FacesContext facesContext = FacesContext.getCurrentInstance();
         String sampleImagePath = facesContext.getExternalContext()
-                .getRealPath("/resources/images/icefaces_logo.png");
+                .getRealPath("/resources/images/icemobile_large.png");
         File imageFile = new File(sampleImagePath);
 
         // create new resource object that the graphicImageComponent can use.

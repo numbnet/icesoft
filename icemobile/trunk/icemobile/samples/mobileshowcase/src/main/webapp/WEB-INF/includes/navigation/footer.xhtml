@@ -22,24 +22,26 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
              xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
 
-    <div style="text-align: left;"><!--padding-top:10px;padding-left:3px;-->
+    <div style="float:left;display:inline-block;text-align:left;">
         <h:form>
             <icecore:singleSubmit rendered="true"/>
-            <!--<h:commandLink styleclass="changeThemeLink">-->
-            <!--<h:graphicImage library="images" name="theme.png"/>-->
-            <!--</h:commandLink>-->
+
             <h:selectOneMenu value="#{themeBean.currentTheme}">
                 <f:selectItem itemLabel="Auto" itemValue=""/>
                 <f:selectItem itemLabel="iPhone" itemValue="iphone.css"/>
                 <f:selectItem itemLabel="Android" itemValue="android.css"/>
                 <f:selectItem itemLabel="BlackBerry" itemValue="bberry.css"/>
             </h:selectOneMenu>
+
             <h:commandButton value="Change Theme"
                              action="handheld"
-                             styleClass="mobi-button mobi-button-default"
-                             >
+                             styleClass="mobi-button mobi-button-default" >
               <f:ajax disabled="true" />
             </h:commandButton>
         </h:form>
     </div>
+    <h:panelGroup style="float:right;display:inline-block;margin: 5px 15px 0 0;">
+        <h:graphicImage library="images" name="icemobile_thumb.png"
+                style="width:30px;height:30px;"/>
+    </h:panelGroup>
 </ui:fragment>

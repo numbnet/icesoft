@@ -65,7 +65,7 @@ public class ExampleImpl<T> implements Example, ExampleResources, ContextBase {
             descriptionPath = example.descriptionPath();
             examplePath = example.examplePath();
             resourcesPath = example.resourcesPath();
-            selectedExamplePath = descriptionPath;
+            selectedExamplePath = examplePath;
         }
         // copy data over for destination information.
         if (parentClass.isAnnotationPresent(
