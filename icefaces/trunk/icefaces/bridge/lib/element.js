@@ -237,7 +237,7 @@
         //no polymophism here...'switch' is the way then.
         if (!e)
             return new This.Element(e);
-        switch (e.tagName.toLowerCase()) {
+        switch (e.nodeName.toLowerCase()) {
             case 'textarea':
             case 'input': return new This.InputElement(e);
             case 'thead':
