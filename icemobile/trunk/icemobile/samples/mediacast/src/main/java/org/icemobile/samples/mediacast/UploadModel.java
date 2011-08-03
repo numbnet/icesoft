@@ -107,19 +107,7 @@ public class UploadModel implements Serializable {
     }
 
     public String getComment() {
-        if ((null != photoComment) && (!"".equals(photoComment))) {
-            return photoComment;
-        }
-        if (null != cameraFile) {
-            return MediaMessage.MEDIA_TYPE_PHOTO;
-        }
-        if (null != videoFile) {
-            return MediaMessage.MEDIA_TYPE_VIDEO;
-        }
-        if (null != audioFile) {
-            return MediaMessage.MEDIA_TYPE_AUDIO;
-        }
-        return "Message";
+        return photoComment;
     }
 
     public void setComment(String photoComment) {
