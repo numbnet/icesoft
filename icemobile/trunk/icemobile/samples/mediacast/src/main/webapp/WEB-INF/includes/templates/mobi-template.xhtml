@@ -1,0 +1,120 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html >
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <title>ICEfaces Mobile Media Demo</title>
+    <h:outputScript library="js" name="iscroll-min.js"/>
+    <mobi:deviceStylesheet media="screen"/>
+    <h:outputStylesheet library="css" name="photocast.css" media="screen"/>
+
+</h:head>
+<h:body>
+    <div id="h" class="mobi-panel-stack-header">
+        <ui:insert name="toolbar">
+            <h:form id="toolbar" prependId="false">
+                <mobic:commandButton type="back"
+                                     action="#{navigationController.navigateBack}"
+                                     rendered="#{not navigationModel.currentDestination.hideBack}">
+                    #{navigationModel.backDestination.backTitle}
+                </mobic:commandButton>
+
+                #{navigationModel.currentDestination.title}
+
+                <ui:insert name="toolBarContent"/>
+            </h:form>
+        </ui:insert>
+    </div>
+
+    <div id="wrapper" class="mobi-panel-stack-body-nofooter">
+        <div class="mobi-panel-scrollable">
+            <!-- main content include of page content -->
+            <ui:insert name="panelContent"/>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var myScroll;
+        var onLoadCallback = function () {
+            setTimeout(function () {
+                if (myScroll != null) {
+                    ice.log.debug(ice.log, 'onload destroy mysroll');
+                    myScroll.destroy();
+                }
+                ice.log.debug(ice.log, 'onload create mysroll');
+                myScroll = new iScroll('wrapper', { vScroll:true});
+            }, 100);
+        };
+        var afterUpdateCallback = function(updates) {
+            setTimeout(function () {
+                if (myScroll != null) {
+                    ice.log.debug(ice.log, 'afterUpdate refresh iscroll ');
+                    myScroll.refresh();
+                } else {
+                    ice.log.debug(ice.log, 'afterUpdate create iscroll');
+                    myScroll = new iScroll('wrapper', { vScroll:true})
+                }
+            }, 150);
+        };
+        var unloadHandler = function() {
+            ice.log.debug(ice.log, 'unload handler Iscroll');
+            myScroll.destroy();
+            myScroll = null;
+        };
+
+        if (navigator.platform.indexOf('iPhone') != -1 ||
+                navigator.userAgent.indexOf('iPod') != -1 ||
+                navigator.userAgent.indexOf('iPad') != -1) {
+
+            // tweak safari css for iscroll.
+            document.getElementById("wrapper").style.position = "absolute";
+
+            ice.onLoad(onLoadCallback);
+            ice.onUnload(unloadHandler);
+            ice.onAfterUpdate(afterUpdateCallback);
+
+            var supportsOrientationChange = "onorientationchange" in window,
+                    orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+            window.addEventListener(orientationEvent, function() {
+                setTimeout(function () {
+                    ice.log.debug(ice.log, 'orientation change iscroll refresh');
+                    myScroll.refresh();
+                }, 250);
+            }, false);
+
+            window.addEventListener('resize', function() {
+                setTimeout(function () {
+                    ice.log.debug(ice.log, 'resize iscroll refresh');
+                    myScroll.refresh();
+                }, 0);
+            });
+        }
+
+    </script>
+</h:body>
+</html>
