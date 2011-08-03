@@ -64,7 +64,7 @@ public class ICEmobileContainer extends Activity
     implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     /* Container configuration constants */
-    protected static final String HOME_URL = "http://mobile-showcase.icemobile.org/mobileshowcase/";
+    protected static final String HOME_URL = "http://www.icemobile.org/demos.html";
     protected static final boolean INCLUDE_CAMERA = true;
     protected static final boolean INCLUDE_AUDIO = true;
     protected static final boolean INCLUDE_VIDEO = true;
