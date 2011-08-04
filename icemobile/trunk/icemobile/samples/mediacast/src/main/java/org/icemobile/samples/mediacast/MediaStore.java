@@ -52,7 +52,7 @@ public class MediaStore implements Serializable {
     }
 
     public int getCarouselStackCount() {
-        return mediaStack.size();
+        return mediaCarouselStack.size();
     }
 
     /**

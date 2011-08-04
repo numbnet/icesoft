@@ -130,9 +130,12 @@ public class MediaMessage {
                 logger.fine("Could not dispose of media file" + mediaFile.getAbsolutePath());
             }
         }
-        // try and clean up the data[]
-        for (Media photo : photos){
-            photo.dispose();
+        // try and clean up the data[], but only for real photos, we don't
+        // want to delete the video and audio icons.
+        if (getShowPhoto()){
+            for (Media photo : photos){
+                photo.dispose();
+            }
         }
     }
 
