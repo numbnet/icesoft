@@ -136,15 +136,15 @@
                 this.on = Function.NOOP;
                 //prepare cursor shape rollback 
                 var cursorRollbacks = ['input', 'select', 'textarea', 'button', 'a'].inject([ element ],
-                        function(result, type) {
-                            return result.concat($enumerate(element.getElementsByTagName(type)).toArray());
-                        }).collect(function(e) {
-                    var c = e.style.cursor;
-                    e.style.cursor = 'wait';
-                    return function() {
-                        e.style.cursor = c;
-                    };
-                });
+                    function(result, type) {
+                        return result.concat($enumerate(element.getElementsByTagName(type)).toArray());
+                    }).collect(function(e) {
+                        var c = e.style.cursor;
+                        e.style.cursor = 'wait';
+                        return function() {
+                            e.style.cursor = c;
+                        };
+                    });
 
                 this.off = function() {
                     cursorRollbacks.broadcast();
@@ -191,7 +191,7 @@
             if (this.overlay) {
                 if (/MSIE/.test(navigator.userAgent)) {
                     var overlay = document.createElement('iframe');
-                    overlay.setAttribute('src', 'javascript:document.write("<html></html>");');
+                    overlay.setAttribute('src', 'javascript:document.write("<html></html>");document.close();');
                     overlay.setAttribute('frameborder', '0');
                     document.body.replaceChild(overlay, this.overlay);
                     document.body.removeChild(overlay);
@@ -303,7 +303,7 @@
 
         on: function() {
             var overlay = this.container.ownerDocument.createElement('iframe');
-            overlay.setAttribute('src', 'javascript:document.write("<html></html>");');
+            overlay.setAttribute('src', 'javascript:document.write("<html></html>");document.close();');
             overlay.setAttribute('frameborder', '0');
             var overlayStyle = overlay.style;
             overlayStyle.position = 'absolute';
@@ -318,14 +318,14 @@
             this.container.appendChild(overlay);
 
             var resize = this.container.tagName.toLowerCase() == 'body' ?
-                    function() {
-                        overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-                        overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
-                    } :
-                    function() {
-                        overlayStyle.width = this.container.offsetWidth + 'px';
-                        overlayStyle.height = this.container.offsetHeight + 'px';
-                    };
+                function() {
+                    overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
+                    overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+                } :
+                function() {
+                    overlayStyle.width = this.container.offsetWidth + 'px';
+                    overlayStyle.height = this.container.offsetHeight + 'px';
+                };
             resize();
             window.onResize(resize);
         },
