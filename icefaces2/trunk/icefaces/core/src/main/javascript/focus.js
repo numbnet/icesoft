@@ -128,12 +128,10 @@ var currentFocus = '';
     function captureFocusIn(root) {
         if (contains(focusableElements, root.nodeName)) {
             registerElementListener(root, 'onfocus', setFocusListener);
-            registerElementListener(root, 'onclick', setFocusListener);
         }
         each(focusableElements, function(type) {
             each(root.getElementsByTagName(type), function(element) {
                 registerElementListener(element, 'onfocus', setFocusListener);
-                registerElementListener(element, 'onclick', setFocusListener);
             });
         });
     }
