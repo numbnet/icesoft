@@ -169,7 +169,7 @@ var ComponentIndicators;
             function createOverlay() {
                 if (isIEBrowser) {
                     overlay = document.createElement('iframe');
-                    overlay.setAttribute('src', 'javascript:document.write(\'<html><body style="cursor: wait;"></body><html>\');');
+                    overlay.setAttribute('src', 'javascript:document.write(\'<html><body style="cursor: wait;"></body><html>\');document.close();');
                     overlay.setAttribute('frameborder', '0');
                     document.body.appendChild(overlay);
                 } else {
@@ -192,7 +192,7 @@ var ComponentIndicators;
             function deleteOverlay() {
                 if (isIEBrowser) {
                     var blankOverlay = document.createElement('iframe');
-                    blankOverlay.setAttribute('src', 'javascript:document.write("<html></html>");');
+                    blankOverlay.setAttribute('src', 'javascript:document.write("<html></html>");document.close();');
                     blankOverlay.setAttribute('frameborder', '0');
                     document.body.replaceChild(blankOverlay, overlay);
                     document.body.removeChild(blankOverlay);
