@@ -133,7 +133,7 @@
     } else {
         NSLog(@"using apns notification: %@", self.hexDeviceToken );
         NSString *scriptTemplate = 
-                @"ice.deviceToken = \"%@\";ice.push.parkInactivePushIds('apns:' + ice.deviceToken);";
+                @"ice.deviceToken = \"apns:%@\";ice.push.parkInactivePushIds(ice.deviceToken);";
         script = [NSString stringWithFormat:scriptTemplate, self.hexDeviceToken];
     }
     NSLog(@"ICEpush parking: %@", script );
