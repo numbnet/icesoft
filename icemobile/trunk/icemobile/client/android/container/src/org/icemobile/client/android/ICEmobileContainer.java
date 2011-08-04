@@ -96,8 +96,8 @@ public class ICEmobileContainer extends Activity
     private String currentURL="";
     private String newURL;
     private SharedPreferences prefs;
-    private Vector history;
     private HistoryManager historyManager;
+    private Vector history;
     private boolean showLoadProgress;
     private ProgressDialog progressDialog;
 
@@ -268,7 +268,7 @@ public class ICEmobileContainer extends Activity
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 	if (key.equals("url")) {
-	    newURL = prefs.getString(key,"");
+	    newURL = prefs.getString(key,HOME_URL);
 	    historyManager.add(newURL);
 	} else if (key.equals("gallery")) {
 	    setGallery(prefs.getBoolean(key,false));
@@ -323,7 +323,6 @@ public class ICEmobileContainer extends Activity
         
         @Override  
         public void onPageFinished(WebView view, String url){
-	    Log.e("ICEmobile", "onPageFinished() called");
             view.loadUrl("javascript:eval(' ' + window.ICEassets.loadAssetFile('native-interface.js'));");  
 	    utilInterface.loadURL("javascript:ice.push.parkInactivePushIds('" + getCloudNotificationId() + "');");
         }  
@@ -478,7 +477,7 @@ public class ICEmobileContainer extends Activity
 		}
 	    }
 
-	    if (changed) {
+	    if (changed && url != null) {
 		history.add(0,url);
 		save();
 	    }
@@ -490,14 +489,13 @@ public class ICEmobileContainer extends Activity
 		String historyList = fileLoader.readTextFile(new FileInputStream(historyFile));
 		history = new Vector(Arrays.asList(historyList.split(" ")));
 	    } catch (IOException e) {
-		history = new Vector();
-		history.add(newURL);
 	    }
 	}
 
 	public void save() {
 	    FileWriter out;
 	    try {
+
 		File historyFile = new File(utilInterface.getTempPath(), "history.log");
 		out = new FileWriter(historyFile);
 		for (Enumeration i = history.elements(); i.hasMoreElements();) {
