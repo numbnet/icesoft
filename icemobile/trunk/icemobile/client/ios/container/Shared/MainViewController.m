@@ -62,7 +62,8 @@
         [self.webView loadRequest: [NSURLRequest requestWithURL:[NSURL 
                 URLWithString:@"http://www.icemobile.org/demos.html"] ]];
     } else {
-        [webView stringByEvaluatingJavaScriptFromString: 
+        [self.webView reload];
+        [self.webView stringByEvaluatingJavaScriptFromString: 
                 @"ice.push.resumeBlockingConnection()"];
     }
 }
@@ -141,6 +142,7 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error  {
     NSLog(@"didFailLoadWithError %@", [error localizedDescription]);
+    NSLog(@"didFailLoadWithError %@", [self getCurrentURL]);
     NSString *localPath = [[NSBundle mainBundle] 
             pathForResource:@"main" ofType:@"html"];
     NSURL *localURL = [NSURL fileURLWithPath:localPath];
