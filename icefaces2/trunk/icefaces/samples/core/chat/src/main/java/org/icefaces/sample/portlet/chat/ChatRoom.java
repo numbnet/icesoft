@@ -35,9 +35,9 @@ import java.util.logging.Logger;
  * It is also responsible for firing Ajax Push requests when the state
  * of the application has changed.
  */
-@ManagedBean(name = "chatRoom")
+@ManagedBean
 @ApplicationScoped
-public class ChatRoom {
+public class ChatRoom{
 
     private static Logger log = Logger.getLogger(Participant.class.getName());
 

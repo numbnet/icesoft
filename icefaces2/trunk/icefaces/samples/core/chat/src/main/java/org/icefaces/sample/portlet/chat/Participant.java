@@ -24,6 +24,9 @@ package org.icefaces.sample.portlet.chat;
 import org.icefaces.sample.portlet.chat.resources.ResourceUtil;
 
 import javax.annotation.PreDestroy;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 import java.util.List;
@@ -38,12 +41,16 @@ import java.util.logging.Logger;
  * bean.
  * <p/>
  */
+@ManagedBean
+@SessionScoped
 public class Participant implements Serializable {
 
     private static Logger log = Logger.getLogger(Participant.class.getName());
 
+    @ManagedProperty(value="#{chatRoom}")
+    private transient ChatRoom chatRoom;
+
     private String handle;
-    private ChatRoom chatRoom;
     private String message;
 
     private int firstMessageIndex = 0;

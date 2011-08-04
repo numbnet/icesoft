@@ -35,14 +35,4 @@
         </locale-config>
     </application>
 
-    <managed-bean>
-        <managed-bean-name>participant</managed-bean-name>
-        <managed-bean-class>org.icefaces.sample.portlet.chat.Participant</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-        <managed-property>
-            <property-name>chatRoom</property-name>
-            <value>#{chatRoom}</value>
-        </managed-property>
-    </managed-bean>
-
 </faces-config>
