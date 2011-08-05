@@ -62,52 +62,42 @@
 
     <script type="text/javascript">
         var myScroll;
-        var onLoadCallback = function () {
+        var loader = function () {
             setTimeout(function () {
+                // tweak safari css for iscroll.
+                document.getElementById("wrapper").style.position = "absolute";
+                document.getElementById("wrapper").style.overflow = "hidden";
+                // clean up the old scroller
                 if (myScroll != null) {
-                    ice.log.debug(ice.log, 'onload destroy mysroll');
                     myScroll.destroy();
                 }
-                ice.log.debug(ice.log, 'onload create mysroll');
                 myScroll = new iScroll('wrapper', { vScroll:true});
+                myScroll.refresh();
             }, 100);
         };
-        var afterUpdateCallback = function(updates) {
-            setTimeout(function () {
-                if (myScroll != null) {
-                    ice.log.debug(ice.log, 'afterUpdate refresh iscroll ');
-                    myScroll.refresh();
-                } else {
-                    ice.log.debug(ice.log, 'afterUpdate create iscroll');
-                    myScroll = new iScroll('wrapper', { vScroll:true})
-                }
-            }, 150);
-        };
+
+        var onLoadCallback = function () { loader(); };
+        var afterUpdateCallback = function(updates) { loader(); };
+
         var unloadHandler = function() {
-            ice.log.debug(ice.log, 'unload handler Iscroll');
+            ice.log.debug(ice.log, 'unload handler iScroll');
             myScroll.destroy();
             myScroll = null;
         };
 
+        // only load iscroll for apple devices.
         if (navigator.platform.indexOf('iPhone') != -1 ||
                 navigator.userAgent.indexOf('iPod') != -1 ||
                 navigator.userAgent.indexOf('iPad') != -1) {
 
-            // tweak safari css for iscroll.
-            document.getElementById("wrapper").style.position = "absolute";
-
+            // setup icefaces callbacks bridge.
             ice.onLoad(onLoadCallback);
             ice.onUnload(unloadHandler);
             ice.onAfterUpdate(afterUpdateCallback);
 
             var supportsOrientationChange = "onorientationchange" in window,
                     orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
-            window.addEventListener(orientationEvent, function() {
-                setTimeout(function () {
-                    ice.log.debug(ice.log, 'orientation change iscroll refresh');
-                    myScroll.refresh();
-                }, 250);
-            }, false);
+            window.addEventListener(orientationEvent, afterUpdateCallback, false);
 
             window.addEventListener('resize', function() {
                 setTimeout(function () {
