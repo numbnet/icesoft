@@ -66,7 +66,8 @@ public class ReloadAfterNavigationFix extends ConfigurableNavigationHandler {
     }
 
     public void handleNavigation(FacesContext context, String fromAction, String outcome) {
-        if (EnvUtils.isICEfacesView(context)) {
+        NavigationCase navigationCase = getNavigationCase(context, fromAction, outcome);
+        if (navigationCase != null && !navigationCase.isRedirect() && EnvUtils.isICEfacesView(context)) {
             UIViewRoot viewRoot = context.getViewRoot();
             String fromViewId = viewRoot.getViewId();
             Map map = WindowScopeManager.lookupWindowScope(context);
