@@ -574,7 +574,7 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
             return super.getValue();
         } catch (Exception e) {
             //ICE-4066
-            if (CustomComponentUtils.isAncestorRendered(this)) {
+            if (CustomComponentUtils.isAncestorRendered(this.getParent()) && isRendered()) {
                 throw new FacesException(e);
             }
         }
