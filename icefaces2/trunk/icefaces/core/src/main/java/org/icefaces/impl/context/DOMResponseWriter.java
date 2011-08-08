@@ -186,6 +186,14 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
             return;
         }
         try {
+            if (cursor == null) {
+                Element doc = document.getDocumentElement();
+                if( doc != null ){
+                    cursor = doc;
+                } else {
+                    cursor = document;
+                }
+            }
             if (cursor.getNodeType() == Node.CDATA_SECTION_NODE) {
                 CDATASection section = (CDATASection) cursor;
                 section.appendData(str);
@@ -352,6 +360,14 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     }
 
     private Node appendToCursor(String data) {
+		if (cursor == null) {
+			Element doc = document.getDocumentElement();
+			if( doc != null ){
+				cursor = doc;
+			} else {
+				cursor = document;
+			}
+		}
         if (cursor.getNodeType() == Node.CDATA_SECTION_NODE) {
             CDATASection section = (CDATASection) cursor;
             section.appendData(data);
