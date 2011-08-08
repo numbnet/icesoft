@@ -51,10 +51,13 @@
 
         function showLocation()  {
             var canvas = document.getElementById('mapCanvas');
+            if (!canvas) {
+                return;
+            }
             var lat = document.getElementById('lat').value;
             var lon = document.getElementById('lon').value;
                         
-            if (canvas.getContext){
+            if (canvas.getContext) {
                 var ctx = canvas.getContext('2d');
                 ctx.clearRect(0,0,600, 400);
                 var height = canvas.height ;
