@@ -175,7 +175,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     partialWriter.endUpdate();
                     renderState();
                     renderExtensions();
-                } else {
+                } else if (null != diffs)  {
                     for (DOMUtils.EditOperation op : diffs)  {
 
                         //client throws error on receving an update for the 'head' element
@@ -550,6 +550,12 @@ class StdPartialRenderCallback implements VisitCallback {
             PartialResponseWriter writer = facesContext
                     .getPartialViewContext().getPartialResponseWriter();
 
+            ResponseWriter originalWriter = facesContext.getResponseWriter();
+            ResponseWriter updateWriter = new BasicResponseWriter(
+                    facesContext.getExternalContext().getResponseOutputWriter(),
+                    originalWriter.getCharacterEncoding(),
+                    originalWriter.getContentType() );
+            facesContext.setResponseWriter(updateWriter);
             writer.startUpdate(component.getClientId(facesContext));
             try {
                 component.encodeAll(facesContext);
@@ -562,6 +568,7 @@ class StdPartialRenderCallback implements VisitCallback {
                 }
             }
             writer.endUpdate();
+            facesContext.setResponseWriter(originalWriter);
         } catch (Exception e) {
             if (log.isLoggable(Level.SEVERE)) {
                 log.severe("Subtree rendering failed for " + component.getClass()
