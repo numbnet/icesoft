@@ -321,8 +321,11 @@ if (!window.ice.icefaces) {
                     var event = e || window.event;
                     var element = event.target || event.srcElement;
                     f.onsubmit = function() {
-                        submit(event, element);
-                        f.onsubmit = none;
+                        //fallback to using form as submitting element when the element was removed by a previous
+                        //update and form.onsubmit callback is called directly (by application or third party library code)
+                        var elementExists = document.getElementById(element.id);
+                        submit(event, elementExists ? element : f);
+                        f.onsubmit = null;
                         return false;
                     };
                 };
@@ -445,6 +448,10 @@ if (!window.ice.icefaces) {
                     }
                 });
             }
+
+            collectUpdatedForms(updates, function(form) {
+                namespace.captureSubmit(form.id);
+            });
         });
 
         //recalculate delta submit previous parameters for the updated forms, if necessary
