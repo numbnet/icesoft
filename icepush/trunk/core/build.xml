@@ -25,6 +25,7 @@
     <property file="local.properties"/>
     <property file="build.properties"/>
     <property name="root.offset" value=".."/>
+    <property name="java.dir" location="src/main/java"/>
     <property name="push.product" value="ICEpush"/>
     <property name="version.primary" value="2"/>
     <property name="version.secondary" value="0"/>
@@ -35,42 +36,21 @@
     <import file="${root.offset}/build-common.xml"/>
 
     <target name="product.info" description="update product information">
-    	
-        <sequential>
-            <tempfile property="svninfo.log"/>
-            <exec executable="svn" failonerror="no">
-                <arg line="info"/>
-            </exec>
-            <loadfile property="revision" srcFile="${svninfo.log}" failonerror="no">
-                <filterchain>
-                    <linecontainsregexp>
-                        <regexp pattern="Last Changed Rev: "/>
-                    </linecontainsregexp>
-                    <deletecharacters chars="Last Changed Rev: "/>
-                    <striplinebreaks/>
-                </filterchain>
-            </loadfile>
-            <delete file="${svninfo.log}"/>
+        <buildnumber/>
+        <copy file="conf/${product.info}"
+              tofile="${java.dir}/${product.info}"
+              overwrite="true"/>
+        <replace file="${java.dir}/${product.info}" >
+            <replacefilter token="@company@"           value="${company}"/>
+            <replacefilter token="@product@"           value="${product}"/>
+            <replacefilter token="@release.type@"      value="${release.type}"/>
+            <replacefilter token="@version.primary@"   value="${version.primary}"/>
+            <replacefilter token="@version.secondary@" value="${version.secondary}"/>
+            <replacefilter token="@version.tertiary@"  value="${version.tertiary}"/>
+            <replacefilter token="@build.number@"      value="${build.number}"/>
+            <replacefilter token="@revision@"          value="${revision}"/>
+        </replace>
 
-            <buildnumber/>
-
-            <copy file="conf/${product.info}"
-                  tofile="${java.dir}/${product.info}"
-                  overwrite="true">
-                <filterchain>
-                    <replacetokens>
-                        <token key="company" value="${company}"/>
-                        <token key="product" value="${product}"/>
-                        <token key="release.type" value="${release.type}"/>
-                        <token key="version.primary" value="${version.primary}"/>
-                        <token key="version.secondary" value="${version.secondary}"/>
-                        <token key="version.tertiary" value="${version.tertiary}"/>
-                        <token key="build.number" value="${build.number}"/>
-                        <token key="revision" value="${revision}"/>
-                    </replacetokens>
-                </filterchain>
-            </copy>
-        </sequential>
     </target>
 
     <target name="clean.product.info">
@@ -86,7 +66,6 @@
 
     <target name="compile" depends="pre.compile, product.info" description="compile classes">
         <compile/>
-        <antcall target="clean.product.info"/>
     </target>
 
     <target name="jar" depends="compile, build.bridge" description="fill the jar">
@@ -105,6 +84,7 @@
             </add.filesets>
         </build.jar>
         <delete file="${sources}"/>
+        <antcall target="clean.product.info"/>
     </target>
 </project>
 
