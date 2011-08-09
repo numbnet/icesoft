@@ -55,6 +55,8 @@ public class MediaController implements Serializable {
     private Media movieIcon ;
     private Media soundIconSmall;
     private Media movieIconSmall;
+    private String videoCommand = null;
+    private String thumbCommand = null;
 
     public MediaController() {
         BufferedImage image;
@@ -62,6 +64,13 @@ public class MediaController implements Serializable {
         ExternalContext externalContext =
                 FacesContext.getCurrentInstance().getExternalContext();
 
+        videoCommand = FacesContext.getCurrentInstance()
+                .getExternalContext().getInitParameter(
+                    "org.icemobile.videoConvertCommand" );
+
+        thumbCommand = FacesContext.getCurrentInstance()
+                .getExternalContext().getInitParameter(
+                    "org.icemobile.thumbnailCommand" );
         /**
          * Video and Audio files don't have default thumbnail icons for preview
          * so we load the following thumbnails.
@@ -90,6 +99,7 @@ public class MediaController implements Serializable {
             image = ImageIO.read(imageStream);
             movieIconSmall = createPhoto(image,
                     image.getWidth(), image.getHeight());
+
         } catch (IOException e) {
             logger.log(Level.WARNING, "Error loading audio and video thumbnails.", e);
         }
@@ -150,9 +160,9 @@ public class MediaController implements Serializable {
             } catch (Exception e) {
                 logger.log(Level.WARNING, "Media message was not sent to recipients.", e);
             }
-            FacesUtils.addInfoMessage("Message sent successfully.");
+//            FacesUtils.addInfoMessage("Message sent successfully.");
         }else{
-            FacesUtils.addInfoMessage("Media upload failed, please try again.");
+//            FacesUtils.addInfoMessage("Media upload failed, please try again.");
         }
         return null;
     }
@@ -170,6 +180,26 @@ public class MediaController implements Serializable {
 
     }
 
+    private File processFile(File inputFile, String commandTemplate,
+            String outputExtension)  {
+        try {
+            File converted = File.createTempFile("out", outputExtension);
+            StringBuilder command = new StringBuilder();
+            Formatter formatter = new Formatter(command);
+            formatter.format(commandTemplate,
+                    inputFile.getAbsolutePath(),
+                    converted.getAbsolutePath());
+            Runtime runtime = Runtime.getRuntime();
+            Process process = runtime.exec(command.toString());
+            process.waitFor();
+            return converted;
+        } catch (Exception e) {
+            //conversion fails, but we may proceed with original file
+            logger.log(Level.WARNING, "Error processing file.", e);
+        }
+        return null;
+    }
+
     private void processUploadedAudio(MediaMessage audioMessage, File audioFile) {
         if (audioFile == null){
             return;
@@ -185,32 +215,33 @@ public class MediaController implements Serializable {
             return;
         }
 
-        String commandTemplate =
-                FacesContext.getCurrentInstance().getExternalContext()
-                        .getInitParameter("org.icemobile.videoConvertCommand");
+        Media customMovieIcon = movieIcon;
+
         try {
-            if (null != commandTemplate) {
-                File converted = File.createTempFile("video", ".mp4");
-                StringBuilder command = new StringBuilder();
-                Formatter formatter = new Formatter(command);
-                formatter.format(commandTemplate,
-                        videoFile.getAbsolutePath(),
-                        converted.getAbsolutePath());
-                Runtime runtime = Runtime.getRuntime();
-                Process process = runtime.exec(command.toString());
-                process.waitFor();
+
+            if (null != thumbCommand) {
+                File thumbImage = 
+                        processFile(videoFile, thumbCommand, ".jpg");
+                customMovieIcon = createPhoto(thumbImage);
+                thumbImage.delete();
+            }
+
+            if (null != videoCommand) {
+                File converted = 
+                        processFile(videoFile, videoCommand, ".mp4");
                 File videoDir = videoFile.getParentFile();
                 File newVideo = new File(videoDir, converted.getName());
                 videoFile.delete();
                 converted.renameTo(newVideo);
                 videoFile = newVideo;
             }
+
         } catch (Exception e) {
             //conversion fails, but we may proceed with original file
             logger.log(Level.WARNING, "Error processing video.", e);
         }
         videoMessage.addVideo(videoFile);
-        videoMessage.addMediumPhoto(movieIcon);
+        videoMessage.addMediumPhoto(customMovieIcon);
         videoMessage.addSmallPhoto(movieIconSmall);
     }
 
@@ -261,6 +292,11 @@ public class MediaController implements Serializable {
         } catch (Throwable e) {
             logger.log(Level.WARNING, "Error processing camera image upload.", e);
         }
+    }
+
+    private Media createPhoto(File imageFile) throws IOException  {
+        BufferedImage image = ImageIO.read(imageFile);
+        return createPhoto(image, image.getWidth(), image.getHeight());
     }
 
     private Media createPhoto(BufferedImage image, int width, int height)
