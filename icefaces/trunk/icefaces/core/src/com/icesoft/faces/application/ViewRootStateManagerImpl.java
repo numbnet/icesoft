@@ -100,14 +100,16 @@ public class ViewRootStateManagerImpl extends StateManager {
             sessionMap.put( View.ICEFACES_STATE_MAPS, stateMap );
         }
 
-        UIViewRoot root;
-
-        root = ((ViewRootHolder) stateMap.get(viewNumber)).getViewRoot();
-        if (root == null) {
-            log.error("Missing ViewRoot in restoreState, ice.session: " + bfc.getIceFacesId() + ", viewNumber: " + viewNumber );
-            return null;
+        UIViewRoot root = null;
+        ViewRootHolder holder = (ViewRootHolder)stateMap.get(viewNumber);
+        if( holder != null ){
+            root = holder.getViewRoot();
+            if (root != null) {
+                return root;
+            }
         }
-        return root;
+        log.debug("Missing ViewRoot in restoreState, ice.session: " + bfc.getIceFacesId() + ", viewNumber: " + viewNumber );
+        return null;
     }
 
     /**
