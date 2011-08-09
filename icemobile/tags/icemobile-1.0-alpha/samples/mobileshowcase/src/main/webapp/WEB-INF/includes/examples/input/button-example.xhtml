@@ -1,0 +1,66 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:icecore="http://www.icefaces.org/icefaces/core"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+    <h:form>
+        <h4>Vertical Button List</h4>
+        <mobic:fieldsetGroup>
+            <mobic:fieldsetRow>
+                <mobic:buttonGroup orientation="vertical">
+                    <mobic:commandButton
+                            selected="true">Yes</mobic:commandButton>
+                    <mobic:commandButton>No</mobic:commandButton>
+                    <mobic:commandButton>Please</mobic:commandButton>
+                </mobic:buttonGroup>
+            </mobic:fieldsetRow>
+        </mobic:fieldsetGroup>
+
+        <h4>Horizontal button list</h4>
+        <mobic:fieldsetGroup>
+            <mobic:fieldsetRow>
+                <mobic:buttonGroup orientation="horizontal">
+                    <mobic:commandButton
+                            selected="false">Yes</mobic:commandButton>
+                    <mobic:commandButton
+                            selected="true">No</mobic:commandButton>
+                    <mobic:commandButton
+                            selected="false">Please</mobic:commandButton>
+                </mobic:buttonGroup>
+            </mobic:fieldsetRow>
+        </mobic:fieldsetGroup>
+
+        <h4>Button Type Test</h4>
+        <mobic:fieldsetGroup>
+            <mobic:fieldsetRow>
+                <mobi:commandButton style="float:left;"
+                                    value="Default" type="default"/>
+                <mobi:commandButton style="float:left;"
+                                    value="important" type="important"/>
+                <!--<mobi:commandButton type="back">Back</mobic:commandButton>-->
+                <mobi:commandButton style="float:left;"
+                                    value="Attention" type="attention"/>
+            </mobic:fieldsetRow>
+        </mobic:fieldsetGroup>
+
+    </h:form>
+
+</ui:fragment>
