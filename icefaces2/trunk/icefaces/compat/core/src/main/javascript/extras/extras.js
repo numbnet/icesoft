@@ -2810,43 +2810,43 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
 
         var form = Ice.util.findForm(this.element);
         if (idx > -1) {
-                    var indexName = this.element.id + "_idx";
-                    form[indexName].value = idx;
-                }
+            var indexName = this.element.id + "_idx";
+            form[indexName].value = idx;
+        }
 
-                //     form.focus_hidden_field.value=this.element.id;
-                if (isEnterKey && !this.partialSubmit) {
-                    Ice.Autocompleter.logger.debug("Sending submit");
-                    iceSubmit(form, this.element, event);
-                }
-                else {
-                    Ice.Autocompleter.logger.debug("Sending partial submit");
-                    iceSubmitPartial(form, this.element, event);
-                }
+        //     form.focus_hidden_field.value=this.element.id;
+        if (isEnterKey && !this.partialSubmit) {
+            Ice.Autocompleter.logger.debug("Sending submit");
+            iceSubmit(form, this.element, event);
+        }
+        else {
+            Ice.Autocompleter.logger.debug("Sending partial submit");
+            iceSubmitPartial(form, this.element, event);
+        }
 
-                var indexName = this.element.id + "_idx";
-                form[indexName].value = "";
-            },
+        var indexName = this.element.id + "_idx";
+        form[indexName].value = "";
+    },
 
-            onComplete: function(request) {
-                this.updateChoices(request.responseText);
-            },
+    onComplete: function(request) {
+        this.updateChoices(request.responseText);
+    },
 
-            updateNOW: function(text) {
+    updateNOW: function(text) {
 
 
-                if (this.hidden) {
-                    this.hidden = false;
-                    //Ice.Autocompleter.logger.debug("Not showing due to hide force");
-                    return;
-                }
-                this.hasFocus = true;
-                Element.cleanWhitespace(this.update);
-                this.updateChoices(text);
-                this.show();
-                this.render();
-            }
-        });
+        if (this.hidden) {
+            this.hidden = false;
+            //Ice.Autocompleter.logger.debug("Not showing due to hide force");
+            return;
+        }
+        this.hasFocus = true;
+        Element.cleanWhitespace(this.update);
+        this.updateChoices(text);
+        this.show();
+        this.render();
+    }
+});
 /*
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
@@ -2906,12 +2906,12 @@ Effect.Highlight.prototype.finish = function() {
 
 
 Object.extend(Effect.DefaultOptions, {afterFinish:function(ele) {
-            if (this.uploadCSS != null) {
-                Ice.DnD.StyleReader.upload(ele.element, ele.options.submit);
-            }
-            if (ele.options.iceFinish)
-                ele.options.iceFinish(ele);
-        }});
+    if (this.uploadCSS != null) {
+        Ice.DnD.StyleReader.upload(ele.element, ele.options.submit);
+    }
+    if (ele.options.iceFinish)
+        ele.options.iceFinish(ele);
+}});
 
 
 function blankEffect() {
@@ -2920,11 +2920,11 @@ function blankEffect() {
 Effect.Grow = function(element) {
     element = $(element);
     var options = Object.extend({
-                direction: 'center',
-                moveTransition: Effect.Transitions.sinoidal,
-                scaleTransition: Effect.Transitions.sinoidal,
-                opacityTransition: Effect.Transitions.full
-            }, arguments[1] || {});
+        direction: 'center',
+        moveTransition: Effect.Transitions.sinoidal,
+        scaleTransition: Effect.Transitions.sinoidal,
+        opacityTransition: Effect.Transitions.full
+    }, arguments[1] || {});
     var oldStyle = {
         top: element.style.top,
         left: element.style.left,
@@ -2965,29 +2965,29 @@ Effect.Grow = function(element) {
     }
 
     return new Effect.Move(element, {
-                x: initialMoveX,
-                y: initialMoveY,
-                duration: 0.01,
-                beforeSetup: function(effect) {
-                    effect.element.hide().makeClipping().makePositioned();
-                },
-                afterFinishInternal: function(effect) {
-                    new Effect.Parallel(
-                            [ new Effect.Opacity(effect.element, { sync: true, to: 1.0, from: 0.0, transition: options.opacityTransition }),
-                                new Effect.Move(effect.element, { x: moveX, y: moveY, sync: false, transition: options.moveTransition }),
-                                new Effect.Scale(effect.element, 100, {
-                                            scaleMode: { originalHeight: dims.height, originalWidth: dims.width },
-                                            sync: false, scaleFrom: window.opera ? 1 : 0, transition: options.scaleTransition, restoreAfterFinish: true})
-                            ], Object.extend({
-                                        beforeSetup: function(effect) {
-                                            effect.effects[0].element.setStyle({height: '10px'}, {width: '10px'}).show();
-                                        },
-                                        afterFinishInternal: function(effect) {
-                                            effect.effects[0].element.undoClipping().undoPositioned().setStyle(oldStyle);
-                                        }
-                                    }, options))
-                }
-            });
+        x: initialMoveX,
+        y: initialMoveY,
+        duration: 0.01,
+        beforeSetup: function(effect) {
+            effect.element.hide().makeClipping().makePositioned();
+        },
+        afterFinishInternal: function(effect) {
+            new Effect.Parallel(
+                [ new Effect.Opacity(effect.element, { sync: true, to: 1.0, from: 0.0, transition: options.opacityTransition }),
+                    new Effect.Move(effect.element, { x: moveX, y: moveY, sync: false, transition: options.moveTransition }),
+                    new Effect.Scale(effect.element, 100, {
+                        scaleMode: { originalHeight: dims.height, originalWidth: dims.width },
+                        sync: false, scaleFrom: window.opera ? 1 : 0, transition: options.scaleTransition, restoreAfterFinish: true})
+                ], Object.extend({
+                    beforeSetup: function(effect) {
+                        effect.effects[0].element.setStyle({height: '10px'}, {width: '10px'}).show();
+                    },
+                    afterFinishInternal: function(effect) {
+                        effect.effects[0].element.undoClipping().undoPositioned().setStyle(oldStyle);
+                    }
+                }, options))
+        }
+    });
 }
 /*
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -3318,9 +3318,9 @@ Ice.GoogleMap = {
         var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
         //if the chart is recreated, so add any geoCoderMarker that was exist before.
         if (gmapWrapper.geoMarkerSet
-                && gmapWrapper.geoMarker != null
-                && gmapWrapper.geoMarkerAddress != null
-                ) {
+            && gmapWrapper.geoMarker != null
+            && gmapWrapper.geoMarkerAddress != null
+            ) {
             gmapWrapper.getRealGMap().addOverlay(gmapWrapper.geoMarker);
             gmapWrapper.geoMarker.openInfoWindowHtml(gmapWrapper.geoMarkerAddress);
             gmapWrapper.geoMarkerSet = false;
@@ -3455,115 +3455,111 @@ Ice.Repository = {
 var visibleTooltipList = new Array();
 
 ToolTipPanelPopup = Class.create({
-            initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue, iFrameUrl, displayOn, moveWithMouse) {
-                //tooltip is not rendered
-                if (!$(tooltipCompId)) return;
-                this.src = srcComp;
-                this.delay = delay || 500;
-                this.dynamic = (dynamic == "true");
-                this.tooltipCompId = tooltipCompId;
-                this.srcCompId = srcComp.id;
-                this.hideOn = hideOn;
-                this.x = Event.pointerX(event);
-                this.y = Event.pointerY(event);
-                this.formId = formId;
-                this.ctxValue = ctxValue
-                this.iFrameUrl = iFrameUrl;
-                this.moveWithMouse = moveWithMouse;
-                this.displayOn = displayOn;
-                this.event = event;
-                //cancel bubbling
-                event.cancelBubble = true;
-                //attach events
+    initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue, iFrameUrl, displayOn, moveWithMouse) {
+        //tooltip is not rendered
+        if (!$(tooltipCompId)) return;
+        this.src = srcComp;
+        this.delay = delay || 500;
+        this.dynamic = (dynamic == "true");
+        this.tooltipCompId = tooltipCompId;
+        this.srcCompId = srcComp.id;
+        this.hideOn = hideOn;
+        this.x = Event.pointerX(event);
+        this.y = Event.pointerY(event);
+        this.formId = formId;
+        this.ctxValue = ctxValue
+        this.iFrameUrl = iFrameUrl;
+        this.moveWithMouse = moveWithMouse;
+        this.displayOn = displayOn;
+        this.event = event;
+        //cancel bubbling
+        event.cancelBubble = true;
+        //attach events
 
-                if (this.hideOn == "mousedown") {
-                    this.hideEvent = this.hidePopupOnMouseClick.bindAsEventListener(this);
-                } else if (this.hideOn == "mouseout") {
-                    this.hideEvent = this.hidePopupOnMouseOut.bindAsEventListener(this);
-                } else {
-                    this.hideOn = "none";
-                    //associate no-op callback to avoid stack overflow in IE
-                    this.hideEvent = Function.NOOP;
-                }
+        if (this.hideOn == "mousedown") {
+            this.hideEvent = this.hidePopupOnMouseClick.bindAsEventListener(this);
+        } else if (this.hideOn == "mouseout") {
+            this.hideEvent = this.hidePopupOnMouseOut.bindAsEventListener(this);
+        } else {
+            this.hideOn = "none";
+            //associate no-op callback to avoid stack overflow in IE
+            this.hideEvent = Function.NOOP;
+        }
 
-                this.eventMouseMove = this.updateCordinate.bindAsEventListener(this);
-                this.clearTimerEvent = this.clearTimer.bindAsEventListener(this);
-                Event.observe(document, "mouseout", this.clearTimerEvent);
-                Event.observe(document, this.hideOn, this.hideEvent);
-                Event.observe(document, "mousemove", this.eventMouseMove);
-                if (displayOn == "hover") {
-                    this.timer = setTimeout(this.showPopup.bind(this), parseInt(this.delay));
-                } else {
-                    this.showPopup.bind(this)();
-                    Event.extend(event).stop();
-                }
-            },
+        this.eventMouseMove = this.updateCordinate.bindAsEventListener(this);
+        this.clearTimerEvent = this.clearTimer.bindAsEventListener(this);
+        Event.observe(document, "mouseout", this.clearTimerEvent);
+        Event.observe(document, this.hideOn, this.hideEvent);
+        Event.observe(document, "mousemove", this.eventMouseMove);
+        if (displayOn == "hover") {
+            this.timer = setTimeout(this.showPopup.bind(this), parseInt(this.delay));
+        } else {
+            this.showPopup.bind(this)();
+            Event.extend(event).stop();
+        }
+    },
 
-            showPopup: function() {
-                if (this.isTooltipVisible()) return;
-                if (this.dynamic) {
-                    //its a dynamic tooltip, so remove all its childres
-                    var tooltip = this.getTooltip();
-                    if (tooltip) {
-                        tooltip.style.visibility = "hidden";
-                        var table = tooltip.childNodes[0];
-                        if (table) {
-                            tooltip.removeChild(table);
-                        }
-                    }
-                    //dynamic? set status=show, populatefields, and submit
-                    this.submit("show");
-                    if (this.hideOn == "none") {
-                        //reset the info
-                        this.populateFields(true);
-                    }
-                } else {
-                    //static? just set the visibility= true
-                    var tooltip = this.getTooltip();
-                    tooltip.style.visibility = "visible";
-                    tooltip.style.position = "absolute";
-                    tooltip.style.display = "";
-                    var srcComp = $(this.srcCompId);onedOffset();
-                    tooltip.style.top = this.y - tooltip.offsetHeight - 4 - cumulativeOffset.top + positionedOffset.top + "px";
-                    tooltip.style.left = this.x + 4 - cumulativeOffset.left + positionedOffset.left + "px";
-                    ToolTipPanelPopupUtil.adjustPosition(tooltip);
-                    Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
+    showPopup: function() {
+        if (this.isTooltipVisible()) return;
+        if (this.dynamic) {
+            //its a dynamic tooltip, so remove all its childres
+            var tooltip = this.getTooltip();
+            if (tooltip) {
+                tooltip.style.visibility = "hidden";
+                var table = tooltip.childNodes[0];
+                if (table) {
+                    tooltip.removeChild(table);
                 }
-                this.addToVisibleList();
-                //prohibits to open browser's context menu, as 'altclick' uses onmenucontext handler
-                if (this.event && this.displayOn == 'altclick') {
-                    Event.extend(this.event).stop();
-                }
-            },
+            }
+            //dynamic? set status=show, populatefields, and submit
+            this.submit("show");
+            if (this.hideOn == "none") {
+                //reset the info
+                this.populateFields(true);
+            }
+        } else {
+            //static? just set the visibility= true
+            var tooltip = this.getTooltip();
+            tooltip.style.visibility = "visible";
+            tooltip.style.position = "absolute";
+            tooltip.style.display = "";
+            var srcComp = $(this.srcCompId);
+            var cumulativeOffset = srcComp.cumulativeOffset();
+            var positionedOffset = srcComp.positionedOffset();
+            tooltip.style.top = this.y - tooltip.offsetHeight - 4 - cumulativeOffset.top + positionedOffset.top + "px";
+            tooltip.style.left = this.x + 4 - cumulativeOffset.left + positionedOffset.left + "px";
+            ToolTipPanelPopupUtil.adjustPosition(tooltip);
+            Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
+        }
+        this.addToVisibleList();
+        //prohibits to open browser's context menu, as 'altclick' uses onmenucontext handler
+        if (this.event && this.displayOn == 'altclick') {
+            Event.extend(this.event).stop();
+        }
+    },
 
-            hidePopupOnMouseOut: function(event) {
-                if (!this.isTooltipVisible()) return;
-                var x = Event.pointerX(event);
-                var y = Event.pointerY(event);
-                if (Position.within($(this.tooltipCompId), x, y)) return; //ICE-3521
-                if (Position.within(this.src, x, y)) return; //ICE-6285
-                this.hidePopup(event);
-                this.state = "hide";
-                this.populateFields();
-                if (this.hideOn == "mouseout") {
-                    this.removedFromVisibleList();
-                }
-                this.dispose(event);
-            },
-
-            hidePopupOnMouseClick: function(event) {
-                if (!this.isTooltipVisible() || !Event.isLeftClick(event)) return;
-                var eventSrc = Event.element(event);
-                if (this.srcOrchildOfSrcElement(eventSrc)) {
-                    return;
-                } else {
-                    this.hidePopup(event);
-                }
-                if (this.hideOn == "mousedown") {
-                    this.removedFromVisibleList();
-                }
-                this.dispose(event);
-            },
+    hidePopupOnMouseOut: function(event) {
+        if (!this.isTooltipVisible()) return;
+        var x = Event.pointerX(event);
+        var y = Event.pointerY(event);
+        if (Position.within($(this.tooltipCompId), x, y)) return; //ICE-3521
+        if (Position.within(this.src, x, y)) return; //ICE-6285
+        this.hidePopup(event);
+        this.state = "hide";
+        this.populateFields();
+        if (this.hideOn == "mouseout") {
+              if (!this.isTooltipVisible() || !Event.isLeftClick(event)) return;
+        var eventSrc = Event.element(event);
+        if (this.srcOrchildOfSrcElement(eventSrc)) {
+            return;
+        } else {
+            this.hidePopup(event);
+        }
+        if (this.hideOn == "mousedown") {
+            this.removedFromVisibleList();
+        }
+        this.dispose(event);
+    },
 
 
             dispose: function(event) {
