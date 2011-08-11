@@ -37,7 +37,7 @@ var currentFocus = '';
 
     var focusOn = function(id) {
         runOnce(Delay(function() {
-            if (id && isValidID(id)) {
+            if (id && isValidID(id) && id != currentFocus) {
                 var e = document.getElementById(id);
                 if (e) {
                     setFocus(id);
