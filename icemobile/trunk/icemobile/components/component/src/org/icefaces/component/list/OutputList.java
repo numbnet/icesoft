@@ -18,7 +18,7 @@ package org.icefaces.component.list;
 
 
 public class OutputList extends OutputListBase {
-    public static final String OUTPUTLIST_CLASS = "mobi-list";
+    public static final String OUTPUTLIST_CLASS = "mobi-list ";
 	public static final String OUTPUTLISTINSET_CLASS="mobi-list mobi-list-inset ";
 	
     public OutputList() {
