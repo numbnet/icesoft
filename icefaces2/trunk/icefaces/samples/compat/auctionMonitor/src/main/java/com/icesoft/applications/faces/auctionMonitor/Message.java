@@ -21,13 +21,14 @@
 
 package com.icesoft.applications.faces.auctionMonitor;
 
+import java.io.Serializable;
 import java.sql.Time;
 
 /**
  * Class to represent a Message passed between users It stores the sender,
  * timestamp flag, and message content
  */
-public class Message {
+public class Message implements Serializable {
     private static final String SEPERATOR = ": ";
     private String message;
     private String sender;
