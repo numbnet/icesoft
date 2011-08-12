@@ -325,6 +325,7 @@ public class ICEmobileContainer extends Activity
         public void onPageFinished(WebView view, String url){
             view.loadUrl("javascript:eval(' ' + window.ICEassets.loadAssetFile('native-interface.js'));");  
 	    utilInterface.loadURL("javascript:ice.push.parkInactivePushIds('" + getCloudNotificationId() + "');");
+	    utilInterface.setUrl(url);
         }  
 
 	@Override
