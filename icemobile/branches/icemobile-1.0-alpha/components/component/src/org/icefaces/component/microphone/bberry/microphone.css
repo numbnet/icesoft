@@ -1,0 +1,31 @@
+/*
+ * Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions an
+ * limitations under the License.
+ */
+
+@CHARSET "UTF-8";
+.mobi-mic-record {
+    border: 1px solid #F902B6;
+    background-color: #59aada;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F902B6), to(#FFA4E6));
+    -webkit-box-shadow: 3px 3px 3px #000000;
+    color: #369;
+    -webkit-border-radius: 6px;
+}
+
+.mobi-mic-stop {
+    border: 1px outset;
+    color: #369;
+    background: #f9d543;
+}
