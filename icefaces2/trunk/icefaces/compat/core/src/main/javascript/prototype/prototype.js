@@ -3840,7 +3840,7 @@ Element.addMethods({
 
         element = forElement;
         do {
-            if (element != docBody) {
+            if (!Prototype.Browser.Opera || element == docBody) {
                 valueT -= element.scrollTop || 0;
                 valueL -= element.scrollLeft || 0;
             }
