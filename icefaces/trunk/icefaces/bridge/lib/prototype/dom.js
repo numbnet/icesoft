@@ -93,7 +93,7 @@ if (Prototype.BrowserFeatures.XPath) {
     document._getElementsByXPath = function(expression, parentElement) {
         var results = [];
         var query = document.evaluate(expression, $(parentElement) || document,
-                null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+            null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
         for (var i = 0, length = query.snapshotLength; i < length; i++)
             results.push(Element.extend(query.snapshotItem(i)));
         return results;
@@ -107,19 +107,19 @@ if (!Node) var Node = { };
 if (!Node.ELEMENT_NODE) {
     // DOM level 2 ECMAScript Language Binding
     Object.extend(Node, {
-                ELEMENT_NODE: 1,
-                ATTRIBUTE_NODE: 2,
-                TEXT_NODE: 3,
-                CDATA_SECTION_NODE: 4,
-                ENTITY_REFERENCE_NODE: 5,
-                ENTITY_NODE: 6,
-                PROCESSING_INSTRUCTION_NODE: 7,
-                COMMENT_NODE: 8,
-                DOCUMENT_NODE: 9,
-                DOCUMENT_TYPE_NODE: 10,
-                DOCUMENT_FRAGMENT_NODE: 11,
-                NOTATION_NODE: 12
-            });
+        ELEMENT_NODE: 1,
+        ATTRIBUTE_NODE: 2,
+        TEXT_NODE: 3,
+        CDATA_SECTION_NODE: 4,
+        ENTITY_REFERENCE_NODE: 5,
+        ENTITY_NODE: 6,
+        PROCESSING_INSTRUCTION_NODE: 7,
+        COMMENT_NODE: 8,
+        DOCUMENT_NODE: 9,
+        DOCUMENT_TYPE_NODE: 10,
+        DOCUMENT_FRAGMENT_NODE: 11,
+        NOTATION_NODE: 12
+    });
 }
 
 /** section: DOM
@@ -214,7 +214,7 @@ if (!Node.ELEMENT_NODE) {
         if (!cache[tagName]) cache[tagName] = Element.extend(document.createElement(tagName));
 
         var node = shouldUseCache(tagName, attributes) ?
-                cache[tagName].cloneNode(false) : document.createElement(tagName);
+            cache[tagName].cloneNode(false) : document.createElement(tagName);
 
         return Element.writeAttribute(node, attributes);
     };
@@ -566,7 +566,7 @@ Element.Methods = {
         // see: http://support.microsoft.com/kb/276228
         var SELECT_ELEMENT_INNERHTML_BUGGY = (function() {
             var el = document.createElement("select"),
-                    isBuggy = true;
+                isBuggy = true;
             el.innerHTML = "<option value=\"test\">test</option>";
             if (el.options && el.options[0]) {
                 isBuggy = el.options[0].nodeName.toUpperCase() !== "OPTION";
@@ -603,15 +603,15 @@ Element.Methods = {
         })();
 
         var ANY_INNERHTML_BUGGY = SELECT_ELEMENT_INNERHTML_BUGGY ||
-                TABLE_ELEMENT_INNERHTML_BUGGY || LINK_ELEMENT_INNERHTML_BUGGY;
+            TABLE_ELEMENT_INNERHTML_BUGGY || LINK_ELEMENT_INNERHTML_BUGGY;
 
         var SCRIPT_ELEMENT_REJECTS_TEXTNODE_APPENDING = (function () {
             var s = document.createElement("script"),
-                    isBuggy = false;
+                isBuggy = false;
             try {
                 s.appendChild(document.createTextNode(""));
                 isBuggy = !s.firstChild ||
-                        s.firstChild && s.firstChild.nodeType !== 3;
+                    s.firstChild && s.firstChild.nodeType !== 3;
             } catch (e) {
                 isBuggy = true;
             }
@@ -628,7 +628,7 @@ Element.Methods = {
             // event listeners, since said content will be replaced no matter
             // what.
             var descendants = element.getElementsByTagName('*'),
-                    i = descendants.length;
+                i = descendants.length;
             while (i--) purgeElement(descendants[i]);
 
             if (content && content.toElement)
@@ -653,9 +653,9 @@ Element.Methods = {
                         element.removeChild(element.firstChild);
                     }
                     Element._getContentFromAnonymousElement(tagName, content.stripScripts())
-                            .each(function(node) {
-                                element.appendChild(node)
-                            });
+                        .each(function(node) {
+                            element.appendChild(node)
+                        });
                 } else if (LINK_ELEMENT_INNERHTML_BUGGY && Object.isString(content) && content.indexOf('<link') > -1) {
                     // IE barfs when inserting a string that beings with a LINK
                     // element. The workaround is to add any content to the beginning
@@ -817,7 +817,7 @@ Element.Methods = {
         element = $(element);
 
         if (Object.isString(insertions) || Object.isNumber(insertions) ||
-                Object.isElement(insertions) || (insertions && (insertions.toElement || insertions.toHTML)))
+            Object.isElement(insertions) || (insertions && (insertions.toElement || insertions.toHTML)))
             insertions = {bottom:insertions};
 
         var content, insert, tagName, childNodes;
@@ -836,7 +836,7 @@ Element.Methods = {
             content = Object.toHTML(content);
 
             tagName = ((position == 'before' || position == 'after')
-                    ? element.parentNode : element).tagName.toUpperCase();
+                ? element.parentNode : element).tagName.toUpperCase();
 
             childNodes = Element._getContentFromAnonymousElement(tagName, content.stripScripts());
 
@@ -960,8 +960,8 @@ Element.Methods = {
         var result = '<' + element.tagName.toLowerCase();
         $H({'id': 'id', 'className': 'class'}).each(function(pair) {
             var property = pair.first(),
-                    attribute = pair.last(),
-                    value = (element[property] || '').toString();
+                attribute = pair.last(),
+                value = (element[property] || '').toString();
             if (value) result += ' ' + attribute + '=' + value.inspect(true);
         });
         return result + '>';
@@ -1234,7 +1234,7 @@ Element.Methods = {
     siblings: function(element) {
         element = $(element);
         return Element.previousSiblings(element).reverse()
-                .concat(Element.nextSiblings(element));
+            .concat(Element.nextSiblings(element));
     },
 
     /**
@@ -1381,7 +1381,7 @@ Element.Methods = {
         if (arguments.length == 1) return $(element.parentNode);
         var ancestors = Element.ancestors(element);
         return Object.isNumber(expression) ? ancestors[expression] :
-                Prototype.Selector.find(ancestors, expression, index);
+            Prototype.Selector.find(ancestors, expression, index);
     },
 
     /**
@@ -1485,7 +1485,7 @@ Element.Methods = {
         element = $(element);
         if (arguments.length == 1) return Element.firstDescendant(element);
         return Object.isNumber(expression) ? Element.descendants(element)[expression] :
-                Element.select(element, expression)[index || 0];
+            Element.select(element, expression)[index || 0];
     },
 
     /**
@@ -1886,7 +1886,7 @@ Element.Methods = {
             if (t.names[name]) name = t.names[name];
             if (name.include(':')) {
                 return (!element.attributes || !element.attributes[name]) ? null :
-                        element.attributes[name].value;
+                    element.attributes[name].value;
             }
         }
         return element.getAttribute(name);
@@ -2011,7 +2011,7 @@ Element.Methods = {
         if (!(element = $(element))) return;
         var elementClassName = element.className;
         return (elementClassName.length > 0 && (elementClassName == className ||
-                new RegExp("(^|\\s)" + className + "(\\s|$)").test(elementClassName)));
+            new RegExp("(^|\\s)" + className + "(\\s|$)").test(elementClassName)));
     },
 
     /**
@@ -2065,7 +2065,7 @@ Element.Methods = {
     removeClassName: function(element, className) {
         if (!(element = $(element))) return;
         element.className = element.className.replace(
-                new RegExp("(^|\\s+)" + className + "(\\s+|$)"), ' ').strip();
+            new RegExp("(^|\\s+)" + className + "(\\s+|$)"), ' ').strip();
         return element;
     },
 
@@ -2093,7 +2093,7 @@ Element.Methods = {
     toggleClassName: function(element, className) {
         if (!(element = $(element))) return;
         return Element[Element.hasClassName(element, className) ?
-                'removeClassName' : 'addClassName'](element, className);
+            'removeClassName' : 'addClassName'](element, className);
     },
 
     /**
@@ -2349,14 +2349,14 @@ Element.Methods = {
         if (Object.isString(styles)) {
             element.style.cssText += ';' + styles;
             return styles.include('opacity') ?
-                    element.setOpacity(styles.match(/opacity:\s*(\d?\.?\d*)/)[1]) : element;
+                element.setOpacity(styles.match(/opacity:\s*(\d?\.?\d*)/)[1]) : element;
         }
         for (var property in styles)
             if (property == 'opacity') element.setOpacity(styles[property]);
             else
                 elementStyle[(property == 'float' || property == 'cssFloat') ?
-                        (Object.isUndefined(elementStyle.styleFloat) ? 'cssFloat' : 'styleFloat') :
-                        property] = styles[property];
+                    (Object.isUndefined(elementStyle.styleFloat) ? 'cssFloat' : 'styleFloat') :
+                    property] = styles[property];
 
         return element;
     },
@@ -2384,7 +2384,7 @@ Element.Methods = {
     setOpacity: function(element, value) {
         element = $(element);
         element.style.opacity = (value == 1 || value === '') ? '' :
-                (value < 0.00001) ? 0 : value;
+            (value < 0.00001) ? 0 : value;
         return element;
     },
 
@@ -2429,10 +2429,10 @@ Element.Methods = {
         if (element._madePositioned) {
             element._madePositioned = undefined;
             element.style.position =
-                    element.style.top =
-                            element.style.left =
-                                    element.style.bottom =
-                                            element.style.right = '';
+                element.style.top =
+                    element.style.left =
+                        element.style.bottom =
+                            element.style.right = '';
         }
         return element;
     },
@@ -4695,7 +4695,7 @@ Element.addMethods({
             // Opera < 9.5 sets scrollTop/Left on both HTML and BODY elements.
             // Other browsers set it only on the HTML element. The BODY element
             // can be skipped since its scrollTop/Left should always be 0.
-            if (element != docBody) {
+            if (!Prototype.Browser.Opera || element == docBody) {
                 valueT -= element.scrollTop || 0;
                 valueL -= element.scrollLeft || 0;
             }
