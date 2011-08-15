@@ -448,10 +448,6 @@ if (!window.ice.icefaces) {
                     }
                 });
             }
-
-            collectUpdatedForms(updates, function(form) {
-                namespace.captureSubmit(form.id);
-            });
         });
 
         //recalculate delta submit previous parameters for the updated forms, if necessary
