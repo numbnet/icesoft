@@ -21,8 +21,9 @@
 
 package org.icefaces.impl.event;
 
-import org.icefaces.impl.application.WindowScopeManager;
-import org.icefaces.util.EnvUtils;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
@@ -34,8 +35,9 @@ import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.io.IOException;
-import java.util.Map;
-import java.util.logging.Logger;
+
+import org.icefaces.impl.application.WindowScopeManager;
+import org.icefaces.util.EnvUtils;
 
 public class WindowAndViewIDSetup implements SystemEventListener {
     private static final Logger Log = Logger.getLogger(WindowAndViewIDSetup.class.getName());
@@ -47,28 +49,10 @@ public class WindowAndViewIDSetup implements SystemEventListener {
             FacesContext.getCurrentInstance() );
     }
 
-    public void processEvent(SystemEvent event) throws AbortProcessingException {
+    public void processEvent(final SystemEvent event) throws AbortProcessingException {
         final FacesContext context = FacesContext.getCurrentInstance();
-        if (!EnvUtils.isICEfacesView(context)) {
-            return;
-        }
-
         HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
         String componentId = form.getId() + ID_SUFFIX;
-
-        if (!partialStateSaving)  {
-            for (UIComponent child : form.getChildren())  {
-                String id = child.getId();
-                if ((null != id) && id.endsWith(ID_SUFFIX))  {
-                    return;
-                }
-            }
-        }
-
-        //guard against duplicates within the same JSF lifecycle
-        if (null != context.getAttributes().get(componentId)) {
-            return;
-        }
         context.getAttributes().put(componentId, componentId);
 
         UIOutput output = new UIOutputWriter() {
@@ -84,7 +68,6 @@ public class WindowAndViewIDSetup implements SystemEventListener {
                     Log.severe("Missing view ID attribute. Request map cleared prematurely.");
                     return;
                 }
-
                 writer.startElement("input", this);
                 writer.writeAttribute("type", "hidden", null);
                 writer.writeAttribute("name", "ice.window", null);
@@ -104,7 +87,28 @@ public class WindowAndViewIDSetup implements SystemEventListener {
         form.getChildren().add(0, output);
     }
 
-    public boolean isListenerForSource(Object source) {
-        return source instanceof HtmlForm;
+    public boolean isListenerForSource(final Object source) {
+        if (!(source instanceof HtmlForm)) {
+            return false;
+        }
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (!EnvUtils.isICEfacesView(facesContext)) {
+            return false;
+        }
+        HtmlForm htmlForm = (HtmlForm)source;
+        String componentId = htmlForm.getId() + ID_SUFFIX;
+        if (!partialStateSaving)  {
+            for (UIComponent child : htmlForm.getChildren())  {
+                String id = child.getId();
+                if ((null != id) && id.endsWith(ID_SUFFIX))  {
+                    return false;
+                }
+            }
+        }
+        // Guard against duplicates within the same JSF lifecycle
+        if (null != facesContext.getAttributes().get(componentId)) {
+            return false;
+        }
+        return true;
     }
 }
