@@ -22,8 +22,8 @@
 package org.icefaces.impl.event;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
@@ -52,7 +52,7 @@ public class FormSubmit implements SystemEventListener {
         partialStateSaving = EnvUtils.isPartialStateSaving(facesContext);
     }
 
-    public void processEvent(SystemEvent event) throws AbortProcessingException {
+    public void processEvent(final SystemEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
 
         // Using PostAddToViewEvent ensures that the component resource is added to the view only once
@@ -92,7 +92,7 @@ public class FormSubmit implements SystemEventListener {
 
     }
 
-    public boolean isListenerForSource(Object source) {
+    public boolean isListenerForSource(final Object source) {
         if (!(source instanceof HtmlForm)) {
             return false;
         }
