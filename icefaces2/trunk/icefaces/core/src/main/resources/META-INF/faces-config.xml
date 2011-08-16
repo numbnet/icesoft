@@ -67,20 +67,18 @@
         <system-event-listener>
             <system-event-listener-class>org.icefaces.impl.event.HeadBodyListener</system-event-listener-class>
             <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
+            <source-class>javax.faces.component.UIViewRoot</source-class>
         </system-event-listener>
         <system-event-listener>
             <system-event-listener-class>org.icefaces.impl.event.BridgeSetup</system-event-listener-class>
             <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
+            <source-class>javax.faces.component.UIViewRoot</source-class>
         </system-event-listener>
         <system-event-listener>
             <system-event-listener-class>org.icefaces.impl.event.WindowAndViewIDSetup</system-event-listener-class>
             <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
         </system-event-listener>
-        <system-event-listener>
-            <system-event-listener-class>org.icefaces.impl.event.DebugTagListener</system-event-listener-class>
-            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
-        </system-event-listener>
-        <!-- MainEventListener and AjaxDisabledList are added programatically -->
+        <!-- MainEventListener, AjaxDisabledList and DebugTagListener are added programatically -->
     </application>
     <render-kit>
         <renderer>

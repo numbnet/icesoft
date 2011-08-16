@@ -21,13 +21,16 @@
 
 package org.icefaces.impl.event;
 
-import org.icefaces.impl.application.LazyPushManager;
-import org.icefaces.impl.application.WindowScopeManager;
-import org.icefaces.impl.push.SessionViewManager;
-import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
-import org.icefaces.impl.renderkit.DOMRenderKit;
-import org.icefaces.render.ExternalScript;
-import org.icefaces.util.EnvUtils;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceDependencies;
@@ -40,14 +43,21 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.*;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PhaseListener;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 import javax.faces.render.RenderKit;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.icefaces.impl.application.LazyPushManager;
+import org.icefaces.impl.application.WindowScopeManager;
+import org.icefaces.impl.push.SessionViewManager;
+import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
+import org.icefaces.impl.renderkit.DOMRenderKit;
+import org.icefaces.render.ExternalScript;
+import org.icefaces.util.EnvUtils;
 
 public class BridgeSetup implements SystemEventListener {
     public final static String ViewState = BridgeSetup.class.getName() + "::ViewState";
@@ -66,27 +76,29 @@ public class BridgeSetup implements SystemEventListener {
         fc.getExternalContext().getApplicationMap().put(BRIDGE_SETUP, this);
     }
 
-    public boolean isListenerForSource(Object source) {
-        return source instanceof UIViewRoot;
+    public boolean isListenerForSource(final Object source) {
+        if (!(source instanceof UIViewRoot)) {
+            return false;
+        }
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (!EnvUtils.isICEfacesView(facesContext)) {
+            // If ICEfaces is not configured for this view, we don't need to process this event.
+            return false;
+        }
+        if (!EnvUtils.hasHeadAndBodyComponents(facesContext)) {
+            // If ICEfaces is configured for this view, but the h:head and/or h:body components
+            // are not available, we cannot process it but we log the reason.
+            if (log.isLoggable(Level.WARNING)) {
+                log.log(Level.WARNING, "ICEfaces configured for view " + facesContext.getViewRoot().getViewId() +
+                        " but h:head and h:body components are required");
+            }
+            return false;
+        }
+        return true;
     }
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         final FacesContext context = FacesContext.getCurrentInstance();
-
-        if (!EnvUtils.isICEfacesView(context)) {
-            //If ICEfaces is not configured for this view, we don't need to process this event.
-            return;
-        }
-
-        if (!EnvUtils.hasHeadAndBodyComponents(context)) {
-            //If ICEfaces is configured for this view, but the h:head and/or h:body components
-            //are not available, we cannot process it but we log the reason. 
-            if (log.isLoggable(Level.WARNING)) {
-                log.log(Level.WARNING, "ICEfaces configured for view " + context.getViewRoot().getViewId() +
-                        " but h:head and h:body components are required");
-            }
-            return;
-        }
 
         UIViewRoot root = context.getViewRoot();
         final ExternalContext externalContext = context.getExternalContext();

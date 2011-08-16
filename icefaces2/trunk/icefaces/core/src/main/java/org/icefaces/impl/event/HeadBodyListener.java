@@ -21,7 +21,10 @@
 
 package org.icefaces.impl.event;
 
-import org.icefaces.util.EnvUtils;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -29,10 +32,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.icefaces.util.EnvUtils;
 
 /**
  * The aim of the class is to listen for HtmlHead and HtmlBody components as we
@@ -43,7 +44,7 @@ import java.util.logging.Logger;
 public class HeadBodyListener implements SystemEventListener {
     private final static Logger log = Logger.getLogger("org.icefaces.impl.event.HeadBodyListener");
 
-    public void processEvent(SystemEvent event) throws AbortProcessingException {
+    public void processEvent(final SystemEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         UIViewRoot viewRoot = context.getViewRoot();
         Map viewMap = viewRoot.getViewMap();
@@ -81,7 +82,7 @@ public class HeadBodyListener implements SystemEventListener {
         }
     }
 
-    public boolean isListenerForSource(Object source) {
-        return source instanceof UIViewRoot;
+    public boolean isListenerForSource(final Object source) {
+        return true;
     }
 }
