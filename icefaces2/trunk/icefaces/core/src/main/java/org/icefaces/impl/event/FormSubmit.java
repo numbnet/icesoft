@@ -21,7 +21,9 @@
 
 package org.icefaces.impl.event;
 
-import org.icefaces.util.EnvUtils;
+import java.io.IOException;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
@@ -34,9 +36,11 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import java.io.IOException;
+
+import org.icefaces.util.EnvUtils;
 
 public class FormSubmit implements SystemEventListener {
+    private static final Logger LOGGER = Logger.getLogger(FormSubmit.class.getName());
     public static final String DISABLE_CAPTURE_SUBMIT = "DISABLE_CAPTURE_SUBMIT";
     private static final String CAPTURE_SUBMIT_SUFFIX = "_captureSubmit";
     private boolean deltaSubmit;
@@ -50,32 +54,11 @@ public class FormSubmit implements SystemEventListener {
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
-        if (!EnvUtils.isICEfacesView(context)) {
-            return;
-        }
 
-        //using PostAddToViewEvent ensures that the component resource is added to the view only once
+        // Using PostAddToViewEvent ensures that the component resource is added to the view only once
         final HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
-        if (form.getAttributes().get(DISABLE_CAPTURE_SUBMIT) != null) {
-            return;
-        }
         String componentId = form.getId() + CAPTURE_SUBMIT_SUFFIX;
-
-        if (!partialStateSaving)  {
-            for (UIComponent child : form.getChildren())  {
-                String id = child.getId();
-                if ((null != id) && id.endsWith(CAPTURE_SUBMIT_SUFFIX))  {
-                    return;
-                }
-            }
-        }
-
-        //guard against duplicates within the same JSF lifecycle
-        if (null != context.getAttributes().get(componentId)) {
-            return;
-        }
         context.getAttributes().put(componentId, componentId);
-
 
         UIOutput scriptWriter = new UIOutputWriter() {
             public void encode(ResponseWriter writer, FacesContext context) throws IOException {
@@ -110,7 +93,31 @@ public class FormSubmit implements SystemEventListener {
     }
 
     public boolean isListenerForSource(Object source) {
-        return source instanceof HtmlForm;
+        if (!(source instanceof HtmlForm)) {
+            return false;
+        }
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (!EnvUtils.isICEfacesView(facesContext)) {
+            return false;
+        }
+        HtmlForm htmlForm = (HtmlForm)source;
+        if (htmlForm.getAttributes().get(DISABLE_CAPTURE_SUBMIT) != null) {
+            return false;
+        }
+        String componentId = htmlForm.getId() + CAPTURE_SUBMIT_SUFFIX;
+        if (!partialStateSaving)  {
+            for (UIComponent child : htmlForm.getChildren())  {
+                String id = child.getId();
+                if (null != id && id.endsWith(CAPTURE_SUBMIT_SUFFIX))  {
+                    return false;
+                }
+            }
+        }
+        // Guard against duplicates within the same JSF lifecycle
+        if (null != facesContext.getAttributes().get(componentId)) {
+            return false;
+        }
+        return true;
     }
 }
 
