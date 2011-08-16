@@ -76,7 +76,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         FacesContext facesContext = FacesContext.getCurrentInstance();
         final ServletContext servletContext = (ServletContext)facesContext.getExternalContext().getContext();
         if (!servletContext.getInitParameter("javax.faces.PROJECT_STAGE").equals("Production")) {
-            facesContext.getApplication().subscribeToEvent(PostAddToViewEvent.class, new DebugTagListener());
+            facesContext.getApplication().subscribeToEvent(PostAddToViewEvent.class, com.sun.faces.facelets.tag.ui.UIDebug.class, new DebugTagListener());
         }
         if (EnvUtils.isICEpushPresent()) {
             String serverInfo = servletContext.getServerInfo();

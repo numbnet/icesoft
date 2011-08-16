@@ -26,6 +26,8 @@ import org.icefaces.util.EnvUtils;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * As per ICE-5717, the <ui:debug> tag was causing full page refreshes so we wrap it with
@@ -36,6 +38,7 @@ import javax.faces.event.SystemEventListener;
  * SystemEventListener in a way that's independent of the JSF implementation.
  */
 public class DebugTagListener implements SystemEventListener {
+    private static final Logger LOGGER = Logger.getLogger(DebugTagListener.class.getName());
 
     private SystemEventListener wrapped;
 

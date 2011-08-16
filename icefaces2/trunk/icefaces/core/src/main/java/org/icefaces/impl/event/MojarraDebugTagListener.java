@@ -28,6 +28,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *  As per ICE-5717, the <ui:debug> tag was causing full page refreshes so we wrap it with
@@ -38,9 +40,10 @@ import java.util.Iterator;
  *  SystemEventListener in a way that's independent of the JSF implementation.
  **/
 public class MojarraDebugTagListener implements SystemEventListener {
+    private static final Logger LOGGER = Logger.getLogger(MojarraDebugTagListener.class.getName());
 
     public boolean isListenerForSource(Object source) {
-        return source.getClass().getName().equals("com.sun.faces.facelets.tag.ui.UIDebug");
+        return true;
     }
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
