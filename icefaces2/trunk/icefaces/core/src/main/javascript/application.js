@@ -447,6 +447,15 @@ if (!window.ice.icefaces) {
                         debug(logger, 'append missing "javax.faces.ViewState" input element to form["' + form.id + '"]');
                     }
                 });
+
+                //MyFaces uses a linked list of view state keys to track the changes in the view state -- the participating
+                //forms need to have their view state key updated so that the next submit will work with the latest saved state
+                each(document.getElementsByTagName('form'), function(form) {
+                    var viewStateElement = form['javax.faces.ViewState'];
+                    if (viewStateElement) {
+                        viewStateElement.value = viewState;
+                    }
+                });
             }
         });
 
