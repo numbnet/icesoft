@@ -19,9 +19,22 @@ if (!window['mobi']) {
 }
 
 mobi.input = {
+		
+    flipswitch: function(clientId, singleSubmit){
+    	console.log("in javascript for clientId="+clientId);
+    	var oldVal = $(clientId).bind("change", function(){
+ 	       if(oldVal != $(this).val()){
+ 	           oldVal = $(this).val();
+ 	           console.log("val change to " + oldVal);
+ 	       }
+        }).val();
+    	
+    },
+
     submit: function(clientId, singleSubmit) {
         var element = document.getElementById(clientId);
         var hidden = document.getElementById(clientId + "_hidden");
+        var inputEl = $element.siblings('input');
         var elVal = "unset";
         var ssubmit = singleSubmit;
         if (element) {
@@ -29,6 +42,11 @@ mobi.input = {
             elVal = element.value;
         } else {
             alert("clientId " + clientId + " NOT FOUND");
+        }
+        if (input){
+            alert("input element is="+inputEl+" value is ="+inputEl.value);
+        }else {
+        	alert("could not get at input element");
         }
 
 
@@ -49,9 +67,6 @@ mobi.input = {
         }
 
     },
-    submitButton: function(clientId) {
-        var element = document.getElementById(clientId);
-
-    }
+ 
 };
 
