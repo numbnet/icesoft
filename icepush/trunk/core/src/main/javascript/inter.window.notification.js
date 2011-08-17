@@ -28,9 +28,16 @@ function LocalStorageNotificationBroadcaster(name, callback) {
         window.localStorage.setItem(name, '');
     }
 
-    window.addEventListener('storage', function(e) {
-        callback(split(e.newValue, ' '));
-    }, false);
+    var storageListener = function(e) {
+        var newValue = e.newValue || window.localStorage.getItem(name);
+        callback(split(newValue, ' '));
+    };
+
+    if (window.addEventListener) {
+        window.addEventListener('storage', storageListener, false);
+    } else {
+        window.attachEvent('onstorage', storageListener);//IE8
+    }
 
     return object(function(method) {
         method(notifyWindows, function(self, newValue) {
