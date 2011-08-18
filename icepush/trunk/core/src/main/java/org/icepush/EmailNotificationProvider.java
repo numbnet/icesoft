@@ -22,10 +22,6 @@
 
 package org.icepush;
 
-import org.icepush.Configuration;
-import org.icepush.NotificationProvider;
-import org.icepush.OutOfBandNotifier;
-import org.icepush.PushMessage;
 import org.icepush.servlet.ServletContextConfiguration;
 import org.icepush.util.ExtensionRegistry;
 
@@ -85,6 +81,8 @@ public class EmailNotificationProvider implements NotificationProvider {
     }
 
     public static class AutoRegister implements ServletContextListener {
+        private static final Logger LOGGER = Logger.getLogger(AutoRegister.class.getName());
+
         public void contextInitialized(ServletContextEvent servletContextEvent) {
             try {
                 Class.forName("javax.mail.Message");
@@ -99,7 +97,7 @@ public class EmailNotificationProvider implements NotificationProvider {
                 String password = configuration.getAttribute("password", "");
                 ExtensionRegistry.addExtension(servletContext, 10, NotificationProvider.class.getName(), new EmailNotificationProvider(host, port, from, user, password));
             } catch (ClassNotFoundException e) {
-                log.info("Could not setup the email notification provider, the mail.jar library is missing.");
+                LOGGER.info("Could not setup the email notification provider, the mail.jar library is missing.");
             }
         }
 
