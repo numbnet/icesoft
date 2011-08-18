@@ -83,6 +83,6 @@ public class HeadBodyListener implements SystemEventListener {
     }
 
     public boolean isListenerForSource(final Object source) {
-        return true;
+        return source instanceof UIViewRoot;
     }
 }
