@@ -24,9 +24,10 @@ import java.util.zip.ZipInputStream;
 public class InputRichTextSetup implements Serializable, SystemEventListener {
     public static final Resource ICE_CK_EDITOR_JS = new FCKJarResource("com/icesoft/faces/component/inputrichtext/ckeditor_ext.js");
     private static final String CK_EDITOR_ZIP = "com/icesoft/faces/component/inputrichtext/ckeditor.zip";
-    private static final Date lastModified = new Date();
-    private static final Map ZipEntryCacheCK = new HashMap();
-    private static final ResourceLinker.Handler CK_LINKED_BASE = new ResourceLinker.Handler() {
+
+    private final Date lastModified = new Date();
+    private final Map ZipEntryCacheCK = new HashMap();
+    private final ResourceLinker.Handler CK_LINKED_BASE = new ResourceLinker.Handler() {
         public void linkWith(ResourceLinker linker) {
             synchronized (ZipEntryCacheCK) {
                 if (ZipEntryCacheCK.isEmpty()) {
@@ -87,7 +88,7 @@ public class InputRichTextSetup implements Serializable, SystemEventListener {
         }
     }
 
-    private static class RelativeResource implements Resource, Serializable {
+    private class RelativeResource implements Resource, Serializable {
         private final String entryName;
 
         private RelativeResource(final String entryName) {
@@ -112,7 +113,7 @@ public class InputRichTextSetup implements Serializable, SystemEventListener {
         }
     }
 
-    private static void loadZipEntryCache() {
+    private void loadZipEntryCache() {
         try {
             InputStream inCK = InputRichText.class.getClassLoader().getResourceAsStream(CK_EDITOR_ZIP);
             ZipInputStream zipCK = new ZipInputStream(inCK);
