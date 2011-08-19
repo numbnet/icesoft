@@ -118,6 +118,18 @@ public class BasicResponseWriter extends ResponseWriterWrapper {
         closeStartIfNecessary();
         writer.write(text.toString());
     }
+
+    public void writeText(char[] text, int off, int len) throws IOException {
+        closeStartIfNecessary();
+        writer.write(text, len, off);
+    }
+
+    public void writeText(java.lang.Object text, java.lang.String property) throws IOException {
+        closeStartIfNecessary();
+        writer.write(text.toString());
+    }
+
+
     public ResponseWriter cloneWithWriter(Writer writer)  {
         return new BasicResponseWriter(writer, getCharacterEncoding(), getContentType());
     }
