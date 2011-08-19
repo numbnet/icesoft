@@ -226,7 +226,9 @@ public class TableRenderer
             htmlDataTable.setColNumber(-1);
             while (childColumns.hasNext()) {
                 UIComponent nextColumn = (UIComponent) childColumns.next();
-                htmlDataTable.setColNumber(htmlDataTable.getColNumber()+1);
+                if (nextColumn instanceof UIColumn) {
+                    htmlDataTable.setColNumber(htmlDataTable.getColNumber()+1);
+                }
                 if (!nextColumn.isRendered()) continue;
                 if (nextColumn instanceof UIColumn) {
 //                    htmlDataTable.setColNumber(htmlDataTable.getColNumber()+1);
