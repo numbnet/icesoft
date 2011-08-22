@@ -24,8 +24,12 @@
     function extractTagContent(tag, html) {
         var start = new RegExp('\<' + tag + '[^\<]*\>', 'g').exec(html);
         var end = new RegExp('\<\/' + tag + '\>', 'g').exec(html);
-        var tagWithContent = html.substring(start.index, end.index + end[0].length);
-        return tagWithContent.substring(tagWithContent.indexOf('>') + 1, tagWithContent.lastIndexOf('<'));
+        if (start && end && start.index && end.index) {
+            var tagWithContent = html.substring(start.index, end.index + end[0].length);
+            return tagWithContent.substring(tagWithContent.indexOf('>') + 1, tagWithContent.lastIndexOf('<'));
+        } else {
+            return '';
+        }
     }
 
     function extractSrcAttribute(html) {
