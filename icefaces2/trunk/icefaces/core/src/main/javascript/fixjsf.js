@@ -92,7 +92,9 @@
                 return code;
             });
 
-            each(scripts, eval);
+            each(scripts, function(code) {
+                eval(code);
+            });
         } else {
             //clear the flag for the next update
             document.documentElement.isHeadUpdateSuccessful = null;
