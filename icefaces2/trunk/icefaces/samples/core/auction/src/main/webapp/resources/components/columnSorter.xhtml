@@ -72,7 +72,8 @@
                      value="#{cc.attrs.columnName}"/>
             <h:graphicImage library="css/images"
                             rendered="#{isSortedColumn}"
-                            name="ascending_arrow_#{cc.attrs.ascending}.gif"/>
+                            name="ascending_arrow_#{cc.attrs.ascending}.gif"
+                            alt="Sorting order"/>
             #{cc.attrs.columnLabel}
         </h:commandLink>
     </th>
