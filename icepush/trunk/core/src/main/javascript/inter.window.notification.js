@@ -36,7 +36,7 @@ function LocalStorageNotificationBroadcaster(name, callback) {
     if (window.addEventListener) {
         window.addEventListener('storage', storageListener, false);
     } else {
-        window.attachEvent('onstorage', storageListener);//IE8
+        document.attachEvent('onstorage', storageListener);//IE8
     }
 
     return object(function(method) {
