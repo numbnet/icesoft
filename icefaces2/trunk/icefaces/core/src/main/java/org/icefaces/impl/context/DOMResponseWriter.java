@@ -40,6 +40,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -57,7 +58,6 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
     private String contentType;
 
     public static final String OLD_DOM = "org.icefaces.old-dom";
-    public static final String STATE_FIELD_MARKER = "~com.sun.faces.saveStateFieldMarker~";
     protected static final String XML_MARKER = "<?xml";
     protected static final String DOCTYPE_MARKER = "<!DOCTYPE";
 
@@ -168,7 +168,7 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
         if ("".equals(str)) {
             return;
         }
-        if (STATE_FIELD_MARKER.equals(str)) {
+        if (EnvUtils.getStateMarker().equals(str)) {
             //TODO: suppress insertion of state node into DOM rather than
             //remove later.  This special case is caused by the fact that
             //during partial responses the Sun implementation does not
@@ -222,7 +222,13 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
 
         //full-page requests write directly to the response
         if (!isPartialRequest) {
-            DOMUtils.printNode(document, writer);
+            if(EnvUtils.isMojarra() ){
+                DOMUtils.printNode(document, writer);
+            } else if (EnvUtils.isMyFaces()){
+                //With MyFaces, we simulate Mojarra's "mark and replace" approach. Mojarra
+                //already replaces the marker for us but need to do it for MyFacesFaces.
+                DOMUtils.printNode(document, new WriteViewStateMarkup(writer));
+            }
         }
 
         if (null != document.getDocumentElement()) {
@@ -556,4 +562,22 @@ public class DOMResponseWriter extends ResponseWriterWrapper {
 
         return (isScript || isStyle);
     }
+
+    private class WriteViewStateMarkup extends FilterWriter {
+        protected WriteViewStateMarkup(Writer out) {
+            super(out);
+        }
+
+        public void write(String str) throws IOException {
+            if (EnvUtils.getStateMarker().equals(str) ) {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                out.write("<input id=\"javax.faces.ViewState\" type=\"hidden\" autocomplete=\"off\" value=\"");
+                out.write(fc.getApplication().getStateManager().getViewState(fc));
+                out.write("\" name=\"javax.faces.ViewState\"/>");
+            } else {
+                out.write(str);
+            }
+        }
+    }
+
 }

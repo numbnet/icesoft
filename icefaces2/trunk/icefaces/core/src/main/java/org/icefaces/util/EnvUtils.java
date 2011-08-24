@@ -83,6 +83,7 @@ public class EnvUtils {
     //Use reflection to identify the JSF implementation.
     private static boolean isMojarra = false;
     private static Class MojarraClass;
+    private static final String MOJARRA_STATE_SAVING_MARKER = "~com.sun.faces.saveStateFieldMarker~";
 
     static {
         try {
@@ -95,6 +96,7 @@ public class EnvUtils {
 
     private static boolean isMyFaces = false;
     private static Class MyFacesClass;
+    private static final String MYFACES_STATE_SAVING_MARKER = "~org.apache.myfaces.saveStateFieldMarker~";
 
     static {
         try {
@@ -104,6 +106,8 @@ public class EnvUtils {
             log.log(Level.FINE, "MyFaces is not available: ", t);
         }
     }
+
+    private static String stateMarker;
 
     //Use reflection to identify if the Portlet classes are available.
     private static Class PortletSessionClass;
@@ -536,6 +540,19 @@ public class EnvUtils {
 
     public static boolean isMyFaces() {
         return isMyFaces;
+    }
+
+    public static String getStateMarker(){
+        if( stateMarker == null){
+            if(EnvUtils.isMojarra()){
+                stateMarker = MOJARRA_STATE_SAVING_MARKER;
+            } else if(EnvUtils.isMyFaces()){
+                stateMarker = MYFACES_STATE_SAVING_MARKER;
+            } else {
+                log.warning("could not determine JSF implementation");
+            }
+        }
+        return stateMarker;
     }
 
     public static boolean containsBeans(Map<String, Object> scopeMap) {

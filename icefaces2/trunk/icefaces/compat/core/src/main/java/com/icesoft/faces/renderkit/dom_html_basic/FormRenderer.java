@@ -44,7 +44,6 @@ public class FormRenderer extends DomBasicRenderer {
     private static Logger log = Logger.getLogger("com.icesoft.faces.compat");
     public static final String COMMAND_LINK_HIDDEN_FIELD = "command_link_hidden_field";
     public static final String COMMAND_LINK_HIDDEN_FIELDS_KEY = "com.icesoft.faces.FormRequiredHidden";
-    public static final String STATE_SAVING_MARKER = "~com.sun.faces.saveStateFieldMarker~";
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_FORMFORM);
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -185,26 +184,13 @@ public class FormRenderer extends DomBasicRenderer {
 
     private void encodeViewState(FacesContext facesContext, DOMContext domContext) {
         //Different JSF implemenations take different strategies for inserting the ViewState
-        //into the view.  Mojarra uses a marker that it replaces later but MyFaces doesn't
-        //by default.  To ensure ice:form components are properly marked with the ViewState,
-        //we take different approaches for each implementation.
-        //Note:  Mojarra appears to work using the same approach as MyFaces and we may switch
-        //       to using a single strategy when more testing has been done.
+        //into the view.  Mojarra uses a marker to hold the place of the ViewState that it
+        //replaces when rendering out the response. To ensure ice:form components are properly
+        //marked with the ViewState and that state saving isn't invoked to early, we mimic this
+        //strategy with MyFaces.
         Node rootNode = domContext.getRootNode();
-        Node stateMarkerNode = null;
-        if(EnvUtils.isMojarra()){
-            stateMarkerNode = domContext.createTextNode(STATE_SAVING_MARKER);
-        } else if(EnvUtils.isMyFaces()){
-            Element inputElement = domContext.createElement("input");
-            inputElement.setAttribute("type", "hidden");
-            inputElement.setAttribute("id", "javax.faces.ViewState");
-            inputElement.setAttribute("name", "javax.faces.ViewState");
-            String viewState = facesContext.getApplication().getStateManager().getViewState(facesContext);
-            inputElement.setAttribute("value", viewState);
-            stateMarkerNode = inputElement;
-        } else {
-            log.warning("could not determine JSF implementation");
-        }
+        String stateMarker = EnvUtils.getStateMarker();
+        Node stateMarkerNode = domContext.createTextNode(stateMarker);
         rootNode.appendChild(stateMarkerNode);
     }
 

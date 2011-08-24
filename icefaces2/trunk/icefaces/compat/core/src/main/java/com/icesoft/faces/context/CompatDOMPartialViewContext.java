@@ -24,6 +24,7 @@ package com.icesoft.faces.context;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import org.icefaces.impl.context.DOMPartialViewContext;
 import org.icefaces.impl.context.DOMResponseWriter;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
@@ -64,7 +65,7 @@ public class CompatDOMPartialViewContext extends DOMPartialViewContext {
         }
 
         public void write(String str) throws IOException {
-            if (DOMResponseWriter.STATE_FIELD_MARKER.equals(str)) {
+            if (EnvUtils.getStateMarker().equals(str)) {
                 out.write("<input id=\"javax.faces.ViewState\" type=\"hidden\" autocomplete=\"off\" value=\"");
                 out.write(facesContext.getApplication().getStateManager().getViewState(facesContext));
                 out.write("\" name=\"javax.faces.ViewState\"/>");
