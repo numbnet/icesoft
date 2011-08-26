@@ -63,6 +63,7 @@
     </receiver>
 
     <service android:name="org.icemobile.client.android.c2dm.C2dmService"/>
+    <service android:name="org.icemobile.client.android.ConnectionChangeService"/>
   </application>
 
   <uses-sdk android:minSdkVersion="8" />

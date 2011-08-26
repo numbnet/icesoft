@@ -28,6 +28,7 @@ import java.util.Vector;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.content.res.Configuration;
 import android.view.Window;
@@ -35,6 +36,7 @@ import android.webkit.WebView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.JsResult;
@@ -49,6 +51,7 @@ import android.view.MenuInflater;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.content.ComponentName;
+import android.content.ServiceConnection;
 
 import android.media.MediaPlayer;
 import android.widget.VideoView;
@@ -61,7 +64,8 @@ import android.content.ActivityNotFoundException;
 import org.icemobile.client.android.c2dm.C2dmHandler;
 
 public class ICEmobileContainer extends Activity 
-    implements SharedPreferences.OnSharedPreferenceChangeListener {
+    implements SharedPreferences.OnSharedPreferenceChangeListener,
+	       ConnectionChangeListener {
 
     /* Container configuration constants */
     protected static final String HOME_URL = "http://www.icemobile.org/demos.html";
@@ -69,6 +73,7 @@ public class ICEmobileContainer extends Activity
     protected static final boolean INCLUDE_AUDIO = true;
     protected static final boolean INCLUDE_VIDEO = true;
     protected static final int HISTORY_SIZE = 20;
+    protected static final int NETWORK_DOWN_DELAY = 5000;
     protected static final String C2DM_SENDER = "icec2dm@gmail.com";
     /* Intent Return Codes */
     protected static final int TAKE_PHOTO_CODE = 1;
@@ -100,12 +105,22 @@ public class ICEmobileContainer extends Activity
     private Vector history;
     private boolean showLoadProgress;
     private ProgressDialog progressDialog;
+    private boolean isNetworkUp;
+    private ConnectionChangeService connectionChangeService;
+    private AlertDialog networkDialog;
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 	self = this;
+
+	/* Bind to network connectivity monitoring service */
+	Intent bindingIntent = new Intent(self,ConnectionChangeService.class);
+	boolean bound = self.bindService(bindingIntent, mConnection, 
+					 Context.BIND_AUTO_CREATE);
+
+	/* Establish view */
 	requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
 
@@ -529,5 +544,48 @@ public class ICEmobileContainer extends Activity
         default:
             return null;
         }
+    }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+	    public void onServiceConnected(ComponentName comp, IBinder service) {
+		connectionChangeService = ((ConnectionChangeService.LocalBinder)service).getService();
+		isNetworkUp = connectionChangeService.setListener(ICEmobileContainer.this,
+								  NETWORK_DOWN_DELAY,self);
+		if (!isNetworkUp) {
+		    networkIsDown();
+		}
+	    }
+
+	    public void onServiceDisconnected(ComponentName arg0) {
+		connectionChangeService = null;
+	    }
+	};
+
+    public void networkIsDown() {
+	isNetworkUp = false;
+	mHandler.post(new Runnable() {
+		public void run() {
+		    if (networkDialog == null) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(self);
+			builder.setTitle(self.getString(R.string.networkDialogTitle));
+			builder.setMessage(self.getString(R.string.networkDialogMsg));
+			builder.setCancelable(false);
+			networkDialog = builder.create();
+		    }
+		    networkDialog.show();
+		}
+	    });
+    }
+
+    public void networkIsUp() {
+	isNetworkUp = true;
+	mHandler.post(new Runnable() {
+		public void run() {
+		    if (networkDialog != null) {
+			networkDialog.hide();
+		    }
+		    mWebView.reload();
+		}
+	    });
     }
 }
