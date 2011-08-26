@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--
+/*
 * Copyright 2004-2011 ICEsoft Technologies Canada Corp.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +12,11 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions an
 * limitations under the License.
--->
+*/ 
 
-<resources>
-    <string name="app_name">ICEmobile</string>
-    <string name="pref_name">Container Preferences</string>
-    <string name="history_name">URL History</string>
-    <string name="reload">Reload</string>
-    <string name="preferences">Preferences</string>
-    <string name="history">History</string>
-    <string name="stop">Stop</string>
-    <string name="networkDialogTitle">Internet Unavailable</string>
-    <string name="networkDialogMsg">Check your network settings</string>
-</resources>
+package org.icemobile.client.android;
+
+public interface ConnectionChangeListener {
+    public void networkIsUp();
+    public void networkIsDown();
+}
