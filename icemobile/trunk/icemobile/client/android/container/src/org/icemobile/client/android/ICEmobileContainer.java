@@ -61,11 +61,15 @@ import android.webkit.DownloadListener;
 import android.net.Uri;
 import android.content.ActivityNotFoundException;
 
+import android.app.DatePickerDialog;
+import java.util.Calendar;
+import android.widget.DatePicker;
+
 import org.icemobile.client.android.c2dm.C2dmHandler;
 
 public class ICEmobileContainer extends Activity 
     implements SharedPreferences.OnSharedPreferenceChangeListener,
-	       ConnectionChangeListener {
+	       ConnectionChangeListener, DatePickerDialog.OnDateSetListener {
 
     /* Container configuration constants */
     protected static final String HOME_URL = "http://www.icemobile.org/demos.html";
@@ -249,6 +253,11 @@ public class ICEmobileContainer extends Activity
 		mC2dmHandler.stop();
 	    }
 	    finish();
+	    return true;
+	case R.id.date:
+	    final Calendar c = Calendar.getInstance();
+	    DatePickerDialog datePick = new DatePickerDialog(this,this,c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+	    datePick.show();
 	    return true;
 	default:
 	    return super.onOptionsItemSelected(item);
@@ -587,5 +596,9 @@ public class ICEmobileContainer extends Activity
 		    mWebView.reload();
 		}
 	    });
+    }
+
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+	Log.e("ICEcontainer", "Date picked = " + year + "/" + monthOfYear + "/" + dayOfMonth);
     }
 }
