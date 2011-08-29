@@ -149,7 +149,15 @@ public class BridgeSetup implements SystemEventListener {
             Set<ResourceDependency> addedResDeps =
                     new HashSet<ResourceDependency>();
             List<String> mandatoryResourceComponents = drk.getMandatoryResourceComponents();
+            String resourceOverride = EnvUtils
+                    .getMandatoryResourceOverride(context);
             for (String compClassName : mandatoryResourceComponents) {
+                if (null != resourceOverride)  {
+                    if (!resourceOverride.contains(
+                            " " + compClassName + " "))  {
+                        continue;
+                    }
+                }
                 try {
                     Class<UIComponent> compClass = (Class<UIComponent>)
                             Class.forName(compClassName);

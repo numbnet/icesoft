@@ -374,6 +374,18 @@ public class EnvUtils {
         return EnvConfig.getEnvConfig(facesContext).windowScopeExpiration;
     }
 
+    public static String getMandatoryResourceOverride(FacesContext facesContext) {
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        Map viewMap = viewRoot.getViewMap();
+        String mandatoryResourceConfig = (String) viewMap
+                .get(MANDATORY_RESOURCE_CONFIG);
+        //pad with spaces to allow String.contains checking
+        if (null != mandatoryResourceConfig)  {
+            mandatoryResourceConfig = " " + mandatoryResourceConfig + " ";
+        }
+        return mandatoryResourceConfig;
+    }
+
     public static String getMandatoryResourceConfig(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).mandatoryResourceConfig;
     }
