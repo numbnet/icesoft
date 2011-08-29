@@ -18,55 +18,77 @@ if (!window['mobi']) {
     window.mobi = {};
 }
 
-mobi.input = {
+mobi.flipper = {                
+        init: function(clientId, event, flipperEl, singleSubmit){
+              ice.log.debug(ice.log, 'clientId is '+clientId);               
+              if (flipperEl){
+                var oldClass = flipperEl.className; 
+                ice.log.debug(ice.log, 'have a switch element with class='+oldClass);
+                var value = "off";
+                if (oldClass.indexOf('-off ')>0){
+                	flipperEl.className='mobi-flip-switch mobi-flip-switch-on ';
+                	value = true;
+                }else{
+                	flipperEl.className='mobi-flip-switch mobi-flip-switch-off ';
+                	value = false;
+                }
+                mobi.input.updateHidden(clientId, event, value, singleSubmit);
+              }
+              else{
+                ice.log.debug(ice.log, 'do not have a switch element');
+              }
+
+         },
+}       
+
+mobi.flipjq = {
 		
-    flipswitch: function(clientId, singleSubmit){
-    	console.log("in javascript for clientId="+clientId);
-    	var oldVal = $(clientId).bind("change", function(){
- 	       if(oldVal != $(this).val()){
- 	           oldVal = $(this).val();
- 	           console.log("val change to " + oldVal);
- 	       }
-        }).val();
-    	
+		init: function(clientId, event, value, singleSubmit){
+		  ice.log.debug(ice.log, 'clientId ='+clientId+" for jqflipper with value="+value);	
+		  if (value){
+			  ice.log.debug(ice.log, ' sliderVal is='+value);
+		  }else{
+			  ice.log.debug(ice.log, 'no sliderVal');
+		  }
+		  if (singleSubmit){
+			  ice.se(event, clientId);
+		  }else{
+			  ice.log.debug(ice.log, 'singleSubmit false but value='+value);
+		  }
+			  
+		 // mobi.input.updateHidden(clientId, event, value, false);
+		},
+}
+		
+
+mobi.input = {
+	
+    updateHidden: function(clientId, event, value, singleSubmit) {
+    	var prevVal;
+    	var element = document.getElementById(clientId);
+    	var hiddenId = clientId+'_hidden';
+    	var hidden = document.getElementById(hiddenId);
+    	if (prevVal == value){ //no change
+    		ice.log.debug(ice.log, 'prevVal='+prevVal+' value='+value);
+    		return;
+    	}
+    	if (hidden){
+        	hidden.value = value;
+         	ice.log.debug(ice.log, 'value has been updated to:'+hidden.value);
+        } else {
+           /* using this function generically also for jquery comps which may not have a hidden field*/
+           var input = document.createElement("input");
+           input.setAttribute("type", "hidden");
+           input.setAttribute("name", clientId + "_hidden");
+           input.setAttribute("id", clientId + "hidden");
+           input.setAttribute("value", value);
+           element.appendChild(input);  
+        }
+    	prevVal = value;
+ 	    if (singleSubmit){
+			ice.se( event, clientId);
+  	   }
     },
 
-    submit: function(clientId, singleSubmit) {
-        var element = document.getElementById(clientId);
-        var hidden = document.getElementById(clientId + "_hidden");
-        var inputEl = $element.siblings('input');
-        var elVal = "unset";
-        var ssubmit = singleSubmit;
-        if (element) {
-            //	alert ("clientId "+clientId+" found");
-            elVal = element.value;
-        } else {
-            alert("clientId " + clientId + " NOT FOUND");
-        }
-        if (input){
-            alert("input element is="+inputEl+" value is ="+inputEl.value);
-        }else {
-        	alert("could not get at input element");
-        }
-
-
-        if (hidden) {
-            hidden.value = elVal;
-            //             alert("hidden found id="+hidden.value+"singleSubmit="+singleSubmit+" elvalue="+elVal);
-        } else {
-            var input = document.createElement("input");
-            input.setAttribute("type", "hidden");
-            input.setAttribute("name", clientId + "_hidden");
-            input.setAttribute("value", elVal);
-            document.getElementById(clientId).appendChild(input);
-            alert("had to create hidden field and singleSubmit=" + singleSubmit + " val = " + elVal);
-        }
-        if (ssubmit) {
-            //   	alert("singleSubmit true submitting value="+hidden.value+" for clientId="+clientId);
-            ice.se(null, clientId);
-        }
-
-    },
- 
 };
 
