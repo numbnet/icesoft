@@ -2810,43 +2810,43 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
 
         var form = Ice.util.findForm(this.element);
         if (idx > -1) {
-                    var indexName = this.element.id + "_idx";
-                    form[indexName].value = idx;
-                }
+            var indexName = this.element.id + "_idx";
+            form[indexName].value = idx;
+        }
 
-                //     form.focus_hidden_field.value=this.element.id;
-                if (isEnterKey && !this.partialSubmit) {
-                    Ice.Autocompleter.logger.debug("Sending submit");
-                    iceSubmit(form, this.element, event);
-                }
-                else {
-                    Ice.Autocompleter.logger.debug("Sending partial submit");
-                    iceSubmitPartial(form, this.element, event);
-                }
+        //     form.focus_hidden_field.value=this.element.id;
+        if (isEnterKey && !this.partialSubmit) {
+            Ice.Autocompleter.logger.debug("Sending submit");
+            iceSubmit(form, this.element, event);
+        }
+        else {
+            Ice.Autocompleter.logger.debug("Sending partial submit");
+            iceSubmitPartial(form, this.element, event);
+        }
 
-                var indexName = this.element.id + "_idx";
-                form[indexName].value = "";
-            },
+        var indexName = this.element.id + "_idx";
+        form[indexName].value = "";
+    },
 
-            onComplete: function(request) {
-                this.updateChoices(request.responseText);
-            },
+    onComplete: function(request) {
+        this.updateChoices(request.responseText);
+    },
 
-            updateNOW: function(text) {
+    updateNOW: function(text) {
 
 
-                if (this.hidden) {
-                    this.hidden = false;
-                    //Ice.Autocompleter.logger.debug("Not showing due to hide force");
-                    return;
-                }
-                this.hasFocus = true;
-                Element.cleanWhitespace(this.update);
-                this.updateChoices(text);
-                this.show();
-                this.render();
-            }
-        });
+        if (this.hidden) {
+            this.hidden = false;
+            //Ice.Autocompleter.logger.debug("Not showing due to hide force");
+            return;
+        }
+        this.hasFocus = true;
+        Element.cleanWhitespace(this.update);
+        this.updateChoices(text);
+        this.show();
+        this.render();
+    }
+});
 /*
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
@@ -2906,12 +2906,12 @@ Effect.Highlight.prototype.finish = function() {
 
 
 Object.extend(Effect.DefaultOptions, {afterFinish:function(ele) {
-            if (this.uploadCSS != null) {
-                Ice.DnD.StyleReader.upload(ele.element, ele.options.submit);
-            }
-            if (ele.options.iceFinish)
-                ele.options.iceFinish(ele);
-        }});
+    if (this.uploadCSS != null) {
+        Ice.DnD.StyleReader.upload(ele.element, ele.options.submit);
+    }
+    if (ele.options.iceFinish)
+        ele.options.iceFinish(ele);
+}});
 
 
 function blankEffect() {
@@ -2920,11 +2920,11 @@ function blankEffect() {
 Effect.Grow = function(element) {
     element = $(element);
     var options = Object.extend({
-                direction: 'center',
-                moveTransition: Effect.Transitions.sinoidal,
-                scaleTransition: Effect.Transitions.sinoidal,
-                opacityTransition: Effect.Transitions.full
-            }, arguments[1] || {});
+        direction: 'center',
+        moveTransition: Effect.Transitions.sinoidal,
+        scaleTransition: Effect.Transitions.sinoidal,
+        opacityTransition: Effect.Transitions.full
+    }, arguments[1] || {});
     var oldStyle = {
         top: element.style.top,
         left: element.style.left,
@@ -2965,29 +2965,29 @@ Effect.Grow = function(element) {
     }
 
     return new Effect.Move(element, {
-                x: initialMoveX,
-                y: initialMoveY,
-                duration: 0.01,
-                beforeSetup: function(effect) {
-                    effect.element.hide().makeClipping().makePositioned();
-                },
-                afterFinishInternal: function(effect) {
-                    new Effect.Parallel(
-                            [ new Effect.Opacity(effect.element, { sync: true, to: 1.0, from: 0.0, transition: options.opacityTransition }),
-                                new Effect.Move(effect.element, { x: moveX, y: moveY, sync: false, transition: options.moveTransition }),
-                                new Effect.Scale(effect.element, 100, {
-                                            scaleMode: { originalHeight: dims.height, originalWidth: dims.width },
-                                            sync: false, scaleFrom: window.opera ? 1 : 0, transition: options.scaleTransition, restoreAfterFinish: true})
-                            ], Object.extend({
-                                        beforeSetup: function(effect) {
-                                            effect.effects[0].element.setStyle({height: '10px'}, {width: '10px'}).show();
-                                        },
-                                        afterFinishInternal: function(effect) {
-                                            effect.effects[0].element.undoClipping().undoPositioned().setStyle(oldStyle);
-                                        }
-                                    }, options))
-                }
-            });
+        x: initialMoveX,
+        y: initialMoveY,
+        duration: 0.01,
+        beforeSetup: function(effect) {
+            effect.element.hide().makeClipping().makePositioned();
+        },
+        afterFinishInternal: function(effect) {
+            new Effect.Parallel(
+                [ new Effect.Opacity(effect.element, { sync: true, to: 1.0, from: 0.0, transition: options.opacityTransition }),
+                    new Effect.Move(effect.element, { x: moveX, y: moveY, sync: false, transition: options.moveTransition }),
+                    new Effect.Scale(effect.element, 100, {
+                        scaleMode: { originalHeight: dims.height, originalWidth: dims.width },
+                        sync: false, scaleFrom: window.opera ? 1 : 0, transition: options.scaleTransition, restoreAfterFinish: true})
+                ], Object.extend({
+                    beforeSetup: function(effect) {
+                        effect.effects[0].element.setStyle({height: '10px'}, {width: '10px'}).show();
+                    },
+                    afterFinishInternal: function(effect) {
+                        effect.effects[0].element.undoClipping().undoPositioned().setStyle(oldStyle);
+                    }
+                }, options))
+        }
+    });
 }
 /*
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -3318,9 +3318,9 @@ Ice.GoogleMap = {
         var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
         //if the chart is recreated, so add any geoCoderMarker that was exist before.
         if (gmapWrapper.geoMarkerSet
-                && gmapWrapper.geoMarker != null
-                && gmapWrapper.geoMarkerAddress != null
-                ) {
+            && gmapWrapper.geoMarker != null
+            && gmapWrapper.geoMarkerAddress != null
+            ) {
             gmapWrapper.getRealGMap().addOverlay(gmapWrapper.geoMarker);
             gmapWrapper.geoMarker.openInfoWindowHtml(gmapWrapper.geoMarkerAddress);
             gmapWrapper.geoMarkerSet = false;
@@ -3455,255 +3455,258 @@ Ice.Repository = {
 var visibleTooltipList = new Array();
 
 ToolTipPanelPopup = Class.create({
-            initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue, iFrameUrl, displayOn, moveWithMouse) {
-                //tooltip is not rendered
-                if (!$(tooltipCompId)) return;
-                this.src = srcComp;
-                this.delay = delay || 500;
-                this.dynamic = (dynamic == "true");
-                this.tooltipCompId = tooltipCompId;
-                this.srcCompId = srcComp.id;
-                this.hideOn = hideOn;
-                this.x = Event.pointerX(event);
-                this.y = Event.pointerY(event);
-                this.formId = formId;
-                this.ctxValue = ctxValue
-                this.iFrameUrl = iFrameUrl;
-                this.moveWithMouse = moveWithMouse;
-                this.displayOn = displayOn;
-                this.event = event;
-                //cancel bubbling
-                event.cancelBubble = true;
-                //attach events
+    initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue, iFrameUrl, displayOn, moveWithMouse) {
+        //tooltip is not rendered
+        if (!$(tooltipCompId)) return;
+        this.src = srcComp;
+        this.delay = delay || 500;
+        this.dynamic = (dynamic == "true");
+        this.tooltipCompId = tooltipCompId;
+        this.srcCompId = srcComp.id;
+        this.hideOn = hideOn;
+        this.x = Event.pointerX(event);
+        this.y = Event.pointerY(event);
+        this.formId = formId;
+        this.ctxValue = ctxValue
+        this.iFrameUrl = iFrameUrl;
+        this.moveWithMouse = moveWithMouse;
+        this.displayOn = displayOn;
+        this.event = event;
+        //cancel bubbling
+        event.cancelBubble = true;
+        //attach events
 
-                if (this.hideOn == "mousedown") {
-                    this.hideEvent = this.hidePopupOnMouseClick.bindAsEventListener(this);
-                } else if (this.hideOn == "mouseout") {
-                    this.hideEvent = this.hidePopupOnMouseOut.bindAsEventListener(this);
-                } else {
-                    this.hideOn = "none";
-                    //associate no-op callback to avoid stack overflow in IE
-                    this.hideEvent = Function.NOOP;
+        if (this.hideOn == "mousedown") {
+            this.hideEvent = this.hidePopupOnMouseClick.bindAsEventListener(this);
+        } else if (this.hideOn == "mouseout") {
+            this.hideEvent = this.hidePopupOnMouseOut.bindAsEventListener(this);
+        } else {
+            this.hideOn = "none";
+            //associate no-op callback to avoid stack overflow in IE
+            this.hideEvent = Function.NOOP;
+        }
+
+        this.eventMouseMove = this.updateCordinate.bindAsEventListener(this);
+        this.clearTimerEvent = this.clearTimer.bindAsEventListener(this);
+        Event.observe(document, "mouseout", this.clearTimerEvent);
+        Event.observe(document, this.hideOn, this.hideEvent);
+        Event.observe(document, "mousemove", this.eventMouseMove);
+        if (displayOn == "hover") {
+            this.timer = setTimeout(this.showPopup.bind(this), parseInt(this.delay));
+        } else {
+            this.showPopup.bind(this)();
+            Event.extend(event).stop();
+        }
+    },
+
+    showPopup: function() {
+        if (this.isTooltipVisible()) return;
+        if (this.dynamic) {
+            //its a dynamic tooltip, so remove all its childres
+            var tooltip = this.getTooltip();
+            if (tooltip) {
+                tooltip.style.visibility = "hidden";
+                var table = tooltip.childNodes[0];
+                if (table) {
+                    tooltip.removeChild(table);
                 }
-
-                this.eventMouseMove = this.updateCordinate.bindAsEventListener(this);
-                this.clearTimerEvent = this.clearTimer.bindAsEventListener(this);
-                Event.observe(document, "mouseout", this.clearTimerEvent);
-                Event.observe(document, this.hideOn, this.hideEvent);
-                Event.observe(document, "mousemove", this.eventMouseMove);
-                if (displayOn == "hover") {
-                    this.timer = setTimeout(this.showPopup.bind(this), parseInt(this.delay));
-                } else {
-                    this.showPopup.bind(this)();
-                    Event.extend(event).stop();
-                }
-            },
-
-            showPopup: function() {
-                if (this.isTooltipVisible()) return;
-                if (this.dynamic) {
-                    //its a dynamic tooltip, so remove all its childres
-                    var tooltip = this.getTooltip();
-                    if (tooltip) {
-                        tooltip.style.visibility = "hidden";
-                        var table = tooltip.childNodes[0];
-                        if (table) {
-                            tooltip.removeChild(table);
-                        }
-                    }
-                    //dynamic? set status=show, populatefields, and submit
-                    this.submit("show");
-                    if (this.hideOn == "none") {
-                        //reset the info
-                        this.populateFields(true);
-                    }
-                } else {
-                    //static? just set the visibility= true
-                    var tooltip = this.getTooltip();
-                    tooltip.style.visibility = "visible";
-                    tooltip.style.position = "absolute";
-                    tooltip.style.display = "";
-                    var srcComp = $(this.srcCompId);
-                    var cumulativeOffset = srcComp.cumulativeOffset();
-                    var positionedOffset = srcComp.positionedOffset();
-                    tooltip.style.top = this.y - tooltip.offsetHeight - 4 - cumulativeOffset.top + positionedOffset.top + "px";
-                    tooltip.style.left = this.x + 4 - cumulativeOffset.left + positionedOffset.left + "px";
-                    ToolTipPanelPopupUtil.adjustPosition(tooltip);
-                    Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
-                }
-                this.addToVisibleList();
-                //prohibits to open browser's context menu, as 'altclick' uses onmenucontext handler
-                if (this.event && this.displayOn == 'altclick') {
-                    Event.extend(this.event).stop();
-                }
-            },
-
-            hidePopupOnMouseOut: function(event) {
-                if (!this.isTooltipVisible()) return;
-                var x = Event.pointerX(event);
-                var y = Event.pointerY(event);
-                if (Position.within($(this.tooltipCompId), x, y)) return; //ICE-3521
-                if (Position.within(this.src, x, y)) return; //ICE-6285
-                this.hidePopup(event);
-                this.state = "hide";
-                this.populateFields();
-                if (this.hideOn == "mouseout") {
-                    this.removedFromVisibleList();
-                }
-                this.dispose(event);
-            },
-
-            hidePopupOnMouseClick: function(event) {
-                if (!this.isTooltipVisible() || !Event.isLeftClick(event)) return;
-                var eventSrc = Event.element(event);
-                if (this.srcOrchildOfSrcElement(eventSrc)) {
-                    return;
-                } else {
-                    this.hidePopup(event);
-                }
-                if (this.hideOn == "mousedown") {
-                    this.removedFromVisibleList();
-                }
-                this.dispose(event);
-            },
-
-
-            dispose: function(event) {
-                Event.stopObserving(document, this.hideOn, this.hideEvent);
-                Event.stopObserving(document, "mousemove", this.eventMouseMove);
-
-            },
-
-            hidePopup:function(event) {
-                if (this.dynamic) {
-                    //dynamic? set status=hide, populatefiels and submit
-                    this.submit("hide");
-                } else {
-                    //static? set visibility = false;
-                    tooltip = this.getTooltip();
-                    tooltip.style.visibility = "hidden";
-                    tooltip.style.display = "none";
-                }
-            },
-
-
-            submit:function(state, event) {
-                if (!event) event = new Object();
-                this.state = state;
-                this.populateFields();
-                var element = $(this.srcCompId);
-                try {
-                    var form = Ice.util.findForm(element);
-                    iceSubmitPartial(form, element, event);
-                } catch (e) {
-                    logger.info("Form not found" + e);
-                }
-            },
-
-            clearTimer:function() {
-                //   $(action).innerHTML += "<br/> Clearing the event";
-                Event.stopObserving(document, "mouseout", this.clearTimerEvent);
-                clearTimeout(this.timer);
-
-            },
-
-            updateCordinate: function(event) {
-                if (Event.element(event) != this.src && !Element.descendantOf(event.element(), this.src)) return;
-                this.x = Event.pointerX(event);
-                this.y = Event.pointerY(event);
-                if (!this.isTooltipVisible() || !this.moveWithMouse) return;
-                var tooltip = this.getTooltip();
-                tooltip.style.top = this.y - tooltip.offsetHeight - 4 + "px";
-                tooltip.style.left = this.x + 4 + "px";
-                ToolTipPanelPopupUtil.adjustPosition(tooltip);
-                Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
-            },
-
-            srcOrchildOfSrcElement: function(ele) {
-                var tooltip = this.getTooltip();
-                if (tooltip == ele) return true;
-                while (ele.parentNode) {
-                    ele = ele.parentNode;
-                    if (tooltip == ele) {
-                        return true;
-                    }
-                }
-            },
-
-            getTooltip: function () {
-                return $(this.tooltipCompId);
-            },
-
-            populateFields: function(reset) {
-                // the following field should be rendered by the panelPoupRenderer if rendered as tooltip
-
-
-                var form = $(this.formId);
-                if (form == null) return;
-                var iceTooltipInfo = form.getElements().find(function(element) {
-                    if (element.id == "iceTooltipInfo") return element;
-                });
-                if (!iceTooltipInfo) {
-                    iceTooltipInfo = document.createElement('input');
-                    iceTooltipInfo.id = "iceTooltipInfo";
-                    iceTooltipInfo.name = "iceTooltipInfo";
-                    iceTooltipInfo.type = "hidden";
-                    form.appendChild(iceTooltipInfo);
-                } else {
-
-                }
-                if (reset) {
-                    iceTooltipInfo.value = "";
-                } else {
-                    iceTooltipInfo.value = "tooltip_id=" + this.tooltipCompId +
-                            "; tooltip_src_id=" + this.src.id +
-                            "; tooltip_state=" + this.state +
-                            "; tooltip_x=" + this.x +
-                            "; tooltip_y=" + this.y +
-                            "; cntxValue=" + this.ctxValue;
-                }
-            },
-
-            addToVisibleList: function() {
-                if (!this.isTooltipVisible()) {
-                    this.removedFromVisibleList('all');
-                    visibleTooltipList[parseInt(visibleTooltipList.length)] = {tooltipId: this.tooltipCompId, srcCompId: this.srcCompId};
-                } else {
-                }
-            },
-
-            removedFromVisibleList: function(all) {
-                if (this.isTooltipVisible() || all) {
-                    var newList = new Array();
-                    var index = -1;
-                    for (i = 0; i < visibleTooltipList.length; i++) {
-                        if (visibleTooltipList[i].tooltipId != this.tooltipCompId) {
-                            index = parseInt(index) + 1;
-                            newList[index] = visibleTooltipList[i];
-                        } else {
-                        }
-                    }
-                    visibleTooltipList = newList;
-                } else {
-                }
-            },
-
-            isTooltipVisible: function(onlyTooltip) {
-                for (i = 0; i < visibleTooltipList.length; i++) {
-                    if (onlyTooltip) {
-                        if (visibleTooltipList[i].tooltipId == this.tooltipCompId) {
-                            return true;
-                        }
-                    } else {
-                        if (visibleTooltipList[i].tooltipId == this.tooltipCompId && visibleTooltipList[i].srcCompId == this.srcCompId) {
-                            return true;
-                        }
-                    }
-
-                }
-                return false;
             }
+            //dynamic? set status=show, populatefields, and submit
+            this.submit("show");
+            if (this.hideOn == "none") {
+                //reset the info
+                this.populateFields(true);
+            }
+        } else {
+            //static? just set the visibility= true
+            var tooltip = this.getTooltip();
+            tooltip.style.visibility = "visible";
+            tooltip.style.position = "absolute";
+            tooltip.style.display = "";
+            var srcComp = $(this.srcCompId);
+            var cumulativeOffset = srcComp.cumulativeOffset();
+            var positionedOffset = srcComp.positionedOffset();
+            tooltip.style.top = this.y - tooltip.offsetHeight - 4 - cumulativeOffset.top + positionedOffset.top + "px";
+            tooltip.style.left = this.x + 4 - cumulativeOffset.left + positionedOffset.left + "px";
+            ToolTipPanelPopupUtil.adjustPosition(tooltip);
+            Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
+        }
+        this.addToVisibleList();
+        //prohibits to open browser's context menu, as 'altclick' uses onmenucontext handler
+        if (this.event && this.displayOn == 'altclick') {
+            Event.extend(this.event).stop();
+        }
+    },
+
+    hidePopupOnMouseOut: function(event) {
+        if (!this.isTooltipVisible()) return;
+        var tooltip = $(this.tooltipCompId);
+        var x = Event.pointerX(event);
+        var y = Event.pointerY(event);
+        if (Position.within(this.src, x, y)) return; //ICE-6285
+        if (tooltip) {
+            if (Position.within(tooltip, x, y)) return; //ICE-3521
+            this.hidePopup(event);
+        }
+        this.state = "hide";
+        this.populateFields();
+        if (this.hideOn == "mouseout") {
+            this.removedFromVisibleList();
+        }
+        this.dispose(event);
+    },
+
+    hidePopupOnMouseClick: function(event) {
+        if (!this.isTooltipVisible() || !Event.isLeftClick(event)) return;
+        var eventSrc = Event.element(event);
+        if (this.srcOrchildOfSrcElement(eventSrc)) {
+            return;
+        } else {
+            this.hidePopup(event);
+        }
+        if (this.hideOn == "mousedown") {
+            this.removedFromVisibleList();
+        }
+        this.dispose(event);
+    },
+
+
+    dispose: function(event) {
+        Event.stopObserving(document, this.hideOn, this.hideEvent);
+        Event.stopObserving(document, "mousemove", this.eventMouseMove);
+
+    },
+
+    hidePopup:function(event) {
+        if (this.dynamic) {
+            //dynamic? set status=hide, populatefiels and submit
+            this.submit("hide");
+        } else {
+            //static? set visibility = false;
+            tooltip = this.getTooltip();
+            tooltip.style.visibility = "hidden";
+            tooltip.style.display = "none";
+        }
+    },
+
+
+    submit:function(state, event) {
+        if (!event) event = new Object();
+        this.state = state;
+        this.populateFields();
+        var element = $(this.srcCompId);
+        try {
+            var form = Ice.util.findForm(element);
+            iceSubmitPartial(form, element, event);
+        } catch (e) {
+            logger.info("Form not found" + e);
+        }
+    },
+
+    clearTimer:function() {
+        //   $(action).innerHTML += "<br/> Clearing the event";
+        Event.stopObserving(document, "mouseout", this.clearTimerEvent);
+        clearTimeout(this.timer);
+
+    },
+
+    updateCordinate: function(event) {
+        if (Event.element(event) != this.src && !Element.descendantOf(event.element(), this.src)) return;
+        this.x = Event.pointerX(event);
+        this.y = Event.pointerY(event);
+        if (!this.isTooltipVisible() || !this.moveWithMouse) return;
+        var tooltip = this.getTooltip();
+        tooltip.style.top = this.y - tooltip.offsetHeight - 4 + "px";
+        tooltip.style.left = this.x + 4 + "px";
+        ToolTipPanelPopupUtil.adjustPosition(tooltip);
+        Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
+    },
+
+    srcOrchildOfSrcElement: function(ele) {
+        var tooltip = this.getTooltip();
+        if (tooltip == ele) return true;
+        while (ele.parentNode) {
+            ele = ele.parentNode;
+            if (tooltip == ele) {
+                return true;
+            }
+        }
+    },
+
+    getTooltip: function () {
+        return $(this.tooltipCompId);
+    },
+
+    populateFields: function(reset) {
+        // the following field should be rendered by the panelPoupRenderer if rendered as tooltip
+
+
+        var form = $(this.formId);
+        if (form == null) return;
+        var iceTooltipInfo = form.getElements().find(function(element) {
+            if (element.id == "iceTooltipInfo") return element;
         });
+        if (!iceTooltipInfo) {
+            iceTooltipInfo = document.createElement('input');
+            iceTooltipInfo.id = "iceTooltipInfo";
+            iceTooltipInfo.name = "iceTooltipInfo";
+            iceTooltipInfo.type = "hidden";
+            form.appendChild(iceTooltipInfo);
+        } else {
+
+        }
+        if (reset) {
+            iceTooltipInfo.value = "";
+        } else {
+            iceTooltipInfo.value = "tooltip_id=" + this.tooltipCompId +
+                "; tooltip_src_id=" + this.src.id +
+                "; tooltip_state=" + this.state +
+                "; tooltip_x=" + this.x +
+                "; tooltip_y=" + this.y +
+                "; cntxValue=" + this.ctxValue;
+        }
+    },
+
+    addToVisibleList: function() {
+        if (!this.isTooltipVisible()) {
+            this.removedFromVisibleList('all');
+            visibleTooltipList[parseInt(visibleTooltipList.length)] = {tooltipId: this.tooltipCompId, srcCompId: this.srcCompId};
+        } else {
+        }
+    },
+
+    removedFromVisibleList: function(all) {
+        if (this.isTooltipVisible() || all) {
+            var newList = new Array();
+            var index = -1;
+            for (i = 0; i < visibleTooltipList.length; i++) {
+                if (visibleTooltipList[i].tooltipId != this.tooltipCompId) {
+                    index = parseInt(index) + 1;
+                    newList[index] = visibleTooltipList[i];
+                } else {
+                }
+            }
+            visibleTooltipList = newList;
+        } else {
+        }
+    },
+
+    isTooltipVisible: function(onlyTooltip) {
+        for (i = 0; i < visibleTooltipList.length; i++) {
+            if (onlyTooltip) {
+                if (visibleTooltipList[i].tooltipId == this.tooltipCompId) {
+                    return true;
+                }
+            } else {
+                if (visibleTooltipList[i].tooltipId == this.tooltipCompId && visibleTooltipList[i].srcCompId == this.srcCompId) {
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+});
 
 ToolTipPanelPopupUtil = {
     removeFromVisibleList:function(comp_id) {
@@ -3786,391 +3789,391 @@ ToolTipPanelPopupUtil = {
  *
  */
 Ice.Resizable = Class.create({
-            initialize: function(event, horizontal) {
+    initialize: function(event, horizontal) {
 
-                //resize handler
-                this.source = Event.element(event);
-                this.horizontal = horizontal;
+        //resize handler
+        this.source = Event.element(event);
+        this.horizontal = horizontal;
 
-                //initial pointer location
-                if (this.horizontal) {
-                    this.pointerLocation = parseInt(Event.pointerY(event));
-                } else {
-                    this.pointerLocation = parseInt(Event.pointerX(event));
-                }
+        //initial pointer location
+        if (this.horizontal) {
+            this.pointerLocation = parseInt(Event.pointerY(event));
+        } else {
+            this.pointerLocation = parseInt(Event.pointerX(event));
+        }
 
-                this.eventMouseMove = this.resize.bindAsEventListener(this);
-                this.eventMouseUp = this.detachEvent.bindAsEventListener(this);
-                Event.observe(document, "mousemove", this.eventMouseMove);
-                Event.observe(document, "mouseup", this.eventMouseUp);
-                this.origionalHeight = this.source.style.height;
-                this.disableTextSelection();
-                this.getGhost().style.position = "absolute";
-                //    this.getGhost().style.backgroundColor = "green";
-                //    this.getGhost().style.border= "1px dashed";
+        this.eventMouseMove = this.resize.bindAsEventListener(this);
+        this.eventMouseUp = this.detachEvent.bindAsEventListener(this);
+        Event.observe(document, "mousemove", this.eventMouseMove);
+        Event.observe(document, "mouseup", this.eventMouseUp);
+        this.origionalHeight = this.source.style.height;
+        this.disableTextSelection();
+        this.getGhost().style.position = "absolute";
+        //    this.getGhost().style.backgroundColor = "green";
+        //    this.getGhost().style.border= "1px dashed";
 
-                this.deadPoint = 20;
-            },
+        this.deadPoint = 20;
+    },
 
-            print: function(msg) {
-                logger.info(msg);
-            },
+    print: function(msg) {
+        logger.info(msg);
+    },
 
-            getPreviousElement: function() {
-            },
+    getPreviousElement: function() {
+    },
 
-            getContainerElement: function() {
-            },
+    getContainerElement: function() {
+    },
 
-            getNextElement: function() {
-            },
+    getNextElement: function() {
+    },
 
-            getGhost:function() {
-                return this.source;
-            },
+    getGhost:function() {
+        return this.source;
+    },
 
-            finalize: function (event) {
-                this.source.style.position = "";
-                this.source.style.left = Event.pointerX(event) + "px";
-                //   this.source.style.backgroundColor = "#EFEFEF";
-                //   this.source.style.border = "none";
-            },
+    finalize: function (event) {
+        this.source.style.position = "";
+        this.source.style.left = Event.pointerX(event) + "px";
+        //   this.source.style.backgroundColor = "#EFEFEF";
+        //   this.source.style.border = "none";
+    },
 
-            resize: function(event) {
-                this.getGhost().style.visibility = "";
-                if (this.deadEnd(event)) return;
-                //   this.getGhost().style.backgroundColor = "green";
-                if (this.horizontal) {
-                    this.getGhost().style.cursor = "n-resize";
-                    var top = Event.pointerY(event) - this.getGhost().getOffsetParent().cumulativeOffset().top;
-                    this.getGhost().style.top = top + "px";
-                } else {
-                    this.getGhost().style.cursor = "e-resize";
-                    var left = Event.pointerX(event) - this.getGhost().getOffsetParent().cumulativeOffset().left;
-                    this.getGhost().style.left = left + "px";
-                }
-            },
-
-
-            detachEvent: function(event) {
-                //restore height
-                this.source.style.height = this.origionalHeight;
-                if (this.getDifference(event) > 0 && !this.deadEnd(event)) {
-                    this.adjustPosition(event);
-                }
-
-                Event.stopObserving(document, "mousemove", this.eventMouseMove);
-                Event.stopObserving(document, "mouseup", this.eventMouseUp);
-                this.enableTextSelection();
-                this.finalize(event);
-            },
-
-            adjustPosition:function(event) {
-                var leftElementWidth = Element.getWidth(this.getPreviousElement());
-                var rightElementWidth = Element.getWidth(this.getNextElement());
-                var tableWidth = Element.getWidth(this.getContainerElement());
-                var diff = this.getDifference(event);
-
-                if (this.resizeAction == "inc") {
-                    this.getPreviousElement().style.width = (leftElementWidth + diff) + "px";
-                    this.getNextElement().style.width = (rightElementWidth - diff) + "px"
-
-                    //    this.getContainerElement().style.width = tableWidth + diff + "px";;
-
-                    this.print("Diff " + diff);
-                    this.print("Td width " + leftElementWidth + this.getPreviousElement().id);
-                    this.print("Table width " + tableWidth);
+    resize: function(event) {
+        this.getGhost().style.visibility = "";
+        if (this.deadEnd(event)) return;
+        //   this.getGhost().style.backgroundColor = "green";
+        if (this.horizontal) {
+            this.getGhost().style.cursor = "n-resize";
+            var top = Event.pointerY(event) - this.getGhost().getOffsetParent().cumulativeOffset().top;
+            this.getGhost().style.top = top + "px";
+        } else {
+            this.getGhost().style.cursor = "e-resize";
+            var left = Event.pointerX(event) - this.getGhost().getOffsetParent().cumulativeOffset().left;
+            this.getGhost().style.left = left + "px";
+        }
+    },
 
 
-                } else {
-                    this.getPreviousElement().style.width = (leftElementWidth - diff) + "px";
-                    this.getNextElement().style.width = (rightElementWidth + diff) + "px"
+    detachEvent: function(event) {
+        //restore height
+        this.source.style.height = this.origionalHeight;
+        if (this.getDifference(event) > 0 && !this.deadEnd(event)) {
+            this.adjustPosition(event);
+        }
 
-                    //      this.getContainerElement().style.width = tableWidth - diff + "px";
-                }
-            },
+        Event.stopObserving(document, "mousemove", this.eventMouseMove);
+        Event.stopObserving(document, "mouseup", this.eventMouseUp);
+        this.enableTextSelection();
+        this.finalize(event);
+    },
 
-            getDifference: function(event) {
-                var x;
-                if (this.horizontal) {
-                    x = parseInt(Event.pointerY(event));
-                } else {
-                    x = parseInt(Event.pointerX(event));
-                }
-                if (this.pointerLocation > x) {
-                    this.resizeAction = "dec";
-                    return this.pointerLocation - x;
-                } else {
-                    this.resizeAction = "inc";
-                    return x - this.pointerLocation;
-                }
-            },
+    adjustPosition:function(event) {
+        var leftElementWidth = Element.getWidth(this.getPreviousElement());
+        var rightElementWidth = Element.getWidth(this.getNextElement());
+        var tableWidth = Element.getWidth(this.getContainerElement());
+        var diff = this.getDifference(event);
 
-            deadEnd: function(event) {
-                var diff = this.getDifference(event);
-                if (this.resizeAction == "dec") {
-                    var leftElementWidth;
-                    if (this.horizontal) {
-                        leftElementWidth = Element.getHeight(this.getPreviousElement());
-                    } else {
-                        leftElementWidth = Element.getWidth(this.getPreviousElement());
-                    }
+        if (this.resizeAction == "inc") {
+            this.getPreviousElement().style.width = (leftElementWidth + diff) + "px";
+            this.getNextElement().style.width = (rightElementWidth - diff) + "px"
 
-                    if ((leftElementWidth - diff) < this.deadPoint) {
-                        // this.getGhost().style.backgroundColor = "red";
-                        return true;
-                    }
-                } else {
-                    var rightElementWidth;
-                    if (this.horizontal) {
-                        rightElementWidth = Element.getHeight(this.getNextElement());
-                    } else {
-                        rightElementWidth = Element.getWidth(this.getNextElement());
-                    }
+            //    this.getContainerElement().style.width = tableWidth + diff + "px";;
 
-                    if ((rightElementWidth - diff) < this.deadPoint) {
-                        //    this.getGhost().style.backgroundColor = "red";
-                        return true;
-                    }
-                }
-                return false;
-            },
+            this.print("Diff " + diff);
+            this.print("Td width " + leftElementWidth + this.getPreviousElement().id);
+            this.print("Table width " + tableWidth);
 
-            disableTextSelection:function() {
-                this.getContainerElement().onselectstart = function () {
-                    return false;
-                }
-                this.source.style.unselectable = "on";
-                this.source.style.MozUserSelect = "none";
-                this.source.style.KhtmlUserSelect = "none";
-            },
 
-            enableTextSelection:function() {
-                this.getContainerElement().onselectstart = function () {
-                    return true;
-                }
-                this.source.style.unselectable = "";
-                this.source.style.MozUserSelect = "";
-                this.source.style.KhtmlUserSelect = "";
+        } else {
+            this.getPreviousElement().style.width = (leftElementWidth - diff) + "px";
+            this.getNextElement().style.width = (rightElementWidth + diff) + "px"
+
+            //      this.getContainerElement().style.width = tableWidth - diff + "px";
+        }
+    },
+
+    getDifference: function(event) {
+        var x;
+        if (this.horizontal) {
+            x = parseInt(Event.pointerY(event));
+        } else {
+            x = parseInt(Event.pointerX(event));
+        }
+        if (this.pointerLocation > x) {
+            this.resizeAction = "dec";
+            return this.pointerLocation - x;
+        } else {
+            this.resizeAction = "inc";
+            return x - this.pointerLocation;
+        }
+    },
+
+    deadEnd: function(event) {
+        var diff = this.getDifference(event);
+        if (this.resizeAction == "dec") {
+            var leftElementWidth;
+            if (this.horizontal) {
+                leftElementWidth = Element.getHeight(this.getPreviousElement());
+            } else {
+                leftElementWidth = Element.getWidth(this.getPreviousElement());
             }
-        });
+
+            if ((leftElementWidth - diff) < this.deadPoint) {
+                // this.getGhost().style.backgroundColor = "red";
+                return true;
+            }
+        } else {
+            var rightElementWidth;
+            if (this.horizontal) {
+                rightElementWidth = Element.getHeight(this.getNextElement());
+            } else {
+                rightElementWidth = Element.getWidth(this.getNextElement());
+            }
+
+            if ((rightElementWidth - diff) < this.deadPoint) {
+                //    this.getGhost().style.backgroundColor = "red";
+                return true;
+            }
+        }
+        return false;
+    },
+
+    disableTextSelection:function() {
+        this.getContainerElement().onselectstart = function () {
+            return false;
+        }
+        this.source.style.unselectable = "on";
+        this.source.style.MozUserSelect = "none";
+        this.source.style.KhtmlUserSelect = "none";
+    },
+
+    enableTextSelection:function() {
+        this.getContainerElement().onselectstart = function () {
+            return true;
+        }
+        this.source.style.unselectable = "";
+        this.source.style.MozUserSelect = "";
+        this.source.style.KhtmlUserSelect = "";
+    }
+});
 
 Ice.ResizableGrid = Class.create(Ice.Resizable, {
-            initialize: function($super, event) {
-                $super(event);
-                logger.info(">>>>>>>>>>>>>>>>>>> ");
-                this.cntHght = (Element.getHeight(this.getContainerElement())) + "px";
-                this.source.style.height = this.cntHght;
-                this.getGhost().style.left = Event.pointerX(event) + "px";
-                this.source.style.backgroundColor = "#CCCCCC";
-            }
-        });
+    initialize: function($super, event) {
+        $super(event);
+        logger.info(">>>>>>>>>>>>>>>>>>> ");
+        this.cntHght = (Element.getHeight(this.getContainerElement())) + "px";
+        this.source.style.height = this.cntHght;
+        this.getGhost().style.left = Event.pointerX(event) + "px";
+        this.source.style.backgroundColor = "#CCCCCC";
+    }
+});
 
 Ice.ResizableGrid.addMethods({
-            getDifference: function($super, event) {
-                return $super(event);
-            },
+    getDifference: function($super, event) {
+        return $super(event);
+    },
 
-            getContainerElement: function() {
-                return this.source.parentNode.parentNode.parentNode.parentNode;
-            },
+    getContainerElement: function() {
+        return this.source.parentNode.parentNode.parentNode.parentNode;
+    },
 
-            getPreviousElement: function() {
-                if (this.source.parentNode.previousSibling.tagName == "TH") {
-                    return this.source.parentNode.previousSibling.firstChild;
-                } else {
-                    return this.source.parentNode.previousSibling.previousSibling.firstChild;
-                }
-            },
+    getPreviousElement: function() {
+        if (this.source.parentNode.previousSibling.tagName == "TH") {
+            return this.source.parentNode.previousSibling.firstChild;
+        } else {
+            return this.source.parentNode.previousSibling.previousSibling.firstChild;
+        }
+    },
 
-            getNextElement: function() {
-                if (this.source.parentNode.nextSibling.tagName == "TH") {
-                    return this.source.parentNode.nextSibling.firstChild;
-                } else {
-                    return this.source.parentNode.nextSibling.nextSibling.firstChild;
-                }
-            },
+    getNextElement: function() {
+        if (this.source.parentNode.nextSibling.tagName == "TH") {
+            return this.source.parentNode.nextSibling.firstChild;
+        } else {
+            return this.source.parentNode.nextSibling.nextSibling.firstChild;
+        }
+    },
 
-            resize: function($super, event) {
-                this.source.style.height = this.cntHght;
-                this.getGhost().style.height = this.cntHght;
-                $super(event);
-                this.source.style.height = this.cntHght;
-                this.getGhost().style.height = this.cntHght;
-            },
+    resize: function($super, event) {
+        this.source.style.height = this.cntHght;
+        this.getGhost().style.height = this.cntHght;
+        $super(event);
+        this.source.style.height = this.cntHght;
+        this.getGhost().style.height = this.cntHght;
+    },
 
-            finalize: function ($super, event) {
-                $super(event);
-                this.source.style.height = "1px";
-                this.source.style.backgroundColor = "transparent";
-                this.getGhost().style.height = "1px";
-                var clientOnly = $(this.getContainerElement().id + "clientOnly");
-                if (clientOnly) {
-                    clientOnly.value = this.getAllColumnsWidth();
-                    var form = Ice.util.findForm(clientOnly);
-                    iceSubmitPartial(form, clientOnly, event);
-                }
-            },
+    finalize: function ($super, event) {
+        $super(event);
+        this.source.style.height = "1px";
+        this.source.style.backgroundColor = "transparent";
+        this.getGhost().style.height = "1px";
+        var clientOnly = $(this.getContainerElement().id + "clientOnly");
+        if (clientOnly) {
+            clientOnly.value = this.getAllColumnsWidth();
+            var form = Ice.util.findForm(clientOnly);
+            iceSubmitPartial(form, clientOnly, event);
+        }
+    },
 
-            getAllColumnsWidth:function() {
-                var container = this.getContainerElement();
-                var children = container.firstChild.firstChild.childNodes;
-                var widths = "";
-                for (i = 0; i < children.length; i++) {
-                    if (children[i].className == 'iceDatTblResBor') {
-                        continue;
-                    }
-                    widths += Element.getStyle(children[i].firstChild, "width") + ",";
-                }
-                return widths;
+    getAllColumnsWidth:function() {
+        var container = this.getContainerElement();
+        var children = container.firstChild.firstChild.childNodes;
+        var widths = "";
+        for (i = 0; i < children.length; i++) {
+            if (children[i].className == 'iceDatTblResBor') {
+                continue;
             }
+            widths += Element.getStyle(children[i].firstChild, "width") + ",";
+        }
+        return widths;
+    }
 
 
-        });
+});
 
 Ice.PanelDivider = Class.create(Ice.Resizable, {
-            initialize: function($super, event, horizontal) {
-                $super(event, horizontal);
-                this.deadPoint = 20;
-                if (this.horizontal) {
-                    var spliterHeight = Element.getHeight(this.source);
-                    var mouseTop = Event.pointerY(event);
-                    this.getGhost().style.top = (mouseTop - (spliterHeight )) + "px";
-                    this.getGhost().style.width = (Element.getWidth(this.getContainerElement())) + "px";
-                } else {
-                    var spliterWidth = Element.getWidth(this.source);
-                    var borderLeft = parseInt(Element.getStyle(this.source, 'border-left-width'));
-                    var borderRight = parseInt(Element.getStyle(this.source, 'border-right-width'));
-                    if (borderLeft && borderLeft >= 1) {
-                        spliterWidth -= borderLeft;
-                    }
-                    if (borderRight && borderRight >= 1) {
-                        spliterWidth -= borderRight;
-                    }
-                    var mouseLeft = Event.pointerX(event);
-                    this.getGhost().style.left = (mouseLeft - (spliterWidth )) + "px";
-                    this.getGhost().style.width = spliterWidth + "px";
-                    this.getGhost().style.height = (Element.getHeight(this.getContainerElement())) + "px";
-                }
+    initialize: function($super, event, horizontal) {
+        $super(event, horizontal);
+        this.deadPoint = 20;
+        if (this.horizontal) {
+            var spliterHeight = Element.getHeight(this.source);
+            var mouseTop = Event.pointerY(event);
+            this.getGhost().style.top = (mouseTop - (spliterHeight )) + "px";
+            this.getGhost().style.width = (Element.getWidth(this.getContainerElement())) + "px";
+        } else {
+            var spliterWidth = Element.getWidth(this.source);
+            var borderLeft = parseInt(Element.getStyle(this.source, 'border-left-width'));
+            var borderRight = parseInt(Element.getStyle(this.source, 'border-right-width'));
+            if (borderLeft && borderLeft >= 1) {
+                spliterWidth -= borderLeft;
             }
-        });
+            if (borderRight && borderRight >= 1) {
+                spliterWidth -= borderRight;
+            }
+            var mouseLeft = Event.pointerX(event);
+            this.getGhost().style.left = (mouseLeft - (spliterWidth )) + "px";
+            this.getGhost().style.width = spliterWidth + "px";
+            this.getGhost().style.height = (Element.getHeight(this.getContainerElement())) + "px";
+        }
+    }
+});
 
 Ice.PanelDivider.addMethods({
-            getDifference: function($super, event) {
-                return $super(event);
-            },
+    getDifference: function($super, event) {
+        return $super(event);
+    },
 
-            getContainerElement: function() {
-                return this.source.parentNode.parentNode;
-            },
-
-
-            getPreviousElement: function() {
-                if (this.source.previousSibling.tagName == "DIV") {
-                    return this.source.previousSibling;
-                } else {
-                    return this.source.previousSibling.previousSibling;
-                }
-            },
-
-            getNextElement: function() {
-                if (this.source.nextSibling.tagName == "DIV") {
-                    return this.source.nextSibling;
-                } else {
-                    return this.source.nextSibling.nextSibling;
-                }
-            },
-
-            getGhost: function() {
-                if (!this.ghost) {
-                    this.ghost = this.source.cloneNode(true);
-                    this.ghost.id = this.source.id + ":ghost";
-                    this.ghost.onmousedown = null;
-                    this.source.parentNode.appendChild(this.ghost);
-                    this.ghost.style.width = Element.getWidth(this.source) + "px";
-                    this.getGhost().style.visibility = "hidden";
-                }
-                this.ghost.setStyle({width:this.source.getStyle("width")});
-                if (Prototype.Browser.IE && this.horizontal) {
-                    this.ghost.style.width = Element.getWidth(this.source) + "px";
-                }
-                return this.ghost;
-            },
-
-            finalize: function (event) {
-                Element.remove(this.ghost);
-            },
-
-            adjustPosition:function(event) {
-                logger.info("<<<<<<<<<<<<<<<<<<<<< ADJUST POSTITITITITITI >>>>>>>>>>>>>>>>");
-                var savedVisibility = this.getNextElement().style.visibility;
-                this.getNextElement().style.visibility = "hidden";
-                if (this.horizontal) {
-                    var leftElementHeight = (Element.getHeight(this.getPreviousElement()));
-                    var rightElementHeight = (Element.getHeight(this.getNextElement()));
-
-                    var tableHeight = Element.getHeight(this.getContainerElement());
-                    var totalHeight = (parseInt(leftElementHeight) + parseInt(rightElementHeight));
-                    var diff = this.getDifference(event);
-                    var inPercent;
-                    if (this.resizeAction == "inc") {
-                        inPercent = (leftElementHeight + diff) / tableHeight;
-                        topInPercent = Math.round(inPercent * 100);
-                        bottomInPercent = 99 - topInPercent;
-                        this.getPreviousElement().style.height = (topInPercent) + "%";
-                        //            this.getNextElement().style.height = bottomInPercent + "%"
-
-                    } else {
-                        inPercent = (leftElementHeight - diff) / tableHeight;
-                        topInPercent = Math.round(inPercent * 100);
-                        bottomInPercent = 99 - topInPercent;
-                        this.getPreviousElement().style.height = (topInPercent) + "%";
-                        //            this.getNextElement().style.height = bottomInPercent + "%"
-
-                    }
-                } else {
-                    var leftElementWidth = (Element.getWidth(this.getPreviousElement()));
-                    var rightElementWidth = (Element.getWidth(this.getNextElement()));
-                    var splitterWidth = (Element.getWidth(this.source));
-                    var tableWidth = Element.getWidth(this.getContainerElement());
-                    var totalWidth = (parseInt(leftElementWidth) + parseInt(rightElementWidth));
-                    var diff = this.getDifference(event);
-                    if (this.resizeAction == "inc") {
-                        inPercent = (leftElementWidth + diff) / tableWidth;
-                        leftInPercent = Math.round(inPercent * 100);
-                        rightInPercent = 100 - leftInPercent;
-                        this.getPreviousElement().style.width = leftInPercent + "%";
-                        //            this.getNextElement().style.width = rightInPercent + "%"
+    getContainerElement: function() {
+        return this.source.parentNode.parentNode;
+    },
 
 
-                    } else {
-                        inPercent = (leftElementWidth - diff) / tableWidth;
-                        leftInPercent = Math.round(inPercent * 100);
-                        rightInPercent = 100 - leftInPercent;
-                        this.getPreviousElement().style.width = leftInPercent + "%";
-                        //            this.getNextElement().style.width = rightInPercent + "%"
+    getPreviousElement: function() {
+        if (this.source.previousSibling.tagName == "DIV") {
+            return this.source.previousSibling;
+        } else {
+            return this.source.previousSibling.previousSibling;
+        }
+    },
 
-                    }
-                }
-                Ice.PanelDivider.adjustSecondPaneSize(this.source, this.horizontal);
-                this.getNextElement().style.visibility = savedVisibility;
-                inPercent = inPercent + 0.01;
-                this.submitInfo(event, inPercent);
-            },
+    getNextElement: function() {
+        if (this.source.nextSibling.tagName == "DIV") {
+            return this.source.nextSibling;
+        } else {
+            return this.source.nextSibling.nextSibling;
+        }
+    },
 
-            submitInfo:function(event, inPercent) {
-                var form = Ice.util.findForm(this.source);
-                var clientId = this.getContainerElement().id;
-                var firstPaneStyleElement = $(clientId + "FirstPane");
-                var secondPaneStyleElement = $(clientId + "SecondPane");
-                var inPercentElement = $(clientId + "InPercent");
-                firstPaneStyleElement.value = this.getPreviousElement().style.cssText;
-                secondPaneStyleElement.value = this.getNextElement().style.cssText;
-                inPercentElement.value = Math.round(inPercent * 100);
-                iceSubmitPartial(form, this.source, event);
+    getGhost: function() {
+        if (!this.ghost) {
+            this.ghost = this.source.cloneNode(true);
+            this.ghost.id = this.source.id + ":ghost";
+            this.ghost.onmousedown = null;
+            this.source.parentNode.appendChild(this.ghost);
+            this.ghost.style.width = Element.getWidth(this.source) + "px";
+            this.getGhost().style.visibility = "hidden";
+        }
+        this.ghost.setStyle({width:this.source.getStyle("width")});
+        if (Prototype.Browser.IE && this.horizontal) {
+            this.ghost.style.width = Element.getWidth(this.source) + "px";
+        }
+        return this.ghost;
+    },
+
+    finalize: function (event) {
+        Element.remove(this.ghost);
+    },
+
+    adjustPosition:function(event) {
+        logger.info("<<<<<<<<<<<<<<<<<<<<< ADJUST POSTITITITITITI >>>>>>>>>>>>>>>>");
+        var savedVisibility = this.getNextElement().style.visibility;
+        this.getNextElement().style.visibility = "hidden";
+        if (this.horizontal) {
+            var leftElementHeight = (Element.getHeight(this.getPreviousElement()));
+            var rightElementHeight = (Element.getHeight(this.getNextElement()));
+
+            var tableHeight = Element.getHeight(this.getContainerElement());
+            var totalHeight = (parseInt(leftElementHeight) + parseInt(rightElementHeight));
+            var diff = this.getDifference(event);
+            var inPercent;
+            if (this.resizeAction == "inc") {
+                inPercent = (leftElementHeight + diff) / tableHeight;
+                topInPercent = Math.round(inPercent * 100);
+                bottomInPercent = 99 - topInPercent;
+                this.getPreviousElement().style.height = (topInPercent) + "%";
+                //            this.getNextElement().style.height = bottomInPercent + "%"
+
+            } else {
+                inPercent = (leftElementHeight - diff) / tableHeight;
+                topInPercent = Math.round(inPercent * 100);
+                bottomInPercent = 99 - topInPercent;
+                this.getPreviousElement().style.height = (topInPercent) + "%";
+                //            this.getNextElement().style.height = bottomInPercent + "%"
+
             }
+        } else {
+            var leftElementWidth = (Element.getWidth(this.getPreviousElement()));
+            var rightElementWidth = (Element.getWidth(this.getNextElement()));
+            var splitterWidth = (Element.getWidth(this.source));
+            var tableWidth = Element.getWidth(this.getContainerElement());
+            var totalWidth = (parseInt(leftElementWidth) + parseInt(rightElementWidth));
+            var diff = this.getDifference(event);
+            if (this.resizeAction == "inc") {
+                inPercent = (leftElementWidth + diff) / tableWidth;
+                leftInPercent = Math.round(inPercent * 100);
+                rightInPercent = 100 - leftInPercent;
+                this.getPreviousElement().style.width = leftInPercent + "%";
+                //            this.getNextElement().style.width = rightInPercent + "%"
 
-        });
+
+            } else {
+                inPercent = (leftElementWidth - diff) / tableWidth;
+                leftInPercent = Math.round(inPercent * 100);
+                rightInPercent = 100 - leftInPercent;
+                this.getPreviousElement().style.width = leftInPercent + "%";
+                //            this.getNextElement().style.width = rightInPercent + "%"
+
+            }
+        }
+        Ice.PanelDivider.adjustSecondPaneSize(this.source, this.horizontal);
+        this.getNextElement().style.visibility = savedVisibility;
+        inPercent = inPercent + 0.01;
+        this.submitInfo(event, inPercent);
+    },
+
+    submitInfo:function(event, inPercent) {
+        var form = Ice.util.findForm(this.source);
+        var clientId = this.getContainerElement().id;
+        var firstPaneStyleElement = $(clientId + "FirstPane");
+        var secondPaneStyleElement = $(clientId + "SecondPane");
+        var inPercentElement = $(clientId + "InPercent");
+        firstPaneStyleElement.value = this.getPreviousElement().style.cssText;
+        secondPaneStyleElement.value = this.getNextElement().style.cssText;
+        inPercentElement.value = Math.round(inPercent * 100);
+        iceSubmitPartial(form, this.source, event);
+    }
+
+});
 
 Ice.PanelDivider.adjustSecondPaneSize = function(divider, isHorizontal) {
     divider = $(divider);
@@ -4319,326 +4322,326 @@ Ice.PanelDivider.getParentHeight = function(element) {
  */
 
 Ice.KeyNavigator = Class.create({
-            initialize: function(componentId) {
-                this.component = $(componentId);
-                this.component.onkeydown = this.keydown.bindAsEventListener(this);
-            },
+    initialize: function(componentId) {
+        this.component = $(componentId);
+        this.component.onkeydown = this.keydown.bindAsEventListener(this);
+    },
 
-            keydown: function(event) {
-                this.srcElement = Event.element(event);
-                switch (event.keyCode) {
+    keydown: function(event) {
+        this.srcElement = Event.element(event);
+        switch (event.keyCode) {
 
-                    case Event.KEY_RETURN:
-                        this.showMenu(event);
-                        break;
+            case Event.KEY_RETURN:
+                this.showMenu(event);
+                break;
 
-                    case Event.KEY_UP:
-                        this.goNorth(event);
-                        Event.stop(event);
-                        break;
+            case Event.KEY_UP:
+                this.goNorth(event);
+                Event.stop(event);
+                break;
 
-                    case Event.KEY_DOWN:
-                        this.goSouth(event);
-                        Event.stop(event);
-                        break;
+            case Event.KEY_DOWN:
+                this.goSouth(event);
+                Event.stop(event);
+                break;
 
-                    case Event.KEY_LEFT:
-                        this.goWest(event);
-                        Event.stop(event);
-                        break;
+            case Event.KEY_LEFT:
+                this.goWest(event);
+                Event.stop(event);
+                break;
 
-                    case Event.KEY_RIGHT:
-                        this.goEast(event);
-                        Event.stop(event);
-                        break;
-                }
-            },
+            case Event.KEY_RIGHT:
+                this.goEast(event);
+                Event.stop(event);
+                break;
+        }
+    },
 
-            goNorth: function(event) {
-            },
+    goNorth: function(event) {
+    },
 
-            goSouth: function(event) {
-            },
+    goSouth: function(event) {
+    },
 
-            goWest: function(event) {
-            },
+    goWest: function(event) {
+    },
 
-            goEast: function(event) {
-            }
+    goEast: function(event) {
+    }
 
-        });
+});
 
 Ice.MenuBarKeyNavigator = Class.create(Ice.KeyNavigator, {
-            initialize: function($super, componentId, displayOnClick) {
-                $super(componentId);
-                this.displayOnClick = displayOnClick;
-                this.component.onclick = this.hideAll.bindAsEventListener(this);
-                document.onclick = this.hideAllDocument.bindAsEventListener(this);
+    initialize: function($super, componentId, displayOnClick) {
+        $super(componentId);
+        this.displayOnClick = displayOnClick;
+        this.component.onclick = this.hideAll.bindAsEventListener(this);
+        document.onclick = this.hideAllDocument.bindAsEventListener(this);
 
-                if (Element.hasClassName(this.component, 'iceMnuBarVrt')) {
-                    this.vertical = true;
-                } else {
-                    this.vertical = false;
-                }
-                this.clicked = true;
-                this.configureRootItems();
-            }
-        });
+        if (Element.hasClassName(this.component, 'iceMnuBarVrt')) {
+            this.vertical = true;
+        } else {
+            this.vertical = false;
+        }
+        this.clicked = true;
+        this.configureRootItems();
+    }
+});
 
 Ice.MenuBarKeyNavigator.addMethods({
-            goEast: function(event) {
-                this.applyFocus('e');
-            },
+    goEast: function(event) {
+        this.applyFocus('e');
+    },
 
-            goWest: function(event) {
-                this.applyFocus('w');
-            },
+    goWest: function(event) {
+        this.applyFocus('w');
+    },
 
-            goSouth: function(event) {
-                this.applyFocus('s');
-            },
+    goSouth: function(event) {
+        this.applyFocus('s');
+    },
 
-            goNorth: function(event) {
-                this.applyFocus('n');
-            },
+    goNorth: function(event) {
+        this.applyFocus('n');
+    },
 
-            focusMenuItem: function(iclass, next, direct) {
-                var ci = this.srcElement.up(iclass);
-                if (ci) {
-                    if (direct == 'e') {
-                        var sm = $(ci.id + '_sub');
-                        this.focusAnchor(sm);
-                        return;
-                    }
-
-                    if (direct == 'w') {
-                        var owner = $(ci.id.substring(0, ci.id.length - 6));
-                        if (owner) {
-                            this.focusAnchor(owner);
-                        } else {
-                            this.focusAnchor($(ci.id.substring(0, ci.id.lastIndexOf(':'))));
-                        }
-                        return;
-                    }
-
-                    var ni = null;
-                    if (next) {
-                        ni = ci.next(iclass);
-                    } else {
-                        ni = ci.previous(iclass);
-                        if (!ni && direct == 'n') {
-                            this.focusAnchor($(ci.id.substring(0, ci.id.lastIndexOf(':'))));
-                            return;
-                        }
-                    }
-                    this.focusAnchor(ni);
-                }
-            },
-
-            focusSubMenuItem: function(item) {
-                if (item) {
-                    var sm = $(item.id + '_sub');
-                    this.focusAnchor(sm);
-                }
-            },
-
-            focusAnchor: function(item) {
-                if (item) {
-                    try {
-                        var anch = item.down('a');
-                        anch.focus();
-                    } catch(e) {
-                    }
-                }
-            },
-
-            applyFocus: function(direct) {
-                var p = this.srcElement.parentNode;
-                var pm = Element.hasClassName(p, this.getPopupMenuClass());
-                var mb = Element.hasClassName(p, this.getMenuBarItemClass());
-                var mi = Element.hasClassName(p, this.getMenuItemClass());
-
-                if (mb) {
-                    switch (direct) {
-                        case 's':
-                            if (this.vertical)
-                                this.focusMenuItem('.' + this.getMenuBarItemClass(), true);
-                            else
-                                this.focusSubMenuItem(p);
-                            break;
-
-                        case 'e':
-                            if (this.vertical)
-                                this.focusSubMenuItem(p);
-                            else
-                                this.focusMenuItem('.' + this.getMenuBarItemClass(), true);
-                            break;
-
-                        case 'w':
-                            this.focusMenuItem('.' + this.getMenuBarItemClass());
-                            break;
-
-                        case 'n':
-                            if (this.vertical)
-                                this.focusMenuItem('.' + this.getMenuBarItemClass());
-                            break;
-                    }
-
-                } else if (mi) {
-                    this.focusMenuItem('.' + this.getMenuItemClass(), direct == 's', direct);
-                } else if (pm) {
-                    switch (direct) {
-                        case 'n':
-                            this.focusMenuItem('.' + this.getPopupMenuClass());
-                            break;
-                        case 's':
-                            this.focusMenuItem('.' + this.getPopupMenuClass(), true);
-                            break;
-                        case 'e':
-                            this.focusSubMenuItem(p);
-                            break;
-
-                    }
-                }
-            },
-
-
-            getMenuBarItemClass: function(event) {
-                if (this.vertical) {
-                    return "iceMnuBarVrtItem";
-                } else {
-                    return "iceMnuBarItem";
-                }
-            },
-
-            getSubMenuClass: function(event) {
-                if (this.vertical) {
-                    return "iceMnuBarVrtSubMenu";
-                } else {
-                    return "iceMnuBarSubMenu";
-                }
-            },
-
-            getSubMenuIndClass: function(event) {
-                if (this.vertical) {
-                    return "iceMnuBarVrtSubMenuInd";
-                } else {
-                    return "iceMnuBarSubMenuInd";
-                }
-            },
-
-            getRootClass: function() {
-                if (this.vertical) {
-                    return "iceMnuBarVrt";
-                } else {
-                    return "iceMnuBar";
-                }
-            },
-
-            getMenuItemClass: function() {
-                return "iceMnuItm";
-            },
-
-            getPopupMenuClass: function() {
-                return "iceMnuPopVrtItem";
-            },
-
-            hover: function(event, element, isMouseDown) {
-                if (!isMouseDown) {
-                    if (Ice.Menu.currentHover && Ice.Menu.currentHover == element.id) {
-                        //already hovered do nothing
-                        return;
-                    }
-                }
-                Ice.Menu.currentHover = element.id;
-                if (this.clicked) {
-                    if (this.displayOnClick && Ice.Menu.lastClickedMenu != this.component.id) {
-                        this.clicked = false;
-                        return;
-                    }
-
-                    var submenu = $(element.id + '_sub');
-                    Ice.Menu.hideOrphanedMenusNotRelatedTo(element);
-                    if (this.vertical) {
-                        Ice.Menu.show(this.component, submenu, element);
-                    } else {
-                        Ice.Menu.show(element, submenu, null);
-                    }
-                }
-            },
-
-            mousedown: function(event, element) {
-                Ice.Menu.lastClickedMenu = this.component.id;
-                if (this.clicked) {
-                    this.clicked = false;
-                } else {
-                    this.clicked = true;
-                    this.hover(event, element, true);
-                }
-            },
-
-            focus: function(event, element) {
-                this.hover(event, element);
-            },
-
-            configureRootItems: function () {
-                var rootLevelItems = this.component.childNodes;
-                for (i = 0; i < rootLevelItems.length; i++) {
-                    var element = rootLevelItems[i];
-                    if (element.tagName == "DIV") {
-                        if (Element.hasClassName(element, this.getMenuBarItemClass())) {
-                            element.onmouseover = this.hover.bindAsEventListener(this, element);
-                            //add focus support
-                            var anch = element.firstChild;
-                            if (anch.tagName == "A") {
-                                anch.onfocus = this.focus.bindAsEventListener(this, element);
-                            }
-                            if (this.displayOnClick) {
-                                element.onmousedown = this.mousedown.bindAsEventListener(this, element);
-                                this.clicked = false;
-                            }
-                        }
-                    }
-                }
-            },
-
-            hideAll:function(event) {
-                element = Event.element(event);
-                var baritem = element.up('.' + this.getMenuBarItemClass());
-                var elt = event.element();
-                if (elt && elt.match("a[onclick]")) {
-                    elt = elt.down();
-                }
-                if (elt) {
-                    elt = elt.up(".iceMnuItm a[onclick^='return false']");
-                }
-                if (!(baritem && this.clicked) && !elt) {
-                    Ice.Menu.lastClickedMenue = null;
-                    Ice.Menu.hideAll();
-                    if (this.displayOnClick) {
-                        this.clicked = false;
-                    }
-                }
-                event.stopPropagation();
-            },
-
-            hideAllDocument:function(event) {
-                Ice.Menu.lastClickedMenu = "document";
-                if (this.displayOnClick) {
-                    this.clicked = false;
-                }
-                Ice.Menu.hideAll();
-            },
-
-            showMenu:function(event) {
-                element = Event.element(event);
-                var baritem = element.up('.' + this.getMenuBarItemClass());
-                if (baritem && this.displayOnClick) {
-                    this.mousedown(event, baritem);
-                }
+    focusMenuItem: function(iclass, next, direct) {
+        var ci = this.srcElement.up(iclass);
+        if (ci) {
+            if (direct == 'e') {
+                var sm = $(ci.id + '_sub');
+                this.focusAnchor(sm);
+                return;
             }
 
-        });
+            if (direct == 'w') {
+                var owner = $(ci.id.substring(0, ci.id.length - 6));
+                if (owner) {
+                    this.focusAnchor(owner);
+                } else {
+                    this.focusAnchor($(ci.id.substring(0, ci.id.lastIndexOf(':'))));
+                }
+                return;
+            }
+
+            var ni = null;
+            if (next) {
+                ni = ci.next(iclass);
+            } else {
+                ni = ci.previous(iclass);
+                if (!ni && direct == 'n') {
+                    this.focusAnchor($(ci.id.substring(0, ci.id.lastIndexOf(':'))));
+                    return;
+                }
+            }
+            this.focusAnchor(ni);
+        }
+    },
+
+    focusSubMenuItem: function(item) {
+        if (item) {
+            var sm = $(item.id + '_sub');
+            this.focusAnchor(sm);
+        }
+    },
+
+    focusAnchor: function(item) {
+        if (item) {
+            try {
+                var anch = item.down('a');
+                anch.focus();
+            } catch(e) {
+            }
+        }
+    },
+
+    applyFocus: function(direct) {
+        var p = this.srcElement.parentNode;
+        var pm = Element.hasClassName(p, this.getPopupMenuClass());
+        var mb = Element.hasClassName(p, this.getMenuBarItemClass());
+        var mi = Element.hasClassName(p, this.getMenuItemClass());
+
+        if (mb) {
+            switch (direct) {
+                case 's':
+                    if (this.vertical)
+                        this.focusMenuItem('.' + this.getMenuBarItemClass(), true);
+                    else
+                        this.focusSubMenuItem(p);
+                    break;
+
+                case 'e':
+                    if (this.vertical)
+                        this.focusSubMenuItem(p);
+                    else
+                        this.focusMenuItem('.' + this.getMenuBarItemClass(), true);
+                    break;
+
+                case 'w':
+                    this.focusMenuItem('.' + this.getMenuBarItemClass());
+                    break;
+
+                case 'n':
+                    if (this.vertical)
+                        this.focusMenuItem('.' + this.getMenuBarItemClass());
+                    break;
+            }
+
+        } else if (mi) {
+            this.focusMenuItem('.' + this.getMenuItemClass(), direct == 's', direct);
+        } else if (pm) {
+            switch (direct) {
+                case 'n':
+                    this.focusMenuItem('.' + this.getPopupMenuClass());
+                    break;
+                case 's':
+                    this.focusMenuItem('.' + this.getPopupMenuClass(), true);
+                    break;
+                case 'e':
+                    this.focusSubMenuItem(p);
+                    break;
+
+            }
+        }
+    },
+
+
+    getMenuBarItemClass: function(event) {
+        if (this.vertical) {
+            return "iceMnuBarVrtItem";
+        } else {
+            return "iceMnuBarItem";
+        }
+    },
+
+    getSubMenuClass: function(event) {
+        if (this.vertical) {
+            return "iceMnuBarVrtSubMenu";
+        } else {
+            return "iceMnuBarSubMenu";
+        }
+    },
+
+    getSubMenuIndClass: function(event) {
+        if (this.vertical) {
+            return "iceMnuBarVrtSubMenuInd";
+        } else {
+            return "iceMnuBarSubMenuInd";
+        }
+    },
+
+    getRootClass: function() {
+        if (this.vertical) {
+            return "iceMnuBarVrt";
+        } else {
+            return "iceMnuBar";
+        }
+    },
+
+    getMenuItemClass: function() {
+        return "iceMnuItm";
+    },
+
+    getPopupMenuClass: function() {
+        return "iceMnuPopVrtItem";
+    },
+
+    hover: function(event, element, isMouseDown) {
+        if (!isMouseDown) {
+            if (Ice.Menu.currentHover && Ice.Menu.currentHover == element.id) {
+                //already hovered do nothing
+                return;
+            }
+        }
+        Ice.Menu.currentHover = element.id;
+        if (this.clicked) {
+            if (this.displayOnClick && Ice.Menu.lastClickedMenu != this.component.id) {
+                this.clicked = false;
+                return;
+            }
+
+            var submenu = $(element.id + '_sub');
+            Ice.Menu.hideOrphanedMenusNotRelatedTo(element);
+            if (this.vertical) {
+                Ice.Menu.show(this.component, submenu, element);
+            } else {
+                Ice.Menu.show(element, submenu, null);
+            }
+        }
+    },
+
+    mousedown: function(event, element) {
+        Ice.Menu.lastClickedMenu = this.component.id;
+        if (this.clicked) {
+            this.clicked = false;
+        } else {
+            this.clicked = true;
+            this.hover(event, element, true);
+        }
+    },
+
+    focus: function(event, element) {
+        this.hover(event, element);
+    },
+
+    configureRootItems: function () {
+        var rootLevelItems = this.component.childNodes;
+        for (i = 0; i < rootLevelItems.length; i++) {
+            var element = rootLevelItems[i];
+            if (element.tagName == "DIV") {
+                if (Element.hasClassName(element, this.getMenuBarItemClass())) {
+                    element.onmouseover = this.hover.bindAsEventListener(this, element);
+                    //add focus support
+                    var anch = element.firstChild;
+                    if (anch.tagName == "A") {
+                        anch.onfocus = this.focus.bindAsEventListener(this, element);
+                    }
+                    if (this.displayOnClick) {
+                        element.onmousedown = this.mousedown.bindAsEventListener(this, element);
+                        this.clicked = false;
+                    }
+                }
+            }
+        }
+    },
+
+    hideAll:function(event) {
+        element = Event.element(event);
+        var baritem = element.up('.' + this.getMenuBarItemClass());
+        var elt = event.element();
+        if (elt && elt.match("a[onclick]")) {
+            elt = elt.down();
+        }
+        if (elt) {
+            elt = elt.up(".iceMnuItm a[onclick^='return false']");
+        }
+        if (!(baritem && this.clicked) && !elt) {
+            Ice.Menu.lastClickedMenue = null;
+            Ice.Menu.hideAll();
+            if (this.displayOnClick) {
+                this.clicked = false;
+            }
+        }
+        event.stopPropagation();
+    },
+
+    hideAllDocument:function(event) {
+        Ice.Menu.lastClickedMenu = "document";
+        if (this.displayOnClick) {
+            this.clicked = false;
+        }
+        Ice.Menu.hideAll();
+    },
+
+    showMenu:function(event) {
+        element = Event.element(event);
+        var baritem = element.up('.' + this.getMenuBarItemClass());
+        if (baritem && this.displayOnClick) {
+            this.mousedown(event, baritem);
+        }
+    }
+
+});
 
 /*
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -4676,55 +4679,55 @@ Ice.MenuBarKeyNavigator.addMethods({
 Ice.dataTable = {};
 
 Ice.dataTable.DataTable = Class.create({
-            initialize: function(id) {
-                this.id = id;
-                this.resizeObserver = this.resize.bindAsEventListener(this);
-            },
+    initialize: function(id) {
+        this.id = id;
+        this.resizeObserver = this.resize.bindAsEventListener(this);
+    },
 
-            resize: function() {
-                var table = $(this.id);
-                if (!table) return;
-                var scrollTable = table.select("div.iceDatTblScrlSpr")[0];
-                //no scrollabletable
-                if (!scrollTable) return;
+    resize: function() {
+        var table = $(this.id);
+        if (!table) return;
+        var scrollTable = table.select("div.iceDatTblScrlSpr")[0];
+        //no scrollabletable
+        if (!scrollTable) return;
 
-                var spacer = scrollTable.select("table > thead > tr > th:last-child > div")[0];
-                var body = table.select("div.iceDatTblScrlSpr + div")[0];
-                //nobody
-                if (!body) return;
+        var spacer = scrollTable.select("table > thead > tr > th:last-child > div")[0];
+        var body = table.select("div.iceDatTblScrlSpr + div")[0];
+        //nobody
+        if (!body) return;
 
-                var borderLeftWidth = body.getStyle("borderLeftWidth");
-                var borderRightWidth = body.getStyle("borderRightWidth");
-                if (Prototype.Browser.IE && body.scrollHeight > body.clientHeight) {
-                    body.style.overflowX = "hidden";
-                    body.style.overflowY = "scroll";
-                }
-                var width = body.getWidth();
-                var scrollWidth = width - body.clientWidth;
+        var borderLeftWidth = body.getStyle("borderLeftWidth");
+        var borderRightWidth = body.getStyle("borderRightWidth");
+        if (Prototype.Browser.IE && body.scrollHeight > body.clientHeight) {
+            body.style.overflowX = "hidden";
+            body.style.overflowY = "scroll";
+        }
+        var width = body.getWidth();
+        var scrollWidth = width - body.clientWidth;
 
-                //no scroller
-                if (scrollWidth == 0) return;
+        //no scroller
+        if (scrollWidth == 0) return;
 
-                body.setStyle({borderLeftWidth:0, borderRightWidth:0});
-                var innerTable = body.select("table")[0];
-                var headerTable = scrollTable.select("table")[0];
+        body.setStyle({borderLeftWidth:0, borderRightWidth:0});
+        var innerTable = body.select("table")[0];
+        var headerTable = scrollTable.select("table")[0];
 
-                if (spacer)
-                    spacer.setStyle({width:scrollWidth + "px"});
+        if (spacer)
+            spacer.setStyle({width:scrollWidth + "px"});
 
-                //fixing IE6 bug, table width should be decreased by scrollWidth
-                var innerTable = body.select("table")[0];
-                if (innerTable) {
-                    var innerTableWidth = innerTable.getWidth();
-                    if (Prototype.Browser.IE) {
-                        //            innerTable.setStyle({width:body.clientWidth  + "px"});
-                    }
-                }
-
-                body.setStyle({borderLeftWidth:borderLeftWidth, borderRightWidth:borderRightWidth});
-
+        //fixing IE6 bug, table width should be decreased by scrollWidth
+        var innerTable = body.select("table")[0];
+        if (innerTable) {
+            var innerTableWidth = innerTable.getWidth();
+            if (Prototype.Browser.IE) {
+                //            innerTable.setStyle({width:body.clientWidth  + "px"});
             }
-        });
+        }
+
+        body.setStyle({borderLeftWidth:borderLeftWidth, borderRightWidth:borderRightWidth});
+
+    }
+});
 
 Ice.dataTable.DataTable.hash = $H();
 
@@ -4741,78 +4744,78 @@ Ice.dataTable.onLoad = function(id) {
     Ice.dataTable.DataTable.hash.set(id, table);
 };
 Ice.PanelConfirmation = Class.create({
-            initialize: function(trigger, e, confirmationPanelId, autoCentre, draggable, displayAtMouse, iframeUrl, handler) {
-                this.srcComp = trigger;
-                this.event = e;
-                this.panel = $(confirmationPanelId);
-                this.url = iframeUrl;
-                this.srcHandler = handler;
+    initialize: function(trigger, e, confirmationPanelId, autoCentre, draggable, displayAtMouse, iframeUrl, handler) {
+        this.srcComp = trigger;
+        this.event = e;
+        this.panel = $(confirmationPanelId);
+        this.url = iframeUrl;
+        this.srcHandler = handler;
 
-                this.isAutoCentre = autoCentre;
-                this.isDraggable = draggable;
-                this.isAtMouse = displayAtMouse;
+        this.isAutoCentre = autoCentre;
+        this.isDraggable = draggable;
+        this.isAtMouse = displayAtMouse;
 
-                Ice.PanelConfirmation.current = this;
-                this.showPanel();
-            },
-            showPanel: function() {
-                Ice.modal.start(this.panel.id, this.url);
-                Ice.iFrameFix.start(this.panel.id, this.url);
-                this.panel.style.display = '';
-                this.handleDraggableObject();
-                Ice.autoPosition.stop(this.panel.id);
-                if (this.isAtMouse) {
-                    this.panel.style.left = parseInt(Event.pointerX(this.event)) + "px";
-                    this.panel.style.top = parseInt(Event.pointerY(this.event)) + "px";
-                } else {
-                    Ice.autoCentre.start(this.panel.id);
-                }
-                if (!this.isAutoCentre) {
-                    Ice.autoCentre.stop(this.panel.id);
-                }
-                this.setDefaultFocus();
-            },
-            accept: function() {
-                this.close();
-                setFocus(this.srcComp.id);
-                this.srcHandler.call(this.srcComp, this.event);
-            },
-            cancel: function() {
-                this.close();
-            },
-            close: function() {
-                Ice.PanelConfirmation.current = null;
-                this.panel.style.visibility = 'hidden';
-                this.panel.style.display = 'none';
-                Ice.modal.stop(this.panel.id);
-                Ice.autoCentre.stop(this.panel.id);
-                Draggable.removeMe(this.panel.id);
-                if (Ice.Focus && Ice.Focus.setFocus) {
-                    Ice.Focus.setFocus(this.srcComp.id);
-                }
-            },
-            handleDraggableObject: function() {
-                if (this.isDraggable) {
-                    Ice.DnD.adjustPosition(this.panel.id);
-                    new Draggable(this.panel.id, {
-                                handle:this.panel.id + '-handle',
-                                dragGhost:false,
-                                dragCursor:false,
-                                ghosting:false,
-                                revert:false,
-                                mask:'1,2,3,4,5'
-                            });
-                }
-            },
-            setDefaultFocus: function() {
-                var cancel = $(this.panel.id + '-cancel');
-                if (cancel) {
-                    cancel.focus();
-                } else {
-                    $(this.panel.id + '-accept').focus();
-                }
-            }
-        });
+        Ice.PanelConfirmation.current = this;
+        this.showPanel();
+    },
+    showPanel: function() {
+        Ice.modal.start(this.panel.id, this.url);
+        Ice.iFrameFix.start(this.panel.id, this.url);
+        this.panel.style.display = '';
+        this.handleDraggableObject();
+        Ice.autoPosition.stop(this.panel.id);
+        if (this.isAtMouse) {
+            this.panel.style.left = parseInt(Event.pointerX(this.event)) + "px";
+            this.panel.style.top = parseInt(Event.pointerY(this.event)) + "px";
+        } else {
+            Ice.autoCentre.start(this.panel.id);
+        }
+        if (!this.isAutoCentre) {
+            Ice.autoCentre.stop(this.panel.id);
+        }
+        this.setDefaultFocus();
+    },
+    accept: function() {
+        this.close();
+        setFocus(this.srcComp.id);
+        this.srcHandler.call(this.srcComp, this.event);
+    },
+    cancel: function() {
+        this.close();
+    },
+    close: function() {
+        Ice.PanelConfirmation.current = null;
+        this.panel.style.visibility = 'hidden';
+        this.panel.style.display = 'none';
+        Ice.modal.stop(this.panel.id);
+        Ice.autoCentre.stop(this.panel.id);
+        Draggable.removeMe(this.panel.id);
+        if (Ice.Focus && Ice.Focus.setFocus) {
+            Ice.Focus.setFocus(this.srcComp.id);
+        }
+    },
+    handleDraggableObject: function() {
+        if (this.isDraggable) {
+            Ice.DnD.adjustPosition(this.panel.id);
+            new Draggable(this.panel.id, {
+                handle:this.panel.id + '-handle',
+                dragGhost:false,
+                dragCursor:false,
+                ghosting:false,
+                revert:false,
+                mask:'1,2,3,4,5'
+            });
+        }
+    },
+    setDefaultFocus: function() {
+        var cancel = $(this.panel.id + '-cancel');
+        if (cancel) {
+            cancel.focus();
+        } else {
+            $(this.panel.id + '-accept').focus();
+        }
+    }
+});
 
 Ice.PanelConfirmation.current = null;
 
@@ -4828,63 +4831,63 @@ Ice.Calendar.addCloseListener = function(calendar, form, commandLink, hiddenFiel
 };
 
 Ice.Calendar.CloseListener = Class.create({
-            initialize: function(calendar, form, commandLink, hiddenField) {
-                this.calendarId = calendar;
-                this.formId = form;
-                this.commandLinkId = commandLink;
-                this.hiddenFieldId = hiddenField;
+    initialize: function(calendar, form, commandLink, hiddenField) {
+        this.calendarId = calendar;
+        this.formId = form;
+        this.commandLinkId = commandLink;
+        this.hiddenFieldId = hiddenField;
 
-                this.popupId = this.calendarId + '_ct';
-                this.buttonId = this.calendarId + '_cb'
+        this.popupId = this.calendarId + '_ct';
+        this.buttonId = this.calendarId + '_cb'
 
-                this.handler = this.closePopupOnClickOutside.bindAsEventListener(this);
-                Event.observe(document, 'click', this.handler);
-            },
-            closePopupOnClickOutside: function(event) {
-                if (this.getPopup()) {
-                    if (this.isInPopup(event.element())) {
-                        return;
-                    }
-                    if (this.isWithin(this.getPopup(), event)) {
-                        return;
-                    }
-                    if (event.element() == this.getButton()) {
-                        this.dispose();
-                        return;
-                    }
-
-                    var id = event.element().id;
-                    if (id) setFocus(id);
-                    else setFocus('');
-
-                    this.submit(event);
-                    this.dispose();
-                }
-            },
-            isInPopup: function(element) {
-                if (element.id == this.popupId) return true;
-                if (element == undefined || element == document) return false;
-                return this.isInPopup(element.parentNode);
-            },
-            isWithin: function(element, event) {
-                return Position.within(element, Event.pointerX(event), Event.pointerY(event));
-            },
-            dispose: function() {
-                Ice.Calendar.listeners[this.calendarId] = null;
-                Event.stopObserving(document, 'click', this.handler);
-            },
-            submit: function(event) {
-                document.forms[this.formId][this.commandLinkId].value = this.getButton().id;
-                document.forms[this.formId][this.hiddenFieldId].value = 'toggle';
-                iceSubmitPartial(document.forms[this.formId], this.getButton(), event);
-            },
-            getPopup: function() {
-                return $(this.popupId);
-            },
-            getButton: function() {
-                return $(this.buttonId);
+        this.handler = this.closePopupOnClickOutside.bindAsEventListener(this);
+        Event.observe(document, 'click', this.handler);
+    },
+    closePopupOnClickOutside: function(event) {
+        if (this.getPopup()) {
+            if (this.isInPopup(event.element())) {
+                return;
             }
-        });
+            if (this.isWithin(this.getPopup(), event)) {
+                return;
+            }
+            if (event.element() == this.getButton()) {
+                this.dispose();
+                return;
+            }
+
+            var id = event.element().id;
+            if (id) setFocus(id);
+            else setFocus('');
+
+            this.submit(event);
+            this.dispose();
+        }
+    },
+    isInPopup: function(element) {
+        if (element.id == this.popupId) return true;
+        if (element == undefined || element == document) return false;
+        return this.isInPopup(element.parentNode);
+    },
+    isWithin: function(element, event) {
+        return Position.within(element, Event.pointerX(event), Event.pointerY(event));
+    },
+    dispose: function() {
+        Ice.Calendar.listeners[this.calendarId] = null;
+        Event.stopObserving(document, 'click', this.handler);
+    },
+    submit: function(event) {
+        document.forms[this.formId][this.commandLinkId].value = this.getButton().id;
+        document.forms[this.formId][this.hiddenFieldId].value = 'toggle';
+        iceSubmitPartial(document.forms[this.formId], this.getButton(), event);
+    },
+    getPopup: function() {
+        return $(this.popupId);
+    },
+    getButton: function() {
+        return $(this.buttonId);
+    }
+});
 
 /*
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -4935,7 +4938,7 @@ Ice.Menu = {
     },
     printHoverMenuAndOpenMenus: function(hoverMenu) {
         alert('hoverMenu=[' + hoverMenu.id + ']\n'
-                + 'openMenus=[' + Ice.Menu.printOpenMenus() + ']');
+            + 'openMenus=[' + Ice.Menu.printOpenMenus() + ']');
     },
     printArray: function(arrayToPrint) {
         var buffer = '';
@@ -4976,12 +4979,12 @@ Ice.Menu = {
             if (menu && menu.style.display == '') return;
             Ice.Menu.showMenuWithId(submenu);
             var supmVPO = supermenu.viewportOffset(),
-                    submVPO = submenu.viewportOffset(),
-                    viewport = document.viewport,
-                    supmOW = supermenu.offsetWidth,
-                    submOW = submenu.offsetWidth,
-                    submOH = submenu.offsetHeight,
-                    supmOH = supermenu.offsetHeight;
+                submVPO = submenu.viewportOffset(),
+                viewport = document.viewport,
+                supmOW = supermenu.offsetWidth,
+                submOW = submenu.offsetWidth,
+                submOH = submenu.offsetHeight,
+                supmOH = supermenu.offsetHeight;
             submenuDiv = $(submenuDiv);
             if (submenuDiv) {
                 var subdOH = submenuDiv.offsetHeight;
@@ -5007,10 +5010,10 @@ Ice.Menu = {
                 } else {
                     if (Prototype.Browser.IE)
                         Ice.clonePositionIE(submenu, submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
-                                    offsetTop:- submOH + subdOH});
+                            offsetTop:- submOH + subdOH});
                     else
                         submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false,
-                                    offsetTop:- submOH + subdOH});
+                            offsetTop:- submOH + subdOH});
                 }
             } else {
                 // ICE-3196, ICE-3620
@@ -5023,10 +5026,10 @@ Ice.Menu = {
                 } else {
                     if (Prototype.Browser.IE)
                         Ice.clonePositionIE(submenu, supermenu, {setTop:false, setWidth:false, setHeight:false,
-                                    offsetLeft:viewport.getWidth() - supmVPO.left - submOW}, supmVPO);
+                            offsetLeft:viewport.getWidth() - supmVPO.left - submOW}, supmVPO);
                     else
                         submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false,
-                                    offsetLeft:viewport.getWidth() - supmVPO.left - submOW});
+                            offsetLeft:viewport.getWidth() - supmVPO.left - submOW});
 
                 }
                 if (supmVPO.top + supmOH + submOH < viewport.getHeight()) {
@@ -5108,9 +5111,9 @@ Ice.Menu = {
             }
             else if (event.clientX || event.clientY) {
                 posx = event.clientX + document.body.scrollLeft
-                        + document.documentElement.scrollLeft;
+                    + document.documentElement.scrollLeft;
                 posy = event.clientY + document.body.scrollTop
-                        + document.documentElement.scrollTop;
+                    + document.documentElement.scrollTop;
             }
             if (dynamic) {
                 dynamic.value = posx + ", " + posy + ", " + popupMenu + ", " + targComp;
@@ -5294,13 +5297,13 @@ Ice.clonePositionIE = function(element, source, options, sourceVOS) {
         }
     }
     var options = Object.extend({
-                setLeft:    true,
-                setTop:     true,
-                setWidth:   true,
-                setHeight:  true,
-                offsetTop:  0,
-                offsetLeft: 0
-            }, arguments[2] || { });
+        setLeft:    true,
+        setTop:     true,
+        setWidth:   true,
+        setHeight:  true,
+        offsetTop:  0,
+        offsetLeft: 0
+    }, arguments[2] || { });
     element = $(element);
     // find page position of source
     var p = null;
@@ -5335,7 +5338,7 @@ Ice.clonePositionIE = function(element, source, options, sourceVOS) {
             repositioned = true;
         } else {
             repositioned = !((parent['_top'] == top && parent['_left'] == left) &&
-                    (parent['_bodyScrollTop'] == bdyScrollTop && parent['_bodyScrollLeft'] == bdyScrollLeft));
+                (parent['_bodyScrollTop'] == bdyScrollTop && parent['_bodyScrollLeft'] == bdyScrollLeft));
         }
 
         parent['_top'] = top;
@@ -5390,8 +5393,8 @@ Ice.treeNavigator = {
             case 37: //left
                 //root node
                 if (imgSrc.indexOf('top_close_no_siblings') > 0 ||
-                        imgSrc.indexOf('middle_close') > 0 ||
-                        imgSrc.indexOf('bottom_close') > 0) {
+                    imgSrc.indexOf('middle_close') > 0 ||
+                    imgSrc.indexOf('bottom_close') > 0) {
                     logger.info('LEFT_KEY: top_close_no_siblings FOUND, root Node opend close it and reinitialize index');
                     ele.onclick();
                     Ice.treeNavigator.reset();
@@ -5402,8 +5405,8 @@ Ice.treeNavigator = {
 
             case 39: //right
                 if (imgSrc.indexOf('top_open_no_siblings') > 0 ||
-                        imgSrc.indexOf('middle_open') > 0 ||
-                        imgSrc.indexOf('bottom_open') > 0) {
+                    imgSrc.indexOf('middle_open') > 0 ||
+                    imgSrc.indexOf('bottom_open') > 0) {
                     ele.onclick();
                     Ice.treeNavigator.reset();
                     return false;
@@ -5801,8 +5804,8 @@ Ice.selectChange = function(form, elem, event, partialSubmitDelay) {
         var currentTime = new Date();
         var currentMillis = currentTime.getTime();
         if (! elem.lastTime ||
-                ((currentMillis - elem.lastTime) > partialSubmitDelay) ||
-                (partialSubmitDelay <= 0)) {
+            ((currentMillis - elem.lastTime) > partialSubmitDelay) ||
+            (partialSubmitDelay <= 0)) {
             elem.lastTime = currentTime.getTime();
             return iceSubmitPartial(form, elem, event);
         }
