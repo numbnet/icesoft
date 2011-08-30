@@ -21,7 +21,9 @@
 
 package org.icefaces.demo.scopes;
 
-public class Counter {
+import java.io.Serializable;
+
+public class Counter implements Serializable {
     private int count = 0;
 
     public int getCount() {
