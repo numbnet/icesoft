@@ -43,7 +43,7 @@ public class MojarraDebugTagListener implements SystemEventListener {
     private static final Logger LOGGER = Logger.getLogger(MojarraDebugTagListener.class.getName());
 
     public boolean isListenerForSource(Object source) {
-        return true;
+        return source.getClass().getName().equals("com.sun.faces.facelets.tag.ui.UIDebug");
     }
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
