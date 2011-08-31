@@ -46,7 +46,7 @@ import java.io.Serializable;
  * @since 1.7
  */
 @ManagedBean(name = "outputProgressController")
-@ViewScoped
+@SessionScoped
 public class OutputProgressController implements Serializable{
 
     public static Logger log = Logger.getLogger("OutputProgressController");
