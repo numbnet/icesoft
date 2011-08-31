@@ -200,10 +200,10 @@ public class PushRenderer {
                         log.fine("PushContext not initialized yet.");
                     } else {
                         if (options instanceof PushMessage)  {
-                            pushContext.push( groupName, 
+                            pushContext.push( group, 
                                 new PushNotification(options.getAttributes()) );
                         } else {
-                            pushContext.push( groupName, 
+                            pushContext.push( group, 
                                 new PushConfiguration(options.getAttributes()) );
                         }
                     }
