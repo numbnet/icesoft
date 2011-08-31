@@ -19,6 +19,8 @@
  * Contributor(s): _____________________.
  */
 
+Position.includeScrollOffsets = true;
+
 Ice.DnD = Class.create();
 var IceLoaded = false;
 Ice.DnD.logger = Class.create();
