@@ -14,43 +14,38 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
- *
  */
 
 package org.icepush;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Observer;
 
-public interface PushGroupManager {
-    void addMember(String groupName, String pushId);
+public class PushNotification extends PushConfiguration {
+    public static String SUBJECT = "subject";
+    public static String DETAIL = "detail";
 
-    void addObserver(Observer observer);
+    public PushNotification(String subject)  {
+        getAttributes().put(SUBJECT, subject);
+    }
+    
+    public PushNotification(String subject, String detail)  {
+        getAttributes().put(SUBJECT, (String) subject);
+        getAttributes().put(DETAIL, detail);
+    }
 
-    void addPushGroupListener(PushGroupListener listener);
+    public PushNotification(Map<String, Object> attributes)  {
+        super(attributes);
+    }
 
-    void deleteObserver(Observer observer);
+    public String getSubject() {
+        return (String) getAttributes().get(SUBJECT);
+    }
 
-    String[] getPendingNotifications();
-
-    Map<String, String[]> getGroupMap();
-
-    void notifyObservers(List pushIdList);
-
-    void push(String groupName);
-
-    void push(String groupName, PushConfiguration config);
-
-    void park(String[] pushIds, String notifyBackURI);
-
-    void removeMember(String groupName, String pushId);
-
-    void removePushGroupListener(PushGroupListener listener);
-
-    void shutdown();
-
+    public String getDetail() {
+        return (String) getAttributes().get(DETAIL);
+    }
 }

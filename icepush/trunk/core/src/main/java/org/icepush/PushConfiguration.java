@@ -14,18 +14,29 @@
  * The Original Code is ICEfaces 1.5 open source software code, released
  * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
  * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2010 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * 2004-2009 ICEsoft Technologies Canada, Corp. All Rights Reserved.
  *
  * Contributor(s): _____________________.
- *
  */
 
 package org.icepush;
 
-public interface OutOfBandNotifier {
+import java.util.HashMap;
+import java.util.Map;
 
-    void broadcast(PushNotification notification, String[] uris);
+public class PushConfiguration {
+    private Map<String, Object> attributes = new HashMap();
 
-    void registerProvider(String protocol, NotificationProvider provider);
+    public PushConfiguration()  {
+        attributes = new HashMap<String, Object>();
+    }
+
+    public PushConfiguration(Map<String, Object> attributes)  {
+        this.attributes = attributes;
+    }
+
+    public Map<String, Object> getAttributes()  {
+        return attributes;
+    }
 
 }

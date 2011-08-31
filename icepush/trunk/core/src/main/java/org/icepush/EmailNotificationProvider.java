@@ -36,6 +36,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.net.URI;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,15 +66,15 @@ public class EmailNotificationProvider implements NotificationProvider {
         outOfBandNotifier.registerProvider("mail", this);
     }
 
-    public void send(String uri, PushMessage message) {
+    public void send(String uri, PushNotification notification) {
         URI destinationURI = URI.create(uri);
 
         MimeMessage mimeMessage = new MimeMessage(session);
         try {
             mimeMessage.setFrom(fromAddress);
             mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(destinationURI.getSchemeSpecificPart()));
-            mimeMessage.setSubject(message.getPropertyAsString("subject"));
-            mimeMessage.setText(message.getPropertyAsString("body"));
+            mimeMessage.setSubject(notification.getSubject());
+            mimeMessage.setText(notification.getDetail());
             Transport.send(mimeMessage);
         } catch (MessagingException ex) {
             log.log(Level.WARNING, "Failed to send email message.", ex);
