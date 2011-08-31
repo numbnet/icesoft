@@ -26,6 +26,8 @@ import org.icefaces.impl.event.BridgeSetup;
 import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
 import org.icepush.PushContext;
+import org.icepush.PushConfiguration;
+import org.icepush.PushNotification;
 
 import javax.faces.context.FacesContext;
 import java.util.Map;
@@ -140,14 +142,20 @@ public class PushRenderer {
      * that have their blocking connection paused.
      *
      * @param groupName the name of the group of sessions to render.
-     * @param message   the message to be sent
+     * @param options   options for this push request
      */
-    public static void render(String groupName, PushRendererMessage message) {
+    public static void render(String groupName, PushOptions options) {
         if (EnvUtils.isICEpushPresent()) {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
             PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
-            pushContext.push(groupName, message.toPushMessage());
+            if (options instanceof PushMessage)  {
+                pushContext.push( groupName, 
+                        new PushNotification(options.getAttributes()) );
+            } else {
+                pushContext.push( groupName, 
+                        new PushConfiguration(options.getAttributes()) );
+            }
         } else {
             log.warning(MissingICEpushMessage);
         }
@@ -185,14 +193,19 @@ public class PushRenderer {
                     }
                 }
 
-                public void render(String group, PushRendererMessage message) {
+                public void render(String group, PushOptions options) {
                     //delay PushContext lookup until is needed
                     PushContext pushContext = (PushContext) applicationMap.get(PushContext.class.getName());
                     if (pushContext == null) {
                         log.fine("PushContext not initialized yet.");
                     } else {
-
-                        pushContext.push(group, message.toPushMessage());
+                        if (options instanceof PushMessage)  {
+                            pushContext.push( groupName, 
+                                new PushNotification(options.getAttributes()) );
+                        } else {
+                            pushContext.push( groupName, 
+                                new PushConfiguration(options.getAttributes()) );
+                        }
                     }
                 }
             };
@@ -204,7 +217,7 @@ public class PushRenderer {
                     log.warning(MissingICEpushMessage);
                 }
 
-                public void render(String group, PushRendererMessage message) {
+                public void render(String group, PushOptions options) {
                     log.warning(MissingICEpushMessage);
                 }
             };
