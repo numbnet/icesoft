@@ -17,7 +17,7 @@
 package org.icemobile.samples.mediacast;
 
 import org.icefaces.application.PushRenderer;
-import org.icefaces.application.PushRendererMessage;
+import org.icefaces.application.PushMessage;
 import org.icemobile.samples.mediacast.navigation.NavigationModel;
 import org.icemobile.samples.util.FacesUtils;
 
@@ -121,21 +121,20 @@ public class MediaController implements Serializable {
 
         File mediaFile = null;
         MediaMessage photoMessage = new MediaMessage();
-        PushRendererMessage pushMessage = new PushRendererMessage();
-
+        String subject = "";
         String selectedMediaInput = uploadModel.getSelectedMediaInput();
 
         if (MediaMessage.MEDIA_TYPE_PHOTO.equals(selectedMediaInput)) {
             mediaFile = uploadModel.getCameraFile();
             processUploadedImage(photoMessage, mediaFile);
-            pushMessage.setProperty("subject", "New Photo");
+            subject = "New Photo";
             photoMessage.setComment(processComment(uploadModel.getComment(),
                     MediaMessage.MEDIA_TYPE_PHOTO));
             uploadModel.setCameraFile(null);
         } else if (MediaMessage.MEDIA_TYPE_VIDEO.equals(selectedMediaInput)) {
             mediaFile = uploadModel.getVideoFile();
             processUploadedVideo(photoMessage, mediaFile);
-            pushMessage.setProperty("subject", "New Video");
+            subject = "New Video";
             photoMessage.setComment(processComment(uploadModel.getComment(),
                     MediaMessage.MEDIA_TYPE_VIDEO));
             uploadModel.setVideoFile(null);
@@ -144,7 +143,7 @@ public class MediaController implements Serializable {
             processUploadedAudio(photoMessage, mediaFile);
             photoMessage.setComment(processComment(uploadModel.getComment(),
                     MediaMessage.MEDIA_TYPE_AUDIO));
-            pushMessage.setProperty("subject", "New Audio");
+            subject =  "New Audio";
             uploadModel.setAudioFile(null);
         }
         // reset the selected input string, so the input selection buttons show up again.
@@ -155,8 +154,9 @@ public class MediaController implements Serializable {
         if (mediaFile != null){
             mediaStore.addMedia(photoMessage);
             try {
-                pushMessage.setProperty("body", photoMessage.getComment());
-                PushRenderer.render(RENDER_GROUP, pushMessage);
+                String body = photoMessage.getComment();
+                PushRenderer.render(RENDER_GROUP, 
+                        new PushMessage(subject, body) );
             } catch (Exception e) {
                 logger.log(Level.WARNING, "Media message was not sent to recipients.", e);
             }

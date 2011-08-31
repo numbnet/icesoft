@@ -17,7 +17,7 @@
 package org.icemobile.samples.mobileshowcase.view.examples.device.notification;
 
 import org.icefaces.application.PushRenderer;
-import org.icefaces.application.PushRendererMessage;
+import org.icefaces.application.PushMessage;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
@@ -112,10 +112,8 @@ public class NotificationBean extends ExampleImpl<NotificationBean> implements
      * @param event jsf action event
      */
     public void sendNotificationMessage(ActionEvent event) {
-        PushRendererMessage pushMessage = new PushRendererMessage();
-        pushMessage.setProperty("subject", notificationSubject);
-        pushMessage.setProperty("body", notificationMessage);
-        PushRenderer.render(NOTIFICATION_GROUP_NAME, pushMessage);
+        PushRenderer.render(NOTIFICATION_GROUP_NAME, 
+            new PushMessage(notificationSubject, notificationMessage) );
     }
 
     public String getNotificationSubject() {
