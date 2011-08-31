@@ -59,7 +59,7 @@ public class NoopPushGroupManager implements PushGroupManager {
     public void push(String groupName) {
     }
 
-    public void push(String groupName, PushMessage message) {
+    public void push(String groupName, PushConfiguration config) {
     }
 
     public void park(String[] pushIds, String notifyBackURI) {

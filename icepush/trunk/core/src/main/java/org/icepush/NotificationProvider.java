@@ -24,7 +24,7 @@ package org.icepush;
 
 public interface NotificationProvider {
 
-    void send(String uri, PushMessage message);
+    void send(String uri, PushNotification notification);
 
     void registerWith(OutOfBandNotifier outOfBandNotifier);
 }

@@ -35,8 +35,8 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
     private static final String[] STRINGS = new String[0];
     private static final int GROUP_SCANNING_TIME_RESOLUTION = 3000; // ms
     private static final OutOfBandNotifier NOOPOutOfBandNotifier = new OutOfBandNotifier() {
-        public void broadcast(PushMessage message, String[] uris) {
-            System.out.println("message send " + message + " to " + Arrays.asList(uris));
+        public void broadcast(PushNotification notification, String[] uris) {
+            System.out.println("message send " + notification + " to " + Arrays.asList(uris));
         }
 
         public void registerProvider(String protocol, NotificationProvider provider) {
@@ -163,7 +163,7 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
         }
     }
 
-    public void push(String groupName, PushMessage message) {
+    public void push(String groupName, PushConfiguration config) {
         try {
             Group group = groupMap.get(groupName);
             String[] pushIDs = group.getPushIDs();
@@ -177,7 +177,9 @@ public class LocalPushGroupManager extends AbstractPushGroupManager implements P
             }
 
             if (!uris.isEmpty()) {
-                getOutOfBandNotifier().broadcast(message, (String[]) uris.toArray(STRINGS));
+                getOutOfBandNotifier().broadcast(
+                        (PushNotification) config, 
+                        (String[]) uris.toArray(STRINGS) );
             }
 
             //invoke normal push after the verification for park push IDs to avoid interfering with the blocking connection
