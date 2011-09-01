@@ -24,7 +24,6 @@
     function globalEval(src) {
         if (window.execScript) {
             window.execScript(src);
-            return;
         } else {
             (function() {
                 window.eval.call(window, src);
