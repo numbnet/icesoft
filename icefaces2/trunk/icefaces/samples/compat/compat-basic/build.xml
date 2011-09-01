@@ -22,6 +22,7 @@
 <project name="compat-basic" default="servlet-profile">
 
     <property file="./build.properties"/>
+    <property name="no-icepush" value="no-icepush"/>
     <import file="../build/common.xml"/>
 
 </project>

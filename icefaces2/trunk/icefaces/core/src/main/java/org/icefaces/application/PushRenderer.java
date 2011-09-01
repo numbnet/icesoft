@@ -141,21 +141,16 @@ public class PushRenderer {
      * Render message to the specified group of sessions but only to the clients
      * that have their blocking connection paused.
      *
-     * @param groupName the name of the group of sessions to render.
+     * @param group the name of the group of sessions to render.
      * @param options   options for this push request
      */
-    public static void render(String groupName, PushOptions options) {
+    public static void render(String group, PushOptions options) {
         if (EnvUtils.isICEpushPresent()) {
             FacesContext context = FacesContext.getCurrentInstance();
             missingFacesContext(context);
-            PushContext pushContext = (PushContext) context.getExternalContext().getApplicationMap().get(PushContext.class.getName());
-            if (options instanceof PushMessage)  {
-                pushContext.push( groupName, 
-                        new PushNotification(options.getAttributes()) );
-            } else {
-                pushContext.push( groupName, 
-                        new PushConfiguration(options.getAttributes()) );
-            }
+            Map<String, Object> applicationMap = 
+                    context.getExternalContext().getApplicationMap();
+            PushIsolator.render(applicationMap, group, options);
         } else {
             log.warning(MissingICEpushMessage);
         }
@@ -195,18 +190,7 @@ public class PushRenderer {
 
                 public void render(String group, PushOptions options) {
                     //delay PushContext lookup until is needed
-                    PushContext pushContext = (PushContext) applicationMap.get(PushContext.class.getName());
-                    if (pushContext == null) {
-                        log.fine("PushContext not initialized yet.");
-                    } else {
-                        if (options instanceof PushMessage)  {
-                            pushContext.push( group, 
-                                new PushNotification(options.getAttributes()) );
-                        } else {
-                            pushContext.push( group, 
-                                new PushConfiguration(options.getAttributes()) );
-                        }
-                    }
+                    PushIsolator.render(applicationMap, group, options);
                 }
             };
         } else {
@@ -233,4 +217,31 @@ public class PushRenderer {
             throw new RuntimeException("FacesContext is not present for thread " + Thread.currentThread());
         }
     }
+}
+
+/*
+Classloading problems were observed with the following code inline.
+This avoids a runtime dependency on icepush.jar.
+*/
+
+class PushIsolator {
+    private static Logger log = Logger.getLogger(PushRenderer.class.getName());
+
+    public static void render(Map<String, Object> applicationMap, String group, 
+            PushOptions options) {
+        PushContext pushContext = 
+                (PushContext) applicationMap.get(PushContext.class.getName());
+        if (pushContext == null) {
+            log.fine("PushContext not initialized yet.");
+        } else {
+            if (options instanceof PushMessage)  {
+                pushContext.push( group, 
+                    new PushNotification(options.getAttributes()) );
+            } else {
+                pushContext.push( group, 
+                    new PushConfiguration(options.getAttributes()) );
+            }
+        }
+    }
+
 }
