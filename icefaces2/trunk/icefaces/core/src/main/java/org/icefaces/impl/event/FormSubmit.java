@@ -33,7 +33,6 @@ import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
@@ -55,8 +54,7 @@ public class FormSubmit implements SystemEventListener {
     public void processEvent(final SystemEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        // Using PostAddToViewEvent ensures that the component resource is added to the view only once
-        final HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
+        final HtmlForm form = (HtmlForm) event.getSource();
         String componentId = form.getId() + CAPTURE_SUBMIT_SUFFIX;
         context.getAttributes().put(componentId, componentId);
 
