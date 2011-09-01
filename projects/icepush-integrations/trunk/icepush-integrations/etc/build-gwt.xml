@@ -29,9 +29,6 @@
 	<target name="bin-dist">
 		<echo>Building ICEpush GWT Binary Integration</echo>	
 		
-		<antcall target="jar-icepush-core"/>
-		<copy file="./core/${dist.dir}/icepush.jar" todir="${dist.dir}"/>
-		
 		<antcall target="jar-gwt-core"/>
 		<copy file="./integration/gwt/core/dist/icepush-gwt.jar" todir="${dist.dir}"/>
 		
