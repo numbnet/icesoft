@@ -21,6 +21,17 @@
 
 //fix for ICE-6481, effective only when the document found in the DOM update is not valid XML
 (function() {
+    function globalEval(src) {
+        if (window.execScript) {
+            window.execScript(src);
+            return;
+        } else {
+            (function() {
+                window.eval.call(window, src);
+            })();
+        }
+    }
+
     function extractTagContent(tag, html) {
         var start = new RegExp('\<' + tag + '[^\<]*\>', 'g').exec(html);
         var end = new RegExp('\<\/' + tag + '\>', 'g').exec(html);
@@ -96,9 +107,7 @@
                 return code;
             });
 
-            each(scripts, function(code) {
-                eval(code);
-            });
+            each(scripts, globalEval);
         } else {
             //clear the flag for the next update
             document.documentElement.isHeadUpdateSuccessful = null;
