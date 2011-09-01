@@ -33,7 +33,7 @@
     <property name="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}"/>
    
 
-	<fileset id="icepush.dist" dir="${root.offset}/core/${dist.dir}">
+	<fileset id="icepush.dist" dir="${root.offset}/lib/">
 		<include name="icepush.jar" />
 	</fileset>
 	
@@ -228,8 +228,8 @@
 	
 	<macrodef name="icepush.available">
 		<sequential>			
-			<available file="${root.offset}/core/${dist.dir}/icepush.jar" property="icepush.jar.present"/>
-			<echo message="checking for ${root.offset}/core/${dist.dir}/icepush.jar"/>
+			<available file="${root.offset}/lib/icepush.jar" property="icepush.jar.present"/>
+			<echo message="checking for ${root.offset}/lib/icepush.jar"/>
 			<fail message="The core icepush.jar has to be built before this target. Building from the root will ensure all dependencies are pre-built.">
 				<condition>
 					<not>

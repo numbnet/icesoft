@@ -26,36 +26,31 @@
 	<property file="build.properties"/>	
 	<import file="build-common.xml"/> 
 	
-	<target name="dist-icepush-bin">
-		<antcall target="jar-icepush-core"></antcall>
-		<copy file="./core/dist/icepush.jar" todir="${dist.dir}"/>
-	</target>
-	
-	<target name="dist-gwt-bin" depends="dist-icepush-bin">
+	<target name="dist-gwt-bin" >
 		<build.with.path.offset target="gwt"/>
 	</target>
 	
-	<target name="dist-jsp-bin" depends="dist-icepush-bin">
+	<target name="dist-jsp-bin" >
 		<build.with.path.offset target="jsp"/>
 	</target>
 	
-	<target name="dist-spring-bin" depends="dist-icepush-bin">
+	<target name="dist-spring-bin" >
 		<build.with.path.offset target="spring"/>
 	</target>
 	
-	<target name="dist-jquery-bin" depends="dist-icepush-bin">
+	<target name="dist-jquery-bin" >
 		<build.with.path.offset target="jquery"/>
 	</target>
 	
-	<target name="dist-prototype-bin" depends="dist-icepush-bin">
+	<target name="dist-prototype-bin" >
 		<build.with.path.offset target="prototype"/>
 	</target>
 	
-	<target name="dist-wicket-bin" depends="dist-icepush-bin">
+	<target name="dist-wicket-bin" >
 		<build.with.path.offset target="wicket"/>
 	</target>
 
-    <target name="dist-grails-bin" depends="dist-icepush-bin">
+    <target name="dist-grails-bin" >
         <build.with.path.offset target="grails"/>
     </target>
 	
@@ -66,7 +61,6 @@
 			
 			<delete dir="${build.dir}" failonerror="false" includeEmptyDirs="true"></delete>
 			
-			<copy file="./core/${dist.dir}/icepush.jar" todir="${build.dir}"/>
 			
 			<ant dir="./integration/@{target}" target="build.all"/>
 			<copy todir="${build.dir}">
@@ -104,7 +98,6 @@
 	
 	<target name="clean-all">
 		<clean/>
-		<ant dir="./core" target="clean"/>
 		<!-- JSP -->
 		<clean.with.path.offset target="jsp"/>
 		<ant target="clean" dir="./samples/icechat/jsp"/>
