@@ -106,7 +106,8 @@
                 return code;
             });
 
-            each(scripts, globalEval);
+            //select only non empty scripts
+            each(select(scripts, identity), globalEval);
         } else {
             //clear the flag for the next update
             document.documentElement.isHeadUpdateSuccessful = null;
