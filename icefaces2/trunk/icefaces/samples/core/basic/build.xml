@@ -23,6 +23,7 @@
     
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>
+    <property name="no-icepush" value="no-icepush" />
     <import file="../build/common.xml"/>
         
 </project>
