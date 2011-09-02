@@ -90,3 +90,12 @@ function renderEditor(editor, defaultToolbar, lang, _skin, _height, _width, _cus
 		alert(e);	
 	}
 }
+// Update editor value
+function _uev(editor) {
+	if (CKEDITOR.instances[editor]) {
+		var element = document.getElementById(editor);
+		if (element) {
+			CKEDITOR.instances[editor].setData(element.value);
+		}
+	}
+}
