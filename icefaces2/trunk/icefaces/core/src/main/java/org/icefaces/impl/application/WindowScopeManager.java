@@ -294,8 +294,8 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         }
 
         private void disactivateIfUnused(FacesContext facesContext) {
-            if (EnvUtils.containsBeans(this)) {
-                //the map contains objects (most probably beans) other than the ones inserted by the framework
+            if (!EnvUtils.containsBeans(this)) {
+                //the map *does not* contain objects (most probably beans) other than the ones inserted by the framework
                 disactivate(getState(facesContext));
             }
         }
