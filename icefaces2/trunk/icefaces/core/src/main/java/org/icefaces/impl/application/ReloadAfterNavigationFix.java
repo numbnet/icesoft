@@ -21,10 +21,8 @@
 
 package org.icefaces.impl.application;
 
-
 import org.icefaces.util.EnvUtils;
 
-import javax.faces.application.Application;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.application.NavigationHandler;
@@ -66,12 +64,14 @@ public class ReloadAfterNavigationFix extends ConfigurableNavigationHandler {
     }
 
     public void handleNavigation(FacesContext context, String fromAction, String outcome) {
-        NavigationCase navigationCase = getNavigationCase(context, fromAction, outcome);
-        if (navigationCase != null && !navigationCase.isRedirect() && EnvUtils.isICEfacesView(context)) {
-            UIViewRoot viewRoot = context.getViewRoot();
-            String fromViewId = viewRoot.getViewId();
-            Map map = WindowScopeManager.lookupWindowScope(context);
-            map.put(NavigationKey, new NavigationInfo(fromViewId, fromAction, outcome));
+        if (EnvUtils.isICEfacesView(context) && EnvUtils.isReplayNavigationOnReload(context)) {
+            NavigationCase navigationCase = getNavigationCase(context, fromAction, outcome);
+            if (navigationCase != null && !navigationCase.isRedirect()) {
+                UIViewRoot viewRoot = context.getViewRoot();
+                String fromViewId = viewRoot.getViewId();
+                Map map = WindowScopeManager.lookupWindowScope(context);
+                map.put(NavigationKey, new NavigationInfo(fromViewId, fromAction, outcome, handler));
+            }
         }
 
         handler.handleNavigation(context, fromAction, outcome);
@@ -81,7 +81,7 @@ public class ReloadAfterNavigationFix extends ConfigurableNavigationHandler {
 
         public void afterPhase(PhaseEvent event) {
             FacesContext context = event.getFacesContext();
-            if (!context.isPostback()) {
+            if (EnvUtils.isReplayNavigationOnReload(context) && !context.isPostback()) {
                 Map map = WindowScopeManager.lookupWindowScope(context);
                 NavigationInfo navigation = (NavigationInfo) map.get(NavigationKey);
                 if (navigation != null) {
@@ -102,19 +102,19 @@ public class ReloadAfterNavigationFix extends ConfigurableNavigationHandler {
         private String fromViewId;
         private String navigateFrom;
         private String navigateTo;
+        private NavigationHandler handler;
 
-        private NavigationInfo(String fromViewId, String navigateFrom, String navigateTo) {
+        private NavigationInfo(String fromViewId, String navigateFrom, String navigateTo, NavigationHandler handler) {
             this.fromViewId = fromViewId;
             this.navigateFrom = navigateFrom;
             this.navigateTo = navigateTo;
+            this.handler = handler;
         }
 
         public void navigate(FacesContext context) {
             if (navigateTo != null) {
                 context.getViewRoot().setViewId(fromViewId);
-                Application application = context.getApplication();
-                NavigationHandler navigationHandler = application.getNavigationHandler();
-                navigationHandler.handleNavigation(context, navigateFrom, navigateTo);
+                handler.handleNavigation(context, navigateFrom, navigateTo);
             }
         }
     }

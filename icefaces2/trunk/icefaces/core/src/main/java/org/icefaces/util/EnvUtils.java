@@ -58,7 +58,7 @@ public class EnvUtils {
     public static String UNIQUE_RESOURCE_URLS = "org.icefaces.uniqueResourceURLs";
     public static String LAZY_WINDOW_SCOPE = "org.icefaces.lazyWindowScope";
     public static String DISABLE_DEFAULT_ERROR_POPUPS = "org.icefaces.disableDefaultErrorPopups";
-
+    public static String REPLAY_NAVIGATION_ON_RELOAD = "org.icefaces.replayNavigationOnReload";
 
     //Parameters configurable using context parameters but only in compatibility mode
     public static String CONNECTION_LOST_REDIRECT_URI = "org.icefaces.connectionLostRedirectURI";
@@ -380,7 +380,7 @@ public class EnvUtils {
         String mandatoryResourceConfig = (String) viewMap
                 .get(MANDATORY_RESOURCE_CONFIG);
         //pad with spaces to allow String.contains checking
-        if (null != mandatoryResourceConfig)  {
+        if (null != mandatoryResourceConfig) {
             mandatoryResourceConfig = " " + mandatoryResourceConfig + " ";
         }
         return mandatoryResourceConfig;
@@ -542,6 +542,10 @@ public class EnvUtils {
         return EnvConfig.getEnvConfig(facesContext).disableDefaultErrorPopups;
     }
 
+    public static boolean isReplayNavigationOnReload(FacesContext facesContext) {
+        return EnvConfig.getEnvConfig(facesContext).replayNavigationOnReload;
+    }
+
     public static boolean isMessagePersistence(final FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).messagePersistence;
     }
@@ -554,11 +558,11 @@ public class EnvUtils {
         return isMyFaces;
     }
 
-    public static String getStateMarker(){
-        if( stateMarker == null){
-            if(EnvUtils.isMojarra()){
+    public static String getStateMarker() {
+        if (stateMarker == null) {
+            if (EnvUtils.isMojarra()) {
                 stateMarker = MOJARRA_STATE_SAVING_MARKER;
-            } else if(EnvUtils.isMyFaces()){
+            } else if (EnvUtils.isMyFaces()) {
                 stateMarker = MYFACES_STATE_SAVING_MARKER;
             } else {
                 log.warning("could not determine JSF implementation");
@@ -601,6 +605,7 @@ class EnvConfig {
     boolean lazyWindowScope;
     boolean messagePersistence;
     public boolean disableDefaultErrorPopups;
+    boolean replayNavigationOnReload;
 
     public EnvConfig(Map initMap) {
         init(initMap);
@@ -628,6 +633,7 @@ class EnvConfig {
         lazyWindowScope = decodeBoolean(initMap, EnvUtils.LAZY_WINDOW_SCOPE, true, info);
         messagePersistence = decodeBoolean(initMap, EnvUtils.MESSAGE_PERSISTENCE, true, info);
         disableDefaultErrorPopups = decodeBoolean(initMap, EnvUtils.DISABLE_DEFAULT_ERROR_POPUPS, false, info);
+        replayNavigationOnReload = decodeBoolean(initMap, EnvUtils.REPLAY_NAVIGATION_ON_RELOAD, true, info);
 
         log.info("ICEfaces Configuration: \n" + info);
     }
