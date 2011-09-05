@@ -64,27 +64,6 @@ var submit;
         }
     }
 
-    var submitSendListeners = [];
-    namespace.onSubmitSend = function(callback) {
-        append(submitSendListeners, callback);
-    };
-
-    var submitResponseListeners = [];
-    namespace.onSubmitResponse = function(callback) {
-        append(submitResponseListeners, callback);
-    };
-
-    function requestCallback(e) {
-        switch (e.status) {
-            case 'begin':
-                broadcast(submitSendListeners);
-                break;
-            case 'complete':
-                broadcast(submitResponseListeners, [ e.responseCode, e.responseText, e.responseXML ]);
-                break;
-        }
-    }
-
     function singleSubmit(execute, render, event, element, additionalParameters) {
         var viewID = viewIDOf(element);
         var form = document.getElementById(viewID);
@@ -119,7 +98,15 @@ var submit;
             }
 
             event = event || null;
-            var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID, 'ice.focus': currentFocus};
+            var options = {
+                execute: execute,
+                render: render,
+                onevent: submitEventBroadcaster,
+                onerror: submitErrorBroadcaster,
+                'ice.window': namespace.window,
+                'ice.view': viewID,
+                'ice.focus': currentFocus
+            };
             var decoratedEvent = $event(event, element);
 
             if (isKeyEvent(decoratedEvent) && isEnterKey(decoratedEvent)) {
@@ -200,7 +187,15 @@ var submit;
             event = event || null;
 
             var viewID = viewIDOf(element);
-            var options = {execute: execute, render: render, onevent: requestCallback, 'ice.window': namespace.window, 'ice.view': viewID, 'ice.focus': currentFocus};
+            var options = {
+                execute: execute,
+                render: render,
+                onevent: submitEventBroadcaster,
+                onerror: submitErrorBroadcaster,
+                'ice.window': namespace.window,
+                'ice.view': viewID,
+                'ice.focus': currentFocus};
+
             var decoratedEvent = $event(event, element);
 
             if (isKeyEvent(decoratedEvent) && isEnterKey(decoratedEvent)) {

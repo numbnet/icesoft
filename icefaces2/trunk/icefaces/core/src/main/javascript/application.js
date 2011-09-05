@@ -145,11 +145,6 @@ if (!window.ice.icefaces) {
         namespace.af = applyFocus;
 
         //include http.js
-        //include submit.js
-        namespace.se = singleSubmitExecuteThis;
-        namespace.ser = singleSubmitExecuteThisRenderThis;
-        namespace.submit = submit;
-        namespace.s = submit;
 
         function appendHiddenInputElement(form, name, value, defaultValue) {
             var hiddenInput = document.createElement('input');
@@ -218,8 +213,8 @@ if (!window.ice.icefaces) {
             return doc && doc.documentElement;
         }
 
-        //wire callbacks into JSF bridge
-        jsf.ajax.addOnEvent(function(e) {
+        //define function to be wired as submit callback into JSF bridge
+        function submitEventBroadcaster(e) {
             switch (e.status) {
                 case 'begin':
                     broadcast(beforeSubmitListeners, [ e.source ]);
@@ -252,10 +247,10 @@ if (!window.ice.icefaces) {
                     debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
                     break;
             }
-        });
+        }
 
-        //notify errors captured by JSF bridge
-        jsf.ajax.addOnError(function(e) {
+        //define function to be wired as error callback into JSF bridge
+        function submitErrorBroadcaster(e) {
             if (e.status == 'serverError') {
                 var xmlContent = e.responseXML;
                 if (containsXMLData(xmlContent)) {
@@ -276,8 +271,13 @@ if (!window.ice.icefaces) {
                 //If the error falls through the other conditions, just log it.
                 error(logger, 'Error [status: ' + e.status + ' code: ' + e.responseCode + ']: ' + e.description);
             }
-        });
+        }
 
+        //include submit.js
+        namespace.se = singleSubmitExecuteThis;
+        namespace.ser = singleSubmitExecuteThisRenderThis;
+        namespace.submit = submit;
+        namespace.s = submit;
 
         namespace.setupBridge = function(setupID, viewID, windowID, configuration) {
             var container = document.getElementById(setupID).parentNode;
