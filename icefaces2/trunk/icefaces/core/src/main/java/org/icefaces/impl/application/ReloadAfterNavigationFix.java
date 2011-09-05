@@ -102,7 +102,7 @@ public class ReloadAfterNavigationFix extends ConfigurableNavigationHandler {
         private String fromViewId;
         private String navigateFrom;
         private String navigateTo;
-        private NavigationHandler handler;
+        private transient NavigationHandler handler;
 
         private NavigationInfo(String fromViewId, String navigateFrom, String navigateTo, NavigationHandler handler) {
             this.fromViewId = fromViewId;
@@ -112,7 +112,7 @@ public class ReloadAfterNavigationFix extends ConfigurableNavigationHandler {
         }
 
         public void navigate(FacesContext context) {
-            if (navigateTo != null) {
+            if (navigateTo != null && handler != null) {
                 context.getViewRoot().setViewId(fromViewId);
                 handler.handleNavigation(context, navigateFrom, navigateTo);
             }
