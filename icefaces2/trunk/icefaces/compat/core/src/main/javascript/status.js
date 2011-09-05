@@ -376,10 +376,10 @@ var ComponentIndicators;
     };
 
     onLoad(window, function() {
-        ice.onSubmitSend(function() {
+        ice.onBeforeSubmit(function() {
             indctrs && on(indctrs.busy);
         });
-        ice.onSubmitResponse(function() {
+        ice.onBeforeUpdate(function() {
             indctrs && off(indctrs.busy);
         });
         ice.onNetworkError(function() {
