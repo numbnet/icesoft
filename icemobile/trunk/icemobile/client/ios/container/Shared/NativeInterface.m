@@ -27,6 +27,7 @@
 @synthesize maxwidth;
 @synthesize maxheight;
 @synthesize recording;
+@synthesize uploading;
 @synthesize soundRecorder;
 @synthesize receivedData;
 
@@ -325,6 +326,11 @@ static char base64EncodingTable[64] = {
 }
 
 - (BOOL)upload: (NSString*)formId  {
+    if (self.uploading)  {
+    NSLog(@" already uploading, ignoring request");
+        return NO;
+    }
+    self.uploading = YES;
     self.activeDOMElementId = formId;
     
     NSString *scriptTemplate;
@@ -537,6 +543,7 @@ static char base64EncodingTable[64] = {
     // release the connection, and the data object
     [connection release];
     [receivedData release];
+    self.uploading = NO;
 }
 
 @end
