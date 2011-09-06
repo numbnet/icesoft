@@ -21,6 +21,7 @@
 @implementation MainViewController
 
 @synthesize webView;
+@synthesize prefsButton;
 @synthesize nativeInterface;
 @synthesize preferences;
 @synthesize hexDeviceToken;
@@ -48,13 +49,16 @@
     }
 }
 
-/*
-// Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
 }
-*/
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation  {
+    NSLog(@"MainViewController didRotateFromInterfaceOrientation");
+    prefsButton.center = CGPointMake(self.view.bounds.size.width - 20, 
+            self.view.bounds.size.height - 30);
+}
 
 - (void)didBecomeActive  {
     NSLog(@"MainViewController didBecomeActive.");

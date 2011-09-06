@@ -25,10 +25,11 @@
 	Preferences *preferences;
     NSString *hexDeviceToken;
     NSString *notificationEmail;
-
+    UIButton *prefsButton;
 }
 
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
+@property (nonatomic, retain) IBOutlet UIButton *prefsButton;
 @property (retain) NativeInterface *nativeInterface;
 @property (retain) Preferences *preferences;
 @property (nonatomic, retain) NSString *hexDeviceToken;
