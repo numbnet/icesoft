@@ -25,6 +25,7 @@
     NSString *maxwidth;
     NSString *maxheight;
     BOOL recording;
+    BOOL uploading;
     AVAudioRecorder *soundRecorder;
     NSMutableData *receivedData;
 }
@@ -34,6 +35,7 @@
 @property (retain) NSString *maxwidth;
 @property (retain) NSString *maxheight;
 @property (nonatomic, assign) BOOL recording;
+@property (assign) BOOL uploading;
 @property (retain) AVAudioRecorder *soundRecorder;
 @property (retain) NSMutableData *receivedData;
 

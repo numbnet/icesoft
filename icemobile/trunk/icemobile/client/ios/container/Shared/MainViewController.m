@@ -35,6 +35,7 @@
 
     self.nativeInterface = [[NativeInterface alloc] init];
     self.nativeInterface.controller = self;
+    self.nativeInterface.uploading = NO;
 
     self.preferences = [[Preferences alloc] init];
     self.preferences.mainViewController = self;
