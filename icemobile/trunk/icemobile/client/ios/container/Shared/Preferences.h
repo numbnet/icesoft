@@ -18,25 +18,31 @@
 
 @class MainViewController;
 
-@interface Preferences : UIViewController<UITextFieldDelegate> {
+@interface Preferences : UIViewController<UITextFieldDelegate, 
+        UIPickerViewDelegate, UIPickerViewDataSource> {
 
     UITextField* urlField;
     UITextField* emailField;
-	MainViewController *mainViewController;
-	UIView *oldView;
-
+    UIPickerView* historyPicker;
+    MainViewController *mainViewController;
+    UIView *oldView;
+    NSMutableArray *history;
 }
 
 - (IBAction) doDone;
 - (IBAction) doGo;
 - (IBAction) doQuit;
 - (IBAction) doReload;
+- (IBAction) doClear;
 - (void) update;
 - (void) dismiss;
+- (void) addIfUnique:(NSString *) url;
 
 @property (nonatomic, retain) IBOutlet UITextField *urlField;
 @property (nonatomic, retain) IBOutlet UITextField *emailField;
+@property (nonatomic, retain) IBOutlet UIPickerView *historyPicker;
 @property (nonatomic, retain) MainViewController *mainViewController;
 @property (nonatomic, retain) UIView *oldView;
+@property (nonatomic, retain) NSMutableArray *history;
 
 @end

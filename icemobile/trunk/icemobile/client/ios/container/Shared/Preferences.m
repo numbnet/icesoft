@@ -21,14 +21,21 @@
 
 @synthesize urlField;
 @synthesize emailField;
+@synthesize historyPicker;
 @synthesize oldView;
 @synthesize mainViewController;
+@synthesize history;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        self.history = [prefs objectForKey:@"history"];
+        if (nil == self.history)  {
+            self.history = [[NSMutableArray alloc] init];
+        }
     }
     return self;
 }
@@ -66,6 +73,7 @@
 - (void)update {
     NSString* currentURL = [[mainViewController getCurrentURL] absoluteString];
     self.urlField.text = currentURL;
+    [historyPicker reloadAllComponents];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -77,6 +85,7 @@
 - (IBAction) doGo {
     NSLog(@"Go pressed");
     [mainViewController loadURL:urlField.text];
+    [self addIfUnique:urlField.text];
     [self dismiss];
 }
 
@@ -96,10 +105,20 @@
     [self dismiss];
 }
 
+- (IBAction) doClear {
+    NSLog(@"Clear History pressed");
+    self.history = [[NSMutableArray alloc] init];
+    [self.history addObject:@"http://www.icemobile.org/demos.html"];
+    [historyPicker reloadAllComponents];
+}
+
 - (void) dismiss {
     if (nil != self.emailField.text)  {
         mainViewController.notificationEmail = self.emailField.text;
-    } 
+    }
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:self.history forKey:@"history"];
+    [prefs synchronize];
     UIView *containerView = self.view.superview;
     [UIView transitionWithView:containerView duration:0.5
 		options:UIViewAnimationOptionTransitionFlipFromLeft
@@ -108,9 +127,51 @@
 		completion:nil];
 }
 
+- (void) addIfUnique:(NSString *) url  {
+    BOOL isNew = YES;
+    for (NSString *existing in self.history) {
+        if ([existing isEqualToString:url])  {
+            isNew = NO;
+            break;
+        }
+    }
+    if (isNew)  {
+        [self.history addObject:url];
+    }
+
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField  {
     [textField resignFirstResponder];
     return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField  {
+    [textField resignFirstResponder];
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView  {
+        return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView
+      numberOfRowsInComponent:(NSInteger)component  {
+    return [self.history count];
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView 
+    titleForRow:(NSInteger)row forComponent:(NSInteger)component  {
+    NSString *title = [self.history objectAtIndex:row];
+    if (NSNotFound == [title rangeOfString:@"http://"].location)  {
+        return title;
+    }
+    return [title substringFromIndex:7];
+}
+
+- (void)pickerView:(UIPickerView *)pickerView 
+    didSelectRow:(NSInteger)row inComponent:(NSInteger)component  {
+    NSLog(@" pickerView didSelectRow %d", row);
+    self.urlField.text = [self.history objectAtIndex:row];
 }
 
 @end
