@@ -71,6 +71,7 @@
 }
 
 - (void)update {
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     NSString* currentURL = [[mainViewController getCurrentURL] absoluteString];
     self.urlField.text = currentURL;
     [historyPicker reloadAllComponents];
@@ -119,6 +120,7 @@
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs setObject:self.history forKey:@"history"];
     [prefs synchronize];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     UIView *containerView = self.view.superview;
     [UIView transitionWithView:containerView duration:0.5
 		options:UIViewAnimationOptionTransitionFlipFromLeft
