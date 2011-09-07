@@ -26,6 +26,7 @@
     NSString *hexDeviceToken;
     NSString *notificationEmail;
     UIButton *prefsButton;
+    UIPopoverController *popover;
 }
 
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
@@ -34,6 +35,7 @@
 @property (retain) Preferences *preferences;
 @property (nonatomic, retain) NSString *hexDeviceToken;
 @property (nonatomic, retain) NSString *notificationEmail;
+@property (nonatomic, retain) UIPopoverController *popover;
 
 - (void)didBecomeActive;
 - (void)willResignActive;

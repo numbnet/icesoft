@@ -26,6 +26,7 @@
 @synthesize preferences;
 @synthesize hexDeviceToken;
 @synthesize notificationEmail;
+@synthesize popover;
 
 
 - (void)viewDidLoad {
@@ -41,6 +42,9 @@
     self.preferences.mainViewController = self;
     [[NSBundle mainBundle] loadNibNamed:@"Preferences" owner:self.preferences options:nil];
 
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.popover = [[UIPopoverController alloc] initWithContentViewController:preferences];
+    }
     NSLog(@"MainViewController viewDidLoad");
 }
 
@@ -59,6 +63,10 @@
     NSLog(@"MainViewController didRotateFromInterfaceOrientation");
     prefsButton.center = CGPointMake(self.view.bounds.size.width - 20, 
             self.view.bounds.size.height - 30);
+    if ((nil != self.popover) && ([self.popover isPopoverVisible])) {
+        [self.popover presentPopoverFromRect:[prefsButton frame] 
+            inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+    }
 }
 
 - (void)didBecomeActive  {
@@ -158,15 +166,20 @@
 
 - (IBAction)doPreferences {
     NSLog(@"Preferences pressed");
-    self.preferences.oldView = self.view;
     [self.preferences update];
-    UIView *containerView = self.view.superview;
-    [UIView transitionWithView:containerView duration:0.5
-		options:UIViewAnimationOptionTransitionFlipFromRight
-		animations:^ { [self.view removeFromSuperview]; 
-        [containerView addSubview:self.preferences.view]; }
-		completion:nil];
-        
+    if (nil != self.popover) {
+        [self.popover presentPopoverFromRect:[prefsButton frame] 
+            inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        self.preferences.oldView = self.view;
+        UIView *containerView = self.view.superview;
+        [UIView transitionWithView:containerView duration:0.5
+            options:UIViewAnimationOptionTransitionFlipFromRight
+            animations:^ { [self.view removeFromSuperview]; 
+            [containerView addSubview:self.preferences.view]; }
+            completion:nil];
+    }
 }
 
 - (NSURL*)getCurrentURL {
