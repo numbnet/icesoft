@@ -46,7 +46,7 @@ import com.icesoft.faces.presenter.timer.SlideshowTimerBean;
 import com.icesoft.faces.presenter.util.MessageBundleLoader;
 import com.icesoft.faces.presenter.util.StringResource;
 
-import org.icefaces.component.fileentry.*;
+import org.icefaces.ace.component.fileentry.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
