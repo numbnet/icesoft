@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<meta charset="UTF-8"></meta>
+	<title>image</title>
+
+</h:head>
+<h:body>
+
+	<h3>mobi graphicImage</h3>
+
+	<h:outputText value="Static File no height or width specified" />
+	<mobi:graphicImage id="staticFile" value="../images/DSC_3.JPG" />
+	<br />
+	<h5>height and width specified</h5>
+	<mobi:graphicImage id="imageFile" value="../images/DSC_4.JPG" width="150" height="120"/>
+   <br />
+   
+   <br /> 
+	<h5>from byte array in view scope</h5>
+	<mobi:graphicImage name="viewImage" id="image1" value="#{imageBean.fileInBytes}"  scope="view" mimeType="image/jpeg"/>
+	<br />
+	<h5>flash</h5>
+	<mobi:graphicImage name="flashImage" id="image2" value="#{imageBean.fileInBytes}"  scope="flash" mimeType="image/jpeg"/>
+    <br />
+    <h5>window</h5>
+    <mobi:graphicImage name="windowImage" id="image3" value="#{imageBean.fileInBytes}" scope="window" mimeType="image/jpeg"/>
+ 	<br />
+ 	<h5>session</h5>
+ 	<mobi:graphicImage name="sessionImage" id="image4" value="#{imageBean.fileInBytes}"  scope="session" mimeType="image/jpeg"/>
+   <br />
+    <h5>application</h5>
+    <mobi:graphicImage name="ApplicationImage" id="image5" value="#{imageBean.fileInBytes}" width="60" height="40" scope="application" mimeType="image/jpeg"/>
+    <br />
+    <h5>no scope specified should default to session</h5>
+    <mobi:graphicImage name="noScopedefined" id="image6" value="#{imageBean.fileInBytes}"  width="55" height = "50" mimeType="image/jpeg"/>
+	<br />
+	<li><a href="../resourceComponents.html">index page</a>
+	</li>
+</h:body>
+</html>
