@@ -55,11 +55,15 @@ if (!window.ice.icefaces) {
         namespace.onBeforeSubmit = function(callback) {
             append(beforeSubmitListeners, callback);
         };
+        //alias for onBeforeSubmit
+        namespace.onSubmitSend = namespace.onBeforeSubmit;
 
         var beforeUpdateListeners = [];
         namespace.onBeforeUpdate = function(callback) {
             append(beforeUpdateListeners, callback);
         };
+        //alias for onBeforeUpdate
+        namespace.onSubmitResponse = namespace.onBeforeSubmit;
 
         var afterUpdateListeners = [];
         namespace.onAfterUpdate = function(callback) {
