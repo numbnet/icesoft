@@ -71,10 +71,13 @@
 }
 
 - (void)update {
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     NSString* currentURL = [[mainViewController getCurrentURL] absoluteString];
     self.urlField.text = currentURL;
     [historyPicker reloadAllComponents];
+}
+
+- (CGSize)contentSizeForViewInPopoverView {
+    return CGSizeMake(320, 480);
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -120,13 +123,17 @@
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs setObject:self.history forKey:@"history"];
     [prefs synchronize];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    UIView *containerView = self.view.superview;
-    [UIView transitionWithView:containerView duration:0.5
-		options:UIViewAnimationOptionTransitionFlipFromLeft
-		animations:^ { [self.view removeFromSuperview]; 
-        [containerView addSubview:self.oldView]; }
-		completion:nil];
+    if (nil != mainViewController.popover)  {
+        [mainViewController.popover dismissPopoverAnimated:YES];
+    } else {
+        [[UIApplication sharedApplication] setStatusBarHidden:NO];
+        UIView *containerView = self.view.superview;
+        [UIView transitionWithView:containerView duration:0.5
+            options:UIViewAnimationOptionTransitionFlipFromLeft
+            animations:^ { [self.view removeFromSuperview]; 
+            [containerView addSubview:self.oldView]; }
+            completion:nil];
+    }
 }
 
 - (void) addIfUnique:(NSString *) url  {
