@@ -56,6 +56,7 @@ if (!window.ice.icefaces) {
             append(beforeSubmitListeners, callback);
         };
         //alias for onBeforeSubmit
+        //deprecated
         namespace.onSubmitSend = namespace.onBeforeSubmit;
 
         var beforeUpdateListeners = [];
@@ -63,6 +64,7 @@ if (!window.ice.icefaces) {
             append(beforeUpdateListeners, callback);
         };
         //alias for onBeforeUpdate
+        //deprecated
         namespace.onSubmitResponse = namespace.onBeforeSubmit;
 
         var afterUpdateListeners = [];
