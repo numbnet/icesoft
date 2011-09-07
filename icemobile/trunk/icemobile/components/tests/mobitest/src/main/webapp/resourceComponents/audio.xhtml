@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<meta charset="UTF-8"></meta>
+	<title>audio</title>
+
+</h:head>
+<h:body>
+
+	<h3>audio</h3>
+
+	<h:outputText value="Playback with ice audio" />
+	<br />
+	<mobi:audio id="audio_one" value="hatejob.wav" controls="true"
+		preload="auto" />
+   <br />
+   <p>
+     <h5>audio using resource and byte array support</h5>
+     <mobi:audio id="audioResource" name="audioResource.mp3" value="#{audio.fileInBytes}" mimeType="audio/x-mpeg" controls="true" scope="session"/>
+     <br />
+     <h:outputText value="#{audio.contentType}"/>
+     <br />
+  
+     <h5>using resource with backing bean specifyin contentType</h5>
+        <mobi:audio id="audiocont" name="audiocont.mp3" value="#{audio.fileInBytes}" controls="true" scope="session"/>
+   </p>
+ 
+	<h5>list of audio files in data table</h5>
+	<h:dataTable value="#{audioList.playList}" var="clip">
+		<h:column id="col1">
+			<f:facet name="header">
+				<h:outputText value="ClipName" />
+			</f:facet>
+			<h:outputText value="#{clip.clipName}" />
+		</h:column>
+		<h:column id="col2">
+			<f:facet name="header">
+				<h:outputText value="PlayMe!" />
+			</f:facet>
+			<mobi:audio id="play" value="#{clip.audioURL}" controls="true"
+				preload="auto" />
+		</h:column>
+
+	</h:dataTable>
+	<br />
+	<!--  <li><a href="http://www.brianhadaway.com/audio/test.html">audioTestPage</a></li> -->
+    <br />
+	<li><a href="../index.html">index page</a>
+	</li>
+</h:body>
+</html>
