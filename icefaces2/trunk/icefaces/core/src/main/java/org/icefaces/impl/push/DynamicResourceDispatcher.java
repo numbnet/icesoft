@@ -254,7 +254,8 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
                 externalContext.setResponseHeader("Expires",
                         Util.HTTP_DATE.format(options.expiresBy));
             }
-            if (options.attachement && options.contentDispositionFileName != null) {
+            String contentDispositionFileName = Util.encodeContentDispositionFilename(options.fileName);
+            if (options.attachement && contentDispositionFileName != null) {
                 externalContext.setResponseHeader("Content-Disposition", "attachment; filename" + options.contentDispositionFileName);
             }
             InputStream inputStream = resource.open();
