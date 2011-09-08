@@ -19,9 +19,15 @@ import org.icefaces.component.utils.BaseInputRenderer;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.PassThruAttributeWriter;
 
+import javax.el.ValueExpression;
+
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -41,10 +47,26 @@ public class InputTextRenderer extends BaseInputRenderer {
         if (inputText.isDisabled() || inputText.isReadonly()) {
             return;
         }
+        //if singleSubmit is true then make sure that captured Event is same as clientId
+        //otherwise return
+        if (inputText.isSingleSubmit()){
+        	  if (requestParameterMap.containsKey("ice.event.captured")){
+        		  log.info("Single Submit THIS ID CAPTURED THE EVENT id="+clientId);
+        	  }
+        }
         if (requestParameterMap.containsKey(clientId)) {
             String submittedString = String.valueOf(requestParameterMap.get(clientId));
-            if (submittedString != null)
-                this.setSubmittedValue(inputText, submittedString);
+//            log.info("submittedString is="+submittedString+ " for id="+clientId);
+
+            if (submittedString != null){
+                Object convertedValue = this.getConvertedValue(facesContext, uiComponent, submittedString);
+                log.info("id is ="+clientId+" convertedValue = "+convertedValue.toString());
+                this.setSubmittedValue(inputText, convertedValue);
+            }
+                
+        }
+        else {
+        	log.info(" clientId="+clientId+" not included in request parameter map");
         }
 
     }
@@ -55,12 +77,9 @@ public class InputTextRenderer extends BaseInputRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         InputText inputText = (InputText) uiComponent;
         String baseClass = "mobi-input-text";
-        // Write outer div --> only for panelStack?
-//	        writer.startElement(HTML.DIV_ELEM, uiComponent); //only have this if in panelStack?
-//	        writer.writeAttribute(HTML.ID_ATTR, clientId + "_div", HTML.ID_ATTR);
-//            writer.writeAttribute("class", divClass, null);
-        String type = inputText.getType();
+        String type = inputText.validateType(inputText.getType());
         String componentType = "input";
+        
         if (type.equals("textarea")) {
             componentType = "textarea";
         }
@@ -69,16 +88,21 @@ public class InputTextRenderer extends BaseInputRenderer {
         writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
         writer.writeAttribute("class", baseClass, null);
         String valueToRender = getStringValueToRender(facesContext, inputText);
-
+        log.info(" \t\t ENCODE Value to render ="+valueToRender+" for id="+clientId);
         //do common passThrough attributes
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, inputText.getCommonInputAttributeNames());
         PassThruAttributeWriter.renderBooleanAttributes(writer, uiComponent, inputText.getBooleanAttNames());
         if (type.equals("textarea")) {
             //autocomplete and list not yet implemented on mobile safari
             PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, inputText.getTextAreaAttributeNames());
-        } else {
+        } else if (type.equals("number")){
+        	PassThruAttributeWriter.renderNonBooleanAttributes(writer,uiComponent, inputText.getNumberAttributeNames());
+        }
+        else {
             PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, inputText.getInputtextAttributeNames());
         }
+       	writer.writeAttribute("autocorrect", "off", null);
+    	writer.writeAttribute("autocapitalize", "off", null);
         boolean singleSubmit = inputText.isSingleSubmit();
         if (inputText.isDisabled())
             writer.writeAttribute("disabled", "disabled", null);
@@ -95,6 +119,36 @@ public class InputTextRenderer extends BaseInputRenderer {
         writer.endElement(componentType);
 
 
+    }
+    
+    @Override
+    public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent, Object submittedValue) throws ConverterException {
+        UIInput uiInput = (UIInput) uiComponent;
+        String value = String.valueOf(submittedValue);
+        Converter converter = uiInput.getConverter();
+
+        //first ask the converter
+        if (converter != null) {
+            return converter.getAsObject(facesContext, uiInput, value);
+        }
+        //Try to guess
+        else {
+            ValueExpression ve = uiInput.getValueExpression("value");
+
+            if (ve != null) {
+                Class<?> valueType = ve.getType(facesContext.getELContext());
+                Converter converterForType = facesContext.getApplication().createConverter(valueType);
+  
+//    log.info("trying to guess converter for id="+uiInput.getClientId()+" valueType = "+valueType.getName());
+                if (converterForType != null) {
+//                	  log.info(" converter Type = "+converterForType.toString());
+                    return converterForType.getAsObject(facesContext, uiInput, value);
+                }
+                	
+            }
+        }
+
+        return value;
     }
 
 
