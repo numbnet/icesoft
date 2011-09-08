@@ -65,9 +65,7 @@ public class OooPresentationDocument extends CommonPresentationDocument implemen
 
     public OooPresentationDocument(Presentation presentation) {
         this.presentation = presentation;
-        officeManager = 
-                new DefaultOfficeManagerConfiguration().buildOfficeManager();
-        officeManager.start();
+        officeManager = OooManager.getOfficeManager();
     }
 
     public boolean isLoaded() {
@@ -205,7 +203,15 @@ public class OooPresentationDocument extends CommonPresentationDocument implemen
                     new OfficeDocumentConverter(officeManager);
             converter.convert( new File(fullPath), 
                     new File(baseDirectory + File.separator + "out.html") );
-
+            //remove generated .html
+            File baseDir = new File(baseDirectory);
+            File[] files = baseDir.listFiles();
+            for (int i = 0; i < files.length; i++)  {
+                String name = files[i].getName();
+                if (name.endsWith(".html"))  {
+                    files[i].delete();
+                }
+            }
 	    }
 	
 	    private Slide[] slideCreator(File[] files, String base, boolean mobile){

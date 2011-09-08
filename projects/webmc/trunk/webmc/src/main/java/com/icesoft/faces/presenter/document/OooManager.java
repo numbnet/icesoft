@@ -30,36 +30,43 @@
  * this file under either the MPL or the LGPL License."
  *
  */
-package com.icesoft.faces.presenter.document.factory;
+package com.icesoft.faces.presenter.document;
 
-import java.io.File;
-import com.icesoft.faces.presenter.document.UnknownPresentationDocument;
-import com.icesoft.faces.presenter.document.ZipPresentationDocument;
-import com.icesoft.faces.presenter.document.PptPresentationDocument;
-import com.icesoft.faces.presenter.document.OooPresentationDocument;
-import com.icesoft.faces.presenter.document.base.PresentationDocument;
-import com.icesoft.faces.presenter.presentation.Presentation;
+import javax.faces.context.FacesContext;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ApplicationScoped;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+import org.artofsolving.jodconverter.OfficeDocumentConverter;
+import org.artofsolving.jodconverter.office.OfficeManager;
+import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
- * Class used to determine what action should be taken for a specific file type
+ * Manage startup and shutdown of OpenOffice conversion.
  */
-public class DocumentFactory {
-    /**
-     * Method to generate a PresentationDocument based on the file value of the
-     * passed input file component
-     *
-     * @param file to create a document for
-     * @param parent presentation
-     * @return the created presentation document
-     */
-    public static PresentationDocument createDocument(File file,
-                                                      Presentation parent) {
-        if (file.getName().toLowerCase().indexOf(".zip") != -1) {
-            return new ZipPresentationDocument(parent);
-        } else if (file.getName().toLowerCase().endsWith(".ppt")) {
-            return new OooPresentationDocument(parent);
-        } else {
-            return new UnknownPresentationDocument(parent);
-        }
+@ManagedBean(eager = true )
+@ApplicationScoped
+public class OooManager {
+    private static Log log = LogFactory.getLog(OooManager.class);
+    static OfficeManager officeManager;
+
+    public OooManager() {
+        officeManager = 
+                new DefaultOfficeManagerConfiguration().buildOfficeManager();
+        officeManager.start();
+    }
+
+    public static OfficeManager getOfficeManager()  {
+        return officeManager;
+    }
+
+    @PreDestroy
+    void cleanup()  {
+        officeManager.stop();
     }
 }
