@@ -453,6 +453,7 @@ class RegisteredResource implements Resource {
     private String mimeType;
     private boolean isAttachment;
     private boolean isShared;
+    private String userAgent;
     private String path;
     
     public RegisteredResource(OutputResource outputResource, Resource resource, String fileName) {
@@ -526,7 +527,9 @@ class RegisteredResource implements Resource {
         else if (isAttachment)
             options.setAsAttachement();
 
-
+        if (fName != null && options instanceof ResourceRegistryLocator.ExtendedResourceOptions) {
+            ((ResourceRegistryLocator.ExtendedResourceOptions) options).setContentDispositionFileName(encodeContentDispositionFilename(fName));
+        }
     }
 
     private class ResourceOptions implements Resource.Options {
@@ -553,5 +556,65 @@ class RegisteredResource implements Resource {
         public void setAsAttachement() {
             isAttachment = true;
         }
+    }
+
+    // ICE-4342
+    // Encode filename for Content-Disposition header; to be used in save file dialog;
+    // See http://greenbytes.de/tech/tc2231/
+    // Some code suggested by Deryk Sinotte 
+    private String encodeContentDispositionFilename(String fileName) {
+        if (fileName == null || fileName.trim().length() == 0) return null;
+
+        String defaultFileName = "=\"" + fileName + "\"";
+
+        //WebLogic does not provide the user-agent for some reason
+        //System.out.println("RegisteredResource.encodeContentDispositionFilename: user-agent = " + userAgent);
+        if (userAgent == null || userAgent.trim().length() == 0) return defaultFileName;
+
+
+        userAgent = userAgent.toLowerCase();
+        try {
+            if (userAgent.indexOf("msie") > -1) return encodeForIE(fileName);
+            if (userAgent.indexOf("firefox") > -1 || userAgent.indexOf("opera") > -1) return encodeForFirefox(fileName);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return defaultFileName;
+    }
+
+    // contributed by Robert Vojta
+    private static String encodeForIE(String fileName)
+            throws UnsupportedEncodingException {
+        /*
+         * http://greenbytes.de/tech/tc2231/#attwithfnrawpctenca
+         *
+         * IE decodes %XY to characters and than if it detects
+         * UTF-8 stream (after decoding of %XY), than it creates
+         * UTF-8 string.
+         *
+         * We use this behavior to offer correct file name
+         * for download.
+         */
+        StringBuffer encodedFileName = new StringBuffer();
+        encodedFileName.append("=\""); // ICEfaces 1.7.2 bug
+        encodedFileName.append(URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20"));
+        encodedFileName.append("\""); // ICEfaces 1.7.2 bug
+
+        return encodedFileName.toString();
+    }
+    // contributed by Robert Vojta
+    private static String encodeForFirefox(String fileName)
+            throws UnsupportedEncodingException {
+        /*
+         * http://greenbytes.de/tech/tc2231/#attwithfn2231utf8 
+         */
+        StringBuffer encodedFileName = new StringBuffer();
+
+        encodedFileName.append("*=UTF-8''");
+
+        encodedFileName.append(URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20"));
+
+        return encodedFileName.toString();
     }
 }
