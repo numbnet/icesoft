@@ -26,6 +26,14 @@ public class InputText extends InputTextBase {
             new Attribute("wrap", null),
             new Attribute("rows", null),
     };
+    
+    private Attribute[] numberAttributeNames = {
+            new Attribute("type", null),
+            new Attribute("min", null),
+            new Attribute("max", null),
+            new Attribute("step", null),
+            new Attribute("rows", null),
+    };
 
     //passthrough attributes for input text
     private Attribute[] inputtextAttributeNames = {
@@ -38,11 +46,11 @@ public class InputText extends InputTextBase {
     };
 
     private Attribute[] commonInputAttributeNames = {
-            new Attribute("tabindex", null),
             new Attribute("title", null),
             new Attribute("placeholder", null),
             new Attribute("maxlength", null),
             new Attribute("name", null),
+            new Attribute("required", null),
             new Attribute("tabindex", null)
     };
 
@@ -82,6 +90,19 @@ public class InputText extends InputTextBase {
     public void setCommonInputAttributeNames(Attribute[] commonInputAttributeNames) {
         this.commonInputAttributeNames = commonInputAttributeNames;
     }
+
+	public String validateType(String attributeType) {
+	    if (attributeType.equals("text")||attributeType.equals("number")||attributeType.equals("url")||
+	    		attributeType.equals("textarea")||attributeType.equals("phone")||attributeType.equals("email")|| 
+	    		attributeType.equals("password")){
+	    	return attributeType;
+	    }
+	    else return "text";
+	}
+
+	public Attribute[] getNumberAttributeNames() {
+		return numberAttributeNames;
+	}
 
 
 }

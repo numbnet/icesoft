@@ -42,7 +42,8 @@ public class InputTextMeta extends UIInputMeta {
     //type of text, search, url and tel all support the following attributes
     //password supports all the following but not list
 
-    @Property(defaultValue = "text", tlddoc = "html5 type attribute.  Currently supports text, textarea, inputSecret....")
+    @Property(defaultValue = "text", tlddoc = "html5 type attribute.  Currently supports text, textarea, inputSecret,"+
+    		"phone, url, email, number.  Each of the last 4 types brings up the proper keyboard on the mobility device")
     private String type;
 
     @Property(tlddoc = "default value of placeholder from html5 properties")
@@ -84,8 +85,16 @@ public class InputTextMeta extends UIInputMeta {
 
     @Property(tlddoc = "can have a title which is like tooltip")
     private String title;
+    
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="minimum value")
+    private int min;
 
-
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="maximum value")
+    private int max;
+    
+    @Property(defaultValue = "Integer.MIN_VALUE", tlddoc="step to increase/decrease the value of the number input")
+    private int step;
+    
     //see miketaylr.com/code/input-type-attr.html to see what is supported on browser used don't have list of supported browsers yet
     @Property(implementation = Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "Value of the component as a Date object.")
     private Object value;

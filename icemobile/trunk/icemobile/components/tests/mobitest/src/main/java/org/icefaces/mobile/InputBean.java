@@ -22,6 +22,8 @@ public class InputBean implements Serializable {
    private String url;
    private String email;
    private String phone;
+   private double converterVal;
+   private double doubleVal;
    private String selectedInp;
    private List nameList= new ArrayList();
    private String textField ="some kind of text field";
@@ -177,6 +179,18 @@ public int getNumberInput() {
 }
 public void setNumberInput(int numberInput) {
 	this.numberInput = numberInput;
+}
+public double getConverterVal() {
+	return converterVal;
+}
+public void setConverterVal(double converterVal) {
+	this.converterVal = converterVal;
+}
+public double getDoubleVal() {
+	return doubleVal;
+}
+public void setDoubleVal(double doubleVal) {
+	this.doubleVal = doubleVal;
 }
 
    

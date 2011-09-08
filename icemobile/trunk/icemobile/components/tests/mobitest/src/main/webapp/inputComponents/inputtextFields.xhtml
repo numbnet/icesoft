@@ -11,12 +11,9 @@
 		content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-   <h:outputScript type="application/javascript"
-                    library="org.icefaces.component.util"
-                    name="component.js"/>
  
   <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
-  <mobi:deviceStylesheet
+   <mobi:deviceStylesheet
             name="#{themeSwitcher.theme}" media="screen" />
 
 </h:head>
@@ -40,7 +37,8 @@
        <p>
        <h5>mobi input type is textfield</h5>
          <h:outputText value="C. inputTextfield"/>
-         <mobi:inputText id="textareaId" value="#{input.textField}" type="textarea" placeholder="#{input.placeholder}"
+         <mobi:inputText id="textareaId" value="#{input.textField}" type="textarea" 
+                   placeholder="#{input.placeholder}"
                          rows="3" cols="40" title="inputText field"/>
                          
        </p>
@@ -82,8 +80,10 @@
      <p>
        <h5>mobi input type is Url</h5>
          <h:outputText value="H. url"/>
-         <mobi:inputText id="urlId" value="#{input.url}" type="url" placeholder="http://www.icesoft.com"
-                          title="url field"/>
+         <mobi:inputText id="urlId" value="#{input.url}" type="url"
+                placeholder="http://www.icesoft.com"
+                singleSubmit="true"
+                 title="url field"/>
                          
        </p>         
           <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>
