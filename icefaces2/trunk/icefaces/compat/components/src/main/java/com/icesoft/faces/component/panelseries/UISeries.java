@@ -34,6 +34,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.*;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.html.HtmlForm;
+import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
@@ -696,27 +697,28 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
     }
     
     /**
-     * <p class="changed_added_2_0">Override the behavior in {@link
-     * UIComponent#visitTree} to handle iteration correctly.</p>
+     * <p class="changed_added_2_0"><span
+     * class="changed_modified_2_0_rev_a">Override</span> the behavior
+     * in {@link UIComponent#visitTree} to handle iteration
+     * correctly.</p>
      *
      * <div class="changed_added_2_0">
 
      * <p>If the {@link UIComponent#isVisitable} method of this instance
      * returns <code>false</code>, take no action and return.</p>
 
-     * <p>Otherwise, save aside the result of a call to {@link
-     * #getRowIndex}.  Call {@link UIComponent#pushComponentToEL} and
+     * <p>Call {@link UIComponent#pushComponentToEL} and
      * invoke the visit callback on this <code>UIData</code> instance as
      * described in {@link UIComponent#visitTree}.  Let the result of
      * the invoctaion be <em>visitResult</em>.  If <em>visitResult</em>
-     * is {@link javax.faces.component.visit.VisitResult#COMPLETE}, take no further action and
+     * is {@link VisitResult#COMPLETE}, take no further action and
      * return <code>true</code>.  Otherwise, determine if we need to
      * visit our children.  The default implementation calls {@link
-     * javax.faces.component.visit.VisitContext#getSubtreeIdsToVisit} passing <code>this</code> as
+     * VisitContext#getSubtreeIdsToVisit} passing <code>this</code> as
      * the argument.  If the result of that call is non-empty, let
      * <em>doVisitChildren</em> be <code>true</code>.  If
      * <em>doVisitChildren</em> is <code>true</code> and
-     * <em>visitResult</em> is {@link javax.faces.component.visit.VisitResult#ACCEPT}, take the
+     * <em>visitResult</em> is {@link VisitResult#ACCEPT}, take the
      * following action.<p>
 
      * <ul>
@@ -727,15 +729,40 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
      * 	  <code>UIComponent</code> in the returned <code>Map</code>,
      * 	  call {@link UIComponent#visitTree}.</p></li>
 
-     * 	  <li><p>If this component has children, for each child
-     * 	  <code>UIComponent</code> retured from calling {@link
-     * 	  #getChildren} on this instance, if the child has facets, call
-     * 	  {@link UIComponent#getFacets} on the child instance and invoke
-     * 	  the <code>values()</code> method.  For each
-     * 	  <code>UIComponent</code> in the returned <code>Map</code>,
-     * 	  call {@link UIComponent#visitTree}.</p></li>
+     * 	  <li>
 
-     * 	  <li><p>Iterate over the columns and rows.</p>
+     * <div class="changed_modified_2_0_rev_a">
+
+     *  <p>If this component has children, for each
+     * 	  <code>UIColumn</code> child:</p>
+     *
+     *    <p>Call {@link VisitContext#invokeVisitCallback} on that
+          <code>UIColumn</code> instance.
+     *    If such a call returns <code>true</code>, terminate visiting and
+          return <code>true</code> from this method.</p>
+     *
+     *    <p>If the child <code>UIColumn</code> has facets, call
+     *    {@link UIComponent#visitTree} on each one.</p>
+     *
+     *    <p>Take no action on non-<code>UIColumn</code> children.</p>
+     *
+     * </div>
+     * </li>
+     *
+     *    <li>
+
+     * <div class="changed_modified_2_0_rev_a">
+     *
+     * <p>Save aside the result of a call to {@link
+     *    #getRowIndex}.</p>
+
+     *    <p>For each child component of this <code>UIData</code> that is
+     *    also an instance of {@link UIColumn},
+     *    </p>
+
+     * 	  <p>Iterate over the rows.</p>
+
+     * </div>
 
      * <ul>
 
@@ -752,13 +779,10 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
 
      * <p>If {@link #isRowAvailable} returns <code>false</code>, take no
      * further action and return <code>false</code>.</p>
-
-     * <p>For each child component of this <code>UIData</code> that is
-     * also an instance of {@link javax.faces.component.UIColumn}, call {@link
-     * UIComponent#visitTree} on the child.  If such a call returns
-     * <code>true</code>, terminate iteration and return
-     * <code>true</code>.  Take no action on non <code>UIColumn</code>
-     * children.</p>
+     *
+     * <p class="changed_modified_2_0_rev_a">>Call {@link
+     * UIComponent#visitTree} on each of the children of this
+     * <code>UIColumn</code> instance.</p>
 
      *     </li>
 
@@ -785,10 +809,10 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
      * @throws NullPointerException if any of the parameters are
      * <code>null</code>.
 
-     * 
+     *
      */
     @Override
-    public boolean visitTree(VisitContext context, 
+    public boolean visitTree(VisitContext context,
                              VisitCallback callback) {
 
         // First check to see whether we are visitable.  If not
@@ -797,18 +821,25 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         if (!isVisitable(context))
             return false;
 
+        FacesContext facesContext = context.getFacesContext();
+        // NOTE: that the visitRows local will be obsolete once the
+        //       appropriate visit hints have been added to the API
+        boolean visitRows = requiresRowIteration(context);;
+
         // Clear out the row index is one is set so that
         // we start from a clean slate.
-        int oldRowIndex = getRowIndex();
-        setRowIndex(-1);
+        int oldRowIndex = -1;
+        if (visitRows) {
+            oldRowIndex = getRowIndex();
+            setRowIndex(-1);
+        }
 
         // Push ourselves to EL
-        FacesContext facesContext = context.getFacesContext();
         pushComponentToEL(facesContext, null);
 
         try {
 
-            // Visit ourselves.  Note that we delegate to the 
+            // Visit ourselves.  Note that we delegate to the
             // VisitContext to actually perform the visit.
             VisitResult result = context.invokeVisitCallback(this, callback);
 
@@ -817,48 +848,88 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
                 return true;
 
             // Visit children, short-circuiting as necessary
-            if ((result == VisitResult.ACCEPT) && doVisitChildren(context)) {
+            // NOTE: that the visitRows parameter will be obsolete once the
+            //       appropriate visit hints have been added to the API
+            if ((result == VisitResult.ACCEPT) && doVisitChildren(context, visitRows)) {
 
                 // First visit facets
-                if (visitFacets(context, callback))
+                // NOTE: that the visitRows parameter will be obsolete once the
+                //       appropriate visit hints have been added to the API
+                if (visitFacets(context, callback, visitRows))
                     return true;
 
                 // Next column facets
-                if (visitColumnFacets(context, callback))
+                // NOTE: that the visitRows parameter will be obsolete once the
+                //       appropriate visit hints have been added to the API
+                if (visitColumnsAndColumnFacets(context, callback, visitRows))
                     return true;
 
                 // And finally, visit rows
-                if (visitColumnsAndRows(context, callback))
+                // NOTE: that the visitRows parameter will be obsolete once the
+                //       appropriate visit hints have been added to the API
+                if (visitRows(context, callback, visitRows))
                     return true;
             }
         }
         finally {
             // Clean up - pop EL and restore old row index
             popComponentFromEL(facesContext);
-            setRowIndex(oldRowIndex);
+            if (visitRows) {
+                setRowIndex(oldRowIndex);
+            }
         }
 
         // Return false to allow the visit to continue
         return false;
     }
+
+    /**
+     * Called by {@link UIData#visitTree} to determine whether or not the
+     * <code>visitTree</code> implementation should visit the rows of UIData
+     * or by manipulating the row index before visiting the components themselves.
+     *
+     * Once we have the appropriate Visit hints for state saving, this method
+     * will become obsolete.
+     *
+     * @param ctx the <code>FacesContext</code> for the current request
+     *
+     * @return true if row index manipulation is required by the visit to this
+     *  UIData instance
+     */
+    private boolean requiresRowIteration(VisitContext ctx) {
+        try { // Use JSF 2.1 hints if available
+            return !ctx.getHints().contains(VisitHint.SKIP_ITERATION);
+        } catch (NoSuchFieldError e) {
+            FacesContext fctx = FacesContext.getCurrentInstance();
+            return (!PhaseId.RESTORE_VIEW.equals(fctx.getCurrentPhaseId()));
+        }
+    }
+
     // Tests whether we need to visit our children as part of
     // a tree visit
-    private boolean doVisitChildren(VisitContext context) {
+    private boolean doVisitChildren(VisitContext context, boolean visitRows) {
 
         // Just need to check whether there are any ids under this
-        // subtree.  Make sure row index is cleared out since 
+        // subtree.  Make sure row index is cleared out since
         // getSubtreeIdsToVisit() needs our row-less client id.
-        setRowIndex(-1);
+        if (visitRows) {
+            setRowIndex(-1);
+        }
         Collection<String> idsToVisit = context.getSubtreeIdsToVisit(this);
         assert(idsToVisit != null);
 
         // All ids or non-empty collection means we need to visit our children.
         return (!idsToVisit.isEmpty());
     }
-    // Visit each facet of this component exactly once
-    private boolean visitFacets(VisitContext context, VisitCallback callback) {
 
-        setRowIndex(-1);
+    // Visit each facet of this component exactly once.
+    private boolean visitFacets(VisitContext context,
+                                VisitCallback callback,
+                                boolean visitRows) {
+
+        if (visitRows) {
+            setRowIndex(-1);
+        }
         if (getFacetCount() > 0) {
             for (UIComponent facet : getFacets().values()) {
                 if (facet.visitTree(context, callback))
@@ -869,16 +940,26 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         return false;
     }
 
-    // Visit each facet of our child UIColumn components exactly once
-    private boolean visitColumnFacets(VisitContext context, 
-                                      VisitCallback callback) {
-        setRowIndex(-1);
+    // Visit each UIColumn and any facets it may have defined exactly once
+    private boolean visitColumnsAndColumnFacets(VisitContext context,
+                                                VisitCallback callback,
+                                                boolean visitRows) {
+        if (visitRows) {
+            setRowIndex(-1);
+        }
         if (getChildCount() > 0) {
             for (UIComponent column : getChildren()) {
-                if (column.getFacetCount() > 0) {
-                    for (UIComponent columnFacet : column.getFacets().values()) {
-                        if (columnFacet.visitTree(context, callback))
-                            return true;
+                if (column instanceof UIColumn) {
+                    VisitResult result = context.invokeVisitCallback(column, callback); // visit the column directly
+                    if (result == VisitResult.COMPLETE) {
+                        return true;
+                    }
+                    if (column.getFacetCount() > 0) {
+                        for (UIComponent columnFacet : column.getFacets().values()) {
+                            if (columnFacet.visitTree(context, callback)) {
+                                return true;
+                            }
+                        }
                     }
                 }
             }
@@ -888,54 +969,55 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
     }
 
     // Visit each column and row
-    private boolean visitColumnsAndRows(VisitContext context,  VisitCallback callback) {
-
-
-        // first, visit all columns
-        if (getChildCount() > 0) {
-            for (UIComponent kid : getChildren()) {
-                if (kid.visitTree(context, callback)) {
-                    return true;
-                }
-            }
-        }
+    private boolean visitRows(VisitContext context,
+                              VisitCallback callback,
+                              boolean visitRows) {
 
         // Iterate over our UIColumn children, once per row
         int processed = 0;
-        int rowIndex = getFirst() - 1;
-        int rows = getRows();
+        int rowIndex = 0;
+        int rows = 0;
+        if (visitRows) {
+            rowIndex = getFirst() - 1;
+            rows = getRows();
+        }
 
         while (true) {
 
             // Have we processed the requested number of rows?
-            if ((rows > 0) && (++processed > rows)) {
-                break;
-            }
-
-            // Expose the current row in the specified request attribute
-            setRowIndex(++rowIndex);
-            if (!isRowAvailable()) {
-                break; // Scrolled past the last row
+            if (visitRows) {
+                if ((rows > 0) && (++processed > rows)) {
+                    break;
+                }
+                // Expose the current row in the specified request attribute
+                setRowIndex(++rowIndex);
+                if (!isRowAvailable()) {
+                    break; // Scrolled past the last row
+                }
             }
 
             // Visit as required on the *children* of the UIColumn
             // (facets have been done a single time with rowIndex=-1 already)
             if (getChildCount() > 0) {
                 for (UIComponent kid : getChildren()) {
-                    if (kid instanceof UIColumn) {
-                        if (kid.getChildCount() > 0) {
-                            for (UIComponent grandkid : kid.getChildren()) {
-                                if (grandkid.visitTree(context, callback)) {
-                                    return true;
-                                }
-                            }
-                        }
-                    } else {
+                    if (!(kid instanceof UIColumn)) {
                         if (kid.visitTree(context, callback)) {
                             return true;
                         }
+                        continue;
+                    }
+                    if (kid.getChildCount() > 0) {
+                    for (UIComponent grandkid : kid.getChildren()) {
+                            if (grandkid.visitTree(context, callback)) {
+                                return true;
+                            }
+                        }
                     }
                 }
+            }
+
+            if (!visitRows) {
+                break;
             }
 
         }
