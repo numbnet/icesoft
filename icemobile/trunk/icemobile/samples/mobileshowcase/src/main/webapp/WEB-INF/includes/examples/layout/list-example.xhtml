@@ -18,21 +18,21 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
     <h:form style="margin-top:10px;">
 
-        <mobic:outputList inset="false">
-            <mobic:outputListItem group="true">
+        <mobi:outputList inset="false">
+            <mobi:outputListItem group="true">
                 Common Link Structure
-            </mobic:outputListItem>
-            <mobic:outputListItem>
+            </mobi:outputListItem>
+            <mobi:outputListItem>
                 <h:link>Link to this page</h:link>
-            </mobic:outputListItem>
-            <mobic:outputListItem>
+            </mobi:outputListItem>
+            <mobi:outputListItem>
                 <h:commandLink action="#{navigationController.navigateBack}">
                     Link back to main menu</h:commandLink>
-            </mobic:outputListItem>
-            <mobic:outputListItem type="default">
+            </mobi:outputListItem>
+            <mobi:outputListItem type="default">
                 <h:link>
                     <p class="mobi-list-item-aside"><strong>2:30</strong>AM</p>
 
@@ -44,14 +44,14 @@
 
                     <p>Hi John, how was the Calgary Stampeed this year? I would like to discuss</p>
                 </h:link>
-            </mobic:outputListItem>
-        </mobic:outputList>
+            </mobi:outputListItem>
+        </mobi:outputList>
 
-        <mobic:outputList inset="true">
-            <mobic:outputListItem group="true">
+        <mobi:outputList inset="true">
+            <mobi:outputListItem group="true">
                 Thumbnail display
-            </mobic:outputListItem>
-            <mobic:outputListItem type="thumb">
+            </mobi:outputListItem>
+            <mobi:outputListItem type="thumb">
                 <h:link>
                     <h:graphicImage library="images/auction" name="icesailor.png"/>
 
@@ -59,8 +59,8 @@
 
                     <p>Put him on the ice and watch him go!</p>
                 </h:link>
-            </mobic:outputListItem>
-            <mobic:outputListItem type="thumb">
+            </mobi:outputListItem>
+            <mobi:outputListItem type="thumb">
                 <h:link>
                     <h:graphicImage library="images/auction"
                                     name="icebreaker.png"/>
@@ -69,8 +69,8 @@
 
                     <p>Used icebreaker with very few dents.</p>
                 </h:link>
-            </mobic:outputListItem>
-            <mobic:outputListItem type="thumb">
+            </mobi:outputListItem>
+            <mobi:outputListItem type="thumb">
                 <h:link>
                     <h:graphicImage library="images/auction"
                                     name="iceskate.png"/>
@@ -79,8 +79,8 @@
 
                     <p>A single sharpened ice skate, size 7.</p>
                 </h:link>
-            </mobic:outputListItem>
-            <mobic:outputListItem type="thumb">
+            </mobi:outputListItem>
+            <mobi:outputListItem type="thumb">
                 <h:link>
                     <h:graphicImage library="images/auction" name="icecar.png"/>
 
@@ -88,7 +88,7 @@
 
                     <p>Beautiful ice car with metal car filling.</p>
                 </h:link>
-            </mobic:outputListItem>
-        </mobic:outputList>
+            </mobi:outputListItem>
+        </mobi:outputList>
     </h:form>
 </ui:fragment>
