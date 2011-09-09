@@ -36,6 +36,7 @@
 - (IBAction) doClear;
 - (void) update;
 - (void) dismiss;
+- (void) clearHistory;
 - (void) addIfUnique:(NSString *) url;
 
 @property (nonatomic, retain) IBOutlet UITextField *urlField;

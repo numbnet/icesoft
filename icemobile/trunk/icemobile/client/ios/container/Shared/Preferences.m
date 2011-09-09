@@ -34,7 +34,7 @@
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         self.history = [prefs objectForKey:@"history"];
         if (nil == self.history)  {
-            self.history = [[NSMutableArray alloc] init];
+            [self clearHistory];
         }
     }
     return self;
@@ -111,9 +111,13 @@
 
 - (IBAction) doClear {
     NSLog(@"Clear History pressed");
+    [self clearHistory];
+    [historyPicker reloadAllComponents];
+}
+
+- (void) clearHistory {
     self.history = [[NSMutableArray alloc] init];
     [self.history addObject:@"http://www.icemobile.org/demos.html"];
-    [historyPicker reloadAllComponents];
 }
 
 - (void) dismiss {
