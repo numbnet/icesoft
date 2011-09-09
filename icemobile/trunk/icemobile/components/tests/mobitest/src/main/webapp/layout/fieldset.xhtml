@@ -36,12 +36,13 @@
         <mobi:fieldsetGroup inset="false">
             <mobi:fieldsetRow >
                 <h:outputLabel value="Input label:" />
-                <h:inputText />
+                <h:inputText value="#{input.someText2}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow >
                 <h:outputLabel value="Select label:" />
-                <h:selectOneMenu >
-
+                <h:selectOneMenu value="#{input.someText}" >
+                    <f:selectItem itemValue="red" itemLabel="red"/>
+                    <f:selectItem itemValue="blue" itemLabel="blue"/>
                 </h:selectOneMenu>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
