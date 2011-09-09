@@ -22,6 +22,7 @@ import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
 import org.icefaces.util.EnvUtils;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -31,6 +32,7 @@ import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.List;
 import java.util.Iterator;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -54,29 +56,26 @@ public class OutputListRenderer extends Renderer {
         }
         else{
         	if (userDefinedClass!=null){
-        	   styleClass =   OutputList.OUTPUTLIST_CLASS+" "+userDefinedClass;
+        	   styleClass =  OutputList.OUTPUTLIST_CLASS+" "+userDefinedClass;
         	}
         }       
         writer.writeAttribute("class", styleClass, "styleClass");
         //verify the children are OutputListItem only 
-        List<UIComponent> children = uiComponent.getChildren();
-        Iterator it = children.iterator();
-        while (it.hasNext()){
-        	UIComponent child = (UIComponent)it.next();
-        	if (!(child instanceof OutputListItem)){
-        		logger.info("The OutputList component allows only children of type OutputListItem");
-        	}
+        if (facesContext.isProjectStage(ProjectStage.Development)&& logger.isLoggable(Level.FINER)){
+            List<UIComponent> children = uiComponent.getChildren();
+            Iterator it = children.iterator();
+            while (it.hasNext()){
+        	    UIComponent child = (UIComponent)it.next();
+        	    if (!(child instanceof OutputListItem)){
+        		    logger.finer("The OutputList component allows only children of type OutputListItem");
+        	    }
+            }
         }
     }
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-//        String clientId = uiComponent.getClientId(facesContext);
-//        OutputList list = (OutputList) uiComponent;
-
-         //no javascript tag for this component
-        //check to ensure children are all of type OutputListItem
         writer.endElement(HTML.UL_ELEM);
      }
 }
