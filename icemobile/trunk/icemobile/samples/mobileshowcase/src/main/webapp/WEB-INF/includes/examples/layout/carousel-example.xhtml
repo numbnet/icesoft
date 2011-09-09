@@ -21,26 +21,21 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
              xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
 
-    <mobic:fieldsetGroup inset="true">
-        <mobic:fieldsetRow style="padding-bottom:15px;">
+    <mobi:fieldsetGroup inset="true">
+        <mobi:fieldsetRow style="padding-bottom:15px;">
             Carousel images can be moved via finger swipe or mouse drag gesture.
-        </mobic:fieldsetRow>
-    </mobic:fieldsetGroup>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 
-    <mobic:carousel count="4">
-        <mobic:carouselItem>
-            <h:graphicImage library="images" name="desktop.png"/>
-        </mobic:carouselItem>
-        <mobic:carouselItem>
-            <h:graphicImage library="images" name="laptop.png"/>
-        </mobic:carouselItem>
-        <mobic:carouselItem>
-            <h:graphicImage library="images" name="monitor.png"/>
-        </mobic:carouselItem>
-        <mobic:carouselItem>
-            <h:graphicImage library="images" name="pda.png"/>
-        </mobic:carouselItem>
-    </mobic:carousel>
-
+    <h:form>
+        <mobi:carousel singleSubmit="true"
+                       selectedItem="#{carouselBean.selectedItem}"
+                       value="#{carouselBean.images}"
+                       var="item">
+            <h:panelGroup>
+                <h:graphicImage library="images" name="#{item}"/>
+            </h:panelGroup>
+        </mobi:carousel>
+    </h:form>
 
 </ui:fragment>
