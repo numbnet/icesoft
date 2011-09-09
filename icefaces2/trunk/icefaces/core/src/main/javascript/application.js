@@ -329,6 +329,9 @@ if (!window.ice.icefaces) {
                     f.onsubmit = function() {
                         //fallback to using form as submitting element when the element was removed by a previous
                         //update and form.onsubmit callback is called directly (by application or third party library code)
+                        if (element.name && !element.id)  {
+                            element.id = element.name;
+                        }
                         var elementExists = document.getElementById(element.id);
                         submit(event, elementExists ? element : f);
                         f.onsubmit = null;
