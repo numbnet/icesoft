@@ -22,6 +22,7 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -57,8 +58,28 @@ public class CarouselBean extends ExampleImpl<CarouselBean> implements
 
     public static final String BEAN_NAME = "carouselBean";
 
+    private ArrayList<String> images = new ArrayList<String>();
+
+    private int selectedItem =3;
+
     public CarouselBean() {
         super(CarouselBean.class);
+
+        images.add("desktop.png");
+        images.add("laptop.png");
+        images.add("monitor.png");
+        images.add("pda.png");
     }
 
+    public ArrayList<String> getImages() {
+        return images;
+    }
+
+    public int getSelectedItem() {
+        return selectedItem;
+    }
+
+    public void setSelectedItem(int selectedItem) {
+        this.selectedItem = selectedItem;
+    }
 }
