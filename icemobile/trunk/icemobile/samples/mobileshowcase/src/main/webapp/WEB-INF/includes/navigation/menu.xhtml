@@ -18,69 +18,69 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
     <!-- display device links. -->
     <h:form>
-        <mobic:outputList inset="false">
+        <mobi:outputList inset="false">
 
             <!-- native components menu links. -->
-            <mobic:outputListItem
-                    group="true">#{msgs[nativeCompsMenu.title]}</mobic:outputListItem>
+            <mobi:outputListItem
+                    group="true">#{msgs[nativeCompsMenu.title]}</mobi:outputListItem>
             <ui:repeat value="#{nativeCompsMenu.menuLinks}" var="menuLinks">
-                <mobic:outputListItem>
+                <mobi:outputListItem>
                     <h:commandLink
                             value="#{msgs[menuLinks.title]}"
                             action="#{navigationController.navigateToPage}">
                         <f:param name="#{navigationController.navDestination}"
                                  value="#{menuLinks.exampleBeanName}"/>
                     </h:commandLink>
-                </mobic:outputListItem>
+                </mobi:outputListItem>
             </ui:repeat>
 
             <!-- output media components  example links. -->
-            <mobic:outputListItem
-                    group="true">#{msgs[mediaPlaybackMenu.title]}</mobic:outputListItem>
+            <mobi:outputListItem
+                    group="true">#{msgs[mediaPlaybackMenu.title]}</mobi:outputListItem>
             <ui:repeat value="#{mediaPlaybackMenu.menuLinks}" var="menuLinks">
-                <mobic:outputListItem>
+                <mobi:outputListItem>
                     <h:commandLink
                             value="#{msgs[menuLinks.title]}"
                             action="#{navigationController.navigateToPage}">
                         <f:param name="#{navigationController.navDestination}"
                                  value="#{menuLinks.exampleBeanName}"/>
                     </h:commandLink>
-                </mobic:outputListItem>
+                </mobi:outputListItem>
             </ui:repeat>
 
             <!-- output media components  example links. -->
-            <mobic:outputListItem
-                    group="true">#{msgs[layoutAndNavigationMenu.title]}</mobic:outputListItem>
+            <mobi:outputListItem
+                    group="true">#{msgs[layoutAndNavigationMenu.title]}</mobi:outputListItem>
             <ui:repeat value="#{layoutAndNavigationMenu.menuLinks}"
                        var="menuLinks">
-                <mobic:outputListItem>
+                <mobi:outputListItem>
                     <h:commandLink
                             value="#{msgs[menuLinks.title]}"
                             action="#{navigationController.navigateToPage}">
                         <f:param name="#{navigationController.navDestination}"
                                  value="#{menuLinks.exampleBeanName}"/>
                     </h:commandLink>
-                </mobic:outputListItem>
+                </mobi:outputListItem>
             </ui:repeat>
 
             <!-- input and selection components example links. -->
-            <mobic:outputListItem
-                    group="true">#{msgs[inputAndSelectionMenu.title]}</mobic:outputListItem>
+            <mobi:outputListItem
+                    group="true">#{msgs[inputAndSelectionMenu.title]}</mobi:outputListItem>
             <ui:repeat value="#{inputAndSelectionMenu.menuLinks}"
                        var="menuLinks">
-                <mobic:outputListItem>
+                <mobi:outputListItem>
                     <h:commandLink
                             value="#{msgs[menuLinks.title]}"
                             action="#{navigationController.navigateToPage}">
                         <f:param name="#{navigationController.navDestination}"
                                  value="#{menuLinks.exampleBeanName}"/>
                     </h:commandLink>
-                </mobic:outputListItem>
+                </mobi:outputListItem>
             </ui:repeat>
 
-        </mobic:outputList>
+        </mobi:outputList>
     </h:form>
 </ui:fragment>
