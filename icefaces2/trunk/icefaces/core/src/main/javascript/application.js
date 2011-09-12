@@ -169,12 +169,15 @@ if (!window.ice.icefaces) {
         function retrieveUpdate(viewID) {
             append(viewIDs, viewID);
             return function() {
-                var form = document.getElementById(viewID);
-                try {
-                    debug(logger, 'picking updates for view ' + viewID);
-                    jsf.ajax.request(form, null, {'ice.submit.type': 'ice.push', render: '@all', 'ice.view': viewID, 'ice.window': namespace.window});
-                } catch (e) {
-                    warn(logger, 'failed to pick updates', e);
+                var form = lookupElementById(viewID);
+                //form is missing after navigating to a non-icefaces page
+                if (form) {
+                    try {
+                        debug(logger, 'picking updates for view ' + viewID);
+                        jsf.ajax.request(form, null, {'ice.submit.type': 'ice.push', render: '@all', 'ice.view': viewID, 'ice.window': namespace.window});
+                    } catch (e) {
+                        warn(logger, 'failed to pick updates', e);
+                    }
                 }
             };
         }
@@ -183,22 +186,25 @@ if (!window.ice.icefaces) {
 
         function disposeWindow(viewID) {
             return function() {
-                var form = document.getElementById(viewID);
-                try {
-                    //dispose is the final operation on this page, so no harm
-                    //in modifying the action to remove CDI conversation id
-                    var encodedURLElement = form['javax.faces.encodedURL'];
-                    var url = encodedURLElement ? encodedURLElement.value : form.action;
-                    form.action = url.replace(/(\?|&)cid=[0-9]+/, "$1");
-                    debug(logger, 'dispose window and associated views ' + viewIDs);
-                    postSynchronously(client, form.action, function(query) {
-                        addNameValue(query, 'ice.submit.type', 'ice.dispose.window');
-                        addNameValue(query, 'ice.window', namespace.window);
-                        addNameValue(query, 'javax.faces.ViewState', form['javax.faces.ViewState'].value);
-                        each(viewIDs, curry(addNameValue, query, 'ice.view'));
-                    }, FormPost, noop);
-                } catch (e) {
-                    warn(logger, 'failed to notify window disposal', e);
+                var form = lookupElementById(viewID);
+                //form is missing after navigating to a non-icefaces page
+                if (form) {
+                    try {
+                        //dispose is the final operation on this page, so no harm
+                        //in modifying the action to remove CDI conversation id
+                        var encodedURLElement = form['javax.faces.encodedURL'];
+                        var url = encodedURLElement ? encodedURLElement.value : form.action;
+                        form.action = url.replace(/(\?|&)cid=[0-9]+/, "$1");
+                        debug(logger, 'dispose window and associated views ' + viewIDs);
+                        postSynchronously(client, form.action, function(query) {
+                            addNameValue(query, 'ice.submit.type', 'ice.dispose.window');
+                            addNameValue(query, 'ice.window', namespace.window);
+                            addNameValue(query, 'javax.faces.ViewState', form['javax.faces.ViewState'].value);
+                            each(viewIDs, curry(addNameValue, query, 'ice.view'));
+                        }, FormPost, noop);
+                    } catch (e) {
+                        warn(logger, 'failed to notify window disposal', e);
+                    }
                 }
             };
         }
@@ -329,7 +335,7 @@ if (!window.ice.icefaces) {
                     f.onsubmit = function() {
                         //fallback to using form as submitting element when the element was removed by a previous
                         //update and form.onsubmit callback is called directly (by application or third party library code)
-                        if (element.name && !element.id)  {
+                        if (element.name && !element.id) {
                             element.id = element.name;
                         }
                         var elementExists = document.getElementById(element.id);
