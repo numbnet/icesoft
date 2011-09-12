@@ -18,32 +18,32 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
     <h:form>
-        <mobic:outputList inset="true">
+        <mobi:outputList inset="true">
             <!-- xhtml source code -->
-            <mobic:outputListItem
-                    group="true">#{msgs['menu.source.xhtml.title']}</mobic:outputListItem>
+            <mobi:outputListItem
+                    group="true">#{msgs['menu.source.xhtml.title']}</mobi:outputListItem>
             <ui:repeat
                     value="#{navigationModel.currentExampleBean.xhtmlResources}"
                     var="xhtmlResource">
-                <mobic:outputListItem>
+                <mobi:outputListItem>
                     <a href="/mobileshowcase/sourcecodeStream.html?path=#{xhtmlResource.resource}">
                         #{xhtmlResource.title}</a>
-                </mobic:outputListItem>
+                </mobi:outputListItem>
             </ui:repeat>
             <!-- xhtml source code -->
-            <mobic:outputListItem
-                    group="true">#{msgs['menu.source.bean.title']}</mobic:outputListItem>
+            <mobi:outputListItem
+                    group="true">#{msgs['menu.source.bean.title']}</mobi:outputListItem>
             <ui:repeat
                     value="#{navigationModel.currentExampleBean.javaResources}"
                     var="beanResource">
-                <mobic:outputListItem>
+                <mobi:outputListItem>
                     <a href="/mobileshowcase/sourcecodeStream.html?path=#{beanResource.resource}">
                         #{beanResource.title}</a>
-                </mobic:outputListItem>
+                </mobi:outputListItem>
             </ui:repeat>
-        </mobic:outputList>
+        </mobi:outputList>
 
     </h:form>
 </ui:fragment>
