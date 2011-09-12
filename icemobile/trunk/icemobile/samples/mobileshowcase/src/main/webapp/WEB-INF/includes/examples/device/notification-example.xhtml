@@ -18,52 +18,51 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
     <h:form prependId="false" enctype="multipart/form-data">
 
         <h4>Send Notification</h4>
-        <mobic:fieldsetGroup>
-            <mobic:fieldsetRow>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
                 <h:outputLabel value="Subject" for="subject"/>
                 <mobi:inputText id="subject"
                                 value="#{notificationBean.notificationSubject}"
                                 type="text" placeholder="subject"/>
-            </mobic:fieldsetRow>
-            <mobic:fieldsetRow>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
                 <h:outputLabel value="Message" for="message"/>
                 <mobi:inputText id="message"
                                 value="#{notificationBean.notificationMessage}"
                                 type="text" placeholder="message"/>
-            </mobic:fieldsetRow>
-            <mobic:fieldsetRow>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
                 <mobi:commandButton value="Send" type="important"
                                     actionListener="#{notificationBean.sendNotificationMessage}"/>
-            </mobic:fieldsetRow>
-        </mobic:fieldsetGroup>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
     </h:form>
 
     <h:form>
         <h4>Push Message</h4>
-        <mobic:fieldsetGroup>
-            <mobic:fieldsetRow>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
                 <h:outputLabel value="Message" for="message"/>
                 <mobi:inputText id="message"
                                 value="#{notificationBean.pushMessage}"
                                 type="text" placeholder="message"/>
-            </mobic:fieldsetRow>
-            <mobic:fieldsetRow>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
                 <h:outputLabel value="Push Message Echo:"/>
                 <h:outputText style="float:right;width:100px;"
                               value="#{messageHub.message}"/>
 
-            </mobic:fieldsetRow>
-            <mobic:fieldsetRow>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
                 <mobi:commandButton value="Send" type="important"
                                     actionListener="#{notificationBean.sendPushMessage}"/>
-            </mobic:fieldsetRow>
-        </mobic:fieldsetGroup>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
 
     </h:form>
 

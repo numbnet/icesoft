@@ -18,14 +18,13 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
     <h:form prependId="false" enctype="multipart/form-data">
 
-        <mobic:fieldsetGroup>
+        <mobi:fieldsetGroup>
 
-            <mobic:fieldsetRow>
+            <mobi:fieldsetRow>
 
                 <!-- device input and thumbnail preview -->
                 <mobi:camcorder id="cc" value="#{camcorderBean.clip}"
@@ -45,19 +44,19 @@
                         rendered="#{not camcorderBean.enhancedBrowser}"
                         value="#{msgs['example.device.disclaimer']}" />
 
-            </mobic:fieldsetRow>
+            </mobi:fieldsetRow>
 
-            <mobic:fieldsetRow>
+            <mobi:fieldsetRow>
                 <ui:fragment rendered="#{camcorderBean.outputResource != null}">
                     Uploaded Video:<br/>
                     <mobi:videoPlayer
                             value="#{camcorderBean.outputResource}"
                             controls="true"/>
                 </ui:fragment>
-            </mobic:fieldsetRow>
+            </mobi:fieldsetRow>
 
 
-        </mobic:fieldsetGroup>
+        </mobi:fieldsetGroup>
 
 
     </h:form>
