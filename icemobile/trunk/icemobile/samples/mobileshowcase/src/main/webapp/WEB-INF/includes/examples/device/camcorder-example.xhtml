@@ -40,6 +40,10 @@
                                  actionListener="#{camcorderBean.processUploadedVideo}"
                                  onclick="ice.s(event, this);"
                                  value="Upload"/>
+                <br />
+                <h:outputText styleClass="ehancedBrowserDisclaimer"
+                        rendered="#{not camcorderBean.enhancedBrowser}"
+                        value="#{msgs['example.device.disclaimer']}" />
 
             </mobic:fieldsetRow>
 

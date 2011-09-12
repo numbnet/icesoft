@@ -41,3 +41,8 @@
 .includeIframe {
     background-color: white;
 }
+
+.ehancedBrowserDisclaimer{
+    color:#666;
+    font-weight: bold;
+}
