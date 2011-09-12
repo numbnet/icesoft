@@ -18,42 +18,41 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
     <h:form>
         <h4>Keyboard Input Test</h4>
-        <mobic:fieldsetGroup>
+        <mobi:fieldsetGroup>
 
             <!-- Text input -->
-            <mobic:fieldsetRow>
+            <mobi:fieldsetRow>
                 <h:outputLabel for="textInput" value="Text:"/>
                 <mobi:inputText id="textInput" type="text"
                                 placeholder="Text input"
                                 value="#{inputBean.textInput}"/>
-            </mobic:fieldsetRow>
+            </mobi:fieldsetRow>
 
             <!-- Number input -->
-            <mobic:fieldsetRow>
+            <mobi:fieldsetRow>
                 <h:outputLabel for="numberInput" value="Number:"/>
                 <mobi:inputText id="numberInput" type="number"
                                 placeholder="Number input"
                                 value="#{inputBean.numberInput}">
                 </mobi:inputText>
-            </mobic:fieldsetRow>
+            </mobi:fieldsetRow>
 
             <!-- Password input -->
-            <mobic:fieldsetRow>
+            <mobi:fieldsetRow>
                 <h:outputLabel for="passwordInput" value="Password:"/>
                 <mobi:inputText id="passwordInput" type="password"
                                 placeholder="Password input"
                                 value="#{inputBean.passwordInput}">
                     <f:validateLength minimum="6" maximum="8"/>
                 </mobi:inputText>
-            </mobic:fieldsetRow>
+            </mobi:fieldsetRow>
 
 
-        </mobic:fieldsetGroup>
+        </mobi:fieldsetGroup>
         <h:messages/>
         <h:panelGroup styleClass="right">
             <mobi:commandButton value="Submit"/>
@@ -61,26 +60,26 @@
     </h:form>
 
     <h4>Input Echo</h4>
-    <mobic:fieldsetGroup>
+    <mobi:fieldsetGroup>
         <!-- Text output-->
-        <mobic:fieldsetRow>
+        <mobi:fieldsetRow>
             <h:outputLabel value="Text: "/>
             <h:outputText value="#{inputBean.textInput}"/>
-        </mobic:fieldsetRow>
+        </mobi:fieldsetRow>
 
         <!-- Number output -->
-        <mobic:fieldsetRow>
+        <mobi:fieldsetRow>
             <h:outputLabel value="Number: "/>
             <h:outputText value="#{inputBean.numberInput}"/>
-        </mobic:fieldsetRow>
+        </mobi:fieldsetRow>
 
         <!-- Password output -->
-        <mobic:fieldsetRow>
+        <mobi:fieldsetRow>
             <h:outputLabel value="Password: "/>
             <h:outputText value="#{inputBean.passwordInput}"/>
-        </mobic:fieldsetRow>
+        </mobi:fieldsetRow>
 
 
-    </mobic:fieldsetGroup>
+    </mobi:fieldsetGroup>
 
 </ui:fragment>

@@ -18,21 +18,20 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <mobic:fieldsetGroup>
+    <mobi:fieldsetGroup>
 
-        <mobic:fieldsetRow>
+        <mobi:fieldsetRow>
             <h4>Resource Backed Video</h4>
             <h:panelGroup styleClass="center">
                 <mobi:videoPlayer value="#{videoBean.videoResourceData}"
                                   style="width:50px;"
                                   controls="true" preload="auto"/>
             </h:panelGroup>
-        </mobic:fieldsetRow>
+        </mobi:fieldsetRow>
 
-        <mobic:fieldsetRow>
+        <mobi:fieldsetRow>
             <h4>Byte Array Backed Video</h4>
             <h:panelGroup styleClass="center">
                 <mobi:videoPlayer value="#{videoBean.videoByteData}"
@@ -41,9 +40,9 @@
                                   name="audioByteArray.mp3"
                                   controls="true" preload="auto"/>
             </h:panelGroup>
-        </mobic:fieldsetRow>
+        </mobi:fieldsetRow>
 
-        <mobic:fieldsetRow>
+        <mobi:fieldsetRow>
             <h4>Fixed URL Video</h4>
             <h:panelGroup styleClass="center">
                 <mobi:videoPlayer
@@ -51,8 +50,8 @@
                         value="./resources/video/icesoft_mobile_push.mp4"
                         controls="true" preload="auto"/>
             </h:panelGroup>
-        </mobic:fieldsetRow>
+        </mobi:fieldsetRow>
 
-    </mobic:fieldsetGroup>
+    </mobi:fieldsetGroup>
 
 </ui:fragment>

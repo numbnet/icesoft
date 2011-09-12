@@ -18,25 +18,24 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <mobic:fieldsetGroup>
+    <mobi:fieldsetGroup>
 
-        <mobic:fieldsetRow>
+        <mobi:fieldsetRow>
             <h4>Resource Backed Image</h4>
             <h:panelGroup styleClass="center">
                 <mobi:graphicImage value="#{imageBean.imageResourceData}"/>
             </h:panelGroup>
-        </mobic:fieldsetRow>
+        </mobi:fieldsetRow>
 
-        <mobic:fieldsetRow>
+        <mobi:fieldsetRow>
             <h4>Byte Array Backed Image</h4>
             <h:panelGroup styleClass="center">
                 <mobi:graphicImage value="#{imageBean.imageByteData}"/>
             </h:panelGroup>
-        </mobic:fieldsetRow>
+        </mobi:fieldsetRow>
 
-    </mobic:fieldsetGroup>
+    </mobi:fieldsetGroup>
 
 </ui:fragment>

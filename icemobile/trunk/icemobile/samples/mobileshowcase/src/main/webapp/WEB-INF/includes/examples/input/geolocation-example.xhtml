@@ -19,8 +19,7 @@
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:icecore="http://www.icefaces.org/icefaces/core"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
 
 
@@ -36,18 +35,18 @@
             <mobi:commandButton type="default" value="Locate Me" />
         </h:panelGroup>
 
-        <mobic:fieldsetGroup>
-            <mobic:fieldsetRow>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
                 Latitude: <h:outputText value="#{geolocationBean.latitude}" />
-            </mobic:fieldsetRow>
-            <mobic:fieldsetRow>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
                 Longitude: <h:outputText value="#{geolocationBean.longitude}" />
-            </mobic:fieldsetRow>
-        </mobic:fieldsetGroup>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
 
     </h:form>
     
-      <script>
+      <script type="text/javascript">
 
         function showLocation()  {
             var canvas = document.getElementById('mapCanvas');
