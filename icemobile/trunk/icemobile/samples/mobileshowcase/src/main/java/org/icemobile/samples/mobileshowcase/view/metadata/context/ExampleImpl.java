@@ -16,11 +16,13 @@
 
 package org.icemobile.samples.mobileshowcase.view.metadata.context;
 
+import org.icefaces.util.EnvUtils;
 import org.icemobile.samples.mobileshowcase.util.FacesUtils;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.Destination;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.ResourceType;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 
 /**
@@ -107,7 +109,7 @@ public class ExampleImpl<T> implements Example, ExampleResources, ContextBase {
     /**
      * Utility for loading example tab set content include.
      *
-     * @return
+     * @return retunrs path example resource include
      */
     public String loadExampleResource() {
         String resource = FacesUtils.getRequestParameter("resourceName");
@@ -116,6 +118,16 @@ public class ExampleImpl<T> implements Example, ExampleResources, ContextBase {
         }
         return null;
     }
+
+/**
+     * Test to see if the calling browser has the ICEmobile enhancements/extensions.
+     *
+     * @return true if an ICEmobile enhancements are detected, otherwise false.
+     */
+    public boolean isEnhancedBrowser() {
+        return EnvUtils.isEnhancedBrowser(FacesContext.getCurrentInstance());
+    }
+
 
     public String getDescriptionPath() {
         return descriptionPath;
