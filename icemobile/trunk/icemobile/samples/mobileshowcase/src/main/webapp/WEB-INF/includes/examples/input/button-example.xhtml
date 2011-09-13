@@ -18,46 +18,76 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:icecore="http://www.icefaces.org/icefaces/core"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
     <h:form>
         <h4>Vertical Button List</h4>
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <mobic:buttonGroup orientation="vertical">
-                    <mobic:commandButton
-                            selected="true">Yes</mobic:commandButton>
-                    <mobic:commandButton>No</mobic:commandButton>
-                    <mobic:commandButton>Please</mobic:commandButton>
-                </mobic:buttonGroup>
+                <mobi:commandButtonGroup orientation="vertical" rendered="true">
+                    <mobi:commandButton value="Yes"
+                             actionListener="#{buttonBean.commandGroup1Selected}"
+                             selected="#{buttonBean.selectedButton1 eq 'Yes'}">
+                        <f:attribute name="selectedName" value="Yes"/>
+                    </mobi:commandButton>
+                    <mobi:commandButton value="No"
+                            actionListener="#{buttonBean.commandGroup1Selected}"
+                            selected="#{buttonBean.selectedButton1 eq 'No'}">
+                        <f:attribute name="selectedName" value="No"/>
+                    </mobi:commandButton>
+                    <mobi:commandButton value="Please"
+                            actionListener="#{buttonBean.commandGroup1Selected}"
+                            selected="#{buttonBean.selectedButton1 eq 'Please'}" >
+                        <f:attribute name="selectedName" value="Please" />
+                    </mobi:commandButton>
+                </mobi:commandButtonGroup>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
         <h4>Horizontal button list</h4>
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                <mobic:buttonGroup orientation="horizontal">
-                    <mobic:commandButton
-                            selected="false">Yes</mobic:commandButton>
-                    <mobic:commandButton
-                            selected="true">No</mobic:commandButton>
-                    <mobic:commandButton
-                            selected="false">Please</mobic:commandButton>
-                </mobic:buttonGroup>
+                <mobi:commandButtonGroup orientation="horizontal">
+                    <mobi:commandButton value="Yes"
+                             actionListener="#{buttonBean.commandGroup2Selected}"
+                             selected="#{buttonBean.selectedButton2 eq 'Yes'}">
+                        <f:attribute name="selectedName" value="Yes"/>
+                    </mobi:commandButton>
+                    <mobi:commandButton value="No"
+                            actionListener="#{buttonBean.commandGroup2Selected}"
+                            selected="#{buttonBean.selectedButton2 eq 'No'}">
+                        <f:attribute name="selectedName" value="No"/>
+                    </mobi:commandButton>
+                    <mobi:commandButton value="Please"
+                            actionListener="#{buttonBean.commandGroup2Selected}"
+                            selected="#{buttonBean.selectedButton2 eq 'Please'}" >
+                        <f:attribute name="selectedName" value="Please" />
+                    </mobi:commandButton>
+                </mobi:commandButtonGroup>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
         <h4>Button Type Test</h4>
         <mobi:fieldsetGroup>
-            <mobi:fieldsetRow>
+            <mobi:fieldsetRow style="float:left;width:95%;">
                 <mobi:commandButton style="float:left;"
-                                    value="Default" type="default"/>
+                                    actionListener="#{buttonBean.buttonType}"
+                                    value="Default" type="default">
+                    <f:attribute name="buttonType" value="default"/>
+                </mobi:commandButton>
                 <mobi:commandButton style="float:left;"
-                                    value="important" type="important"/>
-                <!--<mobi:commandButton type="back">Back</mobic:commandButton>-->
+                                    actionListener="#{buttonBean.buttonType}"
+                                    value="Important" type="important">
+                        <f:attribute name="buttonType" value="important"/>
+                </mobi:commandButton>
                 <mobi:commandButton style="float:left;"
-                                    value="Attention" type="attention"/>
+                                    actionListener="#{buttonBean.buttonType}"
+                                    value="Attention" type="attention">
+                    <f:attribute name="buttonType" value="attention"/>
+                </mobi:commandButton>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow style="float:left;width:95%;">
+                <h:outputLabel value="Selected Value: " />
+                <h:outputText value="#{buttonBean.buttonType}" />
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
