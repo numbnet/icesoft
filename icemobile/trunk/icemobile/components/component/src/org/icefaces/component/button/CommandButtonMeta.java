@@ -18,6 +18,7 @@ package org.icefaces.component.button;
 
 import org.icefaces.component.annotation.Component;
 import org.icefaces.component.annotation.Property;
+import org.icefaces.component.annotation.Required;
 import org.icefaces.component.baseMeta.UICommandMeta;
 
 @Component(
@@ -61,6 +62,11 @@ public class CommandButtonMeta extends UICommandMeta {
     @Property(tlddoc = "style of the component, rendered on the div root of the component")
     private String style;
 
-    @Property(defaultValue = "default", tlddoc = "Four types of buttons are allowed default, important, back and attention")
+    @Property(tlddoc = "Four types of buttons are allowed default, important, back and attention",
+            required = Required.no)
     private String type;
+
+    @Property(defaultValue = "false", tlddoc = "Selected state of button, normally activated when parent component is a button group.")
+    // todo move selected state out into CommandButtonGroup model. Would be nice if this was transparent.
+    private boolean selected;
 }

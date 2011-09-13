@@ -56,37 +56,39 @@ public class CommandButtonRenderer extends Renderer {
         // root element
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        String defaultClass = "mobi-button mobi-button-default";
-        String importantClass = "mobi-button mobi-button-important";
-        String backClass = "mobi-button mobi-button-back";
-        String attentionClass = "mobi-button mobi-button-attention";
-        String baseClass = "mobi-button";
+
+        // apply button type style classes
+        StringBuilder baseClass = new StringBuilder(CommandButton.BASE_STYLE_CLASS);
         String type = commandButton.getType();
-        if (type.equals("important")) {
-            baseClass = importantClass;
-        } else if (type.equals("back")) {
-            baseClass = backClass;
-        } else if (type.equals("attention")) {
-            baseClass = attentionClass;
-        } else if (type.equals("default")) {
-            baseClass = defaultClass;
+        // assign button type
+        if (CommandButton.BUTTON_TYPE_DEFAULT.equals(type)) {
+            baseClass.append(CommandButton.DEFAULT_STYLE_CLASS);
+        } else if (CommandButton.BUTTON_TYPE_BACK.equals(type)) {
+            baseClass.append(CommandButton.BACK_STYLE_CLASS);
+        } else if (CommandButton.BUTTON_TYPE_ATTENTION.equals(type)) {
+            baseClass.append(CommandButton.ATTENTION_STYLE_CLASS);
+        } else if (CommandButton.BUTTON_TYPE_IMPORTANT.equals(type)) {
+            baseClass.append(CommandButton.IMPORTANT_STYLE_CLASS);
         } else if (logger.isLoggable(Level.FINER)) {
-            logger.finer("unsupported type. default is used");
+            baseClass.append(CommandButton.DEFAULT_STYLE_CLASS);
         }
-        /*  mobi-button-default - regular mobile OS themed button
-mobi-button-important - mimics OS's important button if relevant
-mobi-button-back - mimics OS's back button if relevant
-mobi-button-attention - mimics OS's attention button if relevant. */
-//        Object styleClass = commandButton.getStyleClass();
-//        if (null!=styleClass){
-//             baseClass +=  " " + String.valueOf(styleClass);
-//        }
-        writer.writeAttribute(HTML.CLASS_ATTR, baseClass, null);
+        // apply selected state if any
+        if (commandButton.isSelected()) {
+            baseClass.append(CommandButton.SELECTED_STYLE_CLASS);
+        }
+        // append any user specific style attributes
+        String styleClass = commandButton.getStyleClass();
+        if (styleClass != null) {
+            baseClass.append(" ").append(styleClass);
+        }
+        writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString(), null);
+
+        // should be auto base though
         String style = commandButton.getStyle();
         if (style != null && style.trim().length() > 0) {
             writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
         }
-        writer.writeAttribute("type", "button", null);
+        writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
         String value = type;
         Object oVal = commandButton.getValue();
@@ -105,13 +107,14 @@ mobi-button-attention - mimics OS's attention button if relevant. */
         if (commandButton.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         } else {
+            StringBuilder builder = new StringBuilder(255);
             if (singleSubmit) {
-                writer.writeAttribute("onclick", "ice.se(event, '" + clientId + "');", null);
+                builder.append("ice.se(event, '").append(clientId).append("');");
             } else {
-                writer.writeAttribute("onclick", "ice.s(event, '" + clientId + "');", null);
+                builder.append("ice.s(event, '").append(clientId).append("');");
             }
+            writer.writeAttribute(HTML.ONCLICK_ATTR, builder.toString(), null);
         }
         writer.endElement(HTML.INPUT_ELEM);
-
     }
 }
