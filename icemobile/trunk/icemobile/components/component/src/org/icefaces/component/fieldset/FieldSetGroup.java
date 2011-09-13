@@ -18,8 +18,9 @@ package org.icefaces.component.fieldset;
 
 
 public class FieldSetGroup extends FieldSetGroupBase {
-	public static final String FIELDSET_CLASS = "mobi-fieldset ";
-	public static final String FIELDSETINSET_CLASS = "mobi-fieldset mobi-fieldset-inset ";
+
+	public static final String FIELDSET_CLASS = "mobi-fieldset";
+	public static final String FIELDSETINSET_CLASS = "mobi-fieldset-inset";
 	
     public FieldSetGroup() {
         super();

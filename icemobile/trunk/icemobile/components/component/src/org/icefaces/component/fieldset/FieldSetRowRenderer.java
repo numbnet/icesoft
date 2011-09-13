@@ -18,17 +18,12 @@ package org.icefaces.component.fieldset;
 
 
 import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.Utils;
-import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
 import javax.faces.render.Renderer;
-
 import java.io.IOException;
-
 import java.util.logging.Logger;
 
 
@@ -36,32 +31,35 @@ public class FieldSetRowRenderer extends Renderer {
     private static Logger logger = Logger.getLogger(FieldSetRowRenderer.class.getName());
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
-    throws IOException {
+            throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         FieldSetRow field = (FieldSetRow) uiComponent;
 
-         //no javascript tag for this component
-        //do I have to make sure that the items only have a parent that is an OutputList?
-        
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+
+        // apply default style
         String userDefinedClass = field.getStyleClass();
-        String styleClass = FieldSetRow.FIELDSETROW_CLASS;
-        if (field.isGroup()){
-        	styleClass = FieldSetRow.FIELDSETGROUP_CLASS;
-        	if (userDefinedClass!=null){
-        	    styleClass += " "+userDefinedClass;
-        	}
-        }   
-        writer.writeAttribute("class", styleClass, "styleClass");
-  
-     }
-    
+        StringBuilder styleClass = new StringBuilder(FieldSetRow.FIELDSETROW_CLASS);
+        // apply group stying if any, header look to group rows.
+        if (field.isGroup()) {
+            styleClass.append(" ").append(FieldSetRow.FIELDSETGROUP_CLASS);
+        }
+        // apply user defined style class
+        if (userDefinedClass != null && !userDefinedClass.isEmpty()){
+            styleClass.append(" ").append(userDefinedClass);
+        }
+        writer.writeAttribute(HTML.CLASS_ATTR, styleClass.toString(), "styleClass");
+
+        // write out any users specified style attributes.
+        writer.writeAttribute(HTML.STYLE_ATTR, field.getStyle(), "style");
+
+    }
+
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-        throws IOException {
+            throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
         writer.endElement(HTML.DIV_ELEM);
     }
 }

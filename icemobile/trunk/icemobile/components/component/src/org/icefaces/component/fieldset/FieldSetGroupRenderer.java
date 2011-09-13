@@ -17,22 +17,13 @@
 package org.icefaces.component.fieldset;
 
 
-import org.icefaces.component.fieldset.FieldSetRow;
 import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.Utils;
-import org.icefaces.util.EnvUtils;
 
-import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
 import javax.faces.render.Renderer;
-
 import java.io.IOException;
-import java.util.List;
-import java.util.Iterator;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -44,28 +35,25 @@ public class FieldSetGroupRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         FieldSetGroup field = (FieldSetGroup) uiComponent;
-        //check to ensure children are all of type OutputListItem
+        //write out root tag
         writer.startElement(HTML.FIELDSET_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        String userDefinedClass = field.getStyleClass();
-        String styleClass = FieldSetGroup.FIELDSET_CLASS;
+
+        // apply default style class
+        StringBuilder styleClass = new StringBuilder(FieldSetGroup.FIELDSET_CLASS);
+        // optional inset style class
         if (field.isInset()){
-        	if (userDefinedClass!=null){
-        	    styleClass =  FieldSetGroup.FIELDSETINSET_CLASS+" "+userDefinedClass;
-        	}
-        }  
-        writer.writeAttribute("class", styleClass, "styleClass");
-        //verify the children are OutputListItem only in development mode
-        if (facesContext.isProjectStage(ProjectStage.Development)&& logger.isLoggable(Level.FINER)){
-            List<UIComponent> children = uiComponent.getChildren();
-            Iterator it = children.iterator();
-            while (it.hasNext()){
-        	    UIComponent child = (UIComponent)it.next();
-        	    if (!(child instanceof FieldSetRow)){
-        		    logger.finer("The OutputList component allows only children of type OutputListItem");
-        	    }
-            }
+            styleClass.append(" ").append(FieldSetGroup.FIELDSETINSET_CLASS);
         }
+        // user specified style class
+        String userDefinedClass = field.getStyleClass();
+        if (userDefinedClass != null && !userDefinedClass.isEmpty()){
+            styleClass.append(" ").append(userDefinedClass);
+        }
+        writer.writeAttribute("class", styleClass.toString(), "styleClass");
+
+        // write out any users specified style attributes.
+        writer.writeAttribute(HTML.STYLE_ATTR, field.getStyle(), "style");
     }
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
