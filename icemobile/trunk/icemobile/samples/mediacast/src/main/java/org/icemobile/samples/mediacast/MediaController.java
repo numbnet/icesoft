@@ -182,20 +182,31 @@ public class MediaController implements Serializable {
 
     private File processFile(File inputFile, String commandTemplate,
             String outputExtension)  {
+        StringBuilder command = new StringBuilder();
         try {
             File converted = File.createTempFile("out", outputExtension);
-            StringBuilder command = new StringBuilder();
             Formatter formatter = new Formatter(command);
             formatter.format(commandTemplate,
                     inputFile.getAbsolutePath(),
                     converted.getAbsolutePath());
             Runtime runtime = Runtime.getRuntime();
             Process process = runtime.exec(command.toString());
-            process.waitFor();
+            int exitValue = process.waitFor();
+            if (0 != exitValue)  {
+                logger.log(Level.WARNING, "Transcoding failure: " + command);
+                StringBuilder errorString = new StringBuilder();
+                InputStream errorStream = process.getErrorStream();
+                byte[] buf = new byte[1000];
+                int len = -1;
+                while ( (len = errorStream.read(buf)) > 0)  {
+                    errorString.append(new String(buf, 0, len));
+                }
+                logger.log(Level.WARNING, errorString.toString());
+            }
             return converted;
         } catch (Exception e) {
             //conversion fails, but we may proceed with original file
-            logger.log(Level.WARNING, "Error processing file.", e);
+            logger.log(Level.WARNING, command + " Error processing file.", e);
         }
         return null;
     }
@@ -219,13 +230,6 @@ public class MediaController implements Serializable {
 
         try {
 
-            if (null != thumbCommand) {
-                File thumbImage = 
-                        processFile(videoFile, thumbCommand, ".jpg");
-                customMovieIcon = createPhoto(thumbImage);
-                thumbImage.delete();
-            }
-
             if (null != videoCommand) {
                 File converted = 
                         processFile(videoFile, videoCommand, ".mp4");
@@ -234,6 +238,13 @@ public class MediaController implements Serializable {
                 videoFile.delete();
                 converted.renameTo(newVideo);
                 videoFile = newVideo;
+            }
+
+            if (null != thumbCommand) {
+                File thumbImage =
+                        processFile(videoFile, thumbCommand, ".jpg");
+                customMovieIcon = createPhoto(thumbImage);
+                thumbImage.delete();
             }
 
         } catch (Exception e) {
