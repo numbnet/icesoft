@@ -130,14 +130,7 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
         }
         // 2.) User has specified a named theme they want to load, no auto detect
         else if (name != null && library == null) {
-            if (!(ANDROID_CSS.equals(name) ||
-                    BBERRY_CSS.equals(name) ||
-                    IPHONE_CSS.equals(name))) {
-                if (log.isLoggable(Level.WARNING)) {
-                    log.warning("Defaulting to iphone.css the specified name is unknown: " + name);
-                }
-                name = IPHONE_CSS;
-            }
+            // keep the name but apply default library.
             library = DEFAULT_LIBRARY;
         }
         // 3.) User has specified a name and theme of there own, anything goes.
