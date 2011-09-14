@@ -28,6 +28,7 @@ import org.icefaces.impl.push.http.DynamicResourceLinker;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
@@ -102,7 +103,7 @@ public class ResourceRegistryLocator {
             return URI.create(CoreUtils.resolveResourceURL(context, uri));
         }
 
-        private static class DynamicResourceAdapter implements DynamicResource {
+        private static class DynamicResourceAdapter implements DynamicResource, Serializable {
             private final Resource resource;
 
             public DynamicResourceAdapter(Resource resource) {
