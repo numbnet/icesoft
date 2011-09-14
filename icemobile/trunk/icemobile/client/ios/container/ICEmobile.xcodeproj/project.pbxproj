@@ -26,6 +26,7 @@
 		9C65FC2E137C9E5500530472 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C65FC2C137C9E5500530472 /* Preferences.m */; };
 		9C65FC2F137C9E5500530472 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C65FC2D137C9E5500530472 /* Preferences.xib */; };
 		9C77A01E139E9E9B00A2B1EC /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77A01D139E9E9B00A2B1EC /* icon@2x.png */; };
+		9CACFD5E141AD389009D0C3C /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CACFD5D141AD389009D0C3C /* icon-72.png */; };
 		9CE11565133BDDE80051D367 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE11564133BDDE80051D367 /* AVFoundation.framework */; };
 		9CE7A43613B92240008C4D9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE7A43513B92240008C4D9C /* MediaPlayer.framework */; };
 /* End PBXBuildFile section */
@@ -57,6 +58,7 @@
 		9C65FC2C137C9E5500530472 /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Preferences.m; path = Shared/Preferences.m; sourceTree = "<group>"; };
 		9C65FC2D137C9E5500530472 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = Preferences.xib; path = Shared/Preferences.xib; sourceTree = "<group>"; };
 		9C77A01D139E9E9B00A2B1EC /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "Shared/icon@2x.png"; sourceTree = "<group>"; };
+		9CACFD5D141AD389009D0C3C /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-72.png"; path = "Shared/icon-72.png"; sourceTree = "<group>"; };
 		9CE11564133BDDE80051D367 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9CE7A43513B92240008C4D9C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -114,6 +116,7 @@
 				9C65FC2D137C9E5500530472 /* Preferences.xib */,
 				9C113906132ACD2E00FB7919 /* icon.png */,
 				9C77A01D139E9E9B00A2B1EC /* icon@2x.png */,
+				9CACFD5D141AD389009D0C3C /* icon-72.png */,
 				9C31408813201C37005F0E8F /* icefaces-logo.gif */,
 				8D1107310486CEB800E47090 /* ICEmobile-Info.plist */,
 				9C34261D131865700084532D /* MainViewController.h */,
@@ -221,6 +224,7 @@
 				9C113907132ACD2E00FB7919 /* icon.png in Resources */,
 				9C65FC2F137C9E5500530472 /* Preferences.xib in Resources */,
 				9C77A01E139E9E9B00A2B1EC /* icon@2x.png in Resources */,
+				9CACFD5E141AD389009D0C3C /* icon-72.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
