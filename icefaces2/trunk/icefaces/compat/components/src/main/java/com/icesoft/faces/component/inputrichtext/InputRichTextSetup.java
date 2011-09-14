@@ -27,7 +27,9 @@ public class InputRichTextSetup implements Serializable, SystemEventListener {
 
     private final Date lastModified = new Date();
     private final Map ZipEntryCacheCK = new HashMap();
-    private final ResourceLinker.Handler CK_LINKED_BASE = new ResourceLinker.Handler() {
+    private final ResourceLinker.Handler CK_LINKED_BASE = new LinkHandler();
+
+    private class LinkHandler implements ResourceLinker.Handler, Serializable{
         public void linkWith(ResourceLinker linker) {
             synchronized (ZipEntryCacheCK) {
                 if (ZipEntryCacheCK.isEmpty()) {
@@ -40,7 +42,7 @@ public class InputRichTextSetup implements Serializable, SystemEventListener {
                 linker.registerRelativeResource(entryName, new RelativeResource(entryName));
             }
         }
-    };
+    }
 
     public boolean isListenerForSource(Object source) {
         return true;
