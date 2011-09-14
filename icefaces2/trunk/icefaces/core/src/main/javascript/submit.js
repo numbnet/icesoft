@@ -64,7 +64,7 @@ var submit;
         }
     }
 
-    function singleSubmit(execute, render, event, element, additionalParameters) {
+    function singleSubmit(execute, render, event, element, additionalParameters, callbacks) {
         var viewID = viewIDOf(element);
         var form = document.getElementById(viewID);
         var clonedElements = [];
@@ -98,11 +98,25 @@ var submit;
             }
 
             event = event || null;
+            var onBeforeSubmitListeners = [];
+            var onBeforeUpdateListeners = [];
+            var onAfterUpdateListeners = [];
+            var onNetworkErrorListeners = [];
+            var onServerErrorListeners = [];
+            if (callbacks) {
+                callbacks(
+                    curry(append, onBeforeSubmitListeners),
+                    curry(append, onBeforeUpdateListeners),
+                    curry(append, onAfterUpdateListeners),
+                    curry(append, onNetworkErrorListeners),
+                    curry(append, onServerErrorListeners)
+                );
+            }
             var options = {
                 execute: execute,
                 render: render,
-                onevent: submitEventBroadcaster,
-                onerror: submitErrorBroadcaster,
+                onevent: submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners),
+                onerror: submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners),
                 'ice.window': namespace.window,
                 'ice.view': viewID,
                 'ice.focus': currentFocus
@@ -133,44 +147,44 @@ var submit;
         }
     }
 
-    singleSubmitExecuteThis = function(event, idorelement, additionalParameters) {
+    singleSubmitExecuteThis = function(event, idorelement, additionalParameters, callbacks) {
         var element = idOrElement(idorelement);
         if (standardFormSerialization(element)) {
             return fullSubmit('@this', '@all', event, element, function(p) {
                 p('ice.submit.type', 'ice.se');
                 p('ice.submit.serialization', 'form');
                 if (additionalParameters) additionalParameters(p);
-            });
+            }, callbacks);
         } else {
             return singleSubmit('@this', '@all', event, element, function(p) {
                 p('ice.submit.type', 'ice.se');
                 p('ice.submit.serialization', 'element');
                 if (additionalParameters) additionalParameters(p);
-            });
+            }, callbacks);
         }
     };
 
-    singleSubmitExecuteThisRenderThis = function(event, idorelement, additionalParameters) {
+    singleSubmitExecuteThisRenderThis = function(event, idorelement, additionalParameters, callbacks) {
         var element = idOrElement(idorelement);
         if (standardFormSerialization(element)) {
             return fullSubmit('@this', '@this', event, element, function(p) {
                 p('ice.submit.type', 'ice.ser');
                 p('ice.submit.serialization', 'form');
                 if (additionalParameters) additionalParameters(p);
-            });
+            }, callbacks);
         } else {
             return singleSubmit('@this', '@this', event, element, function(p) {
                 p('ice.submit.type', 'ice.ser');
                 p('ice.submit.serialization', 'element');
                 if (additionalParameters) additionalParameters(p);
-            });
+            }, callbacks);
         }
     };
 
     var addPrefix = 'patch+';
     var removePrefix = 'patch-';
 
-    function fullSubmit(execute, render, event, element, additionalParameters) {
+    function fullSubmit(execute, render, event, element, additionalParameters, callbacks) {
         if (isAjaxDisabled(element)) {
             var f = formOf(element);
             //use native submit function saved by namespace.captureSubmit
@@ -186,12 +200,26 @@ var submit;
         } else {
             event = event || null;
 
+            var onBeforeSubmitListeners = [];
+            var onBeforeUpdateListeners = [];
+            var onAfterUpdateListeners = [];
+            var onNetworkErrorListeners = [];
+            var onServerErrorListeners = [];
+            if (callbacks) {
+                callbacks(
+                    curry(append, onBeforeSubmitListeners),
+                    curry(append, onBeforeUpdateListeners),
+                    curry(append, onAfterUpdateListeners),
+                    curry(append, onNetworkErrorListeners),
+                    curry(append, onServerErrorListeners)
+                );
+            }
             var viewID = viewIDOf(element);
             var options = {
                 execute: execute,
                 render: render,
-                onevent: submitEventBroadcaster,
-                onerror: submitErrorBroadcaster,
+                onevent: submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners),
+                onerror: submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners),
                 'ice.window': namespace.window,
                 'ice.view': viewID,
                 'ice.focus': currentFocus};
@@ -261,11 +289,11 @@ var submit;
         }
     }
 
-    submit = function(event, element, additionalParameters) {
+    submit = function(event, element, additionalParameters, callbacks) {
         return fullSubmit('@all', '@all', event, idOrElement(element), function(p) {
             p('ice.submit.type', 'ice.s');
             p('ice.submit.serialization', 'form');
             if (additionalParameters) additionalParameters(p);
-        });
+        }, callbacks);
     };
 })();

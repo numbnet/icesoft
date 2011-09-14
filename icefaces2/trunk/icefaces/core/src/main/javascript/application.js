@@ -226,63 +226,72 @@ if (!window.ice.icefaces) {
         }
 
         //define function to be wired as submit callback into JSF bridge
-        function submitEventBroadcaster(e) {
-            switch (e.status) {
-                case 'begin':
-                    broadcast(beforeSubmitListeners, [ e.source ]);
-                    break;
-                case 'complete':
-                    var xmlContent = e.responseXML;
-                    if (containsXMLData(xmlContent)) {
-                        broadcast(beforeUpdateListeners, [ xmlContent ]);
-                    } else {
-                        warn(logger, 'the response does not contain XML data');
-                    }
-                    break;
-                case 'success':
-                    var xmlContent = e.responseXML;
-                    broadcast(afterUpdateListeners, [ xmlContent ]);
-                    var updates = xmlContent.documentElement.firstChild.childNodes;
-                    var updateDescriptions = collect(updates, function(update) {
-                        var id = update.getAttribute('id');
-                        var detail = update.nodeName + (id ? '["' + id + '"]' : '');
-                        //will require special case for insert operation
-                        if ("update" == update.nodeName) {
-                            detail += ': ' + substring(update.firstChild.data, 0, 40) + '....';
-                        } else if ("insert" == update.nodeName) {
-                            var location = update.firstChild.getAttribute('id');
-                            var text = update.firstChild.firstChild.data;
-                            detail += ': ' + update.firstChild.nodeName + ' ' + location + ': ' + substring(text, 0, 40) + '....';
+        function submitEventBroadcaster(perRequestOnBeforeSubmitListeners, perRequestOnBeforeUpdateListeners, perRequestOnAfterUpdateListeners) {
+            perRequestOnBeforeSubmitListeners = perRequestOnBeforeSubmitListeners || [];
+            perRequestOnBeforeUpdateListeners = perRequestOnBeforeUpdateListeners || [];
+            perRequestOnAfterUpdateListeners = perRequestOnAfterUpdateListeners || [];
+            return function(e) {
+                switch (e.status) {
+                    case 'begin':
+                        broadcast(concatenate(beforeSubmitListeners, perRequestOnBeforeSubmitListeners), [ e.source ]);
+                        break;
+                    case 'complete':
+                        var xmlContent = e.responseXML;
+                        if (containsXMLData(xmlContent)) {
+                            broadcast(concatenate(beforeUpdateListeners, perRequestOnBeforeUpdateListeners), [ xmlContent ]);
+                        } else {
+                            warn(logger, 'the response does not contain XML data');
                         }
-                        return detail;
-                    });
-                    debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
-                    break;
-            }
+                        break;
+                    case 'success':
+                        var xmlContent = e.responseXML;
+                        broadcast(concatenate(afterUpdateListeners, perRequestOnAfterUpdateListeners), [ xmlContent ]);
+                        var updates = xmlContent.documentElement.firstChild.childNodes;
+                        var updateDescriptions = collect(updates, function(update) {
+                            var id = update.getAttribute('id');
+                            var detail = update.nodeName + (id ? '["' + id + '"]' : '');
+                            //will require special case for insert operation
+                            if ("update" == update.nodeName) {
+                                detail += ': ' + substring(update.firstChild.data, 0, 40) + '....';
+                            } else if ("insert" == update.nodeName) {
+                                var location = update.firstChild.getAttribute('id');
+                                var text = update.firstChild.firstChild.data;
+                                detail += ': ' + update.firstChild.nodeName + ' ' + location + ': ' + substring(text, 0, 40) + '....';
+                            }
+                            return detail;
+                        });
+                        debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
+                        break;
+                }
+            };
         }
 
         //define function to be wired as error callback into JSF bridge
-        function submitErrorBroadcaster(e) {
-            if (e.status == 'serverError') {
-                var xmlContent = e.responseXML;
-                if (containsXMLData(xmlContent)) {
-                    var errorName = xmlContent.getElementsByTagName("error-name")[0].firstChild.nodeValue;
-                    if (errorName && contains(errorName, 'org.icefaces.application.SessionExpiredException')) {
-                        info(logger, 'received session expired message');
-                        sessionExpired();
-                        return;
+        function submitErrorBroadcaster(perRequestNetworkErrorListeners, perRequestServerErrorListeners) {
+            perRequestNetworkErrorListeners = perRequestNetworkErrorListeners || [];
+            perRequestServerErrorListeners = perRequestServerErrorListeners || [];
+            return function(e) {
+                if (e.status == 'serverError') {
+                    var xmlContent = e.responseXML;
+                    if (containsXMLData(xmlContent)) {
+                        var errorName = xmlContent.getElementsByTagName("error-name")[0].firstChild.nodeValue;
+                        if (errorName && contains(errorName, 'org.icefaces.application.SessionExpiredException')) {
+                            info(logger, 'received session expired message');
+                            sessionExpired();
+                            return;
+                        }
                     }
-                }
 
-                info(logger, 'received error message [code: ' + e.responseCode + ']: ' + e.responseText);
-                broadcast(serverErrorListeners, [ e.responseCode, e.responseText, containsXMLData(xmlContent) ? xmlContent : null]);
-            } else if (e.status == 'httpError') {
-                warn(logger, 'HTTP error [code: ' + e.responseCode + ']: ' + e.description);
-                broadcast(networkErrorListeners, [ e.responseCode, e.description]);
-            } else {
-                //If the error falls through the other conditions, just log it.
-                error(logger, 'Error [status: ' + e.status + ' code: ' + e.responseCode + ']: ' + e.description);
-            }
+                    info(logger, 'received error message [code: ' + e.responseCode + ']: ' + e.responseText);
+                    broadcast(concatenate(serverErrorListeners, perRequestServerErrorListeners), [ e.responseCode, e.responseText, containsXMLData(xmlContent) ? xmlContent : null]);
+                } else if (e.status == 'httpError') {
+                    warn(logger, 'HTTP error [code: ' + e.responseCode + ']: ' + e.description);
+                    broadcast(concatenate(networkErrorListeners, perRequestNetworkErrorListeners), [ e.responseCode, e.description]);
+                } else {
+                    //If the error falls through the other conditions, just log it.
+                    error(logger, 'Error [status: ' + e.status + ' code: ' + e.responseCode + ']: ' + e.description);
+                }
+            };
         }
 
         //include submit.js
