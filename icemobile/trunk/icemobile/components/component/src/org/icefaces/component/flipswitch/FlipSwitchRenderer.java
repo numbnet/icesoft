@@ -19,6 +19,7 @@ package org.icefaces.component.flipswitch;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.PassThruAttributeWriter;
 import org.icefaces.component.utils.Utils;
+import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
@@ -41,7 +42,7 @@ import java.util.logging.Logger;
  * In addition to the rendering the renderer performs decode as well. This component
  * doesn't use a hidden field for it value instead takes advantage of param support of JSF2
  */
-
+@MandatoryResourceComponent("org.icefaces.component.flipswitch.FlipSwitch")
 public class FlipSwitchRenderer extends Renderer {
 
     private final static Logger logger = Logger.getLogger(FlipSwitchRenderer.class.getName());
@@ -110,15 +111,20 @@ public class FlipSwitchRenderer extends Renderer {
         writer.write(labelOff);
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.ANCHOR_ELEM);
-        writer.startElement("input", uiComponent);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("name", clientId + "_hidden", null);
-        writer.writeAttribute("id", clientId + "_hidden", null);
-        writer.writeAttribute("value", switchValue, null);
+        writeHiddenField(uiComponent, clientId, writer, switchValue);
         writer.endElement("input");
 
         writer.endElement(HTML.DIV_ELEM);
     }
+
+	private void writeHiddenField(UIComponent uiComponent, String clientId,
+			ResponseWriter writer, String switchValue) throws IOException {
+		writer.startElement("input", uiComponent);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("name", clientId + "_hidden", null);
+        writer.writeAttribute("id", clientId + "_hidden", null);
+        writer.writeAttribute("value", switchValue, null);
+	}
     private boolean isChecked(String hiddenValue) {
         return hiddenValue.equalsIgnoreCase("on") ||
                 hiddenValue.equalsIgnoreCase("yes") ||

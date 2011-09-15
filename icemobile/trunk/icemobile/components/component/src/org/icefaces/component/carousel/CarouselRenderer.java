@@ -20,6 +20,7 @@ package org.icefaces.component.carousel;
 import org.icefaces.component.list.OutputListItem;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
+import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
@@ -35,7 +36,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
 
-
+@MandatoryResourceComponent("org.icefaces.component.carousel.Carousel")
 public class CarouselRenderer extends Renderer {
     private static Logger logger = Logger.getLogger(CarouselRenderer.class.getName());
     
