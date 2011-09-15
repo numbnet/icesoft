@@ -36,6 +36,7 @@ import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
+import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialResponseWriter;
@@ -43,6 +44,7 @@ import javax.faces.context.PartialViewContext;
 import javax.faces.context.PartialViewContextWrapper;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
+import javax.faces.application.ProjectStage;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -499,6 +501,9 @@ class DOMPartialRenderCallback implements VisitCallback {
     }
 
     public VisitResult visit(VisitContext visitContext, UIComponent component) {
+        FacesContext facesContext = visitContext.getFacesContext();
+        boolean isDevMode = 
+                !facesContext.isProjectStage(ProjectStage.Production);
         String clientId = component.getClientId(facesContext);
         DOMResponseWriter domWriter = (DOMResponseWriter)
                 facesContext.getResponseWriter();
@@ -517,6 +522,10 @@ class DOMPartialRenderCallback implements VisitCallback {
                 if (null != newSubtree)  {
                     diffs.add(new DOMUtils.ReplaceOperation(newSubtree));
                 }
+                if (isDevMode)  {
+                    log.warning("Subtree rendering " + clientId +
+                        " which not exist on client and replace may fail.");
+                }
             } else {
                 if (null != newSubtree)  {
                     //typical case
@@ -525,6 +534,10 @@ class DOMPartialRenderCallback implements VisitCallback {
                     //delete component no longer rendered, but there is now
                     //no way to add it again
                     diffs.add(new DOMUtils.DeleteOperation(clientId));
+                    if (isDevMode)  {
+                        log.warning("Subtree rendering deleting " + clientId +
+                            " and subsequent updates may fail.");
+                    }
                 }
             }
         } catch (Exception e) {
