@@ -54,6 +54,7 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -167,7 +168,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
 
                 partialWriter.startDocument();
                 if (null != customIds)  {
-                    standardRenderSubtrees(viewRoot, customIds);
+                    customRenderSubtrees(viewRoot, customIds);
                 }
 
                 if ((null == oldDOM) && isRenderAll()) {
@@ -313,12 +314,12 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         return NOOP;
     }
 
-    private void standardRenderSubtrees(UIViewRoot viewRoot, Collection<String> renderIds) {
+    private void customRenderSubtrees(UIViewRoot viewRoot, Collection<String> renderIds) {
         EnumSet<VisitHint> hints = EnumSet.of(VisitHint.SKIP_UNRENDERED);
         VisitContext visitContext =
                 VisitContext.createVisitContext(facesContext, renderIds, hints);
-        StdPartialRenderCallback renderCallback =
-                new StdPartialRenderCallback(facesContext);
+        CustomPartialRenderCallback renderCallback =
+                new CustomPartialRenderCallback(facesContext);
         viewRoot.visitTree(visitContext, renderCallback);
         return;
     }
@@ -564,11 +565,11 @@ class DOMPartialRenderCallback implements VisitCallback {
 }
 
 
-class StdPartialRenderCallback implements VisitCallback {
-    private static Logger log = Logger.getLogger(StdPartialRenderCallback.class.getName());
+class CustomPartialRenderCallback implements VisitCallback {
+    private static Logger log = Logger.getLogger(CustomPartialRenderCallback.class.getName());
     private FacesContext facesContext;
 
-    public StdPartialRenderCallback(FacesContext facesContext) {
+    public CustomPartialRenderCallback(FacesContext facesContext) {
         this.facesContext = facesContext;
     }
 
@@ -584,7 +585,12 @@ class StdPartialRenderCallback implements VisitCallback {
                     originalWriter.getCharacterEncoding(),
                     originalWriter.getContentType() );
             facesContext.setResponseWriter(updateWriter);
-            writer.startUpdate(component.getClientId(facesContext));
+            Map extensionAttributes = new HashMap();
+            extensionAttributes.put("id", clientId);
+            extensionAttributes.put(
+                    DOMPartialViewContext.CUSTOM_UPDATE, "true");
+            writer.startExtension(extensionAttributes);
+            writer.startCDATA();
             try {
                 component.encodeAll(facesContext);
             }
@@ -595,7 +601,8 @@ class StdPartialRenderCallback implements VisitCallback {
                             + " " + clientId + x.toString());
                 }
             }
-            writer.endUpdate();
+            writer.endCDATA();
+            writer.endExtension();
             facesContext.setResponseWriter(originalWriter);
         } catch (Exception e) {
             if (log.isLoggable(Level.SEVERE)) {
