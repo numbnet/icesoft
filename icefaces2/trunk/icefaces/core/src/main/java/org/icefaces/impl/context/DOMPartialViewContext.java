@@ -507,10 +507,25 @@ class DOMPartialRenderCallback implements VisitCallback {
             component.encodeAll(facesContext);
             Node newSubtree = domWriter.getDocument().getElementById(clientId);
             //these should be non-overlapping by application design
+            if (log.isLoggable(Level.FINEST)) {
+                log.finest("Subtree rendering for " + clientId + 
+                " oldSubtree: " + oldSubtree + " newSubtree: " + newSubtree);
+            }
             if (null == oldSubtree) {
-                diffs.add(new DOMUtils.ReplaceOperation(newSubtree));
+                //ReplaceOperation may be discarded by the client
+                //and likely indicates an application design flaw
+                if (null != newSubtree)  {
+                    diffs.add(new DOMUtils.ReplaceOperation(newSubtree));
+                }
             } else {
-                diffs.addAll((DOMUtils.nodeDiff(oldSubtree, newSubtree)));
+                if (null != newSubtree)  {
+                    //typical case
+                    diffs.addAll((DOMUtils.nodeDiff(oldSubtree, newSubtree)));
+                } else {
+                    //delete component no longer rendered, but there is now
+                    //no way to add it again
+                    diffs.add(new DOMUtils.DeleteOperation(clientId));
+                }
             }
         } catch (Exception e) {
             //if errors occur in any of the subtrees, we likely should perform
