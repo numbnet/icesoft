@@ -26,6 +26,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
 import java.io.IOException;
@@ -42,11 +43,23 @@ public class CarouselRenderer extends Renderer {
     	Map<String,String> params = facesContext.getExternalContext().getRequestParameterMap();
     	Carousel carousel = (Carousel)uiComponent;
     	String clientId = carousel.getClientId(facesContext);
+    	logger.info("DECODE for clientId="+clientId);
     	String hiddenField = clientId+"_hidden";
     	if (params.containsKey(hiddenField)){
-    		int selected = Integer.parseInt(params.get(hiddenField));
-    		logger.info("DECODE selected is="+selected);
-    		carousel.setSelectedItem(selected);
+    		logger.info("\t\t  have hidden");
+    		try{
+    		   Integer selected = Integer.parseInt(params.get(hiddenField));
+    		   int old = carousel.getSelectedItem();
+    		   logger.info("DECODE selected is="+selected+" old is "+old);
+    		   if (old != selected){
+        		   carousel.setSelectedItem(selected);
+    		       uiComponent.queueEvent(new ValueChangeEvent(uiComponent, 
+    		    		    new Integer(old), selected));
+    		   }
+
+    		}catch (NumberFormatException nfe){
+    			nfe.printStackTrace();
+    		}
     	}
     }
       
@@ -55,8 +68,8 @@ public class CarouselRenderer extends Renderer {
         String clientId = uiComponent.getClientId(facesContext);
         Carousel carousel = (Carousel) uiComponent;
         //check to ensure children are all of type OutputListItem
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+		writer.startElement(HTML.DIV_ELEM, uiComponent);
+		writer.writeAttribute(HTML.ID_ATTR, clientId+"_carousel", HTML.ID_ATTR);
         String userDefinedClass = carousel.getStyleClass();
         String styleClass = Carousel.CAROUSEL_CLASS;
         if (userDefinedClass!=null){
@@ -128,6 +141,8 @@ public class CarouselRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         Carousel carousel = (Carousel) uiComponent;
+        int selected = carousel.getSelectedItem();
+        logger.info("clientId ="+clientId+" encoding selectedItem of "+selected); 
 		encodeCarouselList(carousel, facesContext);
          //no javascript tag for this component
         //check to ensure children are all of type OutputListItem
@@ -135,13 +150,15 @@ public class CarouselRenderer extends Renderer {
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.DIV_ELEM);
         //now do the paginator for the carousel
-        writer.startElement(HTML.DIV_ELEM, null);
+        writer.startElement(HTML.DIV_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+		writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
+        writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute("class", carousel.CAROUSEL_CURSOR_CLASS, null);
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute("class", "mobi-carousel-cursor-center", null);
         writer.startElement(HTML.UL_ELEM, null);
-        writer.writeAttribute("class", carousel.CAROUSEL_CURSOR_LISTCLASS, null);
-        int selected = carousel.getSelectedItem();
+        writer.writeAttribute("class", carousel.CAROUSEL_CURSOR_LISTCLASS, null);       
         int size = carousel.getRowCount();
         if (selected > size-1 || selected < 0){
         	selected = 0;
@@ -159,28 +176,36 @@ public class CarouselRenderer extends Renderer {
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.DIV_ELEM);
         this.encodeHiddenSelected(facesContext, clientId, selected);
+        writer.endElement(HTML.DIV_ELEM);
         renderScript(carousel, facesContext, clientId);
      }
     private void renderScript(Carousel carousel, FacesContext facesContext, String clientId) throws IOException {
         ResponseWriter writer= facesContext.getResponseWriter();
+        boolean singleSubmit=carousel.isSingleSubmit();
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);
         //define mobi namespace if necessary
         writer.write("if (!window['mobi']) {"+
          " window.mobi = {};}\n");
         writer.write("ice.onLoad(function() { "+
-            "mobi.carousel.loaded('"+clientId+"');"+
-                 "});\n");
+                "mobi.carousel.loaded('"+clientId+"',"+singleSubmit+");"+
+             "});\n");
         writer.write("ice.onAfterUpdate(function() { "+
-             "mobi.carousel.loaded('"+clientId+"');"+
-                "});\n");
+                "mobi.carousel.refresh('"+clientId+"',"+singleSubmit+");"+
+             "});\n");
+        writer.write("ice.onUnload(function(){"+
+        		"mobi.carousel.unloaded('"+clientId+"');"+
+             "});\n");
         writer.write("supportsOrientationChange = 'onorientationchange' in window," +
             "orientationEvent = supportsOrientationChange ? 'orientationchange' : 'resize';");	
-//        writer.write("window.addEventListener(orientationEvent, function() {"+
-//	          "  setTimeout(function () { "+
-//	          "       mobi.carousel.carousels.refresh(); "+
-//	          "  }, 100); "+
-//	       " }, false);");
+        writer.write("window.addEventListener(orientationEvent, function() {"+
+	          "  setTimeout(function () { "+
+	          "       mobi.carousel.refresh('"+clientId+"',"+singleSubmit+");"+
+	          "  }, 100); "+
+	       " }, false);");
+      //  document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+   //     document.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }, 200), false);
         writer.endElement("script");
 	}
 	/**
