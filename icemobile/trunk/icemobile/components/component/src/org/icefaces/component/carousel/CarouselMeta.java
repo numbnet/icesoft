@@ -19,6 +19,7 @@ package org.icefaces.component.carousel;
 
 import org.icefaces.component.annotation.*;
 
+
 import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 
 import javax.el.MethodExpression;
@@ -43,7 +44,7 @@ import javax.faces.component.UIComponent;
 
 @ResourceDependencies({
 	@ResourceDependency(library="org.icefaces.component.util", name="iscroll.js"),
-	@ResourceDependency(library="org.icefaces.component.carousel", name="carousel.js")
+	@ResourceDependency(library="org.icefaces.component.util", name="component.js")
 })
 public class CarouselMeta extends UIComponentBaseMeta {
 	
