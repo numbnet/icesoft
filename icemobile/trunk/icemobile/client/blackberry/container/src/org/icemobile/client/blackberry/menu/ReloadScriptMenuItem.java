@@ -45,7 +45,7 @@ public class ReloadScriptMenuItem extends MenuItem {
     private ICEmobileContainer mContainer; 
 
     public ReloadScriptMenuItem(ICEmobileContainer container) { 
-        super(new StringProvider("Rerun script"), 3, 0);
+        super(new StringProvider("Rerun script"), 4, 0);
         mContainer = container;
         super.setCommand( new Command( new RerunScriptImmediateHandler() ));
     }
