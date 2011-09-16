@@ -73,6 +73,8 @@ public class AjaxUpload extends ScriptableFunction {
         //String[] result;
         //		MultipartEntity content = new MultipartEntity();
         final MultipartPostData content = new MultipartPostData();
+        final long startTime = System.currentTimeMillis();
+        
         try {
             ICEmobileContainer.DEBUG("ajax.upload - Serialized form:\n" + serializedForm);
             NameValuePair[] params = UploadUtilities.getNameValuePairs(serializedForm, "=", "&");
@@ -158,6 +160,7 @@ public class AjaxUpload extends ScriptableFunction {
                 public void run() { 
 
                     String response = mHandler.processAJAXRequest( mContainer.getCurrentURL(), null, content );
+                    ICEmobileContainer.TIME(startTime, "ajax.upload FormUpload");
                     ICEmobileContainer.DEBUG("ajax.upload - Raw response: " + response);
                     drh.setResult(response);
                     if (response != null) { 
