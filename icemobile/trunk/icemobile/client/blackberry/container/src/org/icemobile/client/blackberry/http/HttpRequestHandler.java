@@ -47,12 +47,12 @@ public class HttpRequestHandler {
     }
 
     /**
-     * Form up some details and forward a request to the container. 
-     * The Container (or more accurately, the original BrowserField) must 
+     * Form up some details and forward a request to the server. 
+     * The  original BrowserField) must 
      * make the request (rather than our doing so using HttpConnection 
      * directly) in order to maintain the JSessionId cookies during 
      * upload and to allow the BrowserField to properly utilize the 
-     * Network transport infrastructure on the device. 
+     * configured Network transport infrastructure on the device. 
      * 
      * @param authToken An optional authentication token
      * @param requestData A MultipartPostData object containing a series of 
