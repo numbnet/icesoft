@@ -35,10 +35,11 @@ import org.icemobile.client.blackberry.ICEmobileContainer;
 import net.rim.device.api.io.Base64InputStream;
 import net.rim.device.api.io.http.HttpServerConnection;
 import net.rim.device.api.io.http.PushInputStream;
+import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.util.Arrays;
 
 /**
- * Source (on standard installation): C:\Program Files\BPSS\pushsdk\client-sample-app\pushdemo\com\rim\samples\device\push <br/>
  * Reads incoming push messages and extracts texts and images.
  */
 public final class PushMessageReader {
@@ -64,16 +65,13 @@ public final class PushMessageReader {
     }
 
     /**
-     * Reads the incoming push message from the given streams in the current thread and notifies controller to display the information.
+     * Reads the incoming push message from the given streams in the current thread
+     * and notifies controller to display the information.
      * 
-     * @param pis
-     *            the pis
-     * @param conn
-     *            the conn
+     * @param piStream the push input stream
+     * @param conn The connection
      */
-    public static void process(PushInputStream pis, Connection conn) {
-
-        ICEmobileContainer.DEBUG("Reading incoming push message ...");
+    public static void process(PushInputStream piStream, Connection conn) {
 
         try {
 
@@ -89,7 +87,8 @@ public final class PushMessageReader {
             String msgType = httpConn.getType();
             String encoding = httpConn.getEncoding();
 
-            ICEmobileContainer.DEBUG("Message props: ID=" + msgId + ", Type=" + msgType + ", Encoding=" + encoding);
+//            ICEmobileContainer.DEBUG("Message props: ID=" + msgId + ", Type=" + msgType + ", Encoding=" + encoding);
+            ICEmobileContainer.showNotificationIcon(true);
 
             boolean accept = true;
             if (!alreadyReceived(msgId)) {
@@ -103,14 +102,16 @@ public final class PushMessageReader {
                     ICEmobileContainer.DEBUG("Message content type is NULL");
                     accept = false;
                 } else if (msgType.indexOf(MESSAGE_TYPE_TEXT) >= 0) {
-                    // a string
-                    int size = pis.read(buffer);
+                    
+                    // a string 
+                    int size = piStream.read(buffer);
                     binaryData = new byte[size];
                     System.arraycopy(buffer, 0, binaryData, 0, size);					
-                    // TODO report message
+                    ICEmobileContainer.DEBUG("Message recieved: " + new String (binaryData));
+                    
                 } else if (msgType.indexOf(MESSAGE_TYPE_IMAGE) >= 0) {
                     // an image in binary or Base64 encoding
-                    int size = pis.read(buffer);
+                    int size = piStream.read(buffer);
                     if (encoding != null && encoding.equalsIgnoreCase("base64")) {
                         // image is in Base64 encoding, decode it
                         Base64InputStream bis = new Base64InputStream(new ByteArrayInputStream(buffer, 0, size));
@@ -126,11 +127,12 @@ public final class PushMessageReader {
             } else {
                 ICEmobileContainer.DEBUG("Received duplicate message with ID " + msgId);
             }
-            pis.accept();
+            piStream.accept();
+            
         } catch (Exception e) {
             ICEmobileContainer.DEBUG("Failed to process push message: " + e);
         } finally {
-            PushAgent.close(conn, pis, null);
+            PushAgent.close(conn, piStream, null);
         }
     }
 
