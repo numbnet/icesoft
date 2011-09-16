@@ -37,31 +37,30 @@ import org.icemobile.client.blackberry.ICEmobileContainer;
 
 /**
  * This MenuItem is intended to execute from the Blackberry 
- * menu system and allows reloading the main application URL 
- * without having switched 'from' the application as in the options 
- * case. 
+ * menu system and allows reloading the current page, which 
+ * may not be the application home page
  *
  */
-public class ReloadMenuItem extends MenuItem {
+public class ReloadCurrentMenuItem extends MenuItem {
 
     private ICEmobileContainer mContainer; 
 
-    public ReloadMenuItem(ICEmobileContainer container) { 
-        super(new StringProvider("Reload Home Page"), 1, 0);
+    public ReloadCurrentMenuItem(ICEmobileContainer container) { 
+        super(new StringProvider("Reload"), 2, 0);
         mContainer = container;
-        super.setCommand( new Command( new ReloadPageImmediateHandler() ));
+        super.setCommand( new Command( new ReloadCurrentPageHandler() ));
     }
 
     
 
-    class ReloadPageImmediateHandler extends CommandHandler { 
+    class ReloadCurrentPageHandler extends CommandHandler { 
 
-        public ReloadPageImmediateHandler () {
+        public ReloadCurrentPageHandler () {
             super();
         }
 
         public void execute(ReadOnlyCommandMetadata metadata, Object context) { 
-            mContainer.reloadApplicationImmediately();
+            mContainer.reloadCurrentPage();
         }
     } 
 
