@@ -28,7 +28,8 @@ package org.icemobile.client.blackberry;
 
 import org.icemobile.client.blackberry.menu.BackMenuItem;
 import org.icemobile.client.blackberry.menu.HistorySubMenuItem;
-import org.icemobile.client.blackberry.menu.ReloadMenuItem;
+import org.icemobile.client.blackberry.menu.ReloadCurrentMenuItem;
+import org.icemobile.client.blackberry.menu.ReloadHomeMenuItem;
 import org.icemobile.client.blackberry.menu.ReloadScriptMenuItem;
 import org.icemobile.client.blackberry.menu.ResetAudioMenuItem;
 import org.icemobile.client.blackberry.menu.ResetPushMenuItem;
@@ -58,6 +59,7 @@ import net.rim.device.api.ui.menu.SubMenu;
      private MenuItem mResetPushMenu;
      private MenuItem mBackMenu; 
      
+     
      private HistorySubMenuItem[] mHistorySubs;
      
      /**
@@ -72,49 +74,25 @@ import net.rim.device.api.ui.menu.SubMenu;
 
      // 
 
-     public boolean onClose() { 
-         UiApplication.getUiApplication().requestBackground(); 
-         return false; 
-     }
+//     public boolean onClose() { 
+////         UiApplication.getUiApplication().requestBackground(); 
+//         return false; 
+//     }
 
-     public void close() { 
-
-     }
+//     public void close() { 
+//
+//     }
      
      /**
       * Define the options subclasses for the MainScreen
       */
      private void loadMenus() {
 
-         mReloadMenu = new ReloadMenuItem(mContainer);
-//         mReloadMenu.setCommandContext( new Object() { 
-//             public String toString() { 
-//                 return "My Menu object";
-//             }
-//         });
-
+         mReloadMenu = new ReloadHomeMenuItem(mContainer);         
+         mReloadCurrentMenu = new ReloadCurrentMenuItem(mContainer);
          mResetAudioMenu = new ResetAudioMenuItem( mContainer); 
-//         mResetAudioMenu.setCommandContext( new Object() { 
-//             public String toString() { 
-//                 return "Audio reset"; 
-//             }
-//         });
-
-
          mRerunScriptMenu = new ReloadScriptMenuItem( mContainer);
-//         mRerunScriptMenu.setCommandContext( new Object() { 
-//             public String toString() { 
-//                 return "Script Reset";
-//             }                   
-//         });
-
-         mResetPushMenu = new ResetPushMenuItem(mContainer);
-//         mResetPushMenu.setCommandContext( new Object() { 
-//             public String toString() { 
-//                 return "Reset Push Agent";
-//             }                   
-//         });    
-         
+         mResetPushMenu = new ResetPushMenuItem(mContainer);         
          mBackMenu = new BackMenuItem(mContainer); 
          
         
@@ -124,6 +102,7 @@ import net.rim.device.api.ui.menu.SubMenu;
      protected void makeMenu ( Menu menu, int instance ) {     
     
     	 menu.add ( mReloadMenu ); 
+    	 menu.add ( mReloadCurrentMenu);
     	 menu.add( mBackMenu );
 //         menu.add (mResetAudioMenu);
 //    	 menu.add (mRerunScriptMenu);
