@@ -45,7 +45,7 @@ public class BackMenuItem extends MenuItem {
     private ICEmobileContainer mContainer; 
 
     public BackMenuItem(ICEmobileContainer container) { 
-        super(new StringProvider("Back"), 2, 0);
+        super(new StringProvider("Back"), 3, 0);
         mContainer = container;
         super.setCommand( new Command( new BackHandler() ));
     }
