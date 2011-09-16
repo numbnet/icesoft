@@ -34,7 +34,7 @@ public class HistoryMenuItem extends MenuItem {
     private ICEmobileContainer mContainer; 
 
     public HistoryMenuItem(ICEmobileContainer container) { 
-        super(new StringProvider("Reload page"), 1, 0);
+        super(new StringProvider("Reload page"), 4, 0);
         mContainer = container;
         super.setCommand( new Command( new ReloadPageImmediateHandler() ));
     }
