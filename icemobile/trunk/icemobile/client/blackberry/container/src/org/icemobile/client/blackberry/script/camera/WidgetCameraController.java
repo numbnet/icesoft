@@ -73,13 +73,13 @@ public class WidgetCameraController extends ScriptableFunction {
     private ICEmobileContainer mContainer;
     private VideoControl mVideoControl;
     private MainScreen mCameraScreen;
-    private int maxWidth = 2592;
-    private int maxHeight = 1944;  
+    private int maxWidth = 640;
+    private int maxHeight = 480;  
     private String mFieldId;
     private int mThumbWidth; 
     private int mThumbHeight;
-    private int mCapturedWidth = 2592;
-    private int mCapturedHeight = 1944;
+    private int mCapturedWidth = 640;
+    private int mCapturedHeight = 480;
     
    
     private Player mPlayer; 
@@ -230,7 +230,6 @@ public class WidgetCameraController extends ScriptableFunction {
         protected boolean invokeAction(int action) { 
 
             boolean handled = super.invokeAction(action); 
-
             if(!handled) { 
 
                 if(action == ACTION_INVOKE) { 
@@ -240,9 +239,14 @@ public class WidgetCameraController extends ScriptableFunction {
                 			String localFilename = null;
 
                 			try {
+                	            long startTime = System.currentTimeMillis();
                 				// Get the orientation at photo time, not when processing! 
                 				int capturedOrientation = Display.getOrientation(); 
-                				byte[] rawImage = mVideoControl.getSnapshot(null);                				
+                				byte[] rawImage = mVideoControl.getSnapshot(null);
+                				synchronized (mContainer.getEventLock()) { 
+                                    mContainer.popScreen( mCameraScreen );
+                                } 
+                				ICEmobileContainer.TIME(startTime, "ice.shootPhoto capturing bytes" );
                 				processThumbnail( rawImage, capturedOrientation ); 
                 				
                 				ICEmobileContainer.DEBUG("ice.shootPhoto - capture size: " + rawImage.length);
@@ -256,17 +260,19 @@ public class WidgetCameraController extends ScriptableFunction {
                 					JPEGEncodedImage u = JPEGEncodedImage.encode( uploadBitmap, 100 );
                 					rawImage = u.getData();
                 				}
-                				
+                				startTime = System.currentTimeMillis(); 
                 				persistImage(rawImage, localFilename); 
+                                ICEmobileContainer.TIME(startTime, "ice.shootPhoto persisting image" );
                 				mContainer.insertHiddenFilenameScript(mFieldId, localFilename ); 
                 				ICEmobileContainer.DEBUG("ice.shootPhoto - done");
-                			} catch(Exception e) {
-//
+                			} catch(Exception e) {//
                 				ICEmobileContainer.ERROR("ice.shootPhoto - exception: " + e);
 //
                 			} finally {
-                				mContainer.popScreen( mCameraScreen );
-                				mCameraScreen.deleteAll();
+                			    synchronized (mContainer.getEventLock()) { 
+                                    mCameraScreen.deleteAll();
+                                } 
+                				
                 			}
                 		} 
                 	});
@@ -377,6 +383,7 @@ public class WidgetCameraController extends ScriptableFunction {
 			rawImage = u.getData();
 		}
 
+		long startTime = System.currentTimeMillis(); 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream (thumbnailData.length);
 		Base64OutputStream b64os = new Base64OutputStream( bos );
 		
@@ -388,6 +395,7 @@ public class WidgetCameraController extends ScriptableFunction {
 			bos.flush();
 			bos.close();
 
+            ICEmobileContainer.TIME(startTime, "ice.shootPhoto writing thumb" );
 			mContainer.insertThumbnail(mFieldId, bos.toString() ); 
 		} catch (IOException ioe) { 
 			ICEmobileContainer.ERROR("ice.shootPhoto - Exception writing thumbnail: " + ioe);
