@@ -45,17 +45,12 @@ import net.rim.device.api.servicebook.ServiceBook;
 import net.rim.device.api.servicebook.ServiceRecord;
 import net.rim.device.api.system.CoverageInfo;
 import net.rim.device.api.system.DeviceInfo;
+import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.Dialog;
 
 /**
- * Registers and receives bis push messages.<br/>
- * Based on PushLib43.java found in (standard installtion) <br/>
- * C:\Program Files\BPSS\pushsdk\client-sample-app\pushdemo\com\rim\samples\device\push\lib<br/>
- * Please note that the registration to your content provider is not included.<br/>
- * You have to enter your port and app id, and change the connection suffix<br/>
- * Unregister-code is left if needed, but not implemented.<br/>
- * It is suggested to replace the sysouts with a real logger service.
+ * Registers for and receives bis push messages.<br/>
  * 
- * @author simon_hain of supportforums.blackberry.com
  */
 public class PushAgent {
 
@@ -116,7 +111,7 @@ public class PushAgent {
                     if ( (checkUID.toLowerCase().indexOf("wifi") == -1) && 
                             (checkUID.toLowerCase().indexOf("mms") == -1)) { 
                         //						mConnectionSuffix += checkUID; 
-                        ICEmobileContainer.DEBUG("WAP2 Book entry found: " + checkUID);
+//                        ICEmobileContainer.DEBUG("WAP2 Book entry found: " + checkUID);
                         break;
                     }
                 }					
@@ -138,15 +133,14 @@ public class PushAgent {
         }
 
         messageReadingThread = null;		
-
     }
 
     /**
      * Thread that processes incoming connections through {@link PushMessageReader}.
      */
-    private static class MessageReadingThread extends Thread {
+    private class MessageReadingThread extends Thread {
 
-        private boolean running;
+        private boolean running = true;
         private ServerSocketConnection socket;
         private HttpServerConnection conn;
         private InputStream inputStream;
@@ -156,7 +150,6 @@ public class PushAgent {
          * Instantiates a new message reading thread.
          */
         public MessageReadingThread() {
-            this.running = true;
         }
 
         /**
@@ -165,8 +158,8 @@ public class PushAgent {
          * @see java.lang.Thread#run()
          */
         public void run() {
-            String url = "http://:" + PUSH_PORT ; // + mConnectionSuffix;
-            ICEmobileContainer.DEBUG("Starting to listen for push messages through '" + url + "'");
+            String url = "http://:" + PUSH_PORT  + mConnectionSuffix;
+//            ICEmobileContainer.DEBUG("Listening for push messages through '" + url + "'");
 
             try {
                 socket = (ServerSocketConnection) Connector.open(url);
@@ -175,16 +168,19 @@ public class PushAgent {
                 onListenError(ex);
             }
 
+            ICEmobileContainer.DEBUG("Push Reader ready for connection ");
             while (running) {
                 try {
-                    Object o = socket.acceptAndOpen();
+                    
+                    Object o = socket.acceptAndOpen();                    
                     conn = (HttpServerConnection) o;
                     inputStream = conn.openInputStream();
                     pushInputStream = new MDSPushInputStream(conn, inputStream);
                     PushMessageReader.process(pushInputStream, conn);
+                    ICEmobileContainer.DEBUG("Message processed");
                 } catch (Exception e) {
+                    ICEmobileContainer.ERROR("Exception reading push message: " + e);
                     if (running) {
-                        ICEmobileContainer.ERROR("Failed to read push message, caused by " + e.getMessage());
                         running = false;
                     }
                 } finally {
@@ -198,6 +194,8 @@ public class PushAgent {
          * Stop running.
          */
         public void stopRunning() {
+            
+            ICEmobileContainer.DEBUG("pushAgent - Stop called");
             running = false;
             close(socket, null, null);
         }
@@ -206,22 +204,15 @@ public class PushAgent {
          * On listen error.
          * 
          * @param ex
-         *            the ex
          */
         private void onListenError(final Exception ex) {
-            ICEmobileContainer.ERROR("Failed to open port, caused by " + ex);
+            ICEmobileContainer.ERROR("pushAgent - Exception opening local port: " + ex);
         }
     }
 
     /**
      * Safely closes connection and streams.
-     * 
-     * @param conn
-     *            the conn
-     * @param is
-     *            the is
-     * @param os
-     *            the os
+     *
      */
     public static void close(Connection conn, InputStream is, OutputStream os) {
         if (os != null) {
@@ -246,14 +237,6 @@ public class PushAgent {
 
     /**
      * Form a register request.
-     * 
-     * @param bpasUrl
-     *            the bpas url
-     * @param appId
-     *            the app id
-     * @param token
-     *            the token
-     * @return the the built request
      */
     private String formRegisterRequest(String bpasUrl, String appId, String token) {
         StringBuffer sb = new StringBuffer(bpasUrl);
@@ -269,14 +252,7 @@ public class PushAgent {
 
     /**
      * Form an unregister request.
-     * 
-     * @param bpasUrl
-     *            the bpas url
-     * @param appId
-     *            the app id
-     * @param token
-     *            the token
-     * @return the built request
+     *
      */
     private String formUnRegisterRequest(String bpasUrl, String appId, String token) {
         StringBuffer sb = new StringBuffer(bpasUrl);
