@@ -17,6 +17,12 @@
 #import "MainViewController.h"
 #import "NativeInterface.h"
 #import "Preferences.h"
+#import <QRCodeReader.h>
+#import <ZXingWidgetController.h>
+/* Will require AddressBook and AddressBookUI frameworks
+#import <UniversalResultParser.h>
+#import <ParsedResult.h>
+*/
 
 @implementation MainViewController
 
@@ -180,6 +186,34 @@
             [containerView addSubview:self.preferences.view]; }
             completion:nil];
     }
+}
+
+- (void)scanQR {
+    NSLog(@"scanQR ");
+    ZXingWidgetController *widController = [[ZXingWidgetController alloc] initWithDelegate:self showCancel:YES OneDMode:NO];
+    QRCodeReader* qrcodeReader = [[QRCodeReader alloc] init];
+    NSSet *readers = [[NSSet alloc ] initWithObjects:qrcodeReader,nil];
+    [qrcodeReader release];
+    widController.readers = readers;
+    [readers release];
+    NSBundle *mainBundle = [NSBundle mainBundle];
+    [self presentModalViewController:widController animated:YES];
+    [widController release];
+}
+
+- (void)zxingController:(ZXingWidgetController*)controller didScanResult:(NSString *)resultString {
+    [self dismissModalViewControllerAnimated:YES];
+    NSLog(@"didScanResult %@", resultString);
+    NSString *scriptTemplate = @"alert('%@')";
+    NSString *script = [NSString stringWithFormat:scriptTemplate, resultString];
+    [self.webView stringByEvaluatingJavaScriptFromString: script];
+
+//    ParsedResult *parsedResult = [[UniversalResultParser parsedResultForString:resultString] retain];
+//    NSLog(@"parsedResult %@", parsedResult);
+}
+
+- (void)zxingControllerDidCancel:(ZXingWidgetController*)controller {
+  [self dismissModalViewControllerAnimated:YES];
 }
 
 - (NSURL*)getCurrentURL {
