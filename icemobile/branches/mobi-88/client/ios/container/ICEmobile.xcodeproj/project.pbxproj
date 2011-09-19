@@ -22,7 +22,7 @@
 		9C31408913201C37005F0E8F /* icefaces-logo.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9C31408813201C37005F0E8F /* icefaces-logo.gif */; };
 		9C3140D613203841005F0E8F /* native-interface.js in Sources */ = {isa = PBXBuildFile; fileRef = 9C3140D513203841005F0E8F /* native-interface.js */; };
 		9C3140F513205108005F0E8F /* native-interface.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C3140D513203841005F0E8F /* native-interface.js */; };
-		9C34261F131865700084532D /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C34261E131865700084532D /* MainViewController.m */; };
+		9C34261F131865700084532D /* MainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C34261E131865700084532D /* MainViewController.mm */; };
 		9C65FC2E137C9E5500530472 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C65FC2C137C9E5500530472 /* Preferences.m */; };
 		9C65FC2F137C9E5500530472 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C65FC2D137C9E5500530472 /* Preferences.xib */; };
 		9C77A01E139E9E9B00A2B1EC /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77A01D139E9E9B00A2B1EC /* icon@2x.png */; };
@@ -53,7 +53,7 @@
 		9C31408813201C37005F0E8F /* icefaces-logo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = "icefaces-logo.gif"; path = "Shared/icefaces-logo.gif"; sourceTree = "<group>"; };
 		9C3140D513203841005F0E8F /* native-interface.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "native-interface.js"; path = "Shared/native-interface.js"; sourceTree = "<group>"; };
 		9C34261D131865700084532D /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = Shared/MainViewController.h; sourceTree = "<group>"; };
-		9C34261E131865700084532D /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = Shared/MainViewController.m; sourceTree = "<group>"; };
+		9C34261E131865700084532D /* MainViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MainViewController.mm; path = Shared/MainViewController.mm; sourceTree = "<group>"; };
 		9C65FC2B137C9E5500530472 /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Preferences.h; path = Shared/Preferences.h; sourceTree = "<group>"; };
 		9C65FC2C137C9E5500530472 /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Preferences.m; path = Shared/Preferences.m; sourceTree = "<group>"; };
 		9C65FC2D137C9E5500530472 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = Preferences.xib; path = Shared/Preferences.xib; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 				9C31408813201C37005F0E8F /* icefaces-logo.gif */,
 				8D1107310486CEB800E47090 /* ICEmobile-Info.plist */,
 				9C34261D131865700084532D /* MainViewController.h */,
-				9C34261E131865700084532D /* MainViewController.m */,
+				9C34261E131865700084532D /* MainViewController.mm */,
 				9C31404C13200264005F0E8F /* NativeInterface.h */,
 				9C31404D13200264005F0E8F /* NativeInterface.m */,
 				9C31408613201B67005F0E8F /* main.html */,
@@ -238,7 +238,7 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				2860E328111B887F00E27156 /* AppDelegate_iPhone.m in Sources */,
 				2860E32E111B888700E27156 /* AppDelegate_iPad.m in Sources */,
-				9C34261F131865700084532D /* MainViewController.m in Sources */,
+				9C34261F131865700084532D /* MainViewController.mm in Sources */,
 				9C31404E13200264005F0E8F /* NativeInterface.m in Sources */,
 				9C3140D613203841005F0E8F /* native-interface.js in Sources */,
 				9C65FC2E137C9E5500530472 /* Preferences.m in Sources */,
