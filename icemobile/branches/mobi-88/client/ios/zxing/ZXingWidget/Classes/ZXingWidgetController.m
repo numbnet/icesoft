@@ -59,10 +59,10 @@
     [self setDelegate:scanDelegate];
     self.oneDMode = shouldUseoOneDMode;
     self.showCancel = shouldShowCancel;
-    self.wantsFullScreenLayout = YES;
+//    self.wantsFullScreenLayout = YES;
     beepSound = -1;
     decoding = NO;
-    OverlayView *theOverLayView = [[OverlayView alloc] initWithFrame:[UIScreen mainScreen].bounds 
+    OverlayView *theOverLayView = [[OverlayView alloc] initWithFrame:CGRectMake(0, 0, 320, 480) 
                                                        cancelEnabled:showCancel 
                                                             oneDMode:oneDMode];
     [theOverLayView setDelegate:self];
@@ -117,7 +117,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  self.wantsFullScreenLayout = YES;
+//  self.wantsFullScreenLayout = YES;
   if ([self soundToPlay] != nil) {
     OSStatus error = AudioServicesCreateSystemSoundID((CFURLRef)[self soundToPlay], &beepSound);
     if (error != kAudioServicesNoError) {
