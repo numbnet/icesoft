@@ -15,10 +15,12 @@
 */
 
 #import <UIKit/UIKit.h>
+#import "ZXingWidgetController.h"
 @class NativeInterface;
 @class Preferences;
 
-@interface MainViewController : UIViewController<UIWebViewDelegate> {
+@interface MainViewController : UIViewController<UIWebViewDelegate,
+    ZXingDelegate,UINavigationControllerDelegate,UIActionSheetDelegate> {
 
 	UIWebView *webView;
 	NativeInterface *nativeInterface;

@@ -196,16 +196,26 @@
     [qrcodeReader release];
     widController.readers = readers;
     [readers release];
-    NSBundle *mainBundle = [NSBundle mainBundle];
-    [self presentModalViewController:widController animated:YES];
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
+//        UIPopoverController *scanPop = [[UIPopoverController alloc] initWithContentViewController:widController];
+//        //[picker release];
+//        [scanPop presentPopoverFromRect:CGRectMake(200.0, 200.0, 0.0, 0.0) 
+//                                 inView:self.view
+//               permittedArrowDirections:UIPopoverArrowDirectionAny 
+//                               animated:YES];
+//    } else {
+        [self presentModalViewController:widController animated:YES];
+//    }
     [widController release];
 }
 
 - (void)zxingController:(ZXingWidgetController*)controller didScanResult:(NSString *)resultString {
     [self dismissModalViewControllerAnimated:YES];
     NSLog(@"didScanResult %@", resultString);
-    NSString *scriptTemplate = @"alert('%@')";
-    NSString *script = [NSString stringWithFormat:scriptTemplate, resultString];
+    NSString *scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
+    NSString *scanId = self.nativeInterface.activeDOMElementId;
+    NSString *scanName = [scanId stringByAppendingString:@"-text"];
+    NSString *script = [NSString stringWithFormat:scriptTemplate, scanId, scanName, resultString];
     [self.webView stringByEvaluatingJavaScriptFromString: script];
 
 //    ParsedResult *parsedResult = [[UniversalResultParser parsedResultForString:resultString] retain];
