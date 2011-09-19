@@ -21,14 +21,13 @@
              xmlns:icecore="http://www.icefaces.org/icefaces/core"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
+    <h:form prependId="false" id="geoForm">
 
-
-    <h:form prependId="false" >
-
-        <mobi:geolocation latitude="#{geolocationBean.latitude}"
+        <mobi:geolocation id="test" latitude="#{geolocationBean.latitude}"
 				longitude="#{geolocationBean.longitude}" />
         <h:inputHidden id="lat" value="#{geolocationBean.latitudeRead}" />
         <h:inputHidden id="lon" value="#{geolocationBean.longitudeRead}" />
+
         <h:panelGroup style="display:block;padding-left:10px;">
             <canvas id="mapCanvas" width="300" height="150" />
             <br/>

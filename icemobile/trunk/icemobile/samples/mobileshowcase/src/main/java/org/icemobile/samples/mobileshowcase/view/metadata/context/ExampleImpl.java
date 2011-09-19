@@ -23,6 +23,7 @@ import org.icemobile.samples.mobileshowcase.view.metadata.annotation.ResourceTyp
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import java.util.ArrayList;
 
 /**
@@ -119,7 +120,20 @@ public class ExampleImpl<T> implements Example, ExampleResources, ContextBase {
         return null;
     }
 
-/**
+    /**
+     * Utility for loading example tab set content include.
+     *
+     * @param event jsf action event, even'ts component attribute is used to
+     *              retreive the attribute "resourceName".
+     */
+    public void loadExampleResource(ActionEvent event) {
+        String resource = (String) event.getComponent().getAttributes().get("resourceName");
+        if (resource != null) {
+            selectedExamplePath = resource;
+        }
+    }
+
+    /**
      * Test to see if the calling browser has the ICEmobile enhancements/extensions.
      *
      * @return true if an ICEmobile enhancements are detected, otherwise false.

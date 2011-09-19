@@ -18,43 +18,12 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
-    <h:form>
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-        <h:panelGroup style="text-align:center;">
-            <mobic:buttonGroup style="margin:0.2em 0;">
-
-                <mobic:commandButton
-                        style="width:23%"
-                        selected="#{cameraBean.selectedExamplePath eq cameraBean.descriptionPath}"
-                        action="#{cameraBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{cameraBean.descriptionPath}"/>
-                    #{msgs['example.description.label']}
-                </mobic:commandButton>
-
-                <mobic:commandButton
-                        style="width:23%"
-                        selected="#{cameraBean.selectedExamplePath eq cameraBean.examplePath}"
-                        action="#{cameraBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{cameraBean.examplePath}"/>
-                    #{msgs['example.example.label']}
-                </mobic:commandButton>
-
-                <mobic:commandButton style="width:23%"
-                                     selected="#{cameraBean.selectedExamplePath eq cameraBean.resourcesPath}"
-                                     action="#{cameraBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{cameraBean.resourcesPath}"/>
-                    #{msgs['example.resources.label']}
-                </mobic:commandButton>
-
-            </mobic:buttonGroup>
-        </h:panelGroup>
-    </h:form>
-
-    <ui:include src="#{cameraBean.selectedExamplePath}"/>
-
+    <util:exampleTabset exampleBean="#{cameraBean}"
+            renderDescription="true"
+            renderExample="true"
+            renderSource="true" />
 
 </ui:fragment>

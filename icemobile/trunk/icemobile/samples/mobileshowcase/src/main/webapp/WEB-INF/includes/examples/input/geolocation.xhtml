@@ -13,48 +13,16 @@
   ~ See the License for the specific language governing permissions an
   ~ limitations under the License.
   -->
-
 <ui:fragment xmlns="http://www.w3.org/1999/xhtml"
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
-    <h:form>
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-        <h:panelGroup style="text-align:center;">
-            <mobic:buttonGroup style="margin:0.2em 0;">
-
-                <mobic:commandButton
-                        style="width:23%"
-                        selected="#{geolocationBean.selectedExamplePath eq geolocationBean.descriptionPath}"
-                        action="#{geolocationBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{geolocationBean.descriptionPath}"/>
-                    #{msgs['example.description.label']}
-                </mobic:commandButton>
-
-                <mobic:commandButton
-                        style="width:23%"
-                        selected="#{geolocationBean.selectedExamplePath eq geolocationBean.examplePath}"
-                        action="#{geolocationBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{geolocationBean.examplePath}"/>
-                    #{msgs['example.example.label']}
-                </mobic:commandButton>
-
-                <mobic:commandButton style="width:23%"
-                                     selected="#{geolocationBean.selectedExamplePath eq geolocationBean.resourcesPath}"
-                                     action="#{geolocationBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{geolocationBean.resourcesPath}"/>
-                    #{msgs['example.resources.label']}
-                </mobic:commandButton>
-
-            </mobic:buttonGroup>
-        </h:panelGroup>
-    </h:form>
-
-    <ui:include src="#{geolocationBean.selectedExamplePath}"/>
-
+    <util:exampleTabset exampleBean="#{geolocationBean}"
+            renderDescription="true"
+            renderExample="true"
+            renderSource="true" />
 
 </ui:fragment>

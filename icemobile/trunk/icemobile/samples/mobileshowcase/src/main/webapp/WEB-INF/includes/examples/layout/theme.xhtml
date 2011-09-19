@@ -18,43 +18,12 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
-    <h:form>
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-        <h:panelGroup style="text-align:center;">
-            <mobic:buttonGroup style="margin:0.2em 0;">
-
-                <mobic:commandButton
-                        style="width:23%"
-                        selected="#{skinBean.selectedExamplePath eq skinBean.descriptionPath}"
-                        action="#{skinBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{skinBean.descriptionPath}"/>
-                    #{msgs['example.description.label']}
-                </mobic:commandButton>
-
-                <mobic:commandButton
-                        style="width:23%"
-                        selected="#{skinBean.selectedExamplePath eq skinBean.examplePath}"
-                        action="#{skinBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{skinBean.examplePath}"/>
-                    #{msgs['example.example.label']}
-                </mobic:commandButton>
-
-                <mobic:commandButton style="width:23%"
-                                     selected="#{skinBean.selectedExamplePath eq skinBean.resourcesPath}"
-                                     action="#{skinBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{skinBean.resourcesPath}"/>
-                    #{msgs['example.resources.label']}
-                </mobic:commandButton>
-
-            </mobic:buttonGroup>
-        </h:panelGroup>
-
-    </h:form>
-
-    <ui:include src="#{skinBean.selectedExamplePath}"/>
+    <util:exampleTabset exampleBean="#{skinBean}"
+            renderDescription="true"
+            renderExample="false"
+            renderSource="false" />
 
 </ui:fragment>
