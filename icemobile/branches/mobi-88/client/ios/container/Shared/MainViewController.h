@@ -41,6 +41,7 @@
 - (void)willResignActive;
 - (void)setDeviceToken:(NSData *)deviceToken;
 - (IBAction)doPreferences;
+- (void)scanQR;
 - (void)reloadCurrentPage;
 - (NSURL*)getCurrentURL;
 - (void)loadURL:(NSString*) url;

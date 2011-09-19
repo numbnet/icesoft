@@ -23,6 +23,11 @@
 		9C3140D613203841005F0E8F /* native-interface.js in Sources */ = {isa = PBXBuildFile; fileRef = 9C3140D513203841005F0E8F /* native-interface.js */; };
 		9C3140F513205108005F0E8F /* native-interface.js in Resources */ = {isa = PBXBuildFile; fileRef = 9C3140D513203841005F0E8F /* native-interface.js */; };
 		9C34261F131865700084532D /* MainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C34261E131865700084532D /* MainViewController.mm */; };
+		9C3B27911427AE1700409376 /* libZXingWidget.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27901427A1E700409376 /* libZXingWidget.a */; };
+		9C3B27931427AEA000409376 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27921427AEA000409376 /* libiconv.dylib */; };
+		9C3B27951427AEB500409376 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27941427AEB500409376 /* AudioToolbox.framework */; };
+		9C3B27971427AFAF00409376 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27961427AFAF00409376 /* CoreVideo.framework */; };
+		9C3B27991427B01100409376 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3B27981427B01100409376 /* CoreMedia.framework */; };
 		9C65FC2E137C9E5500530472 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C65FC2C137C9E5500530472 /* Preferences.m */; };
 		9C65FC2F137C9E5500530472 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C65FC2D137C9E5500530472 /* Preferences.xib */; };
 		9C77A01E139E9E9B00A2B1EC /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77A01D139E9E9B00A2B1EC /* icon@2x.png */; };
@@ -30,6 +35,16 @@
 		9CE11565133BDDE80051D367 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE11564133BDDE80051D367 /* AVFoundation.framework */; };
 		9CE7A43613B92240008C4D9C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE7A43513B92240008C4D9C /* MediaPlayer.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9C3B278F1427A1E700409376 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C3B27881427A1E600409376 /* ZXingWidget.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = ZXingWidget;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -54,6 +69,11 @@
 		9C3140D513203841005F0E8F /* native-interface.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "native-interface.js"; path = "Shared/native-interface.js"; sourceTree = "<group>"; };
 		9C34261D131865700084532D /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = Shared/MainViewController.h; sourceTree = "<group>"; };
 		9C34261E131865700084532D /* MainViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MainViewController.mm; path = Shared/MainViewController.mm; sourceTree = "<group>"; };
+		9C3B27881427A1E600409376 /* ZXingWidget.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZXingWidget.xcodeproj; path = ../zxing/ZXingWidget/ZXingWidget.xcodeproj; sourceTree = "<group>"; };
+		9C3B27921427AEA000409376 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		9C3B27941427AEB500409376 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		9C3B27961427AFAF00409376 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		9C3B27981427B01100409376 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		9C65FC2B137C9E5500530472 /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Preferences.h; path = Shared/Preferences.h; sourceTree = "<group>"; };
 		9C65FC2C137C9E5500530472 /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Preferences.m; path = Shared/Preferences.m; sourceTree = "<group>"; };
 		9C65FC2D137C9E5500530472 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = Preferences.xib; path = Shared/Preferences.xib; sourceTree = "<group>"; };
@@ -68,6 +88,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C3B27991427B01100409376 /* CoreMedia.framework in Frameworks */,
+				9C3B27971427AFAF00409376 /* CoreVideo.framework in Frameworks */,
+				9C3B27951427AEB500409376 /* AudioToolbox.framework in Frameworks */,
+				9C3B27931427AEA000409376 /* libiconv.dylib in Frameworks */,
+				9C3B27911427AE1700409376 /* libZXingWidget.a in Frameworks */,
 				9CE7A43613B92240008C4D9C /* MediaPlayer.framework in Frameworks */,
 				9C2A9F6513B8E78F0068D894 /* MobileCoreServices.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -132,6 +157,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				9C3B27871427A1B500409376 /* Dependencies */,
 				2860E32A111B888700E27156 /* iPad */,
 				2860E324111B887F00E27156 /* iPhone */,
 				28EEBF621118D79A00187D67 /* Shared */,
@@ -154,6 +180,10 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9C3B27981427B01100409376 /* CoreMedia.framework */,
+				9C3B27961427AFAF00409376 /* CoreVideo.framework */,
+				9C3B27941427AEB500409376 /* AudioToolbox.framework */,
+				9C3B27921427AEA000409376 /* libiconv.dylib */,
 				9CE7A43513B92240008C4D9C /* MediaPlayer.framework */,
 				9C2A9F6413B8E78F0068D894 /* MobileCoreServices.framework */,
 				9CE11564133BDDE80051D367 /* AVFoundation.framework */,
@@ -162,6 +192,22 @@
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9C3B27871427A1B500409376 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				9C3B27881427A1E600409376 /* ZXingWidget.xcodeproj */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		9C3B27891427A1E600409376 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9C3B27901427A1E700409376 /* libZXingWidget.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -204,12 +250,28 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 9C3B27891427A1E600409376 /* Products */;
+					ProjectRef = 9C3B27881427A1E600409376 /* ZXingWidget.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* ICEmobile */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		9C3B27901427A1E700409376 /* libZXingWidget.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libZXingWidget.a;
+			remoteRef = 9C3B278F1427A1E700409376 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
@@ -259,6 +321,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Shared/ICEmobile_Prefix.pch;
+				HEADER_SEARCH_PATHS = (
+					../zxing/cpp/core/src,
+					"../zxing/ZXingWidget/Classes/**",
+				);
 				INFOPLIST_FILE = "Shared/ICEmobile-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = ICEmobile;
@@ -276,6 +342,10 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Shared/ICEmobile_Prefix.pch;
+				HEADER_SEARCH_PATHS = (
+					../zxing/cpp/core/src,
+					"../zxing/ZXingWidget/Classes/**",
+				);
 				INFOPLIST_FILE = "Shared/ICEmobile-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = ICEmobile;

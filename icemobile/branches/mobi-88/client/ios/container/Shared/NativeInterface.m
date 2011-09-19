@@ -60,6 +60,8 @@ static char base64EncodingTable[64] = {
         [self microphone:[params objectForKey:@"id"]];
     } else if ([@"play" isEqualToString:commandName])  {
         [self play:[params objectForKey:@"id"]];
+    } else if ([@"scan" isEqualToString:commandName])  {
+        [self scan:[params objectForKey:@"id"]];
     }
     return YES;
 }
@@ -192,6 +194,11 @@ static char base64EncodingTable[64] = {
  
     [controller presentModalViewController:picker animated:YES];
     
+    return YES;
+}
+
+- (BOOL)scan: (NSString*)scanId  {
+    [self.controller scanQR];
     return YES;
 }
 
