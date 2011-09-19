@@ -22,6 +22,7 @@
 var singleSubmitExecuteThis;
 var singleSubmitExecuteThisRenderThis;
 var submit;
+var fullSubmitFunction;
 (function() {
     function idOrElement(e) {
         return isString(e) ? document.getElementById(e) : e;
@@ -288,6 +289,8 @@ var submit;
             }
         }
     }
+
+    fullSubmitFunction = fullSubmit;
 
     submit = function(event, element, additionalParameters, callbacks) {
         return fullSubmit('@all', '@all', event, idOrElement(element), function(p) {
