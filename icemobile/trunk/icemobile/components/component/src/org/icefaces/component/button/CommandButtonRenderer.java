@@ -16,20 +16,23 @@
 package org.icefaces.component.button;
 
 import org.icefaces.component.utils.HTML;
-
+import org.icefaces.component.utils.Utils;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import javax.faces.render.Renderer;
+import javax.faces.component.UIParameter;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.List;
 
 
 public class CommandButtonRenderer extends Renderer {
     private static Logger logger = Logger.getLogger(CommandButtonRenderer.class.getName());
+    List <UIParameter> uiParamChildren;
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
@@ -52,7 +55,7 @@ public class CommandButtonRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         CommandButton commandButton = (CommandButton) uiComponent;
-
+        uiParamChildren = Utils.captureParameters( commandButton );
         // root element
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
@@ -104,14 +107,18 @@ public class CommandButtonRenderer extends Renderer {
         String clientId = uiComponent.getClientId(facesContext);
         CommandButton commandButton = (CommandButton) uiComponent;
         boolean singleSubmit = commandButton.isSingleSubmit();
+        String params = "'"+clientId+"'";
+        if (uiParamChildren != null) {
+             params += ","+Utils.asParameterString(uiParamChildren);
+        }
         if (commandButton.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         } else {
             StringBuilder builder = new StringBuilder(255);
             if (singleSubmit) {
-                builder.append("ice.se(event, '").append(clientId).append("');");
+                builder.append("ice.se(event, ").append(params).append(");");
             } else {
-                builder.append("ice.s(event, '").append(clientId).append("');");
+                builder.append("ice.s(event, ").append(params).append(");");
             }
             writer.writeAttribute(HTML.ONCLICK_ATTR, builder.toString(), null);
         }
