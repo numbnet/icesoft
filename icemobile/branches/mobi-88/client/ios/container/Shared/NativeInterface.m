@@ -198,6 +198,7 @@ static char base64EncodingTable[64] = {
 }
 
 - (BOOL)scan: (NSString*)scanId  {
+    self.activeDOMElementId = scanId;
     [self.controller scanQR];
     return YES;
 }
