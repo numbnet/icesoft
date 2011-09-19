@@ -22,7 +22,7 @@
 var singleSubmitExecuteThis;
 var singleSubmitExecuteThisRenderThis;
 var submit;
-var fullSubmitFunction;
+var fullSubmit;
 (function() {
     function idOrElement(e) {
         return isString(e) ? document.getElementById(e) : e;
@@ -185,7 +185,7 @@ var fullSubmitFunction;
     var addPrefix = 'patch+';
     var removePrefix = 'patch-';
 
-    function fullSubmit(execute, render, event, element, additionalParameters, callbacks) {
+    fullSubmit = function(execute, render, event, element, additionalParameters, callbacks) {
         if (isAjaxDisabled(element)) {
             var f = formOf(element);
             //use native submit function saved by namespace.captureSubmit
@@ -288,9 +288,7 @@ var fullSubmitFunction;
                 namespace.submitFunction(element, event, options);
             }
         }
-    }
-
-    fullSubmitFunction = fullSubmit;
+    };
 
     submit = function(event, element, additionalParameters, callbacks) {
         return fullSubmit('@all', '@all', event, idOrElement(element), function(p) {
