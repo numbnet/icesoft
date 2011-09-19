@@ -35,6 +35,9 @@
 .mobi-button-group-hor .mobi-button {
     display: inline-block;
     margin: 0 -5px 0 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
 
 .mobi-button-group-vert .mobi-button:first-child {
@@ -77,6 +80,9 @@
     border: 1px solid #999;
     background: -moz-linear-gradient(top, #E7EBE7, #ccc) repeat scroll 0 0 #ccc;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #E7EBE7), color-stop(1, #ccc));
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
     font-size: 12px;
     color: black;
     font-weight: bold;
