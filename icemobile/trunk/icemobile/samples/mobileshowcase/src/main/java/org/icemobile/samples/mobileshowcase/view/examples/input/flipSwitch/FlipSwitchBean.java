@@ -22,6 +22,7 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 
 @Destination(
@@ -63,6 +64,16 @@ public class FlipSwitchBean extends ExampleImpl<FlipSwitchBean> implements
 
     public FlipSwitchBean() {
         super(FlipSwitchBean.class);
+    }
+
+    /**
+     * Auto capitalization value change event.  This is a simple example of
+     * how to setup a valueChangeListener for the flipSwitch component.
+     *
+     * @param event jsf valueChangeEvent.
+     */
+    public void autoCapitalizationChange(ValueChangeEvent event){
+
     }
 
     public boolean isAutoCapitalization() {
