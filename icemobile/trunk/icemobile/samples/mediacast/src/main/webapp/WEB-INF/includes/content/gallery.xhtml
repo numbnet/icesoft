@@ -18,14 +18,13 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
     <h:form>
-        <mobic:outputList inset="false">
+        <mobi:outputList inset="false">
             <ui:repeat var="media"
                        value="#{mediaStore.mediaStack}">
-                <mobic:outputListItem>
+                <mobi:outputListItem>
                     <h:commandLink action="#{mediaController.viewMediaDetail}">
                         <f:setPropertyActionListener
                                 target="#{uploadModel.selectedPhoto}"
@@ -35,16 +34,15 @@
                                 value="#{media.smallPhoto.data}"
                                 width="#{media.smallPhoto.width}"
                                 height="#{media.smallPhoto.height}"
-                                style="padding-right:5px;"
-                                />
+                                style="padding-right:5px;" />
 
                         <h:outputText
                                 value="#{media.comment}"/>
 
                     </h:commandLink>
-                </mobic:outputListItem>
+                </mobi:outputListItem>
             </ui:repeat>
-        </mobic:outputList>
+        </mobi:outputList>
     </h:form>
 
 

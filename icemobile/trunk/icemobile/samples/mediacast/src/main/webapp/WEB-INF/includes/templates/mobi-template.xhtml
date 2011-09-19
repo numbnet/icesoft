@@ -20,7 +20,6 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite"
       xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
@@ -40,11 +39,10 @@
     <div id="h" class="mobi-panel-stack-header">
         <ui:insert name="toolbar">
             <h:form id="toolbar" prependId="false">
-                <mobic:commandButton type="back"
-                                     action="#{navigationController.navigateBack}"
-                                     rendered="#{not navigationModel.currentDestination.hideBack}">
-                    #{navigationModel.backDestination.backTitle}
-                </mobic:commandButton>
+                <h:commandLink type="back" value="#{navigationModel.backDestination.backTitle}"
+                                 styleClass="mobi-button mobi-button-back"
+                                 action="#{navigationController.navigateBack}"
+                                 rendered="#{not navigationModel.currentDestination.hideBack}" />
 
                 #{navigationModel.currentDestination.title}
 
