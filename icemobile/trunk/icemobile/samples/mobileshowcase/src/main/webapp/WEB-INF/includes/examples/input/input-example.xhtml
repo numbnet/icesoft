@@ -27,7 +27,9 @@
             <!-- Text input -->
             <mobi:fieldsetRow>
                 <h:outputLabel for="textInput" value="Text:"/>
-                <mobi:inputText id="textInput" type="text"
+                <mobi:inputText id="textInput"
+                                autocorrect="on"
+                                type="text"
                                 placeholder="Text input"
                                 value="#{inputBean.textInput}"/>
             </mobi:fieldsetRow>
@@ -35,16 +37,39 @@
             <!-- Number input -->
             <mobi:fieldsetRow>
                 <h:outputLabel for="numberInput" value="Number:"/>
-                <mobi:inputText id="numberInput" type="number"
+                <mobi:inputText id="numberInput"
+                                type="number"
                                 placeholder="Number input"
                                 value="#{inputBean.numberInput}">
+                </mobi:inputText>
+            </mobi:fieldsetRow>
+
+            <!-- Email input -->
+            <mobi:fieldsetRow>
+                <h:outputLabel for="emailInput" value="Email:"/>
+                <mobi:inputText id="emailInput"
+                                type="email"
+                                placeholder="Email input"
+                                value="#{inputBean.email}">
+                </mobi:inputText>
+            </mobi:fieldsetRow>
+
+
+            <!-- url input -->
+            <mobi:fieldsetRow>
+                <h:outputLabel for="urlInput" value="URL:"/>
+                <mobi:inputText id="urlInput"
+                                type="url"
+                                placeholder="URL input"
+                                value="#{inputBean.urlInput}">
                 </mobi:inputText>
             </mobi:fieldsetRow>
 
             <!-- Password input -->
             <mobi:fieldsetRow>
                 <h:outputLabel for="passwordInput" value="Password:"/>
-                <mobi:inputText id="passwordInput" type="password"
+                <mobi:inputText id="passwordInput"
+                                type="password"
                                 placeholder="Password input"
                                 value="#{inputBean.passwordInput}">
                     <f:validateLength minimum="6" maximum="8"/>
@@ -64,19 +89,36 @@
         <!-- Text output-->
         <mobi:fieldsetRow>
             <h:outputLabel value="Text: "/>
-            <h:outputText value="#{inputBean.textInput}"/>
+            <h:outputText styleClass="fr"
+                          value="#{inputBean.textInput}"/>
         </mobi:fieldsetRow>
 
         <!-- Number output -->
         <mobi:fieldsetRow>
             <h:outputLabel value="Number: "/>
-            <h:outputText value="#{inputBean.numberInput}"/>
+            <h:outputText styleClass="fr"
+                          value="#{inputBean.numberInput}"/>
+        </mobi:fieldsetRow>
+
+        <!-- Email output -->
+        <mobi:fieldsetRow>
+            <h:outputLabel value="Email: "/>
+            <h:outputText styleClass="fr"
+                    value="#{inputBean.email}"/>
+        </mobi:fieldsetRow>
+
+        <!-- URL output -->
+        <mobi:fieldsetRow>
+            <h:outputLabel value="URL: "/>
+            <h:outputText styleClass="fr"
+                          value="#{inputBean.urlInput}"/>
         </mobi:fieldsetRow>
 
         <!-- Password output -->
         <mobi:fieldsetRow>
             <h:outputLabel value="Password: "/>
-            <h:outputText value="#{inputBean.passwordInput}"/>
+            <h:outputText styleClass="fr"
+                          value="#{inputBean.passwordInput}"/>
         </mobi:fieldsetRow>
 
 

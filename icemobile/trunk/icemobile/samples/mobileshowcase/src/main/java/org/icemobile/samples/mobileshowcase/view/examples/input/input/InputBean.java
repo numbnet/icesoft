@@ -61,6 +61,9 @@ public class InputBean extends ExampleImpl<InputBean> implements
 
     private String textInput;
     private String passwordInput;
+    private String email;
+    private String date;
+    private String urlInput;
     private int numberInput;
     private Date dateInput;
 
@@ -99,5 +102,30 @@ public class InputBean extends ExampleImpl<InputBean> implements
 
     public void setDateInput(Date dateInput) {
         this.dateInput = dateInput;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getUrlInput() {
+        return urlInput;
+    }
+
+    public void setUrlInput(String urlInput) {
+        this.urlInput = urlInput;
     }
 }
