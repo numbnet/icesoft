@@ -1,0 +1,11 @@
+<project name="mobitest" default="tomcat7">
+
+	<property file="build.properties" />
+	<property name="common.build.file" location="../build-common.xml" />
+
+	<import file="${common.build.file}" />
+    <target name="tomcat7" depends="war">
+        <copy file="${dist.dir}/${ant.project.name}.war" todir="${tomcat.home}/webapps" />
+    </target>
+  
+</project>
