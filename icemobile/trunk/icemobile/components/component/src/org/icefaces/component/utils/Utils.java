@@ -17,11 +17,13 @@
 package org.icefaces.component.utils;
 
 import org.icefaces.impl.util.CoreUtils;
+import org.icefaces.impl.util.DOMUtils;
 
 import javax.el.ValueExpression;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.StateHelper;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -34,6 +36,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.List;
+import java.util.ArrayList;
 
 /*
  * base was copied over from ace and then added to by mobility
@@ -381,6 +385,46 @@ public class Utils {
             e.printStackTrace();
             logger.info("ERROR creating byte array for component");
         }
+    }
+
+      /**
+     * Capture UIParameter (f:param) children of a component
+     * @param component The component to work from
+     * @return List of UIParameter objects, null if no UIParameter children present
+     */
+    public static List<UIParameter> captureParameters( UIComponent component) {
+        List<UIComponent> children = component.getChildren();
+        List<UIParameter>  returnVal = null;
+        for (UIComponent child: children) {
+            if (child instanceof UIParameter) {
+                UIParameter param = (UIParameter) child;
+                if (returnVal == null) {
+                    returnVal = new ArrayList<UIParameter>();
+                }
+                returnVal.add( param );
+            }
+        }
+        return returnVal;
+    }
+
+    /**
+     * Return the name value pairs parameters as a ANSI escaped string
+     * formatted in query string parameter format.
+     * TODO: determine the correct escaping here
+     * @param children List of children
+     * @return a String in the form function(p){name1,value1,name2,value2...});
+     */
+    public static String asParameterString ( List<UIParameter> children) {
+        StringBuffer builder = new StringBuffer();
+        builder.append("function(p){");
+        for (UIParameter param: children) { //assume all params are strings
+            builder.append("p('"+DOMUtils.escapeAnsi(param.getName()) +"'")
+                    .append(",'").append(DOMUtils.escapeAnsi(
+                    (String)param.getValue() ).replace(' ', '+')).append("');");
+        }
+
+        builder.append("}");
+        return builder.toString();
     }
 
 }
