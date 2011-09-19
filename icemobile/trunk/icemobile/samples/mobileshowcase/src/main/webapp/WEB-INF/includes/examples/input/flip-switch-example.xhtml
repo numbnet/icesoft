@@ -18,40 +18,69 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
     <h:form>
         <mobi:fieldsetGroup>
 
             <mobi:fieldsetRow>
                 <h:outputLabel for="cap" value="Auto-Capitalization"/>
-                <mobic:selectFlipSwitch id="cap" style="float:right"
-                                        labelOn="ON" labelOff="OFF"
-                                        value="#{flipSwitchBean.autoCapitalization}"/>
+                <mobi:flipswitch id="cap" style="float:right"
+                                 labelOn="ON" labelOff="OFF"
+                                 singleSubmit="true"
+                                 valueChangeListener="#{flipSwitchBean.autoCapitalizationChange}"
+                                 value="#{flipSwitchBean.autoCapitalization}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="cor" value="Auto-Correction"/>
-                <mobic:selectFlipSwitch id="cor" style="float:right"
-                                        labelOn="ON" labelOff="OFF"
-                                        value="#{flipSwitchBean.autoCorrection}"/>
+                <mobi:flipswitch id="cor" style="float:right"
+                                 labelOn="ON" labelOff="OFF"
+                                 singleSubmit="true"
+                                 value="#{flipSwitchBean.autoCorrection}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="spell" value="Check Spelling"/>
-                <mobic:selectFlipSwitch id="spell" style="float:right"
-                                        labelOn="ON" labelOff="OFF"
-                                        value="#{flipSwitchBean.checkSpelling}"/>
+                <mobi:flipswitch id="spell" style="float:right"
+                                 labelOn="ON" labelOff="OFF"
+                                 singleSubmit="true"
+                                 value="#{flipSwitchBean.checkSpelling}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel for="lock" value="Enable Caps Lock"/>
-                <mobic:selectFlipSwitch id="lock" style="float:right"
-                                        labelOn="ON" labelOff="OFF"
-                                        value="#{flipSwitchBean.enableCapsLock}"/>
+                <mobi:flipswitch id="lock" style="float:right"
+                                 labelOn="ON" labelOff="OFF"
+                                 singleSubmit="true"
+                                 value="#{flipSwitchBean.enableCapsLock}"/>
             </mobi:fieldsetRow>
 
         </mobi:fieldsetGroup>
 
     </h:form>
+
+    <h4><h:outputText value="SwitchSwitch Value Echo"/></h4>
+    <mobi:fieldsetGroup>
+        <mobi:fieldsetRow>
+            <h:outputLabel value="Auto-Capitalization"/>
+            <h:outputText styleClass="fr"
+                          value="#{flipSwitchBean.autoCapitalization}"/>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <h:outputLabel value="Auto-Correction"/>
+            <h:outputText styleClass="fr"
+                          value="#{flipSwitchBean.autoCorrection}"/>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <h:outputLabel value="Check Spelling"/>
+            <h:outputText styleClass="fr"
+                          value="#{flipSwitchBean.checkSpelling}"/>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <h:outputLabel value="Enable Caps Lock"/>
+            <h:outputText styleClass="fr"
+                          value="#{flipSwitchBean.enableCapsLock}"/>
+        </mobi:fieldsetRow>
+
+    </mobi:fieldsetGroup>
 
 
 </ui:fragment>
