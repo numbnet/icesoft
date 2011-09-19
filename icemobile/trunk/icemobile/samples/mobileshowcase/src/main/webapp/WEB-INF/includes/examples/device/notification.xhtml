@@ -13,48 +13,16 @@
   ~ See the License for the specific language governing permissions an
   ~ limitations under the License.
   -->
-
 <ui:fragment xmlns="http://www.w3.org/1999/xhtml"
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
-    <h:form>
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-        <h:panelGroup style="text-align:center;">
-            <mobic:buttonGroup style="margin:0.2em 0;">
-
-                <mobic:commandButton
-                        style="width:23%"
-                        selected="#{notificationBean.selectedExamplePath eq notificationBean.descriptionPath}"
-                        action="#{notificationBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{notificationBean.descriptionPath}"/>
-                    #{msgs['example.description.label']}
-                </mobic:commandButton>
-
-                <mobic:commandButton
-                        style="width:23%"
-                        selected="#{notificationBean.selectedExamplePath eq notificationBean.examplePath}"
-                        action="#{notificationBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{notificationBean.examplePath}"/>
-                    #{msgs['example.example.label']}
-                </mobic:commandButton>
-
-                <mobic:commandButton style="width:23%"
-                                     selected="#{notificationBean.selectedExamplePath eq notificationBean.resourcesPath}"
-                                     action="#{notificationBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{notificationBean.resourcesPath}"/>
-                    #{msgs['example.resources.label']}
-                </mobic:commandButton>
-
-            </mobic:buttonGroup>
-        </h:panelGroup>
-    </h:form>
-
-    <ui:include src="#{notificationBean.selectedExamplePath}"/>
-
+    <util:exampleTabset exampleBean="#{notificationBean}"
+            renderDescription="true"
+            renderExample="true"
+            renderSource="true" />
 
 </ui:fragment>

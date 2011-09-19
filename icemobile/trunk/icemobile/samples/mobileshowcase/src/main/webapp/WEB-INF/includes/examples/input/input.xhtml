@@ -18,42 +18,12 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
-    <h:form>
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-        <h:panelGroup style="text-align:center;">
-            <mobic:buttonGroup style="margin:0.2em 0;">
-
-                <mobic:commandButton
-                        style="width:23%"
-                        selected="#{inputBean.selectedExamplePath eq inputBean.descriptionPath}"
-                        action="#{inputBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{inputBean.descriptionPath}"/>
-                    #{msgs['example.description.label']}
-                </mobic:commandButton>
-
-                <mobic:commandButton
-                        style="width:23%"
-                        selected="#{inputBean.selectedExamplePath eq inputBean.examplePath}"
-                        action="#{inputBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{inputBean.examplePath}"/>
-                    #{msgs['example.example.label']}
-                </mobic:commandButton>
-
-                <mobic:commandButton style="width:23%"
-                                     selected="#{inputBean.selectedExamplePath eq inputBean.resourcesPath}"
-                                     action="#{inputBean.loadExampleResource}">
-                    <f:param name="resourceName"
-                             value="#{inputBean.resourcesPath}"/>
-                    #{msgs['example.resources.label']}
-                </mobic:commandButton>
-
-            </mobic:buttonGroup>
-        </h:panelGroup>
-    </h:form>
-
-    <ui:include src="#{inputBean.selectedExamplePath}"/>
+    <util:exampleTabset exampleBean="#{inputBean}"
+            renderDescription="true"
+            renderExample="true"
+            renderSource="true" />
 
 </ui:fragment>

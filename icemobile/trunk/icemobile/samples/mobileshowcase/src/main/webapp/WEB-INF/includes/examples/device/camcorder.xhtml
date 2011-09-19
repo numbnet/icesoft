@@ -18,43 +18,12 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:util="http://java.sun.com/jsf/composite/components"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
-    <h:form>
 
-        <h:panelGroup style="text-align:center;">
-            <mobi:commandButtonGroup style="margin:0.2em 0;">
-
-                <h:commandButton
-                        style="width:23%"
-                        selected="#{camcorderBean.selectedExamplePath eq camcorderBean.descriptionPath}"
-                        action="#{camcorderBean.loadExampleResource}"
-                        value="#{msgs['example.description.label']}">
-                    <f:param name="resourceName"
-                             value="#{camcorderBean.descriptionPath}"/>
-                </h:commandButton>
-
-                <mobi:commandButton
-                        style="width:23%"
-                        selected="#{camcorderBean.selectedExamplePath eq camcorderBean.examplePath}"
-                        action="#{camcorderBean.loadExampleResource}"
-                        value="#{msgs['example.example.label']}">
-                    <f:param name="resourceName"
-                             value="#{camcorderBean.examplePath}"/>
-                </mobi:commandButton>
-
-                <h:commandButton style="width:23%"
-                       selected="#{camcorderBean.selectedExamplePath eq camcorderBean.resourcesPath}"
-                       action="#{camcorderBean.loadExampleResource}"
-                       value="#{msgs['example.resources.label']}">
-                    <f:param name="resourceName"
-                             value="#{camcorderBean.resourcesPath}"/>
-                </h:commandButton>
-
-            </mobi:commandButtonGroup>
-        </h:panelGroup>
-    </h:form>
-
-    <ui:include src="#{camcorderBean.selectedExamplePath}"/>
-
+    <util:exampleTabset exampleBean="#{camcorderBean}"
+            renderDescription="true"
+            renderExample="true"
+            renderSource="true" />
 
 </ui:fragment>
