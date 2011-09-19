@@ -35,6 +35,9 @@
 .mobi-button-group-hor .mobi-button {
     display: inline-block;
     margin: 0 -5px 0 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
 
 .mobi-button-group-vert .mobi-button:first-child {
@@ -104,10 +107,10 @@
 }
 
 .mobi-button-back {
-    -moz-border-image: url(#{resource[ 'images:back-button-border.png' ]}) 0 8 0 14;
-    -webkit-border-image: url(#{resource[ 'images:back-button-border.png' ]}) 0 8 0 14;
-    border-image: url(#{resource[ 'images:back-button-border.png' ]}) 0 8 0 14;
-    background: url(#{resource[ 'images:back-button-bg.png' ]}) repeat-x scroll 0;
+    -moz-border-image: url('back-button-border.png') 0 8 0 14;
+    -webkit-border-image: url('back-button-border.png') 0 8 0 14;
+    border-image: url('back-button-border.png') 0 8 0 14;
+    background: url('back-button-bg.png') repeat-x scroll 0;
     margin: 0;
     padding: 0;
     border-width: 0 8px 0 14px;

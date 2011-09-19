@@ -35,6 +35,9 @@
 .mobi-button-group-hor .mobi-button {
     display: inline-block;
     margin: 0 -5px 0 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
 
 .mobi-button-group-vert .mobi-button:first-child {
@@ -74,6 +77,9 @@
 .mobi-button {
     border: 1px solid #737173;
     background-color: #E7EBE7;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
     font-size: 12px;
     color: black;
     font-weight: normal;
@@ -89,7 +95,9 @@
 }
 
 .mobi-button-default, .mobi-button-important, .mobi-button-attention {
-
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
 
 .mobi-button-default {
