@@ -56,7 +56,13 @@
           
        </p>
        <mobi:commandButton  id="defaultTwo" type="default" value="defaultSSFalse" actionListener="#{input.defaultEvent}"/>
-
+       <mobi:commandButton id="defaultOne" type="default" singleSubmit="true" actionListener="#{input.defaultEvent}">
+          <f:param name="testParam" value="stringValueParameter"/>
+          <f:param name="test2Param" value="string2"/>
+       </mobi:commandButton>
+       <br />
+        straight input
+         <input type="button" id="buttonId" onclick="ice.se(event, this, function(p){p('p1', 111); p('p2', 222);});"/>
     </h:form>
     <h3>RESULTS</h3>
     <h5>input field A</h5>

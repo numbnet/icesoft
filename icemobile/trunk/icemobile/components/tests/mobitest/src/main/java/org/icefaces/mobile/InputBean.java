@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
+import javax.faces.context.FacesContext;
 
 @ManagedBean(name="input")
 @ViewScoped
@@ -132,12 +133,19 @@ public void setSliderVal3(int sliderVal3) {
 	this.sliderVal3 = sliderVal3;
 }
 
-public void defaultEvent(ActionEvent ae){
-	this.setEventString("DefaultEVent");
-}
-public void importantEvent(ActionEvent ae){
-	this.setEventString("ImportantEvent");
-}
+    public void defaultEvent(ActionEvent ae){
+        String val = "DefaultEvent:";
+        val+=checkTestParam("testParam");
+        val+=checkTestParam("test2Param");
+        this.setEventString(val);
+    }
+    public void importantEvent(ActionEvent ae){
+        String val="importantEvent:";
+        val+=checkTestParam("testParam");
+        val+=checkTestParam("test2Param");
+        this.setEventString(val);
+    }
+
 public String getEventString() {
 	return eventString;
 }
@@ -189,9 +197,22 @@ public void setConverterVal(double converterVal) {
 public double getDoubleVal() {
 	return doubleVal;
 }
-public void setDoubleVal(double doubleVal) {
-	this.doubleVal = doubleVal;
-}
+    public void setDoubleVal(double doubleVal) {
+	    this.doubleVal = doubleVal;
+    }
 
+    public String checkTestParam(String param){
+	   String testP =this.getRequestParmater(param);
+	   String val = "";
+	   if (testP!=null){
+		  val+=" testParam="+testP;
+		 System.out.println(" HAVE testParam = "+val+" for param="+param);
+	   }
+	   return val;
+    }
+
+     public static String getRequestParmater(String name){
+    	return (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(name);
+    }
    
 }
