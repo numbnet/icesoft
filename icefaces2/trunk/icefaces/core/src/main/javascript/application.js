@@ -299,6 +299,7 @@ if (!window.ice.icefaces) {
         namespace.ser = singleSubmitExecuteThisRenderThis;
         namespace.submit = submit;
         namespace.s = submit;
+        namespace.fullSubmit = fullSubmitFunction;
 
         namespace.setupBridge = function(setupID, viewID, windowID, configuration) {
             var container = document.getElementById(setupID).parentNode;
