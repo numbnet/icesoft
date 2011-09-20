@@ -4,6 +4,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,6 +18,8 @@ public class CarouselBean implements Serializable {
         Logger.getLogger(CarouselBean.class.toString());	
 	int carouselLength;
     private List<ImageItem> imageList = new ArrayList<ImageItem>() ;
+
+    private int selectedIndex;
 	private String height="98px";
 	private String style="display:inline-block;position:relative;top:-25px;left:0;color:white;";
 
@@ -46,6 +49,16 @@ public class CarouselBean implements Serializable {
 	public void setImageList(List<ImageItem> imageList) {
 		this.imageList = imageList;
 	}
+         public void changedIndex(ValueChangeEvent vce){
+            System.out.println(" new value is "+ vce.getNewValue().toString());
+        }
+    public void setSelectedIndex(int sel){
+        this.selectedIndex = sel;
+    }
+    public int getSelectedIndex(){
+        return this.selectedIndex;
+    }
+
 
 	public class ImageItem implements Serializable{
     	private String imageUrl;
@@ -91,7 +104,8 @@ public class CarouselBean implements Serializable {
 		public void setStyle(String style) {
 			this.style = style;
 		}
-    	
+
+
     }
 
 
