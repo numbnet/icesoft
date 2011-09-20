@@ -443,21 +443,10 @@ if (!window.ice.icefaces) {
         }
 
         function collectUpdatedForms(updates, iterator) {
-            each(updates.getElementsByTagName('update'), function(update) {
-                var id = update.getAttribute('id');
-                var e = lookupElementById(id);
-                if (e) {
-                    if (toLowerCase(e.nodeName) == 'form') {
-                        if (isComponentRendered(e)) {
-                            iterator(e);//the form is the updated element
-                        }
-                    } else {
-                        each(select(e.getElementsByTagName('form'), isComponentRendered), function(form) {
-                            iterator(form);
-                        });//find the enclosed forms
-                    }
-                }
-            });
+            //todo: is this enough for portlets where view state keys can come from different applications?
+            each(select(document.body.getElementsByTagName('form'), isComponentRendered), function(form) {
+                iterator(form);
+            });//find the enclosed forms
         }
 
         //fix JSF issue: http://jira.icefaces.org/browse/ICE-5691 
