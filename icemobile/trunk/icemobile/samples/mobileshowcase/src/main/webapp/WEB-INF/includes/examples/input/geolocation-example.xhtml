@@ -19,14 +19,15 @@
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:icecore="http://www.icefaces.org/icefaces/core"
-             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+        id="geoLocFrag">
 
-    <h:form prependId="false" id="geoForm">
+    <h:form prependId="false">
 
-        <mobi:geolocation id="test" latitude="#{geolocationBean.latitude}"
-				longitude="#{geolocationBean.longitude}" />
-        <h:inputHidden id="lat" value="#{geolocationBean.latitudeRead}" />
-        <h:inputHidden id="lon" value="#{geolocationBean.longitudeRead}" />
+        <mobi:geolocation id="test" latitude="#{geoLocationBean.latitude}"
+				longitude="#{geoLocationBean.longitude}" />
+        <h:inputHidden id="lat" value="#{geoLocationBean.latitudeRead}" />
+        <h:inputHidden id="lon" value="#{geoLocationBean.longitudeRead}" />
 
         <h:panelGroup style="display:block;padding-left:10px;">
             <canvas id="mapCanvas" width="300" height="150" />
@@ -36,10 +37,10 @@
 
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                Latitude: <h:outputText value="#{geolocationBean.latitude}" />
+                Latitude: <h:outputText value="#{geoLocationBean.latitude}" />
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                Longitude: <h:outputText value="#{geolocationBean.longitude}" />
+                Longitude: <h:outputText value="#{geoLocationBean.longitude}" />
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
@@ -52,8 +53,8 @@
             if (!canvas) {
                 return;
             }
-            var lat = document.getElementById('lat').value;
-            var lon = document.getElementById('lon').value;
+            var lat = document.getElementById('geoloc:lat').value;
+            var lon = document.getElementById('geoloc:lon').value;
                         
             if (canvas.getContext) {
                 var ctx = canvas.getContext('2d');

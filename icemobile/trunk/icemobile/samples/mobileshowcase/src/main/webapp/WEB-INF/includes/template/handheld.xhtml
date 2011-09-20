@@ -41,11 +41,10 @@
         <ui:insert name="toolbar">
             <h:form id="toolbar" prependId="false">
                 <h:commandLink type="back"
+                                 value="#{msgs[navigationModel.backDestination.titleBack]}"
                                  styleClass="mobi-button mobi-button-back"
-                                     action="#{navigationController.navigateBack}"
-                                     rendered="#{navigationController.canGoBack}">
-                    #{msgs[navigationModel.backDestination.titleBack]}
-                </h:commandLink>
+                                 action="#{navigationController.navigateBack}"
+                                 rendered="#{navigationController.canGoBack}" />
 
                 #{msgs[navigationModel.currentDestination.title]}
 
@@ -55,7 +54,7 @@
     </div>
 
     <div id="wrapper" class="mobi-panel-stack-body">
-        <div class="mobi-panel-scrollable">
+        <div id="content" class="mobi-panel-scrollable">
             <!-- main content include of page content -->
             <ui:insert name="panelContent"/>
         </div>
