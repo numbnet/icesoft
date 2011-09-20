@@ -22,7 +22,6 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 
 @Destination(
@@ -44,53 +43,53 @@ import java.io.Serializable;
                         resource = "/WEB-INF/includes/examples/input/geolocation-example.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
-                        title = "GeolocationBean.java",
+                        title = "GeoLocationBean.java",
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
-                                "/view/examples/input/geolocation/GeolocationBean.java")
+                                "/view/examples/input/geolocation/GeoLocationBean.java")
         }
 )
 
-@ManagedBean(name = GeolocationBean.BEAN_NAME)
+@ManagedBean(name = GeoLocationBean.BEAN_NAME)
 @SessionScoped
-public class GeolocationBean extends ExampleImpl<GeolocationBean> implements
+public class GeoLocationBean extends ExampleImpl<GeoLocationBean> implements
         Serializable {
 
-    public static final String BEAN_NAME = "geolocationBean";
+    public static final String BEAN_NAME = "geoLocationBean";
 
-    public GeolocationBean() {
-        super(GeolocationBean.class);
+    private double latitude = 0.0;
+    private double longitude = 0.0;
+
+    public GeoLocationBean() {
+        super(GeoLocationBean.class);
     }
 
-    private Double latitude = 0.0;
-    private Double longitude = 0.0;
-
-    public Double getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public Double getLatitudeRead() {
-        return latitude;
-    }
-
-    public void setLatitudeRead(Double latitude) {
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public Double getLongitudeRead() {
+    public double getLongitudeRead() {
         return longitude;
     }
 
-    public void setLongitude(Double longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public void setLongitudeRead(Double longitude) {
+     public double getLatitudeRead() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    // lat and long values are read only, no value writing takes place.
+    public void setLongitudeRead(double longitude) {
+    }
+    public void setLatitudeRead(double latitude) {
     }
 }
