@@ -52,7 +52,9 @@ public class ThumbnailMeta extends UIComponentBaseMeta {
             "this component.")
     private String styleClass;
 
-    @Property(required = Required.yes, tlddoc = "id of camera component the thumbnail uses to find the image for")
+    @Property( name = "for",
+               required = Required.yes,
+               tlddoc = "id of camera component the thumbnail uses to find the image for")
     private String For;
 
 }
