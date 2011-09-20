@@ -169,14 +169,14 @@
 
     <target name="compile-base">
         <javac srcdir="${build}/generated/base" destdir="${exploded}"
-               debug="true" verbose="true" includeantruntime="false">
+               debug="false" verbose="false" includeantruntime="false">
             <classpath refid="compile.run.classpath"/>
         </javac>
     </target>
 
     <target name="compile-manual">
         <javac srcdir="${src}" destdir="${build}/exploded" debug="true"
-               excludes="**/*Meta.java" verbose="true" failonerror="true"
+               excludes="**/*Meta.java" verbose="false" failonerror="true"
                includeantruntime="false">
             <classpath refid="compile.run.classpath"/>
         </javac>
@@ -184,7 +184,7 @@
 
     <target name="compile-support">
         <javac srcdir="${build}/generated/support" destdir="${exploded}"
-               debug="true" verbose="true" includeantruntime="false">
+               debug="false" verbose="false" includeantruntime="false">
             <classpath refid="compile.run.classpath"/>
         </javac>
     </target>
