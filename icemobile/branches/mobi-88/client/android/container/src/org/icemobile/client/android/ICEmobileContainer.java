@@ -66,6 +66,9 @@ import java.util.Calendar;
 import android.widget.DatePicker;
 
 import org.icemobile.client.android.c2dm.C2dmHandler;
+import org.icemobile.client.android.qrcode.CaptureActivity;
+import org.icemobile.client.android.qrcode.CaptureJSInterface;
+import org.icemobile.client.android.qrcode.Intents;
 
 public class ICEmobileContainer extends Activity 
     implements SharedPreferences.OnSharedPreferenceChangeListener,
@@ -83,6 +86,9 @@ public class ICEmobileContainer extends Activity
     protected static final int TAKE_PHOTO_CODE = 1;
     protected static final int TAKE_VIDEO_CODE = 2;
     protected static final int HISTORY_CODE = 3;
+    public static final int SCAN_CODE = 4;
+    
+    public static final String SCAN_ID = "org.icemobile.id";
 
     /* progress bar config */
     protected static final int PROGRESS_DIALOG = 0;
@@ -93,6 +99,8 @@ public class ICEmobileContainer extends Activity
     private UtilInterface utilInterface;
     private CameraHandler mCameraHandler;
     private CameraInterface mCameraInterface;
+    private CaptureActivity mCaptureActivity;
+    private CaptureJSInterface mCaptureInterface;
     private AudioInterface mAudioInterface;
     private AudioRecorder mAudioRecorder;
     private AudioPlayer mAudioPlayer;
@@ -159,6 +167,7 @@ public class ICEmobileContainer extends Activity
 	/* Establish initial container configuration */
 	prefs = PreferenceManager.getDefaultSharedPreferences(this);
 	includeUtil();
+	includeQRCode();
 	if (INCLUDE_CAMERA) includeCamera();
 	if (INCLUDE_AUDIO) includeAudio();
 	if (INCLUDE_VIDEO) includeVideo();
@@ -183,6 +192,8 @@ public class ICEmobileContainer extends Activity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+Log.w("ICEcontainer", "onActivityResult " + requestCode + " " + resultCode + " " + 
+    data.getStringExtra(SCAN_ID));
 	if (resultCode == RESULT_OK) {
 	    switch(requestCode){
 	    case TAKE_PHOTO_CODE:
@@ -195,6 +206,12 @@ public class ICEmobileContainer extends Activity
 		newURL = data.getStringExtra("url");
 		historyManager.add(newURL);
 		loadUrl();
+		break;
+	    case SCAN_CODE:
+            String scanResult = data.getStringExtra(Intents.Scan.RESULT);
+            utilInterface.loadURL(
+                    "javascript:ice.addHidden(ice.currentScanId, ice.currentScanId + '-text', '" +
+                    scanResult + "');");
 		break;
 	    }
 	}
@@ -452,6 +469,11 @@ public class ICEmobileContainer extends Activity
         mCameraHandler = new CameraHandler(this,mWebView, utilInterface, TAKE_PHOTO_CODE);
         mCameraInterface = new CameraInterface(mCameraHandler);
         mWebView.addJavascriptInterface(mCameraInterface, "ICEcamera");
+    }
+
+    private void includeQRCode() {
+        mCaptureInterface = new CaptureJSInterface(this);
+        mWebView.addJavascriptInterface(mCaptureInterface, "ICEqrcode");
     }
 
     private void includeVideo() {
