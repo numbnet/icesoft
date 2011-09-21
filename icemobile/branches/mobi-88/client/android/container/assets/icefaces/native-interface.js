@@ -69,6 +69,12 @@ if (!window.ice.mobile) {
 	    window.ICEaudio.playUrl(id, true);
         }
 
+        namespace.currentScanId = "";
+        namespace.scan = function(id, attr)  {
+            var result = window.ICEqrcode.scan(id, attr);
+            ice.currentScanId = id;
+        }
+
         //assume single threaded access with this context object spanning request/response
         var context = {
             onevent: null,
