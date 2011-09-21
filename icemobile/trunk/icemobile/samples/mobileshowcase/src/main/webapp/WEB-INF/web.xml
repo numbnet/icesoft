@@ -27,6 +27,11 @@
         A demo application showing the various ICEmobile components.
     </description>
 
+    <context-param>
+        <param-name>org.icefaces.strictSessionTimeout</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
     <!-- Context Parameters used by the framework -->
     <context-param>
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
@@ -75,7 +80,7 @@
     </servlet-mapping>
 
     <session-config>
-        <session-timeout>30</session-timeout>
+        <session-timeout>15</session-timeout>
     </session-config>
 
     <welcome-file-list>
