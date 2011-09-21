@@ -16,38 +16,38 @@
 
 package org.icemobile.samples.mobileshowcase.view.examples.device.notification;
 
+
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
- * MessageHub is an application scoped bean that stores a shared message between
- * active sessions.  The MessagingBean places a new message string in this bean
- * and initiates a push to share the message in a JSF view.
- * Essentially a very simple chat.
+ *
  */
-@ManagedBean
+@ManagedBean(name = ScheduledPushExecutor.BEAN_NAME)
 @ApplicationScoped
-public class MessageHub implements Serializable {
+public class ScheduledPushExecutor implements Serializable {
 
-    private String message;
+    private final static Logger log =
+            Logger.getLogger(ScheduledPushExecutor.class.getName());
 
-    /**
-     * Gets the shared session chat message.
-     *
-     * @return message string. Can be null.
-     */
-    public String getMessage() {
-        return message;
+    public static final String BEAN_NAME = "scheduledPushExecutor";
+
+    private ScheduledThreadPoolExecutor timerThreadPool =
+            new ScheduledThreadPoolExecutor(10);
+
+    public void schedule(Runnable runner, long delay, TimeUnit unit) {
+        timerThreadPool.schedule(runner, delay, unit);
     }
 
-    /**
-     * Sets the message that will be pushed out to other users on receipt of the
-     * notification.
-     *
-     * @param message simple text message.
-     */
-    public void setMessage(String message) {
-        this.message = message;
+    @PreDestroy
+    public void shutdown() {
+        timerThreadPool.purge();
+        timerThreadPool.shutdownNow();
     }
+
 }

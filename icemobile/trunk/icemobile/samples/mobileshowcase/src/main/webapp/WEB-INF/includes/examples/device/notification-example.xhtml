@@ -27,40 +27,60 @@
             <mobi:fieldsetRow>
                 <h:outputLabel value="Subject" for="subject"/>
                 <mobi:inputText id="subject"
-                                value="#{notificationBean.notificationSubject}"
-                                type="text" placeholder="subject"/>
+                                value="#{notificationBean.subject}"
+                                type="text"
+                                placeholder="subject" />
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputLabel value="Message" for="message"/>
+                <h:outputLabel value="Message" for="message"/><br />
                 <mobi:inputText id="message"
-                                value="#{notificationBean.notificationMessage}"
-                                type="text" placeholder="message"/>
+                                style="width:99%;"
+                                value="#{notificationBean.message}"
+                                type="textarea"
+                                placeholder="message" />
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <mobi:commandButton value="Send" type="important"
-                                    actionListener="#{notificationBean.sendNotificationMessage}"/>
+                <h:outputLabel value="Message Delay" for="messageDelay"/>
+                <h:selectOneMenu id="messageDelay"
+                                 value="#{notificationBean.notificationDelay}"
+                                 type="textarea"
+                                 placeholder="message">
+                    <f:selectItem itemLabel="2 sec" itemValue="2"/>
+                    <f:selectItem itemLabel="4 sec" itemValue="4"/>
+                    <f:selectItem itemLabel="6 sec" itemValue="6"/>
+                    <f:selectItem itemLabel="8 sec" itemValue="8"/>
+                    <f:selectItem itemLabel="10 sec" itemValue="10"/>
+                </h:selectOneMenu>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:messages />
+                <mobi:commandButton style="float:right"
+                        value="Piority Push"
+                        type="attention"
+                        actionListener="#{notificationBean.sendPriorityPushMessage}"/>
+                <mobi:commandButton value="Simple Push" type="important"
+                                    style="float:right;"
+                                    actionListener="#{notificationBean.sendNormalPushMessage}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
     </h:form>
 
     <h:form>
-        <h4>Push Message</h4>
+        <h4>Notification Echo</h4>
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
+                <h:outputLabel value="Subject" for="subject"/>
+                <h:outputText id="subject"
+                              styleClass="fr"
+                              value="#{notificationBean.echoedSubject}"
+                              placeholder="subject"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
                 <h:outputLabel value="Message" for="message"/>
-                <mobi:inputText id="message"
-                                value="#{notificationBean.pushMessage}"
-                                type="text" placeholder="message"/>
-            </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <h:outputLabel value="Push Message Echo:"/>
-                <h:outputText style="float:right;width:100px;"
-                              value="#{messageHub.message}"/>
-
-            </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <mobi:commandButton value="Send" type="important"
-                                    actionListener="#{notificationBean.sendPushMessage}"/>
+                <h:outputText id="message"
+                                styleClass="fr"
+                                value="#{notificationBean.echoedMessage}"
+                                placeholder="message"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
