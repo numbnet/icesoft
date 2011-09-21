@@ -16,8 +16,10 @@
 
 package org.icemobile.samples.mobileshowcase.view.examples.device.notification;
 
-import org.icefaces.application.PushRenderer;
+import org.icefaces.application.PortableRenderer;
 import org.icefaces.application.PushMessage;
+import org.icefaces.application.PushRenderer;
+import org.icemobile.samples.mobileshowcase.util.FacesUtils;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
@@ -26,6 +28,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  * The NotificationBean is responsible for sending a notification message
@@ -34,19 +38,19 @@ import java.io.Serializable;
  * bridge must disconnect and reconnect when the device or application become
  * active again.
  * <p/>
- * <ul>
- * <li>The simplest test {@link #sendPushMessage(javax.faces.event.ActionEvent)}
- * sends message string to all active sessions.  </li>
- * <li>The second test {@link #sendNotificationMessage(javax.faces.event.ActionEvent)}
- * pushes a device level notification.  The notification will only be received
- * if the application is running in the the Mobile container. </li>
- * </ul>
+ * Once a message subject and contents have be created it can be send via
+ * a normal push or a priority push.  After the specified delay the message will
+ * be send.  If a normal push the current session will be updated and the message
+ * echo values will be updated.  If a priority push is selected the user
+ * will receive the screen update as before, if the container was parked then
+ * user may receive a system notification or email depending on how the container
+ * and server where configured.
  */
 @Destination(
         title = "example.device.notification.destination.title.short",
         titleExt = "example.device.notification.destination.title.long",
         titleBack = "example.device.notification.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/device/notification-desc.xhtml"
+        contentPath = "/WEB-INF/includes/examples/device/notification.xhtml"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/device/notification-desc.xhtml",
@@ -75,72 +79,141 @@ import java.io.Serializable;
 public class NotificationBean extends ExampleImpl<NotificationBean> implements
         Serializable {
 
-    public static final String NOTIFICATION_GROUP_NAME = "main";
+    private final static Logger log =
+            Logger.getLogger(NotificationBean.class.getName());
 
     public static final String BEAN_NAME = "notificationBean";
 
-    // application scoped common message.
-    @ManagedProperty(value = "#{messageHub}")
-    private MessageHub messageHub;
+    @ManagedProperty(value = "#{scheduledPushExecutor}")
+    private ScheduledPushExecutor scheduledPushExecutor;
 
-    // Simple push notification
-    private String pushMessage;
+    // render group is the current session id.
+    private String renderGroup;
 
     // Notification message values.
-    private String notificationSubject;
-    private String notificationMessage;
+    private String subject;
+    private String message;
+    private int notificationDelay;
+
+    // echo strings that are only set when the push is executed.
+    private String echoedSubject;
+    private String echoedMessage;
+
 
     public NotificationBean() {
         super(NotificationBean.class);
         // add current session to common render group.
-        PushRenderer.addCurrentSession(NOTIFICATION_GROUP_NAME);
+        renderGroup = FacesUtils.getHttpSession(false).getId();
+        PushRenderer.addCurrentSession(renderGroup);
     }
 
     /**
-     * Sends/pushes the shared value bound message string in {@link MessageHub}
+     * Sends a normal push message to the calling client.  When called the echo
+     * values for subject and message are cleared and a new push event is queued
+     * for later execution specified by the value notificationDelay.  When the push
+     * is executed the new message and subject values are copied int into the
+     * echo fields.
      *
      * @param event jsf action event
      */
-    public void sendPushMessage(ActionEvent event) {
-        messageHub.setMessage(pushMessage);
-        PushRenderer.render(NOTIFICATION_GROUP_NAME);
+    public void sendNormalPushMessage(ActionEvent event) {
+        clearPreviousPushMessage();
+        final PortableRenderer portable = PushRenderer.getPortableRenderer();
+        scheduledPushExecutor.schedule(new Runnable() {
+            public void run() {
+                try {
+                    assignPreviousPushMessage();
+                    portable.render(renderGroup);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, notificationDelay, TimeUnit.SECONDS);
     }
 
     /**
-     * Sends a notification api message to active sessions.
+     * Sends a priority push message to the calling client.  When called the echo
+     * values for subject and message are cleared and a new push event is queued
+     * for later execution specified by the value notificationDelay.  When the push
+     * is executed the new message and subject values are copied int into the
+     * echo fields.
      *
      * @param event jsf action event
      */
-    public void sendNotificationMessage(ActionEvent event) {
-        PushRenderer.render(NOTIFICATION_GROUP_NAME, 
-            new PushMessage(notificationSubject, notificationMessage) );
+    public void sendPriorityPushMessage(ActionEvent event) {
+        final PushMessage myMessage = new PushMessage(subject, message);
+        clearPreviousPushMessage();
+        final PortableRenderer portable = PushRenderer.getPortableRenderer();
+        scheduledPushExecutor.schedule(new Runnable() {
+            public void run() {
+                try {
+                    assignPreviousPushMessage();
+                    portable.render(renderGroup, myMessage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, notificationDelay, TimeUnit.SECONDS);
+
     }
 
-    public String getNotificationSubject() {
-        return notificationSubject;
+    /**
+     * Utility to clear the echoed subject and message output fields.
+     */
+    private void clearPreviousPushMessage() {
+        echoedSubject = "";
+        echoedMessage = "";
     }
 
-    public void setNotificationSubject(String notificationSubject) {
-        this.notificationSubject = notificationSubject;
+    /**
+     * Utility to copy the users specified subject and message to the respective
+     * echoed variables.
+     */
+    private void assignPreviousPushMessage() {
+        echoedSubject = subject;
+        echoedMessage = message;
     }
 
-    public String getNotificationMessage() {
-        return notificationMessage;
+    public String getEchoedSubject() {
+        return echoedSubject;
     }
 
-    public void setNotificationMessage(String notificationMessage) {
-        this.notificationMessage = notificationMessage;
+    public String getEchoedMessage() {
+        return echoedMessage;
     }
 
-    public void setMessageHub(MessageHub messageHub) {
-        this.messageHub = messageHub;
+    public int getNotificationDelay() {
+        return notificationDelay;
     }
 
-    public String getPushMessage() {
-        return pushMessage;
+    public void setNotificationDelay(int notificationDelay) {
+        this.notificationDelay = notificationDelay;
     }
 
-    public void setPushMessage(String pushMessage) {
-        this.pushMessage = pushMessage;
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    /**
+     * Sets the application scoped bean scheduledPushExecutor via Bean managed
+     * properties.
+     *
+     * @param scheduledPushExecutor application scoped scheduledPushExecutor Bean
+     *                              instance.
+     */
+    public void setScheduledPushExecutor(ScheduledPushExecutor scheduledPushExecutor) {
+        this.scheduledPushExecutor = scheduledPushExecutor;
     }
 }
