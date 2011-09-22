@@ -233,19 +233,19 @@ if (!window.ice.icefaces) {
             return function(e) {
                 switch (e.status) {
                     case 'begin':
-                        broadcast(concatenate(beforeSubmitListeners, perRequestOnBeforeSubmitListeners), [ e.source ]);
+                        broadcast(perRequestOnBeforeSubmitListeners, [ e.source ]);
                         break;
                     case 'complete':
                         var xmlContent = e.responseXML;
                         if (containsXMLData(xmlContent)) {
-                            broadcast(concatenate(beforeUpdateListeners, perRequestOnBeforeUpdateListeners), [ xmlContent ]);
+                            broadcast(perRequestOnBeforeUpdateListeners, [ xmlContent ]);
                         } else {
                             warn(logger, 'the response does not contain XML data');
                         }
                         break;
                     case 'success':
                         var xmlContent = e.responseXML;
-                        broadcast(concatenate(afterUpdateListeners, perRequestOnAfterUpdateListeners), [ xmlContent ]);
+                        broadcast(perRequestOnAfterUpdateListeners, [ xmlContent ]);
                         var updates = xmlContent.documentElement.firstChild.childNodes;
                         var updateDescriptions = collect(updates, function(update) {
                             var id = update.getAttribute('id');
@@ -283,16 +283,19 @@ if (!window.ice.icefaces) {
                     }
 
                     info(logger, 'received error message [code: ' + e.responseCode + ']: ' + e.responseText);
-                    broadcast(concatenate(serverErrorListeners, perRequestServerErrorListeners), [ e.responseCode, e.responseText, containsXMLData(xmlContent) ? xmlContent : null]);
+                    broadcast(perRequestServerErrorListeners, [ e.responseCode, e.responseText, containsXMLData(xmlContent) ? xmlContent : null]);
                 } else if (e.status == 'httpError') {
                     warn(logger, 'HTTP error [code: ' + e.responseCode + ']: ' + e.description);
-                    broadcast(concatenate(networkErrorListeners, perRequestNetworkErrorListeners), [ e.responseCode, e.description]);
+                    broadcast(perRequestNetworkErrorListeners, [ e.responseCode, e.description]);
                 } else {
                     //If the error falls through the other conditions, just log it.
                     error(logger, 'Error [status: ' + e.status + ' code: ' + e.responseCode + ']: ' + e.description);
                 }
             };
         }
+
+        jsf.ajax.addOnEvent(submitEventBroadcaster(beforeSubmitListeners, beforeUpdateListeners, afterUpdateListeners));
+        jsf.ajax.addOnError(submitErrorBroadcaster(networkErrorListeners, serverErrorListeners));
 
         //include submit.js
         namespace.se = singleSubmitExecuteThis;
