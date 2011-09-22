@@ -74,4 +74,14 @@ public class MediaStore implements Serializable {
         }
     }
 
+    /**
+     * Removes the specified message from the media and carousel stacks.
+     *
+     * @param mediaMessage media message to remove.
+     */
+    public void removeMedia(MediaMessage mediaMessage){
+        mediaCarouselStack.remove(mediaMessage);
+        mediaStack.remove(mediaMessage);
+    }
+
 }

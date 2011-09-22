@@ -57,6 +57,14 @@
                     style="margin-bottom:10px;"/>
           </h:panelGroup>
         </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <h:form>
+                <mobi:commandButton value="Delete" type="attention"
+                        style="float:right"
+                        actionListener="#{mediaController.deleteCurrentMedia}"
+                        />
+            </h:form>
+        </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
 </ui:fragment>
