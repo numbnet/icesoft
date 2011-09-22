@@ -169,11 +169,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 //    showHelpOnFirstLaunch();
   }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-Log.w(TAG, "onActivityResult " + requestCode + " " + resultCode + " " + 
-    "org.icemobile.id");
-    }
 
   @Override
   protected void onResume() {
@@ -370,42 +365,14 @@ Log.w(TAG, "onActivityResult " + requestCode + " " + resultCode + " " +
   public void handleDecode(Result rawResult, Bitmap barcode) {
     inactivityTimer.onActivity();
     lastResult = rawResult;
-//    ResultHandler resultHandler = ResultHandlerFactory.makeResultHandler(this, rawResult);
-//    historyManager.addHistoryItem(rawResult, resultHandler);
 
     if (barcode == null) {
       // This is from history -- no saved barcode
 //      handleDecodeInternally(rawResult, resultHandler, null);
     } else {
-Log.w(TAG, "barcode is not null, is it " + rawResult.getText());
+      Log.w(TAG, "barcode decoded " + rawResult.getText());
       beepManager.playBeepSoundAndVibrate();
       drawResultPoints(barcode, rawResult);
-      switch (source) {
-        case NATIVE_APP_INTENT:
-        case PRODUCT_SEARCH_LINK:
-//          handleDecodeExternally(rawResult, resultHandler, barcode);
-          break;
-        case ZXING_LINK:
-          if (returnUrlTemplate == null){
-//            handleDecodeInternally(rawResult, resultHandler, barcode);
-          } else {
-//            handleDecodeExternally(rawResult, resultHandler, barcode);
-          }
-          break;
-        case NONE:
-//          SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//          if (prefs.getBoolean(PreferencesActivity.KEY_BULK_MODE, false)) {
-//            Toast.makeText(this, R.string.msg_bulk_mode_scanned, Toast.LENGTH_SHORT).show();
-//            // Wait a moment or else it will scan the same barcode continuously about 3 times
-//            if (handler != null) {
-//              handler.sendEmptyMessageDelayed(R.id.restart_preview, BULK_MODE_SCAN_DELAY_MS);
-//            }
-//            resetStatusView();
-//          } else {
-//            handleDecodeInternally(rawResult, resultHandler, barcode);
-//          }
-          break;
-      }
     }
   }
 
@@ -449,165 +416,6 @@ Log.w(TAG, "barcode is not null, is it " + rawResult.getText());
     canvas.drawLine(a.getX(), a.getY(), b.getX(), b.getY(), paint);
   }
 
-  // Put up our own UI for how to handle the decoded contents.
-//  private void handleDecodeInternally(Result rawResult, ResultHandler resultHandler, Bitmap barcode) {
-//    statusView.setVisibility(View.GONE);
-//    viewfinderView.setVisibility(View.GONE);
-//    resultView.setVisibility(View.VISIBLE);
-//
-//    ImageView barcodeImageView = (ImageView) findViewById(R.id.barcode_image_view);
-//    if (barcode == null) {
-//      barcodeImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(),
-//          R.drawable.launcher_icon));
-//    } else {
-//      barcodeImageView.setImageBitmap(barcode);
-//    }
-//
-//    TextView formatTextView = (TextView) findViewById(R.id.format_text_view);
-//    formatTextView.setText(rawResult.getBarcodeFormat().toString());
-//
-//    TextView typeTextView = (TextView) findViewById(R.id.type_text_view);
-//    typeTextView.setText(resultHandler.getType().toString());
-//
-//    DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-//    String formattedTime = formatter.format(new Date(rawResult.getTimestamp()));
-//    TextView timeTextView = (TextView) findViewById(R.id.time_text_view);
-//    timeTextView.setText(formattedTime);
-//
-//
-//    TextView metaTextView = (TextView) findViewById(R.id.meta_text_view);
-//    View metaTextViewLabel = findViewById(R.id.meta_text_view_label);
-//    metaTextView.setVisibility(View.GONE);
-//    metaTextViewLabel.setVisibility(View.GONE);
-//    Map<ResultMetadataType,Object> metadata =
-//        (Map<ResultMetadataType,Object>) rawResult.getResultMetadata();
-//    if (metadata != null) {
-//      StringBuilder metadataText = new StringBuilder(20);
-//      for (Map.Entry<ResultMetadataType,Object> entry : metadata.entrySet()) {
-//        if (DISPLAYABLE_METADATA_TYPES.contains(entry.getKey())) {
-//          metadataText.append(entry.getValue()).append('\n');
-//        }
-//      }
-//      if (metadataText.length() > 0) {
-//        metadataText.setLength(metadataText.length() - 1);
-//        metaTextView.setText(metadataText);
-//        metaTextView.setVisibility(View.VISIBLE);
-//        metaTextViewLabel.setVisibility(View.VISIBLE);
-//      }
-//    }
-//
-//    TextView contentsTextView = (TextView) findViewById(R.id.contents_text_view);
-//    CharSequence displayContents = resultHandler.getDisplayContents();
-//    contentsTextView.setText(displayContents);
-//    // Crudely scale betweeen 22 and 32 -- bigger font for shorter text
-//    int scaledSize = Math.max(22, 32 - displayContents.length() / 4);
-//    contentsTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaledSize);
-//
-//    TextView supplementTextView = (TextView) findViewById(R.id.contents_supplement_text_view);
-//    supplementTextView.setText("");
-//    supplementTextView.setOnClickListener(null);
-//    if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
-//        PreferencesActivity.KEY_SUPPLEMENTAL, true)) {
-//      SupplementalInfoRetriever.maybeInvokeRetrieval(supplementTextView, resultHandler.getResult(),
-//          handler, this);
-//    }
-//
-//    int buttonCount = resultHandler.getButtonCount();
-//    ViewGroup buttonView = (ViewGroup) findViewById(R.id.result_button_view);
-//    buttonView.requestFocus();
-//    for (int x = 0; x < ResultHandler.MAX_BUTTON_COUNT; x++) {
-//      TextView button = (TextView) buttonView.getChildAt(x);
-//      if (x < buttonCount) {
-//        button.setVisibility(View.VISIBLE);
-//        button.setText(resultHandler.getButtonText(x));
-////        button.setOnClickListener(new ResultButtonListener(resultHandler, x));
-//      } else {
-//        button.setVisibility(View.GONE);
-//      }
-//    }
-//
-//    if (copyToClipboard && !resultHandler.areContentsSecure()) {
-//      ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-//      clipboard.setText(displayContents);
-//    }
-//  }
-
-  // Briefly show the contents of the barcode, then handle the result outside Barcode Scanner.
-//  private void handleDecodeExternally(Result rawResult, ResultHandler resultHandler, Bitmap barcode) {
-//    viewfinderView.drawResultBitmap(barcode);
-//
-//    // Since this message will only be shown for a second, just tell the user what kind of
-//    // barcode was found (e.g. contact info) rather than the full contents, which they won't
-//    // have time to read.
-//    statusView.setText(getString(resultHandler.getDisplayTitle()));
-//
-//    if (copyToClipboard && !resultHandler.areContentsSecure()) {
-//      ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-//      clipboard.setText(resultHandler.getDisplayContents());
-//    }
-//
-//    if (source == Source.NATIVE_APP_INTENT) {
-//      // Hand back whatever action they requested - this can be changed to Intents.Scan.ACTION when
-//      // the deprecated intent is retired.
-//      Intent intent = new Intent(getIntent().getAction());
-//      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-//      intent.putExtra(Intents.Scan.RESULT, rawResult.toString());
-//      intent.putExtra(Intents.Scan.RESULT_FORMAT, rawResult.getBarcodeFormat().toString());
-//      byte[] rawBytes = rawResult.getRawBytes();
-//      if (rawBytes != null && rawBytes.length > 0) {
-//        intent.putExtra(Intents.Scan.RESULT_BYTES, rawBytes);
-//      }
-//      Message message = Message.obtain(handler, R.id.return_scan_result);
-//      message.obj = intent;
-//      handler.sendMessageDelayed(message, INTENT_RESULT_DURATION);
-//    } else if (source == Source.PRODUCT_SEARCH_LINK) {
-//      // Reformulate the URL which triggered us into a query, so that the request goes to the same
-//      // TLD as the scan URL.
-//      Message message = Message.obtain(handler, R.id.launch_product_query);
-//      int end = sourceUrl.lastIndexOf("/scan");
-//      message.obj = sourceUrl.substring(0, end) + "?q=" +
-//          resultHandler.getDisplayContents().toString() + "&source=zxing";
-//      handler.sendMessageDelayed(message, INTENT_RESULT_DURATION);
-//    } else if (source == Source.ZXING_LINK) {
-//      // Replace each occurrence of RETURN_CODE_PLACEHOLDER in the returnUrlTemplate
-//      // with the scanned code. This allows both queries and REST-style URLs to work.
-//      Message message = Message.obtain(handler, R.id.launch_product_query);
-//      message.obj = returnUrlTemplate.replace(RETURN_CODE_PLACEHOLDER,
-//          resultHandler.getDisplayContents().toString());
-//      handler.sendMessageDelayed(message, INTENT_RESULT_DURATION);
-//    }
-//  }
-
-  /**
-   * We want the help screen to be shown automatically the first time a new version of the app is
-   * run. The easiest way to do this is to check android:versionCode from the manifest, and compare
-   * it to a value stored as a preference.
-   */
-//  private boolean showHelpOnFirstLaunch() {
-//    try {
-//      PackageInfo info = getPackageManager().getPackageInfo(PACKAGE_NAME, 0);
-//      int currentVersion = info.versionCode;
-//      // Since we're paying to talk to the PackageManager anyway, it makes sense to cache the app
-//      // version name here for display in the about box later.
-//      this.versionName = info.versionName;
-//      SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//      int lastVersion = prefs.getInt(PreferencesActivity.KEY_HELP_VERSION_SHOWN, 0);
-//      if (currentVersion > lastVersion) {
-//        prefs.edit().putInt(PreferencesActivity.KEY_HELP_VERSION_SHOWN, currentVersion).commit();
-//        Intent intent = new Intent(this, HelpActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-//        // Show the default page on a clean install, and the what's new page on an upgrade.
-//        String page = lastVersion == 0 ? HelpActivity.DEFAULT_PAGE : HelpActivity.WHATS_NEW_PAGE;
-//        intent.putExtra(HelpActivity.REQUESTED_PAGE_KEY, page);
-//        startActivity(intent);
-//        return true;
-//      }
-//    } catch (PackageManager.NameNotFoundException e) {
-//      Log.w(TAG, e);
-//    }
-//    return false;
-//  }
-
   private void initCamera(SurfaceHolder surfaceHolder) {
     try {
       CameraManager.get().openDriver(surfaceHolder);
@@ -647,8 +455,4 @@ Log.w(TAG, "barcode is not null, is it " + rawResult.getText());
     viewfinderView.drawViewfinder();
   }
   
-  public String scan()  {
-      Log.w(TAG, "I would like to scan");
-      return "iloveqrcodes";
-  }
 }
