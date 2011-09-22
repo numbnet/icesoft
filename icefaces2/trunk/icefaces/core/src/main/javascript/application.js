@@ -65,7 +65,7 @@ if (!window.ice.icefaces) {
         };
         //alias for onBeforeUpdate
         //deprecated
-        namespace.onSubmitResponse = namespace.onBeforeSubmit;
+        namespace.onSubmitResponse = namespace.onBeforeUpdate;
 
         var afterUpdateListeners = [];
         namespace.onAfterUpdate = function(callback) {
