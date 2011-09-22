@@ -18,6 +18,7 @@ package org.icefaces.component.inputText;
 import org.icefaces.component.utils.BaseInputRenderer;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.PassThruAttributeWriter;
+import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.el.ValueExpression;
 
@@ -31,8 +32,9 @@ import javax.faces.convert.ConverterException;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.Iterator;
 
-
+@MandatoryResourceComponent("org.icefaces.component.flipswitch.FlipSwitch")
 public class InputTextRenderer extends BaseInputRenderer {
     private final static Logger log = Logger.getLogger(InputTextRenderer.class.getName());
 
@@ -48,26 +50,24 @@ public class InputTextRenderer extends BaseInputRenderer {
             return;
         }
         //if singleSubmit is true then make sure that captured Event is same as clientId
-        //otherwise return
+ /*       //otherwise return
         if (inputText.isSingleSubmit()){
         	  if (requestParameterMap.containsKey("ice.event.captured")){
         		  log.info("Single Submit THIS ID CAPTURED THE EVENT id="+clientId);
         	  }
-        }
+        } */
         if (requestParameterMap.containsKey(clientId)) {
             String submittedString = String.valueOf(requestParameterMap.get(clientId));
-//            log.info("submittedString is="+submittedString+ " for id="+clientId);
-
             if (submittedString != null){
                 Object convertedValue = this.getConvertedValue(facesContext, uiComponent, submittedString);
-                log.info("id is ="+clientId+" convertedValue = "+convertedValue.toString());
+       //         log.info("id is ="+clientId+" convertedValue = "+convertedValue.toString());
                 this.setSubmittedValue(inputText, convertedValue);
             }
                 
         }
-        else {
+ /*       else {
         	log.info(" clientId="+clientId+" not included in request parameter map");
-        }
+        }  */
 
     }
 
@@ -84,18 +84,22 @@ public class InputTextRenderer extends BaseInputRenderer {
             componentType = "textarea";
         }
         writer.startElement(componentType, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+        boolean isNumberType = type.equals("number");
+        String compId = clientId;
+        if (isNumberType){
+            compId+="_number";
+        }
+        writer.writeAttribute(HTML.ID_ATTR, compId, HTML.ID_ATTR);
+        writer.writeAttribute(HTML.NAME_ATTR, compId, null);
         writer.writeAttribute("class", baseClass, null);
         String valueToRender = getStringValueToRender(facesContext, inputText);
-        log.info(" \t\t ENCODE Value to render ="+valueToRender+" for id="+clientId);
         //do common passThrough attributes
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, inputText.getCommonInputAttributeNames());
         PassThruAttributeWriter.renderBooleanAttributes(writer, uiComponent, inputText.getBooleanAttNames());
         if (type.equals("textarea")) {
             //autocomplete and list not yet implemented on mobile safari
             PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, inputText.getTextAreaAttributeNames());
-        } else if (type.equals("number")){
+        } else if (isNumberType){
         	PassThruAttributeWriter.renderNonBooleanAttributes(writer,uiComponent, inputText.getNumberAttributeNames());
         }
         else {
@@ -109,12 +113,25 @@ public class InputTextRenderer extends BaseInputRenderer {
         if (inputText.isReadonly())
             writer.writeAttribute("readonly", "readonly", null);
         //still need to implement styleClass
-        if (singleSubmit)
-            writer.writeAttribute("onchange", "ice.se(event, '" + clientId + "');", null);
+        String jsCall = "ice.se(event, '" + clientId + "');";
+        if (isNumberType){
+          jsCall = "mobi.input.submit(event, '"+clientId+"', this.value,"+singleSubmit+");";
+        }
+        if (singleSubmit){
+            writer.writeAttribute("onchange", jsCall, null);
+        }
         if (!componentType.equals("textarea")) {
             writer.writeAttribute(HTML.VALUE_ATTR, valueToRender, HTML.VALUE_ATTR);
         } else {
             writer.write(valueToRender);
+        }
+        if (isNumberType){
+            writer.startElement(HTML.INPUT_ELEM, uiComponent);
+            writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
+            writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+            writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+            writer.writeAttribute(HTML.VALUE_ATTR, valueToRender,  null);
+            writer.endElement(HTML.INPUT_ELEM);
         }
         writer.endElement(componentType);
 

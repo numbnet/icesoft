@@ -21,6 +21,9 @@ import org.icefaces.component.annotation.Implementation;
 import org.icefaces.component.annotation.Property;
 import org.icefaces.component.baseMeta.UIInputMeta;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
 @Component(
         tagName = "inputText",
         componentClass = "org.icefaces.component.inputText.InputText",
@@ -35,7 +38,9 @@ import org.icefaces.component.baseMeta.UIInputMeta;
                 "for mobility devices"
 )
 
-
+@ResourceDependencies({
+	 @ResourceDependency(name="component.js",library="org.icefaces.component.util")
+})
 public class InputTextMeta extends UIInputMeta {
 
     //at this time list and autocomplete are not supported on webkit safari mobile
