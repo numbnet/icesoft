@@ -462,7 +462,7 @@ if (!window.ice.icefaces) {
                                 if (match && match[1]) {
                                     var id = match[1];
                                     var form = document.getElementById(id);
-                                    if (isComponentRendered(form)) {
+                                    if (form && isComponentRendered(form)) {
                                         iterator(form);
                                     }
                                 }
