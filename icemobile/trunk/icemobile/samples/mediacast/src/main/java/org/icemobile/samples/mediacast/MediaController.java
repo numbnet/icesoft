@@ -16,8 +16,8 @@
 
 package org.icemobile.samples.mediacast;
 
-import org.icefaces.application.PushRenderer;
 import org.icefaces.application.PushMessage;
+import org.icefaces.application.PushRenderer;
 import org.icemobile.samples.mediacast.navigation.NavigationModel;
 import org.icemobile.samples.util.FacesUtils;
 
@@ -175,6 +175,31 @@ public class MediaController implements Serializable {
             NavigationModel navigationModel = (NavigationModel)
                     FacesUtils.getManagedBean(NavigationModel.BEAN_NAME);
             navigationModel.goForward(NavigationModel.DESTINATION_VIEWER.getKey());
+        }
+        return null;
+
+    }
+
+    /**
+     * Deletes the currently selected media object from the media store.
+     *
+     * @return null no jsf navigation takes place.
+     */
+    public String deleteCurrentMedia() {
+        UploadModel uploadModel = (UploadModel)
+                FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
+        MediaStore mediaStore = (MediaStore)
+                FacesUtils.getManagedBean(MediaStore.BEAN_NAME);
+
+        if (uploadModel.getSelectedPhoto() != null) {
+
+            // clear the resource
+            mediaStore.removeMedia(uploadModel.getSelectedPhoto());
+
+            // navigate to previous location.
+            NavigationModel navigationModel = (NavigationModel)
+                    FacesUtils.getManagedBean(NavigationModel.BEAN_NAME);
+            navigationModel.goBack();
         }
         return null;
 
