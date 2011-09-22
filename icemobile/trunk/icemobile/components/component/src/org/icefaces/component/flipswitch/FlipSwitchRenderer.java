@@ -80,13 +80,13 @@ public class FlipSwitchRenderer extends Renderer {
 //        uiParamChildren = Utils.captureParameters( slider );
 
         // Write outer div
-        writer.startElement(HTML.DIV_ELEM, uiComponent);
+/*        writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);   */
            
         writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId+"_anchor", HTML.ID_ATTR);
- //       writer.writeAttribute("href", "#", null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
         String styleClass = flipswitch.FLIPSWITCH_OFF_CLASS;
         String switchValue = String.valueOf(flipswitch.getValue());
         boolean isChecked = this.isChecked(switchValue);
@@ -106,23 +106,24 @@ public class FlipSwitchRenderer extends Renderer {
         writer.writeAttribute("class", "mobi-flip-switch-txt", null);
         writer.write(labelOn);
         writer.endElement(HTML.SPAN_ELEM);
+        boolean switchVal = (Boolean)flipswitch.getValue();
+        writeHiddenField(uiComponent, clientId, writer, switchVal);
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute("class", "mobi-flip-switch-txt", null);
         writer.write(labelOff);
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.ANCHOR_ELEM);
-        writeHiddenField(uiComponent, clientId, writer, switchValue);
         writer.endElement("input");
 
-        writer.endElement(HTML.DIV_ELEM);
+    //    writer.endElement(HTML.DIV_ELEM);
     }
 
 	private void writeHiddenField(UIComponent uiComponent, String clientId,
-			ResponseWriter writer, String switchValue) throws IOException {
+			ResponseWriter writer, boolean switchValue) throws IOException {
 		writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("name", clientId + "_hidden", null);
-        writer.writeAttribute("id", clientId + "_hidden", null);
+        writer.writeAttribute("name", clientId+"_hidden" , null);
+        writer.writeAttribute("id", clientId+"_hidden" , null);
         writer.writeAttribute("value", switchValue, null);
 	}
     private boolean isChecked(String hiddenValue) {
