@@ -79,10 +79,14 @@ public class SourceCodeLoaderServlet extends HttpServlet {
 
                     String toReturn;
                     if (m.find(0)) {
-                        toReturn = m.replaceFirst("// MPL License text (see http://www.mozilla.org/MPL/)");
+                        toReturn = m.replaceFirst(
+                                "// MPL License text (see http://www.mozilla.org/MPL/)\n\n" +
+                                "// Click or touch the screen to navigate back to ICEmobile Suite\n" );
                     } else {
                         m = JAVA_PATTERN.matcher(stringBuffer);
-                        toReturn = m.replaceFirst("/* MPL License text (see http://www.mozilla.org/MPL/) */\n");
+                        toReturn = m.replaceFirst(
+                                "/* MPL License text (see http://www.mozilla.org/MPL/) */\n\n" +
+                                "/* Click or touch the screen to navigate back to ICEmobile Suite */\n" );
                     }
                     String name = sourcePath
                             .substring(sourcePath.lastIndexOf("/") + 1);
