@@ -192,8 +192,6 @@ public class ICEmobileContainer extends Activity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-Log.w("ICEcontainer", "onActivityResult " + requestCode + " " + resultCode + " " + 
-    data.getStringExtra(SCAN_ID));
 	if (resultCode == RESULT_OK) {
 	    switch(requestCode){
 	    case TAKE_PHOTO_CODE:
