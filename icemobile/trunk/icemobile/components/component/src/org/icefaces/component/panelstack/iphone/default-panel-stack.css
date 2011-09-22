@@ -50,7 +50,7 @@
 
 .mobi-panel-stack-body > div, .mobi-panel-stack-body-nofooter > div {
     background: #c8c8c8 url('pinstripes.png');
-    min-height: 480px;
+    min-height: 640px;
     padding-bottom:50px;
 }
 
