@@ -20,10 +20,14 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
+
+    <h4>Recently Uploaded Messages</h4>
+    <div style="clear:both;"/>
     <!-- diplay of uploaded images for all users, top 5 are shown. -->
     <h:form>
         <mobi:carousel var="mediaMessage"
-                       value="#{mediaStore.carouselStack}">
+                       value="#{mediaStore.carouselStack}"
+                       style="border-top: 1px solid #999999;">
                 <h:panelGroup>
                     <div style="overflow:hidden;width:175px;height:98px;">
                         <mobi:graphicImage
@@ -49,6 +53,18 @@
 
     <!-- upload components. -->
     <h4>Send a Media Message</h4>
+    <mobi:fieldsetGroup >
+        <mobi:fieldsetRow style="padding-bottom:10px;">
+            Create a new media message using your mobile device.  When you press
+            upload your message is sent to all Mediacast users.
+            <ui:fragment rendered="#{not mediaController.enhancedBrowser}">
+                <br /><span style="font-weight:bold;font-style:italic;">
+                    ICEmobile container was not detected, native
+                    device intregation will not be available.</span>
+            </ui:fragment>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+
     <h:form prependId="false" id="cform">
 
         <!-- upload helper to help with desktop and mobile shared UI's -->
@@ -120,10 +136,10 @@
 
     <h:form>
         <!-- linke to gallery of all uploaded media files. -->
-        <mobi:outputList>
+        <mobi:outputList inset="true">
             <mobi:outputListItem group="false">
                 <h:commandLink
-                        value="Gallery"
+                        value="Media Messages Gallery"
                         actionListener="#{navigationController.navigateToPage}">
                     <f:param name="navigateTo"
                              value="#{navigationModel.destinationGallery.key}"/>
