@@ -18,6 +18,7 @@ package org.icemobile.samples.mediacast;
 
 import org.icefaces.application.PushMessage;
 import org.icefaces.application.PushRenderer;
+import org.icefaces.util.EnvUtils;
 import org.icemobile.samples.mediacast.navigation.NavigationModel;
 import org.icemobile.samples.util.FacesUtils;
 
@@ -234,6 +235,15 @@ public class MediaController implements Serializable {
             logger.log(Level.WARNING, command + " Error processing file.", e);
         }
         return null;
+    }
+
+    /**
+     * Test to see if the calling browser has the ICEmobile enhancements/extensions.
+     *
+     * @return true if an ICEmobile enhancements are detected, otherwise false.
+     */
+    public boolean isEnhancedBrowser() {
+        return EnvUtils.isEnhancedBrowser(FacesContext.getCurrentInstance());
     }
 
     private void processUploadedAudio(MediaMessage audioMessage, File audioFile) {
