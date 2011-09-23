@@ -17,65 +17,56 @@
 package org.icefaces.component.list;
 
 
-import org.icefaces.component.list.OutputListItem;
 import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.Utils;
-import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
 import javax.faces.render.Renderer;
-
 import java.io.IOException;
 import java.util.List;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
 public class OutputListRenderer extends Renderer {
     private static Logger logger = Logger.getLogger(OutputListRenderer.class.getName());
- 
-      
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)throws IOException {
+
+
+    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         OutputList list = (OutputList) uiComponent;
         //check to ensure children are all of type OutputListItem
         writer.startElement(HTML.UL_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+
+        // apply component style classes.
         String userDefinedClass = list.getStyleClass();
-        String styleClass = OutputList.OUTPUTLIST_CLASS;
-        if (list.isInset()){
-        	if (userDefinedClass!=null){
-        	    styleClass =   OutputList.OUTPUTLISTINSET_CLASS+" "+userDefinedClass;
-        	}
+        StringBuilder styleClasses = new StringBuilder(OutputList.OUTPUTLIST_CLASS);
+        if (list.isInset()) {
+            styleClasses.append(" ").append(OutputList.OUTPUTLISTINSET_CLASS);
         }
-        else{
-        	if (userDefinedClass!=null){
-        	   styleClass =  OutputList.OUTPUTLIST_CLASS+" "+userDefinedClass;
-        	}
-        }       
-        writer.writeAttribute("class", styleClass, "styleClass");
+        if (userDefinedClass != null) {
+            styleClasses.append(" ").append(userDefinedClass);
+        }
+        writer.writeAttribute("class", styleClasses.toString(), "styleClass");
+
         //verify the children are OutputListItem only 
-        if (facesContext.isProjectStage(ProjectStage.Development)&& logger.isLoggable(Level.FINER)){
+        if (facesContext.isProjectStage(ProjectStage.Development) && logger.isLoggable(Level.FINER)) {
             List<UIComponent> children = uiComponent.getChildren();
-            Iterator it = children.iterator();
-            while (it.hasNext()){
-        	    UIComponent child = (UIComponent)it.next();
-        	    if (!(child instanceof OutputListItem)){
-        		    logger.finer("The OutputList component allows only children of type OutputListItem");
-        	    }
+            for (UIComponent child : children) {
+                if (!(child instanceof OutputListItem)) {
+                    logger.finer("The OutputList component allows only children of type OutputListItem");
+                }
             }
         }
     }
-    
+
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-    throws IOException {
+            throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.endElement(HTML.UL_ELEM);
-     }
+    }
 }
