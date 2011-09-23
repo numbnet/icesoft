@@ -24,7 +24,7 @@ package org.icefaces.mobile;
 import java.io.Serializable;
 
 import org.icefaces.application.PushRenderer;
-import org.icefaces.application.PushRendererMessage;
+import org.icefaces.application.PushMessage;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -45,8 +45,8 @@ public class NotificationBean implements Serializable {
     public static final String GROUP = "main";
     private String subject = "subject";
     private String message = "message";
-    @ManagedProperty(value = "#{messagingHub}")
-    private MessagingHub messagingHub;
+//    @ManagedProperty(value = "#{messagingHub}")
+//    private MessagingHub messagingHub;
 
     public NotificationBean() {
         PushRenderer.addCurrentSession(GROUP);
@@ -54,15 +54,12 @@ public class NotificationBean implements Serializable {
 
     public void sendNotification() {
         PushRenderer.render(GROUP);
-        messagingHub.setMessage(message);
+//        messagingHub.setMessage(message);
     }
 
     public void sendImportantNotification() {
-        PushRendererMessage pushMessage = new PushRendererMessage();
-        pushMessage.setProperty("subject", subject);
-        pushMessage.setProperty("body", message);
-        PushRenderer.render(GROUP, pushMessage);
-        messagingHub.setMessage(message);
+        PushRenderer.render(GROUP, new PushMessage(subject, message));
+//        messagingHub.setMessage(message);
     }
 
     public String getSubject() {
@@ -81,11 +78,11 @@ public class NotificationBean implements Serializable {
         this.message = message;
     }
 
-    public MessagingHub getMessagingHub() {
-        return messagingHub;
-    }
-
-    public void setMessagingHub(MessagingHub messagingHub) {
-        this.messagingHub = messagingHub;
-    }
+//    public MessagingHub getMessagingHub() {
+//        return messagingHub;
+//    }
+//
+//    public void setMessagingHub(MessagingHub messagingHub) {
+//        this.messagingHub = messagingHub;
+//    }
 }
