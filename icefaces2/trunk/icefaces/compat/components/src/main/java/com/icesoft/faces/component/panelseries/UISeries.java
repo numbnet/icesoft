@@ -229,31 +229,6 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         super.setValueBinding(name, binding);
     }
 
-
-    /**
-     * @see javax.faces.component.UIData#getClientId(FacesContext)
-     */
-    public String getClientId(FacesContext context) {
-        if (context == null) {
-            throw new NullPointerException();
-        }
-        String baseClientId = super.getClientId(context);
-        if (getRowIndex() >= 0) {
-            //this extra if is to produce the same ids among myfaces and sunri
-            //myfaces uses the getRowIndex() and SunRI directly using the rowIndex 
-            //variable inside its getClientId()
-            if (!baseClientId.endsWith(
-                    "" + NamingContainer.SEPARATOR_CHAR + getRowIndex())) {
-                return (baseClientId + NamingContainer.SEPARATOR_CHAR +
-                        getRowIndex());
-            }
-            return (baseClientId);
-        } else {
-            return (baseClientId);
-        }
-    }
-
-
     /**
      * @see javax.faces.component.UIData#queueEvent(FacesEvent)
      */
