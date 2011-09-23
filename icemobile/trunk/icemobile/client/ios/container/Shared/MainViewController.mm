@@ -33,6 +33,7 @@
 @synthesize hexDeviceToken;
 @synthesize notificationEmail;
 @synthesize popover;
+@synthesize scanPopover;
 
 
 - (void)viewDidLoad {
@@ -196,22 +197,30 @@
     [qrcodeReader release];
     widController.readers = readers;
     [readers release];
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
-//        UIPopoverController *scanPop = [[UIPopoverController alloc] initWithContentViewController:widController];
-//        //[picker release];
-//        [scanPop presentPopoverFromRect:CGRectMake(200.0, 200.0, 0.0, 0.0) 
-//                                 inView:self.view
-//               permittedArrowDirections:UIPopoverArrowDirectionAny 
-//                               animated:YES];
-//    } else {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
+        if (nil == self.scanPopover)  {
+            scanPopover = [[UIPopoverController alloc] 
+                    initWithContentViewController:widController];
+            self.scanPopover.popoverContentSize = CGSizeMake(320, 480);
+        }
+        //[picker release];
+        [self.scanPopover presentPopoverFromRect:CGRectMake(200.0, 200.0, 0.0, 0.0) 
+                                 inView:self.view
+               permittedArrowDirections:UIPopoverArrowDirectionAny 
+                               animated:YES];
+    } else {
         [self presentModalViewController:widController animated:YES];
-//    }
+    }
     [widController release];
 }
 
 - (void)zxingController:(ZXingWidgetController*)controller didScanResult:(NSString *)resultString {
-    [self dismissModalViewControllerAnimated:YES];
     NSLog(@"didScanResult %@", resultString);
+    if (nil != self.scanPopover)  {
+        [self.scanPopover dismissPopoverAnimated:YES];
+    } else {
+        [self dismissModalViewControllerAnimated:YES];
+    }
     NSString *scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
     NSString *scanId = self.nativeInterface.activeDOMElementId;
     NSString *scanName = [scanId stringByAppendingString:@"-text"];
