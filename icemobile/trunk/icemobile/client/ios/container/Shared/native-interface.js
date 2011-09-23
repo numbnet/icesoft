@@ -230,6 +230,10 @@ if (!window.ice.mobile) {
             ice.native('play?id=' + id);
         }
 
+        namespace.scan = function(id)  {
+            ice.native('scan?id=' + id);
+        }
+
         namespace.deviceToken = "cafebeef";
 
     })(window.ice)

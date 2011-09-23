@@ -17,6 +17,12 @@
 #import "MainViewController.h"
 #import "NativeInterface.h"
 #import "Preferences.h"
+#import <QRCodeReader.h>
+#import <ZXingWidgetController.h>
+/* Will require AddressBook and AddressBookUI frameworks
+#import <UniversalResultParser.h>
+#import <ParsedResult.h>
+*/
 
 @implementation MainViewController
 
@@ -89,7 +95,7 @@
 }
 
 - (void)setDeviceToken:(NSData *)deviceToken {
-    const unsigned *tokenBytes = [deviceToken bytes];
+    const unsigned *tokenBytes = (unsigned int*) [deviceToken bytes];
     NSString *hexToken = [NSString stringWithFormat:
             @"%08x%08x%08x%08x%08x%08x%08x%08x",
             ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
@@ -180,6 +186,44 @@
             [containerView addSubview:self.preferences.view]; }
             completion:nil];
     }
+}
+
+- (void)scanQR {
+    NSLog(@"scanQR ");
+    ZXingWidgetController *widController = [[ZXingWidgetController alloc] initWithDelegate:self showCancel:YES OneDMode:NO];
+    QRCodeReader* qrcodeReader = [[QRCodeReader alloc] init];
+    NSSet *readers = [[NSSet alloc ] initWithObjects:qrcodeReader,nil];
+    [qrcodeReader release];
+    widController.readers = readers;
+    [readers release];
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
+//        UIPopoverController *scanPop = [[UIPopoverController alloc] initWithContentViewController:widController];
+//        //[picker release];
+//        [scanPop presentPopoverFromRect:CGRectMake(200.0, 200.0, 0.0, 0.0) 
+//                                 inView:self.view
+//               permittedArrowDirections:UIPopoverArrowDirectionAny 
+//                               animated:YES];
+//    } else {
+        [self presentModalViewController:widController animated:YES];
+//    }
+    [widController release];
+}
+
+- (void)zxingController:(ZXingWidgetController*)controller didScanResult:(NSString *)resultString {
+    [self dismissModalViewControllerAnimated:YES];
+    NSLog(@"didScanResult %@", resultString);
+    NSString *scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
+    NSString *scanId = self.nativeInterface.activeDOMElementId;
+    NSString *scanName = [scanId stringByAppendingString:@"-text"];
+    NSString *script = [NSString stringWithFormat:scriptTemplate, scanId, scanName, resultString];
+    [self.webView stringByEvaluatingJavaScriptFromString: script];
+
+//    ParsedResult *parsedResult = [[UniversalResultParser parsedResultForString:resultString] retain];
+//    NSLog(@"parsedResult %@", parsedResult);
+}
+
+- (void)zxingControllerDidCancel:(ZXingWidgetController*)controller {
+  [self dismissModalViewControllerAnimated:YES];
 }
 
 - (NSURL*)getCurrentURL {

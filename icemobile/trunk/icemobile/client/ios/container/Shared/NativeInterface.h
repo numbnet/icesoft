@@ -44,6 +44,7 @@
 - (BOOL)camcorder: (NSString*)cameraId;
 - (BOOL)upload: (NSString*)formId;
 - (BOOL)play: (NSString*)audioId;
+- (BOOL)scan: (NSString*)scanId;
 - (NSDictionary*)parseQuery: (NSString*)queryString;
 - (void)setThumbnail: (UIImage*)image at: (NSString *)thumbId;
 - (UIImage*)scaleImage: (UIImage*)image toSize: (int)finalSize;
