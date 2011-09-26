@@ -36,17 +36,17 @@ import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Font;
-import net.rim.device.api.ui.XYEdges;
+import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.CheckboxField;
 import net.rim.device.api.ui.component.EditField;
+import net.rim.device.api.ui.component.EmailAddressEditField;
+import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.component.ObjectChoiceField;
 import net.rim.device.api.ui.container.MainScreen;
 import net.rim.device.api.ui.container.VerticalFieldManager;
 import net.rim.device.api.ui.decor.Background;
 import net.rim.device.api.ui.decor.BackgroundFactory;
-import net.rim.device.api.ui.decor.Border;
-import net.rim.device.api.ui.decor.BorderFactory;
 
 public class BlackberryOptionsProvider implements OptionsProvider {
 
@@ -54,8 +54,11 @@ public class BlackberryOptionsProvider implements OptionsProvider {
     private BlackberryOptionsProperties mOptionsProperties;
     private EditField mUrlField;
     private ObjectChoiceField mRecentURLs;
+    private CheckboxField mUseEmailNotification; 
+    private LabelField mEmailEntryLabel;
     
-//    private TextField mEmailNotification; 
+    
+    private EmailAddressEditField mEmailNotification; 
 //    private CheckboxField mBrowsePhotos; 
 //    private CheckboxField mBrowseVideos;
 
@@ -76,20 +79,20 @@ public class BlackberryOptionsProvider implements OptionsProvider {
         VerticalFieldManager vfm = new VerticalFieldManager();
         screen.add (vfm);
         
-        Border aBorder;
-        XYEdges borderEdges = new XYEdges( 2, 5, 5, 5);
-
-        aBorder = BorderFactory.createRoundedBorder( borderEdges, Color.DARKGRAY, Border.STYLE_SOLID );
         
-        mUrlField = new EditField( "Home URL:  ", 
+        // ---------- Home URL pair 
+        
+        LabelField homeLabel = new LabelField("Home URL:", Field.FIELD_LEFT);
+        screen.add(  homeLabel ); 
+        
+        mUrlField = new EditField( "", 
                 mOptionsProperties.getHomeURL(), 
                 100, 
-                EditField.FILTER_URL);
+                EditField.FILTER_URL | Field.FIELD_HCENTER);
         
         Background whiteBackground = BackgroundFactory.createSolidBackground(Color.WHITE);
         mUrlField.setBackground(whiteBackground);
         
-        mUrlField.setBorder( aBorder );
 
         // A little bit smaller font for sizing
         Font F = mUrlField.getFont(); 
@@ -103,14 +106,19 @@ public class BlackberryOptionsProvider implements OptionsProvider {
         }); 
 
         screen.add(mUrlField);
+        
+        // -----------  recently defined HOME urls 
+        
 
-        mRecentURLs  = new ObjectChoiceField("Alternative HOME URLs:", 
+        LabelField urlList = new LabelField ("Recent HOME URLs: ", Field.FIELD_LEFT);
+        screen.add (urlList); 
+        
+        mRecentURLs  = new ObjectChoiceField("", 
                 mOptionsProperties.getApplicationURLs(), 
                 mOptionsProperties.getHomeURLIndex(), 
-                Field.FIELD_LEADING);
+                Field.FIELD_HCENTER);
 
         mRecentURLs.setFont(newF);
-        mRecentURLs.setBorder( aBorder ); 
         mRecentURLs.setBackground( whiteBackground );
         screen.add( mRecentURLs );
 
@@ -119,46 +127,74 @@ public class BlackberryOptionsProvider implements OptionsProvider {
                 mOptionsProperties.setMode(BlackberryOptionsProperties.DROP_MODE);
             } 			
         }); 		
-
-        ButtonField reloadField = new ButtonField("Load Home URL on Re-entry");
-        reloadField.setBorder( aBorder );
-        reloadField.setCommandContext( new Object() { 
-            public String toString() { 
-                return "Options Menu"; 
-            }		
-        });
-
-        reloadField.setCommand(new Command (new ReloadPageHandler()));		
-        screen.add( reloadField );
+    
         
-        /*
-        mBrowsePhotos = new CheckboxField("Browse photo gallery mode", mOptionsProperties.isUsePhotoGallery());
-        mBrowsePhotos.setBorder( aBorder );
-        mBrowsePhotos.setBackground( whiteBackground );
-        mBrowsePhotos.setFont(newF);
-        screen.add(mBrowsePhotos);
+        // ----------------- Email Notification section 
         
-        mBrowseVideos = new CheckboxField("Browse video gallery mode", mOptionsProperties.isUseVideoGallery());
-        mBrowseVideos.setFont ( newF );
-        mBrowseVideos.setBorder( aBorder );
-        mBrowseVideos.setBackground( whiteBackground );
-        screen.add (mBrowseVideos);
-         
+        mUseEmailNotification = new CheckboxField( "Use Email Notification", 
+                mOptionsProperties.isUsingEmailNotification(), 
+                Field.FIELD_LEFT);
+        mUseEmailNotification.setFont( newF ); 
         
-        mEmailNotification = new BasicEditField( "Email notification address:   ", 
+        mUseEmailNotification.setChangeListener( new FieldChangeListener () {
+            public void fieldChanged(Field field, int context) {
+                
+                final boolean enabled = mUseEmailNotification.getChecked(); 
+                UiApplication.getUiApplication().invokeLater(new Runnable() { 
+                    public void run() { 
+                        setFieldState( enabled );
+                    }
+                }); 
+            }   
+            
+        });         
+        
+        screen.add( mUseEmailNotification );
+                
+        
+        mEmailEntryLabel = new LabelField ("Email notification address: ", Field.FIELD_LEFT);
+        screen.add ( mEmailEntryLabel );
+        
+        mEmailNotification = new EmailAddressEditField( "", 
                 mOptionsProperties.getEmailNotification(), 
                 50, 
-                BasicEditField.FILTER_EMAIL); 
+                Field.FIELD_HCENTER); 
 
         mEmailNotification.setBackground(whiteBackground);
         mEmailNotification.setFont(newF);
-        mEmailNotification.setBorder ( aBorder );
-        screen.add(mEmailNotification);
+        screen.add(mEmailNotification);        
         
-        */
+        
+        
+          // ---- Reload Home page on exit button 
+        
+        
+        
+        ButtonField reloadField = new ButtonField("Load Home URL on Re-entry", 
+                Field.FIELD_BOTTOM );
+        reloadField.setCommandContext( new Object() { 
+            public String toString() { 
+                return "Options Menu"; 
+            }       
+        });
+
+        reloadField.setCommand(new Command (new ReloadPageHandler()));      
+        screen.add( reloadField );
+        
+        setFieldState ( mOptionsProperties.isUsingEmailNotification());
     }
     
 
+    public void setFieldState(boolean enabled) { 
+        // blackberry labels  don't support enabled/disabled
+        if (enabled) { 
+            mEmailEntryLabel.setVisualState(Field.VISUAL_STATE_NORMAL);
+        } else { 
+            mEmailEntryLabel.setVisualState ( Field.VISUAL_STATE_DISABLED);
+        }
+        mEmailNotification.setEnabled(enabled);                
+    }
+    
     class ReloadPageHandler extends CommandHandler { 
 
         public void execute(ReadOnlyCommandMetadata metadata, Object context) { 
@@ -173,12 +209,14 @@ public class BlackberryOptionsProvider implements OptionsProvider {
         } else { 			
             mOptionsProperties.setHomeURLIndex( mRecentURLs.getSelectedIndex() );
         }
+              
+        boolean isChecked = mUseEmailNotification.getChecked(); 
         
-//        mOptionsProperties.setUsePhotoGallery( mBrowsePhotos.getChecked() ); 
-//        mOptionsProperties.setUseVideoGallery( mBrowseVideos.getChecked() );
-//        mOptionsProperties.setEmailNotification( mEmailNotification.getText() );         
-        mOptionsProperties.save(); 				
-        
+        mOptionsProperties.setUsingEmailNotification( isChecked );
+        if (isChecked) { 
+            mOptionsProperties.setEmailNotification( mEmailNotification.getText() );   
+        }
+        mOptionsProperties.save(); 				        
         mContainer.optionsChanged(); 
     }
 }
