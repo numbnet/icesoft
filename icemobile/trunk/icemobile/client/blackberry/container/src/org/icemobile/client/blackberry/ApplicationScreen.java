@@ -74,14 +74,14 @@ import net.rim.device.api.ui.menu.SubMenu;
 
      // 
 
-//     public boolean onClose() { 
-////         UiApplication.getUiApplication().requestBackground(); 
-//         return false; 
-//     }
+     public boolean onClose() { 
+         UiApplication.getUiApplication().requestBackground(); 
+         return false; 
+     }
 
-//     public void close() { 
-//
-//     }
+     public void close() { 
+
+     }
      
      /**
       * Define the options subclasses for the MainScreen
