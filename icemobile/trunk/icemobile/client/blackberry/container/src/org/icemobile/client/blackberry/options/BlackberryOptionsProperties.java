@@ -43,13 +43,9 @@ public class BlackberryOptionsProperties implements Persistable {
     private String[] mApplicationURLs;
     private int mSelectedIndex;
     
-//    // Select photos from gallery over using camera
-//    private boolean mUsePhotoGallery; 
-//    
-//    // select videos from gallery over using camera 
-//    private boolean mUseVideoGallery;
-    
-    // 
+    private Boolean mUsingEmailNotification; 
+        
+    // Email address to use for email notification
     private String mEmailNotification= "";
     
     // invisible flag indicating whether the eula has been viewed. 
@@ -98,11 +94,13 @@ public class BlackberryOptionsProperties implements Persistable {
         }
         // 
         mApplicationURLs[0] = mHomeUrl;
-        mApplicationURLs[1] = "http://labs.icesoft.com:8080/mobileshowcase";
+//        mApplicationURLs[1] = "http://labs.icesoft.com:8080/mobileshowcase";
+//        mApplicationURLs[2] = "http://192.168.10.101:9090/demos.html";
 
         mSelectedIndex = 0;
         mMode = TEXT_MODE;
         mEulaViewed = Boolean.FALSE;
+//       A  mUsingEmailNotification = Boolean.FALSE; 
     }        
 
     //Retrieves a copy of the effective properties set from storage.
@@ -190,21 +188,13 @@ public class BlackberryOptionsProperties implements Persistable {
     	mEulaViewed  = new Boolean (eulaViewed);
     }
     
-//    public boolean isUsePhotoGallery () { 
-//        return mUsePhotoGallery; 
-//    }
-//    
-//    public void setUsePhotoGallery(boolean usePhotoGallery) { 
-//        mUsePhotoGallery = usePhotoGallery;
-//    }
-//    
-//    public boolean isUseVideoGallery() { 
-//        return mUseVideoGallery;
-//    }
-//    
-//    public void setUseVideoGallery(boolean useVideoGallery) { 
-//        mUseVideoGallery = useVideoGallery; 
-//    }
+    public boolean isUsingEmailNotification() { 
+        return mUsingEmailNotification.booleanValue(); 
+    }
+    
+    public void setUsingEmailNotification(boolean usingEmail) { 
+        mUsingEmailNotification = new Boolean( usingEmail );
+    }
     
     public String getEmailNotification() { 
         return mEmailNotification; 
@@ -228,11 +218,16 @@ public class BlackberryOptionsProperties implements Persistable {
         } else {  
             mEulaViewed = Boolean.FALSE; 
         }
-        mMode = other.mMode;
-//        mUsePhotoGallery = other.mUsePhotoGallery; 
-//        mUseVideoGallery = other.mUseVideoGallery; 
+        if (other.mUsingEmailNotification != null) { 
+            mUsingEmailNotification = new Boolean (other.mUsingEmailNotification.booleanValue()); 
+        } else { 
+            mUsingEmailNotification = Boolean.FALSE; 
+        }
+        
+        mMode = other.mMode;        
+        
         if (other.mEmailNotification != null ) { 
             mEmailNotification = new String( other.mEmailNotification );
-        }
+        } 
     }
 }
