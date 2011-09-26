@@ -35,10 +35,10 @@ import java.io.Serializable;
         menuLinks = {
                 @MenuLink(title = "menu.layout.carousel.title",
                         exampleBeanName = CarouselBean.BEAN_NAME),
-                @MenuLink(title = "menu.layout.fieldset.title",
-                        exampleBeanName = FieldsetBean.BEAN_NAME),
                 @MenuLink(title = "menu.layout.theming.title",
                         exampleBeanName = SkinBean.BEAN_NAME),
+                @MenuLink(title = "menu.layout.fieldset.title",
+                        exampleBeanName = FieldsetBean.BEAN_NAME),
                 @MenuLink(title = "menu.layout.list.title",
                         exampleBeanName = ListBean.BEAN_NAME)
         })

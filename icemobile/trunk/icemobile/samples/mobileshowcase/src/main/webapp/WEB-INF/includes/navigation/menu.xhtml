@@ -23,10 +23,26 @@
     <h:form>
         <mobi:outputList inset="false">
 
-            <!-- native components menu links. -->
+            <!-- output media components  example links. -->
             <mobi:outputListItem
-                    group="true">#{msgs[nativeCompsMenu.title]}</mobi:outputListItem>
-            <ui:repeat value="#{nativeCompsMenu.menuLinks}" var="menuLinks">
+                    group="true">#{msgs[layoutAndNavigationMenu.title]}</mobi:outputListItem>
+            <ui:repeat value="#{layoutAndNavigationMenu.menuLinks}"
+                       var="menuLinks">
+                <mobi:outputListItem>
+                    <h:commandLink
+                            value="#{msgs[menuLinks.title]}"
+                            action="#{navigationController.navigateToPage}">
+                        <f:param name="#{navigationController.navDestination}"
+                                 value="#{menuLinks.exampleBeanName}"/>
+                    </h:commandLink>
+                </mobi:outputListItem>
+            </ui:repeat>
+
+            <!-- input and selection components example links. -->
+            <mobi:outputListItem
+                    group="true">#{msgs[inputAndSelectionMenu.title]}</mobi:outputListItem>
+            <ui:repeat value="#{inputAndSelectionMenu.menuLinks}"
+                       var="menuLinks">
                 <mobi:outputListItem>
                     <h:commandLink
                             value="#{msgs[menuLinks.title]}"
@@ -51,26 +67,10 @@
                 </mobi:outputListItem>
             </ui:repeat>
 
-            <!-- output media components  example links. -->
+            <!-- native components menu links. -->
             <mobi:outputListItem
-                    group="true">#{msgs[layoutAndNavigationMenu.title]}</mobi:outputListItem>
-            <ui:repeat value="#{layoutAndNavigationMenu.menuLinks}"
-                       var="menuLinks">
-                <mobi:outputListItem>
-                    <h:commandLink
-                            value="#{msgs[menuLinks.title]}"
-                            action="#{navigationController.navigateToPage}">
-                        <f:param name="#{navigationController.navDestination}"
-                                 value="#{menuLinks.exampleBeanName}"/>
-                    </h:commandLink>
-                </mobi:outputListItem>
-            </ui:repeat>
-
-            <!-- input and selection components example links. -->
-            <mobi:outputListItem
-                    group="true">#{msgs[inputAndSelectionMenu.title]}</mobi:outputListItem>
-            <ui:repeat value="#{inputAndSelectionMenu.menuLinks}"
-                       var="menuLinks">
+                    group="true">#{msgs[nativeCompsMenu.title]}</mobi:outputListItem>
+            <ui:repeat value="#{nativeCompsMenu.menuLinks}" var="menuLinks">
                 <mobi:outputListItem>
                     <h:commandLink
                             value="#{msgs[menuLinks.title]}"

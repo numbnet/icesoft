@@ -41,7 +41,7 @@ import java.io.Serializable;
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
                         title = "flipSwitch-example.xhtml",
-                        resource = "/WEB-INF/includes/examples/input/flipSwitch-example.xhtml"),
+                        resource = "/WEB-INF/includes/examples/input/flip-switch-example.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
                         title = "FlipSwitchBean.java",

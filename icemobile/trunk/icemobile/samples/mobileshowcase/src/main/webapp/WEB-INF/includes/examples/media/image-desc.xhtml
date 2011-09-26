@@ -29,9 +29,10 @@
 
 <pre>
 &lt;mobi:graphicImage
-    value="#{'#'}{bean.fileInBytes}"
+    value="#{'#'}{bean.fileBytes}"
     width="60" height="40"
-    scope="view" mimeType="image/jpeg" &gt;
+    scope="view"
+    mimeType="image/jpeg" &gt;
 </pre>
         <p>
             The image component uses JSF 2 resource handling and as a result it
@@ -40,10 +41,6 @@
             remain in memory.
         </p>
 
-        <p>
-            The audio component is support in both the ICEfaces container and
-            a standalone mobile browser.
-        </p>
 
     </mobi:fieldsetGroup>
 

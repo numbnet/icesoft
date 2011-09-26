@@ -69,9 +69,9 @@ import java.util.logging.Logger;
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
                                 "/view/examples/device/notification/NotificationBean.java"),
                 @ExampleResource(type = ResourceType.java,
-                        title = "MessageHub.java",
+                        title = "ScheduledPush.java",
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
-                                "/view/examples/device/notification/MessageHub.java")
+                                "/view/examples/device/notification/ScheduledPushExecutor.java")
         }
 )
 @ManagedBean(name = NotificationBean.BEAN_NAME)
@@ -95,7 +95,7 @@ public class NotificationBean extends ExampleImpl<NotificationBean> implements
     private String message;
     private int notificationDelay;
 
-    // echo strings that are only set when the push is executed.
+    // echo strings that are only set when the push is executed in the future.
     private String echoedSubject;
     private String echoedMessage;
 

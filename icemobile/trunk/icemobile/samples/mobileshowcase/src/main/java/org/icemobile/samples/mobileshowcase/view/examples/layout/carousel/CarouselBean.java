@@ -69,6 +69,11 @@ public class CarouselBean extends ExampleImpl<CarouselBean> implements
         images.add("laptop.png");
         images.add("monitor.png");
         images.add("pda.png");
+        images.add("desktop.png");
+        images.add("laptop.png");
+        images.add("monitor.png");
+        images.add("pda.png");
+        images.add("desktop.png");
     }
 
     public ArrayList<String> getImages() {

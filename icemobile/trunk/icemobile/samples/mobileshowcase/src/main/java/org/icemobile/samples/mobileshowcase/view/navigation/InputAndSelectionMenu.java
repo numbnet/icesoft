@@ -38,10 +38,10 @@ import java.io.Serializable;
                         exampleBeanName = ButtonBean.BEAN_NAME),
                 @MenuLink(title = "menu.input.flipswitch.title",
                         exampleBeanName = FlipSwitchBean.BEAN_NAME),
-                @MenuLink(title = "menu.input.input.title",
-                        exampleBeanName = InputBean.BEAN_NAME),
                 @MenuLink(title = "menu.input.geolocation.title",
-                        exampleBeanName = GeoLocationBean.BEAN_NAME)
+                        exampleBeanName = GeoLocationBean.BEAN_NAME),
+                @MenuLink(title = "menu.input.input.title",
+                        exampleBeanName = InputBean.BEAN_NAME)
         })
 @ManagedBean(name = InputAndSelectionMenu.BEAN_NAME)
 @ApplicationScoped
