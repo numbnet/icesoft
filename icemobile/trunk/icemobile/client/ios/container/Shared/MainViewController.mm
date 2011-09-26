@@ -148,8 +148,9 @@
     if ( (nil != self.notificationEmail) && 
          ([self.notificationEmail length] > 0) )  {
         NSLog(@"using email notification: %@", self.notificationEmail );
-        script = [NSString stringWithFormat:@"ice.push.parkInactivePushIds('mail: %@');", 
-                self.notificationEmail];
+        NSString *scriptTemplate = 
+                @"ice.deviceToken = \"mail:%@\";ice.push.parkInactivePushIds(ice.deviceToken);";
+        script = [NSString stringWithFormat:scriptTemplate, self.notificationEmail];
     } else {
         NSLog(@"using apns notification: %@", self.hexDeviceToken );
         NSString *scriptTemplate = 
