@@ -7,11 +7,12 @@
 	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 <h:head>
 	<meta charset="UTF-8"></meta>
-	<title>camera on iPhone</title>
+	<title>camera with uploadHelper component</title>
 </h:head>
 <h:body>
 <!--   <h:form prependId="false"  id="cform"> --> 
     <h:form id="cform">
+
 		<h3>Mobile Camera</h3>
 		<h5>uploaded images</h5>
 		<div id="uploadedImage" rendered="#{not empty ImageStore.imageStack}">
@@ -36,27 +37,27 @@
 		<h5>path to file from imageStore</h5>
 		   <h:outputText value="#{CameraBean.pathToFile}"/>
 		</div>
-	<!--  <div>
-		    <h:graphicImage value="../images/image.jpg"/>
-		</div> -->	
+
 		<br />
         <br />
      </h:form>   
     <h2>Take a Picture</h2>
     <fieldset>
-        <h:form prependId="false" id="cform2" enctype="multipart/form-data" >
+        <h:form prependId="false" id="cform2"  >
+          <mobi:uploadhelper/>
           <div id="skinningPnl" >
-            <mobi:camera id="camera" height="200" width="200" value="#{cameraBean.cameraImage}"/>
-            <mobi:thumbnail for="camera"/>
-            <input type="button" id="upload1"
-                   onclick="ice.s(event, this);"
-                   value="upload"></input>
+              <mobi:camera id="camera" height="200" width="200" value="#{cameraBean.cameraImage}"
+                    valueChangeListener="#{cameraBean.methodOne}"/>
+              <mobi:thumbnail for="camera"/>
+
+              <h:commandButton value="upload" />
+
            </div>
         </h:form>
     </fieldset>
 	
-		<li><a href="../index.html">index page</a>
-		</li>
+    <li><a href="../index.html">index page</a>
+	</li>
 
 </h:body>
 </html>
