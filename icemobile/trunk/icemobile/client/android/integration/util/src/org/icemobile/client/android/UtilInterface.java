@@ -164,16 +164,19 @@ public class UtilInterface implements JavascriptInterface,
     protected void loadURL(final String url) {
 	handler.post(new Runnable() {
 		public void run() {
+		    //Log.e("ICEmobile","Loading URL: " + url);
 		    view.loadUrl(url);
 		}
 	    });
     }
 
     private void sendProgress(int progress) {
-	Message msg = new Message();
-	msg.what = PROGRESS_MSG;
-	msg.arg1 = progress;
-	handler.sendMessage(msg);
+	if (progress <= 100) {
+	    Message msg = new Message();
+	    msg.what = PROGRESS_MSG;
+	    msg.arg1 = progress;
+	    handler.sendMessage(msg);
+	}
     }
 
     private BasicNameValuePair[] getNameValuePairs(String data, String delim1, String delim2) {

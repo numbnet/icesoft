@@ -61,10 +61,6 @@ import android.webkit.DownloadListener;
 import android.net.Uri;
 import android.content.ActivityNotFoundException;
 
-import android.app.DatePickerDialog;
-import java.util.Calendar;
-import android.widget.DatePicker;
-
 import org.icemobile.client.android.c2dm.C2dmHandler;
 import org.icemobile.client.android.qrcode.CaptureActivity;
 import org.icemobile.client.android.qrcode.CaptureJSInterface;
@@ -72,7 +68,7 @@ import org.icemobile.client.android.qrcode.Intents;
 
 public class ICEmobileContainer extends Activity 
     implements SharedPreferences.OnSharedPreferenceChangeListener,
-	       ConnectionChangeListener, DatePickerDialog.OnDateSetListener {
+	       ConnectionChangeListener {
 
     /* Container configuration constants */
     protected static final String HOME_URL = "http://www.icemobile.org/demos.html";
@@ -171,7 +167,7 @@ public class ICEmobileContainer extends Activity
 	if (INCLUDE_CAMERA) includeCamera();
 	if (INCLUDE_AUDIO) includeAudio();
 	if (INCLUDE_VIDEO) includeVideo();
-	if (prefs.getBoolean("c2dm",true)) {
+	if (prefs.getBoolean("c2dm",false)) {
 	    includeC2dm();
 	}
 
@@ -269,11 +265,6 @@ public class ICEmobileContainer extends Activity
 	    }
 	    finish();
 	    return true;
-	case R.id.date:
-	    final Calendar c = Calendar.getInstance();
-	    DatePickerDialog datePick = new DatePickerDialog(this,this,c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-	    datePick.show();
-	    return true;
 	default:
 	    return super.onOptionsItemSelected(item);
 	}
@@ -365,6 +356,10 @@ public class ICEmobileContainer extends Activity
             view.loadUrl("javascript:eval(' ' + window.ICEassets.loadAssetFile('native-interface.js'));");  
 	    utilInterface.loadURL("javascript:ice.push.parkInactivePushIds('" + getCloudNotificationId() + "');");
 	    utilInterface.setUrl(url);
+	    historyManager.add(url);
+	    currentURL = url;
+	    newURL = url;
+	    //Log.e("ICEcontainer", "Page loaded: " + url);
         }  
 
 	@Override
@@ -456,6 +451,7 @@ public class ICEmobileContainer extends Activity
 	editor.putString("url", currentURL);
 	editor.commit();
 	mWebView.loadUrl(currentURL);
+	historyManager.add(currentURL);
     }
 	
     private void includeUtil() {
@@ -616,9 +612,5 @@ public class ICEmobileContainer extends Activity
 		    mWebView.reload();
 		}
 	    });
-    }
-
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-	Log.e("ICEcontainer", "Date picked = " + year + "/" + monthOfYear + "/" + dayOfMonth);
     }
 }
