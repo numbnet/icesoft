@@ -37,7 +37,6 @@ import javax.microedition.io.file.FileSystemRegistry;
 import org.icemobile.client.blackberry.options.BlackberryOptionsProperties;
 import org.icemobile.client.blackberry.options.BlackberryOptionsProvider;
 import org.icemobile.client.blackberry.push.PushAgent;
-import org.icemobile.client.blackberry.push.PushServiceListener;
 import org.icemobile.client.blackberry.script.audio.AudioPlayback;
 import org.icemobile.client.blackberry.script.audio.AudioRecorder;
 import org.icemobile.client.blackberry.script.camera.VideoController;
@@ -49,6 +48,7 @@ import org.icemobile.client.blackberry.utils.HistoryManager;
 import org.icemobile.client.blackberry.utils.ResultHolder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import net.rim.blackberry.api.options.OptionsManager;
 import net.rim.device.api.browser.field.RenderingOptions;
@@ -131,8 +131,8 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     private boolean mReloadOnActivate; 
     private HistoryManager mHistoryManager; 
 
-    // RIM public infrastructure agent
-    //private PushAgent mPushAgent;
+    // RIM public infrastructure PUSH agent
+    private PushAgent mPushAgent;
 
 //    private PushServiceListener mPushServiceListener;
     private static ApplicationIndicator mAppIndicator; 
@@ -145,12 +145,23 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     private String mCurrentlyLoadingDocument; 
     private long mDocumentStartTime;
 
-    private boolean mApplicationPaused;
+    private boolean mRunParkPushId = true;
+    private Runnable mParkPushIdRunnable = new Runnable() { 
+        public void run() { 
+            try {   
+                if (mParkScript != null) { 
+                    mScriptEngine.executeScript(mParkScript, null);
+                    DEBUG("ICEmobile - Park Script executed properly");
+                } 
+            } catch (Throwable t) { 
+                ERROR("ICEmobile - Exception executing park script: " + t);
+            } finally  { 
+                mRunParkPushId = false;                  
+            }
+        }
+    }; 
 
-//    private String mResumeScript = "ice.push.resumeBlockingConnection();"; 
-    private String mParkScript = "ice.push.parkInactivePushIds('bpns:" + 
-                                    Integer.toHexString(DeviceInfo.getDeviceId()).toUpperCase()
-                                    + "');"; 
+    private String mParkScript;  
 
 
     /**
@@ -182,7 +193,6 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
      * System callback method for powerup. This indicates device is up.  
      */
     public void powerUp() { 
-        
         removeSystemListener( this ); 
         eulaCheck();        
     }
@@ -226,7 +236,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
             mMainScreen = new ApplicationScreen(this);
             pushScreen(mMainScreen);
 
-            enumerateStorageLocations();
+            //enumerateStorageLocations();
 
             // Add loading screen and display ASAP
             mLoadingImage = EncodedImage.getEncodedImageResource( LOADING_IMAGE );
@@ -274,7 +284,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
             // Push registration will be performed here via one of two 
             // mechanisms
             //            setupPushListener();
-            //mPushAgent = new PushAgent();
+            mPushAgent = new PushAgent();
 
 
             ApplicationIndicatorRegistry reg = ApplicationIndicatorRegistry.getInstance(); 
@@ -308,19 +318,31 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
 
                             if (mLoadingScreen != null) { 
                                 popScreen(mLoadingScreen); 
-                                mLoadingScreen = null;
+                                mLoadingScreen = null;                               
                             }
-
+                            
                             if (mScriptEngine != null ) {
 
                                 invokeLater(new Runnable() {
                                     public void run() { 
                                         try {
+                                            
                                             Document document = mBrowserField.getDocument();
+//                                            DEBUG("Document creation: uri: " + uri + ", document: " + document);
                                             Element scriptElem = document.createElement("script");
                                             scriptElem.setTextContent(mInitialScript);
                                             //append to head
-                                            document.getDocumentElement().getFirstChild().appendChild(scriptElem);
+                                            Element docElement = document.getDocumentElement();
+                                            Node child = docElement.getFirstChild();  
+                                            while ( child != null && ( !child.getNodeName().equalsIgnoreCase("head"))) { 
+                                                child = child.getNextSibling();
+                                            }
+                                            
+                                            if (child != null) { 
+//                                                DEBUG("Found true head element at: " + idx);
+                                                child.appendChild(scriptElem);
+                                            } 
+                             
                                             ScriptableFunction myTestFunction = new ScriptableTest(null);
                                             mScriptEngine.addExtension("icefaces.shootPhoto", mCameraController );
                                             //											mScriptEngine.addExtension("icefaces.uploadPhoto", oldUploadPhoto );
@@ -331,13 +353,17 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                                             mScriptEngine.addExtension("icefaces.getResult", mResultReader);
                                             mScriptEngine.addExtension("icefaces.shootVideo", mVideoController);
                                             DEBUG("ICEmobile - native script executed");
+                                            if (mRunParkPushId) {
+                                                invokeLater( mParkPushIdRunnable );      
+                                            }
 
                                         } catch (Throwable t) {
-                                            ERROR("ICEmobile - Error executing Blackberry-interface.js: " + t + ", document: " + uri);
+                                            ERROR("ICEmobile - Error executing startup scripts: " + t + ", document: " + uri);
                                         }
                                     } 
                                 });
-                            }
+                            }                      
+
 
                             mCurrentPage = uri;
                             mHistoryManager.addLocation(uri);
@@ -348,8 +374,6 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                         ERROR("Exception in DocumentLoad: " + e);
                     }
                 } 
-
-
 
                 // public void documentAborted( BrowserField field, Document document ) { 
                 //					
@@ -428,8 +452,8 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
 
     public void resetPushAgent() { 
 
-       //mPushAgent.shutdown(); 
-       // mPushAgent = new PushAgent();
+        mPushAgent.shutdown(); 
+        mPushAgent = new PushAgent();
     }
 
 
@@ -489,7 +513,6 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
 
         mPendingResponses.put(resultKey, holder);
         String updateScript = "ice.handleResponse(icefaces.getResult('" + resultKey + "') ); ";
-        DEBUG("Executing update script: " + resultKey + ", holder? " + (holder != null));
         try { 
             if (mScriptEngine != null) { 
                 mScriptEngine.executeScript(updateScript, null);
@@ -582,7 +605,9 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                     mBrowserField.requestContent( url );
                 }
             });		
-        } 
+        } else { 
+            DIALOG("Network Unavailable");
+        }
     }	
 
     /**
@@ -600,6 +625,18 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     	
     	mOptionsProperties = BlackberryOptionsProperties.fetch();
         mCurrentHome = mOptionsProperties.getHomeURL();
+        
+        // Use either an email notification (if desired) or the 
+        // RIM push version
+        if (mOptionsProperties.isUsingEmailNotification()) { 
+            mParkScript  = "ice.push.parkInactivePushIds('email:" + 
+                        mOptionsProperties.getEmailNotification() + "');";        
+        } else { 
+            mParkScript  = "ice.push.parkInactivePushIds('bpns:" + 
+            Integer.toHexString(DeviceInfo.getDeviceId()).toUpperCase()
+            + "');";
+        }
+        mRunParkPushId = true;
     }
 
     /**
@@ -624,43 +661,6 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         ((AudioRecorder)mAudioRecorder).resetAudioState();
     }
 
-
-    /**
-     * This method will resume the ajax push interaction through the bridge and 
-     * unpark the application pushId on the server. At this time, we haven't a way 
-     * to park the pushId on deactivate, so this isn't strictly necessary.
-     */
-    public void resumeICEPush() { 
-
-        try { 				
-            if (mApplicationPaused && mScriptEngine != null) { 
-                //mScriptEngine.executeScript(RESUME_SCRIPT, null);
-                mApplicationPaused = false; 
-            } 
-
-        } catch (Throwable e) {							
-            ERROR("Error Resuming ICEPush: " + e );
-        }		
-    }
-
-    public void pauseICEPush() { 
-        try { 				
-            if (mScriptEngine != null && mParkScript != null) {
-            	DEBUG("ICEmobile - park script: " + mParkScript);
-            	mBrowserField.executeScript( mParkScript );
-//                mScriptEngine.executeScript(mParkScript, null);
-                mApplicationPaused = true; 
-            }
-        } catch (final Throwable e) {							
-            ERROR("Error Pausing ICEPush: " + e);
-//            UiApplication.getUiApplication().invokeLater( new Runnable() {
-//            	public void run() { 
-//            		Dialog.alert("Exception in park: " + e); 
-//            	}
-//            });             
-        }		
-    }
-
     /**
      * UIApplication activate override. 
      */
@@ -668,20 +668,20 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
 
         // method gets called several times in contravention of docs on activate();
         if (isForeground() ) { 
-
+            // turn off the notification indicator if we're revisiting the app. 
+            // However, it wont be defined if this is the first time entry. 
             if (mAppIndicator != null) { 
                 showNotificationIcon(false);
             } 
-            // resumeICEPush();
+        
             if (mReloadOnActivate && checkNetworkAvailability()) { 
                 loadPage ( mCurrentHome );
                 mReloadOnActivate = false; 
-            }
+            } 
         } 
     }
 
     public void deactivate() { 		
-        pauseICEPush();
     }
 
 
@@ -718,7 +718,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     } 
     
     /**
-     * 
+     * The eula has been accepted, persist the change. 
      */
     void accept() { 
         mOptionsProperties.setEulaViewed(true); 
@@ -732,19 +732,9 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
      */
     private boolean checkNetworkAvailability() { 
 
-        if ( (!CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_DIRECT )) && 
-                (!CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_BIS_B)) && 
-                (!CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_MDS) )) {
-
-            invokeLater(new Runnable() {
-                
-                public void run() { 
-                    Dialog.alert("Network unavailable");
-                }
-            });
-            return false; 
-        } 
-        return true;
+        return  ( CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_DIRECT ) || 
+                CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_BIS_B) || 
+                CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_MDS) ); 
     }
 
     
@@ -768,6 +758,15 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         DEBUG( message + " took: " + (System.currentTimeMillis() - startTime) + " ms"); 
     }
     
+    public static void DIALOG(final String message) {
+        
+        UiApplication.getUiApplication().invokeLater(new Runnable() {
+            
+            public void run() { 
+                Dialog.alert(message);
+            }
+        });
+    }
     
     
     // -------------------- System event methods ----------------------------
