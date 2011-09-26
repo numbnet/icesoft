@@ -27,11 +27,28 @@ div.room {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
 }
+
+div.room input {
+    text-align: center;
+    padding: 2px;  
+    font-size: 15px;  
+    outline: none;  
+    -webkit-border-radius: 3px;  
+    -moz-border-radius: 3px;  
+    border-radius: 3px;  
+    border: 1px solid grey;  
+}
+
+.roundedimg img {
+  margin: 5px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
     </style>
 </h:head>
 
 <h:body>
-    <h:form>
+    <h:form class="roundedimg" >
         <icecore:singleSubmit />
         <div class="room" style="float:left;">
             <h:inputText value="#{photoDropBean.room1Code}"/><br/>
