@@ -628,7 +628,7 @@ class EnvConfig {
         strictSessionTimeout = decodeBoolean(initMap, EnvUtils.STRICT_SESSION_TIMEOUT, false, info);
         subtreeDiff = decodeBoolean(initMap, EnvUtils.SUBTREE_DIFF, true, info);
         windowScopeExpiration = decodeLong(initMap, EnvUtils.WINDOW_SCOPE_EXPIRATION, 1000, info);
-        mandatoryResourceConfig = decodeString(initMap, EnvUtils.MANDATORY_RESOURCE_CONFIG, null, info);
+        mandatoryResourceConfig = decodeString(initMap, EnvUtils.MANDATORY_RESOURCE_CONFIG, "none", info);
         uniqueResourceURLs = decodeBoolean(initMap, EnvUtils.UNIQUE_RESOURCE_URLS, true, info);
         lazyWindowScope = decodeBoolean(initMap, EnvUtils.LAZY_WINDOW_SCOPE, true, info);
         messagePersistence = decodeBoolean(initMap, EnvUtils.MESSAGE_PERSISTENCE, true, info);
