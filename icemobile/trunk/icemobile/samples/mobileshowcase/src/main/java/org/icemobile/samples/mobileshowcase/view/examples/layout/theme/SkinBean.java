@@ -30,7 +30,7 @@ import java.io.Serializable;
         title = "example.layout.theme.destination.title.short",
         titleExt = "example.layout.theme.destination.title.long",
         titleBack = "example.layout.theme.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/layout/theme.xhtml"
+        contentPath = "/WEB-INF/includes/examples/layout/theme-desc.xhtml"
 )
 @Example(
         descriptionPath = "/WEB-INF/includes/examples/layout/theme-desc.xhtml",

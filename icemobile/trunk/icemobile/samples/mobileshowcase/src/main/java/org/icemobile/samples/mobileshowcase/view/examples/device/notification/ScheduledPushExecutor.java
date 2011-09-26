@@ -26,7 +26,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
- *
+ * The ScheduledPushExecutor executor is a utility to schedule a push notification
+ * for future execution.
  */
 @ManagedBean(name = ScheduledPushExecutor.BEAN_NAME)
 @ApplicationScoped
