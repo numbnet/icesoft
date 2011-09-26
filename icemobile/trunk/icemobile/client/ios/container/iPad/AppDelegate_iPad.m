@@ -48,8 +48,22 @@
      Restart any tasks that were paused (or not yet started) while the application was inactive.
      */
     [window.rootViewController didBecomeActive];
+    [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert];
 }
 
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken %@", deviceToken);
+    [window.rootViewController setDeviceToken: deviceToken];
+
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error  {
+    NSLog(@"didFailToRegisterForRemoteNotificationsWithError %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo  {
+    NSLog(@"didReceiveRemoteNotification %@", userInfo);
+}
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     /*
