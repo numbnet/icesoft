@@ -72,8 +72,11 @@ public class GraphicImageMeta {
     @Property(tlddoc = "usemap of html markup, specifies image as client-side image map")
     private String usemap;
 
-    @Property(tlddoc = "style as per basic component standards for overwriting style")
+    @Property(tlddoc = "styleClass as per basic component standards for overwriting styleClass")
     private String styleClass;
+
+    @Property(tlddoc = "style as per basic component standards for overwriting style")
+    private String style;
 
     @Property(tlddoc = "direction indication for text that does not inherit directionality. Valid values are LTR " +
             "or RTL  left to right or right to left")
