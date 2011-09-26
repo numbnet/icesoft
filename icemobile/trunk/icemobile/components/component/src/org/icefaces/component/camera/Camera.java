@@ -16,11 +16,12 @@
 
 package org.icefaces.component.camera;
 
-import org.icefaces.impl.event.FormSubmit;
+import javax.el.MethodExpression;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.UIViewRoot;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.ValueChangeEvent;
 import java.util.Map;
 
 public class Camera extends CameraBase {
@@ -41,24 +42,32 @@ public class Camera extends CameraBase {
         else return false;
     }
 
-    //Should be in a Util class
-    public static UIForm getContainingForm(UIComponent component) {
-        if (component instanceof UIForm) {
-            return (UIForm) component;
-        }
-        UIComponent parent = component.getParent();
-        while ((!(parent instanceof UIForm)) &&
-                (!(parent instanceof UIViewRoot))) {
-            if (null == parent) {
-                return null;
-            }
-            parent = parent.getParent();
-        }
-        if (parent instanceof UIForm) {
-            return (UIForm) parent;
-        }
-        return null;
-    }
+
+    public void broadcast(FacesEvent event)
+       throws AbortProcessingException {
+         if (event instanceof ValueChangeEvent){
+            if (event != null) {
+                 ValueChangeEvent e = (ValueChangeEvent)event;
+                 MethodExpression method = getValueChangeListener();
+                 if (method != null) {
+                     method.invoke(getFacesContext().getELContext(), new Object[]{event});
+                 }
+             }
+         }
+     }
+
+     public void queueEvent(FacesEvent event) {
+         if (event.getComponent() instanceof Camera) {
+             if (isImmediate()) {
+                 event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+             }
+             else {
+                 event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+             }
+         }
+         super.queueEvent(event);
+     }
+
 
 
 }

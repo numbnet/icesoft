@@ -24,7 +24,7 @@ import org.icefaces.util.EnvUtils;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -47,52 +47,72 @@ public class CameraRenderer extends Renderer {
         try {
             if (!camera.isDisabled()) {
                 Map<String, Object> map = new HashMap<String, Object>();
-                extractImages(facesContext, map, clientId);
-                camera.setValue(map);
-                uiComponent.queueEvent(new ActionEvent(uiComponent));
+                boolean valid =  extractImages(facesContext, map, clientId);
+                /* only set map to value if boolean returned from extractImages is true */
+                if (valid){
+                   logger.info("\t\t valid is true");
+                   camera.setValue(map);
+                   Integer old = Integer.MAX_VALUE;
+                   Integer selected = Integer.MIN_VALUE;
+             //   just trigger valueChange for now as validation may include
+             //   only queueing this if certain attrbiutes change to valid values.
+                   uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
+    		    		    new Integer(old), selected));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void extractImages(FacesContext facesContext, Map map, String clientId) throws IOException {
+    /**
+     *
+     * @param facesContext
+     * @param map
+     * @param clientId
+     * @return   boolean true means validation of the upload passes, false mean it does not.
+     * @throws IOException
+     *
+     * that uploaded this component.
+     */
+    public boolean extractImages(FacesContext facesContext, Map map, String clientId) throws IOException {
         HttpServletRequest request = (HttpServletRequest)
                 facesContext.getExternalContext().getRequest();
+        boolean isValid=false;
+
         try {
-            for (Part part : request.getParts()) {
-                //  	logger.info("********part name="+part.getName()+" clientId="+clientId);
+            //if it's a container upload then the name of part if <clientId>-file
+            //if desktop browser it's just the clientId
+            String partUploadName = clientId;
+            if (EnvUtils.isEnhancedBrowser(facesContext)){
+               partUploadName+="-file";
+            }
+            Part part = request.getPart(partUploadName);
+            if (part !=null){
                 String contentType = part.getContentType();
                 String fileName = java.util.UUID.randomUUID().toString();
                 if ("image/jpeg".equals(contentType)) {
                     fileName += ".jpg";
+                    if (part.getSize()<=0){
+                        isValid=false;
+                    }
+                    isValid=true;
                     Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
                 }
-                if ("image/png".equals(contentType)) {
+                else if ("image/png".equals(contentType)) {
+                    if (part.getSize()<=0){
+                        isValid=false;
+                    }
+                    isValid=true;
                     fileName += ".png";
                     Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
                 }
             }
-            /**   This is how the code should read so that multiple media component uploads can be on same form
-             *           Part part=  request.getPart(clientId);
-             if (null!=part){
-             String contentType = part.getContentType();
-             logger.info("part " + part.getName() + " " + contentType);
-             String fileName=java.util.UUID.randomUUID().toString();
-             if ("image/jpeg".equals(contentType))  {
-             fileName += ".jpg";
-             Utils.createMap(map, request, part, fileName, contentType, facesContext);
-             }
-             if ("image/png".equals(contentType)){
-             fileName += ".png";
-             Utils.createMap(map, request, part, fileName, contentType, facesContext);
-             }
-             }
-             */
-
+            return isValid;
         } catch (ServletException e) {
             //ServletException is discarded since it indicates
             //form-encoded rather than multipart
+            return isValid;
         }
     }
 
@@ -132,15 +152,12 @@ public class CameraRenderer extends Renderer {
         if (width != Integer.MIN_VALUE || height != Integer.MIN_VALUE) {
             String params = "'" + clientId + "','maxwidth=" + width + "&maxheight=" + height + "'";
             String finalScript = "ice.camera(" + params + ");";
-//            logger.info("final Script call="+finalScript);
             writer.writeAttribute(HTML.ONCLICK_ATTR, finalScript, null);
         } else {
             writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.camera( '" + clientId + "' );", null);
         }
         writer.writeText("camera", null);
         writer.endElement(HTML.BUTTON_ELEM);
-        //no more hidden fields
-
 
     }
 

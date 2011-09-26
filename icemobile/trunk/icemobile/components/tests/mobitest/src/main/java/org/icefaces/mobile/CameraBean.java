@@ -42,6 +42,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.imageio.ImageIO;
 
 import org.icefaces.application.PushRenderer;
@@ -67,6 +68,7 @@ public class CameraBean implements Serializable {
     private int height=200;
     private byte[] bytes;
     private boolean bytesAvailable = false;
+    private String messageFromAL = " ValueChangenListener fired for camera";
   
     
     private static int sampleUploadCount = 1;
@@ -101,9 +103,8 @@ public class CameraBean implements Serializable {
             	System.out.println(" /t/t name="+imageFile.getName());
                 this.numberImages++;
                 this.pathToFile = imageFile.getAbsolutePath();
-              String relativePath =  cameraImage.get("relativePath").toString();
-  //              logger.info("RElative PATH ="+relativePath);
-//               String fileLocation = "/Users/jguglielmin/"+imageFile.getName();
+                String relativePath =  cameraImage.get("relativePath").toString();
+                logger.info("RElative PATH ="+relativePath);
                 this.setPathToFile(relativePath);
                 logger.info("Real PATH TO FILE+"+this.getPathToFile());
                 logger.info("Retrieved Camera Image adding to ImageStore");
@@ -124,6 +125,7 @@ public class CameraBean implements Serializable {
         } catch (IOException e) {
             logger.log(Level.WARNING,
                     "Error reading sample upload file: ", e);
+            e.printStackTrace();
         }
         // process the image and add the image store.
         if (image != null) {
@@ -136,6 +138,9 @@ public class CameraBean implements Serializable {
             image.flush();
 
    
+        }
+        else{
+            System.out.println("image is null!!!!");
         }
     }
 
@@ -192,7 +197,21 @@ public class CameraBean implements Serializable {
     public boolean isEnhancedBrowser()  {
         return EnvUtils.isEnhancedBrowser(FacesContext.getCurrentInstance());
     }
+    int numTimes = 0;
 
-	//should have predestroy method to get rid of files???
+    public void methodOne(ValueChangeEvent event){
+        numTimes++;
+        System.out.println("ValueChangeListener for camera been fired "+numTimes+" times");
+        this.messageFromAL += " "+numTimes+" times fired";
+    }
+
+    public String getMessageFromAL() {
+        return messageFromAL;
+    }
+
+    public void setMessageFromAL(String messageFromAL) {
+        this.messageFromAL = messageFromAL;
+    }
+    //should have predestroy method to get rid of files???
 
 }
