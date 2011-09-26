@@ -39,15 +39,16 @@ public class EulaManager {
         
         Background black = BackgroundFactory.createSolidBackground( Color.BLACK );
 
-        VerticalFieldManager vfm = new VerticalFieldManager();
+        final VerticalFieldManager vfm = new VerticalFieldManager();
         vfm.setBackground( black );
         mPopup = new MainScreen();         
         mPopup.add(vfm);
+
         
         mBrowserField = new BrowserField( bfc );
         mBrowserField.displayContent(mEula, "");
 
-        ButtonField okButton = new ButtonField("OK", Field.FIELD_HCENTER); 
+        final ButtonField okButton = new ButtonField("OK", Field.FIELD_HCENTER); 
         okButton.setChangeListener( new FieldChangeListener() { 
 
             public void fieldChanged( Field field, int context) {
@@ -62,7 +63,20 @@ public class EulaManager {
         }); 
 
         vfm.add(mBrowserField);
-        vfm.add(okButton);
+        UiApplication.getUiApplication().invokeLater( new Runnable() {
+            public void run() { 
+                                
+                synchronized (this) { 
+                    try { 
+                        this.wait(2500);
+                    
+                    } catch (InterruptedException ie) {}
+                    vfm.add(okButton);
+                } 
+                
+            }
+        } );        
+        
     }
 
     public void show() {
