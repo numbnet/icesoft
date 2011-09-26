@@ -152,7 +152,7 @@ if (!window.ice.mobile) {
             context.formid = "";
             context.serialized = "";
             } catch (e) { 
-            // alert ("Exception in handleResponse: " + e); 
+             //alert ("Exception in handleResponse: " + e); 
             } 
         }
 
@@ -278,7 +278,7 @@ if (!window.ice.mobile) {
     }
 
      function init()  {
-        getIPCIframe();
+        // getIPCIframe();
         // document.body.appendChild(document.createTextNode("ice.mobile functions enabled."));
         addConnectionStatus();
     }
