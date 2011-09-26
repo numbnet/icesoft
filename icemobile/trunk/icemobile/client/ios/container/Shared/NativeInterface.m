@@ -30,6 +30,7 @@
 @synthesize uploading;
 @synthesize soundRecorder;
 @synthesize receivedData;
+@synthesize camPopover;
 
 static char base64EncodingTable[64] = {
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -167,17 +168,7 @@ static char base64EncodingTable[64] = {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera ])  {
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     }
-
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
-        UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:picker];
-        //[picker release];
-        [popover presentPopoverFromRect:CGRectMake(200.0, 200.0, 0.0, 0.0) 
-                                 inView:self.controller.view
-               permittedArrowDirections:UIPopoverArrowDirectionAny 
-                               animated:YES];
-    } else {
-        [controller presentModalViewController:picker animated:YES];
-    }
+    [self showImagePicker:picker];
     
     return YES;
 }
@@ -192,7 +183,7 @@ static char base64EncodingTable[64] = {
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     }
  
-    [controller presentModalViewController:picker animated:YES];
+    [self showImagePicker:picker];
     
     return YES;
 }
@@ -221,7 +212,7 @@ static char base64EncodingTable[64] = {
     NSString *savedPath = [self saveImage:uploadImage];
     NSLog(@"called camera and saved %@ for %@", savedPath, cameraId);
     // Remove the picker interface and release the picker object.
-    [controller dismissModalViewControllerAnimated:YES];
+    [self dismissImagePicker];
     [picker release];
 
     UIImage *scaledImage = [self scaleImage:image toSize:64];
@@ -269,8 +260,30 @@ static char base64EncodingTable[64] = {
     script = [NSString stringWithFormat:scriptTemplate, cameraId, cameraName, moviePath];
     result = [controller.webView stringByEvaluatingJavaScriptFromString: script];
 
-    [controller dismissModalViewControllerAnimated:YES];
+    [self dismissImagePicker];
     [picker release];
+}
+
+- (void)showImagePicker: (UIImagePickerController*)picker {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
+        self.camPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
+        //[picker release];
+        [self.camPopover presentPopoverFromRect:
+                CGRectMake(200.0, 200.0, 0.0, 0.0) 
+                inView:self.controller.view
+                permittedArrowDirections:UIPopoverArrowDirectionAny 
+                animated:YES];
+    } else {
+        [controller presentModalViewController:picker animated:YES];
+    }
+}
+
+- (void)dismissImagePicker {
+    if (nil != self.camPopover)  {
+        [self.camPopover dismissPopoverAnimated:YES];
+    } else {
+        [self.controller dismissModalViewControllerAnimated:YES];
+    }
 }
 
 - (void)setThumbnail: (UIImage*)image at: (NSString *)thumbId  {
@@ -292,7 +305,7 @@ static char base64EncodingTable[64] = {
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     NSLog(@"imagePickerControllerDidCancel");
-    [controller dismissModalViewControllerAnimated:YES];
+    [self dismissImagePicker];
     [picker release];
 }
 

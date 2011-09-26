@@ -28,6 +28,7 @@
     BOOL uploading;
     AVAudioRecorder *soundRecorder;
     NSMutableData *receivedData;
+    UIPopoverController *camPopover;
 }
 
 @property (retain) MainViewController *controller;
@@ -38,6 +39,7 @@
 @property (assign) BOOL uploading;
 @property (retain) AVAudioRecorder *soundRecorder;
 @property (retain) NSMutableData *receivedData;
+@property (nonatomic, retain) UIPopoverController *camPopover;
 
 - (BOOL)dispatch: (NSString*)command;
 - (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw maxheight: (NSString*)maxh;
@@ -46,6 +48,8 @@
 - (BOOL)play: (NSString*)audioId;
 - (BOOL)scan: (NSString*)scanId;
 - (NSDictionary*)parseQuery: (NSString*)queryString;
+- (void)showImagePicker: (UIImagePickerController*)picker;
+- (void)dismissImagePicker;
 - (void)setThumbnail: (UIImage*)image at: (NSString *)thumbId;
 - (UIImage*)scaleImage: (UIImage*)image toSize: (int)finalSize;
 - (UIImage*)scaleImage: (UIImage*)image maxWidth: (int)maxw maxHeight: (int)maxh ;
