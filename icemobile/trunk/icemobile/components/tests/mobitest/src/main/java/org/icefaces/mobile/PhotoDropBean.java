@@ -42,8 +42,6 @@ import javax.faces.bean.ApplicationScoped;
 @ApplicationScoped
 public class PhotoDropBean  {
     public static final String GROUP = "photodrop";
-    private String subject = "subject";
-    private String message = "message";
     private int count1 = 0;
     private int count2 = 0;
     private int count3 = 0;
@@ -52,10 +50,10 @@ public class PhotoDropBean  {
     public PhotoDropBean() {
     }
 
-    private String room1Code = "room1";
-    private String room2Code = "room2";
-    private String room3Code = "room3";
-    private String room4Code = "room4";
+    private String room1Code = "One";
+    private String room2Code = "Two";
+    private String room3Code = "Three";
+    private String room4Code = "Four";
 
     public String getRoom1Code() {
         PushRenderer.addCurrentSession(GROUP);
