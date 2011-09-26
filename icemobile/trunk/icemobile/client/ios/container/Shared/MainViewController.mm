@@ -216,11 +216,7 @@
 
 - (void)zxingController:(ZXingWidgetController*)controller didScanResult:(NSString *)resultString {
     NSLog(@"didScanResult %@", resultString);
-    if (nil != self.scanPopover)  {
-        [self.scanPopover dismissPopoverAnimated:YES];
-    } else {
-        [self dismissModalViewControllerAnimated:YES];
-    }
+    [self dismissScan];
     NSString *scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
     NSString *scanId = self.nativeInterface.activeDOMElementId;
     NSString *scanName = [scanId stringByAppendingString:@"-text"];
@@ -232,7 +228,15 @@
 }
 
 - (void)zxingControllerDidCancel:(ZXingWidgetController*)controller {
-  [self dismissModalViewControllerAnimated:YES];
+    [self dismissScan];
+}
+
+- (void)dismissScan {
+    if (nil != self.scanPopover)  {
+        [self.scanPopover dismissPopoverAnimated:YES];
+    } else {
+        [self dismissModalViewControllerAnimated:YES];
+    }
 }
 
 - (NSURL*)getCurrentURL {
