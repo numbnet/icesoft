@@ -53,17 +53,6 @@
 
     <!-- upload components. -->
     <h4>Send a Media Message</h4>
-    <mobi:fieldsetGroup >
-        <mobi:fieldsetRow style="padding-bottom:10px;">
-            Create a new media message using your mobile device.  When you press
-            upload your message is sent to all Mediacast users.
-            <ui:fragment rendered="#{not mediaController.enhancedBrowser}">
-                <br /><span style="font-weight:bold;font-style:italic;">
-                    ICEmobile container was not detected, native
-                    device intregation will not be available.</span>
-            </ui:fragment>
-        </mobi:fieldsetRow>
-    </mobi:fieldsetGroup>
 
     <h:form prependId="false" id="cform">
 
@@ -133,6 +122,18 @@
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
     </h:form>
+
+     <mobi:fieldsetGroup >
+        <mobi:fieldsetRow style="padding-bottom:10px;">
+            Create a new media message using your mobile device.  When you press
+            upload your message is sent to all Mediacast users.
+            <ui:fragment rendered="#{not mediaController.enhancedBrowser}">
+                <br /><span style="font-weight:bold;font-style:italic;">
+                    ICEmobile container was not detected, native
+                    device intregation will not be available.</span>
+            </ui:fragment>
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
 
     <h:form>
         <!-- linke to gallery of all uploaded media files. -->
