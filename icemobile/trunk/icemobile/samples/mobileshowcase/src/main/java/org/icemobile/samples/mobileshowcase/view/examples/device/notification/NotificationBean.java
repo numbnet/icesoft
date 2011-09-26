@@ -69,7 +69,7 @@ import java.util.logging.Logger;
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
                                 "/view/examples/device/notification/NotificationBean.java"),
                 @ExampleResource(type = ResourceType.java,
-                        title = "ScheduledPush.java",
+                        title = "ScheduledPushExecutor.java",
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
                                 "/view/examples/device/notification/ScheduledPushExecutor.java")
         }
@@ -91,8 +91,8 @@ public class NotificationBean extends ExampleImpl<NotificationBean> implements
     private String renderGroup;
 
     // Notification message values.
-    private String subject;
-    private String message;
+    private String subject = "ICEmobile Push Notification";
+    private String message = "This is an ICEmobile Push Notification";
     private int notificationDelay;
 
     // echo strings that are only set when the push is executed in the future.
