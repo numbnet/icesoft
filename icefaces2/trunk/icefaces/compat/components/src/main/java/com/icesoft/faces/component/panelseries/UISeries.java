@@ -28,6 +28,7 @@ import com.icesoft.faces.component.tree.TreeDataModel;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.model.SetDataModel;
 import com.icesoft.faces.utils.SeriesStateHolder;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
@@ -228,6 +229,39 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         }
         super.setValueBinding(name, binding);
     }
+
+    /**
+     * @see javax.faces.component.UIData#getClientId(FacesContext)
+     */
+    public String getClientId(FacesContext context) {
+        if (context == null) {
+            throw new NullPointerException();
+        }
+
+        String baseClientId = super.getClientId(context);
+
+        //MyFaces no longer requires the special row index logic in this method but it seems
+        //some compat components still rely on it. So we just bypass it for now if we are running
+        //under MyFaces but still use it for Mojarra.
+        if(EnvUtils.isMyFaces()){
+            return baseClientId;
+        }
+
+        if (getRowIndex() >= 0) {
+            //this extra if is to produce the same ids among myfaces and sunri
+            //myfaces uses the getRowIndex() and SunRI directly using the rowIndex 
+            //variable inside its getClientId()
+            if (!baseClientId.endsWith(
+                    "" + NamingContainer.SEPARATOR_CHAR + getRowIndex())) {
+                return (baseClientId + NamingContainer.SEPARATOR_CHAR +
+                        getRowIndex());
+            }
+            return (baseClientId);
+        } else {
+            return (baseClientId);
+        }
+    }
+
 
     /**
      * @see javax.faces.component.UIData#queueEvent(FacesEvent)
