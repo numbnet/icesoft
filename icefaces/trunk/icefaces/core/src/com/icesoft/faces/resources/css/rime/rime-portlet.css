@@ -1827,6 +1827,31 @@ input.iceSelInpDateClosePopup {
     padding-right: 1px;
 }
 
+
+.iceMnuItm-dis .iceLink-dis{
+   text-decoration:none;
+   pointer:normal;
+}
+
+.iceMnuItm-dis .iceLink-dis:hover {
+   text-decoration:none;
+   pointer:normal;
+
+}
+
+.iceMnuItmLabel-dis{
+   color:gray;
+   font-style:italic;
+   text-decoration: line-through;
+}
+
+.iceMnuItm-dis {
+	border-bottom:1px solid #DBDBDB;
+}
+
+.iceMnuItm-dis .iceCmdLnk-dis, .iceMnuItm-dis .iceOutLnk-dis  {
+	border-bottom:none;
+}
 /*
 ----------- PanelPopup & panelTooltip ----------
 */
