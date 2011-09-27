@@ -204,6 +204,8 @@ public class CarouselRenderer extends Renderer {
 	          "       mobi.carousel.refresh('"+clientId+"',"+singleSubmit+");"+
 	          "  }, 100); "+
 	       " }, false);");
+        writer.write("mobi.carousel.loaded('"+clientId+"'," + 
+            singleSubmit+");");
       //  document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 
    //     document.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }, 200), false);
