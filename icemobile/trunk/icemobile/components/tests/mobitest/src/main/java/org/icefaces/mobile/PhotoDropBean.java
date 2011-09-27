@@ -42,10 +42,7 @@ import javax.faces.bean.ApplicationScoped;
 @ApplicationScoped
 public class PhotoDropBean  {
     public static final String GROUP = "photodrop";
-    private int count1 = 0;
-    private int count2 = 0;
-    private int count3 = 0;
-    private int count4 = 0;
+    private int count = 0;
 
     public PhotoDropBean() {
     }
@@ -54,6 +51,11 @@ public class PhotoDropBean  {
     private String room2Code = "Two";
     private String room3Code = "Three";
     private String room4Code = "Four";
+    
+    private String room1Name = "room1.jpg";
+    private String room2Name = "room2.jpg";
+    private String room3Name = "room3.jpg";
+    private String room4Name = "room4.jpg";
 
     public String getRoom1Code() {
         PushRenderer.addCurrentSession(GROUP);
@@ -89,19 +91,19 @@ public class PhotoDropBean  {
     }   
     
     public String getRoom1Path()  {
-        return "/images/room1.jpg?r=" + count1;
+        return "/images/" + room1Name;
     }
 
     public String getRoom2Path()  {
-        return "/images/room2.jpg?r=" + count2;
+        return "/images/" + room2Name;
     }
 
     public String getRoom3Path()  {
-        return "/images/room3.jpg?r=" + count3;
+        return "/images/" + room3Name;
     }
 
     public String getRoom4Path()  {
-        return "/images/room4.jpg?r=" + count4;
+        return "/images/" + room4Name;
     }
 
     private String uploadedCode = "";
@@ -123,23 +125,28 @@ public class PhotoDropBean  {
     public String upload()  {
         String baseDir = FacesContext.getCurrentInstance().getExternalContext()
             .getRealPath("/images/");
-        String destFileName = baseDir + File.separator;
+        String destDirName = baseDir + File.separator;
+        String oldName = "";
+        count++;
+        String newName = "upload" + String.valueOf(count) + ".jpg";
 
         if (uploadedCode.equals(room1Code))  {
-            destFileName += "room1.jpg";
-            count1++;
+            oldName = room1Name;
+            room1Name = newName;
         } else if (uploadedCode.equals(room2Code))  {
-            destFileName += "room2.jpg";
-            count2++;
+            oldName = room2Name;
+            room2Name = newName;
         } else if (uploadedCode.equals(room3Code))  {
-            destFileName += "room3.jpg";
-            count3++;
+            oldName = room3Name;
+            room3Name = newName;
         } else if (uploadedCode.equals(room4Code))  {
-            destFileName += "room4.jpg";
-            count4++;
+            oldName = room4Name;
+            room4Name = newName;
         }
         if (null != uploadedFile)  {
-            uploadedFile.renameTo(new File(destFileName));
+            uploadedFile.renameTo(new File(destDirName + newName));
+            File oldFile = new File(destDirName + oldName);
+            oldFile.delete();
         }
 
         PushRenderer.render(GROUP);
