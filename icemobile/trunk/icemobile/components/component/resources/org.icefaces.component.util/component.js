@@ -57,33 +57,17 @@ mobi.carousel = {
 		            ice.log.debug(ice.log, 'in the carouselLoaded method');
 		            setTimeout(function () {
 	    	            ice.log.debug(ice.log, "in setTimeout function");
-		                if (this.carousels) {
-		                    ice.log.debug(ice.log, 'have existing carousel');
-		                //    this.carousels.destroy();
-		                    ice.mobi.refresh(clientId, singleSubmit);
-		                }
-		                else {
-		                    ice.log.debug(ice.log, 'onload create carousel');
-		                    this.carousels = new iScroll(carouselId, {
-		                    snap: 'li',
-		                    momentum: false,
-		                    hScrollbar: false, 
-		                    onScrollEnd: function () {
-//		                        document.querySelector('.mobi-carousel-cursor-list > li.active').className = '';
-//		                        document.querySelector('.mobi-carousel-cursor-list > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
-	                            ice.log.debug(ice.log, 'onScrollEnd and current page is='+this.currPageX);
-	                            var hidden = document.getElementById(clientId+'_hidden');
-	                            mobi.carousel.scrollUpdate(clientId, singleSubmit, this.currPageX);
-//	                            if (hidden){                               
-//	                            	hidden.value=this.currPageX;
-//	                            	ice.log.debug(ice.log, 'set hidden.value = '+hidden.value);
-//	                            }
-//	                            if (singleSubmit){
-//	                            	ice.ser(null, clientId);
-//	                            }
-	    	                }
+                        ice.log.debug(ice.log, 'onload create carousel');
+                        this.carousels = new iScroll(carouselId, {
+                            snap: 'li',
+                            momentum: false,
+                            hScrollbar: false, 
+                            onScrollEnd: function () {
+                                ice.log.debug(ice.log, 'onScrollEnd and current page is='+this.currPageX);
+                                var hidden = document.getElementById(clientId+'_hidden');
+                                mobi.carousel.scrollUpdate(clientId, singleSubmit, this.currPageX);
+                            }
 		                 });
-		                }
 		              }, 100);
 		               ice.log.debug(ice.log,"after setTimeout function");
 		   },
