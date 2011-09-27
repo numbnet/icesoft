@@ -14,9 +14,9 @@
   ~ limitations under the License.
   -->
 
-<project name="icefaces-mob" default="lib" basedir=".">
+<project name="icefaces-mobi" default="lib" basedir=".">
     <description>
-        ICEfaces Advanced Components build file.
+        ICEfaces Mobile Components.
     </description>
 
     <!-- This property file is only used for EE builds and overrides various
@@ -222,7 +222,7 @@
     </target>
 
     <target name="lib" depends="skins,compile"
-            description="Generate the icefaces-mob.jar">
+            description="Generate the icefaces-mobi.jar">
         <!-- Create the distribution directory -->
         <mkdir dir="${dist}"/>
 
