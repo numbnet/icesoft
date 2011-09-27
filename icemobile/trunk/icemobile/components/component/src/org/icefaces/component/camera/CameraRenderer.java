@@ -26,6 +26,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
+import org.icefaces.component.utils.BaseInputResourceRenderer;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -35,10 +36,10 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 
-public class CameraRenderer extends Renderer {
+public class CameraRenderer extends BaseInputResourceRenderer {
     private static Logger logger = Logger.getLogger(CameraRenderer.class.getName());
 
-    @Override
+
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
         Camera camera = (Camera) uiComponent;
@@ -50,14 +51,15 @@ public class CameraRenderer extends Renderer {
                 boolean valid =  extractImages(facesContext, map, clientId);
                 /* only set map to value if boolean returned from extractImages is true */
                 if (valid){
-                   logger.info("\t\t valid is true");
-                   camera.setValue(map);
-                   Integer old = Integer.MAX_VALUE;
-                   Integer selected = Integer.MIN_VALUE;
+                    if (map !=null){
+                       this.setSubmittedValue(uiComponent, map);
+                       Integer old = Integer.MAX_VALUE;
+                       Integer selected = Integer.MIN_VALUE;
              //   just trigger valueChange for now as validation may include
              //   only queueing this if certain attrbiutes change to valid values.
-                   uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
+                       uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
     		    		    new Integer(old), selected));
+                    }
                 }
             }
         } catch (Exception e) {
@@ -91,22 +93,21 @@ public class CameraRenderer extends Renderer {
             if (part !=null){
                 String contentType = part.getContentType();
                 String fileName = java.util.UUID.randomUUID().toString();
-                if ("image/jpeg".equals(contentType)) {
+                if (part.getSize()<=0){
+                   isValid=false;
+                }else {
+                   isValid = true;
+                }
+                if ("image/jpeg".equals(contentType)|| "image/jpg".equals(contentType)) {
                     fileName += ".jpg";
-                    if (part.getSize()<=0){
-                        isValid=false;
-                    }
-                    isValid=true;
-                    Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
                 }
                 else if ("image/png".equals(contentType)) {
-                    if (part.getSize()<=0){
-                        isValid=false;
-                    }
-                    isValid=true;
                     fileName += ".png";
-                    Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
                 }
+                else {  /*if not jpeg or png give it filename of oth for other */
+                    fileName += ".oth";
+                }
+                Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
             }
             return isValid;
         } catch (ServletException e) {
