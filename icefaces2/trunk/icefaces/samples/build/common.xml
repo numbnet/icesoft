@@ -141,6 +141,13 @@
                 <include name="**/*"/>
             </fileset>
         </copy>
+        
+        <copy todir="${classes.dir}">
+            <fileset dir="${java.dir}">
+                <include name="**/*.java" if="includeSrc"/>
+            </fileset>
+        </copy>
+        
     </target>
 
     <target name="war.basic" depends="compile">
