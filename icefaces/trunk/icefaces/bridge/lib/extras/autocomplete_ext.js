@@ -142,7 +142,9 @@ Autocompleter.Base.prototype = {
             this.iefix = $(this.update.id + '_iefix');
         }
         if (this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
-        this.element.focus();
+        if (this.hasFocus) {
+        	this.element.focus();
+        }
     },
 
     fixIEOverlapping: function() {
@@ -171,6 +173,7 @@ Autocompleter.Base.prototype = {
             Ice.Autocompleter.logger.debug("Key press ignored. Not active.");
             switch (event.keyCode) {
                 case Event.KEY_TAB:
+                	setFocus('');
                 case Event.KEY_RETURN:
                     this.getUpdatedChoices(true, event, -1);
                     return;
@@ -184,6 +187,7 @@ Autocompleter.Base.prototype = {
         if (this.active) {
             switch (event.keyCode) {
                 case Event.KEY_TAB:
+                	setFocus(''); 
                 case Event.KEY_RETURN:
                     //this.selectEntry();
                     //Event.stop(event);
@@ -225,7 +229,10 @@ Autocompleter.Base.prototype = {
             }
         }
         else {
-            if (event.keyCode == Event.KEY_TAB || event.keyCode == Event.KEY_RETURN) return;
+            if (event.keyCode == Event.KEY_TAB || event.keyCode == Event.KEY_RETURN) {
+            	setFocus('');
+            	return;
+            }
         }
 
         this.changed = true;
@@ -241,6 +248,8 @@ Autocompleter.Base.prototype = {
     onKeyDown: function(event) {
         if (!this.active) {
             switch (event.keyCode) {
+            	case Event.KEY_TAB:
+            		setFocus(''); 
                 case Event.KEY_DOWN:
                     this.getUpdatedChoices(false, event, -1);
                     return;
@@ -258,6 +267,8 @@ Autocompleter.Base.prototype = {
                     this.render();
                     Event.stop(event);
                     return;
+                case Event.KEY_TAB:
+                	setFocus('');  
                 case Event.KEY_DOWN:
                     this.markNext();
                     this.render();
@@ -313,6 +324,7 @@ Autocompleter.Base.prototype = {
     },
 
     onBlur: function(event) {
+    	setFocus(''); 
         if (navigator.userAgent.indexOf("MSIE") >= 0) { // ICE-2225
             var strictMode = document.compatMode && document.compatMode == "CSS1Compat";
             var docBody = strictMode ? document.documentElement : document.body;
@@ -430,7 +442,9 @@ Autocompleter.Base.prototype = {
         } else {
             this.element.value = value;
         }
-        this.element.focus();
+        if (this.hasFocus) {
+        	this.element.focus();
+        }
 
         if (this.options.afterUpdateElement)
             this.options.afterUpdateElement(this.element, selectedElement);
@@ -666,7 +680,11 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
             //Ice.Autocompleter.logger.debug("Not showing due to hide force");
             return;
         }
-        this.hasFocus = true;
+        if (window['currentFocus'] && this.element.id == window['currentFocus']) {
+        	this.hasFocus = true;
+        } else {
+        	this.hasFocus = false;
+        }
         Element.cleanWhitespace(this.update);
         this.updateChoices(text);
         this.show();
