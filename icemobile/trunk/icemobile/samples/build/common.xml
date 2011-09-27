@@ -72,7 +72,7 @@
     </patternset>
 
     <patternset id="lib.distribute.application.mobi"
-                includes="icefaces-mob.jar mail.jar icepush-ee.jar icepush.jar jstl-1.1.2.jar ${lib.distribute.application.mobi.includes}">
+                includes="icefaces-mobi.jar mail.jar icepush-ee.jar icepush.jar jstl-1.1.2.jar ${lib.distribute.application.mobi.includes}">
         <exclude name="icefaces-compat-trunk.jar" />
     </patternset>
 
