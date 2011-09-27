@@ -24,19 +24,11 @@
 
         <p>Device notification is a server to client mechanism used to alert a
             device-resident application that some external state change has
-            occurred. In the case of a web application that is ICEpush-enabled,
-            device notification will typically be used when the application is
-            not active (and ICEpush is idle)</p>
+            occurred when the application is not actively being used. 
+            This is achieve using a device-specific notification mechanism like
+	    an icon displayed in a notification status bar.</p>
 
-        <p>
-            User Notification is a native device capability to indicate to the
-            user that something has happened in an application. User notification
-            can occur when the application is idle or actively in use. Typically,
-            device UIs include a notification or status bar where notification
-            icons can be placed.
-        </p>
-
-        <p>Developers familiar with ICEpush will fine notification initiation
+        <p>Developers familiar with ICEfaces Ajax Push will find notification initiation
             quite simple. Notification can be sent to a group of devices with the
             following line of code:</p>
 
@@ -46,7 +38,7 @@ PushRenderer.render(
 </pre>
 
         <p>
-            ICEfaces device notification supports Android C2DM, Apple APNS and
+            ICEfaces device notification supports Android C2DM, Apple APNS, Blackberry Push Service, and
             general email notification.
         </p>
 

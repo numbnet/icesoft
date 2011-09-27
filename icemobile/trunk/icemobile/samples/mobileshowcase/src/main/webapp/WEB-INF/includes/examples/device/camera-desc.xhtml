@@ -23,14 +23,14 @@
     <mobi:fieldsetGroup styleClass="exampleDescription">
 
         <p>The camera component allows JSF applications to access a mobile devices’
-            camera. The component renders a simple button that when pressed launches
+            camera. The component renders a simple button that, when pressed, launches
             the native camera application on the device. Once a picture has been taken
-            and accepted the user is returned to the web application. Image data
+            and accepted, the user is returned to the web application. Image data
             captured by the device is inserted in the calling form and data is
             submitted to the server via a standard JSF form post.</p>
 
         <p>
-            Value binding is achieved via Map object so that other important
+            Value binding is achieved via a Map object so that other important
             camera image data can be stored along with the image file data. A
             typical camera component setup looks as follows:
         </p>
@@ -42,14 +42,13 @@
 
         <p>
             When the containing form is submitted to the server the setter
-            setMap() is called on the Bean. The JSF developer now has the device
-            camera image to work with as they please.
+            setMap() is called on the bean, making the camera image 
+            available to the application.
         </p>
 
-        <p>Device camera access is only accessible if the application is running
-            in an ICEfaces device container. If the application is not running in
-            an ICEfaces device container then the component will display a file
-            upload input component. </p>
+        <p>Device camera is only accessible if the application is running
+            in an ICEmobile device container, otherwise
+            the component will display a file upload input component. </p>
 
     </mobi:fieldsetGroup>
 

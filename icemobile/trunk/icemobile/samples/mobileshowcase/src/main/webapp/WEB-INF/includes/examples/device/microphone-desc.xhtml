@@ -23,13 +23,13 @@
     <mobi:fieldsetGroup styleClass="exampleDescription">
 
         <p>The microphone component allows JSF applications to access a mobile
-            devices’ microphone. The component renders a simple button that when
-            pressed toggles the on and off state of the devices microphone.
+            devices’ microphone. The component renders a simple button that, when
+            pressed, toggles the on and off state of the device's microphone.
             Sound data captured by the device is inserted in the calling form
             and data is submitted to the server via a standard JSF form post.</p>
 
         <p>
-            Value binding is achieved via Map object so that other important
+            Value binding is achieved via a Map object so that other important
             sound data can be stored along with the sound file data. A typical
             microphone component setup looks as follows:
         </p>
@@ -41,8 +41,8 @@
 
         <p>
             When the containing form is submitted to the server the setter
-            setMap() is called on the Bean. The JSF developer now has the device
-            sound file to work with as they please.
+            setMap() is called on the bean, making the
+            sound file available to the application.
         </p>
 
     </mobi:fieldsetGroup>

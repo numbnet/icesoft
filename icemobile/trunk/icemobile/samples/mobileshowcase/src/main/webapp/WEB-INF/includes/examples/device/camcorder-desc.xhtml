@@ -23,15 +23,15 @@
     <mobi:fieldsetGroup styleClass="exampleDescription">
 
         <p>The camcorder component allows JSF applications to access a mobile
-            devices’ video camera. The component renders a simple button that
-            when pressed launches the native video camera application on the
-            device. Once a video has been taken and accepted the user is returned
+            devices’ video camera. The component renders a simple button that,
+            when pressed, launches the native video camera application on the
+            device. Once a video has been taken and accepted, the user is returned
             to the web application. Video data captured by the device is
             inserted in the calling form and data is submitted to the server
             via a standard JSF form post.</p>
 
         <p>
-            Value binding is achieved via Map object so that other important
+            Value binding is achieved via a Map object so that other important
             video data can be stored along with the video file data. A typical
             video component setup looks as follows:
         </p>
@@ -42,14 +42,13 @@
 </pre>
 
         <p>
-            When the containing form is submitted to the server the setter
-            setMap() is called on the Bean. The JSF developer now has the device
-            video file to work with as they please.
+            When the containing form is submitted to the server, the setter
+            setMap() is called on the bean, making the video file available to
+            the JSF application.
         </p>
 
-        <p>Device video access is only accessible if the application is running
-            in an ICEfaces device container. If the application is not running
-            in an ICEfaces device container then the component will display a
+        <p>Device video access is only available if the application is running
+            in an ICEmobile device container, otherwise the component will display a
             file upload input component. </p>
 
     </mobi:fieldsetGroup>
