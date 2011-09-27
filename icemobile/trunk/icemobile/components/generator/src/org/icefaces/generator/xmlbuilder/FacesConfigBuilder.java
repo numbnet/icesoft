@@ -33,9 +33,22 @@ public class FacesConfigBuilder extends XMLBuilder {
         root.setAttribute("metadata-complete", "false");
         getDocument().appendChild(root);
 //        addEffectBehavior("Animation");
+        addApplicationConfiguration(root);
         Element render_kit = getDocument().createElement("render-kit");
         root.appendChild(render_kit);
     }
+
+    void addApplicationConfiguration(Element root)  {
+        Element appElement = getDocument().createElement("application");
+        root.appendChild(appElement);
+
+        Element resElement = getDocument()
+                .createElement("resource-handler");
+        appElement.appendChild(resElement);
+        resElement.appendChild(getDocument().createTextNode(
+            "org.icefaces.component.qrcode.generator.QRCodeResourceHandler"));
+    }
+
 
     public void addComponentInfo(Class clazz, Component component) {
         Element compElement = getDocument().createElement("component");
