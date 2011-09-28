@@ -48,8 +48,8 @@ public class ScriptResultReader extends ScriptableFunction {
 
         String responseKey = (String) args[0];
         String result = mContainer.getPendingResponse( responseKey ).getResult();
-        ICEmobileContainer.DEBUG("ice.upload - fetching response with key: " + responseKey +
-                ", result length: " + result.length());
+//        ICEmobileContainer.DEBUG("ice.upload - fetching response with key: " + responseKey +
+//                ", result length: " + result.length());
         return result; 
 
     } 
