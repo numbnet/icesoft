@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions an
  * limitations under the License.
  */
+
 package org.icefaces.component.inputText;
 
 import org.icefaces.component.utils.Attribute;
@@ -51,7 +52,8 @@ public class InputText extends InputTextBase {
             new Attribute("maxlength", null),
             new Attribute("name", null),
             new Attribute("required", null),
-            new Attribute("tabindex", null)
+            new Attribute("tabindex", null),
+            new Attribute("style", null)
     };
 
     private Attribute[] booleanAttNames = {new Attribute("required", null),
