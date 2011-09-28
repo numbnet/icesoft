@@ -52,7 +52,7 @@ public class GraphicImage extends GraphicImageBase {
 
     public String processSrcAttribute(FacesContext facesContext, Object o, String name, String mimeType,
                                       String scope) {
-        ResourceRegistry registry = this.lookupRegistry(facesContext);
+//        ResourceRegistry registry = this.lookupRegistry(facesContext);
         if (o instanceof IceOutputResource) {
             //register resource..
             IceOutputResource iceResource = (IceOutputResource) o;
@@ -107,7 +107,7 @@ public class GraphicImage extends GraphicImageBase {
             value = super.getUrl();
         }
         if (value != null) {
-            String ctxtPath = facesContext.getExternalContext().getRequestContextPath();
+//            String ctxtPath = facesContext.getExternalContext().getRequestContextPath();
             return facesContext.getApplication().getViewHandler().getResourceURL(facesContext, value);
         } else {
             return "";
@@ -141,15 +141,7 @@ public class GraphicImage extends GraphicImageBase {
         this.booleanAttNames = booleanAttNames;
     }
 
-    /**
-     * currently this method is not being used.  If no use is found, for post alpha, remove it.
-     *
-     * @param context
-     * @param component
-     * @param attrName
-     * @return
-     */
-    public static String getImageSource(FacesContext context, UIComponent component, String attrName) {
+    private static String getImageSource(FacesContext context, UIComponent component, String attrName) {
         String resourceName = (String) component.getAttributes().get("name");
         if (resourceName != null) {
             String libName = (String) component.getAttributes().get("library");

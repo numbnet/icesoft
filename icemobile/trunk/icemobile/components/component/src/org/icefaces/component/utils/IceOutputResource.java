@@ -61,7 +61,7 @@ public class IceOutputResource extends Resource implements Serializable {
     public InputStream getInputStream() throws IOException {
         // TODO Auto-generated method stub
         InputStream inStream = null;
-        if (logger.isLoggable(Level.FINE)) {
+        if (logger.isLoggable(Level.FINER)) {
             logger.fine("for name=" + super.getResourceName() + ".......getINputStream with type=" + super.getContentType());
         }
         if (null != content) {
@@ -73,11 +73,11 @@ public class IceOutputResource extends Resource implements Serializable {
                 try {
                     inStream = new ByteArrayInputStream(content.toString().getBytes());
                 } catch (Exception ex) {
-                    logger.info("Unable to service request due to unsupported data type");
+                    logger.log(Level.WARNING, "Unable to service request due to unsupported data type",ex);
                 }
             }
-        } else {
-            logger.info("NULL  item requested not found ");
+        } else if (logger.isLoggable(Level.FINER)) {
+            logger.finer("Content stream request was null");
         }
         return inStream;
     }
@@ -93,7 +93,7 @@ public class IceOutputResource extends Resource implements Serializable {
 
         buf.append("/").append(super.getResourceName()).append(".faces?ln=").append(libraryName);
         if (logger.isLoggable(Level.FINER)) {
-            logger.info("Request path for program resource " + this.toString() + " : '" + buf.toString() + "'");
+            logger.finer("Request path for program resource " + this.toString() + " : '" + buf.toString() + "'");
         }
 
         return buf.toString();
@@ -128,9 +128,8 @@ public class IceOutputResource extends Resource implements Serializable {
         URL url = null;
         try {
             url = new URL(buff.toString());
-            logger.info(" create new uRL = " + buff.toString() + " for resource=" + this.toString());
         } catch (java.net.MalformedURLException e) {
-            logger.info("CAN'T CREATE URL FOR resource=" + this.toString());
+            logger.log(Level.WARNING, "Error creating IceOutputResource URL",e);
         }
         return url;
 

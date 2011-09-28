@@ -18,17 +18,12 @@ package org.icefaces.component.list;
 
 
 import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.Utils;
-import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
 import javax.faces.render.Renderer;
-
 import java.io.IOException;
-
 import java.util.logging.Logger;
 
 
@@ -36,42 +31,37 @@ public class OutputListItemRenderer extends Renderer {
     private static Logger logger = Logger.getLogger(OutputListItemRenderer.class.getName());
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
-    throws IOException {
+            throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         OutputListItem item = (OutputListItem) uiComponent;
 
-         //no javascript tag for this component
-        //do I have to make sure that the items only have a parent that is an OutputList?
-        
         writer.startElement(HTML.LI_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         String userDefinedClass = item.getStyleClass();
         String styleClass = OutputListItem.OUTPUTLISTITEM_CLASS;
-        if (item.isGroup()){
-        	styleClass = OutputListItem.OUTPUTLISTITEMGROUP_CLASS;
-        	if (userDefinedClass!=null){
-        	    styleClass += " "+userDefinedClass;
-        	}
+        if (item.isGroup()) {
+            styleClass = OutputListItem.OUTPUTLISTITEMGROUP_CLASS;
+            if (userDefinedClass != null) {
+                styleClass += " " + userDefinedClass;
+            }
+        } else {
+            if (userDefinedClass != null) {
+                styleClass = OutputListItem.OUTPUTLISTITEM_CLASS + " " + userDefinedClass;
+            }
         }
-        else{
-        	if (userDefinedClass!=null){
-        	   styleClass =   OutputListItem.OUTPUTLISTITEM_CLASS+" "+userDefinedClass;
-        	}
-        }       
         writer.writeAttribute("class", styleClass, "styleClass");
         writer.startElement(HTML.DIV_ELEM, uiComponent);
-        if (item.getType().equals("thumb")){
-            writer.writeAttribute("class",OutputListItem.OUTPUTLISTITEMTHUMB_CLASS, null);
-        }else {
-            writer.writeAttribute("class",OutputListItem.OUTPUTLISTITEMDEFAULT_CLASS, null);       	
+        if (item.getType().equals("thumb")) {
+            writer.writeAttribute("class", OutputListItem.OUTPUTLISTITEMTHUMB_CLASS, null);
+        } else {
+            writer.writeAttribute("class", OutputListItem.OUTPUTLISTITEMDEFAULT_CLASS, null);
         }
-     }
-    
+    }
+
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-        throws IOException {
+            throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.LI_ELEM);
     }

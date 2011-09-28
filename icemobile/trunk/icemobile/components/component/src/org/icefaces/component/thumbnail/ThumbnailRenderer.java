@@ -20,6 +20,7 @@ package org.icefaces.component.thumbnail;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -37,22 +38,21 @@ public class ThumbnailRenderer extends Renderer {
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
+
         Thumbnail thumbnail = (Thumbnail) uiComponent;
         String cameraId = thumbnail.getFor();
-        //if for is empty, then search for closest camera component:-
-        UIComponent root = facesContext.getViewRoot();
-        String parentId = cameraId;
-        if (cameraId == null && logger.isLoggable(Level.WARNING)) {
+
+        if (cameraId == null &&
+                (facesContext.isProjectStage(ProjectStage.Development) ||
+                logger.isLoggable(Level.FINER))) {
             logger.warning("'for' attribute cannot be null");
         }
         UIComponent cameraComp = thumbnail.findComponent(cameraId);
         String thumbId = cameraId + "-thumb";
         if (null != cameraComp) {
-            parentId = cameraComp.getClientId();
-//       		logger.info("FOUND camera component = "+cameraComp.getClientId());
-            thumbId = parentId + "-thumb";
-        } else {
+            thumbId = cameraComp.getClientId() + "-thumb";
+        } else if (facesContext.isProjectStage(ProjectStage.Development) ||
+                logger.isLoggable(Level.FINER)){
             logger.finer(" Cannot find camera component with id=" + cameraId);
         }
 
@@ -63,9 +63,6 @@ public class ThumbnailRenderer extends Renderer {
                 thumbnail.getStyleClass());
         writer.writeAttribute(HTML.STYLE_ATTR, thumbnail.getStyle(), HTML.STYLE_ATTR);
         writer.writeAttribute(HTML.ID_ATTR, "span-thumb", null);
-//        if (style != null && style.trim().length() > 0) {
-//            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
-//        }
         writer.startElement("img", uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, thumbId, null);
         writer.writeAttribute(HTML.WIDTH_ATTR, "64", null);
@@ -77,11 +74,6 @@ public class ThumbnailRenderer extends Renderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-//        String clientId = uiComponent.getClientId(facesContext);
-//        Thumbnail thumbnail = (Thumbnail) uiComponent;
-
-        //no javascript tag for this component
-
         writer.endElement("span");
         writer.endElement("img");
     }

@@ -1,27 +1,23 @@
 package org.icefaces.component.qrcode.generator;
 
 import org.icefaces.component.qrcode.generator.zxing.BarcodeFormat;
-import org.icefaces.component.qrcode.generator.zxing.qrcode.QRCodeWriter;
 import org.icefaces.component.qrcode.generator.zxing.common.BitMatrix;
+import org.icefaces.component.qrcode.generator.zxing.qrcode.QRCodeWriter;
 import org.icefaces.util.EnvUtils;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
-import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
-
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.io.IOException;
-import java.net.URLEncoder;
+import java.io.OutputStream;
 import java.net.URLDecoder;
-import java.util.logging.Logger;
+import java.net.URLEncoder;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class QRCodeResourceHandler extends ResourceHandlerWrapper  {
     private static Logger log = Logger.getLogger(QRCodeResourceHandler.class.getName());
@@ -118,7 +114,7 @@ public class QRCodeResourceHandler extends ResourceHandlerWrapper  {
 
             ImageIO.write(bi, "PNG", out);
         } catch (Exception e)  {
-            e.printStackTrace();
+            log.log(Level.WARNING, "Error create QR Code image", e);
         }
     }
 

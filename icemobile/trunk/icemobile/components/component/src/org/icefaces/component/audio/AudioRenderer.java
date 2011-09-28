@@ -79,18 +79,15 @@ public class AudioRenderer extends BaseResourceRenderer {
         String scope = audio.getScope().toLowerCase().trim();
         if (!scope.equals("flash") && !(scope.equals("window")) && !(scope.equals("application"))
                 && (!scope.equals("request")) && (!scope.equals("view"))) {
-//	    	log.info("setting scope to session for addition of resource");
             scope = "session";
         }
         String name = audio.getName();
         if (null == name || name.equals("")) name = "audio" + clientId;
         Object audioObject = audio.getValue();
-//	    log.info("audio Object is of type ="+audioObject.getClass().getName());
         String srcAttribute = "null";
         if (null != audioObject) {
             srcAttribute = processSrcAttribute(facesContext, audioObject, name, mimeType, scope, audio.getUrl());
         }
-//	    log.info("src attribute="+srcAttribute);
         writer.writeAttribute("src", srcAttribute, null);
     }
 
