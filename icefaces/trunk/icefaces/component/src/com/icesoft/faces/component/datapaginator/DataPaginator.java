@@ -533,7 +533,8 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
     public static final String FACET_LAST = "last".intern();
     public static final String FACET_FAST_FORWARD = "fastf".intern();
     public static final String FACET_FAST_REWIND = "fastr".intern();
-
+    private Integer tabindex = null;
+    
     public DataPaginator() {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
@@ -885,7 +886,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[24];
+        Object values[] = new Object[25];
         values[0] = super.saveState(context);
         values[1] = _for;
         values[2] = _fastStep;
@@ -910,6 +911,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         values[21] = new Integer(oldRow);   
         values[22] = new Integer(pageIndex);  
         values[23] = keyboardNavigationEnabled;
+        values[24] = tabindex;
                 
         return values;
     }
@@ -945,6 +947,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         oldRow = ((Integer) values[21]).intValue();
         pageIndex = ((Integer) values[22]).intValue();
         keyboardNavigationEnabled = (Boolean) values[23];
+        tabindex = (Integer) values[24];
     }
 
     /**
@@ -1148,4 +1151,26 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         uiData.getAttributes().put(DataPaginator.class.getName(), getClientId(context));
         super.decode(context);
     }
+    
+
+    /**
+     * <p>Set the value of the <code>tabindex</code> property.</p>
+     */
+    public void setTabindex(int tabindex) {
+    	this.tabindex = new Integer(tabindex);
+    }
+
+    /**
+     * <p>Return the value of the <code>fastStep</code> property.</p>
+     */
+    public int getTabindex() {
+        if (tabindex != null) {
+            return tabindex.intValue();
+        }
+        ValueBinding vb = getValueBinding("tabindex");
+        Integer v =
+                vb != null ? (Integer) vb.getValue(getFacesContext()) : null;
+        return v != null ? v.intValue() : Integer.MIN_VALUE;
+    }
+    
 }
