@@ -18,11 +18,9 @@ package org.icefaces.component.uploadhelper;
 
 
 import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
 import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 
 import javax.faces.application.ResourceDependencies;
-import java.util.Map;
 
 @Component(
         tagName = "uploadhelper",
@@ -40,7 +38,6 @@ import java.util.Map;
 @ResourceDependencies({
 })
 public class UploadHelperMeta extends UIComponentBaseMeta {
-
 
 
 }

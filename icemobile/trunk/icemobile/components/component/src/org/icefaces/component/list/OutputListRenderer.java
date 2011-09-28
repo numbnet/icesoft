@@ -53,8 +53,9 @@ public class OutputListRenderer extends Renderer {
         }
         writer.writeAttribute("class", styleClasses.toString(), "styleClass");
 
-        //verify the children are OutputListItem only 
-        if (facesContext.isProjectStage(ProjectStage.Development) && logger.isLoggable(Level.FINER)) {
+        // verify the children are OutputListItem only
+        if (facesContext.isProjectStage(ProjectStage.Development) ||
+                logger.isLoggable(Level.FINER)) {
             List<UIComponent> children = uiComponent.getChildren();
             for (UIComponent child : children) {
                 if (!(child instanceof OutputListItem)) {

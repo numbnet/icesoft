@@ -17,8 +17,8 @@
 package org.icefaces.component.qrcode;
 
 
-import org.icefaces.component.utils.HTML;
 import org.icefaces.component.qrcode.generator.QRCodeResourceHandler;
+import org.icefaces.component.utils.HTML;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -44,7 +44,7 @@ public class QRCodeRenderer extends Renderer {
         writer.writeAttribute(HTML.CLASS_ATTR, 
                 qrcode.getStyleClass(), null);
         writer.writeAttribute(HTML.STYLE_ATTR, qrcode.getStyle(), HTML.STYLE_ATTR);
-        writer.endElement("img");
+        writer.endElement(HTML.IMG_ELEM);
     }
 
 }

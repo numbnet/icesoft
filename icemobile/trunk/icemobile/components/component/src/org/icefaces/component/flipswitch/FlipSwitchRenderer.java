@@ -156,7 +156,6 @@ public class FlipSwitchRenderer extends Renderer {
             script.append("ice.se(event, '").append(clientId).append("');");
             //submit the div. as need the hidden field
         }
-        //  logger.info(" script is ="+script.toString());
         return script;
     }
 

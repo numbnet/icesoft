@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -42,25 +43,19 @@ public class GeolocationRenderer extends Renderer {
         try {
             if (!geolocation.isDisabled()) {
                 //MOBI-11 requirement is to decode the height and width values
-                String idHidden = clientId + "_locHidden";
                 String nameHidden = clientId + "_field";
                 String locationString = String.valueOf(requestParameterMap.get(nameHidden));
-                if (null != locationString || !(locationString.equals("null"))) {
+                if (null != locationString || !("null".equals(locationString))){
                     String[] params = locationString.split(",\\s*");
                     int numberOfParams = params.length;
-//	           		    	for (int i=0; i<params.length; i++){
-//	           		    		System.out.println(" \t param ["+i+"]="+params[i]);
-//	           		    	}
                     if (numberOfParams > 1) {
                         String latString = params[0];
                         if (null != latString) {
-//                            log.info("\t\t latString=" + latString);
                             try {
                                 Double latitude = Double.parseDouble(latString);
-//                                log.info("\t\t latitude=" + latitude);
                                 geolocation.setLatitude(latitude);
                             } catch (Exception e) {
-                                log.warning(" Exception thrown, setting latitude to zero e=");
+                                log.log(Level.WARNING, "ERROR  parsing latitude value, defaulting to zero",e);
                                 geolocation.setLatitude(0.0);
                             }
                         }
@@ -71,19 +66,16 @@ public class GeolocationRenderer extends Renderer {
                                 Double longitude = Double.parseDouble(longString);
                                 geolocation.setLongitude(longitude);
                             } catch (Exception e) {
-                                log.warning(" Exception thrown, setting longitutde to zero e=");
+                                log.log(Level.WARNING, "ERROR  parsing longitude value, defaulting to zero",e);
                                 geolocation.setLongitude(0.0);
                             }
                         }
                     }
-                } else log.finer(" params is empty!!");
-            } else log.finer(" no hidden value set!!");
-            //unparse the location string
+                }
+            }
 
-
-            //	 	    do we need to queue an event or a valueChangeEvent?
         } catch (Exception e) {
-            e.printStackTrace();
+            log.log(Level.WARNING, "Error decoding geo-location request paramaters.",e);
         }
     }
 
@@ -92,9 +84,7 @@ public class GeolocationRenderer extends Renderer {
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
-        Geolocation Geolocation = (Geolocation) uiComponent;
         // root element
-//        boolean disabled = Geolocation.isDisabled();
 
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
@@ -106,7 +96,6 @@ public class GeolocationRenderer extends Renderer {
         writer.endElement("input");
         String fnCall = "document.getElementById(\"" + clientId + "_locHidden\").value=pos.coords.latitude+\",\"+pos.coords.longitude;";
         String finalScript = "navigator.geolocation.getCurrentPosition(function(pos) { " + fnCall + "} );";
-        //   System.out.println(" \t final script="+finalScript);
         writer.startElement("script", uiComponent);
         writer.write(finalScript);
         writer.endElement("script");

@@ -24,6 +24,5 @@ public class FieldSetRow extends FieldSetRowBase {
     public FieldSetRow() {
         super();
     }
- 
 
 }

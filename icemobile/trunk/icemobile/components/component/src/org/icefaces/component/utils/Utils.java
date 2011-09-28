@@ -20,11 +20,7 @@ import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.impl.util.DOMUtils;
 
 import javax.el.ValueExpression;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.StateHelper;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.component.UIForm;
+import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpServletRequest;
@@ -32,12 +28,12 @@ import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.List;
-import java.util.ArrayList;
 
 /*
  * base was copied over from ace and then added to by mobility
@@ -342,8 +338,8 @@ public class Utils {
         }
         try {
             part.write(newFile.getAbsolutePath());
-        } catch (IOException fnfe) {
-            fnfe.printStackTrace();
+        } catch (IOException e) {
+            logger.log(Level.WARNING, "Error writing uploaded file to disk ", e);
         }
         map.put("file", newFile);
         map.put("contentType", contentType);
@@ -379,8 +375,7 @@ public class Utils {
             map.put("fileInBytes", fileContents);
             map.put("contentType", contentType);
         } catch (IOException e) {
-            e.printStackTrace();
-            logger.info("ERROR creating byte array for component");
+            logger.log(Level.WARNING, "ERROR creating byte array for component", e);
         }
     }
 

@@ -19,11 +19,10 @@ package org.icefaces.component.uploadhelper;
 import org.icefaces.impl.event.FormSubmit;
 import org.icefaces.util.EnvUtils;
 
-import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIViewRoot;
-import java.util.Map;
+import javax.faces.context.FacesContext;
 
 public class UploadHelper extends UploadHelperBase {
 
@@ -34,7 +33,7 @@ public class UploadHelper extends UploadHelperBase {
 
     public void setInView(boolean inView) {
         super.setInView(inView);
-        if (EnvUtils.isEnhancedBrowser(FacesContext.getCurrentInstance()) ) {
+        if (EnvUtils.isEnhancedBrowser(FacesContext.getCurrentInstance())) {
             return;
         }
         //the desktop case becomes non-ajax and multipart

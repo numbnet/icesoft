@@ -45,7 +45,7 @@ public class GraphicImageRenderer extends Renderer {
         assert (null != uiComponent);
         String clientId = uiComponent.getClientId(facesContext);
         GraphicImage uiGraphic = (GraphicImage) uiComponent;
-        if (logger.isLoggable(Level.FINE)) {
+        if (logger.isLoggable(Level.FINER)) {
             checkAttributes(uiGraphic);
         }
         writer.startElement("img", uiComponent);
@@ -95,7 +95,7 @@ public class GraphicImageRenderer extends Renderer {
     private void checkAttributes(GraphicImage uiGraphic) {
         Map<String, Object> tempMap = uiGraphic.getAttributes();
         for (Map.Entry<String, Object> entry : tempMap.entrySet()) {
-            logger.info(" attribute entry is " + entry.getKey() + " value is " + entry.getValue());
+            logger.finer(" attribute entry is " + entry.getKey() + " value is " + entry.getValue());
         }
     }
 

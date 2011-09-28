@@ -17,15 +17,14 @@
 package org.icefaces.component.scan;
 
 
+import org.icefaces.component.utils.BaseInputRenderer;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
-import org.icefaces.component.utils.BaseInputRenderer;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -72,7 +71,7 @@ public class ScanRenderer extends BaseInputRenderer {
         }
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-        writer.startElement("input", uiComponent);
+        writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "-button", null);
         writer.writeAttribute(HTML.VALUE_ATTR, "Scan QR Code", null);
@@ -84,15 +83,12 @@ public class ScanRenderer extends BaseInputRenderer {
             writer.writeAttribute("disabled", "disabled", null);
         }
         writer.writeAttribute("onclick", "ice.scan('" + clientId + "');", null);
-        writer.endElement("input");
+        writer.endElement(HTML.INPUT_ELEM);
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = uiComponent.getClientId(facesContext);
-        Scan scan = (Scan) uiComponent;
-
         writer.endElement(HTML.SPAN_ELEM);
     }
 
