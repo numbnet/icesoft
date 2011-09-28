@@ -144,24 +144,23 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     // Keeping track of page load times
     private String mCurrentlyLoadingDocument; 
     private long mDocumentStartTime;
-
-    private boolean mRunParkPushId = true;
+    
     private Runnable mParkPushIdRunnable = new Runnable() { 
         public void run() { 
             try {   
                 if (mParkScript != null) { 
                     mScriptEngine.executeScript(mParkScript, null);
-                    DEBUG("ICEmobile - Park Script executed properly");
+                    DEBUG("ICEmobile - Park Script ok");
                 } 
             } catch (Throwable t) { 
                 ERROR("ICEmobile - Exception executing park script: " + t);
             } finally  { 
-                mRunParkPushId = false;                  
             }
         }
     }; 
 
     private String mParkScript;  
+    private String mPauseScript; 
 
 
     /**
@@ -206,7 +205,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     private void eulaCheck() {
         
         if (!mOptionsProperties.isEulaViewed()) { 
-            DEBUG("Launching eula viewer");
+            DEBUG("ICEmobile - Launching eula viewer");
             EulaManager em = new EulaManager(this); 
             em.show();            
         } else { 
@@ -286,7 +285,6 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
             //            setupPushListener();
             mPushAgent = new PushAgent();
 
-
             ApplicationIndicatorRegistry reg = ApplicationIndicatorRegistry.getInstance(); 
             EncodedImage image = EncodedImage.getEncodedImageResource("icebox-32x32.png"); 
             ApplicationIcon icon  = new ApplicationIcon( image ); 
@@ -298,8 +296,6 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
             mBrowserCookieManager = mBrowserField.getCookieManager();			
             mBrowserCookieManager.setCookie( mCurrentHome , "com.icesoft.user-agent=HyperBrowser/1.0");		
 
-
-
             mBrowserField.addListener(new BrowserFieldListener() { 
                 public void documentLoaded( BrowserField field, Document document) { 
 
@@ -310,7 +306,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                         if (uri.indexOf("about:blank") == -1 ) { 		
                             
                             if (uri != null && uri.equals(mCurrentlyLoadingDocument)) { 
-                                TIME(mDocumentStartTime, "iceMobile loading page: " + uri );
+                                TIME(mDocumentStartTime, "ICEmobile loading page: " + uri );
                             }
                             
                             mScriptEngine = mBrowserField.getScriptEngine();
@@ -353,9 +349,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                                             mScriptEngine.addExtension("icefaces.getResult", mResultReader);
                                             mScriptEngine.addExtension("icefaces.shootVideo", mVideoController);
                                             DEBUG("ICEmobile - native script executed");
-                                            if (mRunParkPushId) {
-                                                invokeLater( mParkPushIdRunnable );      
-                                            }
+                                            invokeLater( mParkPushIdRunnable );      
 
                                         } catch (Throwable t) {
                                             ERROR("ICEmobile - Error executing startup scripts: " + t + ", document: " + uri);
@@ -363,7 +357,6 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                                     } 
                                 });
                             }                      
-
 
                             mCurrentPage = uri;
                             mHistoryManager.addLocation(uri);
@@ -428,7 +421,6 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         String root = null; 
         Enumeration i = FileSystemRegistry.listRoots(); 
         while (i.hasMoreElements()) { 
-
             root = (String) i.nextElement(); 
             DEBUG("File device: " + root);	
 
@@ -626,17 +618,25 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     	mOptionsProperties = BlackberryOptionsProperties.fetch();
         mCurrentHome = mOptionsProperties.getHomeURL();
         
+        String argument; 
+        if (mOptionsProperties.isUsingEmailNotification()) { 
+            argument = "('mail:" + 
+                mOptionsProperties.getEmailNotification() + "');"; 
+        } else { 
+            argument = "('bpns:" + 
+                Integer.toHexString(DeviceInfo.getDeviceId()).toUpperCase()
+                + "');"; 
+        }
+        
         // Use either an email notification (if desired) or the 
         // RIM push version
         if (mOptionsProperties.isUsingEmailNotification()) { 
-            mParkScript  = "ice.push.parkInactivePushIds('email:" + 
-                        mOptionsProperties.getEmailNotification() + "');";        
+            mParkScript  = "ice.push.parkInactivePushIds" + argument;      
+            mPauseScript  = "ice.push.pauseBlockingConnection" + argument;       
         } else { 
-            mParkScript  = "ice.push.parkInactivePushIds('bpns:" + 
-            Integer.toHexString(DeviceInfo.getDeviceId()).toUpperCase()
-            + "');";
+            mParkScript  = "ice.push.parkInactivePushIds"+ argument;
+            mPauseScript = "ice.push.pauseBlockingConnection" + argument;
         }
-        mRunParkPushId = true;
     }
 
     /**
@@ -678,10 +678,30 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                 loadPage ( mCurrentHome );
                 mReloadOnActivate = false; 
             } 
+            
+            try { 
+                if (mScriptEngine != null) { 
+                    mScriptEngine.executeScript("ice.push.resumeBlockingConnection();" , null);
+                    DEBUG("ICEmobile - resumeScript ok");
+                }
+            } catch (Throwable t) { 
+                ERROR("ICEmobile - resumeScript exception: " + t);
+            }
         } 
     }
 
     public void deactivate() { 		
+        
+        if (mPauseScript != null && mScriptEngine != null) {
+            try { 
+                mScriptEngine.executeScript(mPauseScript, null);
+                DEBUG ("ICEmobile - Paused Blocking connection ok");
+              
+            } catch (Throwable t) { 
+                ERROR("ICEmobile - Exception pausing Blocking Connection: " + t);
+            }
+        }
+        
     }
 
 
