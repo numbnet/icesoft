@@ -48,8 +48,8 @@ import java.util.logging.Logger;
  * </ul>
  * <p/>
  * The character encoding detection code is essentially the same logic as is used in
- * the ViewHandler of the Mojarr which is where the character encoding is currently
- * detected and applied, albeit too late for our purposes.
+ * the ViewHandler of the Mojarra implementation which is where the character encoding
+ * is currently detected and applied, albeit too late for our purposes.
  */
 public class CharacterEncodingHandler extends ResourceHandlerWrapper {
 
@@ -103,7 +103,9 @@ public class CharacterEncodingHandler extends ResourceHandlerWrapper {
             // see if this header had a charset
             String charsetStr = "charset=";
             int len = charsetStr.length();
-            int idx = contentType.indexOf(charsetStr);
+
+            //It's possible for Content-Type header to have multiple charset entries
+            int idx = contentType.lastIndexOf(charsetStr);
 
             // if we have a charset in this Content-Type header AND it
             // has a non-zero length.
