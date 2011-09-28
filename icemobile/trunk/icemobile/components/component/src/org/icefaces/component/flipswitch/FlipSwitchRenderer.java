@@ -18,18 +18,14 @@ package org.icefaces.component.flipswitch;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.PassThruAttributeWriter;
-import org.icefaces.component.utils.Utils;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -54,12 +50,12 @@ public class FlipSwitchRenderer extends Renderer {
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = uiComponent.getClientId(facesContext);
         FlipSwitch flipswitch = (FlipSwitch) uiComponent;
-        if (flipswitch.isDisabled()){
-        	return;
+        if (flipswitch.isDisabled()) {
+            return;
         }
         //update with hidden field
-        String submittedString = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
-        if (submittedString!=null){
+        String submittedString = String.valueOf(requestParameterMap.get(clientId + "_hidden"));
+        if (submittedString != null) {
             boolean submittedValue = isChecked(submittedString);
             flipswitch.setSubmittedValue(submittedValue);
         }
@@ -76,103 +72,98 @@ public class FlipSwitchRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         FlipSwitch flipswitch = (FlipSwitch) uiComponent;
 
-        // capture any children UIParameter (f:param) parameters.
-//        uiParamChildren = Utils.captureParameters( slider );
-
-        // Write outer div
-/*        writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);   */
-           
         writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
-        String styleClass = flipswitch.FLIPSWITCH_OFF_CLASS;
+        String styleClass = FlipSwitch.FLIPSWITCH_OFF_CLASS;
         String switchValue = String.valueOf(flipswitch.getValue());
         boolean isChecked = this.isChecked(switchValue);
-        if (isChecked){
-        	styleClass = flipswitch.FLIPSWITCH_ON_CLASS;
+        if (isChecked) {
+            styleClass = FlipSwitch.FLIPSWITCH_ON_CLASS;
         }
         writer.writeAttribute("class", styleClass, "class");
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, flipswitch.getAttributesNames());
         PassThruAttributeWriter.renderBooleanAttributes(writer, uiComponent, flipswitch.getBooleanAttNames());
-        String labelOn=flipswitch.getLabelOn();
-        String labelOff=flipswitch.getLabelOff();
-        
- //       StringBuilder jsCall = this.writeJSCall(clientId, flipswitch);
-        writer.writeAttribute("onclick", "mobi.flipper.init('"+clientId+"', event, this,"+flipswitch.isSingleSubmit()+");", null);
-        
+        String labelOn = flipswitch.getLabelOn();
+        String labelOff = flipswitch.getLabelOff();
+
+        //       StringBuilder jsCall = this.writeJSCall(clientId, flipswitch);
+        writer.writeAttribute("onclick", "mobi.flipper.init('" + clientId + "', event, this," + flipswitch.isSingleSubmit() + ");", null);
+
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute("class", "mobi-flip-switch-txt", null);
         writer.write(labelOn);
         writer.endElement(HTML.SPAN_ELEM);
-        boolean switchVal = (Boolean)flipswitch.getValue();
+        boolean switchVal = (Boolean) flipswitch.getValue();
         writeHiddenField(uiComponent, clientId, writer, switchVal);
+
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute("class", "mobi-flip-switch-txt", null);
         writer.write(labelOff);
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.ANCHOR_ELEM);
-        writer.endElement("input");
 
-    //    writer.endElement(HTML.DIV_ELEM);
+
+        //    writer.endElement(HTML.DIV_ELEM);
     }
 
-	private void writeHiddenField(UIComponent uiComponent, String clientId,
-			ResponseWriter writer, boolean switchValue) throws IOException {
-		writer.startElement("input", uiComponent);
+    private void writeHiddenField(UIComponent uiComponent, String clientId,
+                                  ResponseWriter writer, boolean switchValue) throws IOException {
+        writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("name", clientId+"_hidden" , null);
-        writer.writeAttribute("id", clientId+"_hidden" , null);
+        writer.writeAttribute("name", clientId + "_hidden", null);
+        writer.writeAttribute("id", clientId + "_hidden", null);
         writer.writeAttribute("value", switchValue, null);
-	}
+        writer.endElement("input");
+    }
+
     private boolean isChecked(String hiddenValue) {
         return hiddenValue.equalsIgnoreCase("on") ||
                 hiddenValue.equalsIgnoreCase("yes") ||
                 hiddenValue.equalsIgnoreCase("true");
     }
-    //forced converter support. It's either a boolean or string.   
+
+    //forced converter support. It's either a boolean or string.
     @Override
     public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent,
-    		                        Object submittedValue) throws ConverterException{
-    	if (submittedValue instanceof Boolean) {
+                                    Object submittedValue) throws ConverterException {
+        if (submittedValue instanceof Boolean) {
             return submittedValue;
-        }
-    	else {
+        } else {
             return Boolean.valueOf(submittedValue.toString());
         }
     }
-    
+
     /*
-     * not currently being used.  Will switch to build in script if better performance.  For now leave
-     * in separate javascript file as easier to modify/debug
-     */
+    * not currently being used.  Will switch to build in script if better performance.  For now leave
+    * in separate javascript file as easier to modify/debug
+    */
     private StringBuilder writeJSCall(String clientId, FlipSwitch flipper) {
         final StringBuilder script = new StringBuilder();
         //first update the hidden field.  If class is on class then switch class to off and update hidden field to off
         //otherwise, vice versa
-        String hiddenField=clientId+"_hidden";
-        script.append("var hidden = getElementById('"+hiddenField+"');"+
-        		"if(this.className='"+flipper.FLIPSWITCH_ON_CLASS+"'){"+"" +
-        		    "this.className='"+flipper.FLIPSWITCH_OFF_CLASS+";"+       		
-        		    "if(hidden){hidden.value='on';}"+
-        		"}"+
-        		"else{"+
-        		   "this.className='"+flipper.FLIPSWITCH_ON_CLASS+"';"+
-        		   "if(hidden){hidden.value='off';}"+
-        		"}");
-        
-        if (flipper.isSingleSubmit()){
-        	script.append("ice.se(event, '" + clientId + "');");
-        	//submit the div. as need the hidden field       
+        StringBuilder hiddenField = new StringBuilder(clientId).append("_hidden");
+        script.append("var hidden = getElementById('").append(hiddenField).append("');").
+                append("if(this.className='").append(FlipSwitch.FLIPSWITCH_ON_CLASS).append("'){").
+                append("this.className='").append(FlipSwitch.FLIPSWITCH_OFF_CLASS).append(";").
+                append("if(hidden){hidden.value='on';}").
+                append("}else{").
+                append("this.className='").append(FlipSwitch.FLIPSWITCH_ON_CLASS).append("';").
+                append("if(hidden){hidden.value='off';}").
+                append("}");
+
+        if (flipper.isSingleSubmit()) {
+            script.append("ice.se(event, '").append(clientId).append("');");
+            //submit the div. as need the hidden field
         }
-      //  logger.info(" script is ="+script.toString());
+        //  logger.info(" script is ="+script.toString());
         return script;
     }
-	/**
+
+    /**
      * will render it's own children
      */
-	public boolean getRendersChildren() {
-		return true;
-	}
+    public boolean getRendersChildren() {
+        return true;
+    }
 }
