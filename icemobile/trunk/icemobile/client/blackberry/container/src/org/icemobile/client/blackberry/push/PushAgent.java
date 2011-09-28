@@ -60,9 +60,10 @@ public class PushAgent {
     private static final String ALREADY_UNSUSCRIBED_BY_USER = "rc=10004";
     private static final String ALREADY_UNSUSCRIBED_BY_PROVIDER = "rc=10005";
 
-    private static final String PUSH_PORT = "29785";
+    private static final String PUSH_PORT = "30391";
     private static final String BPAS_URL = "http://pushapi.eval.blackberry.com";
     private static final String APP_ID = "1868-72162e8r2m8tr292r9D3o2i7890921k9s66";
+//                                        1868-72162e8r2m8tr292r9D3o2i7890921k9s66
     private static final String WAP2_SUFFIX = ";deviceside=true;ConnectionUID=";
     private static final String HTTP_SUFFIX = ";deviceside=true";
     private static final String BIS_SUFFIX = ";deviceside=true;ConnectionUID=";
@@ -168,7 +169,7 @@ public class PushAgent {
                 onListenError(ex);
             }
 
-            ICEmobileContainer.DEBUG("Push Reader ready for connection ");
+            ICEmobileContainer.DEBUG("pushAgent - Reader ready for connection ");
             while (running) {
                 try {
                     
@@ -276,7 +277,7 @@ public class PushAgent {
 
         //		final String registerUrl = formRegisterRequest(BPAS_URL, APP_ID, null) + mConnectionSuffix;
         final String registerUrl = url;
-        ICEmobileContainer.DEBUG("Opening initial URL: " + registerUrl);
+        ICEmobileContainer.DEBUG("pushAgent - opening initial URL: " + registerUrl);
         /**
          * As the connection suffix is fixed I just use a Thread to call the connection code
          * 
@@ -289,7 +290,7 @@ public class PushAgent {
                     String response = new String(IOUtilities.streamToBytes(is));
                     close(httpConnection, is, null);
                     String nextUrl = formRegisterRequest(BPAS_URL, APP_ID, response) + mConnectionSuffix;
-                    ICEmobileContainer.DEBUG("Subsequent URL for registration: " + nextUrl);
+                    ICEmobileContainer.DEBUG("pushAgent - Subsequent URL for registration: " + nextUrl);
                     HttpConnection nextHttpConnection = (HttpConnection) Connector.open(nextUrl);
                     InputStream nextInputStream = nextHttpConnection.openInputStream();
                     response = new String(IOUtilities.streamToBytes(nextInputStream));
