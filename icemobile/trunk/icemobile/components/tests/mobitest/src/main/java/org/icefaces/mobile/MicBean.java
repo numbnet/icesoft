@@ -21,13 +21,15 @@
 
 package org.icefaces.mobile;
 
+import org.icefaces.util.EnvUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.FileNameMap;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,7 +42,7 @@ import javax.activation.MimetypesFileTypeMap;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 /**
  * <p>The MicBean is used to test microphone component.</p>
@@ -131,7 +133,6 @@ public class MicBean implements Serializable {
     	FacesContext facesContext = FacesContext.getCurrentInstance();
         String rootPath = facesContext.getExternalContext()
         .getRealPath("/audio/");
-        System.out.println("ROOTPATH of audio url is ="+rootPath);
 		return rootPath+sampleBite;
 	}
 	public void setSampleBite(String sampleBite) {
@@ -164,7 +165,6 @@ public class MicBean implements Serializable {
 		return clipName;
 	}
 
-
 	public boolean isSoundClipAvailable() {
 		return soundClipAvailable;
 	}
@@ -176,11 +176,9 @@ public class MicBean implements Serializable {
 		this.soundClipAvailable = soundClipAvailable;
 	}
 
-
 	public void setClipName(String clip) {
 		this.clipName = clip;
 	}
-
 
 	private void prepIPadClip() throws FileNotFoundException {
 		   File clipFile;
@@ -190,12 +188,11 @@ public class MicBean implements Serializable {
 		    .concat(File.separator) 
 		    .concat("sampleIPad" + ".mp4"); 
 		    clipFile = new File(sampleFilePath); 
-		    try{
+	/*	    try{
 		       System.out.println("\t\t  MIMETYPE of iPadClip="+this.getMimeType(sampleFilePath));
 		    }catch (Exception e){
 		    	System.out.println("could not get mimetype for iPadClip");
-		    }
-		   
+		    } */
 
 		//Buffer some bytes. 
 
@@ -227,23 +224,11 @@ public class MicBean implements Serializable {
 		     String type = new MimetypesFileTypeMap().getContentType(fileUrl);
 		     return type;
 	    }
-    public void getContentTypes(){
-    	System.out.println(" ===========MIMETYPES=============");
-    	try{
-    	System.out.println(" iPad mimetype = "+getContentType("http://10.18.39.112:8080/mobitest/audio/sampleIPad.mp4"));
-    	System.out.println(" Android mimetype = "+getContentType("http://10.18.39.112:8080/mobitest/sampleAndroid.mp4"));
-    	System.out.println(" resource filetype = "
-    			+getContentType( "http://10.18.39.112:8080/mobitest/javax.faces.resource/audioplaybytes.jsf"));
-    	}catch (Exception e){
-    		
-    	}
-    }
+
     //very slow way to get contentType or mimeType of file.  Quicker to use commons file logging or activation jar
     String contentType = "none";
 	public String getContentType(String fileext) throws Exception{
-		System.out.println("trying to get contentType of fileext="+fileext);
 		contentType =  new MimetypesFileTypeMap().getContentType(fileext);
-	    System.out.println("\t\t contentType="+contentType);
 		return contentType;		
 	}
 
@@ -270,11 +255,30 @@ public class MicBean implements Serializable {
 	public void setMaxtime(int maxtime) {
 		this.maxtime = maxtime;
 	}
-		
 
     public String reset()  {
         pathToFile = "../audio/icemobile.mp4";
         return "";
     }		
+    int numTimes = 0;
+    private String messageFromAL = "ValueChangeListener called:-";
 
+    public void methodOne(ValueChangeEvent event){
+        numTimes++;
+        this.messageFromAL += " "+numTimes+" times-";
+    }
+
+    public String getMessageFromAL() {
+        return messageFromAL;
+    }
+
+    public void setMessageFromAL(String messageFromAL) {
+        this.messageFromAL = messageFromAL;
+    }
+    public Map getClip(){
+        return this.clip;
+    }
+        public boolean isEnhancedBrowser()  {
+        return EnvUtils.isEnhancedBrowser(FacesContext.getCurrentInstance());
+    }
 }

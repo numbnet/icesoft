@@ -25,7 +25,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.render.Renderer;
 import org.icefaces.component.utils.BaseInputResourceRenderer;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

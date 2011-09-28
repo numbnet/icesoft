@@ -68,13 +68,6 @@ public class CameraMeta extends UIInputMeta {
     @Property(implementation = Implementation.EXISTS_IN_SUPERCLASS, tlddoc= "as per specs the image information is stored in a Map")
     private Map<String, Object> value;
 
-/*    @Property(expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
-    	    tlddoc = "MethodExpression representing a value change listener method that will be notified when a file has " +
-    	            "been uploaded with a valid file size > 0. The expression must evaluate to a public method that takes a " +
-    	            "ValueChangeEvent  parameter, with a return type of void, or to a public method that takes no arguments " +
-    	            "with a return type of void. ")
-    private MethodExpression valueChangeListener;     */
-
     @Property(defaultValue="false", tlddoc="The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
     private boolean immediate;
 }

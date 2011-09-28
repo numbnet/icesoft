@@ -10,8 +10,8 @@
     <mobi:deviceStylesheet/>
 </h:head>
 <h:body>
-	<h:form prependId="false" id="cform" enctype="multipart/form-data">
-
+	<h:form prependId="false" id="cform" >
+        <mobi:uploadhelper/>
 		<h3>microphone</h3>
 
 		<h:outputText value="TalktoMe!" />
@@ -19,10 +19,8 @@
 		<h5>filename of sound clip</h5>
 		<h:outputText value="#{micBean.clipName}" />
 		<br />
-		<mobi:microphone id="mic_one" duration="10" value="#{micBean.clip}" />
-		<input type="button" id="upload1"
-			onclick="ice.s(event, this);"
-			value="upload"></input>
+		<mobi:microphone id="mic_one" duration="10" value="#{micBean.clip}" valueChangeListener="#{micBean.methodOne}"/>
+		<h:commandButton id="submitBtn"  value="upload"/>
 	</h:form>
 	<h5>audio controls will appear if soundClipIsAvailable</h5>
 		<mobi:audio id="play"  controls="true" value="#{micBean.pathToFile}" 
