@@ -32,7 +32,6 @@
                  	<include name="icefaces.jar"/>
                     <include name="icepush.jar"/>
                     <include name="mobi.jar"/>
-                    <include name="icefaces-push.jar"/>
                     <include name="icefaces-mobi.jar"/>
                     <include name="jsf-api.jar"/>
                     <include name="el-api-2.2.1-b03.jar"/>
@@ -55,8 +54,7 @@
 	             webxml="${web.dir}/WEB-INF/web.xml">
 	            <lib dir="${lib.dir}"  erroronmissingdir="false">
 	            	 <include name="icefaces.jar"/>
-	            	 <include name="icefaces-mob.jar"/>
-                    <include name="icefaces-mobic.jar"/>
+	            	 <include name="icefaces-mobi.jar"/>
 	                 <include name="jsf-api.jar"/>          	               
 	                 <include name="jsf-impl.jar"/>
 	            	 <include name="icepush.jar"/>
