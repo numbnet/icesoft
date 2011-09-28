@@ -65,11 +65,11 @@ public final class PushMessageReader {
     }
 
     /**
-     * Reads the incoming push message from the given streams in the current thread
-     * and notifies controller to display the information.
+     * Reads the incoming push message from the given streams in the current thread and notifies controller to display the information.
      * 
-     * @param piStream the push input stream
-     * @param conn The connection
+     * @param piStream the Push Input Stream
+     *            
+     * @param conn The Push Connection
      */
     public static void process(PushInputStream piStream, Connection conn) {
 
@@ -107,11 +107,12 @@ public final class PushMessageReader {
                     int size = piStream.read(buffer);
                     binaryData = new byte[size];
                     System.arraycopy(buffer, 0, binaryData, 0, size);					
-                    ICEmobileContainer.DEBUG("Message recieved: " + new String (binaryData));
+                    ICEmobileContainer.DEBUG("icePush - Text message received: " + new String (binaryData));
                     
                 } else if (msgType.indexOf(MESSAGE_TYPE_IMAGE) >= 0) {
                     // an image in binary or Base64 encoding
                     int size = piStream.read(buffer);
+                    ICEmobileContainer.DEBUG("icePush - image message received");
                     if (encoding != null && encoding.equalsIgnoreCase("base64")) {
                         // image is in Base64 encoding, decode it
                         Base64InputStream bis = new Base64InputStream(new ByteArrayInputStream(buffer, 0, size));
