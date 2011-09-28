@@ -50,7 +50,6 @@ public class MicrophoneRenderer extends BaseInputResourceRenderer {
 
             Map<String, Object> map = new HashMap<String, Object>();
             boolean valid = extractAudio(facesContext, map, clientId);
-            logger.info("MIC VALID="+valid);
             if (valid){
 
                if (map !=null){
@@ -82,7 +81,6 @@ public class MicrophoneRenderer extends BaseInputResourceRenderer {
             if (part !=null && part.getSize()>0){
                 isSound=true;
                 String contentType = part.getContentType().trim();
-                logger.info("MICROPHONE CONTENT TYPE="+contentType);
                 String fileName = java.util.UUID.randomUUID().toString();
                 if ("audio/wav".equals(contentType) || "audio/x-wav".equals(contentType)) {
                     fileName = fileName + ".wav";
