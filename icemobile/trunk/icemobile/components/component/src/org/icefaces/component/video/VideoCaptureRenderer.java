@@ -20,12 +20,13 @@ package org.icefaces.component.video;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.component.utils.BaseInputResourceRenderer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
-import javax.faces.render.Renderer;
+
+import javax.faces.event.ValueChangeEvent;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -35,67 +36,75 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 
-public class VideoCaptureRenderer extends Renderer {
+public class VideoCaptureRenderer extends BaseInputResourceRenderer {
     private final static Logger logger = Logger.getLogger(VideoCaptureRenderer.class.getName());
 
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         VideoCapture video = (VideoCapture) uiComponent;
-
         String clientId = video.getClientId();
-        if (video.isDisabled()) {
-            return;
+        if (!video.isDisabled()) {
+           try {
+              Map<String, Object> map = new HashMap<String, Object>();
+              boolean isValid = extractVideo(facesContext, map, clientId);
+              if (isValid){
+                    if (map !=null){
+                       this.setSubmittedValue(uiComponent, map);
+                       Integer old = Integer.MAX_VALUE;
+                       Integer selected = Integer.MIN_VALUE;
+             //   just trigger valueChange for now as validation may include
+             //   only queueing this if certain attrbiutes change to valid values.
+                       uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
+    		    		    new Integer(old), selected));
+                    }
+              }
+
+           } catch (Exception e) {
+              e.printStackTrace();
+           }
         }
-
-        try {
-            Map<String, Object> map = new HashMap<String, Object>();
-            extractVideo(facesContext, map, clientId);
-            video.setValue(map);
-            uiComponent.queueEvent(new ActionEvent(uiComponent));
-
-        } catch (Exception e) {
-            logger.warning("Exception decoding video stream: " + e);
-        }
-
     }
 
-    private void extractVideo(FacesContext facesContext, Map map, String clientId) throws IOException {
+    public boolean extractVideo(FacesContext facesContext, Map map, String clientId) throws IOException {
         HttpServletRequest request = (HttpServletRequest)
                 facesContext.getExternalContext().getRequest();
+        boolean isValid=false;
+
         try {
-            for (Part part : request.getParts()) {
+            String partUploadName = clientId;
+            if (EnvUtils.isEnhancedBrowser(facesContext)){
+               partUploadName+="-file";
+            }
+            Part part = request.getPart(partUploadName);
+
+            if (part !=null){
                 String contentType = part.getContentType();
                 String fileName = java.util.UUID.randomUUID().toString();
-                boolean isVideo = false;
+                if (part.getSize()<=0){
+                   isValid=false;
+                }else {
+                   isValid = true;
+                }
                 if ("video/mp4".equals(contentType)) {
-                    fileName = fileName + ".mp4";
-                    isVideo = true;
+                    fileName += ".mp4";
                 } else if ("video/mpeg".equals(contentType)) {
                     fileName = fileName + ".mp4";
-                    isVideo = true;
                 } else if ("video/mov".equals(contentType)) {
-                    fileName = fileName + ".mov";
-                    isVideo = true;
+                    fileName += ".mov";
                 } else if ("video/3gpp".equals(contentType)) {
-                    fileName = fileName + ".3gp";
-                    isVideo = true;
+                    fileName +=".3gp";
+                } else {
+                    fileName+=".oth";
                 }
-
-                //need to restrict to parts matching the ID of this component
-                if (isVideo) {
-                    Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
-                }
-//            	else { //log an error for unknown filetype
-//                    logger.info(" No video formatted files captured from multipart upload, part="+part.getContentType());
-//            	}
+                Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
             }
         } catch (ServletException e) {
             logger.warning("ServletException decoding video stream: " + e);
+            isValid=false;
             //ServletException is discarded since it indicates
             //form-encoded rather than multipart
-        } catch (Exception ee) {
-            logger.warning("Exception decoding video: " + ee);
         }
+        return isValid;
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
@@ -103,7 +112,6 @@ public class VideoCaptureRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         VideoCapture video = (VideoCapture) uiComponent;
-
         // root element
         boolean disabled = video.isDisabled();
         if (!EnvUtils.isEnhancedBrowser(facesContext)) {
@@ -118,8 +126,6 @@ public class VideoCaptureRenderer extends Renderer {
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
         // button element
-        //only pass id in basic mode for development
-
         writer.startElement("input", uiComponent);
         writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
         writer.writeAttribute("id", clientId + "_button", null);
@@ -135,8 +141,6 @@ public class VideoCaptureRenderer extends Renderer {
         int height = video.getMaxheight();
         int maxtime = video.getMaxtime();
         //default value of unset in params is Integer.MIN_VALUE
-        //hopefully Steve can calculate size in android based on maxwidth and
-        //maxheight? 
         String params = "'" + clientId + "'";
         //only commonality between iPhone and android is duration or maxTime
         //simplify this scripting when devices have this implemented and is final api
@@ -170,14 +174,11 @@ public class VideoCaptureRenderer extends Renderer {
         if (numParams > 0) {
             params += "'";
         }
-//        logger.info("*******finalScript params="+params);
         String finalScript = "ice.camcorder(" + params + ");";
-//	    logger.info("final Script call="+finalScript);
         if (video.isDisabled()) {
             writer.writeAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR, null);
         }
         writer.writeAttribute(HTML.ONCLICK_ATTR, finalScript, null);
-//        			
         writer.endElement("input");
 
     }
@@ -185,7 +186,6 @@ public class VideoCaptureRenderer extends Renderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-//        String clientId = uiComponent.getClientId(facesContext);
         writer.endElement(HTML.SPAN_ELEM);
     }
 }

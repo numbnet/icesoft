@@ -23,10 +23,7 @@ package org.icefaces.mobile;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Formatter;
 
@@ -34,6 +31,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
+import javax.faces.event.ValueChangeEvent;
 
 import org.icefaces.util.EnvUtils;
 
@@ -54,7 +52,7 @@ public class VideoBean implements Serializable {
     private Map clip2 = new HashMap<String, Object>();
         
     public VideoBean(){
-    	System.out.println("in VideoBean constuctor");
+
     }
    
     public void setClip(Map videoInfo) { 
@@ -96,7 +94,7 @@ public class VideoBean implements Serializable {
                 String urlPath = absolutePath.substring(rootPath.length() - 1);
                 setPathToFile(urlPath);
                videoSize = String.valueOf(videoFile.length());
-               System.out.println("new soundSize " + videoSize);
+             //  System.out.println("new soundSize " + videoSize);
                this.videoClipAvailable = true;
                this.contentType =(String) videoInfo.get("contentType");        
             }
@@ -126,7 +124,7 @@ public class VideoBean implements Serializable {
     	  FacesContext facesContext = FacesContext.getCurrentInstance();
           String rootPath = facesContext.getExternalContext()
                 .getRealPath("/video/");
-          System.out.println("ROOTPATH="+rootPath);
+       //   System.out.println("ROOTPATH="+rootPath);
         return "../video/"+this.getClipName();
     }
 
@@ -164,7 +162,9 @@ public class VideoBean implements Serializable {
 	public void setPathToFile(String ptf){
 		this.pathToFile= ptf;
 	}
-
+    public Map getClip(){
+        return this.clip;
+    }
 
 	public Map getClip2() {
 		return clip2;
@@ -184,4 +184,17 @@ public class VideoBean implements Serializable {
         return "";
     }
 
+    private String messageFromAL = " ValueChangenListener fired ";
+
+    public void methodOne(ValueChangeEvent event){
+        this.messageFromAL =" uploaded file ="+this.getClipName()+" sucessfully";
+    }
+
+    public String getMessageFromAL() {
+        return messageFromAL;
+    }
+
+    public void setMessageFromAL(String messageFromAL) {
+        this.messageFromAL = messageFromAL;
+    }
 }
