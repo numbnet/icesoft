@@ -132,7 +132,13 @@ public:
 #ifdef DEBUG
   NSLog(@"rect for image = (%.1f,%.1f)x(%.1f,%.1f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 #endif
-  [image drawInRect:rect];
+    if (1 == (arc4random() % 2))  {
+        CGContextSetFillColorWithColor(ctx, [[UIColor whiteColor] CGColor]);
+        CGContextFillRect(ctx, CGRectMake(0, 0, subsetWidth, subsetHeight));
+        [image drawInRect:rect blendMode:kCGBlendModeDifference alpha:1.0];  
+    } else {
+        [image drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+    }
   UIGraphicsPopContext();
   
 #ifdef DEBUG
