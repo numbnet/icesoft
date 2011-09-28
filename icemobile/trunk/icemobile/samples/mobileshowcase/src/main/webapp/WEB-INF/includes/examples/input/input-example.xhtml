@@ -37,31 +37,11 @@
             <!-- Number input -->
             <mobi:fieldsetRow>
                 <h:outputLabel for="numberInput" value="Number:"/>
-                <mobi:inputText id="numberInput"
+                <mobi:inputText id="numberInput" styleClass="fr"
                                 type="number"
+                                singleSubmit="true"
                                 placeholder="Number input"
                                 value="#{inputBean.numberInput}">
-                </mobi:inputText>
-            </mobi:fieldsetRow>
-
-            <!-- Email input -->
-            <mobi:fieldsetRow>
-                <h:outputLabel for="emailInput" value="Email:"/>
-                <mobi:inputText id="emailInput"
-                                type="email"
-                                placeholder="Email input"
-                                value="#{inputBean.email}">
-                </mobi:inputText>
-            </mobi:fieldsetRow>
-
-
-            <!-- url input -->
-            <mobi:fieldsetRow>
-                <h:outputLabel for="urlInput" value="URL:"/>
-                <mobi:inputText id="urlInput"
-                                type="url"
-                                placeholder="URL input"
-                                value="#{inputBean.urlInput}">
                 </mobi:inputText>
             </mobi:fieldsetRow>
 
@@ -98,20 +78,6 @@
             <h:outputLabel value="Number: "/>
             <h:outputText styleClass="fr"
                           value="#{inputBean.numberInput}"/>
-        </mobi:fieldsetRow>
-
-        <!-- Email output -->
-        <mobi:fieldsetRow>
-            <h:outputLabel value="Email: "/>
-            <h:outputText styleClass="fr"
-                    value="#{inputBean.email}"/>
-        </mobi:fieldsetRow>
-
-        <!-- URL output -->
-        <mobi:fieldsetRow>
-            <h:outputLabel value="URL: "/>
-            <h:outputText styleClass="fr"
-                          value="#{inputBean.urlInput}"/>
         </mobi:fieldsetRow>
 
         <!-- Password output -->
