@@ -336,9 +336,6 @@ public class Utils {
         }
         File dirFile = new File(folder);
         File newFile = new File(dirFile, fileName);
-//       logger.info("dirFile location="+dirFile.getAbsolutePath());
-//       logger.info("newFile location="+newFile.getAbsolutePath());
-
         boolean success = false;
         if (!dirFile.exists()) {
             success = dirFile.mkdirs();
@@ -389,6 +386,7 @@ public class Utils {
 
       /**
      * Capture UIParameter (f:param) children of a component
+     *  used by commandButton for f:param support
      * @param component The component to work from
      * @return List of UIParameter objects, null if no UIParameter children present
      */
@@ -410,7 +408,7 @@ public class Utils {
     /**
      * Return the name value pairs parameters as a ANSI escaped string
      * formatted in query string parameter format.
-     * TODO: determine the correct escaping here
+     * used by commandButton for f:param support
      * @param children List of children
      * @return a String in the form function(p){name1,value1,name2,value2...});
      */
