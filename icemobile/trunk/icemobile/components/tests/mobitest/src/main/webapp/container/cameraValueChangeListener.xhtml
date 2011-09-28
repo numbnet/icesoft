@@ -15,9 +15,7 @@
         <h:form prependId="false" class="centered" enctype="multipart/form-data" >
             <mobi:camera id="camera" value="#{cameraBean.cameraImage}"
                     valueChangeListener="#{cameraBean.methodOne}">
-                 <f:validator validatorId="org.icefaces.mobile.util.CameraValidator"/>
             </mobi:camera>
-
             <mobi:thumbnail for="camera"/>
             <h:commandButton value="upload" rendered="#{cameraBean.enhancedBrowser}" />
            <h:commandButton value="upload" rendered="#{!cameraBean.enhancedBrowser}">

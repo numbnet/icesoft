@@ -18,10 +18,13 @@ package org.icefaces.component.camera;
 
 
 import org.icefaces.component.annotation.Component;
+import org.icefaces.component.annotation.Expression;
 import org.icefaces.component.annotation.Implementation;
 import org.icefaces.component.annotation.Property;
+import org.icefaces.component.baseMeta.UIComponentBaseMeta;
 import org.icefaces.component.baseMeta.UIInputMeta;
 
+import javax.el.MethodExpression;
 import java.util.Map;
 
 @Component(
@@ -31,15 +34,15 @@ import java.util.Map;
         generatedClass = "org.icefaces.component.camera.CameraBase",
         componentType = "org.icefaces.Camera",
         rendererType = "org.icefaces.CameraRenderer",
-        extendsClass = "javax.faces.component.UIInput",
+        extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.Camera",
         tlddoc = "This mobility component captures an image via a mobile device camera" +
-                " and stores it on the mobile device. Validator support is present as well as " +
+                " and stores it on the mobile device. Available is "+
                 " valueChangeListener support"
 )
 
 
-public class CameraMeta extends UIInputMeta {
+public class CameraMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "maxium allowed width of image")
     private int maxwidth;
@@ -62,9 +65,9 @@ public class CameraMeta extends UIInputMeta {
             "this component.")
     private String styleClass;
 
-    @Property(implementation = Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "as per specs the image information is stored in a Map")
+    @Property(tlddoc = "as per specs the image information is stored in a Map")
     private Map<String, Object> value;
 
-    @Property(defaultValue = "false", tlddoc = "The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
+    @Property(defaultValue="false", tlddoc="The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
     private boolean immediate;
 }

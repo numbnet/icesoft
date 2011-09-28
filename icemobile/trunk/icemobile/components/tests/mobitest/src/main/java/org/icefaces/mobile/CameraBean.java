@@ -38,6 +38,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.activation.MimetypesFileTypeMap;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
@@ -87,7 +89,6 @@ public class CameraBean implements Serializable {
         this.cameraImage = cameraImage;
         File imageFile;
         if (null==cameraImage){
-            System.out.println("attribute null for cameraImage");
             imageFile = new File("temp");
         }
         else {
@@ -100,14 +101,12 @@ public class CameraBean implements Serializable {
         try {
             if (imageFile != null) {            	
                  //actually have ability to call file anything
-            	System.out.println(" /t/t name="+imageFile.getName());
                 this.numberImages++;
                 this.pathToFile = imageFile.getAbsolutePath();
                 String relativePath =  cameraImage.get("relativePath").toString();
-                logger.info("RElative PATH ="+relativePath);
                 this.setPathToFile(relativePath);
                 logger.info("Real PATH TO FILE+"+this.getPathToFile());
-                logger.info("Retrieved Camera Image adding to ImageStore");
+             //   logger.info("Retrieved Camera Image adding to ImageStore");
                 
                 // try for a little clean up after
                 imageFile.deleteOnExit();
@@ -133,11 +132,7 @@ public class CameraBean implements Serializable {
             // into a 1 megapixelish sized image.
             this.width = image.getWidth();
             this.height = image.getHeight();
-
-
             image.flush();
-
-   
         }
         else{
             System.out.println("image is null!!!!");
@@ -146,9 +141,7 @@ public class CameraBean implements Serializable {
 
     public Map getCameraImage() {
         return cameraImage;
-    }  
-    
- 
+    }
 
     public List getFileList() {
         return fileList;
@@ -197,12 +190,20 @@ public class CameraBean implements Serializable {
     public boolean isEnhancedBrowser()  {
         return EnvUtils.isEnhancedBrowser(FacesContext.getCurrentInstance());
     }
-    int numTimes = 0;
 
     public void methodOne(ValueChangeEvent event){
-        numTimes++;
-        System.out.println("ValueChangeListener for camera been fired "+numTimes+" times");
-        this.messageFromAL += " "+numTimes+" times fired";
+        //going to use this method to check filetype and remove the file if not correct filetype
+         if (event!=null){
+            String filePath = (String)event.getNewValue();
+            MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
+            String mimeType = mimeTypesMap.getContentType(filePath);
+            if (mimeType.equals("image/jpeg") || mimeType.equals("image/png")){
+                 messageFromAL="valid image uploaded of jpg or png";
+            } else {
+               messageFromAL = "invalid upload so can delete without user being able to access";
+            }
+         }
+        logger.info("ValueChangeListener  event is null");
     }
 
     public String getMessageFromAL() {

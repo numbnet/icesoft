@@ -17,7 +17,6 @@
 package org.icefaces.component.camera;
 
 
-import org.icefaces.component.utils.BaseInputResourceRenderer;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
 import org.icefaces.util.EnvUtils;
@@ -26,65 +25,87 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
+
+import javax.faces.render.Renderer;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class CameraRenderer extends BaseInputResourceRenderer {
+public class CameraRenderer extends Renderer {
     private static Logger logger = Logger.getLogger(CameraRenderer.class.getName());
 
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
+        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
         Camera camera = (Camera) uiComponent;
+        String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
         String clientId = camera.getClientId();
         try {
             if (!camera.isDisabled()) {
                 Map<String, Object> map = new HashMap<String, Object>();
-                boolean valid = extractImages(facesContext, map, clientId);
+                boolean valid =  extractImages(facesContext, map, clientId);
                 /* only set map to value if boolean returned from extractImages is true */
-                if (valid) {
-                    this.setSubmittedValue(uiComponent, map);
-                    Integer old = Integer.MAX_VALUE;
-                    Integer selected = Integer.MIN_VALUE;
-                    //   just trigger valueChange for now as validation may include
-                    //   only queueing this if certain attributes change to valid values.
-                    uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
-                            old, selected));
+                if (valid){
+                    if (map !=null){
+                       camera.setValue(map);
+                       String old = null;
+                       File imageFile = (File) map.get("file");
+                       String newFnm = imageFile.getAbsolutePath();
+             //   just trigger valueChange for now as validation may include
+             //   only queueing this if certain attrbiutes change to valid values.
+                       uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
+    		    		    old, newFnm));
+                    }
                 }
             }
         } catch (Exception e) {
-            logger.log(Level.WARNING, "Error extracting image data from request.",e);
+            e.printStackTrace();
         }
     }
 
-    private boolean extractImages(FacesContext facesContext, Map map, String clientId) throws IOException {
+    /**
+     *
+     * @param facesContext
+     * @param map
+     * @param clientId
+     * @return   boolean true means validation of the upload passes, false mean it does not.
+     * @throws IOException
+     *
+     * that uploaded this component.
+     */
+    public boolean extractImages(FacesContext facesContext, Map map, String clientId) throws IOException {
         HttpServletRequest request = (HttpServletRequest)
                 facesContext.getExternalContext().getRequest();
-        boolean isValid = false;
+        boolean isValid=false;
 
         try {
             //if it's a container upload then the name of part if <clientId>-file
             //if desktop browser it's just the clientId
             String partUploadName = clientId;
-            if (EnvUtils.isEnhancedBrowser(facesContext)) {
-                partUploadName += "-file";
+            if (EnvUtils.isEnhancedBrowser(facesContext)){
+               partUploadName+="-file";
             }
             Part part = request.getPart(partUploadName);
-            if (part != null) {
+            if (part !=null){
                 String contentType = part.getContentType();
                 String fileName = java.util.UUID.randomUUID().toString();
-                isValid = part.getSize() > 0;
-                if ("image/jpeg".equals(contentType) || "image/jpg".equals(contentType)) {
+                if (part.getSize()<=0){
+                   isValid=false;
+                }else {
+                   isValid = true;
+                }
+                if ("image/jpeg".equals(contentType)|| "image/jpg".equals(contentType)) {
                     fileName += ".jpg";
-                } else if ("image/png".equals(contentType)) {
+                }
+                else if ("image/png".equals(contentType)) {
                     fileName += ".png";
-                } else {  /*if not jpeg or png give it filename of oth for other */
+                }
+                else {  /*if not jpeg or png give it filename of oth for other */
                     fileName += ".oth";
                 }
                 Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
@@ -112,6 +133,8 @@ public class CameraRenderer extends BaseInputResourceRenderer {
             writer.endElement(HTML.INPUT_ELEM);
             return;
         }
+        // root element
+        boolean disabled = camera.isDisabled();
         // span as per MobI-11
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
@@ -143,6 +166,8 @@ public class CameraRenderer extends BaseInputResourceRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = uiComponent.getClientId(facesContext);
+        Camera camera = (Camera) uiComponent;
         writer.endElement(HTML.SPAN_ELEM);
     }
 
