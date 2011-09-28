@@ -18,8 +18,9 @@ package org.icefaces.component.video;
 
 
 import org.icefaces.component.annotation.Component;
+import org.icefaces.component.annotation.Implementation;
 import org.icefaces.component.annotation.Property;
-import org.icefaces.component.baseMeta.UIComponentBaseMeta;
+import org.icefaces.component.baseMeta.UIInputMeta;
 
 import java.util.Map;
 
@@ -31,16 +32,16 @@ import java.util.Map;
         generatedClass = "org.icefaces.component.video.VideoCaptureBase",
         componentType = "org.icefaces.VideoCapture",
         rendererType = "org.icefaces.VideoCaptureRenderer",
-        extendsClass = "javax.faces.component.UIComponentBase",
+        extendsClass = "javax.faces.component.UIInput",
         componentFamily = "org.icefaces.VideoCapture",
         tlddoc = "This mobility component captures a video file via a mobile device video capture" +
                 " using the ICEfaces mobility container, and stores this file on the server. "
 )
 
 
-public class VideoCaptureMeta extends UIComponentBaseMeta {
+public class VideoCaptureMeta extends UIInputMeta {
 
-    @Property(tlddoc = "as per specs the video clip information is stored in a Map")
+    @Property(implementation = Implementation.EXISTS_IN_SUPERCLASS, tlddoc= "as per specs the image information is stored in a Map")
     private Map<String, Object> value;
 
     @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "length of audio clip in seconds")
@@ -61,10 +62,6 @@ public class VideoCaptureMeta extends UIComponentBaseMeta {
             "this component.")
     private String styleClass;
 
-
-    @Property(defaultValue = "2097152", tlddoc = "find out from Ted what this represents")
-    private int maxK;
-
     @Property(defaultValue = "Integer.MIN_VALUE",
             tlddoc = "int value of maxwidth for video size in container and passed as a parameter ")
     private int maxwidth;
@@ -73,10 +70,7 @@ public class VideoCaptureMeta extends UIComponentBaseMeta {
             tlddoc = "int value of maxheight passed as a parameter to device")
     private int maxheight;
 
-    @Property(defaultValue = "mp4", tlddoc = "format of video")
-    private String format;
-
-    @Property(defaultValue = "mp4", tlddoc = "encoding of video")
-    private String encoding;
+    @Property(defaultValue="false", tlddoc="The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
+    private boolean immediate;
 
 }
