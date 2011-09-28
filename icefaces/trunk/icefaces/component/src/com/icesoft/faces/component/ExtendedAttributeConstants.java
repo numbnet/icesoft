@@ -214,7 +214,7 @@ public class ExtendedAttributeConstants {
                new String[]{ HTML.ROWS_ATTR };                        
            attributes[4] = (ICE_COLUMNS);
            final String[] ICE_DATAPAGINATOR = 
-               new String[]{ HTML.STYLE_ATTR };                        
+               new String[]{ HTML.STYLE_ATTR, HTML.TABINDEX_ATTR };                        
            attributes[5] = (ICE_DATAPAGINATOR);
            final String[] ICE_INPUTFILE = 
                new String[]{ HTML.ACCEPT_ATTR,  HTML.ACCESSKEY_ATTR,  HTML.HEIGHT_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONFOCUS_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        

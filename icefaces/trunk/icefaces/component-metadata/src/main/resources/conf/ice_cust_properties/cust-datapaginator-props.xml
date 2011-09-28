@@ -280,3 +280,16 @@
         <default-value>false</default-value>
     </property-extension>
 </property>
+<property>
+	<description>
+		Position of this element in the tabbing order for the current document. This value must be an integer between 0 and 32767. 
+	</description>
+	<property-name>tabindex</property-name>
+	<property-class>int</property-class>
+	<property-extension>
+		<category>ICE_LAYOUT</category>
+          <editor-class>
+            &integerEditor;
+          </editor-class>	
+	</property-extension>
+</property>
