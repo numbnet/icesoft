@@ -16,16 +16,8 @@
 
 package org.icefaces.component.camera;
 
-import javax.el.MethodExpression;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.ValueChangeEvent;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Camera extends CameraBase {

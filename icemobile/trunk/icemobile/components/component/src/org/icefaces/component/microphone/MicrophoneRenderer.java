@@ -20,12 +20,12 @@ package org.icefaces.component.microphone;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.component.utils.BaseInputResourceRenderer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
-import javax.faces.render.Renderer;
+import javax.faces.event.ValueChangeEvent;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -35,65 +35,70 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 
-public class MicrophoneRenderer extends Renderer {
+public class MicrophoneRenderer extends BaseInputResourceRenderer {
     private static Logger logger = Logger.getLogger(MicrophoneRenderer.class.getName());
 
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
-//        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
         Microphone microphone = (Microphone) uiComponent;
-//        String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
-        //print out the keys for the req param map
         String clientId = microphone.getClientId();
         if (microphone.isDisabled()) {
             return;
         }
         try {
             //MOBI-18 requirement is to decode the file from the map
+
             Map<String, Object> map = new HashMap<String, Object>();
-            extractAudio(facesContext, map, clientId);
-            microphone.setValue(map);
-            uiComponent.queueEvent(new ActionEvent(uiComponent));
+            boolean valid = extractAudio(facesContext, map, clientId);
+            logger.info("MIC VALID="+valid);
+            if (valid){
+
+               if (map !=null){
+                   this.setSubmittedValue(uiComponent, map);
+                   Integer old = Integer.MAX_VALUE;
+                   Integer selected = Integer.MIN_VALUE;
+             //   just trigger valueChange for now as validation may include
+             //   only queueing this if certain attrbiutes change to valid values.
+                   uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
+    		    		    new Integer(old), selected));
+                }
+            }
         } catch (Exception e) {
             logger.warning("Exception decoding audio stream: " + e);
         }
     }
 
-    private void extractAudio(FacesContext facesContext, Map map, String clientId) throws IOException {
+    public boolean extractAudio(FacesContext facesContext, Map map, String clientId) throws IOException {
         HttpServletRequest request = (HttpServletRequest)
                 facesContext.getExternalContext().getRequest();
-        try {
-            for (Part part : request.getParts()) {
-                String contentType = part.getContentType();
-//logger.info(" part type=" + contentType  + " name="+part.getName() );
+        boolean isSound=false;
 
+        try {
+            String partUploadName = clientId;
+            if (EnvUtils.isEnhancedBrowser(facesContext)){
+               partUploadName+="_mic-file";
+            }
+            Part part = request.getPart(partUploadName);
+            if (part !=null && part.getSize()>0){
+                isSound=true;
+                String contentType = part.getContentType().trim();
+                logger.info("MICROPHONE CONTENT TYPE="+contentType);
                 String fileName = java.util.UUID.randomUUID().toString();
-                boolean isSound = false;
                 if ("audio/wav".equals(contentType) || "audio/x-wav".equals(contentType)) {
                     fileName = fileName + ".wav";
-                    isSound = true;
-                } else if ("audio/mp4".equals(contentType)) {
+                } else if (contentType.endsWith("mp4")) {
                     fileName = fileName + ".mp4";
-                    isSound = true;
                 } else if ("audio/x-m4a".equals(contentType)) {
                     fileName = fileName + ".m4a";
-                    isSound = true;
                 } else if ("audio/mpeg".equals(contentType)) {
                     fileName = fileName + ".mp3";
-                    isSound = true;
                 } else if ("audio/amr".equals(contentType)) {
                     fileName = fileName + ".amr";
-                    isSound = true;
+                } else {
+                    fileName+=".oth";
                 }
-                //need to restrict to parts matching the ID of this component
-                if (isSound) {
-                    //fill map with the file
-                    logger.finer("creating sound file with content=" + contentType);
-                    Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
-                }
-//            	else { //log an error for unknown filetype
-//                    logger.info(" No audio formatted files captured from multipart upload, part="+part.getContentType());
-//            	}
+
+                Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
             }
         } catch (ServletException e) {
             logger.finer("Exception decoding audio stream: " + e);
@@ -101,7 +106,9 @@ public class MicrophoneRenderer extends Renderer {
             //form-encoded rather than multipart
         } catch (Exception ee) {
             logger.warning("Some other exception decoding audio: " + ee);
+
         }
+        return isSound;
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
@@ -146,7 +153,6 @@ public class MicrophoneRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         Microphone microphone = (Microphone) uiComponent;
-
         writer.endElement(HTML.SPAN_ELEM);
     }
 
