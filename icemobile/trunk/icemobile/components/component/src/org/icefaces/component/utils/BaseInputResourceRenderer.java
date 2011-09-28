@@ -147,27 +147,6 @@ public class BaseInputResourceRenderer extends Renderer {
         }
     }
 
-    //not sure if need this yet as none of these uiComponents render their own children yet.
-    protected void renderChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        for (UIComponent child : uiComponent.getChildren()) {
-            renderChild(facesContext, child);
-        }
-    }
-
-    protected void renderChild(FacesContext facesContext, UIComponent child) throws IOException {
-        if (!child.isRendered()) {
-            return;
-        }
-
-        child.encodeBegin(facesContext);
-
-        if (child.getRendersChildren()) {
-            child.encodeChildren(facesContext);
-        } else {
-            renderChildren(facesContext, child);
-        }
-        child.encodeEnd(facesContext);
-    }
 
 
     public void setSubmittedValue(UIComponent uiComponent, Object value) {
@@ -180,63 +159,15 @@ public class BaseInputResourceRenderer extends Renderer {
     }
 
 
-  /*  protected Object getValue(UIComponent uiComponent) {
-        //need this to support conversion.  use UIInput or ValueHolder??
-        if (uiComponent instanceof UIInput) {
+   protected Object getValue(UIComponent uiComponent) {
+       if (uiComponent instanceof UIInput) {
             Object value = ((UIInput) uiComponent).getValue();
-
-            if (logger.isLoggable(Level.FINE)) {
-                logger.fine("component.getValue() = " + value + " for component=" + uiComponent.getClientId());
-            }
             return value;
         }
 
         return null;
-    }  */
-
-    protected List<SelectItem> getSelectItems(FacesContext facesContext, UIInput uiComponent) {
-        List<SelectItem> selectItems = new ArrayList<SelectItem>();
-
-        for (UIComponent child : uiComponent.getChildren()) {
-            if (child instanceof UISelectItem) {
-                UISelectItem uiSelectItem = (UISelectItem) child;
-
-                selectItems.add(new SelectItem(uiSelectItem.getItemValue(), uiSelectItem.getItemLabel()));
-            } else if (child instanceof UISelectItems) {
-                UISelectItems uiSelectItems = ((UISelectItems) child);
-                Object value = uiSelectItems.getValue();
-
-                if (value instanceof SelectItem[]) {
-                    selectItems.addAll(Arrays.asList((SelectItem[]) value));
-                } else if (value instanceof Map) {
-                    Map map = (Map) value;
-
-                    for (Object key : map.keySet()) {
-                        selectItems.add(new SelectItem(map.get(key), String.valueOf(key)));
-                    }
-                } else if (value instanceof Collection) {
-                    Collection collection = (Collection) value;
-                    String var = (String) uiSelectItems.getAttributes().get("var");
-
-                    if (var != null) {
-                        for (Object object : collection) {
-                            facesContext.getExternalContext().getRequestMap().put(var, object);
-                            String itemLabel = (String) uiSelectItems.getAttributes().get("itemLabel");
-                            Object itemValue = uiSelectItems.getAttributes().get("itemValue");
-
-                            selectItems.add(new SelectItem(itemValue, itemLabel));
-                        }
-                    } else {
-                        for (Object aCollection : collection) {
-                            selectItems.add((SelectItem) aCollection);
-                        }
-                    }
-                }
-            }
-        }
-
-        return selectItems;
     }
+
 
         /*if the image properties have to be gotten from the image map to encode*/
     public Object getPropertyFromMap(Map<String, Object> componentMap, String key) {
