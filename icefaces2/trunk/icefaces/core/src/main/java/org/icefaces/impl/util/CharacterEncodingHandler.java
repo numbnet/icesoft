@@ -74,15 +74,15 @@ public class CharacterEncodingHandler extends ResourceHandlerWrapper {
     private void setCharacterEncoding(FacesContext context) {
         String calculatedEncoding = calculateCharacterEncoding(context);
         if (null != calculatedEncoding) {
+            ExternalContext ec = context.getExternalContext();
+            String currentEncoding = ec.getRequestCharacterEncoding();
             try {
-                ExternalContext ec = context.getExternalContext();
-                String currentEncoding = ec.getRequestCharacterEncoding();
                 if (!calculatedEncoding.equals(currentEncoding)) {
                     ec.setRequestCharacterEncoding(calculatedEncoding);
                 }
             } catch (UnsupportedEncodingException e) {
                 if (log.isLoggable(Level.WARNING)) {
-                    log.warning("can't set encoding " + calculatedEncoding + " " + e.getMessage());
+                    log.warning("can't set encoding to [" + calculatedEncoding + "], current encoding is [" + currentEncoding + "]");
                 }
             }
         } else {

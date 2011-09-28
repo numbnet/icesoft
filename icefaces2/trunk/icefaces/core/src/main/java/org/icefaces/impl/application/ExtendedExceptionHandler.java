@@ -80,7 +80,7 @@ public class ExtendedExceptionHandler extends ExceptionHandlerWrapper {
                 if (PhaseId.RESTORE_VIEW.equals(queueContext.getPhaseId())) {
                     FacesContext fc = FacesContext.getCurrentInstance();
 
-                    if (!isValidSession(fc) || true) {
+                    if (!isValidSession(fc)) {
                         //At this point, perhaps we should remove the ViewExpiredException and add
                         //a SessionExpiredException wrapped around it then proceed with normal processing
                         iter.remove();
@@ -128,7 +128,7 @@ public class ExtendedExceptionHandler extends ExceptionHandlerWrapper {
             long lastAccessed = 0;
             long maxInactive = 0;
             if (EnvUtils.instanceofPortletSession(sessObj)) {
-                newSession = ((PortletSession) sessObj).isNew();
+//                newSession = ((PortletSession) sessObj).isNew();
                 lastAccessed = ((PortletSession) sessObj).getLastAccessedTime();
                 maxInactive = ((PortletSession) sessObj).getMaxInactiveInterval();
             } else {
@@ -137,7 +137,6 @@ public class ExtendedExceptionHandler extends ExceptionHandlerWrapper {
                 maxInactive = ((HttpSession) sessObj).getMaxInactiveInterval();
             }
 
-            long now = System.currentTimeMillis();
             if (!newSession && (System.currentTimeMillis() - lastAccessed) <= (maxInactive * 1000)) {
                 validSession = true;
             }
