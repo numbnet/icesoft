@@ -14,6 +14,8 @@
   ~ limitations under the License.
   -->
 
+
+
 <ui:fragment xmlns="http://www.w3.org/1999/xhtml"
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
@@ -29,6 +31,7 @@
                 <h:outputLabel for="textInput" value="Text:"/>
                 <mobi:inputText id="textInput"
                                 autocorrect="on"
+                                singleSubmit="true"
                                 type="text"
                                 placeholder="Text input"
                                 value="#{inputBean.textInput}"/>
@@ -45,14 +48,25 @@
                 </mobi:inputText>
             </mobi:fieldsetRow>
 
+            <!-- textarea input -->
+            <mobi:fieldsetRow>
+                <h:outputLabel for="textAreaInput" value="TextArea:"/><br />
+                <mobi:inputText id="textAreaInput" style="width:99%;"
+                                type="textarea"
+                                singleSubmit="true"
+                                placeholder="Text area"
+                                value="#{inputBean.textArea}">
+                </mobi:inputText>
+            </mobi:fieldsetRow>
+
             <!-- Password input -->
             <mobi:fieldsetRow>
                 <h:outputLabel for="passwordInput" value="Password:"/>
                 <mobi:inputText id="passwordInput"
                                 type="password"
+                                singleSubmit="true"
                                 placeholder="Password input"
                                 value="#{inputBean.passwordInput}">
-                    <f:validateLength minimum="6" maximum="8"/>
                 </mobi:inputText>
             </mobi:fieldsetRow>
 
@@ -78,6 +92,13 @@
             <h:outputLabel value="Number: "/>
             <h:outputText styleClass="fr"
                           value="#{inputBean.numberInput}"/>
+        </mobi:fieldsetRow>
+
+         <!-- Textarea output -->
+        <mobi:fieldsetRow>
+            <h:outputLabel value="Number: "/>
+            <h:outputText styleClass="fr"
+                          value="#{inputBean.textArea}"/>
         </mobi:fieldsetRow>
 
         <!-- Password output -->
