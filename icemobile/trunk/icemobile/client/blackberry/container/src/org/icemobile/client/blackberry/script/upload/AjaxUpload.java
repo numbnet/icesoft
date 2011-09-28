@@ -76,7 +76,7 @@ public class AjaxUpload extends ScriptableFunction {
         final long startTime = System.currentTimeMillis();
         
         try {
-            ICEmobileContainer.DEBUG("ajax.upload - Serialized form:\n" + serializedForm);
+//            ICEmobileContainer.DEBUG("ajax.upload - Serialized form:\n" + serializedForm);
             NameValuePair[] params = UploadUtilities.getNameValuePairs(serializedForm, "=", "&");
             //Log.e("ICEutil", "NVP=" + params.length);
             for (int i=0; i<params.length; i++) {
