@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">inputComponent Tests</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport"
+		content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+ 
+  <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
+   <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
+
+</h:head>
+
+<h:body>
+ 
+    <h3>html5 input types should bring up proper device keyboard</h3>
+
+    <h:form id="inputForm" >
+
+      <p>
+       <h5>mobi input type is number no converter</h5>
+         <h:outputText value="F. number"/>
+         <mobi:inputText id="numberId" value="#{input.numberInput}" type="number" placeholder="9999"
+                       singleSubmit="true"  min="0" max="100" step="5" title="number field"/>
+                         
+       </p>
+       <p>
+       <h5>mobi input type is number with converter</h5>
+         <h:outputText value="F2. number"/>
+         <mobi:inputText id="numberIdConv" value="#{input.numberInput2}" type="number" placeholder="9999"
+                       singleSubmit="true"  min="0" max="100" step="5" title="number field">
+                       <f:convertNumber type="number"/>
+         </mobi:inputText>
+                         
+       </p>
+
+       <p>
+       <span id="numSpan" name="inputForm:num_span" >
+       <input autocapitalize="off" autocorrect="off" class="mobi-input-text" id="inputForm:num" max="100" min="0"
+              name="inputForm:num" onchange="mobi.input.testSubmit(event, 'inputForm:num', this.value, true);"
+                  placeholder="9999" step="5" type="number" value="90"/>
+       <input type="hidden" id="inputForm:num_hidden" name="inputForm:num_hidden"/>
+       </span>
+       </p>
+       <p>
+          <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>
+          <h:outputText value="#{input.eventString}"/>
+          
+       </p>
+       <mobi:commandButton id="defaultOne" type="default" value="defaultSStrue" singleSubmit="true" actionListener="#{input.defaultEvent}"/>
+       <mobi:commandButton  id="defaultTwo" type="default" value="defaultSSFalse" actionListener="#{input.defaultEvent}"/>
+       <mobi:commandButton id="importantOne" type="important" value="importantSStrue" singleSubmit="true"
+                 actionListener="#{input.importantEvent}"/>
+       <mobi:commandButton id="importantTwo" type="important" value="importantSSFalse" 
+                 actionListener="#{input.importantEvent}"/>
+    </h:form>
+    <h3>RESULTS</h3>
+
+    <h5>mumber F</h5>
+    <h:outputText value="#{input.numberInput}"/>
+    <h5>number F2</h5>
+    <h:outputText value="#{input.numberInput2}"/>
+
+	<li><a href="../inputComponents.html">index page</a>
+	</li>
+
+</h:body>
+</html>

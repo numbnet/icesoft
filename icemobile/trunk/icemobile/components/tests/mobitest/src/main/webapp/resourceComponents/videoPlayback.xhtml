@@ -5,43 +5,31 @@
 	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 <h:head>
 	<meta charset="UTF-8"></meta>
-	<title>video Playback</title>
+	<title>video Playbackwith static links to files</title>
 
 </h:head>
 <h:body>
 
-	<h3> A. video component</h3>
+	<h3> videoPlayback</h3>
 
-	<h:outputText value="mp4 Playback with mob video Not all attributes yet supported" />
+	<h5>ipad clip recorded with camcorder" </h5>
 	<br />
-	<mobi:videoPlayer id="videao_one" value="sample_mpeg4.mp4" controls="controls"
-		preload="auto" playsinline="true"/>
-   <br />
-   
-   	<h:outputText value="3g2 format Playback with mob video Not all attributes yet supported" />
-	<br />
-	<mobi:videoPlayer id="video_two" value="sample_3GPP2.3g2" controls="true"
+	<mobi:videoPlayer id="videao_one" value="../video/iPadvideo.mp4" controls="true"
 		preload="auto" />
    <br />
    
-   <h5>ipad clip recorded with camcorder</h5>
-   <mobi:videoPlayer id="ipad" value="iPadvideo.mp4" controls="true"  playsinline="true"
-           preload="auto"/>
+   	<h5>3g2 format Playback </h5>
+	<br />
+	<mobi:videoPlayer id="video_two" value="../video/sample_3GPP2.3g2" controls="true"
+		preload="auto" />
+   <br />
    
-   
-     <h5>android clip recorded with android</h5>
-   <mobi:videoPlayer id="android" value="androidvideo.mp4" controls="true" preload="auto" type="video/mp4 codecs='avc1, samr'"/>
-   
-   
-   <h5>B. rough tags to try on android that do not work on iPad or iPhone</h5>
-   
- <!--  <h:outputText value="iPadSample with autoplay"/>
-   <mobi:videoPlayer value="iPadvideo.mp4" autoplay="autoplay" controls="controls"/>  --> 
-   
-  <!-- <br />
-   <h:outputText value="3g2 sample"/>
-   <mobi:videoPlayer onclick="this.play();" src="sample_3GPP2.3g2" controls="controls"/>
-   <br />  -->
+    <h5>android clip recorded with android</h5>
+    <mobi:videoPlayer id="android" value="../video/androidvideo.mp4" controls="true" preload="auto"/>
+
+    <br/>
+
+
  
  	<li><a href="../index.html">index page</a>
 	</li>
