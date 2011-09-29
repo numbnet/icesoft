@@ -168,13 +168,17 @@ if (!window.ice.icefaces) {
 
         function retrieveUpdate(viewID) {
             append(viewIDs, viewID);
+            var form = lookupElementById(viewID);
+            appendHiddenInputElement(form, 'ice.view', viewID);
+            appendHiddenInputElement(form, 'ice.window', namespace.window);
+
             return function() {
                 var form = lookupElementById(viewID);
                 //form is missing after navigating to a non-icefaces page
                 if (form) {
                     try {
                         debug(logger, 'picking updates for view ' + viewID);
-                        jsf.ajax.request(form, null, {'ice.submit.type': 'ice.push', render: '@all', 'ice.view': viewID, 'ice.window': namespace.window});
+                        jsf.ajax.request(form, null, {'ice.submit.type': 'ice.push', render: '@all'});
                     } catch (e) {
                         warn(logger, 'failed to pick updates', e);
                     }
@@ -237,15 +241,17 @@ if (!window.ice.icefaces) {
                         break;
                     case 'complete':
                         var xmlContent = e.responseXML;
+                        var sourceElement = e.source;
                         if (containsXMLData(xmlContent)) {
-                            broadcast(perRequestOnBeforeUpdateListeners, [ xmlContent ]);
+                            broadcast(perRequestOnBeforeUpdateListeners, [ xmlContent, sourceElement ]);
                         } else {
                             warn(logger, 'the response does not contain XML data');
                         }
                         break;
                     case 'success':
                         var xmlContent = e.responseXML;
-                        broadcast(perRequestOnAfterUpdateListeners, [ xmlContent ]);
+                        var sourceElement = e.source;
+                        broadcast(perRequestOnAfterUpdateListeners, [ xmlContent, sourceElement ]);
                         var updates = xmlContent.documentElement.firstChild.childNodes;
                         var updateDescriptions = collect(updates, function(update) {
                             var id = update.getAttribute('id');
@@ -350,7 +356,7 @@ if (!window.ice.icefaces) {
                         //update and form.onsubmit callback is called directly (by application or third party library code)
                         if (element.name && !element.id) {
                             //verify that the id is not already in use
-                            if (!document.getElementById(element.name))  {
+                            if (!document.getElementById(element.name)) {
                                 element.id = element.name;
                             }
                         }
@@ -477,7 +483,7 @@ if (!window.ice.icefaces) {
         }
 
         //fix JSF issue: http://jira.icefaces.org/browse/ICE-5691 
-        namespace.onAfterUpdate(function(updates) {
+        namespace.onAfterUpdate(function(updates, source) {
             var viewStateUpdate = detect(updates.getElementsByTagName('update'), function(update) {
                 return update.getAttribute('id') == 'javax.faces.ViewState';
             });
@@ -494,13 +500,16 @@ if (!window.ice.icefaces) {
 
                 //MyFaces uses a linked list of view state keys to track the changes in the view state -- the participating
                 //forms need to have their view state key updated so that the next submit will work with the latest saved state
-                //ICE-7188 - commented out as ViewState updates were being applied to all forms on the page.
-//                each(document.getElementsByTagName('form'), function(form) {
-//                    var viewStateElement = form['javax.faces.ViewState'];
-//                    if (viewStateElement) {
-//                        viewStateElement.value = viewState;
-//                    }
-//                });
+                var submittedForm = formOf(source);
+                var submittedViewID = submittedForm['ice.view'].value;
+                //update only the forms that have the same viewID with the one used by the submitting form
+                each(document.getElementsByTagName('form'), function(form) {
+                    var viewIDElement = form['ice.view'];
+                    var viewStateElement = form['javax.faces.ViewState'];
+                    if (viewStateElement && viewIDElement && viewIDElement.value == submittedViewID) {
+                        viewStateElement.value = viewState;
+                    }
+                });
             }
         });
 
