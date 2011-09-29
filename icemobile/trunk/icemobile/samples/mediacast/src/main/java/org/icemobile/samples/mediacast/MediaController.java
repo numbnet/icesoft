@@ -57,6 +57,7 @@ public class MediaController implements Serializable {
     private Media soundIconSmall;
     private Media movieIconSmall;
     private String videoCommand = null;
+    private String audioCommand = null;
     private String thumbCommand = null;
 
     public MediaController() {
@@ -68,6 +69,10 @@ public class MediaController implements Serializable {
         videoCommand = FacesContext.getCurrentInstance()
                 .getExternalContext().getInitParameter(
                     "org.icemobile.videoConvertCommand" );
+                    
+        audioCommand = FacesContext.getCurrentInstance()
+                .getExternalContext().getInitParameter(
+                    "org.icemobile.audioConvertCommand" );
 
         thumbCommand = FacesContext.getCurrentInstance()
                 .getExternalContext().getInitParameter(
@@ -217,6 +222,7 @@ public class MediaController implements Serializable {
                     converted.getAbsolutePath());
             Runtime runtime = Runtime.getRuntime();
             Process process = runtime.exec(command.toString());
+System.out.println(command);
             int exitValue = process.waitFor();
             if (0 != exitValue)  {
                 logger.log(Level.WARNING, "Transcoding failure: " + command);
@@ -249,6 +255,21 @@ public class MediaController implements Serializable {
     private void processUploadedAudio(MediaMessage audioMessage, File audioFile) {
         if (audioFile == null){
             return;
+        }
+        try {
+            if (null != audioCommand) {
+                File converted = 
+                        processFile(audioFile, audioCommand, ".m4a");
+                File audioDir = audioFile.getParentFile();
+                File newAudio = new File(audioDir, converted.getName());
+//                audioFile.delete();
+System.out.println("not deleting");
+                converted.renameTo(newAudio);
+                audioFile = newAudio;
+            }
+        } catch (Exception e) {
+            //conversion fails, but we may proceed with original file
+            logger.log(Level.WARNING, "Error processing audio.", e);
         }
         audioMessage.addAudio(audioFile);
         audioMessage.addMediumPhoto(soundIcon);
