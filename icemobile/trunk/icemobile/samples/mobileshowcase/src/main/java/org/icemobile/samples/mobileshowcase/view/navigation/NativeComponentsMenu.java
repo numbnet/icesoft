@@ -20,6 +20,7 @@ import org.icemobile.samples.mobileshowcase.view.examples.device.camcorder.Camco
 import org.icemobile.samples.mobileshowcase.view.examples.device.camera.CameraBean;
 import org.icemobile.samples.mobileshowcase.view.examples.device.microphone.MicrophoneBean;
 import org.icemobile.samples.mobileshowcase.view.examples.device.notification.NotificationBean;
+import org.icemobile.samples.mobileshowcase.view.examples.device.qrcode.QrCodeBean;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
 
 import javax.annotation.PostConstruct;
@@ -40,7 +41,9 @@ import java.io.Serializable;
                 @MenuLink(title = "menu.native.microphone.title",
                         exampleBeanName = MicrophoneBean.BEAN_NAME),
                 @MenuLink(title = "menu.native.notification.title",
-                        exampleBeanName = NotificationBean.BEAN_NAME)
+                        exampleBeanName = NotificationBean.BEAN_NAME),
+                @MenuLink(title = "menu.native.qrcode.title",
+                        exampleBeanName = QrCodeBean.BEAN_NAME)
         })
 @ManagedBean(name = NativeComponentsMenu.BEAN_NAME)
 @ApplicationScoped
