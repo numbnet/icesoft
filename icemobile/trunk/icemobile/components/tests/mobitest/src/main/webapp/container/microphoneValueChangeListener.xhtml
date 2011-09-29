@@ -4,7 +4,7 @@
 	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 <h:head>
 	<meta charset="UTF-8"></meta>
-	<title>microphone embedded device</title>
+	<title>microphone embedded device with ValueChangeListener to check valid input type</title>
     
     <mobi:deviceStylesheet/>
 </h:head>
@@ -14,13 +14,12 @@
 		<h3>microphone with JSF Validator</h3>
 
 		<h:outputText value="TalktoMe!" />
+           <h5>message from value change listener</h5>
+           <h:outputText value="#{micBean.messageFromAL}"/>
 
-		<h5>filename of sound clip</h5>
-		<h:outputText value="#{micBean.clipName}" />
 		<br />
 		<mobi:microphone id="mic_one" duration="10" value="#{micBean.clip}"
                 valueChangeListener="#{micBean.methodOne}">
-             <f:validator validatorId="org.icefaces.mobile.util.MicValidator"/>
         </mobi:microphone>
              <h:commandButton value="upload" rendered="#{micBean.enhancedBrowser}" />
             <h:commandButton value="upload" rendered="#{!micBean.enhancedBrowser}">
@@ -34,8 +33,8 @@
 	<br />
 	<h5>contentType of uploadedFile</h5>
 	 <h:outputText value="#{micBean.audioContentType}"/>
-            <h5>message from value change listener</h5>
-           <h:outputText value="#{micBean.messageFromAL}"/>
+    	<h5>filename of sound clip</h5>
+		<h:outputText value="#{micBean.clipName}" />
 	<br />
 
 

@@ -18,9 +18,10 @@ package org.icefaces.component.microphone;
 
 
 import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Implementation;
+import org.icefaces.component.annotation.Expression;
 import org.icefaces.component.annotation.Property;
-import org.icefaces.component.baseMeta.UIInputMeta;
+import org.icefaces.component.baseMeta.UIComponentBaseMeta;
+import javax.el.MethodExpression;
 
 import java.util.Map;
 
@@ -31,13 +32,13 @@ import java.util.Map;
         generatedClass = "org.icefaces.component.microphone.MicrophoneBase",
         componentType = "org.icefaces.Microphone",
         rendererType = "org.icefaces.MicrophoneRenderer",
-        extendsClass = "javax.faces.component.UIInput",
+        extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.Microphone",
         tlddoc = "This mobility component captures an audio file via a mobile device microphone" +
                 " and stores this file on the server. "
 )
 
-public class MicrophoneMeta extends UIInputMeta {
+public class MicrophoneMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "maximun allowed length of audio clip in seconds")
     private int maxtime;
@@ -57,9 +58,16 @@ public class MicrophoneMeta extends UIInputMeta {
             "this component.")
     private String styleClass;
 
-    @Property(implementation = Implementation.EXISTS_IN_SUPERCLASS, tlddoc= "as per specs the image information is stored in a Map")
+    @Property(tlddoc = "as per specs the image information is stored in a Map")
     private Map<String, Object> value;
 
     @Property(defaultValue="false", tlddoc="The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
     private boolean immediate;
+
+    @Property(expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
+    	    tlddoc = "MethodExpression representing a value change listener method that will be notified when a file has " +
+    	            "been uploaded with a valid file size > 0. The expression must evaluate to a public method that takes a " +
+    	            "ValueChangeEvent  parameter, with a return type of void, or to a public method that takes no arguments " +
+    	            "with a return type of void. ")
+    private MethodExpression valueChangeListener;
 }

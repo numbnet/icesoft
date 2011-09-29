@@ -20,9 +20,10 @@ package org.icefaces.component.microphone;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
 import org.icefaces.util.EnvUtils;
-import org.icefaces.component.utils.BaseInputResourceRenderer;
+
 
 import javax.faces.component.UIComponent;
+import javax.faces.render.Renderer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
@@ -30,12 +31,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
 
-public class MicrophoneRenderer extends BaseInputResourceRenderer {
+public class MicrophoneRenderer extends Renderer {
     private static Logger logger = Logger.getLogger(MicrophoneRenderer.class.getName());
 
     @Override
@@ -53,13 +55,14 @@ public class MicrophoneRenderer extends BaseInputResourceRenderer {
             if (valid){
 
                if (map !=null){
-                   this.setSubmittedValue(uiComponent, map);
-                   Integer old = Integer.MAX_VALUE;
-                   Integer selected = Integer.MIN_VALUE;
+                   microphone.setValue(map);
+                   String old = null;
+                   File imageFile = (File) map.get("file");
+                   String newFnm = imageFile.getAbsolutePath();
              //   just trigger valueChange for now as validation may include
              //   only queueing this if certain attrbiutes change to valid values.
                    uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
-    		    		    new Integer(old), selected));
+    		    		    old, newFnm));
                 }
             }
         } catch (Exception e) {
@@ -70,18 +73,21 @@ public class MicrophoneRenderer extends BaseInputResourceRenderer {
     public boolean extractAudio(FacesContext facesContext, Map map, String clientId) throws IOException {
         HttpServletRequest request = (HttpServletRequest)
                 facesContext.getExternalContext().getRequest();
-        boolean isSound=false;
-
+        boolean isValid=false;
         try {
             String partUploadName = clientId;
             if (EnvUtils.isEnhancedBrowser(facesContext)){
                partUploadName+="_mic-file";
             }
             Part part = request.getPart(partUploadName);
-            if (part !=null && part.getSize()>0){
-                isSound=true;
-                String contentType = part.getContentType().trim();
+            if (part !=null){
+                String contentType = part.getContentType();
                 String fileName = java.util.UUID.randomUUID().toString();
+                if (part.getSize()<=0){
+                   isValid=false;
+                }else {
+                   isValid = true;
+                }
                 if ("audio/wav".equals(contentType) || "audio/x-wav".equals(contentType)) {
                     fileName = fileName + ".wav";
                 } else if (contentType.endsWith("mp4")) {
@@ -95,18 +101,17 @@ public class MicrophoneRenderer extends BaseInputResourceRenderer {
                 } else {
                     fileName+=".oth";
                 }
-
                 Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
+
             }
+            return isValid;
         } catch (ServletException e) {
             logger.finer("Exception decoding audio stream: " + e);
             //ServletException is discarded since it indicates
             //form-encoded rather than multipart
-        } catch (Exception ee) {
-            logger.warning("Some other exception decoding audio: " + ee);
-
+            return isValid;
         }
-        return isSound;
+
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
