@@ -131,6 +131,7 @@ public class OutputMessageRenderer extends DomBasicRenderer {
             // to the text node
             if (spanIsRequired) {
                 Element rootSpan = domContext.createElement(HTML.SPAN_ELEM);
+                rootSpan.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext));
                 domContext.setRootNode(rootSpan);
                 if (styleClass != null) {
                     rootSpan.setAttribute("class", styleClass);
