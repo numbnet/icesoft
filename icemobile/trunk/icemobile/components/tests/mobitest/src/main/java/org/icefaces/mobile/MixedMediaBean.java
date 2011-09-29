@@ -43,6 +43,7 @@ import javax.imageio.ImageIO;
 
 import org.icefaces.application.PushRenderer;
 import org.icefaces.impl.util.CoreUtils;
+import org.icefaces.util.EnvUtils;
 
 /**
  * <p>The CameraBean is used to test camera component.</p>
@@ -86,19 +87,16 @@ public class MixedMediaBean implements Serializable {
         try {
             if (imageFile != null) {            	
                  //actually have ability to call file anything
-            	System.out.println(" /t/t name="+imageFile.getName());
                 this.numberImages++;
                 this.pathToImageFile = imageFile.getAbsolutePath();
                 String relativePath =  cameraImage.get("relativePath").toString();
                 this.setPathToImageFile(relativePath);
-                logger.info("Real PATH TO FILE+"+this.getPathToImageFile());
-                logger.info("Retrieved Camera Image adding to ImageStore");
                 
                 // try for a little clean up after
                 imageFile.deleteOnExit();
               
             } else {
-                logger.info("Camera Image Retrieval failed, loading test file from jar");
+
 				//     FacesContext facesContext = FacesContext.getCurrentInstance();
                 String sampleImagePath = facesContext.getExternalContext()
                         .getRealPath("/images/")
@@ -197,6 +195,7 @@ public class MixedMediaBean implements Serializable {
 		this.soundClipAvailable = soundClipAvailable;
 	}
 	
-	//should have predestroy method to get rid of files???
-
+    public boolean isEnhancedBrowser()  {
+        return EnvUtils.isEnhancedBrowser(FacesContext.getCurrentInstance());
+    }
 }
