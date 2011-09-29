@@ -52,9 +52,9 @@ public class VideoPlayerRenderer extends BaseResourceRenderer {
 
         if (video.isLoop()) writer.writeAttribute("loop", "loop", null);
         String mimeType = video.getType();
-        if (null == mimeType)
-            mimeType = "video/mp4"; //do we want a default type this seems to work best???
-        writer.writeAttribute("type", mimeType, null);
+        if (null != mimeType)  {
+            writer.writeAttribute("type", mimeType, null);
+        }
         if (video.isPlaysinline()) {
             writer.writeAttribute("webkit-playsinline", "yes", null);
         }
@@ -79,9 +79,6 @@ public class VideoPlayerRenderer extends BaseResourceRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-//        String clientId = uiComponent.getClientId(facesContext);
-
-
         writer.endElement(HTML.SPAN_ELEM);
     }
 

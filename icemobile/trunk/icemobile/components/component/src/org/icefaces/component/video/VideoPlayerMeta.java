@@ -36,8 +36,7 @@ import javax.faces.application.ResourceDependencies;
         tlddoc = "This mobility component renders a video Player to play back supported codecs for mobility devices"
 )
 
-@ResourceDependencies({
-})
+
 public class VideoPlayerMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue = "auto", tlddoc = "whether to preload the file accepted values are auto,none or metadata,  " +
@@ -91,6 +90,6 @@ public class VideoPlayerMeta extends UIComponentBaseMeta {
     @Property(defaultValue = "session", tlddoc = "support for resource based video which can be registered in various scopes")
     private String scope;
 
-    @Property(defaultValue = "video/mp4", tlddoc = " contentType or mimeType for video file")
+    @Property( tlddoc = " contentType or mimeType for video file")
     private String type;
 }
