@@ -27,7 +27,10 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-    <h:form prependId="false" enctype="multipart/form-data">
+    <h:form prependId="false" id="form">
+
+        <!-- upload helper to help with desktop and mobile shared UI's -->
+        <mobi:uploadhelper/>
 
         <mobi:fieldsetGroup>
 
@@ -37,11 +40,10 @@
                     <mobi:thumbnail for="cam"/>
                 </mobi:camera>
 
-                <h:commandButton type="button" id="upload1"
+                <h:commandButton id="upload1"
                                  style="float:none;"
                                  styleClass="mobi-button mobi-round-all mobi-button-important"
                                  actionListener="#{cameraBean.processUploadedImage}"
-                                 onclick="ice.s(event, this);"
                                  value="Upload"/>
 
                 <br />
