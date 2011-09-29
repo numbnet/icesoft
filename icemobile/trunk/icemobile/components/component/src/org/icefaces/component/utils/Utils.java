@@ -46,7 +46,7 @@ public class Utils {
         bberry,
         iphone,
         ipad;
-        public static final DeviceType DEFAULT = DeviceType.iphone;
+        public static final DeviceType DEFAULT = DeviceType.ipad;
 
         public boolean equals(String deviceName) {
             return this.name().equals(deviceName);
@@ -309,6 +309,7 @@ public class Utils {
         if (uai.sniffIphone()) return DeviceType.iphone;
         if (uai.sniffAndroid()) return DeviceType.android;
         if (uai.sniffBlackberry()) return DeviceType.bberry;
+        if (uai.sniffIpad()) return DeviceType.ipad;
         return DeviceType.DEFAULT;
     }
 

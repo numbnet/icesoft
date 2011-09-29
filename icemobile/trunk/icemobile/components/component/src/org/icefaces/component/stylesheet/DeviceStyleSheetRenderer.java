@@ -58,6 +58,8 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
 
     // iPhone style sheet name found in jar.
     public static final String IPHONE_CSS = Utils.DeviceType.iphone.name() + CSS_EXT;
+    // iPad style sheed name found in jar.
+    public static final String IPAD_CSS = Utils.DeviceType.ipad.name() + CSS_EXT;
     // Android style sheet name found in jar.
     public static final String ANDROID_CSS = Utils.DeviceType.android.name() + CSS_EXT;
     // Blackberry style sheet name found in jar.
