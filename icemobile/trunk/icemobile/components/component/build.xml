@@ -292,7 +292,7 @@
 
         <includeresources dir="src/org/icefaces/component/stylesheet/iphone"
                           name="stylesheet" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/stylesheet/iphone"
+        <includeresources dir="src/org/icefaces/component/stylesheet/ipad"
                           name="stylesheet" skin="ipad"/>
         <includeresources dir="src/org/icefaces/component/stylesheet/android"
                           name="stylesheet" skin="android"/>
@@ -302,6 +302,8 @@
         <!-- inputText html5 component -->
         <includeresources dir="src/org/icefaces/component/inputText/iphone"
                           name="input" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/component/inputText/ipad"
+                          name="input" skin="ipad"/>
         <includeresources dir="src/org/icefaces/component/inputText/android"
                           name="input" skin="android"/>
         <includeresources dir="src/org/icefaces/component/inputText/bberry"
@@ -309,6 +311,8 @@
         <!-- microphone - device integration microphone component -->
         <includeresources dir="src/org/icefaces/component/microphone/iphone"
                           name="microphone" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/component/microphone/ipad"
+                          name="microphone" skin="ipad"/>
         <includeresources dir="src/org/icefaces/component/microphone/android"
                           name="microphone" skin="android"/>
         <includeresources dir="src/org/icefaces/component/microphone/bberry"
@@ -316,17 +320,17 @@
         <!-- thumbnail - device integration thumbnail preview for camera and video components -->
         <includeresources dir="src/org/icefaces/component/thumbnail/iphone"
                           name="thumbnail" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/component/thumbnail/ipad"
+                          name="thumbnail" skin="ipad"/>
         <includeresources dir="src/org/icefaces/component/thumbnail/android"
                           name="thumbnail" skin="android"/>
         <includeresources dir="src/org/icefaces/component/thumbnail/bberry"
                           name="thumbnail" skin="bberry"/>
-
-        <!--
-            Composite components style definitions
-        -->
         <!-- panelStack - composite panelStack style definition -->
         <includeresources dir="src/org/icefaces/component/panelstack/iphone"
                           name="panelstack" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/component/panelstack/ipad"
+                          name="panelstack" skin="ipad"/>
         <includeresources dir="src/org/icefaces/component/panelstack/android"
                           name="panelstack" skin="android"/>
         <includeresources dir="src/org/icefaces/component/panelstack/bberry"
@@ -334,6 +338,8 @@
         <!-- carousel - composite carousel style definition -->
         <includeresources dir="src/org/icefaces/component/carousel/iphone"
                           name="carousel" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/component/carousel/ipad"
+                          name="carousel" skin="ipad"/>
         <includeresources dir="src/org/icefaces/component/carousel/android"
                           name="carousel" skin="android"/>
         <includeresources dir="src/org/icefaces/component/carousel/bberry"
@@ -341,12 +347,16 @@
         <!-- fieldset - composite fieldsetGroup and fieldsetRow style definition -->
         <includeresources dir="src/org/icefaces/component/fieldset/iphone"
                           name="fieldset" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/component/fieldset/ipad"
+                          name="fieldset" skin="ipad"/>
         <includeresources dir="src/org/icefaces/component/fieldset/android"
                           name="fieldset" skin="android"/>
         <includeresources dir="src/org/icefaces/component/fieldset/bberry"
                           name="fieldset" skin="bberry"/>
         <!-- list - composite outputList and outputListItem and  style definition -->
-        <includeresources dir="src/org/icefaces/component/list/iphone"
+        <includeresources dir="src/org/icefaces/component/list/ipad"
+                          name="list" skin="ipad"/>
+                <includeresources dir="src/org/icefaces/component/list/iphone"
                           name="list" skin="iphone"/>
         <includeresources dir="src/org/icefaces/component/list/android"
                           name="list" skin="android"/>
@@ -355,6 +365,8 @@
         <!-- flipswitch - composite flipSwitch style definition -->
         <includeresources dir="src/org/icefaces/component/flipswitch/iphone"
                           name="flipswitch" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/component/flipswitch/ipad"
+                          name="flipswitch" skin="ipad"/>
         <includeresources dir="src/org/icefaces/component/flipswitch/android"
                           name="flipswitch" skin="android"/>
         <includeresources dir="src/org/icefaces/component/flipswitch/bberry"
@@ -362,6 +374,8 @@
         <!-- search - composite search toolbar style definition -->
         <includeresources dir="src/org/icefaces/component/search/iphone"
                           name="search" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/component/search/ipad"
+                          name="search" skin="ipad"/>
         <includeresources dir="src/org/icefaces/component/search/android"
                           name="search" skin="android"/>
         <includeresources dir="src/org/icefaces/component/search/bberry"
@@ -369,6 +383,8 @@
         <!-- select - composite selection style definition -->
         <includeresources dir="src/org/icefaces/component/select/iphone"
                           name="select" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/component/select/ipad"
+                          name="select" skin="ipad"/>
         <includeresources dir="src/org/icefaces/component/select/android"
                           name="select" skin="android"/>
         <includeresources dir="src/org/icefaces/component/select/bberry"
@@ -376,6 +392,8 @@
         <!-- button - composite button and button group style definition -->
         <includeresources dir="src/org/icefaces/component/button/iphone"
                           name="button" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/component/button/ipad"
+                          name="button" skin="ipad"/>
         <includeresources dir="src/org/icefaces/component/button/android"
                           name="button" skin="android"/>
         <includeresources dir="src/org/icefaces/component/button/bberry"
