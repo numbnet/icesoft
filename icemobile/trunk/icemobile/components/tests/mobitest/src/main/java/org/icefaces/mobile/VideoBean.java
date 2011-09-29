@@ -26,7 +26,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Formatter;
+import java.util.logging.Logger;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
@@ -36,12 +38,13 @@ import javax.faces.event.ValueChangeEvent;
 import org.icefaces.util.EnvUtils;
 
 /**
- * <p>The MicBean is used to test camera component.</p>
+ * <p>The VideoBean is used to test camcorder component.</p>
  */
 @ManagedBean(name="videoBean")
 @ApplicationScoped
 public class VideoBean implements Serializable {
-    
+    private static final Logger logger =
+        Logger.getLogger(VideoBean.class.toString());
     private int idCounter = 0;
     private Map clip = new HashMap<String, Object>();
     private String clipName = "icefaces.mp4";
@@ -78,7 +81,7 @@ public class VideoBean implements Serializable {
                     File newVideo = new File(videoDir, converted.getName());
                     converted.renameTo(newVideo);
                     videoFile = newVideo;
-                    System.out.println("Completed video conversion for " + 
+                    logger.info("Completed video conversion for " +
                             videoFile.getAbsolutePath());
                 } catch (Throwable t)  {
                     t.printStackTrace();
@@ -93,17 +96,16 @@ public class VideoBean implements Serializable {
                 String absolutePath = videoFile.getAbsolutePath();
                 String urlPath = absolutePath.substring(rootPath.length() - 1);
                 setPathToFile(urlPath);
-               videoSize = String.valueOf(videoFile.length());
-             //  System.out.println("new soundSize " + videoSize);
-               this.videoClipAvailable = true;
-               this.contentType =(String) videoInfo.get("contentType");        
+                videoSize = String.valueOf(videoFile.length());
+                this.videoClipAvailable = true;
+                this.contentType =(String) videoInfo.get("contentType");
             }
              catch (Exception e) {
                 e.printStackTrace();
             }
 
         }else{
-        	System.out.println("soundfile is empty in backing bean");
+        	logger.warning("soundfile is empty in backing bean");
         }
         	
     } 
@@ -117,14 +119,11 @@ public class VideoBean implements Serializable {
 		return this.clipName;
 	}
 
-
-
     String videoURL = "../video/video.mp4";
     public String getVideoURL()  {
     	  FacesContext facesContext = FacesContext.getCurrentInstance();
           String rootPath = facesContext.getExternalContext()
                 .getRealPath("/video/");
-       //   System.out.println("ROOTPATH="+rootPath);
         return "../video/"+this.getClipName();
     }
 
@@ -184,17 +183,30 @@ public class VideoBean implements Serializable {
         return "";
     }
 
-    private String messageFromAL = " ValueChangenListener fired ";
+    private String messageFromAL = "ValueChangeListener -";
 
-    public void methodOne(ValueChangeEvent event){
-        this.messageFromAL =" uploaded file ="+this.getClipName()+" sucessfully";
-    }
+     public void methodOne(ValueChangeEvent event){
+        //going to use this method to check filetype and remove the file if not correct filetype
+          if (event!=null){
+             String filePath = (String)event.getNewValue();
+             MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
+             String mimeType = mimeTypesMap.getContentType(filePath);
+             this.setContentType(mimeType);
+             if (mimeType.equals("video/mpeg") || mimeType.equals("video/mov") ||
+                 mimeType.equals("video/3gpp") || mimeType.equals("video/mp4")){
+                 messageFromAL="valid video uploaded of mpeg or move or amr or 3gpp or mp4";
+             } else {
+                  messageFromAL = "invalid upload so can delete without user being able to access";
+             }
+          }
+         logger.info("ValueChangeListener  event is null");
+     }
 
-    public String getMessageFromAL() {
-        return messageFromAL;
-    }
+     public String getMessageFromAL() {
+         return messageFromAL;
+     }
 
-    public void setMessageFromAL(String messageFromAL) {
-        this.messageFromAL = messageFromAL;
-    }
+     public void setMessageFromAL(String messageFromAL) {
+         this.messageFromAL = messageFromAL;
+     }
 }

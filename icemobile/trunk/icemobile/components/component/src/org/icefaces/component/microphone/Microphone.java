@@ -42,7 +42,7 @@ public class Microphone extends MicrophoneBase {
         return microphoneMap.containsKey(key);
     }
 
-       public void broadcast(FacesEvent event)
+    public void broadcast(FacesEvent event)
        throws AbortProcessingException {
          if (event instanceof ValueChangeEvent){
             if (event != null) {
@@ -55,7 +55,7 @@ public class Microphone extends MicrophoneBase {
          }
      }
 
-     public void queueEvent(FacesEvent event) {
+    public void queueEvent(FacesEvent event) {
          if (event.getComponent() instanceof Microphone) {
              if (isImmediate()) {
                  event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
