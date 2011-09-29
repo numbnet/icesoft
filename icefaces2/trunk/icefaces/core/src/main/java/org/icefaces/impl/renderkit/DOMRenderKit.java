@@ -118,10 +118,7 @@ public class DOMRenderKit extends RenderKitWrapper {
             String compClassName = mrc.value();
             if (compClassName != null && compClassName.length() > 0) {
                 if (!mandatoryResourceComponents.contains(compClassName)) {
-                    if ((null == mandatoryResourceConfig) || 
-                        mandatoryResourceConfig.contains(compClassName)) {
-                        mandatoryResourceComponents.add(compClassName);
-                    }
+                    mandatoryResourceComponents.add(compClassName);
                 }
             }
         }
