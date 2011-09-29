@@ -55,6 +55,10 @@
                     value="#{uploadModel.selectedPhoto.mediaURL}"
                     styleClass="imageViewer"
                     style="margin-bottom:10px;"/>
+            <br/>
+            <h:outputLink value="/mediacast/#{uploadModel.selectedPhoto.mediaURL}">
+                PLAY
+            </h:outputLink>
           </h:panelGroup>
         </mobi:fieldsetRow>
         <mobi:fieldsetRow>
