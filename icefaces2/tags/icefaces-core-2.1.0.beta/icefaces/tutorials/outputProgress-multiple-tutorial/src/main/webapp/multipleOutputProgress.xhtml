@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Progress Bar Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        </h:head>    <h:body>        <ice:form>
+            <ice:dataTable value="#{multiple.progressBarList}" var="progress">
+                <ice:column>
+                    <f:facet name="header">
+                        <ice:outputText value="Server Location"></ice:outputText>
+                    </f:facet>
+                    <ice:outputText value="#{progress.name}"></ice:outputText>
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">
+                        <ice:outputText value="CPU Load"></ice:outputText>
+                    </f:facet>
+                    <ice:outputProgress value="#{progress.percent}"></ice:outputProgress>
+                </ice:column>
+            </ice:dataTable>
+        		</ice:form>	</h:body></f:view></html>
