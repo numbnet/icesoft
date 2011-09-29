@@ -21,15 +21,22 @@
 */
 package com.icefaces.project.memory.user;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.icefaces.project.memory.game.GameInstance;
 import com.icefaces.project.memory.game.GameManager;
 
+@ManagedBean(name="userSession")
+@SessionScoped
 public class UserSession extends UserModel {
 	protected Log log = LogFactory.getLog(this.getClass());
 	
+	@ManagedProperty(value = "#{gameManager}")
 	protected GameManager gameManager;
 	protected GameInstance currentGame;
 	protected UserRenderer renderer = new UserRenderer();

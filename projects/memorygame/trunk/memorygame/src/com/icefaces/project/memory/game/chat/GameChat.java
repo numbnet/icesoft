@@ -26,11 +26,11 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Vector;
 
-import com.icesoft.faces.async.render.SessionRenderer;
-import com.icefaces.project.memory.bean.color.ColorBean;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.icefaces.application.PushRenderer;
+
+import com.icefaces.project.memory.bean.color.ColorBean;
 
 /**
  * Game class to manage chat
@@ -95,7 +95,7 @@ public class GameChat {
 		}
 		
 		if ((renderAfter) && (gameName != null)) {
-			SessionRenderer.render(gameName);
+			PushRenderer.render(gameName);
 		}
 	}
 	

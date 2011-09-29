@@ -20,140 +20,131 @@
  ~
 -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:c="http://java.sun.com/jstl/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:ice="http://www.icesoft.com/icefaces/component">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:icecore="http://www.icefaces.org/icefaces/core"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<ice:form>
-	    <ice:dataTable id="gameListTable"
-	                   value="#{lobbyBean.localGameList}"
-	                   var="game"
-	                   cellpadding="2" cellspacing="2"
-	                   rows="15"
-	                   sortColumn="#{lobbyBean.sortColumnName}"
-                       sortAscending="#{lobbyBean.ascending}"
-	                   styleClass="genericTable"
-	                   columnClasses="nameCol,passCol,sizeCol,cardCol,playerCol"
-	                   rowClasses="lightRow,darkRow"
-                       tabindex="50">
-	            <f:facet name="header">
-                    <ice:outputText value="Join Game"
-                                    style="font-weight: bold; font-size: 12px;"/>
-	            </f:facet>
-	                   
-	        <ice:column rendered="#{gameManager.hasGameList}">
-	            <ice:rowSelector value="#{game.selected}"
-	                             multiple="false"
-	                             toggleOnInput="false"
-	                             preStyleOnSelection="true"
-	                             selectionListener="#{lobbyBean.gameSelectionListener}"/>
-	            <f:facet name="header">
-	                <ice:commandSortHeader columnName="name">
+		<ice:dataTable id="gameListTable" value="#{lobbyBean.localGameList}"
+			var="game" cellpadding="2" cellspacing="2" rows="15"
+			sortColumn="#{lobbyBean.sortColumnName}"
+			sortAscending="#{lobbyBean.ascending}" styleClass="genericTable"
+			columnClasses="nameCol,passCol,sizeCol,cardCol,playerCol"
+			rowClasses="lightRow,darkRow" tabindex="50">
+			<f:facet name="header">
+				<ice:outputText value="Join Game"
+					style="font-weight: bold; font-size: 12px;" />
+			</f:facet>
+
+			<ice:column rendered="#{gameManager.hasGameList}">
+				<ice:rowSelector value="#{game.selected}" multiple="false"
+					toggleOnInput="false" preStyleOnSelection="true"
+					selectionListener="#{lobbyBean.gameSelectionListener}" />
+				<f:facet name="header">
+					<ice:commandSortHeader columnName="name">
 	                    Name
 	                </ice:commandSortHeader>
-	            </f:facet>
-	            <ice:outputText value="#{game.wrapped.name}"/>
-	        </ice:column>
-	        <ice:column rendered="#{gameManager.hasGameList}">
-	            <f:facet name="header">
-	                <ice:commandSortHeader columnName="password">
+				</f:facet>
+				<ice:outputText value="#{game.wrapped.name}" />
+			</ice:column>
+			<ice:column rendered="#{gameManager.hasGameList}">
+				<f:facet name="header">
+					<ice:commandSortHeader columnName="password">
 	                    Password
 	                </ice:commandSortHeader>
-	            </f:facet>
-	            <ice:graphicImage value="./css/images/password-protected.png"
-	                              styleClass="imageButton"
-	                              alt="Password Required" title="Password Required"
-	                              rendered="#{game.wrapped.hasPassword}"/>
-	            <ice:outputText value="N/A"
-	                            rendered="#{!game.wrapped.hasPassword}"/>
-	        </ice:column>
-	        <ice:column rendered="#{gameManager.hasGameList}">
-	            <f:facet name="header">
-	                <ice:commandSortHeader columnName="gridSize">
+				</f:facet>
+				<ice:graphicImage value="./css/images/password-protected.png"
+					styleClass="imageButton" alt="Password Required"
+					title="Password Required" rendered="#{game.wrapped.hasPassword}" />
+				<ice:outputText value="N/A" rendered="#{!game.wrapped.hasPassword}" />
+			</ice:column>
+			<ice:column rendered="#{gameManager.hasGameList}">
+				<f:facet name="header">
+					<ice:commandSortHeader columnName="gridSize">
 	                    Size
 	                </ice:commandSortHeader>
-	            </f:facet>
-	            <ice:outputText value="#{game.wrapped.board.size}">
-	                <f:converter converterId="GridSizeFormatter"/>
-	            </ice:outputText>
-	        </ice:column>
-	        <ice:column rendered="#{gameManager.hasGameList}">
-	            <f:facet name="header">
-	                <ice:commandSortHeader columnName="cardSet">
+				</f:facet>
+				<ice:outputText value="#{game.wrapped.board.size}">
+					<f:converter converterId="GridSizeFormatter" />
+				</ice:outputText>
+			</ice:column>
+			<ice:column rendered="#{gameManager.hasGameList}">
+				<f:facet name="header">
+					<ice:commandSortHeader columnName="cardSet">
 	                    Card Images
 	                </ice:commandSortHeader>
-	            </f:facet>
-	            <ice:outputText value="#{game.wrapped.board.cardSet.name}"
-	                            title="Card theme of '#{game.wrapped.board.cardSet.backImage}'"/>
-	        </ice:column>
-	        <ice:column rendered="#{gameManager.hasGameList}">
-	            <f:facet name="header">
-	                <ice:commandSortHeader columnName="players">
+				</f:facet>
+				<ice:outputText value="#{game.wrapped.board.cardSet.name}"
+					title="Card theme of '#{game.wrapped.board.cardSet.backImage}'" />
+			</ice:column>
+			<ice:column rendered="#{gameManager.hasGameList}">
+				<f:facet name="header">
+					<ice:commandSortHeader columnName="players">
 	                    Players
 	                </ice:commandSortHeader>
-	            </f:facet>
-	            <ice:outputFormat value="{0}/{1}">
-	                <f:param value="#{game.wrapped.userCount}"/>
-	                <f:param value="#{game.wrapped.maxUsers}"/>
-	            </ice:outputFormat>
-	        </ice:column>
-	        <f:facet name="footer">
-	            <ice:panelGroup>
-	                <center>
-	                <c:if test="#{gameManager.hasGameList}">
-	                    <ice:panelGrid rendered="#{lobbyBean.passwordPromptRendered}"
-	                                   columns="3" cellspacing="2" cellpadding="2"
-	                                   columnClasses="labelCol,valueCol,errorCol"
-	                                   style="width: 100%; font-size: 12px;">
-	                        <ice:outputLabel for="enteredPass" value="Game Password:"/>
-	                        <ice:inputSecret id="enteredPass" value="#{lobbyBean.password}"
-	                                         required="true"
-	                                         action="#{lobbyBean.joinGame}"
-	                                         partialSubmit="true" redisplay="true"
-	                                         maxlength="20" size="21"/>
-	                        <ice:message errorClass="errorMessage" for="enteredPass"/>
-	                    </ice:panelGrid>
-	                
-	                    <ice:dataPaginator for="gameListTable"
-	                                       paginator="true" paginatorMaxPages="5"
-	                                       renderFacetsIfSinglePage="false">
-	                        <f:facet name="first">
-	                            <ice:graphicImage url="./css/images/components/back_double.gif"
-	                                              style="border: none; width: 22px; height: 23px;"
-	                                              title="First Page" alt="First"/>
-	                        </f:facet>
-	                        <f:facet name="last">
-	                            <ice:graphicImage url="./css/images/components/forward_double.gif"
-	                                              style="border: none; width: 22px; height: 23px;"
-	                                              title="Last Page" alt="Last"/>
-	                        </f:facet>
-	                        <f:facet name="previous">
-	                            <ice:graphicImage url="./css/images/components/back_single.gif"
-	                                              style="border: none; width: 22px; height: 23px;"
-	                                              title="Previous Page" alt="Prev"/>
-	                        </f:facet>
-	                        <f:facet name="next">
-	                            <ice:graphicImage url="./css/images/components/forward_single.gif"
-	                                              style="border: none; width: 22px; height: 23px;"
-	                                              title="Next Page" alt="Next"/>
-	                        </f:facet>
-	                    </ice:dataPaginator>
-	                    
-	                    <ice:commandButton value="Join Selected"
-	                                       styleClass="halfButton"
-	                                       action="#{lobbyBean.joinGame}"
-                                           tabindex="51"/>                             
-	                </c:if>
-	                <c:if test="#{!gameManager.hasGameList}">
+				</f:facet>
+				<ice:outputFormat value="{0}/{1}">
+					<f:param value="#{game.wrapped.userCount}" />
+					<f:param value="#{game.wrapped.maxUsers}" />
+				</ice:outputFormat>
+			</ice:column>
+			<f:facet name="footer">
+				<ice:panelGroup>
+					<center>
+						<c:if test="#{gameManager.hasGameList}">
+							<ice:panelGrid rendered="#{lobbyBean.passwordPromptRendered}"
+								columns="3" cellspacing="2" cellpadding="2"
+								columnClasses="labelCol,valueCol,errorCol"
+								style="width: 100%; font-size: 12px;">
+								<ice:outputLabel for="enteredPass" value="Game Password:" />
+								<icecore:singleSubmit>
+									<ice:inputSecret id="enteredPass" value="#{lobbyBean.password}"
+										required="true" action="#{lobbyBean.joinGame}"
+										maxlength="20" size="21" />
+								</icecore:singleSubmit>
+								<ice:message errorClass="errorMessage" for="enteredPass" />
+							</ice:panelGrid>
+
+							<ice:dataPaginator for="gameListTable" paginator="true"
+								paginatorMaxPages="5" renderFacetsIfSinglePage="false">
+								<f:facet name="first">
+									<ice:graphicImage url="./css/images/components/back_double.gif"
+										style="border: none; width: 22px; height: 23px;"
+										title="First Page" alt="First" />
+								</f:facet>
+								<f:facet name="last">
+									<ice:graphicImage
+										url="./css/images/components/forward_double.gif"
+										style="border: none; width: 22px; height: 23px;"
+										title="Last Page" alt="Last" />
+								</f:facet>
+								<f:facet name="previous">
+									<ice:graphicImage url="./css/images/components/back_single.gif"
+										style="border: none; width: 22px; height: 23px;"
+										title="Previous Page" alt="Prev" />
+								</f:facet>
+								<f:facet name="next">
+									<ice:graphicImage
+										url="./css/images/components/forward_single.gif"
+										style="border: none; width: 22px; height: 23px;"
+										title="Next Page" alt="Next" />
+								</f:facet>
+							</ice:dataPaginator>
+
+							<ice:commandButton value="Join Selected" styleClass="halfButton"
+								action="#{lobbyBean.joinGame}" tabindex="51" />
+						</c:if>
+						<c:if test="#{!gameManager.hasGameList}">
 	                    No existing games were found. Be the first to create one!
 	                </c:if>
-                    
-                    <ice:messages errorClass="globalErrorMessage" layout="table"
-                                  globalOnly="true" showSummary="true" showDetail="false"/>                    
-                    
-	                </center>
-	            </ice:panelGroup>
-	        </f:facet>
-	    </ice:dataTable>
+
+						<ice:messages errorClass="globalErrorMessage" layout="table"
+							globalOnly="true" showSummary="true" showDetail="false" />
+
+					</center>
+				</ice:panelGroup>
+			</f:facet>
+		</ice:dataTable>
 	</ice:form>
 </ui:composition>

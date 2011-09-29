@@ -1,5 +1,10 @@
 package com.icefaces.project.memory.bean.color;
 
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+
+@ManagedBean(name="colorBean")
+@ApplicationScoped
 public class ColorBean {
 	public static final String DEFAULT_COLOR_HEX = "#0B5383";
 	

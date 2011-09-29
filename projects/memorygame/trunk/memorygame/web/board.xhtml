@@ -21,67 +21,58 @@
  ~
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<f:view xmlns="http://www.w3.org/1999/xhtml"
-	    xmlns:f="http://java.sun.com/jsf/core"
-	    xmlns:c="http://java.sun.com/jstl/core"
-	    xmlns:ui="http://java.sun.com/jsf/facelets"
-	    xmlns:ice="http://www.icesoft.com/icefaces/component">
-    <html>
-    <head>
-        <title>
-            Board
-            <c:if test="#{userSession.isInGame}">
-                <c:if test="#{!userSession.currentGame.isFull}">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+<f:view>
+	<h:head>
+		<title>Board <c:if test="#{userSession.isInGame}">
+				<c:if test="#{!userSession.currentGame.isFull}">
                     - Need #{userSession.currentGame.emptySpace} Player
                 </c:if>
                 - #{userSession.currentGame.name}
-            </c:if>
-            - Memory Game
-        </title>
-        
-        <ice:outputStyle href="./css/all-styles.css"/>
-        <ice:outputStyle href="./css/board-styles.css"/>
-        <ice:outputStyle href="./css/override-styles.css"/>
-    </head>
-    <body>
-        <div class="header_overall">
-            <div class="header_right">
-                <img src="./css/images/banner-company.jpg"
-                     width="267" height="159"
-                     alt="ICEfaces"/>
-            </div>
-            <div class="header_container">
-                <div class="header_left">
-                    <img src="./css/images/banner-logo.jpg"
-                         width="463" height="100"
-                         alt="ICEfaces Memory Game"/>
-                </div>
-            </div>
-        </div>
-    
-    	<c:if test="#{userSession.isInGame}">
-	   		<ice:panelGroup id="oc" style="overallContainer">
-	    		<ice:panelGroup id="l" styleClass="leftPane-#{boardBean.layout}"
-	    		                effect="#{boardBean.shakeEffect}">
-	    		    <ui:include src="/WEB-INF/includes/board/gamePane.xhtml"/>
+            </c:if> - Memory Game</title>
+
+		<ice:outputStyle href="./css/all-styles.css" />
+		<ice:outputStyle href="./css/board-styles.css" />
+		<ice:outputStyle href="./css/override-styles.css" />
+	</h:head>
+	<h:body>
+		<div class="header_overall">
+			<div class="header_right">
+				<img src="./css/images/banner-company.jpg" width="267" height="159"
+					alt="ICEfaces" />
+			</div>
+			<div class="header_container">
+				<div class="header_left">
+					<img src="./css/images/banner-logo.jpg" width="463" height="100"
+						alt="ICEfaces Memory Game" />
+				</div>
+			</div>
+		</div>
+
+		<c:if test="#{userSession.isInGame}">
+			<ice:panelGroup id="oc" style="overallContainer">
+				<ice:panelGroup id="l" styleClass="leftPane-#{boardBean.layout}"
+					effect="#{boardBean.shakeEffect}">
+					<ui:include src="/WEB-INF/includes/board/gamePane.xhtml" />
 				</ice:panelGroup>
-				
-	    		<ice:panelGroup styleClass="rightPane-#{boardBean.layout}">
-				    <ui:include src="/WEB-INF/includes/board/chatPane.xhtml"/>
-	    		</ice:panelGroup>
-	   		</ice:panelGroup>
-    	</c:if>
-    	
-    	<c:if test="#{!userSession.isInGame}">
-    		<center>
-    		    <br/>
-	    		<span class="returnToLobby">
-	    		You need to create or join a game before visiting this page.
-	    		<br/><br/>
-	    		Return to the&amp;nbsp;<a href="./lobby.iface">lobby</a> to do this.
-	    		</span>
-    		</center>
-    	</c:if>
-    </body>
-    </html>
+
+				<ice:panelGroup styleClass="rightPane-#{boardBean.layout}">
+					<ui:include src="/WEB-INF/includes/board/chatPane.xhtml" />
+				</ice:panelGroup>
+			</ice:panelGroup>
+		</c:if>
+		<c:if test="#{!userSession.isInGame}">
+			<center>
+				<br /> <span class="returnToLobby"> You need to create or
+					join a game before visiting this page. <br /> <br /> Return to
+					the&amp;nbsp;<a href="./lobby.iface">lobby</a> to do this. </span>
+			</center>
+		</c:if>
+	</h:body>
 </f:view>
+</html>

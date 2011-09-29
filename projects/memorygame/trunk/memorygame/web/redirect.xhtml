@@ -21,16 +21,17 @@
  ~
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<f:view xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:f="http://java.sun.com/jsf/core"
-	    xmlns:ice="http://www.icesoft.com/icefaces/component">
-    <html>
-    <head>
-        <title>Remote Join Game - Memory Game</title>
-    </head>
-    <body>
-    	<ice:outputText value="#{redirectBean.check}"
-					    style="display: none;"/>
-    </body>
-    </html>
-</f:view>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+	<f:view>
+		<h:head>
+			<title>Remote Join Game - Memory Game</title>
+		</h:head>
+		<h:body>
+			<ice:outputText value="#{redirectBean.check}" style="display: none;" />
+		</h:body>
+	</f:view>
+</html>
