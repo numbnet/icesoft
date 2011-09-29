@@ -88,6 +88,9 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
     // uploaded video will be stored as a resource.
     private Resource outputResource;
 
+    // upload error message
+    private String uploadMessage;
+
     public CamcorderBean() {
         super(CamcorderBean.class);
     }
@@ -99,7 +102,9 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
      * @param event jsf action event
      */
     public void processUploadedVideo(ActionEvent event) {
-        if (camcorderImage != null) {
+        if (camcorderImage != null &&
+                camcorderImage.get("contentType") != null &&
+                ((String)camcorderImage.get("contentType")).startsWith("video")) {
             // clean up previously upload file
             if (camcorderFile != null){
                 disposeResources();
@@ -114,8 +119,12 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
                 } catch (IOException ex) {
                     logger.warning("Error setting up video resource object");
                 }
+                uploadMessage = "Upload was successful";
                 return;
             }
+        }else{
+            // create error message for users.
+            uploadMessage = "The uploaded file could not be correctly processed.";
         }
         // a null/empty object is used in the page to hide the audio
         // component.
@@ -140,5 +149,13 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
 
     public Resource getOutputResource() {
         return outputResource;
+    }
+
+    public String getUploadMessage() {
+        return uploadMessage;
+    }
+
+    public void setUploadMessage(String uploadMessage) {
+        this.uploadMessage = uploadMessage;
     }
 }
