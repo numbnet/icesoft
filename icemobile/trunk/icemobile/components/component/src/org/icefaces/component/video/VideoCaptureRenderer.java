@@ -50,14 +50,10 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
               boolean isValid = extractVideo(facesContext, map, clientId);
               if (isValid){
                  if (map !=null){
-                   video.setValue(map);
-                   String old = null;
-                   File imageFile = (File) map.get("file");
-                   String newFnm = imageFile.getAbsolutePath();
-             //    just trigger valueChange for now as validation may include
-             //    only queueing this if certain attrbiutes change to valid values.
-                   uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
-    		    		    old, newFnm));
+                    video.setValue(map);
+             //     trigger valueChange and add map as newEvent value old event is NA
+                    uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
+    		    		    null, map));
                 }
               }
 

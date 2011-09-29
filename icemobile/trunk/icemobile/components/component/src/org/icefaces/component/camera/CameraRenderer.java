@@ -54,13 +54,10 @@ public class CameraRenderer extends Renderer {
                 if (valid){
                     if (map !=null){
                        camera.setValue(map);
-                       String old = null;
-                       File imageFile = (File) map.get("file");
-                       String newFnm = imageFile.getAbsolutePath();
-             //   just trigger valueChange for now as validation may include
-             //   only queueing this if certain attrbiutes change to valid values.
+
+             //   trigger valueChange and add map as newEvent value old event is NA
                        uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
-    		    		    old, newFnm));
+    		    		    null, map));
                     }
                 }
             }
