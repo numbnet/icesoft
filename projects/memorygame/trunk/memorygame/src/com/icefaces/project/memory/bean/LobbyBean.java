@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
@@ -45,9 +48,12 @@ import edu.emory.mathcs.backport.java.util.Collections;
  * Page bean for the functionality in lobby.xhtml
  * We'll store all the backing information for the various dropdowns, manage a few render flags, etc.
  */
+@ManagedBean(name="lobbyBean")
+@ViewScoped
 public class LobbyBean extends SortBean {
 	private static final String RANDOM_CARD_VALUE = "RANDOMIZE";
 	
+	@ManagedProperty(value = "#{userSession}")
 	private UserSession userSession;
 	private List<GameInstanceWrapper> localGameList;
 	private SelectItem[] availableSetsAsItems;

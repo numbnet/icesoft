@@ -20,24 +20,24 @@
  ~
 -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:c="http://java.sun.com/jstl/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:ice="http://www.icesoft.com/icefaces/component">
-	<ice:form>
-	    <ice:panelGrid columns="3" cellspacing="2" cellpadding="2"
-	                   styleClass="genericTable"
-	                   columnClasses="labelCol,valueCol,errorCol">
-	            <f:facet name="header">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:icecore="http://www.icefaces.org/icefaces/core"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<ice:form>		
+		<ice:panelGrid columns="3" cellspacing="2" cellpadding="2"
+			styleClass="genericTable" columnClasses="labelCol,valueCol,errorCol">
+			<f:facet name="header">
 	                Personalization
 	            </f:facet>
-	            
-	        <ice:outputLabel for="userName" value="* Your Name:"/>
-	        <ice:inputText id="userName" value="#{userSession.name}"
-	                       required="true" partialSubmit="true"
-	                       maxlength="35" size="36"
-                           tabindex="40"/>
-	        <ice:message errorClass="errorMessage" for="userName"/>
-	    </ice:panelGrid>
+
+			<ice:outputLabel for="userName" value="* Your Name:" />
+			<icecore:singleSubmit>
+				<ice:inputText id="userName" value="#{userSession.name}"
+					required="true" maxlength="35" size="36" tabindex="40" />
+			</icecore:singleSubmit>	
+			<ice:message errorClass="errorMessage" for="userName" />
+		</ice:panelGrid>
 	</ice:form>
 </ui:composition>

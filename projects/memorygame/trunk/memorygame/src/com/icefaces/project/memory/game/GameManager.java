@@ -24,8 +24,14 @@ package com.icefaces.project.memory.game;
 import java.util.List;
 import java.util.Vector;
 
-import com.icesoft.faces.async.render.SessionRenderer;
-import com.icesoft.faces.context.DisposableBean;
+import javax.annotation.PreDestroy;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.icefaces.application.PushRenderer;
+
 import com.icefaces.project.memory.bean.RedirectBean;
 import com.icefaces.project.memory.bot.BotDifficulty;
 import com.icefaces.project.memory.bot.BotDifficultyManager;
@@ -35,14 +41,13 @@ import com.icefaces.project.memory.game.card.GameCardSetManager;
 import com.icefaces.project.memory.user.UserModel;
 import com.icefaces.project.memory.util.ValidatorUtil;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
  * Game class that maintains a list of all available GameInstances
  * This also handles the management of card sets by delegating it to a GameCardSetManager
  */
-public class GameManager implements DisposableBean {
+@ManagedBean(name="gameManager")
+@ApplicationScoped
+public class GameManager {
 	public static final int DEFAULT_SIZE = 4;
 	public static final int DEFAULT_MAX_USERS = 2;
 	public static final int DEFAULT_MAX_FLIP = 2;
@@ -60,7 +65,7 @@ public class GameManager implements DisposableBean {
 	}
 	
 	private void renderLobby() {
-		SessionRenderer.render(RENDER_GROUP_LOBBY);
+		PushRenderer.render(RENDER_GROUP_LOBBY);
 	}
 	
 	public GameCardSetManager getCardSetManager() {
@@ -245,7 +250,8 @@ public class GameManager implements DisposableBean {
 	 * In this case we want to cancel the TimerTask that checks for Card Set related
 	 *  filesystem changes every so often
 	 */
-	public void dispose() throws Exception {
+	@PreDestroy
+	public void dispose() {
 		if (getCardSetManager() != null) {
 			cardSetManager.cancelCheckSetChanges();
 		}

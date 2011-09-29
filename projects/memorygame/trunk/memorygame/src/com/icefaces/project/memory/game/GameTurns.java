@@ -26,7 +26,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.icesoft.faces.async.render.SessionRenderer;
+import org.icefaces.application.PushRenderer;
+
 import com.icefaces.project.memory.exception.ThreadRunningException;
 import com.icefaces.project.memory.game.card.GameCard;
 import com.icefaces.project.memory.user.UserModel;
@@ -222,7 +223,7 @@ public class GameTurns {
 						}catch (InterruptedException ignored) { }
 						
 						if (parentGame != null) {
-							SessionRenderer.render(parentGame.getName());
+							PushRenderer.render(parentGame.getName());
 						}
 						
 						flipThreadRunning = false;

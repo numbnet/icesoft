@@ -21,28 +21,34 @@
 */
 package com.icefaces.project.memory.bean;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.icesoft.faces.context.DisposableBean;
-import com.icesoft.faces.context.effects.Shake;
 import com.icefaces.project.memory.bot.BotDifficultyManager;
 import com.icefaces.project.memory.game.card.GameCard;
 import com.icefaces.project.memory.user.UserSession;
 import com.icefaces.project.memory.util.FacesUtil;
+import com.icesoft.faces.context.effects.Shake;
 
 /**
  * Page bean for the functionality in board.xhtml
  * This will control a few popups, the shake effect, the current layout, etc.
  */
-public class BoardBean implements DisposableBean {
+@ManagedBean(name="boardBean")
+@ViewScoped
+public class BoardBean {
 	public static final String DEFAULT_LAYOUT = "vertical";
 	
 	private Log log = LogFactory.getLog(this.getClass());
-	
+	@ManagedProperty(value = "#{userSession}")
 	private UserSession userSession;
 	private boolean invitePopup = false;
 	private boolean helpPopup = false;
@@ -53,15 +59,16 @@ public class BoardBean implements DisposableBean {
 	private SelectItem[] difficultiesAsItems;
 	
 	public BoardBean() {
-		init();
-	}
-	
-	protected void init() {
-		shakeEffect.setFired(true);
+		
 	}
 	
 	public UserSession getUserSession() {
 		return userSession;
+	}
+
+	@PostConstruct
+	protected void init() {
+		shakeEffect.setFired(true);
 	}
 
 	public void setUserSession(UserSession userSession) {
@@ -196,13 +203,14 @@ public class BoardBean implements DisposableBean {
 	 * In this case we'll try to make them leave their current game, so that we don't have
 	 *  a bunch of idle users populating games and confusing people
 	 */
-	public void dispose() throws Exception {
+	@PreDestroy
+	public void dispose() {
 		if (userSession != null) {
 			if (userSession.getCurrentGame() != null) {
-				if (log.isInfoEnabled()) {
-					log.info("Disposing of BoardBean for '" + userSession.getName() + "' in game '" + userSession.getCurrentGame() + "'.");
-				}
 				
+				if (log.isInfoEnabled()) {
+					System.out.println("Disposing of BoardBean for '" + userSession.getName() + "' in game '" + userSession.getCurrentGame() + "'.");
+				}
 				// Kick the user from their current game
 				userSession.leaveCurrentGame();
 			}

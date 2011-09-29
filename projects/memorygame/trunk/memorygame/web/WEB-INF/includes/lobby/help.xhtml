@@ -21,7 +21,7 @@
 -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:ice="http://www.icesoft.com/icefaces/component">
     <ice:form>
@@ -32,16 +32,16 @@
                 Instructions
             </f:facet>
             
-            <ice:outputLabel for="generalInfo" value="&amp;bull;"/>
+			<ice:outputText for="generalInfo" value="&amp;#8226" escape="false" />
             <ice:outputText id="generalInfo" value="You are currently in the lobby, where you can create or join games."/>
             
-            <ice:outputLabel for="personalizeInfo" value="&amp;bull;"/>
+            <ice:outputText for="personalizeInfo" value="&amp;#8226" escape="false" />
             <ice:outputText id="personalizeInfo" value="Customize what you are named in the game by filling in the Personalization input field below."/>
             
-            <ice:outputLabel for="joinInfo" value="&amp;bull;"/>
+            <ice:outputText for="joinInfo" value="&amp;#8226" escape="false"/>
             <ice:outputText id="joinInfo" value="If games are available to join you will see them in a selectable list in the Join Game box. There must be a free player slot available to do this. This list will automatically update when new games are created by anyone in the lobby."/>
             
-            <ice:outputLabel for="createInfo" value="&amp;bull;"/>
+            <ice:outputText for="createInfo" value="&amp;#8226" escape="false"/>
             <ice:outputText id="createInfo" value="Make a new game in the Create Game box. A Name is required, and you can optionally provide a Password to make your game private. The Card Images will be what you try to match in the game, while Card Back will be displayed before a card is flipped over and viewed. Board Size sets the number of cards in each row in the game, for example 4 would make a 4x4 board (with 16 cards). Maximum Players are how many people must join before the game can start."/>
         </ice:panelGrid>
     </ice:form>

@@ -23,6 +23,10 @@ package com.icefaces.project.memory.bean;
 
 import java.util.List;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
+
 import com.icefaces.project.memory.exception.FailedJoinException;
 import com.icefaces.project.memory.game.GameInstance;
 import com.icefaces.project.memory.user.UserSession;
@@ -36,6 +40,8 @@ import com.icefaces.project.memory.util.ValidatorUtil;
  *  the friends can instantly join their exact game without having
  *  to go through the lobby
  */
+@ManagedBean(name="redirectBean")
+@RequestScoped
 public class RedirectBean {
 	public static final String BASE_URL_PARAM = "invite.url.base";
 	public static final String GAME_NAME_PARAM = "game";
@@ -45,6 +51,7 @@ public class RedirectBean {
 	private static final String BOARD_URI = "./board.iface";
 	private static final String LOBBY_URI = "./lobby.iface";
 	
+	@ManagedProperty(value = "#{userSession}")
 	private UserSession userSession;
 	private boolean hasChecked = false;
 	

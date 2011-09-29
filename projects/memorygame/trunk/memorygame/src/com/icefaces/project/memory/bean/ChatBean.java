@@ -21,6 +21,9 @@
 */
 package com.icefaces.project.memory.bean;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 import com.icesoft.faces.context.effects.Highlight;
@@ -31,8 +34,13 @@ import com.icefaces.project.memory.util.ValidatorUtil;
 /**
  * Page bean for the functionality of chatting, both sending and displaying messages
  */
+@ManagedBean(name="chatBean")
+@ViewScoped
 public class ChatBean {
+	@ManagedProperty(value = "#{userSession.currentGame.chat}")
 	private GameChat chatRoom;
+	
+	@ManagedProperty(value = "#{userSession.name}")
 	private String sender;
 	private String text;
 	private String fontColor = GameChat.DEFAULT_COLOR;

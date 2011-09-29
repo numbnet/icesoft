@@ -21,10 +21,11 @@
 */
 package com.icefaces.project.memory.game;
 
-import java.util.Vector;
 import java.util.List;
+import java.util.Vector;
 
-import com.icesoft.faces.async.render.SessionRenderer;
+import org.icefaces.application.PushRenderer;
+
 import com.icefaces.project.memory.bot.BotChatManager;
 import com.icefaces.project.memory.bot.BotManager;
 import com.icefaces.project.memory.comparator.UserByScoreComparator;
@@ -198,7 +199,7 @@ public class GameInstance {
 
 	public void renderGame() {
 		if (name != null) {
-			SessionRenderer.render(name);
+			PushRenderer.render(name);
 		}
 	}
 	
