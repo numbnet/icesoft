@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Formatter;
+import java.util.logging.Logger;
 
 import javax.activation.MimetypesFileTypeMap;
 import javax.faces.bean.ManagedBean;
@@ -50,7 +51,8 @@ import javax.faces.event.ValueChangeEvent;
 @ManagedBean(name="micBean")
 @ApplicationScoped
 public class MicBean implements Serializable {
-    
+    private static final Logger logger =
+        Logger.getLogger(MicBean.class.toString());
     private int idCounter = 0;
     private Map clip = new HashMap<String, Object>();
     private String clipName = "icemobile.mp4";
@@ -70,7 +72,7 @@ public class MicBean implements Serializable {
     	try{   
     	  this.prepIPadClip();
     	}catch (Exception e){
-    		System.out.println("could not convert iPadClip to byte array");
+    		logger.warning("could not convert iPadClip to byte array");
     	}
     }   
    
@@ -94,7 +96,7 @@ public class MicBean implements Serializable {
                     process.waitFor();
                     soundFile.delete();
                     converted.renameTo(soundFile);
-                    System.out.println("Completed audio conversion for " + 
+                    logger.info("Completed audio conversion for " +
                             soundFile.getAbsolutePath());
                 } catch (Throwable t)  {
                     t.printStackTrace();
@@ -104,10 +106,8 @@ public class MicBean implements Serializable {
              System.out.println("SOUNDFILE not empty in backing bean has name="+this.clipName);   
             try {
                String relativePath = clip.get("relativePath").toString();
-               System.out.println(" path to file="+relativePath);
                this.setPathToFile(relativePath);
                soundSize = String.valueOf(soundFile.length());
-               System.out.println("new soundSize " + soundSize);
                this.soundClipAvailable = true;
                this.audioContentType =(String) soundInfo.get("contentType");        
             }
@@ -116,7 +116,7 @@ public class MicBean implements Serializable {
             }
 
         }else{
-        	System.out.println("soundfile is empty in backing bean");
+            logger.warning("soundfile is empty in backing bean");
         }
         	
     } 
@@ -157,7 +157,6 @@ public class MicBean implements Serializable {
     	  FacesContext facesContext = FacesContext.getCurrentInstance();
           String rootPath = facesContext.getExternalContext()
                 .getRealPath("/audio/");
-          System.out.println("ROOTPATH of audio url is ="+rootPath);
         return "../audio/"+this.getClipName();
     }
 
@@ -187,14 +186,7 @@ public class MicBean implements Serializable {
 		    .getRealPath("/audio/") 
 		    .concat(File.separator) 
 		    .concat("sampleIPad" + ".mp4"); 
-		    clipFile = new File(sampleFilePath); 
-	/*	    try{
-		       System.out.println("\t\t  MIMETYPE of iPadClip="+this.getMimeType(sampleFilePath));
-		    }catch (Exception e){
-		    	System.out.println("could not get mimetype for iPadClip");
-		    } */
-
-		//Buffer some bytes. 
+		    clipFile = new File(sampleFilePath);
 
 		   FileInputStream fis = new FileInputStream(clipFile); 
 		   ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
@@ -204,12 +196,12 @@ public class MicBean implements Serializable {
 		        bos.write(buf, 0, readNum); //no doubt here is 0 
 		     } 
 		   } catch (IOException ex) { 
-		       System.out.println("Error writing out stream"); 
+		       logger.info("Error writing out stream");
 		   } 
 			this.clipInBytes = bos.toByteArray();
-//			this.getContentTypes();
 			
-		}
+    }
+
 	public byte[] getClipInBytes() {
 		return clipInBytes;
 	}
@@ -220,10 +212,10 @@ public class MicBean implements Serializable {
 
     public String getMimeType(String fileUrl)
 		      throws java.io.IOException
-		{
-		     String type = new MimetypesFileTypeMap().getContentType(fileUrl);
-		     return type;
-	    }
+	{
+		String type = new MimetypesFileTypeMap().getContentType(fileUrl);
+		return type;
+	}
 
     //very slow way to get contentType or mimeType of file.  Quicker to use commons file logging or activation jar
     String contentType = "none";
@@ -259,13 +251,24 @@ public class MicBean implements Serializable {
     public String reset()  {
         pathToFile = "../audio/icemobile.mp4";
         return "";
-    }		
-    int numTimes = 0;
-    private String messageFromAL = "ValueChangeListener called:-";
+    }
+    private String messageFromAL = "ValueChangeListener -";
 
     public void methodOne(ValueChangeEvent event){
-        numTimes++;
-        this.messageFromAL += " "+numTimes+" times-";
+       //going to use this method to check filetype and remove the file if not correct filetype
+         if (event!=null){
+            String filePath = (String)event.getNewValue();
+            MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
+            String mimeType = mimeTypesMap.getContentType(filePath);
+            this.audioContentType = mimeType;
+            if (mimeType.equals("audio/wav") || mimeType.equals("audio/mpeg") ||
+                mimeType.equals("audio/amr") || mimeType.equals("audio/x-m4a")){
+                messageFromAL="valid audio uploaded of mpeg or wav or amr or x-m4a";
+            } else {
+                 messageFromAL = "invalid upload so can delete without user being able to access";
+            }
+         }
+        logger.info("ValueChangeListener  event is null");
     }
 
     public String getMessageFromAL() {
@@ -275,10 +278,12 @@ public class MicBean implements Serializable {
     public void setMessageFromAL(String messageFromAL) {
         this.messageFromAL = messageFromAL;
     }
+
     public Map getClip(){
         return this.clip;
     }
-        public boolean isEnhancedBrowser()  {
+
+    public boolean isEnhancedBrowser()  {
         return EnvUtils.isEnhancedBrowser(FacesContext.getCurrentInstance());
     }
 }

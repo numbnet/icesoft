@@ -31,6 +31,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;

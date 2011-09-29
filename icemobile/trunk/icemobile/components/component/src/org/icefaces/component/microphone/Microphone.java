@@ -16,6 +16,11 @@
 
 package org.icefaces.component.microphone;
 
+import javax.el.MethodExpression;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.ValueChangeEvent;
 import java.util.Map;
 
 
@@ -36,4 +41,29 @@ public class Microphone extends MicrophoneBase {
     private boolean containsKey(Map<String, Object> microphoneMap, String key) {
         return microphoneMap.containsKey(key);
     }
+
+       public void broadcast(FacesEvent event)
+       throws AbortProcessingException {
+         if (event instanceof ValueChangeEvent){
+            if (event != null) {
+                 ValueChangeEvent e = (ValueChangeEvent)event;
+                 MethodExpression method = getValueChangeListener();
+                 if (method != null) {
+                     method.invoke(getFacesContext().getELContext(), new Object[]{event});
+                 }
+             }
+         }
+     }
+
+     public void queueEvent(FacesEvent event) {
+         if (event.getComponent() instanceof Microphone) {
+             if (isImmediate()) {
+                 event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+}
+             else {
+                 event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+             }
+         }
+         super.queueEvent(event);
+     }
 }
