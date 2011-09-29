@@ -240,13 +240,6 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
 
         String baseClientId = super.getClientId(context);
 
-        //MyFaces no longer requires the special row index logic in this method but it seems
-        //some compat components still rely on it. So we just bypass it for now if we are running
-        //under MyFaces but still use it for Mojarra.
-        if(EnvUtils.isMyFaces()){
-            return baseClientId;
-        }
-
         if (getRowIndex() >= 0) {
             //this extra if is to produce the same ids among myfaces and sunri
             //myfaces uses the getRowIndex() and SunRI directly using the rowIndex 
