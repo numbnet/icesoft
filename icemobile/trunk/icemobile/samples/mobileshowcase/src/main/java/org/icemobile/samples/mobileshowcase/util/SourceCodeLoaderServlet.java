@@ -80,12 +80,12 @@ public class SourceCodeLoaderServlet extends HttpServlet {
                     String toReturn;
                     if (m.find(0)) {
                         toReturn = m.replaceFirst(
-                                "// MPL License text (see http://www.mozilla.org/MPL/)\n\n" +
+                                "// Apache License, Version 2.0 (see http://www.apache.org/licenses/LICENSE-2.0)\n\n" +
                                 "// Click or touch the screen to navigate back to ICEmobile Suite\n" );
                     } else {
                         m = JAVA_PATTERN.matcher(stringBuffer);
                         toReturn = m.replaceFirst(
-                                "/* MPL License text (see http://www.mozilla.org/MPL/) */\n\n" +
+                                "/*  Apache License, Version 2.0 (see http://www.apache.org/licenses/LICENSE-2.0) */\n\n" +
                                 "/* Click or touch the screen to navigate back to ICEmobile Suite */\n" );
                     }
                     String name = sourcePath
