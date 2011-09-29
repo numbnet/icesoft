@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.icemobile.samples.mobileshowcase.view.examples.input.qrcode;
+package org.icemobile.samples.mobileshowcase.view.examples.device.qrcode;
 
 
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
@@ -36,14 +36,14 @@ import java.io.Serializable;
  * an input string.  The string is converted into a valid QR graphic image.
  */
 @Destination(
-        title = "example.input.input.destination.title.short",
-        titleExt = "example.input.input.destination.title.long",
-        titleBack = "example.input.input.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/input/qrcode.xhtml"
+        title = "example.device.qrcode.destination.title.short",
+        titleExt = "example.device.qrcode.destination.title.long",
+        titleBack = "example.device.qrcode.destination.title.back",
+        contentPath = "/WEB-INF/includes/examples/device/qrcode.xhtml"
 )
 @Example(
-        descriptionPath = "/WEB-INF/includes/examples/input/qrcode-desc.xhtml",
-        examplePath = "/WEB-INF/includes/examples/input/qrcode-example.xhtml",
+        descriptionPath = "/WEB-INF/includes/examples/device/qrcode-desc.xhtml",
+        examplePath = "/WEB-INF/includes/examples/device/qrcode-example.xhtml",
         resourcesPath = "/WEB-INF/includes/examples/example-resources.xhtml"
 )
 @ExampleResources(
@@ -51,12 +51,12 @@ import java.io.Serializable;
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
                         title = "qrcode-example.xhtml",
-                        resource = "/WEB-INF/includes/examples/input/qrcode-example.xhtml"),
+                        resource = "/WEB-INF/includes/examples/device/qrcode-example.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
                         title = "QrCodeBean.java",
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
-                                "/view/examples/input/input/QrCodeBean.java")
+                                "/view/examples/device/qrcode/QrCodeBean.java")
         }
 )
 
