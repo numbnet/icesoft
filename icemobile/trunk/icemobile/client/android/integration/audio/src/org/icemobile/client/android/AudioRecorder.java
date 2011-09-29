@@ -23,6 +23,7 @@ import android.media.MediaPlayer;
 import android.os.Environment;
 import java.io.IOException;
 import java.io.File;
+import java.lang.reflect.Field;
 
 public class AudioRecorder {
 
@@ -51,22 +52,36 @@ public class AudioRecorder {
     }
 
     private void startRecording(int maxDuration) {
-
-	mRecorder = new MediaRecorder();
-	mRecorder.reset();
-        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-	if (maxDuration > 0) {
-	    mRecorder.setMaxDuration(maxDuration*1000);
-	}
-        //set to AAC from android-10 for better iPhone compatibility
-//        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        mRecorder.setOutputFile(audioFile.getAbsolutePath());
         try {
+            mRecorder = null;
+            try {
+                Field aacField = MediaRecorder.AudioEncoder.class
+                        .getField("AAC");
+                if (null != aacField)  {
+                    //set to AAC from android-10 for better iPhone compatibility
+                    mRecorder = getMediaRecorder(aacField.getInt(null));
+                    if (maxDuration > 0) {
+                        mRecorder.setMaxDuration(maxDuration*1000);
+                    }
+                }
+            } catch (Throwable t)  {
+                Log.d("ICEaudio", "AAC setup failed");
+            }
             mRecorder.prepare();
-        } catch (IOException e) {
-            Log.e("ICEaudio", "prepare() failed");
+            Log.d("ICEaudio", "AAC audio encoding ");
+        } catch (Exception e) {
+            Log.e("ICEaudio", "prepare() failed for AAC");
+            try {
+                mRecorder = getMediaRecorder(
+                        MediaRecorder.AudioEncoder.DEFAULT );
+                if (maxDuration > 0) {
+                    mRecorder.setMaxDuration(maxDuration*1000);
+                }
+                mRecorder.prepare();
+                Log.d("ICEaudio", "DEFAULT audio encoding ");
+            } catch (IOException x) {
+                Log.e("ICEaudio", "prepare() failed for DEFAULT");
+            }
         }
 
         //record in a separate thread so that the UI is not blocked
@@ -88,6 +103,16 @@ public class AudioRecorder {
         });
         t.start();
 	recording = true;
+    }
+
+    MediaRecorder getMediaRecorder(int encoder)  {
+        MediaRecorder recorder = new MediaRecorder();
+        recorder.reset();
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        recorder.setAudioEncoder(encoder);
+        recorder.setOutputFile(audioFile.getAbsolutePath());
+        return recorder;
     }
 
     private void stopRecording() {
