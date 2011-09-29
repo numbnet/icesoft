@@ -1,0 +1,72 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">
+<h:head>
+    <title>ICEfaces Converter Example - Custom</title>
+    <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+</h:head>
+<h:body>
+    <h:form>
+        <h1>ICEfaces Converter Example - Custom</h1>
+        <p>The following example uses standard JSF converters to convert
+           input data to the appropriate data type.  In addition to standard
+           converters a custom converter is also implemented on the phone number field.</p>
+
+        First Name:
+        <h:inputText id="firstname" value="#{user.firstName}" />
+        <ice:message style="color:red;" id="firstNameError" for="firstname" />
+        <br/>
+
+
+        Last Name:
+        <h:inputText id="lastname" value="#{user.lastName}" />
+        <ice:message style="color:red;" id="lastNameError" for="lastname" />
+        <br/>
+
+
+        Address:
+        <h:inputText id="address" value="#{user.address}" />
+        <ice:message style="color:red;" id="addressError" for="address" />
+        <br/>
+
+
+        City:
+        <h:inputText id="city" value="#{user.city}" />
+        <ice:message style="color:red;" id="cityError" for="city" />
+        <br/>
+
+
+        Phone Number:
+        <h:inputText id="phone" value="#{user.phone}">
+            <f:converter converterId="icefaces.PhoneConverter" />
+        </h:inputText>
+        <ice:message style="color:red;" id="phoneError" for="phone" />
+        <br/>
+
+
+        Age:
+        <h:inputText id="age" value="#{user.age}" partialSubmit="true">
+            <f:converter converterId="javax.faces.Integer" />
+        </h:inputText>
+        <ice:message style="color:red;" id="ageError" for="age" />
+        <br/>
+
+
+        Birth Date:
+        <h:inputText id="birthdate" value="#{user.birthDate}">
+            <f:convertDateTime dateStyle="short" />
+        </h:inputText>
+        <ice:message style="color:red;" id="birthDateError" for="birthdate" />
+        <br/>
+
+
+        Salary:
+        <h:inputText id="salary" value="#{user.salary}">
+            <f:convertNumber maxFractionDigits="2" groupingUsed="true" currencySymbol="$" maxIntegerDigits="7" type="currency" />
+        </h:inputText>
+        <ice:message style="color:red;" id="salaryError" for="salary" />
+        <br/>
+
+
+        <h:commandButton id="registercommand" type="submit" value="Register" action="#{registerBean.register}" />
+    </h:form>
+</h:body>
+</html>

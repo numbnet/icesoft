@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.icefaces.samples</groupId>
+    <artifactId>samples-parent</artifactId>
+    <version>2.0.1</version>
+    <packaging>pom</packaging>
+    <name>ICEfaces Samples Parent</name>
+    <url>http://www.icefaces.org</url>
+ 
+    <modules>
+        <module>compat</module>
+        <module>core</module>
+        <module>ace</module>
+    </modules>
+    <properties>
+        <ice.version>2.0.1</ice.version>
+        <compiler.plugins.version>2.0.2</compiler.plugins.version>
+        <jsf.version>2.1.1-b04</jsf.version>
+        <jsf.portlet.version>2.1.1-b04</jsf.portlet.version>
+    </properties>
+   <dependencies>
+        <dependency>
+            <groupId>org.icefaces</groupId>
+            <artifactId>icefaces</artifactId>
+            <version>${ice.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugins.version}</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+   <repositories>
+     <repository>
+        <id>snapshots</id>
+        <url>http://anonsvn.icefaces.org/repo/maven2/snapshots</url>
+     </repository>
+       <repository>
+          <id>java.net</id>
+          <url>http://download.java.net/maven/2</url>
+       </repository>
+       <repository>
+          <id>maven.org</id>
+          <url>http://repo1.maven.org/maven2</url>
+       </repository>
+  </repositories>
+ <profiles>
+    <profile>
+       <id>servlet</id>
+       <activation>
+          <activeByDefault>true</activeByDefault>
+       </activation>
+       <dependencies>
+          <dependency>
+             <groupId>com.sun.faces</groupId>
+             <artifactId>jsf-impl</artifactId>
+             <version>${jsf.version}</version>
+          </dependency>
+          <dependency>
+             <groupId>com.sun.faces</groupId>
+             <artifactId>jsf-api</artifactId>
+             <version>${jsf.version}</version>
+          </dependency>
+       </dependencies>
+    </profile>
+    <profile>
+       <id>web</id>
+      <activation>
+          <activeByDefault>false</activeByDefault>
+       </activation>       
+       <dependencies>
+          <dependency>
+             <groupId>com.sun.faces</groupId>
+             <artifactId>jsf-impl</artifactId>
+             <version>${jsf.version}</version>
+             <scope>provided</scope>
+          </dependency>
+          <dependency>
+             <groupId>com.sun.faces</groupId>
+             <artifactId>jsf-api</artifactId>
+             <version>${jsf.version}</version>
+             <scope>provided</scope>
+          </dependency>
+       </dependencies>
+    </profile>
+  </profiles>
+  
+</project>
