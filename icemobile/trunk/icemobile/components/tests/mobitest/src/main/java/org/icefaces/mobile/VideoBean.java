@@ -188,7 +188,9 @@ public class VideoBean implements Serializable {
      public void methodOne(ValueChangeEvent event){
         //going to use this method to check filetype and remove the file if not correct filetype
           if (event!=null){
-             String filePath = (String)event.getNewValue();
+             Map compMap = (HashMap)event.getNewValue();
+             File fname = (File)compMap.get("file");
+             String filePath = fname.getAbsolutePath();
              MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
              String mimeType = mimeTypesMap.getContentType(filePath);
              this.setContentType(mimeType);

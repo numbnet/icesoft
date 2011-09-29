@@ -192,9 +192,11 @@ public class CameraBean implements Serializable {
     }
 
     public void methodOne(ValueChangeEvent event){
-        //going to use this method to check filetype and remove the file if not correct filetype
+        // use this method to check filetype and can possibly remove the file if not correct filetype
          if (event!=null){
-            String filePath = (String)event.getNewValue();
+            Map compMap = (HashMap)event.getNewValue();
+            File fname = (File)compMap.get(CAMERA_KEY_FILE);
+            String filePath = fname.getAbsolutePath();
             MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
             String mimeType = mimeTypesMap.getContentType(filePath);
             if (mimeType.equals("image/jpeg") || mimeType.equals("image/png")){

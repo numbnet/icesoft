@@ -54,14 +54,10 @@ public class MicrophoneRenderer extends Renderer {
             boolean valid = extractAudio(facesContext, map, clientId);
             if (valid){
                if (map !=null){
-                   microphone.setValue(map);
-                   String old = null;
-                   File imageFile = (File) map.get("file");
-                   String newFnm = imageFile.getAbsolutePath();
-             //   just trigger valueChange for now as validation may include
-             //   only queueing this if certain attrbiutes change to valid values.
-                   uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
-    		    		    old, newFnm));
+                  microphone.setValue(map);
+             //   trigger valueChange and add map as newEvent value old event is NA
+                  uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
+    		    		    null, map));
                 }
             }
         } catch (Exception e) {
