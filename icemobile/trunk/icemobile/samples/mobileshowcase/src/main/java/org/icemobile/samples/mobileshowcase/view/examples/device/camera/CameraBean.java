@@ -16,6 +16,7 @@
 
 package org.icemobile.samples.mobileshowcase.view.examples.device.camera;
 
+import org.icemobile.samples.mobileshowcase.util.FacesUtils;
 import org.icemobile.samples.mobileshowcase.view.examples.device.DeviceInput;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
@@ -80,12 +81,17 @@ public class CameraBean extends ExampleImpl<CameraBean> implements
     // uploaded video will be stored as a resource.
     private Resource outputResource;
 
+    // upload error message
+    private String uploadMessage;
+
     public CameraBean() {
         super(CameraBean.class);
     }
 
     public void processUploadedImage(ActionEvent event) {
-        if (cameraImage != null) {
+        if (cameraImage != null &&
+                cameraImage.get("contentType") != null &&
+                ((String)cameraImage.get("contentType")).startsWith("image")) {
             // clean up previously upload file
             if (cameraFile != null){
                 disposeResources();
@@ -100,8 +106,12 @@ public class CameraBean extends ExampleImpl<CameraBean> implements
                 } catch (IOException ex) {
                     logger.warning("Error setting up video resource object");
                 }
+                uploadMessage = "Upload was successful";
                 return;
             }
+        }else{
+            // create error message for users.
+            uploadMessage = "The uploaded file could not be correctly processed.";
         }
         // a null/empty object is used in the page to hide the audio
         // component.
@@ -130,4 +140,7 @@ public class CameraBean extends ExampleImpl<CameraBean> implements
         return outputResource;
     }
 
+    public String getUploadMessage() {
+        return uploadMessage;
+    }
 }

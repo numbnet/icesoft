@@ -87,12 +87,17 @@ public class MicrophoneBean extends ExampleImpl<MicrophoneBean> implements
     private Map audioFileMap;
     private File audioFile;
 
+    // upload error message
+    private String uploadMessage;
+
     public MicrophoneBean() {
         super(MicrophoneBean.class);
     }
 
     public void processUploadedAudio(ActionEvent event) {
-        if (audioFileMap != null) {
+        if (audioFileMap != null &&
+                audioFileMap.get("contentType") != null &&
+                ((String)audioFileMap.get("contentType")).startsWith("audio")) {
             // clean up previously upload file
             if (audioFile != null){
                 disposeResources();
@@ -107,8 +112,12 @@ public class MicrophoneBean extends ExampleImpl<MicrophoneBean> implements
                 } catch (IOException ex) {
                     logger.warning("Error setting up video resource object");
                 }
+                uploadMessage = "Upload was successful";
                 return;
             }
+        }else{
+            // create error message for users.
+            uploadMessage = "The uploaded file could not be correctly processed.";
         }
         // a null/empty object is used in the page to hide the audio
         // component.
@@ -133,5 +142,13 @@ public class MicrophoneBean extends ExampleImpl<MicrophoneBean> implements
 
     public Resource getOutputResource() {
         return outputResource;
+    }
+
+    public String getUploadMessage() {
+        return uploadMessage;
+    }
+
+    public void setUploadMessage(String uploadMessage) {
+        this.uploadMessage = uploadMessage;
     }
 }
