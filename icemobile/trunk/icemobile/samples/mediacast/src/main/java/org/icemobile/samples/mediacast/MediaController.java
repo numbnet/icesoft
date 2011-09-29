@@ -222,7 +222,6 @@ public class MediaController implements Serializable {
                     converted.getAbsolutePath());
             Runtime runtime = Runtime.getRuntime();
             Process process = runtime.exec(command.toString());
-System.out.println(command);
             int exitValue = process.waitFor();
             if (0 != exitValue)  {
                 logger.log(Level.WARNING, "Transcoding failure: " + command);
@@ -262,8 +261,7 @@ System.out.println(command);
                         processFile(audioFile, audioCommand, ".m4a");
                 File audioDir = audioFile.getParentFile();
                 File newAudio = new File(audioDir, converted.getName());
-//                audioFile.delete();
-System.out.println("not deleting");
+                audioFile.delete();
                 converted.renameTo(newAudio);
                 audioFile = newAudio;
             }
