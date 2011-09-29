@@ -20,7 +20,10 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
-    <h:form prependId="false" enctype="multipart/form-data">
+    <h:form prependId="false" >
+
+        <!-- upload helper to help with desktop and mobile shared UI's -->
+        <mobi:uploadhelper/>
 
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow style="padding-bottom:10px;">
@@ -40,11 +43,10 @@
                 <mobi:thumbnail for="cc"/>
 
                 <!--upload handler -->
-                <h:commandButton type="button" id="upload1"
+                <h:commandButton id="upload1"
                                  style="float:none;"
                                  styleClass="mobi-button mobi-round-all mobi-button-important"
                                  actionListener="#{camcorderBean.processUploadedVideo}"
-                                 onclick="ice.s(event, this);"
                                  value="Upload"/>
                 <br />
                 <h:outputText styleClass="ehancedBrowserDisclaimer"

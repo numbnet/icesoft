@@ -27,7 +27,10 @@
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 
-    <h:form prependId="false" enctype="multipart/form-data">
+    <h:form prependId="false">
+
+        <!-- upload helper to help with desktop and mobile shared UI's -->
+        <mobi:uploadhelper/>
 
         <mobi:fieldsetGroup>
 
@@ -37,11 +40,9 @@
                                  styleClass="mobi-button"
                                  value="#{microphoneBean.audioFileMap}"/>
 
-                <h:commandButton type="button"
-                                 style="float:none;"
+                <h:commandButton style="float:none;"
                                  styleClass="mobi-button mobi-button-important"
                                  actionListener="#{microphoneBean.processUploadedAudio}"
-                                 onclick="ice.s(event, this);"
                                  value="Upload"/>
 
                 <br />
