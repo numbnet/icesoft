@@ -30,6 +30,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,15 +49,16 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
               Map<String, Object> map = new HashMap<String, Object>();
               boolean isValid = extractVideo(facesContext, map, clientId);
               if (isValid){
-                    if (map !=null){
-                       this.setSubmittedValue(uiComponent, map);
-                       Integer old = Integer.MAX_VALUE;
-                       Integer selected = Integer.MIN_VALUE;
-             //   just trigger valueChange for now as validation may include
-             //   only queueing this if certain attrbiutes change to valid values.
-                       uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
-    		    		    new Integer(old), selected));
-                    }
+                 if (map !=null){
+                   video.setValue(map);
+                   String old = null;
+                   File imageFile = (File) map.get("file");
+                   String newFnm = imageFile.getAbsolutePath();
+             //    just trigger valueChange for now as validation may include
+             //    only queueing this if certain attrbiutes change to valid values.
+                   uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
+    		    		    old, newFnm));
+                }
               }
 
            } catch (Exception e) {

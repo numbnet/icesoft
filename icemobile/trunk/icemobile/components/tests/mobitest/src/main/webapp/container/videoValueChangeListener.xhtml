@@ -10,12 +10,11 @@
   <style>.centered * {vertical-align:middle;padding-left:2px;padding-right:2px;}</style>
 </h:head>
 <h:body style="font-family:sans-serif">
-    <h3>Camcorder Component with JSF Validataion</h3>
+    <h3>Camcorder Component with valueChangeListener</h3>
     <div style="border-radius: 15px; border: 1px dotted silver; max-width: 500px;">
         <h:form prependId="false" class="centered" enctype="multipart/form-data">
 
             <mobi:camcorder id="vid_one" value="#{videoBean.clip}" valueChangeListener="#{videoBean.methodOne}">
-                <f:validator validatorId="org.icefaces.mobile.util.VideoValidator"/>
             </mobi:camcorder>
             <mobi:thumbnail for="vid_one"/>
             <h:commandButton value="upload" rendered="#{videoBean.enhancedBrowser}" />

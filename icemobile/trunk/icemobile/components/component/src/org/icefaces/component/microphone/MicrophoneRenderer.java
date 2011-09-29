@@ -53,7 +53,6 @@ public class MicrophoneRenderer extends Renderer {
             Map<String, Object> map = new HashMap<String, Object>();
             boolean valid = extractAudio(facesContext, map, clientId);
             if (valid){
-
                if (map !=null){
                    microphone.setValue(map);
                    String old = null;
