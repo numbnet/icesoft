@@ -18,6 +18,7 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:util="http://java.sun.com/jsf/composite/components"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
 
@@ -25,10 +26,10 @@
     <div style="clear:both;"/>
     <!-- diplay of uploaded images for all users, top 5 are shown. -->
     <h:form>
-        <mobi:carousel var="mediaMessage"
-                       value="#{mediaStore.carouselStack}"
-                       style="border-top: 1px solid #999999;">
-                <h:panelGroup>
+        <util:carousel count="#{mediaStore.carouselStackCount}">
+            <ui:repeat var="mediaMessage"
+                       value="#{mediaStore.carouselStack}">
+                <util:carouselItem>
                     <div style="overflow:hidden;width:175px;height:98px;">
                         <mobi:graphicImage
                                 width="#{mediaMessage.mediumPhoto.width}"
@@ -44,9 +45,9 @@
                         <h:graphicImage library="images"
                                         name="view-icon.png"/>
                     </h:commandLink>
-                </h:panelGroup>
-
-        </mobi:carousel>
+                </util:carouselItem>
+            </ui:repeat>
+        </util:carousel>
     </h:form>
 
     <div style="clear:both;"/>
