@@ -18,8 +18,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	  package="org.icemobile.client.android"
-	  android:versionCode="1"
-	  android:versionName="1.0 Alpha">
+	  android:versionCode="2"
+	  android:versionName="1.0 Beta">
   <permission android:name="org.icemobile.client.android.permission.C2D_MESSAGE"
 	      android:protectionLevel="signature" />
   <uses-permission android:name="org.icemobile.client.android.permission.C2D_MESSAGE" />
