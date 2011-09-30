@@ -18,7 +18,6 @@
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
              xmlns:ui="http://java.sun.com/jsf/facelets"
-              xmlns:util="http://java.sun.com/jsf/composite/components"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 
 
@@ -26,17 +25,17 @@
     <div style="clear:both;"/>
     <!-- diplay of uploaded images for all users, top 5 are shown. -->
     <h:form>
-        <util:carousel id="crs" count="#{mediaStore.carouselStackCount}">
-            <ui:repeat var="mediaMessage"
-                       value="#{mediaStore.carouselStack}">
-                <util:carouselItem id="crsItm" >
-                    <h:panelGroup style="display:block;overflow:hidden;width:175px;height:98px;">
-                        <mobi:graphicImage id="img"
+        <mobi:carousel var="mediaMessage"
+                       value="#{mediaStore.carouselStack}"
+                       style="border-top: 1px solid #999999;">
+                <h:column>
+                    <div style="overflow:hidden;width:175px;height:98px;">
+                        <mobi:graphicImage
                                 width="#{mediaMessage.mediumPhoto.width}"
                                 height="#{mediaMessage.mediumPhoto.height}"
                                 value="#{mediaMessage.mediumPhoto.data}"/>
-                    </h:panelGroup>
-                    <h:commandLink id="link"
+                    </div>
+                    <h:commandLink
                             action="#{mediaController.viewMediaDetail}"
                             class="view-play-icon">
                         <f:setPropertyActionListener
@@ -45,9 +44,9 @@
                         <h:graphicImage library="images"
                                         name="view-icon.png"/>
                     </h:commandLink>
-                </util:carouselItem>
-            </ui:repeat>
-        </util:carousel>
+                </h:column>
+
+        </mobi:carousel>
     </h:form>
 
     <div style="clear:both;"/>
