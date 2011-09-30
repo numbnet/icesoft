@@ -387,7 +387,13 @@ public class EnvUtils {
     }
 
     public static String getMandatoryResourceConfig(FacesContext facesContext) {
-        return EnvConfig.getEnvConfig(facesContext).mandatoryResourceConfig;
+        String configValue = EnvConfig.getEnvConfig(facesContext)
+                .mandatoryResourceConfig;
+        if ("all".equalsIgnoreCase(configValue))  {
+            //restore previous default behavior to load all components
+            configValue = null;
+        }
+        return configValue;
     }
 
     public static boolean isUniqueResourceURLs(FacesContext facesContext) {
