@@ -265,7 +265,6 @@ if (!window.ice.mobile) {
 
     function init()  {
         getIPCIframe();
-document.body.appendChild(document.createTextNode("ice.mobile functions enabled."));
         addConnectionStatus();
     }
     //use below if loaded over network vs embedded use to eval this file
