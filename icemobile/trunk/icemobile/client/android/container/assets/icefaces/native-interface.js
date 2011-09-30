@@ -200,6 +200,8 @@ if (!window.ice.mobile) {
                 var el = els[i];
                 if (!el.disabled) {
                     switch (el.type) {
+                        case 'submit':
+                            break;
                         case 'text':
                         case 'password':
                         case 'hidden':
@@ -224,6 +226,8 @@ if (!window.ice.mobile) {
                                 addField(el.name, el.value);
                             }
                             break;
+                        default:
+                            addField(el.name, el.value);
                     }
                 }
             }
@@ -250,7 +254,6 @@ if (!window.ice.mobile) {
         iframe.setAttribute("id", "ipciframe");
         iframe.setAttribute("style", "width:0px; height:0px; border: 0px");
         document.body.appendChild(iframe);
-	//document.body.appendChild(document.createTextNode("ice.mobile functions enabled."))
         addConnectionStatus();
     }
     //use below if loaded over network vs embedded use to eval this file
