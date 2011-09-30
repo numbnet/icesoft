@@ -34,9 +34,8 @@
     </patternset>
 
     <patternset id="lib.distribute">
-        <patternset id="lib.distribute.jsf" includes="jsf-api.jar jsf-impl.jar">
-            <exclude name="jsf-api.jar"         unless="jsf"/>
-            <exclude name="jsf-impl.jar"        unless="jsf"/>
+        <patternset id="lib.distribute.jsf" includes="javax.faces.jar">
+            <exclude name="javax.faces.jar"         unless="jsf"/>
         </patternset>
 
         <patternset id="lib.distribute.ice" includes="${icefaces.lib.name}.jar ${icepush.lib.name}.jar">
