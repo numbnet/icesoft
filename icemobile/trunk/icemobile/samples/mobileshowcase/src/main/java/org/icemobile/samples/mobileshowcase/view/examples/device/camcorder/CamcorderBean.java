@@ -124,7 +124,7 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
             }
         }else{
             // create error message for users.
-            uploadMessage = "The uploaded file could not be correctly processed.";
+            uploadMessage = "The uploaded video file could not be correctly processed.";
         }
         // a null/empty object is used in the page to hide the audio
         // component.
