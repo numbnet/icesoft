@@ -67,12 +67,17 @@ public class InputTextRenderer extends BaseInputRenderer {
         if (type.equals("textarea")) {
             componentType = "textarea";
         }
-        writer.startElement(componentType, uiComponent);
+
         boolean isNumberType = type.equals("number");
         String compId = clientId;
         if (isNumberType) {
             compId += "_number";
+            writer.startElement(HTML.SPAN_ELEM, uiComponent);
+            writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", HTML.ID_ATTR);
+            writer.writeAttribute(HTML.NAME_ATTR, clientId+"_span", null);
         }
+
+        writer.startElement(componentType, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, compId, HTML.ID_ATTR);
         writer.writeAttribute(HTML.NAME_ATTR, compId, null);
 
@@ -105,8 +110,9 @@ public class InputTextRenderer extends BaseInputRenderer {
         String jsCall = "ice.se(event, '" + clientId + "');";
         if (isNumberType) {
             jsCall = "mobi.input.submit(event, '" + clientId + "', this.value," + singleSubmit + ");";
+            writer.writeAttribute("onchange", jsCall, null);
         }
-        if (singleSubmit) {
+        if  (!isNumberType && singleSubmit){
             writer.writeAttribute("onchange", jsCall, null);
         }
         if (!componentType.equals("textarea")) {
@@ -114,6 +120,7 @@ public class InputTextRenderer extends BaseInputRenderer {
         } else {
             writer.write(valueToRender);
         }
+        writer.endElement(componentType);
         if (isNumberType) {
             writer.startElement(HTML.INPUT_ELEM, uiComponent);
             writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
@@ -121,8 +128,9 @@ public class InputTextRenderer extends BaseInputRenderer {
             writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
             writer.writeAttribute(HTML.VALUE_ATTR, valueToRender, null);
             writer.endElement(HTML.INPUT_ELEM);
+            writer.endElement(HTML.SPAN_ELEM);
         }
-        writer.endElement(componentType);
+
     }
 
     @Override
