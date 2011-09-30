@@ -56,9 +56,9 @@ public class MediaController implements Serializable {
     private Media movieIcon ;
     private Media soundIconSmall;
     private Media movieIconSmall;
-    private String videoCommand = null;
-    private String audioCommand = null;
-    private String thumbCommand = null;
+    private String videoConvertCommand;
+    private String audioConvertCommand;
+    private String thumbConvertCommand;
 
     public MediaController() {
         BufferedImage image;
@@ -66,15 +66,15 @@ public class MediaController implements Serializable {
         ExternalContext externalContext =
                 FacesContext.getCurrentInstance().getExternalContext();
 
-        videoCommand = FacesContext.getCurrentInstance()
+        videoConvertCommand = FacesContext.getCurrentInstance()
                 .getExternalContext().getInitParameter(
                     "org.icemobile.videoConvertCommand" );
                     
-        audioCommand = FacesContext.getCurrentInstance()
+        audioConvertCommand = FacesContext.getCurrentInstance()
                 .getExternalContext().getInitParameter(
                     "org.icemobile.audioConvertCommand" );
 
-        thumbCommand = FacesContext.getCurrentInstance()
+        thumbConvertCommand = FacesContext.getCurrentInstance()
                 .getExternalContext().getInitParameter(
                     "org.icemobile.thumbnailCommand" );
         /**
@@ -125,51 +125,69 @@ public class MediaController implements Serializable {
         MediaStore mediaStore = (MediaStore)
                 FacesUtils.getManagedBean(MediaStore.BEAN_NAME);
 
-        File mediaFile = null;
-        MediaMessage photoMessage = new MediaMessage();
-        String subject = "";
         String selectedMediaInput = uploadModel.getSelectedMediaInput();
+        String contentType = (String)uploadModel.getMediaMap().get("contentType");
 
-        if (MediaMessage.MEDIA_TYPE_PHOTO.equals(selectedMediaInput)) {
-            mediaFile = uploadModel.getCameraFile();
-            processUploadedImage(photoMessage, mediaFile);
-            subject = "New Photo";
-            photoMessage.setComment(processComment(uploadModel.getComment(),
-                    MediaMessage.MEDIA_TYPE_PHOTO));
-            uploadModel.setCameraFile(null);
-        } else if (MediaMessage.MEDIA_TYPE_VIDEO.equals(selectedMediaInput)) {
-            mediaFile = uploadModel.getVideoFile();
-            processUploadedVideo(photoMessage, mediaFile);
-            subject = "New Video";
-            photoMessage.setComment(processComment(uploadModel.getComment(),
-                    MediaMessage.MEDIA_TYPE_VIDEO));
-            uploadModel.setVideoFile(null);
-        } else if (MediaMessage.MEDIA_TYPE_AUDIO.equals(selectedMediaInput)) {
-            mediaFile = uploadModel.getAudioFile();
-            processUploadedAudio(photoMessage, mediaFile);
-            photoMessage.setComment(processComment(uploadModel.getComment(),
-                    MediaMessage.MEDIA_TYPE_AUDIO));
-            subject =  "New Audio";
-            uploadModel.setAudioFile(null);
+        // check that we have a valid file type before processing.
+        if (contentType != null &&
+                (contentType.startsWith("image") ||
+                 contentType.startsWith("video") ||
+                 contentType.startsWith("audio"))){
+
+            File mediaFile = null;
+            MediaMessage photoMessage = new MediaMessage();
+            String subject = "";
+
+            if (MediaMessage.MEDIA_TYPE_PHOTO.equals(selectedMediaInput) &&
+                    contentType.startsWith("image")) {
+                mediaFile = uploadModel.getCameraFile();
+                processUploadedImage(photoMessage, mediaFile);
+                subject = "New Photo";
+                photoMessage.setComment(processComment(uploadModel.getComment(),
+                        MediaMessage.MEDIA_TYPE_PHOTO));
+                uploadModel.setCameraFile(null);
+            } else if (MediaMessage.MEDIA_TYPE_VIDEO.equals(selectedMediaInput) &&
+                    contentType.startsWith("video")) {
+                mediaFile = uploadModel.getVideoFile();
+                processUploadedVideo(photoMessage, mediaFile);
+                subject = "New Video";
+                photoMessage.setComment(processComment(uploadModel.getComment(),
+                        MediaMessage.MEDIA_TYPE_VIDEO));
+                uploadModel.setVideoFile(null);
+            } else if (MediaMessage.MEDIA_TYPE_AUDIO.equals(selectedMediaInput) &&
+                    contentType.startsWith("audio")) {
+                mediaFile = uploadModel.getAudioFile();
+                processUploadedAudio(photoMessage, mediaFile);
+                photoMessage.setComment(processComment(uploadModel.getComment(),
+                        MediaMessage.MEDIA_TYPE_AUDIO));
+                subject =  "New Audio";
+                uploadModel.setAudioFile(null);
+            }
+
+            // only add the message if the file successfully uploaded.
+            if (mediaFile != null){
+                mediaStore.addMedia(photoMessage);
+                try {
+                    String body = photoMessage.getComment();
+                    PushRenderer.render(RENDER_GROUP,
+                            new PushMessage(subject, body) );
+                } catch (Exception e) {
+                    logger.log(Level.WARNING, "Media message was not sent to recipients.", e);
+                }
+                uploadModel.setUploadErrorMessage("The " + selectedMediaInput + " Message sent successfully.");
+            }else{
+                uploadModel.setUploadErrorMessage("An error occurred while upload the " + selectedMediaInput +
+                    " file, please try again.");
+            }
+        }else{
+            uploadModel.setUploadErrorMessage("An error occurred while upload the " + selectedMediaInput +
+                    " file, please try again.");
         }
+
         // reset the selected input string, so the input selection buttons show up again.
         uploadModel.setSelectedMediaInput("");
         uploadModel.setComment("");
 
-        // only add the message if the file successfully uploaded.
-        if (mediaFile != null){
-            mediaStore.addMedia(photoMessage);
-            try {
-                String body = photoMessage.getComment();
-                PushRenderer.render(RENDER_GROUP, 
-                        new PushMessage(subject, body) );
-            } catch (Exception e) {
-                logger.log(Level.WARNING, "Media message was not sent to recipients.", e);
-            }
-//            FacesUtils.addInfoMessage("Message sent successfully.");
-        }else{
-//            FacesUtils.addInfoMessage("Media upload failed, please try again.");
-        }
         return null;
     }
 
@@ -183,7 +201,6 @@ public class MediaController implements Serializable {
             navigationModel.goForward(NavigationModel.DESTINATION_VIEWER.getKey());
         }
         return null;
-
     }
 
     /**
@@ -256,9 +273,9 @@ public class MediaController implements Serializable {
             return;
         }
         try {
-            if (null != audioCommand) {
+            if (null != audioConvertCommand) {
                 File converted = 
-                        processFile(audioFile, audioCommand, ".m4a");
+                        processFile(audioFile, audioConvertCommand, ".m4a");
                 File audioDir = audioFile.getParentFile();
                 File newAudio = new File(audioDir, converted.getName());
                 audioFile.delete();
@@ -283,10 +300,11 @@ public class MediaController implements Serializable {
         Media customMovieIcon = movieIcon;
 
         try {
-
-            if (null != videoCommand) {
-                File converted = 
-                        processFile(videoFile, videoCommand, ".mp4");
+            // check to see if we can process the video file into an mp4 format
+            // this is runtime config controlled in the web.xml
+            if (null != videoConvertCommand) {
+                File converted =
+                        processFile(videoFile, videoConvertCommand, ".mp4");
                 File videoDir = videoFile.getParentFile();
                 File newVideo = new File(videoDir, converted.getName());
                 videoFile.delete();
@@ -294,9 +312,11 @@ public class MediaController implements Serializable {
                 videoFile = newVideo;
             }
 
-            if (null != thumbCommand) {
+            // check if a thumb nail can be generated for the uploaded video
+            // if so show it.
+            if (null != thumbConvertCommand) {
                 File thumbImage =
-                        processFile(videoFile, thumbCommand, ".jpg");
+                        processFile(videoFile, thumbConvertCommand, ".jpg");
                 customMovieIcon = createPhoto(thumbImage);
                 thumbImage.delete();
             }

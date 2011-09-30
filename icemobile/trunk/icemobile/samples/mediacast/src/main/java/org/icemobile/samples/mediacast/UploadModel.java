@@ -54,6 +54,9 @@ public class UploadModel implements Serializable {
     // placeholder for new message comment
     private String photoComment;
 
+    // upload error message
+    private String uploadErrorMessage;
+
     public UploadModel() {
         mediaMap = new HashMap<String, Object>();
     }
@@ -162,4 +165,11 @@ public class UploadModel implements Serializable {
         return MediaMessage.MEDIA_TYPE_AUDIO.equals(selectedMediaInput);
     }
 
+    public String getUploadErrorMessage() {
+        return uploadErrorMessage;
+    }
+
+    public void setUploadErrorMessage(String uploadErrorMessage) {
+        this.uploadErrorMessage = uploadErrorMessage;
+    }
 }
