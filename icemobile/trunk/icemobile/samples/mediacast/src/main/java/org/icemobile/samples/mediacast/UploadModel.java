@@ -63,6 +63,7 @@ public class UploadModel implements Serializable {
 
     public void setAudio(Map audio) {
         audioFile = (File) audio.get(MediaController.MEDIA_FILE_KEY);
+        mediaMap = audio;
         if (audioFile != null) {
             logger.fine("Retrieved Audio File");
             // try for a little clean up after
@@ -72,7 +73,7 @@ public class UploadModel implements Serializable {
 
     public void setVideo(Map video) {
         videoFile = (File) video.get(MediaController.MEDIA_FILE_KEY);
-
+        mediaMap = video;
         if (videoFile != null) {
             logger.fine(this + " Retrieved Video File");
             // try for a little clean up after
