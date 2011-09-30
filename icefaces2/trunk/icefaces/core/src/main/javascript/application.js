@@ -500,6 +500,7 @@ if (!window.ice.icefaces) {
 
                 //MyFaces uses a linked list of view state keys to track the changes in the view state -- the participating
                 //forms need to have their view state key updated so that the next submit will work with the latest saved state
+                //ICE-7188
                 try{
                     var submittedForm = formOf(source);
                     var submittedViewID = submittedForm['ice.view'].value;
