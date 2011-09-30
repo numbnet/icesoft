@@ -113,6 +113,8 @@
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <!--<h:messages  id="fileUploadMsg" />-->
+                <h:outputText style="font-weight:bold"
+                              value="#{uploadModel.uploadErrorMessage}"/>
                 <h:commandButton
                         style="float:right;"
                         disabled="#{uploadModel.showInputSelect}"
