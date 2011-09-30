@@ -80,8 +80,7 @@ public class ExtendedExceptionHandler extends ExceptionHandlerWrapper {
                 if (PhaseId.RESTORE_VIEW.equals(queueContext.getPhaseId())) {
                     FacesContext fc = FacesContext.getCurrentInstance();
 
-                    if (!isValidSession(fc)) {
-                        //At this point, perhaps we should remove the ViewExpiredException and add
+		    if (!isValidSession(fc) || true) {                        //At this point, perhaps we should remove the ViewExpiredException and add
                         //a SessionExpiredException wrapped around it then proceed with normal processing
                         iter.remove();
                         sessionExpired = true;
