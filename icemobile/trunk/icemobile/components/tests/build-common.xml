@@ -33,7 +33,7 @@
                     <include name="icepush.jar"/>
                     <include name="mobi.jar"/>
                     <include name="icefaces-mobi.jar"/>
-                    <include name="jsf-api.jar"/>
+                    <include name="javax.faces.jar"/>
                     <include name="el-api-2.2.1-b03.jar"/>
                     <include name="javax.servlet.jar"/>
 	            	<include name="javax.annotation.jar"/>
@@ -55,9 +55,7 @@
 	            <lib dir="${lib.dir}"  erroronmissingdir="false">
 	            	 <include name="icefaces.jar"/>
 	            	 <include name="icefaces-mobi.jar"/>
-	                 <include name="jsf-api.jar"/>          	               
-	                 <include name="jsf-impl.jar"/>
-	            	 <include name="icepush.jar"/>
+	                 <include name="javax.faces.jar"/>          	                            <include name="icepush.jar"/>
                     <include name="mobi.jar"/>
                     <include name="mail.jar"/>
                     <include name="jstl-1.1.2.jar"/>
