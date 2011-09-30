@@ -49,6 +49,11 @@
         <param-value>true</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>org.icefaces.mandatoryResourceConfiguration</param-name>
+        <param-value>all</param-value>
+    </context-param>
+
     <!-- Servlet declarations and mappings -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
