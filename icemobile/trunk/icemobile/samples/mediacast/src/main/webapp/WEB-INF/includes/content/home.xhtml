@@ -26,17 +26,17 @@
     <div style="clear:both;"/>
     <!-- diplay of uploaded images for all users, top 5 are shown. -->
     <h:form>
-        <util:carousel count="#{mediaStore.carouselStackCount}">
+        <util:carousel id="crs" count="#{mediaStore.carouselStackCount}">
             <ui:repeat var="mediaMessage"
                        value="#{mediaStore.carouselStack}">
-                <util:carouselItem>
-                    <div style="overflow:hidden;width:175px;height:98px;">
-                        <mobi:graphicImage
+                <util:carouselItem id="crsItm" >
+                    <h:panelGroup style="display:block;overflow:hidden;width:175px;height:98px;">
+                        <mobi:graphicImage id="img"
                                 width="#{mediaMessage.mediumPhoto.width}"
                                 height="#{mediaMessage.mediumPhoto.height}"
                                 value="#{mediaMessage.mediumPhoto.data}"/>
-                    </div>
-                    <h:commandLink
+                    </h:panelGroup>
+                    <h:commandLink id="link"
                             action="#{mediaController.viewMediaDetail}"
                             class="view-play-icon">
                         <f:setPropertyActionListener
