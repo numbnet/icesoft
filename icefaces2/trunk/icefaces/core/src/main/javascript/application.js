@@ -500,16 +500,20 @@ if (!window.ice.icefaces) {
 
                 //MyFaces uses a linked list of view state keys to track the changes in the view state -- the participating
                 //forms need to have their view state key updated so that the next submit will work with the latest saved state
-                var submittedForm = formOf(source);
-                var submittedViewID = submittedForm['ice.view'].value;
-                //update only the forms that have the same viewID with the one used by the submitting form
-                each(document.getElementsByTagName('form'), function(form) {
-                    var viewIDElement = form['ice.view'];
-                    var viewStateElement = form['javax.faces.ViewState'];
-                    if (viewStateElement && viewIDElement && viewIDElement.value == submittedViewID) {
-                        viewStateElement.value = viewState;
-                    }
-                });
+                try{
+                    var submittedForm = formOf(source);
+                    var submittedViewID = submittedForm['ice.view'].value;
+                    //update only the forms that have the same viewID with the one used by the submitting form
+                    each(document.getElementsByTagName('form'), function(form) {
+                        var viewIDElement = form['ice.view'];
+                        var viewStateElement = form['javax.faces.ViewState'];
+                        if (viewStateElement && viewIDElement && viewIDElement.value == submittedViewID) {
+                            viewStateElement.value = viewState;
+                        }
+                    });
+                } catch(e) {
+                    debug(logger, 'could not find parent for source ["' + source.id + '"]');
+                }
             }
         });
 
