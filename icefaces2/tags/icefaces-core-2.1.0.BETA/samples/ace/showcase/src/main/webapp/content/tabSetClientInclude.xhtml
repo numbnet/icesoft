@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:icecore="http://www.icefaces.org/icefaces/core"
+     xmlns:ice="http://www.icefaces.org/icefaces/components">
+   <h:panelGroup id="contentContainer" class="tabContainer">
+       <h:panelGroup styleClass="synopsisBox" layout="block">
+           <h:outputText styleClass="iceOutTxt" value="Tab Set (Client-Side)"/>
+           <h:outputText styleClass="iceOutTxt" value="Illustrates a TabSet with selected-tab state maintained on the client and support for various tab orientations."/>
+       </h:panelGroup>
+
+   
+    <h:panelGroup styleClass="exampleBox firstChildTitle" layout="block">
+    <h:form id="forminputsId">
+     <h:panelGrid columns="2" id="setupgrid">
+        <h:panelGroup id="newControls">
+         <icecore:singleSubmit/>
+         <h:panelGrid id="selectOrientation" columns="2">
+            <h:outputText value="Tab Orientation:"/>
+            <h:selectOneMenu id="orientationSelection"
+                label="Orientation"
+                value="#{tabBean.orientation}">
+             <f:selectItems value="#{tabBean.orientations}"/>          
+           </h:selectOneMenu>
+         </h:panelGrid>
+        </h:panelGroup> 
+       </h:panelGrid>	
+     </h:form>   
+    </h:panelGroup>
+    <h:panelGroup  id="tabSetPanelGroupId" styleClass="exampleBox" layout="block" style="min-width:400px">
+       <ice:tabSet clientSide="true" id="tabSetClientId"
+              orientation="#{tabBean.orientation}" 
+              styleClass="tabSetDemo">
+            <ice:tabPane id="tpOne" label="TabPane One" >
+                 <p>
+                    <h:outputText id="tpOneText" 
+                      value="When used in client mode, all tabPanes are rendered to the client, and the visibilty of each tabPane is managed by the tabSet without requiring a server round-trip."/>                  
+                </p>                       
+            </ice:tabPane>       
+            <ice:tabPane id="tpTwo" label="TabPane Two" >  
+               <h:panelGroup id="pane2Panel">
+                  <h:panelGroup id="testOrientation">
+					<p>
+                    <h:outputText id="tpTwoTextOne" value="Note the ability to orient the tabPane labels along any side of the tabSet."/>
+                    </p><p>
+                    <h:outputText id="testOutput" value="The selected orientation is: '#{tabBean.orientation}'."/>
+					</p>
+                   </h:panelGroup> 
+                </h:panelGroup>       
+            </ice:tabPane>
+            <ice:tabPane id="tpThree" label="TabPane Three" >
+              <h:panelGroup id="pane3PanelId">
+                <h:form id="tabPane1Form">
+                 <h:panelGroup id="tpThreePanel" >
+                   <p>
+                   <h:outputText id="tpThreeText" value="When in client mode, all components in all tabPanes are rendered, with just the client visibility being toggled by the tabSet. Thus, it is easy to keep the state of entered, but not yet submitted values in the client, even when switching between tabs." />
+                   </p>
+                   <p/>
+                     <h:inputText id="requiredInput" required="#{true}" 
+                          value="#{tabBean.inpTxt}"
+                          errorStyle="color:red"/>
+                     <h:message for="requiredInput"/>
+				    <h:commandButton id="tpThreeButton" value="submit"/>
+				 </h:panelGroup> 
+				 <p>
+				    <h:outputText id="outputPlayback" value=" Value Entered: #{tabBean.inpTxt}"/>
+				 </p>                 
+			   </h:form> 
+			  </h:panelGroup>                     
+            </ice:tabPane>
+        </ice:tabSet>
+       <h:messages/>
+    </h:panelGroup>  
+  </h:panelGroup>  
+</ui:composition>

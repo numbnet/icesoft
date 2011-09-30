@@ -1,0 +1,12 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Series Panel Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        </h:head>    <h:body>        <ice:form>
+            <ice:panelSeries var="color" value="#{basicPanelSeriesBean.colorList}">
+            	<ice:panelGrid columns="1" style="border:1px dotted silver;" width="100px">
+            		<ice:outputText value="#{color}"></ice:outputText>
+            	</ice:panelGrid>
+            	<br />
+            </ice:panelSeries>
+        		</ice:form>	</h:body></f:view></html>

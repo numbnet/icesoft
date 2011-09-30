@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+        <title>Panel Popup Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        <h:outputStylesheet lib="css" name="override.css" />
+    </h:head>
+    <h:body>
+        <h2>Styled Panel Popup Component</h2>
+        <p>This demo shows how completely a draggable panelPopup can be styled.</p>
+        <ice:form style="width: 45%;">
+            <ice:panelPopup draggable="true">
+                <f:facet name="header">
+                    <ice:panelGrid width="100%" cellpadding="0" cellspacing="0" columns="2">
+                        <ice:outputText value="Styled Panel Popup"/>
+                    </ice:panelGrid>
+                </f:facet>
+                
+                <f:facet name="body">
+                    <ice:panelGrid>
+                        <ice:outputText value="The appearance of this popup dialog has been changed using only CSS"/>
+                    </ice:panelGrid>
+                </f:facet>
+            </ice:panelPopup>
+        </ice:form>
+    </h:body>
+    </html>          
