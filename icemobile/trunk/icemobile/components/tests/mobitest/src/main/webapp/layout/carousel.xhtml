@@ -43,11 +43,13 @@
     <p>using value of list for items</p>
 
     <mobi:carousel id="carOne" value="#{carousel.imageList}" var="item">
+       <h:column>
         <h:panelGroup>
             <h:graphicImage value="#{item.imageUrl}"
                             height="#{item.height}"/>
             <span style="#{item.style}">#{item.title}</span>
         </h:panelGroup>
+       </h:column>
     </mobi:carousel>
      <br />
      <a href="../layoutComponents.html">index page</a>

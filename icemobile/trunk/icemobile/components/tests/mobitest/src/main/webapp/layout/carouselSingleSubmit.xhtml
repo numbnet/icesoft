@@ -44,11 +44,13 @@
     <h:form id="carouselForm">
 	    <mobi:carousel id="carOne" value="#{carousel.imageList}" var="item" valueChangeListener="#{carousel.changedIndex}"
 	         selectedIten="#{carousel.selectedIndex}" singleSubmit="true">
+           <h:column>
 	        <h:panelGroup id="imgPanel">
 	            <h:graphicImage id="innerImg" value="#{item.imageUrl}"
 	                            height="#{item.height}"/>
 	            <span id="imgStyle" style="#{item.style}">#{item.title}</span>
 	        </h:panelGroup>
+            </h:column>
 	    </mobi:carousel>
     </h:form>
     <br />
