@@ -34,9 +34,9 @@ public class CarouselBean implements Serializable {
         Logger.getLogger(CarouselBean.class.toString());	
 	int carouselLength;
     private List<ImageItem> imageList = new ArrayList<ImageItem>() ;
-
+private String propertyAL="none";
     private int selectedIndex;
-	private String height="98px";
+	private String height="58px";
 	private String style="display:inline-block;position:relative;top:-25px;left:0;color:white;";
 
 	
@@ -53,6 +53,13 @@ public class CarouselBean implements Serializable {
     public int getCarouselLength() {
 		return imageList.size();
 	}
+    public String getPropertyAL(){
+        return this.propertyAL;
+    }
+
+    public void setPropertyAL(String propIn){
+        this.propertyAL =  propIn;
+    }
 
 	public void setCarouselLength(int carouselLength) {
 		this.carouselLength = carouselLength;
@@ -62,12 +69,16 @@ public class CarouselBean implements Serializable {
 		return imageList;
 	}
 
+    public String viewDetail(){
+        logger.info("IN METHOD DETAIL") ;
+        return "result";
+    }
 	public void setImageList(List<ImageItem> imageList) {
 		this.imageList = imageList;
 	}
-         public void changedIndex(ValueChangeEvent vce){
-            System.out.println(" new value is "+ vce.getNewValue().toString());
-        }
+    public void changedIndex(ValueChangeEvent vce){
+        System.out.println(" new value is "+ vce.getNewValue().toString());
+    }
     public void setSelectedIndex(int sel){
         this.selectedIndex = sel;
     }
