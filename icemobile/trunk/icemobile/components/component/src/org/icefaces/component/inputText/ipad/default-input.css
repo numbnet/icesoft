@@ -15,7 +15,7 @@
  */
 
 .mobi-input-text, .mobi-input-secret, .mobi-input-textarea {
-    border: none;
+    border: 1px solid #eaeaea;
     padding: 3px 3px;
 }
 
