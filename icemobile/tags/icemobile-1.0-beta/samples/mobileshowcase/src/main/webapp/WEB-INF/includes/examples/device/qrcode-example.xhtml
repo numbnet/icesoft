@@ -1,0 +1,81 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+    <mobi:fieldsetGroup>
+        <mobi:fieldsetRow style="padding-bottom:10px;">
+            Scan or generate QR codes.
+        </mobi:fieldsetRow>
+    </mobi:fieldsetGroup>
+
+    <h:form prependId="false">
+
+        <h4>QR Code Scanner</h4>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <mobi:scan value="#{qrCodeBean.qrScanner}"
+                           id="scanOne"
+                           singleSubmit="true"/>
+                <mobi:commandButton value="submit"
+                                    actionListener="#{qrCodeBean.checkCodeForUrl}"
+                                    style="float:right;"
+                                    type="important"/>
+                <br />
+                <h:outputText styleClass="ehancedBrowserDisclaimer"
+                        rendered="#{not qrCodeBean.enhancedBrowser}"
+                        value="#{msgs['example.device.disclaimer']}" />
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="QR Code: "/>
+                <h5>
+                <h:outputText style="font-style: italic"
+                              rendered="#{not qrCodeBean.qrScannerUrl}"
+                              value="#{qrCodeBean.qrScanner}"/>
+                <h:outputLink style="font-style: italic"
+                              value="#{qrCodeBean.qrScanner}"
+                              rendered="#{qrCodeBean.qrScannerUrl}">
+                        #{qrCodeBean.qrScanner}</h:outputLink>
+                </h5>
+            </mobi:fieldsetRow>
+
+        </mobi:fieldsetGroup>
+    </h:form>
+    <h:form prependId="false" >
+        <h4>QR Code Generator</h4>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow>
+                <h:outputLabel value="Code Input:"/>
+                <mobi:inputText type="text" value="#{qrCodeBean.qrString}" />
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <mobi:commandButton value="submit" type="important" styleClass="fr"/>
+            </mobi:fieldsetRow>
+            <!-- qr code echo-->
+            <mobi:fieldsetRow>
+                <h:outputLabel value="QR Output: "/>
+                <mobi:qrcode value="#{qrCodeBean.qrString}"
+                             styleClass="fr"/>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+    </h:form>
+
+
+</ui:fragment>
