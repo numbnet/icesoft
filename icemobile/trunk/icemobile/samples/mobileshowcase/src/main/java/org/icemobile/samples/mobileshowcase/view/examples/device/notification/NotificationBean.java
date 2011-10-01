@@ -91,8 +91,8 @@ public class NotificationBean extends ExampleImpl<NotificationBean> implements
     private String renderGroup;
 
     // Notification message values.
-    private String subject = "ICEmobile Push Notification";
-    private String message = "This is an ICEmobile Push Notification";
+    private String subject = "ICEmobile Notification";
+    private String message = "This is a  message from  ICEmobile.";
     private int notificationDelay = 15;
 
     // echo strings that are only set when the push is executed in the future.
