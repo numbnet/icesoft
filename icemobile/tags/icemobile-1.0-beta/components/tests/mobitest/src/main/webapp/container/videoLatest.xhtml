@@ -1,0 +1,56 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+  <meta charset="UTF-8"></meta>
+  <meta name = "viewport" content = "width = device-width"></meta>
+  <title>Camcorder Component</title>
+  <style>.centered * {vertical-align:middle;padding-left:2px;padding-right:2px;}</style>
+</h:head>
+<h:body style="font-family:sans-serif">
+    <h3>Camcorder Component</h3>
+    <div style="border-radius: 15px; border: 1px dotted silver; max-width: 500px;">
+        <h:form prependId="false" class="centered" enctype="multipart/form-data">
+
+            <mobi:camcorder id="vid_one" value="#{videoBean.clip}" />
+            <mobi:thumbnail for="vid_one"/>
+            <h:commandButton value="upload" rendered="#{videoBean.enhancedBrowser}" />
+            <h:commandButton value="upload" rendered="#{!videoBean.enhancedBrowser}">
+              <f:ajax disabled="true" />
+            </h:commandButton>
+            <h:commandButton value="Reset" action="#{videoBean.reset}" />
+
+        </h:form>
+    </div>
+
+    <div align="center" style="border-radius: 15px; border: 1px dotted silver; max-width: 500px;">
+       <mobi:videoPlayer preload="auto" controls="true" value="#{videoBean.pathToFile}"
+         playsinline="true"/><br/>
+       <h:outputLink value="/mobitest/#{videoBean.pathToFile}">Play Video</h:outputLink>
+      <div>
+        <h:outputText value="#{videoBean.contentType}"/>
+      </div>
+    </div>
+
+    <li><a href="../index.html">index page</a>
+    </li>
+</h:body>
+</html>

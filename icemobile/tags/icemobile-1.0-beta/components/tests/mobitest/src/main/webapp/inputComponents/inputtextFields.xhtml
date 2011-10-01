@@ -1,0 +1,140 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">inputComponent Tests</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport"
+		content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+ 
+  <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
+   <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
+
+</h:head>
+
+<h:body>
+ 
+    <h3>html5 input types should bring up proper device keyboard</h3>
+
+    <h:form id="inputForm">
+    
+       <h5>mobi input type is text</h5>
+       <p>
+        <h:outputText value="A. mobi comp singleSubmit is false "/>
+        <mobi:inputText id="textSSFalse" value="#{input.someText}" type="text" placeholder="#{input.placeholder}" title="basic text input"/>
+       </p>
+       <p>
+        <h:outputText value="B. mobi comp singleSubmit is true "/>
+        <mobi:inputText id="textSStrueId" value="#{input.someText2}" type="text" 
+                   singleSubmit="true" placeholder="#{input.placeholder}" title="basic text input"/>      
+       </p>
+       <p>
+       <h5>mobi input type is textfield</h5>
+         <h:outputText value="C. inputTextfield"/>
+         <mobi:inputText id="textareaId" value="#{input.textField}" type="textarea" 
+                   placeholder="#{input.placeholder}"
+                         rows="3" cols="40" title="inputText field"/>
+                         
+       </p>
+       <h5>mobi input type is password</h5>
+         <h:outputText value="D. password"/>
+         <mobi:inputText id="passwordId" value="#{input.password}" type="password" placeholder="enter password" title="password"/>
+       <p>
+       <p>
+       <h5>mobi input type is email</h5>
+         <h:outputText value="E. email"/>
+         <mobi:inputText id="emailId" value="#{input.email}" type="email" placeholder="#{input.placeholder}"
+                         title="email field"/>
+                         
+       </p>
+      <p>
+       <h5>mobi input type is number no converter</h5>
+         <h:outputText value="F. number"/>
+         <mobi:inputText id="numberId" value="#{input.numberInput}" type="number" placeholder="9999"
+                       singleSubmit="true"  min="0" max="100" step="5" title="number field"/>
+                         
+       </p>
+            <p>
+       <h5>mobi input type is number with converter</h5>
+         <h:outputText value="F2. number"/>
+         <mobi:inputText id="numberIdConv" value="#{input.numberInput2}" type="number" placeholder="9999"
+                       singleSubmit="true"  min="0" max="100" step="5" title="number field">
+                       <f:convertNumber type="number"/>
+         </mobi:inputText>
+                         
+       </p>
+      <p>
+       <h5>mobi input type is phone</h5>
+         <h:outputText value="G. phone"/>
+         <mobi:inputText id="phoneId" value="#{input.phone}" type="phone" 
+             singleSubmit="true" placeholder="504-555-2323"
+                          title="phone field"/>
+                         
+       </p> 
+     <p>
+       <h5>mobi input type is Url</h5>
+         <h:outputText value="H. url"/>
+         <mobi:inputText id="urlId" value="#{input.url}" type="url"
+                placeholder="http://www.icesoft.com"
+                singleSubmit="true"
+                 title="url field"/>
+                         
+       </p>         
+          <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>
+          <h:outputText value="#{input.eventString}"/>
+          
+       </p>
+       <mobi:commandButton id="defaultOne" type="default" value="defaultSStrue" singleSubmit="true" actionListener="#{input.defaultEvent}"/>
+       <mobi:commandButton  id="defaultTwo" type="default" value="defaultSSFalse" actionListener="#{input.defaultEvent}"/>
+       <mobi:commandButton id="importantOne" type="important" value="importantSStrue" singleSubmit="true"
+                 actionListener="#{input.importantEvent}"/>
+       <mobi:commandButton id="importantTwo" type="important" value="importantSSFalse" 
+                 actionListener="#{input.importantEvent}"/>
+    </h:form>
+    <h3>RESULTS</h3>
+    <h5>input field A</h5>
+    <h:outputText value="#{input.someText}"/>
+    <h5>input Field B</h5>
+    <h:outputText value="#{input.someText2}"/>
+    <h5>text field C</h5>
+    <h:outputText value="#{input.textField}"/>
+    <h5>password D</h5>
+    <h:outputText value="#{input.password}"/>
+    <h5>email E</h5>
+    <h:outputText value="#{input.email}"/>
+    <h5>phone F</h5>
+    <h:outputText value="#{input.numberInput}"/>
+    <h5>number F2</h5>
+    <h:outputText value="#{input.numberInput2}"/>
+    <h5>phone</h5>
+    <h:outputText value="#{input.phone}"/>
+    <h5>urlType H</h5>
+    <h:outputText value="#{input.url}"/>
+    <br />
+	<li><a href="../inputComponents.html">index page</a>
+	</li>
+
+</h:body>
+</html>

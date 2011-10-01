@@ -1,0 +1,62 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<meta charset="UTF-8"></meta>
+	<title>microphone embedded device with ValueChangeListener to check valid input type</title>
+    
+    <mobi:deviceStylesheet/>
+</h:head>
+<h:body>
+	<h:form prependId="false" id="cform" >
+        <mobi:uploadhelper/>
+		<h3>microphone with JSF Validator</h3>
+
+		<h:outputText value="TalktoMe!" />
+           <h5>message from value change listener</h5>
+           <h:outputText value="#{micBean.messageFromAL}"/>
+
+		<br />
+		<mobi:microphone id="mic_one" duration="10" value="#{micBean.clip}"
+                valueChangeListener="#{micBean.methodOne}">
+        </mobi:microphone>
+             <h:commandButton value="upload" rendered="#{micBean.enhancedBrowser}" />
+            <h:commandButton value="upload" rendered="#{!micBean.enhancedBrowser}">
+              <f:ajax disabled="true" />
+            </h:commandButton>
+	</h:form>
+	<h5>audio controls will appear if soundClipIsAvailable</h5>
+		<mobi:audio id="play"  controls="true" value="#{micBean.pathToFile}" 
+				preload="auto" type="#{micBean.audioContentType}"/>
+	
+	<br />
+	<h5>contentType of uploadedFile</h5>
+	 <h:outputText value="#{micBean.audioContentType}"/>
+    	<h5>filename of sound clip</h5>
+		<h:outputText value="#{micBean.clipName}" />
+	<br />
+
+
+ 
+	<li><a href="../index.html">index page</a>
+	</li>
+
+</h:body>
+</html>

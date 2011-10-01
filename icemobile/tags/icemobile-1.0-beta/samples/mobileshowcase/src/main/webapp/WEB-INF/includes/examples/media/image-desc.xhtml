@@ -1,0 +1,47 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+    <mobi:fieldsetGroup styleClass="exampleDescription">
+
+        <p>The image component is a rendering aid for 
+            loading images from a data source other than the file system, for instance a
+            database. The component can take byte[], Resource or a fixed URL
+            to a valid image. </p>
+
+<pre>
+&lt;mobi:graphicImage
+    value="#{'#'}{bean.fileBytes}"
+    width="60" height="40"
+    scope="view"
+    mimeType="image/jpeg" &gt;
+</pre>
+        <p>
+            The image component uses JSF 2 resource handling making it
+            necessary to set scope on the image resource. Resource scope is
+            similar to bean scope and defines how long the image resource will
+            remain in memory.
+        </p>
+
+
+    </mobi:fieldsetGroup>
+
+</ui:fragment>
