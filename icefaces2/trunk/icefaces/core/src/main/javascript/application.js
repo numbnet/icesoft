@@ -451,6 +451,16 @@ if (!window.ice.icefaces) {
                 (form.id && form[form.id] && form.id == form[form.id].value);
         }
 
+        function ifViewStateUpdated(updates, callback) {
+            var viewStateUpdate = detect(updates.getElementsByTagName('update'), function(update) {
+                return update.getAttribute('id') == 'javax.faces.ViewState';
+            });
+
+            if (viewStateUpdate) {
+                callback(viewStateUpdate.firstChild.data);
+            }
+        }
+
         function collectUpdatedForms(updates, iterator) {
             each(updates.getElementsByTagName('update'), function(update) {
                 var id = update.getAttribute('id');
@@ -483,13 +493,8 @@ if (!window.ice.icefaces) {
         }
 
         //fix JSF issue: http://jira.icefaces.org/browse/ICE-5691 
-        namespace.onAfterUpdate(function(updates, source) {
-            var viewStateUpdate = detect(updates.getElementsByTagName('update'), function(update) {
-                return update.getAttribute('id') == 'javax.faces.ViewState';
-            });
-
-            if (viewStateUpdate) {
-                var viewState = viewStateUpdate.firstChild.data;
+        namespace.onAfterUpdate(function(updates) {
+            ifViewStateUpdated(updates, function(viewState) {
                 collectUpdatedForms(updates, function(form) {
                     //add hidden input field to the updated forms that don't have it
                     if (!form['javax.faces.ViewState']) {
@@ -497,25 +502,7 @@ if (!window.ice.icefaces) {
                         debug(logger, 'append missing "javax.faces.ViewState" input element to form["' + form.id + '"]');
                     }
                 });
-
-                //MyFaces uses a linked list of view state keys to track the changes in the view state -- the participating
-                //forms need to have their view state key updated so that the next submit will work with the latest saved state
-                //ICE-7188
-                try{
-                    var submittedForm = formOf(source);
-                    var submittedViewID = submittedForm['ice.view'].value;
-                    //update only the forms that have the same viewID with the one used by the submitting form
-                    each(document.getElementsByTagName('form'), function(form) {
-                        var viewIDElement = form['ice.view'];
-                        var viewStateElement = form['javax.faces.ViewState'];
-                        if (viewStateElement && viewIDElement && viewIDElement.value == submittedViewID) {
-                            viewStateElement.value = viewState;
-                        }
-                    });
-                } catch(e) {
-                    debug(logger, 'could not find parent for source ["' + source.id + '"]');
-                }
-            }
+            });
         });
 
         //recalculate delta submit previous parameters for the updated forms, if necessary
@@ -555,6 +542,26 @@ if (!window.ice.icefaces) {
                 }
 
                 return notFound;
+            });
+        });
+
+        //MyFaces uses a linked list of view state keys to track the changes in the view state -- the participating
+        //forms need to have their view state key updated so that the next submit will work with the latest saved state
+        //ICE-7188
+        var formViewID;
+        namespace.onBeforeSubmit(function(source) {
+            formViewID = formOf(source)['ice.view'].value;
+        });
+        namespace.onAfterUpdate(function(updates) {
+            ifViewStateUpdated(updates, function(viewState) {
+                //update only the forms that have the same viewID with the one used by the submitting form
+                each(document.getElementsByTagName('form'), function(form) {
+                    var viewIDElement = form['ice.view'];
+                    var viewStateElement = form['javax.faces.ViewState'];
+                    if (viewStateElement && viewIDElement && viewIDElement.value == formViewID) {
+                        viewStateElement.value = viewState;
+                    }
+                });
             });
         });
 
