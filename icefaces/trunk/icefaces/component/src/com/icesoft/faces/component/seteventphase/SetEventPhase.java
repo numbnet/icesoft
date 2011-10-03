@@ -38,6 +38,9 @@ import javax.faces.el.ValueBinding;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.FacesException;
+
+import com.icesoft.faces.component.panelseries.UISeries.RowEvent;
+
 import java.util.Map;
 import java.util.HashMap;
 
@@ -111,6 +114,9 @@ public class SetEventPhase extends UIComponentBase {
                 }
                 if (specifiedClass.isInstance(event)) {
                     return true;
+                    //covers nested UIData as well
+                } else if (event instanceof RowEvent) {
+                	return eventMatchingType(((RowEvent)event).getFacesEvent());
                 }
             }
         }
