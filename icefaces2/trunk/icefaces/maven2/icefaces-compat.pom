@@ -43,19 +43,7 @@
       <artifactId>commons-beanutils</artifactId>
       <version>1.8.0</version>
     </dependency>
-    
-    <dependency>
-      <groupId>commons-collections</groupId>
-      <artifactId>commons-collections</artifactId>
-      <version>3.2</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>commons-digester</groupId>
-      <artifactId>commons-digester</artifactId>
-      <version>1.8</version>
-    </dependency>
-    
+        
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
