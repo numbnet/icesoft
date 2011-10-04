@@ -24,6 +24,7 @@ var setupDefaultIndicators;
     function PopupIndicator(message, description, panel) {
         panel();
         var messageContainer = document.body.appendChild(document.createElement('div'));
+        messageContainer.className = 'ice-status-indicator';
         var messageContainerStyle = messageContainer.style;
         messageContainerStyle.position = 'absolute';
         messageContainerStyle.textAlign = 'center';
@@ -43,6 +44,7 @@ var setupDefaultIndicators;
 
         var messageElement = messageContainer.appendChild(document.createElement('div'));
         messageElement.appendChild(document.createTextNode(message));
+        messageElement.className = 'ice-status-indicator-message';
         var messageElementStyle = messageElement.style;
         messageElementStyle.textAlign = 'left';
         messageElementStyle.fontSize = '14px';
@@ -51,6 +53,7 @@ var setupDefaultIndicators;
 
         var descriptionElement = messageElement.appendChild(document.createElement('div'));
         descriptionElement.innerHTML = description;
+        descriptionElement.className = 'ice-status-indicator-description';
         var descriptionElementStyle = descriptionElement.style;
         descriptionElementStyle.fontSize = '11px';
         descriptionElementStyle.marginTop = '7px';
@@ -83,14 +86,14 @@ var setupDefaultIndicators;
             container.appendChild(overlay);
 
             var resize = container.tagName.toLowerCase() == 'body' ?
-                    function() {
-                        overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-                        overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
-                    } :
-                    function() {
-                        overlayStyle.width = container.offsetWidth + 'px';
-                        overlayStyle.height = container.offsetHeight + 'px';
-                    };
+                function() {
+                    overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
+                    overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+                } :
+                function() {
+                    overlayStyle.width = container.offsetWidth + 'px';
+                    overlayStyle.height = container.offsetHeight + 'px';
+                };
             resize();
             onResize(window, resize);
         };

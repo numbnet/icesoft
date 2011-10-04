@@ -222,6 +222,7 @@ var ComponentIndicators;
             method(on, function(self) {
                 on(panel);
                 var messageContainer = document.body.appendChild(document.createElement('div'));
+                messageContainer.className = 'ice-status-indicator';
                 var messageContainerStyle = messageContainer.style;
                 messageContainerStyle.position = 'absolute';
                 messageContainerStyle.textAlign = 'center';
@@ -242,6 +243,7 @@ var ComponentIndicators;
 
                 var messageElement = messageContainer.appendChild(document.createElement('div'));
                 messageElement.appendChild(document.createTextNode(message));
+                messageElement.className = 'ice-status-indicator-message';
                 var messageElementStyle = messageElement.style;
                 messageElementStyle.marginLeft = '30px';
                 messageElementStyle.textAlign = 'left';
@@ -251,6 +253,7 @@ var ComponentIndicators;
 
                 var descriptionElement = messageElement.appendChild(document.createElement('div'));
                 descriptionElement.appendChild(document.createTextNode(description));
+                descriptionElement.className = 'ice-status-indicator-description';
                 var descriptionElementStyle = descriptionElement.style;
                 descriptionElementStyle.fontSize = '11px';
                 descriptionElementStyle.marginTop = '7px';
