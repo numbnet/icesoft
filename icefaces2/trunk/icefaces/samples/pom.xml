@@ -37,10 +37,10 @@
         <module>ace</module>
     </modules>
     <properties>
-        <ice.version>2.0.1</ice.version>
+        <ice.version>2.1.0.BETA</ice.version>
         <compiler.plugins.version>2.0.2</compiler.plugins.version>
-        <jsf.version>2.1.1-b04</jsf.version>
-        <jsf.portlet.version>2.1.1-b04</jsf.portlet.version>
+        <jsf.version>2.1.3</jsf.version>
+        <jsf.portlet.version>2.1.3</jsf.portlet.version>
     </properties>
    <dependencies>
         <dependency>
@@ -88,16 +88,11 @@
           <activeByDefault>true</activeByDefault>
        </activation>
        <dependencies>
-          <dependency>
-             <groupId>com.sun.faces</groupId>
-             <artifactId>jsf-impl</artifactId>
-             <version>${jsf.version}</version>
-          </dependency>
-          <dependency>
-             <groupId>com.sun.faces</groupId>
-             <artifactId>jsf-api</artifactId>
-             <version>${jsf.version}</version>
-          </dependency>
+			<dependency>
+	  			<groupId>org.glassfish</groupId>
+	  			<artifactId>javax.faces</artifactId>
+		        <version>${jsf.version}</version>
+			</dependency>
        </dependencies>
     </profile>
     <profile>
@@ -106,18 +101,11 @@
           <activeByDefault>false</activeByDefault>
        </activation>       
        <dependencies>
-          <dependency>
-             <groupId>com.sun.faces</groupId>
-             <artifactId>jsf-impl</artifactId>
-             <version>${jsf.version}</version>
-             <scope>provided</scope>
-          </dependency>
-          <dependency>
-             <groupId>com.sun.faces</groupId>
-             <artifactId>jsf-api</artifactId>
-             <version>${jsf.version}</version>
-             <scope>provided</scope>
-          </dependency>
+			<dependency>
+	  			<groupId>org.glassfish</groupId>
+	  			<artifactId>javax.faces</artifactId>
+		        <version>${jsf.version}</version>
+			</dependency>
        </dependencies>
     </profile>
   </profiles>
