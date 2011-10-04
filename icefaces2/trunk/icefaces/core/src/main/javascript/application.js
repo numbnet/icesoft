@@ -300,8 +300,18 @@ if (!window.ice.icefaces) {
             };
         }
 
-        jsf.ajax.addOnEvent(submitEventBroadcaster(beforeSubmitListeners, beforeUpdateListeners, afterUpdateListeners));
-        jsf.ajax.addOnError(submitErrorBroadcaster(networkErrorListeners, serverErrorListeners));
+        function filterICEfacesEvents(f) {
+            return function(e) {
+                var form = formOf(e.source);
+                if (form['ice.view'] || form['ice.window']) {
+                    //invoke callback only when event triggered from an ICEfaces enabled form
+                    f(e);
+                }
+            };
+        }
+
+        jsf.ajax.addOnEvent(filterICEfacesEvents(submitEventBroadcaster(beforeSubmitListeners, beforeUpdateListeners, afterUpdateListeners)));
+        jsf.ajax.addOnError(filterICEfacesEvents(submitErrorBroadcaster(networkErrorListeners, serverErrorListeners)));
 
         //include submit.js
         namespace.se = singleSubmitExecuteThis;
