@@ -17,6 +17,6 @@
 
 package org.icefaces.ace.component.animation;
 
-public class Anim extends Effect{
+public class Scale extends Effect{
 
 }
