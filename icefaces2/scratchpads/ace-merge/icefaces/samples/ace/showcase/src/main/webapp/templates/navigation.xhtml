@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:ice="http://www.icefaces.org/icefaces/components">
+
+ <h:panelGroup id="panelNavigation">
+    <f:facet name="header">
+        <h:panelGroup id="nav1pane">
+            <h:outputText value="#{msgs['navigation.panelCollapsible1.header']}"/>
+        </h:panelGroup>
+    </f:facet>
+  
+    <h:link id="homeLink" outcome="main.xhtml" value="#{msgs['navigation.content1.label']}" />
+     <br />
+     <p/>
+	 <h:link id="animationLink" outcome="animation.xhtml" value="#{msgs['navigation.animation.label']}"/>
+     <br />
+    <h:link id="dateTimeLink" outcome="dateTimeEntry.xhtml" value="#{msgs['navigation.dateTimeEntry.label']}"/>
+     <br />
+    <h:link id="filEntryLink" outcome="fileEntry.xhtml" value="#{msgs['navigation.fileEntry.label']}"/>
+     <br/>
+     <h:link id="sliderLink" outcome="sliderEntry.xhtml" value="#{msgs['navigation.sliderEntry.label']}"/>
+     <br />
+     <p/>
+    <h:link id="tabClientLink" outcome="tabSetClient.xhtml" value="#{msgs['navigation.tabClient.label']}"/>
+     <br />
+    <h:link id="tabServerLink" outcome="tabSetServer.xhtml" value="#{msgs['navigation.tabServer.label']}"/>
+     <br />
+    <h:link id="tabSetProxyServerLink" outcome="tabSetProxyServer.xhtml" value="#{msgs['navigation.tabSetProxyServer.label']}"/>
+	 <br />
+     <p/>
+	<h:link id="checkboxButonLink" outcome="checkboxButton.xhtml" value="#{msgs['navigation.checkbox.label']}"/>
+     <br />
+    <h:link id="linkLink" outcome="linkButton.xhtml" value="#{msgs['navigation.linkButtons.label']}"/>
+     <br />
+    <h:link id="buttonLink" outcome="pushButton.xhtml" value="#{msgs['navigation.buttons.label']}"/>
+     <br />
+     <p/>
+ </h:panelGroup>
+</ui:composition>

@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Tree Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        </h:head>    <h:body>        <ice:form>
+            <ice:panelGroup styleClass="treeContainer">
+                <!--
+                    This is a very basic tree comprising of only text nodes.  The
+                    expand and contract images are rendered because the "imageDir"
+                    attribute on the tree component has been set to a known path.
+                -->
+                <ice:tree id="tree" value="#{tree.model}" var="item" hideRootNode="false" hideNavigation="false" imageDir="./xmlhttp/css/xp/css-images/">
+                    <ice:treeNode>
+                        <f:facet name="content">
+                            <ice:panelGroup style="display: inline">
+                                <ice:outputText value="#{item.userObject.text}"></ice:outputText>
+                            </ice:panelGroup>
+                        </f:facet>
+                    </ice:treeNode>
+                </ice:tree>
+            </ice:panelGroup>
+        		</ice:form>	</h:body></f:view></html>
