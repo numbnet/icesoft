@@ -1,0 +1,407 @@
+/*
+Copyright (c) 2010, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.com/yui/license.html
+version: 2.8.1
+*/
+/* .yui-navset defaults to .yui-navset-top */
+.ice-skin-rime .yui-navset .yui-nav,
+.ice-skin-rime .yui-navset .yui-navset-top .yui-nav { /* protect nested tabviews from other orientations */
+    /*border:solid #2647a0; *//* color between tab list and content */
+    /*border-width:0 0 5px;*/
+    /*zoom:1;*/
+}
+
+.ice-skin-rime .yui-navset .yui-nav li,
+.ice-skin-rime .yui-navset .yui-navset-top .yui-nav li {
+    margin:0 0.16em 0 0; /* space between tabs */
+    padding:1px 0 0; /* gecko: make room for overflow */
+    zoom:1;
+}
+
+.ice-skin-rime .yui-navset .yui-nav .selected,
+.ice-skin-rime .yui-navset .yui-navset-top .yui-nav .selected {
+    margin:0 0.16em -1px 0; /* for overlap */
+}
+
+.ice-skin-rime .yui-navset .yui-nav a,
+.ice-skin-rime .yui-navset .yui-navset-top .yui-nav a {
+    border:solid #a3a3a3;
+    border-width:0 1px;
+    color:#000;
+    position:relative;
+    text-decoration:none;
+}
+
+.ice-skin-rime .yui-navset .yui-nav a em,
+.ice-skin-rime .yui-navset .yui-navset-top .yui-nav a em {
+    border:solid #a3a3a3;
+    border-width:1px 0 0;
+    cursor:hand;
+    padding:0.25em .75em;
+    left:0; right: 0; bottom: 0; /* protect from other orientations */
+    top:-1px; /* for 1px rounded corners */
+    position:relative;
+}
+
+.ice-skin-rime .yui-navset .yui-nav .selected a,
+.ice-skin-rime .yui-navset .yui-nav .selected a:focus, /* no focus effect for selected */
+.ice-skin-rime .yui-navset .yui-nav .selected a:hover { /* no hover effect for selected */
+    color:#fff;
+}
+
+.ice-skin-rime .yui-navset .yui-nav a:hover,
+.ice-skin-rime .yui-navset .yui-nav a:focus {
+    outline:0;
+}
+
+.ice-skin-rime .yui-navset .yui-nav .selected a em {
+    padding:0.35em 0.75em; /* raise selected tab */
+}
+
+.ice-skin-rime .yui-navset .yui-nav .selected a,
+.ice-skin-rime .yui-navset .yui-nav .selected a em {
+    border-color:#243356; /* selected tab border color */
+}
+
+.ice-skin-rime .yui-navset .yui-content {
+    background-image: url(contentContainer_bg.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+    background-repeat: repeat-x;
+}
+
+.ice-skin-rime .yui-navset .yui-content,
+.ice-skin-rime .yui-navset .yui-navset-top .yui-content {
+    border:1px solid #808080; /* content border */
+    border-top-color:#243356; /* different border color */
+    padding:0.25em 0.5em; /* content padding */
+}
+
+/* left and right orientations */
+.ice-skin-rime .yui-navset-left .yui-nav,
+.ice-skin-rime .yui-navset .yui-navset-left .yui-nav,
+.ice-skin-rime .yui-navset .yui-navset-right .yui-nav,
+.ice-skin-rime .yui-navset-right .yui-nav {
+    border-width:0 5px 0 0;
+    Xposition:absolute; /* from tabview-core; have to reiterate for skin-sam due to pos:rel on skin-sam yui-nav */
+    top:0; bottom:0; /* stretch to fill content height */
+}
+
+.ice-skin-rime .yui-navset .yui-navset-right .yui-nav,
+.ice-skin-rime .yui-navset-right .yui-nav {
+    border-width:0 0 0 5px;
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav li,
+.ice-skin-rime .yui-navset .yui-navset-left .yui-nav li,
+.ice-skin-rime .yui-navset-right .yui-nav li {
+    margin:0 0 0.16em; /* space between tabs */
+    padding:0 0 0 1px; /* gecko: make room for overflow */
+}
+
+.ice-skin-rime .yui-navset-right .yui-nav li {
+    padding:0 1px 0 0; /* gecko: make room for overflow */
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav .selected,
+.ice-skin-rime .yui-navset .yui-navset-left .yui-nav .selected {
+    margin:0 -1px 0.16em 0;
+}
+
+.ice-skin-rime .yui-navset-right .yui-nav .selected {
+    margin:0 0 0.16em -1px;
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav a,
+.ice-skin-rime .yui-navset-right .yui-nav a {
+    border-width:1px 0;
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav a em,
+.ice-skin-rime .yui-navset .yui-navset-left .yui-nav a em,
+.ice-skin-rime .yui-navset-right .yui-nav a em {
+    border-width:0 0 0 1px;
+    padding:0.2em .75em;
+    top:auto;
+    left:-1px; /* for 1px rounded corners */
+}
+
+.ice-skin-rime .yui-navset-right .yui-nav a em {
+    border-width:0 1px 0 0;
+    left:auto;
+    right:-1px; /* for 1px rounded corners */
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav a,
+.ice-skin-rime .yui-navset-left .yui-nav .selected a,
+.ice-skin-rime .yui-navset-left .yui-nav a:hover,
+.ice-skin-rime .yui-navset-right .yui-nav a,
+.ice-skin-rime .yui-navset-right .yui-nav .selected a,
+.ice-skin-rime .yui-navset-right .yui-nav a:hover,
+.ice-skin-rime .yui-navset-bottom .yui-nav a,
+.ice-skin-rime .yui-navset-bottom .yui-nav .selected a,
+.ice-skin-rime .yui-navset-bottom .yui-nav a:hover {
+    background-image:none; /* no left-right or bottom-top gradient */
+}
+
+.ice-skin-rime .yui-navset-left .yui-content {
+    border:1px solid #808080; /* content border */
+    border-left-color:#243356; /* different border color */
+}
+
+/* bottom orientation */
+.ice-skin-rime .yui-navset-bottom .yui-nav,
+.ice-skin-rime .yui-navset .yui-navset-bottom .yui-nav {
+    border-width:5px 0 0; /* color between tab list and content */
+}
+
+.ice-skin-rime .yui-navset .yui-navset-bottom .yui-nav .selected,
+.ice-skin-rime .yui-navset-bottom .yui-nav .selected {
+    margin:-1px 0.16em 0 0; /* for overlap */
+}
+
+.ice-skin-rime .yui-navset .yui-navset-bottom .yui-nav li,
+.ice-skin-rime .yui-navset-bottom .yui-nav li {
+    padding:0 0 1px 0; /* gecko: make room for overflow */
+    vertical-align:top;
+}
+
+.ice-skin-rime .yui-navset .yui-navset-bottom .yui-nav li a,
+.ice-skin-rime .yui-navset-bottom .yui-nav li a {
+}
+
+.ice-skin-rime .yui-navset .yui-navset-bottom .yui-nav a em,
+.ice-skin-rime .yui-navset-bottom .yui-nav a em {
+    border-width:0 0 1px;
+    top:auto;
+    bottom:-1px; /* for 1px rounded corners */
+}
+
+.ice-skin-rime .yui-navset-bottom .yui-content,
+.ice-skin-rime .yui-navset .yui-navset-bottom .yui-content {
+    border:1px solid #808080; /* content border */
+    border-bottom-color:#243356; /* different border color */
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav div.yui-navdiv, .ice-skin-rime .yui-navset-right .yui-nav div.yui-navdiv {
+border-width:1px 0;
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav div.yui-navdiv em, .ice-skin-rime .yui-navset .yui-navset-left .yui-nav div.yui-navdiv em, .ice-skin-rime .yui-navset-right .yui-nav div.yui-navdiv em {
+border-width:0 0 0 1px;
+left:-1px;
+padding:0.2em 0.75em;
+top:auto;
+}
+
+.ice-skin-rime .yui-navset-right .yui-nav div.yui-navdiv em {
+border-width:0 1px 0 0;
+left:auto;
+right:-1px;
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav div.yui-navdiv, .ice-skin-rime .yui-navset-left .yui-nav .selected div.yui-navdiv, .ice-skin-rime .yui-navset-left .yui-nav a:hover, .ice-skin-rime .yui-navset-right .yui-nav div.yui-navdiv, .ice-skin-rime .yui-navset-right .yui-nav .selected div.yui-navdiv, .ice-skin-rime .yui-navset-right .yui-nav a:hover, .ice-skin-rime .yui-navset-bottom .yui-nav div.yui-navdiv, .ice-skin-rime .yui-navset-bottom .yui-nav .selected div.yui-navdiv, .ice-skin-rime .yui-navset-bottom .yui-nav a:hover {
+background-image:none;
+}
+
+.ice-skin-rime .yui-navset .yui-navset-bottom .yui-nav div.yui-navdiv em, .ice-skin-rime .yui-navset-bottom .yui-nav div.yui-navdiv em {
+border-width:0 0 1px;
+bottom:-1px;
+top:auto;
+}
+
+.ice-skin-rime .yui-navset .yui-nav div.yui-navdiv, .ice-skin-rime .yui-navset .yui-navset-top .yui-nav div.yui-navdiv {
+border-color:#A3A3A3;
+border-style:solid;
+border-width:0 1px;
+color:#000000;
+position:relative;
+text-decoration:none;
+}
+
+.ice-skin-rime .yui-navset .yui-nav div.yui-navdiv em, .ice-skin-rime .yui-navset .yui-navset-top .yui-nav div.yui-navdiv em {
+border-color:#A3A3A3;
+border-style:solid;
+border-width:1px 0 0;
+bottom:0;
+left:0;
+padding:0.25em 0.75em;
+position:relative;
+right:0;
+top:-1px;
+}
+
+.ice-skin-rime .yui-navset .yui-nav .selected div.yui-navdiv, .ice-skin-rime .yui-navset .yui-nav .selected a:focus, .ice-skin-rime .yui-navset .yui-nav .selected a:hover {
+    /*color:#FFFFFF;*/
+}
+
+.ice-skin-rime .yui-navset .yui-nav .selected div.yui-navdiv em {
+padding:0.35em 0.75em;
+}
+
+.ice-skin-rime .yui-navset .yui-nav .selected div.yui-navdiv, .ice-skin-rime .yui-navset .yui-nav .selected div.yui-navdiv em {
+border-color:#243356;
+}
+
+.ice-skin-rime .yui-navset .yui-nav .selected div.yui-navdiv, .ice-skin-rime .yui-navset .yui-nav .selected div.yui-navdiv em {
+border-color:#243356;
+}
+
+/* -- .yui-navset defaults to .yui-navset-top -- */
+.ice-skin-rime .yui-navset .yui-nav,.ice-skin-rime .yui-navset .yui-navset-top .yui-nav
+{
+
+}
+
+.ice-skin-rime .yui-navset .yui-nav li,.ice-skin-rime .yui-navset .yui-navset-top .yui-nav li
+{
+
+}
+
+.ice-skin-rime .yui-navset .yui-nav .selected,.ice-skin-rime .yui-navset .yui-navset-top .yui-nav .selected
+{
+
+}
+
+/* -- Tab background -- */
+.ice-skin-rime .yui-navset .yui-nav div.yui-navdiv, .ice-skin-rime .yui-navset .yui-navset-top .yui-nav div.yui-navdiv
+{
+	background-image: url(Tab_MidMid_off.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+}
+
+.ice-skin-rime .yui-navset .yui-nav a em,.ice-skin-rime .yui-navset .yui-navset-top .yui-nav a em
+{
+
+}
+
+/* -- Selected tab background -- */
+.ice-skin-rime .yui-navset .yui-nav .selected div.yui-navdiv, .ice-skin-rime .yui-navset .yui-nav .selected a:focus, .ice-skin-rime .yui-navset .yui-nav .selected a:hover {
+	background-image: url(Tab_MidMid.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+}
+
+/* -- Selected tab background -- */
+.ice-skin-rime .yui-navset .yui-nav a:hover,.ice-skin-rime .yui-navset .yui-nav a:focus
+{
+	background-image: url(Tab_MidMid.gif); /** sprite-ref: sprite-x; sprite-alignment: repeat; */
+	background-repeat: repeat-x;
+}
+
+.ice-skin-rime .yui-navset .yui-nav .selected a em
+{
+
+}
+
+.ice-skin-rime .yui-navset .yui-nav .selected a,.ice-skin-rime .yui-navset .yui-nav .selected a em
+{
+
+}
+
+.ice-skin-rime .yui-navset .yui-content
+{
+
+}
+
+.ice-skin-rime .yui-navset .yui-content,.ice-skin-rime .yui-navset .yui-navset-top .yui-content
+{
+
+}
+
+/* -- Left and right orientations -- */
+.ice-skin-rime .yui-navset-left .yui-nav,.ice-skin-rime .yui-navset .yui-navset-left .yui-nav,.ice-skin-rime .yui-navset .yui-navset-right .yui-nav,.ice-skin-rime .yui-navset-right .yui-nav
+{
+
+}
+
+.ice-skin-rime .yui-navset .yui-navset-right .yui-nav,.ice-skin-rime .yui-navset-right .yui-nav
+{
+
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav li,.ice-skin-rime .yui-navset .yui-navset-left .yui-nav li,.ice-skin-rime .yui-navset-right .yui-nav li
+{
+
+}
+
+.ice-skin-rime .yui-navset-right .yui-nav li
+{
+
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav .selected,.ice-skin-rime .yui-navset .yui-navset-left .yui-nav .selected
+{
+
+}
+
+.ice-skin-rime .yui-navset-right .yui-nav .selected
+{
+
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav a,.ice-skin-rime .yui-navset-right .yui-nav a
+{
+
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav a em,.ice-skin-rime .yui-navset .yui-navset-left .yui-nav a em,.ice-skin-rime .yui-navset-right .yui-nav a em
+{
+
+}
+
+.ice-skin-rime .yui-navset-right .yui-nav a em
+{
+
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav a,.ice-skin-rime .yui-navset-left .yui-nav .selected a,.ice-skin-rime .yui-navset-left .yui-nav a:hover,.ice-skin-rime .yui-navset-right .yui-nav a,.ice-skin-rime .yui-navset-right .yui-nav .selected a,.ice-skin-rime .yui-navset-right .yui-nav a:hover,.ice-skin-rime .yui-navset-bottom .yui-nav a,.ice-skin-rime .yui-navset-bottom .yui-nav .selected a,.ice-skin-rime .yui-navset-bottom .yui-nav a:hover
+{
+
+}
+
+.ice-skin-rime .yui-navset-left .yui-content
+{
+
+}
+
+.ice-skin-rime .yui-navset-bottom .yui-nav,.ice-skin-rime .yui-navset .yui-navset-bottom .yui-nav
+{
+
+}
+
+.ice-skin-rime .yui-navset .yui-navset-bottom .yui-nav .selected,.ice-skin-rime .yui-navset-bottom .yui-nav .selected
+{
+
+}
+
+.ice-skin-rime .yui-navset .yui-navset-bottom .yui-nav li,.ice-skin-rime .yui-navset-bottom .yui-nav li
+{
+
+}
+
+.ice-skin-rime .yui-navset .yui-navset-bottom .yui-nav a em,.ice-skin-rime .yui-navset-bottom .yui-nav a em
+{
+
+}
+
+.ice-skin-rime .yui-navset-bottom .yui-content,.ice-skin-rime .yui-navset .yui-navset-bottom .yui-content
+{
+
+}
+
+
+/*
+.yui-navset .yui-nav li {
+    background-image: none;
+}
+*/
+.ice-skin-rime .yui-navset-bottom .yui-nav .selected div.yui-navdiv em {
+    border-top-style: none;
+}
+
+.ice-skin-rime .yui-navset-left .yui-nav .selected div.yui-navdiv {
+    border-right-style: none;
+}
+
+.ice-skin-rime .yui-navset-right .yui-nav .selected div.yui-navdiv {
+    border-left-style: none;
+}
