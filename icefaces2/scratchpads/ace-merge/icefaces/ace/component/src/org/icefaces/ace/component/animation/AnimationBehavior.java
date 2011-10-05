@@ -1,22 +1,18 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.component.animation;
@@ -37,14 +33,14 @@ import javax.faces.context.FacesContext;
 
 @FacesBehavior("org.icefaces.ace.animation.Animation")
 @ResourceDependencies({
-                              @ResourceDependency(name="yui/yui-min.js",library="yui/3_3_0"),
-                              @ResourceDependency(name="loader/loader-min.js",library="yui/3_3_0"),
-                              @ResourceDependency(name="util/combined.js",library="icefaces.ace"),
-                              @ResourceDependency(name="util/combined.css",library="icefaces.ace")
-                      })
+	@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
+	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
+	@ResourceDependency(name="util/combined.js",library="icefaces.ace"),
+	@ResourceDependency(name="util/combined.css",library="icefaces.ace")
+})
 public class AnimationBehavior extends BehaviorBase {
     public final static String BEHAVIOR_ID = "org.icefaces.ace.animation.Animation";
-    private String effectsLib = "ice.animation.";
+    private String effectsLib = "ice.ace.animation.";
     private boolean usingStyleClass;
     private boolean run;
     Effect effect = new Anim();
@@ -54,6 +50,9 @@ public class AnimationBehavior extends BehaviorBase {
     private String easing;
     private Integer iterations;
     private Double duration;
+
+
+    
     public String getTo() {
         return to;
     }
@@ -151,12 +150,38 @@ public class AnimationBehavior extends BehaviorBase {
     }
 
     private void use(String name) {
-        if ("Fade".equalsIgnoreCase(name)) {
-            effect = new Fade();
-        } else if ("Appear".equalsIgnoreCase(name)) {
+        if ("Appear".equalsIgnoreCase(name)) {
             effect = new Appear();
+        } else if ("Blind".equalsIgnoreCase(name)) {
+            effect = new Blind();
+        } else if ("Clip".equalsIgnoreCase(name)) {
+            effect = new Clip();
+        } else if ("Drop".equalsIgnoreCase(name)) {
+            effect = new Drop();
+        } else if ("Explode".equalsIgnoreCase(name)) {
+            effect = new Explode();
+        } else if ("Fade".equalsIgnoreCase(name)) {
+            effect = new Fade();
+        } else if ("Fold".equalsIgnoreCase(name)) {
+            effect = new Fold();
+        } else if ("Puff".equalsIgnoreCase(name)) {
+            effect = new Puff();
+        } else if ("Slide".equalsIgnoreCase(name)) {
+            effect = new Slide();
+        } else if ("Scale".equalsIgnoreCase(name)) {
+            effect = new Scale();
+        } else if ("Bounce".equalsIgnoreCase(name)) {
+            effect = new Bounce();
         } else if ("Highlight".equalsIgnoreCase(name)) {
             effect = new Highlight();
+        } else if ("Pulsate".equalsIgnoreCase(name)) {
+            effect = new Pulsate();
+        } else if ("Shake".equalsIgnoreCase(name)) {
+            effect = new Shake();
+        } else if ("Size".equalsIgnoreCase(name)) {
+            effect = new Size();
+        } else if ("Transfer".equalsIgnoreCase(name)) {
+            effect = new Transfer();
         } else if("Anim".equalsIgnoreCase(name)) {
             effect = new Anim();
         }
