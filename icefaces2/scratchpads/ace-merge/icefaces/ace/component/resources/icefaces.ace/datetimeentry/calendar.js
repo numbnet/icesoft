@@ -1,23 +1,31 @@
-/*
- * Version: MPL 1.1
- *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- */
+/* 
+* Original Code developed and contributed by Prime Technology. 
+* Subsequent Code Modifications Copyright 2011 ICEsoft Technologies Canada Corp. (c) 
+* 
+* Licensed under the Apache License, Version 2.0 (the "License"); 
+* you may not use this file except in compliance with the License. 
+* You may obtain a copy of the License at 
+* 
+* http://www.apache.org/licenses/LICENSE-2.0 
+* 
+* Unless required by applicable law or agreed to in writing, software 
+* distributed under the License is distributed on an "AS IS" BASIS, 
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+* See the License for the specific language governing permissions and 
+* limitations under the License. 
+* 
+* NOTE THIS CODE HAS BEEN MODIFIED FROM ORIGINAL FORM 
+* 
+* Subsequent Code Modifications have been made and contributed by ICEsoft Technologies Canada Corp. (c). 
+* 
+* Code Modification 1: Integrated with ICEfaces Advanced Component Environment. 
+* Contributors: ICEsoft Technologies Canada Corp. (c) 
+* 
+* Code Modification 2: [ADD BRIEF DESCRIPTION HERE] 
+* Contributors: ______________________ 
+* Contributors: ______________________ 
+* 
+*/
 
 //(function(){
 /*
@@ -25,13 +33,13 @@
 var calendarns = this, i, ns;
 //calendarns = (function(){return this;}).call();
 //ns = "YAHOO.icefaces.calendar".split(".");
-ns = "ice.component.calendar".split(".");
+ns = "ice.ace.calendar".split(".");
 for (i = 0; i < ns.length; i++) {
     calendarns[ns[i]] = calendarns[ns[i]] || {};
     calendarns = calendarns[ns[i]];
 }
 */
-//var calendarns = ice.component.calendar; // namespace creation as in tabset.js
+//var calendarns = ice.ace.calendar; // namespace creation as in tabset.js
 /*
 YAHOO.util.Event.onDOMReady(function() {
     var calLogReader = new YAHOO.widget.LogReader(null, {newestOnTop:false});
@@ -41,9 +49,9 @@ YAHOO.util.Event.onDOMReady(function() {
 });
 var logger = new YAHOO.widget.LogWriter("Calendar 4");
 */
-ice.component.calendar = { // public functions for calendar namespace
+ice.ace.calendar = { // public functions for calendar namespace
 IceCalendar: function(container, config, params) { // ICE calendar constructor
-    ice.component.calendar.IceCalendar.superclass.constructor.call(this, container, config);
+    ice.ace.calendar.IceCalendar.superclass.constructor.call(this, container, config);
     this.params = params;
 },
 isReady: false,
@@ -57,7 +65,7 @@ var YuiCalendar = YAHOO.widget.Calendar,
           Event = YAHOO.util.Event;
 
 var renderFooter = function(html) {
-    html = ice.component.calendar.IceCalendar.superclass.renderFooter.call(this, html);
+    html = ice.ace.calendar.IceCalendar.superclass.renderFooter.call(this, html);
     var cfg = this.cfg;
     var hourField = cfg.getProperty("hourField");
     if (!hourField) return html;
@@ -88,7 +96,7 @@ var renderFooter = function(html) {
         }
         ice.setFocus(selId);
         if (!renderAsPopup) {
-            ice.component.calendar.timeSelectHandler(this, evt);
+            ice.ace.calendar.timeSelectHandler(this, evt);
         }
     };
     var selAvailable = function (selId) {
@@ -148,7 +156,7 @@ var renderFooter = function(html) {
 };
 var selectCell = function(cellIndex) {
     this.currentFocus = this.cells[cellIndex].id;
-    ice.component.calendar.IceCalendar.superclass.selectCell.call(this, cellIndex);
+    ice.ace.calendar.IceCalendar.superclass.selectCell.call(this, cellIndex);
 };
 var styleCellDefault = function(workingDate, cell) {
     if (this.params.disabled) {
@@ -188,7 +196,7 @@ var setProperty = function(key, value) {
 };
 var overrides = {renderFooter:renderFooter, selectCell:selectCell, styleCellDefault:styleCellDefault,
                  renderCellDefault:renderCellDefault, get:getProperty, set:setProperty};
-lang.extend(ice.component.calendar.IceCalendar, YuiCalendar, overrides);
+lang.extend(ice.ace.calendar.IceCalendar, YuiCalendar, overrides);
 },
 getTime: function(calendar) {
     var hr = 0, min = 0;
@@ -435,9 +443,9 @@ initialize: function(clientId, jsProps, jsfProps, bindYUI) {
 
 
 
-	if (!ice.component.calendar.isReady) {
-		ice.component.calendar.setupLib(thisYUI);
-		ice.component.calendar.isReady = true;
+	if (!ice.ace.calendar.isReady) {
+		ice.ace.calendar.setupLib(thisYUI);
+		ice.ace.calendar.isReady = true;
 	}
 
     var Element = YAHOO.util.Element,
@@ -472,16 +480,16 @@ initialize: function(clientId, jsProps, jsfProps, bindYUI) {
 //            console.log("calendar.currentFocus =", calendar.currentFocus);
             ice.setFocus(calendar.currentFocus);
             Dom.getFirstChild(calendar.currentFocus).focus();
-            var time = ice.component.calendar.getTime(calendar);
+            var time = ice.ace.calendar.getTime(calendar);
             var dateStr = args[0][0][0] + "-" + args[0][0][1] + "-" + args[0][0][2] + " " + time.hr + ":" + time.min;
             calValueEl.set("value", dateStr, true);
-            var context = ice.component.getJSContext(params.clientId);
+            var context = ice.ace.getJSContext(params.clientId);
             var sJSFProps = context.getJSFProps();
             if (sJSFProps.singleSubmit) {
                 ice.se(null, rootId);
             }
         }
-        calendar = new ice.component.calendar.IceCalendar(calContainerId, { // Art: non-structural change, 'calContainerEl' was before 'calContainerId'
+        calendar = new ice.ace.calendar.IceCalendar(calContainerId, { // Art: non-structural change, 'calContainerEl' was before 'calContainerId'
             pagedate:params.pageDate,
             selected:params.selectedDate,
             hide_blank_weeks:true,
@@ -512,7 +520,7 @@ initialize: function(clientId, jsProps, jsfProps, bindYUI) {
     }
     var inputChange = function(evt) {
         calValueEl.setAttributes({value:this.get("value")}, true);
-        var context = ice.component.getJSContext(params.clientId);
+        var context = ice.ace.getJSContext(params.clientId);
         var sJSFProps = context.getJSFProps();
         if (sJSFProps.singleSubmit) {
             ice.se(evt, rootId);
@@ -531,11 +539,11 @@ initialize: function(clientId, jsProps, jsfProps, bindYUI) {
     var okClick = function(evt, dialog) {
         this.hide();
         toggleBtnEl.replaceClass("close-popup", "open-popup");
-        var context = ice.component.getJSContext(params.clientId);
+        var context = ice.ace.getJSContext(params.clientId);
         var calendar = context.getComponent();
         if (calendar.getSelectedDates().length <= 0) return;
         var date = calendar.getSelectedDates()[0];
-        var time = ice.component.calendar.getTime(calendar);
+        var time = ice.ace.calendar.getTime(calendar);
         var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + time.hr + ":" + time.min;
         calValueEl.setAttributes({value:dateStr}, true);
         var sJSFProps = context.getJSFProps();
@@ -561,7 +569,7 @@ initialize: function(clientId, jsProps, jsfProps, bindYUI) {
         Dom.setAttribute(dialog.id, "tabindex", params.tabIndex);
     }
 
-    calendar = new ice.component.calendar.IceCalendar(calContainerId, {
+    calendar = new ice.ace.calendar.IceCalendar(calContainerId, {
         pagedate:params.pageDate,
         selected:params.selectedDate,
         iframe:false,
@@ -576,7 +584,7 @@ initialize: function(clientId, jsProps, jsfProps, bindYUI) {
    var toggleClick = null;
 ////	ice.yui3.use(function(Y) {
 
-    var animation = ice.animation.getAnimation(params.clientId, "transition");
+    var animation = ice.ace.animation.getAnimation(params.clientId, "transition");
 
 	if (animation) {
 			animation.chain.set('node', '#'+ dialog.id+'_c');
@@ -676,7 +684,7 @@ updateProperties: function(clientId, jsProps, jsfProps, events) {
     var YAHOO = Yui.YUI2;
     var lang = YAHOO.lang;
 
-    var context = ice.component.getJSContext(clientId);
+    var context = ice.ace.getJSContext(clientId);
     if (context && context.isAttached()) {
         var prevProps = lang.merge(context.getJSProps(), context.getJSFProps());
         var currProps = lang.merge(jsProps, jsfProps);
@@ -692,14 +700,14 @@ updateProperties: function(clientId, jsProps, jsfProps, events) {
             break;
         }
     }
-    ice.component.updateProperties(clientId, jsProps, jsfProps, events, ice.component.calendar);
+    ice.ace.updateProperties(clientId, jsProps, jsfProps, events, ice.ace.calendar);
 
 	}, '#' + clientId);
 	});
     });
 },
 getInstance: function(clientId, callback) {
-    ice.component.getInstance(clientId, callback, this);
+    ice.ace.getInstance(clientId, callback, this);
 }
 };
 //lang.augmentObject(calendarns, ns, true);
