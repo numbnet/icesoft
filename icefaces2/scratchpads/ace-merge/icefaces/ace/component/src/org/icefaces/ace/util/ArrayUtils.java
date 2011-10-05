@@ -10,7 +10,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * See the License for the specific language governing permissions andd
  * limitations under the License.
  */
 
@@ -165,14 +165,38 @@ public class ArrayUtils {
     }
 
     public static Object concat(Object arr1, Object arr2, Object arr3,
-                                Object arr4) {
-        return concat(new Object[]{arr1, arr2, arr3, arr4});
-    }
-
-    public static Object concat(Object arr1, Object arr2, Object arr3,
                                 Object arr4, Object arr5) {
         return concat(new Object[]{arr1, arr2, arr3, arr4, arr5});
     }
+
+	public static String[] concat(String[] array1, String[] array2) {
+		int length1 = array1.length;
+		int length2 = array2.length;
+		int length = length1 + length2;
+
+		String[] dest = new String[length];
+
+		System.arraycopy(array1, 0, dest, 0, length1);
+		System.arraycopy(array2, 0, dest, length1, length2);
+
+		return dest;
+	}
+
+	public static String[] concat(String[]... arrays) {
+		int destSize = 0;
+		for (int i = 0; i < arrays.length; i++) {
+			destSize += arrays[i].length;
+		}
+		String[] dest = new String[destSize];
+		int lastIndex = 0;
+		for (int i = 0; i < arrays.length; i++) {
+			String[] array = arrays[i];
+			System.arraycopy(array, 0, dest, lastIndex, array.length);
+			lastIndex += array.length;
+		}
+
+		return dest;
+	}
 
     public static Object concatSameType(Object toArray, Object[] arrs) {
         int totalLen = 0;
@@ -184,7 +208,6 @@ public class ArrayUtils {
 
         return concat(toArray, totalLen, arrs);
     }
-
 
     public static boolean contains(Object[] array, Object value) {
         if (array == null || array.length == 0) {
@@ -201,4 +224,17 @@ public class ArrayUtils {
 
         return false;
     }
+
+    public static boolean contains(String[] array, String searchedText) {
+
+		if (array == null || array.length == 0)
+			return false;
+
+		for (int i = 0; i < array.length; i++) {
+			if (array[i].equalsIgnoreCase(searchedText))
+				return true;
+		}
+
+		return false;
+	}
 }
