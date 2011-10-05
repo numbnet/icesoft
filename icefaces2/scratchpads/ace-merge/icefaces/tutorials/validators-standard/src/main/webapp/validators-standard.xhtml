@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">
+        <h:head>
+            <meta http-equiv="Content-Type"
+                  content="text/html; charset=iso-8859-1"></meta>
+            <title>Validators - Standard(Built-In)</title>
+            <h:outputStylesheet library="css" name="validate.css" />
+        </h:head>
+        
+        <h:body>
+            <h2>Standard Validation</h2>
+            
+            <ice:form >
+                <ice:inputText id="age" value="#{user.age}" partialSubmit="true">
+                    <f:validateLongRange maximum="120" minimum="1"/>
+                </ice:inputText>
+                <ice:message style="color: red;" id="ageError" for="age"/>
+                <br/>
+                <ice:commandButton value="Submit" actionListener="#{user.submitAction}"/>
+                <br/>
+                <ice:outputText value="Age: "/>
+                <ice:outputText value="#{user.displayAge}" />        
+            </ice:form>            
+        </h:body>        
+</html>

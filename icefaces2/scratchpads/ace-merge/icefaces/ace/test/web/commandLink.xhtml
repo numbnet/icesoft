@@ -1,0 +1,188 @@
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ann="http://www.icefaces.org/icefaces/components" >
+<f:view  contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Command Link Test page</title>
+    <h:outputScript name="jsf.js" library="javax.faces" />
+</h:head>
+<h:body styleClass="ice-skin-sam">
+
+    <h:panelGroup >
+        <h2> Demonstration linkButton! </h2>
+
+        <div class="yui-skin-sam" id="sam-skin-div">
+            <h:form id="frm1">
+
+                1) This simple output link should only navigate to google.com <br></br>
+                <ann:linkButton href="http://google.com" value="Google.com">Google.com</ann:linkButton>   <p></p>
+
+            </h:form>
+
+            The following two items are in the same form to test single submit. 
+            <hr></hr>
+
+            <h:form id="frm2">
+                2) This link should only toggle the employee image <br></br>
+                <ann:linkButton value="#{linkBean.linkValue}" actionListener="#{linkBean.actionListenerMethod}" >
+                        Link with actionListener only  </ann:linkButton>
+                <p></p>
+
+                3) A single submit link with actionOnly <br></br>
+                <ann:linkButton value="single submit action" singleSubmit="true" actionListener="#{linkBean.singleSubmitListenerMethod}" />
+                    <!--<f:param name="fartyTowel" value="10" /> -->
+            </h:form>
+            <p></p>
+
+            <hr></hr>
+            <h:form id="frm4">
+                4) This link should toggle the image if clicked, but not navigate to google.com. You <em>should</em> be able to open the link in another tab<br></br>
+                <ann:linkButton  href="http://www.google.ca"
+                                 value="Link with actionListener and HREF defined"
+                               actionListener="#{linkBean.hrefAndActionMethod}" >
+                                  Link with actionListener and HREF defined OLD STRING
+                </ann:linkButton>
+            </h:form>
+            <p></p>
+
+            <h:graphicImage value="images/employee.gif" label="output" rendered="#{linkBean.rendered}" />
+
+            <hr></hr>
+            <h4>This section is an informal test section containing stuff that
+            I don't want to lose</h4>
+
+            <h:form id="frm6">
+               5) This is a 'value Only' link with no embedded text
+                <ann:linkButton  href="http://www.google.ca"
+                                 value="Link with actionListener and HREF defined"
+                               actionListener="#{linkBean.hrefAndActionMethod}" />
+            </h:form>
+            <p></p>
+
+            <h:form id="frm6a">
+               5a) This is a 'value Only' link with no embedded text
+                <ann:linkButton  href="http://www.google.ca"
+                                 value="Link with actionListener and HREF defined"
+                               actionListener="#{linkBean.hrefAndActionMethod}" >
+                    <f:param name="parameterOne" value="Here's some" />
+                    <f:param name="parameterTwo" value="Helly Dolly!" />
+                 </ann:linkButton>
+            </h:form>
+            <p></p>
+
+             <h:form id="frm7">
+                6) This JSF:link might not behave the same as an ice:link. You <em>probably wont</em> be able to open Google.com in another tab<br></br>
+                <h:commandLink  href="http://www.google.ca"
+                                 value="[The value inside the link] "
+                               actionListener="#{linkBean.hrefAndActionMethod}" >
+                                  <h:outputText value="you could press me" />
+                </h:commandLink>
+            </h:form>
+            <p></p>
+
+            <h:form id="frm8">
+                7) This is a ice:linkButton with an output text in it<br></br>
+                <ann:linkButton
+                                 value="Link with inner text button PLUS EXTRA"
+                               actionListener="#{linkBean.hrefAndActionMethod}" />
+            </h:form>
+
+            <h3> Here's an example</h3>
+            <h:form id="jsfwithParamForm">
+                <h:outputLink value="http://www.google.ca" >
+                    <f:param  name="parameterOne" value="Hello Dolly!" />
+                    <f:param  name="parameterTwo" value="No_escape_necessary" />
+                </h:outputLink>
+            </h:form>
+
+           <h:form id="frmOfTarget">
+                8) Target _blank to open in new window.  <br></br>
+                <ann:linkButton href="http://google.com" value="Google.com"
+                        target="_blank" />
+            </h:form>
+            <p></p>
+
+             <h:form id="frmOfTargetTwo">
+                9) Target _self to open in this window  <br></br>
+                <ann:linkButton href="http://google.com" value="Google.com"
+                        target="_self" />
+            </h:form>
+            <p></p>
+
+            <h:form id="frmOfTargetThree">
+                10) Target _parent to open in parent frameset  <br></br>
+                <ann:linkButton href="http://google.com" value="Google.com"
+                        target="_parent" />
+            </h:form>
+            <p></p>
+
+            <h:form id="frmOfTargetFour">
+                11) Target _top to open in full body of the window  <br></br>
+                <ann:linkButton href="http://google.com" value="Google.com"
+                                target="_top" />
+            </h:form>
+            <p></p>
+
+            <h:form id="frmOfTargetFive">
+                12) Target framename to open in named frame: <em>frameOne</em>  <br></br>
+                <ann:linkButton href="http://google.com" value="Google.com"
+                        target="frameOne" />
+            </h:form>
+            <p></p>
+
+            <h:form id="frmOfActionLinkParams">
+                13) LinkButton with actionHandler and f:param arguments <br></br>
+                <ann:linkButton value="Google.com" actionListener="#{linkBean.singleSubmitListenerMethod}"
+                        singleSubmit="true">
+                    <f:param name="firstActionParam" value="first Action Value" />
+                    <f:param name="secondActionParam" value="secondActionValue" />
+                </ann:linkButton>
+            </h:form>
+            <p></p>
+
+            <h:form id="frmActionOnly">
+                14) Action attribute only <br></br>
+                <ann:linkButton value="Alternate Image state with action handler" action="#{linkBean.singleSubmitAction}"
+                        singleSubmit="true">
+                    <f:param name="firstActionParam" value="first Action Value" />
+                    <f:param name="secondActionParam" value="secondActionValue" />
+                </ann:linkButton>
+            </h:form>
+            <p></p>
+
+        </div>
+    </h:panelGroup>
+
+    <hr>
+    </hr>
+    <hr></hr>
+
+    <a href="index.html"> Goto Main page </a>
+</h:body>
+<h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
+</html>
+
