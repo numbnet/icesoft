@@ -1,22 +1,18 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.component.checkboxbutton;
@@ -58,13 +54,9 @@ public class CheckboxButtonRenderer extends Renderer {
 	        String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
 	        String clientId = uiComponent.getClientId();
 	        //update with hidden field
-	        String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
-	        if (null==hiddenValue || hiddenValue.equals("null")){
-	        	return;
-	        }else {
-			    boolean submittedValue = isChecked(hiddenValue);
-			    checkbox.setSubmittedValue(submittedValue);  
-	        }
+		    String hiddenValue = String.valueOf(requestParameterMap.get(clientId+"_hidden"));
+			boolean submittedValue = isChecked(hiddenValue);
+			checkbox.setSubmittedValue(submittedValue);           	
     }
 
 
@@ -124,24 +116,26 @@ public class CheckboxButtonRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
 		String clientId = uiComponent.getClientId(facesContext);
 		CheckboxButton checkbox = (CheckboxButton) uiComponent;
- 		String label=this.findCheckboxLabel(checkbox);
+ 		String label = findCheckboxLabel(checkbox);
+        Object val = checkbox.getValue();
 
         writer.endElement(HTML.BUTTON_ELEM);
 		writer.endElement(HTML.SPAN_ELEM);  
 	    
 		writer.endElement(HTML.SPAN_ELEM);			
 		//hidden input for single submit=false
+		
 	    writer.startElement("input", uiComponent);
 	    writer.writeAttribute("type", "hidden", null);
 	    writer.writeAttribute("name",clientId+"_hidden", null);
 	    writer.writeAttribute("id",clientId+"_hidden", null);
-	    writer.writeAttribute("value",checkbox.getValue(), null);
+	    writer.writeAttribute("value",val, null);
 	    writer.endElement("input");	
      
 		// js call using JSONBuilder utility ICE-5831 and ScriptWriter ICE-5830
 	    //note that ScriptWriter takes care of the span tag surrounding the script
-	    String boxValue = String.valueOf(checkbox.getValue());
-	    boolean isChecked = this.isChecked(boxValue);
+	    String boxValue = String.valueOf(val);
+	    boolean isChecked = isChecked(boxValue);
 
         StringBuilder sb = new StringBuilder();
         sb.append(checkbox.getStyle()).
@@ -149,41 +143,34 @@ public class CheckboxButtonRenderer extends Renderer {
 
         boolean ariaEnabled = EnvUtils.isAriaEnabled(facesContext);
         Integer tabindex = checkbox.getTabindex();
-        if (ariaEnabled && tabindex == null) tabindex = 0;
-
-        JSONBuilder jsonBuilder = JSONBuilder.create().beginMap();
-        String builder="";
-	    JSONBuilder.create().beginMap().entry("nothing", label).toString();
-
-        jsonBuilder.
-                entry("type", "checkbox").
-                entry("checked", isChecked).
-                entry("disabled", checkbox.isDisabled());
-        if (tabindex != null) {
-            jsonBuilder.entry("tabindex", tabindex);
+        if (ariaEnabled && tabindex == null) {
+            tabindex = 0;
         }
-        builder = jsonBuilder.entry("label", label).endMap().toString();
 
-
-        JSONBuilder jBuild = JSONBuilder.create().
-           beginMap().
-               entry("singleSubmit", checkbox.isSingleSubmit()).
-               entry("hashCode", sb.toString().hashCode()).
-               entry("ariaEnabled", ariaEnabled);
-
+        JSONBuilder jb = JSONBuilder.create();
+        jb.beginFunction("ice.ace.checkboxbutton.updateProperties").
+                item(clientId).
+                beginMap().
+                    entry("type", "checkbox").
+                    entry("checked", isChecked).
+                    entry("disabled", checkbox.isDisabled()).
+                    entryNonNullValue("tabindex", tabindex).
+                    entry("label", label).
+                endMap().
+                beginMap().
+                    entry("singleSubmit", checkbox.isSingleSubmit()).
+                    entry("hashCode", sb.toString().hashCode()).
+                    entry("ariaEnabled", ariaEnabled);
         if (uiParamChildren != null) {
-            jBuild.entry("postParameters",  Utils.asStringArray(uiParamChildren) );
-        } 
+            jb.entry("postParameters",  Utils.asStringArray(uiParamChildren) );
+        }
+        jb.endMap().endFunction();
 
-	    String params = "'" + clientId + "'," +
-        builder
-           + "," + jBuild.endMap().toString();
-  //        System.out.println("params = " + params);
-
-        String finalScript = "ice.component.checkboxbutton.updateProperties(" + params + ");";
-        ScriptWriter.insertScript(facesContext, uiComponent,finalScript);        		  
+        String finalScript = jb.toString();
+        //System.out.println("CheckboxButtonRenderer  finalScript: " + finalScript);
+        ScriptWriter.insertScript(facesContext, uiComponent,finalScript);
         
-       writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
     }
     
     private String findCheckboxLabel(CheckboxButton checkbox){
@@ -213,8 +200,12 @@ public class CheckboxButtonRenderer extends Renderer {
     @Override
     public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent,
     		                        Object submittedValue) throws ConverterException{
-    	if (submittedValue instanceof Boolean)return submittedValue;
-    	else return Boolean.valueOf(submittedValue.toString());
+    	if (submittedValue instanceof Boolean) {
+            return submittedValue;
+        }
+    	else {
+            return Boolean.valueOf(submittedValue.toString());
+        }
     }
     
 }
