@@ -1,22 +1,18 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.component.fileentry;
@@ -177,19 +173,21 @@ public class FileEntryPhaseListener implements PhaseListener {
 //System.out.println("FileEntryPhaseListener.beforePhase()  Our ajaxResponse: " + ajaxResponse);
 
 //            System.out.println("FileEntryPhaseListener.beforePhase()  parameterMap    : " + parameterMap);
-            Object wrapper = null;
-            if( isPortlet ){
-                wrapper = getPortletRequestWrapper(requestObject,parameterMap);
-            } else {
-                wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, parameterMap);
-            }
-            phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
-            
-            if (ajaxResponse) {
-                PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
-                if (pvc instanceof DOMPartialViewContext)
-                    ((DOMPartialViewContext) pvc).setAjaxRequest(true);
-                pvc.setPartialRequest(true);                
+            if (!parameterMap.isEmpty()) {
+                Object wrapper = null;
+                if (isPortlet) {
+                    wrapper = getPortletRequestWrapper(requestObject, parameterMap);
+                } else {
+                    wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, parameterMap);
+                }
+                phaseEvent.getFacesContext().getExternalContext().setRequest(wrapper);
+
+                if (ajaxResponse) {
+                    PartialViewContext pvc = phaseEvent.getFacesContext().getPartialViewContext();
+                    if (pvc instanceof DOMPartialViewContext)
+                        ((DOMPartialViewContext) pvc).setAjaxRequest(true);
+                    pvc.setPartialRequest(true);
+                }
             }
             // Apparently not necessary, as long as we don't call
             // FacesContext.isPostback() before this point
@@ -308,124 +306,126 @@ public class FileEntryPhaseListener implements PhaseListener {
             if (fileName != null && fileName.length() > 0) {
                 String identifier = fieldName;
                 config = FileEntry.retrieveConfigFromPreviousLifecycle(facesContext, identifier);
-                // config being null might be indicative of a non-ICEfaces' file upload component in the form
-//System.out.println("File    config: " + config);
+                if (config != null) {
+                    // config being null might be indicative of a non-ICEfaces' file upload component in the form
+    //System.out.println("File    config: " + config);
 
-                results = clientId2Results.get(config.getClientId());
-                if (results == null) {
-                    results = new FileEntryResults(config.isViaCallback());
-                    clientId2Results.put(config.getClientId(), results);
-                }
-//System.out.println("File    results: " + results);
+                    results = clientId2Results.get(config.getClientId());
+                    if (results == null) {
+                        results = new FileEntryResults(config.isViaCallback());
+                        clientId2Results.put(config.getClientId(), results);
+                    }
+    //System.out.println("File    results: " + results);
 
-                fileInfo = new FileEntryResults.FileInfo();
-                fileInfo.begin(fileName, contentType);
+                    fileInfo = new FileEntryResults.FileInfo();
+                    fileInfo.begin(fileName, contentType);
 
-                progressListenerResourcePusher.setPushResourcePathAndGroupName(
-                        facesContext, config.getProgressResourcePath(),
-                        config.getProgressGroupName());
-                
-                if (config.isViaCallback()) {
-                    callback = clientId2Callbacks.get(config.getClientId());
-                    if (callback == null) {
-                        try {
-                            callback = evaluateCallback(facesContext, config);
-                        } catch(javax.el.ELException e) {
-                            status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
-                            throw e;
+                    progressListenerResourcePusher.setPushResourcePathAndGroupName(
+                            facesContext, config.getProgressResourcePath(),
+                            config.getProgressGroupName());
+
+                    if (config.isViaCallback()) {
+                        callback = clientId2Callbacks.get(config.getClientId());
+                        if (callback == null) {
+                            try {
+                                callback = evaluateCallback(facesContext, config);
+                            } catch(javax.el.ELException e) {
+                                status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
+                                throw e;
+                            }
                         }
                     }
-                }
-//System.out.println("File    callback: " + callback);
+    //System.out.println("File    callback: " + callback);
 
-                long availableTotalSize = results.getAvailableTotalSize(config.getMaxTotalSize());
-//System.out.println("File    availableTotalSize: " + availableTotalSize);
-                long availableFileSize = config.getMaxFileSize();
-//System.out.println("File    availableFileSize: " + availableFileSize);
-                int maxFileCount = config.getMaxFileCount();
-//System.out.println("File    maxFileCount: " + maxFileCount);
-                if (results.getFiles().size() >= maxFileCount) {
-                    status = FileEntryStatuses.MAX_FILE_COUNT_EXCEEDED;
-                    fileInfo.prefail(status);
-                    InputStream in = item.openStream();
-                    while (in.read(buffer) >= 0) {}
-                    if (callback != null) {
-                        try {
-                            callback.begin(fileInfo);
-                            callback.end(fileInfo);
-                        } catch(RuntimeException e) {
-                            status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
-                            handleCallbackException(
-                                    facesContext, config.getClientId(), e);
-                            throw e;
-                        }
-                    }
-                }
-                else {
-                    OutputStream output = null;
-                    if (callback != null) {
-                        try {
-                            callback.begin(fileInfo);
-                        } catch(RuntimeException e) {
-                            status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
-                            handleCallbackException(
-                                    facesContext, config.getClientId(), e);
-                            throw e;
+                    long availableTotalSize = results.getAvailableTotalSize(config.getMaxTotalSize());
+    //System.out.println("File    availableTotalSize: " + availableTotalSize);
+                    long availableFileSize = config.getMaxFileSize();
+    //System.out.println("File    availableFileSize: " + availableFileSize);
+                    int maxFileCount = config.getMaxFileCount();
+    //System.out.println("File    maxFileCount: " + maxFileCount);
+                    if (results.getFiles().size() >= maxFileCount) {
+                        status = FileEntryStatuses.MAX_FILE_COUNT_EXCEEDED;
+                        fileInfo.prefail(status);
+                        InputStream in = item.openStream();
+                        while (in.read(buffer) >= 0) {}
+                        if (callback != null) {
+                            try {
+                                callback.begin(fileInfo);
+                                callback.end(fileInfo);
+                            } catch(RuntimeException e) {
+                                status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
+                                handleCallbackException(
+                                        facesContext, config.getClientId(), e);
+                                throw e;
+                            }
                         }
                     }
                     else {
-                        String folder = calculateFolder(facesContext, config);
-                        file = makeFile(config, folder, fileName);
-//System.out.println("File    file: " + file);
-                        output = new FileOutputStream(file);
-                    }
-
-                    InputStream in = item.openStream();
-                    try {
-                        boolean overQuota = false;
-                        while (true) {
-                            int read = in.read(buffer);
-                            if (read < 0) {
-                                break;
+                        OutputStream output = null;
+                        if (callback != null) {
+                            try {
+                                callback.begin(fileInfo);
+                            } catch(RuntimeException e) {
+                                status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
+                                handleCallbackException(
+                                        facesContext, config.getClientId(), e);
+                                throw e;
                             }
-                            fileSizeRead += read;
-                            if (!overQuota) {
-                                if (fileSizeRead > availableFileSize) {
-                                    overQuota = true;
-                                    status = FileEntryStatuses.MAX_FILE_SIZE_EXCEEDED;
+                        }
+                        else {
+                            String folder = calculateFolder(facesContext, config);
+                            file = makeFile(config, folder, fileName);
+    //System.out.println("File    file: " + file);
+                            output = new FileOutputStream(file);
+                        }
+
+                        InputStream in = item.openStream();
+                        try {
+                            boolean overQuota = false;
+                            while (true) {
+                                int read = in.read(buffer);
+                                if (read < 0) {
+                                    break;
                                 }
-                                else if (fileSizeRead > availableTotalSize) {
-                                    overQuota = true;
-                                    status = FileEntryStatuses.MAX_TOTAL_SIZE_EXCEEDED;
-                                }
+                                fileSizeRead += read;
                                 if (!overQuota) {
-                                    if (callback != null) {
-                                        try {
-                                            callback.write(buffer, 0, read);
-                                        } catch(RuntimeException e) {
-                                            status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
-                                            handleCallbackException(
-                                                    facesContext, config.getClientId(), e);
-                                            throw e;
+                                    if (fileSizeRead > availableFileSize) {
+                                        overQuota = true;
+                                        status = FileEntryStatuses.MAX_FILE_SIZE_EXCEEDED;
+                                    }
+                                    else if (fileSizeRead > availableTotalSize) {
+                                        overQuota = true;
+                                        status = FileEntryStatuses.MAX_TOTAL_SIZE_EXCEEDED;
+                                    }
+                                    if (!overQuota) {
+                                        if (callback != null) {
+                                            try {
+                                                callback.write(buffer, 0, read);
+                                            } catch(RuntimeException e) {
+                                                status = FileEntryStatuses.PROBLEM_WITH_CALLBACK;
+                                                handleCallbackException(
+                                                        facesContext, config.getClientId(), e);
+                                                throw e;
+                                            }
+                                        }
+                                        else if (output != null) {
+                                            output.write(buffer, 0, read);
                                         }
                                     }
-                                    else if (output != null) {
-                                        output.write(buffer, 0, read);
-                                    }
                                 }
                             }
+    //System.out.println("File    fileSizeRead: " + fileSizeRead);
+    //if (overQuota)
+    //  System.out.println("File    overQuota  status: " + status);
+                            if (status == FileEntryStatuses.UPLOADING) {
+                                status = FileEntryStatuses.SUCCESS;
+                            }
                         }
-//System.out.println("File    fileSizeRead: " + fileSizeRead);
-//if (overQuota)
-//  System.out.println("File    overQuota  status: " + status);
-                        if (status == FileEntryStatuses.UPLOADING) {
-                            status = FileEntryStatuses.SUCCESS;
-                        }
-                    }
-                    finally {
-                        if (output != null) {
-                            output.flush();
-                            output.close();
+                        finally {
+                            if (output != null) {
+                                output.flush();
+                                output.close();
+                            }
                         }
                     }
                 }
@@ -447,7 +447,7 @@ public class FileEntryPhaseListener implements PhaseListener {
                 log.log(Level.SEVERE, "Problem processing uploaded file", e);
             }
         }
-        
+
         if (file != null && !status.isSuccess()) {
 //System.out.println("File    Unsuccessful file being deleted");
             file.delete();
