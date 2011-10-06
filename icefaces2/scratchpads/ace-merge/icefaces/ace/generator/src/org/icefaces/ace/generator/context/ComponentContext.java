@@ -1,22 +1,18 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.generator.context;
@@ -35,19 +31,17 @@ import org.icefaces.ace.generator.artifacts.Artifact;
 import org.icefaces.ace.generator.artifacts.ComponentArtifact;
 import org.icefaces.ace.generator.artifacts.ComponentHandlerArtifact;
 import org.icefaces.ace.generator.artifacts.TagArtifact;
+import org.icefaces.ace.generator.artifacts.TagHandlerArtifact;
 import org.icefaces.ace.generator.behavior.Behavior;
 import org.icefaces.ace.generator.utils.PropertyValues;
 import org.icefaces.ace.meta.annotation.*;
 
-public class ComponentContext {
+public class ComponentContext extends MetaContext {
 	private Map<String, Field> fieldsForComponentClass = new HashMap<String, Field>();
     private Map<String, Field> internalFieldsForComponentClass = new HashMap<String, Field>();
     private Map<String, Field> fieldsForFacet = new HashMap<String, Field>();    
     private Map<String, Field> fieldsForTagClass = new HashMap<String, Field>();
-    private Map<String, Artifact> artifacts = new HashMap<String, Artifact>();
-    private Class activeClass;
     private List<Behavior> behaviors = new ArrayList<Behavior>();
-	private Map<Field, PropertyValues> propertyValuesMap = new HashMap<Field, PropertyValues>();
     
     public List<Behavior> getBehaviors() {
 		return behaviors;
@@ -56,8 +50,6 @@ public class ComponentContext {
 	public void setBehaviors(List<Behavior> behaviors) {
 		this.behaviors = behaviors;
 	}
-
-	private boolean hasMethodExpression;
     
     public Map<String, Field> getFieldsForComponentClass() {
 		return fieldsForComponentClass;
@@ -112,43 +104,14 @@ public class ComponentContext {
 	public void setFieldsForTagClass(Map<String, Field> fieldsForTagClass) {
 		this.fieldsForTagClass = fieldsForTagClass;
 	}
-	
-    public Map<Field, PropertyValues> getPropertyValuesMap() {
-		return propertyValuesMap;
-	}
-
-	public boolean isHasMethodExpression() {
-		return hasMethodExpression;
-	}
-
-	public void setHasMethodExpression(boolean hasMethodExpression) {
-		this.hasMethodExpression = hasMethodExpression;
-	}
-
-	public Artifact getArtifact(Class<? extends Artifact> artifact ) {
-		return artifacts.get(artifact.getSimpleName());
-	}
-	
-	public Class getActiveClass() {
-		return activeClass;
-	}
-
-	public void setActiveClass(Class activeClass) {
-		this.activeClass = activeClass;
-	}
-
-	public Iterator<Artifact> getArtifacts() {
-		return artifacts.values().iterator();
-	}
 
 	public ComponentContext(Class clazz) {
-		GeneratorContext.getInstance().setActiveComponentContext(this);
-		setActiveClass(clazz);
+		super(clazz);
     	processAnnotation(clazz, true);
     	
-    	artifacts.put(ComponentArtifact.class.getSimpleName(), new ComponentArtifact(this));
-    	artifacts.put(TagArtifact.class.getSimpleName(), new TagArtifact(this));
-    	artifacts.put(ComponentHandlerArtifact.class.getName(), new ComponentHandlerArtifact(this));
+		artifacts.put(ComponentArtifact.class.getSimpleName(), new ComponentArtifact(this));
+		artifacts.put(TagArtifact.class.getSimpleName(), new TagArtifact(this));
+		artifacts.put(ComponentHandlerArtifact.class.getName(), new ComponentHandlerArtifact(this));
 
     	for (Behavior behavior: GeneratorContext.getInstance().getBehaviors()) {
     		if (behavior.hasBehavior(clazz)) {
@@ -232,9 +195,7 @@ public class ComponentContext {
 							}
 							// if only javadocGet or javadocSet were specified, then simply create delegating getter/setter and do not include in save state
 							if (modifiesDefaultValueOrMethodExpression == false && modifiesJavadoc == true) {
-								if (propertyValues.overrides) { // ...as long as the property exists in ancestor class
-									propertyValues.isDelegatingProperty = true;
-								}
+								propertyValues.isDelegatingProperty = true;
 							}
 						}
                         if (!fieldsForTagClass.containsKey(field.getName())) {                       
@@ -267,136 +228,4 @@ public class ComponentContext {
             }
         }
     } 
-	
-	private static PropertyValues collectPropertyValues(String fieldName, Class clazz) {
-		return collectPropertyValues(fieldName, clazz, new PropertyValues(), true);
-	}
-	
-	private static PropertyValues collectPropertyValues(String fieldName, Class clazz, PropertyValues propertyValues, boolean isBaseClass) {
-		Class superClass = clazz.getSuperclass();
-		if (superClass != null) {
-			boolean inherit = true;
-			try {
-				// if isBaseClass check for implementation()... otherwise, always go up
-				if (isBaseClass) {
-					Field field = clazz.getDeclaredField(fieldName);
-					if (field.isAnnotationPresent(Property.class)) {
-						Property property = (Property) field.getAnnotation(Property.class);
-						inherit = property.implementation() != Implementation.GENERATE;
-					}
-				}
-			} catch (NoSuchFieldException e) {
-				// do nothing
-			}
-			
-			if (inherit) {
-				collectPropertyValues(fieldName, superClass, propertyValues, false);
-			}
-		}
-		try {
-			Field field = clazz.getDeclaredField(fieldName);
-			if (field.isAnnotationPresent(Property.class)) {
-				if (!isBaseClass) {
-					propertyValues.overrides = true;
-				}
-				Property property = (Property) field.getAnnotation(Property.class);
-				if (property.expression() != Expression.UNSET) {
-					propertyValues.expression = property.expression();
-				}
-				if (!property.methodExpressionArgument().equals(Property.Null)) {
-					propertyValues.methodExpressionArgument = property.methodExpressionArgument();
-				}
-				if (!property.defaultValue().equals(Property.Null)) {
-					propertyValues.defaultValue = property.defaultValue();
-				}
-				if (property.defaultValueType() != DefaultValueType.UNSET) {
-					propertyValues.defaultValueType = property.defaultValueType();
-				}
-				if (!property.tlddoc().equals(Property.Null)) {
-					propertyValues.tlddoc = property.tlddoc();
-				}
-				if (!property.javadocGet().equals(Property.Null)) {
-					propertyValues.javadocGet = property.javadocGet();
-				}
-				if (!property.javadocSet().equals(Property.Null)) {
-					propertyValues.javadocSet = property.javadocSet();
-				}
-				if (property.required() != Required.UNSET) {
-					propertyValues.required = property.required();
-				}
-				if (property.implementation() != Implementation.UNSET) {
-					propertyValues.implementation = property.implementation();
-				}
-                if (!property.name().equals(Property.Null)) {
-                    propertyValues.name = property.name();
-                } 
-			}
-		} catch (NoSuchFieldException e) {
-			// do nothing
-		}
-		return propertyValues;
-	}
-	
-	private static void setDefaultValues(PropertyValues propertyValues) {
-	
-		if (propertyValues.expression == Expression.UNSET) {
-			propertyValues.expression = Expression.DEFAULT;
-		}
-		if (propertyValues.methodExpressionArgument.equals(Property.Null)) {
-			propertyValues.methodExpressionArgument = "";
-		}
-		if (propertyValues.defaultValue.equals(Property.Null)) {
-			propertyValues.defaultValue = "null";
-		}
-		if (propertyValues.defaultValueType == DefaultValueType.UNSET) {
-			propertyValues.defaultValueType = DefaultValueType.DEFAULT;
-		}
-		if (propertyValues.tlddoc.equals(Property.Null)) {
-			propertyValues.tlddoc = "";
-		}
-		if (propertyValues.javadocGet.equals(Property.Null)) {
-			propertyValues.javadocGet = "";
-		}
-		if (propertyValues.javadocSet.equals(Property.Null)) {
-			propertyValues.javadocSet = "";
-		}
-		if (propertyValues.required == Required.UNSET) {
-			propertyValues.required = Required.DEFAULT;
-		}
-		if (propertyValues.implementation == Implementation.UNSET) {
-			propertyValues.implementation = Implementation.DEFAULT;
-		}
-	}
-	
-	private static Field[] getDeclaredFields(Class clazz) {
-		return getDeclaredFields(clazz, new HashMap<String, Field>());
-	}
-	
-	// collect all declared fields of a class and all its ancestor classes
-	private static Field[] getDeclaredFields(Class clazz, Map<String, Field> fields) {
-		
-		if (fields == null) {
-			fields = new HashMap<String, Field>();
-		}
-		
-		// add fields to map
-		Field[] localFields = clazz.getDeclaredFields();
-		for (int i = 0; i < localFields.length; i++) {
-			if (!fields.containsKey(localFields[i].getName())) {
-				fields.put(localFields[i].getName(), localFields[i]);
-			}
-		}
-	
-		Class superClass = clazz.getSuperclass();
-		if (superClass != null) {
-			return getDeclaredFields(superClass, fields);
-		} else {
-			Object[] values = fields.values().toArray();
-			Field[] result = new Field[values.length];
-			for (int i = 0; i < values.length; i++) {
-				result[i] = (Field) values[i];
-			}
-			return result;
-		}
-	}
 }

@@ -1,29 +1,25 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.generator.xmlbuilder;
 
 import java.lang.reflect.Field;
 
-import org.icefaces.ace.generator.context.ComponentContext;
+import org.icefaces.ace.generator.context.MetaContext;
 import org.icefaces.ace.generator.context.GeneratorContext;
 import org.icefaces.ace.generator.utils.PropertyValues;
 import org.icefaces.ace.generator.utils.Utility;
@@ -31,6 +27,7 @@ import org.icefaces.ace.meta.annotation.Required;
 import org.w3c.dom.Element;
 
 import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.TagHandler;
 import org.icefaces.ace.meta.annotation.Property;
 
 public class FaceletTagLibBuilder extends XMLBuilder{
@@ -45,7 +42,6 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         root.setAttribute("version",            "2.0");
         getDocument().appendChild(root);
         addNode(root, "namespace", GeneratorContext.namespace);
-        addEffectBehavior("Animation");
     }
 
     public void addTagInfo(Class clazz, Component component) {
@@ -65,26 +61,36 @@ public class FaceletTagLibBuilder extends XMLBuilder{
         } catch (Exception e) {
             e.printStackTrace();
         } 
-        if (GeneratorContext.getInstance().getActiveComponentContext().isHasMethodExpression()) {
+        if (GeneratorContext.getInstance().getActiveMetaContext().isHasMethodExpression()) {
             addNode(component_element, "handler-class", clazz.getName()+ "Handler");
         }
         //addNode(component_element, "handler-class", component.handlerClass());
     }
-    
-    private void addEffectBehavior(String name) {
+	
+    public void addTagInfo(TagHandler tagHandler) {
+        
         Element root = (Element)getDocument().getDocumentElement();
         tag = getDocument().createElement("tag");        
         root.appendChild(tag);
-        addNode(tag, "tag-name", name.toLowerCase());
+        addNode(tag, "tag-name", tagHandler.tagName());
+		addNode(tag, "handler-class", tagHandler.tagHandlerClass());
+    }
+    
+    public void addBehaviorInfo(TagHandler tagHandler) {
+	
+        Element root = (Element)getDocument().getDocumentElement();
+        tag = getDocument().createElement("tag");        
+        root.appendChild(tag);
+        addNode(tag, "tag-name", tagHandler.tagName());
         Element behavior = getDocument().createElement("behavior");
         tag.appendChild(behavior);
-        addNode(behavior, "behavior-id", "org.icefaces.ace.animation."+ name);
-        addNode(behavior, "handler-class", "org.icefaces.ace.component.animation.AnimationBehaviorHandler");
+        addNode(behavior, "behavior-id", tagHandler.behaviorId());
+        addNode(behavior, "handler-class", tagHandler.tagHandlerClass());
     }
     
     public void addAttributeInfo(Field field) {
-		ComponentContext component = GeneratorContext.getInstance().getActiveComponentContext();
-		PropertyValues propertyValues = component.getPropertyValuesMap().get(field);
+		MetaContext metaContext = GeneratorContext.getInstance().getActiveMetaContext();
+		PropertyValues propertyValues = metaContext.getPropertyValuesMap().get(field);
 		
         Element attribute = getDocument().createElement("attribute");
         tag.appendChild(attribute);
