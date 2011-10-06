@@ -1,0 +1,133 @@
+/*
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.ice-checkboxbutton .yui-button{
+    border-width: 1px 0;
+	border-style:solid;
+	border-color:#808080;
+	background-image: url("#{resource['icefaces.ace:checkboxbutton/background.png']}");
+	background-repeat: repeat-x;
+	margin:auto .25em;}
+	
+.ice-checkboxbutton .yui-button .first-child{
+	border-width: 0 1px;
+	border-style:solid;
+	border-color:#808080;
+	margin:0 -1px;
+    _margin: 0;
+	}
+	
+.ice-checkboxbutton .yui-button button,.ice-checkboxbutton .yui-button a{
+	padding:0 10px;
+	font-size:93%;
+	line-height:2;
+	*line-height:1.7;
+	min-height:2em;
+	*min-height:auto;
+	color:#000;
+	border-width: 0px;
+	border-style:solid;
+	border-color:#808080;
+    background-image: url("#{resource['icefaces.ace:checkboxbutton/background.png']}");
+	background-repeat: repeat-x;
+	margin:auto .25em;
+	}
+	
+.ice-checkboxbutton .yui-button a{
+	*line-height:1.875;
+	*padding-bottom:1px;
+	}
+	
+.ice-checkboxbutton .yui-button-focus{
+	border-color:#7D98B8;
+ 	background-image: url("#{resource['icefaces.ace:checkboxbutton/background-focus.png']}");
+	background-repeat: repeat-x;   }
+	
+.ice-checkboxbutton .yui-button-focus .first-child{
+	border-color:#7D98B8;}
+	
+.ice-checkboxbutton .yui-button-focus button,.ice-checkboxbutton .yui-button-focus a{
+	color:#000;}
+		
+.ice-checkboxbutton .yui-button-hover{
+	border-color:#7D98B8;
+    background-image: url("#{resource['icefaces.ace:checkboxbutton/background-focus.png']}");
+	background-repeat: repeat-x;   }
+	
+.ice-checkboxbutton .yui-button-hover .first-child{
+	border-color:#7D98B8;}
+	
+.ice-checkboxbutton .yui-button-hover button,.ice-checkboxbutton .yui-button-hover a{
+	color:#000;
+	border-color:#7D98B8;
+    background-image: url("#{resource['icefaces.ace:checkboxbutton/background-focus.png']}");
+	background-repeat: repeat-x;   }
+	
+.ice-checkboxbutton .yui-button-active{
+	border-color:#7D98B8;
+    background-image: url("#{resource['icefaces.ace:checkboxbutton/background-active.png']}");
+	background-repeat: repeat-x;
+}
+	
+.ice-checkboxbutton .yui-button-active .first-child{
+	border-color:#7D98B8;}
+	
+.ice-checkboxbutton .yui-button-active button,.ice-checkboxbutton .yui-button-active a{
+	color:#000;
+	border-color:#7D98B8;
+    background-image: url("#{resource['icefaces.ace:checkboxbutton/background-highlight.png']}");
+	background-repeat: repeat-x;
+	 }
+	
+.ice-checkboxbutton .yui-radio-button-checked,.ice-checkboxbutton 
+ .yui-checkbox-button-checked{
+	border-color:#304369;
+    background-image: url("#{resource['icefaces.ace:checkboxbutton/background-highlight.png']}");
+	background-repeat: repeat-x;
+}
+	
+.ice-checkboxbutton .yui-radio-button-checked .first-child,
+.ice-checkboxbutton .yui-checkbox-button-checked .first-child{
+	border-color:#304369;
+    background-image: url("#{resource['icefaces.ace:checkboxbutton/background-highlight.png']}");
+	background-repeat: repeat-x; 
+	}
+	
+.ice-checkboxbutton .yui-radio-button-checked button,.ice-checkboxbutton .yui-checkbox-button-checked button{
+	color:#0000;
+    background-image: url("#{resource['icefaces.ace:checkboxbutton/background-highlight.png']}");
+	background-repeat: repeat-x; 
+	}
+	
+.ice-checkboxbutton .yui-button-disabled{
+	border-color:#ccc;
+    background-image: url("#{resource['icefaces.ace:checkboxbutton/background-disabled.gif']}");
+	background-repeat: repeat-x;
+}
+	
+.ice-checkboxbutton .yui-button-disabled .first-child{
+	border-color:#ccc;
+    background-image: url("#{resource['icefaces.ace:checkboxbutton/background-disabled.gif']}");
+	background-repeat: repeat-x; 	
+	}
+	
+.ice-checkboxbutton .yui-button-disabled button,.ice-checkboxbutton .yui-button-disabled a{
+	color:#A6A6A6;
+	cursor:default;
+    background-image: url("#{resource['icefaces.ace:checkboxbutton/background-disabled.gif']}");
+	background-repeat: repeat-x; 	
+	}
