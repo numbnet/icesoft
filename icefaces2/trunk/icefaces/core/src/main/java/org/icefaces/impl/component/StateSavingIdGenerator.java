@@ -17,7 +17,7 @@ public class StateSavingIdGenerator {
 	
 	private int count = 0;
 	
-	public String getNewId() {
+	public synchronized String getNewId() {
 		
 		return String.valueOf(count++);
 	}
