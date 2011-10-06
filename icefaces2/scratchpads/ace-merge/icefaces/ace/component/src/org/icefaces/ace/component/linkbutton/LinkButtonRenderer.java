@@ -1,22 +1,18 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.component.linkbutton;
@@ -113,7 +109,7 @@ public class LinkButtonRenderer extends Renderer {
 
         // Uncomment this for the so - called inline model onclick handler 
         writer.writeAttribute(HTML.ONCLICK_ATTR,
-                              "return ice.component.linkButton.clickHandler(event, '" + clientId + "' );",
+                              "return ice.ace.linkButton.clickHandler(event, '" + clientId + "' );",
                               null);
         String temp;
         if ((temp = linkButton.getHref()) != null) {
@@ -124,7 +120,7 @@ public class LinkButtonRenderer extends Renderer {
         } else {
             // if there's no href, install a default key handler to catch the enter key
             writer.writeAttribute(HTML.ONKEYDOWN_ATTR,
-                              "return ice.component.linkButton.keyDownHandler(event, '" + clientId + "' );",
+                              "return ice.ace.linkButton.keyDownHandler(event, '" + clientId + "' );",
                               null);
         } 
 
@@ -191,7 +187,7 @@ public class LinkButtonRenderer extends Renderer {
                          jsProps
                         + "," + jBuild.endMap().toString();
 
-        String finalScript = "ice.component.linkButton.updateProperties(" + params + ");";
+        String finalScript = "ice.ace.linkButton.updateProperties(" + params + ");";
         ScriptWriter.insertScript(facesContext, uiComponent, finalScript);
         writer.endElement(HTML.DIV_ELEM);
     }
