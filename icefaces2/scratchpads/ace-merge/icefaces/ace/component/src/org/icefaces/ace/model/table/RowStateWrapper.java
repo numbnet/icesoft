@@ -1,7 +1,6 @@
 package org.icefaces.ace.model.table;
 
 import org.icefaces.ace.component.datatable.DataTable;
-import org.icefaces.ace.event.IdleEvent;
 
 import java.util.ArrayList;
 import java.util.List;
