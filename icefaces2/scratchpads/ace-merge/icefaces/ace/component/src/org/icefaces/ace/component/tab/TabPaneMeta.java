@@ -1,22 +1,18 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.component.tab;
@@ -52,13 +48,28 @@ public class TabPaneMeta extends UIComponentBaseMeta {
     @Property(tlddoc="If true, then when the tabSet has clientSide=false, " +
             "this tabPane will be lazily loaded and cached on the client. " +
             "That is, once this tabPane has been visited, and rendered into " +
-            "the client, it will remain rendered onto the client. As long " +
-            "as its contents do not change on the server, they will remain " +
-            "intact on the client. But, if its contents do change on the " +
-            "server, then they will be reflected in the client via standard " +
-            "ICEfaces mechanisms. When clientSide=true, all tabPane " +
-            "components are always cached on the client.")
+            "the client, it will remain rendered onto the client. Whether " +
+            "the caching is static or dynamic is controlled by the " +
+            "cacheStatically property. When clientSide=true on the tabSet, " +
+            "all tabPane components are always cached on the client.")
     private boolean cacheOnClient;
+
+    @Property(tlddoc="This property applies when clientSide=false on the " +
+            "tabSet, and cacheOnClient=true for this tabPane. If this " +
+            "property is false, then caching is dynamic, in that if " +
+            "portions of the already lazily loaded tab contents change on " +
+            "the server, then they will be reflected in the client via " +
+            "standard ICEfaces mechanisms. If nothing changes, then the " +
+            "tabPane will render on the server, and the ICEfaces DOM " +
+            "difference will detect that nothing has changed, and the " +
+            "client will receive no updates. If this property is true, " +
+            "then once the tab contents have been rendered and sent to " +
+            "the client, they will subsequently never be rendered or " +
+            "updated again, regardless of whether the tab contents may have " +
+            "changed. This is an optimisation for applications that know " +
+            "their tab contents will not change, and wish to eliminate " +
+            "rendering overhead.")
+    private boolean cacheStatically;
 
     
     @Facets
