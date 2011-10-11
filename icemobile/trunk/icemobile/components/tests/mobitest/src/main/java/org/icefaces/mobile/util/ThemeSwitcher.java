@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class ThemeSwitcher implements Serializable{
 
     private String theme = "";
+    private String prefix = "tcal";
 
     public String getTheme() {
         return theme;
@@ -19,5 +20,12 @@ public class ThemeSwitcher implements Serializable{
 
     public void setTheme(String theme) {
         this.theme = theme;
+    }
+
+    public String getPrefix(){
+        if (theme.equals("iphone.css")){
+            return "iphone";
+        }
+       else return "tcal";
     }
 }
