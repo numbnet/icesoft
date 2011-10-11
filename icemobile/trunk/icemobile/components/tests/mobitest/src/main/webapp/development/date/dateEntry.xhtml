@@ -42,12 +42,12 @@
 
     <h:form id="dateForm" >
 
-       <h5>mobi dater no converter</h5>
+       <h5>mobi dater built-in converter for ipad</h5>
          <h:outputText value="A. date"/>
-         <mobi:dateEntry id="dateId" value="#{date.selectedDate}"   stringPrefix="iphone"
+         <mobi:dateEntry id="dateId" value="#{date.selectedDate}"   stringPrefix="#{themeSwitcher.prefix}"
                        singleSubmit="false"   title="date input field"/>
 
-        <br />
+
        <p>
 
           <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>
@@ -59,7 +59,7 @@
     </h:form>
     <h3>RESULTS</h3>
 
-    <h5>mumber A</h5>
+    <h5>date iphone</h5>
     <h:outputText value="#{date.selectedDate}"/>
 
 
