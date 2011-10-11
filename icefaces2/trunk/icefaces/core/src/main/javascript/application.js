@@ -301,25 +301,15 @@ if (!window.ice.icefaces) {
         }
 
         function filterICEfacesEvents(f) {
+            var isICEfacesEvent = false;
             return function(e) {
-                var sourceElement = e.source;
-                var form;
-                try {
-                    form = formOf(sourceElement);
-                } catch (e) {
-                    //sometimes a fragment that includes the triggering element is updated, thus becoming orphaned,
-                    //if the form is not included in the orphaned element the 'formOf' call will fail
-
-                    //trying to lookup the new element by id
-                    if (sourceElement && sourceElement.id) {
-                        form = formOf(lookupElementById(sourceElement.id));
-                    } else {
-                        return false;
-                    }
+                if (e.status == 'begin') {
+                    var source = e.source;
+                    var form = formOf(source);
+                    isICEfacesEvent = form['ice.view'] || form['ice.window'];
                 }
-
-                if (form['ice.view'] || form['ice.window']) {
-                    //invoke callback only when event triggered from an ICEfaces enabled form
+                //invoke callback only when event is triggered from an ICEfaces enabled form
+                if (isICEfacesEvent) {
                     f(e);
                 }
             };
