@@ -401,6 +401,8 @@
          <!-- dateentry - style definition -->
         <includeresources dir="src/org/icefaces/component/dateentry/ipad"
                           name="dateentry" skin="ipad"/>
+        <includeresources dir="src/org/icefaces/component/dateentry/iphone"
+                          name="dateentry" skin="iphone"/>
         <!-- Process sprites, if use.sprites is set -->
         <antcall target="sprites"/>
 

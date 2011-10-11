@@ -35,40 +35,33 @@
 </h:head>
 
 <h:body>
- 
-    <h3>dateEntry using type="date" to bring up correct keyboard</h3>
+        <!-- theme switcher -->
+    <ui:include src="/WEB-INF/includes/composite/theme-switcher.xhtml"/>
+
+    <h3>dateEntry using type="text"</h3>
 
     <h:form id="dateForm" >
 
        <h5>mobi dater no converter</h5>
          <h:outputText value="A. date"/>
-         <mobi:dateEntry id="dateId" value="#{date.selectedDate}"
+         <mobi:dateEntry id="dateId" value="#{date.selectedDate}"   stringPrefix="iphone"
                        singleSubmit="false"   title="date input field"/>
 
         <br />
        <p>
-  <ui:remove>    <h5>date input singleSubmit true</h5>
-         <h:outputText value="F2. number"/>
-         <mobi:dateEntry id="dateTwo" value="#{date.date2}"
-                       singleSubmit="false"  title="date field">
-                   <!--    <f:convertDate type="number"/> -->
-         </mobi:dateEntry>  </ui:remove>
-                         
 
           <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>
           <h:outputText value="#{date.eventString}"/>
           
        </p>
-       <mobi:commandButton id="defaultOne" type="default" value="defaultSStrue" singleSubmit="true" actionListener="#{date.defaultEvent}"/>
        <mobi:commandButton  id="defaultTwo" type="default" value="defaultSSFalse" actionListener="#{date.defaultEvent}"/>
 
     </h:form>
     <h3>RESULTS</h3>
 
-    <h5>mumber F</h5>
+    <h5>mumber A</h5>
     <h:outputText value="#{date.selectedDate}"/>
-    <h5>number F2</h5>
-    <h:outputText value="#{date.date2}"/>
+
 
 	<li><a href="../../developingComponents.html">index page</a>
 	</li>
