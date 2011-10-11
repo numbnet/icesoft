@@ -24,7 +24,7 @@ function identifier(element) {
 }
 
 function tag(element) {
-    return toLowerCase(element.tagName);
+    return toLowerCase(element.nodeName);
 }
 
 function property(element, name) {
