@@ -54,7 +54,9 @@ public class QRCodeResourceHandler extends ResourceHandlerWrapper  {
 
     public static String getQRImageURL(String data)  {
         String[] pathTemplate = EnvUtils.getPathTemplate();
-        String key = QR_PREFIX + URLEncoder.encode(data);
+        //double encode to hide URL characters from Servlet decode
+        String key = QR_PREFIX + URLEncoder.encode(
+                URLEncoder.encode(data));
         String result = pathTemplate[0] + key + pathTemplate[1];
         return result;
     }
