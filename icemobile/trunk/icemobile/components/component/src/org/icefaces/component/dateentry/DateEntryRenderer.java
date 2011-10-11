@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
@@ -102,7 +103,15 @@ public class DateEntryRenderer extends BaseInputRenderer {
     protected void encodeScript(FacesContext facesContext, UIComponent uiComponent) throws IOException{
         ResponseWriter writer= facesContext.getResponseWriter();
         DateEntry dateEntry = (DateEntry) uiComponent;
-        String prefix = dateEntry.getStringPrefix();
+        Map contextMap = facesContext.getAttributes();
+        String deviceType = "ipad";  //default
+        String prefix = "tcal";
+        if (null != contextMap.get("device")) {
+            deviceType = contextMap.get("device").toString();
+        }
+        // so far only have iphone and ipad defined
+     //   if (deviceType.equals("iphone"))prefix="iphone";
+        if (dateEntry.getStringPrefix()!=null)prefix = dateEntry.getStringPrefix();
         boolean yrscroll = dateEntry.isYearscroll();
         int wkstrt = dateEntry.getWeekstart();
         String dtFormat = dateEntry.getFormat();
