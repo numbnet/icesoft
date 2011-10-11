@@ -398,7 +398,9 @@
                           name="button" skin="android"/>
         <includeresources dir="src/org/icefaces/component/button/bberry"
                           name="button" skin="bberry"/>
-
+         <!-- dateentry - style definition -->
+        <includeresources dir="src/org/icefaces/component/dateentry/ipad"
+                          name="dateentry" skin="ipad"/>
         <!-- Process sprites, if use.sprites is set -->
         <antcall target="sprites"/>
 
