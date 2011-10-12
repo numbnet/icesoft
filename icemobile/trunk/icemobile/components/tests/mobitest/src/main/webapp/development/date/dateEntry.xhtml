@@ -45,8 +45,16 @@
        <h5>mobi dater built-in converter for ipad</h5>
          <h:outputText value="A. date"/>
          <mobi:dateEntry id="dateId" value="#{date.selectedDate}"   stringPrefix="#{themeSwitcher.prefix}"
-                       singleSubmit="false"   title="date input field"/>
+                       singleSubmit="false"   title="date input field">
+                <f:convertDateTime pattern="d-M-yyyy" />
+         </mobi:dateEntry>
 
+         <br />
+        <h:outputText value="B. date WITH CONVERTER"/>
+         <mobi:dateEntry id="dateId2" value="#{date.date2}"   stringPrefix="#{themeSwitcher.prefix}"
+                       singleSubmit="false"   title="date input field">
+             <f:convertDateTime pattern="d-M-yyyy" />
+         </mobi:dateEntry>
 
        <p>
 
@@ -59,8 +67,11 @@
     </h:form>
     <h3>RESULTS</h3>
 
-    <h5>date iphone</h5>
+    <h5>date</h5>
     <h:outputText value="#{date.selectedDate}"/>
+ <br />
+    <h5>date with converter</h5>
+    <h:outputText value="#{date.date2}"/>
 
 
 	<li><a href="../../developingComponents.html">index page</a>
