@@ -86,6 +86,7 @@ public class RowSelector extends UIPanel {
     public static final String COMPONENT_FAMILY =
             "com.icesoft.faces.RowSelectorFamily";
     public static final int DEFAULT_DBLCLICK_DELAY = 200;
+    private Object lastSelectedRow;
     
     //to deselect multiple rows with paginator we need to keep track of whole
     //selection.
@@ -131,6 +132,7 @@ public class RowSelector extends UIPanel {
         int rowindex = dataTable.getRowIndex();
         if (value.booleanValue()) {
             currentSelection.add(new Integer(rowindex));
+            setLastSelectedRow(dataTable.getRowData());
         } else {
             currentSelection.remove(new Integer(rowindex));
         }
@@ -461,16 +463,22 @@ public class RowSelector extends UIPanel {
                     }
                 } else {
                     b = !b;
+                    Object lastSelectedRow = getLastSelectedRow();
                     _queueEvent(rowSelector, rowIndex, b, clickActionEvent);
                     // ICE-3440
                     if (!getMultiple().booleanValue()) {
-                        if (oldRow != null && oldRow.intValue() >= 0 && oldRow.intValue() != rowIndex) {
-                            dataTable.setRowIndex(oldRow.intValue());
-                            if (dataTable.isRowAvailable()) {
-                                setValue(Boolean.FALSE);
-                            }
-                            dataTable.setRowIndex(rowIndex);
-                        }
+                    	Object currentRow = dataTable.getRowData();
+                    	if (currentRow != lastSelectedRow) {
+                    		if (lastSelectedRow != null) {
+                    			Map reqMap = facesContext.getExternalContext().getRequestMap();
+                    			reqMap.put(dataTable.getVar(), lastSelectedRow);
+                    	        ValueBinding vb = getValueBinding("value");
+                    	        if (vb != null) {
+                    	            vb.setValue(getFacesContext(), Boolean.FALSE);
+                    	        }
+                    	        reqMap.put(dataTable.getVar(), currentRow);
+                    		}
+                    	}
                     }
                 }
             } 
@@ -577,8 +585,16 @@ public class RowSelector extends UIPanel {
         selectedRowsList.clear();
     }
 
-    public Object saveState(FacesContext context) {
-        Object[] state = new Object[23];
+    public Object getLastSelectedRow() {
+		return lastSelectedRow;
+	}
+
+	public void setLastSelectedRow(Object lastSelectedRow) {
+		this.lastSelectedRow = lastSelectedRow;
+	}
+
+	public Object saveState(FacesContext context) {
+        Object[] state = new Object[24];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
@@ -602,6 +618,7 @@ public class RowSelector extends UIPanel {
         state[20] = singleRowAutoSelect;    
         state[21] = currentSelection;
         state[22] = tabindex;
+        state[23] = lastSelectedRow;
         return state;
     }
 
@@ -634,6 +651,7 @@ public class RowSelector extends UIPanel {
         singleRowAutoSelect = (Boolean) state[20];
         currentSelection = (List)state[21];
         tabindex = (String) state[22];
+        lastSelectedRow = state[23];
     }
     
     private String styleClass;
