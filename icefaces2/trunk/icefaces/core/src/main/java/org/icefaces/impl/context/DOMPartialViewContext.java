@@ -176,8 +176,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                     writeXMLPreamble(outputWriter);
                     DOMUtils.printNodeCDATA(newDOM.getDocumentElement(), outputWriter);
                     partialWriter.endUpdate();
-                    renderState();
-                    renderExtensions();
                 } else if (null != diffs)  {
                     for (DOMUtils.EditOperation op : diffs)  {
 
@@ -202,10 +200,10 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                             partialWriter.endUpdate();
                         }
                     }
-                    renderState();
-                    renderExtensions();
                 }
 
+                renderState();
+                renderExtensions();
                 partialWriter.endDocument();
 
             } catch (IOException ex) {
