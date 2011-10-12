@@ -46,8 +46,7 @@ public class DateEntryRenderer extends BaseInputRenderer {
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
         logger.info("dateEntry submittedValue="+submittedValue);
         if(submittedValue != null) {
-            Object objVal = this.getConvertedValue(context, component, submittedValue);
-            dateEntry.setSubmittedValue(objVal);
+            dateEntry.setSubmittedValue(submittedValue);
         }
 
        // decodeBehaviors(context, dateEntry);
@@ -74,6 +73,7 @@ public class DateEntryRenderer extends BaseInputRenderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", type, null);
+        writer.writeAttribute("onfocus","blur", null);
         StringBuilder baseClass = new StringBuilder("tcal");
         String styleClass = dateEntry.getStyleClass();
         if (styleClass != null) {
@@ -166,6 +166,7 @@ public class DateEntryRenderer extends BaseInputRenderer {
             SimpleDateFormat format = new SimpleDateFormat(dateEntry.getPattern(), locale);
             format.setTimeZone(dateEntry.calculateTimeZone());
             convertedValue = format.parse(submittedValue);
+            logger.info(" convertedValue = "+convertedValue.toString());
             
             return convertedValue;
 
