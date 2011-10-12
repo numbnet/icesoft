@@ -117,6 +117,7 @@ public class CSS_DEFAULT {
     public static final String COLUMN = "Col";
     public static final String HEADER = "Hdr";
     public static final String FOOTER = "Ftr";
+    public static final String OUTPUT_RESOURCE_DEFAULT_STYLE_CLASS = "iceOutRsr";
     public static final String OUTPUT_CONNECTION_STATUS_DEFAULT_STYLE_CLASS =
             "iceOutConStat";  // Originally was "outputConnectionStatusStyleClass"
     public static final String OUTPUT_CONNECTION_STATUS_DEFAULT_INACTIVE_CLASS =

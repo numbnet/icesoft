@@ -39,6 +39,7 @@ import javax.faces.context.FacesContext;
 
 import org.w3c.dom.Element;
 
+import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -65,6 +66,7 @@ public class OutputResourceRenderer extends DomBasicInputRenderer {
 			root.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext)
 					+ CONTAINER_DIV_SUFFIX);
 			domContext.setCursorParent(root);
+			root.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT.OUTPUT_RESOURCE_DEFAULT_STYLE_CLASS);
 			
 			String style = outputResource.getStyle();
 			String styleClass = outputResource.getStyleClass();
