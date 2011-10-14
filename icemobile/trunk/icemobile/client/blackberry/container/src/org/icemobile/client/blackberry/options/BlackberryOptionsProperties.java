@@ -94,8 +94,8 @@ public class BlackberryOptionsProperties implements Persistable {
         }
         // 
         mApplicationURLs[0] = mHomeUrl;
-//        mApplicationURLs[1] = "http://labs.icesoft.com:8080/mobileshowcase";
-//        mApplicationURLs[2] = "http://192.168.10.101:9090/demos.html";
+        mApplicationURLs[1] = "http://mediacast.icemobile.org";
+        mApplicationURLs[2] = "http://mobileshowcase.icemobile.org";
 
         mSelectedIndex = 0;
         mMode = TEXT_MODE;
