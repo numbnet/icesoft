@@ -34,6 +34,7 @@
 @synthesize notificationEmail;
 @synthesize popover;
 @synthesize scanPopover;
+@synthesize canRetry;
 
 
 - (void)viewDidLoad {
@@ -44,6 +45,7 @@
     self.nativeInterface = [[NativeInterface alloc] init];
     self.nativeInterface.controller = self;
     self.nativeInterface.uploading = NO;
+    self.canRetry = YES;
 
     self.preferences = [[Preferences alloc] init];
     self.preferences.mainViewController = self;
@@ -164,11 +166,14 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error  {
     NSLog(@"didFailLoadWithError %@", [error localizedDescription]);
     NSLog(@"didFailLoadWithError %@", [self getCurrentURL]);
-    NSString *localPath = [[NSBundle mainBundle] 
-            pathForResource:@"main" ofType:@"html"];
-    NSURL *localURL = [NSURL fileURLWithPath:localPath];
-    NSURLRequest *request = [NSURLRequest requestWithURL:localURL];
-    [self.webView loadRequest:request];
+    if (self.canRetry)  {
+        NSString *localPath = [[NSBundle mainBundle] 
+                pathForResource:@"main" ofType:@"html"];
+        NSURL *localURL = [NSURL fileURLWithPath:localPath];
+        NSURLRequest *request = [NSURLRequest requestWithURL:localURL];
+        [self.webView loadRequest:request];
+        self.canRetry = NO;
+    }
 }
 
 
@@ -245,6 +250,10 @@
 }
 
 - (void)loadURL:(NSString*) url {
+    self.canRetry = YES;
+    if (![[url lowercaseString] hasPrefix:@"http://"]) {
+        url = [@"http://" stringByAppendingString:url];
+    }
 	[self.webView loadRequest: [NSURLRequest requestWithURL:[NSURL 
             URLWithString:url] ]];
 }
