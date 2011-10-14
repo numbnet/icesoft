@@ -545,8 +545,8 @@ class DOMPartialRenderCallback implements VisitCallback {
             //making the subtree diff invalid.  This is not yet implemented.
             exception = true;
             if (log.isLoggable(Level.SEVERE)) {
-                log.severe("Subtree rendering failed for " + component.getClass()
-                        + " " + clientId + e.toString());
+                log.log(Level.SEVERE, "Subtree rendering failed for " +
+                        component.getClass() + " " + clientId, e);
             }
         }
         //Return REJECT to skip subtree visiting
@@ -594,9 +594,8 @@ class CustomPartialRenderCallback implements VisitCallback {
             }
             catch (Exception x) {
                 if (log.isLoggable(Level.SEVERE)) {
-                    log.severe("Subtree rendering failed for " + 
-                            component.getClass()
-                            + " " + clientId + x.toString());
+                    log.log(Level.SEVERE, "Subtree rendering failed for " +
+                            component.getClass() + " " + clientId, x);
                 }
             }
             writer.endCDATA();
@@ -604,8 +603,8 @@ class CustomPartialRenderCallback implements VisitCallback {
             facesContext.setResponseWriter(originalWriter);
         } catch (Exception e) {
             if (log.isLoggable(Level.SEVERE)) {
-                log.severe("Subtree rendering failed for " + component.getClass()
-                        + " " + clientId + e.toString());
+                log.log(Level.SEVERE, "Subtree rendering failed for " +
+                        component.getClass() + " " + clientId, e);
             }
         }
         //Return REJECT to skip subtree visiting
