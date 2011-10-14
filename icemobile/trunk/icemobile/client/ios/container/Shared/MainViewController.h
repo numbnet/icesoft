@@ -30,6 +30,7 @@
     UIButton *prefsButton;
     UIPopoverController *popover;
     UIPopoverController *scanPopover;
+    BOOL canRetry;
 }
 
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
@@ -40,6 +41,7 @@
 @property (nonatomic, retain) NSString *notificationEmail;
 @property (nonatomic, retain) UIPopoverController *popover;
 @property (nonatomic, retain) UIPopoverController *scanPopover;
+@property (nonatomic, assign) BOOL canRetry;
 
 - (void)didBecomeActive;
 - (void)willResignActive;
