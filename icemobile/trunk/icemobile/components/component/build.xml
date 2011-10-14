@@ -403,6 +403,11 @@
                           name="dateentry" skin="ipad"/>
         <includeresources dir="src/org/icefaces/component/dateentry/iphone"
                           name="dateentry" skin="iphone"/>
+        <!-- datespinner- style definition -->
+        <includeresources dir="src/org/icefaces/component/datespinner/ipad"
+                          name="datespinner" skin="ipad"/>
+        <includeresources dir="src/org/icefaces/component/datespinner/iphone"
+                          name="datespinner" skin="iphone"/>
         <!-- Process sprites, if use.sprites is set -->
         <antcall target="sprites"/>
 
