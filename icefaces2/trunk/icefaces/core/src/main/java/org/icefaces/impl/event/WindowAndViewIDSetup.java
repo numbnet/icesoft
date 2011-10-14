@@ -21,9 +21,8 @@
 
 package org.icefaces.impl.event;
 
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.icefaces.impl.application.WindowScopeManager;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
@@ -31,27 +30,26 @@ import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PostAddToViewEvent;
+import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 import java.io.IOException;
-
-import org.icefaces.impl.application.WindowScopeManager;
-import org.icefaces.util.EnvUtils;
+import java.util.Map;
+import java.util.logging.Logger;
 
 public class WindowAndViewIDSetup implements SystemEventListener {
     private static final Logger Log = Logger.getLogger(WindowAndViewIDSetup.class.getName());
     private static final String ID_SUFFIX = "_windowviewid";
     private boolean partialStateSaving;
 
-    public WindowAndViewIDSetup()  {
+    public WindowAndViewIDSetup() {
         partialStateSaving = EnvUtils.isPartialStateSaving(
-            FacesContext.getCurrentInstance() );
+                FacesContext.getCurrentInstance());
     }
 
     public void processEvent(final SystemEvent event) throws AbortProcessingException {
         final FacesContext context = FacesContext.getCurrentInstance();
-        HtmlForm form = (HtmlForm) ((PostAddToViewEvent) event).getComponent();
+        HtmlForm form = (HtmlForm) ((ComponentSystemEvent) event).getComponent();
         String componentId = form.getId() + ID_SUFFIX;
         context.getAttributes().put(componentId, componentId);
 
@@ -95,12 +93,12 @@ public class WindowAndViewIDSetup implements SystemEventListener {
         if (!EnvUtils.isICEfacesView(facesContext)) {
             return false;
         }
-        HtmlForm htmlForm = (HtmlForm)source;
+        HtmlForm htmlForm = (HtmlForm) source;
         String componentId = htmlForm.getId() + ID_SUFFIX;
-        if (!partialStateSaving)  {
-            for (UIComponent child : htmlForm.getChildren())  {
+        if (!partialStateSaving) {
+            for (UIComponent child : htmlForm.getChildren()) {
                 String id = child.getId();
-                if ((null != id) && id.endsWith(ID_SUFFIX))  {
+                if ((null != id) && id.endsWith(ID_SUFFIX)) {
                     return false;
                 }
             }
