@@ -303,7 +303,7 @@ if (!window.ice.icefaces) {
         function filterICEfacesEvents(f) {
             var isICEfacesEvent = false;
             return function(e) {
-                if (e.status == 'begin') {
+                if (e.status == 'begin' || e.status == 'serverError') {
                     var source = e.source;
                     var form = formOf(source);
                     isICEfacesEvent = form['ice.view'] || form['ice.window'];
