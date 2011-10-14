@@ -33,6 +33,7 @@ import org.icemobile.client.blackberry.menu.ReloadHomeMenuItem;
 import org.icemobile.client.blackberry.menu.ReloadScriptMenuItem;
 import org.icemobile.client.blackberry.menu.ResetAudioMenuItem;
 import org.icemobile.client.blackberry.menu.ResetPushMenuItem;
+import org.icemobile.client.blackberry.menu.URLEntryMenu;
 
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
@@ -52,6 +53,8 @@ import net.rim.device.api.ui.menu.SubMenu;
      private MenuItem mReloadMenu;        // reload Home page
      private MenuItem mReloadCurrentMenu; // reload current page 
      private MenuItem mHistoryMenu;       // bring up page history submenu
+     private MenuItem mURLMenu;           // allow user to manually define HOME_URL locally
+                                          // without going into options system.
      
      
      private MenuItem mResetAudioMenu;
@@ -94,6 +97,7 @@ import net.rim.device.api.ui.menu.SubMenu;
          mRerunScriptMenu = new ReloadScriptMenuItem( mContainer);
          mResetPushMenu = new ResetPushMenuItem(mContainer);         
          mBackMenu = new BackMenuItem(mContainer); 
+         mURLMenu = new URLEntryMenu(mContainer);
          
         
          
@@ -106,7 +110,9 @@ import net.rim.device.api.ui.menu.SubMenu;
     	 menu.add( mBackMenu );
 //         menu.add (mResetAudioMenu);
 //    	 menu.add (mRerunScriptMenu);
+    	 menu.add(mURLMenu);
 //    	 menu.add(mResetPushMenu);  
+    	 
     	 
     	 SubMenu urlSubmenu = new SubMenu(null, "URL History", 5, 3);
     	 if (mHistorySubs[0] == null) { 
