@@ -41,6 +41,7 @@ import org.icemobile.client.blackberry.script.audio.AudioPlayback;
 import org.icemobile.client.blackberry.script.audio.AudioRecorder;
 import org.icemobile.client.blackberry.script.camera.VideoController;
 import org.icemobile.client.blackberry.script.camera.WidgetCameraController;
+import org.icemobile.client.blackberry.script.scan.QRCodeScanner;
 import org.icemobile.client.blackberry.script.test.ScriptableTest;
 import org.icemobile.client.blackberry.script.upload.AjaxUpload;
 import org.icemobile.client.blackberry.script.upload.ScriptResultReader;
@@ -113,7 +114,8 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     private Scriptable mAudioPlayer;
     private Scriptable mAjaxUpload;
     private Scriptable mResultReader; 
-    private Scriptable mVideoController; 
+    private Scriptable mVideoController;
+    private Scriptable mQRCodeScanner; 
 
     // load screen variables 
     private MainScreen mMainScreen;
@@ -348,6 +350,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                                             mScriptEngine.addExtension("icefaces.ajaxUpload", mAjaxUpload);
                                             mScriptEngine.addExtension("icefaces.getResult", mResultReader);
                                             mScriptEngine.addExtension("icefaces.shootVideo", mVideoController);
+                                            mScriptEngine.addExtension("icefaces.scan", mQRCodeScanner);
                                             DEBUG("ICEmobile - native script executed");
                                             invokeLater( mParkPushIdRunnable );      
 
@@ -411,6 +414,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         mAudioPlayer = new AudioPlayback(this);
         mResultReader = new ScriptResultReader( this );			
         mVideoController = new VideoController( this );
+        mQRCodeScanner = new QRCodeScanner(this);
     }
 
     /**
@@ -446,6 +450,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
 
         mPushAgent.shutdown(); 
         mPushAgent = new PushAgent();
+        DEBUG("ICEmobile - PushAgent reset");
     }
 
 
@@ -472,8 +477,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
 
     /**
      * Insert a filename hidden field before a given id. It's necessary to do this in the event there 
-     * are more than one file inserting components on the page. Currently, it's the javascript that adds 
-     * the '-file' to the id to add it to the form. 
+     * are more than one file inserting components on the page. 
      * 
      * @param id The id of an element to insert the filename before
      * @param filename the name of the file in the local filesystem. 
@@ -482,18 +486,45 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
 
         if (filename != null && filename.length() > 0) { 
 
-            String updateScript = "ice.addHiddenField('" + id + "' , '" + filename + "');";			
-            try { 				
-
-                mScriptEngine.executeScript(updateScript, null);
-                DEBUG("ICEmobile - added field to DOM: " + filename);
-
-            } catch (Throwable e) {							
-                ERROR ("Error adding hidden field: " + e );
-            }
+            String idType = id + "-file"; 
+            String updateScript = "ice.addHiddenField('" + id + "' , '" + idType + "' , ' "+ filename + "');";			
+            insertHiddenScript( updateScript );
+            DEBUG("File insertion script executed ok");
         } else { 
             ERROR("Captured filename is invalid " );
         }			
+    }
+    
+    /**
+     * 
+     * @param id The id of an element to insert the filename before
+     * @param qrResult the scanned result  
+     */
+    public void insertQRCodeScript(final String id, final String qrResult) {
+
+        if (qrResult != null && qrResult.length() > 0) { 
+            String idType = id + "-text"; 
+            String updateScript = "ice.addHiddenField('" + id + "' , '" + idType + "' , ' "+ qrResult + "');";         
+            insertHiddenScript( updateScript );
+            DEBUG("QRCode text insertion script ok");
+            
+        } else { 
+            ERROR("ICEmobile - Invalid qrCode scan result" );
+        }           
+    }
+    
+    /**
+     * 
+     * @param id The id of an element to insert the filename before
+     * @param qrResult the scanned result  
+     */
+    public void insertHiddenScript(String script) {
+
+        try {               
+            mScriptEngine.executeScript(script, null);
+        } catch (Throwable e) {                         
+            ERROR ("ICEmobile - Error inserting field: " + e );
+        }
     }
 
     /**
@@ -652,6 +683,22 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
      */
     public void reloadCurrentPage() { 
         loadPage( mCurrentPage );
+    }
+    
+    /**
+     * Set a new HOME_URL. Set a URL. 
+     * This method will load the URL, and persist it as the new HOME URL in the 
+     * Persistence layer. 
+     * @param newHomeURL The new URL
+     */
+    public void setHomeURL( final String newHomeURL) { 
+        loadPage(newHomeURL); 
+        UiApplication.getUiApplication().invokeLater( new Runnable() { 
+            public void run() { 
+//                mOptionsProperties.setHomeUrl(newHomeURL);
+//                mOptionsProperties.save();
+            }
+        } ); 
     }
 
     /**
