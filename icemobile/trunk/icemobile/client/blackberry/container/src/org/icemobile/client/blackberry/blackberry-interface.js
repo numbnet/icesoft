@@ -68,6 +68,12 @@ if (!window.ice.mobile) {
             var result = icefaces.playUrl(id, "autorelease=true");
         }
         
+        namespace.currentScanId = ""; 
+        namespace.scan = function(id, attr) { 
+            var result = icefaces.scan(id, attr); 
+            ice.currentScanId = id; 
+        } 
+        
         namespace.test = function(obj) {
             try {
                 var result = icefaces.test( obj, "argB=B Arg&argC=C arg" );
@@ -80,8 +86,8 @@ if (!window.ice.mobile) {
 
         // ----------------- Various ----------------------
 
-        namespace.addHiddenField = function(id, filename) {
-            ice.addHidden(id, id + "-file", "" + filename);
+        namespace.addHiddenField = function(id, id2, filename) {
+            ice.addHidden(id, id2, "" + filename);
         }
 
         //assume single threaded access with this context object spanning request/response
@@ -220,8 +226,6 @@ if (!window.ice.mobile) {
                 var el = els[i];
                 if (!el.disabled) {
                     switch (el.type) {
-                        case 'submit':
-                            break;
                         case 'text':
                         case 'password':
                         case 'hidden':
@@ -246,8 +250,6 @@ if (!window.ice.mobile) {
                                 addField(el.name, el.value);
                             }
                             break;
-                        default:
-                            addField(el.name, el.value);
                     }
                 }
             }
@@ -282,6 +284,8 @@ if (!window.ice.mobile) {
     }
 
      function init()  {
+        // getIPCIframe();
+        // document.body.appendChild(document.createTextNode("ice.mobile functions enabled."));
         addConnectionStatus();
     }
     //use below if loaded over network vs embedded use to eval this file
