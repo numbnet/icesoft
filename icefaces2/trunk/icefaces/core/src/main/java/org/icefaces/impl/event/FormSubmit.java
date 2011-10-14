@@ -21,22 +21,20 @@
 
 package org.icefaces.impl.event;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIOutput;
 import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIOutput;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-
-import org.icefaces.util.EnvUtils;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 public class FormSubmit implements SystemEventListener {
     private static final Logger LOGGER = Logger.getLogger(FormSubmit.class.getName());
@@ -52,11 +50,8 @@ public class FormSubmit implements SystemEventListener {
     }
 
     public void processEvent(final SystemEvent event) throws AbortProcessingException {
-        FacesContext context = FacesContext.getCurrentInstance();
-
         final HtmlForm form = (HtmlForm) event.getSource();
         String componentId = form.getId() + CAPTURE_SUBMIT_SUFFIX;
-        context.getAttributes().put(componentId, componentId);
 
         UIOutput scriptWriter = new UIOutputWriter() {
             public void encode(ResponseWriter writer, FacesContext context) throws IOException {
@@ -98,23 +93,27 @@ public class FormSubmit implements SystemEventListener {
         if (!EnvUtils.isICEfacesView(facesContext)) {
             return false;
         }
-        HtmlForm htmlForm = (HtmlForm)source;
+        HtmlForm htmlForm = (HtmlForm) source;
         if (htmlForm.getAttributes().get(DISABLE_CAPTURE_SUBMIT) != null) {
             return false;
         }
         String componentId = htmlForm.getId() + CAPTURE_SUBMIT_SUFFIX;
-        if (!partialStateSaving)  {
-            for (UIComponent child : htmlForm.getChildren())  {
+        if (!partialStateSaving) {
+            for (UIComponent child : htmlForm.getChildren()) {
                 String id = child.getId();
-                if (null != id && id.endsWith(CAPTURE_SUBMIT_SUFFIX))  {
+                if (null != id && id.endsWith(CAPTURE_SUBMIT_SUFFIX)) {
                     return false;
                 }
             }
         }
+
         // Guard against duplicates within the same JSF lifecycle
-        if (null != facesContext.getAttributes().get(componentId)) {
-            return false;
+        for (UIComponent comp : htmlForm.getChildren()) {
+            if (componentId.equals(comp.getId())) {
+                return false;
+            }
         }
+
         return true;
     }
 }
@@ -122,7 +121,7 @@ public class FormSubmit implements SystemEventListener {
 class AjaxDisabledWriter extends UIOutputWriter {
     public void encode(ResponseWriter writer, FacesContext context)
             throws IOException {
-        UIForm form =  AjaxDisabledList.getContainingForm(this);
+        UIForm form = AjaxDisabledList.getContainingForm(this);
         //consume with remove to reset the list each time
         String value = (String) form.getAttributes()
                 .remove(AjaxDisabledList.DISABLED_LIST);
@@ -137,9 +136,9 @@ class AjaxDisabledWriter extends UIOutputWriter {
         writer.endElement("input");
     }
 
-    public String getClientId(FacesContext context)  {
-        UIForm form =  AjaxDisabledList.getContainingForm(this);
+    public String getClientId(FacesContext context) {
+        UIForm form = AjaxDisabledList.getContainingForm(this);
         return (form.getClientId() + UINamingContainer
-                    .getSeparatorChar(context)+ "ajaxDisabled");
+                .getSeparatorChar(context) + "ajaxDisabled");
     }
 }
