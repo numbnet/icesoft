@@ -54,7 +54,7 @@ mobi.datespinner = {
            var yrEl = document.getElementById(yId);
             if (yrEl){
                 var yInt = this.getIntValue(yId);
-                if (yInt == yrMin || yInt ==yrMax){
+                if ( yInt ==yrMax){
                     //nothing
                 }
                 else {
@@ -67,7 +67,7 @@ mobi.datespinner = {
             var yrEl = document.getElementById(clientId+'_yInt');
             if (yrEl){
                 yInt = this.getIntValue(clientId+'_yInt');
-                if (yInt == yrMin || yInt ==yrMax){
+                if (yInt == yrMin){
                     //nothing
                 }
                 else {
