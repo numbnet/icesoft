@@ -123,7 +123,7 @@ public class View implements CommandQueue {
                     viewID = facesContext.getViewRoot().getViewId();
                 } catch (NullPointerException npe) {
                 }
-                Log.error("Failed to render page for " +
+                Log.debug("Failed to render page for " +
                         request.getURI() + " [" + viewID + "]");
                 throw e;
             }
@@ -314,7 +314,7 @@ public class View implements CommandQueue {
     }
 
     private void reportException(Throwable t) throws Exception {
-        Log.error("Problem encountered during View.servePage ", t);
+        Log.debug("Problem encountered during View.servePage ", t);
         throw new Exception(t);
     }
 

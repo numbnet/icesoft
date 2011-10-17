@@ -289,8 +289,8 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
         }
         */
         catch (Exception e) {
-            if (log.isErrorEnabled()) {
-                log.error("Problem in renderResponse: " + e.getMessage(), e);
+            if (log.isDebugEnabled()) {
+                log.debug("Problem in renderResponse: " + e.getMessage(), e);
             }
             throw new FacesException("Problem in renderResponse: " + e.getMessage(), e);
         }
