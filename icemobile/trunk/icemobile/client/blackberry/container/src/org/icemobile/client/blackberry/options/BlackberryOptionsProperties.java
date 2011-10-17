@@ -51,6 +51,8 @@ public class BlackberryOptionsProperties implements Persistable {
     // invisible flag indicating whether the eula has been viewed. 
     private Boolean mEulaViewed; 
     
+    private String mQuickURL; 
+    
 
     // Current mode of choosing mainApplication URL, see below 
     private int mMode; 
@@ -204,6 +206,15 @@ public class BlackberryOptionsProperties implements Persistable {
         mEmailNotification = emailNotification;
     }
     
+    
+
+    public String getQuickURL() {
+        return mQuickURL;
+    }
+
+    public void setQuickURL(String quickURL) {
+        this.mQuickURL = quickURL;
+    }
 
     //Canonical copy constructor.
     private BlackberryOptionsProperties(BlackberryOptionsProperties other) { 
@@ -225,6 +236,9 @@ public class BlackberryOptionsProperties implements Persistable {
         }
         
         mMode = other.mMode;        
+        if (other.mQuickURL != null) { 
+            this.mQuickURL = new String( other.mQuickURL );
+        }
         
         if (other.mEmailNotification != null ) { 
             mEmailNotification = new String( other.mEmailNotification );
