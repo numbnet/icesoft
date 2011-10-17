@@ -55,7 +55,7 @@ public class URLEntryMenu extends MenuItem {
 
     private ICEmobileContainer mContainer;
     private EditField mURLField;
-    private String mLastEnteredURL;
+    
 
     public URLEntryMenu(ICEmobileContainer container) {
         super(new StringProvider("Open URL..."), 5, 0);
@@ -70,11 +70,7 @@ public class URLEntryMenu extends MenuItem {
         public void execute(ReadOnlyCommandMetadata metadata, Object context) {
             
             String url; 
-            if (mLastEnteredURL != null && mLastEnteredURL.trim().length() > 0) {
-                url = mLastEnteredURL; 
-            } else { 
-                url = mContainer.getCurrentURL();
-            }
+            url = mContainer.getQuickURL();
             
             final Dialog newURLDialog = new 
                    Dialog(Dialog.D_OK_CANCEL,
@@ -88,7 +84,7 @@ public class URLEntryMenu extends MenuItem {
                 public void dialogClosed( Dialog dialog, int choice) { 
                     if (choice == Dialog.D_OK) { 
                         String url = mURLField.getText();                    
-                        mContainer.setHomeURL( url );
+                        mContainer.setQuickURL( url );
                     }
                 }            
             }); 
