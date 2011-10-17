@@ -194,7 +194,7 @@ if (!window.ice.mobile) {
             var targetElm = document.getElementById(target);
             var hidden = document.createElement("input");
             hidden.setAttribute("type", "hidden");
-            hidden.setAttribute("id", name);
+            hidden.setAttribute("id", name); 
             hidden.setAttribute("name", name);
             hidden.setAttribute("value", value);
             targetElm.parentNode.insertBefore(hidden, targetElm);
@@ -251,7 +251,7 @@ if (!window.ice.mobile) {
                                 addField(el.name, el.value);
                             }
                             break;
-                         default:
+                        default: 
                             addField(el.name, el.value);
                     }
                 }
