@@ -469,6 +469,32 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     public String getCurrentURL() { 		
         return mBrowserField.getDocumentUrl();		
     }
+    
+    /**
+     * Get the quickURL. The quick URL is a persisted value used in the URL 
+     * navigation menu. If it hasn't been defined, use the current URL. 
+     * Can't be kept in the menu, as those are 
+     * @param
+     */
+    public String getQuickURL() { 
+        String u = mOptionsProperties.getQuickURL(); 
+        if (u == null) { 
+            u = getCurrentURL(); 
+        }
+        return u; 
+    }
+    
+    /**
+     * Set the QuickURL. This will persist the value
+     * @param url
+     */
+    public void setQuickURL(String url) { 
+        if (url != null && url.trim().length() > 0) { 
+            loadPage(url);
+            mOptionsProperties.setQuickURL( url ); 
+            mOptionsProperties.save();
+        } 
+    }
 
     public static void showNotificationIcon(boolean show) { 
     	mAppIndicator.setVisible(show);
@@ -685,22 +711,6 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         loadPage( mCurrentPage );
     }
     
-    /**
-     * Set a new HOME_URL. Set a URL. 
-     * This method will load the URL, and persist it as the new HOME URL in the 
-     * Persistence layer. 
-     * @param newHomeURL The new URL
-     */
-    public void setHomeURL( final String newHomeURL) { 
-        loadPage(newHomeURL); 
-        UiApplication.getUiApplication().invokeLater( new Runnable() { 
-            public void run() { 
-//                mOptionsProperties.setHomeUrl(newHomeURL);
-//                mOptionsProperties.save();
-            }
-        } ); 
-    }
-
     /**
      * Allow a borkened demo system to reset the audio recorder structure.
      */
