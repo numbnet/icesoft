@@ -1,8 +1,5 @@
 /*
- * Generated, Do Not Modify
- */
-/*
- * Copyright 2010 Prime Technology.
+ * Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +25,8 @@ public class DateSpinner extends DateSpinnerBase {
     private static Logger logger = Logger.getLogger(DateSpinner.class.getName());
     public static final String BLACKOUT_PNL_CLASS = "mobi-date-bg";
     public static final String CONTAINER_CLASS = "mobi-date-container";
+    public static final String INPUT_CLASS = "mobi-input-text";
+    public static final String POP_UP_CLASS = "mobi-popup-btn";
     public static final String TITLE_CLASS = "mobi-date-title-container";
     public static final String SELECT_CONT_CLASS = "mobi-date-select-container";
     public static final String VALUE_CONT_CLASS = "mobi-date-select-value-cont";

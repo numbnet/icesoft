@@ -408,6 +408,10 @@
                           name="datespinner" skin="ipad"/>
         <includeresources dir="src/org/icefaces/component/datespinner/iphone"
                           name="datespinner" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/component/datespinner/android"
+                          name="datespinner" skin="android"/>
+        <includeresources dir="src/org/icefaces/component/datespinner/bberry"
+                          name="datespinner" skin="bberry"/>
         <!-- Process sprites, if use.sprites is set -->
         <antcall target="sprites"/>
 
