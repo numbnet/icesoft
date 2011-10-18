@@ -227,6 +227,8 @@ if (!window.ice.mobile) {
                 var el = els[i];
                 if (!el.disabled) {
                     switch (el.type) {
+                    	case 'submit': 
+                    		break;
                         case 'text':
                         case 'password':
                         case 'hidden':
