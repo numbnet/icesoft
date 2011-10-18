@@ -171,7 +171,7 @@ public class AjaxUpload extends ScriptableFunction {
 
 
         } catch (Exception e) { 
-            ICEmobileContainer.ERROR ("UploadException: " + e);
+            ICEmobileContainer.ERROR ("ajax.upload - Upload exception: " + e);
             return Boolean.FALSE;
         }
         return Boolean.TRUE;
