@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Effects Component Tutorial</title>
+        <link href="css/effects.css" rel="stylesheet" type="text/css" />
+        </h:head>    <h:body>        <ice:form>
+            <ice:panelGrid columns="2">
+            	<ice:panelGroup>
+            		<ice:outputText value="Input Text: "></ice:outputText>
+                        <ice:inputText value="#{basicEffects.text}"></ice:inputText>
+            	</ice:panelGroup>
+                <ice:panelGroup>
+                    <ice:outputText value="Value: "></ice:outputText>
+                    <ice:outputText value="#{basicEffects.text}" effect="#{basicEffects.effectOutputText}"></ice:outputText>
+                </ice:panelGroup>
+            </ice:panelGrid>
+        		</ice:form>	</h:body></f:view></html>

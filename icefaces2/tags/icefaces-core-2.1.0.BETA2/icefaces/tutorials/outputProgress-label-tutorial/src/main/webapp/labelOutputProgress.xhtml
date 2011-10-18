@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Progress Bar Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        </h:head>    <h:body>        <ice:form>
+            <!-- Various control options for labels and positon -->
+            <ice:panelGrid columns="2" style="border: 1px solid #000000;">
+                <ice:outputText value="Working Label:"></ice:outputText>
+                <ice:inputText value="#{label.label}" partialSubmit="true"></ice:inputText>
+                
+                <ice:outputText value="Complete Label:"></ice:outputText>
+                <ice:inputText value="#{label.labelComplete}" partialSubmit="true"></ice:inputText>
+                
+                <ice:outputText value="Label Position:"></ice:outputText>
+                <ice:selectOneMenu value="#{label.labelPosition}" partialSubmit="true">
+                    <f:selectItems value="#{label.availablePositions}"></f:selectItems>
+                </ice:selectOneMenu>
+            </ice:panelGrid>
+            
+            <ice:outputProgress value="#{label.percent}" label="#{label.label}" labelComplete="#{label.labelComplete}" labelPosition="#{label.labelPosition}"></ice:outputProgress>
+                                
+            <ice:commandButton value="Start" action="#{label.startProgress}" rendered="#{!label.isRunning}"></ice:commandButton>
+            <ice:commandButton value="Stop" action="#{label.stopProgress}" rendered="#{label.isRunning}"></ice:commandButton>
+        		</ice:form>	</h:body></f:view></html>
