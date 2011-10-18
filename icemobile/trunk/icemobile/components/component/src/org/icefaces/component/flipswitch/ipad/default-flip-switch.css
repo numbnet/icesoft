@@ -17,9 +17,9 @@
 .mobi-flip-switch {
     display: inline-block;
     text-decoration: none;
-    border-radius: 0.2em 0.2em 0.2em 0.2em;
-    -webkit-border-radius: 0.2em;
-    -moz-border-radius: 0.2em;
+    border-radius: 1em 1em 1em 1em;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
 }
 
 .mobi-flip-switch-off, .mobi-flip-switch-on {
@@ -52,9 +52,10 @@
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #e3e3e3), color-stop(1, #fcfcfc));
     color: transparent;
     text-shadow: none;
-    border-radius: 0.2em 0.2em 0.2em 0.2em;
-    -webkit-border-radius: 0.2em;
-    -moz-border-radius: 0.2em;
+    border-radius: 1em 1em 1em 1em;
+    -webkit-border-radius:1em;
+    -moz-border-radius: 1em;
+    width:20px
 }
 
 .mobi-flip-switch-on span:last-child {
@@ -71,5 +72,5 @@
     text-align: center;
     font-weight: bold;
     padding: 3px;
-    width: 45px;
+    width: 35px;
 }
