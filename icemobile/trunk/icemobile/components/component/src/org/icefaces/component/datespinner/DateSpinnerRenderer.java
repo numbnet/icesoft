@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2011 Prime Technology.
+ * Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
             return;
         }
         String inputValue = context.getExternalContext().getRequestParameterMap().get(clientId+"_input");
-        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId+"_hidden");
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_hidden");
         //if not the standard format, then must get this in the specified pattern
 
   //      logger.info("DECODE date spinner submittedValue="+submittedValue+" inputValue="+inputValue+" pattern="+dateSpinner.getPattern());
@@ -107,11 +107,11 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
             popupBaseClass.append("-hide");
         }
         //first do the input field and the button
-        writer.startElement("div",uiComponent);
-        writer.writeAttribute("id", clientId, "id");
+        // build out first input field
         writer.startElement("input", uiComponent);
         writer.writeAttribute("id", clientId+"_input", "id");
         writer.writeAttribute("name", clientId+"_input", "name");
+        writer.writeAttribute("class", DateSpinner.INPUT_CLASS, null);
         if (value!=null){
             writer.writeAttribute("value", value, null);
         }
@@ -119,22 +119,27 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         if(dateEntry.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if(dateEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         writer.endElement("input");
+        // build out command button for show/hide of date select popup.
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("type", "button", "type");
-        writer.writeAttribute("value", "popup", null);
+        writer.writeAttribute("type", "submit", "type");
+        writer.writeAttribute("value", "", null);
+        writer.writeAttribute("class", DateSpinner.POP_UP_CLASS, null);
         if(dateEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         else{
             writer.writeAttribute("onclick", "mobi.datespinner.open('"+clientId+"');", null);
         }
         writer.endElement("input");
-        //hidden field..may not need this
+        //hidden field to store state of current instance
         writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("id", clientId+"_hidden", "id");
         writer.writeAttribute("name", clientId+"_hidden", "name");
         writer.endElement("input");
+        // dive that is use to hide/show the popup screen black out.
+        writer.startElement("div",uiComponent);
+        writer.writeAttribute("id", clientId, "id");
         writer.endElement("div");
-        //this is the popup
+        // actual popup code.
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", clientId+"_popup", "id");
         writer.writeAttribute("class", popupBaseClass.toString(), null);
