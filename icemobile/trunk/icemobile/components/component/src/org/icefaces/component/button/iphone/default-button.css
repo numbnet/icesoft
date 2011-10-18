@@ -77,6 +77,7 @@
 }
 
 .mobi-button {
+    -webkit-appearance: none;
     background: -moz-linear-gradient(center top, #FEFEFE, #EEEEEE) repeat scroll 0 0 #EEEEEE;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #FEFEFE), color-stop(1, #EEEEEE));
     border: 1px solid #BEBEBE;
