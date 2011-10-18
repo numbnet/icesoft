@@ -189,7 +189,7 @@ public class QRCodeScanner extends ScriptableFunction {
                                 synchronized (ICEmobileContainer.getEventLock()) { 
                                     mContainer.popScreen( mCameraScreen );
                                 } 
-                                ICEmobileContainer.TIME(startTime, "ice.qrCode capturing bytes" );   
+                                ICEmobileContainer.TIME(startTime, "ice.qrCode capturing scan bytes" );   
                                 
                                 startTime = System.currentTimeMillis();
                                 Bitmap qrcodeBitmap = Bitmap.
@@ -235,16 +235,18 @@ public class QRCodeScanner extends ScriptableFunction {
             Result[] qrCodes = null;
             try { 
                 BitmapLuminanceSource bls = new BitmapLuminanceSource(qrcodeBitmap);
-                ICEmobileContainer.DEBUG("ice.qrCode - B"); 
-                ICEmobileContainer.DEBUG("ice.qrCode - Height: " + bls.getHeight() + ", Width: " + bls.getWidth() + 
-                        ", isCropSupported: " + bls.isCropSupported() + ", isRotate: " + bls.isRotateSupported()); 
+                ICEmobileContainer.DEBUG("ice.qrCode - 1 of 4 BitmapLuminance obtained: width: " + 
+                        bls.getWidth() + ", height: " + bls.getHeight() +  
+                        ", canCrop: " + bls.isCropSupported() + ", canRotate: " + bls.isRotateSupported());
+                
                 Binarizer lbb = new GlobalHistogramBinarizer( bls ); 
-                ICEmobileContainer.DEBUG("ice.qrCode - C"); 
+                ICEmobileContainer.DEBUG("ice.qrCode - 2 of 4 Binarizer obtained"); 
                 BinaryBitmap bb = new BinaryBitmap( lbb ); 
-                ICEmobileContainer.DEBUG("ice.qrCode - D"); 
+                ICEmobileContainer.DEBUG("ice.qrCode - 3 of 4 BinaryBitmap obtained"); 
                 MultipleBarcodeReader mbr = new QRCodeMultiReader();
-                ICEmobileContainer.DEBUG("ice.qrCode - E"); 
+             
                 qrCodes = mbr.decodeMultiple(bb);
+                ICEmobileContainer.DEBUG("ice.qrCode - 4 of 4 BarcodeResult read, length: " + qrCodes.length); 
                 for (int idx = 0; idx < qrCodes.length; idx ++ ) { 
                     ICEmobileContainer.DEBUG("ice.qrCode - found: " + qrCodes[idx].getText());                                   
                 }
