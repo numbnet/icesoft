@@ -513,7 +513,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         if (filename != null && filename.length() > 0) { 
 
             String idType = id + "-file"; 
-            String updateScript = "ice.addHiddenField('" + id + "' , '" + idType + "' , ' "+ filename + "');";			
+            String updateScript = "ice.addHiddenField('" + id + "' , '" + idType + "' , '"+ filename + "');";			
             insertHiddenScript( updateScript );
             DEBUG("File insertion script executed ok");
         } else { 
