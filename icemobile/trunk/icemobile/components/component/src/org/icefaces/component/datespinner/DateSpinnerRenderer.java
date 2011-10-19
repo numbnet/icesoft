@@ -17,14 +17,18 @@ package org.icefaces.component.datespinner;
 
 import org.icefaces.component.utils.BaseInputRenderer;
 
+import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import javax.naming.PartialResultException;
 
 import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
@@ -33,6 +37,7 @@ import java.util.logging.Logger;
 public class DateSpinnerRenderer extends BaseInputRenderer  {
     private static Logger logger = Logger.getLogger(DateSpinnerRenderer.class.getName());
     public static final String DATESPINNER_JS_KEY = "false";
+
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -45,18 +50,9 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_hidden");
         //if not the standard format, then must get this in the specified pattern
 
-  //      logger.info("DECODE date spinner submittedValue="+submittedValue+" inputValue="+inputValue+" pattern="+dateSpinner.getPattern());
-        if(inputValue != null) {
-
-            if (dateSpinner.getPattern().equals("yyyy-M-d H:m")){
- //               logger.info("using default pattern");
-                dateSpinner.setSubmittedValue(inputValue);
-
-            } else{
-                String convertedString = convertStringInput(dateSpinner, inputValue.toString());
- //               logger.info("had to convert string to ="+convertedString);
-                dateSpinner.setSubmittedValue(convertedString);
-            }
+        logger.info("DECODE date spinner submittedValue="+submittedValue+" inputValue="+inputValue+" pattern="+dateSpinner.getPattern());
+        if(!isValueBlank(inputValue)) {
+            dateSpinner.setSubmittedValue(inputValue);
         }
     }
 
@@ -67,28 +63,17 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         String clientId = spinner.getClientId(context);
         Map contextMap = context.getAttributes();
         if (!contextMap.containsKey(DATESPINNER_JS_KEY)) {
-            String contextRoot = context.getExternalContext().getRequestContextPath();
+            Resource jsFile = context.getApplication().getResourceHandler().createResource("dateSpinner.js", "org.icefaces.component.datespinner");
+            String src = jsFile.getRequestPath();
             writer.startElement("script", component);
             writer.writeAttribute("text", "text/javascript", null);
-            writer.writeAttribute("src",contextRoot+"/javax.faces.resource/dateSpinner.js.jsf?ln=org.icefaces.component.datespinner", null);
+            writer.writeAttribute("src", src, null);
             writer.endElement("script");
             contextMap.put(DATESPINNER_JS_KEY, "true");
         }
-        String value = getStringValueToRender(context, component);
-//        logger.info("ENCODE value="+value );
-        if (isValueBlank(value)){
-            Date newDate = new Date();
-            this.setIntValues(spinner, newDate);
-        }else {
-            try{
-                SimpleDateFormat df2 = new SimpleDateFormat(spinner.getPattern());
-                Date newDate = df2.parse(value);
-                this.setIntValues(spinner, newDate);
-            }catch (Exception e){
-                //nothing?
-            }
-
-        }
+        String initialValue = getStringValueToRender(context, component);
+        String value = this.encodeValue(spinner, initialValue);
+        logger.info("after value = "+value);
         encodeMarkup(context, component, value);
         encodeScript(context, component);
     }
@@ -109,7 +94,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         //first do the input field and the button
         // build out first input field
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("id", clientId+"_input", "id");
+        writer.writeAttribute("id", clientId + "_input", "id");
         writer.writeAttribute("name", clientId+"_input", "name");
         writer.writeAttribute("class", DateSpinner.INPUT_CLASS, null);
         if (value!=null){
@@ -132,8 +117,12 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         //hidden field to store state of current instance
         writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", clientId+"_hidden", "id");
-        writer.writeAttribute("name", clientId+"_hidden", "name");
+        writer.writeAttribute("id", clientId + "_hidden", "id");
+        writer.writeAttribute("name", clientId + "_hidden", "name");
+        boolean singleSubmit = dateEntry.isSingleSubmit();
+        if (singleSubmit) {
+            writer.writeAttribute("onchange", "ice.se(event,'"+clientId+"');", null);
+        }
         writer.endElement("input");
         // dive that is use to hide/show the popup screen black out.
         writer.startElement("div",uiComponent);
@@ -148,10 +137,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         }
 
 
-     /*   boolean singleSubmit = dateEntry.isSingleSubmit();
-        if (singleSubmit) {
-            writer.writeAttribute("onchange", "ice.se(event,'"+clientId+"');", null);
-        }     */
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", clientId+"_title", "id");
         writer.writeAttribute("class", DateSpinner.TITLE_CLASS, null);
@@ -275,7 +260,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
 
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);
-        writer.write("mobi.datespinner.init('"+clientId+"',"+yrStart+","+yrEnd+",'"+yrInt+"',"+mnthInt+",'"+dateInt+"');");
+        writer.write("mobi.datespinner.init('"+clientId+"',"+yrInt+","+mnthInt+","+dateInt+",'"+spinner.getPattern()+"');");
         writer.endElement("script");
     }
 
@@ -284,16 +269,11 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
     public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
         DateSpinner spinner = (DateSpinner) component;
         String submittedValue = String.valueOf(value);
- //       logger.info("converting string="+submittedValue);
-             //Use built-in converter to create a date object that can be used for general jsf
-
         Object objVal = null;
         Converter converter = spinner.getConverter();
 
         //Delegate to user supplied converter if defined
         if(converter != null) {
- //           logger.info("using supplied converter");
-            //if pattern is other than standard iso
             objVal =  converter.getAsObject(context, spinner, submittedValue);
             return objVal;
         }
@@ -301,12 +281,9 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         try {
             Date convertedValue;
             Locale locale = spinner.calculateLocale(context);
-            SimpleDateFormat format = new SimpleDateFormat((spinner.getPattern()), locale);
+            SimpleDateFormat format = new SimpleDateFormat(spinner.getPattern(), locale);
             format.setTimeZone(spinner.calculateTimeZone());
             convertedValue = format.parse(submittedValue);
-            setIntValues(spinner, convertedValue);
-//            logger.info(" builtin converter convertedValue = "+convertedValue.toString());
-
             return convertedValue;
 
         } catch (ParseException e) {
@@ -320,30 +297,61 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         spinner.setYearInt(cal.get(Calendar.YEAR));
         spinner.setMonthInt(cal.get(Calendar.MONTH)+1);  //month is 0-indexed 0 = jan, 1=feb, etc
         spinner.setDayInt(cal.get(Calendar.DAY_OF_MONTH));
-//        logger.info("SETTING INT Values for day="+spinner.getDayInt()+" month="+spinner.getMonthInt()+" year="+spinner.getYearInt());
     }
 
-    public String convertStringInput(DateSpinner dspin, String inString){
- //       logger.info(" in convertString with input = "+inString+" pattern="+dspin.getPattern());
-        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-M-d H:m");
-        SimpleDateFormat df2 = new SimpleDateFormat(dspin.getPattern());
+    private String convertStringInput(String patternIn,String patternOut, String inString){
+         logger.info(" in convertString with input = "+inString+" patternIn="+patternIn+" patternOut="+patternOut);
+        SimpleDateFormat df1 = new SimpleDateFormat(patternIn);   //default date pattern
+        SimpleDateFormat df2 = new SimpleDateFormat(patternOut);
         String returnString = inString;
         try {
             Date aDate = df1.parse(inString);
             returnString = df2.format(aDate);
         }catch (Exception e){
+            //means that it was already in the pattern format so just return the inString
             e.printStackTrace();
         }
         return returnString;
     }
 
 
-    public boolean isValueBlank(String value) {
+    private boolean isValueBlank(String value) {
 		if(value == null)
 			return true;
 
 		return value.trim().equals("");
 	}
+
+    private String encodeValue( DateSpinner spinner,  String initialValue)  {
+        String value = "";
+        Date aDate = new Date();
+   //     logger.info("ENCODE value="+value +" initial value = "+initialValue+" pattern = "+spinner.getPattern());
+        SimpleDateFormat df2 = new SimpleDateFormat(spinner.getPattern());
+        if (isValueBlank(initialValue)){
+            //nothing values already set as default
+        }else {
+            try{
+                if (isFormattedDate(initialValue, spinner.getPattern())){
+                    value= initialValue;
+                    aDate = df2.parse(value);
+                } else if (isFormattedDate(initialValue, "EEE MMM dd hh:mm:ss zzz yyyy")){
+                    value= convertStringInput("EEE MMM dd hh:mm:ss zzz yyyy", spinner.getPattern(), initialValue); //converts to the patter the spinner is set for
+                    aDate = df2.parse(value);
+                }
+            }catch (Exception e){
+                logger.info("in throwing new converter exception");
+               throw new ConverterException();
+            }
+
+        }
+        this.setIntValues(spinner, aDate);
+        return value;
+    }
+
+    private boolean isFormattedDate(String inStr, String format){
+         SimpleDateFormat sdf = new SimpleDateFormat(format);
+         return sdf.parse(inStr, new ParsePosition(0)) != null;
+    }
 
 
 }

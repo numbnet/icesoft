@@ -2,10 +2,15 @@ if (!window['mobi']) {
     window.mobi = {};
 }
 mobi.datespinner = {
-	  init: function(clientId, yrStrt, yrEnd, yrSel, mSel, dSel ){
+      pattern: 'M-dd-yyyy', //supported formats are dd-M-yyyyy, yyyy-M-dd
+	  init: function(clientId, yrSel, mSel, dSel, format ){
           var intDt = parseInt(dSel);
           var intMth = parseInt(mSel);
           var intYr= parseInt(yrSel);
+          if (format){
+              this.pattern = format;
+   //           ice.log.debug(ice.log, ' pattern changed to ='+this.pattern);
+          }
           //have to set the value controls to the correct integer
           var mnthEl = document.getElementById(clientId+"_mInt");
           var yrEl = document.getElementById(clientId+"_yInt");
@@ -122,29 +127,16 @@ mobi.datespinner = {
                 dInt = this.daysInMonth(mInt, yInt);
                 dEl.innerHTML = dInt;
             }
-            else{  //update hidden field with the new date object
-               var hiddenString = 'date';
-               if (mInt < 10){
-                   hiddenString = dInt +'-0'+mInt+'-'+yInt;
-               }
-               else {
-                   hiddenString = dInt +'-'+mInt+'-'+yInt;
-               }
-               hiddenEl.value = hiddenString;
-               //update title
-               this.writeTitle(clientId, dInt, mInt, yInt);
-            }
-
+            this.writeTitle(clientId, dInt, mInt, yInt);
         },
 
         writeTitle: function(clientId, iD, iM, iY){
-            var dateObj = new Date();
-            dateObj.setDate(iD);
-            dateObj.setMonth(iM-1);
-            dateObj.setYear(iY);
-            ice.log.debug(ice.log, 'set dateObj to '+dateObj.toDateString());
+            var date = new Date();
+            date.setDate(iD);
+            date.setMonth(iM-1);
+            date.setYear(iY);
             var titleEl = document.getElementById(clientId+'_title');
-            titleEl.innerHTML = dateObj.toDateString();
+            titleEl.innerHTML = date.toDateString();
         },
 
         daysInMonth: function(iMnth, iYr){
@@ -170,9 +162,32 @@ mobi.datespinner = {
             } else return 1;
         },
         select: function(clientId){
-            var titleEl = document.getElementById(clientId+'_title');
             var inputEl = document.getElementById(clientId+'_input');
-            inputEl.value = titleEl.innerHTML;
+            var hiddenEl = document.getElementById(clientId+'_hidden');
+            var dInt = this.getIntValue(clientId+"_dInt");
+            var mInt = this.getIntValue(clientId+"_mInt");
+            var yInt = this.getIntValue(clientId+"_yInt");
+            var dStr= dInt;
+            var mStr = mInt
+            if (dInt < 10){
+                dStr = '0'+dInt;
+            }
+            if (mInt < 10){
+               mStr = '0'+mInt;
+            }
+            //default pattern
+            var dateStr = mStr +'-'+dStr+'-'+yInt;
+            if (this.pattern == 'yyyy-MM-dd'){
+                dateStr = yInt + "-" + mStr + "-" + dStr;
+            }
+            if (this.pattern == 'yyyy-dd-MM'){
+                dateStr = yInt + "-" + dStr + "-" + mStr;
+            }
+            if (this.pattern == 'dd-MM-yyyy'){
+                dateStr = dStr+'-'+mStr+'-'+yInt;
+            }
+            hiddenEl.value = dateStr;
+            inputEl.value = dateStr;
             this.close(clientId);
         },
         open: function(clientId){
@@ -182,6 +197,10 @@ mobi.datespinner = {
         close: function(clientId){
             document.getElementById(clientId).className = "mobi-date";
             document.getElementById(clientId+"_popup").className = "mobi-date-container-hide";
+        },
+        reset: function(clientId){
+            var titleEl = document.getElementById(clientId+'_title');
+            titleEl.innerHTML = "";
         }
 
 }

@@ -34,12 +34,12 @@ import javax.faces.application.ResourceDependency;
         rendererType = "org.icefaces.component.DateSpinnerRenderer",
         tlddoc = "DateSpinner is an input component to provide a date for mobile components. ")
 @ResourceDependencies({
-   //    @ResourceDependency(library = "org.icefaces.component.datespinner", name = "dateSpinner.js")
+ //loaded javascript in body css is loaded via deviceStyleSheet
 })
 public class DateSpinnerMeta extends UIInputMeta {
 
 
-    @Property(defaultValue = "yyyy-M-d H:m", tlddoc = "DateFormat pattern for localization")
+    @Property(defaultValue = "MM-dd-yyyy", tlddoc = "DateFormat pattern for localization")
     private String pattern;
 
     @Property(defaultValue = "2000", tlddoc="yearStart is the first year to appear in the dateScroller")
