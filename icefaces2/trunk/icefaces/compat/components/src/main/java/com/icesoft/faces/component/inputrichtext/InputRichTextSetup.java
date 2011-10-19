@@ -58,7 +58,7 @@ public class InputRichTextSetup implements Serializable, SystemEventListener {
                     String clientID = getClientId(context);
                     writer.startElement("script", this);
                     writer.writeAttribute("id", clientID + "JS", null);
-                    writer.writeAttribute("src", getURI(context) + "/ckeditor.js", "src");
+                    writer.writeAttribute("src", getURI(context) + "ckeditor.js", "src");
                     writer.endElement("script");
                     writer.startElement("script", this);
                     writer.writeAttribute("id", clientID + "JSWrpr", null);
