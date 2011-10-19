@@ -104,20 +104,16 @@ public class DateEntryRenderer extends BaseInputRenderer {
         ResponseWriter writer= facesContext.getResponseWriter();
         DateEntry dateEntry = (DateEntry) uiComponent;
         Map contextMap = facesContext.getAttributes();
-        String deviceType = "ipad";  //default
         String prefix = "tcal";
-        if (null != contextMap.get("device")) {
-            deviceType = contextMap.get("device").toString();
-        }
         // so far only have iphone and ipad defined
      //   if (deviceType.equals("iphone"))prefix="iphone";
         if (dateEntry.getStringPrefix()!=null)prefix = dateEntry.getStringPrefix();
         boolean yrscroll = dateEntry.isYearscroll();
         int wkstrt = dateEntry.getWeekstart();
         String dtFormat = dateEntry.getFormat();
-        if (!dtFormat.equals(dateEntry.TCAL_FMT_Ymd) && !dtFormat.equals(dateEntry.TCAL_FMT_dmY) &&
-            !dtFormat.equals(dateEntry.TCAL_FMT_LONG)){
-            dtFormat = dateEntry.TCAL_FMT_dmY;
+        if (!dtFormat.equals(DateEntry.TCAL_FMT_Ymd) && !dtFormat.equals(DateEntry.TCAL_FMT_dmY) &&
+            !dtFormat.equals(DateEntry.TCAL_FMT_LONG)){
+            dtFormat = DateEntry.TCAL_FMT_dmY;
         }
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);
@@ -136,14 +132,14 @@ public class DateEntryRenderer extends BaseInputRenderer {
         if (dateEntry.getFormat().equals(dateEntry.TCAL_FMT_LONG)){
             //Friday, October 21st 2011
             //Tuesday, April 12, 1952 AD
-            logger.info("need to convert long");
+     //       logger.info("need to convert long");
             dateEntry.setPattern("EEEEEEEEEE, MMMMMMMMMM dd yyyy");
         }
         else if (dateEntry.getFormat().equals(dateEntry.TCAL_FMT_dmY )) {
-             logger.info("converting dmY");
+     //        logger.info("converting dmY");
             dateEntry.setPattern("dd-MM-yyyy");
         } else if (dateEntry.getFormat().equals(dateEntry.TCAL_FMT_Ymd)) {
-            logger.info("converting Ymd");
+  //          logger.info("converting Ymd");
             dateEntry.setPattern("yyyy-MM-dd");
         }
         else{

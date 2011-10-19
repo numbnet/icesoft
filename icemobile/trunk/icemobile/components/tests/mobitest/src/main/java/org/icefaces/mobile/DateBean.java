@@ -1,6 +1,5 @@
 package org.icefaces.mobile;
 
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,6 +7,7 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.List;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
@@ -15,17 +15,14 @@ import javax.faces.validator.ValidatorException;
 import javax.faces.application.FacesMessage;
 
 @ManagedBean(name="date")
-@SessionScoped
+@ViewScoped
 public class DateBean implements Serializable{
     private Date selectedDate;
     private Date date2;
-    private boolean renderAsPopup;
-    private boolean renderInputField;
     private boolean singleSubmit;
     private boolean required;
   //  private boolean valid;
-    private boolean immediate;
-    private String pattern = "MMM/dd/yyyy hh:mm a";
+    private String pattern;
     private boolean rendered;
     private String eventString="none";
     private List<DateNtry> dateList = new  ArrayList <DateNtry>();
@@ -34,7 +31,13 @@ public class DateBean implements Serializable{
         dateList.add(new DateNtry());
         dateList.add(new DateNtry());
         dateList.add(new DateNtry());
-//        selectedDate = new SimpleDateFormat("yyyy-M-d H:m z").parse("2008-4-30 13:9 Pacific Daylight Time");
+        try{
+            this.pattern = "MM-dd-yyyy";
+            selectedDate = new SimpleDateFormat("yyyy-M-d H:m z").parse("2008-4-30 13:9 Pacific Daylight Time");
+        } catch (Exception e){
+            System.out.println("PROBLEM PARSING DATE SO SETTING TO TODAY!");
+            selectedDate = new Date();
+        }
     }
 
     public Date getSelectedDate() {
@@ -43,22 +46,6 @@ public class DateBean implements Serializable{
 
     public void setSelectedDate(Date selectedDate) {
         this.selectedDate = selectedDate;
-    }
-
-    public boolean isRenderAsPopup() {
-        return renderAsPopup;
-    }
-
-    public void setRenderAsPopup(boolean renderAsPopup) {
-        this.renderAsPopup = renderAsPopup;
-    }
-
-    public boolean isRenderInputField() {
-        return renderInputField;
-    }
-
-    public void setRenderInputField(boolean renderInputField) {
-        this.renderInputField = renderInputField;
     }
 
     public boolean isSingleSubmit() {
@@ -74,8 +61,6 @@ public class DateBean implements Serializable{
     }
 
     public void setPattern(String pattern) {
-        System.out.println("\nCalendarBean.setPattern");
-        System.out.println("pattern = " + pattern);
         this.pattern = pattern;
     }
     
@@ -96,11 +81,6 @@ public class DateBean implements Serializable{
         this.rendered = rendered;
     }
 
-
-    public void valueChangeListener() {
-        System.out.println("CalendarBean.valueChangeListener");
-        System.out.println("CurrentPhaseId = " + FacesContext.getCurrentInstance().getCurrentPhaseId());
-    }
     public String getEventString() {
         return eventString;
     }

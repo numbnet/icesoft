@@ -38,18 +38,44 @@
         <!-- theme switcher -->
     <ui:include src="/WEB-INF/includes/composite/theme-switcher.xhtml"/>
 
-    <h3>dateSpinner can be used without converter as has one builtin using default pattern attribute on component</h3>
+    <h3>dateSpinner test converter support and singleSubmit</h3>
+ <h:form id="testingInp">
+<!--    <h:outputText value="renderAsPopup"/>
+    <h:selectBooleanCheckbox id="renderAsPopup" value="#{calendarBean.renderAsPopup}" onclick="ice.se(event, this);"/>
+    <h:outputText value="renderInputField (popup only)"/>
+    <h:selectBooleanCheckbox id="renderInputField" value="#{calendarBean.renderInputField}" onclick="ice.se(event, this);"/> -->
+    <br/>
+    <h:outputText value="singleSubmit"/>
+    <h:selectBooleanCheckbox id="singleSubmit" value="#{date.singleSubmit}" onclick="ice.se(event, this);"/>
+    <h:outputText value="pattern"/>
+    <h:selectOneMenu id="pattern" value="#{date.pattern}" onchange="ice.se(event, this);">
+        <f:selectItem itemLabel="MM-dd-yyyy" itemValue="MM-dd-yyyy"/>
+        <f:selectItem itemLabel="dd-MM-yyyy" itemValue="dd-MM-yyyy"/>
+        <f:selectItem itemLabel="yyyy-dd-MM" itemValue="yyyy-dd-MM"/>
+    </h:selectOneMenu>
+</h:form>
+
 
     <h:form id="dateForm" >
 
-        <h5> only d-M-yyyy pattern is currently supported with converter</h5>
+        <h5> pattern support set backing bean pattern same as converter</h5>
          <h:outputText value="A. date"/>
          <mobi:dateSpinner id="dateId" value="#{date.selectedDate}"
-                       singleSubmit="false"   title="date input field">
-         <!--       <f:convertDateTime pattern="#{date.pattern}" timeZone="MST"/>  -->
+                       singleSubmit="#{date.singleSubmit}"  >
+                <f:convertDateTime pattern="MM-dd-yyyy" timeZone="Canada/Mountain"/>
+         </mobi:dateSpinner>
+         <mobi:dateSpinner id="date2Id" value="#{date.date2}"  pattern="#{date.pattern}"
+                        rendered="#{date.pattern == 'dd-MM-yyyy'}"  >
+                 <f:convertDateTime pattern="dd-MM-yyyy" timeZone="Canada/Mountain"/>
+         </mobi:dateSpinner>
+         <mobi:dateSpinner id="date3Id" value="#{date.date2}"   pattern="#{date.pattern}"
+                        rendered="#{date.pattern == 'yyyy-dd-MM'}">
+                 <f:convertDateTime pattern="yyyy-dd-MM" timeZone="Canada/Mountain"/>
          </mobi:dateSpinner>
 
-
+         <br />
+         <h5> current pattern selected is</h5>
+         <h:outputText  value="#{date.pattern}"/>
 
           <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>
           <h:outputText value="#{date.eventString}"/>
@@ -63,7 +89,9 @@
     <h5>date</h5>
     <h:outputText value="#{date.selectedDate}"/>
  <br />
-
+    <h5>date 2</h5>
+    <h:outputText value="#{date.date2}"/>
+ <br />
 
  <li><a href="../inputComponents.html">index page</a> </li>
 
