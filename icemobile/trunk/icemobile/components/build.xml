@@ -22,7 +22,7 @@
     <target name="all">
         <subant>
             <fileset dir="."
-                     includes="generator/build.xml component/build.xml">
+                     includes="generator/build.xml component/build.xml tests/mobitest/build.xml">
             </fileset>
         </subant>
     </target>
