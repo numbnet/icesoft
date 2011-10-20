@@ -2,7 +2,7 @@ if (!window['mobi']) {
     window.mobi = {};
 }
 mobi.datespinner = {
-      pattern: {}, //supported formats are MM-dd-yyyy, dd-MM-yyyy, yyyy-MM-dd, yyyy-dd-MM
+      pattern: {}, //supported formats are dd/MM/yyyy, MM-dd-yyyy, dd-MM-yyyy, yyyy-MM-dd, yyyy-dd-MM
 	  init: function(clientId, yrSel, mSel, dSel, format ){
           var intDt = parseInt(dSel);
           var intMth = parseInt(mSel);
@@ -176,14 +176,18 @@ mobi.datespinner = {
                mStr = '0'+mInt;
             }
             //default pattern
-            var dateStr = mStr +'-'+dStr+'-'+yInt;
-            if (this.pattern[clientId] == 'yyyy-MM-dd'){
+            var dateStr = dStr +'/'+mStr+'/'+yInt;
+            var myPattern = this.pattern[clientId];
+            if (myPattern=='MM-dd-yyyy'){
+               dateStr= mStr+'-'+dStr+'-'+yInt;
+            }
+            if (myPattern == 'yyyy-MM-dd'){
                 dateStr = yInt + "-" + mStr + "-" + dStr;
             }
-            if (this.pattern[clientId] == 'yyyy-dd-MM'){
+            if (myPattern == 'yyyy-dd-MM'){
                 dateStr = yInt + "-" + dStr + "-" + mStr;
             }
-            if (this.pattern[clientId] == 'dd-MM-yyyy'){
+            if (myPattern == 'dd-MM-yyyy'){
                 dateStr = dStr+'-'+mStr+'-'+yInt;
             }
             hiddenEl.value = dateStr;

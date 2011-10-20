@@ -35,7 +35,7 @@ public class DateSpinner extends DateSpinnerBase {
     public static final String SEL_VALUE_CLASS = "mobi-date-select-value";
     public static final String BUTTON_DEC_CONT_CLASS = "mobi-date-btn-cont-decr";
     public static final String BUTTON_DEC_CLASS = "mobi-date-btn mobi-date-btn-decr";
-    public static final String DEFAULT_PATTERN = "MM-dd-yyyy";
+    public static final String DEFAULT_PATTERN = "dd/MM/yyyy";
 
     private int monthInt;
     private int yearInt;

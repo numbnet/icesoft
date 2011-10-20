@@ -39,10 +39,10 @@ import javax.faces.application.ResourceDependency;
 public class DateSpinnerMeta extends UIInputMeta {
 
 
-    @Property(defaultValue = "MM-dd-yyyy", tlddoc = "DateFormat pattern for localization")
+    @Property(defaultValue = "dd/MM/yyyy", tlddoc = "DateFormat pattern for localization")
     private String pattern;
 
-    @Property(defaultValue = "2000", tlddoc="yearStart is the first year to appear in the dateScroller")
+    @Property(defaultValue = "1980", tlddoc="yearStart is the first year to appear in the dateScroller")
     private int yearStart;
 
     @Property(defaultValue = "2020", tlddoc="yearEbd is the last year to appear in the dateScroller")
