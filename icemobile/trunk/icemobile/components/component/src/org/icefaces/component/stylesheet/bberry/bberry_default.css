@@ -66,7 +66,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .mobi-device {
-    background-image: url(bberry.png); /** sprite-ref: sprite;  */
+    /*background-image: url(bberry.png); */
     background-repeat: no-repeat;
     height: 94px;
 

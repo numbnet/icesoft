@@ -16,8 +16,9 @@
 
 .mobi-popup-btn{
     -webkit-appearance: none;
-    background: url('btn-calendar.png') no-repeat;
-    width:25px;
+    background-image: url('btn-calendar.png'); /** sprite-ref: sprite; */
+    background-repeat: no-repeat;
+    width:22px;
     height:21px;
     border: none;
     margin: 0 0 0 5px;
@@ -142,7 +143,7 @@
     border-radius: 6px 6px 0 0;
     -webkit-border-radius:  6px 6px 0 0;
     -moz-border-radius:  6px 6px 0 0;
-    background-image: url('increment.png'); /** sprite-ref: sprite; */
+    background-image: url('increment.png');
     background-color: transparent;
     background-repeat: no-repeat;
     background-position: center;
@@ -155,7 +156,7 @@
     border-radius: 0 0 6px 6px;
     -webkit-border-radius:  0 0 6px 6px;
     -moz-border-radius:  0 0 6px 6px;
-    background-image: url('decrement.png'); /** sprite-ref: sprite; */
+    background-image: url('decrement.png');
     background-color: transparent;
     background-repeat: no-repeat;
     background-position: center;
