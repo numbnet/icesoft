@@ -24,6 +24,9 @@ if (!window.ice.mobile) {
         
         namespace.progress = function(amount)  {
             var canvas = document.getElementById('progMeterCanvas');
+            if (null == canvas)  {
+                return;
+            }
             if (canvas.getContext){
                 var ctx = canvas.getContext('2d');
                 ctx.clearRect(0,0,200, 200);
@@ -99,7 +102,9 @@ if (!window.ice.mobile) {
 
             var form = document.getElementById(context.formid);
             for (var i in tempInputs)  {
-                form.removeChild(tempInputs[i]);
+                if (form == tempInputs[i].parentNode)  {
+                    form.removeChild(tempInputs[i]);
+                }
             }
             context.sourceid = "";
             context.formid = "";
@@ -137,7 +142,6 @@ if (!window.ice.mobile) {
             context.formid = formId;
             context.serialized = ice.serialize(form.id);
             ice.upload(formId);
-
         };
 
         namespace.formOf = function(element)  {
