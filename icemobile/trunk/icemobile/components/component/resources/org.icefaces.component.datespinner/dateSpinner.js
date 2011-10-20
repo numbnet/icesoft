@@ -3,6 +3,7 @@ if (!window['mobi']) {
 }
 mobi.datespinner = {
       pattern: {}, //supported formats are dd/MM/yyyy, MM-dd-yyyy, dd-MM-yyyy, yyyy-MM-dd, yyyy-dd-MM
+      opened: {},
 	  init: function(clientId, yrSel, mSel, dSel, format ){
           var intDt = parseInt(dSel);
           var intMth = parseInt(mSel);
@@ -11,6 +12,7 @@ mobi.datespinner = {
               this.pattern[clientId] = format;
    //           ice.log.debug(ice.log, ' pattern changed to ='+this.pattern);
           }
+          this.opened[clientId]= false;
           //have to set the value controls to the correct integer
           var mnthEl = document.getElementById(clientId+"_mInt");
           var yrEl = document.getElementById(clientId+"_yInt");
@@ -196,20 +198,30 @@ mobi.datespinner = {
                 ice.se(null, clientId);
             } */
             this.close(clientId);
-
+        },
+        toggle: function(clientId){
+            if (this.opened[clientId]==false){
+                this.open(clientId);
+            }  else {
+                this.close(clientId);
+            }
         },
         open: function(clientId){
             document.getElementById(clientId).className = "mobi-date-bg";
             document.getElementById(clientId+"_popup").className = "mobi-date-container";
+            this.opened[clientId]= true;
         },
         close: function(clientId){
             document.getElementById(clientId).className = "mobi-date";
             document.getElementById(clientId+"_popup").className = "mobi-date-container-hide";
+            this.opened[clientId]= false;
         },
         unload: function(clientId){
-            var titleEl = document.getElementById(clientId+'_title');
-            titleEl.innerHTML = "";
-            this.clientId = {};
+            alert("unloading for clientId");
+           /* var titleEl = document.getElementById(clientId+'_title');
+            titleEl.innerHTML = "";  */
+            this.pattern[clientId] = null;
+            this.opened[clientId] = null;
         }
 
 }

@@ -47,8 +47,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         }
         String inputValue = context.getExternalContext().getRequestParameterMap().get(clientId+"_input");
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_hidden");
-        //if not the standard format, then must get this in the specified pattern
-
+        //if we want to use the type="date" for html5 then we will use the hidden field
         if(!isValueBlank(inputValue)) {
             dateSpinner.setSubmittedValue(inputValue);
         }
@@ -109,12 +108,12 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         writer.endElement("input");
         // build out command button for show/hide of date select popup.
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("type", "submit", "type");
+        writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("value", "", null);
         writer.writeAttribute("class", DateSpinner.POP_UP_CLASS, null);
         if(dateEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         else{
-            writer.writeAttribute("onclick", "mobi.datespinner.open('"+clientId+"');", null);
+            writer.writeAttribute("onclick", "mobi.datespinner.toggle('"+clientId+"');", null);
         }
         writer.endElement("input");
         //hidden field to store state of current instance
@@ -229,7 +228,8 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         writer.writeAttribute("value", "Set", null);
         //prep for singleSubmit in
         boolean singleSubmit = dateEntry.isSingleSubmit();
-        writer.writeAttribute("onclick", "mobi.datespinner.select('"+clientId+"',"+singleSubmit+");", null);
+ //       writer.writeAttribute("onclick", "mobi.datespinner.select('"+clientId+"',"+singleSubmit+");", null);
+        writer.writeAttribute("onclick", "mobi.datespinner.select('"+clientId+"');", null);
         writer.endElement("input");
         writer.startElement("input", uiComponent);
         writer.writeAttribute("class", "mobi-button mobi-button-default", null);
@@ -257,9 +257,9 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);
         writer.write("mobi.datespinner.init('"+clientId+"',"+yrInt+","+mnthInt+","+dateInt+",'"+spinner.getPattern()+"');");
-        writer.write("ice.onUnload(function(){" +
+    /*    writer.write("ice.onUnload(function(){" +
                 "mobi.datespinner.unload('" + clientId + "');" +
-                "});\n");
+                "});\n");      */
         writer.endElement("script");
     }
 
