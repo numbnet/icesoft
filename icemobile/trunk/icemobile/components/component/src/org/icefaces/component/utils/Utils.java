@@ -305,6 +305,37 @@ public class Utils {
         return device;
     }
 
+    /**
+     * used by DateSpinner to detect which type of events to use
+     * mobile devices get touch events
+     * @param context
+     * @return   true if mobile device
+     */
+    public static boolean isMobile (FacesContext context){
+        Map requestHeaders = context.getExternalContext().getRequestHeaderMap();
+        String accept = "none";
+        String userAgentString = "user-agent";
+        if (!requestHeaders.isEmpty()) {
+            int size = requestHeaders.size();
+            for (Object o : requestHeaders.entrySet()) {
+                Map.Entry pairs = (Map.Entry) o;
+                String ua = pairs.getKey().toString().toLowerCase();
+                if (ua.contains("accept")) {
+                    accept = pairs.getValue().toString().toLowerCase();
+                }
+                if (ua.toLowerCase().contains("user-agent")) {
+                    userAgentString = pairs.getValue().toString();
+                }
+
+            }
+            UserAgentInfo uai = new UserAgentInfo(userAgentString, accept);
+            if (uai.sniffIphone() || uai.sniffAndroid() || uai.sniffBlackberry() || uai.sniffIpad()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static DeviceType checkUserAgentInfo(UserAgentInfo uai) {
         if (uai.sniffIphone()) return DeviceType.iphone;
         if (uai.sniffAndroid()) return DeviceType.android;
