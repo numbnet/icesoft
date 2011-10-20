@@ -28,9 +28,9 @@ public class DateBean implements Serializable{
     private List<DateNtry> dateList = new  ArrayList <DateNtry>();
 
     public DateBean() {
-        dateList.add(new DateNtry());
-        dateList.add(new DateNtry());
-        dateList.add(new DateNtry());
+        dateList.add(new DateNtry("dateOne"));
+        dateList.add(new DateNtry("dateTwo"));
+        dateList.add(new DateNtry("dateThree"));
         try{
             this.pattern = "MM-dd-yyyy";
             selectedDate = new SimpleDateFormat("yyyy-M-d H:m z").parse("2008-4-30 13:9 Pacific Daylight Time");
@@ -110,12 +110,24 @@ public class DateBean implements Serializable{
 
     public class DateNtry{
         private Date adate;
+        private String title;
 
+        public DateNtry (String title){
+             this.title = title;
+            adate = new Date();
+        }
         public Date getAdate(){
             return adate;
         }
         public void setAdate(Date dateIn){
             this.adate = dateIn;
         }
+        public String getTitle(){
+            return this.title;
+        }
+        public void setTitle(String title){
+            this.title = title;
+        }
+
     }
 }
