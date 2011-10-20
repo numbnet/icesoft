@@ -1,0 +1,82 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">jquery flipswitch with Mobi Tests</title>
+	<meta http-equiv="Co ntent-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport"
+		content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <mobi:deviceStylesheet />
+
+</h:head>
+
+<h:body>
+<f:view contentType="text/html">
+<div data-role="page" id="home" class="type-home"> 
+  <h:form id="formFQ">
+     <div data-role="content" id="flipswitchContentId"> 
+        <div class="content-primary"> 
+            <p>Mobi jquery flipswitch :</p> 
+            <mobi:jqflipswitch id="jqflip"  value="#{valueHolder.boolean3}"
+                    singleSubmit="true" labelOn="ForSure" labelOff="NoWay"/>  
+        </div>   
+      </div>
+   </h:form>
+       <div id="show-me" class="hidden" rendered="#{valueHolder.boolean3}">
+                <p>
+                    Bacon ipsum dolor sit amet bresaola velit laboris bacon eiusmod. Id ex short ribs, dolor dolore rump pork belly beef ad ullamco salami labore aute ut. Jowl et in do, fatback jerky salami reprehenderit irure laboris pork loin commodo qui eu. Chuck tri-tip cupidatat, turkey sunt in anim jerky pork belly exercitation bacon. Eu corned beef qui adipisicing, ground round veniam turkey chicken incididunt deserunt. Proident t-bone chuck, non excepteur biltong elit in anim minim swine short loin magna do. Sint enim nisi, minim nulla tongue ut incididunt ground round.
+                </p>  
+       </div>
+</div>
+
+<li><a href="../index.html">index page</a>
+    </li>
+</f:view>
+	
+</h:body>
+ <script type="text/javascript">
+ $(document).ready(function(){
+	 var oldId='formFQ:jqflip';
+	 var id =  "#" + oldId.replace(/:/g,"\\:");
+     alert('document readyfunction oldId='+oldId+' newid='+id);
+     $(id).delegate('select','change',(function(event) {
+         alert('in delegate function');
+         var myswitch = $(this);
+         var value  = myswitch[0].selectedIndex == 1 ? 'true':'false';
+         mobi.flipjq.init('mySlider', event, value, true);     
+     }));
+	 });
+ /* $(document).delegate('formFQ','mobileinit', function () {
+    //apply overrides here
+    alert("mobileinit");
+    $.mobile.ajaxLinksEnabled = false;
+    $.mobile.ajaxFormsEnabled = false;
+}); */
+ 
+ 
+ </script>  
+</html>
+
