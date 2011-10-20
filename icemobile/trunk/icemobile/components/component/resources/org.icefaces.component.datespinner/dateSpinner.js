@@ -2,13 +2,13 @@ if (!window['mobi']) {
     window.mobi = {};
 }
 mobi.datespinner = {
-      pattern: 'M-dd-yyyy', //supported formats are dd-M-yyyyy, yyyy-M-dd
+      pattern: {}, //supported formats are MM-dd-yyyy, dd-MM-yyyy, yyyy-MM-dd, yyyy-dd-MM
 	  init: function(clientId, yrSel, mSel, dSel, format ){
           var intDt = parseInt(dSel);
           var intMth = parseInt(mSel);
           var intYr= parseInt(yrSel);
           if (format){
-              this.pattern = format;
+              this.pattern[clientId] = format;
    //           ice.log.debug(ice.log, ' pattern changed to ='+this.pattern);
           }
           //have to set the value controls to the correct integer
@@ -161,7 +161,7 @@ mobi.datespinner = {
                 return parseInt(stringEl);
             } else return 1;
         },
-        select: function(clientId){
+        select: function(clientId, singleSubmit){
             var inputEl = document.getElementById(clientId+'_input');
             var hiddenEl = document.getElementById(clientId+'_hidden');
             var dInt = this.getIntValue(clientId+"_dInt");
@@ -177,18 +177,22 @@ mobi.datespinner = {
             }
             //default pattern
             var dateStr = mStr +'-'+dStr+'-'+yInt;
-            if (this.pattern == 'yyyy-MM-dd'){
+            if (this.pattern[clientId] == 'yyyy-MM-dd'){
                 dateStr = yInt + "-" + mStr + "-" + dStr;
             }
-            if (this.pattern == 'yyyy-dd-MM'){
+            if (this.pattern[clientId] == 'yyyy-dd-MM'){
                 dateStr = yInt + "-" + dStr + "-" + mStr;
             }
-            if (this.pattern == 'dd-MM-yyyy'){
+            if (this.pattern[clientId] == 'dd-MM-yyyy'){
                 dateStr = dStr+'-'+mStr+'-'+yInt;
             }
             hiddenEl.value = dateStr;
             inputEl.value = dateStr;
+ /*           if (singleSubmit){
+                ice.se(null, clientId);
+            } */
             this.close(clientId);
+
         },
         open: function(clientId){
             document.getElementById(clientId).className = "mobi-date-bg";
@@ -198,9 +202,10 @@ mobi.datespinner = {
             document.getElementById(clientId).className = "mobi-date";
             document.getElementById(clientId+"_popup").className = "mobi-date-container-hide";
         },
-        reset: function(clientId){
+        unload: function(clientId){
             var titleEl = document.getElementById(clientId+'_title');
             titleEl.innerHTML = "";
+            this.clientId = {};
         }
 
 }
