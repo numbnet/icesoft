@@ -497,6 +497,16 @@ Ice.tblRowFocus = function(anc, singleSelection) {
                                  } catch(ee) {}
                             },400);
                         }                        
+
+                        //lookup the scrollable container
+                        var scrollableContainer = parent.parentNode.parentNode.parentNode;
+                        var rowTop = Element.measure(tr, 'top');
+                        var scrollableAreaTop = Element.measure(scrollableContainer, 'top');
+                        var scrolled = scrollableContainer.scrollTop;
+                        var delta = rowTop - (scrollableAreaTop + scrolled);
+                        if (delta < 0) {
+                            scrollableContainer.scrollTop = scrolled + delta;
+                        }
                     }
 
                     Event.stop(event);                    
@@ -515,8 +525,20 @@ Ice.tblRowFocus = function(anc, singleSelection) {
                                  } catch(ee) {}
                             },400);
                         }
+
+                        //lookup the scrollable container
+                        var scrollableContainer = parent.parentNode.parentNode.parentNode;
+                        var rowTop = Element.measure(tr, 'top');
+                        var rowHeight = Element.measure(tr, 'height');
+                        var scrollableAreaTop = Element.measure(scrollableContainer, 'top');
+                        var scrollableAreaHeight = Element.getHeight(scrollableContainer);
+                        var scrolled = scrollableContainer.scrollTop;
+                        var delta = (rowTop + rowHeight) - (scrollableAreaTop + scrollableAreaHeight + scrolled);
+                        if (delta > 0) {
+                            scrollableContainer.scrollTop = scrolled + delta;
+                        }
                     }
-                    Event.stop(event);                    
+                    Event.stop(event);
                     return false;
                 case 33: //page up 
                 case 34: //page down
