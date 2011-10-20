@@ -398,11 +398,6 @@
                           name="button" skin="android"/>
         <includeresources dir="src/org/icefaces/component/button/bberry"
                           name="button" skin="bberry"/>
-         <!-- dateentry - style definition -->
-        <includeresources dir="src/org/icefaces/component/dateentry/ipad"
-                          name="dateentry" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/dateentry/iphone"
-                          name="dateentry" skin="iphone"/>
         <!-- datespinner- style definition -->
         <includeresources dir="src/org/icefaces/component/datespinner/ipad"
                           name="datespinner" skin="ipad"/>
