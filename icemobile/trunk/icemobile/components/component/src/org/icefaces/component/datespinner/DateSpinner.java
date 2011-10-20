@@ -16,6 +16,8 @@
 package org.icefaces.component.datespinner;
 
 
+import org.icefaces.component.utils.Attribute;
+
 import javax.faces.context.FacesContext;
 import java.util.*;
 import java.util.logging.Logger;
@@ -36,6 +38,10 @@ public class DateSpinner extends DateSpinnerBase {
     public static final String BUTTON_DEC_CONT_CLASS = "mobi-date-btn-cont-decr";
     public static final String BUTTON_DEC_CLASS = "mobi-date-btn mobi-date-btn-decr";
     public static final String DEFAULT_PATTERN = "dd/MM/yyyy";
+
+    private Attribute[] commonAttributeNames = {
+            new Attribute("style", null)
+    };
 
     private int monthInt;
     private int yearInt;
@@ -119,6 +125,10 @@ public class DateSpinner extends DateSpinnerBase {
 
     public void setDayInt(int dateInt) {
         this.dayInt = dateInt;
+    }
+
+    public Attribute[] getCommonAttributeNames() {
+        return commonAttributeNames;
     }
 
     protected FacesContext getFacesContext() {
