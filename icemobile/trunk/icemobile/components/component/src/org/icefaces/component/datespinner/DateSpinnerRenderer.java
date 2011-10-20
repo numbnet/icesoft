@@ -17,6 +17,7 @@ package org.icefaces.component.datespinner;
 
 import com.sun.org.apache.xalan.internal.xsltc.dom.LoadDocument;
 import org.icefaces.component.utils.BaseInputRenderer;
+import org.icefaces.component.utils.PassThruAttributeWriter;
 
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
@@ -24,15 +25,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.naming.PartialResultException;
 
 import java.io.IOException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DateSpinnerRenderer extends BaseInputRenderer  {
@@ -96,7 +94,12 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         writer.startElement("input", uiComponent);
         writer.writeAttribute("id", clientId + "_input", "id");
         writer.writeAttribute("name", clientId+"_input", "name");
-        writer.writeAttribute("class", DateSpinner.INPUT_CLASS, null);
+        // apply class attribute and pass though attributes for style.
+        PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent,
+                dateEntry.getCommonAttributeNames());
+        StringBuilder classNames = new StringBuilder(DateSpinner.INPUT_CLASS)
+                .append(" ").append(dateEntry.getStyleClass());
+        writer.writeAttribute("class", classNames.toString(), null);
         if (value!=null){
             writer.writeAttribute("value", value, null);
         }
@@ -128,9 +131,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", clientId+"_popup", "id");
         writer.writeAttribute("class", popupBaseClass.toString(), null);
-        if (dateEntry.getStyle()!=null){
-            writer.writeAttribute("style", dateEntry.getStyle(), null);
-        }
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", clientId+"_title", "id");
         writer.writeAttribute("class", DateSpinner.TITLE_CLASS, null);

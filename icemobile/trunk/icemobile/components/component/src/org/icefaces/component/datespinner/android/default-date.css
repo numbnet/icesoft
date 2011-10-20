@@ -16,8 +16,8 @@
 .mobi-popup-btn{
     -webkit-appearance: none;
     background: url('btn-calendar.png') no-repeat;
-    width:17px;
-    height:15px;
+    width:30px;
+    height:25px;
     border: none;
     margin: 0 0 0 5px;
     cursor:pointer;
