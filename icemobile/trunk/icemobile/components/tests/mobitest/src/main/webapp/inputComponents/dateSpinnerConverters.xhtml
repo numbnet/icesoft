@@ -62,9 +62,14 @@
          <h:outputText value="A. date"/>
          <mobi:dateSpinner id="dateId" value="#{date.selectedDate}"
                        singleSubmit="#{date.singleSubmit}"  >
-                <f:convertDateTime pattern="MM-dd-yyyy" timeZone="Canada/Mountain"/>
+                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="Canada/Mountain"/>
          </mobi:dateSpinner>
          <mobi:dateSpinner id="date2Id" value="#{date.date2}"  pattern="#{date.pattern}"
+                           singleSubmit="#{date.singleSubmit}"
+                        rendered="#{date.pattern == 'MM-dd-yyyy'}"  >
+                 <f:convertDateTime pattern="MM-dd-yyyy" timeZone="Canada/Mountain"/>
+         </mobi:dateSpinner>
+         <mobi:dateSpinner id="date4Id" value="#{date.date2}"  pattern="#{date.pattern}"
                            singleSubmit="#{date.singleSubmit}"
                         rendered="#{date.pattern == 'dd-MM-yyyy'}"  >
                  <f:convertDateTime pattern="dd-MM-yyyy" timeZone="Canada/Mountain"/>
