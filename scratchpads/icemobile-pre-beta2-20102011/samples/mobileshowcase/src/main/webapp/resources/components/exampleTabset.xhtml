@@ -1,0 +1,88 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+<head><title>(For validation only)</title></head>
+<body>
+
+<!--
+    Contruct to allow users ot view component documentation, source and a usage example.
+-->
+<composite:interface
+        displayName="Example Tabset control"
+        shortDescription="Contruct to allow users ot view component documentation, source and a usage example." >
+
+    <composite:attribute name="exampleBean" required="true"
+            displayName="Example bean"
+            type="org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl"
+            shortDescription="Manged bean used for this component example"/>
+
+    <composite:attribute name="renderDescription" default="true"
+            displayName="Render Description tab"/>
+    <composite:attribute name="renderExample" default="true"
+            displayName="Render Example tab"/>
+    <composite:attribute name="renderSource" default="true"
+            displayName="Render Source tab"/>
+
+</composite:interface>
+
+<composite:implementation >
+    <h:form prependId="false">
+
+        <h:panelGroup style="text-align:center;">
+            <mobi:commandButtonGroup style="margin:0.2em 0;">
+
+                <mobi:commandButton
+                        style="width:30%"
+                        rendered="#{cc.attrs.renderDescription}"
+                        selected="#{cc.attrs.exampleBean.selectedExamplePath eq cc.attrs.exampleBean.descriptionPath}"
+                        value="#{msgs['example.description.label']}">
+                   <f:setPropertyActionListener value="#{cc.attrs.exampleBean.descriptionPath}"
+                                                target="#{cc.attrs.exampleBean.selectedExamplePath}" />
+                </mobi:commandButton>
+
+                <mobi:commandButton
+                        style="width:30%"
+                        rendered="#{cc.attrs.renderExample}"
+                        selected="#{cc.attrs.exampleBean.selectedExamplePath eq cc.attrs.exampleBean.examplePath}"
+                        value="#{msgs['example.example.label']}">
+                    <f:setPropertyActionListener value="#{cc.attrs.exampleBean.examplePath}"
+                                                target="#{cc.attrs.exampleBean.selectedExamplePath}" />
+                </mobi:commandButton>
+
+                <mobi:commandButton style="width:30%"
+                       rendered="#{cc.attrs.renderSource}"
+                       selected="#{cc.attrs.exampleBean.selectedExamplePath eq cc.attrs.exampleBean.resourcesPath}"
+                       value="#{msgs['example.resources.label']}">
+                     <f:setPropertyActionListener value="#{cc.attrs.exampleBean.resourcesPath}"
+                                                target="#{cc.attrs.exampleBean.selectedExamplePath}" />
+                </mobi:commandButton>
+
+            </mobi:commandButtonGroup>
+        </h:panelGroup>
+    </h:form>
+
+    <ui:include src="#{cc.attrs.exampleBean.selectedExamplePath}"/>
+
+</composite:implementation>
+</body>
+</html>
