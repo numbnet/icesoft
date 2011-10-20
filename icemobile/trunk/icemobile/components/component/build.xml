@@ -372,23 +372,23 @@
         <includeresources dir="src/org/icefaces/component/flipswitch/bberry"
                           name="flipswitch" skin="bberry"/>
         <!-- search - composite search toolbar style definition -->
-        <includeresources dir="src/org/icefaces/component/search/iphone"
-                          name="search" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/search/ipad"
-                          name="search" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/search/android"
-                          name="search" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/search/bberry"
-                          name="search" skin="bberry"/>
+        <!--<includeresources dir="src/org/icefaces/component/search/iphone"-->
+                          <!--name="search" skin="iphone"/>-->
+        <!--<includeresources dir="src/org/icefaces/component/search/ipad"-->
+                          <!--name="search" skin="ipad"/>-->
+        <!--<includeresources dir="src/org/icefaces/component/search/android"-->
+                          <!--name="search" skin="android"/>-->
+        <!--<includeresources dir="src/org/icefaces/component/search/bberry"-->
+                          <!--name="search" skin="bberry"/>-->
         <!-- select - composite selection style definition -->
-        <includeresources dir="src/org/icefaces/component/select/iphone"
-                          name="select" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/select/ipad"
-                          name="select" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/select/android"
-                          name="select" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/select/bberry"
-                          name="select" skin="bberry"/>
+        <!--<includeresources dir="src/org/icefaces/component/select/iphone"-->
+                          <!--name="select" skin="iphone"/>-->
+        <!--<includeresources dir="src/org/icefaces/component/select/ipad"-->
+                          <!--name="select" skin="ipad"/>-->
+        <!--<includeresources dir="src/org/icefaces/component/select/android"-->
+                          <!--name="select" skin="android"/>-->
+        <!--<includeresources dir="src/org/icefaces/component/select/bberry"-->
+                          <!--name="select" skin="bberry"/>-->
         <!-- button - composite button and button group style definition -->
         <includeresources dir="src/org/icefaces/component/button/iphone"
                           name="button" skin="iphone"/>
