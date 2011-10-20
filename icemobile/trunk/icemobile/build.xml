@@ -19,8 +19,8 @@
 
     <target name="all">
         <subant>
-            <fileset dir="components" includes="*/build.xml" />
-            <fileset dir="samples" includes="*/build.xml" />
+            <fileset dir="components" includes="build.xml" />
+            <fileset dir="samples" includes="build.xml" />
         </subant>
     </target>
 
