@@ -201,17 +201,13 @@ public class QRCodeScanner extends ScriptableFunction {
                                 
                                 startTime = System.currentTimeMillis();
                                 Result[] results = processQRCodeBitmap(qrcodeBitmap);
-                                if (results != null) { 
-                                    if (results.length != 1) { 
-                                        ICEmobileContainer.DIALOG("QRCode scan attempted to process: " + 
-                                                results.length + " codes");
-                                    }
-                                    mContainer.insertQRCodeScript( mFieldId, results[0].getText());
+                                if (results.length == 0) { 
+                                        ICEmobileContainer.DIALOG("ice.qrCode found no codes in scan.. Please try again. ");                                               
                                 } else { 
-                                    ICEmobileContainer.DIALOG("Error scanning code, please try again");
-                                }
+                                    ICEmobileContainer.TIME(startTime, "ice.qrCode processing qrcode" );  
+                                    mContainer.insertQRCodeScript( mFieldId, results[0].getText());
+                                }                                 
                                 
-                                ICEmobileContainer.TIME(startTime, "ice.qrCode processing qrcode" );  
                                 ICEmobileContainer.DEBUG("ice.qrCode - done");
 
                             } catch(Exception e) {
@@ -232,7 +228,7 @@ public class QRCodeScanner extends ScriptableFunction {
 
         private Result[] processQRCodeBitmap(Bitmap qrcodeBitmap)  {
             
-            Result[] qrCodes = null;
+            Result[] qrCodes = new Result[0];
             try { 
                 BitmapLuminanceSource bls = new BitmapLuminanceSource(qrcodeBitmap);
                 ICEmobileContainer.DEBUG("ice.qrCode - 1 of 4 BitmapLuminance obtained: width: " + 
