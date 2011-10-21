@@ -25,7 +25,7 @@
       xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
       xmlns:icecore="http://www.icefaces.org/icefaces/core">
 <h:head>
-    <title id="title">MOBI-31 Tests</title>
+    <title id="title">Flipswitch Tests</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
     <meta name="viewport"
           content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
@@ -38,7 +38,7 @@
 
 <h:body>
 
-    <p><a href="http://jira.icefaces.org/browse/MOBI-31" >MOBI- CONVERT Composite Flipswitch Test Case</a></p>
+    <p><a href="http://jira.icefaces.org/browse/MOBI-31" >Flipswitch Test Case</a></p>
 
  <br />
     <li><a href="../inputComponents.html">index page</a>
@@ -48,18 +48,19 @@
     test
     <br />
     <h:form id="flipperForm">
-            <label>Flip a Switch first one has singleSubmitTrue second is false</label>
-            <mobi:flipswitch value="#{valueHolder.boolean1}" id="flipperOne" singleSubmit="true"
+            <label>Flip a Switchyou sur</label>
+        <br />
+        <h:outputText value="singleSubmit true-:"/>     <mobi:flipswitch value="#{input.boolean1}" id="flipperOne" singleSubmit="true"
                                    labelOn="ON" labelOff="OFF"/>
             <br />
-            <mobi:flipswitch value="#{valueHolder.boolean2}" id="flipperTwo" labelOn="YES" labelOff="NO"/>
+        <h:outputText value="singleSubmit false:-" />   <mobi:flipswitch value="#{input.boolean2}" id="flipperTwo" labelOn="YES" labelOff="NO"/>
             <br />
             <h:commandButton value="submit"/>
     </h:form>
-    <h3>VAlues of switches from backing beans</h3>
-    <label>flipperOne </label><h:outputText id="fone" value="#{valueHolder.boolean1}"/>
+    <h3>Values of switches from backing beans</h3>
+    <label>flipperOne </label><h:outputText id="fone" value="#{input.boolean1}"/>
     <br />
-    <label>flipperTwo</label><h:outputText id="ftwo" value="#{valueHolder.boolean2}"/>
+    <label>flipperTwo</label><h:outputText id="ftwo" value="#{input.boolean2}"/>
   
 </h:body>
 </html>

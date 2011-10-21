@@ -42,14 +42,14 @@
 
       <p>
        <h5>mobi input type is number no converter</h5>
-         <h:outputText value="F. number"/>
+         <h:outputText value="A. number"/>
          <mobi:inputText id="numberId" value="#{input.numberInput}" type="number" placeholder="9999"
                        singleSubmit="true"  min="0" max="100" step="5" title="number field"/>
                          
        </p>
        <p>
        <h5>mobi input type is number with converter</h5>
-         <h:outputText value="F2. number"/>
+         <h:outputText value="B. number"/>
          <mobi:inputText id="numberIdConv" value="#{input.numberInput2}" type="number" placeholder="9999"
                        singleSubmit="true"  min="0" max="100" step="5" title="number field">
                        <f:convertNumber type="number"/>
@@ -57,14 +57,6 @@
                          
        </p>
 
-       <p>
-       <span id="numSpan" name="inputForm:num_span" >
-       <input autocapitalize="off" autocorrect="off" class="mobi-input-text" id="inputForm:num" max="100" min="0"
-              name="inputForm:num" onchange="mobi.input.testSubmit(event, 'inputForm:num', this.value, true);"
-                  placeholder="9999" step="5" type="number" value="90"/>
-       <input type="hidden" id="inputForm:num_hidden" name="inputForm:num_hidden"/>
-       </span>
-       </p>
        <p>
           <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>
           <h:outputText value="#{input.eventString}"/>

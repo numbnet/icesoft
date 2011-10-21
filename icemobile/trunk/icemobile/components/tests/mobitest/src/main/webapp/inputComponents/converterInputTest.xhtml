@@ -35,36 +35,31 @@
 
 <h:body>
  
-    <h3>html5 input types should bring up proper device keyboard</h3>
+    <h3>html5 input type is number should bring up proper device keyboard</h3>
 
-    <h:form id="inputForm">
+    <h:form id="inputForm">     :
     <h:messages style="color:red;margin:8px;" />
       <p>
-       <h5>mobi number converter pattern</h5>
-         <h:outputText value="A. number"/>
-         <mobi:inputText id="numberId" value="#{input.converterVal}" type="number" 
-                       singleSubmit="true"  title="number field">
-            <f:convertNumber pattern="#0.00"/>
-         </mobi:inputText>
-          <h:message for="numberId" style="color:red"/>               
+         <h:outputText value="A. number no converter:-"/>
+         <mobi:inputText id="numberId" value="#{input.numberInput}" type="number" placeholder="9999"
+                       singleSubmit="true"  min="0" max="100" step="5" title="number field"/>
+
        </p>
        <p>
-       <h5>mobi input type is number with converter</h5>
-         <h:outputText value="B. number"/>
-         <mobi:inputText id="numberIdConv" value="#{input.numberInput2}" type="number" placeholder="9999"
-                       singleSubmit="true" title="number field">
-                   <f:convertNumber type="number"/>
+         <h:outputText value="B. real number"/>
+         <mobi:inputText id="numberIdConv" value="#{input.doubleVal}" type="number" placeholder="2.53"
+                       singleSubmit="true"  title="number field">
+                    <f:convertNumber pattern="#0.00"/>
          </mobi:inputText>
-         <h:message for="numberIdConv"  style="color:red"/>           
+
        </p>
       <p>
-       <h5>mobi number converter currency symbol</h5>
-         <h:outputText value="C. number"/>
-         <mobi:inputText id="currencyId" value="#{input.doubleVal}" type="number" 
+       <h:outputText value="C. number with currency"/>
+         <mobi:inputText id="currencyId" value="#{input.converterVal}" type="number"
                        singleSubmit="true"  title="number field">
             <f:convertNumber currencySymbol="$" type="currency" />
          </mobi:inputText>
-          <h:message for="currencyId"  style="color:red"/>               
+          <h:message for="currencyId"  style="color:red"/>
        </p>
        <p>
           <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>
@@ -77,16 +72,23 @@
           <f:param name="test2Param" value="string2"/>
        </mobi:commandButton>
        <br />
-        straight input
-         <input type="button" id="buttonId" onclick="ice.se(event, this, function(p){p('p1', 111); p('p2', 222);});"/>
+
     </h:form>
     <h3>RESULTS</h3>
-    <h5>input field A</h5>
-    <h:outputText value="#{input.converterVal}"/>
-    <h5>input Field B</h5>
-    <h:outputText value="#{input.numberInput2}"/>
-    <h5>text field C</h5>
-    <h:outputText value="#{input.doubleVal}"/>
+    <h:outputText id="aOut" value="#{input.numberInput}">
+         <h:outputLabel for="aOut" value="number converted for A just number ="/>
+    </h:outputText>
+    <br />
+    <h:outputText id="bOut" value=" #{input.doubleVal}">
+        <h:outputLabel for="bOut" value="number converted for B pattern is 0.00 ="/>
+        <f:convertNumber pattern="#0.00"/>
+    </h:outputText>
+    <br />
+    <br />
+    <h:outputText id="cOut" value="#{input.converterVal}">
+        <h:outputLabel for="cOut" value="number converted for C currency pattern ="/>
+        <f:convertNumber currencySymbol="$" type="currency" />
+    </h:outputText>
  
 	<li><a href="../inputComponents.html">index page</a>
 	</li>

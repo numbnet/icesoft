@@ -114,24 +114,41 @@
                  actionListener="#{input.importantEvent}"/>
     </h:form>
     <h3>RESULTS</h3>
-    <h5>input field A</h5>
-    <h:outputText value="#{input.someText}"/>
-    <h5>input Field B</h5>
-    <h:outputText value="#{input.someText2}"/>
-    <h5>text field C</h5>
-    <h:outputText value="#{input.textField}"/>
-    <h5>password D</h5>
-    <h:outputText value="#{input.password}"/>
-    <h5>email E</h5>
-    <h:outputText value="#{input.email}"/>
-    <h5>phone F</h5>
-    <h:outputText value="#{input.numberInput}"/>
-    <h5>number F2</h5>
-    <h:outputText value="#{input.numberInput2}"/>
-    <h5>phone</h5>
-    <h:outputText value="#{input.phone}"/>
-    <h5>urlType H</h5>
-    <h:outputText value="#{input.url}"/>
+    <h:outputText id="out1" value="#{input.someText}">
+            <h:outputLabel for="out1" value="A. text SS False:-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="bOut" value="#{input.someText2}">
+       <h:outputLabel for="bOut" value="B. text singleSubmitTrue:-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="cOut" value="#{input.textField}">
+         <h:outputLabel for="cOut" value="C. textarea :-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="dOut" value="#{input.password}">
+          <h:outputLabel for="dOut" value="D. password :-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="emailOut" value="#{input.email}">
+          <h:outputLabel for="emailOut" value="E. email :-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="fOut" value="#{input.numberInput}">
+          <h:outputLabel for="fOut" value="F. number singleSubmit true:-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="f2Out" value="#{input.numberInput2}">
+          <h:outputLabel for="f2Out" value="F2. number with converter and singleSubmie :-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="gOut" value="#{input.phone}">
+          <h:outputLabel for="gOut" value="G. phone:-"/>
+    </h:outputText>
+    <br />
+    <h:outputText id="hOut" value="#{input.url}">
+          <h:outputLabel for="hOut" value="H. url:- " />
+    </h:outputText>
     <br />
 	<li><a href="../inputComponents.html">index page</a>
 	</li>
