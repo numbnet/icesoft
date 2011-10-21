@@ -21,11 +21,9 @@
 
 package org.icefaces.impl.event;
 
+import javax.faces.application.Application;
 import javax.faces.context.FacesContext;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
-import javax.faces.event.PostAddToViewEvent;
-import javax.faces.event.PreRenderViewEvent;
+import javax.faces.event.*;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
@@ -47,9 +45,13 @@ public class MainEventListener implements SystemEventListener  {
             facesContext.getApplication()
                 .subscribeToEvent(PreRenderViewEvent.class, this);
         }
+        Application app = facesContext.getApplication();
+
         AjaxDisabledList disabledList = new AjaxDisabledList();
-        facesContext.getApplication()
-            .subscribeToEvent(PostAddToViewEvent.class, disabledList);
+        app.subscribeToEvent(PostAddToViewEvent.class, disabledList);
+
+        CommandLinkModifier clMod = new CommandLinkModifier();
+        app.subscribeToEvent(PreRenderComponentEvent.class, clMod);
     }
 
     public void processEvent(SystemEvent event)  {
