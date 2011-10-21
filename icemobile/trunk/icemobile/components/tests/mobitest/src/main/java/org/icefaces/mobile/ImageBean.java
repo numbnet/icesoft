@@ -16,11 +16,17 @@
 
 package org.icefaces.mobile;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
+import java.io.IOException;
+import java.io.FileInputStream;
 import java.util.logging.Logger;
 
 @ManagedBean(name="imageBean")
@@ -35,39 +41,31 @@ public class ImageBean implements Serializable {
 	private byte[] fileInBytes;
 	
 	public ImageBean(){
-		if (null==fileInBytes)
-			try {
-				this.prepFile();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
 	}
-	
-	public void prepFile() throws FileNotFoundException{
-		File imageFile;
-	    FacesContext facesContext = FacesContext.getCurrentInstance(); 
-	    String sampleImagePath = facesContext.getExternalContext() 
-	    .getRealPath("/images/") 
-	    .concat(File.separator) 
-	    .concat("DSC_" + cameraSampleUploadCount + ".jpg"); 
-	    logger.info("trying to read file from path="+sampleImagePath);
-	    imageFile = new File(sampleImagePath); 
-	    logger.info("\t\t  size of file="+imageFile.getTotalSpace());
+	@PostConstruct
+	public void prepFile() {
 
-	//Buffer some bytes. 
+        try {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            String sampleImagePath = facesContext.getExternalContext()
+                      .getRealPath("/images/DSC_2.JPG");
+            File imageFile = new File(sampleImagePath);
+            imageFile = new File(sampleImagePath);;
+           //Buffer some bytes.
 
-	   FileInputStream fis = new FileInputStream(imageFile); 
-	   ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
-	   byte[] buf = new byte[1024]; 
-	   try { 
-	      for (int readNum; (readNum = fis.read(buf)) != -1;) { 
-	        bos.write(buf, 0, readNum); //no doubt here is 0 
-	     } 
-	   } catch (IOException ex) { 
-	       logger.warning("Error writing out stream"); 
-	   } 
-	    this.fileInBytes= bos.toByteArray(); 
+           FileInputStream fis = new FileInputStream(imageFile);
+           ByteArrayOutputStream bos = new ByteArrayOutputStream();
+           byte[] buf = new byte[1024];
+	       for (int readNum; (readNum = fis.read(buf)) != -1;) {
+	            bos.write(buf, 0, readNum); //no doubt here is 0
+                this.fileInBytes= bos.toByteArray();
+	       }
+	    } catch (Exception ex) {
+	       logger.warning("Error writing out stream");
+           ex.printStackTrace();
+	    }
+
 	 }
 
 	public int getCameraSampleUploadCount() {
