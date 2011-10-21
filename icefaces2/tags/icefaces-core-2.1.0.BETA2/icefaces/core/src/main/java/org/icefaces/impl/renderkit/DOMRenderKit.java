@@ -50,7 +50,6 @@ public class DOMRenderKit extends RenderKitWrapper {
     private MainEventListener mainEventListener = new MainEventListener();
     private RenderKit delegate;
     private boolean deltaSubmit;
-    private List mandatoryResourceConfig = null;
     private Renderer modifiedMessageRenderer = null;
     private static final String MESSAGE = "javax.faces.Message";
     private static final String MESSAGE_CLASS = 
@@ -73,12 +72,6 @@ public class DOMRenderKit extends RenderKitWrapper {
         this.delegate = delegate;
         FacesContext facesContext = FacesContext.getCurrentInstance();
         deltaSubmit = EnvUtils.isDeltaSubmit(facesContext);
-        String mandatoryResourceConfigString = 
-                EnvUtils.getMandatoryResourceConfig(facesContext);
-        if (null != mandatoryResourceConfigString)  {
-            mandatoryResourceConfig = Arrays.asList(
-                mandatoryResourceConfigString.split("\\s+") );
-        }
         try {
             modifiedMessageRenderer = 
                     (Renderer) Class.forName(MESSAGE_CLASS).newInstance();

@@ -374,26 +374,20 @@ public class EnvUtils {
         return EnvConfig.getEnvConfig(facesContext).windowScopeExpiration;
     }
 
-    public static String getMandatoryResourceOverride(FacesContext facesContext) {
-        UIViewRoot viewRoot = facesContext.getViewRoot();
-        Map viewMap = viewRoot.getViewMap();
-        String mandatoryResourceConfig = (String) viewMap
-                .get(MANDATORY_RESOURCE_CONFIG);
-        //pad with spaces to allow String.contains checking
-        if (null != mandatoryResourceConfig) {
-            mandatoryResourceConfig = " " + mandatoryResourceConfig + " ";
-        }
-        return mandatoryResourceConfig;
-    }
-
     public static String getMandatoryResourceConfig(FacesContext facesContext) {
         String configValue = EnvConfig.getEnvConfig(facesContext)
                 .mandatoryResourceConfig;
-        if ("all".equalsIgnoreCase(configValue))  {
-            //restore previous default behavior to load all components
-            configValue = null;
+        String result = configValue;
+        UIViewRoot viewRoot = facesContext.getViewRoot();
+        Map viewMap = viewRoot.getViewMap();
+        String overValue = (String) viewMap.get(MANDATORY_RESOURCE_CONFIG);
+        if (null != overValue) {
+            result = overValue;
         }
-        return configValue;
+        if (null != result)  {
+            result = result.trim();
+        }
+        return result;
     }
 
     public static boolean isUniqueResourceURLs(FacesContext facesContext) {
