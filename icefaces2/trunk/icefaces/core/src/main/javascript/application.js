@@ -303,10 +303,11 @@ if (!window.ice.icefaces) {
         function filterICEfacesEvents(f) {
             var isICEfacesEvent = false;
             return function(e) {
-                if (e.status == 'begin' || e.status == 'serverError') {
+                try {
                     var source = e.source;
                     var form = formOf(source);
                     isICEfacesEvent = form['ice.view'] || form['ice.window'];
+                } catch (e)  {
                 }
                 //invoke callback only when event is triggered from an ICEfaces enabled form
                 if (isICEfacesEvent) {
