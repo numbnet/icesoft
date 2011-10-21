@@ -44,9 +44,9 @@ public class CommandLinkModifier implements SystemEventListener {
     @Override
     public boolean isListenerForSource(Object source) {
 
-        //We only need to process this if it's an HtmlCommandLink running under MyFaces and ICEfaces
+        //We only need to process this if it's an HtmlCommandLink in an ICEfaces view.
+        //The listener is only registered if running under MyFaces.
         if (source instanceof HtmlCommandLink &&
-                EnvUtils.isMyFaces() &&
                 EnvUtils.isICEfacesView(FacesContext.getCurrentInstance())) {
             return true;
         }

@@ -50,8 +50,10 @@ public class MainEventListener implements SystemEventListener  {
         AjaxDisabledList disabledList = new AjaxDisabledList();
         app.subscribeToEvent(PostAddToViewEvent.class, disabledList);
 
-        CommandLinkModifier clMod = new CommandLinkModifier();
-        app.subscribeToEvent(PreRenderComponentEvent.class, clMod);
+        if(EnvUtils.isMyFaces()){
+            CommandLinkModifier clMod = new CommandLinkModifier();
+            app.subscribeToEvent(PreRenderComponentEvent.class, clMod);
+        }
     }
 
     public void processEvent(SystemEvent event)  {
