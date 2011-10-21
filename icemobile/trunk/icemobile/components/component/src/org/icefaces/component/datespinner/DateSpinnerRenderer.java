@@ -82,8 +82,9 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         String clientId = dateEntry.getClientId(context);
         String eventStr = "onclick";
         if (Utils.isMobile(context)){
-            eventStr="ontouchend";
-        }
+            logger.info("MOBILE");
+            eventStr="ontouchstart";
+        } else logger.info("DESKTOP");
         //for now assume always a popuop
         boolean popup = true;
         int yMin = dateEntry.getYearStart();
@@ -233,8 +234,8 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         writer.writeAttribute("value", "Set", null);
         //prep for singleSubmit in
         boolean singleSubmit = dateEntry.isSingleSubmit();
- //       writer.writeAttribute(eventStr, "mobi.datespinner.select('"+clientId+"',"+singleSubmit+");", null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.select('"+clientId+"');", null);
+        writer.writeAttribute(eventStr, "mobi.datespinner.select('"+clientId+"',"+singleSubmit+");", null);
+   //     writer.writeAttribute(eventStr, "mobi.datespinner.select('"+clientId+"');", null);
         writer.endElement("input");
         writer.startElement("input", uiComponent);
         writer.writeAttribute("class", "mobi-button mobi-button-default", null);
