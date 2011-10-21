@@ -329,7 +329,8 @@ public class Utils {
 
             }
             UserAgentInfo uai = new UserAgentInfo(userAgentString, accept);
-            if (uai.sniffIphone() || uai.sniffAndroid() || uai.sniffBlackberry() || uai.sniffIpad()) {
+            if (uai.sniffIphone() || uai.sniffAndroid() || uai.sniffBlackberry()
+                    || uai.sniffIpad() || uai.sniffIpod()) {
                 return true;
             }
         }
@@ -337,7 +338,7 @@ public class Utils {
     }
 
     private static DeviceType checkUserAgentInfo(UserAgentInfo uai) {
-        if (uai.sniffIphone()) return DeviceType.iphone;
+        if (uai.sniffIphone() || uai.sniffIpod()) return DeviceType.iphone;
         if (uai.sniffAndroid()) return DeviceType.android;
         if (uai.sniffBlackberry()) return DeviceType.bberry;
         if (uai.sniffIpad()) return DeviceType.ipad;
