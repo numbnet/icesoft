@@ -128,6 +128,7 @@
     <macrodef name="concatskin">
         <attribute name="name"/>
         <sequential>
+            <delete file="${resources}/${skins.lib}/@{name}.css" />
             <concat destfile="${resources}/${skins.lib}/@{name}.css"
                     append="true">
                 <fileset dir="${resources}/${skins.lib}/@{name}"
