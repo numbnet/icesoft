@@ -52,11 +52,12 @@ public class InputBean implements Serializable {
    private int numberInput2 = 450;
    private String eventString="none";
    private String password;
-   private String flipswitchVal = "Off";
+   private boolean boolean1 = false;
+   private boolean boolean2 = false;
    
    
    public InputBean(){
-	   //System.out.println("INPUTBEAN CONSTRUCTOR version="+this);
+
    }
 public int getNumberInput2() {
 	return numberInput2;
@@ -162,57 +163,51 @@ public void setSliderVal3(int sliderVal3) {
         this.setEventString(val);
     }
 
-public String getEventString() {
-	return eventString;
-}
-public void setEventString(String eventString) {
-	this.eventString = eventString;
-}
-public String getPassword() {
-	return password;
-}
-public void setPassword(String password) {
-	this.password = password;
-}
-public String getFlipswitchVal() {
-	return flipswitchVal;
-}
-public void setFlipswitchVal(String flipswitchVal) {
-	this.flipswitchVal = flipswitchVal;
-}
-public String getUrl() {
-	return url;
-}
-public void setUrl(String url) {
-	this.url = url;
-}
-public String getEmail() {
-	return email;
-}
-public void setEmail(String email) {
-	this.email = email;
-}
-public String getPhone() {
-	return phone;
-}
-public void setPhone(String phone) {
-	this.phone = phone;
-}
-public int getNumberInput() {
-	return numberInput;
-}
-public void setNumberInput(int numberInput) {
-	this.numberInput = numberInput;
-}
-public double getConverterVal() {
-	return converterVal;
-}
-public void setConverterVal(double converterVal) {
-	this.converterVal = converterVal;
-}
-public double getDoubleVal() {
-	return doubleVal;
-}
+    public String getEventString() {
+        return eventString;
+    }
+    public void setEventString(String eventString) {
+        this.eventString = eventString;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public String getUrl() {
+        return url;
+    }
+    public void setUrl(String url) {
+        this.url = url;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getPhone() {
+        return phone;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    public int getNumberInput() {
+        return numberInput;
+    }
+    public void setNumberInput(int numberInput) {
+        this.numberInput = numberInput;
+    }
+    public double getConverterVal() {
+        return converterVal;
+    }
+    public void setConverterVal(double converterVal) {
+        this.converterVal = converterVal;
+    }
+    public double getDoubleVal() {
+        return doubleVal;
+    }
     public void setDoubleVal(double doubleVal) {
 	    this.doubleVal = doubleVal;
     }
@@ -230,5 +225,20 @@ public double getDoubleVal() {
      public static String getRequestParmater(String name){
     	return (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(name);
     }
-   
+
+    public boolean isBoolean1() {
+        return boolean1;
+    }
+
+    public void setBoolean1(boolean boolean1) {
+        this.boolean1 = boolean1;
+    }
+
+    public boolean isBoolean2() {
+        return boolean2;
+    }
+
+    public void setBoolean2(boolean boolean2) {
+        this.boolean2 = boolean2;
+    }
 }

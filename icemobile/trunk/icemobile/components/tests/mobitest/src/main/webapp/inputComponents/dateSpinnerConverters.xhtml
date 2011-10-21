@@ -59,11 +59,17 @@
     <h:form id="dateForm" >
 
         <h5> pattern support set backing bean pattern same as converter</h5>
+        <span  style="font-size: smaller; font-style: italic"> default pattern for this component dd/MM/yyyy and does not require a converter
+            or that the pattern attribute be set on the component
+            Note that singleSubmit of true is not yet supported</span>
+
+        <br />
          <h:outputText value="A. date"/>
          <mobi:dateSpinner id="dateId" value="#{date.selectedDate}"
                        singleSubmit="#{date.singleSubmit}"  >
                 <f:convertDateTime pattern="dd/MM/yyyy" timeZone="Canada/Mountain"/>
          </mobi:dateSpinner>
+         <h:outputText value="B. date2"/>
          <mobi:dateSpinner id="date2Id" value="#{date.date2}"  pattern="#{date.pattern}"
                            singleSubmit="#{date.singleSubmit}"
                         rendered="#{date.pattern == 'MM-dd-yyyy'}"  >
