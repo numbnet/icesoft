@@ -57,8 +57,8 @@
     padding: 0;
     z-index: 1001;
     position: fixed;
-    top:20px;
-    left:15%;
+    top:100px;
+    left:35%;
 }
 
 .mobi-date-title-container, .mobi-date-select-container,
