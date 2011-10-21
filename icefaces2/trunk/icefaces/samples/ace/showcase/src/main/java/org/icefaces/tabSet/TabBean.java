@@ -37,8 +37,8 @@ import javax.faces.model.SelectItem;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
 
-import org.icefaces.ace.component.tab.TabPane;
-import org.icefaces.ace.component.tab.TabSet;
+import org.icefaces.ace.component.tabset.TabPane;
+import org.icefaces.ace.component.tabset.TabSet;
 
 @ManagedBean (name="tabBean")
 @SessionScoped
