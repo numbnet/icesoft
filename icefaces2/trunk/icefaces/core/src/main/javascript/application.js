@@ -307,7 +307,8 @@ if (!window.ice.icefaces) {
                     var source = e.source;
                     var form = formOf(source);
                     isICEfacesEvent = form['ice.view'] || form['ice.window'];
-                } catch (e)  {
+                } catch (ex) {
+                    //ignore failure to find forms since that usually occurs after the update is applied
                 }
                 //invoke callback only when event is triggered from an ICEfaces enabled form
                 if (isICEfacesEvent) {
