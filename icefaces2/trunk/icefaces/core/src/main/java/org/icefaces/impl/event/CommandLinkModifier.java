@@ -41,7 +41,6 @@ public class CommandLinkModifier implements SystemEventListener {
 
     private static final Collection<String> AJAX_ALL = Collections.singletonList("@all");
 
-    @Override
     public boolean isListenerForSource(Object source) {
 
         //We only need to process this if it's an HtmlCommandLink in an ICEfaces view.
@@ -54,7 +53,6 @@ public class CommandLinkModifier implements SystemEventListener {
         return false;
     }
 
-    @Override
     public void processEvent(SystemEvent event) {
         HtmlCommandLink link = (HtmlCommandLink) event.getSource();
 
