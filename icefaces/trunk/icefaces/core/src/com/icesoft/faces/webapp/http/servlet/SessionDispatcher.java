@@ -55,6 +55,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
     private final Map sessionBoundServers = new WeakHashMap();
     private final Map activeRequests = new HashMap();
     private final String sessionIdDelimiter;
+    private final PseudoServlet notFoundServer = new BasicAdaptingServlet(new NotFoundServer());
 
     private ServletContext context;
 
@@ -74,7 +75,12 @@ public abstract class SessionDispatcher implements PseudoServlet {
             //put the request in the pool of active request in case HttpServletRequest.isUserInRole need to be called
             addRequest(id, request);
             //lookup session bound server -- this is a lock-free strategy
-            lookupServer(session).service(request, response);
+            PseudoServlet sessionBoundServer = lookupServer(session);
+            if (sessionBoundServer != null) {
+                sessionBoundServer.service(request, response);
+            } else {
+                notFoundServer.service(request, response);
+            }
         } finally {
             //remove the request from the active requests pool
             removeRequest(id, request);
