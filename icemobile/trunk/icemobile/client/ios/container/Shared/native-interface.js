@@ -99,7 +99,10 @@ if (!window.ice.mobile) {
 
             if (options) {
                 for (var p in options) {
-                    tempInputs.push(ice.addHiddenFormField(formId, p, options[p]));
+                    if ("function" != typeof(options[p]))  {
+                        tempInputs.push(
+                                ice.addHiddenFormField(formId, p, options[p]));
+                    }
                 }
             }
 
@@ -173,6 +176,7 @@ if (!window.ice.mobile) {
                 if (!el.disabled) {
                     switch (el.type) {
                         case 'submit':
+                        case 'button':
                             break;
                         case 'text':
                         case 'password':
