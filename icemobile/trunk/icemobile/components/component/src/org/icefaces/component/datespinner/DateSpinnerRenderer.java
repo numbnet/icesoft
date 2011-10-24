@@ -82,9 +82,8 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         String clientId = dateEntry.getClientId(context);
         String eventStr = "onclick";
         if (Utils.isMobile(context)){
-            logger.info("MOBILE");
             eventStr="ontouchstart";
-        } else logger.info("DESKTOP");
+        }
         //for now assume always a popuop
         boolean popup = true;
         int yMin = dateEntry.getYearStart();
@@ -119,7 +118,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         writer.writeAttribute("class", DateSpinner.POP_UP_CLASS, null);
         if(dateEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         else{
-            writer.writeAttribute(eventStr, "mobi.datespinner.toggle('"+clientId+"');", null);
+            writer.writeAttribute("onclick", "mobi.datespinner.toggle('"+clientId+"');", null);
         }
         writer.endElement("input");
         //hidden field to store state of current instance
