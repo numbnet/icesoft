@@ -125,7 +125,7 @@ public class UtilInterface implements JavascriptInterface,
 	    Thread thread = new Thread(this);
 	    thread.start();
 	} catch (Throwable e) {
-	    Log.e("ICEutil", e.toString());
+	    Log.e("ICEutil", "Failed to submit form ", e);
 	}
     }
 
@@ -138,7 +138,7 @@ public class UtilInterface implements JavascriptInterface,
 	    sendProgress(100);
 	    handler.sendEmptyMessage(RESPONSE_MSG);
 	} catch (Throwable e) {
-	    Log.e("ICEutil", e.toString());
+	    Log.e("ICEutil", "HTTP POST failed ", e);
 	}
     }
 
@@ -191,9 +191,17 @@ public class UtilInterface implements JavascriptInterface,
 		    String nameValue[] = splitRes[i].split(delim2);
 		    if (nameValue.length == 2) {
 			res[i] = new BasicNameValuePair(nameValue[0],nameValue[1]);
-		    } else {
-			res[i] = new BasicNameValuePair(nameValue[0],"");
-		    }
+		    } else if (nameValue.length == 1)   {
+                        //likely corrupt pair
+                        Log.w("ICEutil", "singleton form value " + splitRes[i]);
+			BasicNameValuePair pair = 
+                                new BasicNameValuePair(nameValue[0],"");
+			res[i] = pair;
+		    }  else {
+                        Log.e("ICEutil", "empty form value " + splitRes[i]);
+                        res[i] = new BasicNameValuePair("empty" + i,"");
+                    } 
+
 		}
 	    }
 	    return res;
