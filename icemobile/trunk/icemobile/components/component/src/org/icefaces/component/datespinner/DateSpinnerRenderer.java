@@ -81,7 +81,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         DateSpinner dateEntry = (DateSpinner) uiComponent;
         String clientId = dateEntry.getClientId(context);
         String eventStr = "onclick";
-        if (Utils.isMobile(context)){
+        if (Utils.isTouchEventEnabled(context)){
             eventStr="ontouchstart";
         }
         //for now assume always a popuop

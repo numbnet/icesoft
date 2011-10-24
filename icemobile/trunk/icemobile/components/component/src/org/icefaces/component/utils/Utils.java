@@ -311,7 +311,7 @@ public class Utils {
      * @param context
      * @return   true if mobile device
      */
-    public static boolean isMobile (FacesContext context){
+    public static boolean isTouchEventEnabled (FacesContext context){
         Map requestHeaders = context.getExternalContext().getRequestHeaderMap();
         String accept = "none";
         String userAgentString = "user-agent";
@@ -329,8 +329,10 @@ public class Utils {
 
             }
             UserAgentInfo uai = new UserAgentInfo(userAgentString, accept);
-            if (uai.sniffIphone() || uai.sniffAndroid() || uai.sniffBlackberry()
-                    || uai.sniffIpad() || uai.sniffIpod()) {
+  //          commenting out Blackberry at this time as support of touch events is problematic
+  //          if (uai.sniffIphone() || uai.sniffAndroid() || uai.sniffBlackberry()
+            if (uai.sniffIphone() || uai.sniffAndroid() ||
+                   uai.sniffIpad() || uai.sniffIpod()) {
                 return true;
             }
         }
