@@ -147,10 +147,12 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     private String mCurrentlyLoadingDocument; 
     private long mDocumentStartTime;
     
+    private boolean mRealDevice  = !DeviceInfo.isSimulator(); 
+    
     private Runnable mParkPushIdRunnable = new Runnable() { 
         public void run() { 
             try {   
-                if (mParkScript != null) { 
+                if (mParkScript != null && mRealDevice ) { 
                     mScriptEngine.executeScript(mParkScript, null);
                     DEBUG("ICEmobile - Park Script ok");
                 } 
@@ -230,7 +232,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
 
         EventLogger.clearLog();
         EventLogger.register(GUID, "ICE", EventLogger.VIEWER_STRING);
-        EventLogger.setMinimumLevel( EventLogger.DEBUG_INFO );
+        EventLogger.setMinimumLevel( EventLogger.DEBUG_INFO  );
 
         try { 
 
@@ -737,7 +739,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
             } 
             
             try { 
-                if (mScriptEngine != null) { 
+                if (mScriptEngine != null && mRealDevice) { 
                     mScriptEngine.executeScript("ice.push.resumeBlockingConnection();" , null);
                     DEBUG("ICEmobile - resumeScript ok");
                 }
@@ -749,7 +751,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
 
     public void deactivate() { 		
         
-        if (mPauseScript != null && mScriptEngine != null) {
+        if (mPauseScript != null && mScriptEngine != null && mRealDevice) {
             try { 
                 mScriptEngine.executeScript(mPauseScript, null);
                 DEBUG ("ICEmobile - Paused Blocking connection ok");
