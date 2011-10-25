@@ -54,6 +54,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.popover = [[UIPopoverController alloc] initWithContentViewController:preferences];
     }
+
     NSLog(@"MainViewController viewDidLoad");
 }
 
@@ -254,8 +255,11 @@
     if (![[url lowercaseString] hasPrefix:@"http://"]) {
         url = [@"http://" stringByAppendingString:url];
     }
-	[self.webView loadRequest: [NSURLRequest requestWithURL:[NSURL 
-            URLWithString:url] ]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:
+            [NSURL URLWithString:url] ]; 
+    [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+
+    [self.webView loadRequest: request];
 }
 
 
