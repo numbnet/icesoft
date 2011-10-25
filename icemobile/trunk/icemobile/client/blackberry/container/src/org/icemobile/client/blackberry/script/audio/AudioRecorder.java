@@ -158,7 +158,7 @@ public class AudioRecorder extends ScriptableFunction {
                             public void run() { 
 
                                 try {  
-                                    Thread.currentThread().sleep( mMaxDuration * 1000);
+                                    Thread.sleep( mMaxDuration * 1000);
                                     stop();
                                 } catch (InterruptedException i) { }                                
                             }
