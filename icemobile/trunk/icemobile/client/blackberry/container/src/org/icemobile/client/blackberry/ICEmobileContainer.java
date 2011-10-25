@@ -313,8 +313,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                             }
                             
                             mScriptEngine = mBrowserField.getScriptEngine();
-                            mBrowserCookieManager = mBrowserField.getCookieManager();
-                            mBrowserCookieManager.setCookie( mCurrentHome , "com.icesoft.user-agent=HyperBrowser/1.0");
+                            mBrowserCookieManager.setCookie( uri , "com.icesoft.user-agent=HyperBrowser/1.0");
 
                             if (mLoadingScreen != null) { 
                                 popScreen(mLoadingScreen); 
