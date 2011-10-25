@@ -132,3 +132,58 @@ mobi.input = {
 
 };
 
+jsf.getViewState = function(form) {
+    if (!form) {
+        throw new Error("jsf.getViewState:  form must be set");
+    }
+    var els = form.elements;
+    var len = els.length;
+    var qString = [];
+    var addField = function(name, value) {
+        var tmpStr = "";
+        if (qString.length > 0) {
+            tmpStr = "&";
+        }
+        tmpStr += encodeURIComponent(name) + "=" + encodeURIComponent(value);
+        qString.push(tmpStr);
+    };
+    for (var i = 0; i < len; i++) {
+        var el = els[i];
+        if (!el.disabled) {
+            switch (el.type) {
+                case 'submit':
+                case 'button':
+                    break;
+                case 'text':
+                case 'password':
+                case 'hidden':
+                case 'textarea':
+                    addField(el.name, el.value);
+                    break;
+                case 'select-one':
+                    if (el.selectedIndex >= 0) {
+                        addField(el.name, el.options[el.selectedIndex].value);
+                    }
+                    break;
+                case 'select-multiple':
+                    for (var j = 0; j < el.options.length; j++) {
+                        if (el.options[j].selected) {
+                            addField(el.name, el.options[j].value);
+                        }
+                    }
+                    break;
+                case 'checkbox':
+                case 'radio':
+                    if (el.checked) {
+                        addField(el.name, el.value);
+                    }
+                    break;
+                default:
+                    addField(el.name, el.value);
+            }
+        }
+    }
+    // concatenate the array
+    return qString.join("");
+};
+
