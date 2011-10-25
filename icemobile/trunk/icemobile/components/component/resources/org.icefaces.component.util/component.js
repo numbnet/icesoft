@@ -132,7 +132,7 @@ mobi.input = {
 
 };
 
-jsf.getViewState = function(form) {
+function html5getViewState(form) {
     if (!form) {
         throw new Error("jsf.getViewState:  form must be set");
     }
@@ -187,3 +187,7 @@ jsf.getViewState = function(form) {
     return qString.join("");
 };
 
+if (window.addEventListener)  {
+    window.addEventListener( "load", 
+    function() {jsf.getViewState = html5getViewState}, false );
+}
