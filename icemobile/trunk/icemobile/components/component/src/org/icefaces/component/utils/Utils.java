@@ -18,11 +18,16 @@ package org.icefaces.component.utils;
 
 import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.impl.util.DOMUtils;
+import org.icemobile.component.impl.SessionContext;
 
 import javax.el.ValueExpression;
-import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
+import javax.faces.component.UIForm;
+import javax.faces.component.NamingContainer;
+import javax.faces.component.StateHelper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.File;
@@ -273,35 +278,8 @@ public class Utils {
      * @return
      */
     public static DeviceType getDeviceType(FacesContext context) {
-
-        Map requestHeaders = context.getExternalContext().getRequestHeaderMap();
-        DeviceType device = DeviceType.DEFAULT;
-        String accept = "none";
-        String userAgentString = "user-agent";
-        if (!requestHeaders.isEmpty()) {
-            int size = requestHeaders.size();
-            //    	log.info("requestHeaders size="+size);
-            for (Object o : requestHeaders.entrySet()) {
-                Map.Entry pairs = (Map.Entry) o;
-                String ua = pairs.getKey().toString().toLowerCase();
-
-//	    	  	log.info(pairs.getKey() + " = "+pairs.getValue());
-//	     	    log.info(" .........key........."+ua);
-                if (ua.contains("accept")) {
-                    accept = pairs.getValue().toString().toLowerCase();
-                    //   	log.info("ACCEPT string ="+accept);
-                }
-                if (ua.toLowerCase().contains("user-agent")) {
-                    //	 log.info(" USER AGENT ="+ua);
-                    userAgentString = pairs.getValue().toString();
-//                    log.fine("USER AGENT STRING =" + userAgentString);
-                }
-
-            }
-            device = checkUserAgentInfo(new UserAgentInfo(userAgentString, accept));
-//              log.info ("======device found="+device);
-
-        }
+        String userAgent = SessionContext.getSessionContext().getUserAgent();
+        DeviceType device = checkUserAgentInfo(new UserAgentInfo(userAgent));
         return device;
     }
 
@@ -311,30 +289,14 @@ public class Utils {
      * @param context
      * @return   true if mobile device
      */
-    public static boolean isTouchEventEnabled (FacesContext context){
-        Map requestHeaders = context.getExternalContext().getRequestHeaderMap();
-        String accept = "none";
-        String userAgentString = "user-agent";
-        if (!requestHeaders.isEmpty()) {
-            int size = requestHeaders.size();
-            for (Object o : requestHeaders.entrySet()) {
-                Map.Entry pairs = (Map.Entry) o;
-                String ua = pairs.getKey().toString().toLowerCase();
-                if (ua.contains("accept")) {
-                    accept = pairs.getValue().toString().toLowerCase();
-                }
-                if (ua.toLowerCase().contains("user-agent")) {
-                    userAgentString = pairs.getValue().toString();
-                }
-
-            }
-            UserAgentInfo uai = new UserAgentInfo(userAgentString, accept);
+    public static boolean isTouchEventEnabled (FacesContext context)  {
+        String userAgent = SessionContext.getSessionContext().getUserAgent();
+        UserAgentInfo uai = new UserAgentInfo(userAgent);
   //          commenting out Blackberry at this time as support of touch events is problematic
   //          if (uai.sniffIphone() || uai.sniffAndroid() || uai.sniffBlackberry()
-            if (uai.sniffIphone() || uai.sniffAndroid() ||
-                   uai.sniffIpad() || uai.sniffIpod()) {
-                return true;
-            }
+        if (uai.sniffIphone() || uai.sniffAndroid() ||
+               uai.sniffIpad() || uai.sniffIpod()) {
+            return true;
         }
         return false;
     }
