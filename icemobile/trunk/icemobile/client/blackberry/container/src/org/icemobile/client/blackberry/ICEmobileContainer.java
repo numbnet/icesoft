@@ -313,6 +313,8 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                             }
                             
                             mScriptEngine = mBrowserField.getScriptEngine();
+                            mBrowserCookieManager = mBrowserField.getCookieManager();
+                            mBrowserCookieManager.setCookie( mCurrentHome , "com.icesoft.user-agent=HyperBrowser/1.0");
 
                             if (mLoadingScreen != null) { 
                                 popScreen(mLoadingScreen); 
@@ -459,7 +461,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
      * to load the intitial request must be used for all subsequent requests in order to maintain 
      * the correct cookie setup. 
      */
-    public InputConnection postRequest( String url, String request, HttpHeaders headers) throws Exception { 
+    public InputConnection postRequest( String url, String request, HttpHeaders headers) {
 
         BrowserFieldConnectionManager bfconman = mBrowserField.getConnectionManager();
         BrowserFieldRequest bfr = new BrowserFieldRequest(url, request.getBytes(), headers);
