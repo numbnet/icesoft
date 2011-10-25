@@ -32,7 +32,7 @@ public class DateBean implements Serializable{
         dateList.add(new DateNtry("dateTwo"));
         dateList.add(new DateNtry("dateThree"));
         try{
-            this.pattern = "MM-dd-yyyy";
+            this.pattern = "yyyy-MM-dd";
             selectedDate = new SimpleDateFormat("yyyy-M-d H:m z").parse("2008-4-30 13:9 Pacific Daylight Time");
         } catch (Exception e){
             System.out.println("PROBLEM PARSING DATE SO SETTING TO TODAY!");

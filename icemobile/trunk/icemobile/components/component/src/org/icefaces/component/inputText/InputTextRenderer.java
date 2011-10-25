@@ -19,21 +19,25 @@ import org.icefaces.component.utils.BaseInputRenderer;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.PassThruAttributeWriter;
 import org.icefaces.render.MandatoryResourceComponent;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.el.ValueExpression;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import org.icefaces.component.utils.Utils;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
 
-@MandatoryResourceComponent("org.icefaces.component.flipswitch.FlipSwitch")
+@MandatoryResourceComponent("org.icefaces.component.inputText.InputText")
 public class InputTextRenderer extends BaseInputRenderer {
-    private final static Logger log = Logger.getLogger(InputTextRenderer.class.getName());
+    private final static Logger logger = Logger.getLogger(InputTextRenderer.class.getName());
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         // The RequestParameterMap holds the values received from the browser
@@ -47,13 +51,15 @@ public class InputTextRenderer extends BaseInputRenderer {
         }
         if (requestParameterMap.containsKey(clientId)) {
             String submittedString = String.valueOf(requestParameterMap.get(clientId));
-            if (submittedString != null) {
-                Object convertedValue = this.getConvertedValue(facesContext, uiComponent, submittedString);
-                this.setSubmittedValue(inputText, convertedValue);
+            if (submittedString==null) {
+                return;
             }
-        }
+            this.setSubmittedValue(inputText, submittedString);
 
+        }
     }
+
+
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -69,13 +75,14 @@ public class InputTextRenderer extends BaseInputRenderer {
         }
 
         boolean isNumberType = type.equals("number");
+        boolean isDateType = type.equals("date");
         String compId = clientId;
-        if (isNumberType) {
-            compId += "_number";
+   /*     if (isNumberType || isDateType) {
+            compId += "_"+type;
             writer.startElement(HTML.SPAN_ELEM, uiComponent);
             writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", HTML.ID_ATTR);
             writer.writeAttribute(HTML.NAME_ATTR, clientId+"_span", null);
-        }
+        } */
 
         writer.startElement(componentType, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, compId, HTML.ID_ATTR);
@@ -88,6 +95,13 @@ public class InputTextRenderer extends BaseInputRenderer {
         }
         writer.writeAttribute("class", baseClass.toString(), null);
         String valueToRender = getStringValueToRender(facesContext, inputText);
+        logger.info("value to Render original ="+valueToRender);
+        if (valueToRender == null && isDateType){
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+                Date aDate = new Date();
+                valueToRender =  sdf.format(aDate);
+             //   logger.info("updated valueto render to ="+valueToRender);
+        }
         //do common passThrough attributes
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, inputText.getCommonInputAttributeNames());
         PassThruAttributeWriter.renderBooleanAttributes(writer, uiComponent, inputText.getBooleanAttNames());
@@ -99,7 +113,8 @@ public class InputTextRenderer extends BaseInputRenderer {
         } else {
             PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, inputText.getInputtextAttributeNames());
         }
-        writer.writeAttribute("autocorrect", "off", null);
+        if (!isDateType) writer.writeAttribute("autocorrect", "off", null);
+        else writer.writeAttribute("autocorrect", "on", null);
         writer.writeAttribute("autocapitalize", "off", null);
         boolean singleSubmit = inputText.isSingleSubmit();
         if (inputText.isDisabled())
@@ -108,11 +123,24 @@ public class InputTextRenderer extends BaseInputRenderer {
             writer.writeAttribute("readonly", "readonly", null);
         //still need to implement styleClass
         String jsCall = "ice.se(event, '" + clientId + "');";
-        if (isNumberType) {
+    /*    if (isNumberType) {
             jsCall = "mobi.input.submit(event, '" + clientId + "', this.value," + singleSubmit + ");";
             writer.writeAttribute("onchange", jsCall, null);
         }
-        if  (!isNumberType && singleSubmit){
+        else if (isDateType){
+            String dateJSCall =  "mobi.input.submit(event, '";
+            StringBuilder sb = new StringBuilder(dateJSCall).append(clientId).append("', this.value,").append(singleSubmit).append(");");
+           // logger.info("dateJSCall sb="+sb);
+           if (Utils.isTouchEventEnabled(facesContext)){
+                logger.info("WRITING FOR MOBILE");
+               writer.writeAttribute("onblur",sb, null);
+           }else {
+                logger.info("DESKTOP") ;
+                writer.writeAttribute("onchange",sb, null);
+           }
+
+        }   */
+        if (singleSubmit){
             writer.writeAttribute("onchange", jsCall, null);
         }
         if (!componentType.equals("textarea")) {
@@ -121,43 +149,7 @@ public class InputTextRenderer extends BaseInputRenderer {
             writer.write(valueToRender);
         }
         writer.endElement(componentType);
-        if (isNumberType) {
-            writer.startElement(HTML.INPUT_ELEM, uiComponent);
-            writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
-            writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-            writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
-            writer.writeAttribute(HTML.VALUE_ATTR, valueToRender, null);
-            writer.endElement(HTML.INPUT_ELEM);
-            writer.endElement(HTML.SPAN_ELEM);
-        }
 
     }
-
-    @Override
-    public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent, Object submittedValue) throws ConverterException {
-        UIInput uiInput = (UIInput) uiComponent;
-        String value = String.valueOf(submittedValue);
-        Converter converter = uiInput.getConverter();
-
-        //first ask the converter
-        if (converter != null) {
-            return converter.getAsObject(facesContext, uiInput, value);
-        }
-        //Try to guess
-        else {
-            ValueExpression ve = uiInput.getValueExpression("value");
-
-            if (ve != null) {
-                Class<?> valueType = ve.getType(facesContext.getELContext());
-                Converter converterForType = facesContext.getApplication().createConverter(valueType);
-                if (converterForType != null) {
-                    return converterForType.getAsObject(facesContext, uiInput, value);
-                }
-            }
-        }
-
-        return value;
-    }
-
 
 }
