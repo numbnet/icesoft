@@ -301,6 +301,20 @@ public class Utils {
         return false;
     }
 
+    /**
+     *  Some input components may have html5 support for iOS5 such as DateSpinner
+     * @param context
+     * @return true if request header denotes os 5_0
+     */
+    public static boolean isIOS5 (FacesContext context) {
+        String userAgent = SessionContext.getSessionContext().getUserAgent();
+        UserAgentInfo uai = new UserAgentInfo(userAgent);
+        if (uai.sniffIOS5()){
+            return true;
+        }
+        return false;
+    }
+
     private static DeviceType checkUserAgentInfo(UserAgentInfo uai) {
         if (uai.sniffIphone() || uai.sniffIpod()) return DeviceType.iphone;
         if (uai.sniffAndroid()) return DeviceType.android;

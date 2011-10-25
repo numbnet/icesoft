@@ -19,6 +19,7 @@ package org.icefaces.mobile;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -54,101 +55,102 @@ public class InputBean implements Serializable {
    private String password;
    private boolean boolean1 = false;
    private boolean boolean2 = false;
+   private String dateString = "2012-12-12";
+   private Date dateObj = new Date();
    
-   
-   public InputBean(){
+    public InputBean(){
 
-   }
-public int getNumberInput2() {
-	return numberInput2;
-}
-public void setNumberInput2(int numberInput2) {
-	this.numberInput2 = numberInput2;
-}
-public String getPlaceholder() {
-	return placeholder;
-}
-public void setPlaceholder(String placeholder) {
-	this.placeholder = placeholder;
-}
-public String getPatternTest() {
-	return patternTest;
-}
-public void setPatternTest(String patternTest) {
-	this.patternTest = patternTest;
-}
-public String getDefaultInput() {
-	return defaultInput;
-}
-public void setDefaultInput(String defaultInput) {
-	this.defaultInput = defaultInput;
-}
-public String getSearchPlaceholder() {
-	return searchPlaceholder;
-}
-public void setSearchPlaceholder(String searchPlaceholder) {
-	this.searchPlaceholder = searchPlaceholder;
-}
-public String getTelephone() {
-	return telephone;
-}
-public void setTelephone(String telephone) {
-	this.telephone = telephone;
-}
-public String getSelectedInp() {
-	return selectedInp;
-}
-public void setSelectedInp(String selectedInp) {
-	this.selectedInp = selectedInp;
-}
-public List getNameList() {
-	return nameList;
-}
-public void setNameList(List nameList) {
-	this.nameList = nameList;
-}
-public String getName() {
-	return name;
-}
-public void setName(String name) {
-	this.name = name;
-}
-public int getSliderValue() {
-	return sliderValue;
-}
-public void setSliderValue(int sliderValue) {
-	this.sliderValue = sliderValue;
-}
-public String getTextField() {
-	return textField;
-}
-public void setTextField(String textField) {
-	this.textField = textField;
-}
-public String getSomeText() {
-	return someText;
-}
-public void setSomeText(String someText) {
-	this.someText = someText;
-}
-public String getSomeText2() {
-	return someText2;
-}
-public void setSomeText2(String someText2) {
-	this.someText2 = someText2;
-}
-public int getSliderVal2() {
-	return sliderVal2;
-}
-public void setSliderVal2(int sliderVal2) {
-	this.sliderVal2 = sliderVal2;
-}
-public int getSliderVal3() {
-	return sliderVal3;
-}
-public void setSliderVal3(int sliderVal3) {
-	this.sliderVal3 = sliderVal3;
-}
+    }
+    public int getNumberInput2() {
+        return numberInput2;
+    }
+    public void setNumberInput2(int numberInput2) {
+        this.numberInput2 = numberInput2;
+    }
+    public String getPlaceholder() {
+        return placeholder;
+    }
+    public void setPlaceholder(String placeholder) {
+        this.placeholder = placeholder;
+    }
+    public String getPatternTest() {
+        return patternTest;
+    }
+    public void setPatternTest(String patternTest) {
+        this.patternTest = patternTest;
+    }
+    public String getDefaultInput() {
+        return defaultInput;
+    }
+    public void setDefaultInput(String defaultInput) {
+        this.defaultInput = defaultInput;
+    }
+    public String getSearchPlaceholder() {
+        return searchPlaceholder;
+    }
+    public void setSearchPlaceholder(String searchPlaceholder) {
+        this.searchPlaceholder = searchPlaceholder;
+    }
+    public String getTelephone() {
+        return telephone;
+    }
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+    public String getSelectedInp() {
+        return selectedInp;
+    }
+    public void setSelectedInp(String selectedInp) {
+        this.selectedInp = selectedInp;
+    }
+    public List getNameList() {
+        return nameList;
+    }
+    public void setNameList(List nameList) {
+        this.nameList = nameList;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public int getSliderValue() {
+        return sliderValue;
+    }
+    public void setSliderValue(int sliderValue) {
+        this.sliderValue = sliderValue;
+    }
+    public String getTextField() {
+        return textField;
+    }
+    public void setTextField(String textField) {
+        this.textField = textField;
+    }
+    public String getSomeText() {
+        return someText;
+    }
+    public void setSomeText(String someText) {
+        this.someText = someText;
+    }
+    public String getSomeText2() {
+        return someText2;
+    }
+    public void setSomeText2(String someText2) {
+        this.someText2 = someText2;
+    }
+    public int getSliderVal2() {
+        return sliderVal2;
+    }
+    public void setSliderVal2(int sliderVal2) {
+        this.sliderVal2 = sliderVal2;
+    }
+    public int getSliderVal3() {
+        return sliderVal3;
+    }
+    public void setSliderVal3(int sliderVal3) {
+        this.sliderVal3 = sliderVal3;
+    }
 
     public void defaultEvent(ActionEvent ae){
         String val = "DefaultEvent:";
@@ -240,5 +242,21 @@ public void setSliderVal3(int sliderVal3) {
 
     public void setBoolean2(boolean boolean2) {
         this.boolean2 = boolean2;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
+    }
+
+    public Date getDateObj() {
+        return dateObj;
+    }
+
+    public void setDateObj(Date dateObj) {
+        this.dateObj = dateObj;
     }
 }

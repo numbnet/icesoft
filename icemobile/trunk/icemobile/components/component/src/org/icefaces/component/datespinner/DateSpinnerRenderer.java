@@ -47,8 +47,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
             return;
         }
         String inputValue = context.getExternalContext().getRequestParameterMap().get(clientId+"_input");
-        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_hidden");
-        //if we want to use the type="date" for html5 then we will use the hidden field
+
         if(!isValueBlank(inputValue)) {
             dateSpinner.setSubmittedValue(inputValue);
         }
@@ -59,21 +58,45 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         DateSpinner spinner = (DateSpinner) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = spinner.getClientId(context);
-   //    Map contextMap = context.getViewRoot().getViewMap(); //this does not work
-        Map contextMap = context.getAttributes();
-        if (!contextMap.containsKey(DATESPINNER_JS_KEY)) {
-            Resource jsFile = context.getApplication().getResourceHandler().createResource("dateSpinner.js", "org.icefaces.component.datespinner");
-            String src = jsFile.getRequestPath();
-            writer.startElement("script", component);
-            writer.writeAttribute("text", "text/javascript", null);
-            writer.writeAttribute("src", src, null);
-            writer.endElement("script");
-            contextMap.put(DATESPINNER_JS_KEY, "true");
-        }
         String initialValue = getStringValueToRender(context, component);
-        String value = this.encodeValue(spinner, initialValue);
-        encodeMarkup(context, component, value);
-        encodeScript(context, component);
+        if (Utils.isIOS5(context)){
+            writer.startElement("input", component);
+            writer.writeAttribute("type", "date", "type");
+            writer.writeAttribute("id", clientId+"_input", "id");
+            writer.writeAttribute("name", clientId+"_input", "name");
+            boolean disabled = spinner.isDisabled();
+            boolean readonly = spinner.isReadonly();
+            boolean singleSubmit = spinner.isSingleSubmit();
+            writer.writeAttribute("value", initialValue, "value");
+            if (disabled){
+                writer.writeAttribute("disabled", component, "disabled");
+            }
+            if (readonly){
+                writer.writeAttribute("readonly", component, "readonly");
+            }
+            if (!disabled || !readonly && singleSubmit){
+                String jsCall =  "ice.se(event,'"+clientId+"');";
+                writer.writeAttribute("onblur", jsCall, null);
+            }
+            writer.endElement("input");
+        }
+        else {
+       //    Map contextMap = context.getViewRoot().getViewMap(); //this does not work
+            Map contextMap = context.getAttributes();
+            if (!contextMap.containsKey(DATESPINNER_JS_KEY)) {
+                Resource jsFile = context.getApplication().getResourceHandler().createResource("dateSpinner.js", "org.icefaces.component.datespinner");
+                String src = jsFile.getRequestPath();
+                writer.startElement("script", component);
+                writer.writeAttribute("text", "text/javascript", null);
+                writer.writeAttribute("src", src, null);
+                writer.endElement("script");
+                contextMap.put(DATESPINNER_JS_KEY, "true");
+            }
+
+            String value = this.encodeValue(spinner, initialValue);
+            encodeMarkup(context, component, value);
+            encodeScript(context, component);
+        }
     }
 
     protected void encodeMarkup(FacesContext context, UIComponent uiComponent, String value) throws IOException {
@@ -278,6 +301,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
 
         //Delegate to user supplied converter if defined
         if(converter != null) {
+            logger.info("spinner id ="+spinner.getId()+" has converter and string value ="+submittedValue);
             objVal =  converter.getAsObject(context, spinner, submittedValue);
             return objVal;
         }

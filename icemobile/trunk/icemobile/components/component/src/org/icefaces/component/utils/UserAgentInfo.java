@@ -42,6 +42,7 @@ public class UserAgentInfo {
     public static final String deviceBBCurve = "blackberry89"; //curve2
     public static final String deviceBBTorch = "blackberry 98"; //torch
     public static final String vndRIM = "vnd.rim";  //found when emulating IE or FF on BB
+    public static final String deviceIOS5 = " os 5_0";
 
     public UserAgentInfo(String userAgent, String httpAcc) {
         if (userAgent != null) {
@@ -71,6 +72,12 @@ public class UserAgentInfo {
                 && !sniffIpod()
                 && !sniffIpad();
         logSniff(result, "iPod", userAgentString);
+        return result;
+    }
+
+    public boolean sniffIOS5(){
+        boolean result = userAgentString.indexOf(deviceIOS5) != -1;
+        logSniff(result, "iOS5", userAgentString);
         return result;
     }
 

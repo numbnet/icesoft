@@ -96,7 +96,7 @@ public class InputText extends InputTextBase {
 	public String validateType(String attributeType) {
 	    if (attributeType.equals("text")||attributeType.equals("number")||attributeType.equals("url")||
 	    		attributeType.equals("textarea")||attributeType.equals("phone")||attributeType.equals("email")|| 
-	    		attributeType.equals("password")){
+	    		attributeType.equals("password")||attributeType.equals("date")){
 	    	return attributeType;
 	    }
 	    else return "text";

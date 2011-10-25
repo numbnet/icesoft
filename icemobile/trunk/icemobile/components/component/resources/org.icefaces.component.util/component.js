@@ -23,8 +23,7 @@ mobi.flipper = {
         init: function(clientId, event, flipperEl, singleSubmit){
               ice.log.debug(ice.log, 'clientId is '+clientId);               
               if (flipperEl){
-                var oldClass = flipperEl.className; 
-                ice.log.debug(ice.log, 'have a switch element with class='+oldClass);
+                var oldClass = flipperEl.className;
                 var value = "off";
                 if (oldClass.indexOf('-off ')>0){
                 	flipperEl.className='mobi-flip-switch mobi-flip-switch-on ';
@@ -54,10 +53,9 @@ mobi.carousel = {
 		            ice.log.debug(ice.log, 'clientId is '+clientId);
 		            var carouselId = clientId+'_carousel';
 		            //carousel iscroll loading
-		            ice.log.debug(ice.log, 'in the carouselLoaded method');
 		            setTimeout(function () {
-	    	            ice.log.debug(ice.log, "in setTimeout function");
-                        ice.log.debug(ice.log, 'onload create carousel');
+	    	        //    ice.log.debug(ice.log, "in setTimeout function");
+                    //    ice.log.debug(ice.log, 'onload create carousel');
                         this.carousels = new iScroll(carouselId, {
                             snap: 'li',
                             momentum: false,
@@ -69,10 +67,9 @@ mobi.carousel = {
                             }
 		                 });
 		              }, 100);
-		               ice.log.debug(ice.log,"after setTimeout function");
 		   },
 		   unloaded: function(clientId){
-		       ice.log.debug(ice.log, 'unload handler carousel');
+		 //      ice.log.debug(ice.log, 'unload handler carousel');
 		       if (this.carousels!=null){
 		           this.carousels.destroy();
 		           this.carousels = null;
@@ -84,8 +81,8 @@ mobi.carousel = {
 	           ice.log.debug(ice.log, 'scrollUpdate and current page is='+pageVal);
 	           var hidden = document.getElementById(clientId+'_hidden');
 	           if (hidden){                               
-	           	hidden.value=pageVal;
-	           	ice.log.debug(ice.log, 'set hidden.value = '+hidden.value);
+	               hidden.value=pageVal;
+	           	   ice.log.debug(ice.log, 'set hidden.value = '+hidden.value);
 	           }
 	           if (singleSubmit){
 	           	ice.se(null, clientId);
@@ -113,7 +110,7 @@ mobi.carousel = {
 	} ;
 
 
-mobi.input = {
+/*mobi.input = {
 
 	   submit : function(event, clientId, value, singleSubmit){
         var valueString = value.toString();
@@ -130,7 +127,7 @@ mobi.input = {
         }
     }
 
-};
+}; */
 
 function html5getViewState(form) {
     if (!form) {
