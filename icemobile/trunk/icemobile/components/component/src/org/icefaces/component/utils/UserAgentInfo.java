@@ -15,11 +15,16 @@
  */
 package org.icefaces.component.utils;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * backbone of deviceStylesheet as it requires these
  * objects for device detection.
  */
 public class UserAgentInfo {
+    private static Logger log = Logger.getLogger(
+            UserAgentInfo.class.getName());
 
     //info about browser and device
     private String userAgentString;
@@ -51,30 +56,50 @@ public class UserAgentInfo {
         if (userAgent != null) {
             this.userAgentString = userAgent.toLowerCase();
         }
+        this.httpAccepted = "*/*";
     }
 
     public boolean sniffIpod() {
-        return userAgentString.indexOf(deviceIpod) != -1;
+        boolean result = userAgentString.indexOf(deviceIpod) != -1;
+        logSniff(result, "iPod", userAgentString);
+        return result;
     }
-
 
     //don't get iPhone confused with iPod touch
     public boolean sniffIphone() {
-        return userAgentString.indexOf(deviceIphone) != -1 && !sniffIpod()
+        boolean result = userAgentString.indexOf(deviceIphone) != -1
+                && !sniffIpod()
                 && !sniffIpad();
+        logSniff(result, "iPod", userAgentString);
+        return result;
     }
 
     public boolean sniffIpad() {
-        return userAgentString.indexOf(deviceIpad) != -1;
+        boolean result = userAgentString.indexOf(deviceIpad) != -1;
+        logSniff(result, "iPad", userAgentString);
+        return result;
     }
 
     public boolean sniffAndroid() {
-        return userAgentString.contains(deviceAndroid);
+        boolean result = userAgentString.contains(deviceAndroid);
+        logSniff(result, "Android", userAgentString);
+        return result;
     }
 
 
     public boolean sniffBlackberry() {
-        return userAgentString.contains(deviceBlackB) || httpAccepted.contains(vndRIM);
+        boolean result = userAgentString.contains(deviceBlackB) 
+            || httpAccepted.contains(vndRIM);
+        logSniff(result, "BlackBerry", userAgentString);
+        return result;
     }
 
+    private void logSniff(boolean result, String device, 
+                          String userAgent)  {
+        if (log.isLoggable(Level.FINEST))  {
+            if (result)  {
+                log.finest("Detected " + device + " " + userAgentString);
+            }
+        }
+    }
 }
