@@ -37,15 +37,14 @@ import javax.faces.model.SelectItem;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ManagedBean;
 
-import org.icefaces.ace.component.tabset.TabPane;
-import org.icefaces.ace.component.tabset.TabSet;
+import org.icefaces.ace.component.tab.Tabs;
 
 @ManagedBean (name="tabBean")
 @SessionScoped
 public class TabBean implements Serializable{
     private String inpTxt;
     private String richText;
-    private TabSet tabSet;
+    private Tabs tabSet;
     private int tabIndex = 0;
     private int userDefineIndex = 0;
     private boolean renderTab1 = true;
@@ -92,10 +91,10 @@ public class TabBean implements Serializable{
         this.richText = richText;
     }
 
-    public TabSet getTabSet() {
+    public Tabs getTabSet() {
         return tabSet;
     }
-    public void setTabSet(TabSet tabSet) {
+    public void setTabSet(Tabs tabSet) {
         this.tabSet = tabSet;
     } 
     int i=2;
