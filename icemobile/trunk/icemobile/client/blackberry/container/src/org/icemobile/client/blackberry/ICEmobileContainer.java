@@ -298,7 +298,6 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
             //			mAppIndicator.set ( )
 
             mBrowserCookieManager = mBrowserField.getCookieManager();			
-            mBrowserCookieManager.setCookie( mCurrentHome , "com.icesoft.user-agent=HyperBrowser/1.0");		
 
             mBrowserField.addListener(new BrowserFieldListener() { 
                 public void documentLoaded( BrowserField field, Document document) { 
@@ -314,7 +313,6 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                             }
                             
                             mScriptEngine = mBrowserField.getScriptEngine();
-                            mBrowserCookieManager.setCookie( uri , "com.icesoft.user-agent=HyperBrowser/1.0");//	
 
                             if (mLoadingScreen != null) { 
                                 popScreen(mLoadingScreen); 
@@ -653,6 +651,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         if (checkNetworkAvailability()) { 
             UiApplication.getUiApplication().invokeLater( new Runnable() {
                 public void run() { 
+                    mBrowserCookieManager.setCookie( url , "com.icesoft.user-agent=HyperBrowser/1.0");
                     mBrowserField.requestContent( url );
                 }
             });		
