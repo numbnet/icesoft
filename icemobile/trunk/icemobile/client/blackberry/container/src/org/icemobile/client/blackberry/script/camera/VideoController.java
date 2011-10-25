@@ -160,7 +160,7 @@ class VideoRecordingScreen extends MainScreen {
                     public void run() { 
                         try {  
                      
-                            Thread.currentThread().sleep( mMaxTime * 1000);
+                            Thread.sleep( mMaxTime * 1000);
                             stopRecording( mFieldId );
 
                         } catch (InterruptedException i) { }  
