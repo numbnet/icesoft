@@ -17,8 +17,9 @@ package org.icemobile.component.impl;
 
 import java.util.Map;
 import javax.faces.context.FacesContext;
+import java.io.Serializable;
 
-public class SessionContext {
+public class SessionContext implements Serializable  {
     private static String SESSION_CONTEXT = SessionContext.class.getName();
     private String userAgent;
 
