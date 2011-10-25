@@ -301,7 +301,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
 
         //Delegate to user supplied converter if defined
         if(converter != null) {
-            logger.info("spinner id ="+spinner.getId()+" has converter and string value ="+submittedValue);
             objVal =  converter.getAsObject(context, spinner, submittedValue);
             return objVal;
         }
