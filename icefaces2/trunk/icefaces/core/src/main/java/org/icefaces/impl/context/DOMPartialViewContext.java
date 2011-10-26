@@ -125,8 +125,8 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 ec.addResponseHeader("Cache-Control", "no-cache");
 
                 DOMResponseWriter writer = new DOMResponseWriter(outputWriter,
-                        ec.getRequestCharacterEncoding(),
-                        ec.getRequestContentType());
+                        ec.getResponseCharacterEncoding(),
+                        ec.getResponseContentType());
                 facesContext.setResponseWriter(writer);
 
                 Document oldDOM = writer.getOldDocument();
@@ -578,10 +578,11 @@ class CustomPartialRenderCallback implements VisitCallback {
                     .getPartialViewContext().getPartialResponseWriter();
 
             ResponseWriter originalWriter = facesContext.getResponseWriter();
-            ResponseWriter updateWriter = new BasicResponseWriter(
+            ResponseWriter updateWriter = facesContext.getRenderKit()
+                .createResponseWriter(
                     facesContext.getExternalContext().getResponseOutputWriter(),
-                    originalWriter.getCharacterEncoding(),
-                    originalWriter.getContentType() );
+                    originalWriter.getContentType(), 
+                    originalWriter.getCharacterEncoding() );
             facesContext.setResponseWriter(updateWriter);
             Map extensionAttributes = new HashMap();
             extensionAttributes.put("id", clientId);
