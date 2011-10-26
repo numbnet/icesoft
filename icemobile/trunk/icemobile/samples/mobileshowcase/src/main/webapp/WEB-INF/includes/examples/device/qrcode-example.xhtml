@@ -64,12 +64,14 @@
                 <mobi:inputText type="text" value="#{qrCodeBean.qrString}" />
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <mobi:commandButton value="submit" type="important" styleClass="fr"/>
+                <mobi:commandButton value="test" type="important"
+                                    styleClass="fr" />
             </mobi:fieldsetRow>
             <!-- qr code echo-->
             <mobi:fieldsetRow>
                 <h:outputLabel value="QR Output: "/>
                 <mobi:qrcode value="#{qrCodeBean.qrString}"
+                             style="width:160px;height:160px;"
                              styleClass="fr"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
