@@ -57,8 +57,12 @@ public class FacesUtils {
     }
 
     public static HttpSession getHttpSession(boolean create) {
-        return (HttpSession) FacesContext.getCurrentInstance().
-                getExternalContext().getSession(create);
+        try {
+            return (HttpSession) FacesContext.getCurrentInstance().
+                    getExternalContext().getSession(create);
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     /**
