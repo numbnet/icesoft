@@ -15,7 +15,6 @@
   -->
 
 
-
 <ui:fragment xmlns="http://www.w3.org/1999/xhtml"
              xmlns:h="http://java.sun.com/jsf/html"
              xmlns:f="http://java.sun.com/jsf/core"
@@ -50,7 +49,7 @@
 
             <!-- textarea input -->
             <mobi:fieldsetRow>
-                <h:outputLabel for="textAreaInput" value="Text area:"/><br />
+                <h:outputLabel for="textAreaInput" value="Text area:"/><br/>
                 <mobi:inputText id="textAreaInput" style="width:99%;"
                                 type="textarea"
                                 singleSubmit="false"
@@ -67,6 +66,18 @@
                                 singleSubmit="false"
                                 placeholder="Password input"
                                 value="#{inputBean.passwordInput}">
+                </mobi:inputText>
+            </mobi:fieldsetRow>
+
+            <!-- Date input -->
+            <mobi:fieldsetRow>
+                <h:outputLabel for="dateInput" value="Date:"/>
+                <mobi:inputText id="dateInput"
+                                type="date"
+                                placeholder="yyyy-mm-dd"
+                                singleSubmit="false"
+                                value="#{inputBean.dateInput}">
+                    <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
                 </mobi:inputText>
             </mobi:fieldsetRow>
 
@@ -94,7 +105,7 @@
                           value="#{inputBean.numberInput}"/>
         </mobi:fieldsetRow>
 
-         <!-- Textarea output -->
+        <!-- Textarea output -->
         <mobi:fieldsetRow>
             <h:outputLabel value="Text area: "/>
             <h:outputText styleClass="fr"
@@ -106,6 +117,15 @@
             <h:outputLabel value="Password: "/>
             <h:outputText styleClass="fr"
                           value="#{inputBean.passwordInput}"/>
+        </mobi:fieldsetRow>
+
+        <!-- date output -->
+        <mobi:fieldsetRow>
+            <h:outputLabel value="Date: "/>
+            <h:outputText styleClass="fr"
+                          value="#{inputBean.dateInput}">
+                <f:convertDateTime dateStyle="full" />
+            </h:outputText>
         </mobi:fieldsetRow>
 
 
