@@ -45,15 +45,13 @@
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel value="QR Code: "/>
-                <h5>
-                <h:outputText style="font-style: italic"
-                              rendered="#{not qrCodeBean.qrScannerUrl}"
+                <em>
+                <h:outputText rendered="#{not qrCodeBean.qrScannerUrl}"
                               value="#{qrCodeBean.qrScanner}"/>
-                <h:outputLink style="font-style: italic"
-                              value="#{qrCodeBean.qrScanner}"
+                <h:outputLink value="#{qrCodeBean.qrScanner}"
                               rendered="#{qrCodeBean.qrScannerUrl}">
                         #{qrCodeBean.qrScanner}</h:outputLink>
-                </h5>
+                </em>
             </mobi:fieldsetRow>
 
         </mobi:fieldsetGroup>
