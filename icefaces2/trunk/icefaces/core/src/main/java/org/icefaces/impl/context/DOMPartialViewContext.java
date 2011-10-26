@@ -589,7 +589,10 @@ class CustomPartialRenderCallback implements VisitCallback {
             extensionAttributes.put(
                     DOMPartialViewContext.CUSTOM_UPDATE, "true");
             writer.startExtension(extensionAttributes);
-            writer.startCDATA();
+            writer.flush();
+            //apply CDATA to inner updateWriter so that it
+            //properly escapes its CDATA sections
+            updateWriter.startCDATA();
             try {
                 component.encodeAll(facesContext);
             }
@@ -599,7 +602,7 @@ class CustomPartialRenderCallback implements VisitCallback {
                             component.getClass() + " " + clientId, x);
                 }
             }
-            writer.endCDATA();
+            updateWriter.endCDATA();
             writer.endExtension();
             facesContext.setResponseWriter(originalWriter);
         } catch (Exception e) {
