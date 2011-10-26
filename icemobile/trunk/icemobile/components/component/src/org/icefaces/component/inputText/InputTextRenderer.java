@@ -77,12 +77,6 @@ public class InputTextRenderer extends BaseInputRenderer {
         boolean isNumberType = type.equals("number");
         boolean isDateType = type.equals("date");
         String compId = clientId;
-   /*     if (isNumberType || isDateType) {
-            compId += "_"+type;
-            writer.startElement(HTML.SPAN_ELEM, uiComponent);
-            writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", HTML.ID_ATTR);
-            writer.writeAttribute(HTML.NAME_ATTR, clientId+"_span", null);
-        } */
 
         writer.startElement(componentType, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, compId, HTML.ID_ATTR);
@@ -95,12 +89,10 @@ public class InputTextRenderer extends BaseInputRenderer {
         }
         writer.writeAttribute("class", baseClass.toString(), null);
         String valueToRender = getStringValueToRender(facesContext, inputText);
-        logger.info("value to Render original ="+valueToRender);
         if (valueToRender == null && isDateType){
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
                 Date aDate = new Date();
                 valueToRender =  sdf.format(aDate);
-             //   logger.info("updated valueto render to ="+valueToRender);
         }
         //do common passThrough attributes
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, inputText.getCommonInputAttributeNames());
@@ -123,23 +115,7 @@ public class InputTextRenderer extends BaseInputRenderer {
             writer.writeAttribute("readonly", "readonly", null);
         //still need to implement styleClass
         String jsCall = "ice.se(event, '" + clientId + "');";
-    /*    if (isNumberType) {
-            jsCall = "mobi.input.submit(event, '" + clientId + "', this.value," + singleSubmit + ");";
-            writer.writeAttribute("onchange", jsCall, null);
-        }
-        else if (isDateType){
-            String dateJSCall =  "mobi.input.submit(event, '";
-            StringBuilder sb = new StringBuilder(dateJSCall).append(clientId).append("', this.value,").append(singleSubmit).append(");");
-           // logger.info("dateJSCall sb="+sb);
-           if (Utils.isTouchEventEnabled(facesContext)){
-                logger.info("WRITING FOR MOBILE");
-               writer.writeAttribute("onblur",sb, null);
-           }else {
-                logger.info("DESKTOP") ;
-                writer.writeAttribute("onchange",sb, null);
-           }
 
-        }   */
         if (singleSubmit){
             writer.writeAttribute("onchange", jsCall, null);
         }
