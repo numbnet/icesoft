@@ -154,7 +154,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
             try {   
                 if (mParkScript != null && mRealDevice ) { 
                     mScriptEngine.executeScript(mParkScript, null);
-                    DEBUG("ICEmobile - Park Script ok");
+                    DEBUG("ICEmobile - Park Script ok: " + mParkScript);
                 } 
             } catch (Throwable t) { 
                 ERROR("ICEmobile - Exception executing park script: " + t);
@@ -290,7 +290,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
             mPushAgent = new PushAgent();
 
             ApplicationIndicatorRegistry reg = ApplicationIndicatorRegistry.getInstance(); 
-            EncodedImage image = EncodedImage.getEncodedImageResource("icebox-32x32.png"); 
+            EncodedImage image = EncodedImage.getEncodedImageResource("icemobile-icon-32x32.png"); 
             ApplicationIcon icon  = new ApplicationIcon( image ); 
 
             ApplicationIndicator indicator = reg.register(icon, true, false );
@@ -313,7 +313,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                             }
                             
                             mScriptEngine = mBrowserField.getScriptEngine();
-                            mBrowserCookieManager.setCookie( uri , "com.icesoft.user-agent=HyperBrowser/1.0");
+                            mBrowserCookieManager.setCookie(uri, "com.icesoft.user-agent=HyperBrowser/1.0");
 
                             if (mLoadingScreen != null) { 
                                 popScreen(mLoadingScreen); 
@@ -460,7 +460,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
      * to load the intitial request must be used for all subsequent requests in order to maintain 
      * the correct cookie setup. 
      */
-    public InputConnection postRequest( String url, String request, HttpHeaders headers) {
+    public InputConnection postRequest( String url, String request, HttpHeaders headers) throws Exception { 
 
         BrowserFieldConnectionManager bfconman = mBrowserField.getConnectionManager();
         BrowserFieldRequest bfr = new BrowserFieldRequest(url, request.getBytes(), headers);
