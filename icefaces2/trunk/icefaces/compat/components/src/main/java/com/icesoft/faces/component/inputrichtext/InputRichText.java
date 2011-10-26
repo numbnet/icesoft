@@ -26,19 +26,24 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.util.CoreUtils;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
+@ResourceDependencies({
+        @ResourceDependency(name = "inputrichtext/ckeditor/ckeditor.js"),
+        @ResourceDependency(name = "inputrichtext/ckeditor_ext.js")
+})
 public class InputRichText extends UIInput {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.InputRichText";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.InputRichTextRenderer";
- 
+
     private Boolean partialSubmit = null;
 
 
@@ -48,15 +53,15 @@ public class InputRichText extends UIInput {
     private String styleClass;
     private String width;
     private String height;
- 
- 
+
+
     private String toolbar;
     private String customConfigPath;
     private Boolean disabled = null;
     private String skin = null;
     private Boolean saveOnSubmit = null;
- 
-	
+
+
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
     }
@@ -230,10 +235,10 @@ public class InputRichText extends UIInput {
      */
     public String getCustomConfigPath() {
         if (customConfigPath != null) {
-            return CoreUtils.resolveResourceURL(getFacesContext(), "/"+ customConfigPath);
+            return CoreUtils.resolveResourceURL(getFacesContext(), "/" + customConfigPath);
         }
         ValueBinding vb = getValueBinding("customConfigPath");
-        return vb != null ? CoreUtils.resolveResourceURL(getFacesContext(), "/"+ (String) vb.getValue(getFacesContext())) : null;
+        return vb != null ? CoreUtils.resolveResourceURL(getFacesContext(), "/" + (String) vb.getValue(getFacesContext())) : null;
     }
 
     /**
