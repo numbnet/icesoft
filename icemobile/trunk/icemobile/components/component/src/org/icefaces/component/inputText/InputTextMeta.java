@@ -39,7 +39,7 @@ import javax.faces.application.ResourceDependency;
 )
 
 @ResourceDependencies({
-	 @ResourceDependency(name="component.js",library="org.icefaces.component.util")
+
 })
 public class InputTextMeta extends UIInputMeta {
 
