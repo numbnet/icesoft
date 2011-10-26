@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
 
-@MandatoryResourceComponent("org.icefaces.component.inputText.InputText")
 public class InputTextRenderer extends BaseInputRenderer {
     private final static Logger logger = Logger.getLogger(InputTextRenderer.class.getName());
 
@@ -45,7 +44,6 @@ public class InputTextRenderer extends BaseInputRenderer {
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = uiComponent.getClientId(facesContext);
         InputText inputText = (InputText) uiComponent;
-
         if (inputText.isDisabled() || inputText.isReadonly()) {
             return;
         }
@@ -55,7 +53,6 @@ public class InputTextRenderer extends BaseInputRenderer {
                 return;
             }
             this.setSubmittedValue(inputText, submittedString);
-
         }
     }
 
