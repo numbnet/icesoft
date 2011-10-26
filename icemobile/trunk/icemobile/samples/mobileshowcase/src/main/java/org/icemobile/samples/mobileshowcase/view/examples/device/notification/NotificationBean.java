@@ -27,6 +27,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -103,8 +104,11 @@ public class NotificationBean extends ExampleImpl<NotificationBean> implements
     public NotificationBean() {
         super(NotificationBean.class);
         // add current session to common render group.
-        renderGroup = FacesUtils.getHttpSession(false).getId();
-        PushRenderer.addCurrentSession(renderGroup);
+        HttpSession session = FacesUtils.getHttpSession(false);
+        if (session != null){
+            renderGroup = session.getId();
+            PushRenderer.addCurrentSession(renderGroup);
+        }
     }
 
     /**
