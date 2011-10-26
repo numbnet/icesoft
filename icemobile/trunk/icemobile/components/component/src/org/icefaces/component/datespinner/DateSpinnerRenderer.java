@@ -67,7 +67,17 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
             boolean disabled = spinner.isDisabled();
             boolean readonly = spinner.isReadonly();
             boolean singleSubmit = spinner.isSingleSubmit();
-            writer.writeAttribute("value", initialValue, "value");
+            if (isValueBlank(initialValue)) {
+                try {
+                    Date aDate = new Date();
+                    SimpleDateFormat df2 = new SimpleDateFormat("yyyy-mm-dd");
+                    writer.writeAttribute("value",df2.parse(initialValue),"value");
+                } catch (ParseException pe){
+                    writer.writeAttribute("value", "2011-11-01", "value");
+                }
+            }  else {
+                writer.writeAttribute("value", initialValue, "value");
+            }
             if (disabled){
                 writer.writeAttribute("disabled", component, "disabled");
             }
