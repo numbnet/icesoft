@@ -48,6 +48,7 @@
           <ui:repeat value="#{date.dateList}"  var ="item">
                <h:panelGroup >
                    <mobi:dateSpinner value="#{item.adate}"   >
+                       <f:convertDateTime pattern="yyyy-MM-dd"  type="date"/>
                   </mobi:dateSpinner>
                </h:panelGroup>
           </ui:repeat>
@@ -70,7 +71,7 @@
            <h:outputLabel value="#{outItem.title}"/>
            <h:outputText styleClass="fr"
                          value="#{outItem.adate}">
-               <f:convertDateTime type="date" />
+               <f:convertDateTime type="date" pattern='yyyy-MM-dd' />
            </h:outputText>
        </mobi:fieldsetRow>
       </ui:repeat>
