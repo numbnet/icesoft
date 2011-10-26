@@ -121,7 +121,7 @@ public class InputRichTextSetup implements Serializable, SystemEventListener {
                     code.append(",");
                 }
             }
-            code.append("]; if (r.indexOf('http://') == 0) { var i = document.location.href.lastIndexOf('/'); r = r.substring(i + 1); }; console.info('in: ' + r); for (var i = 0, l = mappings.length; i < l; i++) { var m = mappings[i]; if (m.in == r) { console.warn('out: ' + m.out); return m.out;} } return false; };");
+            code.append("]; if (r.indexOf('http://') == 0) { var i = document.location.href.lastIndexOf('/'); r = r.substring(i + 1); }; for (var i = 0, l = mappings.length; i < l; i++) { var m = mappings[i]; if (m.in == r) { return m.out;} } return false; };");
             applicationMap.put(InputRichTextSetup.class.getName(), code.toString());
 
             return code.toString();
