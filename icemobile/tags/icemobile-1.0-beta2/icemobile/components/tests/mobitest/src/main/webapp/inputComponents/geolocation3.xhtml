@@ -1,0 +1,54 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<meta charset="UTF-8"></meta>
+	<title>geolocation on iPhone</title>
+
+</h:head>
+<h:body>
+	<h:form prependId="false" id="cform">
+
+		<h3>html5 geolocation</h3>
+
+		<h:outputText value="Locate!" />
+		<br />
+		<div id="surround">
+			<mobi:geolocation id="locateId" latitude="#{positionBean.latitude}"
+				longitude="#{positionBean.longitude}" />
+		</div>
+		<div>
+			<h:commandButton value="submit" id="submitBtn"
+				actionListener="#{positionBean.submitForm}" />
+		</div>
+		<h5>results from html5 location component</h5>
+		<h:outputText value="#{positionBean.latitude}" />
+		<div class="output" id="output"></div>
+
+	</h:form>
+
+	 <br />
+    <li><a href="../inputComponents.html">index page</a>
+    </li>
+</h:body>
+</html>
