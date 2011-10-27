@@ -975,6 +975,15 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
                               VisitCallback callback,
                               boolean visitRows) {
 
+        // first, visit all columns
+        if (getChildCount() > 0) {
+            for (UIComponent kid : getChildren()) {
+                if (kid.visitTree(context, callback)) {
+                    return true;
+                }
+            }
+        }
+
         // Iterate over our UIColumn children, once per row
         int processed = 0;
         int rowIndex = 0;
