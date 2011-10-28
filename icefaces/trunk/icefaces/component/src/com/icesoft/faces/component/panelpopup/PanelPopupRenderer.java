@@ -310,9 +310,6 @@ public class PanelPopupRenderer extends GroupRenderer {
 
         scriptTextNode.appendData("; " + centreJS);
 
-        if (panelPopup instanceof PanelTooltip) {
-            scriptTextNode.appendData("; ToolTipPanelPopupUtil.adjustPosition('" + clientId + "');");
-        }
         scriptTextNode.appendData("; Ice.iFrameFix.start('" + clientId + "','" +
                 CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank") + "');");
     }
