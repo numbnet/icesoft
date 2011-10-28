@@ -32,6 +32,7 @@ import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.URI;
 import java.util.Date;
@@ -95,12 +96,13 @@ public class DynamicResourceDispatcher extends ResourceHandlerWrapper implements
         if (context == null) {
             throw new RuntimeException("Resource registration process needs access to current FacesContext instance.");
         }
-        Map session = context.getExternalContext().getSessionMap();
-        Object o = session.get(SessionBasedResourceDispatcher.class.getName());
+
+        HttpSession session = EnvUtils.getSafeSession(context);
+        Object o = session.getAttribute(SessionBasedResourceDispatcher.class.getName());
         SessionBasedResourceDispatcher dispatcher;
         if (o == null) {
             dispatcher = new SessionBasedResourceDispatcher();
-            session.put(SessionBasedResourceDispatcher.class.getName(), dispatcher);
+            session.setAttribute(SessionBasedResourceDispatcher.class.getName(), dispatcher);
         } else {
             dispatcher = (SessionBasedResourceDispatcher) o;
         }

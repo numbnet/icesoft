@@ -24,6 +24,7 @@ package org.icefaces.util;
 import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
 import org.icefaces.impl.push.servlet.ProxyHttpServletRequest;
 import org.icefaces.impl.push.servlet.ProxyHttpServletResponse;
+import org.icefaces.impl.push.servlet.ProxySession;
 
 import javax.faces.application.Resource;
 import javax.faces.component.UIViewRoot;
@@ -32,6 +33,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -518,6 +520,15 @@ public class EnvUtils {
             return new ProxyHttpServletResponse(fc);
         }
         return (HttpServletResponse) rawRes;
+    }
+
+    public static HttpSession getSafeSession(FacesContext fc) {
+        ExternalContext ec = fc.getExternalContext();
+        Object rawSess = ec.getSession(true);
+        if (instanceofPortletSession(rawSess)) {
+            return new ProxySession(fc);
+        }
+        return (HttpSession)rawSess;
     }
 
     public static boolean isPushRequest(FacesContext facesContext) {
