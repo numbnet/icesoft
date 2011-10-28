@@ -34,6 +34,7 @@ package com.icesoft.faces.component.panelseries;
 
 import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.component.datapaginator.DataPaginator;
+import com.icesoft.faces.component.datapaginator.DataPaginatorGroup;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.tree.TreeDataModel;
 import com.icesoft.faces.component.util.CustomComponentUtils;
@@ -698,12 +699,11 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
     } 
     
     protected void synchWithPaginator() {
-        if (!this.getAttributes().containsKey(DataPaginator.class.getName())) return;
-        String dataPaginatorClientId = (String) this.getAttributes().get(DataPaginator.class.getName()); 
-        DataPaginator paginator = (DataPaginator) D2DViewHandler.findComponent(":" + dataPaginatorClientId, FacesContext.getCurrentInstance().getViewRoot());
-        if (paginator != null && paginator.isRendered()) {
-            paginator.getPageIndex();
-        }
+    	DataPaginatorGroup.execute(this, new DataPaginatorGroup.Invoker() {
+			public void invoke(DataPaginator dataPaginator) {
+				dataPaginator.getPageIndex();				
+			}
+		}); 
     }
 }
 
