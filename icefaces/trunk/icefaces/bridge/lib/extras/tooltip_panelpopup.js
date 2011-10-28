@@ -106,7 +106,7 @@ ToolTipPanelPopup = Class.create({
             var positionedOffset = srcComp.positionedOffset();
             tooltip.style.top = this.y - tooltip.offsetHeight - 4 - cumulativeOffset.top + positionedOffset.top + "px";
             tooltip.style.left = this.x + 4 - cumulativeOffset.left + positionedOffset.left + "px";
-            ToolTipPanelPopupUtil.adjustPosition(tooltip);
+            ToolTipPanelPopupUtil.adjustPosition(tooltip, this.x, this.y);
             Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
         }
         this.addToVisibleList();
@@ -193,7 +193,7 @@ ToolTipPanelPopup = Class.create({
         var tooltip = this.getTooltip();
         tooltip.style.top = this.y - tooltip.offsetHeight - 4 + "px";
         tooltip.style.left = this.x + 4 + "px";
-        ToolTipPanelPopupUtil.adjustPosition(tooltip);
+        ToolTipPanelPopupUtil.adjustPosition(tooltip, this.x, this.y);
         Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
     },
 
