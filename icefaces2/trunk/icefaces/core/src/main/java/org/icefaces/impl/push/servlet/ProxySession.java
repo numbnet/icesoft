@@ -62,37 +62,31 @@ public class ProxySession implements HttpSession {
         currentScope = defaultScope;
     }
 
-    @Override
     public ServletContext getServletContext() {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public HttpSessionContext getSessionContext() {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public Object getValue(String s) {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public String[] getValueNames() {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public void putValue(String s, Object o) {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public void removeValue(String s) {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
@@ -100,7 +94,6 @@ public class ProxySession implements HttpSession {
 
     //By default, we want to get the APPLICATION-scoped attributes rather than
     //the PORTLET-scoped attributes.
-    @Override
     public Object getAttribute(String key) {
         Object sess = facesContext.getExternalContext().getSession(true);
         Class clazz = sess.getClass();
@@ -114,55 +107,46 @@ public class ProxySession implements HttpSession {
         return val;
     }
 
-    @Override
     public Enumeration<String> getAttributeNames() {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public long getCreationTime() {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public String getId() {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public long getLastAccessedTime() {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public int getMaxInactiveInterval() {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public void invalidate() {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public boolean isNew() {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public void removeAttribute(String s) {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public void setAttribute(String key, Object val) {
         Object sess = facesContext.getExternalContext().getSession(true);
         Class clazz = sess.getClass();
@@ -174,7 +158,6 @@ public class ProxySession implements HttpSession {
         }
     }
 
-    @Override
     public void setMaxInactiveInterval(int i) {
         log.severe("ProxySession unsupported operation");
         throw new UnsupportedOperationException();
