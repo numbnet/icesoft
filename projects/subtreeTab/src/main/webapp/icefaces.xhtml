@@ -29,23 +29,90 @@
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
     <title>ICEfaces Ajax</title>
+    <style>
+    .tab-selected {
+        background-color: red;
+    }
+    .tab-unselected {
+        background-color: white;
+    }
+    .panel-shown {
+      display:block;
+      background: gainsboro;
+      width:300px;
+      height:200px;
+      -moz-border-radius: 10px;
+      -webkit-border-radius: 10px;
+    }
+    .panel-hidden {
+        display: none;
+    }
+    </style>
 </h:head>
 <h:body>
-    <icecore:config render="true" />
-    <h:form id="form1" prependId="false">
+<script>
+function selectTab(element, event)  {
+    console.log(element + ' tab button ' + event.target.id);
+    var tabButtons = element.getElementsByTagName('input');
+    var l = tabButtons.length;
+    //dangerous iteration termination to avoid less than character
+    for (var i = 0; i != l; i++)  {
+        tabButtons[i].className = "tab-unselected";
+    }
+    event.target.className = "tab-selected";
 
+    var buttonId = event.target.id;
+    var buttonNumber = buttonId.substr(buttonId.lastIndexOf('-'));
+
+    var tabPanels = document.getElementById("panels").children;
+    l = tabPanels.length;
+    //dangerous iteration termination to avoid less than character
+    for (var i = 0; i != l; i++)  {
+        tabPanels[i].className = "panel-hidden";
+        var panelId = tabPanels[i].id;
+        var panelNumber = panelId.substr(panelId.lastIndexOf('-'));
+        if (panelNumber == buttonNumber) {
+            tabPanels[i].className = "panel-shown";
+        }
+    }
+}
+</script>
+    <icecore:config render="true" />
+
+<!--Notes
+  onclick should make the selected tab visible and button highlighted
+  each tab panel contains a form with render="@form"
+  can we use event bubbling on the tab button container?
+-->
         <h2>ICEfaces: Show / Hide based on backing bean</h2>
-        <h:panelGroup id="pg1">
-        <h:outputText id="out1" value="Show" rendered="#{basic.visible}"/>
-        </h:panelGroup>
-        <h:panelGroup id="pg2">
-        <h:outputText id="out2" value="Or Not" rendered="#{!basic.visible}"/>
-        </h:panelGroup>
+    <h:form id="buttonForm" prependId="false">
+        <div onclick="selectTab(this, event);">
+          <f:ajax execute="@this" render="@this">
+            <h:commandButton id="button-1" value="One" class="tab-selected"
+                         action="#{basic.show1}">
+            </h:commandButton>
+            <h:commandButton id="button-2" value="Two" 
+                         actionListener="#{basic.show2}">
+            </h:commandButton>
+            <h:commandButton id="button-3" value="Three" 
+                         actionListener="#{basic.show2}">
+            </h:commandButton>
+          </f:ajax>
+        </div>
+    </h:form >
+        <div id="panels">
+          <h:panelGroup id="panel-1" class="panel-shown">
+            <ui:include src="panel1.xhtml" />
+          </h:panelGroup>
+          <h:panelGroup id="panel-2" class="panel-hidden">
+            <ui:include src="panel2.xhtml" />
+          </h:panelGroup>
+          <h:panelGroup id="panel-3" class="panel-hidden">
+            <ui:include src="panel3.xhtml" />
+          </h:panelGroup>
+        </div>
         <br/>
-        <h:commandButton id="button1" value="Show/Hide"
-                         actionListener="#{basic.toggle}">
-        </h:commandButton>
-        <br/>
+    <h:form id="form1">
         <h:outputText value="Reload entire page: "/>
         <h:commandButton id="reload" value="reload">
             <f:ajax disabled="true" />

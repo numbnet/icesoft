@@ -39,6 +39,16 @@ public class Basic implements Serializable  {
     public void toggle(ActionEvent ae) {
         visible = !visible;
     }
+
+    public String show1() {
+        visible = !visible;
+        return "";
+    }
+
+    public String show2() {
+        visible = !visible;
+        return "";
+    }
     
     public String getTime()  {
         return Long.toString(System.currentTimeMillis());

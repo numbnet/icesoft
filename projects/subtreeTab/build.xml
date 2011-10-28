@@ -19,7 +19,7 @@
   ~ Contributor(s): _____________________.
   -->
 
-<project name="basic" default="servlet-profile">
+<project name="subtreetab" default="servlet-profile">
     
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>
