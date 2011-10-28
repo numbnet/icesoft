@@ -234,11 +234,11 @@ ToolTipPanelPopup = Class.create({
             iceTooltipInfo.value = "";
         } else {
             iceTooltipInfo.value = "tooltip_id=" + this.tooltipCompId +
-                    "; tooltip_src_id=" + this.src.id +
-                    "; tooltip_state=" + this.state +
-                    "; tooltip_x=" + this.x +
-                    "; tooltip_y=" + this.y +
-                    "; cntxValue=" + this.ctxValue;
+                "; tooltip_src_id=" + this.src.id +
+                "; tooltip_state=" + this.state +
+                "; tooltip_x=" + this.x +
+                "; tooltip_y=" + this.y +
+                "; cntxValue=" + this.ctxValue;
         }
     },
 
@@ -296,37 +296,34 @@ ToolTipPanelPopupUtil = {
         }
         visibleTooltipList = newList;
     },
-    adjustPosition: function(id) {
+    adjustPosition: function(id, x, y) {
         var element = $(id);
         var viewportDimensions = document.viewport.getDimensions();
         var viewportScrollOffsets = document.viewport.getScrollOffsets();
         var elementDimensions = element.getDimensions();
         var elementOffsets = element.cumulativeOffset();
-        var positionedOffset = element.positionedOffset();
+        var tooltipOffset = 4;
 
-        var diff = 0;
-        if (elementOffsets.left < viewportScrollOffsets.left) {
-            diff = viewportScrollOffsets.left - elementOffsets.left;
-        } else if (elementOffsets.left + elementDimensions.width > viewportScrollOffsets.left + viewportDimensions.width) {
-            diff = (elementOffsets.left + elementDimensions.width) - (viewportScrollOffsets.left + viewportDimensions.width);
-            diff = - Math.min(diff, (elementOffsets.left - viewportScrollOffsets.left));
+        //verify if the right edge of the tooltip is outside of the viewport
+        if (x + elementDimensions.width + tooltipOffset > viewportScrollOffsets.left + viewportDimensions.width) {
+            //align tooltip's right edge with the right edge of the view port
+            element.style.left = (viewportScrollOffsets.left + viewportDimensions.width - elementDimensions.width) + 'px';
+        } else {
+            //just offset the tooltip with 4px
+            element.style.left = (x + tooltipOffset) + 'px';
         }
-        element.style.left = positionedOffset.left + diff + "px";
 
-        diff = 0;
-        if (elementOffsets.top < viewportScrollOffsets.top) {
-            diff = viewportScrollOffsets.top - elementOffsets.top;
-        } else if (elementOffsets.top + elementDimensions.height > viewportScrollOffsets.top + viewportDimensions.height) {
-            diff = (elementOffsets.top + elementDimensions.height) - (viewportScrollOffsets.top + viewportDimensions.height);
-            diff = - Math.min(diff, (elementOffsets.top - viewportScrollOffsets.top));
+        //verify if the top edge of the tooltip is outside of the viewport
+        if (y - elementDimensions.height - tooltipOffset < viewportScrollOffsets.top) {
+            //align tooltip's top edge with the top edge of the view port
+            element.style.top = (y + viewportScrollOffsets.top - elementOffsets.top) + 'px';
+        } else {
+            //just offset the tooltip with 4px plus the height of the tooltip
+            element.style.top = (y - (elementDimensions.height + tooltipOffset)) + 'px';
         }
-        element.style.top = positionedOffset.top + diff + "px";
     },
-    showPopup: function(id) {
-        var tooltip = $(id);
-        tooltip.style.top = parseInt(tooltip.style.top) - tooltip.offsetHeight - 4 + "px";
-        tooltip.style.left = parseInt(tooltip.style.left) + 4 + "px";
-        ToolTipPanelPopupUtil.adjustPosition(id);
+    showPopup: function(id, x, y) {
+        ToolTipPanelPopupUtil.adjustPosition(id, x, y);
     }
 };
     
