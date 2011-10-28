@@ -112,16 +112,16 @@ public class InputRichTextSetup implements Serializable, SystemEventListener {
             Iterator<ResourceMapping> entries = allResources.iterator();
             while (entries.hasNext()) {
                 ResourceMapping next = entries.next();
-                code.append("{in: '");
+                code.append("{inbound: '");
                 code.append(next.getRelativeLocalPath());
-                code.append("', out: '");
+                code.append("', outbound: '");
                 code.append(next.getRequestPath());
                 code.append("'}");
                 if (entries.hasNext()) {
                     code.append(",");
                 }
             }
-            code.append("]; if (r.indexOf('http://') == 0) { var i = document.location.href.lastIndexOf('/'); r = r.substring(i + 1); }; for (var i = 0, l = mappings.length; i < l; i++) { var m = mappings[i]; if (m.in == r) { return m.out;} } return false; };");
+            code.append("]; if (r.indexOf('http://') == 0) { var i = document.location.href.lastIndexOf('/'); r = r.substring(i + 1); }; for (var i = 0, l = mappings.length; i < l; i++) { var m = mappings[i]; if (m.inbound == r) { return m.outbound;} } return false; };");
             applicationMap.put(InputRichTextSetup.class.getName(), code.toString());
 
             return code.toString();
@@ -200,7 +200,7 @@ public class InputRichTextSetup implements Serializable, SystemEventListener {
         public void encode(ResponseWriter writer, FacesContext context) throws IOException {
             writer.startElement("script", this);
             writer.writeAttribute("type", "text/javascript", null);
-            writer.writeText(code, null);
+            writer.writeText("try {" + code + " } catch (ex) { alert(ex) }", null);
             writer.endElement("script");
         }
 
