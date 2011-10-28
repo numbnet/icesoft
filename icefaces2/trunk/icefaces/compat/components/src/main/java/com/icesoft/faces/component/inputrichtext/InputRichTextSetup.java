@@ -93,7 +93,7 @@ public class InputRichTextSetup implements Serializable, SystemEventListener {
             }
 
             rewriteRelativeImagePaths(cssResources, imageResources);
-            File file = createCSSResourcesJar(cssResources);
+            File file = createCSSResourcesJar(context, cssResources);
             addJarToClasspath(file);
 
             //add CSS mappings that point to the rewritten CSS resources
@@ -134,14 +134,17 @@ public class InputRichTextSetup implements Serializable, SystemEventListener {
         try {
             Method method = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
             method.setAccessible(true);
-            method.invoke(this.getClass().getClassLoader(), new Object[]{file.toURL()});
+            method.invoke(this.getClass().getClassLoader(), new Object[]{file.toURI().toURL()});
         } catch (Throwable t) {
             throw new IOException("Error, could not add URL to system classloader");
         }
     }
 
-    private File createCSSResourcesJar(List cssList) throws IOException {
-        File file = File.createTempFile("remappedResources", ".tmp.jar");
+    private File createCSSResourcesJar(FacesContext context, List cssList) throws IOException {
+        //using temporary directory as defined in spec: http://java.sun.com/developer/technicalArticles/Servlets/servletapi/
+        File tmpDir = (File) context.getExternalContext().getApplicationMap().get("javax.servlet.context.tempdir");
+        File file = File.createTempFile("remappedCSSResources", ".tmp.jar", tmpDir);
+        file.deleteOnExit();
         JarOutputStream jar = new JarOutputStream(new FileOutputStream(file));
         Iterator<CSSResourceEntry> i = cssList.iterator();
         while (i.hasNext()) {
