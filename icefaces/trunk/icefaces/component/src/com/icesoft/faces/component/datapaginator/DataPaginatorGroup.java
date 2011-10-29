@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 
@@ -29,9 +30,10 @@ public class DataPaginatorGroup {
         List dataPaginatorClientIdList = (List) uiData.getAttributes().get(DataPaginatorGroup.class.getName()); 
         Iterator it = dataPaginatorClientIdList.iterator();
         while (it.hasNext()) {
-	        DataPaginator paginator = (DataPaginator) D2DViewHandler.findComponent(":" + it.next(), FacesContext.getCurrentInstance().getViewRoot());
-	        if (paginator != null && paginator.isRendered()) {
-	            invoker.invoke(paginator);
+	        UIComponent component = D2DViewHandler.findComponent(":" + it.next(), FacesContext.getCurrentInstance().getViewRoot());
+	        if (component != null && component.isRendered() && 
+	        		component instanceof DataPaginator) {
+	            invoker.invoke((DataPaginator)component);
 	        }		
         }
 	}
