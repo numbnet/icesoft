@@ -50,6 +50,10 @@
             <id>kore</id>
             <url>http://kore.fi.muni.cz:9999/repository/</url>
         </repository>
+		<repository>
+			<id>nexus</id>
+			<url>https://maven.nuxeo.org/nexus/content/repositories/public</url>
+		</repository>		
     </repositories>
     
     <dependencies>

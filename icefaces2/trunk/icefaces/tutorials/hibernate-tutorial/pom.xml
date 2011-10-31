@@ -48,6 +48,10 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+		<repository>
+			<id>nexus</id>
+			<url>https://maven.nuxeo.org/nexus/content/repositories/public</url>
+		</repository>
         <repository>
             <id>kore</id>
             <url>http://kore.fi.muni.cz:9999/repository/</url>
