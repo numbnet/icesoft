@@ -23,6 +23,10 @@
         <id>java.net</id>
         <url>http://download.java.net/maven/2</url>
         </repository>
+		<repository>
+			<id>nexus</id>
+			<url>https://maven.nuxeo.org/nexus/content/repositories/public</url>
+		</repository>
     </repositories>
     <dependencies>
       <dependency>
