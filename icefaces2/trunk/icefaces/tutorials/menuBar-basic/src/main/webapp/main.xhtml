@@ -2,7 +2,7 @@
                <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
                <title>MenuBar Component Tutorial - Basic</title>
                <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
-               </h:head>    <h:body>        <ice:form>
+               </h:head>    <h:body>        <ice:form id="frm">
                    <ice:panelGroup>
                        <ice:panelGroup>
                            <ice:panelGrid columns="2">
@@ -23,7 +23,7 @@
                        </ice:panelGroup>
                    </ice:panelGroup>
                    <br />
-                   <ice:menuBar orientation="#{menuBar.orientation}">
+                   <ice:menuBar id="menuBar" orientation="#{menuBar.orientation}">
                        <ice:menuItem value="File" id="file">
                            <ice:menuItem id="open" value="Open" icon="images/open.gif" actionListener="#{menuBar.listener}">
                                  <f:param name="myParam" value="Open"></f:param>
