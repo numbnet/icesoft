@@ -91,7 +91,7 @@
         <dependency>
            <groupId>org.portletfaces</groupId>
            <artifactId>portletfaces-bridge</artifactId>
-           <version>{$portletfacesbridge.version}</version>
+           <version>${portletfacesbridge.version}</version>
         </dependency>
     </dependencies>
    <profiles>
