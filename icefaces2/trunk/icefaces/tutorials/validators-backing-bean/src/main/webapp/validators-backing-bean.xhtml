@@ -14,10 +14,10 @@
                 
                 <ice:message id="emailError" for="email"/>
                 <br/>
-                <ice:commandButton value="Submit" actionListener="#{user.submitActionEmail}"/>
+                <ice:commandButton id="btn" value="Submit" actionListener="#{user.submitActionEmail}"/>
                 <br/>
-                <ice:outputText value="Email: "/>
-                <ice:outputText value="#{user.displayEmail}" />
+                <ice:outputText id="emailLbl" value="Email: "/>
+                <ice:outputText id="emailOut" value="#{user.displayEmail}" />
                 <br/><br/>
             </ice:form>
         </h:body>

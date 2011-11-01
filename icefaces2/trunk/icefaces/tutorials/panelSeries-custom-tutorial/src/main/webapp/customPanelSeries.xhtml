@@ -6,28 +6,28 @@
 	 	.first{width:200px;}
 	 	.second{width:600px;}
 	</style>
-        </h:head>    <h:body>        <ice:form>
-            <ice:panelSeries var="customObject" value="#{customPanelSeriesBean.customObjectList}">
-            	<ice:panelGrid columns="2" style="border:1px solid silver;" width="800px" columnClasses="first,second">
-            		<ice:outputText value="Name:"></ice:outputText>
-            		<ice:outputText value="#{customObject.name}"></ice:outputText>
-            		<ice:outputText value="Age:"></ice:outputText>
-            		<ice:outputText value="#{customObject.age}"></ice:outputText>
-            		<ice:outputText value="Email Address:"></ice:outputText>
-            		<ice:outputText value="#{customObject.emailAddress}"></ice:outputText>
-            		<ice:outputText value="Phone Number:"></ice:outputText>
-            		<ice:outputText value="#{customObject.phoneNumber}"></ice:outputText>
-            		<ice:outputText value="Anonymous Message?"></ice:outputText>
-            		<ice:selectBooleanCheckbox value="#{customObject.anonymous}" partialSubmit="true"></ice:selectBooleanCheckbox>
-            		<ice:outputText value="Message to #{customObject.name}:"></ice:outputText>
-            		<ice:inputText value="#{customObject.inputMessage}" partialSubmit="true"></ice:inputText>
-            		<ice:outputText value="Pick a Day:"></ice:outputText>
-            		<ice:selectInputDate value="#{customObject.selectedDate}" partialSubmit="true" renderAsPopup="true"></ice:selectInputDate>
+        </h:head>    <h:body>        <ice:form id="frm">
+            <ice:panelSeries id="pSeries" var="customObject" value="#{customPanelSeriesBean.customObjectList}">
+            	<ice:panelGrid id="grid" columns="2" style="border:1px solid silver;" width="800px" columnClasses="first,second">
+            		<ice:outputText id="nameLbl" value="Name:"></ice:outputText>
+            		<ice:outputText id="name" value="#{customObject.name}"></ice:outputText>
+            		<ice:outputText id="ageLbl" value="Age:"></ice:outputText>
+            		<ice:outputText id="age" value="#{customObject.age}"></ice:outputText>
+            		<ice:outputText id="emailLbl" value="Email Address:"></ice:outputText>
+            		<ice:outputText id="email" value="#{customObject.emailAddress}"></ice:outputText>
+            		<ice:outputText id="phoneLbl" value="Phone Number:"></ice:outputText>
+            		<ice:outputText id="phone" value="#{customObject.phoneNumber}"></ice:outputText>
+            		<ice:outputText id="anonymousLbl" value="Anonymous Message?"></ice:outputText>
+            		<ice:selectBooleanCheckbox id="anonymous" value="#{customObject.anonymous}" partialSubmit="true"></ice:selectBooleanCheckbox>
+            		<ice:outputText id="msgToLbl" value="Message to #{customObject.name}:"></ice:outputText>
+            		<ice:inputText id="msgIn" value="#{customObject.inputMessage}" partialSubmit="true"></ice:inputText>
+            		<ice:outputText id="dayLbl" value="Pick a Day:"></ice:outputText>
+            		<ice:selectInputDate id="day" value="#{customObject.selectedDate}" partialSubmit="true" renderAsPopup="true"></ice:selectInputDate>
             		
-            		<ice:commandButton value="Done" actionListener="#{customObject.showMessage}"></ice:commandButton>
-            		<ice:outputText value="You have Left following message to #{customObject.name} at                   #{customObject.selectedDate}:" rendered="#{customObject.done}"></ice:outputText>
+            		<ice:commandButton id="btn" value="Done" actionListener="#{customObject.showMessage}"></ice:commandButton>
+            		<ice:outputText id="msgTo" value="You have Left following message to #{customObject.name} at                   #{customObject.selectedDate}:" rendered="#{customObject.done}"></ice:outputText>
             		<br />
-            		<ice:outputText value="#{customObject.inputMessage}" escape="false" rendered="#{customObject.done}"></ice:outputText>
+            		<ice:outputText id="msgOut" value="#{customObject.inputMessage}" escape="false" rendered="#{customObject.done}"></ice:outputText>
             	
             	</ice:panelGrid>
             	<br />

@@ -14,10 +14,10 @@
                 </ice:inputText>
                 <ice:message id="phoneError" for="phoneNumber"/>
                 <br/>
-                <ice:commandButton value="Submit" actionListener="#{user.submitActionPhone}"/>
+                <ice:commandButton id="btn" value="Submit" actionListener="#{user.submitActionPhone}"/>
                 <br/>
-                <ice:outputText value="Phone Number: "/>
-                <ice:outputText value="#{user.displayPhoneNumber}" />
+                <ice:outputText id="phoneNumberLbl" value="Phone Number: "/>
+                <ice:outputText id="phoneNumberOut" value="#{user.displayPhoneNumber}" />
                 <br/><br/>                
             </ice:form>            
         </h:body>        

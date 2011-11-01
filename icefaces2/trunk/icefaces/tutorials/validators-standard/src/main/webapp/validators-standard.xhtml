@@ -9,16 +9,16 @@
         <h:body>
             <h2>Standard Validation</h2>
             
-            <ice:form >
+            <ice:form id="frm">
                 <ice:inputText id="age" value="#{user.age}" partialSubmit="true">
                     <f:validateLongRange maximum="120" minimum="1"/>
                 </ice:inputText>
                 <ice:message style="color: red;" id="ageError" for="age"/>
                 <br/>
-                <ice:commandButton value="Submit" actionListener="#{user.submitAction}"/>
+                <ice:commandButton id="btn" value="Submit" actionListener="#{user.submitAction}"/>
                 <br/>
-                <ice:outputText value="Age: "/>
-                <ice:outputText value="#{user.displayAge}" />        
+                <ice:outputText id="ageLbl" value="Age: "/>
+                <ice:outputText id="ageOut" value="#{user.displayAge}" />        
             </ice:form>            
         </h:body>        
 </html>

@@ -15,10 +15,10 @@
                 </ice:inputText>
                 <ice:message id="nameError" for="name"/>  
                 <br/>
-                <ice:commandButton value="Register" actionListener="#{user.register}"/>
+                <ice:commandButton id="btn" value="Register" actionListener="#{user.register}"/>
                 <br/>
-                <ice:outputText value="Name: "/>
-                <ice:outputText value="#{user.displayName}" />
+                <ice:outputText id="nameLbl" value="Name: "/>
+                <ice:outputText id="nameOut" value="#{user.displayName}" />
                 <br/><br/>
             </ice:form>
         </h:body>

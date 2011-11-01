@@ -2,10 +2,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
         <title>Series Panel Component Tutorial</title>
         <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
-        </h:head>    <h:body>        <ice:form>
-            <ice:panelSeries var="color" value="#{basicPanelSeriesBean.colorList}">
-            	<ice:panelGrid columns="1" style="border:1px dotted silver;" width="100px">
-            		<ice:outputText value="#{color}"></ice:outputText>
+        </h:head>    <h:body>        <ice:form id="frm">
+            <ice:panelSeries id="color" var="color" value="#{basicPanelSeriesBean.colorList}">
+            	<ice:panelGrid id="grid" columns="1" style="border:1px dotted silver;" width="100px">
+            		<ice:outputText id="out" value="#{color}"></ice:outputText>
             	</ice:panelGrid>
             	<br />
             </ice:panelSeries>
