@@ -15,22 +15,22 @@
         <!--
         This demo shows an advanced draggable panelPopup with a variety components in the body
         -->
-        <ice:form style="width: 45%;">
-        <ice:commandButton value="Open a Popup" action="#{popup.openPopup}" rendered="#{not popup.visible}"/>
-            <ice:panelPopup draggable="true" visible="#{popup.visible}" style="z-index: 1000; width: 300px;">
-                <f:facet name="header">
-                    <ice:panelGrid width="100%" cellpadding="0" cellspacing="0" columns="2" style="text-align: center;">
-                        <ice:outputText style="color: #FFFFFF;" value="Draggable Panel Popup"/>
-                        <ice:commandButton image="#{resource['images:close.png']}" action="#{popup.closePopup}" title="Close this draggable popup"/>
+        <ice:form id="frm" style="width: 45%;">
+        <ice:commandButton id="open" value="Open a Popup" action="#{popup.openPopup}" rendered="#{not popup.visible}"/>
+            <ice:panelPopup id="panelPopup" draggable="true" visible="#{popup.visible}" style="z-index: 1000; width: 300px;">
+                <f:facet id="header" name="header">
+                    <ice:panelGrid id="grid" width="100%" cellpadding="0" cellspacing="0" columns="2" style="text-align: center;">
+                        <ice:outputText id="txt" style="color: #FFFFFF;" value="Draggable Panel Popup"/>
+                        <ice:commandButton id="btn" image="#{resource['images:close.png']}" action="#{popup.closePopup}" title="Close this draggable popup"/>
                     </ice:panelGrid>
                 </f:facet>
                 
-                <f:facet name="body">
-                    <ice:panelGrid width="100%" cellpadding="0" cellspacing="0">
-                        <ice:inputText value="Input Text"/><br/>
-                        <ice:selectBooleanCheckbox value="true"/><br/>
-                        <ice:outputLink value="">
-                            <ice:outputText value="Output Link"/>
+                <f:facet id="body" name="body">
+                    <ice:panelGrid id="grid2" width="100%" cellpadding="0" cellspacing="0">
+                        <ice:inputText id="in" value="Input Text"/><br/>
+                        <ice:selectBooleanCheckbox id="select" value="true"/><br/>
+                        <ice:outputLink id="link" value="">
+                            <ice:outputText id="out" value="Output Link"/>
                         </ice:outputLink><br/>
                         <ice:selectInputDate/><br/>
                     </ice:panelGrid>
