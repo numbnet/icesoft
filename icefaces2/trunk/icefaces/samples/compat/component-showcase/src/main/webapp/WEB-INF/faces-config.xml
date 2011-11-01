@@ -33,6 +33,10 @@
             <supported-locale>es</supported-locale>
         </locale-config>
         <message-bundle>org.icefaces.application.showcase.view.resources.messages</message-bundle>
+        <resource-bundle>
+            <base-name>org.icefaces.application.showcase.view.resources.messages</base-name>
+            <var>msgs</var>
+        </resource-bundle>
     </application>
 
 </faces-config>
