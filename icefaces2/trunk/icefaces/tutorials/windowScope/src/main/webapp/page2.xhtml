@@ -9,23 +9,23 @@
 </h:head>
 <h:body>
 	<h2>Page 2</h2>
-	<h:panelGrid columns="2">
-		<h:outputLabel for="viewBean" value="View Bean:"  style="font-weight: bold;"/>
+	<h:panelGrid id="grid" columns="2">
+		<h:outputLabel id="viewLbl" for="viewBean" value="View Bean:"  style="font-weight: bold;"/>
 		<h:outputText id="viewBean" value="#{viewBean} created #{viewBean.created}"/>
 		
-		<h:outputLabel for="windowBean" value="Window Bean:" style="font-weight: bold;"/>
+		<h:outputLabel id="windowLbl" for="windowBean" value="Window Bean:" style="font-weight: bold;"/>
 		<h:outputText id="windowBean" value="#{windowBean} created #{windowBean.created}"/>
 		
-		<h:outputLabel for="sessionBean" value="Session Bean:" style="font-weight: bold;"/>
+		<h:outputLabel id="sessionLbl" for="sessionBean" value="Session Bean:" style="font-weight: bold;"/>
 		<h:outputText id="sessionBean" value="#{sessionBean} created #{sessionBean.created}"/>
 	</h:panelGrid>
 	
-	<h:form>
-		<h:panelGrid columns="4">
-			<h:commandButton value="Redirect to Page 1" action="#{pageController.navigatePage1}"/>
-			<h:commandButton value="Refresh Page" action="#{pageController.navigatePage2}"/>
-			<h:commandButton value="Use an Action" action="#{pageController.action}"/>
-			<h:commandButton value="Use an Action Listener" actionListener="#{pageController.actionListener}"/>
+	<h:form id="frm">
+		<h:panelGrid id="grid2" columns="4">
+			<h:commandButton id="page1" value="Redirect to Page 1" action="#{pageController.navigatePage1}"/>
+			<h:commandButton id="refresh" value="Refresh Page" action="#{pageController.navigatePage2}"/>
+			<h:commandButton id="action" value="Use an Action" action="#{pageController.action}"/>
+			<h:commandButton id="actionListener" value="Use an Action Listener" actionListener="#{pageController.actionListener}"/>
 		</h:panelGrid>
 	</h:form>
 </h:body>
