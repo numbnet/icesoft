@@ -186,7 +186,6 @@
             </fileset>
 
         </delete>
-        <delete dir="${bundle.dir.bin}/lib/myfaces"/>
 
         <!-- Due to a quirk of Ant and Windows, we can't delete a .jar file that was
              used on the classpath to execute a task. With ACE, we use the smartsprites
