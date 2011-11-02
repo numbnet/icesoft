@@ -129,7 +129,7 @@
         </sequential>
     </macrodef>
 
-    <target name="compile" depends="generate.metadata">
+    <target name="compile" depends="generate.metadata, inputrichtext-resources">
         <delete dir="${build.classes.dir}"/>
         <mkdir dir="${build.classes.dir}"/>
 
@@ -158,7 +158,7 @@
         </java>
     </target>
 
-    <target name="jar.components" depends="inputrichtext-resources, gen.facelets.file, test">
+    <target name="jar.components" depends="gen.facelets.file, test">
         <build.jar>
             <add.metainfs>
                 <metainf dir="../component-metadata/target/classes/conf" includes="faces-config.xml"/>
