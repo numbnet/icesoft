@@ -25,13 +25,16 @@ import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.util.pooling.ClientIdPool;
+import org.icefaces.render.MandatoryResourceComponent;
 import org.w3c.dom.Element;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
+@MandatoryResourceComponent("com.icesoft.faces.component.inputrichtext.InputRichText")
 public class InputRichTextRenderer extends DomBasicInputRenderer {
-	
+
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         String clientId = uiComponent.getClientId(facesContext);

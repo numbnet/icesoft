@@ -30,6 +30,7 @@
         <phase-listener>com.icesoft.faces.application.PartialSubmitPhaseListener</phase-listener>
     </lifecycle>
     <application>
+        <resource-handler>com.icesoft.faces.component.inputrichtext.InputRichTextResourceHandler</resource-handler>
         <system-event-listener>
             <system-event-listener-class>com.icesoft.faces.application.ExtrasSetup</system-event-listener-class>
             <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
@@ -38,10 +39,6 @@
             <system-event-listener-class>com.icesoft.faces.component.JavaScriptContextSetup</system-event-listener-class>
             <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
         </system-event-listener>
-        <system-event-listener>
-            <system-event-listener-class>com.icesoft.faces.component.inputrichtext.InputRichTextSetup</system-event-listener-class>
-            <system-event-class>javax.faces.event.PreRenderViewEvent</system-event-class>
-        </system-event-listener>        
         <system-event-listener>
             <system-event-listener-class>com.icesoft.faces.async.render.SessionRenderer$StartupListener
             </system-event-listener-class>
