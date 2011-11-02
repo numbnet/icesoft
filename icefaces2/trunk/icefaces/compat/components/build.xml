@@ -57,7 +57,7 @@
     	<isset property="release.type"/>
 	</condition>
     <property name="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}"/>
-    	
+
     <property name="javadoc.title" value="${product} ${product.lib} Java API Documentation" />
     <property name="javadoc.header" value="${product} ${product.lib} ${version.string}&lt;br&gt;Java API Documentation" />
     <property name="tld.title" value="${product} ${product.lib} ${version.string} Tag Library Reference" />
@@ -158,7 +158,7 @@
         </java>
     </target>
 
-    <target name="jar.components" depends="gen.facelets.file, test">
+    <target name="jar.components" depends="inputrichtext-resources, gen.facelets.file, test">
         <build.jar>
             <add.metainfs>
                 <metainf dir="../component-metadata/target/classes/conf" includes="faces-config.xml"/>
@@ -170,6 +170,10 @@
 
     <target name="tlddoc">
         <gen.tld.doc tld.file="${tld.file}"/>
+    </target>
+
+    <target name="inputrichtext-resources">
+        <ant antfile="src/main/java/com/icesoft/faces/component/inputrichtext/build.xml"/>
     </target>
 
     <target name="javadoc">
