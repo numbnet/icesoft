@@ -163,14 +163,6 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
     }
 
     public Resource createResource(String resourceName) {
-        return createResource(resourceName, null, null);
-    }
-
-    public Resource createResource(String resourceName, String libraryName) {
-        return createResource(resourceName, libraryName, null);
-    }
-
-    public Resource createResource(String resourceName, String libraryName, String contentType) {
         if (codeResource.localPath.equals(resourceName)) {
             //serving up the mapping as a referenced JS resource
             return codeResource;
@@ -179,7 +171,7 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
             return cssResources.get(resourceName);
         } else {
             //let JSF serve the rest of resources
-            return super.createResource(resourceName, libraryName, contentType);
+            return handler.createResource(resourceName);
         }
     }
 
