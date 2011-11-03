@@ -27,6 +27,14 @@
         </subant>
     </target>
 
+    <target name="build">
+        <subant>
+            <fileset dir="."
+                     includes="generator/build.xml component/build.xml">
+            </fileset>
+        </subant>
+    </target>
+
     <target name="clean">
         <subant target="clean">
             <fileset dir="."
