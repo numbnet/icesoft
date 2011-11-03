@@ -17,8 +17,16 @@
 <project name="icemobile-samples" default="all">
     <property file="./build.properties"/>
 
+    <property name="dist.dir" location="dist"/>
+
     <target name="all">
         <subant>
+            <fileset dir="." includes="*/build.xml" excludes=""/>
+        </subant>
+    </target>
+
+    <target name="clean">
+        <subant target="clean">
             <fileset dir="." includes="*/build.xml" excludes=""/>
         </subant>
     </target>
