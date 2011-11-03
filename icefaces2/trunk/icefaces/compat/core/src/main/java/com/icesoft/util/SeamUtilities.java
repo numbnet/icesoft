@@ -21,6 +21,7 @@
  
 package com.icesoft.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -83,6 +84,16 @@ public class SeamUtilities {
             "org.springframework.webflow.executor.jsf.FlowVariableResolver";
     private static String SPRING_CONTEXT_HOLDER = 
             "org.springframework.webflow.execution.RequestContextHolder";
+    private static String SPRING_REQUEST_CONTEXT =
+            "org.springframework.webflow.execution.RequestContext";
+     private static String SPRING_FLOW_EXECUTION_CONTEXT =
+            "org.springframework.webflow.execution.FlowExecutionContext";
+
+    // introspective variables for spring2 webflow flow key resolution
+    private static Class  mRequestContextHolderClass;  // necessary for static method invocation
+    private static Method mGetRequestContext;
+    private static Method mGetFlowExecutionContext;
+    private static Method mGetKey;
 
     private static int springLoaded = 0;
 
@@ -483,6 +494,8 @@ public class SeamUtilities {
         }
         if (null != springClass) {
             springLoaded = 2;
+            mRequestContextHolderClass = springClass;
+            findWebflowMethods ();
             if (log.isLoggable(Level.FINE)) {
                 log.fine("Spring webflow detected: " + springClass);
             }
@@ -538,16 +551,10 @@ public class SeamUtilities {
                 flowIdParameterName = "_flowExecutionKey";
             }
         } else if (2 == springLoaded) {
-if (true) { throw new UnsupportedOperationException("Implement SWF integration");}
-//            value = RequestContextHolder.getRequestContext()
-//                    .getFlowExecutionContext().getKey().toString();
-//            if (null != value)  {
-//                //Spring Web Flow 2.x confirmed
-//                flowIdParameterName = 
-//                        "org.springframework.webflow.FlowExecutionKey";
-//            }
-        }
 
+           value = fetchSpringWebflow2KeyByIntrospection();
+
+        }
         if (null == value) {
             return null;
         }
@@ -563,4 +570,63 @@ if (true) { throw new UnsupportedOperationException("Implement SWF integration")
         return flowIdParameterName;
     }
 
+    /**
+     * Fetch the value of the Spring webflow key from a Spring Webflow 2.x
+     * environment using introspection for the compat environment.
+
+     * @return The current spring webflow id
+     */
+    private static String fetchSpringWebflow2KeyByIntrospection() {
+
+        try {
+//            String key = RequestContextHolder.getRequestContext().getFlowExecutionContext().getKey().toString();
+
+            Object requestHolderInstance = mGetRequestContext.invoke(mRequestContextHolderClass );
+
+            log.fine("Retrieved requestContextHolder instance ");
+            Object flowExecutionContextInstance = mGetFlowExecutionContext.invoke( requestHolderInstance );
+
+            log.fine("Retrieved flowExecutionContext instance");
+            Object keyInstance = mGetKey.invoke( flowExecutionContextInstance );
+
+            log.fine("Retrieved FlowExecutionKey instance -- Success! " + keyInstance.toString() );
+            return keyInstance.toString();
+
+
+        } catch (Exception e) {
+            log.severe("Exception fetching webflow 2 key by introspection: " + e);
+        }
+
+        return null;
+
+    }
+
+    /**
+     * private method to go through the introspection for getting the flow key once
+     */
+    private static void findWebflowMethods () {
+
+        log.fine("Constructing FlowExecutionKeyFinder. Looking for Webflow classes... ");
+        try {
+
+            mGetRequestContext = mRequestContextHolderClass.getMethod( "getRequestContext", new Class[0] );
+            log.fine("Retrieved getRequestContext method from holder");
+
+            Class temp = Class.forName( SPRING_REQUEST_CONTEXT );
+            mGetFlowExecutionContext = temp.getMethod("getFlowExecutionContext",
+                                                      new Class[0]);
+            log.fine("Retrieved getFlowExcutionContext method ");
+
+
+            temp = Class.forName (SPRING_FLOW_EXECUTION_CONTEXT);
+            mGetKey = temp.getMethod("getKey");
+            log.fine("Retrieved getKey method ");
+
+        } catch (ClassNotFoundException cnf ) {
+            log.severe(
+                    "No RequestContextHolder class found. Not SpringWebflow environment. ");
+        } catch (NoSuchMethodException nsme) {
+            log.severe("NoSuchMethodException: " + nsme);
+        }
+    }
 }
