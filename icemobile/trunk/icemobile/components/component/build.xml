@@ -19,6 +19,10 @@
         ICEfaces Mobile Components.
     </description>
 
+    <property name="compile.source" value="1.5"/>
+    <property name="compile.target" value="1.5"/>
+    <property name="compile.debug" value="true"/>
+
     <!-- This property file is only used for EE builds and overrides various
          property values if it is available. -->
 
@@ -170,13 +174,16 @@
 
     <target name="compile-base">
         <javac srcdir="${build}/generated/base" destdir="${exploded}"
-               debug="true" verbose="true" includeantruntime="false">
+                source="${compile.source}" target="${compile.target}"
+                debug="${compile.debug}" verbose="true" includeantruntime="false">
             <classpath refid="compile.run.classpath"/>
         </javac>
     </target>
 
     <target name="compile-manual">
-        <javac srcdir="${src}" destdir="${build}/exploded" debug="true"
+        <javac srcdir="${src}" destdir="${build}/exploded"
+               source="${compile.source}" target="${compile.target}"
+               debug="${compile.debug}"
                excludes="**/*Meta.java" verbose="true" failonerror="true"
                includeantruntime="false">
             <classpath refid="compile.run.classpath"/>
@@ -185,7 +192,8 @@
 
     <target name="compile-support">
         <javac srcdir="${build}/generated/support" destdir="${exploded}"
-               debug="true" verbose="true" includeantruntime="false">
+               source="${compile.source}" target="${compile.target}"
+                debug="${compile.debug}" verbose="true" includeantruntime="false">
             <classpath refid="compile.run.classpath"/>
         </javac>
     </target>
@@ -206,7 +214,9 @@
     <target name="compile-meta">
         <!-- Add these to javac if getting funky compilation errors: optimize="false"
               verbose="true" -->
-        <javac srcdir="${src}" destdir="${build}/meta" debug="true"
+        <javac srcdir="${src}" destdir="${build}/meta"
+               source="${compile.source}" target="${compile.target}"
+                debug="${compile.debug}"
                includes="**/*Meta.java" includeantruntime="false">
             <classpath refid="compile.run.classpath"/>
         </javac>
