@@ -53,7 +53,7 @@ public class CommandButtonGroupRenderer extends Renderer {
         }
         // finally assign any user defines style
         String userDefinedClass = buttonGroup.getStyleClass();
-        if (userDefinedClass != null && !userDefinedClass.isEmpty()){
+        if (userDefinedClass != null && userDefinedClass.length() > 0){
             styleClasses.append(" ").append(userDefinedClass);
         }
         writer.writeAttribute(HTML.CLASS_ATTR, styleClasses, "styleClass");

@@ -47,7 +47,7 @@ public class FieldSetRowRenderer extends Renderer {
             styleClass.append(" ").append(FieldSetRow.FIELDSETGROUP_CLASS);
         }
         // apply user defined style class
-        if (userDefinedClass != null && !userDefinedClass.isEmpty()){
+        if (userDefinedClass != null && userDefinedClass.length() > 0){
             styleClass.append(" ").append(userDefinedClass);
         }
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass.toString(), "styleClass");
