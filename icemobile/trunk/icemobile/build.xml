@@ -39,6 +39,10 @@
     <property name="src.bundle.file"
               location="${dist.dir}/${src.bundle.name}.zip"/>
 
+    <property name="compile.source" value="1.5"/>
+    <property name="compile.target" value="1.5"/>
+    <property name="compile.debug" value="true"/>
+
     <propertyset id="product.info">
         <propertyref name="company"/>
         <propertyref name="product"/>
@@ -63,8 +67,10 @@
     </presetdef>
 
     <target name="build.all" description="Build ICEmobile project and samples.">
-        <ice:subant target="all">
+        <ice:subant target="build">
             <fileset dir="./components" includes="build.xml" />
+        </ice:subant>
+        <ice:subant target="all">
             <fileset dir="./samples" includes="build.xml" />
         </ice:subant>
     </target>
