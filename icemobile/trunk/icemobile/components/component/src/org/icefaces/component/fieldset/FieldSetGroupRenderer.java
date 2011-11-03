@@ -47,7 +47,7 @@ public class FieldSetGroupRenderer extends Renderer {
         }
         // user specified style class
         String userDefinedClass = field.getStyleClass();
-        if (userDefinedClass != null && !userDefinedClass.isEmpty()){
+        if (userDefinedClass != null && userDefinedClass.length() > 0){
             styleClass.append(" ").append(userDefinedClass);
         }
         writer.writeAttribute("class", styleClass.toString(), "styleClass");
