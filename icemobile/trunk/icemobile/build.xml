@@ -14,14 +14,173 @@
   ~ limitations under the License.
   -->
 
-<project name="icemobile" default="all">
-    <property file="./build.properties"/>
+<project default="build.all" xmlns:ice="urn:ICEsoft">
 
-    <target name="all">
-        <subant>
-            <fileset dir="components" includes="build.xml" />
-            <fileset dir="samples" includes="build.xml" />
-        </subant>
+    <property file="build.properties"/>
+
+    <property name="build.dir" location="build"/>
+    <property name="dist.dir" location="dist"/>
+
+    <condition property="release.type.suffix" value="-${release.type}" else="">
+        <not>
+            <equals arg1="${release.type}" arg2="" trim="true"/>
+        </not>
+    </condition>
+    <property name="bundle.name"
+              value="${product}-${version.primary}.${version.secondary}.${version.tertiary}${release.type.suffix}"/>
+
+    <property name="bin.bundle.name" value="${bundle.name}-bin"/>
+    <property name="bin.bundle.prefix" value="${bin.bundle.name}/icemobile"/>
+    <property name="bin.bundle.file"
+              location="${dist.dir}/${bin.bundle.name}.zip"/>
+
+    <property name="src.bundle.name" value="${bundle.name}-src"/>
+    <property name="src.bundle.prefix" value="${src.bundle.name}/icemobile"/>
+    <property name="src.bundle.file"
+              location="${dist.dir}/${src.bundle.name}.zip"/>
+
+    <propertyset id="product.info">
+        <propertyref name="company"/>
+        <propertyref name="product"/>
+        <propertyref name="version.primary"/>
+        <propertyref name="version.secondary"/>
+        <propertyref name="version.tertiary"/>
+        <propertyref name="release.type"/>
+        <propertyref name="build.number"/>
+        <propertyref name="revision"/>
+    </propertyset>
+
+    <presetdef name="ant" uri="urn:ICEsoft">
+        <ant inheritall="false"/>
+    </presetdef>
+
+    <presetdef name="subant" uri="urn:ICEsoft">
+        <subant inheritall="false" failonerror="true" verbose="true"/>
+    </presetdef>
+
+    <presetdef name="zip" uri="urn:ICEsoft">
+        <zip duplicate="fail" whenempty="fail"/>
+    </presetdef>
+
+    <target name="build.all" description="Build ICEmobile project and samples.">
+        <ice:subant target="build.all">
+            <fileset dir="./components" includes="build.xml" />
+            <fileset dir="./samples" includes="build.xml" />
+        </ice:subant>
     </target>
+
+    <target name="build.bin" >
+        <build.bin.bundle />
+    </target>
+
+    <target name="zip.src">
+        <zip.src />
+    </target>
+
+    <target name="build.bin.bundle" depends="build.bin, clean.bin"
+            description="Creates ICEmobile binary bundle.">
+        <zip.bin.bundle/>
+    </target>
+
+    <target name="build.common">
+        <ice:subant>
+            <filelist dir="." files="components, samples"/>
+        </ice:subant>
+    </target>
+
+    <target name="build.src.bundle" description="Creates ICEmobile source bundle.">
+        <touch file="${src.bundle.file}" mkdirs="true"/>
+        <delete file="${src.bundle.file}"/>
+
+        <ice:zip destfile="${src.bundle.file}">
+            <zipfileset dir="." excludes="dist/" prefix="${src.bundle.prefix}"/>
+        </ice:zip>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <ice:subant target="clean">
+            <filelist dir="." files="components, samples"/>
+        </ice:subant>
+    </target>
+
+    <target name="clean.bin">
+        <ice:subant target="clean">
+            <filelist dir="." files="components, samples"/>
+        </ice:subant>
+    </target>
+
+    <macrodef name="zip.bin.bundle" >
+        <attribute name="path" default="."/>
+        <attribute name="bundle.file" default="${bin.bundle.file}"/>
+        <attribute name="zip.bundle.prefix" default="${bin.bundle.prefix}"/>
+        <element name="add.zip.elements" optional="true"/>
+
+        <sequential>
+            <ice:zip destfile="@{bundle.file}" update="true">
+
+                <!-- distributing test adds another 10mb to the download -->
+                <zipfileset dir="." prefix="${bin.bundle.prefix}"  >
+                    <exclude name="dist/"/>
+                    <exclude name="components/tests/mobitest/build/"/>
+                </zipfileset>
+
+
+                <add.zip.elements/>
+            </ice:zip>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="zip.src">
+        <attribute name="path" default="."/>
+        <attribute name="zip.bundle.prefix" default="${bin.bundle.prefix}"/>
+        <attribute name="bundle.file" default="${bin.bundle.file}"/>
+
+        <sequential>
+            <touch file="@{bundle.file}" mkdirs="true"/>
+            <delete file="@{bundle.file}"/>
+
+            <ice:zip destfile="@{bundle.file}">
+                <zipfileset dir="@{path}" includes=""
+                            excludes="dist/"
+                            prefix="@{zip.bundle.prefix}"/>
+            </ice:zip>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="build.bin.bundle">
+        <attribute name="path" default="."/>
+        <element name="add.ant.elements" optional="true"/>
+
+        <sequential>
+            
+            <ice:subant>
+                <filelist dir="@{path}" files="components, samples"/>
+                <propertyset refid="product.info"/>
+            </ice:subant>
+
+            <add.ant.elements/>
+
+        </sequential>
+    </macrodef>
+
+    <macrodef name="build.src.bundle">
+        <attribute name="path" default="."/>
+        <attribute name="bundle.file" default="${src.bundle.file}"/>
+        <attribute name="bundle.prefix" default="${src.bundle.prefix}"/>
+        <element name="add.zip.elements" optional="true"/>
+
+        <sequential>
+            <touch file="@{bundle.file}" mkdirs="true"/>
+            <delete file="@{bundle.file}"/>
+
+            <ice:zip destfile="@{bundle.file}">
+                <zipfileset dir="@{path}" excludes="dist/" prefix="@{bundle.prefix}"/>
+                <add.zip.elements/>
+
+            </ice:zip>
+        </sequential>
+    </macrodef>
 
 </project>
