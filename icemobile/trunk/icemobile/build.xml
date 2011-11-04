@@ -67,10 +67,8 @@
     </presetdef>
 
     <target name="build.all" description="Build ICEmobile project and samples.">
-        <ice:subant target="build">
-            <fileset dir="./components" includes="build.xml" />
-        </ice:subant>
         <ice:subant target="all">
+            <fileset dir="./components " includes="build.xml" />
             <fileset dir="./samples" includes="build.xml" />
         </ice:subant>
     </target>
@@ -160,9 +158,13 @@
         <element name="add.ant.elements" optional="true"/>
 
         <sequential>
-            
-            <ice:subant>
-                <filelist dir="@{path}" files="components, samples"/>
+
+            <ice:subant target="build">
+                <fileset dir="./components" includes="build.xml" />
+                <propertyset refid="product.info"/>
+            </ice:subant>
+            <ice:subant target="all">
+                <fileset dir="./samples" includes="build.xml" />
                 <propertyset refid="product.info"/>
             </ice:subant>
 
