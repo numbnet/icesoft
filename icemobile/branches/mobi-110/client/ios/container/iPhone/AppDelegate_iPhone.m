@@ -89,6 +89,10 @@
     NSLog(@"didReceiveRemoteNotification %@", userInfo);
 }
 
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    NSLog(@"handleOpenURL %@", url);
+    return YES;
+}
 
 #pragma mark -
 #pragma mark Memory management

@@ -159,6 +159,7 @@ static char base64EncodingTable[64] = {
 
 - (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw 
         maxheight: (NSString*)maxh {
+NSLog(@"called camera");
     self.activeDOMElementId = cameraId;
     self.maxwidth = maxw;
     self.maxheight = maxh;
