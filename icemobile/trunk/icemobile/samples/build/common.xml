@@ -155,13 +155,13 @@
                  so that the .jar file is available. In non-EE builds we simply
                  ignore the missing dir and do a normal build.
             -->
-            <lib dir="../../../lib" >
-                <include name="icefaces-ee-ext.jar"/>
-            </lib>
+            <!--<lib dir="../../../lib" >-->
+                <!--<include name="icefaces-ee-ext.jar"/>-->
+            <!--</lib>-->
 
-            <lib dir="../../../../icefaces-ee/lib">
-                <include name="icefaces-ee-ext.jar"/>
-            </lib>
+            <!--<lib dir="../../../../icefaces-ee/lib">-->
+                <!--<include name="icefaces-ee-ext.jar"/>-->
+            <!--</lib>-->
 
             <classes dir="${classes.dir}"/>
         </war>
