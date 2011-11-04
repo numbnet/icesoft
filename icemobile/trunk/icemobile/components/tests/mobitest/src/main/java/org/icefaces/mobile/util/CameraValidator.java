@@ -18,7 +18,6 @@ package org.icefaces.mobile.util;
 
 import org.icefaces.impl.event.FacesMessagesPhaseListener;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.faces.validator.Validator;
 import javax.faces.validator.FacesValidator;
 import javax.faces.context.FacesContext;
@@ -28,8 +27,6 @@ import javax.faces.component.UIComponent;
 import java.io.File;
 import java.util.Map;
 import java.util.HashMap;
-import javax.activation.MimetypesFileTypeMap;
-import javax.activation.MimeType;
 import java.util.Iterator;
 
 
@@ -58,8 +55,7 @@ public class CameraValidator implements Validator{
           if (compMap !=null){
             File imageFile = (File) compMap.get(CAMERA_KEY_FILE);
             String filePth = imageFile.getAbsolutePath();
-            MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
-            String mimeType = mimeTypesMap.getContentType(filePth);
+            String mimeType = (String) compMap.get("contentType");
             if (mimeType.equals(JPEG_FILE) || mimeType.equals(PNG_FILE)){
                  clearFacesMessages(context);
             }else {
