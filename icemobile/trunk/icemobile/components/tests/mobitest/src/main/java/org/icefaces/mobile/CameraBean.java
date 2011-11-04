@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
@@ -66,7 +65,7 @@ public class CameraBean implements Serializable {
     private byte[] bytes;
     private boolean bytesAvailable = false;
     private String messageFromAL = " ValueChangenListener fired for camera";
-  
+    private String contentType;
     
     private static int sampleUploadCount = 1;
     int fileId = -1;
@@ -88,6 +87,7 @@ public class CameraBean implements Serializable {
         }
         else {
           imageFile = (File) cameraImage.get(CAMERA_KEY_FILE);
+          contentType = (String) cameraImage.get("contentType");
         }
   
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -192,9 +192,7 @@ public class CameraBean implements Serializable {
             Map compMap = (HashMap)event.getNewValue();
             File fname = (File)compMap.get(CAMERA_KEY_FILE);
             String filePath = fname.getAbsolutePath();
-            MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
-            String mimeType = mimeTypesMap.getContentType(filePath);
-            if (mimeType.equals("image/jpeg") || mimeType.equals("image/png")){
+            if (contentType.equals("image/jpeg") || contentType.equals("image/png")){
                  messageFromAL="valid image uploaded of jpg or png";
             } else {
                messageFromAL = "invalid upload so can delete without user being able to access";

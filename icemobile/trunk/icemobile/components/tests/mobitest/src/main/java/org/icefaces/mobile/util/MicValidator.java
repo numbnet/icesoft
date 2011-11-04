@@ -18,7 +18,6 @@ package org.icefaces.mobile.util;
 
 import org.icefaces.impl.event.FacesMessagesPhaseListener;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.faces.validator.Validator;
 import javax.faces.validator.FacesValidator;
 import javax.faces.context.FacesContext;
@@ -28,8 +27,6 @@ import javax.faces.component.UIComponent;
 import java.io.File;
 import java.util.Map;
 import java.util.HashMap;
-import javax.activation.MimetypesFileTypeMap;
-import javax.activation.MimeType;
 import java.util.Iterator;
 
 
@@ -61,8 +58,7 @@ public class MicValidator implements Validator{
           if (compMap !=null){
             File micFile = (File) compMap.get(COMP_KEY_FILE);
             String filePth = micFile.getAbsolutePath();
-            MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
-            String mimeType = mimeTypesMap.getContentType(filePth);
+            String mimeType = (String) compMap.get("contentType");
             if (mimeType.equals(WAV) || mimeType.endsWith("mp4") ||
                     mimeType.equals(M4A) || mimeType.equals(MPEG) ||
                     mimeType.equals(AMR) || mimeType.equals(STREAM)){

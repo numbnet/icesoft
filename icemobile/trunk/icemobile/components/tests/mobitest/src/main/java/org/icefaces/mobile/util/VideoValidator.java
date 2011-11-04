@@ -16,7 +16,6 @@
 
 package org.icefaces.mobile.util;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -55,9 +54,7 @@ public class VideoValidator implements Validator{
           Map compMap = (HashMap)value;
           if (compMap !=null){
             File imageFile = (File) compMap.get(KEY_FILE);
-            String filePth = imageFile.getAbsolutePath();
-            MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
-            String mimeType = mimeTypesMap.getContentType(filePth);
+            String mimeType = (String) compMap.get("contentType");
             if (mimeType.equals(MPEG) || mimeType.equals(MOV) || mimeType.equals(GP3)
                     || mimeType.equals(STREAM)){
                  clearFacesMessages(context);

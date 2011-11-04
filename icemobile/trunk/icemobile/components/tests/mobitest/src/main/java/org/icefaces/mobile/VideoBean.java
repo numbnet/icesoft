@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Formatter;
 import java.util.logging.Logger;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
@@ -185,9 +184,7 @@ public class VideoBean implements Serializable {
           if (event!=null){
              Map compMap = (HashMap)event.getNewValue();
              File fname = (File)compMap.get("file");
-             String filePath = fname.getAbsolutePath();
-             MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
-             String mimeType = mimeTypesMap.getContentType(filePath);
+             String mimeType = (String) compMap.get("contentType");
              this.setContentType(mimeType);
              if (mimeType.equals("video/mpeg") || mimeType.equals("video/mov") ||
                  mimeType.equals("video/3gpp") || mimeType.equals("video/mp4")){

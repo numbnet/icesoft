@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.Formatter;
 import java.util.logging.Logger;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.context.FacesContext;
@@ -205,19 +204,6 @@ public class MicBean implements Serializable {
 		this.clipInBytes = clipInBytes;
 	}
 
-    public String getMimeType(String fileUrl)
-		      throws java.io.IOException
-	{
-		String type = new MimetypesFileTypeMap().getContentType(fileUrl);
-		return type;
-	}
-
-    //very slow way to get contentType or mimeType of file.  Quicker to use commons file logging or activation jar
-    String contentType = "none";
-	public String getContentType(String fileext) throws Exception{
-		contentType =  new MimetypesFileTypeMap().getContentType(fileext);
-		return contentType;		
-	}
 
 	public String getPathToFile() {
 		return pathToFile;
@@ -255,11 +241,8 @@ public class MicBean implements Serializable {
             Map compMap = (HashMap)event.getNewValue();
             File fname = (File)compMap.get("file");
             String filePath = fname.getAbsolutePath();
-            MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
-            String mimeType = mimeTypesMap.getContentType(filePath);
-            this.audioContentType = mimeType;
-            if (mimeType.equals("audio/wav") || mimeType.equals("audio/mpeg") ||
-                mimeType.equals("audio/amr") || mimeType.equals("audio/x-m4a")){
+            if (audioContentType.equals("audio/wav") || audioContentType.equals("audio/mpeg") ||
+                audioContentType.equals("audio/amr") || audioContentType.equals("audio/x-m4a")){
                 messageFromAL="valid audio uploaded of mpeg or wav or amr or x-m4a";
             } else {
                  messageFromAL = "invalid upload so can delete without user being able to access";
