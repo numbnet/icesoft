@@ -122,14 +122,16 @@
         <element name="add.zip.elements" optional="true"/>
 
         <sequential>
+
+            <touch file="@{bundle.file}" mkdirs="true"/>
+            <delete file="@{bundle.file}"/>
+
             <ice:zip destfile="@{bundle.file}" update="true">
 
                 <!-- distributing test adds another 10mb to the download -->
                 <zipfileset dir="." prefix="${bin.bundle.prefix}"  >
                     <exclude name="dist/"/>
-                    <exclude name="components/tests/mobitest/build/"/>
                 </zipfileset>
-
 
                 <add.zip.elements/>
             </ice:zip>
