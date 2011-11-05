@@ -23,6 +23,11 @@
         <param-name>com.icesoft.faces.synchronousUpdate</param-name>
         <param-value>true</param-value>
     </context-param>
+    
+    <context-param>
+    	<param-name>facelets.SKIP_COMMENTS</param-name>
+    	<param-value>true</param-value>
+	</context-param>
 	
 	<!-- Faces Servlet -->
     <servlet>
