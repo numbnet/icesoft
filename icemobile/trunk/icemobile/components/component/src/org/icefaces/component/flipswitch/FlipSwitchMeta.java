@@ -16,15 +16,13 @@
 
 package org.icefaces.component.flipswitch;
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Expression;
-import org.icefaces.component.annotation.Property;
-import org.icefaces.component.baseMeta.UIComponentBaseMeta;
-import org.icefaces.component.baseMeta.UISelectBooleanMeta;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Expression;
+import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.baseMeta.UISelectBooleanMeta;
 
 import javax.el.MethodExpression;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+
 
 // Each Meta class requires a @Component annotation
 @Component(
@@ -48,9 +46,7 @@ import javax.faces.application.ResourceDependency;
         tlddoc = "The FlipSwitch is a component that enables the user to turn a feature on or off "                
 )
 
-@ResourceDependencies({
-	 @ResourceDependency(name="component.js",library="org.icefaces.component.util")
-})
+
 public class FlipSwitchMeta extends UISelectBooleanMeta {
 
     @Property(defaultValue = "false",

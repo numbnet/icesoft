@@ -16,12 +16,11 @@
 
 package org.icefaces.component.datespinner;
 
-import org.icefaces.component.annotation.*;
+import org.icefaces.ace.meta.annotation.*;
 
-import org.icefaces.component.baseMeta.UIInputMeta;
+import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
+
 
 @Component(
         tagName = "dateSpinner",
@@ -33,9 +32,7 @@ import javax.faces.application.ResourceDependency;
         componentType = "org.icefaces.component.DateSpinner",
         rendererType = "org.icefaces.component.DateSpinnerRenderer",
         tlddoc = "DateSpinner is an input component to provide a date for mobile components. ")
-@ResourceDependencies({
- //loaded javascript in body css is loaded via deviceStyleSheet
-})
+
 public class DateSpinnerMeta extends UIInputMeta {
 
 

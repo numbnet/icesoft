@@ -20,6 +20,7 @@ import org.icefaces.component.utils.BaseInputRenderer;
 import org.icefaces.component.utils.PassThruAttributeWriter;
 import org.icefaces.component.utils.Utils;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -36,7 +37,10 @@ import java.util.logging.Logger;
 
 public class DateSpinnerRenderer extends BaseInputRenderer  {
     private static Logger logger = Logger.getLogger(DateSpinnerRenderer.class.getName());
-    public static final String DATESPINNER_JS_KEY = "false";
+    private static final String JS_NAME = "datespinner.js";
+    private static final String JS_MIN_NAME = "datespinner-min.js";
+    private static final String JS_LIBRARY = "org.icefaces.component.datespinner";
+
 
 
     @Override
@@ -91,17 +95,24 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
             writer.endElement("input");
         }
         else {
-       //    Map contextMap = context.getViewRoot().getViewMap(); //this does not work
-            Map contextMap = context.getAttributes();
-            if (!contextMap.containsKey(DATESPINNER_JS_KEY)) {
-                Resource jsFile = context.getApplication().getResourceHandler().createResource("dateSpinner.js", "org.icefaces.component.datespinner");
+            Map viewContextMap = context.getViewRoot().getViewMap();
+            if (!viewContextMap.containsKey(JS_NAME)) {
+          //      logger.info("LOAD JS FOR DATESPINNER");
+                String jsFname = JS_NAME;
+                if ( context.isProjectStage(ProjectStage.Production)){
+                    jsFname = JS_MIN_NAME;
+                }
+                //set jsFname to min if development stage
+                logger.info(" loading jsFname = "+jsFname);
+                Resource jsFile = context.getApplication().getResourceHandler().createResource(jsFname, JS_LIBRARY);
                 String src = jsFile.getRequestPath();
                 writer.startElement("script", component);
                 writer.writeAttribute("text", "text/javascript", null);
                 writer.writeAttribute("src", src, null);
                 writer.endElement("script");
-                contextMap.put(DATESPINNER_JS_KEY, "true");
-            }
+          //      contextMap.put(JS_NAME, "true");
+                viewContextMap.put(JS_NAME, "true");
+            } // else logger.info("DATESPINNER JS ALREADY LOADED");
 
             String value = this.encodeValue(spinner, initialValue);
             encodeMarkup(context, component, value);

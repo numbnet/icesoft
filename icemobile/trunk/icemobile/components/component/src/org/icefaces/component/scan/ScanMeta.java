@@ -17,9 +17,9 @@
 package org.icefaces.component.scan;
 
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
-import org.icefaces.component.baseMeta.UIComponentBaseMeta;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
 @Component(
         tagName = "scan",

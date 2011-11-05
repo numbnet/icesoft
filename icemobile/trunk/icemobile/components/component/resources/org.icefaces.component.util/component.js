@@ -19,7 +19,7 @@ if (!window['mobi']) {
     window.mobi = {};
 }
 
-mobi.flipper = {                
+/*mobi.flipper = {
         init: function(clientId, event, flipperEl, singleSubmit){
               ice.log.debug(ice.log, 'clientId is '+clientId);               
               if (flipperEl){
@@ -46,8 +46,8 @@ mobi.flipper = {
               }
 
          }
-} ;
-mobi.carousel = {
+} ; */
+/*mobi.carousel = {
 		  carousels: null,
 		  loaded: function(clientId, singleSubmit){
 		            ice.log.debug(ice.log, 'clientId is '+clientId);
@@ -107,7 +107,7 @@ mobi.carousel = {
 	              
 			   }
 		   }
-	} ;
+	} ; */
 
 
 /*mobi.input = {

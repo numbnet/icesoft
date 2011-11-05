@@ -16,11 +16,10 @@
 package org.icefaces.component.inputText;
 
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Implementation;
-import org.icefaces.component.annotation.Property;
-import org.icefaces.component.baseMeta.UIInputMeta;
-
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Implementation;
+import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
@@ -39,7 +38,7 @@ import javax.faces.application.ResourceDependency;
 )
 
 @ResourceDependencies({
-
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 public class InputTextMeta extends UIInputMeta {
 

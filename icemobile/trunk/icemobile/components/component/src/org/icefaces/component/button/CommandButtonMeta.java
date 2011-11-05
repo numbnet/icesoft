@@ -16,10 +16,10 @@
 
 package org.icefaces.component.button;
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
-import org.icefaces.component.annotation.Required;
-import org.icefaces.component.baseMeta.UICommandMeta;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Required;
+import org.icefaces.ace.meta.baseMeta.UICommandMeta;
 
 @Component(
         tagName = "commandButton",

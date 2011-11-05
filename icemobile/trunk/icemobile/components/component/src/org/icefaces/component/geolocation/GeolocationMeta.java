@@ -17,9 +17,9 @@
 package org.icefaces.component.camera;
 
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
-import org.icefaces.component.baseMeta.UIComponentBaseMeta;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
 import javax.faces.application.ResourceDependencies;
 
@@ -37,8 +37,6 @@ import javax.faces.application.ResourceDependencies;
                 " html5 navigator api"
 )
 
-@ResourceDependencies({
-})
 public class GeolocationMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "latitude of mobile device in decimal degrees")
