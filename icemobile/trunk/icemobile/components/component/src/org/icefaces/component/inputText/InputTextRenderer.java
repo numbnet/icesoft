@@ -34,7 +34,7 @@ import org.icefaces.component.utils.Utils;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
-
+@MandatoryResourceComponent("org.icefaces.component.inputText.InputText")
 public class InputTextRenderer extends BaseInputRenderer {
     private final static Logger logger = Logger.getLogger(InputTextRenderer.class.getName());
 

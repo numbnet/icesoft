@@ -17,10 +17,10 @@
 package org.icefaces.component.carousel;
 
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Expression;
-import org.icefaces.component.annotation.Property;
-import org.icefaces.component.baseMeta.UIComponentBaseMeta;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Expression;
+import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
@@ -41,10 +41,10 @@ import javax.faces.application.ResourceDependency;
                 "array of pictures, touch enabled. "
 )
 
-@ResourceDependencies({
+/**@ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "iscroll-min.js"),
-        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
-})
+        @ResourceDependency(library = "org.icefaces.component.carousel", name = "carousel.js")
+})  */
 public class CarouselMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue = "Integer.MIN_VALUE",

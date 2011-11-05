@@ -17,11 +17,11 @@
 package org.icefaces.component.video;
 
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Expression;
-import org.icefaces.component.annotation.Implementation;
-import org.icefaces.component.annotation.Property;
-import org.icefaces.component.baseMeta.UIComponentBaseMeta;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Expression;
+import org.icefaces.ace.meta.annotation.Implementation;
+import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
 
 import javax.el.MethodExpression;

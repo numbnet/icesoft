@@ -17,10 +17,10 @@
 package org.icefaces.component.uploadhelper;
 
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.baseMeta.UIComponentBaseMeta;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
-import javax.faces.application.ResourceDependencies;
+
 
 @Component(
         tagName = "uploadhelper",
@@ -35,8 +35,7 @@ import javax.faces.application.ResourceDependencies;
                 " detects mobile and desktop cases to support upload. "
 )
 
-@ResourceDependencies({
-})
+
 public class UploadHelperMeta extends UIComponentBaseMeta {
 
 

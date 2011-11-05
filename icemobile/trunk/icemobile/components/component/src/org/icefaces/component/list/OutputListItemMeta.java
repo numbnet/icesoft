@@ -17,11 +17,10 @@
 package org.icefaces.component.list;
 
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
-import org.icefaces.component.baseMeta.UIComponentBaseMeta;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
-import javax.faces.application.ResourceDependencies;
 
 
 @Component(
@@ -35,8 +34,7 @@ import javax.faces.application.ResourceDependencies;
         componentFamily = "org.icefaces.OutputListItem",
         tlddoc = "This mobility component is used within an outputlist tag to group unordered list items."
 )
-@ResourceDependencies({
-})
+
 public class OutputListItemMeta extends UIComponentBaseMeta {
         	
     @Property(defaultValue="default", tlddoc = "type is default or thumb  " )

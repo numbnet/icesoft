@@ -17,11 +17,9 @@
 package org.icefaces.component.list;
 
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
-import org.icefaces.component.baseMeta.UIComponentBaseMeta;
-
-import javax.faces.application.ResourceDependencies;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
 
 @Component(
@@ -38,8 +36,7 @@ import javax.faces.application.ResourceDependencies;
                 "of this component should only be outputListItem. "
 )
 
-@ResourceDependencies({
-})
+
 public class OutputListMeta extends UIComponentBaseMeta {
 	
     @Property(defaultValue="false",

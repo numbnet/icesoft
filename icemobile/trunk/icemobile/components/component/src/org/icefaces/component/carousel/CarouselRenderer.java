@@ -21,6 +21,7 @@ import org.icefaces.component.utils.HTML;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.application.ProjectStage;
+import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -31,9 +32,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@MandatoryResourceComponent("org.icefaces.component.carousel.Carousel")
+//@MandatoryResourceComponent("org.icefaces.component.carousel.Carousel")
 public class CarouselRenderer extends Renderer {
     private static Logger logger = Logger.getLogger(CarouselRenderer.class.getName());
+    private static final String JS_NAME = "carousel";
+    private static final String JS_LIBRARY = "org.icefaces.component.carousel";
+    private static final String JS_ISCROLL = "iscroll";
+    private static final String LIB_ISCROLL = "org.icefaces.component.util";
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
@@ -61,6 +66,16 @@ public class CarouselRenderer extends Renderer {
         String clientId = uiComponent.getClientId(facesContext);
         Carousel carousel = (Carousel) uiComponent;
         //check to ensure children are all of type OutputListItem
+        writer.startElement("span", uiComponent);
+        writer.writeAttribute("id", clientId+"_jscript","id");
+        Map contextMap = facesContext.getViewRoot().getViewMap();
+        if (!contextMap.containsKey(JS_ISCROLL)) {
+            writeJSResource(JS_ISCROLL, LIB_ISCROLL, facesContext, uiComponent, writer);
+        }
+        if (!contextMap.containsKey(JS_NAME)) {
+            writeJSResource(JS_NAME, JS_LIBRARY, facesContext, uiComponent, writer);
+        }
+        writer.endElement("span");
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_carousel", HTML.ID_ATTR);
         String userDefinedClass = carousel.getStyleClass();
@@ -78,6 +93,27 @@ public class CarouselRenderer extends Renderer {
         writer.writeAttribute("class", "mobi-carousel-list", null);
 
     }
+
+    private void writeJSResource(String fname, String library, FacesContext facesContext,
+              UIComponent uiComponent, ResponseWriter writer) throws IOException{
+        Map contextMap = facesContext.getViewRoot().getViewMap();
+             //check to see if Development or Project stage
+        String jsFname = fname+".js";
+        if ( facesContext.isProjectStage(ProjectStage.Production)){
+            jsFname = fname+"-min.js";
+        }
+     //   logger.info("NEED TO LOAD fname = "+jsFname);
+        Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, library);
+        String src = jsFile.getRequestPath();
+        writer.startElement("script", uiComponent);
+        writer.writeAttribute("text", "text/javascript", null);
+        writer.writeAttribute("src", src, null);
+        writer.endElement("script");
+        contextMap.put(fname, "true");
+
+    }
+
+
 
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
         //Rendering happens on encodeEnd

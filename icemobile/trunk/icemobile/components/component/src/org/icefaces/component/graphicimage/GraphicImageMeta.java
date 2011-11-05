@@ -16,8 +16,8 @@
 package org.icefaces.component.graphicimage;
 
 
-import org.icefaces.component.annotation.Component;
-import org.icefaces.component.annotation.Property;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Property;
 
 
 @Component(

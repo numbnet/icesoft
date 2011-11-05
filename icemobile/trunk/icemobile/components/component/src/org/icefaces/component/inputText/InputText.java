@@ -18,7 +18,7 @@ package org.icefaces.component.inputText;
 
 import org.icefaces.component.utils.Attribute;
 
-public class InputText extends InputTextBase {
+public class  InputText extends InputTextBase {
 
     //passthrough attributes for textArea
     private Attribute[] textAreaAttributeNames = {

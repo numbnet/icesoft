@@ -20,6 +20,8 @@ import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.PassThruAttributeWriter;
 import org.icefaces.render.MandatoryResourceComponent;
 
+import javax.faces.application.ProjectStage;
+import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -38,10 +40,13 @@ import java.util.logging.Logger;
  * In addition to the rendering the renderer performs decode as well. This component
  * doesn't use a hidden field for it value instead takes advantage of param support of JSF2
  */
-@MandatoryResourceComponent("org.icefaces.component.flipswitch.FlipSwitch")
+//@MandatoryResourceComponent("org.icefaces.component.flipswitch.FlipSwitch")
 public class FlipSwitchRenderer extends Renderer {
 
     private final static Logger logger = Logger.getLogger(FlipSwitchRenderer.class.getName());
+    private static final String JS_NAME = "flipswitch.js";
+    private static final String JS_MIN_NAME = "flipswitch-min.js";
+    private static final String JS_LIBRARY = "org.icefaces.component.flipswitch";
 
     // The decode method, in the renderer, is responsible for taking the values
     // 
@@ -71,7 +76,22 @@ public class FlipSwitchRenderer extends Renderer {
         String clientId = uiComponent.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();
         FlipSwitch flipswitch = (FlipSwitch) uiComponent;
-
+        Map contextMap = facesContext.getViewRoot().getViewMap();
+        if (!contextMap.containsKey(JS_NAME)) {
+             //check to see if Development or Project stage
+             String jsFname = JS_NAME;
+             if ( facesContext.isProjectStage(ProjectStage.Production)){
+                    jsFname = JS_MIN_NAME;
+             }
+             logger.info("NEED TO LOAD fname = "+jsFname);
+             Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, JS_LIBRARY);
+             String src = jsFile.getRequestPath();
+             writer.startElement("script", uiComponent);
+             writer.writeAttribute("text", "text/javascript", null);
+             writer.writeAttribute("src", src, null);
+             writer.endElement("script");
+             contextMap.put(JS_NAME, "true");
+        } // else logger.info("ALREADY HAVE FLIPSWITCH JS LOADED");
         writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
@@ -102,8 +122,6 @@ public class FlipSwitchRenderer extends Renderer {
         writer.write(labelOff);
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.ANCHOR_ELEM);
-
-
         //    writer.endElement(HTML.DIV_ELEM);
     }
 

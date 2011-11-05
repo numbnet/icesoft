@@ -45,11 +45,14 @@
     <property name="tld.file"
               location="${build}/exploded/META-INF/components.tld"/>
     <property name="tld.jar" location="${lib.dir}"/>
-    <property name="smartsprites.basedir" location="../tools/smartsprites"/>
-
+    <property name="smartsprites.basedir" location="${lib.dir}/generator/tools/smartsprites"/>
+    <property name="javadocs.dir" location="${build}/docs" />
     <property name="root.dir.path" location="${build}/skins/in"/>
     <property name="output.dir.path" location="${build}/skins/out"/>
-
+    <property name="resource.js.dir" location="${resources}/org.icefaces.component.util"/>
+    <property name="combined.js"
+              location="${resources}/org.icefaces.component.util/combined-min.js"/>
+    <property name="combined.js.tmp" location="${resource.js.dir}/combined.js"/>
     <!-- Check if release.type is set, and if so append it after the tertiary
          value -->
     <condition property="version.string"
@@ -74,18 +77,18 @@
 
     <path id="compile.run.classpath">
         <fileset dir="${lib.dir}" includes="*.jar"/>
+        <fileset dir="${lib.dir}/generator" includes="*.jar"/>
         <pathelement path="../component/src"/>
-        <pathelement path="../generator/build"/>
         <pathelement path="../component/build/meta"/>
 
     </path>
 
     <path id="javadoc.classpath">
         <fileset dir="${lib.dir}" includes="*.jar"/>
+        <fileset dir="${lib.dir}/generator" includes="*.jar"/>
         <pathelement path="../component/src"/>
-        <pathelement path="../generator/build"/>
         <pathelement path="../component/build/meta"/>
-        <pathelement path="./build/generated/base"/>
+   <!--     <pathelement path="./build/generated/base"/> -->
         <pathelement path="./build/exploded"/>
 
     </path>
@@ -144,28 +147,24 @@
                     <exclude name="input/*.css"/>
                     <include name="**/*.css"/>
                 </fileset>
-                <!--excludes="stylesheet/*.css" includes="**/*.css" />-->
-                <!--
-                    <fileset dir="${resources}/${skins.lib}/@{name}" includes="**/*.css" >
-                        <include name="icefaces.ace/tab/*.js"/>
-                        <include name="icefaces.ace/sliderentry/*.js"/>
-                        <include name="icefaces.ace/pushbutton/*.js"/>
-                        <include name="icefaces.ace/logger/*.js"/>
-                        <include name="icefaces.ace/linkbutton/*.js"/>
-                        <include name="icefaces.ace/datetimeentry/*.js"/>
-                        <include name="icefaces.ace/checkboxbutton/*.js"/>
-                        <include name="icefaces.ace/animation/*.js"/>
-                        <exclude name="icefaces.ace/util/*.js"/>
-                        <exclude name="icefaces.ace/animation/animation-v2.js"/>
-                        <exclude name="icefaces.ace/fileentry/fileEntry.js"/>
-                    </fileset>
-                    -->
             </concat>
+        </sequential>
+    </macrodef>
+    <macrodef name="compresscssmacro">
+        <attribute name="name"/>
+        <sequential>
+             <java jar="${lib.dir}/generator/yui-compressor.jar" fork="yes">
+             <arg line="--preserve-semi"/>
+             <arg value="${resources}/org.icefaces.component.skins/@{name}.css"/>
+             <arg value="-o"/>
+             <arg value="${resources}/org.icefaces.component.skins/@{name}-min.css"/>
+         </java>
         </sequential>
     </macrodef>
 
     <target name="compile"
-            depends="prepare, generator-dist, compile-meta, generate, compile-base, compile-manual, compile-support"
+            depends="prepare, compile-meta, generate, compile-base, compile-manual, compile-support,
+                      res-js-compress, res-js-no-compress, skins, compress-css, min-js-compress"
             description="compile the source ">
         <copy todir="${exploded}/META-INF/resources">
             <fileset dir="${resources}"/>
@@ -207,10 +206,6 @@
         <mkdir dir="${build}/generated/support"/>
     </target>
 
-    <target name="generator-dist">
-        <ant inheritAll="false" antfile="../generator/build.xml" target="dist"/>
-    </target>
-
     <target name="compile-meta">
         <!-- Add these to javac if getting funky compilation errors: optimize="false"
               verbose="true" -->
@@ -222,17 +217,22 @@
         </javac>
     </target>
 
-    <target name="generate">
-        <ant inheritAll="false" antfile="../generator/build.xml"
-             target="generate">
-            <property name="generator.tld.doc.display.name"
-                      value="${product} ${product.lib}"/>
-            <property name="generator.tld.doc.version"
-                      value="${version.string}"/>
-        </ant>
+     <target name="generate">
+        <tstamp/>
+        <java classname="org.icefaces.ace.generator.Generator"
+              classpathref="compile.run.classpath" fork="true"
+              classpath="${build}">
+            <sysproperty key="generator.tld.doc.display.name"
+                         value="Mobile Components"/>
+            <sysproperty key="generator.tld.doc.version"
+                         value="1.0.0"/>
+            <sysproperty key="generator.tld.doc.short.name"
+                         value="mobi"/>
+        </java>
+
     </target>
 
-    <target name="lib" depends="skins,compile"
+    <target name="lib" depends="compile"
             description="Generate the icefaces-mobi.jar">
         <!-- Create the distribution directory -->
         <mkdir dir="${dist}"/>
@@ -285,15 +285,14 @@
 
         <antcall target="clean-skins"/>
 
-        <subant buildpath="${cssurlmapper.rootdir}" target="clean"/>
+     <!--   <subant buildpath="${cssurlmapper.rootdir}" target="clean"/>   -->
     </target>
 
     <target name="skins"
-            description="Generate skinning resources for deployment."
-            depends="cssurlmapper">
-
+            description="Generate skinning resources for deployment.">
+        <echo message="path to cssurlMapper is ${lib.dir}/generator"/>
         <taskdef name="cssurlmapper" classname="${cssurlmapper.class}"
-                 classpath="${cssurlmapper.rootdir}/dist/cssurlmapper.jar;${cssurlmapper.rootdir}/lib/commons-cli-1.2.jar"/>
+                 classpath="${lib.dir}/generator/cssurlmapper.jar;${lib.dir}/generator/commons-cli-1.2.jar"/>
 
         <!-- Declare all the resources to include -->
         <!-- 'dir' is the actual directory that contains the resources -->
@@ -414,7 +413,6 @@
                       outputdir="${resources}/${skins.lib}"/>
 
         <!-- Generate a single CSS file per skin -->
-        <!--	<concatskin name="rime" /> -->
         <concatskin name="android"/>
         <concatskin name="iphone"/>
         <concatskin name="bberry"/>
@@ -464,7 +462,13 @@
         <generatesprites skin="ipad"/>
         <generatesprites skin="android"/>
         <generatesprites skin="bberry"/>
+    </target>
 
+    <target name="compress-css">
+        <compresscssmacro name="iphone"/>
+        <compresscssmacro name="ipad"/>
+        <compresscssmacro name="android"/>
+        <compresscssmacro name="bberry"/>
     </target>
 
     <target name="smartsprites" description="Performs CSS sprite processing."
@@ -478,34 +482,6 @@
                       loglevel="${log.level}"
                       spritepngdepth="${sprite.png.depth}"
                       spritepngie6="${sprite.png.ie6}"/>
-    </target>
-
-    <target name="concatyuisam">
-        <!-- concatenate yui files in a temporary file -->
-        <concat destfile="${resources}/${skins.lib}/temp.css" append="true">
-            <filelist>
-                <!-- <file name="${src}/org/icefaces/component/skins/sam_renamed/calendar-skin.css"
-                        /> <file name="${src}/org/icefaces/component/skins/sam_renamed/tabview-skin.css"
-                        /> -->
-            </filelist>
-        </concat>
-
-        <!-- join with previously concatenated file -->
-        <concat destfile="${resources}/${skins.lib}/temp.css" append="true">
-            <file file="${resources}/${skins.lib}/sam.css"/>
-        </concat>
-
-        <!-- replace previous sam.css file -->
-        <copy file="${resources}/${skins.lib}/temp.css"
-              tofile="${resources}/${skins.lib}/sam.css"
-              overwrite="true"/>
-
-        <!-- remove temp file -->
-        <delete file="${resources}/${skins.lib}/temp.css"/>
-    </target>
-
-    <target name="cssurlmapper" description="Build the CSS URL mapping tool.">
-        <subant buildpath="${cssurlmapper.rootdir}" target="compile"/>
     </target>
 
     <macrodef name="gen.tld.doc">
@@ -530,4 +506,93 @@
             description="Generate the component TLD Documentation in HTML format.">
         <gen.tld.doc tld.file="${tld.file}"/>
     </target>
+
+    <!--  added these from latest ace build and modified macrodefs for them-->
+
+    <target name="res-js-combine">
+         <delete file="${combined.js.tmp}" verbose="true"/>
+         <concat destfile="${combined.js.tmp}" force="true" fixlastline="true">
+             <filelist dir="${resource.js.dir}">
+                 <file name="component.js"/>
+                 <file name="iscroll.js"/>
+             </filelist>
+             <fileset dir="${resources}">
+                 <include name="org.icefaces.component.flipswitch/flipswitch.js"/>
+                 <include name="org.icefaces.component.datespinner/datespinner.js"/>
+                 <include name="org.icefaces.component.carousel/carousel.js"/>
+
+             </fileset>
+         </concat>
+     </target>
+
+     <target name="res-js-compress" depends="res-js-combine"
+             unless="no-compress">
+         <echo message="Compressing combined javascript code"/>
+         <java jar="${lib.dir}/generator/yui-compressor.jar" fork="yes">
+             <arg line="--preserve-semi"/>
+             <arg value="${combined.js.tmp}"/>
+             <arg value="-o"/>
+             <arg value="${combined.js}"/>
+         </java>
+     </target>
+     <macrodef name="compressjs">
+        <attribute name="comp"/>
+        <attribute name="path"/>
+        <sequential>
+             <echo>path is @{path}</echo>
+             <echo>comp is @{comp}</echo>
+             <java jar="${lib.dir}/generator/yui-compressor.jar" fork="yes">
+             <arg line="--preserve-semi"/>
+             <arg value="@{path}/@{comp}.js"/>
+             <arg value="-o"/>
+             <arg value="@{path}/@{comp}-min.js"/>
+         </java>
+        </sequential>
+    </macrodef>
+     <target name="min-js-compress"
+             unless="no-compress">
+         <echo message="Compressing individual javascript files"/>
+         <compressjs comp="component" path="${resources}/org.icefaces.component.util"/>
+         <compressjs comp="carousel" path="${resources}/org.icefaces.component.carousel"/>
+         <compressjs comp="datespinner" path="${resources}/org.icefaces.component.datespinner"/>
+         <compressjs comp="flipswitch" path="${resources}/org.icefaces.component.flipswitch"/>
+     </target>
+
+     <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
+         <echo message="Not compressing combined javascript code"/>
+         <move file="${combined.js.tmp}" tofile="${combined.js}" overwrite="yes">
+             <filterchain>
+                 <stripjavacomments/>
+                 <ignoreblank/>
+             </filterchain>
+         </move>
+     </target>
+
+<!--     <target name="res-css-combine">
+         <delete file="${resources}/icefaces.ace/util/combined.css"
+                 verbose="true"/>
+         <concat destfile="${resources}/icefaces.ace/util/combined.css"
+                 force="true" fixlastline="true">
+             <fileset dir="${resources}">
+                 <include name="icefaces.ace/*/*.css"/>
+                 <exclude name="icefaces.ace/util/*.css"/>
+                 <exclude name="${skins.lib}/*.css"/>
+             </fileset>
+         </concat>
+     </target>
+
+     <target name="res-copy"
+             description="Copy the resources into the exploded dir ">
+         <copy todir="${exploded}/META-INF">
+             <fileset dir="${meta-include}">
+                 <exclude name="primefaces-p.taglib.xml"/>
+             </fileset>
+         </copy>
+         <copy todir="${exploded}/META-INF/resources">
+             <fileset dir="${resources}"/>
+         </copy>
+         <delete dir="${exploded}/META-INF/resources/icefaces.ace/META-INCLUDE"/>
+     </target>   -->
+
+
 </project>
