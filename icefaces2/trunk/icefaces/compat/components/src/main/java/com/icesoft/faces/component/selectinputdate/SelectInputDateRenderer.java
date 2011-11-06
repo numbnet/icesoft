@@ -1569,6 +1569,11 @@ public class SelectInputDateRenderer
 //System.out.println("SIDR.decode()  clientId: " + clientId);
 
         Object eventCapturedId = requestParameterMap.get("ice.event.captured");
+        if (eventCapturedId != null && 
+        		!eventCapturedId.toString().startsWith(clientId)) {
+        	return;
+        }
+        
         String monthClientId = clientId + SELECT_MONTH;
         String yearClientId = clientId + SELECT_YEAR;
         String hoursClientId = clientId + SELECT_HOUR;
