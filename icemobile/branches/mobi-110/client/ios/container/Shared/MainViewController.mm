@@ -177,6 +177,106 @@
     }
 }
 
+- (void)completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName   {
+        NSString *scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
+        NSString *script = [NSString stringWithFormat:scriptTemplate, 
+                componentID, componentName, path];
+        NSString *result = [webView 
+                stringByEvaluatingJavaScriptFromString: script];
+}
+
+- (NSString *) prepareUpload:(NSString *)formID  {
+    NSString *scriptTemplate = @"document.getElementById(\"%@\").action;";
+    NSString *script = [NSString stringWithFormat:scriptTemplate, formId];
+    NSString *result = [webView stringByEvaluatingJavaScriptFromString: script];
+
+    NSString *actionString = result;
+    
+    scriptTemplate = @"document.location.href;";
+    script = [NSString stringWithFormat:scriptTemplate, formId];
+    result = [webView stringByEvaluatingJavaScriptFromString: script];
+
+    NSString *baseString = result;
+    NSURL *baseURL = [NSURL URLWithString:baseString];
+    NSURL *actionURL = [NSURL URLWithString:actionString relativeToURL:baseURL];
+    NSLog(@"upload will post to actionURL %@", [actionURL absoluteString] );
+
+    result = [webView 
+            stringByEvaluatingJavaScriptFromString: @"ice.progress(0);"];
+
+    return [actionURL absoluteString];
+}
+
+- (NSString *) getFormData:(NSString *)formID  {
+    NSString *scriptTemplate = @"ice.getCurrentSerialized();";
+    NSString *script = [NSString stringWithFormat:scriptTemplate, formId];
+    NSString *result = [webView stringByEvaluatingJavaScriptFromString: script];
+
+    return result;
+}
+
+- (void) setProgress:(NSInteger)percent  {
+    NSString *scriptTemplate = @"ice.progress(%d);";
+    NSString *script = [NSString stringWithFormat:scriptTemplate, percent];
+    NSString *result = [controller.webView 
+            stringByEvaluatingJavaScriptFromString: script];
+}
+
+- (void) handleResponse:(NSString *)responseString  {
+    NSString *scriptTemplate = @"ice.handleResponse(\"%@\");";
+    NSString *script = [NSString stringWithFormat:scriptTemplate, [responseString 
+            stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSString *result = [controller.webView 
+            stringByEvaluatingJavaScriptFromString: script];
+}
+
+- (void)play: (NSString*)audioId  {
+    NSString *scriptTemplate = @"document.getElementById(\"%@\").src;";
+    NSString *script = [NSString stringWithFormat:scriptTemplate, audioId];
+    NSString *result = [webView stringByEvaluatingJavaScriptFromString: script];
+
+    NSString *srcString = result;
+    
+    scriptTemplate = @"document.location.href;";
+    script = [NSString stringWithFormat:scriptTemplate, audioId];
+    result = [webView stringByEvaluatingJavaScriptFromString: script];
+
+    NSString *baseString = result;
+    NSURL *baseURL = [NSURL URLWithString:baseString];
+    NSURL *fullURL = [NSURL URLWithString:srcString relativeToURL:baseURL];
+
+    NSString *soundPath = [NSTemporaryDirectory() 
+            stringByAppendingPathComponent:@"remotesound"];
+    NSData *soundData = [NSData dataWithContentsOfURL:fullURL];
+    [soundData writeToFile:soundPath atomically:YES];
+    NSLog(@"will play sound %@", [fullURL absoluteURL]);
+
+    NSError* err;
+    AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithContentsOfURL:
+            [NSURL fileURLWithPath:soundPath] error:&err];
+    [player play];
+
+    if (nil != err)  {
+        NSLog(@"error playing sound %@", err);
+    }
+}
+
+- (void)setThumbnail: (UIImage*)image at: (NSString *)thumbID  {
+    NSData *scaledData =  UIImageJPEGRepresentation(image, 0.5);
+    NSString *image64 = [self  base64StringFromData:scaledData];
+    NSString *dataURL = [@"data:image/jpg;base64," 
+            stringByAppendingString:image64];
+    NSLog(@"scaled and encoded thumbnail %d", [image64 length]);
+
+    NSString *scriptTemplate;
+    NSString *script;
+    NSString *result;
+
+    NSString *thumbName = [thumbID stringByAppendingString:@"-thumb"];
+    scriptTemplate = @"ice.setThumbnail(\"%@\", \"%@\");";
+    script = [NSString stringWithFormat:scriptTemplate, thumbName, dataURL];
+    result = [controller.webView stringByEvaluatingJavaScriptFromString: script];
+}
 
 - (IBAction)doPreferences {
     NSLog(@"Preferences pressed");
