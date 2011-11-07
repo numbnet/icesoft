@@ -59,6 +59,7 @@
         <resource-handler>org.icefaces.impl.application.WindowScopeManager</resource-handler>
         <!-- SessionTimeoutMonitor needs be the last in the list of resource handlers so that it executes first. -->
         <resource-handler>org.icefaces.impl.application.SessionTimeoutMonitor</resource-handler>
+        <resource-handler>org.icefaces.impl.application.MyFacesResourceHandlingFix</resource-handler>
         <el-resolver>org.icefaces.impl.application.WindowELResolver</el-resolver>
         <system-event-listener>
             <system-event-listener-class>org.icefaces.impl.event.FormSubmit</system-event-listener-class>
