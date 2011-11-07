@@ -16,11 +16,13 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
+#import "NativeInterfaceViewController.h"
+
 @class MainViewController;
 
 @interface NativeInterface : NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate> {
 
-	MainViewController *controller;
+	UIViewController<NativeInterfaceViewController> *controller;
     NSString *activeDOMElementId;
     NSString *maxwidth;
     NSString *maxheight;
@@ -31,7 +33,7 @@
     UIPopoverController *camPopover;
 }
 
-@property (retain) MainViewController *controller;
+@property (retain) UIViewController<NativeInterfaceViewController> *controller;
 @property (retain) NSString *activeDOMElementId;
 @property (retain) NSString *maxwidth;
 @property (retain) NSString *maxheight;

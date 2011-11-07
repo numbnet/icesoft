@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 
 #import "ViewController.h"
+#import "NativeInterface.h"
 
 @implementation AppDelegate
 
@@ -75,11 +76,18 @@
      */
 }
 
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    NSLog(@"ICEmobileHitch handleOpenURL %@", url);
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation  {
+    NSLog(@"ICEmobileHitch handleOpenURL %@ %@", sourceApplication, url);
     NSString *reqString = [url absoluteString];
-    NSString *command = [reqString substringFromIndex:[@"icemobile://" length]];
-    [self.viewController.nativeInterface dispatch:command];
+    NSString *body = [reqString substringFromIndex:[@"icemobile://" length]];
+    NSDictionary *params = 
+            [self.viewController.nativeInterface parseQuery:body];
+
+NSLog(@"ICEmobileHitch found command %@", [params objectForKey:@"c"]);
+NSLog(@"ICEmobileHitch found url %@", [params objectForKey:@"u"]);
+    self.viewController.currentURL = [params objectForKey:@"u"];
+NSLog(@"ICEmobileHitch found JSESSIONID %@", [params objectForKey:@"JSESSIONID"]);
+    [self.viewController.nativeInterface dispatch:[params objectForKey:@"c"]];
     return YES;
 }
 

@@ -7,13 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NativeInterfaceViewController.h"
+
 @class NativeInterface;
 
-@interface ViewController : UIViewController  {
+@interface ViewController : UIViewController<NativeInterfaceViewController> {
 
 	NativeInterface *nativeInterface;
+    NSString *currentURL;
 }
 
 @property (retain) NativeInterface *nativeInterface;
+@property (retain) NSString *currentURL;
 
 @end

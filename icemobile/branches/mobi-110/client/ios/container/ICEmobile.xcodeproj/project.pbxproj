@@ -94,6 +94,7 @@
 		9C65FC2B137C9E5500530472 /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Preferences.h; path = Shared/Preferences.h; sourceTree = "<group>"; };
 		9C65FC2C137C9E5500530472 /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Preferences.m; path = Shared/Preferences.m; sourceTree = "<group>"; };
 		9C65FC2D137C9E5500530472 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = Preferences.xib; path = Shared/Preferences.xib; sourceTree = "<group>"; };
+		9C7466A214685A4800416E8D /* NativeInterfaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeInterfaceViewController.h; path = Shared/NativeInterfaceViewController.h; sourceTree = "<group>"; };
 		9C77A01D139E9E9B00A2B1EC /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "Shared/icon@2x.png"; sourceTree = "<group>"; };
 		9C8A5DB0146470D100019392 /* ICEmobileHitch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ICEmobileHitch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C8A5DB7146470D100019392 /* ICEmobileHitch-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ICEmobileHitch-Info.plist"; sourceTree = "<group>"; };
@@ -192,6 +193,7 @@
 				9C31404D13200264005F0E8F /* NativeInterface.m */,
 				9C31408613201B67005F0E8F /* main.html */,
 				9C3140D513203841005F0E8F /* native-interface.js */,
+				9C7466A214685A4800416E8D /* NativeInterfaceViewController.h */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -598,6 +600,7 @@
 				9C8A5DCC146470D100019392 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ICEmobile" */ = {
 			isa = XCConfigurationList;

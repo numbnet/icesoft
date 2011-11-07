@@ -68,36 +68,7 @@ static char base64EncodingTable[64] = {
 }
 
 - (BOOL)play: (NSString*)audioId  {
-    NSString *scriptTemplate = @"document.getElementById(\"%@\").src;";
-    NSString *script = [NSString stringWithFormat:scriptTemplate, audioId];
-    NSString *result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: script];
-
-    NSString *srcString = result;
-    
-    scriptTemplate = @"document.location.href;";
-    script = [NSString stringWithFormat:scriptTemplate, audioId];
-    result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: script];
-
-    NSString *baseString = result;
-    NSURL *baseURL = [NSURL URLWithString:baseString];
-    NSURL *fullURL = [NSURL URLWithString:srcString relativeToURL:baseURL];
-
-    NSString *soundPath = [NSTemporaryDirectory() 
-            stringByAppendingPathComponent:@"remotesound"];
-    NSData *soundData = [NSData dataWithContentsOfURL:fullURL];
-    [soundData writeToFile:soundPath atomically:YES];
-    NSLog(@"will play sound %@", [fullURL absoluteURL]);
-
-    NSError* err;
-    AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithContentsOfURL:
-            [NSURL fileURLWithPath:soundPath] error:&err];
-    [player play];
-
-    if (nil != err)  {
-        NSLog(@"error playing sound %@", err);
-    }
+    [controller play:audioId];
 
     return YES;
 }
@@ -116,11 +87,9 @@ static char base64EncodingTable[64] = {
         self.recording = NO;
         NSLog(@"recording stopped");
         [self.soundRecorder stop];
-        NSString *scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
-        NSString *script = [NSString stringWithFormat:scriptTemplate, 
-                micId, micName, soundFilePath];
-        NSString *result = [controller.webView 
-                stringByEvaluatingJavaScriptFromString: script];
+        [controller completeFile:soundFilePath
+                forComponent:micId withName:micName];
+
         return YES;
     }
  
@@ -219,13 +188,8 @@ NSLog(@"called camera");
     UIImage *scaledImage = [self scaleImage:image toSize:64];
     [self setThumbnail:scaledImage at:cameraId];
 
-    NSString *scriptTemplate;
-    NSString *script;
-    NSString *result;
-
-    scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
-    script = [NSString stringWithFormat:scriptTemplate, cameraId, cameraName, savedPath];
-    result = [controller.webView stringByEvaluatingJavaScriptFromString: script];
+    [controller completeFile:savedPath 
+            forComponent:cameraId withName:cameraName];
 }
 
 - (void) imagePickerController: (UIImagePickerController *)picker
@@ -242,10 +206,6 @@ NSLog(@"called camera");
     NSURL *movieURL = [info objectForKey: UIImagePickerControllerMediaURL];
     NSString *moviePath = [movieURL path];
 
-    NSString *scriptTemplate;
-    NSString *script;
-    NSString *result;
-
     MPMoviePlayerController *movieController = 
             [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
     movieController.shouldAutoplay = NO;
@@ -257,9 +217,8 @@ NSLog(@"called camera");
     UIImage *scaledImage = [self scaleImage:image toSize:64];
     [self setThumbnail:scaledImage at:cameraId];
 
-    scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
-    script = [NSString stringWithFormat:scriptTemplate, cameraId, cameraName, moviePath];
-    result = [controller.webView stringByEvaluatingJavaScriptFromString: script];
+    [controller completeFile:moviePath
+            forComponent:cameraId withName:cameraName];
 
     [self dismissImagePicker];
     [picker release];
@@ -288,20 +247,7 @@ NSLog(@"called camera");
 }
 
 - (void)setThumbnail: (UIImage*)image at: (NSString *)thumbId  {
-    NSData *scaledData =  UIImageJPEGRepresentation(image, 0.5);
-    NSString *image64 = [self  base64StringFromData:scaledData];
-    NSString *dataURL = [@"data:image/jpg;base64," 
-            stringByAppendingString:image64];
-    NSLog(@"scaled and encoded thumbnail %d", [image64 length]);
-
-    NSString *scriptTemplate;
-    NSString *script;
-    NSString *result;
-
-    NSString *thumbName = [thumbId stringByAppendingString:@"-thumb"];
-    scriptTemplate = @"ice.setThumbnail(\"%@\", \"%@\");";
-    script = [NSString stringWithFormat:scriptTemplate, thumbName, dataURL];
-    result = [controller.webView stringByEvaluatingJavaScriptFromString: script];
+    [controller setThumbnail:image at:thumbId];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -355,37 +301,9 @@ NSLog(@"called camera");
     self.uploading = YES;
     self.activeDOMElementId = formId;
     
-    NSString *scriptTemplate;
-    NSString *script; 
-    NSString *result;
-    
-    scriptTemplate = @"document.getElementById(\"%@\").action;";
-    script = [NSString stringWithFormat:scriptTemplate, formId];
-    result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: script];
-
-    NSString *actionString = result;
-    
-    scriptTemplate = @"document.location.href;";
-    script = [NSString stringWithFormat:scriptTemplate, formId];
-    result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: script];
-
-    NSString *baseString = result;
-    NSURL *baseURL = [NSURL URLWithString:baseString];
-    NSURL *actionURL = [NSURL URLWithString:actionString relativeToURL:baseURL];
-    NSLog(@"upload will post to actionURL %@", [actionURL absoluteString] );
-
-    result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: @"ice.progress(0);"];
-
-    scriptTemplate = @"ice.getCurrentSerialized();";
-    script = [NSString stringWithFormat:scriptTemplate, formId];
-    result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: script];
-
-    NSDictionary *parts = [self parseQuery:result];
-    [self multipartPost:parts toURL:[actionURL absoluteString]];
+    NSString* actionURL = [controller prepareUpload:formId];
+    NSDictionary *parts = [self parseQuery:[controller getFormData:formId]];
+    [self multipartPost:parts toURL:actionURL];
 
     return YES;
 }
@@ -409,7 +327,7 @@ NSLog(@"called camera");
     if ([path hasSuffix:@".MOV"])  {
         return @"Content-Type: video/mp4\r\n\r\n";
     }
-    return "text/plain";
+    return @"text/plain";
 }
 
 /*Return NSDictionary of query parameters
@@ -541,10 +459,7 @@ NSLog(@"called camera");
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite  {
     NSLog(@"didSendBodyData %d bytes of %d",totalBytesWritten, totalBytesExpectedToWrite);
     NSInteger percentProgress = (totalBytesWritten * 100) / totalBytesExpectedToWrite;
-    NSString *scriptTemplate = @"ice.progress(%d);";
-    NSString *script = [NSString stringWithFormat:scriptTemplate, percentProgress];
-    NSString *result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: script];
+    [controller setProgress:percentProgress];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection  {
@@ -553,14 +468,8 @@ NSLog(@"called camera");
     NSString *responseString = [[NSString alloc] initWithData:receivedData
             encoding:NSUTF8StringEncoding];
 
-    [controller.webView 
-            stringByEvaluatingJavaScriptFromString: @"ice.progress(100);"];
-
-    NSString *scriptTemplate = @"ice.handleResponse(\"%@\");";
-    NSString *script = [NSString stringWithFormat:scriptTemplate, [responseString 
-            stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    NSString *result = [controller.webView 
-            stringByEvaluatingJavaScriptFromString: script];
+    [controller setProgress:100];
+    [controller handleResponse:responseString];
 
     // release the connection, and the data object
     [connection release];

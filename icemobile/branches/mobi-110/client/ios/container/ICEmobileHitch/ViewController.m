@@ -11,11 +11,65 @@
 
 @implementation ViewController
 @synthesize nativeInterface;
+@synthesize currentURL;
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Release any cached data, images, etc that aren't in use.
+}
+
+- (void)completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName   {
+        NSString *scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
+        NSString *script = [NSString stringWithFormat:scriptTemplate, 
+                componentID, componentName, path];
+NSLog(@"Hitch just upload what would have been scripted %@", script);
+    [[UIApplication sharedApplication] 
+            openURL:[NSURL URLWithString:self.currentURL]];
+NSLog(@"Hitch opened safari currentURL");
+}
+
+- (NSString *) prepareUpload:(NSString *)formID  {
+    NSString *scriptTemplate = @"document.getElementById(\"%@\").action;";
+    NSString *script = [NSString stringWithFormat:scriptTemplate, formID];
+NSLog(@"Hitch just upload what would have been scripted %@", script);
+    
+    scriptTemplate = @"document.location.href;";
+    script = [NSString stringWithFormat:scriptTemplate, formID];
+NSLog(@"Hitch just upload what would have been scripted %@", script);
+
+NSLog(@"Hitch just upload what would have been scripted %@", script);
+
+    return @"unknown";
+}
+
+- (NSString *) getFormData:(NSString *)formID  {
+    NSString *scriptTemplate = @"ice.getCurrentSerialized();";
+    NSString *script = [NSString stringWithFormat:scriptTemplate, formID];
+NSLog(@"Hitch just upload what would have been scripted %@", script);
+
+    return @"unkown";
+}
+
+- (void) setProgress:(NSInteger)percent  {
+    NSString *scriptTemplate = @"ice.progress(%d);";
+    NSString *script = [NSString stringWithFormat:scriptTemplate, percent];
+NSLog(@"Hitch just upload what would have been scripted %@", script);
+}
+
+- (void) handleResponse:(NSString *)responseString  {
+    NSString *scriptTemplate = @"ice.handleResponse(\"%@\");";
+    NSString *script = [NSString stringWithFormat:scriptTemplate, [responseString 
+            stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+NSLog(@"Hitch just upload what would have been scripted %@", script);
+}
+
+- (void)play: (NSString*)audioId  {
+NSLog(@"Hitch cant play audio from an ID in the page");
+}
+
+- (void)setThumbnail: (UIImage*)image at: (NSString *)thumbID  {
+NSLog(@"Hitch would show a thumbnail");
 }
 
 #pragma mark - View lifecycle
