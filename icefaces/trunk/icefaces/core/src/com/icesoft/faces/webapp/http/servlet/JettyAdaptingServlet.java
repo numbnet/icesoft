@@ -32,6 +32,7 @@
 
 package com.icesoft.faces.webapp.http.servlet;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
 
@@ -47,18 +48,20 @@ import org.mortbay.util.ajax.ContinuationSupport;
 public class JettyAdaptingServlet implements PseudoServlet {
     private Map requests = new HashMap();
     private Server server;
+    private Configuration configuration;
 
-    public JettyAdaptingServlet(final Server server) {
+    public JettyAdaptingServlet(final Server server, final Configuration configuration) {
         this.server = server;
+        this.configuration = configuration;
     }
 
     public void service(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         response.addHeader("X-Powered-By", "Jetty Adapting Servlet");
         if (requests.containsKey(request)) {
             ResponseHandler handler = (ResponseHandler) requests.remove(request);
-            handler.respond(new ServletRequestResponse(request, response));
+            handler.respond(new ServletRequestResponse(request, response, configuration));
         } else {
-            ContinuationRequestResponse requestResponse = new ContinuationRequestResponse(request, response);
+            ContinuationRequestResponse requestResponse = new ContinuationRequestResponse(request, response, configuration);
             server.service(requestResponse);
             requestResponse.captureContinuation();
         }
@@ -72,8 +75,8 @@ public class JettyAdaptingServlet implements PseudoServlet {
         private boolean captureContinuation = true;
         private Continuation continuation;
 
-        public ContinuationRequestResponse(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-            super(request, response);
+        public ContinuationRequestResponse(final HttpServletRequest request, final HttpServletResponse response, final Configuration configuration) throws Exception {
+            super(request, response, configuration);
         }
 
         public synchronized void respondWith(final ResponseHandler handler) throws Exception {

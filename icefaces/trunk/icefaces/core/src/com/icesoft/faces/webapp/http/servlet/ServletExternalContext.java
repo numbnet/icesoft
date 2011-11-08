@@ -40,16 +40,7 @@ import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.jasper.Constants;
 import com.icesoft.util.SeamUtilities;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-import javax.faces.FacesException;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -64,6 +55,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
+import javax.faces.FacesException;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class ServletExternalContext extends BridgeExternalContext {
     private static final Log Log = LogFactory.getLog(ServletExternalContext.class);
@@ -149,7 +151,7 @@ public class ServletExternalContext extends BridgeExternalContext {
         final HttpServletResponse servletResponse = (HttpServletResponse) response;
 
         detectedAuthorization = detectAuthorization(servletRequest.getUserPrincipal());
-        initialRequest = new ServletEnvironmentRequest(request, session, detectedAuthorization) {
+        initialRequest = new ServletEnvironmentRequest(request, session, detectedAuthorization, configuration) {
             public RequestAttributes requestAttributes() {
                 return requestAttributes;
             }

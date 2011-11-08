@@ -88,7 +88,7 @@ public class MainServlet extends HttpServlet {
     private static final int DEFAULT_THREAD_POOL_SIZE = 10;
 
     private static final CurrentContextPath currentContextPath = new CurrentContextPath();
-    private static final PseudoServlet NotFound = new BasicAdaptingServlet(new ResponseHandlerServer(new NotFoundHandler("")));
+    private PseudoServlet NotFound;
 
     static {
         final String headless = "java.awt.headless";
@@ -118,6 +118,7 @@ public class MainServlet extends HttpServlet {
         //end of (ICE-5155) preload
         try {
             final Configuration configuration = new ServletContextConfiguration("com.icesoft.faces", context);
+            NotFound = new BasicAdaptingServlet(new ResponseHandlerServer(new NotFoundHandler("")), configuration);
             ThreadFactory _threadFactory = new ThreadFactory();
             _threadFactory.setPrefix("Core Thread");
             scheduledThreadPoolExecutor =
@@ -144,7 +145,7 @@ public class MainServlet extends HttpServlet {
             };
             monitorRunner = new MonitorRunner(configuration.getAttributeAsLong("monitorRunnerInterval", 10000));
             RenderManager.setServletConfig(servletConfig);
-            PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
+            PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator), configuration);
             PseudoServlet sessionDispatcher = new SessionDispatcher(context, configuration) {
                 protected PseudoServlet newServer(HttpSession session, Monitor sessionMonitor, Authorization authorization) {
                     return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration, getCoreMessageService(configuration), blockingRequestHandlerContext, authorization);

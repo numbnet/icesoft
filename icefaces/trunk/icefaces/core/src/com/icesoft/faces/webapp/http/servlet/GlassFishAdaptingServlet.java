@@ -32,6 +32,7 @@
 
 package com.icesoft.faces.webapp.http.servlet;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.sun.enterprise.web.connector.grizzly.comet.CometContext;
@@ -57,9 +58,10 @@ implements PseudoServlet {
 
     private final Server server;
     private final String contextPath;
+    private final Configuration configuration;
 
     public GlassFishAdaptingServlet(
-        final Server server, final ServletContext servletContext)
+        final Server server, final ServletContext servletContext, final Configuration configuration)
     throws ServletException {
         this.server = server;
         try {
@@ -82,6 +84,7 @@ implements PseudoServlet {
                     exception);
         }
         CometEngine.getEngine().register(contextPath).setExpirationDelay(-1);
+        this.configuration = configuration;
     }
 
     public void service(
@@ -89,7 +92,7 @@ implements PseudoServlet {
     throws Exception {
         response.addHeader("X-Powered-By", "GlassFish Adapting Servlet");
         GlassFishRequestResponse requestResponse =
-            new GlassFishRequestResponse(request, response);
+            new GlassFishRequestResponse(request, response, configuration);
         server.service(requestResponse);
         synchronized (requestResponse) {
             if (!requestResponse.isDone()) {
@@ -143,10 +146,9 @@ implements PseudoServlet {
         private boolean done = false;
 
         public GlassFishRequestResponse(
-            final HttpServletRequest request,
-            final HttpServletResponse response)
+            final HttpServletRequest request, final HttpServletResponse response, final Configuration configuration)
         throws Exception {
-            super(request, response);
+            super(request, response, configuration);
         }
 
         public void attach(final Object object) {

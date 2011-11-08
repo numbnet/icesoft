@@ -32,25 +32,29 @@
 
 package com.icesoft.faces.webapp.http.servlet;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.standard.EmptyResponse;
 import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
 import com.icesoft.faces.webapp.http.core.SessionExpiredResponse;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class SessionVerifier implements PseudoServlet {
     private static final Log log = LogFactory.getLog(SessionVerifier.class);
-    private static final PseudoServlet SessionExpiredServlet = new BasicAdaptingServlet(new ResponseHandlerServer(SessionExpiredResponse.Handler));
-    private static final PseudoServlet EmptyResponseServlet = new BasicAdaptingServlet(new ResponseHandlerServer(EmptyResponse.Handler));
+    private final PseudoServlet SessionExpiredServlet;
+    private final PseudoServlet EmptyResponseServlet;
     private PseudoServlet servlet;
     private boolean xmlResponse;
 
-    public SessionVerifier(PseudoServlet servlet, boolean xmlResponse) {
+    public SessionVerifier(final PseudoServlet servlet, final boolean xmlResponse, final Configuration configuration) {
         this.servlet = servlet;
         this.xmlResponse = xmlResponse;
+        SessionExpiredServlet = new BasicAdaptingServlet(new ResponseHandlerServer(SessionExpiredResponse.Handler), configuration);
+        EmptyResponseServlet = new BasicAdaptingServlet(new ResponseHandlerServer(EmptyResponse.Handler), configuration);
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {

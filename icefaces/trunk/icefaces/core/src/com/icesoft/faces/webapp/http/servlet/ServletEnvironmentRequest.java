@@ -35,9 +35,17 @@ package com.icesoft.faces.webapp.http.servlet;
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.env.CommonEnvironmentRequest;
 import com.icesoft.faces.env.RequestAttributes;
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.jasper.Constants;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -45,10 +53,9 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.*;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * A wrapper for HttpServletRequest.
@@ -88,7 +95,7 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
     private HttpSession session;
     private Authorization authorization;
 
-    public ServletEnvironmentRequest(Object request, HttpSession session, Authorization authorization) {
+    public ServletEnvironmentRequest(Object request, HttpSession session, Authorization authorization, Configuration configuration) {
         HttpServletRequest initialRequest = (HttpServletRequest) request;
         this.session = session;
         this.authorization = authorization;
@@ -173,7 +180,11 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
         contentType = initialRequest.getContentType();
         protocol = initialRequest.getProtocol();
         remoteAddr = initialRequest.getRemoteAddr();
-        remoteHost = initialRequest.getRemoteHost();
+        if (!configuration.getAttributeAsBoolean("disableRemoteHostLookup", false)) {
+            remoteHost = initialRequest.getRemoteHost();
+        } else {
+            remoteHost = initialRequest.getRemoteAddr();
+        }
         initializeServlet2point4Properties(initialRequest);
     }
 
