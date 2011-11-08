@@ -402,7 +402,7 @@ if (!window.ice.icefaces) {
             });
         };
 
-        namespace.enableSingleSubmit = function(id) {
+        namespace.enableSingleSubmit = function(id, useBlur) {
             var f = document.getElementById(id);
 
             function submitForm(ev) {
@@ -440,7 +440,7 @@ if (!window.ice.icefaces) {
                     (elementType == "password") ||
                     (elementType == "textarea") );
                 if (isText) {
-                    if ((eType == "click") || (eType == "blur")) {
+                    if ((eType == "click") || ((!useBlur) && (eType == "blur"))) {
                         //click events should not trigger text box submit
                         //blur events are mostly redundant with change events
                         return;
