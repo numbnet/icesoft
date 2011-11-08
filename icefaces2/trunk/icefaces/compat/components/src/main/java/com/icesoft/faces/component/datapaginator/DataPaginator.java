@@ -256,7 +256,11 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         }
         return pageIndex;
     }
-
+    
+    private void setPageIndex(int pageIndex) {
+    	this.pageIndex = pageIndex;
+    }
+     
     /**
      * <p>Return the value of the <code>pageCount</code> property.</p>
      */
@@ -928,6 +932,12 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
      */
     public void gotoFirstPage() {
         getUIData().setFirst(0);
+    	UIData uiData = getUIData();
+    	DataPaginatorGroup.execute(uiData, new DataPaginatorGroup.Invoker() {
+			public void invoke(DataPaginator dataPaginator) {
+				dataPaginator.setPageIndex(1);
+			}
+		});
     }
 
     /**
@@ -1119,9 +1129,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
     
     public void decode(FacesContext context) {
         //each cycle can have new component
-        UIData uiData = findUIData();
-        setUIData(uiData);
-        uiData.getAttributes().put(DataPaginator.class.getName(), getClientId(context));
+    	DataPaginatorGroup.add(context, this);
         super.decode(context);
     }
     
