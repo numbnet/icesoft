@@ -57,6 +57,20 @@
 
         <attribute>
             <description>
+                A space-delimited list of components that will have their requisite resources
+                pre-loaded on this page. The pre-loading allows the components to function
+                correctly even if they are later added to the page dynamically.  The values
+                "none" (which is the default) and "all" are also valid.  The value of this
+                attribute on a page takes precedence over the values specified by the context
+                parameter org.icefaces.mandatoryResourceConfiguration.
+            </description>
+            <name>mandatoryResource</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+
+        <attribute>
+            <description>
                 A value of "true" indicates that faces messages are persisted
                 across single submits.  This attribute takes precedence over the
                 org.icefaces.messagePersistence context parameter on a per view
