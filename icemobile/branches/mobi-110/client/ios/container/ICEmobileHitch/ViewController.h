@@ -15,9 +15,11 @@
 
 	NativeInterface *nativeInterface;
     NSString *currentURL;
+    NSString *currentParameters;
 }
 
 @property (retain) NativeInterface *nativeInterface;
 @property (retain) NSString *currentURL;
+@property (retain) NSString *currentParameters;
 
 @end

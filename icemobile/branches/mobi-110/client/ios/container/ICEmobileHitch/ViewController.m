@@ -12,6 +12,7 @@
 @implementation ViewController
 @synthesize nativeInterface;
 @synthesize currentURL;
+@synthesize currentParameters;
 
 - (void)didReceiveMemoryWarning
 {
@@ -24,6 +25,10 @@
         NSString *script = [NSString stringWithFormat:scriptTemplate, 
                 componentID, componentName, path];
 NSLog(@"Hitch just upload what would have been scripted %@", script);
+    NSMutableDictionary *params = [nativeInterface parseQuery:currentParameters];
+    [params setValue:path forKey:componentName];
+    [nativeInterface multipartPost:params toURL:self.currentURL];
+
     [[UIApplication sharedApplication] 
             openURL:[NSURL URLWithString:self.currentURL]];
 NSLog(@"Hitch opened safari currentURL");
@@ -58,10 +63,10 @@ NSLog(@"Hitch just upload what would have been scripted %@", script);
 }
 
 - (void) handleResponse:(NSString *)responseString  {
-    NSString *scriptTemplate = @"ice.handleResponse(\"%@\");";
-    NSString *script = [NSString stringWithFormat:scriptTemplate, [responseString 
-            stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-NSLog(@"Hitch just upload what would have been scripted %@", script);
+//    NSString *scriptTemplate = @"ice.handleResponse(\"%@\");";
+//    NSString *script = [NSString stringWithFormat:scriptTemplate, [responseString 
+//            stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+NSLog(@"ICEmobile would have executed ice.handleResponse on %@", responseString);
 }
 
 - (void)play: (NSString*)audioId  {

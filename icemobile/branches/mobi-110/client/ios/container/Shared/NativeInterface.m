@@ -332,9 +332,9 @@ NSLog(@"called camera");
 
 /*Return NSDictionary of query parameters
 */
-- (NSDictionary*)parseQuery: (NSString*)queryString  {
+- (NSMutableDictionary*)parseQuery: (NSString*)queryString  {
     if ((nil == queryString) || (0 == [queryString length]))  {
-        return [NSDictionary dictionary];
+        return [NSMutableDictionary dictionary];
     }
     NSArray *pairs = [queryString componentsSeparatedByString:@"&"];
     NSMutableDictionary *pairDict = [NSMutableDictionary dictionary];
