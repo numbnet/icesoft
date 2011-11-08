@@ -84,6 +84,8 @@ public class IceComponentHandler extends ComponentHandler {
             }
             else if( tag.getLocalName().equals("panelPositioned") ) {
                 try { 
+                m.addRule( new MethodRule("beforeChangedListener", null, new Class[] {
+                        Class.forName("com.icesoft.faces.component.panelpositioned.PanelPositionedEvent")}) );
                 m.addRule( new MethodRule("listener", null, new Class[] {
                         Class.forName("com.icesoft.faces.component.panelpositioned.PanelPositionedEvent")}) );
          } catch (ClassNotFoundException nfe) {}
