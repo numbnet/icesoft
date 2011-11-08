@@ -41,6 +41,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.Map;
@@ -144,7 +145,8 @@ public class PanelPopupRenderer extends GroupRenderer {
             rootDiv.appendChild(targetID);
             UIComponent form = findForm(uiComponent);
             String formId = form.getClientId(facesContext);
-            FormRenderer.addHiddenField(facesContext, ClientIdPool.get(formId + HIDDEN_FILED));
+            FormRenderer.addHiddenField(facesContext, ClientIdPool.get(formId 
+				+ UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()) + HIDDEN_FIELD));
         }
         // Write Modal Javascript so that on refresh it will still be modal.
         String script = modalJavascript(uiComponent, modal, visible, facesContext, clientId);

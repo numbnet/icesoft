@@ -58,7 +58,7 @@ public class GroupRenderer
     protected static final String STATUS = "status";
 
     protected static final String DROP = "dropID";
-    protected static final String HIDDEN_FILED = UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()) + "iceDND";
+	protected static final String HIDDEN_FIELD = "iceDND";
     private static Log log = LogFactory.getLog(GroupRenderer.class);
 
     // Basically, everything is excluded
@@ -98,7 +98,8 @@ public class GroupRenderer
                     UIComponent form = findForm(uiComponent);
                     String formId = form.getClientId(facesContext);
 
-                    FormRenderer.addHiddenField(facesContext, ClientIdPool.get(formId + HIDDEN_FILED));
+                    FormRenderer.addHiddenField(facesContext, ClientIdPool.get(formId 
+						+ UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()) + HIDDEN_FIELD));
 
                 }
             }
@@ -292,7 +293,8 @@ public class GroupRenderer
 
                 UIComponent form = findForm(component);
                 String formId = form.getClientId(context);
-                String hdnFld = ClientIdPool.get(formId + HIDDEN_FILED);
+                String hdnFld = ClientIdPool.get(formId 
+					+ UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()) + HIDDEN_FIELD);
                 if (!requestMap.containsKey(hdnFld)) return;
                 String value = String.valueOf(requestMap.get(hdnFld));
                 DelimitedProperties delimitedProperties = new DelimitedProperties(value);
