@@ -55,6 +55,28 @@
 		</editor-class>
 	</property-extension>
 </property>
+<property>
+	<description>
+         <![CDATA[	
+		beforeChangedListener called before the list is changed. Which takes a PanelPositionedEvent.
+		User can cancel event by calling cancel() on PanelPositionedEvent. If cancel() was called 
+		then the list will not be changed and the listener will not be called.
+		(e.g.) <br/>
+		    public void methodName(PanelPositionedEvent event);
+		    
+        ]]>    		    
+	</description>
+	
+	<property-name>beforeChangedListener</property-name>
+   <property-class>javax.faces.el.MethodBinding</property-class>
+
+	<property-extension>
+		<category>ADVANCED</category>
+		<editor-class>
+			&methodBindingEditor;
+		</editor-class>
+	</property-extension>
+</property>
 
 
 

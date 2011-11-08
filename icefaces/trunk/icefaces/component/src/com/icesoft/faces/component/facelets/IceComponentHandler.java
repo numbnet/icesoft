@@ -73,6 +73,7 @@ public class IceComponentHandler extends ComponentHandler {
             }
             else if( tag.getLocalName().equals("panelPositioned") ) {
                 m.addRule( new MethodRule("listener", null, new Class[] {PanelPositionedEvent.class}) );
+                m.addRule( new MethodRule("beforeChangedListener", null, new Class[] {PanelPositionedEvent.class}) );
             }
             else if( tag.getLocalName().equals("panelTabSet") ) {
                 m.addRule( new MethodRule("tabChangeListener", null, new Class[] {TabChangeEvent.class}) );
