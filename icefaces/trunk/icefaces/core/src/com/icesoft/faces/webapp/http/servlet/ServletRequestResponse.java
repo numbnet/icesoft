@@ -32,16 +32,12 @@
 
 package com.icesoft.faces.webapp.http.servlet;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.portlet.PortletArtifactWrapper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -57,6 +53,13 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class ServletRequestResponse implements Request, Response {
     private final static Log log = LogFactory.getLog(ServletRequestResponse.class);
     private final static DateFormat DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
@@ -71,10 +74,12 @@ public class ServletRequestResponse implements Request, Response {
 
     protected HttpServletRequest request;
     protected HttpServletResponse response;
+    protected boolean disableRemoteHostLookup;
 
-    public ServletRequestResponse(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ServletRequestResponse(final HttpServletRequest request, final HttpServletResponse response, final Configuration configuration) throws Exception {
         this.request = request;
         this.response = response;
+        this.disableRemoteHostLookup = configuration.getAttributeAsBoolean("disableRemoteHostLookup", false);
 
         //Need to determine the type of request URI we are using based on the
         //environment we are running in (servlet vs portlet).
@@ -214,7 +219,11 @@ public class ServletRequestResponse implements Request, Response {
     }
 
     public String getRemoteHost() {
-        return request.getRemoteHost();
+        if (!disableRemoteHostLookup) {
+            return request.getRemoteHost();
+        } else {
+            return request.getRemoteAddr();
+        }
     }
 
     public String getServerName() {
@@ -325,7 +334,7 @@ public class ServletRequestResponse implements Request, Response {
             // This block is removable once we find out why sometimes the request
             // object appears a little corrupted.
 
-            String host = request.getRemoteHost();
+            String host = getRemoteHost();
             StringBuffer data = new StringBuffer("+ Request does not contain parameter '" + name + "' host: \n");
             data.append("  Originator: ").append(host).append("\n");
             data.append("  Path: ").append(requestURI.toString()).append("\n");

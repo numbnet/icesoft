@@ -36,16 +36,35 @@ import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 import com.icesoft.util.ThreadLocalUtility;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.Serializable;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.http.*;
-import java.io.*;
-import java.lang.ref.WeakReference;
-import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public abstract class SessionDispatcher implements PseudoServlet {
     private final static Log Log = LogFactory.getLog(SessionDispatcher.class);
@@ -55,7 +74,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
     private final Map sessionBoundServers = new WeakHashMap();
     private final Map activeRequests = new HashMap();
     private final String sessionIdDelimiter;
-    private final PseudoServlet notFoundServer = new BasicAdaptingServlet(new NotFoundServer());
+    private final PseudoServlet notFoundServer;
 
     private ServletContext context;
 
@@ -63,6 +82,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
         associateSessionDispatcher(context);
         this.context = context;
         this.sessionIdDelimiter = configuration.getAttribute("sessionIdDelimiter", null);
+        this.notFoundServer = new BasicAdaptingServlet(new NotFoundServer(), configuration);
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {

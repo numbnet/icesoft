@@ -84,9 +84,9 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
                 }
             }
         }
-        servlet = factory.newServlet(server, servletContext);
+        servlet = factory.newServlet(server, servletContext, configuration);
         if (fallbackFactory != null) {
-            fallbackServlet = fallbackFactory.newServlet(server, servletContext);
+            fallbackServlet = fallbackFactory.newServlet(server, servletContext, configuration);
         }
     }
 
@@ -134,33 +134,33 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
     }
 
     private static interface EnvironmentAdaptingServletFactory {
-        public PseudoServlet newServlet(final Server server, final ServletContext servletContext);
+        public PseudoServlet newServlet(final Server server, final ServletContext servletContext, final Configuration configuration);
     }
 
     private static class GlassFishAdaptingServletFactory implements EnvironmentAdaptingServletFactory {
-        public PseudoServlet newServlet(final Server server, final ServletContext servletContext) {
+        public PseudoServlet newServlet(final Server server, final ServletContext servletContext, final Configuration configuration) {
             try {
-                return new GlassFishAdaptingServlet(server, servletContext);
+                return new GlassFishAdaptingServlet(server, servletContext, configuration);
             } catch (ServletException exception) {
                 LOG.warn("Failed to adapt to GlassFish ARP environment. Falling back to Thread Blocking environment.", exception);
                 synchronized (LOCK) {
                     factory = fallbackFactory;
                     fallbackFactory = null;
                 }
-                return factory.newServlet(server, servletContext);
+                return factory.newServlet(server, servletContext, configuration);
             }
         }
     }
 
     private static class JettyAdaptingServletFactory implements EnvironmentAdaptingServletFactory {
-        public PseudoServlet newServlet(final Server server, final ServletContext servletContext) {
-            return new JettyAdaptingServlet(server);
+        public PseudoServlet newServlet(final Server server, final ServletContext servletContext, final Configuration configuration) {
+            return new JettyAdaptingServlet(server, configuration);
         }
     }
 
     private static class ThreadBlockingAdaptingServletFactory implements EnvironmentAdaptingServletFactory {
-        public PseudoServlet newServlet(final Server server, final ServletContext servletContext) {
-            return new ThreadBlockingAdaptingServlet(server);
+        public PseudoServlet newServlet(final Server server, final ServletContext servletContext, final Configuration configuration) {
+            return new ThreadBlockingAdaptingServlet(server, configuration);
         }
     }
 }
