@@ -6,9 +6,9 @@
             <ice:dataTable id="dt" value="#{backing.rowModel}" var="index" style="border: medium solid #555555; width: 200px;">
                 <ice:columns id="clmns" value="#{backing.columnsModel}" var="headings">                                        
                 	<f:facet name="header">
-                    	<h:outputText value="#{headings}"></h:outputText>
+                    	<h:outputText id="header" value="#{headings}"></h:outputText>
                 	</f:facet>
-                    <ice:outputText value="#{backing.cellValue}"></ice:outputText>
+                    <ice:outputText id="cellValue" value="#{backing.cellValue}"></ice:outputText>
                 </ice:columns>
             </ice:dataTable>
             <h:messages></h:messages>

@@ -6,14 +6,14 @@
             <ice:dataTable id="dt" value="#{backing.rowModel}" var="index" style="border: medium solid #555555; width: 200px;">
                
                 <ice:column id="clmn">
-                    <ice:outputText value="#{index}" style="font-weight: bold;"></ice:outputText>
+                    <ice:outputText id="index" value="#{index}" style="font-weight: bold;"></ice:outputText>
                 </ice:column>
                 
                 <ice:columns id="clmns" value="#{backing.columnsModel}" var="headings">                                        
                 	<f:facet name="header">
-                    	<h:outputText value="#{headings}"></h:outputText>
+                    	<h:outputText id="headings" value="#{headings}"></h:outputText>
                 	</f:facet>
-                    <ice:outputText value="#{backing.startFrom}"></ice:outputText>
+                    <ice:outputText id="startFrom" value="#{backing.startFrom}"></ice:outputText>
                 </ice:columns>
             </ice:dataTable>
             <ice:commandButton  id="btn" value="Update" actionListener="#{backing.next}"></ice:commandButton>    
