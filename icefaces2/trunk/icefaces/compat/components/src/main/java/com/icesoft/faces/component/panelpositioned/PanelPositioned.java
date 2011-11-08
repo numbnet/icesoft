@@ -52,6 +52,7 @@ public class PanelPositioned extends UISeries {
     private String styleClass;
     private String style;
     private MethodBinding listener;
+    private MethodBinding beforeChangedListener;    
     private String overlap;
     private String constraint;
     private String handle;
@@ -198,6 +199,14 @@ public class PanelPositioned extends UISeries {
             try {
 
                 PanelPositionedEvent de = (PanelPositionedEvent) event;
+                MethodBinding beforeListener = de.getBeforeChangedListener();
+                if (beforeListener!= null){
+                    Object[] oa = {de};
+                    beforeListener.invoke(FacesContext.getCurrentInstance(), oa);    
+                }
+                if (((PanelPositionedEvent)event).isCanceled()) {
+                	return;
+                }
                 de.process(); // Copy over the list values now
                 MethodBinding mb = de.getListener();
                 if (mb == null) return;
@@ -222,7 +231,7 @@ public class PanelPositioned extends UISeries {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] values = new Object[12];
+        Object[] values = new Object[13];
         values[0] = super.saveState(context);
         values[1] = styleClass;
         values[2] = style;
@@ -234,7 +243,8 @@ public class PanelPositioned extends UISeries {
         values[8] = enabledOnUserRole;
         values[9] = overlap;
         values[10] = disabled ? Boolean.TRUE : Boolean.FALSE;
-        values[11] = disabledSet ? Boolean.TRUE : Boolean.FALSE;     
+        values[11] = disabledSet ? Boolean.TRUE : Boolean.FALSE;
+        values[12] = saveAttachedState(context, beforeChangedListener);
         return values;
     }
 
@@ -252,6 +262,7 @@ public class PanelPositioned extends UISeries {
         overlap = (String)state[9];
         disabled = ((Boolean) state[10]).booleanValue();
         disabledSet = ((Boolean) state[11]).booleanValue();     
+        beforeChangedListener = (MethodBinding) restoreAttachedState(context, state[12]);        
     }
 
     //Array type support added to the component
@@ -375,4 +386,12 @@ public class PanelPositioned extends UISeries {
     public void setRows(int rows) {
         super.setRows(rows);
     }
+    
+    public MethodBinding getBeforeChangedListener() {
+        return beforeChangedListener;
+    }
+
+    public void setBeforeChangedListener(MethodBinding beforeChangedListener) {
+        this.beforeChangedListener = beforeChangedListener;
+    }    
 }

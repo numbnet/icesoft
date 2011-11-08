@@ -38,12 +38,13 @@ import java.util.List;
 public class PanelPositionedEvent extends FacesEvent{
 
     private MethodBinding listener;
+    private MethodBinding beforeChangedListener;    
     private int index;
     private int oldIndex = -1;
     private int type;
     private List oldList;
     private List newList;
-
+    private boolean cancel;
 
     public static int TYPE_ADD = 1;
     public static int TYPE_REMOVE = 2;
@@ -63,7 +64,12 @@ public class PanelPositionedEvent extends FacesEvent{
         
     }
 
-
+    public PanelPositionedEvent(UIComponent uiComponent, MethodBinding listener,
+            int eventType, int index, int oldIndex, List oldList, List newList, MethodBinding beforeChangedListener) {
+		this(uiComponent, listener, eventType, index, oldIndex, oldList, newList);
+		this.beforeChangedListener = beforeChangedListener;
+    }
+    
     public PhaseId getPhaseId() {
         return phaseId;
     }
@@ -105,6 +111,14 @@ public class PanelPositionedEvent extends FacesEvent{
     public void setListener(MethodBinding listener) {
         this.listener = listener;
     }
+    
+    public MethodBinding getBeforeChangedListener() {
+        return beforeChangedListener;
+    }
+
+    public void setBeforeChangedListener(MethodBinding beforeChangedListener) {
+        this.beforeChangedListener = beforeChangedListener;
+    }    
 
     /**
      * Index added, removed or changed
@@ -143,5 +157,13 @@ public class PanelPositionedEvent extends FacesEvent{
 
     public void setType(int type) {
         this.type = type;
+    }
+   
+    public void cancel() {
+    	this.cancel = true;
+    }
+    
+    public boolean isCanceled() {
+    	return cancel;
     }
 }
