@@ -32,9 +32,8 @@ var fullSubmit;
         return toLowerCase(element.nodeName) == 'form' ? element : enclosingForm(element);
     }
 
-    function isAjaxDisabled(element) {
+    function isAjaxDisabled(formID, element) {
         var elementID = element.id;
-        var formID = formOf(element).id;
         //lookup element that contains the list of elements that have AJAX submission disabled
         var disablingMarker = document.getElementById(formID + ":ajaxDisabled");
         return disablingMarker && contains(split(trim(disablingMarker.value), ' '), elementID);
@@ -185,15 +184,48 @@ var fullSubmit;
     var addPrefix = 'patch+';
     var removePrefix = 'patch-';
 
+    function extractTarget(e)  {
+        return (e.currentTarget) ? e.currentTarget : 
+                ( (e.target) ? e.target : e.srcElement );
+    }
+
     fullSubmit = function(execute, render, event, element, additionalParameters, callbacks) {
-        if (isAjaxDisabled(element)) {
-            var f = formOf(element);
+        var f = null;
+        var extractedElement = extractTarget(event);
+        var eventElement = (extractedElement) ? extractedElement : 
+                triggeredBy($event(event, element));
+        if ( (eventElement.tagName) && 
+                (toLowerCase(eventElement.tagName) == "form") ) {
+            eventElement = element;
+        }
+        if (toLowerCase(element.tagName) == "form")  {
+            f = element;
+        } else {
+            f = formOf(element);
+        }
+        var formID = f.id;
+        //if the element has ajaxDisabled or any parent has ajaxDisabled,
+        //then ajax is disabled
+        var ajaxIsDisabled = false;
+        var ancestor = eventElement;
+        while (null != ancestor)  {
+            if ( (ancestor.tagName) && 
+                    (toLowerCase(ancestor.tagName) == "form") )  {
+                break;
+            }
+            if (isAjaxDisabled(formID, ancestor))  {
+                ajaxIsDisabled = true;
+                break;
+            }
+            ancestor = ancestor.parentNode;
+        }
+        if (ajaxIsDisabled) {
             //use native submit function saved by namespace.captureSubmit
             if (f && f.nativeSubmit) {
                 var fakeClick = document.createElement("input");
                 fakeClick.setAttribute("type", "hidden");
-                fakeClick.setAttribute("name", element.name);
-                fakeClick.setAttribute("value", element.value);
+                fakeClick.setAttribute("name", eventElement.name);
+                fakeClick.setAttribute("value", eventElement.value);
                 f.appendChild(fakeClick);
                 f.nativeSubmit();
                 f.removeChild(fakeClick);

@@ -362,7 +362,23 @@ if (!window.ice.icefaces) {
             //hijack browser form submit, instead submit through an Ajax request
             f.nativeSubmit = f.submit;
             f.submit = function() {
-                submit(null, f);
+                var theEvent = null;
+                if (typeof(event) != 'undefined')  {
+                    theEvent = event;
+                } else if (window.event)  {
+                    theEvent = window.event;
+                } else {
+                    //very bizarre hack to extract parameters from high up
+                    //on the call stack to obtain the current Event on Firefox
+                    //this is sensitive to the depth of the call stack so
+                    //it may eventually be necessary to walk up rather than
+                    //test a specific caller
+                    var maybeEvent = arguments.callee.caller.caller.arguments[0];
+                    if (typeof(maybeEvent.target) != 'undefined')  {
+                        theEvent = maybeEvent;
+                    }
+                }
+                submit(theEvent, f);
             };
             each(['onkeydown', 'onkeypress', 'onkeyup', 'onclick', 'ondblclick', 'onchange'], function(name) {
                 f[name] = function(e) {
