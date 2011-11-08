@@ -49,7 +49,7 @@
 - (BOOL)upload: (NSString*)formId;
 - (BOOL)play: (NSString*)audioId;
 - (BOOL)scan: (NSString*)scanId;
-- (NSDictionary*)parseQuery: (NSString*)queryString;
+- (NSMutableDictionary*)parseQuery: (NSString*)queryString;
 - (void)showImagePicker: (UIImagePickerController*)picker;
 - (void)dismissImagePicker;
 - (void)setThumbnail: (UIImage*)image at: (NSString *)thumbId;

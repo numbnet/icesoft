@@ -5,6 +5,7 @@
 <%@page import="java.io.File" %>
 <%@page import="java.util.ArrayList" %>
 <%@page import="java.util.List" %>
+<%@page import="java.net.URLEncoder" %>
 <%--
   ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
   ~
@@ -98,10 +99,12 @@
     String requestedPrefix = requestURL.substring(0,
             requestURL.indexOf("/brogcast/"));
     String fullURI = requestedPrefix + clientURI;
+    String encodedURI = URLEncoder.encode(fullURI);
 %>
 
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
     <style>
         body {
             font-family: sans-serif;
@@ -136,17 +139,22 @@
             float: right;
         }
     </style>
+    <script>
+      function getTitleData()  {
+        return escape('title=' + document.getElementById('title').value);
+      }
+    </script>
 </head>
 <body>
 <h3>Post to "<% out.print(topic); %>":</h3>
 
 <form id="form1" method="post">
     <div class="fill">
-        <input name="title" type="text" class="fill" placeholder="Title"><br>
+        <input id="title" name="title" type="text" class="fill" placeholder="Title"><br>
         <textarea name="comment" class="fill" rows="5"
                   placeholder="Comments"></textarea><br>
         <input type="button" id="camera1" class="camera"
-               onclick="ice.camera('camera1');"
+               onclick="window.location='icemobile://c=camera%3Fid%3Dnone&u=<% out.print(encodedURI); %>&p='+getTitleData();"
                value="camera">
         <img style="height:60px;width:65px;vertical-align:middle;"
              id="camera1-thumb"
