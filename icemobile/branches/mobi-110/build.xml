@@ -68,7 +68,7 @@
 
     <target name="build.all" description="Build ICEmobile project and samples.">
         <ice:subant target="all">
-            <fileset dir="./components " includes="build.xml" />
+            <fileset dir="./components" includes="build.xml" />
             <fileset dir="./samples" includes="build.xml" />
         </ice:subant>
     </target>
