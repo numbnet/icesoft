@@ -185,6 +185,9 @@ var fullSubmit;
     var removePrefix = 'patch-';
 
     function extractTarget(e)  {
+        if (!e)  {
+            return null;
+        }
         return (e.currentTarget) ? e.currentTarget : 
                 ( (e.target) ? e.target : e.srcElement );
     }
