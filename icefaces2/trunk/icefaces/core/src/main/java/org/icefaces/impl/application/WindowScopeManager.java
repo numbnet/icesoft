@@ -21,7 +21,6 @@
 
 package org.icefaces.impl.application;
 
-import org.icefaces.bean.AllWindowsClosed;
 import org.icefaces.bean.WindowDisposed;
 import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
@@ -178,7 +177,7 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
                 Collection<Object> windowScopedBeans = scopeMap.values();
                 for (final Object windowScopedBean : windowScopedBeans) {
                     try {
-                        callAnnotatedMethod(windowScopedBean, PreDestroy.class);
+                        callPreDestroy(windowScopedBean);
                     } catch (Exception exception) {
                         log.log(
                                 Level.FINE,
@@ -200,7 +199,7 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
                 Collection<Object> windowScopedBeans = disposedScopeMaps.next().values();
                 for (final Object windowScopedBean : windowScopedBeans) {
                     try {
-                        callAnnotatedMethod(windowScopedBean, PreDestroy.class);
+                        callPreDestroy(windowScopedBean);
                     } catch (Exception exception) {
                         log.log(
                                 Level.FINE,
@@ -217,23 +216,14 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         }
     }
 
-    public static synchronized void disposeWindow(final FacesContext context, String id, Timer timer) {
-        final State state = getState(context);
+    public static synchronized void disposeWindow(FacesContext context, String id) {
+        State state = getState(context);
         ScopeMap scopeMap = (ScopeMap) state.windowScopedMaps.get(id);
         //verify if the ScopeMap is present
         //it's possible to have dispose-window request arriving after an application restart or re-deploy
         if (scopeMap != null) {
             scopeMap.disactivate(state);
         }
-
-        //notify annotated scope beans that all windows were closed
-        if (state.windowScopedMaps.isEmpty()) {
-            long windowScopeExpiration = EnvUtils.getWindowScopeExpiration(context);
-            //copy session beans before they're cleared on FacesContext.release()
-            final Map session = new HashMap(context.getExternalContext().getSessionMap());
-            timer.schedule(new AllWindowsClosedNotifier(state, session), windowScopeExpiration * 2);
-        }
-
         disposeViewScopeBeans(context);
     }
 
@@ -241,7 +231,8 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         ExceptionHandler oldHandler = facesContext.getExceptionHandler();
         //all Exceptions will be ignored since no further action can be taken
         //during window disposal
-        facesContext.setExceptionHandler(new DiscardingExceptionHandler(oldHandler));
+        facesContext.setExceptionHandler(
+                new DiscardingExceptionHandler(oldHandler));
         UIViewRoot viewRoot = facesContext.getViewRoot();
         if (null == viewRoot) {
             return;
@@ -253,7 +244,7 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
             Object object = viewMap.get(key);
             if (object.getClass().isAnnotationPresent(WindowDisposed.class)) {
                 keys.remove();
-                callAnnotatedMethod(object, PreDestroy.class);
+                callPreDestroy(object);
                 if (log.isLoggable(Level.FINE)) {
                     log.log(Level.FINE, "Closing window disposed ViewScoped bean " + key);
                 }
@@ -262,13 +253,13 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         facesContext.setExceptionHandler(oldHandler);
     }
 
-    private static void callAnnotatedMethod(Object object, Class annotation) {
+    private static void callPreDestroy(Object object) {
         Class theClass = object.getClass();
         try {
             while (null != theClass) {
                 Method[] methods = object.getClass().getDeclaredMethods();
                 for (Method method : methods) {
-                    if (method.isAnnotationPresent(annotation)) {
+                    if (method.isAnnotationPresent(PreDestroy.class)) {
                         method.setAccessible(true);
                         method.invoke(object);
                         return;
@@ -277,7 +268,7 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
                 theClass = theClass.getSuperclass();
             }
         } catch (Exception e) {
-            log.log(Level.WARNING, "Failed to invoke" + annotation + " on " + theClass, e);
+            log.log(Level.WARNING, "Failed to invoke PreDestroy on " + theClass, e);
         }
     }
 
@@ -488,7 +479,6 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
     }
 
     public static class DetermineOrDisposeScope implements PhaseListener {
-        private Timer timer = new Timer();
 
         public void afterPhase(final PhaseEvent event) {
             FacesContext facesContext = event.getFacesContext();
@@ -498,7 +488,7 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
                 //shortcut the lifecycle to avoid running it with certain parts discarded or disposed
                 facesContext.responseComplete();
                 String windowID = (String) parameters.get("ice.window");
-                disposeWindow(facesContext, windowID, timer);
+                disposeWindow(facesContext, windowID);
                 if (EnvUtils.isICEpushPresent()) {
                     try {
                         String[] viewIDs = externalContext.getRequestParameterValuesMap().get("ice.view");
@@ -560,27 +550,6 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
 
         public PhaseId getPhaseId() {
             return PhaseId.RENDER_RESPONSE;
-        }
-    }
-
-    private static class AllWindowsClosedNotifier extends TimerTask {
-        private final State state;
-        private final Map session;
-
-        public AllWindowsClosedNotifier(State state, Map session) {
-            this.state = state;
-            this.session = session;
-        }
-
-        public void run() {
-            //re-verify that all windows are still closed
-            if (state.windowScopedMaps.isEmpty()) {
-                Iterator objects = session.values().iterator();
-                while (objects.hasNext()) {
-                    Object object = objects.next();
-                    callAnnotatedMethod(object, AllWindowsClosed.class);
-                }
-            }
         }
     }
 }
