@@ -211,9 +211,9 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
     }
 
     private class ResourceEntry extends Resource {
-        private Date lastModified = new Date();
-        private String localPath;
-        private byte[] content;
+        Date lastModified = new Date();
+        String localPath;
+        byte[] content;
 
         private ResourceEntry(String localPath, byte[] content) {
             this.localPath = localPath;
