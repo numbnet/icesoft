@@ -9,12 +9,12 @@
 	<title>Internationalization - Main</title>
 </h:head>
 <h:body>
-	<h:form>
+	<h:form id="form">
 		<h:panelGrid columns="2">
-			<h:selectOneMenu value="#{pageBean.dropdownItem}" valueChangeListener="#{pageBean.localeChanged}">
+			<h:selectOneMenu id="selectOneMenu" value="#{pageBean.dropdownItem}" valueChangeListener="#{pageBean.localeChanged}">
 				<f:selectItems value="#{pageBean.availableLocales}"/>
 			</h:selectOneMenu>
-			<h:commandButton value="Change Locale"/>
+			<h:commandButton id="cmdBttn" value="Change Locale"/>
 			
 			<h:outputLabel for="firstName" value="#{msgs.firstName}"/>
 			<h:inputText id="firstName"/>
