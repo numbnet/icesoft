@@ -47,7 +47,7 @@ public class InputTextMeta extends UIInputMeta {
     //password supports all the following but not list
 
     @Property(defaultValue = "text", tlddoc = "html5 type attribute.  Currently supports text, textarea, inputSecret,"+
-    		"phone, url, email, number.  Each of the last 4 types brings up the proper keyboard on the mobility device")
+    		"phone, url, email, number, date, time, datetime.  Each of the last 4 types brings up the proper keyboard on the mobility device")
     private String type;
 
     @Property(tlddoc = "default value of placeholder from html5 properties")
