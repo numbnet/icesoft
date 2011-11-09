@@ -52,7 +52,8 @@ public class OutputListRenderer extends Renderer {
             styleClasses.append(" ").append(userDefinedClass);
         }
         writer.writeAttribute("class", styleClasses.toString(), "styleClass");
-
+        //check for value of the var and if not null then iterate over list otherwise,
+        //xlook for appropirate children and
         // verify the children are OutputListItem only
         if (facesContext.isProjectStage(ProjectStage.Development) ||
                 logger.isLoggable(Level.FINER)) {
