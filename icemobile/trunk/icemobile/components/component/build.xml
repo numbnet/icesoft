@@ -164,11 +164,18 @@
         <attribute name="name"/>
         <sequential>
              <java jar="${lib.dir}/generator/yui-compressor.jar" fork="yes">
-             <arg line="--preserve-semi"/>
-             <arg value="${resources}/org.icefaces.component.skins/@{name}.css"/>
-             <arg value="-o"/>
-             <arg value="${resources}/org.icefaces.component.skins/@{name}min.css"/>
-         </java>
+                 <arg value="--type"/>
+                 <arg value="css"/>
+                 <arg value="${resources}/org.icefaces.component.skins/@{name}.css"/>
+                 <arg value="-o"/>
+                 <arg value="${resources}/org.icefaces.component.skins/@{name}-min.css"/>
+             </java>
+            <!-- removes ';'from  the url('#{resource['resourcePath'];}' -->
+            <replaceregexp match="];}" replace="]}"
+                           flags="g"
+                           file="${resources}/org.icefaces.component.skins/@{name}-min.css">
+        </replaceregexp>
+
         </sequential>
     </macrodef>
 
