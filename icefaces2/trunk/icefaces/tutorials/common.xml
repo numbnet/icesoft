@@ -34,7 +34,10 @@
     <property name="lib.distribute.application.includes" value=""/>
     <property name="lib.distribute.compat.includes" value="jstl.jar jhighlight.jar commons-digester.jar commons-beanutils.jar commons-collections.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
     <property name="lib.compile.compat.includes" value="jstl.jar jhighlight.jar commons-digester.jar commons-beanutils.jar commons-collections.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar el-api.jar" />
-
+	<property name="lib.mojarra.dir" location="${lib.dir}/mojarra" />
+	<property name="lib.compile.mojarra.includes" value="javax.faces.jar" />
+	<property name="lib.distribute.mojarra.includes" value="javax.faces.jar" />
+	
     <property name="lib.portlet.dir" location="${lib.dir}/portlets"/>
     <property name="java.dir" location="./src/main/java"/>
     <property name="res.dir" location="./src/main/resources"/>
@@ -58,9 +61,8 @@
     </patternset>
 
     <patternset id="lib.distribute">
-        <patternset id="lib.distribute.jsf" includes="jsf-api.jar jsf-impl.jar">
-            <exclude name="jsf-api.jar"         unless="jsf"/>
-            <exclude name="jsf-impl.jar"        unless="jsf"/>
+        <patternset id="lib.distribute.jsf" includes="${lib.mojarra.dir}">
+            <exclude name="javax.faces.jar"         unless="jsf"/>            
         </patternset>
 
         <patternset id="lib.distribute.ice" includes="${icefaces.lib.name}.jar ${icefaces-ace.lib.name}.jar ${icefaces-compat.lib.name}.jar ${icepush.lib.name}.jar">
@@ -85,6 +87,12 @@
         <exclude name="*.jar"                   unless="compat"/>
     </patternset>
 
+	<patternset id="lib.compile.mojarra" includes="${lib.compile.mojarra.includes}"/>			
+	
+	<patternset id="lib.distribute.mojarra" includes="${lib.distribute.mojarra.includes}">
+		<exclude name="*.jar"                   unless="jsf"/>
+	</patternset>
+	
     <patternset id="lib.distribute.portlet">
         <include name="portletfaces*.jar"/>
         <include name="slf4j*.jar"/>
@@ -120,6 +128,9 @@
                 <fileset dir="${lib.compat.dir}">
                     <patternset refid="lib.compile.compat"/>
                 </fileset>
+            	<fileset dir="${lib.mojarra.dir}">
+            	    <patternset refid="lib.compile.mojarra"/>
+            	</fileset>
                 <fileset dir="${lib.dir}" >
                     <patternset refid="lib.compile"/>
                 </fileset>
@@ -143,6 +154,9 @@
             <lib dir="${lib.compat.dir}">
                 <patternset refid="lib.distribute.compat"/>
             </lib>
+        	<lib dir="${lib.mojarra.dir}">
+        	    <patternset refid="lib.distribute.mojarra"/>
+        	</lib>
             <lib dir="${lib.portlet.dir}">
                 <patternset refid="lib.distribute.portlet"/>
             </lib>
