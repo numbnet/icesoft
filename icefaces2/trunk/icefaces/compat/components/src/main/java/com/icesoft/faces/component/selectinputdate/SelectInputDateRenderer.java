@@ -1569,10 +1569,10 @@ public class SelectInputDateRenderer
 //System.out.println("SIDR.decode()  clientId: " + clientId);
 
         Object eventCapturedId = requestParameterMap.get("ice.event.captured");
-        if (eventCapturedId != null && 
-        		!eventCapturedId.toString().startsWith(clientId)) {
-        	return;
-        }
+//        if (eventCapturedId != null && 
+//        		!eventCapturedId.toString().startsWith(clientId)) {
+//        	return;
+//        }
         
         String monthClientId = clientId + SELECT_MONTH;
         String yearClientId = clientId + SELECT_YEAR;
@@ -1716,11 +1716,15 @@ System.out.println("SIDR.decode()    link: " + checkStrings[check]);
             log.debug("decodePopup::" + showPopup);
             log.debug("#################################");
         }
-
+        Object eventCapturedId = requestParameterMap.get("ice.event.captured");
         // check showPopup
-        if (showPopup != null) {
+        if (showPopup != null ) {
 
-            dateSelect.setShowPopup(!dateSelect.isShowPopup());
+        	if (!(!dateSelect.isShowPopup() &&
+        			eventCapturedId != null && 
+              		!eventCapturedId.toString().endsWith(CALENDAR_BUTTON))) {
+        		dateSelect.setShowPopup(!dateSelect.isShowPopup());
+        	}
             // submit value in text field
             decodeInputText(facesContext, component);
             dateSelect.setHoursSubmittedValue(null);
