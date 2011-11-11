@@ -17,6 +17,7 @@
 package org.icefaces.component.list;
 
 
+import org.icefaces.component.utils.BaseLayoutRenderer;
 import org.icefaces.component.utils.HTML;
 
 import javax.faces.application.ProjectStage;
@@ -30,7 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class OutputListRenderer extends Renderer {
+public class OutputListRenderer extends BaseLayoutRenderer {
     private static Logger logger = Logger.getLogger(OutputListRenderer.class.getName());
 
 
@@ -52,11 +53,35 @@ public class OutputListRenderer extends Renderer {
             styleClasses.append(" ").append(userDefinedClass);
         }
         writer.writeAttribute("class", styleClasses.toString(), "styleClass");
+        if (list.getVar() != null) {
+            list.setRowIndex(-1);
+            for (int i = 0; i < list.getRowCount(); i++) {
+                //assume that if it's a list of items then it's grouped
+                list.setRowIndex(i);
+                writer.startElement(HTML.LI_ELEM, null);
+                writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+                //do we want to allow them to overwrite the styling with a list??
+                String itemDefinedClass = list.getItemStyleClass();
+                String styleClass = OutputListItem.OUTPUTLISTITEM_CLASS;
+                if (userDefinedClass != null) {
+                    styleClass += " " + itemDefinedClass;
+                }
+                writer.writeAttribute("class", styleClass, "styleClass");
+                writer.startElement(HTML.DIV_ELEM, uiComponent);
+                if (list.getItemType().equals("thumb")) {
+                    writer.writeAttribute("class", OutputListItem.OUTPUTLISTITEMTHUMB_CLASS, null);
+                } else {
+                    writer.writeAttribute("class", OutputListItem.OUTPUTLISTITEMDEFAULT_CLASS, null);
+                }
+                renderChildren(facesContext, list);
+                writer.endElement(HTML.DIV_ELEM);
+                writer.endElement(HTML.LI_ELEM);
+            }
+        } else  if (facesContext.isProjectStage(ProjectStage.Development) ||
+                logger.isLoggable(Level.FINER)) {
         //check for value of the var and if not null then iterate over list otherwise,
         //xlook for appropirate children and
         // verify the children are OutputListItem only
-        if (facesContext.isProjectStage(ProjectStage.Development) ||
-                logger.isLoggable(Level.FINER)) {
             List<UIComponent> children = uiComponent.getChildren();
             for (UIComponent child : children) {
                 if (!(child instanceof OutputListItem)) {
@@ -66,9 +91,17 @@ public class OutputListRenderer extends Renderer {
         }
     }
 
+
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.endElement(HTML.UL_ELEM);
+    }
+
+    public boolean getRendersChildren() {
+        return true;
+    }
+    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
+        //Rendering happens on encodeEnd
     }
 }

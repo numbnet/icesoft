@@ -18,6 +18,7 @@ package org.icefaces.component.carousel;
 
 
 import org.icefaces.component.utils.HTML;
+import org.icefaces.component.utils.BaseLayoutRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.application.ProjectStage;
@@ -33,7 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //@MandatoryResourceComponent("org.icefaces.component.carousel.Carousel")
-public class CarouselRenderer extends Renderer {
+public class CarouselRenderer extends BaseLayoutRenderer {
     private static Logger logger = Logger.getLogger(CarouselRenderer.class.getName());
     private static final String JS_NAME = "carousel";
     private static final String JS_LIBRARY = "org.icefaces.component.carousel";
@@ -126,7 +127,7 @@ public class CarouselRenderer extends Renderer {
             carousel.setRowIndex(-1);
             for (int i = 0; i < carousel.getRowCount(); i++) {
                 carousel.setRowIndex(i);
-                writeListWrapper(carousel, writer);
+                writer.startElement(HTML.LI_ELEM, null);
                 renderChildren(facesContext, carousel);
                 writer.endElement(HTML.LI_ELEM);
             }
@@ -134,36 +135,10 @@ public class CarouselRenderer extends Renderer {
                 logger.isLoggable(Level.FINER)) {
             logger.finer("Carousel must define the var and value attributes");
         }
-        //set count attribute
-        if (carousel.getRowCount() > -1) {
-            carousel.setCount(carousel.getRowCount());
-        }
+
     }
 
-    private void renderChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        for (UIComponent child : uiComponent.getChildren()) {
-            renderChild(facesContext, child);
-        }
-    }
 
-    private void renderChild(FacesContext facesContext, UIComponent child) throws IOException {
-        if (!child.isRendered()) {
-            return;
-        }
-        //do we have to worry about encodeAll method???
-        child.encodeBegin(facesContext);
-        if (child.getRendersChildren()) {
-            child.encodeChildren(facesContext);
-        } else {
-            renderChildren(facesContext, child);
-        }
-        child.encodeEnd(facesContext);
-    }
-
-    private void writeListWrapper(Carousel carousel, ResponseWriter writer)
-            throws IOException {
-        writer.startElement(HTML.LI_ELEM, null);
-    }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {

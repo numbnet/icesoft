@@ -65,4 +65,5 @@ public class OutputListItemRenderer extends Renderer {
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.LI_ELEM);
     }
+
 }

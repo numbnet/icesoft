@@ -34,7 +34,7 @@ public class CarouselBean implements Serializable {
         Logger.getLogger(CarouselBean.class.toString());	
 	int carouselLength;
     private List<ImageItem> imageList = new ArrayList<ImageItem>() ;
-private String propertyAL="none";
+    private String propertyAL="none";
     private int selectedIndex;
 	private String height="58px";
 	private String style="display:inline-block;position:relative;top:-25px;left:0;color:white;";

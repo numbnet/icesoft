@@ -47,13 +47,6 @@ import javax.faces.application.ResourceDependency;
 })  */
 public class CarouselMeta extends UIComponentBaseMeta {
 
-    @Property(defaultValue = "Integer.MIN_VALUE",
-            tlddoc = "number of child li elements that make up the carousel.  Is provided " +
-                    " by the component for access in backing bean in case the user wants to control " +
-                    " the number of items to be viewed.  Will possilby be used for paging at a later " +
-                    " stage of component development.")
-    private int count;
-
     @Property(defaultValue = "false",
             tlddoc = "When singleSubmit is true, triggering an action on this component will submit" +
                     " and execute this component only. Equivalent to <f:ajax execute='@this' render='@all'>." +
