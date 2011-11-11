@@ -45,9 +45,7 @@
 
     <br />
     <mobi:outputList id="carslist" inset="true" value="#{list.carList}" var="car" >
-        <h:column>
             #{car.make} #{car.model}, #{car.year} price: #{car.price}
-        </h:column>
     </mobi:outputList>
     <br />
     <mobi:outputList id="linksList" inset="true" value="#{list.linksList}" var="item">
