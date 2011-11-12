@@ -51,7 +51,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
             return;
         }
         String inputValue = context.getExternalContext().getRequestParameterMap().get(clientId+"_input");
-        logger.info(" DECODING STRING="+inputValue );
         if(!isValueBlank(inputValue)) {
             dateSpinner.setSubmittedValue(inputValue);
         }
