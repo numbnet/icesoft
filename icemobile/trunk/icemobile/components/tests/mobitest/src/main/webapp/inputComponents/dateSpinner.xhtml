@@ -21,7 +21,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
 <h:head>
-	<title id="title">dateSpinner Tests</title>
+	<title id="title">dateSpinner basic test</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 	<meta name="viewport"
 		content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
@@ -38,18 +38,21 @@
         <!-- theme switcher -->
     <ui:include src="/WEB-INF/includes/composite/theme-switcher.xhtml"/>
 
-    <h3>dateSpinner can be used without converter as has one builtin using default pattern attribute on component</h3>
+    <h3>dateSpinner</h3>
 
     <h:form id="dateForm" >
 
-        <h5> only d-M-yyyy pattern is currently supported with converter</h5>
+        <h5> built in conversion for yyyy-MM-dd pattern</h5>
          <h:outputText value="A. date"/>
          <mobi:dateSpinner id="dateId" value="#{date.selectedDate}"
-                       singleSubmit="false"   title="date input field">
-         <!--       <f:convertDateTime pattern="#{date.pattern}" timeZone="MST"/>  -->
+                          title="date input field">
          </mobi:dateSpinner>
+               <!--  <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>    -->
 
-
+        <h5>this one has useNative as true...also has built in conversion</h5>
+        <h:outputLabel for="dateIOS5" value="B. iOS5 capable:"/>
+        <mobi:dateSpinner id="dateIOS5" useNative="true" value="#{date.date2}" title="date ios5 cap">
+        </mobi:dateSpinner>
 
           <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>
           <h:outputText value="#{date.eventString}"/>
@@ -61,7 +64,16 @@
     <h3>RESULTS</h3>
 
     <h5>date</h5>
-    <h:outputText value="#{date.selectedDate}"/>
+    <h:outputLabel for="dateA" value="A. Date selected:-"/>
+    <h:outputText id="dateA" value="#{date.selectedDate}">
+          <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+    </h:outputText>
+    <br />
+    <h:outputLabel for="dateIOS5Out" value="B. Date of iOS5 capable:-"/>
+    <h:outputText id="dateIOS5Out" value="#{date.date2}">
+        <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+    </h:outputText>
+
  <br />
 
 
