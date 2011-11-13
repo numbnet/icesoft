@@ -32,6 +32,7 @@ import com.icesoft.faces.utils.SeriesStateHolder;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.FacesException;
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.*;
 import javax.faces.component.html.HtmlDataTable;
@@ -39,10 +40,7 @@ import javax.faces.component.html.HtmlForm;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
-import javax.faces.event.PhaseId;
+import javax.faces.event.*;
 import javax.faces.model.ArrayDataModel;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
@@ -278,6 +276,7 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
     /**
      * @see javax.faces.component.UIData#broadcast(FacesEvent)
      */
+    /*
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         if (!(event instanceof RowEvent)) {
             super.broadcast(event);
@@ -288,6 +287,43 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         ((RowEvent) event).broadcast();
         return;
     }
+    */
+    public void broadcast(FacesEvent event)
+          throws AbortProcessingException {
+
+        if (!(event instanceof RowEvent)) {
+            super.broadcast(event);
+            return;
+        }
+        FacesContext context = FacesContext.getCurrentInstance();
+        // Set up the correct context and fire our wrapped event
+        RowEvent revent = (RowEvent) event;
+        if (isNestedWithinUIData()) {
+            setDataModel(null);
+        }
+        int oldRowIndex = getRowIndex();
+        setRowIndex(revent.getRowIndex());
+        FacesEvent rowEvent = revent.getFacesEvent();
+        UIComponent source = rowEvent.getComponent();
+        UIComponent compositeParent = null;
+        try {
+            if (!UIComponent.isCompositeComponent(source)) {
+                compositeParent = UIComponent.getCompositeComponentParent(source);
+            }
+            if (compositeParent != null) {
+                compositeParent.pushComponentToEL(context, null);
+            }
+            source.pushComponentToEL(context, null);
+            source.broadcast(rowEvent);
+        } finally {
+            source.popComponentFromEL(context);
+            if (compositeParent != null) {
+                compositeParent.popComponentFromEL(context);
+            }
+        }
+        setRowIndex(oldRowIndex);
+    }
+
 
 
     /**
@@ -311,6 +347,7 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         if (!isRendered()) {
             return;
         }
+        pushComponentToEL(context, this);
         dataModel = null;
         if (null == savedChildren || !keepSaved(context)) {
             savedChildren = new HashMap();
@@ -318,6 +355,7 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
 
         iterate(context, PhaseId.APPLY_REQUEST_VALUES);
         decode(context);
+        popComponentFromEL(context);
     }
 
     public void processValidators(FacesContext context) {
@@ -327,10 +365,15 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         if (!isRendered()) {
             return;
         }
+        pushComponentToEL(context, this);
+        Application app = context.getApplication();
+        app.publishEvent(context, PreValidateEvent.class, this);
         if (isNestedWithinUIData()) {
             dataModel = null;
         }
         iterate(context, PhaseId.PROCESS_VALIDATIONS);
+        app.publishEvent(context, PostValidateEvent.class, this);
+        popComponentFromEL(context);
     }
 
 
@@ -341,10 +384,12 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
         if (!isRendered()) {
             return;
         }
+        pushComponentToEL(context, this);
         if (isNestedWithinUIData()) {
             dataModel = null;
         }
         iterate(context, PhaseId.UPDATE_MODEL_VALUES);
+        popComponentFromEL(context);
     }
 
     /**
@@ -597,6 +642,10 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
             this.eventRowIndex = eventRowIndex;
         }
 
+        public int getRowIndex() {
+            return eventRowIndex;
+        }
+        
         public FacesEvent getFacesEvent() {
             return (this.event);
         }
