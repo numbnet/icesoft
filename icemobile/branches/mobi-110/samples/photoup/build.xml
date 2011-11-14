@@ -14,7 +14,7 @@
   ~ limitations under the License.
   -->
 
-<project name="brogcast" default="war">
+<project name="photoup" default="war">
 
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>
@@ -24,16 +24,6 @@
         <war basedir="${web.dir}"
              destfile="${dist.dir}/${ant.project.name}.war"
              webxml="${web.dir}/WEB-INF/web.xml">
-            <lib dir="${lib.dir}">
-                <include name="icepush.jar"/>
-            </lib>
-
-            <lib dir="lib" >
-                <include name="icepush-jsp.jar"/>
-                <include name="jstl.jar"/>
-                <include name="standard.jar"/>
-            </lib>
-
             <classes dir="${classes.dir}"/>
         </war>
         <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>

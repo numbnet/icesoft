@@ -13,6 +13,9 @@
 @synthesize nativeInterface;
 @synthesize currentURL;
 @synthesize currentParameters;
+@synthesize currentCommand;
+@synthesize currentSessionId;
+@synthesize uploadProgress;
 
 - (void)didReceiveMemoryWarning
 {
@@ -57,9 +60,8 @@ NSLog(@"Hitch just upload what would have been scripted %@", script);
 }
 
 - (void) setProgress:(NSInteger)percent  {
-    NSString *scriptTemplate = @"ice.progress(%d);";
-    NSString *script = [NSString stringWithFormat:scriptTemplate, percent];
-NSLog(@"Hitch just upload what would have been scripted %@", script);
+    [uploadProgress setProgress:percent / 100.0f];
+NSLog(@"Native progress display %d", percent);
 }
 
 - (void) handleResponse:(NSString *)responseString  {
@@ -75,6 +77,40 @@ NSLog(@"Hitch cant play audio from an ID in the page");
 
 - (void)setThumbnail: (UIImage*)image at: (NSString *)thumbID  {
 NSLog(@"Hitch would show a thumbnail");
+}
+
+- (void) dispatchCurrentCommand  {
+    NSString *host = [[NSURL URLWithString:self.currentURL] host];
+    NSString *message = [[@"Upload photo to " stringByAppendingString:host]
+        stringByAppendingString:@"?" ];
+    UIAlertView *alert = [[UIAlertView alloc] 
+            initWithTitle:@"Photo Upload" 
+            message:message 
+            delegate:self cancelButtonTitle:@"OK" 
+            otherButtonTitles:@"Cancel",nil];
+    [alert show];
+    [alert release];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+
+    if (buttonIndex == 0){
+        NSString *host = [[NSURL URLWithString:self.currentURL] host];
+        NSDictionary *properties = [[NSDictionary alloc] initWithObjectsAndKeys:
+                @"JSESSIONID", NSHTTPCookieName,
+                currentSessionId, NSHTTPCookieValue,
+                @"/", NSHTTPCookiePath,
+                host, NSHTTPCookieDomain,
+                nil ];
+
+        NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:properties];
+        NSLog(@"setCookie %@ ", cookie );
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie: cookie];
+
+        [nativeInterface dispatch:self.currentCommand];
+    }
+NSLog(@"Alert dismissed via button %d", buttonIndex);
+
 }
 
 #pragma mark - View lifecycle

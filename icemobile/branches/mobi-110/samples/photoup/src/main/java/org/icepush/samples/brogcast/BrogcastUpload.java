@@ -17,21 +17,47 @@
 package org.icepush.samples.brogcast;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletContext;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSessionListener;
+import javax.servlet.http.HttpSessionEvent;
 import java.io.IOException;
+import java.io.File;
 
-@WebServlet(urlPatterns = {"/admin/*"})
+@WebServlet(urlPatterns = {"/mobile/*"})
 @MultipartConfig
-public class BrogcastUpload extends HttpServlet {
+@WebListener
+public class BrogcastUpload extends HttpServlet implements
+        HttpSessionListener {
 
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/mobile-admin.jsp")
+        request.getRequestDispatcher("/WEB-INF/reflect.jsp")
                 .forward(request, response);
+    }
+
+
+    public void sessionCreated(HttpSessionEvent event) {
+        ServletContext servletContext = event.getSession()
+                .getServletContext();
+        servletContext.log("Session created");
+    }
+
+    public void sessionDestroyed(HttpSessionEvent event) {
+        ServletContext servletContext  = event.getSession().getServletContext();
+        try {
+            File imageFile = new File("images/" + 
+                    event.getSession().getId() + ".jpg");
+            imageFile.delete();
+        } catch (Exception e)  {
+            servletContext.log("Failed to delete image", e);
+        }
+        servletContext.log("Session destroyed");
     }
 
 }

@@ -340,6 +340,9 @@ NSLog(@"called camera");
     NSMutableDictionary *pairDict = [NSMutableDictionary dictionary];
     for (NSString *pair in pairs) {
         NSArray *pairPair = [pair componentsSeparatedByString:@"="];
+        if ([pairPair count] < 2)  {
+            continue;
+        }
         NSString *name = [[pairPair objectAtIndex:0] 
                 stringByReplacingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
         NSString *value = [[pairPair objectAtIndex:1] 
