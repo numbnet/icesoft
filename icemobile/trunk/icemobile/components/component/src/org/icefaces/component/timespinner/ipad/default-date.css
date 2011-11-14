@@ -1,0 +1,174 @@
+/*
+ * Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.mobi-popup-btn{
+    -webkit-appearance: none;
+    background-image: url('clock_header.png'); /** sprite-ref: sprite; */
+    background-repeat: no-repeat;
+    width:22px;
+    height:21px;
+    border: none;
+    margin: 0 0 0 5px;
+    cursor:pointer;
+}
+.mobi-time-bg {
+    width: 100%;
+    height:100%;
+    background: #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    opacity: 0.5;
+}
+.mobi-time {
+    opacity:1;
+}
+
+.mobi-time-container-hide{
+    opacity:0;
+    display:none;
+}
+
+.mobi-time-container {
+    opacity: 1;
+    background-color: #ccc;
+    border-radius: 6px 6px 6px 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -moz-box-shadow: 3px 3px 5px black;
+    -webkit-box-shadow: 3px 3px 5px black;
+    box-shadow: 3px 3px 5px black;
+    border: 1px solid #e4e4e4;
+    color: #000000;
+    padding: 0;
+    z-index: 1001;
+    position: fixed;
+    top:100px;
+    left:35%;
+}
+
+.mobi-time-title-container, .mobi-date-select-container,
+.mobi-time-submit-container {
+}
+
+.mobi-time-title-container {
+    color: white;
+    vertical-align: middle;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #e4e4e4;
+    background: url('header.png') repeat-x scroll 0 0 #6D84A2;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    font-weight: bold;
+}
+
+.mobi-time-select-container {
+    background: #c8c8c8 url('pinstripes.png');
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.mobi-time-submit-container {
+    color: black;
+    height: 28px;
+    padding: 5px 3px;
+    background: url('header.png') repeat-x scroll 0 0 #6D84A2;
+}
+
+.mobi-time-submit-container .mobi-button-default {
+    width: 49%;
+    margin: 0;
+}
+
+.mobi-time-submit-container .mobi-button-default:first-child {
+    float: left;
+}
+
+.mobi-date-submit-container .mobi-button-default:last-child {
+    float: right;
+}
+
+.mobi-time-select-value-cont {
+    width: 50px;
+    margin-right: 1px;
+    background-color: white;
+    border-radius: 6px 6px 6px 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    display: inline-block;
+    border: 3px solid #aaacbf;
+}
+
+.mobi-time-btn-cont-incr {
+    border-radius: 6px 6px 0 0;
+    -webkit-border-radius:  6px 6px 0 0;
+    -moz-border-radius:  6px 6px 0 0;
+    background: -moz-linear-gradient(top, #f7f7f7, #bdbebd) center no-repeat;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #fff), color-stop(1, #bdbebd));
+}
+
+.mobi-time-btn-cont-decr {
+    border-radius: 0 0 6px 6px;
+    -webkit-border-radius:  0 0 6px 6px;
+    -moz-border-radius:  0 0 6px 6px;
+    background: -moz-linear-gradient(top, #bdbebd, #f7f7f7) center no-repeat;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #fff));
+}
+
+.mobi-time-btn {
+    width: 100%;
+    height: 35px;
+    border: none;
+}
+
+.mobi-time-btn-incr {
+    box-shadow: 0 3px 3px #888;
+    -moz-box-shadow:  0 3px 3px #888;
+    -webkit-box-shadow:  0 3px 3px #888;
+    border-radius: 6px 6px 0 0;
+    -webkit-border-radius:  6px 6px 0 0;
+    -moz-border-radius:  6px 6px 0 0;
+    background-image: url('increment.png');
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.mobi-time-btn-decr {
+    box-shadow: 0 -3px 3px #888;
+    -moz-box-shadow: 0 -3px 3px #888;
+    -webkit-box-shadow: 0 -3px 3px #888;
+    border-radius: 0 0 6px 6px;
+    -webkit-border-radius:  0 0 6px 6px;
+    -moz-border-radius:  0 0 6px 6px;
+    background-image: url('decrement.png');
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.mobi-time-select-value {
+    color: black;
+    text-align: center;
+    vertical-align: middle;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #E2E3EC;
+}
