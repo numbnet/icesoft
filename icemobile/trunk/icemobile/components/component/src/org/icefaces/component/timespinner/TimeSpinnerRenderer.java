@@ -315,7 +315,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer  {
             Date convertedValue;
             Locale locale = spinner.calculateLocale(context);
             SimpleDateFormat format = new SimpleDateFormat(spinner.getPattern(), locale);
-            logger.info(" time zone ="+spinner.calculateTimeZone());
+    //        logger.info(" time zone ="+spinner.calculateTimeZone());
             format.setTimeZone(spinner.calculateTimeZone());
             convertedValue = format.parse(submittedValue);
             return convertedValue;
