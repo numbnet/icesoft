@@ -67,12 +67,12 @@
    <h5>date</h5>
     <h:outputLabel for="dateA" value="A. Time selected:-"/>
     <h:outputText id="dateA" value="#{date.time1}">
-          <f:convertDateTime type="time" pattern="hh:mm a"/>
+          <f:convertDateTime type="time" pattern="hh:mm a" timeZone="America/Edmonton"/>
     </h:outputText>
     <br />
      <h:outputLabel for="timeIOS5Out" value="B. time of iOS5 capable:-"/>
     <h:outputText id="timeIOS5Out" value="#{date.time2}">
-        <f:convertDateTime type="time" pattern="hh:mm a"/>
+        <f:convertDateTime type="time" pattern="hh:mm a" timeZone="America/Edmonton"/>
     </h:outputText>
 
  <br />
