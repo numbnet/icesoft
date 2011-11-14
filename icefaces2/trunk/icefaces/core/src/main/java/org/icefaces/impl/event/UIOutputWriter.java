@@ -24,6 +24,7 @@ package org.icefaces.impl.event;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.render.Renderer;
 import java.io.IOException;
 
 public abstract class UIOutputWriter extends UIOutput {
@@ -32,6 +33,10 @@ public abstract class UIOutputWriter extends UIOutput {
     }
 
     public void encodeEnd(FacesContext context) throws IOException {
+    }
+
+    protected Renderer getRenderer(FacesContext context) {
+        return null;
     }
 
     public abstract void encode(ResponseWriter writer, FacesContext context) throws IOException;
