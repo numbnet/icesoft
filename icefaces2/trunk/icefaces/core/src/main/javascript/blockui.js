@@ -48,7 +48,13 @@
 
         return object(function(method) {
             method(off, function(self) {
-                if (overlay) container.removeChild(overlay);
+                if (overlay) {
+                    try {
+                        container.removeChild(overlay);
+                    } catch (e) {
+                        //ignore, the overlay does not match the document after a html/body level update
+                    }
+                }
             });
         });
     }
@@ -65,8 +71,8 @@
             var triggeringElement = triggeredBy(ev);
             var capturingElement = capturedBy(ev);
             debug(logger, 'event [type: ' + evenType +
-                    ', triggered by: ' + identifier(triggeringElement) || triggeringElement +
-                    ', captured in: ' + identifier(capturingElement) || capturingElement + '] was discarded.');
+                ', triggered by: ' + identifier(triggeringElement) || triggeringElement +
+                ', captured in: ' + identifier(capturingElement) || capturingElement + '] was discarded.');
         }
     }
 
