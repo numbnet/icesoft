@@ -159,12 +159,12 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
                     pageindex = 1;
                 }
                 uiData.setFirst(uiData.getRows() * (pageindex - 1));
-                if (isImmediate()) {
-                    //page links are not a UICommand. They are just elements, so
-                    //by now the pageindex has been changed, now this component
-                    //itself needs to call the renderResponse. 
-                    getFacesContext().renderResponse();
-                }
+            }
+            if (isImmediate()) {
+                //page links are not a UICommand. They are just elements, so
+                //by now the pageindex has been changed, now this component
+                //itself needs to call the renderResponse. 
+                getFacesContext().renderResponse();
             }
             broadcastToActionListener(scrollerEvent);            
         }
