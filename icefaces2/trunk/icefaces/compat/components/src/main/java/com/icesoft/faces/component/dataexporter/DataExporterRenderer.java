@@ -59,7 +59,7 @@ public class DataExporterRenderer extends BaseRenderer {
         boolean linkRequired = false;
         String type = dataExporter.getType();
         if ( (type != null &&  !"".equals(type)) ||
-                dataExporter.getOutputTypeHandler() != null) {
+                dataExporter.getValueBinding("outputTypeHandler") != null) {
             linkRequired = true;
         }
         writer.startElement(HTML.DIV_ELEM, uiComponent);
