@@ -284,7 +284,7 @@ public class Utils {
     }
 
     /**
-     * used by DateSpinner to detect which type of events to use
+     * used by DateSpinner and TimeSpinner to detect which type of events to use
      * mobile devices get touch events
      * @param context
      * @return   true if mobile device
@@ -302,7 +302,7 @@ public class Utils {
     }
 
     /**
-     *  Some input components may have html5 support for iOS5 such as DateSpinner
+     *  Some input components may have html5 support for iOS5 such as TimeSpinner
      * @param context
      * @return true if request header denotes os 5_0
      */

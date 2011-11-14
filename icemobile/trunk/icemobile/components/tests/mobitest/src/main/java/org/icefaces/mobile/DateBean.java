@@ -7,22 +7,24 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.List;
+import java.util.TimeZone;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UIComponent;
+
 import javax.faces.event.ActionEvent;
-import javax.faces.validator.ValidatorException;
-import javax.faces.application.FacesMessage;
 
 @ManagedBean(name="date")
 @ViewScoped
 public class DateBean implements Serializable{
     private Date selectedDate;
     private Date date2;
+    private Date time1;
+    private Date time2;
     private boolean singleSubmit;
     private boolean required;
   //  private boolean valid;
     private String pattern;
+    private String timePattern = "hh:mm a";
+    private TimeZone zone;
     private boolean rendered;
     private String eventString="none";
     private List<DateNtry> dateList = new  ArrayList <DateNtry>();
@@ -34,9 +36,16 @@ public class DateBean implements Serializable{
         try{
             this.pattern = "yyyy-MM-dd";
             selectedDate = new SimpleDateFormat("yyyy-M-d H:m z").parse("2008-4-30 13:9 Pacific Daylight Time");
+
         } catch (Exception e){
             System.out.println("PROBLEM PARSING DATE SO SETTING TO TODAY!");
             selectedDate = new Date();
+        }
+        try{
+            time1 = new SimpleDateFormat("yyyy-M-d H:m z").parse("2010-10-30 13:9 Mountain Standard Time");
+        }catch (Exception te){
+            System.out.println("PROBLEM Setting TIME");
+            time1 = new Date();
         }
     }
 
@@ -63,7 +72,23 @@ public class DateBean implements Serializable{
     public void setPattern(String pattern) {
         this.pattern = pattern;
     }
-    
+
+    public Date getTime1() {
+        return time1;
+    }
+
+    public void setTime1(Date time1) {
+        this.time1 = time1;
+    }
+
+    public Date getTime2() {
+        return time2;
+    }
+
+    public void setTime2(Date time2) {
+        this.time2 = time2;
+    }
+
     public boolean isRequired() {
         return required;
     }

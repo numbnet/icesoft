@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.icefaces.component.datespinner;
+package org.icefaces.component.timespinner;
 
-import com.sun.org.apache.xalan.internal.xsltc.dom.LoadDocument;
 import org.icefaces.component.utils.BaseInputRenderer;
 import org.icefaces.component.utils.PassThruAttributeWriter;
 import org.icefaces.component.utils.Utils;
@@ -27,56 +26,60 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Logger;
 
-public class DateSpinnerRenderer extends BaseInputRenderer  {
-    private static Logger logger = Logger.getLogger(DateSpinnerRenderer.class.getName());
-    private static final String JS_NAME = "datespinner.js";
-    private static final String JS_MIN_NAME = "datespinner-min.js";
-    private static final String JS_LIBRARY = "org.icefaces.component.datespinner";
+public class TimeSpinnerRenderer extends BaseInputRenderer  {
+    private static Logger logger = Logger.getLogger(TimeSpinnerRenderer.class.getName());
+    private static final String JS_NAME = "timespinner.js";
+    private static final String JS_MIN_NAME = "timespinner-min.js";
+    private static final String JS_LIBRARY = "org.icefaces.component.timespinner";
 
 
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        DateSpinner dateSpinner = (DateSpinner) component;
-        String clientId = dateSpinner.getClientId(context);
-        if(dateSpinner.isDisabled() || dateSpinner.isReadonly()) {
+        TimeSpinner timeSpinner = (TimeSpinner) component;
+        String clientId = timeSpinner.getClientId(context);
+        if(timeSpinner.isDisabled() || timeSpinner.isReadonly()) {
             return;
         }
         String inputValue = context.getExternalContext().getRequestParameterMap().get(clientId+"_input");
+   //     logger.info(" DECODING STRING="+inputValue +" for clientId="+clientId);
         if(!isValueBlank(inputValue)) {
-            dateSpinner.setSubmittedValue(inputValue);
+            timeSpinner.setSubmittedValue(inputValue);
         }
     }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        DateSpinner spinner = (DateSpinner) component;
+        TimeSpinner spinner = (TimeSpinner) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = spinner.getClientId(context);
         String initialValue = getStringValueToRender(context, component);
         if (spinner.isUseNative() && Utils.isIOS5(context)){
             writer.startElement("input", component);
-            writer.writeAttribute("type", "date", "type");
+            writer.writeAttribute("type", "time", "type");
             writer.writeAttribute("id", clientId+"_input", "id");
             writer.writeAttribute("name", clientId+"_input", "name");
             boolean disabled = spinner.isDisabled();
             boolean readonly = spinner.isReadonly();
-            boolean singleSubmit = spinner.isSingleSubmit();
+      //      boolean singleSubmit = spinner.isSingleSubmit();
             if (isValueBlank(initialValue)) {
                 try {
                     Date aDate = new Date();
-                    SimpleDateFormat df2 = new SimpleDateFormat("yyyy-mm-dd");
+                    String defaultPattern = "hh:mm a";
+                    SimpleDateFormat df2 = new SimpleDateFormat(defaultPattern);
                     writer.writeAttribute("value",df2.parse(initialValue),"value");
                 } catch (ParseException pe){
-                    writer.writeAttribute("value", "2011-11-01", "value");
+                    writer.writeAttribute("value", "02:10 AM", "value");
                 }
             }  else {
                 writer.writeAttribute("value", initialValue, "value");
@@ -87,10 +90,10 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
             if (readonly){
                 writer.writeAttribute("readonly", component, "readonly");
             }
-            if (!disabled || !readonly && singleSubmit){
+        /*    if (!disabled || !readonly && singleSubmit){
                 String jsCall =  "ice.se(event,'"+clientId+"');";
                 writer.writeAttribute("onblur", jsCall, null);
-            }
+            }  */
             writer.endElement("input");
         }
         else {
@@ -110,7 +113,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
                 writer.endElement("script");
                 viewContextMap.put(JS_NAME, "true");
             } // else logger.info("DATESPINNER JS ALREADY LOADED");
-
             String value = this.encodeValue(spinner, initialValue);
             encodeMarkup(context, component, value);
             encodeScript(context, component);
@@ -119,17 +121,15 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
 
     protected void encodeMarkup(FacesContext context, UIComponent uiComponent, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        DateSpinner dateEntry = (DateSpinner) uiComponent;
-        String clientId = dateEntry.getClientId(context);
+        TimeSpinner timeEntry = (TimeSpinner) uiComponent;
+        String clientId = timeEntry.getClientId(context);
         String eventStr = "onclick";
         if (Utils.isTouchEventEnabled(context)){
             eventStr="ontouchstart";
         }
         //for now assume always a popuop
         boolean popup = true;
-        int yMin = dateEntry.getYearStart();
-        int yMax = dateEntry.getYearEnd();
-        StringBuilder popupBaseClass = new StringBuilder(DateSpinner.CONTAINER_CLASS);
+        StringBuilder popupBaseClass = new StringBuilder(TimeSpinner.CONTAINER_CLASS);
         //should any component entered styleclass be applied to all base classes?
         if (popup) {
             popupBaseClass.append("-hide");
@@ -140,35 +140,27 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         writer.writeAttribute("id", clientId + "_input", "id");
         writer.writeAttribute("name", clientId+"_input", "name");
         // apply class attribute and pass though attributes for style.
-        PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent,
-                dateEntry.getCommonAttributeNames());
-        StringBuilder classNames = new StringBuilder(DateSpinner.INPUT_CLASS)
-                .append(" ").append(dateEntry.getStyleClass());
+        StringBuilder classNames = new StringBuilder(TimeSpinner.INPUT_CLASS)
+                .append(" ").append(timeEntry.getStyleClass());
         writer.writeAttribute("class", classNames.toString(), null);
         if (value!=null){
             writer.writeAttribute("value", value, null);
         }
         writer.writeAttribute("type", "text", "type");
-        if(dateEntry.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if(dateEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if(timeEntry.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
+        if(timeEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         writer.endElement("input");
         // build out command button for show/hide of date select popup.
         writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("value", "", null);
-        writer.writeAttribute("class", DateSpinner.POP_UP_CLASS, null);
-        if(dateEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        writer.writeAttribute("class", TimeSpinner.POP_UP_CLASS, null);
+        if(timeEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         else{
-            writer.writeAttribute("onclick", "mobi.datespinner.toggle('"+clientId+"');", null);
+            writer.writeAttribute("onclick", "mobi.timespinner.toggle('"+clientId+"');", null);
         }
         writer.endElement("input");
-        //hidden field to store state of current instance
-        writer.startElement("input", uiComponent);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", clientId + "_hidden", "id");
-        writer.writeAttribute("name", clientId + "_hidden", "name");
-        writer.endElement("input");
-        // dive that is use to hide/show the popup screen black out.
+        // div that is use to hide/show the popup screen black out.
         writer.startElement("div",uiComponent);
         writer.writeAttribute("id", clientId, "id");
         writer.endElement("div");
@@ -178,89 +170,89 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         writer.writeAttribute("class", popupBaseClass.toString(), null);
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", clientId+"_title", "id");
-        writer.writeAttribute("class", DateSpinner.TITLE_CLASS, null);
+        writer.writeAttribute("class", TimeSpinner.TITLE_CLASS, null);
         writer.write(value);
         writer.endElement("div");
         writer.startElement("div", uiComponent);                            //entire selection container
-        writer.writeAttribute("class", DateSpinner.SELECT_CONT_CLASS, null);
+        writer.writeAttribute("class", TimeSpinner.SELECT_CONT_CLASS, null);
         //day
         writer.startElement("div",uiComponent);                             //date select container
-        writer.writeAttribute("class", DateSpinner.VALUE_CONT_CLASS, null);
+        writer.writeAttribute("class", TimeSpinner.VALUE_CONT_CLASS, null);
         writer.startElement("div", uiComponent);                            //button increment
-        writer.writeAttribute("class", DateSpinner.BUTTON_INC_CONT_CLASS, null);
+        writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CONT_CLASS, null);
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", DateSpinner.BUTTON_INC_CLASS, null);
-        writer.writeAttribute("id", clientId + "_dUpBtn", null);
+        writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CLASS, null);
+        writer.writeAttribute("id", clientId + "_hrUpBtn", null);
         writer.writeAttribute("type", "button",null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.dUp('"+clientId+"');",null);
+        writer.writeAttribute(eventStr, "mobi.timespinner.hrUp('"+clientId+"');",null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //day value
-        writer.writeAttribute("class", DateSpinner.SEL_VALUE_CLASS, null);
-        writer.writeAttribute("id", clientId+"_dInt",null);
-        writer.write( String.valueOf(dateEntry.getDayInt())) ;
+        writer.writeAttribute("class", TimeSpinner.SEL_VALUE_CLASS, null);
+        writer.writeAttribute("id", clientId+"_hrInt",null);
+        writer.write( String.valueOf(timeEntry.getHourInt())) ;
         writer.endElement("div");                                         //end of day value
         writer.startElement("div", uiComponent);                          //button decrement
-        writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CONT_CLASS, null);
+        writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CONT_CLASS, null);
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CLASS, null);
-        writer.writeAttribute("id", clientId + "_dDnBtn", null);
+        writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CLASS, null);
+        writer.writeAttribute("id", clientId + "_hrDnBtn", null);
         writer.writeAttribute("type", "button",null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.dDn('"+clientId+"');",null);
+        writer.writeAttribute(eventStr, "mobi.timespinner.hrDn('"+clientId+"');",null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button decrement
-        writer.endElement("div");                                         //end of dateEntry select container
+        writer.endElement("div");                                         //end of timeEntry select container
         //month
         writer.startElement("div",uiComponent);                             //month select container
-        writer.writeAttribute("class", DateSpinner.VALUE_CONT_CLASS, null);
+        writer.writeAttribute("class", TimeSpinner.VALUE_CONT_CLASS, null);
         writer.startElement("div", uiComponent);                            //button increment
-        writer.writeAttribute("class", DateSpinner.BUTTON_INC_CONT_CLASS, null);
+        writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CONT_CLASS, null);
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", DateSpinner.BUTTON_INC_CLASS, null);
+        writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CLASS, null);
         writer.writeAttribute("id", clientId + "_mUpBtn", null);
         writer.writeAttribute("type", "button",null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.mUp('"+clientId+"');",null);
+        writer.writeAttribute(eventStr, "mobi.timespinner.mUp('"+clientId+"');",null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //month value
-        writer.writeAttribute("class", DateSpinner.SEL_VALUE_CLASS, null);
+        writer.writeAttribute("class", TimeSpinner.SEL_VALUE_CLASS, null);
         writer.writeAttribute("id", clientId+"_mInt",null);
-        writer.write( String.valueOf(dateEntry.getMonthInt())) ;
+        writer.write( String.valueOf(timeEntry.getMinuteInt())) ;
         writer.endElement("div");                                         //end of month value
         writer.startElement("div", uiComponent);                          //button decrement
-        writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CONT_CLASS, null);
+        writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CONT_CLASS, null);
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CLASS, null);
+        writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CLASS, null);
         writer.writeAttribute("id", clientId + "_mDnBtn", null);
         writer.writeAttribute("type", "button",null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.mDn('"+clientId+"');",null);
+        writer.writeAttribute(eventStr, "mobi.timespinner.mDn('"+clientId+"');",null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of month select container
         //year
         writer.startElement("div",uiComponent);                             //year select container
-        writer.writeAttribute("class", DateSpinner.VALUE_CONT_CLASS, null);
+        writer.writeAttribute("class", TimeSpinner.VALUE_CONT_CLASS, null);
         writer.startElement("div", uiComponent);                            //button increment
-        writer.writeAttribute("class", DateSpinner.BUTTON_INC_CONT_CLASS, null);
+        writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CONT_CLASS, null);
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", DateSpinner.BUTTON_INC_CLASS, null);
-        writer.writeAttribute("id", clientId + "_yUpBtn", null);
+        writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CLASS, null);
+        writer.writeAttribute("id", clientId + "_ampmUpBtn", null);
         writer.writeAttribute("type", "button",null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.yUp('"+clientId+"',"+yMin+","+yMax+");",null);
+        writer.writeAttribute(eventStr, "mobi.timespinner.ampmToggle('"+clientId+"');",null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button incr
         writer.startElement("div", uiComponent);                          //year value
-        writer.writeAttribute("class", DateSpinner.SEL_VALUE_CLASS, null);
-        writer.writeAttribute("id", clientId+"_yInt",null);
-        writer.write( String.valueOf(dateEntry.getYearInt())) ;
+        writer.writeAttribute("class", TimeSpinner.SEL_VALUE_CLASS, null);
+        writer.writeAttribute("id", clientId+"_ampmInt",null);
+        writer.write( String.valueOf(timeEntry.getAmpm())) ;
         writer.endElement("div");                                         //end of year value
         writer.startElement("div", uiComponent);                          //button decrement
-        writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CONT_CLASS, null);
+        writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CONT_CLASS, null);
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", DateSpinner.BUTTON_DEC_CLASS, null);
-        writer.writeAttribute("id", clientId + "_yDnBtn", null);
+        writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CLASS, null);
+        writer.writeAttribute("id", clientId + "_ampmBtn", null);
         writer.writeAttribute("type", "button",null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.yDn('"+clientId+"',"+yMin+","+yMax+");",null);
+        writer.writeAttribute(eventStr, "mobi.timespinner.ampmToggle('"+clientId+"');",null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of year select container
@@ -273,15 +265,15 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         writer.writeAttribute ("type", "button", "type");
         writer.writeAttribute("value", "Set", null);
         //prep for singleSubmit in
-        boolean singleSubmit = dateEntry.isSingleSubmit();
-        writer.writeAttribute(eventStr, "mobi.datespinner.select('"+clientId+"',"+singleSubmit+");", null);
-   //     writer.writeAttribute(eventStr, "mobi.datespinner.select('"+clientId+"');", null);
+ //       boolean singleSubmit = timeEntry.isSingleSubmit();
+ //       writer.writeAttribute(eventStr, "mobi.timespinner.select('"+clientId+"',"+singleSubmit+");", null);
+        writer.writeAttribute(eventStr, "mobi.timespinner.select('"+clientId+"');", null);
         writer.endElement("input");
         writer.startElement("input", uiComponent);
         writer.writeAttribute("class", "mobi-button mobi-button-default", null);
         writer.writeAttribute ("type", "button", "type");
         writer.writeAttribute("value", "Cancel", null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.close('"+clientId+"');", null);
+        writer.writeAttribute(eventStr, "mobi.timespinner.close('"+clientId+"');", null);
         writer.endElement("input");
         writer.endElement("div");                                        //end of button container
 
@@ -291,28 +283,24 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
     public void encodeScript(FacesContext context, UIComponent uiComponent) throws IOException{
            //need to initialize the component on the page and can also
         ResponseWriter writer = context.getResponseWriter();
-        DateSpinner spinner = (DateSpinner) uiComponent;
+        TimeSpinner spinner = (TimeSpinner) uiComponent;
         String clientId = spinner.getClientId(context);
         //separate the value into yrInt, mthInt, dateInt for now just use contstants
-        int yrInt = spinner.getYearInt();
-        int mnthInt  = spinner.getMonthInt();
-        int dateInt = spinner.getDayInt();
-        int yrStart = spinner.getYearStart();
-        int yrEnd = spinner.getYearEnd();
+        int hourInt = spinner.getHourInt();
+        int minuteInt  = spinner.getMinuteInt();
+        int ampm = spinner.getAmpm();
 
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);
-        writer.write("mobi.datespinner.init('"+clientId+"',"+yrInt+","+mnthInt+","+dateInt+",'"+spinner.getPattern()+"');");
-    /*    writer.write("ice.onUnload(function(){" +
-                "mobi.datespinner.unload('" + clientId + "');" +
-                "});\n");      */
+        writer.write("mobi.timespinner.init('"+clientId+"',"+hourInt+","+minuteInt+","+ampm+",'"+spinner.getPattern()+"');");
+
         writer.endElement("script");
     }
 
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
-        DateSpinner spinner = (DateSpinner) component;
+        TimeSpinner spinner = (TimeSpinner) component;
         String submittedValue = String.valueOf(value);
         Object objVal = null;
         Converter converter = spinner.getConverter();
@@ -327,6 +315,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
             Date convertedValue;
             Locale locale = spinner.calculateLocale(context);
             SimpleDateFormat format = new SimpleDateFormat(spinner.getPattern(), locale);
+            logger.info(" time zone ="+spinner.calculateTimeZone());
             format.setTimeZone(spinner.calculateTimeZone());
             convertedValue = format.parse(submittedValue);
             return convertedValue;
@@ -336,12 +325,13 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         }
     }
 
-    private void setIntValues(DateSpinner spinner, Date aDate) {
+    private void setIntValues(TimeSpinner spinner, Date aDate) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(aDate);
-        spinner.setYearInt(cal.get(Calendar.YEAR));
-        spinner.setMonthInt(cal.get(Calendar.MONTH)+1);  //month is 0-indexed 0 = jan, 1=feb, etc
-        spinner.setDayInt(cal.get(Calendar.DAY_OF_MONTH));
+        spinner.setHourInt(cal.get(Calendar.HOUR));
+        spinner.setMinuteInt(cal.get(Calendar.MINUTE)+1);  //month is 0-indexed 0 = jan, 1=feb, etc
+    //    logger.info(" getampm is equal to "+Calendar.AM_PM);
+        spinner.setAmpm(cal.get(Calendar.AM_PM));
     }
 
     private String convertStringInput(String patternIn,String patternOut, String inString){
@@ -366,7 +356,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
 		return value.trim().equals("");
 	}
 
-    private String encodeValue( DateSpinner spinner,  String initialValue)  {
+    private String encodeValue( TimeSpinner spinner,  String initialValue)  {
         String value = "";
         Date aDate = new Date();
         SimpleDateFormat df2 = new SimpleDateFormat(spinner.getPattern());
