@@ -405,7 +405,10 @@ public class BridgeSetup implements SystemEventListener {
     private static class JavascriptResourceOutput extends ReferencedScriptWriter {
         public JavascriptResourceOutput(ResourceHandler resourceHandler, String name, String library, String version) {
             super("");
-            String fixedLibraryName = library == null || library.isEmpty() ? null : library;
+            String fixedLibraryName = null;
+            if (library != null && library.length() > 0) {
+                fixedLibraryName = library;
+            }
             Resource r = resourceHandler.createResource(name, fixedLibraryName);
             String path = r.getRequestPath();
             if (version == null) {
