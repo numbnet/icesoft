@@ -11,15 +11,22 @@
 
 @class NativeInterface;
 
-@interface ViewController : UIViewController<NativeInterfaceViewController> {
+@interface ViewController : UIViewController<NativeInterfaceViewController, UIAlertViewDelegate> {
 
 	NativeInterface *nativeInterface;
     NSString *currentURL;
     NSString *currentParameters;
+    NSString *currentCommand;
+    NSString *currentSessionId;
+    UIProgressView *uploadProgress;
 }
 
 @property (retain) NativeInterface *nativeInterface;
 @property (retain) NSString *currentURL;
 @property (retain) NSString *currentParameters;
+@property (retain) NSString *currentCommand;
+@property (retain) NSString *currentSessionId;
+@property (nonatomic, retain) IBOutlet UIProgressView *uploadProgress;
+- (void) dispatchCurrentCommand;
 
 @end

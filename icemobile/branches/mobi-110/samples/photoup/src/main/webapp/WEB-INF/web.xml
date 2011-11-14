@@ -22,29 +22,8 @@
          metadata-complete="false">
 
     <description>
-        Brogcast
+        Reflect
     </description>
-    <display-name>Broadcast your blog.</display-name>
-
-    <filter>
-        <filter-name>Dispatch</filter-name>
-        <filter-class>org.icepush.samples.brogcast.BrogcastDispatch
-        </filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>Dispatch</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <servlet>
-        <servlet-name>icepush</servlet-name>
-        <servlet-class>org.icepush.servlet.ICEpushServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>icepush</servlet-name>
-        <url-pattern>*.icepush</url-pattern>
-    </servlet-mapping>
+    <display-name>Show the image just uploaded.</display-name>
 
 </web-app>

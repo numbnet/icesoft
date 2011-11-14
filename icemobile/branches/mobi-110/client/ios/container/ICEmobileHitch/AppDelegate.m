@@ -87,8 +87,11 @@ NSLog(@"ICEmobileHitch found command %@", [params objectForKey:@"c"]);
 NSLog(@"ICEmobileHitch found url %@", [params objectForKey:@"u"]);
     self.viewController.currentURL = [params objectForKey:@"u"];
     self.viewController.currentParameters = [params objectForKey:@"p"];
+    self.viewController.currentCommand = [params objectForKey:@"c"];
+    self.viewController.currentSessionId = [params objectForKey:@"JSESSIONID"];
 NSLog(@"ICEmobileHitch found JSESSIONID %@", [params objectForKey:@"JSESSIONID"]);
-    [self.viewController.nativeInterface dispatch:[params objectForKey:@"c"]];
+    [self.viewController dispatchCurrentCommand];
+
     return YES;
 }
 
