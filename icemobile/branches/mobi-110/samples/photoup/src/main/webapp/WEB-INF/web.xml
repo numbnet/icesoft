@@ -26,4 +26,8 @@
     </description>
     <display-name>Show the image just uploaded.</display-name>
 
+    <session-config>
+      <session-timeout>1</session-timeout>
+    </session-config>
+
 </web-app>
