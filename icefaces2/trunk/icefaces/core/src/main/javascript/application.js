@@ -235,23 +235,25 @@ if (!window.ice.icefaces) {
             perRequestOnBeforeUpdateListeners = perRequestOnBeforeUpdateListeners || [];
             perRequestOnAfterUpdateListeners = perRequestOnAfterUpdateListeners || [];
             return function(e) {
+                var source = e.source;
                 switch (e.status) {
                     case 'begin':
-                        broadcast(perRequestOnBeforeSubmitListeners, [ e.source ]);
+                        //trigger notification only when submit is user-initiated
+                        if (viewIDOf(source) != source.id) {
+                            broadcast(perRequestOnBeforeSubmitListeners, [ source ]);
+                        }
                         break;
                     case 'complete':
                         var xmlContent = e.responseXML;
-                        var sourceElement = e.source;
                         if (containsXMLData(xmlContent)) {
-                            broadcast(perRequestOnBeforeUpdateListeners, [ xmlContent, sourceElement ]);
+                            broadcast(perRequestOnBeforeUpdateListeners, [ xmlContent, source ]);
                         } else {
                             warn(logger, 'the response does not contain XML data');
                         }
                         break;
                     case 'success':
                         var xmlContent = e.responseXML;
-                        var sourceElement = e.source;
-                        broadcast(perRequestOnAfterUpdateListeners, [ xmlContent, sourceElement ]);
+                        broadcast(perRequestOnAfterUpdateListeners, [ xmlContent, source ]);
                         var updates = xmlContent.documentElement.firstChild.childNodes;
                         var updateDescriptions = collect(updates, function(update) {
                             var id = update.getAttribute('id');
@@ -363,9 +365,9 @@ if (!window.ice.icefaces) {
             f.nativeSubmit = f.submit;
             f.submit = function() {
                 var theEvent = null;
-                if (typeof(event) != 'undefined')  {
+                if (typeof(event) != 'undefined') {
                     theEvent = event;
-                } else if (window.event)  {
+                } else if (window.event) {
                     theEvent = window.event;
                 } else {
                     //very bizarre hack to extract parameters from high up
@@ -374,7 +376,7 @@ if (!window.ice.icefaces) {
                     //it may eventually be necessary to walk up rather than
                     //test a specific caller
                     var maybeEvent = arguments.callee.caller.caller.arguments[0];
-                    if (typeof(maybeEvent.target) != 'undefined')  {
+                    if (typeof(maybeEvent.target) != 'undefined') {
                         theEvent = maybeEvent;
                     }
                 }
