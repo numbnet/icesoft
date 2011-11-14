@@ -34,12 +34,14 @@ public abstract class OutputTypeHandler {
 	}
 
 	public OutputTypeHandler(String path) {
-		try {
-			file = new File(path);
-			file.createNewFile();
-			file.deleteOnExit();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
+		if (!"no-data".equals(path)) {
+			try {
+				file = new File(path);
+				file.createNewFile();
+				file.deleteOnExit();
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
+			}
 		}
 	}
 
