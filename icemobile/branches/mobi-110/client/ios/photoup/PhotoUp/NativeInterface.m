@@ -15,9 +15,6 @@
 */
 
 #import "NativeInterface.h"
-#import "MobileCoreServices/MobileCoreServices.h"
-//#import "MediaPlayer/MediaPlayer.h"
-
 
 @implementation NativeInterface
 
@@ -27,7 +24,6 @@
 @synthesize maxheight;
 @synthesize recording;
 @synthesize uploading;
-@synthesize soundRecorder;
 @synthesize receivedData;
 @synthesize camPopover;
 
@@ -48,82 +44,15 @@ static char base64EncodingTable[64] = {
     if ([queryParts count] > 1) {
         params = [self parseQuery:[queryParts objectAtIndex:1]];
     }
+
     if ([@"camera" isEqualToString:commandName])  {
         [self camera:[params objectForKey:@"id"] 
                   maxwidth:[params objectForKey:@"maxwidth"]
                   maxheight:[params objectForKey:@"maxheight"] ];
     }
-//    } else if ([@"camcorder" isEqualToString:commandName])  {
-//        [self camcorder:[params objectForKey:@"id"]];
-//    } else if ([@"upload" isEqualToString:commandName])  {
-//        [self upload:[params objectForKey:@"id"]];
-//    } else if ([@"microphone" isEqualToString:commandName])  {
-//        [self microphone:[params objectForKey:@"id"]];
-//    } else if ([@"play" isEqualToString:commandName])  {
-//        [self play:[params objectForKey:@"id"]];
-//    } else if ([@"scan" isEqualToString:commandName])  {
-//        [self scan:[params objectForKey:@"id"]];
-//    }
+
     return YES;
 }
-
-//- (BOOL)play: (NSString*)audioId  {
-//    [controller play:audioId];
-//
-//    return YES;
-//}
-//
-//- (BOOL)microphone: (NSString*)micId  {
-//    self.activeDOMElementId = micId;
-//    NSString *micName = [micId stringByAppendingString:@"-file"];
-//    NSLog(@"called microphone for %@", micId);
-//
-//    NSString *tempDir = NSTemporaryDirectory ();
-//    NSString *soundFilePath =
-//                [tempDir stringByAppendingString: @"sound.mp4"];
-//    NSURL *soundFileURL = [[NSURL alloc] initFileURLWithPath: soundFilePath];
-//
-//    if (self.recording)  {
-//        self.recording = NO;
-//        NSLog(@"recording stopped");
-//        [self.soundRecorder stop];
-//        [controller completeFile:soundFilePath
-//                forComponent:micId withName:micName];
-//
-//        return YES;
-//    }
-// 
-//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-//    audioSession.delegate = self;
-//    [audioSession setActive: YES error: nil];
-//
-//    [[AVAudioSession sharedInstance]
-//            setCategory: AVAudioSessionCategoryRecord error: nil];
-// 
-//    NSDictionary *recordSettings =
-//        [[NSDictionary alloc] initWithObjectsAndKeys:
-//            [NSNumber numberWithFloat: 44100.0], AVSampleRateKey,
-//            [NSNumber numberWithInt: kAudioFormatMPEG4AAC], AVFormatIDKey,
-////             [NSNumber numberWithInt: kAudioFormatLinearPCM], AVFormatIDKey,
-////             [NSNumber numberWithInt: kAudioFormatAppleIMA4], AVFormatIDKey,
-////             [NSNumber numberWithInt: kAudioFormatAppleLossless], AVFormatIDKey,
-//            [NSNumber numberWithInt: 1], AVNumberOfChannelsKey,
-//            [NSNumber numberWithInt: AVAudioQualityMax], AVEncoderAudioQualityKey,
-//            nil];
-// 
-//    AVAudioRecorder *soundRecorder =
-//        [[AVAudioRecorder alloc] initWithURL: soundFileURL
-//                                    settings: recordSettings
-//                                       error: nil];
-//    self.soundRecorder = soundRecorder;
-//    soundRecorder.delegate = self;
-//    [soundRecorder prepareToRecord];
-//    NSLog(@"recording started");
-//    [soundRecorder record];
-//    self.recording = YES;
-//
-//    return YES;
-//}
 
 
 - (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw 
@@ -142,27 +71,6 @@ NSLog(@"called camera");
     
     return YES;
 }
-
-//- (BOOL)camcorder: (NSString*)cameraId  {
-//    self.activeDOMElementId = cameraId;
-//    UIImagePickerController* picker = [[UIImagePickerController alloc] init];
-//    picker.delegate = self;
-//    picker.allowsEditing = YES;
-//    picker.mediaTypes =  [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
-//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera ])  {
-//        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-//    }
-// 
-//    [self showImagePicker:picker];
-//    
-//    return YES;
-//}
-//
-//- (BOOL)scan: (NSString*)scanId  {
-//    self.activeDOMElementId = scanId;
-//    [self.controller scanQR];
-//    return YES;
-//}
 
 - (void)imagePickerController:(UIImagePickerController *)picker
                     didFinishPickingImage:(UIImage *)image
@@ -205,17 +113,6 @@ NSLog(@"called camera");
     NSString *cameraName = [cameraId stringByAppendingString:@"-file"];
     NSURL *movieURL = [info objectForKey: UIImagePickerControllerMediaURL];
     NSString *moviePath = [movieURL path];
-
-//    MPMoviePlayerController *movieController = 
-//            [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
-//    movieController.shouldAutoplay = NO;
-//    movieController.initialPlaybackTime = 0;
-//    movieController.currentPlaybackTime = 0;
-//    UIImage *image = [movieController thumbnailImageAtTime:0 
-//                           timeOption:MPMovieTimeOptionNearestKeyFrame];
-//
-//    UIImage *scaledImage = [self scaleImage:image toSize:64];
-//    [self setThumbnail:scaledImage at:cameraId];
 
     [controller completeFile:moviePath
             forComponent:cameraId withName:cameraName];
