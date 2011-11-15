@@ -1,0 +1,315 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9C77C78F147310B80079FDF5 /* NativeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C77C78D147310B80079FDF5 /* NativeInterface.m */; };
+		9C77C794147310F90079FDF5 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77C791147310F90079FDF5 /* icon-72.png */; };
+		9C77C795147310F90079FDF5 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77C792147310F90079FDF5 /* icon.png */; };
+		9C77C796147310F90079FDF5 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77C793147310F90079FDF5 /* icon@2x.png */; };
+		9CA51B6414730D110065F681 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA51B6314730D110065F681 /* UIKit.framework */; };
+		9CA51B6614730D110065F681 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA51B6514730D110065F681 /* Foundation.framework */; };
+		9CA51B6814730D110065F681 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA51B6714730D110065F681 /* CoreGraphics.framework */; };
+		9CA51B6E14730D110065F681 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9CA51B6C14730D110065F681 /* InfoPlist.strings */; };
+		9CA51B7014730D110065F681 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA51B6F14730D110065F681 /* main.m */; };
+		9CA51B7414730D120065F681 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA51B7314730D120065F681 /* AppDelegate.m */; };
+		9CA51B7714730D120065F681 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA51B7614730D120065F681 /* ViewController.m */; };
+		9CA51B7A14730D120065F681 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA51B7814730D120065F681 /* ViewController_iPhone.xib */; };
+		9CA51B7D14730D120065F681 /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA51B7B14730D120065F681 /* ViewController_iPad.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9C77C78C147310B80079FDF5 /* NativeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeInterface.h; sourceTree = "<group>"; };
+		9C77C78D147310B80079FDF5 /* NativeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativeInterface.m; sourceTree = "<group>"; };
+		9C77C78E147310B80079FDF5 /* NativeInterfaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeInterfaceViewController.h; sourceTree = "<group>"; };
+		9C77C791147310F90079FDF5 /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-72.png"; sourceTree = "<group>"; };
+		9C77C792147310F90079FDF5 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		9C77C793147310F90079FDF5 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
+		9CA51B5F14730D110065F681 /* PhotoUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CA51B6314730D110065F681 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9CA51B6514730D110065F681 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9CA51B6714730D110065F681 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		9CA51B6B14730D110065F681 /* PhotoUp-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PhotoUp-Info.plist"; sourceTree = "<group>"; };
+		9CA51B6D14730D110065F681 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9CA51B6F14730D110065F681 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9CA51B7114730D110065F681 /* PhotoUp-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PhotoUp-Prefix.pch"; sourceTree = "<group>"; };
+		9CA51B7214730D120065F681 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9CA51B7314730D120065F681 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9CA51B7514730D120065F681 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		9CA51B7614730D120065F681 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		9CA51B7914730D120065F681 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
+		9CA51B7C14730D120065F681 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9CA51B5C14730D110065F681 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CA51B6414730D110065F681 /* UIKit.framework in Frameworks */,
+				9CA51B6614730D110065F681 /* Foundation.framework in Frameworks */,
+				9CA51B6814730D110065F681 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9CA51B5414730D110065F681 = {
+			isa = PBXGroup;
+			children = (
+				9CA51B6914730D110065F681 /* PhotoUp */,
+				9CA51B6214730D110065F681 /* Frameworks */,
+				9CA51B6014730D110065F681 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9CA51B6014730D110065F681 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9CA51B5F14730D110065F681 /* PhotoUp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9CA51B6214730D110065F681 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9CA51B6314730D110065F681 /* UIKit.framework */,
+				9CA51B6514730D110065F681 /* Foundation.framework */,
+				9CA51B6714730D110065F681 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9CA51B6914730D110065F681 /* PhotoUp */ = {
+			isa = PBXGroup;
+			children = (
+				9C77C791147310F90079FDF5 /* icon-72.png */,
+				9C77C792147310F90079FDF5 /* icon.png */,
+				9C77C793147310F90079FDF5 /* icon@2x.png */,
+				9C77C78C147310B80079FDF5 /* NativeInterface.h */,
+				9C77C78D147310B80079FDF5 /* NativeInterface.m */,
+				9C77C78E147310B80079FDF5 /* NativeInterfaceViewController.h */,
+				9CA51B7214730D120065F681 /* AppDelegate.h */,
+				9CA51B7314730D120065F681 /* AppDelegate.m */,
+				9CA51B7514730D120065F681 /* ViewController.h */,
+				9CA51B7614730D120065F681 /* ViewController.m */,
+				9CA51B7814730D120065F681 /* ViewController_iPhone.xib */,
+				9CA51B7B14730D120065F681 /* ViewController_iPad.xib */,
+				9CA51B6A14730D110065F681 /* Supporting Files */,
+			);
+			path = PhotoUp;
+			sourceTree = "<group>";
+		};
+		9CA51B6A14730D110065F681 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9CA51B6B14730D110065F681 /* PhotoUp-Info.plist */,
+				9CA51B6C14730D110065F681 /* InfoPlist.strings */,
+				9CA51B6F14730D110065F681 /* main.m */,
+				9CA51B7114730D110065F681 /* PhotoUp-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9CA51B5E14730D110065F681 /* PhotoUp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9CA51B8014730D120065F681 /* Build configuration list for PBXNativeTarget "PhotoUp" */;
+			buildPhases = (
+				9CA51B5B14730D110065F681 /* Sources */,
+				9CA51B5C14730D110065F681 /* Frameworks */,
+				9CA51B5D14730D110065F681 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PhotoUp;
+			productName = PhotoUp;
+			productReference = 9CA51B5F14730D110065F681 /* PhotoUp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9CA51B5614730D110065F681 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "ICEsoft Technologies, Inc.";
+			};
+			buildConfigurationList = 9CA51B5914730D110065F681 /* Build configuration list for PBXProject "PhotoUp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 9CA51B5414730D110065F681;
+			productRefGroup = 9CA51B6014730D110065F681 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9CA51B5E14730D110065F681 /* PhotoUp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9CA51B5D14730D110065F681 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CA51B6E14730D110065F681 /* InfoPlist.strings in Resources */,
+				9CA51B7A14730D120065F681 /* ViewController_iPhone.xib in Resources */,
+				9CA51B7D14730D120065F681 /* ViewController_iPad.xib in Resources */,
+				9C77C794147310F90079FDF5 /* icon-72.png in Resources */,
+				9C77C795147310F90079FDF5 /* icon.png in Resources */,
+				9C77C796147310F90079FDF5 /* icon@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9CA51B5B14730D110065F681 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CA51B7014730D110065F681 /* main.m in Sources */,
+				9CA51B7414730D120065F681 /* AppDelegate.m in Sources */,
+				9CA51B7714730D120065F681 /* ViewController.m in Sources */,
+				9C77C78F147310B80079FDF5 /* NativeInterface.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9CA51B6C14730D110065F681 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9CA51B6D14730D110065F681 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		9CA51B7814730D120065F681 /* ViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9CA51B7914730D120065F681 /* en */,
+			);
+			name = ViewController_iPhone.xib;
+			sourceTree = "<group>";
+		};
+		9CA51B7B14730D120065F681 /* ViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9CA51B7C14730D120065F681 /* en */,
+			);
+			name = ViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9CA51B7E14730D120065F681 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9CA51B7F14730D120065F681 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9CA51B8114730D120065F681 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PhotoUp/PhotoUp-Prefix.pch";
+				INFOPLIST_FILE = "PhotoUp/PhotoUp-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		9CA51B8214730D120065F681 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PhotoUp/PhotoUp-Prefix.pch";
+				INFOPLIST_FILE = "PhotoUp/PhotoUp-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9CA51B5914730D110065F681 /* Build configuration list for PBXProject "PhotoUp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9CA51B7E14730D120065F681 /* Debug */,
+				9CA51B7F14730D120065F681 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9CA51B8014730D120065F681 /* Build configuration list for PBXNativeTarget "PhotoUp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9CA51B8114730D120065F681 /* Debug */,
+				9CA51B8214730D120065F681 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9CA51B5614730D110065F681 /* Project object */;
+}
