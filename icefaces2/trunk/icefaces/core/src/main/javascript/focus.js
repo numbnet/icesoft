@@ -29,6 +29,23 @@ var currentFocus = '';
         debug(logger, 'persisted focus for element "' + id + '"');
     };
 
+    function setCaretTo(element, pos) {
+        if (element.createTextRange) {
+            var range = element.createTextRange();
+            range.move("character", pos);
+            range.select();
+        } else if (element.selectionStart) {
+            element.setSelectionRange(pos, pos);
+        }
+    }
+
+    function setCaretAtTextEnd(element) {
+        if ((toLowerCase(element.nodeName) == 'input' && element.type == 'text') || toLowerCase(element.nodeName) == 'textarea') {
+            var text = element.value;
+            setCaretTo(element, text.length);
+        }
+    }
+
     function isValidID(id) {
         return /^\w[\w\-\:]*$/.test(id);
     }
@@ -56,6 +73,7 @@ var currentFocus = '';
                                 }
                             }
                             debug(logger, 'focused element "' + id + '"');
+                            setCaretAtTextEnd(e);
                         }
                     }
                 }
