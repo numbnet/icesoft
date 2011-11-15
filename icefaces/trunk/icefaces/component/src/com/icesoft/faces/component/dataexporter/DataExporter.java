@@ -325,15 +325,10 @@ public class DataExporter extends OutputResource {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             String type = getType();
             UIData uiData = getUIData();
-            Resource res = getResource(); 
-            if (res == null) {
-                File output = createFile(facesContext, type, uiData);
-                setResource(new FileResource(output));
-                getResource();
-            }
-            JavascriptContext.addJavascriptCall(facesContext, "Ice.DataExporterOpenWindow(\"" + 
-                    getClientId(facesContext) + "\", \"" + getPath() + "\", \""+ getLabel() 
-                    +"\", \""+ getPopupBlockerLabel() +"\" );");
+			File output = createFile(facesContext, type, uiData);
+			setResource(new FileResource(output));
+			getResource();
+            JavascriptContext.addJavascriptCall(facesContext, "Ice.DataExporters['" + getClientId(facesContext) + "'].url('" + getPath() + "');");
         }
     }    
 
