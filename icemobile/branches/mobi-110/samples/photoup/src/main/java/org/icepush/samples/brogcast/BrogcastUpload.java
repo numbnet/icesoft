@@ -29,7 +29,7 @@ import javax.servlet.http.HttpSessionEvent;
 import java.io.IOException;
 import java.io.File;
 
-@WebServlet(urlPatterns = {"/mobile/*"})
+@WebServlet(urlPatterns = {"/index.html"})
 @MultipartConfig
 @WebListener
 public class BrogcastUpload extends HttpServlet implements
