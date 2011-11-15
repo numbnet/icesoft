@@ -6,7 +6,7 @@
         	<!-- Draggable Panel -->
            	<ice:panelGroup id="pg0" style="z-index:10; width:100px; height: 100px; background-color:silver; cursor:move;" draggable="true" dragMask="hover_start, dragging, hover_end, drag_cancel" dragOptions="revert,solid" dragListener="#{dragDrop.dragListener}">
 				<h3>Drag Me</h3>
-				<ice:outputText value="#{dragDrop.dropValue}"></ice:outputText>
+				<ice:outputText id="pg0outputTxt" value="#{dragDrop.dropValue}"></ice:outputText>
 			</ice:panelGroup>
 			
 			<!-- Drop Target 1 -->
