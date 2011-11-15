@@ -29,7 +29,7 @@ public class TimeSpinner extends TimeSpinnerBase {
     public static final String BLACKOUT_PNL_CLASS = "mobi-time-bg";
     public static final String CONTAINER_CLASS = "mobi-time-container";
     public static final String INPUT_CLASS = "mobi-input-text";
-    public static final String POP_UP_CLASS = "mobi-popup-btn";
+    public static final String POP_UP_CLASS = "mobi-popup-time-btn";
     public static final String TITLE_CLASS = "mobi-time-title-container";
     public static final String SELECT_CONT_CLASS = "mobi-time-select-container";
     public static final String VALUE_CONT_CLASS = "mobi-time-select-value-cont";
