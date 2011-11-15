@@ -52,9 +52,17 @@ public class TimeSpinnerRenderer extends BaseInputRenderer  {
             return;
         }
         String inputValue = context.getExternalContext().getRequestParameterMap().get(clientId+"_input");
-   //     logger.info(" DECODING STRING="+inputValue +" for clientId="+clientId);
-        if(!isValueBlank(inputValue)) {
-            timeSpinner.setSubmittedValue(inputValue);
+        if (!isValueBlank(inputValue)){
+            if (Utils.isIOS5(context) && timeSpinner.isUseNative()){
+                //have to convert from 24 hour time and put in same format as mobi timeSpinner
+                String twelveHrString = convertToTwelve(inputValue);
+                if (null != twelveHrString){
+                    timeSpinner.setSubmittedValue(twelveHrString);
+                }
+            }
+            else  {
+                timeSpinner.setSubmittedValue(inputValue);
+            }
         }
     }
 
@@ -71,18 +79,19 @@ public class TimeSpinnerRenderer extends BaseInputRenderer  {
             writer.writeAttribute("name", clientId+"_input", "name");
             boolean disabled = spinner.isDisabled();
             boolean readonly = spinner.isReadonly();
+            String defaultPattern = "HH:mm";
+            SimpleDateFormat df2 = new SimpleDateFormat(defaultPattern);
       //      boolean singleSubmit = spinner.isSingleSubmit();
             if (isValueBlank(initialValue)) {
                 try {
                     Date aDate = new Date();
-                    String defaultPattern = "hh:mm a";
-                    SimpleDateFormat df2 = new SimpleDateFormat(defaultPattern);
-                    writer.writeAttribute("value",df2.parse(initialValue),"value");
-                } catch (ParseException pe){
-                    writer.writeAttribute("value", "02:10 AM", "value");
+                    writer.writeAttribute("value",df2.format(aDate),"value");
+                } catch (Exception e){
+                    writer.writeAttribute("value", "02:10", "value");
                 }
             }  else {
-                writer.writeAttribute("value", initialValue, "value");
+                String twenty4HrVal = convertStringInput("EEE MMM dd hh:mm:ss zzz yyyy", "HH:mm", initialValue);
+                writer.writeAttribute("value", twenty4HrVal, "value");
             }
             if (disabled){
                 writer.writeAttribute("disabled", component, "disabled");
@@ -315,7 +324,6 @@ public class TimeSpinnerRenderer extends BaseInputRenderer  {
             Date convertedValue;
             Locale locale = spinner.calculateLocale(context);
             SimpleDateFormat format = new SimpleDateFormat(spinner.getPattern(), locale);
-    //        logger.info(" time zone ="+spinner.calculateTimeZone());
             format.setTimeZone(spinner.calculateTimeZone());
             convertedValue = format.parse(submittedValue);
             return convertedValue;
@@ -385,6 +393,28 @@ public class TimeSpinnerRenderer extends BaseInputRenderer  {
          return sdf.parse(inStr, new ParsePosition(0)) != null;
     }
 
-
+    private String convertToTwelve(String inputVal){
+        String delim = ":";
+        String tmp[] = inputVal.split(delim);
+        String hr =tmp[0];
+        String min = tmp[1];
+        if (min.length()==1){
+            min+="0";
+        }
+        String retVal = null;
+        try {
+           int hour = Integer.parseInt(hr);
+           int minute = Integer.parseInt(min);
+           if (hour < 13 && minute <= 59){
+               retVal = hr+":"+min+" AM";
+           }
+           else {
+               retVal = String.valueOf(hour-12) +":"+min+" PM";
+           }
+        }catch (NumberFormatException nfe){
+            logger.info("not able to convert iOS5 input to 12 hour clock");
+        }
+        return retVal;
+    }
 }
 
