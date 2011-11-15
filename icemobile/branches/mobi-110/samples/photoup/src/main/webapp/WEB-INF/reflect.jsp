@@ -111,7 +111,7 @@
              src="<% out.print(imageURI); %>">
         <h3>Construct Custom URL</h3>
         <input type="text" id="inputURL" value="<% out.print(fullURI); %>" onchange="updateLink()" style="width:80%" ><br>
-        <input type="text" id="idParam" value="id" onchange="updateLink()" size="10">
+        <input type="text" id="idParam" value="id" onchange="updateLink()" size="10"><br>
         <textarea id="computedLink" style="width:80%">
         </textarea>
         <script>
