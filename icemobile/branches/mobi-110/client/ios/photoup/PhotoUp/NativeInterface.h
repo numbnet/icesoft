@@ -15,12 +15,11 @@
 */
 
 #import <Foundation/Foundation.h>
-#import <AVFoundation/AVFoundation.h>
 #import "NativeInterfaceViewController.h"
 
 @class MainViewController;
 
-@interface NativeInterface : NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate> {
+@interface NativeInterface : NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
 
 	UIViewController<NativeInterfaceViewController> *controller;
     NSString *activeDOMElementId;
@@ -28,7 +27,6 @@
     NSString *maxheight;
     BOOL recording;
     BOOL uploading;
-    AVAudioRecorder *soundRecorder;
     NSMutableData *receivedData;
     UIPopoverController *camPopover;
 }
@@ -39,16 +37,12 @@
 @property (retain) NSString *maxheight;
 @property (nonatomic, assign) BOOL recording;
 @property (assign) BOOL uploading;
-@property (retain) AVAudioRecorder *soundRecorder;
 @property (retain) NSMutableData *receivedData;
 @property (nonatomic, retain) UIPopoverController *camPopover;
 
 - (BOOL)dispatch: (NSString*)command;
 - (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw maxheight: (NSString*)maxh;
-- (BOOL)camcorder: (NSString*)cameraId;
 - (BOOL)upload: (NSString*)formId;
-- (BOOL)play: (NSString*)audioId;
-- (BOOL)scan: (NSString*)scanId;
 - (NSMutableDictionary*)parseQuery: (NSString*)queryString;
 - (void)showImagePicker: (UIImagePickerController*)picker;
 - (void)dismissImagePicker;
