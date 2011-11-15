@@ -33,6 +33,7 @@ package org.icefaces.push.server;
 
 import com.icesoft.faces.env.Authorization;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.servlet.BasicAdaptingServlet;
 import com.icesoft.faces.webapp.http.servlet.PathDispatcher;
 import com.icesoft.faces.webapp.http.servlet.PseudoServlet;
 import com.icesoft.faces.webapp.http.servlet.ServletConfigConfiguration;
@@ -155,8 +156,11 @@ extends HttpServlet {
                         getMessageServiceAdapter()
                 ).getHttpMessagingDispatcher());
             pathDispatcher.dispatchOn(
-                ".*",
+                ".*(block\\/)",
                 _sessionDispatcher);
+            pathDispatcher.dispatchOn(
+                ".*",
+                new BasicAdaptingServlet(new NotFoundServer(), _servletContextConfiguration));
             pushServerMessageService.start();
         } catch (Exception exception) {
             LOG.error(

@@ -106,7 +106,8 @@ implements PseudoServlet {
                     public void handle(final Request request) {
                         new DisposeViewsHandler(request, sessionManager).handle();
                     }
-                }));
-        dispatchOn(".*", new BasicAdaptingServlet(new NotFoundServer()));
+                },
+                configuration));
+        dispatchOn(".*", new BasicAdaptingServlet(new NotFoundServer(), configuration));
     }
 }
