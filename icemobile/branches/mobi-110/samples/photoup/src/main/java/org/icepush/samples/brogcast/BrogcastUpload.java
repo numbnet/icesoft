@@ -51,9 +51,11 @@ public class BrogcastUpload extends HttpServlet implements
     public void sessionDestroyed(HttpSessionEvent event) {
         ServletContext servletContext  = event.getSession().getServletContext();
         try {
-            File imageFile = new File("images/" + 
+            String dirPath = servletContext.getRealPath("/images") + "/";
+            File imageFile = new File(dirPath + 
                     event.getSession().getId() + ".jpg");
             imageFile.delete();
+System.out.println("wanted to delete " + imageFile);
         } catch (Exception e)  {
             servletContext.log("Failed to delete image", e);
         }

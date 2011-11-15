@@ -89,17 +89,34 @@
         }
 
     </style>
+    <script>
+    function updateLink()  {
+        var url = document.getElementById('inputURL').value;
+        var idParam = document.getElementById('idParam').value;
+        var command = 'camera&id=' + idParam;
+        document.getElementById('computedLink').value = 
+            'icemobile://c=' + escape(command) + '&u=' + escape(url);
+    }
+    </script>
 </head>
 <body>
 
 <form id="form1" method="post">
     <div class="fill">
-        <h3>View Uploaded Image</h3>
+        <h3>Upload and View a Photo</h3>
         <input type="button" class="camera"
                onclick="window.location='icemobile://c=camera%3Fid%3Dnone&u=<% out.print(encodedURI); %>&JSESSIONID=<% out.print(session.getId()); %>';" value="camera">
         <br/>
-        <img style="width:80%;margin-top:10px;"
+        <img style="width:80%;margin-top:10px;margin-bottom:10px;"
              src="<% out.print(imageURI); %>">
+        <h3>Construct Custom URL</h3>
+        <input type="text" id="inputURL" value="<% out.print(fullURI); %>" onchange="updateLink()" style="width:80%" ><br>
+        <input type="text" id="idParam" value="id" onchange="updateLink()" size="10">
+        <textarea id="computedLink" style="width:80%">
+        </textarea>
+        <script>
+        updateLink();
+        </script>
     </div>
 </form>
 </body>
