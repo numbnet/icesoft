@@ -101,7 +101,14 @@ public class OutputListRenderer extends BaseLayoutRenderer {
     public boolean getRendersChildren() {
         return true;
     }
+
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {
-        //Rendering happens on encodeEnd
+         OutputList list = (OutputList) component;
+         if (list.getVar() !=null ) {
+             //Rendering happens on encodeEnd
+             return;
+         }
+        super.encodeChildren(facesContext, component);
+
     }
 }
