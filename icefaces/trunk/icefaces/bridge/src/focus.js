@@ -44,7 +44,7 @@ function setFocus(id) {
 
     var isIE = /MSIE/.test(navigator.userAgent);
     var focusOn = (function(id) {
-        if (id && isValidID(id)) {
+        if (id && isValidID(id) && id != currentFocus) {
             try {
                 var e = document.getElementById(id);
                 if (e) {
