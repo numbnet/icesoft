@@ -19,7 +19,7 @@ package org.icefaces.component.list;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.ace.meta.baseMeta.UIDataMeta;
+import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
 
 @Component(
@@ -29,7 +29,7 @@ import org.icefaces.ace.meta.baseMeta.UIDataMeta;
         generatedClass = "org.icefaces.component.list.OutputListBase",
         componentType = "org.icefaces.OutputList",
         rendererType = "org.icefaces.OutputListRenderer",
-        extendsClass = "javax.faces.component.UIData",
+        extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.OutputList",
         tlddoc = "This mobility component " +
                 "represents a grouping of unordered list items.  The child component "+
@@ -37,14 +37,11 @@ import org.icefaces.ace.meta.baseMeta.UIDataMeta;
 )
 
 
-public class OutputListMeta extends UIDataMeta {
+public class OutputListMeta extends UIComponentBaseMeta {
 	
     @Property(defaultValue="false",
     		  tlddoc = "true enables padding around list group")
     private boolean inset;
-
-    @Property(defaultValue="default", tlddoc = "type is default or thumb  " )
-    private String listType;
 
     @Property(tlddoc = "style will be rendered on the root element of this " +
     "component.")
@@ -54,11 +51,4 @@ public class OutputListMeta extends UIDataMeta {
         "this component.")
     private String styleClass;
 
-    @Property(defaultValue="default", tlddoc = "This attribute is only required when a list is used in the var attribute." +
-            " Otherwise if using the OutputListItem component, use the type attribute then.  Itemtype is default or thumb  " )
-    private String itemType;
-
-    @Property(tlddoc = "style class will be rendered on each list item for " +
-        "this component.")
-    private String itemStyleClass;
 }
