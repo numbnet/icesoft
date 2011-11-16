@@ -122,6 +122,7 @@ public class ICEmobileContainer extends Activity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 	self = this;
+	
 
 	/* Bind to network connectivity monitoring service */
 	Intent bindingIntent = new Intent(self,ConnectionChangeService.class);
@@ -466,7 +467,7 @@ public class ICEmobileContainer extends Activity
     }
 
     private void includeQRCode() {
-        mCaptureInterface = new CaptureJSInterface(this);
+        mCaptureInterface = new CaptureJSInterface(this, SCAN_CODE, SCAN_ID);
         mWebView.addJavascriptInterface(mCaptureInterface, "ICEqrcode");
     }
 
