@@ -29,7 +29,7 @@
     <property name="lib.dir" location="${icefaces.base.dir}/lib"/>
     <property name="lib.compat.dir" location="${lib.dir}/compat"/>
     <property name="lib.compat.dir.includes" value=""/>
-    <property name="lib.application.dir" location="./lib"/>
+    
     <property name="lib.compile.application.includes" value=""/>
     <property name="lib.distribute.application.includes" value=""/>
     <property name="lib.distribute.compat.includes" value="jstl.jar jhighlight.jar commons-digester.jar commons-beanutils.jar commons-collections.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
@@ -42,7 +42,7 @@
     <property name="java.dir" location="./src/main/java"/>
     <property name="res.dir" location="./src/main/resources"/>
     <property name="web.dir" location="./src/main/webapp"/>
-         
+	<property name="lib.application.dir" location="${web.dir}/WEB-INF/lib"/>     
     
     <property name="build.dir" location="./build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
@@ -159,14 +159,10 @@
         	</lib>
             <lib dir="${lib.portlet.dir}">
                 <patternset refid="lib.distribute.portlet"/>
-            </lib>
-            <lib dir="${lib.application.dir}" erroronmissingdir="false">
-                <patternset refid="lib.distribute.application"/>
-            </lib>
+            </lib>            
             <classes dir="${classes.dir}"/>
         </war>
-        <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
-        <copy file="${dist.dir}/${ant.project.name}.war" todir="${samples.dist.dir}"/>
+        <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>        
     </target>
 
     <target name="servlet-profile"
@@ -176,7 +172,7 @@
             <param name="jsf"  value="true" />
             <param name="compat"  value="true" />
             <param name="ace"  value="true" />
-        </antcall>
+        </antcall>    	
     </target>
 
     <target name="web-profile"
