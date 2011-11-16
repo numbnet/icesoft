@@ -64,6 +64,23 @@ var fullSubmit;
         }
     }
 
+    //ICE-7456: When using singleSubmit, MyFaces does not include the
+    //          element.name as it does when f:ajax is used. So here
+    //          we add it if it's a valid value and not there already.
+    //          The strategy is similar to what Mojarra already does.
+    function fixExecuteParameter(execute,element){
+        if( execute && element.name && element.id){
+            var execIds = execute.split(' ');
+            for (var i = 0, size = execIds.length; i < size; i++) {
+                if (execIds[i] == element.name) {
+                    return execute;
+                }
+            }
+            execute = execute + ' ' + element.name;
+        }
+        return execute;
+    }
+
     function singleSubmit(execute, render, event, element, additionalParameters, callbacks) {
         var viewID = viewIDOf(element);
         var form = document.getElementById(viewID);
@@ -77,6 +94,7 @@ var fullSubmit;
             if (tagName == 'input') {
                 if (element.type == 'radio') {
                     clonedElement.checked = element.checked;
+                    execute = fixExecuteParameter(execute,element);
                 }
                 if (element.type == 'checkbox') {
                     clonedElement.checked = element.checked;
@@ -89,6 +107,7 @@ var fullSubmit;
                             checkboxClone.checked = checkbox.checked;
                         }
                     });
+                    execute = fixExecuteParameter(execute,element);
                 }
             } else if (tagName == 'select') {
                 var clonedOptions = clonedElement.options;
