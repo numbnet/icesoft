@@ -75,14 +75,14 @@ public class DataExporterRenderer extends BaseRenderer {
                 writer.startElement(HTML.INPUT_ELEM, uiComponent);
                 writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);        
                 writer.writeAttribute(HTML.TYPE_ATTR, HTML.BUTTON_ELEM, HTML.TYPE_ATTR);
-                writer.writeAttribute(HTML.ONCLICK_ATTR, "return "+ DomBasicRenderer.ICESUBMITPARTIAL, HTML.ONCLICK_ATTR);
+                writer.writeAttribute(HTML.ONCLICK_ATTR, "new Ice.DataExporter('" + clientId + "'); return "+ DomBasicRenderer.ICESUBMITPARTIAL, HTML.ONCLICK_ATTR);
                 writer.writeAttribute(HTML.VALUE_ATTR, label, HTML.VALUE_ATTR);                
                 writer.endElement(HTML.INPUT_ELEM);
             } else {
                 writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
                 writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);        
                 writer.writeAttribute(HTML.HREF_ATTR, "javascript:;", HTML.HREF_ATTR);
-                writer.writeAttribute(HTML.ONCLICK_ATTR, "var form=formOf(this); return "+ DomBasicRenderer.ICESUBMITPARTIAL, HTML.ONCLICK_ATTR);        
+                writer.writeAttribute(HTML.ONCLICK_ATTR, "new Ice.DataExporter('" + clientId + "'); var form=formOf(this); return "+ DomBasicRenderer.ICESUBMITPARTIAL, HTML.ONCLICK_ATTR);        
                 if (image !=null) {
                     writer.startElement(HTML.IMG_ELEM, uiComponent);
                     writer.writeAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, image), HTML.SRC_ATTR);  
