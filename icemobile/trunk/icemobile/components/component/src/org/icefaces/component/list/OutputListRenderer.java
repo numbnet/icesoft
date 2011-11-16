@@ -58,7 +58,7 @@ public class OutputListRenderer extends BaseLayoutRenderer {
                  logger.isLoggable(Level.FINER)) {
              List<UIComponent> children = uiComponent.getChildren();
              for (UIComponent child : children) {
-                 if (!(child instanceof OutputListItem) || !(child instanceof OutputListItems)) {
+                 if (!(child instanceof OutputListItem)) {
                      logger.finer("The OutputList component allows only children of type OutputListItem or OutputListItems");
                  }
              }
