@@ -21,25 +21,27 @@ import android.content.Intent;
 import android.util.Log;
 
 import org.icemobile.client.android.JavascriptInterface;
-import org.icemobile.client.android.ICEmobileContainer;
 
 public class CaptureJSInterface implements JavascriptInterface {
   private static final String TAG = CaptureJSInterface.class.getSimpleName();
 
     private Activity activity;
     private String result;
+    private int scanCode;
+    private String scanId;
 
-    public CaptureJSInterface (Activity activity) {
+    public CaptureJSInterface (Activity activity, int scanCode, String scanId) {
         this.activity = activity;
+	this.scanCode = scanCode;
+	this.scanId = scanId;
     }
 
     public String scan(String id, String attr) {
 //        AttributeExtractor attributes = new AttributeExtractor(attr);
         Log.d(TAG, "starting QRCode CaptureActivity");
         Intent myIntent = new Intent(activity.getApplicationContext(), CaptureActivity.class);
-        myIntent.putExtra(ICEmobileContainer.SCAN_ID, id);
-        activity.startActivityForResult(myIntent, 
-                ICEmobileContainer.SCAN_CODE);
+        myIntent.putExtra(scanId, id);
+        activity.startActivityForResult(myIntent, scanCode);
         Log.d(TAG, "returning value from ICEmobile.scan");
         return "howdoigetthescanout";
     }
