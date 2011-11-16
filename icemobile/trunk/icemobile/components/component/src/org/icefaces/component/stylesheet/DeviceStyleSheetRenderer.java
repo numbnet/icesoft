@@ -42,7 +42,7 @@ import java.util.logging.Logger;
  * <p/>
  * If the developer does not wish to have the component auto detect the calling
  * device the library and name attribute can be set to either specify a specific
- * theme by name or a new theme by library and name.
+ * theme by name or a new theme by library and anme.
  *
  * @since 0.0.1 alpha.
  */
@@ -56,18 +56,15 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
 
     // CSS style extension circa 2011
     private static final String CSS_EXT = ".css";
-    // compressed css post-fix notation.
-    public static final String CSS_COMPRESSION_POSTFIX = "-min";
 
     // iPhone style sheet name found in jar.
     public static final String IPHONE_CSS = Utils.DeviceType.iphone.name() + CSS_EXT;
-    // iPad style sheet name found in jar.
+    // iPad style sheed name found in jar.
     public static final String IPAD_CSS = Utils.DeviceType.ipad.name() + CSS_EXT;
     // Android style sheet name found in jar.
     public static final String ANDROID_CSS = Utils.DeviceType.android.name() + CSS_EXT;
     // Blackberry style sheet name found in jar.
     public static final String BBERRY_CSS = Utils.DeviceType.bberry.name() + CSS_EXT;
-
 
     // default resource library for a default themes,  if not specified in
     // component definition this library will be loaded.
@@ -129,11 +126,11 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
             } else {
                 name = Utils.getDeviceType(context).name();
             }
-            // load compressed css if this is production environment.
-            if (context.isProjectStage(ProjectStage.Production)){
-                name = name.concat(CSS_COMPRESSION_POSTFIX);
-            }
+       /*     if (context.isProjectStage(ProjectStage.Production)){
+                name = name.concat("min");
+            } */
             name = name.concat(CSS_EXT);
+            log.info(" loading css file="+name);
             library = DEFAULT_LIBRARY;
             // store in session map for use later.
             contextMap.put(MOBILE_DEVICE_TYPE_KEY, name);
@@ -145,8 +142,7 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
         }
         // 3.) User has specified a name and theme of there own, anything goes.
         else {
-            // nothing to do, any error will be displayed back to user at runtime
-            // if the resource can't be found.
+            // nothing to do, any error will be displayed back to user at runtime.
         }
 
         // create URL that the resource can be loaded from.
