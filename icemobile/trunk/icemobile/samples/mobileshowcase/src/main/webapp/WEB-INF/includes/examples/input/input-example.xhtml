@@ -68,13 +68,7 @@
                                 value="#{inputBean.passwordInput}">
                 </mobi:inputText>
             </mobi:fieldsetRow>
-            <mobi:fieldsetRow>
-                <h:outputLabel for="cap" value="Date Spinner"/>
-                <mobi:dateSpinner id="cap" style="float:right:width:100px;"
-                                 singleSubmit="false"
-                                 value="#{inputBean.dateInput}">
-                </mobi:dateSpinner>
-            </mobi:fieldsetRow>
+
             <!-- Date input -->
             <mobi:fieldsetRow>
                 <h:outputLabel for="dateInput" value="Date:"/>
@@ -124,15 +118,7 @@
             <h:outputText styleClass="fr"
                           value="#{inputBean.passwordInput}"/>
         </mobi:fieldsetRow>
-        <!-- date output -->
-   <h4><h:outputText value="Date Spinner Value Echo"/></h4>
-       <mobi:fieldsetRow>
-           <h:outputLabel value="Auto-Capitalization"/>
-           <h:outputText styleClass="fr"
-                         value="#{inputBean.dateInput}">
-               <f:convertDateTime type="date" />
-           </h:outputText>
-       </mobi:fieldsetRow>
+
         <!-- date output -->
         <mobi:fieldsetRow>
             <h:outputLabel value="Date: "/>

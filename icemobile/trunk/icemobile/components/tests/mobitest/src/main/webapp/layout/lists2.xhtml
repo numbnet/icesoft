@@ -39,36 +39,25 @@
     <p><a href="http://jira.icefaces.org/browse/MOBI-62" > using var attribute for outputList</a></p>
 
     <h5> outputList with group of simple strings not inset, default itemType</h5>
-    <mobi:outputList id="simpleList" inset="false"  >
-        <mobi:outputListItems  value="#{list.simpleList}" var="simple" type="default">
+    <mobi:outputList id="simpleList" inset="false" value="#{list.simpleList}" var="simple" itemType="default">
             <h:outputText value="#{simple}"/>
-        </mobi:outputListItems>
     </mobi:outputList>
 
     <br />
-    <mobi:outputList id="carslist" inset="true" >
-        <mobi:outputListItem type="group">
-             OutputLinksGroup
-        </mobi:outputListItem>
-        <mobi:outputListItems  value="#{list.carList}" var="car" >
+    <mobi:outputList id="carslist" inset="true" value="#{list.carList}" var="car" >
             #{car.make} #{car.model}, #{car.year} price: #{car.price}
-        </mobi:outputListItems>
-        <mobi:outputListItem type="group">
-             OutputLinksGroup
-        </mobi:outputListItem>
-        <mobi:outputListItems  value="#{list.linksList}" var="item">
-             <h:outputLink  value="#{item.url}">#{item.title}</h:outputLink>
-        </mobi:outputListItems>
     </mobi:outputList>
-    <br/>
-     <mobi:outputList id="imgList" inset="false" >
-        <mobi:outputListItems value="#{carousel.imageList}" var="item" type="thumb">
-            <h:link >
+    <br />
+    <mobi:outputList id="linksList" inset="true" value="#{list.linksList}" var="item">
+        <h:outputLink  value="#{item.url}">#{item.title}</h:outputLink>
+    </mobi:outputList>
+    <br />
+    <mobi:outputList id="imgList" inset="false" value="#{carousel.imageList}" var="item" type="thumb">
+         <h:link >
                 <img alt="" src="#{item.imageUrl}" height="20px"/>
                 <h3 >#{item.title}"</h3>
                 <p >picture with img link</p>
-            </h:link>
-        </mobi:outputListItems>
+         </h:link>
     </mobi:outputList>
 
 

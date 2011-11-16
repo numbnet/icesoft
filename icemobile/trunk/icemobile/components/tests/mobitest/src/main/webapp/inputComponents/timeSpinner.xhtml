@@ -40,7 +40,7 @@
 
     <h3>timeSpinner</h3>
 
-    <h:form id="timeForm" >
+    <h:form id="dateForm" >
 
         <h5> built in conversion for yyyy-MM-dd pattern</h5>
          <h:outputText value="A. time"/>
@@ -64,9 +64,9 @@
     </h:form>
     <h3>RESULTS</h3>
 
-   <h5>time selected</h5>
-    <h:outputLabel for="timeA" value="A. Time selected:-"/>
-    <h:outputText id="timeA" value="#{date.time1}">
+   <h5>date</h5>
+    <h:outputLabel for="dateA" value="A. Time selected:-"/>
+    <h:outputText id="dateA" value="#{date.time1}">
           <f:convertDateTime type="time" pattern="hh:mm a" timeZone="America/Edmonton"/>
     </h:outputText>
     <br />

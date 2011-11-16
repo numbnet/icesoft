@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-.mobi-popup-time-btn{
+.mobi-popup-btn{
     -webkit-appearance: none;
     background-image: url('clock_header.png'); /** sprite-ref: sprite; */
     background-repeat: no-repeat;
