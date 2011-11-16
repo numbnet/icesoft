@@ -5586,27 +5586,38 @@ Ice.simulateBlur = function(ele, anc) {
     ele.style.borderColor = ele['_borderColor'];
 };
 
-Ice.DataExporterOpenWindow = function(clientId, path, label, popupBlockerLbl) {
-    var wdo = window.open(path);
-
-    if (!wdo || typeof(wdo) == "undefined") {
-        var ele = $(clientId + 'container').firstChild;
-        var lbl = popupBlockerLbl == "null" ? label : popupBlockerLbl;
-        ele.onclick = function() {
-            window.open(path);
-        };
-
-        if (ele.tagName == "INPUT") {
-            ele.value = lbl;
-        } else {
-            if (ele.firstChild.tagName == "IMG") {
-                ele.firstChild.title = lbl;
-            } else {
-                ele.innerHTML = lbl;
-            }
-        }
-    }
-    new Effect.Highlight(clientId + 'container', { startcolor: '#fda505',endcolor: '#ffffff' });
+Ice.DataExporters = {};
+Ice.DataExporter = function(id) {
+	this.id = id;
+	Ice.DataExporters[this.id] = this;
+	if (Ice.DataExporter.shouldOpenPopUp()) {
+		this.window = window.open('','','width=400,height=150');
+		this.window.document.write('<html><head><title>Data export file loader</title></head><body id="body"></body></html>');
+		this.body = this.window.document.getElementById('body');
+		this.body.innerHTML = '<p>Please wait while the file you requested is generated...</p>';
+		this.window.focus();
+	}
+}
+Ice.DataExporter.prototype.url = function(url) {
+	if (Ice.DataExporter.shouldOpenPopUp()) {
+		this.body.innerHTML = this.body.innerHTML + '<p>The file is ready. Click link below to download.</p>'
+			+ '<a href="' + url + '">Download File</a>';
+		this.window.focus();
+	} else {
+		var iframe = document.createElement('iframe');
+		iframe.setAttribute('src', url);
+		iframe.style.display = 'none';
+		document.body.appendChild(iframe);
+	}
+	Ice.DataExporters[this.id] = null;
+}
+Ice.DataExporter.shouldOpenPopUp = function() {
+	if (Prototype.Browser.IE) {
+		var version = parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5));
+		if (version == 6 || version == 7)
+			return true;
+	}
+	return false;
 }
 
 Ice.tblRowFocus = function(anc, singleSelection) {
