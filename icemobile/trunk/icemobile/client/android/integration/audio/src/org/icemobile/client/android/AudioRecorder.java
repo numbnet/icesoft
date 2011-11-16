@@ -24,6 +24,7 @@ import android.os.Environment;
 import java.io.IOException;
 import java.io.File;
 import java.lang.reflect.Field;
+import android.os.Build;
 
 public class AudioRecorder {
 
@@ -55,15 +56,23 @@ public class AudioRecorder {
         try {
             mRecorder = null;
             try {
-                Field aacField = MediaRecorder.AudioEncoder.class
+		// Can't use AAC on Samsung Tablets 3.1;
+		String model = Build.MODEL;
+		String version = Build.VERSION.RELEASE;
+		if (model.contains("GT-P7")  && 
+		    version.equals("3.1")) {
+                    mRecorder = getMediaRecorder(MediaRecorder.AudioEncoder.DEFAULT);
+		} else {
+		    Field aacField = MediaRecorder.AudioEncoder.class
                         .getField("AAC");
-                if (null != aacField)  {
-                    //set to AAC from android-10 for better iPhone compatibility
-                    mRecorder = getMediaRecorder(aacField.getInt(null));
-                    if (maxDuration > 0) {
-                        mRecorder.setMaxDuration(maxDuration*1000);
-                    }
-                }
+		    if (null != aacField)  {
+			//set to AAC from android-10 for better iPhone compatibility
+			mRecorder = getMediaRecorder(aacField.getInt(null));
+			if (maxDuration > 0) {
+			    mRecorder.setMaxDuration(maxDuration*1000);
+			}
+		    }
+		}
             } catch (Throwable t)  {
                 Log.d("ICEaudio", "AAC setup failed");
             }
