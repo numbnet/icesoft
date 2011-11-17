@@ -19,7 +19,8 @@ package org.icefaces.component.datespinner;
 import org.icefaces.component.utils.Attribute;
 
 import javax.faces.context.FacesContext;
-import java.util.*;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 public class DateSpinner extends DateSpinnerBase {

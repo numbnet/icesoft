@@ -16,8 +16,6 @@
 package org.icefaces.component.timespinner;
 
 
-import org.icefaces.component.timespinner.TimeSpinnerBase;
-
 import javax.faces.context.FacesContext;
 import java.util.Locale;
 import java.util.TimeZone;
