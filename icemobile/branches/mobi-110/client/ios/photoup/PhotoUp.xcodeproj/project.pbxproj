@@ -11,6 +11,8 @@
 		9C77C794147310F90079FDF5 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77C791147310F90079FDF5 /* icon-72.png */; };
 		9C77C795147310F90079FDF5 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77C792147310F90079FDF5 /* icon.png */; };
 		9C77C796147310F90079FDF5 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77C793147310F90079FDF5 /* icon@2x.png */; };
+		9C97BADD1475A7BC000ECCA9 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C97BADC1475A7BC000ECCA9 /* icon.png */; };
+		9C97BADF1475A7D4000ECCA9 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C97BADE1475A7D4000ECCA9 /* icon@2x.png */; };
 		9CA51B6414730D110065F681 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA51B6314730D110065F681 /* UIKit.framework */; };
 		9CA51B6614730D110065F681 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA51B6514730D110065F681 /* Foundation.framework */; };
 		9CA51B6814730D110065F681 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA51B6714730D110065F681 /* CoreGraphics.framework */; };
@@ -20,6 +22,7 @@
 		9CA51B7714730D120065F681 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA51B7614730D120065F681 /* ViewController.m */; };
 		9CA51B7A14730D120065F681 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA51B7814730D120065F681 /* ViewController_iPhone.xib */; };
 		9CA51B7D14730D120065F681 /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CA51B7B14730D120065F681 /* ViewController_iPad.xib */; };
+		9CA7CEE11475A85C001804A3 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CA7CEE01475A85C001804A3 /* icon-72.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +32,8 @@
 		9C77C791147310F90079FDF5 /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-72.png"; sourceTree = "<group>"; };
 		9C77C792147310F90079FDF5 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		9C77C793147310F90079FDF5 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
+		9C97BADC1475A7BC000ECCA9 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		9C97BADE1475A7D4000ECCA9 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		9CA51B5F14730D110065F681 /* PhotoUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CA51B6314730D110065F681 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9CA51B6514730D110065F681 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -43,6 +48,7 @@
 		9CA51B7614730D120065F681 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		9CA51B7914730D120065F681 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
 		9CA51B7C14730D120065F681 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
+		9CA7CEE01475A85C001804A3 /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-72.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +68,9 @@
 		9CA51B5414730D110065F681 = {
 			isa = PBXGroup;
 			children = (
+				9CA7CEE01475A85C001804A3 /* icon-72.png */,
+				9C97BADE1475A7D4000ECCA9 /* icon@2x.png */,
+				9C97BADC1475A7BC000ECCA9 /* icon.png */,
 				9CA51B6914730D110065F681 /* PhotoUp */,
 				9CA51B6214730D110065F681 /* Frameworks */,
 				9CA51B6014730D110065F681 /* Products */,
@@ -174,6 +183,9 @@
 				9C77C794147310F90079FDF5 /* icon-72.png in Resources */,
 				9C77C795147310F90079FDF5 /* icon.png in Resources */,
 				9C77C796147310F90079FDF5 /* icon@2x.png in Resources */,
+				9C97BADD1475A7BC000ECCA9 /* icon.png in Resources */,
+				9C97BADF1475A7D4000ECCA9 /* icon@2x.png in Resources */,
+				9CA7CEE11475A85C001804A3 /* icon-72.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +284,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotoUp/PhotoUp-Prefix.pch";
 				INFOPLIST_FILE = "PhotoUp/PhotoUp-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -283,6 +296,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotoUp/PhotoUp-Prefix.pch";
 				INFOPLIST_FILE = "PhotoUp/PhotoUp-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
