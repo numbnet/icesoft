@@ -16,7 +16,6 @@
 package org.icefaces.component.timespinner;
 
 import org.icefaces.component.utils.BaseInputRenderer;
-import org.icefaces.component.utils.PassThruAttributeWriter;
 import org.icefaces.component.utils.Utils;
 
 import javax.faces.application.ProjectStage;

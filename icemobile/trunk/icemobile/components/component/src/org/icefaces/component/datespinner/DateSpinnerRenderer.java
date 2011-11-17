@@ -15,7 +15,6 @@
  */
 package org.icefaces.component.datespinner;
 
-import com.sun.org.apache.xalan.internal.xsltc.dom.LoadDocument;
 import org.icefaces.component.utils.BaseInputRenderer;
 import org.icefaces.component.utils.PassThruAttributeWriter;
 import org.icefaces.component.utils.Utils;
@@ -32,7 +31,10 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.Map;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 public class DateSpinnerRenderer extends BaseInputRenderer  {
