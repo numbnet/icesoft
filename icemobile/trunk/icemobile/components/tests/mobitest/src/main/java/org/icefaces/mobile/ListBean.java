@@ -43,10 +43,10 @@ public class ListBean implements Serializable {
         carList.add(new Car("Ford","Focus","2009","$5,000" ));
         carList.add(new Car("Chrysler","Caravan","2012","$15,000" ));
         carList.add(new Car("Volkswagen", "Jetta", "2008", "$8,000"));
-        linksList.add(new LinkItem("carousel","carousel.jsf"));
-        linksList.add(new LinkItem("fieldSet", "fieldset.jsf"));
-        linksList.add(new LinkItem("orig outputList", "lists.jsf"));
-        linksList.add(new LinkItem("layout menu", "../layoutComponents.html"));
+        linksList.add(new LinkItem("carousel","carousel.jsf", "carousel"));
+        linksList.add(new LinkItem("fieldSet", "fieldset.jsf","fieldset"));
+        linksList.add(new LinkItem("orig outputList", "lists.jsf", "lists"));
+        linksList.add(new LinkItem("layout menu", "../layoutComponents.html", "../layoutComponents"));
 	}
 
 
@@ -128,10 +128,12 @@ public class ListBean implements Serializable {
 
         private String title;
         private String url;
+        private String action;
 
-        public LinkItem (String title, String url){
+        public LinkItem (String title, String url, String action){
             this.title = title;
             this.url = url;
+            this.action = action;
         }
 
         public String getTitle() {
@@ -148,6 +150,14 @@ public class ListBean implements Serializable {
 
         public void setUrl(String url) {
             this.url = url;
+        }
+
+        public String getAction() {
+            return action;
+        }
+
+        public void setAction(String action) {
+            this.action = action;
         }
     }
 
