@@ -17,12 +17,12 @@
 package org.icefaces.component.list;
 
 
-import org.icefaces.component.utils.BaseLayoutRenderer;
 import org.icefaces.component.utils.HTML;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.render.Renderer;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.List;
@@ -30,7 +30,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class OutputListRenderer extends BaseLayoutRenderer {
+public class OutputListRenderer extends Renderer {
     private static Logger logger = Logger.getLogger(OutputListRenderer.class.getName());
 
 
@@ -58,7 +58,7 @@ public class OutputListRenderer extends BaseLayoutRenderer {
                  logger.isLoggable(Level.FINER)) {
              List<UIComponent> children = uiComponent.getChildren();
              for (UIComponent child : children) {
-                 if (!(child instanceof OutputListItem) || !(child instanceof OutputListItems)) {
+                 if (!(child instanceof OutputListItem)) {
                      logger.finer("The OutputList component allows only children of type OutputListItem or OutputListItems");
                  }
              }
