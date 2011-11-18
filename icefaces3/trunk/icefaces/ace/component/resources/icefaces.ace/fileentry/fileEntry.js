@@ -1,25 +1,28 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-var ice_fileEntry = {
+if (!window['ice']) {
+    window.ice = {};
+}
+if (!window['ice']['ace']) {
+    window.ice.ace = {};
+}
+
+ice.ace.fileentry = {
     iframeLoaded : function(context, id) {
         //alert("iframeLoaded()  begin");
         
@@ -33,7 +36,7 @@ var ice_fileEntry = {
                 var serializer = new XMLSerializer();
                 var responseText = serializer.serializeToString(d);
                 //i.contentDocument.document.body?i.contentDocument.document.body.innerHTML:null;
-                ice_fileEntry.response(d, responseText, context);
+                ice.ace.fileentry.response(d, responseText, context);
             }
         } else if (i.contentWindow &&
                    i.contentWindow.document) {
@@ -48,7 +51,7 @@ var ice_fileEntry = {
                 var serializer = new XMLSerializer();
                 responseText = serializer.serializeToString(d);
             }
-            ice_fileEntry.response(d, responseText, context);
+            ice.ace.fileentry.response(d, responseText, context);
         }
         
         //alert("iframeLoaded()  end");
@@ -73,7 +76,7 @@ var ice_fileEntry = {
         }                                                                
 
         f.onsubmit = function(event) {
-            ice_fileEntry.formOnsubmit(event, f, iframeId, progressPushId, progressResourcePath);
+            ice.ace.fileentry.formOnsubmit(event, f, iframeId, progressPushId, progressResourcePath);
         };
     },
     
@@ -82,7 +85,7 @@ var ice_fileEntry = {
 
         // Set every fileEntry component in the form into the indeterminate
         // state, before progress notifications arrive, if icepush is present
-        ice_fileEntry.setFormFileEntryStates(formElem, "uploading");
+        ice.ace.fileentry.setFormFileEntryStates(formElem, "uploading");
 
         if (progressPushId) {
             //alert("formOnsubmit()  progressPushId: " + progressPushId);
@@ -91,7 +94,7 @@ var ice_fileEntry = {
             var regPushIds = new Array(1);
             regPushIds[0] = progressPushId;
             window.ice.push.register(regPushIds, function(pushedIds) {
-                ice_fileEntry.onProgress(pushedIds, progressResourcePath);
+                ice.ace.fileentry.onProgress(pushedIds, progressResourcePath);
             });
         }
 
@@ -119,16 +122,16 @@ var ice_fileEntry = {
             formElem.enctype = 'multipart/form-data';
         }
         
-        var hSrc = ice_fileEntry.addHiddenInput(
+        var hSrc = ice.ace.fileentry.addHiddenInput(
             formElem, 'javax.faces.source', context.sourceid);
-        var hParEx = ice_fileEntry.addHiddenInput(
+        var hParEx = ice.ace.fileentry.addHiddenInput(
             formElem, 'javax.faces.partial.execute', context_execute);
-        var hParRend = ice_fileEntry.addHiddenInput(
+        var hParRend = ice.ace.fileentry.addHiddenInput(
             formElem, 'javax.faces.partial.render', context.render);
-        var hParAjax = ice_fileEntry.addHiddenInput(
+        var hParAjax = ice.ace.fileentry.addHiddenInput(
             formElem, 'javax.faces.partial.ajax', 'true');
         // Flag specifying javascript, to differentiate our non-javascript mode
-        var hIceAjax = ice_fileEntry.addHiddenInput(
+        var hIceAjax = ice.ace.fileentry.addHiddenInput(
             formElem, 'ice.fileEntry.ajaxResponse', 'true');
 
         formElem.target = iframeId;
@@ -155,9 +158,9 @@ var ice_fileEntry = {
 
             // Set every fileEntry component in the form into the indeterminate
             // state, before progress notifications arrive, if icepush is present
-            ice_fileEntry.setFormFileEntryStates(formElem, "complete");
+            ice.ace.fileentry.setFormFileEntryStates(formElem, "complete");
 
-            ice_fileEntry.iframeLoaded(context, iframeId);
+            ice.ace.fileentry.iframeLoaded(context, iframeId);
             
             // Cleanup the response iframe, after finished using it
             if (iframeElem.removeEventListener) {
@@ -193,7 +196,7 @@ var ice_fileEntry = {
         /*
         //POLL: Uncomment this section
         var progressTimeout = function() {
-            ice_fileEntry.onProgress(null, progressResourcePath);
+            ice.ace.fileentry.onProgress(null, progressResourcePath);
             setTimeout(progressTimeout, 2000);
         };
         setTimeout(progressTimeout, 2000);
@@ -223,7 +226,7 @@ var ice_fileEntry = {
                     var outerDiv = fileDiv.childNodes[1];
                     if (outerDiv) {
                         if (outerDiv.className != "complete") {
-                            var progDiv = outerDiv.firstChild;
+                            var progDiv = outerDiv.firstChild.firstChild;
                             if (progDiv) {
                                 progDiv.style.width = percentStr;
                             }
@@ -245,7 +248,7 @@ var ice_fileEntry = {
     },
 
     setFormFileEntryStates : function(formElem, className) {
-        var fileEntryDivs = ice_fileEntry.getElementsByClass(
+        var fileEntryDivs = ice.ace.fileentry.getElementsByClass(
                 "ice-file-entry",formElem,"div");
         var fileEntryLen = fileEntryDivs.length;
         var fileEntryIndex;
