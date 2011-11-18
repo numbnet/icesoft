@@ -490,11 +490,11 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
                         DataPaginatorRenderer.PAGE_NAVIGATION +
                         Integer.toString(pageIndex));
         String onClick = /*"document.forms['"+ formId + "']" + "['"+ formId +":_idcl']" + ".value='" +  linkid  + "'"+ 
-        		";*/"document.forms['" + formId + "']['" +
-              scroller.getClientId(facesContext) + "'].value='" +
+        		";*/"var ele = document.forms['" + formId + "']['" +
+              scroller.getClientId(facesContext) + "']; ele.value='" +
               DataPaginatorRenderer.PAGE_NAVIGATION + text + "'" +
               ";iceSubmit(" + " document.forms['" + formId + "']," +
-              " this,event); " + "return false;";
+              " this,event); ele.value='';" + "return false;";
         link.setAttribute(HTML.ID_ATTR, linkid);
         if (scroller.isDisabled()) {
             link.removeAttribute(HTML.ONCLICK_ATTR);
