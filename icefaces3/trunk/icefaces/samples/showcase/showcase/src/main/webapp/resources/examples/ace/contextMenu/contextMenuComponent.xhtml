@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[contextMenuComponent.title]}"/>
+    <ui:param name="description" value="#{msgs[contextMenuComponent.description]}"/>
+    <ui:param name="resourceValue" value="#{contextMenuComponent.exampleResource}"/>
+
+    <ui:define name="example">
+        <h:form>
+            <p><i>Note the menu items are just placeholders and do not perform any functionality.</i></p>
+            
+            <h:panelGrid columns="2" cellspacing="10">
+                <h:outputLabel for="intro" value="Clickable:"/>
+                <h:outputText id="intro" value="Right-click on this sentence or any of the widgets below to display a component specific menu."/>
+                
+                <h:outputLabel for="button" value="Clickable:"/>
+                <h:commandButton id="button" value="Submit Button"/>
+            </h:panelGrid>
+            
+            <ace:contextMenu for="intro">
+                <ace:menuitem value="Copy" icon="ui-icon ui-icon-disk" style="font-size: small;"
+                              action="#{contextMenuComponent.performAction}">
+                    <f:param name="actionType" value="Text Copy" />
+                </ace:menuitem>
+                <ace:menuitem value="Translate" icon="ui-icon ui-icon-arrowrefresh-1-w" style="font-style: small;"
+                              action="#{contextMenuComponent.performAction}">
+                    <f:param name="actionType" value="Text Translation" />
+                </ace:menuitem>
+            </ace:contextMenu>
+            
+            <ace:contextMenu for="button">
+                <ace:menuitem value="Click" icon="ui-icon ui-icon-disk" style="font-size: small;"
+                              action="#{contextMenuComponent.performAction}">
+                    <f:param name="actionType" value="Click" />
+                </ace:menuitem>
+                <ace:menuitem value="Status" icon="ui-icon" style="font-size: small;"
+                              action="#{contextMenuComponent.performAction}">
+                    <f:param name="actionType" value="Status Check" />
+                </ace:menuitem>
+                <ace:menuitem value="Refresh" icon="ui-icon ui-icon-arrowrefresh-1-w" style="font-size: small;"
+                              action="#{contextMenuComponent.performAction}">
+                    <f:param name="actionType" value="Page Refresh" />
+                </ace:menuitem>
+            </ace:contextMenu>
+            
+            <h:outputText value="#{contextMenuComponent.actionDescription}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
