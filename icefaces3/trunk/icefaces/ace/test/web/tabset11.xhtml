@@ -1,0 +1,64 @@
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icefaces.org/icefaces/components"
+
+        >
+<f:view  contentType="text/html"/>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>TabSet</title>
+<h:outputScript name="jsf.js" library="javax.faces" />
+</h:head>
+<h:body>
+
+    <h:form styleClass="ice-skin-sam">
+       <ice:tabSet tabIndex="#{tabBean.labelFacetIndex}">
+            <ice:tabPane label="Tab 1">
+                <h:outputText value="YUI generally works well with mobile browsers that are based on A-Grade browser foundations."/>            
+            </ice:tabPane>       
+            <ice:tabPane rendered="#{tabBean.faceTabRendered}">
+                <f:facet name="label">
+                    <h:panelGrid columns="3">
+                            <h:graphicImage style="border:none;width:12px; height:12px;" url="images/image1.gif"/>                    
+                            <h:outputText value=" Tab is using label facet "/>
+                            <h:commandButton id="closeTab" value="close" actionListener="#{tabBean.closeTab}">
+		                       <f:ajax execute="closeTab" render="@all" />
+		                    </h:commandButton>                                       
+                    </h:panelGrid>                   
+                </f:facet>            
+                <h:outputText value="#{tabBean.tabContents}"/>            
+            </ice:tabPane>
+            <ice:tabPane label="Tab contents.." >
+                <h:outputText value="Test ...."/>            
+            </ice:tabPane>
+        </ice:tabSet> 
+    </h:form>          
+
+   <a href="index.html"> Goto Main page </a>    
+   <h:outputStylesheet library="org.icefaces.component.skins" name="sam.css" />
+</h:body>
+</html>
+
