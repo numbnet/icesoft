@@ -36,6 +36,7 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.render.MandatoryResourceComponent;
 
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -54,8 +55,9 @@ public class RowEditorRenderer extends CoreRenderer {
         //Decode row edit request triggered by this editor
         if(params.containsKey(clientId)) {
             DataTable table = findParentTable(context, editor);
+            String tableId = table.getClientId(context);
 
-            if (context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_rowEdit"))
+            if (context.getExternalContext().getRequestParameterMap().containsKey(tableId.substring(0, tableId.lastIndexOf(NamingContainer.SEPARATOR_CHAR)) + "_rowEdit"))
                 component.queueEvent(new RowEditEvent(component, table.getRowData()));
             else
                 component.queueEvent(new RowEditCancelEvent(component, table.getRowData()));
