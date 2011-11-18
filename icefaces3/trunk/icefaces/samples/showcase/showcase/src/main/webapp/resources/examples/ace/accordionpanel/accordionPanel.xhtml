@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[accordionPanelBean.title]}"/>
+    <ui:param name="description" value="#{msgs[accordionPanelBean.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[accordionPanelBean.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{accordionPanelBean.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{accordionPanelBean.exampleResource}"/>
+
+    <ui:define name="example">
+        <h:form>
+            
+            <ace:accordion collapsible="true" autoHeight="true">
+
+                <ace:accordionPane title="My To Do List">  
+                    
+                    <ol type="1" style="font-size: 12pt; font-style: italic; font-family: Gill, Helvetica, sans-serif; font-weight: bold;">
+                        <li>Buy groceries</li>
+                        <li>Review picture of the day</li>
+                        <li>Send invitations</li>
+                        <li>Call John</li>
+                        <li>Check calendar</li>
+                    </ol>
+
+                </ace:accordionPane>
+
+                <ace:accordionPane title="My Shopping List">
+                    
+                     <ace:dataTable   value="#{accordionPanelBean.items}"
+                                                var="item">
+                         
+                            <ace:column headerText="#">
+                                <h:outputText value="#{item.id}"/>
+                            </ace:column>
+
+                            <ace:column headerText="Picture">
+                                <h:graphicImage id="itemImg" value="#{item.image}"/>
+                            </ace:column>
+
+                           <ace:column headerText="Description">
+                               <h:outputText value="#{item.name}"/>
+                          </ace:column>
+                         
+                         <ace:column headerText="Department">
+                             <h:outputText value="#{item.type}"/>
+                         </ace:column>
+                         
+                         <ace:column headerText="Price check">
+                             <h:outputText value="#{item.price}"/>
+                         </ace:column>
+                         
+                         <ace:column headerText="Quantity">
+                             <h:outputText value="#{item.quantity}"/>
+                         </ace:column>
+                    </ace:dataTable>
+                    
+                </ace:accordionPane>  
+
+                <ace:accordionPane title="Picture of the day">  
+                    <h:panelGrid style="text-align: center; width: 100%">
+                        
+                        <h:graphicImage id="sampleImage" value="#{accordionPanelBean.imageLocation}"/>
+
+                    </h:panelGrid>
+                </ace:accordionPane>  
+            </ace:accordion>
+        </h:form>
+    </ui:define>
+</ui:composition>
