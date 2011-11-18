@@ -1,22 +1,18 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.generator.context;
@@ -30,7 +26,6 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 
-//import org.icefaces.ace.component.annotation.PropertyTemplate; /* ### removed */
 import org.icefaces.ace.generator.behavior.ActionSourceBehavior;
 import org.icefaces.ace.generator.behavior.Behavior;
 import org.icefaces.ace.generator.behavior.ClientBehaviorHolder;
@@ -38,6 +33,9 @@ import org.icefaces.ace.generator.utils.FileWriter;
 import org.icefaces.ace.generator.xmlbuilder.FaceletTagLibBuilder;
 import org.icefaces.ace.generator.xmlbuilder.FacesConfigBuilder;
 import org.icefaces.ace.generator.xmlbuilder.TLDBuilder;
+
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.TagHandler;
 
 public class GeneratorContext{
 	private static GeneratorContext generatorContext = null;
@@ -47,9 +45,9 @@ public class GeneratorContext{
     private FacesConfigBuilder facesConfigBuilder = new FacesConfigBuilder(); 
     private FaceletTagLibBuilder faceletTagLibBuilder = new FaceletTagLibBuilder();
 	private List<Class> components;
-    private ComponentContext activeComponentContext;
-    public final static String shortName = "ace";    
-    public final static String namespace = "http://www.icefaces.org/icefaces/components";
+    private MetaContext activeMetaContext;
+    public static String shortName = "";    
+    public static String namespace = "";
     private List<Behavior> behaviors = new ArrayList<Behavior>();
      public static final Map<String,String> SpecialReturnSignatures = new HashMap<String,String>();
      public static final Map<String,String> PrimitiveDefaults = new HashMap<String,String>();
@@ -148,16 +146,22 @@ public class GeneratorContext{
 		this.faceletTagLibBuilder = faceletTagLibBuilder;
 	}
     
-	public ComponentContext getActiveComponentContext() {
-		return activeComponentContext;
+	public MetaContext getActiveMetaContext() {
+		return activeMetaContext;
 	}
 
-	public ComponentContext createComponentContext(Class clazz) {
-		return new ComponentContext(clazz);
+	public MetaContext createMetaContext(Class clazz) {
+		if (clazz.isAnnotationPresent(Component.class)) {
+			return new ComponentContext(clazz);
+		} else if (clazz.isAnnotationPresent(TagHandler.class)) {
+			return new TagHandlerContext(clazz);
+		} else {
+			return null;
+		}
 	}
 	
-	public void setActiveComponentContext(ComponentContext activeComponentContext) {
-		this.activeComponentContext = activeComponentContext;
+	public void setActiveMetaContext(MetaContext activeMetaContext) {
+		this.activeMetaContext = activeMetaContext;
 	}
 	
 	public static GeneratorContext getInstance() {

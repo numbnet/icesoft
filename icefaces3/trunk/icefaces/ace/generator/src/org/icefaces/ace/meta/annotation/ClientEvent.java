@@ -23,31 +23,40 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Allows to add facet support to the component. The @Facets annotation must be defined in 
- * an inner class (e.g.)
- * <pre>
- * public class TabSetMeta {
- *	@Property
- *	private Integer currentIndex;
-
-	*@Facets
-	*class FacetsMeta{
-	*	@Facet		
-    *    UIComponent header;
-
-    *	@Facet		
-*       UIComponent body;
-
-*		@Facet (javadocGet="returns footer facet", javadocSet="Sets footer facet")
- *               UIComponent footer;           	
- *       }
- * }
- * 
- * </pre>
  *
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Facets {
+public @interface ClientEvent {
+	final String EMPTY = "";
+	
+	/**
+	* Name of the client event supported by this component.
+	* @return event names.
+	*/ 
+	String name();
+	
+	/**
+	* javadocs for the component class. Goes into the component class.
+	* @return javadocs for the component class.
+	*/
+	String javadoc() default EMPTY;
 
+	/**
+	* tld docs for the component class. Goes into the Tld documents.
+	* @return component doc for tld.
+	*/
+	String tlddoc() default EMPTY; 
+
+	/**
+	* Default render attribute value.
+	* @return javadocs for the component class.
+	*/
+	String defaultRender() default EMPTY;
+
+	/**
+	* Default execute attribute value.
+	* @return component doc for tld.
+	*/
+	String defaultExecute() default EMPTY; 
 }

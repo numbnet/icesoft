@@ -1,22 +1,18 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.generator.artifacts;
@@ -77,8 +73,9 @@ public class ComponentArtifact extends Artifact{
 		writer.append("import javax.faces.context.FacesContext;\n");
 		writer.append("import javax.el.MethodExpression;\n");
 		writer.append("import javax.el.ValueExpression;\n\n");
-		writer.append("import javax.faces.event.PhaseId;\n");
 		writer.append("import javax.faces.component.StateHelper;\n\n");
+		writer.append("import javax.faces.component.UIComponent;\n");
+		writer.append("import javax.faces.component.UIViewRoot;\n\n");
 //        writer.append("import org.icefaces.ace.util.PartialStateHolderImpl;\n\n");
 
 		writer.append("import javax.faces.application.ResourceDependencies;\n");
@@ -89,12 +86,12 @@ public class ComponentArtifact extends Artifact{
 			behavior.addImportsToComponent(writer);
 		}
 		writer.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
-		
+
 		// copy @ResourceDependency annotations
 		if (clazz.isAnnotationPresent(ResourceDependencies.class)) {
 			writer.append("\n");
 			writer.append("@ResourceDependencies({\n");
-			
+
 			ResourceDependencies rd = (ResourceDependencies) clazz.getAnnotation(ResourceDependencies.class);
 			ResourceDependency[] rds = rd.value();
 			int rdsLength = rds.length;
@@ -105,7 +102,7 @@ public class ComponentArtifact extends Artifact{
 				}
 				writer.append("\n");
 			}
-			
+
 			writer.append("})");
 			writer.append("\n\n");
 		} else if (clazz.isAnnotationPresent(ResourceDependency.class)) {
@@ -125,7 +122,7 @@ public class ComponentArtifact extends Artifact{
 			writer.append(" implements ");
 			writer.append(interfaceNames.subSequence(0, interfaceNames.length()-1));
 		}
-		
+
 		writer.append("{\n");
 
 		writer.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.componentType() + "\";");
@@ -139,13 +136,24 @@ public class ComponentArtifact extends Artifact{
 		writer.append("\n\tpublic String getFamily() {\n\t\treturn \"");
 		writer.append(Utility.getFamily(component));
 		writer.append("\";\n\t}\n\n");
+
+		writer.append("\n\tprivate static boolean isDisconnected(UIComponent component) {\n");
+		writer.append("\t\tUIComponent parent = component.getParent();\n");
+		writer.append("\t\tif (parent != null && parent instanceof UIViewRoot) {\n");
+		writer.append("\t\t\treturn false;\n");
+		writer.append("\t\t} else if (parent != null) {\n");
+		writer.append("\t\t\treturn isDisconnected(parent);\n");
+		writer.append("\t\t} else {\n");
+		writer.append("\t\t\treturn true;\n");
+		writer.append("\t\t}\n");
+		writer.append("\t}\n");
 	}
 
 
 	private void endComponentClass() {
 		for (Behavior behavior: getComponentContext().getBehaviors()) {
 			behavior.addCodeToComponent(writer);
-		}		
+		}
 		writer.append("\n}");
 		createJavaFile();
 
@@ -158,14 +166,14 @@ public class ComponentArtifact extends Artifact{
 		String fileName = componentClass.substring(componentClass.lastIndexOf('.')+1) + ".java";
 		System.out.println("____FileName "+ fileName);
 		String pack = componentClass.substring(0, componentClass.lastIndexOf('.'));
-		System.out.println("____package "+ pack);        
+		System.out.println("____package "+ pack);
 		String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
-		System.out.println("____path "+ path);         
+		System.out.println("____path "+ path);
 		FileWriter.write("base", path, fileName, writer);
 		System.out.println("____________________________Creating component class ends_________________________");
 	}
-    
-    
+
+
 	private void addProperties(List<Field> properties) {
         generatedComponentProperties.addAll(properties);
 		addPropertyEnum();
@@ -178,7 +186,7 @@ public class ComponentArtifact extends Artifact{
 		for (Behavior behavior: getComponentContext().getBehaviors()) {
 			behavior.addPropertiesEnumToComponent(writer);
 		}
-        String propertyName; 
+        String propertyName;
 		Map<Field, PropertyValues> propertyValuesMap = getComponentContext().getPropertyValuesMap();
 		for (int i = 0; i < generatedComponentProperties.size(); i++){
 			PropertyValues propertyValues = propertyValuesMap.get(generatedComponentProperties.get(i));
@@ -187,7 +195,7 @@ public class ComponentArtifact extends Artifact{
                 propertyName += "Val(\"" + propertyName + "\")";
             } else {
                 propertyName = generatedComponentProperties.get(i).getName();
-            } 
+            }
             System.out.println("Processing property " + propertyName );
 
 			if (!propertyValues.isDelegatingProperty) {
@@ -218,7 +226,7 @@ public class ComponentArtifact extends Artifact{
 		}
 		for (int i = 0; i < generatedComponentProperties.size(); i++) {
 			Field field = generatedComponentProperties.get(i);
-			addGetterSetter(field);			
+			addGetterSetter(field);
 		}
 		//since generatedComponentProperties doesn't include inherited properties,
 		//here FieldsForTagClass is used. This part may need re-factor-ed later.
@@ -233,7 +241,7 @@ public class ComponentArtifact extends Artifact{
     /**
      * Add a getter/setter for the property for a given field. This method writes the
      * getters to return a Wrapper class for most primitive types, the exceptions being
-     * if the method name has a signature from EditableValueHolder that can't be changed. 
+     * if the method name has a signature from EditableValueHolder that can't be changed.
      * @param field
      */
 	public void addGetterSetter(Field field) {
@@ -242,7 +250,7 @@ public class ComponentArtifact extends Artifact{
 		boolean isBoolean = field.getType().getName().endsWith("boolean")||
 		field.getType().getName().endsWith("Boolean");
 
-        
+
         // primitive properties are supported (ones with values
         // even if no default is specified in the Meta). Wrapper properties
         // (null default and settable values) are also supported
@@ -314,21 +322,24 @@ public class ComponentArtifact extends Artifact{
 //			writer.append(field.getName());
 //			writer.append(", clientValues ); ");
 //			writer.append("\n\t\t\t}");
-			writer.append("\n\t\t\tPhaseId pi = getFacesContext().getCurrentPhaseId();");
             writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
-            
-			writer.append("\n\t\t\tif (pi.equals(PhaseId.RENDER_RESPONSE) || pi.equals(PhaseId.RESTORE_VIEW))  {");
+
+			writer.append("\n\t\t\tif (isDisconnected(this))  {");
             // Here,
 
             writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append( pseudoFieldName ).
                                 append(".name() + \"_defaultValues\";" );
             writer.append("\n\t\t\t\tMap clientDefaults = (Map) sh.get(defaultKey);");
 
-            writer.append("\n\t\t\t\tif (clientDefaults == null) { ");
+            writer.append("\n\t\t\t\tif (clientDefaults == null");
+            if (!isPrimitive) {
+                writer.append(" && ").append(field.getName().toString()).append(" != null");
+            }
+            writer.append(") { ");
             writer.append("\n\t\t\t\t\tclientDefaults = new HashMap(); ");
             writer.append("\n\t\t\t\t\tclientDefaults.put(\"defValue\"," ).append( field.getName().toString() ).append(");");
-            writer.append("\n\t\t\t\t\tsh.put(defaultKey, clientDefaults); "); 
-            writer.append("\n\t\t\t\t} "); 
+            writer.append("\n\t\t\t\t\tsh.put(defaultKey, clientDefaults); ");
+            writer.append("\n\t\t\t\t} ");
 
 
 			writer.append("\n\t\t\t} else {");
@@ -339,8 +350,15 @@ public class ComponentArtifact extends Artifact{
             writer.append("\n\t\t\t\tif (clientValues == null) {");
             writer.append("\n\t\t\t\t\tclientValues = new HashMap(); ");
             writer.append("\n\t\t\t\t}");
-            writer.append("\n\t\t\t\tclientValues.put(clientId, " ).append( field.getName().toString()).
-                    append(");");
+            if (isPrimitive) {
+                writer.append("\n\t\t\t\tclientValues.put(clientId, " ).append( field.getName().toString()).append(");");
+            } else {
+                writer.append("\n\t\t\t\tif (").append(field.getName().toString()).append(" == null) {");
+                writer.append("\n\t\t\t\t\tclientValues.remove(clientId);");
+                writer.append("\n\t\t\t\t} else {");
+                writer.append("\n\t\t\t\t\tclientValues.put(clientId, " ).append( field.getName().toString()).append(");");
+                writer.append("\n\t\t\t\t}");
+            }
 
             writer.append("\n\t\t\t\t//Always re-add the delta values to the map. JSF merges the values into the main map" );
             writer.append("\n\t\t\t\t//and values are not state saved unless they're in the delta map. " );
@@ -382,7 +400,7 @@ public class ComponentArtifact extends Artifact{
         if (!prop.isDelegatingProperty) {
 			// start of the code
 			writer.append("\n\t\t").append(internalType).append(" retVal = ");
-																																  
+
 			// No defined default value is returned as the string "null". This has to
 			// be handled for various cases. primitives must have a default of some kind
 			// and Strings have to return null (not "null") to work.
@@ -418,7 +436,7 @@ public class ComponentArtifact extends Artifact{
 				writer.append("\n\t\t\tif (o != null) { " );
 				writer.append("\n\t\t\t\tretVal = (").append( internalType ).append
 										   (") o; ");
-				writer.append("\n\t\t\t}"); 
+				writer.append("\n\t\t\t}");
 			} else {
 				writer.append("\n\t\t\t\tretVal = (").append( internalType ).append
 										   (") ve.getValue( getFacesContext().getELContext() ); ");
@@ -485,9 +503,9 @@ public class ComponentArtifact extends Artifact{
 				writer.append(lines[j]);
 				if (j == (lines.length-1)) {
 					writer.append("</p>");
-				}                        
+				}
 			}
-		} 
+		}
 		writer.append("\n\t*/\n");
 	}
 
@@ -540,7 +558,7 @@ public class ComponentArtifact extends Artifact{
 		boolean isBoolean = field.getType().getName().endsWith("boolean")||
 		field.getType().getName().endsWith("Boolean");
 
-        
+
         // primitive properties are supported (ones with values
         // even if no default is specified in the Meta). Wrapper properties
         // (null default and settable values) are also supported
@@ -628,7 +646,7 @@ public class ComponentArtifact extends Artifact{
 
 		// start of the code
 		writer.append("\n\t\t").append(internalType).append(" retVal = ");
-					
+
 		// No defined default value is returned as the string "null". This has to
 		// be handled for various cases. primitives must have a default of some kind
 		// and Strings have to return null (not "null") to work.
@@ -666,7 +684,7 @@ public class ComponentArtifact extends Artifact{
         writer.append("\n\t}\n");
 	}
 
-	
+
 	private void addInternalFields() {
 		Iterator<Field> fields = getComponentContext().getInternalFieldsForComponentClass().values().iterator();
 		while (fields.hasNext()) {
@@ -687,7 +705,7 @@ public class ComponentArtifact extends Artifact{
 			writer.append(" ");
 			writer.append(field.getName());
 			String defaultValue = fieldAnnotation.defaultValue();
-			boolean defaultValueIsStringLiteral = fieldAnnotation.defaultValueIsStringLiteral();            
+			boolean defaultValueIsStringLiteral = fieldAnnotation.defaultValueIsStringLiteral();
 			if (!fieldAnnotation.isTransient()) {
 				nonTransientProperties.put(field.getName(), field);
 			}
@@ -762,22 +780,22 @@ public class ComponentArtifact extends Artifact{
 	}
 
 	private void handleAttribute() {
-		writer.append("\t\tprivate void handleAttribute(String name, Object value) {\n");
-		writer.append("\t\t\tList<String> setAttributes = (List<String>) this.getAttributes().get(\"javax.faces.component.UIComponentBase.attributesThatAreSet\");\n");
-		writer.append("\t\t\tif (setAttributes == null) {\n");
-		writer.append("\t\t\t\tString cname = this.getClass().getName();\n");
-		writer.append("\t\t\t\tif (cname != null) {\n");
-		writer.append("\t\t\t\t\tsetAttributes = new ArrayList<String>(6);\n");
-		writer.append("\t\t\t\t\tthis.getAttributes().put(\"javax.faces.component.UIComponentBase.attributesThatAreSet\", setAttributes);\n");
+		writer.append("\tprivate void handleAttribute(String name, Object value) {\n");
+		writer.append("\t\tList<String> setAttributes = (List<String>) this.getAttributes().get(\"javax.faces.component.UIComponentBase.attributesThatAreSet\");\n");
+		writer.append("\t\tif (setAttributes == null) {\n");
+		writer.append("\t\t\tString cname = this.getClass().getName();\n");
+		writer.append("\t\t\tif (cname != null) {\n");
+		writer.append("\t\t\t\tsetAttributes = new ArrayList<String>(6);\n");
+		writer.append("\t\t\t\tthis.getAttributes().put(\"javax.faces.component.UIComponentBase.attributesThatAreSet\", setAttributes);\n");
 		writer.append("\t\t\t}\n\t\t}\n");
 		writer.append("\t\tif (setAttributes != null) {\n");
 		writer.append("\t\t\tif (value == null) {\n");
 		writer.append("\t\t\t\tValueExpression ve = getValueExpression(name);\n");
 		writer.append("\t\t\t\tif (ve == null) {\n");
 		writer.append("\t\t\t\t\tsetAttributes.remove(name);\n");
-		writer.append("\t\t\t}\n");
-		writer.append("\t\t\t\t\t} else if (!setAttributes.contains(name)) {\n");
-		writer.append("\t\t\t\t\t\tsetAttributes.add(name);\n");
+		writer.append("\t\t\t\t}\n");
+		writer.append("\t\t\t} else if (!setAttributes.contains(name)) {\n");
+		writer.append("\t\t\t\tsetAttributes.add(name);\n");
 		writer.append("\t\t\t}\n");
 		writer.append("\t\t}\n");
 		writer.append("\t}\n");
@@ -789,7 +807,7 @@ public class ComponentArtifact extends Artifact{
 		addProperties(getComponentContext().getPropertyFieldsForComponentClassAsList());
 		addFacet(getComponentContext().getActiveClass(), component);
 		addInternalFields();
-		handleAttribute();        
+		handleAttribute();
 		endComponentClass();
 	}
 
