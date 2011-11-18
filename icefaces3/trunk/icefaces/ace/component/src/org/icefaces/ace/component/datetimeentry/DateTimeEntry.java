@@ -1,128 +1,137 @@
 /*
- * Version: MPL 1.1
+ * Original Code developed and contributed by Prime Technology.
+ * Subsequent Code Modifications Copyright 2011 ICEsoft Technologies Canada Corp. (c)
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
- * Contributor(s): _____________________.
+ * NOTE THIS CODE HAS BEEN MODIFIED FROM ORIGINAL FORM
+ *
+ * Subsequent Code Modifications have been made and contributed by ICEsoft Technologies Canada Corp. (c).
+ *
+ * Code Modification 1: Integrated with ICEfaces Advanced Component Environment.
+ * Contributors: ICEsoft Technologies Canada Corp. (c)
+ *
+ * Code Modification 2: [ADD BRIEF DESCRIPTION HERE]
+ * Contributors: ______________________
+ * Contributors: ______________________
+ */
+
+/*
+ * Generated, Do Not Modify
  */
 
 package org.icefaces.ace.component.datetimeentry;
 
-import org.icefaces.ace.util.Utils;
-import org.icefaces.impl.util.Util;
-import javax.faces.convert.DateTimeConverter;
-import javax.faces.convert.Converter;
+import org.icefaces.ace.event.DateSelectEvent;
+import org.icefaces.ace.util.Constants;
+
 import javax.faces.context.FacesContext;
-import java.util.TimeZone;
-import java.util.Locale;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+import java.util.*;
 
 public class DateTimeEntry extends DateTimeEntryBase {
-    
-    // Copied from 1.8.2
-    /**
-     * To properly function, dateTimeEntry needs to use the same timezone
-     * in the inputText field as well as the calendar, which is accomplished
-     * by using a javax.faces.convert.DateTimeConverter, which provides
-     * the required Converter behaviours, as we as gives access to its
-     * TimeZone object. If developers require a custom Converter, then they
-     * must subclass javax.faces.convert.DateTimeConverter.
-     *
-     * @return DateTimeConverter
-     */
-    public DateTimeConverter resolveDateTimeConverter(FacesContext context) {
-        DateTimeConverter converter = null;
-        Converter compConverter = getConverter();
-        if (compConverter instanceof DateTimeConverter) {
-            converter = (DateTimeConverter) compConverter;
-        } else {
-            Converter appConverter = context.getApplication().createConverter(
-                    java.util.Date.class);
-            if (appConverter instanceof DateTimeConverter) {
-                converter = (DateTimeConverter) appConverter;
+    public final static String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
+
+    public static String POPUP_ICON = "datetimeentry/calendar_icon.png";
+
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<String, AjaxBehaviorEvent>();
+
+    private java.util.Locale appropriateLocale;
+    private java.util.TimeZone appropriateTimeZone;
+
+    public java.util.Locale calculateLocale(FacesContext facesContext) {
+        if (appropriateLocale == null) {
+            Object userLocale = getLocale();
+            if (userLocale != null) {
+                if (userLocale instanceof String) {
+                    String[] tokens = ((String) userLocale).split("_");
+                    if (tokens.length == 1)
+                        appropriateLocale = new java.util.Locale(tokens[0], "");
+                    else
+                        appropriateLocale = new java.util.Locale(tokens[0], tokens[1]);
+                } else if (userLocale instanceof java.util.Locale)
+                    appropriateLocale = (java.util.Locale) userLocale;
+                else
+                    throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for calendar:" + this.getClientId(facesContext));
             } else {
-                converter = new DateTimeConverter();
+                appropriateLocale = facesContext.getViewRoot().getLocale();
             }
         }
-        return converter;
+
+        return appropriateLocale;
     }
-    
-    // Copied from 1.8.2
-    public TimeZone resolveTimeZone(FacesContext context) {
-        DateTimeConverter converter = resolveDateTimeConverter(context);
-        TimeZone tz = converter.getTimeZone();
-        if (tz == null) { // DateTimeConverter should already do this
-            tz = TimeZone.getTimeZone("GMT");
+
+    public java.util.TimeZone calculateTimeZone() {
+        if (appropriateTimeZone == null) {
+            Object usertimeZone = getTimeZone();
+            if (usertimeZone != null) {
+                if (usertimeZone instanceof String)
+                    appropriateTimeZone = java.util.TimeZone.getTimeZone((String) usertimeZone);
+                else if (usertimeZone instanceof java.util.TimeZone)
+                    appropriateTimeZone = (java.util.TimeZone) usertimeZone;
+                else
+                    throw new IllegalArgumentException("TimeZone could be either String or java.util.TimeZone");
+            } else {
+                appropriateTimeZone = java.util.TimeZone.getDefault();
+            }
         }
-        return tz;
+
+        return appropriateTimeZone;
     }
 
-    // Copied from 1.8.2
-    public Locale resolveLocale(FacesContext context) {
-        return context.getViewRoot().getLocale();
+    public boolean isPopup() {
+        return isRenderAsPopup();
     }
 
-    // Copied from 1.8.2
-    /**
-     * This method is necesary since DateTimeConverter.getDateFormat(Locale) is private  
-     */
-    public static String getDateTimeConverterPattern(DateTimeConverter converter) {
-        Locale locale = converter.getLocale();
-        String pattern = converter.getPattern();
-        String type = converter.getType();
-        String dateStyle = converter.getDateStyle();
-        String timeStyle = converter.getTimeStyle();
-        
-        DateFormat df;
-        if (pattern != null) {
-            df = new SimpleDateFormat(pattern, locale);
-        } else if (type.equals("both")) {
-            df = DateFormat.getDateTimeInstance
-                 (getDateTimeConverterStyle(dateStyle), getDateTimeConverterStyle(timeStyle), locale);
-        } else if (type.equals("date")) {
-            df = DateFormat.getDateInstance(getDateTimeConverterStyle(dateStyle), locale);
-        } else if (type.equals("time")) {
-            df = DateFormat.getTimeInstance(getDateTimeConverterStyle(timeStyle), locale);
+    public boolean hasTime() {
+        String pattern = getPattern();
+
+        return (pattern != null && pattern.indexOf(":") != -1);
+    }
+
+    @Override
+    public void queueEvent(FacesEvent event) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
+
+        if (eventName != null && eventName.equals("dateSelect") && event instanceof AjaxBehaviorEvent) {
+            customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
         } else {
-            // PENDING(craigmcc) - i18n
-            throw new IllegalArgumentException("Invalid type: " + type);
+            super.queueEvent(event);
         }
-        df.setLenient(false);
-        
-        // In the underlying code, it is always a SimpleDateFormat
-        if (df instanceof SimpleDateFormat) {
-            return ((SimpleDateFormat)df).toPattern();
-        }
-        return "";
-    }
-    
-    // Copied from 1.8.2
-    /**
-     * This method is necesary since DateTimeConverter.getStylet(String) is private  
-     */
-    private static int getDateTimeConverterStyle(String name) {
-        if      ("short".equals(name))  return DateFormat.SHORT;
-        else if ("medium".equals(name)) return DateFormat.MEDIUM;
-        else if ("long".equals(name))   return DateFormat.LONG;
-        else if ("full".equals(name))   return DateFormat.FULL;
-        else                            return DateFormat.DEFAULT;
     }
 
-    public boolean isSingleSubmit() {
-        return Utils.superValueIfSet(this, getStateHelper(), PropertyKeys.singleSubmit.name(), super.isSingleSubmit(), Util.withinSingleSubmit(this));
+    @Override
+    public void validate(FacesContext context) {
+        super.validate(context);
+
+        if (isValid()) {
+            for (Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext(); ) {
+                AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
+                DateSelectEvent dateSelectEvent = new DateSelectEvent(this, behaviorEvent.getBehavior(), (Date) getValue());
+
+                if (behaviorEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
+                    dateSelectEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
+                }
+
+                super.queueEvent(dateSelectEvent);
+            }
+        }
+    }
+
+    protected FacesContext getFacesContext() {
+        return FacesContext.getCurrentInstance();
     }
 }
