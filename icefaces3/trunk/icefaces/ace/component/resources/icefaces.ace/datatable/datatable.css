@@ -1,0 +1,225 @@
+/*
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+.ui-datatable { line-height: 1; }
+.ui-datatable table {
+    border-collapse:collapse;
+    width:100%;
+}
+
+.ui-datatable .ui-datatable-header,.ui-datatable .ui-datatable-footer {
+    text-align:center;
+    padding:4px 10px;
+}
+
+.ui-datatable th,.ui-datatable tfoot td {
+    position:relative;
+    text-align:center;
+    white-space:nowrap;
+    margin:0;
+    padding:0;
+}
+
+.ui-datatable th .ui-header-column {
+    position:relative;
+}
+
+.ui-datatable .ui-header-column, .ui-datatable .ui-footer-column {
+    overflow: hidden; /* Stop sort control positioned elements from overflowing bounds */
+    padding:4px 10px;
+}
+
+.ui-datatable .ui-datatable-data td,.ui-datatable .ui-datatable-data-empty td {
+    border-color:inherit;
+    border-style:solid;
+    border-width:1px;
+    padding:4px 10px;
+    text-align: center;
+}
+
+.ui-datatable .ui-paginator {
+    text-align:center;
+    margin:0;
+    padding:2px;
+}
+
+.ui-datatable .ui-header-right {
+    position:absolute;
+    right:0;
+    padding-right: 6px;
+    top:-3px;
+}
+
+.ui-tableconf-sort-cont {
+    position: absolute;
+    top:0;
+}
+
+.ui-sortable-control {
+    cursor:pointer;
+}
+
+.ui-sortable-column-order {
+    font-family: Verdana, Arial, sans-serif;
+    display: inline-block;
+    width:14px;
+    line-height: 22px;
+    font-size: 8pt;
+    font-weight: normal;
+    margin-top: 1px;
+    position:relative;
+    top:3px;
+    text-align: left;
+}
+.ui-tableconf-sort-cont {
+    position: relative;
+}
+.ui-tableconf-body * .ui-sortable-column-order {
+    top:-1px;
+    text-align: left;
+}
+
+.ui-datatable .ui-sortable-column * .ui-sortable-column-icon {
+    position:absolute;
+    margin-left:-15px;
+}
+.ui-tableconf-body * .ui-sortable-column-icon {
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin-left:-21px;
+    margin-top:-14px;
+}
+.ui-sortable-column-icon .ui-icon-triangle-1-n {
+    position:relative;
+    top:3px;
+    /* IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+    /* IE 5-7 */
+    filter: alpha(opacity=20);
+    /* Netscape */
+    -moz-opacity: 0.2;
+    /* Safari 1.x */
+    -khtml-opacity: 0.2;
+    /* Good browsers */
+    opacity: 0.2;
+}
+.ui-sortable-column-icon .ui-icon-triangle-1-n.ui-toggled {
+    position:relative;
+    top:3px;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: alpha(opacity=100);
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    opacity: 1;
+}
+
+.ui-sortable-column-icon .ui-icon-triangle-1-s {
+    position:relative;
+    left:-1px;
+    bottom:5px;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+    filter: alpha(opacity=20);
+    -moz-opacity: 0.2;
+    -khtml-opacity: 0.2;
+    opacity: 0.2;
+}
+.ui-sortable-column-icon .ui-icon-triangle-1-s.ui-toggled {
+    position:relative;
+    left:-1px;
+    bottom:5px;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: alpha(opacity=100);
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    opacity: 1;
+}
+
+.ui-disabled {
+    cursor: default !important;
+}
+.ui-opacity-40 {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+    filter: alpha(opacity=40);
+    -moz-opacity: .4;
+    -khtml-opacity: .4;
+    opacity: .4;
+}
+
+.ui-datatable .ui-column-filter {
+    width:100%;
+    display:block;
+    margin:auto;
+    margin-top:.2em;
+}
+
+.ui-datatable .ui-cell-editor-input {
+    display:none;
+}
+
+.ui-datatable .ui-selection-column {
+    width:20px;
+}
+
+.ui-datatable-scrollable-body {
+    overflow:auto;
+}
+
+.ui-datatable-scrollable-footer {
+    margin-top:-1px; /* Easy fix for double border in scrollable mode */
+}
+
+.ui-datatable-scrollable .ui-datatable-scrollable-body table,.ui-datatable-scrollable .ui-datatable-scrollable-header table,.ui-datatable-scrollable .ui-datatable-scrollable-footer table {
+    width:auto;
+}
+
+.ui-datatable .ui-column-resizer {
+    width:2px;
+    height:20px;
+    cursor:col-resize;
+    position:absolute;
+    top:0;
+    right:0;
+    background:transparent;
+    margin:0;
+    padding:0;
+}
+
+.ui-datatable .ui-datatable-header,.ui-datatable .ui-paginator-top,.ui-datatable .ui-expanded-row {
+    border-bottom:0 none #AAA;
+}
+
+.ui-datatable .ui-datatable-footer,.ui-datatable .ui-paginator-bottom,.ui-datatable .ui-expanded-row-content {
+    border-top:0 none #AAA;
+}
+
+.ui-datatable .ui-reorderable-col {
+    cursor:move;
+}
+.ui-datatable .ui-reorderable-col span {
+    cursor:default;
+}
+.ui-datatable thead {
+    vertical-align: bottom;
+}
+
+.ui-datatable .ui-row-toggler,.ui-datatable .ui-row-panel-toggler,.ui-datatable tr.ui-state-highlight {
+    cursor:pointer;
+}
+.ui-datatable .ui-row-toggler, .ui-datatable .ui-row-panel-toggler, .ui-datatable .ui-icon-pencil, .ui-datatable .ui-icon-check, .ui-datatable .ui-icon-close {
+    margin-left:auto;
+    margin-right:auto;
+}
