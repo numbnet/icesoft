@@ -201,8 +201,8 @@
         <delete dir="${bundle.dir.bin}/samples/core/basic"/>
         <delete dir="${bundle.dir.bin}/samples/compat/compat-basic"/>
 
-<!--        <delete dir="${bundle.dir.bin}/samples/ace/comp-suite/build"/>
-        <delete dir="${bundle.dir.bin}/samples/ace/comp-suite-portlet/build"/> -->
+        <delete dir="${bundle.dir.bin}/samples/showcase/showcase/build"/>
+        <delete dir="${bundle.dir.bin}/samples/showcase/showcase-portlet/build"/> 
         <delete dir="${bundle.dir.bin}/samples/core/auction/build"/>
         <delete dir="${bundle.dir.bin}/samples/core/chat/build"/>
         <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/build"/>
@@ -213,7 +213,7 @@
         <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/src/main/webapp/WEB-INF/classes"/>
 
         <subant target="clean">
-<!--            <fileset dir="${bundle.dir.bin}/samples/ace/comp-suite-portlet" includes="build.xml"/>  -->
+            <fileset dir="${bundle.dir.bin}/samples/showcase/showcase-portlet" includes="build.xml"/>
             <fileset dir="${bundle.dir.bin}/samples/core/chat-portlet" includes="build.xml"/>
             <fileset dir="${bundle.dir.bin}/samples/compat/component-showcase-portlets" includes="build.xml"/>
         </subant>
