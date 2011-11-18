@@ -23,7 +23,7 @@
 
     <target name="all">
         <subant>
-            <fileset dir="." includes="**/build.xml" excludes="build.xml **/template/build.xml **/portlets/**/build.xml **/test/**/build.xml"/>
+            <fileset dir="." includes="**/build.xml" excludes="build.xml **/template/build.xml **/portlets/**/build.xml **/**-portlet/**/build.xml **/test/**/build.xml"/>
         </subant> 
     </target>
 
