@@ -119,3 +119,16 @@
         <default-value>true</default-value>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        Setting this property to true, blocks menuPopup on input elements 
+        and shows browser default instead. Default value is false.
+    </description>
+    <property-name>blockMenuOnInput</property-name>
+    <property-class>boolean</property-class>    
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <default-value>true</default-value>
+    </property-extension>
+</property>
