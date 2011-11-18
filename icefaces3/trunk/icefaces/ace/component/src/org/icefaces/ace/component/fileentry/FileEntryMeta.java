@@ -1,22 +1,18 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.component.fileentry;
@@ -24,6 +20,7 @@ package org.icefaces.ace.component.fileentry;
 import javax.el.MethodExpression;
 
 import javax.faces.application.ResourceDependency;
+import javax.faces.application.ResourceDependencies;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
@@ -49,7 +46,11 @@ import org.icefaces.ace.meta.annotation.Property;
         "validation, for model coherency. As well, server push is not " +
         "necessary for receiving the rendered view from the lifecycle " +
         "in which the files were uploaded.")
-@ResourceDependency(name="fileentry/fileEntry.js",library="icefaces.ace")
+@ResourceDependencies({
+@ResourceDependency(name="fileentry/fileEntry.js",library="icefaces.ace"),
+@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
+@ResourceDependency(name="fileentry/fileEntry.css",library="icefaces.ace")
+})
 public class FileEntryMeta extends UIComponentBaseMeta {
     /*
     @Property(defaultValue="false")
