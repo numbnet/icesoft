@@ -1,0 +1,14 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Columns Component Tutorial</title>
+        <link href="./override.css" rel="stylesheet" type="text/css" />
+        </h:head>    <h:body>        <ice:form id="frm">
+            <ice:dataTable id="dt" value="#{backing.rowModel}" var="row" style="border: medium solid #555555; width: 200px;">
+                <ice:column id="clmn1">
+                    <ice:outputText value="#{row}"></ice:outputText>
+                </ice:column>
+                <ice:columns id="clmns1" value="#{backing.columnsModel}" var="col">                                        
+                    <ice:outputText value="#{col}"></ice:outputText>
+                </ice:columns>
+            </ice:dataTable>
+        		</ice:form>	</h:body></f:view></html>
