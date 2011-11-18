@@ -1,25 +1,21 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-package org.icefaces.ace.component.tab;
+package org.icefaces.ace.component.tabset;
 
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
@@ -33,9 +29,9 @@ import java.util.List;
 
 @Component(
     tagName = "tabSet",
-    componentClass  = "org.icefaces.ace.component.tab.TabSet",
-    rendererClass   = "org.icefaces.ace.component.tab.TabSetRenderer",
-    generatedClass  = "org.icefaces.ace.component.tab.TabSetBase",
+    componentClass  = "org.icefaces.ace.component.tabset.TabSet",
+    rendererClass   = "org.icefaces.ace.component.tabset.TabSetRenderer",
+    generatedClass  = "org.icefaces.ace.component.tabset.TabSetBase",
     extendsClass    = "javax.faces.component.UIComponentBase",
     componentType   = "org.icefaces.ace.component.TabSet",
     rendererType    = "org.icefaces.ace.component.TabSetRenderer",
@@ -64,13 +60,18 @@ import java.util.List;
         "on the bottom, top, left, or right of the TabSet."
 )
 @ResourceDependencies({
-	@ResourceDependency(name="yui/yui-min.js",library="yui/3_3_0"),
-    @ResourceDependency(name="loader/loader-min.js",library="yui/3_3_0"),
+	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
+	@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
+	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
+	@ResourceDependency(name="yahoo-dom-event/yahoo-dom-event.js",library="yui/2_8_2"),
+	@ResourceDependency(name="element/element-min.js",library="yui/2_8_2"),
+	@ResourceDependency(name="tabview/tabview-min.js",library="yui/2_8_2"),
     @ResourceDependency(name="util/combined.js",library="icefaces.ace"),
-    @ResourceDependency(name="yui2-skin-sam-tabview/assets/tabview-core.css",library="yui/2in3"),
     @ResourceDependency(name="util/combined.css",library="icefaces.ace")
 })
-@ClientBehaviorHolder(events={"transition"}, defaultEvent="transition")
+@ClientBehaviorHolder(events={
+	@ClientEvent(name="transition", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+})
 public class TabSetMeta extends UIComponentBaseMeta {
     
     @Property(defaultValue="false", tlddoc="The default value of this attribute is fals. If true then tab change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")    
@@ -107,6 +108,12 @@ public class TabSetMeta extends UIComponentBaseMeta {
     @Field(javadoc="Maintains the record of which tabs have been visited")
     private List visitedTabClientIds;
 
+	@Property(tlddoc="The effect when showing the contents of a tab after selecting it.")
+	private String showEffect;
+
+	@Property(tlddoc="The duration of the show effect in milliseconds. The default value varies depending on the effect.")
+	private int showEffectLength;
+	
     @Facets
     class FacetsMeta{
         @Facet

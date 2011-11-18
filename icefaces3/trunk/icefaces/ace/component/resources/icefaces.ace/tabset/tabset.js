@@ -1,48 +1,41 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-ice.component.tabset = {
+ice.ace.tabset = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
        //logger.info('1. tabset initialize');
 	 
-	 ice.yui3.use(function(Y){ 
-     Y.use('yui2-tabview', function(Yui/*, result*/) {
          /*
          if (!result.success) {
              alert("Load failure: " + result.msg);
          }
          */
-	 Y.on('domready', function(){
-	     var YAHOO = Y.YUI2;//TODO Yui.YUI2 ?
+		 YAHOO.util.Event.onDOMReady(function () {
 		 var Dom = YAHOO.util.Dom;
-
+	
        var tabview = new YAHOO.widget.TabView(clientId);  
        tabview.set('orientation', jsProps.orientation);
 
        //if tabset is client side, lets find out if the state is already stored.
        var initElem = document.getElementById(clientId);
-       initElem.setAttribute('suppressTabChange', true);
+       initElem.suppressTabChange = true;
        if (jsfProps.isClientSide) {
-    	   if(ice.component.clientState.has(clientId)){
-    		   tabview.set('activeIndex', ice.component.clientState.get(clientId));      
+    	   if(ice.ace.clientState.has(clientId)){
+    		   tabview.set('activeIndex', ice.ace.clientState.get(clientId));
     	   }
     	   else {
     		   tabview.set('activeIndex', jsfProps.selectedIndex);      
@@ -50,7 +43,7 @@ ice.component.tabset = {
        }
        else {
            //alert("server side init");
-           if(!ice.component.clientState.has(clientId)) {
+           if(!ice.ace.clientState.has(clientId)) {
                //alert("server side init - no context");
                tabview.set('activeIndex', jsfProps.selectedIndex);
                /*
@@ -60,56 +53,27 @@ ice.component.tabset = {
                */
            }
        }
-       initElem.removeAttribute('suppressTabChange');
+       initElem.suppressTabChange = null;
        
        /*
-        if (!Ice.component.registeredComponents[clientId]) {
-            var onupdate = Ice.component.getProperty(clientId, 'onupdate');
+        if (!ice.ace.registeredComponents[clientId]) {
+            var onupdate = ice.ace.getProperty(clientId, 'onupdate');
             if (onupdate["new"] != null) {
                 ice.onAfterUpdate(function() {
-                    tabview = Ice.component.getInstance(clientId, Ice.component.tabset);
+                    tabview = ice.ace.getInstance(clientId, ice.ace.tabset);
                     onupdate["new"](clientId, tabview );
                 });
             }       
         }
         */
        
-       //add hover effect 
-       if (jsfProps.hover) {
-           hoverEffect = function(event, attributes) {  
-               target = ice.component_util.eventTarget(event);
-               target = target.parentNode;
-               if ("selected" == target.parentNode.className) return;         
-               anim = new YAHOO.util.ColorAnim(target, attributes); 
-               anim.animate(); 
-           };       
-           var tabs = tabview.get('tabs');
-           //logger.info('tabs.length  '+ tabs.length);       
-           for (i=0; i<tabs.length; i++) {
-              tab = tabs[i].get('labelEl');
-              tabs[i].get('labelEl').onmouseover = function(event) {
-                  var attributes = { 
-                       backgroundColor: { from: '#DEDBDE', to: '#9F9F9F' } 
-                  }; 
-                  hoverEffect(event, attributes);        
-              }
-              tabs[i].get('labelEl').onmouseout = function(event) {
-                  var attributes = { 
-                     backgroundColor: { from: '#9F9F9F', to: '#DEDBDE'  } 
-                  }; 
-                  hoverEffect(event, attributes);         
-              }          
-           }
-       }
-       //hover ends
-               
        //logger.info('3. tabset initialize');
        var tabChange=function(event) {
             var rootElem = document.getElementById(clientId);
-            if ('suppressTabChange' in rootElem) {
+            if (rootElem.suppressTabChange) {
                 return;
             }
-            var context = ice.component.getJSContext(clientId);
+            var context = ice.ace.getJSContext(clientId);
             var tabview = context.getComponent();
             var sJSFProps = context.getJSFProps();
             event.target = rootElem;
@@ -125,17 +89,17 @@ ice.component.tabset = {
                                 if (data.status == 'success') {
                                     //TODO
                                    try {
-									document.getElementById(event.newValue.get('element').firstChild.id).focus();		
+									document.getElementById(event.newValue.get('element').firstChild.id).focus();
                                    } catch(e) {}    
                                 }
                             });
                         };
             if (sJSFProps.isClientSide){
             	//YAHOO.log(" clientSide and currentIndex="+currentIndex);
-            	ice.component.clientState.set(clientId, currentIndex);
+            	ice.ace.clientState.set(clientId, currentIndex);
                 //console.info('Client side tab ');
             } else {
-                var targetElement = ice.component.tabset.getTabIndexField(rootElem);
+                var targetElement = ice.ace.tabset.getTabIndexField(rootElem);
                 if(targetElement) {
                 	targetElement.value = tabIndexInfo;
                 }            	
@@ -153,7 +117,7 @@ ice.component.tabset = {
                         ice.submit(event, targetElement, params);                    
                     }
                 } catch(e) {
-                    logger.info(e);
+                    //logger.info(e);
                 }                
             }//end if    
        };//tabchange;
@@ -217,10 +181,10 @@ ice.component.tabset = {
            };
        }
        var onKeyPress = function(event, index) {
-            var context = ice.component.getJSContext(clientId);
+            var context = ice.ace.getJSContext(clientId);
             var tabview = context.getComponent();
             var target = Event.getTarget(event).parentNode;
-			if(ice.component_util.isEventSourceInputElement(event)) {
+			if(ice.ace.util.isEventSourceInputElement(event)) {
 				return true ;
 			}
 			//check for enter or space key
@@ -241,139 +205,28 @@ ice.component.tabset = {
            tabs[i].on('keypress', onKeyPress, i); 
        }
 
+	tabview.contentTransition = function(newTab, oldTab) {
+		if (newTab) {
+			newTab.set('contentVisible', true);
+		}
+		if (oldTab) {
+			oldTab.set('contentVisible', false);
+		}
+		// effect
+		if (jsfProps.isClientSide && jsProps.showEffect) {
+			var content = newTab.get('contentEl').childNodes[0];
+			if (jsProps.showEffect == 'fade') jQuery(content).hide();
+			if (content) ice.ace.animation.run({node: content, name: jsProps.showEffect}, {mode: 'show'}, jsProps.showEffectLength);
+		}
+	}
+
     
 	   //console.info('effect >>> '+ jsfProps.effect );
  
-	   var animation = ice.animation.getAnimation(clientId, "transition");
-	   
-	   if (false && animation) {
-		   //console.info('effect found... length ='+ jsfProps.effect.length + 'value = '+ jsfProps.effect);
-		//   var effect = eval(jsfProps.effect);
-		   tabview.contentTransition = function(newTab, oldTab) {	//console.info('1. server side tab ');
-               var context = ice.component.getJSContext(clientId);
-               var tabview = context.getComponent();
-               var currentIndex = tabview.getTabIndex(newTab);
-
-					var callback = function(_effect) {
-					    //console.info('_EFFEFEFEF '+ _effect);
-
-                        var context = ice.component.getJSContext(clientId);
-                        var sJSFProps = context.getJSFProps();
-                        var tbset = document.getElementById(clientId);
-					    //console.info('3. onend server side tab ');
-						oldTab.set('contentVisible', false);
-						YAHOO.util.Dom.setStyle(newTab.get('contentEl').id, 'opacity', 0);
-						newTab.set('contentVisible', true);
-						//console.info('3.a onend server side tab ');
-						 
-						if (sJSFProps.isClientSide){
-							
-							ice.component.clientState.set(clientId, currentIndex);
-							var Effect = new ice.yui3.effects['Appear'](newTab.get('contentEl').id);
-							Effect.setContainerId(clientId);
-							Effect.run();	
-							//console.info('Client side tab ');
-							
-							
-						} else {
-
-						        var tabIndexInfo = clientId + '='+ currentIndex;
-//alert("animation  tabIndexInfo: " + tabIndexInfo);//TODO
-
-							    var targetElement = ice.component.tabset.getTabIndexField(tbset);
-
-								if(targetElement) {
-									targetElement.value = tabIndexInfo;
-								}            	
-							var event ={};
-							            var params = function(parameter) {
-
-										var ele = document.getElementById(newTab.get('element').id).firstChild;
-										parameter('ice.focus',  ele.id);
-										parameter('onevent', function(data) { 
-											if (data.status == 'success') {//console.info('Sucesssssss');
-								   // YAHOO.util.Dom.setStyle(newTab.get('contentEl').id, 'opacity', 0);
-									newTab.set('contentVisible', true);
-									animation.chain.set('node', '#'+  newTab.get('contentEl').id);
-                                        //set the focus back to the selected tab
-                                       // var selectedTab = tabview.getTab(currentIndex);
-                                                var ele = document.getElementById(newTab.get('element').id).firstChild;
-                                                ele.focus();
- 										//ele.parentNode.focus();
-                                                                  									
-											// _effect.set('node', '#'+ newTab.get('contentEl').id);
-										  //  	Appear = new ice.yui3.effects.Appear(newTab.get('contentEl').id);
-											//	Appear.setContainerId(clientId);
-											//	Appear.run();
-												/*
-													var lastKnownSelectedIndex = ice.component.getJSContext(clientId).getJSFProps().selectedIndex;   
-																						   if (lastKnownSelectedIndex != currentIndex) {
-															tabview.removeListener('activeTabChange'); 
-															tabview.set('activeIndex', lastKnownSelectedIndex);
-															tabview.addListener('activeTabChange', tabChange); 
-															currentIndex = lastKnownSelectedIndex; 
-													  }
-												*/
-											   /*
-												   var LIs = Dom.getFirstChild(document.getElementById(clientId)).children;
-
-													//set the focus back to the selected tab
-													if (LIs.length > currentIndex) {
-														Dom.getFirstChild(LIs[currentIndex]).focus();
-													}        
-												 */                                    
-											}
-                            });
-                        };
-								
-											try {
-												if (sJSFProps.isSingleSubmit) {
-													//backup id
-													var elementId = targetElement.id;
-													//replace id with the id of tabset component, so the "execute" property can be set to tabset id
-													targetElement.id = clientId;
-													ice.se(event, targetElement, params);
-													//restore id
-													targetElement.id = elementId;
-												} else {
-													ice.submit(event, targetElement, params);                    
-												}
-											} catch(e) {
-												logger.info(e);
-											} 
-					
-						}
-					};
-
-					//var Effect = new ice.yui3.effects[effect]({node: '#'+  oldTab.get('contentEl').id,  revert:true}, callback);
-					//Effect.setContainerId(clientId);
-					
-					//console.info('2. server side tab '+ oldTab.get('contentEl').id);
-					animation.setContainerId(clientId);
-					animation.chain.set('node', '#'+  oldTab.get('contentEl').id);
-					animation.chain.on('end', callback);
-					//effect.set('node', '#'+  oldTab.get('contentEl').id);
-					//effect.setContainerId(clientId);
-				   // effect.revert = true;
-					//effect.setPreRevert(callback);
-					try {//console.info('run executed. ');
-					//effect.run();
-					//alert(animation.next());
-					
-					animation.chain.run(true);
-		 
-					} catch(e) {					//console.info('run executed. server side tab '+ e);
-					}
-					console.info('run executed. server side tab ');
-		   }
-	   } else { 
-		   tabview.addListener('activeTabChange', tabChange);
-	   }
+	   tabview.addListener('activeTabChange', tabChange);
        bindYUI(tabview);
 
 	 }); // *** end of domready
-	 }); // *** end of Y.use
-	 }); // *** end of ice.yui3.use
    },
    
    //this function is responsible to provide an element that keeps tab index
@@ -392,10 +245,10 @@ ice.component.tabset = {
 				   try {
 					   _form = formOf(tsc);
 				   } catch(e) {
-					   logger.info('ERROR: The tabSetProxy must be enclosed inside a Form element');
+					   //logger.info('ERROR: The tabSetProxy must be enclosed inside a Form element');
 				   }
 			   } else {
-				   logger.info('ERROR: If tabset is not inside a form, then you must use tabSetProxy component');
+				   //logger.info('ERROR: If tabset is not inside a form, then you must use tabSetProxy component');
 			   }
 		   }
 	   }
@@ -404,7 +257,7 @@ ice.component.tabset = {
 		   var f = document.getElementById(_form.id + 'yti');
 		   //if tabindex holder is not exist already, then create it lazily.
 		   if (!f) {
-			   f = ice.component.tabset.createHiddenField(_form, _form.id + 'yti');
+			   f = ice.ace.tabset.createHiddenField(_form, _form.id + 'yti');
 		   }
 	       return f 
 	   } else {
@@ -424,18 +277,19 @@ ice.component.tabset = {
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
    updateProperties:function(clientId, jsProps, jsfProps, events) {
        var lib = this;
-       ice.yui3.use(function(Y){
-       Y.use('yui2-tabview', function(Yui) {
-       Y.on('domready', function(){
+	   YAHOO.util.Event.onDOMReady(function () {
+           YAHOO.widget.Tab.prototype.ACTIVE_CLASSNAME = 'ui-state-active';
+           YAHOO.widget.Tab.prototype.HIDDEN_CLASSNAME = 'ui-tabs-hide';
+           YAHOO.widget.Tab.prototype.DISABLED_CLASSNAME = 'ui-state-disabled';
 
        // Call handlePotentialTabChanges if we're NOT going to initialise
        var oldJSFProps = null;
-       var context = ice.component.getJSContext(clientId);
+       var context = ice.ace.getJSContext(clientId);
        if (context) {
            oldJSFProps = context.getJSFProps();
        }
-       var requiresInitialise = ice.component.tabset.handlePotentialTabChanges(
-               Y, clientId, oldJSFProps, jsfProps);
+       var requiresInitialise = ice.ace.tabset.handlePotentialTabChanges(
+               clientId, oldJSFProps, jsfProps);
        // If the tab info changed sufficiently to require an initialise
        if (context) {
            if (requiresInitialise) {
@@ -460,32 +314,35 @@ ice.component.tabset = {
 
                if (index != objIndex) {
                    var rootElem = document.getElementById(clientId);
-                   rootElem.setAttribute('suppressTabChange', true);
+                   rootElem.suppressTabChange = true;
                    //tabviewObj.removeListener('activeTabChange');
                    if (!jsfProps.isClientSide){
                        tabviewObj.set('activeIndex', index);
                    } else {
                        tabviewObj.selectTab(index);
                    }
-                   rootElem.removeAttribute('suppressTabChange');
+                   rootElem.suppressTabChange = null;
                    //tabviewObj.addListener('activeTabChange', tabChange);
+               }
+               if (jsProps.showEffect) {
+                   var node = tabviewObj.getTab(index).get('contentEl').childNodes[0];
+                   if (jsProps.showEffect == 'fade') jQuery(node).hide();
+                   if (node) ice.ace.animation.run({node: node, name: jsProps.showEffect}, {mode: 'show'}, jsProps.showEffectLength);
                }
            }
        }
-       ice.yui3.updateProperties(clientId, jsProps, jsfProps, events, lib);
-       });
-       });
+       ice.ace.updateProperties(clientId, jsProps, jsfProps, events, lib);
        });
    },
  
    //delegate call to ice.yui.getInstance(..) with the reference of this lib 
    getInstance:function(clientId, callback) {
-       ice.component.getInstance(clientId, callback, this);
+       ice.ace.getInstance(clientId, callback, this);
    },
 
     // Used by updateProperties(-) when we're already initialised
     // Updates the dom, re-parents the content, and triggers a new initialise
-    handlePotentialTabChanges : function(Y, clientId, oldJSFProps, newJSFProps) {
+    handlePotentialTabChanges : function(clientId, oldJSFProps, newJSFProps) {
         var oldSafeIds = ( (!oldJSFProps) ? null : oldJSFProps.safeIds );
         var newSafeIds = ( (!newJSFProps) ? null : newJSFProps.safeIds );
         if (!oldSafeIds) {
@@ -497,7 +354,7 @@ ice.component.tabset = {
 
         var ret = false;
 
-        if (ice.component_util.arraysEqual(oldSafeIds, newSafeIds)) {
+        if (ice.ace.util.arraysEqual(oldSafeIds, newSafeIds)) {
             // We can have a scenario where the [client-side] tabSet is
             // completely updated by the dom-diff, and nothing has changed
             // with the tabs, but now the tab content is stored in the safe,
@@ -512,11 +369,11 @@ ice.component.tabset = {
                     var safeDiv = document.getElementById(newSafeIds[index]);
                     if (safeDiv && safeDiv.hasChildNodes()) {
                         var isSelectedTab = (newJSFProps.selectedIndex == index);
-                        var appendedDiv = ice.component.tabset.createDiv(Y, !isSelectedTab);
-                        contentDiv.appendChild(appendedDiv);
+                        var appendedDiv = ice.ace.tabset.createDiv(!isSelectedTab);
 
                         // Reparent new safe-house entry into content area
-                        ice.component.tabset.moveSafeToContent(safeDiv, appendedDiv);
+                        ice.ace.tabset.moveSafeToContent(safeDiv, appendedDiv);
+                        contentDiv.appendChild(appendedDiv);
 
                         ret = true;
                     }
@@ -527,7 +384,7 @@ ice.component.tabset = {
         }
 
         var appendNewContent = new Array();
-        // [ [oldContent, newIndex where it should go or -1 for delete], É ]
+        // [ [oldContent, newIndex where it should go or -1 for delete], ï¿½ ]
         var moveOldContent = new Array();
         var skipNewIndexes = new Array();
         var oldSafeIndex = 0;
@@ -543,7 +400,7 @@ ice.component.tabset = {
             }
 
             // (3.5 skip) Skip past newSafeIndex if in skip list
-            if (ice.component_util.arrayIndexOf(skipNewIndexes, newSafeIndex, 0) >= 0) {
+            if (ice.ace.util.arrayIndexOf(skipNewIndexes, newSafeIndex, 0) >= 0) {
                 newSafeIndex++;
                 continue;
             }
@@ -564,11 +421,11 @@ ice.component.tabset = {
                 // Current entry in new is appended
                 // Create new div and append it to content area.
                 var isSelectedTab = (newJSFProps.selectedIndex == newSafeIndex);
-                var appendedDiv = ice.component.tabset.createDiv(Y, !isSelectedTab);
-                contentDiv.appendChild(appendedDiv);
+                var appendedDiv = ice.ace.tabset.createDiv(!isSelectedTab);
 
                 // Reparent new safe-house entry into content area
-                ice.component.tabset.moveSafeIdToContent(newSafeIds[newSafeIndex], appendedDiv);
+                ice.ace.tabset.moveSafeIdToContent(newSafeIds[newSafeIndex], appendedDiv);
+                contentDiv.appendChild(appendedDiv);
 
                 // Increment newSafeIndex, but not oldSafeIndex, and continue looping
                 newSafeIndex++;
@@ -588,22 +445,22 @@ ice.component.tabset = {
                 // ?? Search from newSafeIndex onwards or beginning?? Just use beginning
                 var foundInNewIndex;
                 if (oldsid !== null &&
-                    (foundInNewIndex = ice.component_util.arrayIndexOf(newSafeIds, oldsid, 0)) >= 0)
+                    (foundInNewIndex = ice.ace.util.arrayIndexOf(newSafeIds, oldsid, 0)) >= 0)
                 {
                     // Detect if newsid is unvisited/visiting insert
                     var foundInOldIndex;
                     if (newsid === null ||
-                        ( ((foundInOldIndex = ice.component_util.arrayIndexOf(oldSafeIds, newsid, 0)) < 0) &&
+                        ( ((foundInOldIndex = ice.ace.util.arrayIndexOf(oldSafeIds, newsid, 0)) < 0) &&
                           document.getElementById(newsid).hasChildNodes()
                         )) {
                         var isSelectedTab = (newJSFProps.selectedIndex == newSafeIndex);
-                        var newDiv = ice.component.tabset.createDiv(Y, !isSelectedTab);
+                        var newDiv = ice.ace.tabset.createDiv(!isSelectedTab);
                         var newIndex = contentDiv.childNodes.length;
-                        contentDiv.appendChild(newDiv);
 
                         // Reparent new safe-house entry into content area
                         // if newsid is not null
-                        ice.component.tabset.moveSafeIdToContent(newsid, newDiv);
+                        ice.ace.tabset.moveSafeIdToContent(newsid, newDiv);
+                        contentDiv.appendChild(newDiv);
 
                         // Mark the new content div to be moved to it's proper insertion point
                         appendNewContent.push( [newIndex, newSafeIndex] );
@@ -629,7 +486,7 @@ ice.component.tabset = {
                 // Unvisited tab. old goes to null and isn't in new list anymore
                 if (oldsid !== null &&
                          newsid === null &&
-                         (foundInNewIndex = ice.component_util.arrayIndexOf(newSafeIds, oldsid, 0)) < 0) {
+                         (foundInNewIndex = ice.ace.util.arrayIndexOf(newSafeIds, oldsid, 0)) < 0) {
                     // Clear out / un-cache that tab's contents
                     var unvisitedDiv = contentDiv.childNodes[oldSafeIndex];
                     while (unvisitedDiv.hasChildNodes()) {
@@ -669,7 +526,7 @@ ice.component.tabset = {
                         var visitedDiv = contentDiv.childNodes[oldSafeIndex];
 
                         // Reparent new safe-house entry into content area
-                        ice.component.tabset.moveSafeToContent(safeDiv, visitedDiv);
+                        ice.ace.tabset.moveSafeToContent(safeDiv, visitedDiv);
 
                         oldSafeIndex++;
                         newSafeIndex++;
@@ -684,12 +541,12 @@ ice.component.tabset = {
                     // insertion point
                     // Create new div and append it to content area.
                     var isSelectedTab = (newJSFProps.selectedIndex == newSafeIndex);
-                    var newDiv = ice.component.tabset.createDiv(Y, !isSelectedTab);
+                    var newDiv = ice.ace.tabset.createDiv(!isSelectedTab);
                     var newIndex = contentDiv.childNodes.length;
-                    contentDiv.appendChild(newDiv);
 
                     // Reparent new safe-house entry into content area
-                    ice.component.tabset.moveSafeToContent(safeDiv, newDiv);
+                    ice.ace.tabset.moveSafeToContent(safeDiv, newDiv);
+                    contentDiv.appendChild(newDiv);
 
                     // Mark the new content div to be moved to it's proper insertion point
                     appendNewContent.push( [newIndex, newSafeIndex] );
@@ -736,17 +593,17 @@ ice.component.tabset = {
             var insertDiv = fromTo[0];
             var toIndex = fromTo[1];
             if (toIndex >= 0) {
-                ice.component_util.insertElementAtIndex(contentDiv, insertDiv, toIndex);
+                ice.ace.util.insertElementAtIndex(contentDiv, insertDiv, toIndex);
             }
         }
 
         return ret;
     },
 
-    createDiv : function(Y, preStyleHidden) {
+    createDiv : function(preStyleHidden) {
         var theDiv = document.createElement('div');
         if (preStyleHidden) {
-            Y.YUI2.util.Dom.addClass(theDiv, 'yui-hidden');
+            ////YAHOO.util.Dom.addClass(theDiv, YAHOO.widget.Tab.prototype.HIDDEN_CLASSNAME);
             // Y.YUI2.util.Dom.hasClass(theDiv, 'yui-hidden');
             // Y.YUI2.util.Dom.removeClass(theDiv, 'yui-hidden');
         }
@@ -756,7 +613,7 @@ ice.component.tabset = {
     moveSafeIdToContent : function(safeId, tabContentDiv) {
         if (safeId) {
             var safeDiv = document.getElementById(safeId);
-            ice.component.tabset.moveSafeToContent(safeDiv, tabContentDiv);
+            ice.ace.tabset.moveSafeToContent(safeDiv, tabContentDiv);
         }
     },
 
