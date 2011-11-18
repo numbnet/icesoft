@@ -1,0 +1,528 @@
+ <!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<project name="icefaces-ace" default="lib" basedir=".">
+    <description>
+        ICEfaces Advanced Components build file.
+    </description>
+
+    <!-- This property file is only used for EE builds and overrides various
+         property values if it is available. -->
+    <property file="../../../ee-bundle.properties"/>
+
+	<property file="./build.properties"/>
+	<property file="../build.properties"/>
+    <property file="../../build.properties"/>
+
+
+  <property name="lib.dir" location="../../lib"/>
+  <property name="mojarra.lib.dir" location="${lib.dir}/mojarra"/>
+  <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
+  <property name="src" location="src"/>
+  <property name="resources" location="resources"/>  
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+  <property name="conf"  location="conf"/>
+  <property name="bin"  location="bin/"/>
+  <property name="exploded"  location="${build}/exploded"/>
+  <property name="doc" location="${build}/doc"/>
+  <property name="tld.doc" location="${doc}/tld"/>
+  <property name="java.doc" location="${doc}/javadoc"/>
+  <property name="tld.file"   location="${build}/exploded/META-INF/components.tld"/>
+  <property name="tld.jar"  location="${lib.dir}"/>
+  <property name="smartsprites.basedir" location="../tools/smartsprites" />
+  <property name="combined.js" location="${resources}/icefaces.ace/util/combined.js"/>
+  <property name="combined.js.tmp" location="${combined.js}.tmp.js"/>
+
+  <property name="root.dir.path" location="${build}/skins/in" />
+  <property name="output.dir.path" location="${build}/skins/out" />
+
+    <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
+    <condition property="jsf.lib.dir" value="${myfaces.lib.dir}" else="${mojarra.lib.dir}">
+        <isset property="myfaces"/>
+    </condition>
+
+	<!-- Check if release.type is set, and if so append it after the tertiary value -->
+	<condition property="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}.${release.type}">
+    	<isset property="release.type"/>
+	</condition>
+    <property name="version.string" value="${version.primary}.${version.secondary}.${version.tertiary}"/>
+    	
+    <property name="javadoc.title" value="${product} ${product.lib} Java API Documentation" />
+    <property name="javadoc.header" value="${product} ${product.lib} ${version.string}&lt;br&gt;Java API Documentation" />
+    <property name="tld.title" value="${product} ${product.lib} ${version.string} Tag Library Reference" />
+
+
+
+  <tstamp>
+      <format property="build.time" pattern="yyyy-MM-dd hh:mm:ss"/>
+  </tstamp>
+
+  
+  <path id="compile.run.classpath">
+      <fileset dir="${jsf.lib.dir}" includes="*.jar"/>
+      <fileset dir="${lib.dir}" includes="*.jar"/>
+      <pathelement path="../component/src"/>
+      <pathelement path="../generator/build"/>
+      <pathelement path="../component/build/meta"/>
+  </path>
+
+  <path id="javadoc.classpath">
+    <fileset dir="${jsf.lib.dir}" includes="*.jar"/>
+  	<fileset dir="${lib.dir}" includes="*.jar"/>
+    <pathelement path="../component/src"/>
+    <pathelement path="../generator/build"/>
+    <pathelement path="../component/build/meta"/>
+    <pathelement path="./build/generated/base"/>
+	<pathelement path="./build/exploded" /> 
+  </path>
+  
+	<!-- include source images and css for sprite generation -->
+	<macrodef name="includeresources">
+		<attribute name="dir"/>
+		<attribute name="name"/>
+		<attribute name="skin"/>
+		<sequential>
+			<mkdir dir="${root.dir.path}/@{skin}" />
+			<!-- Copy all resources to the input directory for SmartSprites. -->
+			<mkdir dir="${root.dir.path}/@{skin}/@{name}" />
+			<copy todir="${root.dir.path}/@{skin}/@{name}">
+				<fileset dir="@{dir}" includes="**" />
+			</copy>
+			<!-- At the same time, copy all resources to the SmartSprites output directory.
+				If use.sprites is set, SmartSprites will overwrite the CSS files.
+			-->
+			<mkdir dir="${output.dir.path}/@{skin}/@{name}" />
+			<copy todir="${output.dir.path}/@{skin}/@{name}">
+				<fileset dir="@{dir}" includes="**" />
+			</copy>
+		</sequential>
+	</macrodef>
+	
+	<!-- check for any file modifications and call smartsprites -->
+	<macrodef name="generatesprites">
+		<attribute name="skin"/>
+		<sequential>
+			<mkdir dir="${root.dir.path}/@{skin}/base" />
+			<copy todir="${root.dir.path}/@{skin}/base" file="${smartsprites.basedir}/base.css" />
+			<fileset id="@{skin}.files" dir="${root.dir.path}/@{skin}">
+				<modified/>
+			</fileset>
+			<pathconvert property="@{skin}.modified" refid="@{skin}.files" setonempty="false" />
+			<antcall target="smartsprites">
+				<param name="skin" value="@{skin}"/>
+			</antcall>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="concatskin">
+		<attribute name="name"/>
+		<sequential>
+			<delete file="${resources}/${skins.lib}/@{name}.css" />
+			<concat destfile="${resources}/${skins.lib}/@{name}.css" append="true">
+				<fileset dir="${resources}/${skins.lib}/@{name}" includes="**/*.css"/>
+			</concat>
+		</sequential>
+	</macrodef>
+
+  <target name="compile" depends="prepare, generator-dist, compile-meta, generate, compile-base, compile-manual, compile-support, res-js-compress, res-js-no-compress, res-css-combine, res-copy"
+        description="compile the source " >
+  </target>
+
+  <target name="res-js-combine">
+      <delete file="${combined.js.tmp}" verbose="true"/>
+      <concat destfile="${combined.js.tmp}" force="true" fixlastline="true">
+          <filelist dir="${resources}/icefaces.ace/util">
+              <file name="util.js"/>
+              <file name="component.js"/>
+          </filelist>
+          <fileset dir="${resources}">
+               <include name="icefaces.ace/*/*.js"/>
+               <exclude name="icefaces.ace/util/*.js"/>
+               <!-- Nothing uses this -->
+               <exclude name="icefaces.ace/animation/animation-v2.js"/>
+               <!-- Special case, since want to work without YUI dependency -->
+               <exclude name="icefaces.ace/fileentry/fileEntry.js"/>
+          </fileset>
+      </concat>
+  </target>
+
+  <target name="res-js-compress" depends="res-js-combine" unless="no-compress">
+      <echo message="Compressing combined javascript code"/>
+      <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
+          <arg line="--preserve-semi"/>
+          <arg value="-o"/>
+          <arg value="${combined.js}"/>
+          <arg value="${combined.js.tmp}"/>
+      </java>
+  </target>
+
+  <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
+      <echo message="Not compressing combined javascript code"/>
+      <move file="${combined.js.tmp}" tofile="${combined.js}" overwrite="yes">
+          <filterchain>
+              <stripjavacomments/>
+              <ignoreblank/>
+          </filterchain>
+      </move>
+  </target>
+
+  <target name="res-css-combine">
+      <delete file="${resources}/icefaces.ace/util/combined.css" verbose="true"/>
+      <concat destfile="${resources}/icefaces.ace/util/combined.css" force="true" fixlastline="true">
+          <fileset dir="${resources}">
+              <include name="icefaces.ace/*/*.css"/>
+              <exclude name="icefaces.ace/util/*.css"/>
+              <exclude name="${skins.lib}/*.css"/>
+          </fileset>
+      </concat>
+  </target>
+
+  <target name="res-copy"
+          description="Copy the resources into the exploded dir " >
+    <copy todir="${exploded}/META-INF/resources">
+	    <fileset dir="${resources}"/>
+    </copy>
+  </target>
+
+  <target name="compile-base">
+    <javac srcdir="${build}/generated/base" destdir="${exploded}" debug="true" verbose="true" includeantruntime="false">
+        <classpath refid="compile.run.classpath"/>
+    </javac>
+  </target>
+  
+  <target name="compile-manual">
+    <javac srcdir="${src}" destdir="${build}/exploded" debug="true" excludes="**/*Meta.java" verbose="true" failonerror="true" includeantruntime="false">
+    	<classpath refid="compile.run.classpath"/>
+    </javac>  
+  </target>
+  
+  <target name="compile-support">
+    <javac srcdir="${build}/generated/support" destdir="${exploded}" debug="true" verbose="true" includeantruntime="false">
+        <classpath refid="compile.run.classpath"/>
+    </javac> 
+  </target>
+    
+  <target name="prepare">
+    <mkdir dir="${build}/meta"/>
+    <mkdir dir="${build}/resources/META-INF"/>
+    <mkdir dir="${exploded}"/>
+    <mkdir dir="${build}/generated"/>
+    <mkdir dir="${build}/generated/base"/>
+    <mkdir dir="${build}/generated/support"/>
+  </target>
+
+  <target name="generator-dist">
+    <ant inheritAll="false" antfile="../generator/build.xml" target="dist"/>
+  </target>
+    
+  <target  name="compile-meta">
+    <!-- Add these to javac if getting funky compilation errors: optimize="false" verbose="true" -->
+    <javac srcdir="${src}" destdir="${build}/meta" debug="true" includes="**/*Meta.java" includeantruntime="false">
+        <classpath refid="compile.run.classpath"/>
+    </javac>   
+  </target>
+    
+  <target name="generate" >
+    <ant inheritAll="false" antfile="../generator/build.xml" target="generate" >
+        <property name="generator.tld.doc.display.name"
+                  value="${product} ${product.lib}"/>
+        <property name="generator.tld.doc.version"
+                  value="${version.string}"/>
+    </ant>
+  </target>
+
+  <target name="lib" depends="skins,compile"
+
+        description="Generate the icefaces-ace.jar" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}"/>
+
+    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <jar destfile="${dist}/${icefaces-ace.lib.name}.jar" duplicate="fail">
+            <metainf dir="${build}/resources/META-INF"/>
+
+            <manifest>
+                <section name="org.icefaces">
+                    <attribute name="Implementation-Title"
+                               value="${product} ${product.lib}"/>
+                    <attribute name="Implementation-Version"
+                               value="${version.string}"/>
+                    <attribute name="Build-Number"
+                               value="${build.number}"/>
+                    <attribute name="Build-Time"
+                               value="${build.time}"/>
+                    <attribute name="Implementation-Vendor"
+                               value="${company}"/>
+                </section>
+            </manifest>
+
+        <fileset dir="${exploded}">
+            <include name="org/"/>
+            <include name="META-INF/*"/>
+            <include name="META-INF/resources/org*/**"/>
+            <include name="META-INF/resources/icefaces.ace/**"/>
+            <include unless="exclude.unused.yui" name="META-INF/resources/yui/**"/>
+			
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-yahoo/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-yahoo-dom-event/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-dom/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-event/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-element/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-json/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-container/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-selector/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-datasource/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-logger/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-button/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-calendar/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-tabview/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-skin-sam-button/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-skin-sam-calendar/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-skin-sam-container/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-skin-sam-logger/**"/>
+			<include if="exclude.unused.yui" name="META-INF/resources/yui/2in3/yui2-skin-sam-tabview/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/anim/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/assets/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/attribute/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/base/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/classnamemanager/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/dd/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/dom/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/dump/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/event/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/event-custom/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/intl/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/loader/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/node/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/oop/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/plugin/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/pluginhost/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/slider/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/substitute/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/widget/**"/>
+            <include if="exclude.unused.yui" name="META-INF/resources/yui/3_3_0/yui/**"/>
+            <!-- Instead of building the include list, we could build an exclude list, but that'd be even longer
+            <exclude if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/paginator/**"/>
+            <exclude if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/profiler/**"/>
+            <exclude if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/profilerviewer/**"/>
+            -->
+        </fileset>
+        <fileset dir="${src}" includes="org/icefaces/ace/resources/"/>
+    </jar>
+    <copy file="${dist}/${icefaces-ace.lib.name}.jar" todir="${lib.dir}" overwrite="true"/>
+  </target>
+
+  <target name="dist" depends="lib,tlddoc,javadoc"
+        description="Generate the complete ICEfaces Advanced Components distribution (lib + javadoc, tld doc)" >
+  </target>
+
+  <target name="javadoc" depends="compile">
+        <delete dir="${javadocs.dir}"/>
+        <javadoc sourcepath="${src}" 
+               destdir="${java.doc}" 
+	       classpathref="javadoc.classpath" 
+	       excludepackagenames="org.icefaces.apache.*" windowtitle="${javadoc.title}" failonerror="true"  
+        	bottom="Copyright ${year} ${copyright}">
+            <header><![CDATA[${javadoc.header}]]></header>
+            <footer><![CDATA[${javadoc.header}]]></footer>
+            <doctitle><![CDATA[<h2>${javadoc.title}</h2>]]></doctitle>
+        </javadoc>
+    </target>
+
+  <target name="clean"
+        description="clean up" >
+
+  	<!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+	
+	<antcall target="clean-skins" />
+
+	<subant buildpath="${cssurlmapper.rootdir}" target="clean" />
+  </target>
+  
+	<target name="skins" description="Generate skinning resources for deployment." depends="cssurlmapper">
+	
+		<taskdef name="cssurlmapper" classname="${cssurlmapper.class}" 
+			classpath="${cssurlmapper.rootdir}/dist/cssurlmapper.jar;${cssurlmapper.rootdir}/lib/commons-cli-1.2.jar"/>
+		
+		<!-- Declare all the resources to include -->
+		<!-- 'dir' is the actual directory that contains the resources -->
+		<!-- 'name' is just a working name for these resources; they will be placed under a directory with this name -->
+		<!-- 'skin' is the name of the skin these resources will be part of -->
+		<includeresources dir="src/org/icefaces/ace/component/pushbutton/skins/sam" name="button" skin="sam" />
+		<includeresources dir="src/org/icefaces/ace/component/checkboxbutton/skins/sam" name="checkboxbutton" skin="sam" />
+ 		<includeresources dir="src/org/icefaces/ace/component/linkbutton/skins/sam" name="linkbutton" skin="sam" />
+		<includeresources dir="src/org/icefaces/ace/component/datetimeentry/skins/sam" name="calendar" skin="sam" />
+		<includeresources dir="src/org/icefaces/ace/component/sliderentry/skins/sam" name="slider" skin="sam" />
+		<includeresources dir="src/org/icefaces/ace/component/tab/skins/sam" name="tabset" skin="sam" />
+		<includeresources dir="src/org/icefaces/ace/component/fileentry/skins/sam" name="fileEntry" skin="sam" />
+		
+		<includeresources dir="src/org/icefaces/ace/component/datetimeentry/skins/rime" name="calendar" skin="rime" />
+		<includeresources dir="src/org/icefaces/ace/component/tab/skins/rime" name="tabset" skin="rime" />
+		<includeresources dir="src/org/icefaces/ace/component/fileentry/skins/rime" name="fileEntry" skin="rime" />
+		<includeresources dir="src/org/icefaces/ace/component/checkboxbutton/skins/rime" name="checkboxbutton" skin="rime" />
+		<includeresources dir="src/org/icefaces/ace/component/sliderentry/skins/rime" name="slider" skin="rime" />
+		<includeresources dir="src/org/icefaces/ace/component/pushbutton/skins/rime" name="button" skin="rime" />
+ 		<includeresources dir="src/org/icefaces/ace/component/linkbutton/skins/rime" name="linkbutton" skin="rime" />
+		
+		<!-- Process sprites, if use.sprites is set -->
+		<antcall target="sprites" />
+
+		<!-- Copy all resources to the skins resource library -->
+		<copy todir="${resources}/${skins.lib}">
+			<fileset dir="${output.dir.path}" includes="**" />
+		</copy>
+
+		<!-- Map all URLs to the JSF format, CSS files already in the skins resource library will be overwritten -->
+		<cssurlmapper libraryname="${skins.lib}" inputdir="${output.dir.path}" outputdir="${resources}/${skins.lib}" />
+		
+		<!-- add files from the YUI library to the concatenated sam skin -->
+		<antcall target="concatyuisam" />
+		
+		<!-- Copy the original Sam CSS files with class names renamed to ice-skin-sam -->
+		<mkdir dir="${resources}/${skins.lib}/sam/sam_renamed" />
+		<copy todir="${resources}/${skins.lib}/sam/sam_renamed">
+			<fileset dir="src/org/icefaces/ace/skins/sam_renamed" includes="**" />
+		</copy>
+		
+		<!-- Generate a single CSS file per skin -->
+		<concatskin name="rime" />
+		<concatskin name="sam" />
+		
+	</target>
+	
+	<target name="clean-skins" description="Clean all generated skinning resources.">
+	
+		<!-- Delete temporary directories -->
+		<delete dir="${root.dir.path}" />
+		<delete dir="${output.dir.path}" />
+		
+		<!-- Delete the entire skins resource library -->
+		<delete dir="${resources}/${skins.lib}" />
+		
+		<delete file="cache.properties" />
+		
+	</target>
+	
+	<target name="sprites" description="Prepare files to generate sprites." if="use.sprites">
+
+		<available file="build.properties" property="smartsprites.properties.available" />
+		<fail unless="smartsprites.properties.available">
+
+	Please provide SmartSprite parameters in a 'build.properties' file.
+
+		</fail>
+		
+		<property file="build.properties" />
+		
+		<taskdef resource="smartsprites.xml">
+		  <classpath>
+			<fileset dir="${smartsprites.basedir}">
+			  <include name="*.jar" />
+			</fileset>
+		  </classpath>
+		</taskdef>
+
+		<!-- Specify the names of the skins to process, based on the resources included above. -->
+		<generatesprites skin="sam" />
+		<generatesprites skin="rime" />
+		
+	</target>
+  
+  <target name="smartsprites" description="Performs CSS sprite processing." if="${skin}.modified">
+
+    <smartsprites rootdir="${root.dir.path}/${skin}"
+                  documentrootdir="${document.root.dir.path}"
+                  outputdir="${output.dir.path}/${skin}"
+                  cssfileencoding="${css.file.encoding}"
+                  cssfilesuffix="${css.file.suffix}"
+                  loglevel="${log.level}"
+                  spritepngdepth="${sprite.png.depth}"
+                  spritepngie6="${sprite.png.ie6}" />
+  </target>
+  
+	<target name="concatyuisam">
+		<!-- concatenate yui files in a temporary file -->
+		<concat destfile="${resources}/${skins.lib}/temp.css" append="true">
+			<filelist>
+				<file name="${src}/org/icefaces/ace/skins/sam_renamed/calendar-skin.css" />
+				<file name="${src}/org/icefaces/ace/skins/sam_renamed/tabview-skin.css" />
+			</filelist>
+		</concat>
+		
+		<!-- join with previously concatenated file -->
+		<concat destfile="${resources}/${skins.lib}/temp.css" append="true">
+			<file file="${resources}/${skins.lib}/sam.css" />
+		</concat>
+
+		<!-- replace previous sam.css file -->
+		<copy file="${resources}/${skins.lib}/temp.css" tofile="${resources}/${skins.lib}/sam.css" overwrite="true" />
+		
+		<!-- remove temp file -->
+		<delete file="${resources}/${skins.lib}/temp.css" />
+	</target>
+	
+	<target name="cssurlmapper" description="Build the CSS URL mapping tool.">
+		<subant buildpath="${cssurlmapper.rootdir}" target="compile" />
+	</target>
+
+    <macrodef name="gen.tld.doc">
+        <attribute name="tld.file"/>
+        <sequential>
+            <delete dir="${tld.doc}"/>
+    		<mkdir dir="${tld.doc}"/>
+            <java jar="${tld.jar}/tlddoc.jar" fork="true" failonerror="true">
+                <arg value="-d"/>
+                <arg value="${tld.doc}"/>
+                <arg value="-doctitle"/>
+                <arg value="${tld.title}"/>
+                <arg value="-windowtitle"/>
+                <arg value="${tld.title}"/>
+                <arg value="@{tld.file}"/>
+            </java>
+        </sequential>
+    </macrodef>
+    
+<!--
+    <macrodef name="gen.tld.doc">
+        <attribute name="tld.file"/>
+        <sequential>
+            <delete dir="${tld.doc}"/>
+    		<mkdir dir="${tld.doc}"/>
+            <java jar="${tld.jar}/tlddoc.jar" fork="true" failonerror="true">
+                <arg value="-d"/>
+                <arg value="${tld.doc}"/>
+                <arg value="-doctitle"/>
+                <arg value="${generator.tld.doc.overall.name} ${generator.tld.doc.version}"/>
+                <arg value="-windowtitle"/>
+                <arg value="${generator.tld.doc.overall.name} ${generator.tld.doc.version}"/>
+                <arg value="@{tld.file}"/>
+            </java>
+        </sequential>
+    </macrodef>
+-->
+
+    <target name="tlddoc" description="Generate the component TLD Documentation in HTML format.">
+        <gen.tld.doc tld.file="${tld.file}"/>
+    </target>
+</project>
