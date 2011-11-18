@@ -1,22 +1,18 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 function formOf(element) {
@@ -32,12 +28,15 @@ function formOf(element) {
 if (!window['ice']) {
     window.ice = {};
 }
-if (!window['ice']['component_util']) {
-    window.ice.component_util = {};
+if (!window['ice']['ace']) {
+    window.ice.ace = {};
+}
+if (!window['ice']['ace']['util']) {
+    window.ice.ace.util = {};
 }
 
-ice.component_util.isEventSourceInputElement = function(event) {
-    var elem = ice.component_util.eventTarget(event);
+ice.ace.util.isEventSourceInputElement = function(event) {
+    var elem = ice.ace.util.eventTarget(event);
     var tag = elem.tagName.toLowerCase();
     if (tag == 'input' || tag == 'select' || tag == 'option' || tag == 'a' || tag == 'textarea') {
         return true;
@@ -46,28 +45,31 @@ ice.component_util.isEventSourceInputElement = function(event) {
     }
 };
 
-ice.component_util.eventTarget = function(event) {
+ice.ace.util.eventTarget = function(event) {
        event = event || window.event;           
        return(event.target || event.srcElement);
 };
 
-ice.component_util.printArguments = function() {
+ice.ace.util.printArguments = function() {
     logger.info('-= Printing arguments =-');
     for(var i=0; i<arguments.length; i++) 
        logger.info(arguments[i]);
 };
 
-ice.component_util.insertElementAtIndex = function(parentElem, insertElem, index) {
+ice.ace.util.insertElementAtIndex = function(parentElem, insertElem, index) {
 	if (!parentElem.hasChildNodes()) {
 		parentElem.appendChild(insertElem);
-	}
-	else {
+	} else {
 		var afterElem = parentElem.childNodes[index];
-		parentElem.insertBefore(insertElem, afterElem);
+        if (afterElem) {
+            parentElem.insertBefore(insertElem, afterElem);
+        } else {
+            parentElem.appendChild(insertElem);
+        }
 	}
 };
 
-ice.component_util.arrayIndexOf = function(arr, elem, fromIndex) {
+ice.ace.util.arrayIndexOf = function(arr, elem, fromIndex) {
 	if (arr.indexOf) {
 		return arr.indexOf(elem, fromIndex);
 	}
@@ -86,7 +88,7 @@ ice.component_util.arrayIndexOf = function(arr, elem, fromIndex) {
 };
 
 // One level deep comparison, not deep recursive
-ice.component_util.arraysEqual = function(arr1, arr2) {
+ice.ace.util.arraysEqual = function(arr1, arr2) {
     if (!arr1 && !arr2) {
         return true;
     }
@@ -104,4 +106,23 @@ ice.component_util.arraysEqual = function(arr1, arr2) {
         }
     }
     return true;
+};
+
+ice.ace.util.createHiddenField = function(parent, id) {
+    var inp = document.createElement("input");
+    inp.setAttribute('type', 'hidden');
+    inp.setAttribute('id', id);
+    inp.setAttribute('name', id);
+    parent.appendChild(inp);
+    return inp;
+};
+
+ice.ace.util.createElement = function(parent, name) {
+    var element = document.createElement(name);
+    parent.appendChild(element);
+    return element;
+};
+
+ice.ace.util.removeElement = function(element) {
+    element.parentNode.removeChild(element);
 };
