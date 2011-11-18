@@ -47,7 +47,7 @@ import org.icefaces.ace.meta.annotation.Property;
         @ResourceDependency(name="util/combined.js",library="icefaces.ace"),
 		@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
         @ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
-        @ResourceDependency(library="icefaces.ace", name="checkboxbutton/checkboxButton.css"),
+        @ResourceDependency(library="icefaces.ace", name="checkboxbutton/checkboxbutton.css"),
         @ResourceDependency(name="button/assets/button-core.css",library="yui/2_8_2")
 })
 
