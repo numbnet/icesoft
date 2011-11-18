@@ -67,7 +67,8 @@ import javax.faces.el.ValueBinding;;
  *
  */
 public class MenuPopup extends MenuBar {
-
+	private Boolean blockMenuOnInput;
+	
     private MethodBinding displayListener;
     final static String DISPLAY_LISTENER_ID = "_dynamic"; 
     /**
@@ -173,10 +174,11 @@ public class MenuPopup extends MenuBar {
     
     public Object saveState(FacesContext context) {
     
-        Object values[] = new Object[3];
+        Object values[] = new Object[4];
         values[0] = super.saveState(context);
         values[1] = hideOn;
-        values[2] = saveAttachedState(context, displayListener);        
+        values[2] = saveAttachedState(context, displayListener);    
+        values[3] = blockMenuOnInput;        
         return values;
     }
     
@@ -186,6 +188,7 @@ public class MenuPopup extends MenuBar {
         super.restoreState(context, values[0]);
         hideOn = (String) values[1];
         displayListener = (MethodBinding)restoreAttachedState(context, values[2]);
+        blockMenuOnInput = (Boolean) values[3];;
         
     }
     
@@ -203,7 +206,21 @@ public class MenuPopup extends MenuBar {
         this.displayListener = displayListener;
    }
     
-    public void broadcast(FacesEvent event)
+    public boolean isBlockMenuOnInput() {
+        if (blockMenuOnInput != null) {
+            return blockMenuOnInput.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("blockMenuOnInput");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : false;
+	}
+
+	public void setBlockMenuOnInput(boolean blockMenuOnInput) {
+		this.blockMenuOnInput = new Boolean(blockMenuOnInput);
+	}
+
+	public void broadcast(FacesEvent event)
     throws AbortProcessingException {
         super.broadcast(event);
         if (displayListener != null) {
