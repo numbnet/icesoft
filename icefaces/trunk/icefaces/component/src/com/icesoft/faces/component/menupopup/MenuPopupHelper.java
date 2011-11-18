@@ -56,6 +56,10 @@ public class MenuPopupHelper {
             String menuPopupClientId = menuPopup.getClientId(facesContext);
             String originatorClientId = comp.getClientId(facesContext);
 //System.out.println("MenuPopupHelper.renderMenuPopupHandler()  menuPopupClientId: " + menuPopupClientId);
+            if (menuPopup instanceof MenuPopup &&
+            		((MenuPopup)menuPopup).isBlockMenuOnInput()) {
+            	 handler.append("if (Ice.isEventSourceInputElement(event)) return true; ");
+            }
             handler.append("Ice.Menu.contextMenuPopup(event, '");
             handler.append(menuPopupClientId);
             handler.append("_sub', '");
