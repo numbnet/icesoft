@@ -1,22 +1,18 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.component.pushbutton;
@@ -38,10 +34,11 @@ import org.icefaces.ace.util.ScriptWriter;
 import org.icefaces.ace.util.Utils;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.ace.renderkit.CoreRenderer;
 
 
 @MandatoryResourceComponent("org.icefaces.ace.component.pushbutton.PushButton")
-public class PushButtonRenderer extends Renderer {
+public class PushButtonRenderer extends CoreRenderer {
 
     List <UIParameter> uiParamChildren;
 
@@ -77,16 +74,8 @@ public class PushButtonRenderer extends Renderer {
         
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);
-        String yuiBaseClass= "yui-button yui-min yui-push-button";
-        Object styleClass = pushButton.getStyleClass();
-        if (null!=styleClass){
-             yuiBaseClass +=  " " + String.valueOf(styleClass);
-        }
-		writer.writeAttribute(HTML.STYLE_CLASS_ATTR, yuiBaseClass, null);
-        String style = pushButton.getStyle();
-        if (style != null && style.trim().length() > 0) {
-            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
-        }
+        String yuiBaseClass= "yui-button yui-push-button ui-button ui-widget ui-state-default";
+		writer.writeAttribute(HTML.CLASS_ATTR, yuiBaseClass, null);
 		// first child
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
 		writer.writeAttribute(HTML.CLASS_ATTR, "first-child", null);
@@ -94,7 +83,14 @@ public class PushButtonRenderer extends Renderer {
 	 	
 		// button element
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
+        String styleClass = (String) pushButton.getStyleClass();
+        if (null != styleClass) {
+			writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+		}
 		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
+		
+		renderPassThruAttributes(facesContext, pushButton, HTML.BUTTON_ATTRS);
+
         // ICE-6418 Write the id out to be the same as the eventual munged YUI id.
 		writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
         // ICE-6418 Don't define id's where unnecessary
@@ -146,7 +142,7 @@ public class PushButtonRenderer extends Renderer {
         if (tabindex != null) {
             jBuild.entry("tabindex", tabindex);
         }
-        builder = jBuild.entry("label", yuiLabel).endMap().toString();
+        builder = jBuild.endMap().toString();
 
         StringBuilder sb = new StringBuilder();
         sb.append( pushButton.getValue() ).
@@ -169,7 +165,7 @@ public class PushButtonRenderer extends Renderer {
            + "," + jBuild.endMap().toString();
  //         System.out.println("params = " + params);	    
 
-        String finalScript = "ice.component.pushbutton.updateProperties(" + params + ");";
+        String finalScript = "ice.ace.pushbutton.updateProperties(" + params + ");";
         ScriptWriter.insertScript(facesContext, uiComponent,finalScript);
             
         writer.endElement(HTML.DIV_ELEM);
