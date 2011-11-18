@@ -1,25 +1,48 @@
 /*
- * Version: MPL 1.1
+ * Original Code developed and contributed by Prime Technology.
+ * Subsequent Code Modifications Copyright 2011 ICEsoft Technologies Canada Corp. (c)
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
- * Contributor(s): _____________________.
+ * NOTE THIS CODE HAS BEEN MODIFIED FROM ORIGINAL FORM
+ *
+ * Subsequent Code Modifications have been made and contributed by ICEsoft Technologies Canada Corp. (c).
+ *
+ * Code Modification 1: Integrated with ICEfaces Advanced Component Environment.
+ * Contributors: ICEsoft Technologies Canada Corp. (c)
+ *
+ * Code Modification 2: [ADD BRIEF DESCRIPTION HERE]
+ * Contributors: ______________________
+ * Contributors: ______________________
+ */
+
+/*
+ * Generated, Do Not Modify
  */
 
 package org.icefaces.ace.component.sliderentry;
+
+import javax.faces.component.UIComponentBase;
+import javax.faces.context.FacesContext;
+import javax.faces.component.UINamingContainer;
+import javax.el.ValueExpression;
+import javax.el.MethodExpression;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Arrays;
 
 import org.icefaces.ace.util.Utils;
 import org.icefaces.impl.util.Util;
@@ -27,32 +50,24 @@ import org.icefaces.impl.util.Util;
 import java.io.IOException;
 
 import javax.el.ELException;
-import javax.el.MethodExpression;
-import javax.el.ValueExpression;
-import javax.faces.application.Application;
-import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
-//Does JSF respect order?
-//TODO make it so resources can be coalesce and served as whole 
+public class SliderEntry extends SliderEntryBase {
 
-public class SliderEntry extends SliderEntryBase{
-    
+	private static final String OPTIMIZED_PACKAGE = "org.icefaces.ace.component.";
+
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
     }
-    
+	
     public void broadcast(FacesEvent event)
     throws AbortProcessingException {
         super.broadcast(event);
 
         //event was fired by me
-        if (event != null) {
+        if (event != null && event instanceof ValueChangeEvent) {
             
             //To keep it simple slider uses the broadcast to update value, so it doesn't
             //have to keep submitted value
@@ -75,7 +90,7 @@ public class SliderEntry extends SliderEntryBase{
             }
         }
     }
-    
+	
     public void queueEvent(FacesEvent event) {
         if (isImmediate()) {
             event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
@@ -84,29 +99,13 @@ public class SliderEntry extends SliderEntryBase{
             event.setPhaseId(PhaseId.INVOKE_APPLICATION);
         }
         super.queueEvent(event);
-    } 
-
-    
-    public String getThumbUrl() {
-    	String thumbUrl = super.getThumbUrl();
-    	if (null == thumbUrl) {
-
-            //ICE-6782: proper use of the ResourceHandler ensures resource URLs work in
-            //both servlet and portlet environments.  This may be a good candidate for
-            //a more generic utility method if we do this often in the ACE components.
-            FacesContext fc = FacesContext.getCurrentInstance();
-            Application app = fc.getApplication();
-            ResourceHandler resourceHandler = app.getResourceHandler();
-            Resource res = resourceHandler.createResource("assets/skins/sam/thumb-" + getAxis() + ".png","yui/3_3_0", "image/png");
-
-            //The requestPath of the resource should be properly encoded for the
-            //platform that it's running on.
-            thumbUrl = res.getRequestPath();
-    	}
-    	return thumbUrl;
     }
-    
+	
     public boolean isSingleSubmit() {
         return Utils.superValueIfSet(this, getStateHelper(), PropertyKeys.singleSubmit.name(), super.isSingleSubmit(), Util.withinSingleSubmit(this));
     }
+
+	protected FacesContext getFacesContext() {
+		return FacesContext.getCurrentInstance();
+	}
 }
