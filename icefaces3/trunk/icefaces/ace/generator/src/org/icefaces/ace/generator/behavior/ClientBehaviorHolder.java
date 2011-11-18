@@ -1,28 +1,24 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.generator.behavior;
 
 import org.icefaces.ace.generator.context.GeneratorContext;
-
+import org.icefaces.ace.meta.annotation.ClientEvent;
  
 public class ClientBehaviorHolder extends Behavior {
 
@@ -41,30 +37,55 @@ public class ClientBehaviorHolder extends Behavior {
 	}
 
 	public String getInterfaceName() {
-		return "ClientBehaviorHolder";
+		return "IceClientBehaviorHolder";
 	}
 	
 	public void addImportsToComponent(StringBuilder stringBuilder) {
-		stringBuilder.append("import javax.faces.component.behavior.ClientBehaviorHolder;\n");
+		stringBuilder.append("import org.icefaces.ace.api.IceClientBehaviorHolder;\n");
 		stringBuilder.append("import java.util.Collection;\n");
 	}	
 	
 	public void addCodeToComponent(StringBuilder output) {
 		org.icefaces.ace.meta.annotation.ClientBehaviorHolder anno = (org.icefaces.ace.meta.annotation.ClientBehaviorHolder)
-			GeneratorContext.getInstance().getActiveComponentContext().getActiveClass().getAnnotation(org.icefaces.ace.meta.annotation.ClientBehaviorHolder.class);
+			GeneratorContext.getInstance().getActiveMetaContext().getActiveClass().getAnnotation(org.icefaces.ace.meta.annotation.ClientBehaviorHolder.class);
+		ClientEvent[] events = anno.events();
 		output.append("\n\tCollection<String> eventNames = null;");
 		output.append("\n\tpublic Collection<String> getEventNames() {");
 		output.append("\n\tif (eventNames == null) {");
 		output.append("\n\t\teventNames = new ArrayList<String>();");
-		for (String event: anno.events()) {
-			output.append("\n\t\teventNames.add(\""+ event +"\");");
+		for (int i = 0; i < events.length; i++) {
+			output.append("\n\t\teventNames.add(\""+ events[i].name() +"\");");
 		}			
 		output.append("\n\t}");
 		output.append("\n\t\treturn eventNames;");
 		output.append("\n\t}\n");
-		
-		output.append("\n\tpublic String getDefaultEventName() {");
-		output.append("\n\t\treturn \""+ anno.defaultEvent() +"\";");		
+
+		output.append("\n\tMap<String, String> defaultRenderMap = null;");
+		output.append("\n\tpublic String getDefaultRender(String event) {");
+		output.append("\n\tif (defaultRenderMap == null) {");
+		output.append("\n\t\tdefaultRenderMap = new HashMap<String, String>();");
+		for (int i = 0; i < events.length; i++) {
+			output.append("\n\t\tdefaultRenderMap.put(\""+ events[i].name() +"\",\"" + events[i].defaultRender() + "\");");
+		}			
+		output.append("\n\t}");
+		output.append("\n\t\treturn defaultRenderMap.get(event);");
 		output.append("\n\t}\n");
+
+		output.append("\n\tMap<String, String> defaultExecuteMap = null;");
+		output.append("\n\tpublic String getDefaultExecute(String event) {");
+		output.append("\n\tif (defaultExecuteMap == null) {");
+		output.append("\n\t\tdefaultExecuteMap = new HashMap<String, String>();");
+		for (int i = 0; i < events.length; i++) {
+			output.append("\n\t\tdefaultExecuteMap.put(\""+ events[i].name() +"\",\"" + events[i].defaultExecute() + "\");");
+		}			
+		output.append("\n\t}");
+		output.append("\n\t\treturn defaultExecuteMap.get(event);");
+		output.append("\n\t}\n");
+		
+		/*
+		output.append("\n\tpublic String getDefaultEventName() {");
+		output.append("\n\t\treturn \"\";");		
+		output.append("\n\t}\n");
+		*/
 	}
 }

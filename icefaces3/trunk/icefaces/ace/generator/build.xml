@@ -1,22 +1,18 @@
 <!--
-  ~ Version: MPL 1.1
+  ~ Copyright 2010-2011 ICEsoft Technologies Canada Corp.
   ~
-  ~ The contents of this file are subject to the Mozilla Public License
-  ~ Version 1.1 (the "License"); you may not use this file except in
-  ~ compliance with the License. You may obtain a copy of the License at
-  ~ http://www.mozilla.org/MPL/
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
   ~
-  ~ Software distributed under the License is distributed on an "AS IS"
-  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-  ~ License for the specific language governing rights and limitations under
-  ~ the License.
+  ~ http://www.apache.org/licenses/LICENSE-2.0
   ~
-  ~ The Original Code is ICEfaces 1.5 open source software code, released
-  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
-  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
-  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~
-  ~ Contributor(s): _____________________.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
   -->
 
 <project name="ace-generator" default="dist" basedir=".">
@@ -32,8 +28,12 @@
   <property name="conf"  location="conf"/>
   <property name="bin"  location="bin/"/>
   <property name="lib.dir" location="../../lib"/>
+  <property name="compat.lib.dir" location="${lib.dir}/compat"/>
   <property name="mojarra.lib.dir" location="${lib.dir}/mojarra"/>
   <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
+  <property name="compile.source" value="1.5"/>
+  <property name="compile.target" value="1.5"/>
+  <property name="compile.debug" value="true"/>
 
     <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
     <condition property="jsf.lib.dir" value="${myfaces.lib.dir}" else="${mojarra.lib.dir}">
@@ -41,8 +41,10 @@
     </condition>
 
   <path id="compile.run.classpath">
-      <fileset dir="${jsf.lib.dir}" includes="*.jar"/>
+      <fileset dir="${jsf.lib.dir}" includes="*.jar" erroronmissingdir="false"/>
+      <fileset dir="../component/lib" includes="*.jar"/>
       <fileset dir="${lib.dir}" includes="*.jar"/>
+      <fileset dir="${compat.lib.dir}" includes="*.jar"/>
         <pathelement path="../generator/build"/>
       	<pathelement path="../component/build/meta"/>
   </path>
@@ -51,18 +53,33 @@
     <tstamp/>
     <java classname="org.icefaces.ace.generator.Generator"  classpathref="compile.run.classpath" fork="true"
     	classpath="${build}">
+		<!-- the short name of the library is specified as the first attribute, the namespace as the second -->
+		<arg line="ace http://www.icefaces.org/icefaces/components" />
         <sysproperty key="generator.tld.doc.display.name"
                      value="${generator.tld.doc.display.name}"/>
         <sysproperty key="generator.tld.doc.version"
                      value="${generator.tld.doc.version}"/>
     </java>
 
-    <java classname="org.icefaces.ace.generator.TaglibMerge" classpathref="compile.run.classpath" fork="true" classpath="${build}" >
-      <arg value="../component/build/exploded/META-INF/icefaces.taglib.xml" /> 
-      <arg value="../../icefaces/compat/core/build/resources/META-INF/icefaces.taglib.xml" />
-      <arg value="../component/build/exploded/META-INF/icefaces.taglib.xml" /> 
-    </java> 
+    <!--<java classname="org.icefaces.ace.generator.TaglibMerge" classpathref="compile.run.classpath" fork="true" classpath="${build}" >-->
+      <!--<arg value="../component/build/exploded/META-INF/icefaces.taglib.xml" /> -->
+      <!--<arg value="../../compat/core/build/resources/META-INF/icefaces.taglib.xml" />-->
+      <!--<arg value="../component/build/exploded/META-INF/icefaces.taglib.xml" /> -->
+    <!--</java> -->
 
+    <java classname="org.icefaces.ace.generator.TaglibMerge" classpathref="compile.run.classpath" fork="true" classpath="${build}" >
+      <arg value="../component/build/exploded/META-INF/icefaces.taglib.xml" />
+      <arg value="${generator.taglib.merge}" />
+      <arg value="../component/build/exploded/META-INF/icefaces.taglib.xml" />
+    </java>
+
+    <java classname="org.icefaces.ace.generator.xmlbuilder.FacesConfigMerge"
+          classpathref="compile.run.classpath" fork="true"
+          classpath="${build}">
+        <arg value="${generator.faces-config.host}"/>
+        <arg line="${generator.faces-config.merge}"/>
+        <arg value="${generator.faces-config.output}"/>
+    </java>
   </target>
 
   <target name="compile" description="compile the source " >
@@ -70,7 +87,10 @@
 
     <echo message="Compiling generator and code"/>
    <!-- compile generator code -->
-   <javac srcdir="${src}" destdir="${build}" debug="true" includeantruntime="false">
+   <javac srcdir="${src}" destdir="${build}"
+               source="${compile.source}" target="${compile.target}"
+               debug="${compile.debug}"
+               includeantruntime="false">
        <classpath refid="compile.run.classpath"/>
    </javac>    
   </target>

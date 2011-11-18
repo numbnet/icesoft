@@ -1,22 +1,18 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.generator.artifacts;
@@ -134,12 +130,16 @@ public class TagArtifact extends Artifact{
 
 			String type = (prop.expression == Expression.METHOD_EXPRESSION) ?"javax.el.MethodExpression " :"javax.el.ValueExpression ";
 
+            // propertyName can be a reserved Java keyword like "for", so use
+            // is to build the getter/setter method name, but not alone
+            String propertyName = Utility.resolvePropertyName(field, prop);
+
 			generatedTagClass.append("\tprivate ");
 			generatedTagClass.append(type);
 			generatedTagClass.append(field.getName());
 			generatedTagClass.append(";\n\tpublic void set");
-			generatedTagClass.append(field.getName().substring(0,1).toUpperCase());
-			generatedTagClass.append(field.getName().substring(1));  
+			generatedTagClass.append(propertyName.substring(0,1).toUpperCase());
+			generatedTagClass.append(propertyName.substring(1));
 			generatedTagClass.append("(");
 			generatedTagClass.append(type);
 			generatedTagClass.append(field.getName());
@@ -191,18 +191,19 @@ public class TagArtifact extends Artifact{
 		Iterator<String> iterator = getComponentContext().getFieldNamesForTagClass();
 		while (iterator.hasNext()){
 			Field field = getComponentContext().getFieldsForTagClass().get(iterator.next());
-			generatedTagClass.append("\t\tif ("); 
+            PropertyValues property = getComponentContext().getPropertyValuesMap().get(field);
+            String propertyName = Utility.resolvePropertyName(field, property);
+			generatedTagClass.append("\t\tif (");
 			generatedTagClass.append(field.getName()); 
 			generatedTagClass.append(" != null) {\n\t\t\t");
-			PropertyValues property = getComponentContext().getPropertyValuesMap().get(field);
 			if (property.expression == Expression.METHOD_EXPRESSION &&
-                "actionListener".equals(field.getName())) {
+                "actionListener".equals(propertyName)) {
 				generatedTagClass.append("_component.addActionListener(new MethodExpressionActionListener(actionListener)");
 			} else if (property.expression == Expression.METHOD_EXPRESSION &&
-                "action".equals(field.getName())) {
+                "action".equals(propertyName)) {
 				generatedTagClass.append("_component.setActionExpression(action");
             } else if (property.expression == Expression.METHOD_EXPRESSION &&
-                "valueChangeListener".equals(field.getName()) &&
+                "valueChangeListener".equals(propertyName) &&
                 // Any UIInput inherits valueChangeListener, so should use
                 // addValueChangeListener, but any component not inheriting it,
                 // and just implementing it's own MethodExpression property
@@ -210,21 +211,21 @@ public class TagArtifact extends Artifact{
                 !getComponentContext().getFieldsForComponentClass().containsKey("valueChangeListener")) {
 				generatedTagClass.append("_component.addValueChangeListener(new MethodExpressionValueChangeListener(valueChangeListener)");
             } else if (property.expression == Expression.METHOD_EXPRESSION &&
-                "validator".equals(field.getName())) {
+                "validator".equals(propertyName)) {
 				generatedTagClass.append("_component.addValidator(new MethodExpressionValidator(valueChangeListener)");
 			} else {
 				generatedTagClass.append("_component.set");
 
 				if (property.expression == Expression.METHOD_EXPRESSION) {
-					generatedTagClass.append(field.getName().substring(0,1).toUpperCase());
-					generatedTagClass.append(field.getName().substring(1));  
+					generatedTagClass.append(propertyName.substring(0,1).toUpperCase());
+					generatedTagClass.append(propertyName.substring(1));
 				} else {
 					generatedTagClass.append("ValueExpression");            
 				}
 				generatedTagClass.append("(");
 				if (property.expression == Expression.VALUE_EXPRESSION) {
 					generatedTagClass.append("\"");
-					generatedTagClass.append(field.getName());
+					generatedTagClass.append(propertyName);
 					generatedTagClass.append("\", ");
 				}
 				generatedTagClass.append(field.getName());  

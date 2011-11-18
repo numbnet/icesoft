@@ -1,22 +1,18 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.generator.xmlbuilder;
@@ -25,7 +21,8 @@ import org.icefaces.ace.generator.utils.Utility;
 import org.icefaces.ace.meta.annotation.Component;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
-
+import org.icefaces.ace.meta.annotation.TagHandler;
+import org.icefaces.ace.meta.annotation.TagHandlerType;
 
 public class FacesConfigBuilder extends XMLBuilder{
     public FacesConfigBuilder() {
@@ -37,7 +34,6 @@ public class FacesConfigBuilder extends XMLBuilder{
         root.setAttribute("version",            "2.0");
         root.setAttribute("metadata-complete",  "false");
         getDocument().appendChild(root);
-        addEffectBehavior("Animation");
         Element render_kit = getDocument().createElement("render-kit");
         root.appendChild(render_kit);        
     }
@@ -105,19 +101,20 @@ public class FacesConfigBuilder extends XMLBuilder{
         this.addRendererInfo(clazz, component);
     }
     
-    private void addEffectBehavior(String name) {
-        Element behavior = getDocument().createElement("behavior");
-        Element behaviorId = getDocument().createElement("behavior-id"); 
-        behaviorId.appendChild(getDocument().createTextNode("org.icefaces.ace.animation."+ name));
-        
-        Element behaviorClass = getDocument().createElement("behavior-class"); 
-        behaviorClass.appendChild(getDocument().createTextNode("org.icefaces.ace.component.animation."+ name + "Behavior"));
-        behavior.appendChild(behaviorId);
-        behavior.appendChild(behaviorClass);
-        getDocument().getDocumentElement().appendChild(behavior);
+	public void addTagHandlerEntry(TagHandler tagHandler) {
+		if (tagHandler.tagHandlerType() == TagHandlerType.BEHAVIOR_HANDLER) {
+			Element behavior = getDocument().createElement("behavior");
+			Element behaviorId = getDocument().createElement("behavior-id"); 
+			behaviorId.appendChild(getDocument().createTextNode(tagHandler.behaviorId()));
+			
+			Element behaviorClass = getDocument().createElement("behavior-class"); 
+			behaviorClass.appendChild(getDocument().createTextNode(tagHandler.behaviorClass()));
+			behavior.appendChild(behaviorId);
+			behavior.appendChild(behaviorClass);
+			getDocument().getDocumentElement().appendChild(behavior);
+		}
     }
- 
-    
+	
     /*
     public void write() {
         //<application>
