@@ -1,337 +1,234 @@
 /*
- * Version: MPL 1.1
+ * Original Code developed and contributed by Prime Technology.
+ * Subsequent Code Modifications Copyright 2011 ICEsoft Technologies Canada Corp. (c)
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
- * Contributor(s): _____________________.
+ * NOTE THIS CODE HAS BEEN MODIFIED FROM ORIGINAL FORM
+ *
+ * Subsequent Code Modifications have been made and contributed by ICEsoft Technologies Canada Corp. (c).
+ *
+ * Code Modification 1: Integrated with ICEfaces Advanced Component Environment.
+ * Contributors: ICEsoft Technologies Canada Corp. (c)
+ *
+ * Code Modification 2: (ICE-6978) Used JSONBuilder to add the functionality of escaping JS output.
+ * Contributors: ICEsoft Technologies Canada Corp. (c)
+ * Contributors: ______________________
  */
-
 package org.icefaces.ace.component.datetimeentry;
 
-import org.icefaces.ace.util.HTML;
-import org.icefaces.ace.util.JSONBuilder;
-import org.icefaces.ace.util.ScriptWriter;
-import org.icefaces.ace.util.Utils;
-import org.icefaces.ace.component.animation.ClientBehaviorContextImpl;
-import org.icefaces.ace.component.animation.AnimationBehavior;
-import org.icefaces.util.EnvUtils;
-import org.icefaces.render.MandatoryResourceComponent;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.render.Renderer;
+import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.convert.DateTimeConverter;
-import java.io.IOException;
-import java.text.*;
-import java.util.*;
+
+import org.icefaces.ace.renderkit.InputRenderer;
+import org.icefaces.ace.util.HTML;
+import org.icefaces.ace.util.JSONBuilder;
+import org.icefaces.render.MandatoryResourceComponent;
 
 @MandatoryResourceComponent("org.icefaces.ace.component.datetimeentry.DateTimeEntry")
-public class DateTimeEntryRenderer extends Renderer {
+public class DateTimeEntryRenderer extends InputRenderer {
+
     @Override
-    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        super.encodeBegin(context, component);
-        ResponseWriter writer = context.getResponseWriter();
-        String clientId = component.getClientId(context);
-        writer.startElement(HTML.DIV_ELEM, component);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, "clientId");
+    public void decode(FacesContext context, UIComponent component) {
         DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
-        String style = dateTimeEntry.getStyle();
-        if (style != null && style.trim().length() != 0) {
-            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
-        }
-        String styleClass = dateTimeEntry.getStyleClass();
-        if (styleClass != null && styleClass.trim().length() != 0) {
-            writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
-        }
-//        writer.writeAttribute(HTML.TABINDEX_ATTR, dateTimeEntry.getTabindex(), HTML.TABINDEX_ATTR);
-    }
 
-    @Override
-    public boolean getRendersChildren() {
-        return true;
-    }
+        if(dateTimeEntry.isDisabled() || dateTimeEntry.isReadonly()) {
+            return;
+        }
 
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        // ignore children
+        String param = dateTimeEntry.getClientId(context) + "_input";
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(param);
+
+        if(submittedValue != null) {
+            dateTimeEntry.setSubmittedValue(submittedValue);
+        }
+
+        decodeBehaviors(context, dateTimeEntry);
     }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-//        System.out.println("\nDateTimeEntryRenderer.encodeEnd");
-//        printParams();
-        super.encodeEnd(context, component);
+        DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
+        String value = DateTimeEntryUtils.getValueAsString(context, dateTimeEntry);
+
+        encodeMarkup(context, dateTimeEntry, value);
+        encodeScript(context, dateTimeEntry, value);
+    }
+
+    protected void encodeMarkup(FacesContext context, DateTimeEntry dateTimeEntry, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
-        String clientId = component.getClientId(context);
+        String clientId = dateTimeEntry.getClientId(context);
+        String inputId = clientId + "_input";
+        boolean popup = dateTimeEntry.isPopup();
 
-        DateTimeConverter converter = dateTimeEntry.resolveDateTimeConverter(context);
-        TimeZone tz = dateTimeEntry.resolveTimeZone(context);
-        Locale currentLocale = dateTimeEntry.resolveLocale(context);
-//        currentLocale = Locale.CANADA_FRENCH;
-//        currentLocale = Locale.TAIWAN;
-//        currentLocale = Locale.GERMANY;
-//        currentLocale = new Locale("es", "MX");
-        SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, currentLocale);
-        Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
-        Date date;
-        if ("ice.ser".equals(paramMap.get("ice.submit.type"))) {
-            date = (Date) converter.getAsObject(context, component, (String) dateTimeEntry.getSubmittedValue());
-        } else {
-            date = (Date) dateTimeEntry.getValue();
-        }
-        if (date == null) {
-            Calendar calendar = Calendar.getInstance(tz, currentLocale);
-            date = calendar.getTime();
-        }
-        String dateStr = converter.getAsString(context, dateTimeEntry, date);
-        formatter.setTimeZone(tz);
-        formatter.applyPattern("MM/yyyy");
-        String pageDate = formatter.format(date);
-        formatter.applyPattern("MM/dd/yyyy");
-        String selectedDate = formatter.format(date);
-        formatter.applyPattern("yyyy-M-d H:m");
-        String hiddenValue = formatter.format(date);
+        writer.startElement("span", dateTimeEntry);
+        writer.writeAttribute("id", clientId, null);
+        String style = dateTimeEntry.getStyle();
+        if(style != null) writer.writeAttribute("style", style, null);
+        String styleClass = dateTimeEntry.getStyleClass();
+        if(styleClass != null) writer.writeAttribute("class", styleClass, null);
 
-//        System.out.println("DateTimeEntry.getDateTimeConverterPattern(converter) = " + DateTimeEntry.getDateTimeConverterPattern(converter));
-        formatter.applyPattern(DateTimeEntry.getDateTimeConverterPattern(converter));
-        StringBuffer stringBuffer = new StringBuffer();
-        DateFormat.Field[] hourFields = {DateFormat.Field.HOUR0, DateFormat.Field.HOUR1,
-                DateFormat.Field.HOUR_OF_DAY0, DateFormat.Field.HOUR_OF_DAY1};
-        String[] hourFieldNames = {"HOUR0", "HOUR1", "HOUR_OF_DAY0", "HOUR_OF_DAY1"};
-        FieldPosition fieldPosition;
-        int beginIndex;
-        int endIndex;
-        String hourField = "";
-        int savedBeginIndex = Integer.MAX_VALUE, savedEndIndex = Integer.MAX_VALUE;
-        for (int i = 0; i < hourFields.length; i++) {
-            stringBuffer.setLength(0);
-            fieldPosition = new FieldPosition(hourFields[i]);
-            formatter.format(date, stringBuffer, fieldPosition);
-            beginIndex = fieldPosition.getBeginIndex();
-            endIndex = fieldPosition.getEndIndex();
-            if (beginIndex < endIndex && beginIndex < savedBeginIndex) {
-                hourField = hourFieldNames[i];
-                savedBeginIndex = beginIndex;
-                savedEndIndex = endIndex;
-            }
-        }
-        String selectedHour = "";
-        if (!hourField.equals("")) {
-            selectedHour = stringBuffer.substring(savedBeginIndex, savedEndIndex);
-        }
-        Calendar calendar = Calendar.getInstance(tz, currentLocale);
-        calendar.setTime(date);
-        String selectedMinute = String.valueOf(calendar.get(Calendar.MINUTE));
-
-        formatter.applyPattern("a");
-        String amPmStr = formatter.format(date);
-        DateFormatSymbols dateFormatSymbols = formatter.getDateFormatSymbols();
-        String[] amPmStrings = dateFormatSymbols.getAmPmStrings();
-        String[] longMonths = mapMonths(dateFormatSymbols);
-        String[] shortWeekdays = mapWeekdays(dateFormatSymbols);
-        StringBuffer unicodeLongMonths = new StringBuffer(), unicodeShortWeekdays = new StringBuffer();
-        for (String longMonth : longMonths) {
-            unicodeLongMonths.append(",\"").append(convertToEscapedUnicode(longMonth)).append("\"");
-        }
-        unicodeLongMonths.replace(0, 1, "[").append("]");
-        for (String shortWeekday : shortWeekdays) {
-            unicodeShortWeekdays.append(",\"").append(convertToEscapedUnicode(shortWeekday)).append("\"");
-        }
-        unicodeShortWeekdays.replace(0, 1, "[").append("]");
-
-        String currentFocus = paramMap.get("ice.focus");
-        if (currentFocus == null) {
-            currentFocus = "";
-        }
-        boolean ariaEnabled = EnvUtils.isAriaEnabled(context);
-//        ariaEnabled = false;
-        Integer dateTimeEntryTabindex = dateTimeEntry.getTabindex();
-        String tabIndex = "";
-        if (ariaEnabled) {
-            tabIndex = "0";
-        }
-        if (dateTimeEntryTabindex != null) {
-            tabIndex = dateTimeEntryTabindex.toString();
+        //inline container
+        if(!popup) {
+            writer.startElement("div", null);
+            writer.writeAttribute("id", clientId + "_inline", null);
+            writer.endElement("div");
         }
 
-        String params = "'" + clientId + "'," +
-                JSONBuilder.create().
-                beginMap().
-                    entry("pageDate", pageDate).
-                    entry("selectedDate", selectedDate).
-                endMap().toString()
-                + "," +
-                JSONBuilder.create().
-                beginMap().
-                    entry("dateStr", dateStr).
-                    entry("hiddenValue", hiddenValue).
-                    entry("selectedHour", selectedHour).
-                    entry("selectedMinute", selectedMinute).
-                    entry("hourField", hourField).
-                    entry("amPmStr", amPmStr).
-                    entry("amStr", amPmStrings[0]).
-                    entry("pmStr", amPmStrings[1]).
-                    entry("renderAsPopup", dateTimeEntry.isRenderAsPopup()).
-                    entry("renderInputField", dateTimeEntry.isRenderInputField()).
-                    entry("singleSubmit", dateTimeEntry.isSingleSubmit()).
-                    entry("ariaEnabled", ariaEnabled).
-                    entry("disabled", dateTimeEntry.isDisabled()).
-                    entry("longMonths", unicodeLongMonths.toString(), true).
-                    entry("shortWeekdays", unicodeShortWeekdays.toString(), true).
-                    entry("currentFocus", currentFocus).
-                    entry("tabIndex", tabIndex).
-                endMap().toString();
-//        System.out.println("params = " + params);
-        final UIComponent cal = component;
-        final StringBuilder effect = new StringBuilder();
-        Utils.iterateEffects(new AnimationBehavior.Iterator(component) {
-			public void next(String event, AnimationBehavior effectBehavior) {
-				effectBehavior.encodeBegin(FacesContext.getCurrentInstance(), cal);
-				effect.append(effectBehavior.getScript(new ClientBehaviorContextImpl(this.getUIComponent(), "transition"), false));	
-			}
-		});   
-//        System.out.println(effect.toString());
-        effect.append(";");
-        effect.append("ice.component.calendar.updateProperties(");
-        effect.append(params);
-        effect.append(");");
-       // ScriptWriter.insertScript(context, component, effect.toString());
+        //input
+        String type = popup ? "text" : "hidden";
 
-//        System.out.println("effect = " + effect);
-        ScriptWriter.insertScript(context, component, effect.toString());
+        writer.startElement("input", null);
+        writer.writeAttribute("id", inputId, null);
+        writer.writeAttribute("name", inputId, null);
+        writer.writeAttribute("type", type, null);
+
+        if(!isValueBlank(value)) {
+            writer.writeAttribute("value", value, null);
+        }
+
+        if(popup) {
+            if(themeForms()) writer.writeAttribute("class", DateTimeEntry.INPUT_STYLE_CLASS, null);
+            if(dateTimeEntry.isReadOnlyInputText()) writer.writeAttribute("readonly", "readonly", null);
+            if(dateTimeEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+
+            renderPassThruAttributes(context, dateTimeEntry, HTML.INPUT_TEXT_ATTRS);
+        }
+
+        writer.endElement("input");
+
+        writer.endElement("span");
+    }
+
+    protected void encodeScript(FacesContext context, DateTimeEntry dateTimeEntry, String value) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = dateTimeEntry.getClientId(context);
+       
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
+
+        String showOn = dateTimeEntry.getShowOn();
+        StringBuilder script = new StringBuilder();
+        JSONBuilder json = JSONBuilder.create();
+
+        script.append("jQuery(function(){").append(resolveWidgetVar(dateTimeEntry)).append(" = new ");
+        json.beginFunction("ice.ace.Calendar").
+            item(clientId).
+            beginMap().
+                entry("popup", dateTimeEntry.isPopup()).
+                entry("locale", dateTimeEntry.calculateLocale(context).toString());
+                if(!isValueBlank(value)) json.entry("defaultDate", value);
+                json.entryNonNullValue("pattern", DateTimeEntryUtils.convertPattern(dateTimeEntry.getPattern()));
+                if(dateTimeEntry.getPages() != 1) json.entry("numberOfMonths", dateTimeEntry.getPages());
+                json.entryNonNullValue("minDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, dateTimeEntry.getMindate())).
+                entryNonNullValue("maxDate", DateTimeEntryUtils.getDateAsString(dateTimeEntry, dateTimeEntry.getMaxdate()));
+                json.entryNonNullValue("showButtonPanel", dateTimeEntry.isShowButtonPanel());
+                if(dateTimeEntry.isShowWeek()) json.entry("showWeek", true);
+                if(dateTimeEntry.isDisabled()) json.entry("disabled", true);
+                json.entryNonNullValue("yearRange", dateTimeEntry.getYearRange());
+                if(dateTimeEntry.isNavigator()) {
+                    json.entry("changeMonth", true).
+                    entry("changeYear", true);
+                }
+
+                if(dateTimeEntry.getEffect() != null) {
+                    json.entry("showAnim", dateTimeEntry.getEffect()).
+                    entry("duration", dateTimeEntry.getEffectDuration());
+                }
+                if(!showOn.equalsIgnoreCase("focus")) {
+                    String iconSrc = dateTimeEntry.getPopupIcon() != null ? getResourceURL(context, dateTimeEntry.getPopupIcon()) : getResourceRequestPath(context, DateTimeEntry.POPUP_ICON);
+
+                    json.entry("showOn", showOn).
+                    entry("buttonImage", iconSrc).
+                    entry("buttonImageOnly", dateTimeEntry.isPopupIconOnly());
+                }
+
+                if(dateTimeEntry.isShowOtherMonths()) {
+                    json.entry("showOtherMonths", true).
+                    entry("selectOtherMonths", dateTimeEntry.isSelectOtherMonths());
+                }
+
+                //time
+                if(dateTimeEntry.hasTime()) {
+                    json.entry("timeOnly", dateTimeEntry.isTimeOnly()).
         
-        writer.endElement(HTML.DIV_ELEM);
-     
+                    //step
+                    entry("stepHour", dateTimeEntry.getStepHour()).
+                    entry("stepMinute", dateTimeEntry.getStepMinute()).
+                    entry("stepSecond", dateTimeEntry.getStepSecond()).
+                    
+                    //minmax
+                    entry("hourMin", dateTimeEntry.getMinHour()).
+                    entry("hourMax", dateTimeEntry.getMaxHour()).
+                    entry("minuteMin", dateTimeEntry.getMinMinute()).
+                    entry("minuteMax", dateTimeEntry.getMaxMinute()).
+                    entry("secondMin", dateTimeEntry.getMinSecond()).
+                    entry("secondMax", dateTimeEntry.getMaxSecond());
+                }
+
+                encodeClientBehaviors(context, dateTimeEntry, json);
+
+                if(!themeForms()) {
+                    json.entry("theme", false);
+                }
+                json.entry("disableHoverStyling", dateTimeEntry.isDisableHoverStyling());
+                json.entry("showCurrentAtPos", 0 - dateTimeEntry.getLeftMonthOffset());
+            json.endMap();
+        json.endFunction();
+
+        script.append(json.toString()).append("});");
+//        System.out.println(script);
+        writer.write(script.toString());
+
+        writer.endElement("script");
     }
 
     @Override
-    public void decode(FacesContext context, UIComponent component) {
-//        System.out.println("\nDateTimeEntryRenderer.decode");
-//        printParams();
-        super.decode(context, component);
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
         DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
-        String clientId = component.getClientId(context);
-        Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
-        String dateString = paramMap.get(clientId + "_value");
-        
-        if (null == dateString) return;
-        DateTimeConverter converter = dateTimeEntry.resolveDateTimeConverter(context);
-        SimpleDateFormat formatter = (SimpleDateFormat) DateFormat.getDateTimeInstance(DateFormat.SHORT,
-                DateFormat.SHORT, dateTimeEntry.resolveLocale(context));
-        formatter.setTimeZone(dateTimeEntry.resolveTimeZone(context));
-        formatter.applyPattern("yyyy-M-d H:m");
+        String submittedValue = (String) value;
+        Converter converter = dateTimeEntry.getConverter();
+
+        if(isValueBlank(submittedValue)) {
+            return null;
+        }
+
+        //Delegate to user supplied converter if defined
+        if(converter != null) {
+            return converter.getAsObject(context, dateTimeEntry, submittedValue);
+        }
+
+        //Use built-in converter
         try {
-//            System.out.println("formatter.toPattern() = " + formatter.toPattern());
-//            System.out.println("formatter.toLocalizedPattern() = " + formatter.toLocalizedPattern());
-//            System.out.println("DateTimeEntry.getDateTimeConverterPattern(converter) = " + DateTimeEntry.getDateTimeConverterPattern(converter));
-            dateString = converter.getAsString(context, dateTimeEntry, formatter.parse(dateString));
+            Date convertedValue;
+            Locale locale = dateTimeEntry.calculateLocale(context);
+            SimpleDateFormat format = new SimpleDateFormat(dateTimeEntry.getPattern(), locale);
+            format.setTimeZone(dateTimeEntry.calculateTimeZone());
+            convertedValue = format.parse(submittedValue);
+            
+            return convertedValue;
+
         } catch (ParseException e) {
-//            e.printStackTrace();
+            throw new ConverterException(e);
         }
-        dateTimeEntry.setSubmittedValue(dateString);
-        if ("ice.ser".equals(paramMap.get("ice.submit.type"))) {
-//            System.out.println("Skip to renderResponse()");
-            context.renderResponse();
-        }
-    }
-
-    @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-//        System.out.println("\nDateTimeEntryRenderer.getConvertedValue");
-//        System.out.println("submittedValue = " + submittedValue);
-        super.getConvertedValue(context, component, submittedValue);
-        DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
-        return dateTimeEntry.resolveDateTimeConverter(context).getAsObject(context, component, (String) submittedValue);
-    }
-
-    private void printParams() {
-        Map<String, String[]> paramValuesMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterValuesMap();
-        String key;
-        String[] values;
-        for (Map.Entry<String, String[]> entry : paramValuesMap.entrySet()) {
-            key = entry.getKey();
-            values = entry.getValue();
-            System.out.print(key);
-            System.out.print(" = ");
-            for (String value : values) {
-                System.out.print(value);
-                System.out.print(", ");
-            }
-            System.out.println();
-        }
-    }
-
-    public static String convertToEscapedUnicode(String s) {
-        char[] chars = s.toCharArray();
-        String hexStr;
-        StringBuffer stringBuffer = new StringBuffer(chars.length * 6);
-        String[] leadingZeros = {"0000", "000", "00", "0", ""};
-        for (int i = 0; i < chars.length; i++) {
-            hexStr = Integer.toHexString(chars[i]).toUpperCase();
-            stringBuffer.append("\\u");
-            stringBuffer.append(leadingZeros[hexStr.length()]);
-//            stringBuffer.append("0000".substring(0, 4 - hexStr.length()));
-            stringBuffer.append(hexStr);
-        }
-        return stringBuffer.toString();
-    }
-
-    // Copied from 1.8.2
-    /**
-     * @param symbols
-     * @return months - String[] containing localized month names
-     */
-    public static String[] mapMonths(DateFormatSymbols symbols) {
-        String[] months = new String[12];
-
-        String[] localeMonths = symbols.getMonths();
-
-        months[0] = localeMonths[Calendar.JANUARY];
-        months[1] = localeMonths[Calendar.FEBRUARY];
-        months[2] = localeMonths[Calendar.MARCH];
-        months[3] = localeMonths[Calendar.APRIL];
-        months[4] = localeMonths[Calendar.MAY];
-        months[5] = localeMonths[Calendar.JUNE];
-        months[6] = localeMonths[Calendar.JULY];
-        months[7] = localeMonths[Calendar.AUGUST];
-        months[8] = localeMonths[Calendar.SEPTEMBER];
-        months[9] = localeMonths[Calendar.OCTOBER];
-        months[10] = localeMonths[Calendar.NOVEMBER];
-        months[11] = localeMonths[Calendar.DECEMBER];
-
-        return months;
-    }
-
-    // Copied from 1.8.2. Modified indexes.
-    private static String[] mapWeekdays(DateFormatSymbols symbols) {
-        String[] weekdays = new String[7];
-
-        String[] localeWeekdays = symbols.getShortWeekdays();
-
-        weekdays[0] = localeWeekdays[Calendar.SUNDAY];
-        weekdays[1] = localeWeekdays[Calendar.MONDAY];
-        weekdays[2] = localeWeekdays[Calendar.TUESDAY];
-        weekdays[3] = localeWeekdays[Calendar.WEDNESDAY];
-        weekdays[4] = localeWeekdays[Calendar.THURSDAY];
-        weekdays[5] = localeWeekdays[Calendar.FRIDAY];
-        weekdays[6] = localeWeekdays[Calendar.SATURDAY];
-
-        return weekdays;
     }
 }
