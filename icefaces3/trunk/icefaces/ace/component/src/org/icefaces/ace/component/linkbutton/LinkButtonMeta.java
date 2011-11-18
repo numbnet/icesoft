@@ -1,22 +1,18 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.icefaces.ace.component.linkbutton;
@@ -40,10 +36,14 @@ import org.icefaces.ace.meta.annotation.Property;
         componentFamily = "org.icefaces.ace.LinkButton"
 )
 @ResourceDependencies({
-        @ResourceDependency(name="yui/yui-min.js",library="yui/3_3_0"),
-    	@ResourceDependency(name="loader/loader-min.js",library="yui/3_3_0"),
+		@ResourceDependency(name="yahoo-dom-event/yahoo-dom-event.js",library="yui/2_8_2"),
+		@ResourceDependency(name="element/element-min.js",library="yui/2_8_2"),
+		@ResourceDependency(name="button/button-min.js",library="yui/2_8_2"),
         @ResourceDependency(name="util/combined.js",library="icefaces.ace"),
-		@ResourceDependency(name="yui2-skin-sam-button/assets/button-core.css",library="yui/2in3")
+		@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
+        @ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
+        @ResourceDependency(library="icefaces.ace", name="linkbutton/linkbutton.css"),
+		@ResourceDependency(name="button/assets/button-core.css",library="yui/2_8_2")
 })
 
 public class LinkButtonMeta extends UICommandMeta {
