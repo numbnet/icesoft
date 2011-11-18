@@ -1,0 +1,301 @@
+package org.icefaces.ace.component.tableconfigpanel;
+
+import org.icefaces.ace.component.column.Column;
+import org.icefaces.ace.component.datatable.DataTable;
+import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.HTML;
+import org.icefaces.render.MandatoryResourceComponent;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.render.Renderer;
+import java.io.IOException;
+import java.util.List;
+
+@MandatoryResourceComponent("org.icefaces.ace.component.tableconfigpanel.TableConfigPanel")
+public class TableConfigPanelRenderer extends CoreRenderer {
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        TableConfigPanel panel = (TableConfigPanel)component;
+
+        encodePopup(context, panel);
+        super.encodeEnd(context, component);
+    }
+    private void encodePopup(FacesContext context, TableConfigPanel component) throws IOException {
+        DataTable table = (DataTable)component.getTargetedDatatable();
+        String tableId = table.getClientId(context);
+        ResponseWriter writer = context.getResponseWriter();
+        List<Column> columns = table.getColumns();
+        int i;
+
+        writer.startElement(HTML.DIV_ELEM, null);
+        writer.writeAttribute(HTML.ID_ATTR, table.getClientId(context)+"_tableconf", null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-tableconf ui-widget", null);
+        writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
+
+        writer.startElement(HTML.DIV_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-tableconf-header ui-widget-header ui-corner-tr ui-corner-tl", null);
+        writer.writeText("Column Settings", null);
+
+        writeConfigPanelOkButton(writer, tableId);
+        writeConfigPanelCloseButton(writer, tableId);
+
+        writer.endElement(HTML.DIV_ELEM);
+
+        writer.startElement(HTML.DIV_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR,  "ui-tableconf-body ui-widget-content ui-corner-br ui-corner-bl", null);
+
+        writer.startElement(HTML.TABLE_ELEM, null);
+
+        writeHeaderRow(writer, component);
+
+        writer.startElement(HTML.TBODY_ELEM, null);
+
+        writeColumnConfigRows(writer, component, tableId, columns);
+
+        writer.endElement(HTML.TBODY_ELEM);
+        writer.endElement(HTML.TABLE_ELEM);
+
+        writer.endElement(HTML.DIV_ELEM);
+
+        writeJavascript(writer, tableId, component);
+
+        writer.endElement(HTML.DIV_ELEM);
+    }
+
+    private void writeColumnConfigRows(ResponseWriter writer, TableConfigPanel component, String tableId, List<Column> columns) throws IOException {
+        int i;
+        boolean ordering = component.isColumnOrderingConfigurable();
+        boolean naming = component.isColumnNameConfigurable();
+        boolean sizing = component.isColumnSizingConfigurable();
+        boolean visibility = component.isColumnVisibilityConfigurable();
+        boolean sorting = component.isColumnSortingConfigurable();
+        boolean firstCol = component.getType().equals("first-col") ;
+        boolean lastCol = component.getType().equals("last-col");
+        for (i = 0; i < columns.size(); i++) {
+            Column column = columns.get(i);
+
+            String rowClass = "ui-tableconf-row-"+i;
+            if (!column.isConfigurable()) rowClass += " ui-disabled ui-opacity-40";
+
+            writer.startElement(HTML.TR_ELEM, null);
+            writer.writeAttribute(HTML.CLASS_ATTR,  rowClass, null);
+            if (!column.isConfigurable() && component.isHideDisabledRows())
+                writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
+
+            boolean disableVisibilityControl = (firstCol && i == 0) || ((lastCol && i == columns.size() - 1));
+
+            if (ordering) writeColumnOrderingControl(writer, column, i, tableId);
+            writeColumnNameControl(writer, column, i, tableId, naming);
+            if (sizing) writeColumnSizingControl(writer, column, i, tableId);
+            if (visibility) writeColumnVisibilityControl(writer, column, i, tableId, disableVisibilityControl);
+            if (sorting) writeSortControl(writer, column);
+            
+            writer.endElement(HTML.TR_ELEM);
+        }
+    }
+
+    private void writeHeaderRow(ResponseWriter writer, TableConfigPanel component) throws IOException {
+        writer.startElement(HTML.THEAD_ELEM, null);
+        writer.startElement(HTML.TR_ELEM, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default", null);
+        writer.writeAttribute(HTML.STYLE_ATTR, "border:0;", null);
+
+        if (component.isColumnOrderingConfigurable()) {
+            writer.startElement(HTML.TH_ELEM, null);
+            writer.writeText("Ordering", null);
+            writer.endElement(HTML.TH_ELEM);
+        }
+
+        writer.startElement(HTML.TH_ELEM, null);
+        writer.writeText("Name", null);
+        writer.endElement(HTML.TH_ELEM);
+
+        if (component.isColumnSizingConfigurable()) {
+            writer.startElement(HTML.TH_ELEM, null);
+            writer.writeText("Sizing", null);
+            writer.endElement(HTML.TH_ELEM);
+        }
+        if (component.isColumnVisibilityConfigurable()) {
+            writer.startElement(HTML.TH_ELEM, null);
+            writer.writeText("Visibility", null);
+            writer.endElement(HTML.TH_ELEM);
+        }
+        if (component.isColumnSortingConfigurable()) {
+            writer.startElement(HTML.TH_ELEM, null);
+            writer.writeText("Sorting", null);
+            writer.endElement(HTML.TH_ELEM);
+        }
+
+        writer.endElement(HTML.TR_ELEM);
+        writer.endElement(HTML.THEAD_ELEM);
+    }
+
+    private void writeConfigPanelCloseButton(ResponseWriter writer, String clientId) throws IOException {
+        writer.startElement(HTML.SPAN_ELEM, null);
+        writer.writeAttribute(HTML.STYLE_ATTR, "float:right;", null);
+
+        writer.startElement(HTML.ANCHOR_ELEM, null);
+
+        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:0px 10px; text-align:left;";
+        writer.writeAttribute(HTML.STYLE_ELEM, style, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
+        writer.writeAttribute(HTML.HREF_ATTR, "#", null);
+        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"_tableconf')).toggle()", null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId +"_tableconf_close", null);
+
+
+        writer.startElement(HTML.SPAN_ELEM, null);
+
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-close", null);
+        writer.writeText("table", null);
+
+        writer.endElement(HTML.SPAN_ELEM);
+        writer.endElement(HTML.ANCHOR_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
+    }
+
+    private void writeConfigPanelOkButton(ResponseWriter writer, String clientId) throws IOException {
+        writer.startElement(HTML.SPAN_ELEM, null);
+        writer.writeAttribute(HTML.STYLE_ATTR, "float:right;", null);
+
+        writer.startElement(HTML.ANCHOR_ELEM, null);
+
+        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:0px 10px; text-align:left;";
+        writer.writeAttribute(HTML.STYLE_ELEM, style, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
+        writer.writeAttribute(HTML.HREF_ATTR, "#", null);
+        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"_tableconf')).toggle()", null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId +"_tableconf_ok", null);
+
+
+        writer.startElement(HTML.SPAN_ELEM, null);
+
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-check", null);
+        writer.writeText("table", null);
+
+        writer.endElement(HTML.SPAN_ELEM);
+        writer.endElement(HTML.ANCHOR_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
+    }
+
+    private void writeJavascript(ResponseWriter writer, String clientId, TableConfigPanel component) throws IOException {
+        String jsId = this.resolveWidgetVar(component);
+        boolean isSortable = component.isColumnSortingConfigurable();
+        boolean isReorderable = component.isColumnOrderingConfigurable();
+        boolean isSingleSort = ((DataTable)component.getTargetedDatatable()).isSingleSort();
+
+        writer.startElement(HTML.SCRIPT_ELEM, null);
+        writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+        writer.writeText(
+                "ice.ace.jq(function () {\n" +
+                        "\tice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_ok\"))" +
+                        ".hover(function (event) {ice.ace.jq(event.currentTarget)" + ".toggleClass('ui-state-hover');})" +
+                        ".click(function (event) {ice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_launch\")).toggleClass('ui-state-active');\n" +
+                        "var panel = ice.ace.jq(ice.ace.escapeClientId('" + clientId + "_tableconf'));\n" +
+                        "if (panel.is(':not(:visible)')) " + jsId + "_tableconf.submitTableConfig(event.currentTarget);\n" +
+                        "}\n" +
+                        ");\n" +
+                        "\tice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_close\"))" +
+                        ".hover(function (event) {ice.ace.jq(event.currentTarget)" + ".toggleClass('ui-state-hover');})" +
+                        ".click(function (event) {ice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_launch\")).toggleClass('ui-state-active');});\n" +
+                        "\t var cfg = {reorderable :" + isReorderable + ", sortable :" + isSortable + ", singleSort:" + isSingleSort + "};" +
+                        "\t" + jsId + "_tableconf = new ice.ace.TableConf('" + clientId + "_tableconf', cfg);\n" +
+                        "});"
+                , null);
+        writer.endElement(HTML.SCRIPT_ELEM);
+    }
+
+    private void writeSortControl(ResponseWriter writer, Column column) throws IOException {
+        writer.startElement(HTML.TD_ELEM, null);
+
+        if (column.getValueExpression("sortBy") != null) {
+            writer.startElement(HTML.SPAN_ELEM, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, "ui-tableconf-sort-cont", null);
+
+            writer.startElement(HTML.SPAN_ELEM, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_CONTROL_CLASS, null);
+
+            // Write carats
+            writer.startElement(HTML.SPAN_ELEM, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_CONTAINER, null);
+
+            writer.startElement(HTML.ANCHOR_ELEM, null);
+            if (column.getSortPriority() != null && column.isSortAscending())
+                writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_UP_CLASS + " ui-toggled", null);
+            else writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_UP_CLASS, null);            writer.writeAttribute(HTML.TABINDEX_ATTR, 0, null);
+            writer.endElement(HTML.ANCHOR_ELEM);
+
+            writer.startElement(HTML.ANCHOR_ELEM, null);
+            if (column.getSortPriority() != null && !column.isSortAscending())
+                writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_DOWN_CLASS + " ui-toggled", null);
+            else writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_DOWN_CLASS, null);            writer.writeAttribute(HTML.TABINDEX_ATTR, 0, null);
+            writer.endElement(HTML.ANCHOR_ELEM);
+
+            writer.endElement(HTML.SPAN_ELEM);
+
+            // Write Sort Order Integer
+            writer.startElement(HTML.SPAN_ELEM, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ORDER_CLASS, null);
+            if (column.getSortPriority() != null) writer.writeText(column.getSortPriority(), null);
+            else writer.write("&#160;");
+            writer.endElement(HTML.SPAN_ELEM);
+
+            writer.endElement(HTML.SPAN_ELEM);
+            writer.endElement(HTML.SPAN_ELEM);
+        }
+        writer.endElement(HTML.TD_ELEM);
+    }
+    private void writeColumnOrderingControl(ResponseWriter writer, Column column, int i, String tableId) throws IOException {
+        writer.startElement(HTML.TD_ELEM, null);
+        writer.startElement(HTML.ANCHOR_ELEM, null);
+
+        String style = "display:inline-block; padding:0 1px 0 0; margin:0px 10px; text-align:left;";
+        String styleClass = "ui-state-default ui-corner-all ui-sortable-handle";
+
+        if (!column.isConfigurable()) styleClass += " ui-disabled";
+
+        writer.writeAttribute(HTML.STYLE_ELEM, style, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+        writer.writeAttribute(HTML.HREF_ATTR, "#", null);
+        writer.writeAttribute(HTML.ID_ATTR, tableId +"_tableconf_close", null);
+
+        writer.startElement(HTML.SPAN_ELEM, null);
+
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-arrow-2-n-s", null);
+        writer.writeText("table", null);
+
+        writer.endElement(HTML.SPAN_ELEM);
+        writer.endElement(HTML.ANCHOR_ELEM);
+        writer.endElement(HTML.TD_ELEM);
+    }
+    private void writeColumnSizingControl(ResponseWriter writer, Column column, int i, String clientId) throws IOException {
+        writer.writeText("DataTable Settings", null);
+    }
+    private void writeColumnVisibilityControl(ResponseWriter writer, Column column, int i, String clientId, boolean disable) throws IOException {
+        writer.startElement(HTML.TD_ELEM, null);
+        writer.startElement(HTML.INPUT_ELEM, null);
+        writer.writeAttribute(HTML.TYPE_ATTR, "checkbox", null);
+        if (disable || !column.isConfigurable())
+            writer.writeAttribute(HTML.DISABLED_ATTR, "disabled", null);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId+"_colvis_"+i, null);
+        writer.writeAttribute(HTML.CHECKED_ATTR, column.isRendered(), null);
+        writer.endElement(HTML.INPUT_ELEM);
+        writer.endElement(HTML.TD_ELEM);
+    }
+    private void writeColumnNameControl(ResponseWriter writer, Column column, int i, String clientId, boolean naming) throws IOException {
+        writer.startElement(HTML.TD_ELEM, null);
+        writer.startElement(HTML.INPUT_ELEM, null);
+        writer.writeAttribute(HTML.TYPE_ATTR, "text", null);
+        if (!naming || !column.isConfigurable())
+            writer.writeAttribute(HTML.DISABLED_ATTR, "disabled", null);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId+"_head_"+i, null);
+        writer.writeAttribute(HTML.VALUE_ATTR, column.getHeaderText(), null);
+        writer.endElement(HTML.INPUT_ELEM);
+        writer.endElement(HTML.TD_ELEM);
+    }
+
+
+}
