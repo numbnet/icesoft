@@ -29,7 +29,6 @@ package org.icefaces.ace.component.datatable;
 import org.icefaces.ace.component.celleditor.CellEditor;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
-import org.icefaces.ace.component.columns.Columns;
 import org.icefaces.ace.component.row.Row;
 import org.icefaces.ace.component.rowexpander.RowExpander;
 import org.icefaces.ace.component.rowpanelexpander.RowPanelExpander;
@@ -784,25 +783,6 @@ public class DataTableRenderer extends CoreRenderer {
         writer.endElement(HTML.SPAN_ELEM);
     }
 
-    protected void encodeColumnsHeader(FacesContext context, DataTable table, Columns columns) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String columnVar = columns.getVar();
-
-        for (Object column : (Collection) columns.getValue()) {
-            context.getExternalContext().getRequestMap().put(columnVar, column);
-            UIComponent header = columns.getFacet("header");
-
-            writer.startElement("th", null);
-            writer.writeAttribute(HTML.CLASS_ATTR, DataTable.COLUMN_HEADER_CLASS, null);
-
-            if (header != null) header.encodeAll(context);
-
-            writer.endElement("th");
-        }
-
-        context.getExternalContext().getRequestMap().remove(columnVar);
-    }
-
     protected void encodeFilter(FacesContext context, DataTable table, Column column) throws IOException {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         ResponseWriter writer = context.getResponseWriter();
@@ -952,8 +932,6 @@ public class DataTableRenderer extends CoreRenderer {
                             (firstComponent && firstHeadElement),
                             (!headElementIterator.hasNext() && !componentIterator.hasNext()),
                             subRows);
-                else if (headerRowChild instanceof Columns)
-                    encodeColumnsHeader(context, table, (Columns) headerRowChild);
                 firstComponent = false;
             } while (componentIterator.hasNext());
             if (subRows) writer.endElement(HTML.TR_ELEM);
@@ -1042,7 +1020,6 @@ public class DataTableRenderer extends CoreRenderer {
     //        for (UIComponent kid : table.getChildren())
     //            if (kid.isRendered()) {
     //                if (kid instanceof Column) encodeRegularCell(context, table, (Column) kid, clientId, selected, (rowIndex == 0));
-    //                else if (kid instanceof Columns) encodeDynamicCell(context, table, (Columns) kid);
     //            }
 
             if (rowIndexVar != null) context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
@@ -1102,30 +1079,6 @@ public class DataTableRenderer extends CoreRenderer {
             if (resizable) writer.endElement(HTML.DIV_ELEM);
             writer.endElement(HTML.TD_ELEM);
         }
-    }
-
-    protected void encodeDynamicCell(FacesContext context, DataTable table, Columns columns) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String columnVar = columns.getVar();
-        String columnIndexVar = columns.getColumnIndexVar();
-        int colIndex = 0;
-
-        for (Object column : (Collection) columns.getValue()) {
-            context.getExternalContext().getRequestMap().put(columnVar, column);
-            context.getExternalContext().getRequestMap().put(columnIndexVar, colIndex);
-            UIComponent header = columns.getFacet("header");
-
-            writer.startElement(HTML.TD_ELEM, null);
-            writer.startElement(HTML.DIV_ELEM, null);
-            columns.encodeAll(context);
-            writer.endElement(HTML.DIV_ELEM);
-            writer.endElement(HTML.TD_ELEM);
-
-            colIndex++;
-        }
-
-        context.getExternalContext().getRequestMap().remove(columnVar);
-        context.getExternalContext().getRequestMap().remove(columnIndexVar);
     }
 
     protected void encodeTableFoot(FacesContext context, DataTable table, List<Column> columns) throws IOException {
