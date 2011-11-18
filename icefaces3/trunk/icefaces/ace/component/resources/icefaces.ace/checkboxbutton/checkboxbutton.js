@@ -1,30 +1,23 @@
 /*
- * Version: MPL 1.1
+ * Copyright 2010-2011 ICEsoft Technologies Canada Corp.
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *
- * Contributor(s): _____________________.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-ice.component.checkboxbutton = {
+ice.ace.checkboxbutton = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
-	 ice.yui3.use(function(Y){ 
-     Y.use('yui2-button', function(Yui) {
-	 Y.on('domready', function(){
-		var YAHOO = Y.YUI2;
+		YAHOO.util.Event.onDOMReady(function () {
 	
 	  var Dom = YAHOO.util.Dom;
       var divNode = document.getElementById(clientId);
@@ -34,6 +27,28 @@ ice.component.checkboxbutton = {
 //      }
        var spanId = clientId+"_span";
 	   var button = new YAHOO.widget.Button(spanId, {type: jsProps.type, tabindex: null});
+	   
+	button.addStateCSSClasses = function(state) {
+	
+		if (state == 'hover') {
+			jQuery(this._button).addClass('ui-state-hover');
+		} else if (state == 'active' || state == 'checked') {
+			jQuery(this._button).addClass('ui-state-active');
+		} else if (state == 'disabled') {
+			jQuery(this._button).addClass('ui-state-disabled ');
+		}
+	};
+	
+	button.removeStateCSSClasses = function(state) {
+	
+		if (state == 'hover') {
+			jQuery(this._button).removeClass('ui-state-hover');
+		} else if (state == 'active' || state == 'checked') {
+			jQuery(this._button).removeClass('ui-state-active');
+		} else if (state == 'disabled') {
+			jQuery(this._button).removeClass('ui-state-disabled ');
+		}
+	};
 
 		var hiddenField = Dom.get(clientId+"_hidden");
 
@@ -43,7 +58,7 @@ ice.component.checkboxbutton = {
  		}
     
 		var onCheckedChange = function (e) {
-           var context = ice.component.getJSContext(clientId);
+           var context = ice.ace.getJSContext(clientId);
            var singleSubmit= context.getJSFProps().singleSubmit;
            var postParameters = context.getJSFProps().postParameters;
            var params = function(parameter) {
@@ -117,15 +132,13 @@ ice.component.checkboxbutton = {
 	    }
 		bindYUI(button);
 	 }); // *** end of ondomready
-	 }); // *** end of Y.use
-	 }); // *** end of ice.yui3.use
 	},
 	
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
    updateProperties:function(clientId, jsProps, jsfProps, events) {        		
         //YAHOO.log("updateProperties...checking jsfProps.singleSubmit="+jsfProps.singleSubmit);
 
-        var context = ice.component.getJSContext(clientId);
+        var context = ice.ace.getJSContext(clientId);
         if (context && context.isAttached()) {
             var prevJSFProps = context.getJSFProps();
             if (prevJSFProps.hashCode != jsfProps.hashCode) {
@@ -134,15 +147,15 @@ ice.component.checkboxbutton = {
                 JSContext[clientId] = null;
             }
         }
-       ice.component.updateProperties(clientId, jsProps, jsfProps, events, this);
-       //     var JSContext = ice.component.getJSContext(clientId);
+       ice.ace.updateProperties(clientId, jsProps, jsfProps, events, this);
+       //     var JSContext = ice.ace.getJSContext(clientId);
        //     var singleSubmit = JSContext.getJSFProps().singleSubmit;
 
    },
  
    //delegate call to ice.yui.getInstance(..) with the reference of this lib 
    getInstance:function(clientId, callback) {
-       ice.component.getInstance(clientId, callback, this);
+       ice.ace.getInstance(clientId, callback, this);
    }
 
 
