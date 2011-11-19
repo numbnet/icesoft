@@ -69,51 +69,76 @@ import java.util.List;
     @ResourceDependency(name="util/combined.js",library="icefaces.ace"),
     @ResourceDependency(name="util/combined.css",library="icefaces.ace")
 })
-@ClientBehaviorHolder(events={
-	@ClientEvent(name="transition", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
 public class TabSetMeta extends UIComponentBaseMeta {
-    
-    @Property(defaultValue="false", tlddoc="The default value of this attribute is fals. If true then tab change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")    
-    private boolean immediate; 
-    
-    @Property(defaultValue="0", tlddoc="This attribute represents index of the current selected tab")
+
+    @Property(defaultValue="false", tlddoc="The default value of this " +
+            "attribute is false. If true then tab change event will happen " +
+            "in APPLY_REQUEST_VALUES phase and if the value of this " +
+            "attribute is false then event change will happen in " +
+            "INVOKE_APPLICATION phase")
+    private boolean immediate;
+
+    @Property(defaultValue="0", tlddoc="This attribute represents index of " +
+            "the current selected tab")
     private int selectedIndex;
-    
-    @Property(defaultValue="top", tlddoc="This attribute represents orientation of tabs. Valid values are bottom, top, left and right")   
+
+    @Property(defaultValue="top", tlddoc="This attribute represents " +
+            "orientation of tabs. Valid values are bottom, top, left and right")
     private String orientation;
-    
-    @Property(defaultValue="false", tlddoc="This component supports both client and server side tab change modal. When this attribute is set to true, then contents of all tabs gets rendered on client and tabchange would also occur on client. If this attribute is set to false which is default then only current selected tab will get rendered to the client and tab change request will goto server to render requested tab, which allows to send dynamic contents back.")
-    private boolean clientSide; 
-   
-    @Property(defaultValue="false", tlddoc="The default value of this attribute is false, so in this case full submit is being used, where all component gets rendered and executed. If this attribute is set to true, then only this component gets executed and entire view gets rendered")
+
+    @Property(defaultValue="false", tlddoc="This component supports both " +
+            "client and server side tab change modal. When this attribute " +
+            "is set to true, then contents of all tabs gets rendered on " +
+            "client and tabchange would also occur on client. If this " +
+            "attribute is set to false which is default then only current " +
+            "selected tab will get rendered to the client and tab change " +
+            "request will goto server to render requested tab, which allows " +
+            "to send dynamic contents back.")
+    private boolean clientSide;
+
+    @Property(defaultValue="false", tlddoc="The default value of this " +
+            "attribute is false, so in this case full submit is being used, " +
+            "where all component gets rendered and executed. If this " +
+            "attribute is set to true, then only this component gets " +
+            "executed and entire view gets rendered")
     private boolean singleSubmit;
-    
-    @Property(defaultValue="true", tlddoc="This attribute comes into effect when there is a validation error. By default it is set to true, which means that if on a tab change there is a validation error, that error will be ignored and tab will be changed successfully and if this attribute is set to false then on a validation error tab will not be changed untill validation error gone.") 
-    private boolean cancelOnInvalid;    
-    
-    @Property (tlddoc="style class will be rendered on a root element of this component")
+
+    @Property(defaultValue="true", tlddoc="This attribute comes into " +
+            "effect when there is a validation error. By default it is set " +
+            "to true, which means that if on a tab change there is a " +
+            "validation error, that error will be ignored and the tab will " +
+            "be changed successfully. And if this attribute is set to " +
+            "false, then on a validation error the tab will not be changed " +
+            "until the validation error is gone.")
+    private boolean cancelOnInvalid;
+
+    @Property (tlddoc="style class will be rendered on a root element of " +
+            "this component")
     private String styleClass;
-    
-    @Property (tlddoc="style will be rendered on a root element of this component") 
+
+    @Property (tlddoc="style will be rendered on a root element of this component")
     private String style;
-    
-    @Property(expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
+
+    @Property(expression= Expression.METHOD_EXPRESSION,
+            methodExpressionArgument="javax.faces.event.ValueChangeEvent",
             tlddoc="on tabchange value change event can be captured using this listener")
     private MethodExpression tabChangeListener;
 
-    @Property(tlddoc = "If true then all tabs except the active one will be disabled and can not be selected.")
+    @Property(tlddoc = "If true then all tabs except the active one will " +
+            "be disabled and can not be selected.")
     private boolean disabled;
-
-    @Field(javadoc="Maintains the record of which tabs have been visited")
-    private List visitedTabClientIds;
 
 	@Property(tlddoc="The effect when showing the contents of a tab after selecting it.")
 	private String showEffect;
 
-	@Property(tlddoc="The duration of the show effect in milliseconds. The default value varies depending on the effect.")
+	@Property(tlddoc="The duration of the show effect in milliseconds. The " +
+            "default value varies depending on the effect.")
 	private int showEffectLength;
-	
+
+
+    @Field(javadoc="Maintains the record of which tabs have been visited")
+    private List visitedTabClientIds;
+
     @Facets
     class FacetsMeta{
         @Facet
@@ -121,7 +146,7 @@ public class TabSetMeta extends UIComponentBaseMeta {
         @Facet
         UIComponent body;
         @Facet
-        UIComponent footer;           
+        UIComponent footer;
     }
 
 }
