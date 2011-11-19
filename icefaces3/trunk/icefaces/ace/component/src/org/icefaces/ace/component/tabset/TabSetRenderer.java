@@ -26,8 +26,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.render.Renderer;
 
-import org.icefaces.ace.component.animation.ClientBehaviorContextImpl;
-import org.icefaces.ace.component.animation.AnimationBehavior;
 import org.icefaces.ace.util.ARIA;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
@@ -54,12 +52,6 @@ public class TabSetRenderer extends Renderer{
                         new Integer(old), index));
             }
         }
-        //The decode of the component's behavior should be invoked by the component's decode
-        Utils.iterateEffects(new AnimationBehavior.Iterator(uiComponent) {
-			public void next(String name, AnimationBehavior effectBehavior) {
-				effectBehavior.decode(FacesContext.getCurrentInstance(), this.getUIComponent());				
-			}
-		});
     }
 
     /**
@@ -300,28 +292,9 @@ public class TabSetRenderer extends Renderer{
             .endMap().toString())
         .append(");");
        
-////        //Initialize client side tab as soon as they inserted to the DOM
-////        if (isClientSide) {
-            ScriptWriter.insertScript(facesContext, uiComponent, call.toString());
-////        } else {
-////        	//initialize server side tab lazily
-////            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, call.toString(), HTML.ONMOUSEOVER_ATTR);
-////        }
-        
-        //encode animation if any 
-        final StringBuilder effect = new StringBuilder();
-        Utils.iterateEffects(new AnimationBehavior.Iterator(uiComponent) {
-			public void next(String event, AnimationBehavior effectBehavior) {
-				effectBehavior.encodeBegin(FacesContext.getCurrentInstance(), tabSet);
-				effect.append(effectBehavior.getScript(new ClientBehaviorContextImpl(this.getUIComponent(), "transition"), false));	
-			}
-		});
-        
-        //encode animation call if any
-        if (effect.toString().length()> 0) {
-        	ScriptWriter.insertScript(facesContext, uiComponent, effect.toString());
-        }
-        writer.endElement(HTML.DIV_ELEM);  
+        ScriptWriter.insertScript(facesContext, uiComponent, call.toString());
+
+        writer.endElement(HTML.DIV_ELEM);
     }
 
     private void recursivelyRenderSafe(FacesContext facesContext,
@@ -393,12 +366,6 @@ public class TabSetRenderer extends Renderer{
         }
         writer.writeAttribute(HTML.ID_ATTR, clientId+ "li"+ index, HTML.ID_ATTR);
         UIComponent labelFacet = ((TabPane)tab).getLabelFacet();
-////        //if a server side tabset? then apply selected tab class
-////        if (!tabSet.isClientSide()) {
-////	        if (tabSet.getSelectedIndex() == index) {
-////	            writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
-////	        }
-////        }
 		String styleClass = "";
         if (tabSet.isDisabled() || ((TabPane) tab).isDisabled()) {
 			styleClass += "ui-state-disabled";
@@ -418,11 +385,7 @@ public class TabSetRenderer extends Renderer{
         if (EnvUtils.isAriaEnabled(facesContext)) {
             writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TAB_ROLE, ARIA.ROLE_ATTR);  
         }
-        //Server side tab initializes lazily on mouse hover, here we are covering lazy initialization on focus
-////        if (!tabSet.isClientSide()) {
-////        	writer.writeAttribute(HTML.ONFOCUS_ATTR, "this.parentNode.parentNode.parentNode.onmouseover()", HTML.ONFOCUS_ATTR);
-////        }
-        writer.writeAttribute(HTML.ID_ATTR, clientId+ "tab"+ index, HTML.ID_ATTR); 
+        writer.writeAttribute(HTML.ID_ATTR, clientId+ "tab"+ index, HTML.ID_ATTR);
         writer.writeAttribute(HTML.TABINDEX_ATTR, "0", HTML.TABINDEX_ATTR);
         writer.writeAttribute(HTML.CLASS_ATTR, "yui-navdiv", HTML.CLASS_ATTR);           
         writer.startElement("em", tab);
@@ -463,34 +426,7 @@ public class TabSetRenderer extends Renderer{
             writer.writeAttribute(DOMUtils.DIFF_SUPPRESS, DOMUtils.DIFF_TRUE, null);
         }
         if (!Do.RENDER_CONTENT_DIV_BY_CLIENT_ID.equals(d)) {
-            //TODO Render out the tab appropriately
-            boolean isClientSide = tabSet.isClientSide();
-            //Render all tabs and their contents for clientSide tabset
-            if (isClientSide) {
-                Utils.renderChild(facesContext, tab);
-            } else {
-                //Render selected tab only for server side tab
-///            if (tabSet.getSelectedIndex() == index) {
-                final StringBuilder style = new StringBuilder();
-                //apply style on a tab body if it was modified by an animation 
-                Utils.iterateEffects(new AnimationBehavior.Iterator(tabSet) {
-                    public void next(String name, AnimationBehavior effectBehavior) {
-                        if (effectBehavior.getStyle() != null) {
-                            style.append(effectBehavior.getStyle());
-                            style.append(";");
-                        }
-                    }
-                });
-                if (style.toString().length() > 0) {
-                    writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
-                }
-                Utils.renderChild(facesContext, tab);
-///            } else {
-///            	//add hidden class to tabs that are not selected.
-///                writer.writeAttribute(HTML.CLASS_ATTR, "yui-hidden iceOutConStatActv", HTML.CLASS_ATTR);
-///                writer.write(HTML.NBSP_ENTITY);
-///            }
-            }
+            Utils.renderChild(facesContext, tab);
         }
         writer.endElement(HTML.DIV_ELEM);
     }
