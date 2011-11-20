@@ -59,7 +59,7 @@ public class DOMRenderKit extends RenderKitWrapper {
     private static final String MESSAGES_CLASS = 
             "org.icefaces.impl.renderkit.html_basic.MessagesRenderer";
     private ArrayList<ExternalScript> customScriptRenderers = new ArrayList<ExternalScript>();
-    private ArrayList<String> mandatoryResourceComponents = new ArrayList<String>();
+    private ArrayList<MandatoryResourceComponent> mandatoryResourceComponents = new ArrayList<MandatoryResourceComponent>();
 
     //Announce ICEfaces 2.0
     static {
@@ -110,8 +110,8 @@ public class DOMRenderKit extends RenderKitWrapper {
         if (mrc != null) {
             String compClassName = mrc.value();
             if (compClassName != null && compClassName.length() > 0) {
-                if (!mandatoryResourceComponents.contains(compClassName)) {
-                    mandatoryResourceComponents.add(compClassName);
+                if (!mandatoryResourceComponents.contains(mrc)) {
+                    mandatoryResourceComponents.add(mrc);
                 }
             }
         }
@@ -155,7 +155,7 @@ public class DOMRenderKit extends RenderKitWrapper {
         return customScriptRenderers;
     }
     
-    public List<String> getMandatoryResourceComponents() {
+    public List<MandatoryResourceComponent> getMandatoryResourceComponents() {
         return mandatoryResourceComponents;
     }
 

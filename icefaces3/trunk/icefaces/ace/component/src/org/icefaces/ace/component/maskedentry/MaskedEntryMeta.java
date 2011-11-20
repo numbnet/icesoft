@@ -51,7 +51,7 @@ public class MaskedEntryMeta extends HtmlInputTextMeta {
 	@Property(tlddoc="Name of the widget to access client side api")
     private String widgetVar;
 	
-	@Property(tlddoc="Masked input for seperating input texts with given pattern. \nThese mask definitions can be used: \na - Represents an alpha character (A-Z,a-z) \n9 - Represents a numeric character (0-9) \n* - Represents an alphanumeric character (A-Z,a-z,0-9)")
+	@Property(tlddoc="Masked input for separating input texts with given pattern. \nThese mask definitions can be used: \na - Represents an alpha character (A-Z,a-z) \n9 - Represents a numeric character (0-9) \n* - Represents an alphanumeric character (A-Z,a-z,0-9)")
 	private String mask;
 	
 	@Property(tlddoc="Seperator and placeholder in input")

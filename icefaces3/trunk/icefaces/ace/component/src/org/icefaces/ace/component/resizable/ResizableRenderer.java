@@ -41,7 +41,7 @@ import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.resizable.Resizable")
+@MandatoryResourceComponent(tagName="resizable", value="org.icefaces.ace.component.resizable.Resizable")
 public class ResizableRenderer extends CoreRenderer {
 
     @Override

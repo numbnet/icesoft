@@ -32,7 +32,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
-@MandatoryResourceComponent("com.icesoft.faces.component.inputrichtext.InputRichText")
+@MandatoryResourceComponent(tagName="inputRichText", value="com.icesoft.faces.component.inputrichtext.InputRichText")
 public class InputRichTextRenderer extends DomBasicInputRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)

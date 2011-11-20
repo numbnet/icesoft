@@ -42,7 +42,7 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.dnd.Droppable")
+@MandatoryResourceComponent(tagName="droppable", value="org.icefaces.ace.component.dnd.Droppable")
 public class DroppableRenderer extends CoreRenderer {
 
     @Override

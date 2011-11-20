@@ -42,7 +42,7 @@ import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.accordion.Accordion")
+@MandatoryResourceComponent(tagName="accordion", value="org.icefaces.ace.component.accordion.Accordion")
 public class AccordionRenderer extends CoreRenderer {
 
 	@Override

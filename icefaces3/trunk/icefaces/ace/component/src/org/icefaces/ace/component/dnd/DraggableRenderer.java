@@ -39,7 +39,7 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.dnd.Draggable")
+@MandatoryResourceComponent(tagName="draggable", value="org.icefaces.ace.component.dnd.Draggable")
 public class DraggableRenderer extends CoreRenderer {
 
     @Override

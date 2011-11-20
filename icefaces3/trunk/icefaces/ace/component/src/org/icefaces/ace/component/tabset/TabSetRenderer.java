@@ -35,7 +35,7 @@ import org.icefaces.impl.util.DOMUtils;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.tabset.TabSet")
+@MandatoryResourceComponent(tagName="tabSet", value="org.icefaces.ace.component.tabset.TabSet")
 public class TabSetRenderer extends Renderer{
     private static String YUI_TABSET_INDEX = "yti";
     public boolean getRendersChildren() {

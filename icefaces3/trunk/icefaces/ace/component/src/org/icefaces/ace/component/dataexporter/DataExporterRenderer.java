@@ -26,7 +26,7 @@ import javax.faces.event.ActionEvent;
 import java.util.Map;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.dataexporter.DataExporter")
+@MandatoryResourceComponent(tagName="dataExporter", value="org.icefaces.ace.component.dataexporter.DataExporter")
 public class DataExporterRenderer extends Renderer {
 
     @Override

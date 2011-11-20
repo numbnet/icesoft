@@ -40,7 +40,7 @@ import org.icefaces.render.MandatoryResourceComponent;
 
 import java.util.Map;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.tooltip.Tooltip")
+@MandatoryResourceComponent(tagName="tooltip", value="org.icefaces.ace.component.tooltip.Tooltip")
 public class TooltipRenderer extends CoreRenderer {
 
     @Override

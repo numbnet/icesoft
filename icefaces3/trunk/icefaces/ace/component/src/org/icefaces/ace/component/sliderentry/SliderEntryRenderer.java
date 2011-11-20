@@ -43,7 +43,7 @@ import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.event.ValueChangeEvent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.sliderentry.SliderEntry")
+@MandatoryResourceComponent(tagName="sliderEntry", value="org.icefaces.ace.component.sliderentry.SliderEntry")
 public class SliderEntryRenderer extends CoreRenderer{
 
     @Override

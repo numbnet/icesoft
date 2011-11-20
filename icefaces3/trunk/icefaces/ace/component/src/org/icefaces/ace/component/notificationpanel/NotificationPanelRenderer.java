@@ -37,7 +37,7 @@ import javax.faces.context.ResponseWriter;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.notificationpanel.NotificationPanel")
+@MandatoryResourceComponent(tagName="notificationPanel", value="org.icefaces.ace.component.notificationpanel.NotificationPanel")
 public class NotificationPanelRenderer extends CoreRenderer {
 
     @Override

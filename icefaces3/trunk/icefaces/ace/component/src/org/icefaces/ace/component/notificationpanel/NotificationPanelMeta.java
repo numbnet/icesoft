@@ -33,7 +33,7 @@ import javax.faces.application.ResourceDependency;
         componentFamily = "org.icefaces.ace.component.NotificationPanel",
         componentType = "org.icefaces.ace.component.NotificationPanel",
         rendererType = "org.icefaces.ace.component.NotificationPanelRenderer",
-        tlddoc = "NotificationPanel displayes a multipurpose fixed positioned panel for notification. Any group " +
+        tlddoc = "NotificationPanel displays a multipurpose fixed positioned panel for notification. Any group " +
                  "of JSF content can be placed inside notification panel.")
 @ResourceDependencies({
         @ResourceDependency(library = "icefaces.ace", name = "notificationpanel/notificationpanel.css"),

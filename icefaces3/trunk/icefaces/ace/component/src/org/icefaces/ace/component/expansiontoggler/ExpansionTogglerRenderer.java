@@ -40,7 +40,7 @@ import org.icefaces.ace.model.table.TreeDataModel;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.expansiontoggler.ExpansionToggler")
+@MandatoryResourceComponent(tagName="expansionToggler", value="org.icefaces.ace.component.expansiontoggler.ExpansionToggler")
 public class ExpansionTogglerRenderer extends CoreRenderer {
 
     @Override

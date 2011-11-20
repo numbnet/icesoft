@@ -37,4 +37,5 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MandatoryResourceComponent {
     String value();
+    String tagName() default "";
 }

@@ -40,7 +40,7 @@ import org.icefaces.ace.component.menuitem.MenuItem;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.contextmenu.ContextMenu")
+@MandatoryResourceComponent(tagName="contextMenu", value="org.icefaces.ace.component.contextmenu.ContextMenu")
 public class ContextMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {

@@ -42,7 +42,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.menubar.Menubar")
+@MandatoryResourceComponent(tagName="menubar", value="org.icefaces.ace.component.menubar.Menubar")
 public class MenubarRenderer extends BaseMenuRenderer {
 
     private final static Logger logger = Logger.getLogger(MenubarRenderer.class.getName());

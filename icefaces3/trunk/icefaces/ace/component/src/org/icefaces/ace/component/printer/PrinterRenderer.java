@@ -37,7 +37,7 @@ import javax.faces.context.ResponseWriter;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.printer.Printer")
+@MandatoryResourceComponent(tagName="printer", value="org.icefaces.ace.component.printer.Printer")
 public class PrinterRenderer extends CoreRenderer {
 
 	@Override

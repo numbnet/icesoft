@@ -36,7 +36,7 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.dialog.Dialog")
+@MandatoryResourceComponent(tagName="dialog", value="org.icefaces.ace.component.dialog.Dialog")
 public class DialogRenderer extends CoreRenderer {
 
     @Override
