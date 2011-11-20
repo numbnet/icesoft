@@ -42,7 +42,7 @@ import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.ajax.AjaxBehavior")
+@MandatoryResourceComponent(tagName="ajax", value="org.icefaces.ace.component.ajax.AjaxBehavior")
 @FacesBehaviorRenderer(rendererType="org.icefaces.ace.component.AjaxBehaviorRenderer")
 public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 

@@ -43,7 +43,7 @@ import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.Map;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.roweditor.RowEditor")
+@MandatoryResourceComponent(tagName="rowEditor", value="org.icefaces.ace.component.roweditor.RowEditor")
 public class RowEditorRenderer extends CoreRenderer {
 
     @Override

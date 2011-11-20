@@ -41,7 +41,7 @@ import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.menubutton.MenuButton")
+@MandatoryResourceComponent(tagName="menuButton", value="org.icefaces.ace.component.menubutton.MenuButton")
 public class MenuButtonRenderer extends BaseMenuRenderer {
 
    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {

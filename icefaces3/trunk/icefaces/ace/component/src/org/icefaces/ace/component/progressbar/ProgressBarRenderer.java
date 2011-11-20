@@ -42,7 +42,7 @@ import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.progressbar.ProgressBar")
+@MandatoryResourceComponent(tagName="progressBar", value="org.icefaces.ace.component.progressbar.ProgressBar")
 public class ProgressBarRenderer extends CoreRenderer {
 
     @Override

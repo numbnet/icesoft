@@ -37,7 +37,7 @@ import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.confirmationdialog.ConfirmationDialog")
+@MandatoryResourceComponent(tagName="confirmationDialog", value="org.icefaces.ace.component.confirmationdialog.ConfirmationDialog")
 public class ConfirmationDialogRenderer extends CoreRenderer {
 
 	@Override

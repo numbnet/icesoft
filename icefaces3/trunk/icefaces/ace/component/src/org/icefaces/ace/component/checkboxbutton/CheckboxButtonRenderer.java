@@ -40,7 +40,7 @@ import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.ace.renderkit.CoreRenderer;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.checkboxbutton.CheckboxButton")
+@MandatoryResourceComponent(tagName="checkboxButton", value="org.icefaces.ace.component.checkboxbutton.CheckboxButton")
 public class CheckboxButtonRenderer extends CoreRenderer {
 
      List <UIParameter> uiParamChildren;

@@ -27,6 +27,7 @@ import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
 import org.icefaces.impl.renderkit.DOMRenderKit;
 import org.icefaces.render.ExternalScript;
+import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.Resource;
@@ -131,13 +132,17 @@ public class BridgeSetup implements SystemEventListener {
             }
 
             Set<ResourceDependency> addedResDeps = new HashSet<ResourceDependency>();
-            List<String> mandatoryResourceComponents = drk.getMandatoryResourceComponents();
+            List<MandatoryResourceComponent> mandatoryResourceComponents = drk.getMandatoryResourceComponents();
             String resourceConfig = EnvUtils.getMandatoryResourceConfig(context);
             //pad with spaces to allow contains checking
             String resourceConfigPad = " " + resourceConfig + " ";
-            for (String compClassName : mandatoryResourceComponents) {
+            for (MandatoryResourceComponent mrc : mandatoryResourceComponents) {
+                String compClassName = mrc.value();
                 if (!"all".equalsIgnoreCase(resourceConfig)) {
-                    if (!resourceConfigPad.contains(" " + compClassName + " ")) {
+                    String tagName = mrc.tagName();
+                    if (!resourceConfigPad.contains(" " + compClassName + " ") &&
+                        (tagName != null && tagName.length() > 0 &&
+                         !resourceConfigPad.contains(" " + tagName + " "))) {
                         continue;
                     }
                 }

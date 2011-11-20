@@ -35,7 +35,7 @@ import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.celleditor.CellEditor")
+@MandatoryResourceComponent(tagName="cellEditor", value="org.icefaces.ace.component.celleditor.CellEditor")
 public class CellEditorRenderer extends CoreRenderer {
 
     @Override

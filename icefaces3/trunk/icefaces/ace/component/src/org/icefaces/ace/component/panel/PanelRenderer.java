@@ -40,7 +40,7 @@ import org.icefaces.ace.util.Utils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.panel.Panel")
+@MandatoryResourceComponent(tagName="panel", value="org.icefaces.ace.component.panel.Panel")
 public class PanelRenderer extends CoreRenderer {
 
     @Override

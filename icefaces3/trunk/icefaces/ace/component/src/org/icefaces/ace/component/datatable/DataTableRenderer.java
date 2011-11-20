@@ -57,7 +57,7 @@ import javax.faces.model.SelectItem;
 import java.io.IOException;
 import java.util.*;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.datatable.DataTable")
+@MandatoryResourceComponent(tagName="dataTable", value="org.icefaces.ace.component.datatable.DataTable")
 public class DataTableRenderer extends CoreRenderer {
     @Override
 	public void decode(FacesContext context, UIComponent component) {

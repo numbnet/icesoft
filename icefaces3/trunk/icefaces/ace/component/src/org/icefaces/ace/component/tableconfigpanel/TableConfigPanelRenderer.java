@@ -14,7 +14,7 @@ import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.List;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.tableconfigpanel.TableConfigPanel")
+@MandatoryResourceComponent(tagName="tableConfigPanel", value="org.icefaces.ace.component.tableconfigpanel.TableConfigPanel")
 public class TableConfigPanelRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {

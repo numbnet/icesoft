@@ -39,7 +39,7 @@ import org.icefaces.ace.util.Utils;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
-@MandatoryResourceComponent("org.icefaces.ace.component.maskedentry.MaskedEntry")
+@MandatoryResourceComponent(tagName="maskedEntry", value="org.icefaces.ace.component.maskedentry.MaskedEntry")
 public class MaskedEntryRenderer extends InputRenderer {
 	
 	@Override

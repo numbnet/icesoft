@@ -37,7 +37,7 @@ import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.ace.renderkit.CoreRenderer;
 
 
-@MandatoryResourceComponent("org.icefaces.ace.component.pushbutton.PushButton")
+@MandatoryResourceComponent(tagName="pushButton", value="org.icefaces.ace.component.pushbutton.PushButton")
 public class PushButtonRenderer extends CoreRenderer {
 
     List <UIParameter> uiParamChildren;

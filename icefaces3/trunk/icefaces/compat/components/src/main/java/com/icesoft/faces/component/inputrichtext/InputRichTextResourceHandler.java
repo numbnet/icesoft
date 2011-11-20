@@ -171,10 +171,10 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
     }
 
     public Resource createResource(String resourceName, String libraryName, String contentType) {
-        if (codeResource.localPath.equals(resourceName)) {
+        if (codeResource != null && codeResource.localPath != null && codeResource.localPath.equals(resourceName)) {
             //serving up the mapping as a referenced JS resource
             return codeResource;
-        } else if (cssResources.containsKey(resourceName)) {
+        } else if (cssResources != null && cssResources.containsKey(resourceName)) {
             //serve the modified CSS resources
             return cssResources.get(resourceName);
         } else {
