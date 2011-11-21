@@ -34,6 +34,8 @@
     <property name="lib.dir" location="${icefaces.base.dir}/lib"/>
     <property name="mojarra.lib.dir" location="${lib.dir}/mojarra"/>
     <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
+    <property name="lib.ace.dir" location="${lib.dir}/ace"/>
+    <property name="lib.ace.dir.includes" value=""/>
     <property name="lib.compat.dir" location="${lib.dir}/compat"/>
     <property name="lib.compat.dir.includes" value=""/>
     <property name="lib.application.dir" location="./lib"/>
@@ -81,6 +83,10 @@
 
     <patternset id="lib.distribute.jsf">
         <exclude name="*.jar" unless="jsf"/>
+    </patternset>
+
+    <patternset id="lib.distribute.ace" includes="itext-2.1.7.jar poi-3.7.jar ${lib.distribute.ace.includes}">
+        <exclude name="*.jar"                   unless="ace"/>
     </patternset>
 
     <patternset id="lib.compile.compat" includes="commons-logging.jar ${lib.compile.compat.includes}">
@@ -156,6 +162,9 @@
              webxml="${web.dir}/WEB-INF/web.xml">
             <lib dir="${lib.dir}">
                 <patternset refid="lib.distribute"/>
+            </lib>
+            <lib dir="${lib.ace.dir}">
+                <patternset refid="lib.distribute.ace"/>
             </lib>
             <lib dir="${lib.compat.dir}">
                 <patternset refid="lib.distribute.compat"/>
