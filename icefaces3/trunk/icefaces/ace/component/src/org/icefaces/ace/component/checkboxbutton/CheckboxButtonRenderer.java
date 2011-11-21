@@ -62,6 +62,8 @@ public class CheckboxButtonRenderer extends CoreRenderer {
 			    boolean submittedValue = isChecked(hiddenValue);
 			    checkbox.setSubmittedValue(submittedValue);  
 	        }
+			
+			decodeBehaviors(facesContext, checkbox);
     }
 
 
@@ -158,8 +160,9 @@ public class CheckboxButtonRenderer extends CoreRenderer {
                     entry("checked", isChecked).
                     entry("disabled", checkbox.isDisabled()).
                     entryNonNullValue("tabindex", tabindex).
-                    entry("label", label).
-                endMap().
+                    entry("label", label);
+					encodeClientBehaviors(facesContext, checkbox, jb);
+                jb.endMap().
                 beginMap().
                     entry("singleSubmit", checkbox.isSingleSubmit()).
                     entry("hashCode", sb.toString().hashCode()).

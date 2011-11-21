@@ -93,6 +93,13 @@ ice.ace.checkboxbutton = {
              	YAHOO.log("single Submit is false doesn't go to server");
                 //no submit!! already updated the hidden field
             }
+
+			var behaviors = context.getJSProps().behaviors;
+			if (behaviors) {
+				if (behaviors.click) {
+					behaviors.click.call(this);
+				}
+			}
 		};
 
 		button.on("checkedChange", onCheckedChange);

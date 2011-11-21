@@ -24,6 +24,9 @@ import javax.faces.application.ResourceDependency;
 import org.icefaces.ace.meta.baseMeta.UISelectBooleanMeta;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 @Component(
         tagName        = "checkboxButton",
@@ -50,7 +53,9 @@ import org.icefaces.ace.meta.annotation.Property;
         @ResourceDependency(library="icefaces.ace", name="checkboxbutton/checkboxbutton.css"),
         @ResourceDependency(name="button/assets/button-core.css",library="yui/2_8_2")
 })
-
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="click", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+})
 public class CheckboxButtonMeta extends UISelectBooleanMeta {
 
     @Property(tlddoc="A label to be printed either on the buttton or to the left of it "+
