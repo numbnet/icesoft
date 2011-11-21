@@ -48,6 +48,7 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
     private String extensionMapping;
     private HashMap<String, ResourceEntry> cssResources = new HashMap();
     private ResourceEntry codeResource;
+    private String prefixMapping;
 
     public InputRichTextResourceHandler(ResourceHandler handler) {
         this.handler = handler;
@@ -94,11 +95,15 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
     }
 
     private void calculateExtensionMapping() {
-        if (extensionMapping == null) {
+        if (extensionMapping == null || prefixMapping == null) {
             Resource resource = super.createResource(INPUTRICHTEXT_CKEDITOR_DIR + CKEDITOR_JS);
             String path = resource.getRequestPath();
-            int position = path.lastIndexOf(".");
-            extensionMapping = position < 0 ? "" : path.substring(position);
+
+            int extensionPosition = path.indexOf(".js");
+            extensionMapping = extensionPosition < 0 ? "" : path.substring(extensionPosition + 3/*".js".length()*/);
+
+            int prefixPosition = path.indexOf(ResourceHandler.RESOURCE_IDENTIFIER + "/" + INPUTRICHTEXT_CKEDITOR_DIR);
+            prefixMapping = prefixPosition < 0 ? "" : path.substring(0, prefixPosition);
         }
     }
 
@@ -201,8 +206,7 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
     }
 
     public String toRequestPath(FacesContext context, String localPath) {
-        String contextPath = context.getExternalContext().getRequestContextPath();
-        return contextPath + ResourceHandler.RESOURCE_IDENTIFIER + "/" + localPath + extensionMapping;
+        return prefixMapping + "/" + ResourceHandler.RESOURCE_IDENTIFIER + "/" + localPath + extensionMapping;
     }
 
     private String toRelativeLocalDir(String localPath) {
