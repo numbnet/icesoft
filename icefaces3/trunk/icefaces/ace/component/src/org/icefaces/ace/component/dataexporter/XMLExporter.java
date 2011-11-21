@@ -131,7 +131,7 @@ public class XMLExporter extends Exporter {
 		for (int i = 0; i < footers.size(); i++) {
 			String footer = footers.get(i);
 			
-			if (!footer.isEmpty())
+			if (footer.length() > 0)
 				addColumnValue(builder, footer, headers.get(i));
 		}
 	}	

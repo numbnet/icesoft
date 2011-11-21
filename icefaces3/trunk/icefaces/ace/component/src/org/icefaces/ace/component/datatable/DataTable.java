@@ -514,7 +514,7 @@ public class DataTable extends DataTableBase {
         HashMap<String, String> map = new HashMap<String, String>();
         for (Column c : getColumns()) {
             String value = c.getFilterValue();
-            if (value != null && !value.isEmpty())
+            if (value != null && (value.length() > 0) )
                 map.put(ComponentUtils.resolveField(c.getValueExpression("filterBy")), value);
         }
         return map;
