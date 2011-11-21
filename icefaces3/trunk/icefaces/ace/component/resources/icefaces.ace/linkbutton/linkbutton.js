@@ -112,6 +112,12 @@ ice.ace.linkButton = {
             //YAHOO.log("Full Submit on element: " + divRoot);
             ice.s(e, divRoot, params );
         }
+		var behaviors = JSContext.getJSProps().behaviors;
+		if (behaviors) {
+			if (behaviors.click) {
+				behaviors.click.call(this);
+			}
+		}
         // If there are actionListeners, don't do default behaviour
         if (doAction) {
             return false;

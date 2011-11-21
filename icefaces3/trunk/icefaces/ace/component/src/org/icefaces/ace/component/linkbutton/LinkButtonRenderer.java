@@ -48,8 +48,8 @@ public class LinkButtonRenderer extends CoreRenderer {
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
+		LinkButton link  = (LinkButton) uiComponent;
         if (requestParameterMap.containsKey("ice.event.captured")) {
-            LinkButton link  = (LinkButton) uiComponent;
             String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
             String clientId = link.getClientId();
             if (clientId.equals(source)) {
@@ -58,6 +58,8 @@ public class LinkButtonRenderer extends CoreRenderer {
                 } catch (Exception e) {}
             }
         }
+		
+		decodeBehaviors(facesContext, link);
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
@@ -171,7 +173,9 @@ public class LinkButtonRenderer extends CoreRenderer {
             jsonBuilder.entry("tabindex", tabindex);
         }
         jsonBuilder.entry("label", (String) linkButton.getValue());
-        String jsProps = jsonBuilder.entry("disabled", disabled).endMap().toString();
+        jsonBuilder.entry("disabled", disabled);
+		encodeClientBehaviors(facesContext, linkButton, jsonBuilder);
+		String jsProps = jsonBuilder.endMap().toString();
 
         JSONBuilder jBuild = JSONBuilder.create().
                                 beginMap().
