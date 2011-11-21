@@ -19,9 +19,10 @@
  * Contributor(s): _____________________.
  */
 
-package org.icefaces.samples.showcase.example.ace.button;
+package org.icefaces.samples.showcase.example.ace.pushButton;
 
-
+import org.icefaces.samples.showcase.metadata.annotation.Menu;
+import org.icefaces.samples.showcase.metadata.annotation.MenuLink;                                                                       
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -36,36 +37,43 @@ import javax.faces.event.ActionEvent;
 import java.io.IOException;
 import java.io.Serializable;
 
+
 @ComponentExample(
-        parent = ButtonBean.BEAN_NAME,
-        title = "example.ace.button.link.title",
-        description = "example.ace.button.link.description",
-        example = "/resources/examples/ace/button/linkbutton.xhtml"
+        title = "example.ace.pushButton.title",
+        description = "example.ace.pushButton.description",
+        example = "/resources/examples/ace/pushButton/pushbutton.xhtml"
 )
 @ExampleResources(
         resources ={
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
-                    title="linkbutton.xhtml",
-                    resource = "/resources/examples/ace/button/linkbutton.xhtml"),
+                    title="pushbutton.xhtml",
+                    resource = "/resources/examples/ace/pushButton/pushbutton.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="LinkButtonBean.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/"+
-                                "example/ace/button/LinkButtonBean.java")
+                    title="PushButtonBean.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/pushButton/PushButtonBean.java")
         }
 )
-@ManagedBean(name=LinkButtonBean.BEAN_NAME)
+@Menu(
+	title = "menu.ace.pushButton.subMenu.title",
+	menuLinks = 
+                {
+                    @MenuLink(title = "menu.ace.pushButton.subMenu.main", isDefault = true,
+                                     exampleBeanName = PushButtonBean.BEAN_NAME)
+                }
+)
+
+@ManagedBean(name= PushButtonBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean>
+public class PushButtonBean extends ComponentExampleImpl<PushButtonBean>
         implements Serializable {
 
-    public static final String BEAN_NAME = "linkButton";
+    public static final String BEAN_NAME = "pushButton";
 
+    private String exampleValue = "";
+    private String listenerNavigation = "showcase.jsf?grp=aceMenu&exp=accordionPanelBean";
     private String navActionValue = "overview";
-    private String staticNavigation = "showcase.jsf?grp=aceMenu&exp=confirmationDialogBean";
-    private String listenerNavigation = "showcase.jsf?grp=aceMenu&exp=buttonBean";
-    private String requiredField =  "";
 
     public void addMessage() {
         FacesUtils.addInfoMessage("This button didn't submit or validate the rest of the form.");
@@ -81,6 +89,8 @@ public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean>
         }
     }
 
+    public String getNavAction() { return navAction(); }
+
     public String navAction() {
         if (navActionValue.equals("overview")) return "buttonBean";
         if (navActionValue.equals("checkbox")) return "checkboxButton";
@@ -88,28 +98,12 @@ public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean>
         return "linkButton";
     }
 
-    public String getNavAction() {
-        return navAction();
-    }
-
-    public String getRequiredField() {
-        return requiredField;
-    }
-
-    public void setRequiredField(String requiredField) {
-        this.requiredField = requiredField;
-    }
-
-    public void setNavAction(String navAction) {
-        this.navActionValue = navAction;
-    }
-
     public String getNavActionValue() {
         return navActionValue;
     }
 
-    public void setNavActionValue(String navAction) {
-        this.navActionValue = navAction;
+    public void setNavActionValue(String navActionValue) {
+        this.navActionValue = navActionValue;
     }
 
     public String getListenerNavigation() {
@@ -120,15 +114,15 @@ public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean>
         this.listenerNavigation = listenerNavigation;
     }
 
-    public String getStaticNavigation() {
-        return staticNavigation;
+    public String getExampleValue() {
+        return exampleValue;
     }
 
-    public void setStaticNavigation(String staticNavigation) {
-        this.staticNavigation = staticNavigation;
+    public void setExampleValue(String exampleValue) {
+        this.exampleValue = exampleValue;
     }
 
-    public LinkButtonBean() {
-        super(LinkButtonBean.class);
+    public PushButtonBean() {
+        super(PushButtonBean.class);
     }
 }

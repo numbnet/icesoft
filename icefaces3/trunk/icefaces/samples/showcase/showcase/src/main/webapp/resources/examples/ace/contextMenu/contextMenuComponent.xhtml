@@ -36,15 +36,18 @@
 
     <ui:define name="example">
         <h:form>
-            <p><i>Note the menu items are just placeholders and do not perform any functionality.</i></p>
             
-            <h:panelGrid columns="2" cellspacing="10">
-                <h:outputLabel for="intro" value="Clickable:"/>
-                <h:outputText id="intro" value="Right-click on this sentence or any of the widgets below to display a component specific menu."/>
-                
-                <h:outputLabel for="button" value="Clickable:"/>
-                <h:commandButton id="button" value="Submit Button"/>
-            </h:panelGrid>
+            <ace:panel footer="#{contextMenuComponent.actionDescription}">
+                <h:panelGrid>
+                    <h:panelGroup>
+                        <h:outputText id="intro" value=" Right click on this sentence to display a component specific menu"/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel for="button" value="Right click on button to open context menu:"/>
+                        <h:commandButton id="button" value="Submit Button"/>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </ace:panel>
             
             <ace:contextMenu for="intro">
                 <ace:menuitem value="Copy" icon="ui-icon ui-icon-disk" style="font-size: small;"
@@ -71,8 +74,6 @@
                     <f:param name="actionType" value="Page Refresh" />
                 </ace:menuitem>
             </ace:contextMenu>
-            
-            <h:outputText value="#{contextMenuComponent.actionDescription}"/>
         </h:form>
     </ui:define>
 </ui:composition>

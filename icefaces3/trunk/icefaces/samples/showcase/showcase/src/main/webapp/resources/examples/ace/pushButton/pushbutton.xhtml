@@ -31,8 +31,8 @@
     
     <ui:param name="title" value="#{msgs[pushButton.title]}"/>
     <ui:param name="description" value="#{msgs[pushButton.description]}"/>
-    <ui:param name="subMenuTitle" value="#{msgs[buttonBean.subMenuTitle]}"/>
-    <ui:param name="subMenuLinks" value="#{buttonBean.subMenuLinks}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[pushButton.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{pushButton.subMenuLinks}"/>
     <ui:param name="resourceValue" value="#{pushButton.exampleResource}"/>
 
     <ui:define name="example">
@@ -60,7 +60,7 @@
                     <ace:pushButton value="Action Navigation"
                                     action="#{pushButton.navAction}">
                         <f:param name="grp" value="aceMenu"/>
-                        <f:param name="exp" value="#{pushButton.navAction}" />
+                        <f:param name="exp" value="accordionPanelBean" />
                     </ace:pushButton>
                     Required Field: <h:inputText required="true"
                                                  styleClass="full-width"

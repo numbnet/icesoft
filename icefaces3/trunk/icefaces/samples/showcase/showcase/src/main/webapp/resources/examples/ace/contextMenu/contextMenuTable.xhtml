@@ -36,7 +36,6 @@
 
     <ui:define name="example">
         <h:form>
-            <p><i>Right-click on the data table below to optionally add or restore items in the list.</i></p>
             
            <ace:dataTable id="carTable"
                           value="#{dataTableDynamic.carsData}"
@@ -92,9 +91,9 @@
             </ace:dataTable>
             
             <ace:contextMenu for="carTable">
-                <ace:menuitem value="Restore Cars" icon="ui-icon ui-icon-arrowrefresh-1-w"
+                <ace:menuitem value="Undo All" icon="ui-icon ui-icon-arrowrefresh-1-w"
                               actionListener="#{dataTableDynamic.restoreDefault}"/>
-                <ace:menuitem value="Add #{dataTableDynamic.bulkAddNumber} Cars" icon="ui-icon ui-icon-disk"
+                <ace:menuitem value="Add Cars" icon="ui-icon ui-icon-disk"
                               actionListener="#{dataTableDynamic.bulkAdd}"/>  
             </ace:contextMenu>
         </h:form>
