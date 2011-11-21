@@ -100,6 +100,13 @@ ice.ace.pushbutton = {
                 YAHOO.log("single Submit is false for clientId=" + spanId);
                 ice.s(e, divRoot, params);
             }
+			
+		var behaviors = context.getJSProps().behaviors;
+		if (behaviors) {
+			if (behaviors.click) {
+				behaviors.click.call(this);
+			}
+		}
         };
 
         buttonRoot = document.getElementById(spanId);
