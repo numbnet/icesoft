@@ -25,6 +25,10 @@ import org.icefaces.ace.meta.baseMeta.UICommandMeta;
 import org.icefaces.ace.meta.annotation.Implementation;
 import org.icefaces.ace.meta.annotation.Property;
 
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
+
 @Component(
         tagName         = "linkButton",
         componentClass  = "org.icefaces.ace.component.linkbutton.LinkButton",
@@ -45,7 +49,9 @@ import org.icefaces.ace.meta.annotation.Property;
         @ResourceDependency(library="icefaces.ace", name="linkbutton/linkbutton.css"),
 		@ResourceDependency(name="button/assets/button-core.css",library="yui/2_8_2")
 })
-
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="click", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+})
 public class LinkButtonMeta extends UICommandMeta {
 
     @Property(tlddoc = "href of link. If specified and actionListener is absent, linkButton works " +
