@@ -19,23 +19,28 @@ package org.icefaces.ace.component.fileentry;
 
 import org.icefaces.util.EnvUtils;
 import org.icefaces.impl.event.FormSubmit;
+import org.icefaces.impl.context.IceFacesContextFactory;
 
 import javax.faces.event.SystemEventListener;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIForm;
 import java.util.Iterator;
+import java.util.Map;
 import java.io.IOException;
 
 public class FileEntryFormSubmit implements SystemEventListener {
     static final String IFRAME_ID = "hiddenIframe";
     private static final String ID_SUFFIX = "_captureFileOnsubmit";
+    private static final String AJAX_FORCED_VIEWS = 
+            IceFacesContextFactory.AJAX_FORCED_VIEWS;
     private boolean partialStateSaving;
 
     public FileEntryFormSubmit()  {
@@ -67,6 +72,7 @@ public class FileEntryFormSubmit implements SystemEventListener {
             return;
         }
         
+        forceAjaxOnView(context);
         form.getAttributes().put(FormSubmit.DISABLE_CAPTURE_SUBMIT, "true");
 
         FormScriptWriter scriptWriter = new FormScriptWriter(
@@ -109,5 +115,16 @@ public class FileEntryFormSubmit implements SystemEventListener {
 
     public boolean isListenerForSource(Object source) {
         return source instanceof UIForm;
+    }
+    
+    private void forceAjaxOnView(FacesContext facesContext)  {
+        //ideally we would force this only for certain views
+        //unfortunately the JSF view determinateion logic is not exposed
+        //so we can only enable for a given session
+        //Once the FileEntry component is used, all subsequent multipart
+        //posts will have "Faces-Request: partial/ajax" set 
+        ExternalContext externalContext = facesContext.getExternalContext();
+        Map sessionMap = externalContext.getSessionMap();
+        sessionMap.put(AJAX_FORCED_VIEWS, AJAX_FORCED_VIEWS);
     }
 }
