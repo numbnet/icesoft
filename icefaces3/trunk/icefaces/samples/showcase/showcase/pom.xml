@@ -26,18 +26,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.icefaces.samples</groupId>
-        <artifactId>icefaces-showcase</artifactId>
-        <version>3.0.0.RC1</version>
+        <artifactId>samples-parent</artifactId>
+        <version>2.1.0.BETA2</version>
     </parent>
 
-    <artifactId>comp-suite</artifactId>
+    <artifactId>icefaces-showcase</artifactId>
     <packaging>war</packaging>
     <name>ICEfaces 3 Showcase</name>
     <url>http://www.icefaces.org/</url>
     <version>3.0.0.RC1</version>
     <properties>
         <private.demo>true</private.demo>
-        <icefaces.version>3.0.0.RC1</icefaces.version>
+<!--         <icefaces.version>2.1.0.BETA2</icefaces.version> -->
         <jsf.version>2.1.4</jsf.version>
     </properties>
     <repositories>
