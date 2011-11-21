@@ -56,6 +56,8 @@ public class PushButtonRenderer extends CoreRenderer {
              	   }
                 } catch (Exception e) {}
              }
+			 
+			 decodeBehaviors(facesContext, pushButton);
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
@@ -142,6 +144,7 @@ public class PushButtonRenderer extends CoreRenderer {
         if (tabindex != null) {
             jBuild.entry("tabindex", tabindex);
         }
+		encodeClientBehaviors(facesContext, pushButton, jBuild);
         builder = jBuild.endMap().toString();
 
         StringBuilder sb = new StringBuilder();
