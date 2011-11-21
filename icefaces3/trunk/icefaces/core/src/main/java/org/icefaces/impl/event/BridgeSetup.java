@@ -97,7 +97,9 @@ public class BridgeSetup implements SystemEventListener {
 
         String version = EnvUtils.isUniqueResourceURLs(context) ? String.valueOf(hashCode()) : null;
 
-        root.addComponentResource(context, new JavascriptResourceOutput(resourceHandler, "jsf.js", "javax.faces", version), "head");
+        if (!containsResource("jsf.js", "javax.faces", context, "head")) {
+            root.addComponentResource(context, new JavascriptResourceOutput(resourceHandler, "jsf.js", "javax.faces", version), "head");
+        }
         if (EnvUtils.isICEpushPresent()) {
             root.addComponentResource(context, new JavascriptResourceOutput(resourceHandler, "icepush.js", null, version), "head");
         }
@@ -141,8 +143,8 @@ public class BridgeSetup implements SystemEventListener {
                 if (!"all".equalsIgnoreCase(resourceConfig)) {
                     String tagName = mrc.tagName();
                     if (!resourceConfigPad.contains(" " + compClassName + " ") &&
-                        (tagName != null && tagName.length() > 0 &&
-                         !resourceConfigPad.contains(" " + tagName + " "))) {
+                            (tagName != null && tagName.length() > 0 &&
+                                    !resourceConfigPad.contains(" " + tagName + " "))) {
                         continue;
                     }
                 }
@@ -355,8 +357,24 @@ public class BridgeSetup implements SystemEventListener {
                         ". Resource name: " + name + ", library: " + library);
             }
         } else {
-            root.addComponentResource(facesContext, newResourceOutput(resourceHandler, rendererType, name, library, version), target);
+            if (!containsResource(name, library, facesContext, target)) {
+                root.addComponentResource(facesContext, newResourceOutput(resourceHandler, rendererType, name, library, version), target);
+            }
         }
+    }
+
+    private static boolean containsResource(String name, String library, FacesContext context, String target) {
+        List<UIComponent> componentResources = context.getViewRoot().getComponentResources(context, target);
+        for (UIComponent c : componentResources) {
+            Map<String, Object> attributes = c.getAttributes();
+            String resourceName = (String) attributes.get("name");
+            String resourceLibrary = (String) attributes.get("library");
+            if (name.equals(resourceName) && library.equals(resourceLibrary)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static UIComponent newResourceOutput(ResourceHandler resourceHandler, String rendererType, String name, String library, String version) {
