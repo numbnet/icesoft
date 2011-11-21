@@ -21,6 +21,9 @@
 
 package org.icefaces.samples.showcase.example.ace.button;
 
+import org.icefaces.samples.showcase.example.ace.pushButton.PushButtonBean;
+import org.icefaces.samples.showcase.example.ace.linkButton.LinkButtonBean;
+import org.icefaces.samples.showcase.example.ace.checkboxButton.CheckboxButtonBean;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 

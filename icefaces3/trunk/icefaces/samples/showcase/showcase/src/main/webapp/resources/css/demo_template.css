@@ -26,9 +26,22 @@
 
 body {
     font-family: "Arial","Helvetica",sans-serif;
-    font-size: 12pt;
     text-align: center;  /* IE 6 Fix */
 }
+
+p {
+    font-size: 10pt;
+    text-align: left;
+    line-height: 20px;
+}
+
+p+ul {
+    font-size: 10pt;
+    text-align: left;
+    margin-left: 20px;
+    line-height: 20px;
+}
+
 table { font-size: 1.0em; }
 .full-width { width:100%; }
 .text-center { text-align:center; }
@@ -75,8 +88,6 @@ a:link, a:visited {
 	font-size: 1px;
 	color: #fff;
 }
- 
-
 
 /* nav menu. */
 #main-nav {
@@ -228,12 +239,13 @@ a:link, a:visited {
 }
 .example .instance {
   	background-color: #F5F5F1;
+                font-size: 10pt;
 	padding: 8px 6px 6px 12px;    
 	margin: 8px;
 	line-height: 1.5; /* Double spaced inline elements */
 	_height: 65px; /* IE6 Height Behaves like min-height */
 	min-height: 65px;
-    -moz-border-radius: 5px 5px 5px 5px;
+                -moz-border-radius: 5px 5px 5px 5px;
 	border-radius:5px;
 }
 .instance .yui-content div { margin: 6px; }
@@ -407,4 +419,4 @@ code { overflow-x:auto; } /* Needed to overflow IE 6 */
 .java_plain { color: rgb(0,0,0); }
 .java_literal { color: rgb(188,0,0); }
 .java_javadoc_tag { color: rgb(147,147,147); background-color: rgb(247,247,247); font-style: italic; font-weight: bold; }
-.java_separator { color: rgb(0,33,255); }                                                           
+.java_separator { color: rgb(0,33,255); }

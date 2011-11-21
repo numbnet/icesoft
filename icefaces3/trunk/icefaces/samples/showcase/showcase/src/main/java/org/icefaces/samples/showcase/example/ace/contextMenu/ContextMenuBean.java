@@ -26,13 +26,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @ComponentExample(
         title = "example.ace.contextMenu.title",
@@ -58,8 +52,6 @@ import java.util.Date;
 	        @MenuLink(title = "menu.ace.contextMenu.subMenu.main",
 	                isDefault = true,
                     exampleBeanName = ContextMenuBean.BEAN_NAME),
-	        @MenuLink(title = "menu.ace.contextMenu.subMenu.global",
-                    exampleBeanName = ContextMenuGlobal.BEAN_NAME),
 	        @MenuLink(title = "menu.ace.contextMenu.subMenu.component",
                     exampleBeanName = ContextMenuComponent.BEAN_NAME),
 	        @MenuLink(title = "menu.ace.contextMenu.subMenu.table",

@@ -38,10 +38,9 @@
 
     <ui:define name="example">
         <h:form>
-            <p>Right-click anywhere on this page to display the global menu.</p>
-            <p>Normally such a menu would be used for application-wide functionality, instead of on a per-component basis.</p>
-            <br/>
-            <p><i>Note the menu items are just placeholders and do not perform any functionality.</i></p>
+            <ace:panel style="text-align: center;">
+                <h:outputText value="Right-click anywhere on this page to display the global menu"/>
+            </ace:panel>
         
             <ace:contextMenu effect="puff" effectDuration="200">
                 <ace:menuitem value="Save" icon="ui-icon ui-icon-disk"/>  
@@ -50,6 +49,8 @@
                 <ace:menuitem value="Homepage" icon="ui-icon ui-icon-extlink"
                               url="http://www.icefaces.org" target="_blank"/>
             </ace:contextMenu>
+            <p><i><b>Note:</b> Menu items are just placeholders and do not perform any functionality."</i></p>
+            
         </h:form>
     </ui:define>
 </ui:composition>

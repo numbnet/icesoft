@@ -31,27 +31,24 @@
     
     <ui:param name="title" value="#{msgs[checkboxButton.title]}"/>
     <ui:param name="description" value="#{msgs[checkboxButton.description]}"/>
-    <ui:param name="subMenuTitle" value="#{msgs[buttonBean.subMenuTitle]}"/>
-    <ui:param name="subMenuLinks" value="#{buttonBean.subMenuLinks}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[checkboxButton.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{checkboxButton.subMenuLinks}"/>
     <ui:param name="resourceValue" value="#{checkboxButton.exampleResource}"/>
 
     <ui:define name="example">
         <h:form>
-            <span class="row">
-                <span class="top">
-                <h:panelGrid columns="2">
+            
+            <ace:panel>
+                <h:panelGrid columns="2" style="text-align: center;">
                     <ace:checkboxButton value="#{checkboxButton.boxValue}"
-                                        singleSubmit="true"/>
+                                                       singleSubmit="true"/>
                     <ace:pushButton value="Inspect Checkbox Value"
-                        actionListener="#{checkboxButton.boxValueListener}" />
+                                                actionListener="#{checkboxButton.boxValueListener}" />
                 </h:panelGrid>
-                </span>
-                <span class="top options" style="max-width:50%">
-                    <span class="messages top">
-                        <h:messages/>
-                    </span>
-                </span>
-            </span>
+            </ace:panel>
+                
+            <h:messages/>
+            
         </h:form>
     </ui:define>
 </ui:composition>

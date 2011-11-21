@@ -19,57 +19,62 @@
  * Contributor(s): _____________________.
  */
 
-package org.icefaces.samples.showcase.example.ace.button;
+package org.icefaces.samples.showcase.example.ace.linkButton;
 
-import org.icefaces.samples.showcase.example.ace.slider.SliderBasicBean;
-import org.icefaces.samples.showcase.example.ace.slider.SliderAsyncBean;
-import org.icefaces.samples.showcase.example.ace.slider.SliderAsyncInputBean;
 
-import org.icefaces.samples.showcase.metadata.annotation.Menu;
-import org.icefaces.samples.showcase.metadata.annotation.MenuLink;                                                                       
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
+import org.icefaces.samples.showcase.metadata.annotation.Menu;
+import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 import org.icefaces.samples.showcase.util.FacesUtils;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import java.io.IOException;
 import java.io.Serializable;
 
 @ComponentExample(
-        parent = ButtonBean.BEAN_NAME,
-        title = "example.ace.button.push.title",
-        description = "example.ace.button.push.description",
-        example = "/resources/examples/ace/button/pushbutton.xhtml"
+        title = "example.ace.linkButton.title",
+        description = "example.ace.linkButton.description",
+        example = "/resources/examples/ace/linkButton/linkbutton.xhtml"
 )
 @ExampleResources(
         resources ={
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
-                    title="pushbutton.xhtml",
-                    resource = "/resources/examples/ace/button/pushbutton.xhtml"),
+                    title="linkbutton.xhtml",
+                    resource = "/resources/examples/ace/linkButton/linkbutton.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="PushButtonBean.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/button/PushButtonBean.java")
+                    title="LinkButtonBean.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/"+
+                                "example/ace/linkButton/LinkButtonBean.java")
         }
 )
-@ManagedBean(name= PushButtonBean.BEAN_NAME)
+@Menu(
+	title = "menu.ace.linkButton.subMenu.title",
+	menuLinks = 
+                {
+                    @MenuLink(title = "menu.ace.linkButton.subMenu.main", isDefault = true,
+                                     exampleBeanName = LinkButtonBean.BEAN_NAME)
+                }
+)
+
+@ManagedBean(name=LinkButtonBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class PushButtonBean extends ComponentExampleImpl<PushButtonBean>
-        implements Serializable {
+public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean> implements Serializable {
 
-    public static final String BEAN_NAME = "pushButton";
+    public static final String BEAN_NAME = "linkButton";
 
-    private String exampleValue = "";
-    private String listenerNavigation = "showcase.jsf?grp=aceMenu";
     private String navActionValue = "overview";
+    private String staticNavigation = "showcase.jsf?grp=aceMenu&exp=accordionPanelBean";
+    private String listenerNavigation = "showcase.jsf?grp=aceMenu&exp=accordionPanelBean";
+    private String requiredField =  "";
 
     public void addMessage() {
         FacesUtils.addInfoMessage("This button didn't submit or validate the rest of the form.");
@@ -85,21 +90,35 @@ public class PushButtonBean extends ComponentExampleImpl<PushButtonBean>
         }
     }
 
-    public String getNavAction() { return navAction(); }
-
     public String navAction() {
-        if (navActionValue.equals("overview")) return "buttonBean";
+        if (navActionValue.equals("overview")) return "accordionPanelBean";
         if (navActionValue.equals("checkbox")) return "checkboxButton";
         if (navActionValue.equals("push")) return "pushButton";
         return "linkButton";
+    }
+
+    public String getNavAction() {
+        return navAction();
+    }
+
+    public String getRequiredField() {
+        return requiredField;
+    }
+
+    public void setRequiredField(String requiredField) {
+        this.requiredField = requiredField;
+    }
+
+    public void setNavAction(String navAction) {
+        this.navActionValue = navAction;
     }
 
     public String getNavActionValue() {
         return navActionValue;
     }
 
-    public void setNavActionValue(String navActionValue) {
-        this.navActionValue = navActionValue;
+    public void setNavActionValue(String navAction) {
+        this.navActionValue = navAction;
     }
 
     public String getListenerNavigation() {
@@ -110,15 +129,15 @@ public class PushButtonBean extends ComponentExampleImpl<PushButtonBean>
         this.listenerNavigation = listenerNavigation;
     }
 
-    public String getExampleValue() {
-        return exampleValue;
+    public String getStaticNavigation() {
+        return staticNavigation;
     }
 
-    public void setExampleValue(String exampleValue) {
-        this.exampleValue = exampleValue;
+    public void setStaticNavigation(String staticNavigation) {
+        this.staticNavigation = staticNavigation;
     }
 
-    public PushButtonBean() {
-        super(PushButtonBean.class);
+    public LinkButtonBean() {
+        super(LinkButtonBean.class);
     }
 }
