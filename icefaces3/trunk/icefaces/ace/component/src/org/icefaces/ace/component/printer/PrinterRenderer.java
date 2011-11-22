@@ -37,9 +37,20 @@ import javax.faces.context.ResponseWriter;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
 
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import java.util.*;
+
 @MandatoryResourceComponent(tagName="printer", value="org.icefaces.ace.component.printer.Printer")
 public class PrinterRenderer extends CoreRenderer {
 
+    @Override
+    public void decode(FacesContext facesContext, UIComponent component) {
+		Printer printer = (Printer) component;
+		decodeBehaviors(facesContext, printer);
+	}
+	
 	@Override
 	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
@@ -54,6 +65,23 @@ public class PrinterRenderer extends CoreRenderer {
 			
 		writer.write("jQuery(ice.ace.escapeClientId('" + parentClientId + "')).click(function(e) {\n");
 		writer.write("e.preventDefault();\n");
+
+        // ClientBehaviors
+        Map<String,List<ClientBehavior>> behaviorEvents = printer.getClientBehaviors();
+        if(!behaviorEvents.isEmpty()) {
+            String clientId = printer.getClientId(facesContext);
+            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+			for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get("click").iterator(); behaviorIter.hasNext();) {
+				ClientBehavior behavior = behaviorIter.next();
+				ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(facesContext, printer, "click", clientId, params);
+				String script = behavior.getScript(cbc);    //could be null if disabled
+
+				if(script != null) {
+					writer.write(script);
+					writer.write(";\n");
+				}
+			}
+		}
 		writer.write("jQuery(ice.ace.escapeClientId('" + forValue.getClientId(facesContext) + "')).jqprint();\n");
 		writer.write("});");
 
