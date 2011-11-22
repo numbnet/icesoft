@@ -85,7 +85,6 @@
 
 /* link/button child styling specific  */
 .mobi-list > .mobi-list-item > .mobi-list-item-default > a:not(.mobi-list-item-custom) {
-    display: block;
     text-decoration: none;
     color: #fff;
     display: block;
@@ -111,54 +110,5 @@
     padding: 0;
 }
 
-/* sub content for lists */
-.mobi-list-item > div > a > h3 {
-    display: block;
-    font-size: 16px;
-    font-weight: bold;
-    margin: 0.6em 0;
-    overflow: hidden;
-    white-space: nowrap;
-}
 
-.mobi-list-item > div > a > p {
-    display: block;
-    font-size: 12px;
-    font-weight: normal;
-    margin: -0.5em 0 0.6em;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.mobi-list-item-thumb > a {
-    margin-left: 60px;
-    min-height: 55px;
-    text-decoration: none;
-    display: block;
-    color: white;
-}
-
-.mobi-list-item-thumb > a > img {
-    left: 1px;
-    max-height: 55px;
-    max-width: 55px;
-    position: absolute;
-    top: 0;
-}
-
-.mobi-list-item-aside {
-    float: right;
-    min-width: 50%;
-    margin: 0.3em 0;
-    text-align: right;
-    width: 50%;
-}
-
-.mobi-list-item-count {
-    background-color: #999999;
-    color: white;
-    float: right;
-    padding: 4px;
-    font-size: 12px;
-}
 

@@ -10,24 +10,30 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions an
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 
 /* named styles that describe generic characteristics, like .shadow or .h2 */
+* {
+    -webkit-tap-highlight-color: #F79A21;
+}
+
 body, .mobi-body {
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: droid, Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
     background: #c8c8c8;
-}
-
-* {
-    -webkit-tap-highlight-color: #194FDB;
+    color: white;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    margin: 8px 25px;
+    margin: 8px 10px;
+    color: white;
+}
+
+.mobi-messages-validation > li {
+    color: white;
 }
 
 .mobi-shadow {
@@ -35,39 +41,38 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .mobi-round-all {
+    border-radius: 0.1em 0.1em 0.1em 0.1em;
+    -webkit-border-radius: 0.1em;
+    -moz-border-radius: 0.1em;
+}
+
+.mobi-round-all-lg {
     border-radius: 0.6em 0.6em 0.6em 0.6em;
     -webkit-border-radius: 0.6em;
     -moz-border-radius: 0.6em;
 }
 
 .mobi-round-top {
-    border-top-left-radius: 0.6em;
-    border-top-right-radius: 0.6em;
+    border-top-left-radius: 0.1em;
+    border-top-right-radius: 0.1em;
 }
 
 .mobi-round-bottom {
-    border-bottom-left-radius: 0.6em;
-    border-bottom-right-radius: 0.6em;
+    border-bottom-left-radius: 0.1em;
+    border-bottom-right-radius: 0.1em;
 }
 
 .mobi-round-left {
-    border-top-left-radius: 0.6em;
-    border-bottom-left-radius: 0.6em;
+    border-top-left-radius: 0.1em;
+    border-bottom-left-radius: 0.1em;
 }
 
 .mobi-round-right {
-    border-top-right-radius: 0.6em;
-    border-bottom-right-radius: 0.6em;
+    border-top-right-radius: 0.1em;
+    border-bottom-right-radius: 0.1em;
 }
 
 .mobi-controlgroup-controls {
     display: block;
     width: 95%;
-}
-
-.mobi-device {
-    /*background-image: url(iphone.png); */
-    background-repeat: no-repeat;
-    height: 94px;
-
 }
