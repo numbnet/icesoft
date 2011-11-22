@@ -22,10 +22,15 @@ import javax.faces.application.ResourceDependency;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.Required;
 
 import javax.faces.component.html.HtmlInputText;
 //import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 import org.icefaces.ace.meta.baseMeta.*;
+
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 @Component(
         tagName         = "maskedEntry",
@@ -45,13 +50,15 @@ import org.icefaces.ace.meta.baseMeta.*;
 	@ResourceDependency(library="icefaces.ace", name="core/core.js"),
 	@ResourceDependency(library="icefaces.ace", name="maskedentry/maskedentry.js")
 })
-
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="valueChange", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+})
 public class MaskedEntryMeta extends HtmlInputTextMeta {
 
 	@Property(tlddoc="Name of the widget to access client side api")
     private String widgetVar;
 	
-	@Property(tlddoc="Masked input for separating input texts with given pattern. \nThese mask definitions can be used: \na - Represents an alpha character (A-Z,a-z) \n9 - Represents a numeric character (0-9) \n* - Represents an alphanumeric character (A-Z,a-z,0-9)")
+	@Property(required=Required.yes, tlddoc="Masked input for separating input texts with given pattern. \nThese mask definitions can be used: \na - Represents an alpha character (A-Z,a-z) \n9 - Represents a numeric character (0-9) \n* - Represents an alphanumeric character (A-Z,a-z,0-9)")
 	private String mask;
 	
 	@Property(tlddoc="Seperator and placeholder in input")
