@@ -24,6 +24,7 @@
 
 package org.icefaces.ace.component.datatable;
 
+import com.sun.servicetag.SystemEnvironment;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
 import org.icefaces.ace.component.rowexpander.RowExpander;
@@ -367,7 +368,8 @@ public class DataTable extends DataTableBase {
      */
     public void setTableConfigPanel(TableConfigPanel panel) {
         this.panel = panel;
-        configPanelId = panel.getClientId();
+        FacesContext c = FacesContext.getCurrentInstance();
+        setTableConfigPanel(panel.getClientId(c)) ;
     }
 
     /**
@@ -514,7 +516,7 @@ public class DataTable extends DataTableBase {
         HashMap<String, String> map = new HashMap<String, String>();
         for (Column c : getColumns()) {
             String value = c.getFilterValue();
-            if (value != null && (value.length() > 0) )
+            if (value != null && (value.length() > 0))
                 map.put(ComponentUtils.resolveField(c.getValueExpression("filterBy")), value);
         }
         return map;
@@ -564,9 +566,14 @@ public class DataTable extends DataTableBase {
         this.filteredData = list;
     }
 
-    protected TableConfigPanel getTableConfigPanel(FacesContext context) {
-        if (panel == null & configPanelId != null) {
-            panel = (TableConfigPanel)context.getViewRoot().findComponent(configPanelId);
+    protected TableConfigPanel findTableConfigPanel(FacesContext context) {
+        if (panel == null & getTableConfigPanel() != null) {
+            panel = (TableConfigPanel)this.findComponent(getTableConfigPanel());
+
+            if (panel == null)
+                for (UIComponent child : getChildren())
+                    if (child instanceof TableConfigPanel)
+                        panel = (TableConfigPanel)child;
         }
         return panel;
     }
@@ -911,9 +918,6 @@ public class DataTable extends DataTableBase {
     protected org.icefaces.ace.model.table.TreeDataModel treeModel;
     // Detect when the hashCode of value hash changed to trigger check for TreeDataModel handling
     protected java.lang.Integer valueHashCode;
-    // ID of the configPanel that has been associated with this table, used for
-    // component lookups during decodes.
-    protected java.lang.String configPanelId;
     // Flag to process filtering, occurs pre-render, set true when a filter request comes in
     // by modifying a filter input field, when applyFiltering() is called, or when the hashCode
     // of value changes. Initializes to true to enable the first render to process default filter
@@ -928,7 +932,7 @@ public class DataTable extends DataTableBase {
             throw new NullPointerException();
         }
         if (values == null) {
-            values = new Object[9];
+            values = new Object[7];
         }
         values[0] = super.saveState(context);
         values[1] = clearDataModel;
@@ -936,9 +940,7 @@ public class DataTable extends DataTableBase {
         values[3] = sortOrderChanged;
         values[4] = treeModel;
         values[5] = valueHashCode;
-        values[6] = configPanelId;
-        values[7] = filterValueChanged;
-        values[8] = panel;
+        values[6] = filterValueChanged;
         return (values);
     }
 
@@ -956,9 +958,7 @@ public class DataTable extends DataTableBase {
         sortOrderChanged = (java.lang.Boolean) values[3];
         treeModel = (org.icefaces.ace.model.table.TreeDataModel) values[4];
         valueHashCode = (java.lang.Integer) values[5];
-        configPanelId = (java.lang.String) values[6];
-        filterValueChanged = (java.lang.Boolean) values[7];
-        panel = (TableConfigPanel) values[8];
+        filterValueChanged = (java.lang.Boolean) values[6];
     }
 
 
@@ -1163,6 +1163,24 @@ public class DataTable extends DataTableBase {
                         }
                     }
                 }
+            }
+        }
+
+        // Visit tableConfigPanel if one is our child
+        setRowIndex(-1);
+        for (UIComponent kid : getChildren()) {
+            if (!(kid instanceof TableConfigPanel) || !kid.isRendered()) {
+                continue;
+            }
+            
+            if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
+                kid.processDecodes(context);
+            } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
+                kid.processValidators(context);
+            } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+                kid.processUpdates(context);
+            } else {
+                throw new IllegalArgumentException();
             }
         }
 

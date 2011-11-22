@@ -12,6 +12,8 @@ public class TableConfigPanel extends TableConfigPanelBase {
     // Find component cache
     private DataTable table;
 
+    
+
     public DataTable getTargetedDatatable() {
         if (this.table != null) return table;
 
@@ -29,10 +31,10 @@ public class TableConfigPanel extends TableConfigPanelBase {
         }
 
         DataTable table = (DataTable)this.findComponent(target);
-        
+
         if (table == null) throw new FacesException("TableConfigPanel: DataTable with clientId determined by 'for' attribute value '" + target + "' could not be found.");
 
-        table.setTableConfigPanel(this);
+       // table.setTableConfigPanel(this);
         this.table = table;
         return table;
     }

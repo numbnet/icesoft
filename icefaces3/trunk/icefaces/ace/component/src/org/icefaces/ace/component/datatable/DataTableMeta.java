@@ -39,7 +39,10 @@ import java.util.List;
         componentType = "org.icefaces.ace.component.DataTable",
         rendererType = "org.icefaces.ace.component.DataTableRenderer",
         componentFamily = "org.icefaces.ace.DataTable",
-        tlddoc = ""
+        tlddoc = "Renders an HTML table element. Rows are created from the List" +
+                " or DataModel object bound by the value property. The " +
+                "header/footer is rendered by the header/footer facet of Column" +
+                " component children or a child ColumnGroup component definition."
 )
 @ResourceDependencies({
         @ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
@@ -88,6 +91,11 @@ public class DataTableMeta extends UIDataMeta {
             "is enabled by the use of sortBy on ace:column components.",
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean singleSort;
+
+    // ID of the configPanel that has been associated with this table, used for
+    // component lookups during decodes.
+    @Property(tlddoc = "")
+    protected java.lang.String tableConfigPanel;
 
 
 

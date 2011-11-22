@@ -14,7 +14,6 @@ import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.List;
 
-@MandatoryResourceComponent(tagName="tableConfigPanel", value="org.icefaces.ace.component.tableconfigpanel.TableConfigPanel")
 public class TableConfigPanelRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -26,12 +25,13 @@ public class TableConfigPanelRenderer extends CoreRenderer {
     private void encodePopup(FacesContext context, TableConfigPanel component) throws IOException {
         DataTable table = (DataTable)component.getTargetedDatatable();
         String tableId = table.getClientId(context);
+        String clientId = component.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         List<Column> columns = table.getColumns();
         int i;
 
         writer.startElement(HTML.DIV_ELEM, null);
-        writer.writeAttribute(HTML.ID_ATTR, table.getClientId(context)+"_tableconf", null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-tableconf ui-widget", null);
         writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
 
@@ -39,8 +39,8 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-tableconf-header ui-widget-header ui-corner-tr ui-corner-tl", null);
         writer.writeText("Column Settings", null);
 
-        writeConfigPanelOkButton(writer, tableId);
-        writeConfigPanelCloseButton(writer, tableId);
+        writeConfigPanelOkButton(writer, clientId);
+        writeConfigPanelCloseButton(writer, clientId);
 
         writer.endElement(HTML.DIV_ELEM);
 
@@ -53,14 +53,14 @@ public class TableConfigPanelRenderer extends CoreRenderer {
 
         writer.startElement(HTML.TBODY_ELEM, null);
 
-        writeColumnConfigRows(writer, component, tableId, columns);
+        writeColumnConfigRows(writer, component, clientId, columns);
 
         writer.endElement(HTML.TBODY_ELEM);
         writer.endElement(HTML.TABLE_ELEM);
 
         writer.endElement(HTML.DIV_ELEM);
 
-        writeJavascript(writer, tableId, component);
+        writeJavascript(writer, clientId, tableId, component);
 
         writer.endElement(HTML.DIV_ELEM);
     }
@@ -74,10 +74,12 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         boolean sorting = component.isColumnSortingConfigurable();
         boolean firstCol = component.getType().equals("first-col") ;
         boolean lastCol = component.getType().equals("last-col");
+        List<Integer> columnOrdering = component.getTargetedDatatable().getColumnOrdering();
+
         for (i = 0; i < columns.size(); i++) {
             Column column = columns.get(i);
 
-            String rowClass = "ui-tableconf-row-"+i;
+            String rowClass = "ui-tableconf-row-"+columnOrdering.get(i);
             if (!column.isConfigurable()) rowClass += " ui-disabled ui-opacity-40";
 
             writer.startElement(HTML.TR_ELEM, null);
@@ -92,7 +94,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
             if (sizing) writeColumnSizingControl(writer, column, i, tableId);
             if (visibility) writeColumnVisibilityControl(writer, column, i, tableId, disableVisibilityControl);
             if (sorting) writeSortControl(writer, column);
-            
+
             writer.endElement(HTML.TR_ELEM);
         }
     }
@@ -143,7 +145,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.STYLE_ELEM, style, null);
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
         writer.writeAttribute(HTML.HREF_ATTR, "#", null);
-        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"_tableconf')).toggle()", null);
+        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"')).toggle()", null);
         writer.writeAttribute(HTML.ID_ATTR, clientId +"_tableconf_close", null);
 
 
@@ -167,7 +169,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.STYLE_ELEM, style, null);
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
         writer.writeAttribute(HTML.HREF_ATTR, "#", null);
-        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"_tableconf')).toggle()", null);
+        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"')).toggle()", null);
         writer.writeAttribute(HTML.ID_ATTR, clientId +"_tableconf_ok", null);
 
 
@@ -181,7 +183,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         writer.endElement(HTML.SPAN_ELEM);
     }
 
-    private void writeJavascript(ResponseWriter writer, String clientId, TableConfigPanel component) throws IOException {
+    private void writeJavascript(ResponseWriter writer, String clientId, String tableId, TableConfigPanel component) throws IOException {
         String jsId = this.resolveWidgetVar(component);
         boolean isSortable = component.isColumnSortingConfigurable();
         boolean isReorderable = component.isColumnOrderingConfigurable();
@@ -194,15 +196,15 @@ public class TableConfigPanelRenderer extends CoreRenderer {
                         "\tice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_ok\"))" +
                         ".hover(function (event) {ice.ace.jq(event.currentTarget)" + ".toggleClass('ui-state-hover');})" +
                         ".click(function (event) {ice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_launch\")).toggleClass('ui-state-active');\n" +
-                        "var panel = ice.ace.jq(ice.ace.escapeClientId('" + clientId + "_tableconf'));\n" +
-                        "if (panel.is(':not(:visible)')) " + jsId + "_tableconf.submitTableConfig(event.currentTarget);\n" +
+                        "var panel = ice.ace.jq(ice.ace.escapeClientId('" + clientId + "'));\n" +
+                        "if (panel.is(':not(:visible)')) " + jsId + ".submitTableConfig(event.currentTarget);\n" +
                         "}\n" +
                         ");\n" +
                         "\tice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_close\"))" +
                         ".hover(function (event) {ice.ace.jq(event.currentTarget)" + ".toggleClass('ui-state-hover');})" +
                         ".click(function (event) {ice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_launch\")).toggleClass('ui-state-active');});\n" +
-                        "\t var cfg = {reorderable :" + isReorderable + ", sortable :" + isSortable + ", singleSort:" + isSingleSort + "};" +
-                        "\t" + jsId + "_tableconf = new ice.ace.TableConf('" + clientId + "_tableconf', cfg);\n" +
+                        "\t var cfg = {reorderable :" + isReorderable + ", sortable :" + isSortable + ", singleSort:" + isSingleSort + ", tableId:'" + tableId + "'};" +
+                        "\t" + jsId + " = new ice.ace.TableConf('" + clientId + "', cfg);\n" +
                         "});"
                 , null);
         writer.endElement(HTML.SCRIPT_ELEM);
@@ -281,7 +283,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         if (disable || !column.isConfigurable())
             writer.writeAttribute(HTML.DISABLED_ATTR, "disabled", null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId+"_colvis_"+i, null);
-        writer.writeAttribute(HTML.CHECKED_ATTR, column.isRendered(), null);
+        if (column.isRendered()) writer.writeAttribute(HTML.CHECKED_ATTR, "checked", null);
         writer.endElement(HTML.INPUT_ELEM);
         writer.endElement(HTML.TD_ELEM);
     }
