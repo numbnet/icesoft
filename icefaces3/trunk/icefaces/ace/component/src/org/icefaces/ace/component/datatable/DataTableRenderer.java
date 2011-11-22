@@ -36,7 +36,6 @@ import org.icefaces.ace.component.tableconfigpanel.TableConfigPanel;
 import org.icefaces.ace.context.RequestContext;
 import org.icefaces.ace.event.SelectEvent;
 import org.icefaces.ace.event.UnselectEvent;
-import org.icefaces.ace.event.TableFilterEvent;
 import org.icefaces.ace.model.legacy.Cell;
 import org.icefaces.ace.model.table.*;
 import org.icefaces.ace.renderkit.CoreRenderer;
@@ -57,8 +56,10 @@ import javax.faces.model.SelectItem;
 import java.io.IOException;
 import java.util.*;
 
-@MandatoryResourceComponent(tagName="dataTable", value="org.icefaces.ace.component.datatable.DataTable")
-public class DataTableRenderer extends CoreRenderer {
+@MandatoryResourceComponent("org.icefaces.ace.component.datatable.DataTable")
+public class
+
+        DataTableRenderer extends CoreRenderer {
     @Override
 	public void decode(FacesContext context, UIComponent component) {
         DataTable table = (DataTable) component;
@@ -69,7 +70,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (table.isFilterRequest(context)) this.decodeFilters(context, table);
         else if (table.isTableConfigurationRequest(context)) this.decodeTableConfigurationRequest(context, table);
         else if (table.isPaginationRequest(context)) this.decodePageRequest(context, table);
-        else if (table.isSortRequest(context)) this.decodeSortRequest(context, table, null);
+        else if (table.isSortRequest(context)) this.decodeSortRequest(context, table, null, null);
         else if (table.isColumnReorderRequest(context)) this.decodeColumnReorderRequest(context, table);
 	}
 
@@ -82,7 +83,6 @@ public class DataTableRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
         DataTable table = (DataTable) component;
-        String clientId = table.getClientId(context);
 
         if (table.isPaginator())
             table.calculatePage();
@@ -132,7 +132,7 @@ public class DataTableRenderer extends CoreRenderer {
         table.setFirst((table.getPage() - 1) * table.getRows());
 	}
 
-    void decodeSortRequest(FacesContext context, DataTable table, String clientId) {
+    void decodeSortRequest(FacesContext context, DataTable table, String clientId, String sortKeysInput) {
         List<Column> columns = new ArrayList<Column>();
 		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         ColumnGroup group = table.getColumnGroup("header");
@@ -140,7 +140,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         // ClientId null if coming from the tableConfigPanel decode.
         if (clientId == null) clientId = table.getClientId(context);
-        String[] sortKeys = params.get(clientId + "_sortKeys").split(",");
+        String[] sortKeys = (sortKeysInput != null) ? sortKeysInput.split(",") : params.get(clientId + "_sortKeys").split(",");
 		String[] sortDirs = params.get(clientId + "_sortDirs").split(",");
 
         // Get header columns from grouped header
@@ -375,7 +375,7 @@ public class DataTableRenderer extends CoreRenderer {
 	}
 
     void decodeTableConfigurationRequest(FacesContext context, DataTable table) {
-        TableConfigPanel tableConfigPanel = table.getTableConfigPanel(context);
+        TableConfigPanel tableConfigPanel = table.findTableConfigPanel(context);
         decodeColumnConfigurations(context, table, tableConfigPanel);
     }
 
@@ -398,14 +398,30 @@ public class DataTableRenderer extends CoreRenderer {
             if (column.isConfigurable()) {
                 boolean disableVisibilityControl = (firstCol && i == 0) || ((lastCol && i == columns.size() - 1));
 
-                if (visibility && !disableVisibilityControl) decodeColumnVisibility(params, column, i, clientId);
+                if (visibility && !disableVisibilityControl) decodeColumnVisibility(params, column, i, panel.getClientId());
                 if (sizing) decodeColumnSizing(params, column, i, clientId);
                 if (name) decodeColumnName(params, column, i, clientId);
             }
         }
 
-        if (sorting) decodeSortRequest(context, table, clientId);
         if (ordering) decodeColumnOrdering(params, table, clientId);
+        if (sorting) {
+            decodeSortRequest(context, table, clientId,
+                    processConfigPanelSortKeys(clientId, params, table));
+        }
+    }
+
+    private String processConfigPanelSortKeys(String clientId, Map<String, String> params, DataTable table) {
+        String[] sortKeys = params.get(clientId + "_sortKeys").split(",");
+        List<Column> columns = table.getColumns();
+        String newSortKeys = "";
+
+        for (String key : sortKeys) {
+            if (newSortKeys.length() == 0) newSortKeys = columns.get(Integer.parseInt(key)).getClientId();
+            else newSortKeys += "," + columns.get(Integer.parseInt(key)).getClientId();
+        }
+
+        return newSortKeys;
     }
 
     private void decodeColumnName(Map<String, String> params, Column column, int i, String clientId) {
@@ -447,6 +463,8 @@ public class DataTableRenderer extends CoreRenderer {
 
         writer.write("formId:'" + form.getClientId(context) + "'");
         writer.write(",filterEvent:'" + filterEvent + "'");
+        
+        if (table.getTableConfigPanel() != null) writer.write(",configPanel:'" + table.getTableConfigPanel() + "'");
 
         if (table.isPaginator()) encodePaginatorConfig(context, table);
 
@@ -525,7 +543,7 @@ public class DataTableRenderer extends CoreRenderer {
 	}
 
     protected void encodeUtilityChildren(FacesContext context, DataTable table) throws IOException {
-        // Run the encode routines of children who rely on them to initialize
+        // Run the encode routines of children who rely on DT to initialize
         for (UIComponent child : table.getChildren()) {
             if (child instanceof TableConfigPanel) child.encodeAll(context);
         }
@@ -575,7 +593,7 @@ public class DataTableRenderer extends CoreRenderer {
 
     private void writeConfigPanelLaunchButton(ResponseWriter writer, UIComponent component, boolean first) throws IOException {
         String jsId = this.resolveWidgetVar(component);
-        String clientId = component.getClientId();
+        String clientId = ((DataTable)component).findTableConfigPanel(FacesContext.getCurrentInstance()).getClientId();
 
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-tableconf-button", null);
@@ -586,7 +604,7 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.STYLE_ELEM, style, null);
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
         writer.writeAttribute(HTML.HREF_ATTR, "#", null);
-        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"_tableconf')).toggle()", null);
+        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"')).toggle()", null);
         writer.writeAttribute( HTML.ID_ATTR, clientId +"_tableconf_launch", null);
         writer.startElement(HTML.SPAN_ELEM, null);
 
@@ -646,7 +664,7 @@ public class DataTableRenderer extends CoreRenderer {
         //Configurable first-col controls
         boolean shouldWriteConPanelLaunchPanel = false;
         if (first) {
-            TableConfigPanel panel = table.getTableConfigPanel(context);
+            TableConfigPanel panel = table.findTableConfigPanel(context);
             if (panel != null && panel.getType().equals("first-col")) {
                 leftHeaderPadding += 45;
                 shouldWriteConPanelLaunchPanel = true;
@@ -655,7 +673,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         // Add styling for last-col control container
         if (last) {
-            TableConfigPanel panel = table.getTableConfigPanel(context);
+            TableConfigPanel panel = table.findTableConfigPanel(context);
             if (panel != null && panel.getType().equals("last-col"))
                 rightHeaderPadding += 45;
         }
@@ -728,7 +746,7 @@ public class DataTableRenderer extends CoreRenderer {
     }
 
     private boolean isLastColConfPanel(FacesContext context, DataTable table) {
-        TableConfigPanel panel = table.getTableConfigPanel(context);
+        TableConfigPanel panel = table.findTableConfigPanel(context);
         return (panel != null && panel.getType().equals("last-col"));
     }
 
@@ -1017,10 +1035,6 @@ public class DataTableRenderer extends CoreRenderer {
                     encodeRegularCell(context, table, columns, kid, clientId, selected, (rowIndex == 0));
                 }
             }
-    //        for (UIComponent kid : table.getChildren())
-    //            if (kid.isRendered()) {
-    //                if (kid instanceof Column) encodeRegularCell(context, table, (Column) kid, clientId, selected, (rowIndex == 0));
-    //            }
 
             if (rowIndexVar != null) context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
             writer.endElement(HTML.TR_ELEM);

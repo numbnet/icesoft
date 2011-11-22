@@ -2,10 +2,14 @@ if (!window.ice['ace']) {
     window.ice.ace = {};
 }
 ice.ace.TableConf = function (id, cfg) {
-    this.id = ice.ace.escapeClientId(id.replace("_tableconf", ""));
+    this.id = ice.ace.escapeClientId(id);
+    this.tableId = ice.ace.escapeClientId(cfg.tableId);
+    this.$this = ice.ace.jq(this.id);
+    this.$table = ice.ace.jq(this.tableId);
     this.cfg = cfg;
     this.sortOrder = [];
-    ice.ace.jq(this.id+'_tableconf').draggable();
+
+    this.$this.draggable();
 
     if (cfg.reorderable) {
         // Return a helper with preserved width of cells
@@ -16,8 +20,7 @@ ice.ace.TableConf = function (id, cfg) {
             return ui;
         };
 
-
-        ice.ace.jq(this.id+'_tableconf > .ui-tableconf-body > table > tbody')
+        this. $this.find('.ui-tableconf-body > table > tbody')
                 .sortable({
                     axis:'y',
                     containment:'parent',
@@ -29,7 +32,7 @@ ice.ace.TableConf = function (id, cfg) {
 
     if (cfg.sortable) {
         var _self = this;
-         ice.ace.jq(this.id+'_tableconf > .ui-tableconf-body tr:not(.ui-disabled) .ui-sortable-control')
+        this.$this.find('.ui-tableconf-body tr:not(.ui-disabled) .ui-sortable-control')
                 .click(function(event, altY, altMeta) {
                     event.stopPropagation();
                     var $this = ice.ace.jq(this),
@@ -51,14 +54,14 @@ ice.ace.TableConf = function (id, cfg) {
                     // If we are looking a freshly rendered DT initalize our JS sort state
                     // from the state of the rendered controls
                     if (_self.sortOrder.length == 0) {
-                        ice.ace.jq(_self.id+'_tableconf > .ui-tableconf-body .ui-sortable-control').each(function() {
+                       _self.$this.find('.ui-tableconf-body .ui-sortable-control').each(function() {
                             var $this = ice.ace.jq(this);
                             if (ice.ace.getOpacity($this.find('.ui-icon-triangle-1-n')[0]) == 1 ||
                                 ice.ace.getOpacity($this.find('.ui-icon-triangle-1-s')[0]) == 1 )
                                 _self.sortOrder.splice(
                                     parseInt($this.find('.ui-sortable-column-order').html())-1,
                                     0,
-                                    $this.closest('.ui-header-column')
+                                    $this.closest('tr')
                                 );
                         });
                     }
@@ -134,7 +137,7 @@ ice.ace.TableConf = function (id, cfg) {
                 });
 
         // Pre-fade and bind keypress to kb-navigable sort icons
-        ice.ace.jq(this.id+'_tableconf > .ui-tableconf-body tr:not(.ui-disabled) .ui-sortable-control')
+        this.$this.find('.ui-tableconf-body tr:not(.ui-disabled) .ui-sortable-control')
                 .find('.ui-icon-triangle-1-n')
                 .keypress(function(event) {
                     if (event.which == 32 || event.which == 13) {
@@ -142,7 +145,8 @@ ice.ace.TableConf = function (id, cfg) {
                         $currentTarget.closest('.ui-sortable-control')
                                 .trigger('click', [$currentTarget.offset().top, event.metaKey]);
                 }}).not('.ui-toggled').fadeTo(0, 0.2);
-        ice.ace.jq(this.id+'_tableconf > .ui-tableconf-body tr:not(.ui-disabled) .ui-sortable-control')
+
+        this.$this.find('.ui-tableconf-body tr:not(.ui-disabled) .ui-sortable-control')
                 .find('.ui-icon-triangle-1-s')
                 .keypress(function(event) {
                     if (event.which == 32 || event.which == 13) {
@@ -155,7 +159,7 @@ ice.ace.TableConf = function (id, cfg) {
 
 ice.ace.TableConf.prototype.getSortAscending= function() {
     var sortAsc = {}, maxOrder = 0;
-    ice.ace.jq(this.id+'_tableconf tr[class^="ui-tableconf-row"] .ui-sortable-column-icon').each(function(i, val) {
+    this.$this.find('tr[class^="ui-tableconf-row"] .ui-sortable-column-icon').each(function(i, val) {
         var $val = ice.ace.jq(val),
             $order = ice.ace.jq(ice.ace.jq($val.closest('.ui-sortable-control')).find('.ui-sortable-column-order')[0]),
             topCarat = $val.find('.ui-icon-triangle-1-n')[0],
@@ -176,31 +180,29 @@ ice.ace.TableConf.prototype.getSortAscending= function() {
 }
 
 ice.ace.TableConf.prototype.getSortOrder = function() {
-    var sortOrders = {},
+    var sortOrders = [],
         _self = this,
-        maxOrder = 0;
+        maxOrder = 0,
+        columnOrders = this.getColOrder();
 
     // collect order and id for all sorted controls
-    ice.ace.jq(this.id+'_tableconf tr[class^="ui-tableconf-row"] .ui-sortable-column-icon').each(function(i, val) {
+    this.$this.find('tr[class^="ui-tableconf-row"] .ui-sortable-column-icon').each(function(i, val) {
         var $val = ice.ace.jq(val),
-            topCarat = $val.find('.ui-icon-triangle-1-n')[0],
-            bottomCarat = $val.find('.ui-icon-triangle-1-s')[0],
-            $row = ice.ace.jq($val.closest('tr')),
-            $order = ice.ace.jq($row.find('.ui-sortable-column-order')[0]);
+                topCarat = $val.find('.ui-icon-triangle-1-n')[0],
+                bottomCarat = $val.find('.ui-icon-triangle-1-s')[0],
+                $row = ice.ace.jq($val.closest('tr')),
+                $order = ice.ace.jq($row.find('.ui-sortable-column-order')[0]);
 
         if (ice.ace.getOpacity(topCarat) == 1 || ice.ace.getOpacity(bottomCarat) == 1) {
-            sortOrders[parseInt($order.html())] =
-                    (ice.ace.jq(_self.id + " thead tr .ui-header-column")
-                    [parseInt($row.attr('class').split(" ")[0].replace("ui-tableconf-row-",""))].getAttribute('id'));
+            sortOrders[parseInt($order.html())-1] = $row.attr('class').split(" ")[0].replace("ui-tableconf-row-","");
             maxOrder++;
         }
     });
 
-    // reorder ids according to order
-    var sortList = [], i = 0;
-    while (i < maxOrder) {
-        i++;
-        sortList.push(sortOrders[i]);
+    // Change row index into column position.
+    var sortList = [];
+    for (var i = 0; i < sortOrders.length; i++) {
+        sortList.push(columnOrders.indexOf(sortOrders[i]));
     }
 
     return sortList;
@@ -208,14 +210,14 @@ ice.ace.TableConf.prototype.getSortOrder = function() {
 
 ice.ace.TableConf.prototype.getColOrder = function() {
     var columnOrders = [];
-    ice.ace.jq(this.id+'_tableconf tr[class^="ui-tableconf-row"]').each(function(i, val) {
+    this.$this.find('tr[class^="ui-tableconf-row"]').each(function(i, val) {
         columnOrders.push(ice.ace.jq(val).attr('class').split(" ")[0].replace("ui-tableconf-row-",""));
     });
     return columnOrders;
 }
 
 ice.ace.TableConf.prototype.submitTableConfig = function (target) {
-    var id = this.id.replace("#","").replace(/\\/g,""),
+    var id = this.tableId.replace("#","").replace(/\\/g,""),
         body = ice.ace.jq(target).parents('.ui-tableconf').find('.ui-tableconf-body:first'),
         options = {
             source: id,
@@ -244,7 +246,6 @@ ice.ace.TableConf.prototype.submitTableConfig = function (target) {
     params[id+'_colorder'] = this.getColOrder();
     params[id+'_sortKeys'] = this.getSortOrder();
     params[id+'_sortDirs'] = this.getSortAscending();
-    params['ice.customUpdate'] = id;
 
     options.params = params;
     ice.ace.AjaxRequest(options);

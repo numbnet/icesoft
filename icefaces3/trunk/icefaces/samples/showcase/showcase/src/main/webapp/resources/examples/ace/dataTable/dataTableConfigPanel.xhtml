@@ -35,19 +35,20 @@
     <ui:param name="resourceValue" value="#{dataTableConfigPanel.exampleResource}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="carForm">
+            <ace:tableConfigPanel id="tableConfig"
+                                  for="carTable"
+                                  columnNameConfigurable="true"
+                                  columnVisibilityConfigurable="true"
+                                  columnOrderingConfigurable="true"
+                                  columnSortingConfigurable="true"
+                                  type="last-col"/>
             
-            <ace:tableConfigPanel for="carTableSingleRow"
-                                                columnNameConfigurable="true"
-                                                columnVisibilityConfigurable="true"
-                                                columnOrderingConfigurable="true"
-                                                columnSortingConfigurable="true" 
-                                                type="last-col"/>
-            
-            <ace:dataTable id="carTableSingleRow"
-                                   value="#{dataTableSort.carsData}"
-                                   var="car"
-                                   rows="10">
+            <ace:dataTable id="carTable"
+                           value="#{dataTableSort.carsData}"
+                           var="car"
+                           tableConfigPanel=":carForm:tableConfig"
+                           rows="10">
                 
                         <ace:column headerText="ID">
                             #{car.id}
@@ -70,10 +71,10 @@
                         <ace:column headerText="Cost" sortBy="#{car.cost}">
                             <ice:outputText value="#{car.cost}">
                                 <f:convertNumber type="currency"
-                                                             currencySymbol="$"
-                                                             groupingUsed="true"
-                                                             minFractionDigits="2"
-                                                             maxFractionDigits="2"/>
+                                                 currencySymbol="$"
+                                                 groupingUsed="true"
+                                                 minFractionDigits="2"
+                                                 maxFractionDigits="2"/>
                             </ice:outputText>
                         </ace:column>
             </ace:dataTable>

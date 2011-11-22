@@ -66,6 +66,10 @@ ice.ace.DataTable = function(id, cfg) {
         this.setupSelectionEvents();
     }
 
+    if (this.cfg.configPanel)
+        if (this.cfg.configPanel.startsWith(":"))
+            this.cfg.configPanel = this.cfg.configPanel.substring(1);
+
     if (this.cfg.panelExpansion) this.setupPanelExpansionEvents();
 
     if (this.cfg.rowExpansion) this.setupRowExpansionEvents();
@@ -428,6 +432,7 @@ ice.ace.DataTable.prototype.reorderColumns = function(oldIndex, newIndex) {
     var options = {
         source: this.id,
         execute: this.id,
+        render: this.id + " " + this.cfg.configPanel,
         formId: this.cfg.formId
     };
 
@@ -508,7 +513,7 @@ ice.ace.DataTable.prototype.paginate = function(newState) {
 ice.ace.DataTable.prototype.sort = function(headerCells) {
     var options = {
         source: this.id,
-        render: this.id,
+        render: this.id + " " + this.cfg.configPanel,
         execute: this.id,
         formId: this.cfg.formId
     };
@@ -543,7 +548,7 @@ ice.ace.DataTable.prototype.sort = function(headerCells) {
 ice.ace.DataTable.prototype.filter = function(evn) {
     var options = {
         source: this.id,
-        render: this.id,
+        render: this.id  + " " + this.cfg.configPanel,
         execute: this.id,
         formId: this.cfg.formId
     };

@@ -246,6 +246,16 @@ ice.ace.getOpacity = function(elem) {
 /* General Utilities */
 
 /**
+ * Adding startsWith to String prototype
+ */
+if (typeof String.prototype.startsWith != 'function') {
+  String.prototype.startsWith = function (str){
+    return this.slice(0, str.length) == str;
+  };
+}
+
+
+/**
  * jQuery Cookie plugin
  *
  * Copyright (c) 2010 Klaus Hartl (stilbuero.de)
