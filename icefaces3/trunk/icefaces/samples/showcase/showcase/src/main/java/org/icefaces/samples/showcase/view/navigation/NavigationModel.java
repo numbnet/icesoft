@@ -39,7 +39,7 @@ import java.io.Serializable;
 public class NavigationModel implements Serializable {
 
     public static final String BEAN_NAME = "navigationModel";
-
+    
     // TODO NAVIGATION controller should define this from meta data.
     public static final String DEFAULT_MENU = AceMenu.BEAN_NAME;
     public static final String GROUP_PARAM = "grp";
@@ -54,6 +54,9 @@ public class NavigationModel implements Serializable {
     // param for url
     private String componentGroup;
     private String componentExample;
+    
+    //if set to true Source code panel in UI will stay expanded
+    private boolean sourceCodeToggleStatus = false;
 
     public NavigationModel() {
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -172,5 +175,13 @@ public class NavigationModel implements Serializable {
 
     public void setComponentExample(String componentExample) {
         this.componentExample = componentExample;
+    }
+
+    public boolean isSourceCodeToggleStatus() {
+        return sourceCodeToggleStatus;
+    }
+
+    public void setSourceCodeToggleStatus(boolean sourceCodeToggleStatus) {
+        this.sourceCodeToggleStatus = sourceCodeToggleStatus;
     }
 }

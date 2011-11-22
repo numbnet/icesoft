@@ -72,8 +72,8 @@ public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean> impleme
     public static final String BEAN_NAME = "linkButton";
 
     private String navActionValue = "overview";
-    private String staticNavigation = "showcase.jsf?grp=aceMenu&exp=accordionPanelBean";
-    private String listenerNavigation = "showcase.jsf?grp=aceMenu&exp=accordionPanelBean";
+    private String staticNavigation = "showcase.jsf?grp=aceMenu&exp=checkboxButton";
+    private String listenerNavigation = "showcase.jsf?grp=aceMenu&exp=checkboxButton";
     private String requiredField =  "";
 
     public void addMessage() {
@@ -91,10 +91,7 @@ public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean> impleme
     }
 
     public String navAction() {
-        if (navActionValue.equals("overview")) return "accordionPanelBean";
-        if (navActionValue.equals("checkbox")) return "checkboxButton";
-        if (navActionValue.equals("push")) return "pushButton";
-        return "linkButton";
+        return "checkboxButton";
     }
 
     public String getNavAction() {
