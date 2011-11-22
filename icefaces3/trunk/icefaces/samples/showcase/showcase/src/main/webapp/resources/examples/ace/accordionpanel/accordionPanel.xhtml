@@ -63,7 +63,7 @@
                             </ace:column>
 
                             <ace:column headerText="Picture">
-                                <h:graphicImage id="itemImg" value="#{item.image}"/>
+                                <h:graphicImage id="itemImg" value="#{item.image}" alt="#{item.name}"/>
                             </ace:column>
 
                            <ace:column headerText="Description">
@@ -88,7 +88,7 @@
                 <ace:accordionPane title="Picture of the day">  
                     <h:panelGrid style="text-align: center; width: 100%">
                         
-                        <h:graphicImage id="sampleImage" value="#{accordionPanelBean.imageLocation}"/>
+                        <h:graphicImage id="sampleImage" value="#{accordionPanelBean.imageLocation}" alt="Picture of the day"/>
 
                     </h:panelGrid>
                 </ace:accordionPane>  
