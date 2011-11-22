@@ -61,8 +61,15 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import java.sql.ResultSet;
+import javax.faces.model.ListDataModel;
+import javax.faces.model.ResultDataModel;
+import javax.faces.model.ResultSetDataModel;
+import javax.faces.model.ScalarDataModel;
+
 public class DataTable extends DataTableBase {
     private static Logger log = Logger.getLogger(DataTable.class.getName());
+    private static Class SQL_RESULT = null;
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
     public static final String COLUMN_HEADER_CLASS = "ui-widget-header";
     public static final String COLUMN_HEADER_CONTAINER_CLASS = "ui-header-column";
@@ -107,6 +114,14 @@ public class DataTable extends DataTableBase {
     private Map<String, Column> filterMap;
     private Boolean newTreeDataModel = false;
 
+    static {
+        try {
+            SQL_RESULT = Class.forName("javax.servlet.jsp.jstl.sql.Result");
+        } catch (Throwable t)  {
+            //ignore if sql.result not available
+        }
+    }
+
     /*#######################################################################*/
     /*###################### Overridden API #################################*/
     /*#######################################################################*/
@@ -145,16 +160,45 @@ public class DataTable extends DataTableBase {
 
     @Override
     protected DataModel getDataModel() {
-        Object value = this.getValue();
+
+        if (this.model != null) {
+            return (model);
+        }
 
         // If existing tree check for changes or return cached model
         if (hasTreeDataModel() || newTreeDataModel) {
-             if (newTreeDataModel) treeModel = new TreeDataModel((List)value);
-             newTreeDataModel = false;
-             return treeModel;
+            Object value = this.getValue();
+            if (newTreeDataModel) treeModel = new TreeDataModel((List)value);
+            newTreeDataModel = false;
+            return treeModel;
         }
 
-        return super.getDataModel();
+        Object current = getValue();
+        if (current == null) {
+            setDataModel(new ListDataModel(Collections.EMPTY_LIST));
+        } else if (current instanceof DataModel) {
+            setDataModel((DataModel) current);
+        } else if (current instanceof List) {
+            setDataModel(new ListDataModel((List) current));
+        } else if (Object[].class.isAssignableFrom(current.getClass())) {
+            setDataModel(new ArrayDataModel((Object[]) current));
+        } else if (current instanceof ResultSet) {
+            setDataModel(new ResultSetDataModel((ResultSet) current));
+        } else if ((null != SQL_RESULT) && SQL_RESULT.isInstance(current)) {
+            DataModel dataModel = new ResultDataModel();
+            dataModel.setWrappedData(current);
+            setDataModel(dataModel);
+        } else {
+            setDataModel(new ScalarDataModel(current));
+        }
+        
+        return model;
+    }
+
+    private DataModel model;
+    @Override
+    protected void setDataModel(DataModel dataModel) {
+        this.model = dataModel;
     }
 
     @Override
