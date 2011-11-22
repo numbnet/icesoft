@@ -386,7 +386,7 @@ public class
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         boolean visibility = panel.isColumnVisibilityConfigurable();
         boolean ordering = panel.isColumnOrderingConfigurable();
-        boolean sizing = panel.isColumnSizingConfigurable();
+        boolean sizing = false; //panel.isColumnSizingConfigurable();
         boolean name = panel.isColumnNameConfigurable();
         boolean firstCol = panel.getType().equals("first-col") ;
         boolean lastCol = panel.getType().equals("last-col");
@@ -600,7 +600,7 @@ public class
         writer.writeAttribute(HTML.STYLE_ELEM, (first) ? "left:0;" : "right:0;", null);
         writer.startElement(HTML.ANCHOR_ELEM, null);
 
-        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:0px 10px; text-align:left;";
+        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:2px 5px 0px 5px; text-align:left; vertical-align:middle;";
         writer.writeAttribute(HTML.STYLE_ELEM, style, null);
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
         writer.writeAttribute(HTML.HREF_ATTR, "#", null);

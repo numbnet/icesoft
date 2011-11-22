@@ -45,8 +45,8 @@ import javax.faces.application.ResourceDependency;
 public class TableConfigPanelMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Allow the configuration of column order." )
     boolean columnOrderingConfigurable;
-    @Property(tlddoc = "Allow the configuration of column size.")
-    boolean columnSizingConfigurable;
+//    @Property(tlddoc = "Allow the configuration of column size.")
+//    boolean columnSizingConfigurable;
     @Property(tlddoc = "Allow the configuration of column visibility.")
     boolean columnVisibilityConfigurable;
     @Property(tlddoc = "Allow the configuration of column headerText properties.")

@@ -12,8 +12,6 @@ public class TableConfigPanel extends TableConfigPanelBase {
     // Find component cache
     private DataTable table;
 
-    
-
     public DataTable getTargetedDatatable() {
         if (this.table != null) return table;
 
@@ -37,5 +35,10 @@ public class TableConfigPanel extends TableConfigPanelBase {
        // table.setTableConfigPanel(this);
         this.table = table;
         return table;
+    }
+
+    public void setInView(boolean isInView) {
+        getTargetedDatatable().setTableConfigPanel(this);
+        super.setInView(isInView);
     }
 }
