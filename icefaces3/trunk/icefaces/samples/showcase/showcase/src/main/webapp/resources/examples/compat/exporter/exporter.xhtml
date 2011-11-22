@@ -34,16 +34,11 @@
     <ui:param name="resourceValue" value="#{exporter.exampleResource}"/>
     
     <ui:define name="example">
-        <p><b>Demo Use Cases:</b></p>
-        <p><b>1.</b> Click the "Download as CSV" link to save the data table below as a file full of comma-separated-values.</p>
-        <p>The exporter component lets users download the contents of a data table as either a CSV or Excel file, which can be useful for saving search results or other information traditionally displayed with a data table.</p>
-        <p>From a developer perspective the exporter is simple to use, as they just include the component in the page to enable the functionality. Labels and other options can be customized as needed.</p>
-        <br/>
-    
         <h:form>
             <ice:dataExporter for="carData"
                               type="csv"
                               label="Download as CSV"
+                              style="font-weight: bold;"
                               popupBlockerLabel="Popup Blocker detected - click here to resume download..."/>
                               
             <ice:dataTable id="carData"
