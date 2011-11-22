@@ -48,8 +48,7 @@
         <delete file="lib/${icefaces-compat.lib.name}.jar"/>
         <delete file="lib/icefaces-comps-compat.jar"/>
         <subant target="clean">
-            <fileset dir="." includes="*/build.xml">
-                <exclude name="**/maven2/build.xml"/>
+            <fileset dir="." includes="*/build.xml" excludes="**/maven2/build.xml">
             </fileset>
         </subant>
     </target>

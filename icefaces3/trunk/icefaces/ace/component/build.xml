@@ -384,10 +384,12 @@
         <!-- Delete the ${build} and ${dist} directory trees -->
         <delete dir="${build}"/>
         <delete dir="${dist}"/>
-
         <antcall target="clean-skins"/>
-
         <subant buildpath="${cssurlmapper.rootdir}" target="clean"/>
+	 	<delete file="${combined.js.tmp}" />
+	 	<delete file="${combined.js}" />
+	 	<delete file="${resources}/icefaces.ace/util/combined.css" />
+        
     </target>
 
     <target name="skins"

@@ -176,6 +176,10 @@
         <ant antfile="src/main/java/com/icesoft/faces/component/inputrichtext/build.xml"/>
     </target>
 
+    <target name="clean-inputrichtext-resources">
+        <ant antfile="src/main/java/com/icesoft/faces/component/inputrichtext/build.xml" target="clean-inputrichtext-resources" />
+    </target>
+
     <target name="javadoc">
         <delete dir="${build.api.doc.dir}"/>
         <javadoc destdir="${build.api.doc.dir}" windowtitle="${javadoc.title}" failonerror="true"
@@ -214,7 +218,7 @@
         </javadoc>
     </target>
 
-    <target name="clean">
+    <target name="clean" depends="clean-inputrichtext-resources" >
         <delete dir="${build.dir}"/>
         <delete file="src/main/resources/META-INF/icefaces.taglib.xml"/>
         <delete dir="${dist.dir}"/>
