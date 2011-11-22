@@ -31,7 +31,7 @@ import org.icefaces.ace.meta.baseMeta.UICommandMeta;
         rendererType = "org.icefaces.component.CommandButtonRenderer",
         componentFamily = "org.icefaces.CommandButton",
         tlddoc = "This component allows entry of a complete form or just itself. " +
-                "It has athe same functionality of a regular jsf command button " +
+                "It has the same functionality of a regular jsf command button " +
                 "but without having to add extra attributes other than determining singleSubmit " +
                 "to be true or false"
 )
@@ -63,6 +63,9 @@ public class CommandButtonMeta extends UICommandMeta {
     private String style;
 
     @Property(tlddoc = "Four types of buttons are allowed default, important, back and attention",
+            required = Required.no)
+    private String buttonType;
+    @Property(tlddoc = "Standard button type, button, submit, img etc.",
             required = Required.no)
     private String type;
 

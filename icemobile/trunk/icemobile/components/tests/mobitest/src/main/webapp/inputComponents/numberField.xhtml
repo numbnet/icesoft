@@ -62,11 +62,11 @@
           <h:outputText value="#{input.eventString}"/>
           
        </p>
-       <mobi:commandButton id="defaultOne" type="default" value="defaultSStrue" singleSubmit="true" actionListener="#{input.defaultEvent}"/>
-       <mobi:commandButton  id="defaultTwo" type="default" value="defaultSSFalse" actionListener="#{input.defaultEvent}"/>
-       <mobi:commandButton id="importantOne" type="important" value="importantSStrue" singleSubmit="true"
+       <mobi:commandButton id="defaultOne" buttonType="default" value="defaultSStrue" singleSubmit="true" actionListener="#{input.defaultEvent}"/>
+       <mobi:commandButton  id="defaultTwo" buttonType="default" value="defaultSSFalse" actionListener="#{input.defaultEvent}"/>
+       <mobi:commandButton id="importantOne" buttonType="important" value="importantSStrue" singleSubmit="true"
                  actionListener="#{input.importantEvent}"/>
-       <mobi:commandButton id="importantTwo" type="important" value="importantSSFalse" 
+       <mobi:commandButton id="importantTwo" buttonType="important" value="importantSSFalse"
                  actionListener="#{input.importantEvent}"/>
     </h:form>
     <h3>RESULTS</h3>

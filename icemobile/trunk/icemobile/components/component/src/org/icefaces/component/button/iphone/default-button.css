@@ -93,6 +93,11 @@
     text-decoration: none;
 }
 
+.mobi-button-dis {
+    opacity: 0.5;
+	filter: alpha(opacity=50);
+}
+
 .mobi-button-default, .mobi-button-important, .mobi-button-attention {
     border: 1px solid #155678;
     text-shadow: 0 -1px 1px #145072;
