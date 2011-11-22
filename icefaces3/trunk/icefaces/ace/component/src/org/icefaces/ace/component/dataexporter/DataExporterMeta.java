@@ -30,6 +30,10 @@ import javax.el.ValueExpression;
 import javax.el.MethodExpression;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
+
 @Component(
         tagName       = "dataExporter",
         componentClass  = "org.icefaces.ace.component.dataexporter.DataExporter",
@@ -43,6 +47,9 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
 	@ResourceDependency(library="icefaces.ace", name="dataexporter/dataexporter.js")
+})
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="click", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
 })
 public class DataExporterMeta extends UIComponentBaseMeta {
 
