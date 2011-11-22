@@ -72,7 +72,7 @@ public class PushButtonBean extends ComponentExampleImpl<PushButtonBean>
     public static final String BEAN_NAME = "pushButton";
 
     private String exampleValue = "";
-    private String listenerNavigation = "showcase.jsf?grp=aceMenu&exp=accordionPanelBean";
+    private String listenerNavigation = "showcase.jsf?grp=aceMenu&exp=linkButton";
     private String navActionValue = "overview";
 
     public void addMessage() {
@@ -92,9 +92,6 @@ public class PushButtonBean extends ComponentExampleImpl<PushButtonBean>
     public String getNavAction() { return navAction(); }
 
     public String navAction() {
-        if (navActionValue.equals("overview")) return "buttonBean";
-        if (navActionValue.equals("checkbox")) return "checkboxButton";
-        if (navActionValue.equals("push")) return "pushButton";
         return "linkButton";
     }
 

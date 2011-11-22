@@ -39,15 +39,15 @@
             <icecore:singleSubmit/>
             
             <h:panelGrid columns="3">
-                <h:outputLabel for="clickIn" value="Click to Display Menus:"/>
                 <h:selectBooleanCheckbox id="clickIn" value="#{aceMenuBarClick.clickToDisplay}"/>
+                <h:outputLabel for="clickIn" value="Auto display menu on mouse over?"/>
+                
                 <h:message for="clickIn"/>
             </h:panelGrid>
         </h:form>
     
         <h:form>
-             <ace:menubar autoSubmenuDisplay="#{!aceMenuBarClick.clickToDisplay}">
-                 <ace:menuitem value="Home" url="http://www.icefaces.org" target="_blank" icon="ui-icon ui-icon-home" />
+             <ace:menubar autoSubmenuDisplay="#{aceMenuBarClick.clickToDisplay}">
                  <ace:submenu label="File" icon="ui-icon ui-icon-document">  
                      <ace:submenu label="New" icon="ui-icon ui-icon-contact">  
                          <ace:menuitem value="Window"/>  

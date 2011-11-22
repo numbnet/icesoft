@@ -156,6 +156,7 @@ a:link, a:visited {
 	display: inline-block;
     margin-right: 10px;
     width: 190px;
+    font-size: 9pt;
 }
 .menuContainer {
     -moz-border-radius: 5px;
@@ -199,8 +200,9 @@ a:link, a:visited {
     margin: 6px;
 }
 /* Example Element Containers */
-.example span, .example div { margin: 6px; } 
-.example * span, .example * div { margin: 0; }
+.example span, .example div { margin: 6px;} 
+.example * span, .example * div { margin: 0;}
+div .resources { font-size: 10pt;}
 .content ul { padding:.5em 40px .5em 0; }
 .content .yui-nav { padding: 0; }
 .content .instance ul li { 
@@ -232,10 +234,10 @@ a:link, a:visited {
     padding: 2px;
 }     
 .example .content .desc p {
-	padding-top: 20px;
+	padding-top: 0px;
 }   
 .example .content .desc p:first-child {
-	padding-top:0;
+	padding-top: 10px;
 }
 .example .instance {
   	background-color: #F5F5F1;

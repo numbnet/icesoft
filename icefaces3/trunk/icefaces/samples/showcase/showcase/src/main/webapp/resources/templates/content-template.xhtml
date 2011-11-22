@@ -44,9 +44,15 @@ Available ui:params to pass:
         </div>
         
         <div class="resources">
-        <h2>#{navigationModel.componentExample} Resources</h2>
-            
             <h:form>
+                <hr/>
+                <br/>
+                <h:selectBooleanCheckbox id="stayCollapsedCheckbox" value="#{navigationModel.sourceCodeToggleStatus}">
+                    <f:ajax execute="@this" render="sourceCodePanel"/>
+                </h:selectBooleanCheckbox>
+                <h:outputLabel value="Keep source code panel collapsed" for="stayCollapsedCheckbox"/>
+                
+                <ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" header="Source Code">
                 <ace:tabSet clientSide="true" selectedIndex="0"
                             rendered="#{not empty resourceValue}">
                     <c:forEach items="#{resourceValue}"
@@ -56,6 +62,7 @@ Available ui:params to pass:
                         </ace:tabPane>
                     </c:forEach>
                 </ace:tabSet>
+                </ace:panel>
             </h:form>			
         </div>
     </div>
