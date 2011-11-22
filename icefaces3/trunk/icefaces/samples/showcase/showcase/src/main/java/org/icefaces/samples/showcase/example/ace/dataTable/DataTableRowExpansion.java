@@ -28,6 +28,7 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
+import org.icefaces.samples.showcase.util.SimpleEntry;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
@@ -70,8 +71,8 @@ public class DataTableRowExpansion extends ComponentExampleImpl<DataTableRowExpa
         carsData = new ArrayList<Map.Entry<Car, List>>();
         for (Car c : DataTableData.CARS) {
             ArrayList<Map.Entry<Car, List>> detailData = new ArrayList<Map.Entry<Car, List>>();
-            detailData.add(new AbstractMap.SimpleEntry(new Car(c.getId()+1000, c.getName()+" Custom Spec", c.getChassis(), c.getWeight(), c.getAcceleration()*2, c.getMpg()/2, c.getCost()*3), null));
-            carsData.add(new AbstractMap.SimpleEntry(c, detailData));
+            detailData.add(new SimpleEntry(new Car(c.getId()+1000, c.getName()+" Custom Spec", c.getChassis(), c.getWeight(), c.getAcceleration()*2, c.getMpg()/2, c.getCost()*3), null));
+            carsData.add(new SimpleEntry(c, detailData));
         }
     }
 
