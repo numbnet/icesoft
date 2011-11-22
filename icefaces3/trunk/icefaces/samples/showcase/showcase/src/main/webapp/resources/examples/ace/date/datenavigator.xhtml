@@ -35,29 +35,37 @@
     <ui:param name="resourceValue" value="#{dateNavigator.exampleResource}"/>
 
     <ui:define name="example">
-        <h:form>
-            <icecore:singleSubmit/>
-            
-            <h:panelGrid columns="3">
-                <h:outputLabel for="navigatorIn" value="Enable Dropdown Navigator:"/>
-                <h:selectBooleanCheckbox id="navigatorIn" value="#{dateNavigator.enabled}"/>
-                <h:message for="navigatorIn"/>
-            </h:panelGrid>
-        </h:form>
         
         <h:form>
-            <h:panelGrid columns="2">
-                <h:outputLabel for="inlineCal" value="Date Entry:"/>
-                <ace:dateTimeEntry id="inlineCal"
-                                   value="#{dateNavigator.selectedDate}"
-                                   timeZone="Canada/Mountain"
-                                   pattern="MMM/dd/yyyy"
-                                   navigator="#{dateNavigator.enabled}"/>
-                <h:outputLabel for="selectedIn" value="Selected Date:"/>
-                <h:outputText id="selectedIn" value="#{dateNavigator.selectedDate}"
-                              style="font-weight: bold;">
-                    <f:convertDateTime pattern="MMMM dd, yyyy"/>
-                </h:outputText>
+            <ace:panel>
+                <h:panelGrid style="text-align: center;" width="100%">
+                    <h:panelGroup>
+                        <h:outputLabel for="selected" value="Selected Date: "/>
+                        <h:outputText id="selectedDate"
+                                                value="#{dateNavigator.selectedDate}"
+                                                style="font-weight: bold;">
+                            <f:convertDateTime pattern="MMMM dd, yyyy"/>
+                        </h:outputText>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </ace:panel>
+                
+            <h:panelGrid id="calendarPanel" style="margin-left: auto; margin-right: auto; text-align: center;" width="100">
+                <h:panelGroup>
+                    <h:selectBooleanCheckbox id="navigatorFlag" value="#{dateNavigator.enabled}">
+                        <f:ajax execute="@this" render="calendarPanel" event="click"/>
+                    </h:selectBooleanCheckbox>
+                    <h:outputLabel for="navigatorFlag" value="Enable Dropdown Navigator?"/>
+                </h:panelGroup>
+                <ace:dateTimeEntry id="cal"
+                                               value="#{dateNavigator.selectedDate}"
+                                               timeZone="Canada/Mountain"
+                                               pattern="MMM/dd/yyyy"
+                                               navigator="#{dateNavigator.enabled}">
+                    <ace:ajax event="dateSelect"
+                                     listener="#{dateNavigator.dateSelectListener}"
+                                     update="selectedDate"/>
+                </ace:dateTimeEntry>
             </h:panelGrid>
         </h:form>
     </ui:define>

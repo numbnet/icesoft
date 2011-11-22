@@ -21,17 +21,13 @@
 
 package org.icefaces.samples.showcase.example.ace.date;
 
-import org.icefaces.samples.showcase.metadata.annotation.Menu;
-import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
-
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -59,35 +55,33 @@ import org.icefaces.ace.event.DateSelectEvent;
 @CustomScoped(value = "#{window}")
 public class DateAjaxBean extends ComponentExampleImpl<DateAjaxBean> implements Serializable {
     public static final String BEAN_NAME = "dateAjax";
-
-    private Date selectedDateIn = new Date(System.currentTimeMillis());
-    private Date selectedDatePop = new Date(System.currentTimeMillis());
+    
+    private Date selectedDate = new Date(System.currentTimeMillis());
+    private boolean popup;
     
     public DateAjaxBean() {
         super(DateAjaxBean.class);
-    }
-
-    public Date getSelectedDateIn() {
-        return selectedDateIn;
-    }
-
-    public void setSelectedDateIn(Date selectedDateIn) {
-        this.selectedDateIn = selectedDateIn;
+        this.selectedDate = new Date(System.currentTimeMillis());
+        this.popup = true;
     }
     
-    public Date getSelectedDatePop() {
-        return selectedDatePop;
+    public void dateSelectListener(DateSelectEvent event) {
+        this.selectedDate = event.getDate();
     }
 
-    public void setSelectedDatePop(Date selectedDatePop) {
-        this.selectedDatePop = selectedDatePop;
+    public Date getSelectedDate() {
+        return selectedDate;
     }
-    
-    public void dateSelectInListener(DateSelectEvent event) {
-        setSelectedDateIn(event.getDate());
+
+    public void setSelectedDate(Date selectedDate) {
+        this.selectedDate = selectedDate;
     }
-    
-    public void dateSelectPopListener(DateSelectEvent event) {
-        setSelectedDatePop(event.getDate());
+
+    public boolean isPopup() {
+        return popup;
+    }
+
+    public void setPopup(boolean popup) {
+        this.popup = popup;
     }
 }

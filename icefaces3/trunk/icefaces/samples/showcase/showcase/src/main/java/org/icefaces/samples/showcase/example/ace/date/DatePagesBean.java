@@ -20,20 +20,16 @@
  */
 
 package org.icefaces.samples.showcase.example.ace.date;
-
-import org.icefaces.samples.showcase.metadata.annotation.Menu;
-import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
-
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 import java.util.Date;
+import org.icefaces.ace.event.DateSelectEvent;
 
 @ComponentExample(
         parent = DateEntryBean.BEAN_NAME,
@@ -58,11 +54,17 @@ import java.util.Date;
 public class DatePagesBean extends ComponentExampleImpl<DatePagesBean> implements Serializable {
     public static final String BEAN_NAME = "datePages";
 
-    private Date selectedDate = new Date(System.currentTimeMillis());
-    private int pages = 2;
+    private Date selectedDate;
+    private int pages;
     
     public DatePagesBean() {
         super(DatePagesBean.class);
+        this.selectedDate = new Date(System.currentTimeMillis());
+        this.pages = 1;
+    }
+    
+    public void dateSelectListener(DateSelectEvent event) {
+        this.selectedDate = event.getDate();
     }
 
     public Date getSelectedDate() {
