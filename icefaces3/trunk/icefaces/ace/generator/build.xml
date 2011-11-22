@@ -42,7 +42,6 @@
 
   <path id="compile.run.classpath">
       <fileset dir="${jsf.lib.dir}" includes="*.jar" erroronmissingdir="false"/>
-      <fileset dir="../component/lib" includes="*.jar"/>
       <fileset dir="${lib.dir}" includes="*.jar"/>
       <fileset dir="${compat.lib.dir}" includes="*.jar"/>
         <pathelement path="../generator/build"/>
