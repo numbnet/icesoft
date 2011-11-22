@@ -20,61 +20,61 @@
              xmlns:ui="http://java.sun.com/jsf/facelets"
              xmlns:icecore="http://www.icefaces.org/icefaces/core"
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
-        id="geoLocFrag">
+             id="geoLocFrag">
 
     <h:form prependId="false">
 
-        <mobi:geolocation id="test" latitude="#{geoLocationBean.latitude}"
-				longitude="#{geoLocationBean.longitude}" />
-        <h:inputHidden id="lat" value="#{geoLocationBean.latitudeRead}" />
-        <h:inputHidden id="lon" value="#{geoLocationBean.longitudeRead}" />
+        <mobi:geolocation latitude="#{geoLocationBean.latitude}"
+                          longitude="#{geoLocationBean.longitude}"/>
+
 
         <h:panelGroup style="display:block;padding-left:10px;">
-            <canvas id="mapCanvas" width="300" height="150" />
+            <canvas id="mapCanvas" width="300" height="150"/>
             <br/>
-            <mobi:commandButton type="default" value="Locate Me" />
+            <mobi:commandButton type="default" value="Locate Me"/>
         </h:panelGroup>
 
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow>
-                Latitude: <h:outputText value="#{geoLocationBean.latitude}" />
+                Latitude: <h:outputText value="#{geoLocationBean.latitude}"/>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                Longitude: <h:outputText value="#{geoLocationBean.longitude}" />
+                Longitude: <h:outputText value="#{geoLocationBean.longitude}"/>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
-    </h:form>
-    
-      <script type="text/javascript">
 
-        function showLocation()  {
+    </h:form>
+    <script type="text/javascript">
+
+        function showLocation() {
             var canvas = document.getElementById('mapCanvas');
             if (!canvas) {
                 return;
             }
-            var lat = document.getElementById('geoloc:lat').value;
-            var lon = document.getElementById('geoloc:lon').value;
-                        
+            // temporary work around for drawing location on canvas
+            var lat = '#{geoLocationBean.latitude}';
+            var lon = '#{geoLocationBean.longitude}';
+
             if (canvas.getContext) {
                 var ctx = canvas.getContext('2d');
-                ctx.clearRect(0,0,600, 400);
-                var height = canvas.height ;
+                ctx.clearRect(0, 0, 600, 400);
+                var height = canvas.height;
                 var width = canvas.width;
 
-                ctx.drawImage(image, 0,0, width, height);
+                ctx.drawImage(image, 0, 0, width, height);
                 var x = Math.floor(lon * width / 2 / 180 + (width / 2));
-                var y = Math.floor( -1 * lat * (height / 2) / 90 + (height / 2));
+                var y = Math.floor(-1 * lat * (height / 2) / 90 + (height / 2));
                 console.log("coords " + x + " " + y);
                 ctx.fillStyle = "#FFFF00";
                 ctx.beginPath();
-                ctx.arc(x,y,5,0,Math.PI*2,true);
+                ctx.arc(x, y, 5, 0, Math.PI * 2, true);
                 ctx.fill();
             }
         }
 
-        function updateLocation(data)  { 
-            if (data.status == "success")  {
+        function updateLocation(data) {
+            if (data.status == "success") {
                 showLocation();
             }
         }
@@ -88,7 +88,7 @@
 
         jsf.ajax.addOnEvent(updateLocation);
 
-      </script>
+    </script>
 
 
 </ui:fragment>

@@ -31,15 +31,19 @@
 
         <mobi:fieldsetRow>
             <h4>Resource Backed Image</h4>
-            <h:panelGroup styleClass="center">
-                <mobi:graphicImage value="#{imageBean.imageResourceData}"/>
+            <h:panelGroup styleClass="center" style="display:block;">
+                <mobi:graphicImage
+                        style="width:150px;height:150px;"
+                        value="#{imageBean.imageResourceData}"/>
             </h:panelGroup>
         </mobi:fieldsetRow>
 
         <mobi:fieldsetRow>
             <h4>Byte Array Backed Image</h4>
-            <h:panelGroup styleClass="center">
-                <mobi:graphicImage value="#{imageBean.imageByteData}"/>
+            <h:panelGroup styleClass="center" style="display:block;">
+                <mobi:graphicImage
+                        style="width:150px;height:150px;"
+                        value="#{imageBean.imageByteData}"/>
             </h:panelGroup>
         </mobi:fieldsetRow>
 

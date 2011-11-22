@@ -21,8 +21,7 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
     <!-- display device links. -->
     <h:form>
-        <mobi:outputList inset="false">
-
+        <mobi:outputList inset="false" style="">
             <!-- output media components  example links. -->
             <mobi:outputListItem
                     group="true">#{msgs[layoutAndNavigationMenu.title]}</mobi:outputListItem>
@@ -31,7 +30,7 @@
                 <mobi:outputListItem>
                     <h:commandLink
                             value="#{msgs[menuLinks.title]}"
-                            action="#{navigationController.navigateToPage}">
+                            action="#{navigationController.navigateToExample}">
                         <f:param name="#{navigationController.navDestination}"
                                  value="#{menuLinks.exampleBeanName}"/>
                     </h:commandLink>
@@ -46,7 +45,7 @@
                 <mobi:outputListItem>
                     <h:commandLink
                             value="#{msgs[menuLinks.title]}"
-                            action="#{navigationController.navigateToPage}">
+                            action="#{navigationController.navigateToExample}">
                         <f:param name="#{navigationController.navDestination}"
                                  value="#{menuLinks.exampleBeanName}"/>
                     </h:commandLink>
@@ -60,7 +59,7 @@
                 <mobi:outputListItem>
                     <h:commandLink
                             value="#{msgs[menuLinks.title]}"
-                            action="#{navigationController.navigateToPage}">
+                            action="#{navigationController.navigateToExample}">
                         <f:param name="#{navigationController.navDestination}"
                                  value="#{menuLinks.exampleBeanName}"/>
                     </h:commandLink>
@@ -74,7 +73,7 @@
                 <mobi:outputListItem>
                     <h:commandLink
                             value="#{msgs[menuLinks.title]}"
-                            action="#{navigationController.navigateToPage}">
+                            action="#{navigationController.navigateToExample}">
                         <f:param name="#{navigationController.navDestination}"
                                  value="#{menuLinks.exampleBeanName}"/>
                     </h:commandLink>

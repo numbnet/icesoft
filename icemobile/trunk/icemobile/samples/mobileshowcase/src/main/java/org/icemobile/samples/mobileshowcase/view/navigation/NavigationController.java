@@ -38,6 +38,7 @@ import java.io.Serializable;
 public class NavigationController implements Serializable {
 
     public static final String NAV_DESTINATION = "destBean";
+    public static final String NAV_TO_DESTINATION = "navigateTo";
 
     /**
      * Navigate to the page specified by the request parameter
@@ -46,7 +47,7 @@ public class NavigationController implements Serializable {
      *
      * @return null, no jsf navigation string.
      */
-    public String navigateToPage() {
+    public String navigateToExample() {
         NavigationModel navigationModel = getNavigationModel();
         String beanName =
                 FacesUtils.getRequestParameter(NAV_DESTINATION);
@@ -59,6 +60,21 @@ public class NavigationController implements Serializable {
         // do the actual navigation.
         navigationModel.goForward(example.getDestination());
 
+        scrollToTopOfPage();
+
+        return null;
+    }
+
+    /**
+     * Navigate tot the destination key specified by "navigateTo".
+     *
+     * @return null
+     */
+    public String navigateToPage() {
+        NavigationModel navigationModel = getNavigationModel();
+        String key =
+                FacesUtils.getRequestParameter(NAV_TO_DESTINATION);
+        navigationModel.goForward(key);
         scrollToTopOfPage();
 
         return null;
@@ -97,7 +113,7 @@ public class NavigationController implements Serializable {
      * @return "refresh-redirect", navigation rule to redirect and refresh page.
      */
     public String refreshTheme() {
-        navigateToPage();
+        navigateToExample();
         scrollToTopOfPage();
         return "refresh-redirect";
     }
@@ -127,7 +143,7 @@ public class NavigationController implements Serializable {
     }
 
     // make sure we scroll to the top of the page.
-    private void scrollToTopOfPage(){
+    private void scrollToTopOfPage() {
         JavaScriptRunner.runScript(FacesContext.getCurrentInstance(), "javascript:scroll(0,0);");
     }
 }
