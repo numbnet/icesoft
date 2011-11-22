@@ -13,39 +13,23 @@
   ~ See the License for the specific language governing permissions an
   ~ limitations under the License.
   -->
-
-<!DOCTYPE html >
-
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
-<h:head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
-    <meta name="viewport"
-          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-    <link href="./resources/images/favicon.ico" rel="shortcut icon" type="image/x-icon"></link>
-    <link href="./resources/images/favicon.ico" rel="icon" type="image/x-icon"></link>
-    <title>ICEfaces Mobile Showcase</title>
-    <mobi:deviceStylesheet
-            name="#{themeBean.currentTheme}" media="screen"/>
-    <h:outputStylesheet library="css" name="showcase.css" media="screen"/>
-
-</h:head>
-<h:body>
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:util="http://java.sun.com/jsf/composite/components"
+             xmlns:icecore="http://www.icefaces.org/icefaces/core"
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
     <div id="h" class="mobi-panel-stack-header">
         <ui:insert name="toolbar">
             <h:form id="toolbar" prependId="false">
                 <h:commandLink type="back"
-                                 value="#{msgs[navigationModel.backDestination.titleBack]}"
-                                 styleClass="mobi-button mobi-button-back"
-                                 action="#{navigationController.navigateBack}"
-                                 rendered="#{navigationController.canGoBack}" />
+                               value="#{msgs[navigationModel.backDestination.titleBack]}"
+                               styleClass="mobi-button mobi-button-back"
+                               action="#{navigationController.navigateBack}"
+                               rendered="#{navigationController.canGoBack}"/>
 
-                #{msgs[navigationModel.currentDestination.title]}
+                #{msgs[navigationModel.currentSmallViewDestination.title]}
 
                 <ui:insert name="toolBarContent"/>
             </h:form>
@@ -55,7 +39,9 @@
     <div id="wrapper" class="mobi-panel-stack-body">
         <div id="content" class="mobi-panel-scrollable">
             <!-- main content include of page content -->
-            <ui:insert name="panelContent"/>
+            <ui:insert name="panelContent">
+                <ui:include src="#{navigationModel.currentSmallViewDestination.contentPath}"/>
+            </ui:insert>
         </div>
     </div>
 
@@ -65,8 +51,35 @@
             can be over-ridden if needed.
         -->
         <ui:insert name="footerContent">
-            <ui:include
-                    src="/WEB-INF/includes/navigation/footer.xhtml"/>
+            <div style="float:left;display:inline-block;text-align:left;">
+                <h:form>
+                    <icecore:singleSubmit rendered="false"/>
+
+                    <span style="font-size:14px;color:white;font-weight:bold;">Theme: </span>
+                    <h:selectOneMenu value="#{themeBean.currentTheme}"
+                            onchange="ice.s(event, this);" >
+                        <f:selectItem itemLabel="Auto" itemValue=""/>
+                        <f:selectItem itemLabel="iPhone"
+                                      itemValue="iphone.css"/>
+                        <f:selectItem itemLabel="Android"
+                                      itemValue="android.css"/>
+                        <f:selectItem itemLabel="BlackBerry"
+                                      itemValue="bberry.css"/>
+                         <f:ajax disabled="true"/>
+                    </h:selectOneMenu>
+                </h:form>
+            </div>
+            <h:panelGroup
+                    style="float:right;display:inline-block;margin: 5px 15px 0 0;">
+                <h:form>
+                    <h:commandLink action="#{navigationController.navigateToPage}">
+                        <f:param name="navigateTo"
+                                 value="#{navigationModel.destinationHome}"/>
+                        <h:graphicImage library="images" name="icemobile_thumb.png"
+                                        style="width:30px;height:30px;"/>
+                    </h:commandLink>
+                </h:form>
+            </h:panelGroup>
         </ui:insert>
     </div>
     <script type="text/javascript">
@@ -85,8 +98,12 @@
             }, 100);
         };
 
-        var onLoadCallback = function () { loader(); };
-        var afterUpdateCallback = function(updates) { loader(); };
+        var onLoadCallback = function () {
+            loader();
+        };
+        var afterUpdateCallback = function(updates) {
+            loader();
+        };
 
         var unloadHandler = function() {
             ice.log.debug(ice.log, 'unload handler iScroll');
@@ -95,13 +112,13 @@
         };
 
         // only load iscroll for apple devices.
-     <!--   if (navigator.platform.indexOf('iPhone') != -1 ||
+        if (navigator.platform.indexOf('iPhone') != -1 ||
                 navigator.userAgent.indexOf('iPod') != -1 ||
                 navigator.userAgent.indexOf('iPad') != -1) {
 
             if (navigator.userAgent.indexOf('iPhone OS 5_0') != -1) {
                 return;
-            }  -->
+            }
 
             // setup icefaces callbacks bridge.
             ice.onLoad(onLoadCallback);
@@ -118,8 +135,7 @@
                     myScroll.refresh();
                 }, 0);
             });
-      <!--  }  -->
+        }
 
     </script>
-</h:body>
-</html>
+</ui:fragment>

@@ -19,8 +19,10 @@ package org.icemobile.samples.mobileshowcase.view.navigation;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -47,6 +49,24 @@ public class NavigationModel implements Serializable {
 
     // reference to current example bean
     private ExampleImpl currentExampleBean;
+
+    // Static list of destinations not defined by annotations.
+    public static final Destination DESTINATION_HOME =
+            new Destination(
+                "content.home.title", "content.home.title", "content.home.title",
+                "/WEB-INF/includes/navigation/splash.xhtml");
+
+    public static final Destination DESTINATION_MENU =
+            new Destination(
+                "content.home.back.title", "content.home.back.title", "content.home.back.title",
+                "/WEB-INF/includes/navigation/menu.xhtml");
+
+    private static HashMap<String, Destination> destinationMap =
+            new HashMap<String, Destination>(2);
+
+    static {
+        destinationMap.put(DESTINATION_HOME.toString(), DESTINATION_HOME);
+    }
 
     public NavigationModel() {
         navigationStack = new Stack<Destination>();
@@ -76,6 +96,11 @@ public class NavigationModel implements Serializable {
         }
     }
 
+    public void goForward(String key) {
+        backDestination = navigationStack.peek();
+        navigationStack.push(destinationMap.get(key));
+    }
+
     /**
      * Navigates to the previously viewed
      */
@@ -92,7 +117,18 @@ public class NavigationModel implements Serializable {
         return navigationStack != null && navigationStack.size() > 1;
     }
 
-    public Destination getCurrentDestination() {
+    public Destination getCurrentSmallViewDestination() {
+        return navigationStack.peek();
+    }
+
+    public Destination getCurrentLargeViewDestination() {
+
+        Destination currentDestination = navigationStack.peek();
+        // check for handheld content load
+        if (currentDestination.getContentPath().equals(
+                DESTINATION_MENU.getContentPath())){
+            return DESTINATION_HOME;
+        }
         return navigationStack.peek();
     }
 
@@ -114,5 +150,9 @@ public class NavigationModel implements Serializable {
 
     public void setCurrentExampleBean(ExampleImpl currentExampleBean) {
         this.currentExampleBean = currentExampleBean;
+    }
+
+    public Destination getDestinationHome() {
+        return DESTINATION_HOME;
     }
 }

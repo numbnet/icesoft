@@ -21,7 +21,7 @@
              xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
     <h:form style="margin-top:10px;">
 
-        <mobi:fieldsetGroup inset="false">
+        <mobi:fieldsetGroup inset="true">
             <mobi:fieldsetRow style="padding-bottom:10px;">
                 The outputList component shown without and with insets.
             </mobi:fieldsetRow>
@@ -57,7 +57,7 @@
             <mobi:outputListItem group="true">
                 Thumbnail display
             </mobi:outputListItem>
-            <mobi:outputListItem type="thumb">
+            <mobi:outputListItem>
                 <h:outputLink value="#" >
                     <h:graphicImage library="images/auction" name="icesailor.png"/>
 
@@ -66,7 +66,7 @@
                     <p>Put him on the ice and watch him go!</p>
                 </h:outputLink>
             </mobi:outputListItem>
-            <mobi:outputListItem type="thumb">
+            <mobi:outputListItem>
                 <h:outputLink value="#" >
                     <h:graphicImage library="images/auction"
                                     name="icebreaker.png"/>
@@ -76,17 +76,17 @@
                     <p>Used icebreaker with very few dents.</p>
                 </h:outputLink>
             </mobi:outputListItem>
-            <mobi:outputListItem type="thumb">
+            <mobi:outputListItem>
                 <h:outputLink value="#" >
                     <h:graphicImage library="images/auction"
+                                    styleClass="list"
                                     name="iceskate.png"/>
-
                     <h3>ICEsoft Ice Skate</h3>
 
                     <p>A single sharpened ice skate, size 7.</p>
                 </h:outputLink>
             </mobi:outputListItem>
-            <mobi:outputListItem type="thumb">
+            <mobi:outputListItem>
                 <h:outputLink value="#" >
                     <h:graphicImage library="images/auction" name="icecar.png"/>
 

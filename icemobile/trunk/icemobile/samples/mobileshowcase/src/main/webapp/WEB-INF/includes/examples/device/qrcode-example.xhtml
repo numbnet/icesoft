@@ -38,7 +38,7 @@
                                     actionListener="#{qrCodeBean.checkCodeForUrl}"
                                     style="float:right;"
                                     type="important"/>
-                <br />
+                <div style="clear:both" />
                 <h:outputText styleClass="ehancedBrowserDisclaimer"
                         rendered="#{not qrCodeBean.enhancedBrowser}"
                         value="#{msgs['example.device.disclaimer']}" />
@@ -66,6 +66,7 @@
             <mobi:fieldsetRow>
                 <mobi:commandButton value="Create" type="important"
                                     styleClass="fr" />
+                <div style="clear:both" />
             </mobi:fieldsetRow>
             <!-- qr code echo-->
             <mobi:fieldsetRow>
