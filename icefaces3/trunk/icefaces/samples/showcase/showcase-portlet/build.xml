@@ -21,7 +21,7 @@
 
 <project name="showcase-portlet" default="liferay6.servlet-profile">
 
-    <property name="parent.dir" location="../comp-suite"/>
+    <property name="parent.dir" location="../showcase"/>
     <property name="parent.lib.dir" location="${parent.dir}/lib"/>
 
     <property name="lib.application.dir"
