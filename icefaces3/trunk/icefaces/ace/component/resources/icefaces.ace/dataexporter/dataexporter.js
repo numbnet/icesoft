@@ -19,7 +19,7 @@ if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
 ice.ace.DataExporters = {};
 
-ice.ace.DataExporter = function(id) {
+ice.ace.DataExporter = function(id, behaviors) {
 	this.id = id;
 	ice.ace.DataExporters[this.id] = this;
 	if (ice.ace.DataExporter.shouldOpenPopUp()) {
@@ -29,6 +29,7 @@ ice.ace.DataExporter = function(id) {
 		this.body.innerHTML = '<p>Please wait while the file you requested is generated...</p>';
 		this.window.focus();
 	}
+	behaviors();
 }
 ice.ace.DataExporter.prototype.url = function(url) {
 	if (ice.ace.DataExporter.shouldOpenPopUp()) {

@@ -21,13 +21,17 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.render.Renderer;
+import org.icefaces.ace.renderkit.CoreRenderer;
 import javax.faces.event.ActionEvent;
-import java.util.Map;
 import org.icefaces.render.MandatoryResourceComponent;
 
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import java.util.*;
+
 @MandatoryResourceComponent(tagName="dataExporter", value="org.icefaces.ace.component.dataexporter.DataExporter")
-public class DataExporterRenderer extends Renderer {
+public class DataExporterRenderer extends CoreRenderer {
 
     @Override
     public void decode(FacesContext facesContext, UIComponent component) {
@@ -42,6 +46,8 @@ public class DataExporterRenderer extends Renderer {
 				exporter.queueEvent(new ActionEvent(exporter));
 			}
 		}
+		
+		decodeBehaviors(facesContext, exporter);
     }
 	
 	@Override
@@ -56,13 +62,30 @@ public class DataExporterRenderer extends Renderer {
 		if (styleClass != null) writer.writeAttribute("class", styleClass, null);
 		String style = exporter.getStyle();
 		if (style != null) writer.writeAttribute("style", style, null);
-		String onclick = "new ice.ace.DataExporter('" + clientId + "');";
-		if (exporter.isSingleSubmit()) {
-			onclick += "ice.se(event,this);return false;";
-		} else {
-			onclick += "ice.s(event,this);return false;";
+		StringBuilder onclick = new StringBuilder("new ice.ace.DataExporter('" + clientId + "',");
+		onclick.append(" function() { ");
+        // ClientBehaviors
+        Map<String,List<ClientBehavior>> behaviorEvents = exporter.getClientBehaviors();
+        if(!behaviorEvents.isEmpty()) {
+            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+			for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get("click").iterator(); behaviorIter.hasNext();) {
+				ClientBehavior behavior = behaviorIter.next();
+				ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(facesContext, exporter, "click", clientId, params);
+				String script = behavior.getScript(cbc);    //could be null if disabled
+
+				if(script != null) {
+					onclick.append(script);
+					onclick.append(";");
+				}
+			}
 		}
-		writer.writeAttribute("onclick", onclick, null);
+		onclick.append(" });");
+		if (exporter.isSingleSubmit()) {
+			onclick.append("ice.se(event,this);return false;");
+		} else {
+			onclick.append("ice.s(event,this);return false;");
+		}
+		writer.writeAttribute("onclick", onclick.toString(), null);
 		boolean hasChildren = exporter.getChildren().size() > 0;
 		String label = exporter.getLabel();
 		if (!hasChildren) {
