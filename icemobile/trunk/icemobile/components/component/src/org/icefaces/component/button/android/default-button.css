@@ -94,6 +94,11 @@
     margin-left: 15px;
 }
 
+.mobi-button-dis {
+    opacity: 0.5;
+	filter: alpha(opacity=50);
+}
+
 .mobi-button-default, .mobi-button-important, .mobi-button-attention {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;

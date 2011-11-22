@@ -27,6 +27,7 @@ public class CommandButton extends CommandButtonBase {
 
     // button styles.
     public static final String BASE_STYLE_CLASS = "mobi-button";
+    public static final String DISABLED_STYLE_CLASS = "mobi-button-dis";
     public static final String DEFAULT_STYLE_CLASS = " mobi-button-default";
     public static final String IMPORTANT_STYLE_CLASS = " mobi-button-important";
     public static final String BACK_STYLE_CLASS = " mobi-button-back";

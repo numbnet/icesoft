@@ -73,6 +73,10 @@
     color: white !important;
 }
 
+.mobi-button-dis {
+    opacity: 0.5;
+	filter: alpha(opacity=50);
+}
 
 .mobi-button {
     border: 1px solid #38383b;

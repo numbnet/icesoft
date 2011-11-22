@@ -80,9 +80,6 @@
     border: 1px solid #999;
     background: -moz-linear-gradient(top, #E7EBE7, #ccc) repeat scroll 0 0 #ccc;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #E7EBE7), color-stop(1, #ccc));
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
     font-size: 12px;
     color: black;
     font-weight: bold;
@@ -95,12 +92,18 @@
     text-decoration: none;
     text-shadow: none;
     margin-left: 15px;
-}
-
-.mobi-button-default, .mobi-button-important, .mobi-button-attention {
     border-radius: 0.6em 0.6em 0.6em 0.6em;
     -webkit-border-radius: 0.6em;
     -moz-border-radius: 0.6em;
+}
+
+.mobi-button-dis {
+    opacity: 0.5;
+	filter: alpha(opacity=50);
+}
+
+.mobi-button-default, .mobi-button-important, .mobi-button-attention {
+
 }
 
 .mobi-button-default {

@@ -62,7 +62,7 @@ public class CommandButtonRenderer extends Renderer {
 
         // apply button type style classes
         StringBuilder baseClass = new StringBuilder(CommandButton.BASE_STYLE_CLASS);
-        String type = commandButton.getType();
+        String type = commandButton.getButtonType();
         // assign button type
         if (CommandButton.BUTTON_TYPE_DEFAULT.equals(type)) {
             baseClass.append(CommandButton.DEFAULT_STYLE_CLASS);
@@ -78,6 +78,10 @@ public class CommandButtonRenderer extends Renderer {
         // apply selected state if any
         if (commandButton.isSelected()) {
             baseClass.append(CommandButton.SELECTED_STYLE_CLASS);
+        }
+        // apply disabled style state if specified.
+        if (commandButton.isDisabled()) {
+            baseClass.append(" ").append(CommandButton.DISABLED_STYLE_CLASS);
         }
         // append any user specific style attributes
         String styleClass = commandButton.getStyleClass();
