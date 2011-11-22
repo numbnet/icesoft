@@ -41,11 +41,11 @@ import java.io.Serializable;
         resources ={
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
-                        title="dataTableListener.xhtml",
+                        title="dataTablePanelExpansion.xhtml",
                         resource = "/resources/examples/ace/dataTable/dataTablePanelExpansion.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
-                        title="DataTableListener.java",
+                        title="DataTablePanelExpansion.java",
                         resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
                                 "/example/ace/dataTable/DataTablePanelExpansion.java")
         }
@@ -54,7 +54,7 @@ import java.io.Serializable;
 @CustomScoped(value = "#{window}")
 public class DataTablePanelExpansion extends ComponentExampleImpl<DataTablePanelExpansion> implements Serializable {
     public static final String BEAN_NAME = "dataTablePanelExpansion";
-
+    
     public DataTablePanelExpansion() {
         super(DataTablePanelExpansion.class);
     }

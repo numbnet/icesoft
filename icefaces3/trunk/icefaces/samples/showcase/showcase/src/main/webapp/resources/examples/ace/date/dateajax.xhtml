@@ -36,38 +36,35 @@
 
     <ui:define name="example">
         <h:form>
-            <h:panelGrid columns="2">
-                <h:outputLabel for="popCal" value="Popup Date Entry:"/>
-                <ace:dateTimeEntry id="popCal"
-                                   value="#{dateAjax.selectedDatePop}"
-                                   timeZone="Canada/Mountain"
-                                   pattern="MMM/dd/yyyy"
-                                   renderAsPopup="true">
-                   <ace:ajax event="dateSelect"
-                             listener="#{dateAjax.dateSelectPopListener}"
-                             update="selectedPop"/>
-                </ace:dateTimeEntry>
+            <ace:panel>
+                <h:panelGrid style="text-align: center;" width="100%">
+                    <h:panelGroup>
+                        <h:outputLabel for="selected" value="Selected Date: "/>
+                        <h:outputText id="selectedDate"
+                                                value="#{dateAjax.selectedDate}"
+                                                style="font-weight: bold;">
+                            <f:convertDateTime pattern="MMMM dd, yyyy"/>
+                        </h:outputText>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </ace:panel>
                 
-                <h:outputLabel for="selectedPop" value="Selected Popup Date:"/>
-                <h:outputText id="selectedPop" value="#{dateAjax.selectedDatePop}"
-                              style="font-weight: bold;">
-                    <f:convertDateTime pattern="MMMM dd, yyyy"/>
-                </h:outputText>
-            
-                <h:outputLabel for="inlineCal" value="Inline Date Entry:"/>
-                <ace:dateTimeEntry id="inlineCal"
-                                   value="#{dateAjax.selectedDateIn}"
-                                   timeZone="Canada/Mountain"
-                                   pattern="MMM/dd/yyyy">
-                   <ace:ajax event="dateSelect"
-                             listener="#{dateAjax.dateSelectInListener}"
-                             update="selectedIn"/>
+            <h:panelGrid id="calendarPanel" style="margin-left: auto; margin-right: auto; text-align: center;" width="100">
+                <h:panelGroup>
+                    <h:selectBooleanCheckbox id="popupIn" value="#{dateAjax.popup}">
+                        <f:ajax execute="@this" render="calendarPanel" event="click"/>
+                    </h:selectBooleanCheckbox>
+                    <h:outputLabel for="popupIn" value=" Display as Popup?"/>
+                </h:panelGroup>
+                <ace:dateTimeEntry id="cal"
+                                               value="#{dateAjax.selectedDate}"
+                                               timeZone="Canada/Mountain"
+                                               pattern="MMM/dd/yyyy"
+                                               renderAsPopup="#{dateAjax.popup}">
+                    <ace:ajax event="dateSelect"
+                                     listener="#{dateAjax.dateSelectListener}"
+                                     update="selectedDate"/>
                 </ace:dateTimeEntry>
-                <h:outputLabel for="selectedIn" value="Selected Inline Date:"/>
-                <h:outputText id="selectedIn" value="#{dateAjax.selectedDateIn}"
-                              style="font-weight: bold;">
-                    <f:convertDateTime pattern="MMMM dd, yyyy"/>
-                </h:outputText>
             </h:panelGrid>
         </h:form>
     </ui:define>

@@ -38,19 +38,26 @@
 
     <ui:define name="example">
         <h:form>
-            <h:panelGrid columns="3">
-                <h:outputLabel for="cal" value="Date Entry:"/>
-                <ace:dateTimeEntry id="cal"
+            <ace:panel>
+                <h:panelGrid style="text-align: center;" width="100%">
+                    <h:panelGroup>
+                        <h:outputLabel for="selected" value="Selected Date: "/>
+                        <h:outputText id="selected"
+                                                value="#{dateEntry.selectedDate}"
+                                                style="font-weight: bold;">
+                            <f:convertDateTime pattern="MMMM dd, yyyy"/>
+                        </h:outputText>
+                    </h:panelGroup>
+                    
+                </h:panelGrid>
+            </ace:panel>
+            
+            <h:panelGrid style="margin-left: auto; margin-right: auto; text-align: center;" width="100">
+                        <ace:dateTimeEntry id="cal"
                                    value="#{dateEntry.selectedDate}"
                                    timeZone="Canada/Mountain"
-                                   pattern="MMM/dd/yyyy"/>
-                <h:commandButton value="Submit Date"/>
-                
-                <h:outputLabel for="selected" value="Selected Date:"/>
-                <h:outputText id="selected" value="#{dateEntry.selectedDate}"
-                              style="font-weight: bold;">
-                    <f:convertDateTime pattern="MMMM dd, yyyy"/>
-                </h:outputText>
+                                   pattern="MMM/dd/yyyy" />
+                        <h:commandButton value="Submit Date"/>
             </h:panelGrid>
         </h:form>
     </ui:define>

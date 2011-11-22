@@ -21,19 +21,17 @@
 
 package org.icefaces.samples.showcase.example.ace.date;
 
-import org.icefaces.samples.showcase.metadata.annotation.Menu;
-import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
-
+import org.icefaces.ace.event.DateSelectEvent;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 import java.util.Date;
+
 
 @ComponentExample(
         parent = DateEntryBean.BEAN_NAME,
@@ -63,6 +61,10 @@ public class DateNavigatorBean extends ComponentExampleImpl<DateNavigatorBean> i
     
     public DateNavigatorBean() {
         super(DateNavigatorBean.class);
+    }
+    
+    public void dateSelectListener(DateSelectEvent event) {
+        this.selectedDate = event.getDate();
     }
 
     public Date getSelectedDate() {

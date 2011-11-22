@@ -37,29 +37,30 @@
     <ui:define name="example">
         <h:form>
             <icecore:singleSubmit/>
-            
-            <h:panelGrid columns="3">
-                <h:outputLabel for="popupIn" value="Display as Popup?"/>
-                <h:selectBooleanCheckbox id="popupIn" value="#{datePopup.popup}"/>
-                <h:message for="popupIn"/>
-            </h:panelGrid>
-        </h:form>
-    
-        <h:form>
-            <h:panelGrid columns="3">
-                <h:outputLabel for="cal" value="Date Entry:"/>
-                <ace:dateTimeEntry id="cal"
-                                   value="#{datePopup.selectedDate}"
-                                   timeZone="Canada/Mountain"
-                                   pattern="MMM/dd/yyyy"
-                                   renderAsPopup="#{datePopup.popup}"/>
-                <h:commandButton value="Submit Date"/>
+            <ace:panel>
+                <h:panelGrid style="text-align: center;" width="100%">
+                    <h:panelGroup>
+                        <h:outputLabel for="selected" value="Selected Date: "/>
+                        <h:outputText id="selected"
+                                                value="#{datePopup.selectedDate}"
+                                                style="font-weight: bold;">
+                            <f:convertDateTime pattern="MMMM dd, yyyy"/>
+                        </h:outputText>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </ace:panel>
                 
-                <h:outputLabel for="selected" value="Selected Date:"/>
-                <h:outputText id="selected" value="#{datePopup.selectedDate}"
-                              style="font-weight: bold;">
-                    <f:convertDateTime pattern="MMMM dd, yyyy"/>
-                </h:outputText>
+            <h:panelGrid style="margin-left: auto; margin-right: auto; text-align: center;" width="100">
+                <h:panelGroup>
+                    <h:selectBooleanCheckbox id="popupIn" value="#{datePopup.popup}"/>
+                    <h:outputLabel for="popupIn" value=" Display as Popup?"/>
+                </h:panelGroup>
+                <ace:dateTimeEntry id="cal"
+                                               value="#{datePopup.selectedDate}"
+                                               timeZone="Canada/Mountain"
+                                               pattern="MMM/dd/yyyy"
+                                               renderAsPopup="#{datePopup.popup}"/>
+                <h:commandButton value="Submit Date"/>
             </h:panelGrid>
         </h:form>
     </ui:define>
