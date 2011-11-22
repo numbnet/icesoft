@@ -24,6 +24,10 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
+
 @Component(
         tagName         = "printer",
         componentClass  = "org.icefaces.ace.component.printer.Printer",
@@ -40,7 +44,9 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 	@ResourceDependency(library="icefaces.ace", name="core/core.js"),
 	@ResourceDependency(library="icefaces.ace", name="printer/printer.js")
 })
-
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="click", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+})
 public class PrinterMeta extends UIComponentBaseMeta {
 
 	@Property(name="for", tlddoc="Specifies the id of the component to print.")
