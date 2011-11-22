@@ -69,7 +69,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         int i;
         boolean ordering = component.isColumnOrderingConfigurable();
         boolean naming = component.isColumnNameConfigurable();
-        boolean sizing = component.isColumnSizingConfigurable();
+        boolean sizing = false; //component.isColumnSizingConfigurable();
         boolean visibility = component.isColumnVisibilityConfigurable();
         boolean sorting = component.isColumnSortingConfigurable();
         boolean firstCol = component.getType().equals("first-col") ;
@@ -115,11 +115,12 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         writer.writeText("Name", null);
         writer.endElement(HTML.TH_ELEM);
 
-        if (component.isColumnSizingConfigurable()) {
-            writer.startElement(HTML.TH_ELEM, null);
-            writer.writeText("Sizing", null);
-            writer.endElement(HTML.TH_ELEM);
-        }
+        //if (component.isColumnSizingConfigurable()) {
+        //    writer.startElement(HTML.TH_ELEM, null);
+        //    writer.writeText("Sizing", null);
+        //    writer.endElement(HTML.TH_ELEM);
+        //}
+        
         if (component.isColumnVisibilityConfigurable()) {
             writer.startElement(HTML.TH_ELEM, null);
             writer.writeText("Visibility", null);

@@ -94,7 +94,7 @@ public class DataTableMeta extends UIDataMeta {
 
     // ID of the configPanel that has been associated with this table, used for
     // component lookups during decodes.
-    @Property(tlddoc = "")
+    @Field
     protected java.lang.String tableConfigPanel;
 
 
