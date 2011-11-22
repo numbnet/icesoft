@@ -62,15 +62,15 @@ public class CommandButtonRenderer extends Renderer {
 
         // apply button type style classes
         StringBuilder baseClass = new StringBuilder(CommandButton.BASE_STYLE_CLASS);
-        String type = commandButton.getButtonType();
+        String buttonType = commandButton.getButtonType();
         // assign button type
-        if (CommandButton.BUTTON_TYPE_DEFAULT.equals(type)) {
+        if (CommandButton.BUTTON_TYPE_DEFAULT.equals(buttonType)) {
             baseClass.append(CommandButton.DEFAULT_STYLE_CLASS);
-        } else if (CommandButton.BUTTON_TYPE_BACK.equals(type)) {
+        } else if (CommandButton.BUTTON_TYPE_BACK.equals(buttonType)) {
             baseClass.append(CommandButton.BACK_STYLE_CLASS);
-        } else if (CommandButton.BUTTON_TYPE_ATTENTION.equals(type)) {
+        } else if (CommandButton.BUTTON_TYPE_ATTENTION.equals(buttonType)) {
             baseClass.append(CommandButton.ATTENTION_STYLE_CLASS);
-        } else if (CommandButton.BUTTON_TYPE_IMPORTANT.equals(type)) {
+        } else if (CommandButton.BUTTON_TYPE_IMPORTANT.equals(buttonType)) {
             baseClass.append(CommandButton.IMPORTANT_STYLE_CLASS);
         } else if (logger.isLoggable(Level.FINER)) {
             baseClass.append(CommandButton.DEFAULT_STYLE_CLASS);
@@ -95,7 +95,12 @@ public class CommandButtonRenderer extends Renderer {
         if (style != null && style.trim().length() > 0) {
             writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
         }
-        writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
+        String type = commandButton.getType();
+        // button type for styling purposes, otherwise use pass through value.
+        if (type == null){
+            type = "button";
+        }
+        writer.writeAttribute(HTML.TYPE_ATTR, type, null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
         String value = type;
         Object oVal = commandButton.getValue();
