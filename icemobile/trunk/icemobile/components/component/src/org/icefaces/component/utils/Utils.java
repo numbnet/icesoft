@@ -48,6 +48,7 @@ public class Utils {
 
     public enum DeviceType {
         android,
+        honeycomb,
         bberry,
         iphone,
         ipad;
@@ -284,7 +285,7 @@ public class Utils {
     }
 
     /**
-     * used by DateSpinner and TimeSpinner to detect which type of events to use
+     * used by DateSpinner to detect which type of events to use
      * mobile devices get touch events
      * @param context
      * @return   true if mobile device
@@ -302,7 +303,7 @@ public class Utils {
     }
 
     /**
-     *  Some input components may have html5 support for iOS5 such as TimeSpinner
+     *  Some input components may have html5 support for iOS5 such as DateSpinner
      * @param context
      * @return true if request header denotes os 5_0
      */
@@ -318,6 +319,7 @@ public class Utils {
     private static DeviceType checkUserAgentInfo(UserAgentInfo uai) {
         if (uai.sniffIphone() || uai.sniffIpod()) return DeviceType.iphone;
         if (uai.sniffAndroid()) return DeviceType.android;
+        if (uai.sniffAndroidTablet()) return DeviceType.honeycomb;
         if (uai.sniffBlackberry()) return DeviceType.bberry;
         if (uai.sniffIpad()) return DeviceType.ipad;
         return DeviceType.DEFAULT;

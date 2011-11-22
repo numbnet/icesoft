@@ -52,11 +52,7 @@ public class OutputListItemRenderer extends Renderer {
         }
         writer.writeAttribute("class", styleClass, "styleClass");
         writer.startElement(HTML.DIV_ELEM, uiComponent);
-        if (item.getType().equals("thumb")) {
-            writer.writeAttribute("class", OutputListItem.OUTPUTLISTITEMTHUMB_CLASS, null);
-        } else {
-            writer.writeAttribute("class", OutputListItem.OUTPUTLISTITEMDEFAULT_CLASS, null);
-        }
+        writer.writeAttribute("class", OutputListItem.OUTPUTLISTITEMDEFAULT_CLASS, null);
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)

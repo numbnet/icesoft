@@ -65,6 +65,8 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
     public static final String IPAD_CSS = Utils.DeviceType.ipad.name() + CSS_EXT;
     // Android style sheet name found in jar.
     public static final String ANDROID_CSS = Utils.DeviceType.android.name() + CSS_EXT;
+    // Android honeycomb style sheet name found in jar.
+    public static final String HONEYCOMB_CSS = Utils.DeviceType.honeycomb.name() + CSS_EXT;
     // Blackberry style sheet name found in jar.
     public static final String BBERRY_CSS = Utils.DeviceType.bberry.name() + CSS_EXT;
 

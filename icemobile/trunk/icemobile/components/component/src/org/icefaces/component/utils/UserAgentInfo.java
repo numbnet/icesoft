@@ -88,11 +88,20 @@ public class UserAgentInfo {
     }
 
     public boolean sniffAndroid() {
-        boolean result = userAgentString.contains(deviceAndroid);
-        logSniff(result, "Android", userAgentString);
-        return result;
+        boolean foundAndroid = userAgentString.contains(deviceAndroid) &&
+                userAgentString.contains("mobile safari");
+
+        logSniff(foundAndroid, "Android Mobile", userAgentString);
+        return foundAndroid;
     }
 
+    public boolean sniffAndroidTablet() {
+        boolean result = userAgentString.contains(deviceAndroid) &&
+                !userAgentString.contains("mobile safari");
+        // android tablet won't have the "mobile" on the agent at least for 3.x
+        logSniff(result, "Android Tablet", userAgentString);
+        return result;
+    }
 
     public boolean sniffBlackberry() {
         boolean result = userAgentString.contains(deviceBlackB) 
