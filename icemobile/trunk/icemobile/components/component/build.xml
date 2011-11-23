@@ -444,6 +444,17 @@
                           name="datespinner" skin="honeycomb"/>
         <includeresources dir="src/org/icefaces/component/datespinner/bberry"
                           name="datespinner" skin="bberry"/>
+        <!-- timespinner- style definition -->
+        <includeresources dir="src/org/icefaces/component/timespinner/ipad"
+                          name="timespinner" skin="ipad"/>
+        <includeresources dir="src/org/icefaces/component/timespinner/iphone"
+                          name="timespinner" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/component/timespinner/android"
+                          name="timespinner" skin="android"/>
+        <includeresources dir="src/org/icefaces/component/timespinner/honeycomb"
+                          name="timespinner" skin="honeycomb"/>
+        <includeresources dir="src/org/icefaces/component/timespinner/bberry"
+                          name="timespinner" skin="bberry"/>
         <!-- Process sprites, if use.sprites is set -->
         <antcall target="sprites"/>
 
@@ -567,6 +578,7 @@
              <fileset dir="${resources}">
                  <include name="org.icefaces.component.flipswitch/flipswitch.js"/>
                  <include name="org.icefaces.component.datespinner/datespinner.js"/>
+                 <include name="org.icefaces.component.timespinner/timespinner.js"/>
                  <include name="org.icefaces.component.carousel/carousel.js"/>
 
              </fileset>
@@ -603,6 +615,7 @@
          <compressjs comp="component" path="${resources}/org.icefaces.component.util"/>
          <compressjs comp="carousel" path="${resources}/org.icefaces.component.carousel"/>
          <compressjs comp="datespinner" path="${resources}/org.icefaces.component.datespinner"/>
+         <compressjs comp="timespinner" path="${resources}/org.icefaces.component.timespinner"/>
          <compressjs comp="flipswitch" path="${resources}/org.icefaces.component.flipswitch"/>
      </target>
 

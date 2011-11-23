@@ -29,7 +29,7 @@ public class DateSpinner extends DateSpinnerBase {
     public static final String BLACKOUT_PNL_CLASS = "mobi-date-bg";
     public static final String CONTAINER_CLASS = "mobi-date-container";
     public static final String INPUT_CLASS = "mobi-input-text";
-    public static final String POP_UP_CLASS = "mobi-popup-btn";
+    public static final String POP_UP_CLASS = "mobi-date-popup-btn";
     public static final String TITLE_CLASS = "mobi-date-title-container";
     public static final String SELECT_CONT_CLASS = "mobi-date-select-container";
     public static final String VALUE_CONT_CLASS = "mobi-date-select-value-cont";

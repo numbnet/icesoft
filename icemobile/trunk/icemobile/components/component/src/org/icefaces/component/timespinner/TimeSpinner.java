@@ -16,6 +16,8 @@
 package org.icefaces.component.timespinner;
 
 
+import org.icefaces.component.utils.Attribute;
+
 import javax.faces.context.FacesContext;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -27,7 +29,7 @@ public class TimeSpinner extends TimeSpinnerBase {
     public static final String BLACKOUT_PNL_CLASS = "mobi-time-bg";
     public static final String CONTAINER_CLASS = "mobi-time-container";
     public static final String INPUT_CLASS = "mobi-input-text";
-    public static final String POP_UP_CLASS = "mobi-popup-time-btn";
+    public static final String POP_UP_CLASS = "mobi-time-popup-btn";
     public static final String TITLE_CLASS = "mobi-time-title-container";
     public static final String SELECT_CONT_CLASS = "mobi-time-select-container";
     public static final String VALUE_CONT_CLASS = "mobi-time-select-value-cont";
@@ -37,6 +39,9 @@ public class TimeSpinner extends TimeSpinnerBase {
     public static final String BUTTON_DEC_CONT_CLASS = "mobi-time-btn-cont-decr";
     public static final String BUTTON_DEC_CLASS = "mobi-time-btn mobi-time-btn-decr";
 
+    private Attribute[] commonAttributeNames = {
+            new Attribute("style", null)
+    };
 
     private int hourInt;
     private int minuteInt;
@@ -119,4 +124,7 @@ public class TimeSpinner extends TimeSpinnerBase {
         return FacesContext.getCurrentInstance();
     }
 
+    public Attribute[] getCommonAttributeNames() {
+        return commonAttributeNames;
+    }
 }
