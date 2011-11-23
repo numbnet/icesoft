@@ -38,7 +38,8 @@
     <properties>
         <private.demo>true</private.demo>
 <!--         <icefaces.version>2.1.0.BETA2</icefaces.version> -->
-        <jsf.version>2.1.4</jsf.version>
+        <jsf.version>2.1.3</jsf.version>
+        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
     <repositories>
         <repository>
@@ -58,15 +59,20 @@
         <finalName>${artifactId}</finalName>
     </build>
     <dependencies>
+        <dependency>
+             <groupId>org.icefaces</groupId>
+             <artifactId>icefaces-ace</artifactId>
+             <version>${ice.version}</version>
+         </dependency>
          <dependency>
              <groupId>org.icefaces</groupId>
              <artifactId>icefaces-compat</artifactId>
-             <version>${icefaces.version}</version>
+             <version>${ice.version}</version>
          </dependency>
          <dependency>
             <groupId>org.icepush</groupId>
             <artifactId>icepush</artifactId>
-            <version>${icefaces.version}</version>
+            <version>${ice.version}</version>
         </dependency>
         <dependency>
       	    <groupId>javax.servlet</groupId>
