@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-.mobi-popup-btn{
+.mobi-time-popup-btn{
     -webkit-appearance: none;
-    background-image: url('clock_header.png'); /** sprite-ref: sprite; */
+    background-image: url('btn-calendar.png'); /** sprite-ref: sprite; */
     background-repeat: no-repeat;
-    width:22px;
-    height:21px;
+    width:27px;
+    height:24px;
     border: none;
     margin: 0 0 0 5px;
     cursor:pointer;
 }
+
 .mobi-time-bg {
     width: 100%;
     height:100%;
@@ -34,7 +35,7 @@
     z-index: 1000;
     opacity: 0.5;
 }
-.mobi-time {
+.mobi-date {
     opacity:1;
 }
 
@@ -46,38 +47,36 @@
 .mobi-time-container {
     opacity: 1;
     background-color: #ccc;
-    border-radius: 6px 6px 6px 6px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
+    border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
     -moz-box-shadow: 3px 3px 5px black;
     -webkit-box-shadow: 3px 3px 5px black;
     box-shadow: 3px 3px 5px black;
-    border: 1px solid #e4e4e4;
+    border: 1px solid white;
     color: #000000;
     padding: 0;
     z-index: 1001;
     position: fixed;
-    top:100px;
-    left:35%;
+    top:20px;
+    left:15%;
 }
 
-.mobi-time-title-container, .mobi-date-select-container,
+.mobi-time-title-container, .mobi-time-select-container,
 .mobi-time-submit-container {
 }
 
 .mobi-time-title-container {
+    background-color: #000;
     color: white;
     vertical-align: middle;
-    padding: 10px;
     text-align: center;
-    border-bottom: 1px solid #e4e4e4;
-    background: url('header.png') repeat-x scroll 0 0 #6D84A2;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
-    font-weight: bold;
+    padding: 10px;
+    border-bottom: 1px solid white;
 }
 
 .mobi-time-select-container {
-    background: #c8c8c8 url('pinstripes.png');
+    background-color: #fff;
     color: white;
     padding: 10px;
     text-align: center;
@@ -85,9 +84,8 @@
 
 .mobi-time-submit-container {
     color: black;
-    height: 28px;
-    padding: 5px 3px;
-    background: url('header.png') repeat-x scroll 0 0 #6D84A2;
+    height: 34px;
+    padding: 3px;
 }
 
 .mobi-time-submit-container .mobi-button-default {
@@ -99,35 +97,33 @@
     float: left;
 }
 
-.mobi-date-submit-container .mobi-button-default:last-child {
+.mobi-time-submit-container .mobi-button-default:last-child {
     float: right;
 }
 
 .mobi-time-select-value-cont {
     width: 50px;
-    margin-right: 1px;
+    margin: 5px;
     background-color: white;
-    border-radius: 6px 6px 6px 6px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
+    border-radius: 3px ;
     display: inline-block;
-    border: 3px solid #aaacbf;
+    border: 1px solid #999999;
 }
 
 .mobi-time-btn-cont-incr {
-    border-radius: 6px 6px 0 0;
-    -webkit-border-radius:  6px 6px 0 0;
-    -moz-border-radius:  6px 6px 0 0;
+    border-radius: 3px 3px 0 0;
+    -webkit-border-radius:  3px 3px 0 0;
+    -moz-border-radius:  3px 3px 0 0;
     background: -moz-linear-gradient(top, #f7f7f7, #bdbebd) center no-repeat;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #fff), color-stop(1, #bdbebd));
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f7f7f7), color-stop(1, #bdbebd));
 }
 
 .mobi-time-btn-cont-decr {
-    border-radius: 0 0 6px 6px;
-    -webkit-border-radius:  0 0 6px 6px;
-    -moz-border-radius:  0 0 6px 6px;
+    border-radius: 0 0 3px 3px;
+    -webkit-border-radius:  0 0 3px 3px;
+    -moz-border-radius:  0 0 3px 3px;
     background: -moz-linear-gradient(top, #bdbebd, #f7f7f7) center no-repeat;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #fff));
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #f7f7f7));
 }
 
 .mobi-time-btn {
@@ -140,12 +136,12 @@
     box-shadow: 0 3px 3px #888;
     -moz-box-shadow:  0 3px 3px #888;
     -webkit-box-shadow:  0 3px 3px #888;
-    border-radius: 6px 6px 0 0;
-    -webkit-border-radius:  6px 6px 0 0;
-    -moz-border-radius:  6px 6px 0 0;
+    border-radius: 3px 3px 0 0;
+    -webkit-border-radius:  3px 3px 0 0;
+    -moz-border-radius:  3px 3px 0 0;
     background-image: url('increment.png');
-    background-color: transparent;
     background-repeat: no-repeat;
+    background-color: transparent;
     background-position: center;
 }
 
@@ -153,12 +149,12 @@
     box-shadow: 0 -3px 3px #888;
     -moz-box-shadow: 0 -3px 3px #888;
     -webkit-box-shadow: 0 -3px 3px #888;
-    border-radius: 0 0 6px 6px;
-    -webkit-border-radius:  0 0 6px 6px;
-    -moz-border-radius:  0 0 6px 6px;
+    border-radius: 0 0 3px 3px;
+    -webkit-border-radius:  0 0 3px 3px;
+    -moz-border-radius:  0 0 3px 3px;
     background-image: url('decrement.png');
-    background-color: transparent;
     background-repeat: no-repeat;
+    background-color: transparent;
     background-position: center;
 }
 
@@ -170,5 +166,6 @@
     line-height: 40px;
     font-size: 16px;
     font-weight: bold;
-    background-color: #E2E3EC;
 }
+
+

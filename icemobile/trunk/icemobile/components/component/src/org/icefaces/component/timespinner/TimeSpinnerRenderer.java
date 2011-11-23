@@ -16,6 +16,7 @@
 package org.icefaces.component.timespinner;
 
 import org.icefaces.component.utils.BaseInputRenderer;
+import org.icefaces.component.utils.PassThruAttributeWriter;
 import org.icefaces.component.utils.Utils;
 
 import javax.faces.application.ProjectStage;
@@ -147,6 +148,9 @@ public class TimeSpinnerRenderer extends BaseInputRenderer  {
         writer.startElement("input", uiComponent);
         writer.writeAttribute("id", clientId + "_input", "id");
         writer.writeAttribute("name", clientId+"_input", "name");
+        // apply class attribute and pass though attributes for style.
+        PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent,
+                timeEntry.getCommonAttributeNames());
         // apply class attribute and pass though attributes for style.
         StringBuilder classNames = new StringBuilder(TimeSpinner.INPUT_CLASS)
                 .append(" ").append(timeEntry.getStyleClass());

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.mobi-popup-btn{
+.mobi-date-popup-btn{
     -webkit-appearance: none;
     background-image: url('btn-calendar.png'); /** sprite-ref: sprite; */
     background-repeat: no-repeat;

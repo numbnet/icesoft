@@ -18,12 +18,13 @@
     -webkit-appearance: none;
     background-image: url('btn-calendar.png'); /** sprite-ref: sprite; */
     background-repeat: no-repeat;
-    width:22px;
-    height:21px;
+    width:27px;
+    height:24px;
     border: none;
     margin: 0 0 0 5px;
     cursor:pointer;
 }
+
 .mobi-time-bg {
     width: 100%;
     height:100%;
@@ -34,7 +35,7 @@
     z-index: 1000;
     opacity: 0.5;
 }
-.mobi-time {
+.mobi-date {
     opacity:1;
 }
 
@@ -45,20 +46,20 @@
 
 .mobi-time-container {
     opacity: 1;
-    background-color: #ccc;
-    border-radius: 6px 6px 6px 6px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    -moz-box-shadow: 3px 3px 5px black;
-    -webkit-box-shadow: 3px 3px 5px black;
-    box-shadow: 3px 3px 5px black;
-    border: 1px solid #e4e4e4;
-    color: #000000;
+    background-color: black;
+    border: 1px solid #6595F9;
+    border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -moz-box-shadow: 3px 3px 5px #3399FF,-3px -3px 5px #3399FF;
+    -webkit-box-shadow: 3px 3px 10px #3399FF,-3px -3px 10px #3399FF;
+    box-shadow: 3px 3px 10px #3399FF,-3px -3px 10px #3399FF;
+    color: white;
     padding: 0;
     z-index: 1001;
     position: fixed;
-    top:20px;
-    left:15%;
+    top:100px;
+    left:35%;
 }
 
 .mobi-time-title-container, .mobi-time-select-container,
@@ -68,26 +69,25 @@
 .mobi-time-title-container {
     color: white;
     vertical-align: middle;
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #e4e4e4;
-    background: url('header.png') repeat-x scroll 0 0 #6D84A2;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
     font-weight: bold;
+    border-bottom: 3px solid #6595f9;
+    color: white;
+    margin: 10px;
+    padding: 10px;
+
 }
 
 .mobi-time-select-container {
-    background: #c8c8c8 url('pinstripes.png');
     color: white;
     padding: 10px;
     text-align: center;
 }
 
 .mobi-time-submit-container {
-    color: black;
-    height: 28px;
-    padding: 5px 3px;
-    background: url('header.png') repeat-x scroll 0 0 #6D84A2;
+    color:black;
+    height:34px;
+    width:315px;
+    padding: 3px;
 }
 
 .mobi-time-submit-container .mobi-button-default {
@@ -105,29 +105,22 @@
 
 .mobi-time-select-value-cont {
     width: 50px;
-    margin-right: 1px;
-    background-color: white;
-    border-radius: 6px 6px 6px 6px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
+    margin: 5px;
     display: inline-block;
-    border: 3px solid #aaacbf;
 }
 
 .mobi-time-btn-cont-incr {
-    border-radius: 6px 6px 0 0;
-    -webkit-border-radius:  6px 6px 0 0;
-    -moz-border-radius:  6px 6px 0 0;
-    background: -moz-linear-gradient(top, #f7f7f7, #bdbebd) center no-repeat;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #fff), color-stop(1, #bdbebd));
+    border: 1px solid #38383b;
+    border-top: 1px solid #505054;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #424246), color-stop(1, #3f3f42));
+    background: -moz-linear-gradient(top, #424246, #3f3f42);
 }
 
 .mobi-time-btn-cont-decr {
-    border-radius: 0 0 6px 6px;
-    -webkit-border-radius:  0 0 6px 6px;
-    -moz-border-radius:  0 0 6px 6px;
-    background: -moz-linear-gradient(top, #bdbebd, #f7f7f7) center no-repeat;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #fff));
+     border: 1px solid #38383b;
+    border-top: 1px solid #505054;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #424246), color-stop(1, #3f3f42));
+    background: -moz-linear-gradient(top, #424246, #3f3f42);
 }
 
 .mobi-time-btn {
@@ -137,40 +130,27 @@
 }
 
 .mobi-time-btn-incr {
-    box-shadow: 0 3px 3px #888;
-    -moz-box-shadow:  0 3px 3px #888;
-    -webkit-box-shadow:  0 3px 3px #888;
-    border-radius: 6px 6px 0 0;
-    -webkit-border-radius:  6px 6px 0 0;
-    -moz-border-radius:  6px 6px 0 0;
     background-image: url('increment.png');
-    background-color: transparent;
     background-repeat: no-repeat;
+    background-color: transparent;
     background-position: center;
 }
 
 .mobi-time-btn-decr {
-    box-shadow: 0 -3px 3px #888;
-    -moz-box-shadow: 0 -3px 3px #888;
-    -webkit-box-shadow: 0 -3px 3px #888;
-    border-radius: 0 0 6px 6px;
-    -webkit-border-radius:  0 0 6px 6px;
-    -moz-border-radius:  0 0 6px 6px;
     background-image: url('decrement.png');
-    background-color: transparent;
     background-repeat: no-repeat;
+    background-color: transparent;
     background-position: center;
 }
 
 .mobi-time-select-value {
-    color: black;
+    color: white;
     text-align: center;
     vertical-align: middle;
     height: 40px;
     line-height: 40px;
     font-size: 16px;
     font-weight: bold;
-    background-color: #E2E3EC;
 }
 
 

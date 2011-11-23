@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-.mobi-date-popup-btn{
+.mobi-time-popup-btn{
     -webkit-appearance: none;
     background-image: url('btn-calendar.png'); /** sprite-ref: sprite; */
     background-repeat: no-repeat;
@@ -24,7 +24,7 @@
     margin: 0 0 0 5px;
     cursor:pointer;
 }
-.mobi-date-bg {
+.mobi-time-bg {
     width: 100%;
     height:100%;
     background: #000;
@@ -34,16 +34,16 @@
     z-index: 1000;
     opacity: 0.5;
 }
-.mobi-date {
+.mobi-time {
     opacity:1;
 }
 
-.mobi-date-container-hide{
+.mobi-time-container-hide{
     opacity:0;
     display:none;
 }
 
-.mobi-date-container {
+.mobi-time-container {
     opacity: 1;
     background-color: #ccc;
     border-radius: 6px 6px 6px 6px;
@@ -61,11 +61,11 @@
     left:35%;
 }
 
-.mobi-date-title-container, .mobi-date-select-container,
-.mobi-date-submit-container {
+.mobi-time-title-container, .mobi-date-select-container,
+.mobi-time-submit-container {
 }
 
-.mobi-date-title-container {
+.mobi-time-title-container {
     color: white;
     vertical-align: middle;
     padding: 10px;
@@ -76,13 +76,13 @@
     font-weight: bold;
 }
 
-.mobi-date-select-container {
+.mobi-time-select-container {
     color: white;
     padding: 10px;
     text-align: center;
 }
 
-.mobi-date-submit-container {
+.mobi-time-submit-container {
     color: black;
     height: 35px;
     padding: 5px 3px;
@@ -90,20 +90,20 @@
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f4f5f7), color-stop(1, #a8acb9));
 }
 
-.mobi-date-submit-container .mobi-button-default {
+.mobi-time-submit-container .mobi-button-default {
     width: 49%;
     margin: 0;
 }
 
-.mobi-date-submit-container .mobi-button-default:first-child {
+.mobi-time-submit-container .mobi-button-default:first-child {
     float: left;
 }
 
-.mobi-date-submit-container .mobi-button-default:last-child {
+.mobi-time-submit-container .mobi-button-default:last-child {
     float: right;
 }
 
-.mobi-date-select-value-cont {
+.mobi-time-select-value-cont {
     width: 50px;
     margin: 8px 10px;
     background-color: white;
@@ -114,7 +114,7 @@
     border: 3px solid #aaacbf;
 }
 
-.mobi-date-btn-cont-incr {
+.mobi-time-btn-cont-incr {
     border-radius: 6px 6px 0 0;
     -webkit-border-radius:  6px 6px 0 0;
     -moz-border-radius:  6px 6px 0 0;
@@ -122,7 +122,7 @@
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #fff), color-stop(1, #bdbebd));
 }
 
-.mobi-date-btn-cont-decr {
+.mobi-time-btn-cont-decr {
     border-radius: 0 0 6px 6px;
     -webkit-border-radius:  0 0 6px 6px;
     -moz-border-radius:  0 0 6px 6px;
@@ -130,13 +130,13 @@
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #fff));
 }
 
-.mobi-date-btn {
+.mobi-time-btn {
     width: 100%;
     height: 35px;
     border: none;
 }
 
-.mobi-date-btn-incr {
+.mobi-time-btn-incr {
     box-shadow: 0 3px 3px #888;
     -moz-box-shadow:  0 3px 3px #888;
     -webkit-box-shadow:  0 3px 3px #888;
@@ -149,7 +149,7 @@
     background-position: center;
 }
 
-.mobi-date-btn-decr {
+.mobi-time-btn-decr {
     box-shadow: 0 -3px 3px #888;
     -moz-box-shadow: 0 -3px 3px #888;
     -webkit-box-shadow: 0 -3px 3px #888;
@@ -162,7 +162,7 @@
     background-position: center;
 }
 
-.mobi-date-select-value {
+.mobi-time-select-value {
     color: black;
     text-align: center;
     vertical-align: middle;
