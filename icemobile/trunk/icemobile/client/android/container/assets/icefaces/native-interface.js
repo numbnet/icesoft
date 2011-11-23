@@ -260,7 +260,8 @@ if (!window.ice.mobile) {
     function init()  {
         var iframe = document.createElement('iframe');
         iframe.setAttribute("id", "ipciframe");
-        iframe.setAttribute("style", "width:0px; height:0px; border: 0px");
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("style", "width: 0; height: 0; border: 0;position:fixed;top:0;left:0;z-index:1;");
         document.body.appendChild(iframe);
         addConnectionStatus();
     }
