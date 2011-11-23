@@ -52,10 +52,7 @@
                     <ace:tabSet clientSide="true" style="clear:both;">
                         <ace:tabPane>
                             <f:facet name="label">My First Client Tab</f:facet>
-                            <h:outputText value="
-                            An improperly escaped nbsp is rendered by this component, and could be the same as the nbsp
-                            in this issue: http://jira.icefaces.org/browse/ICE-5538 where it is mentioned in an example
-                            of the tabSet rendering when label facets are used. This only raises errors in WebKit." />
+                            <h:outputText value="First Tab Body" />
                             <h:outputText value="#{tabClientSide.slowDownTab}"
                                           rendered="#{not tabClientSide.fastTabs}" />
                         </ace:tabPane>

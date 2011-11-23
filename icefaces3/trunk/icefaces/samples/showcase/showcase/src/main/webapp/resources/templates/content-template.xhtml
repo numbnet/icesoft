@@ -31,9 +31,8 @@ Available ui:params to pass:
  description
  resourceValue
 -->
-    <div class="example">     
-        <h2>#{title}</h2>
-        
+    <div class="example">
+        <ace:panel header="#{title}">
         <div class="content">
             <div class="desc">
                 <ice:outputText value="#{description}" escape="false" nospan="true"/>
@@ -42,7 +41,7 @@ Available ui:params to pass:
                 <ui:insert name="example"/>
             </div>
         </div>
-        
+        </ace:panel>
         <div class="resources">
             <h:form>
                 
