@@ -24,6 +24,9 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
 import javax.el.MethodExpression;
 import java.lang.reflect.Method;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 @Component(
     tagName = "droppable",
@@ -36,6 +39,9 @@ import java.lang.reflect.Method;
     componentFamily = "org.icefaces.ace.Droppable",
     tlddoc = "Enables an Id-specified component as an area that can have Droppable moved onto it to raise events."
 )
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="drop", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+})
 public class DroppableMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "The JavaScript component instance variable name.")
     String widgetVar;
