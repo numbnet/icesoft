@@ -64,6 +64,7 @@ public class AccordionRenderer extends CoreRenderer {
 
             acco.queueEvent(changeEvent);
         }
+        decodeBehaviors(context, component);
 	}
 
 	@Override
@@ -145,7 +146,8 @@ public class AccordionRenderer extends CoreRenderer {
                 jb.entry("onTabChangeUpdate", ComponentUtils.findClientIds(context, acco, acco.getOnPaneChangeUpdate()));
             }
         }
-		
+        encodeClientBehaviors(context, acco, jb);
+
         jb.endMap().endFunction();
 		writer.write(jb.toString());
 		
