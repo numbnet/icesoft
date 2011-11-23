@@ -45,7 +45,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	@ResourceDependency(library="icefaces.ace", name="printer/printer.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="click", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
 })
 public class PrinterMeta extends UIComponentBaseMeta {
 

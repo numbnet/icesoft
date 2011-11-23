@@ -103,8 +103,8 @@ ice.ace.pushbutton = {
 			
 		var behaviors = context.getJSProps().behaviors;
 		if (behaviors) {
-			if (behaviors.click) {
-				behaviors.click.call(this);
+			if (behaviors.activate) {
+				behaviors.activate();
 			}
 		}
         };

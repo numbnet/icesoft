@@ -40,7 +40,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="click", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
 })
 public class MenuItemMeta extends UICommandMeta {
     @Property(tlddoc = "Url to be navigated when menuitem is clicked.")
