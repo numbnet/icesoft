@@ -25,6 +25,9 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 import org.icefaces.ace.meta.annotation.Expression;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 @Component(
         tagName         = "accordion",
@@ -44,6 +47,9 @@ import org.icefaces.ace.meta.annotation.Expression;
 	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
 	@ResourceDependency(library="icefaces.ace", name="core/core.js"),
 	@ResourceDependency(library="icefaces.ace", name="accordion/accordion.js")
+})
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="panechange", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
 })
 
 public class AccordionMeta extends UIPanelMeta {

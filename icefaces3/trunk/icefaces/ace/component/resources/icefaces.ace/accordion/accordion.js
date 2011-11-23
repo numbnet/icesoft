@@ -56,6 +56,7 @@ ice.ace.AccordionPanel = function(id, cfg) {
  */
 ice.ace.AccordionPanel.prototype.onTabChange = function(event, ui) {
     var panel = ui.newContent.get(0),
+    listener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.panechange,
     shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
 
     //Call user onTabChange callback
@@ -69,8 +70,14 @@ ice.ace.AccordionPanel.prototype.onTabChange = function(event, ui) {
     if(shouldLoad) {
         this.loadDynamicTab(panel);
     }
-    else if(this.cfg.ajaxTabChange) {
-        this.fireAjaxTabChangeEvent(panel);
+    else {
+        if (this.cfg.ajaxTabChange) {
+            this.fireAjaxTabChangeEvent(panel);
+        }
+        if (jQuery.isFunction(listener)) {
+//            listener.call(this, event);
+            listener();
+        }
     }
 }
 
