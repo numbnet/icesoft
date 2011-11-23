@@ -70,6 +70,11 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
     // Blackberry style sheet name found in jar.
     public static final String BBERRY_CSS = Utils.DeviceType.bberry.name() + CSS_EXT;
 
+    // View types, small or large
+    public static final String VIEW_TYPE = "view";
+    public static final String VIEW_TYPE_SMALL = "small";
+    public static final String VIEW_TYPE_LARGE = "large";
+
 
     // default resource library for a default themes,  if not specified in
     // component definition this library will be loaded.
@@ -117,6 +122,7 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
         // check for the existence of the name and library attributes.
         String name = (String) attributes.get(HTML.NAME_ATTR);
         String library = (String) attributes.get(HTML.LIBRARY_ATTR);
+        String view = (String)attributes.get(VIEW_TYPE);
 
         // check for empty string on name attribute used for auto mode where
         // name value binding is used.
@@ -129,7 +135,31 @@ public class DeviceStyleSheetRenderer extends Renderer implements javax.faces.ev
             if (contextMap.containsKey(MOBILE_DEVICE_TYPE_KEY)) {
                 name = (String) contextMap.get(MOBILE_DEVICE_TYPE_KEY);
             } else {
-                name = Utils.getDeviceType(context).name();
+                // the view attribute if specified will apply a small or large
+                // theme, large theme's are tablet based, so ipad and honeycomb.
+                // small themes are android, iphone, and bberry.
+                if (view != null){
+                    name = Utils.getDeviceType(context).name();
+                    // forces a small view
+                    if(view.equalsIgnoreCase(VIEW_TYPE_SMALL)){
+                        if(name.equals(Utils.DeviceType.ipad.name())){
+                            name = Utils.DeviceType.iphone.name();
+                        }else if (name.equals(Utils.DeviceType.honeycomb.name())){
+                            name= Utils.DeviceType.android.name();
+                        }
+                    }else if(view.equalsIgnoreCase(VIEW_TYPE_LARGE)){
+                        if(name.equals(Utils.DeviceType.iphone.name())){
+                            name = Utils.DeviceType.ipad.name();
+                        }else if (name.equals(Utils.DeviceType.android.name())){
+                            name= Utils.DeviceType.honeycomb.name();
+                        }
+                    }else{
+                        log.warning("View type " + view + " is not a recognized view type");
+                    }
+                }else{
+                    name = Utils.getDeviceType(context).name();
+                }
+
             }
             // load compressed css if this is production environment.
             if (context.isProjectStage(ProjectStage.Production)){
