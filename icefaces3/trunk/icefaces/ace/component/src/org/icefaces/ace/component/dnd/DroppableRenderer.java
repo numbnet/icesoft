@@ -75,6 +75,7 @@ public class DroppableRenderer extends CoreRenderer {
 
             droppable.queueEvent(event);
         }
+        decodeBehaviors(context, component);
     }
 
     @Override
@@ -108,6 +109,7 @@ public class DroppableRenderer extends CoreRenderer {
                 writer.write(",onDropUpdate:'" + ComponentUtils.findClientIds(context, droppable, onDropUpdate) + "'");
         }
 
+        encodeClientBehaviors(context, droppable);
         writer.write("});});");
 
         writer.endElement("script");

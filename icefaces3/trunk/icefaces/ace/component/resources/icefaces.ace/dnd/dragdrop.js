@@ -49,6 +49,7 @@ ice.ace.Droppable.prototype.setupDropHandler = function() {
     var _self = this;
     
     this.cfg.drop = function(event, ui) {
+        var dropListener = _self.cfg && _self.cfg.behaviors && _self.cfg.behaviors.drop;
         if(_self.cfg.onDrop) {
             _self.cfg.onDrop.call(this, event, ui);
         }
@@ -70,5 +71,9 @@ ice.ace.Droppable.prototype.setupDropHandler = function() {
         options.params = params;
 
         ice.ace.AjaxRequest(options);
+        if (jQuery.isFunction(dropListener)) {
+            dropListener.call(this, event);
+//            dropListener();
+        }
     };
 }
