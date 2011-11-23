@@ -85,7 +85,10 @@
 
 NSLog(@"ICEmobileHitch found command %@", [params objectForKey:@"c"]);
 NSLog(@"ICEmobileHitch found url %@", [params objectForKey:@"u"]);
+    //if the URL to POST to and the URL to reload in Safari are different,
+    //specify u to POST and r to return
     self.viewController.currentURL = [params objectForKey:@"u"];
+    self.viewController.returnURL = [params objectForKey:@"r"];
     self.viewController.currentParameters = [params objectForKey:@"p"];
     self.viewController.currentCommand = [params objectForKey:@"c"];
     self.viewController.currentSessionId = [params objectForKey:@"JSESSIONID"];

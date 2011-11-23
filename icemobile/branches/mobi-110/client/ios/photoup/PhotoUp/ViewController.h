@@ -15,6 +15,7 @@
 
 	NativeInterface *nativeInterface;
     NSString *currentURL;
+    NSString *returnURL;
     NSString *currentParameters;
     NSString *currentCommand;
     NSString *currentSessionId;
@@ -23,6 +24,7 @@
 
 @property (retain) NativeInterface *nativeInterface;
 @property (retain) NSString *currentURL;
+@property (retain) NSString *returnURL;
 @property (retain) NSString *currentParameters;
 @property (retain) NSString *currentCommand;
 @property (retain) NSString *currentSessionId;

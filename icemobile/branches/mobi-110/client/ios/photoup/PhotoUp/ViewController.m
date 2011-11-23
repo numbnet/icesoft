@@ -12,6 +12,7 @@
 @implementation ViewController
 @synthesize nativeInterface;
 @synthesize currentURL;
+@synthesize returnURL;
 @synthesize currentParameters;
 @synthesize currentCommand;
 @synthesize currentSessionId;
@@ -32,9 +33,13 @@ NSLog(@"Hitch just upload what would have been scripted %@", script);
     [params setValue:path forKey:componentName];
     [nativeInterface multipartPost:params toURL:self.currentURL];
 
+    NSString *safariURL = self.currentURL;
+    if (nil != self.returnURL)  {
+        safariURL = self.returnURL;
+    }
     [[UIApplication sharedApplication] 
-            openURL:[NSURL URLWithString:self.currentURL]];
-NSLog(@"Hitch opened safari currentURL");
+            openURL:[NSURL URLWithString:safariURL]];
+NSLog(@"Hitch opened safari currentURL %@", safariURL);
 }
 
 - (NSString *) prepareUpload:(NSString *)formID  {
