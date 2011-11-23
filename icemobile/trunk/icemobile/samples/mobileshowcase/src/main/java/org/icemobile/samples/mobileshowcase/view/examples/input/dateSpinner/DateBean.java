@@ -29,39 +29,41 @@ import java.util.Date;
         title = "example.input.dateSpinner.destination.title.short",
         titleExt = "example.input.dateSpinner.destination.title.long",
         titleBack = "example.input.dateSpinner.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/input/dateSpinner.xhtml"
+        contentPath = "/WEB-INF/includes/examples/input/date.xhtml"
 )
 @Example(
-        descriptionPath = "/WEB-INF/includes/examples/input/dateSpinner-desc.xhtml",
-        examplePath = "/WEB-INF/includes/examples/input/dateSpinner-example.xhtml",
+        descriptionPath = "/WEB-INF/includes/examples/input/date-desc.xhtml",
+        examplePath = "/WEB-INF/includes/examples/input/date-example.xhtml",
         resourcesPath = "/WEB-INF/includes/examples/example-resources.xhtml"
 )
 @ExampleResources(
         resources = {
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
-                        title = "dateSpinner-example.xhtml",
-                        resource = "/WEB-INF/includes/examples/input/dateSpinner-example.xhtml"),
+                        title = "date-example.xhtml",
+                        resource = "/WEB-INF/includes/examples/input/date-example.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
-                        title = "DateSpinnerBean.java",
+                        title = "DateBean.java",
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
-                                "/view/examples/input/dateSpinner/DateSpinnerBean.java")
+                                "/view/examples/input/dateSpinner/DateBean.java")
         }
 )
 
-@ManagedBean(name = DateSpinnerBean.BEAN_NAME)
+@ManagedBean(name = DateBean.BEAN_NAME)
 @SessionScoped
-public class DateSpinnerBean extends ExampleImpl<DateSpinnerBean> implements
+public class DateBean extends ExampleImpl<DateBean> implements
         Serializable {
 
-    public static final String BEAN_NAME = "dateSpinnerBean";
+    public static final String BEAN_NAME = "dateBean";
 
-    // simple bean input value bindings
+    // date input/echo
     private Date dateInput;
+    // time input/echo
+    private Date timeInput;
 
-    public DateSpinnerBean() {
-        super(DateSpinnerBean.class);
+    public DateBean() {
+        super(DateBean.class);
     }
 
     public Date getDateInput() {
@@ -70,6 +72,14 @@ public class DateSpinnerBean extends ExampleImpl<DateSpinnerBean> implements
 
     public void setDateInput(Date dateInput) {
         this.dateInput = dateInput;
+    }
+
+    public Date getTimeInput() {
+        return timeInput;
+    }
+
+    public void setTimeInput(Date timeInput) {
+        this.timeInput = timeInput;
     }
 
 }
