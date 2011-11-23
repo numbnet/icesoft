@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<!DOCTYPE display PUBLIC "-//Liferay//DTD Display 6.0.0//EN" "http://www.liferay.com/dtd/liferay-display_6_0_0.dtd">
+
+<display>
+
+    <category name="ICEfaces2">
+
+        <category name="Suite">
+            <category name="ACE">
+                <portlet id="aceAccordion"/>
+                <portlet id="aceButtons"/>
+                <portlet id="aceConfirm"/>
+                <portlet id="aceContext"/>
+                <portlet id="aceDataExport"/>
+                <portlet id="aceDataTable"/>
+                <portlet id="aceFileEntry"/>
+                <portlet id="aceMenu"/>
+                <portlet id="aceMenuBar"/>
+                <portlet id="aceNotification"/>
+                <portlet id="acePanel"/>
+                <portlet id="aceProgress"/>
+                <portlet id="aceSlider"/>
+                <portlet id="aceTab"/>
+            </category>
+
+            <category name="Compat">
+                <portlet id="compatAutoComplete"/>
+                <portlet id="compatBorder"/>
+                <portlet id="compatCalendar"/>
+                <portlet id="compatChart"/>
+                <portlet id="compatCollapsible"/>
+                <portlet id="compatColumns"/>
+                <portlet id="compatConfirmation"/>
+                <portlet id="compatConnection"/>
+                <portlet id="compatDataTable"/>
+                <portlet id="compatDivider"/>
+                <portlet id="compatDragDrop"/>
+                <portlet id="compatEffect"/>
+                <portlet id="compatEventPhase"/>
+                <portlet id="compatExporter"/>
+                <portlet id="compatMap"/>
+                <portlet id="compatMedia"/>
+                <portlet id="compatMenuBar"/>
+                <portlet id="compatMenuPopup"/>
+                <portlet id="compatOutputResource"/>
+                <portlet id="compatPaginator"/>
+                <portlet id="compatPopup"/>
+                <portlet id="compatPositioned"/>
+                <portlet id="compatProgress"/>
+                <portlet id="compatRichText"/>
+                <portlet id="compatSelector"/>
+                <portlet id="compatSeries"/>
+                <portlet id="compatStacking"/>
+                <portlet id="compatTab"/>
+                <portlet id="compatTooltip"/>
+                <portlet id="compatTree"/>
+            </category>
+
+        </category>
+
+    </category>
+
+</display>

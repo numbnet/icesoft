@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[tooltipOverviewBean.title]}"/>
+    <ui:param name="description" value="#{msgs[tooltipOverviewBean.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[tooltipOverviewBean.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{tooltipOverviewBean.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{tooltipOverviewBean.exampleResource}"/>
+
+    <ui:define name="example">
+        <h:form>
+            
+            <icecore:singleSubmit/>
+            
+            <ace:panel header="Tooltip Component Configuration Panel">
+                <h:panelGrid columns="2" width="100%">
+                       <h:outputLabel id="tooltipEffectLabel" for="tooltipEffectSelector" value="Effect:" />
+                        <h:selectOneMenu id="tooltipEffectSelector" value="#{tooltipOverviewBean.tooltipEffect}">
+                            <f:selectItem itemValue="fade" itemLabel="Fade Effect"/>
+                            <f:selectItem itemValue="slide" itemLabel="Slide Effect"/>
+                            <f:selectItem itemValue="grow" itemLabel="Grow Effect"/>
+                        </h:selectOneMenu>
+                   
+                        <h:outputLabel id="tooltipShowDelayLabel" for="tooltipShowDelaySelector" value="Show Delay:" />
+                        <h:selectOneMenu id="tooltipShowDelaySelector" value="#{tooltipOverviewBean.tooltipShowDelay}">
+                            <f:selectItem itemValue="0" itemLabel="none"/>
+                            <f:selectItem itemValue="2000" itemLabel="2 seconds"/>
+                            <f:selectItem itemValue="4000" itemLabel="4 seconds"/>
+                        </h:selectOneMenu>
+                   
+                       <h:outputLabel id="tooltipHideDelayLabel" for="tooltipHideDelaySelector" value="Hide Delay:" />
+                        <h:selectOneMenu id="tooltipHideDelaySelector" value="#{tooltipOverviewBean.tooltipHideDelay}">
+                            <f:selectItem itemValue="0" itemLabel="none"/>
+                            <f:selectItem itemValue="2000" itemLabel="2 seconds"/>
+                            <f:selectItem itemValue="4000" itemLabel="4 seconds"/>
+                        </h:selectOneMenu>
+                   
+                        <h:outputLabel id="tooltipShowEffectLengthDelayLabel" for="tooltipShowEffectLengthSelector" value="Show Effect Length:" />
+                        <h:selectOneMenu id="tooltipShowEffectLengthSelector" value="#{tooltipOverviewBean.showEffectLength}">
+                            <f:selectItem itemValue="100" itemLabel="100 ms"/>
+                            <f:selectItem itemValue="500" itemLabel="500 ms"/>
+                            <f:selectItem itemValue="1000" itemLabel="1 second"/>
+                            <f:selectItem itemValue="2000" itemLabel="2 seconds"/>
+                        </h:selectOneMenu>
+                   
+                        <h:outputLabel id="tooltipHideEffectLengthDelayLabel" for="tooltipHideEffectLengthSelector" value="Hide Effect Length:" />
+                        <h:selectOneMenu id="tooltipHideEffectLengthSelector" value="#{tooltipOverviewBean.hideEffectLength}">
+                            <f:selectItem itemValue="100" itemLabel="100 ms"/>
+                            <f:selectItem itemValue="500" itemLabel="500 ms"/>
+                            <f:selectItem itemValue="1000" itemLabel="1 second"/>
+                            <f:selectItem itemValue="2000" itemLabel="2 seconds"/>
+                        </h:selectOneMenu>
+                   
+                       <h:outputLabel id="tooltipTargetPositionLabel" for="tooltiptooltipTargetPositionSelector" value="Position relative to tooltip target:" />
+                        <h:selectOneMenu id="tooltiptooltipTargetPositionSelector" value="#{tooltipOverviewBean.tooltipTargetPosition}">
+                            <f:selectItem itemValue="bottomRight" itemLabel="Bottom Right"/>
+                            <f:selectItem itemValue="bottomLeft" itemLabel="Bottom Left"/>
+                            <f:selectItem itemValue="topRight" itemLabel="Top Right"/>
+                            <f:selectItem itemValue="topLeft" itemLabel="Top Left"/>
+                        </h:selectOneMenu>
+                   
+                       <h:outputLabel id="tooltipPositionLabel" for="tooltiptooltipPositionSelector" value="Tooltip position:" />
+                       <h:selectOneMenu id="tooltiptooltipPositionSelector" value="#{tooltipOverviewBean.tooltipPosition}">
+                            <f:selectItem itemValue="topLeft" itemLabel="Top Left"/>
+                            <f:selectItem itemValue="topRight" itemLabel="Top Right"/>
+                            <f:selectItem itemValue="bottomLeft" itemLabel="Bottom Left"/>
+                            <f:selectItem itemValue="bottomRight" itemLabel="Bottom Right"/>
+                        </h:selectOneMenu>
+               </h:panelGrid>
+           </ace:panel>
+           
+           <br/>
+           <br/>
+           <ace:panel>
+               <h:panelGrid style="text-align: center;" width="100%">
+                   <h:panelGrid border="1" style="border-collapse: collapse; margin-left: auto; margin-right: auto;">
+                       <h:outputText id="text" value="Mouse over to see picture of the day"/>
+                   </h:panelGrid>
+                   
+                   <ace:tooltip id="tooltip" for="text"
+                                       showEffect="#{tooltipOverviewBean.tooltipEffect}"
+                                       hideEffect="#{tooltipOverviewBean.tooltipEffect}"
+                                       showDelay="#{tooltipOverviewBean.tooltipShowDelay}"
+                                       hideDelay="#{tooltipOverviewBean.tooltipHideDelay}"
+                                       position="#{tooltipOverviewBean.tooltipPosition}"
+                                       targetPosition="#{tooltipOverviewBean.tooltipTargetPosition}"
+                                       showEffectLength="#{tooltipOverviewBean.showEffectLength}"
+                                       hideEffectLength="#{tooltipOverviewBean.hideEffectLength}">
+                                       
+                          <h:panelGrid style="text-align: center"> 
+                               <h:graphicImage id="sampleImage" value="#{tooltipOverviewBean.imageLocation}"/>
+                               <h:outputText value="This image with double rainbows was made in August of 2010 in the city of Calgary"/>
+                           </h:panelGrid>
+                    </ace:tooltip>
+               </h:panelGrid>
+           </ace:panel>
+           
+        </h:form>
+    </ui:define>
+</ui:composition>

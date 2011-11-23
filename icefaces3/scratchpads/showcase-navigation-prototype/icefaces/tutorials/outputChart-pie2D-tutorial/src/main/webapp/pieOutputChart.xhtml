@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>OutputChart Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        </h:head>    <h:body>        <ice:form>
+        <ice:panelGrid columns="2">        
+            <ice:outputChart id="pieOutputChart" type="pie2D" chartTitle="Pie2D Chart" width="350" height="350" labels="#{pieChartBean.labels}" colors="#{pieChartBean.paints}" data="#{pieChartBean.data}" actionListener="#{pieChartBean.imageClicked}" renderOnSubmit="#{pieChartBean.newChart}"></ice:outputChart>
+                             
+            <ice:panelGroup>
+                <ice:outputText value="Year Specific Data:"></ice:outputText>
+                <ice:dataTable var="sale" value="#{pieChartBean.sales}">
+                    <ice:column>
+                        <f:facet name="header">
+                            <ice:outputText value="Product Name"></ice:outputText>
+                        </f:facet>
+                        <ice:outputText value="#{sale.product}"></ice:outputText>
+                    </ice:column>
+                    <ice:column>
+                        <f:facet name="header">
+                            <ice:outputText value="Price"></ice:outputText>
+                        </f:facet>
+                        <ice:outputText value="#{sale.price}"></ice:outputText>
+                    </ice:column>
+                    <ice:column>
+                        <f:facet name="header">
+                            <ice:outputText value="Year"></ice:outputText>
+                        </f:facet>
+                        <ice:outputText value="#{sale.year}"></ice:outputText>
+                    </ice:column>
+                </ice:dataTable>
+            </ice:panelGroup>
+            
+        </ice:panelGrid>
+        
+    		</ice:form>	</h:body></f:view></html>
