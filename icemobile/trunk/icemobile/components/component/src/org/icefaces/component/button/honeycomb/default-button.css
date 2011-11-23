@@ -79,6 +79,7 @@
 }
 
 .mobi-button {
+    -webkit-appearance: none;
     border: 1px solid #38383b;
     border-top: 1px solid #505054;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #424246), color-stop(1, #3f3f42));
