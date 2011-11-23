@@ -53,7 +53,7 @@ public class MediaController implements Serializable {
             Logger.getLogger(MediaController.class.toString());
 
     private Media soundIcon;
-    private Media movieIcon ;
+    private Media movieIcon;
     private Media soundIconSmall;
     private Media movieIconSmall;
     private String videoConvertCommand;
@@ -68,15 +68,15 @@ public class MediaController implements Serializable {
 
         videoConvertCommand = FacesContext.getCurrentInstance()
                 .getExternalContext().getInitParameter(
-                    "org.icemobile.videoConvertCommand" );
-                    
+                        "org.icemobile.videoConvertCommand");
+
         audioConvertCommand = FacesContext.getCurrentInstance()
                 .getExternalContext().getInitParameter(
-                    "org.icemobile.audioConvertCommand" );
+                        "org.icemobile.audioConvertCommand");
 
         thumbConvertCommand = FacesContext.getCurrentInstance()
                 .getExternalContext().getInitParameter(
-                    "org.icemobile.thumbnailCommand" );
+                        "org.icemobile.thumbnailCommand");
         /**
          * Video and Audio files don't have default thumbnail icons for preview
          * so we load the following thumbnails.
@@ -126,13 +126,13 @@ public class MediaController implements Serializable {
                 FacesUtils.getManagedBean(MediaStore.BEAN_NAME);
 
         String selectedMediaInput = uploadModel.getSelectedMediaInput();
-        String contentType = (String)uploadModel.getMediaMap().get("contentType");
+        String contentType = (String) uploadModel.getMediaMap().get("contentType");
 
         // check that we have a valid file type before processing.
         if (contentType != null &&
                 (contentType.startsWith("image") ||
-                 contentType.startsWith("video") ||
-                 contentType.startsWith("audio"))){
+                        contentType.startsWith("video") ||
+                        contentType.startsWith("audio"))) {
 
             File mediaFile = null;
             MediaMessage photoMessage = new MediaMessage();
@@ -160,26 +160,26 @@ public class MediaController implements Serializable {
                 processUploadedAudio(photoMessage, mediaFile);
                 photoMessage.setComment(processComment(uploadModel.getComment(),
                         MediaMessage.MEDIA_TYPE_AUDIO));
-                subject =  "New Audio";
+                subject = "New Audio";
                 uploadModel.setAudioFile(null);
             }
 
             // only add the message if the file successfully uploaded.
-            if (mediaFile != null){
+            if (mediaFile != null) {
                 mediaStore.addMedia(photoMessage);
                 try {
                     String body = photoMessage.getComment();
                     PushRenderer.render(RENDER_GROUP,
-                            new PushMessage(subject, body) );
+                            new PushMessage(subject, body));
                 } catch (Exception e) {
-                    logger.log(Level.WARNING, "Media message was not sent to recipients.", e);
+                    logger.log(Level.WARNING, "Media message was not sent to recipients.");
                 }
                 uploadModel.setUploadErrorMessage("The " + selectedMediaInput + " Message sent successfully.");
-            }else{
+            } else {
                 uploadModel.setUploadErrorMessage("An error occurred while upload the " + selectedMediaInput +
-                    " file, please try again.");
+                        " file, please try again.");
             }
-        }else{
+        } else {
             uploadModel.setUploadErrorMessage("An error occurred while upload the " + selectedMediaInput +
                     " file, please try again.");
         }
@@ -190,6 +190,25 @@ public class MediaController implements Serializable {
 
         return null;
     }
+
+    /**
+     * Cancel the upload and reset the controls back to input selection.
+     *
+     * @return null, no jsf navigation.
+     */
+    public String cancelUpload() {
+
+        // session scope model bean
+        UploadModel uploadModel = (UploadModel)
+                FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
+
+        // reset the selected input string, so the input selection buttons show up again.
+        uploadModel.setSelectedMediaInput("");
+        uploadModel.setComment("");
+
+        return null;
+    }
+
 
     public String viewMediaDetail() {
         UploadModel uploadModel = (UploadModel)
@@ -229,7 +248,7 @@ public class MediaController implements Serializable {
     }
 
     private File processFile(File inputFile, String commandTemplate,
-            String outputExtension)  {
+                             String outputExtension) {
         StringBuilder command = new StringBuilder();
         try {
             File converted = File.createTempFile("out", outputExtension);
@@ -240,13 +259,13 @@ public class MediaController implements Serializable {
             Runtime runtime = Runtime.getRuntime();
             Process process = runtime.exec(command.toString());
             int exitValue = process.waitFor();
-            if (0 != exitValue)  {
+            if (0 != exitValue) {
                 logger.log(Level.WARNING, "Transcoding failure: " + command);
                 StringBuilder errorString = new StringBuilder();
                 InputStream errorStream = process.getErrorStream();
                 byte[] buf = new byte[1000];
                 int len = -1;
-                while ( (len = errorStream.read(buf)) > 0)  {
+                while ((len = errorStream.read(buf)) > 0) {
                     errorString.append(new String(buf, 0, len));
                 }
                 logger.log(Level.WARNING, errorString.toString());
@@ -269,12 +288,12 @@ public class MediaController implements Serializable {
     }
 
     private void processUploadedAudio(MediaMessage audioMessage, File audioFile) {
-        if (audioFile == null){
+        if (audioFile == null) {
             return;
         }
         try {
             if (null != audioConvertCommand) {
-                File converted = 
+                File converted =
                         processFile(audioFile, audioConvertCommand, ".m4a");
                 File audioDir = audioFile.getParentFile();
                 File newAudio = new File(audioDir, converted.getName());
@@ -293,7 +312,7 @@ public class MediaController implements Serializable {
 
     private void processUploadedVideo(MediaMessage videoMessage, File videoFile) {
 
-        if (videoFile == null){
+        if (videoFile == null) {
             return;
         }
 
@@ -332,7 +351,7 @@ public class MediaController implements Serializable {
 
     private void processUploadedImage(MediaMessage photoMessage, File cameraFile) {
 
-        if (cameraFile == null){
+        if (cameraFile == null) {
             return;
         }
         try {
@@ -379,7 +398,7 @@ public class MediaController implements Serializable {
         }
     }
 
-    private Media createPhoto(File imageFile) throws IOException  {
+    private Media createPhoto(File imageFile) throws IOException {
         BufferedImage image = ImageIO.read(imageFile);
         return createPhoto(image, image.getWidth(), image.getHeight());
     }
@@ -398,6 +417,7 @@ public class MediaController implements Serializable {
         UploadModel uploadModel = (UploadModel)
                 FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
         uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_PHOTO);
+        uploadModel.setUploadErrorMessage("");
         return null;
     }
 
@@ -405,6 +425,7 @@ public class MediaController implements Serializable {
         UploadModel uploadModel = (UploadModel)
                 FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
         uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_VIDEO);
+        uploadModel.setUploadErrorMessage("");
         return null;
     }
 
@@ -412,6 +433,7 @@ public class MediaController implements Serializable {
         UploadModel uploadModel = (UploadModel)
                 FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
         uploadModel.setSelectedMediaInput(MediaMessage.MEDIA_TYPE_AUDIO);
+        uploadModel.setUploadErrorMessage("");
         return null;
     }
 
@@ -465,11 +487,11 @@ public class MediaController implements Serializable {
      * Utility to insure a comment is assigned to a new message.  If the specified
      * comment is empty or null then the default comment value is used.
      *
-     * @param comment comment value specified by user.
+     * @param comment        comment value specified by user.
      * @param defaultComment default comment
      * @return comment value if not null or empty, otherwise default is returned.
      */
-    private String processComment(String comment, String defaultComment){
+    private String processComment(String comment, String defaultComment) {
         if ((null != comment) && (!"".equals(comment))) {
             return comment;
         }

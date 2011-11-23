@@ -31,6 +31,7 @@
                 <h:column>
                     <div style="overflow:hidden;width:175px;height:98px;">
                         <mobi:graphicImage
+                                title="#{mediaMessage.comment}"
                                 width="#{mediaMessage.mediumPhoto.width}"
                                 height="#{mediaMessage.mediumPhoto.height}"
                                 value="#{mediaMessage.mediumPhoto.data}"/>
@@ -45,7 +46,6 @@
                                         name="view-icon.png"/>
                     </h:commandLink>
                 </h:column>
-
         </mobi:carousel>
     </h:form>
 
@@ -63,14 +63,14 @@
             <mobi:fieldsetRow rendered="#{uploadModel.showInputSelect}" >
                 <!-- show new message creation buttons, image, movie and soudn -->
                 <h:panelGroup style="display:inline-block;padding-bottom: 3px;" >
-                    <h:commandButton value="Photo"
-                                     styleClass="mobi-button mobi-button-default"
+                    <mobi:commandButton value="Photo"
+                                     buttonType="default"
                                      action="#{mediaController.chooseCamera}"/>
-                    <h:commandButton value="Video"
-                                     styleClass="mobi-button mobi-button-default"
+                    <mobi:commandButton value="Video"
+                                     buttonType="default"
                                      action="#{mediaController.chooseCamcorder}"/>
-                    <h:commandButton value="Audio"
-                                     styleClass="mobi-button mobi-button-default"
+                    <mobi:commandButton value="Audio"
+                                     buttonType="default"
                                      action="#{mediaController.chooseMicrophone}"/>
                 </h:panelGroup>
             </mobi:fieldsetRow>
@@ -115,6 +115,12 @@
                 <!--<h:messages  id="fileUploadMsg" />-->
                 <h:outputText style="font-weight:bold"
                               value="#{uploadModel.uploadErrorMessage}"/>
+                <h:commandButton
+                        style="float:right;"
+                        disabled="#{uploadModel.showInputSelect}"
+                        styleClass="mobi-button mobi-button-default"
+                        actionListener="#{mediaController.cancelUpload}"
+                        value="Cancel"/>
                 <h:commandButton
                         style="float:right;"
                         disabled="#{uploadModel.showInputSelect}"
