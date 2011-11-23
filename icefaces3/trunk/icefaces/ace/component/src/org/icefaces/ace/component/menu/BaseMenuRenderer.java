@@ -40,6 +40,12 @@ import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.Utils;
 import org.icefaces.impl.event.AjaxDisabledList;
 
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import java.util.*;
+import org.icefaces.ace.component.ajax.AjaxBehavior;
+
 public abstract class BaseMenuRenderer extends CoreRenderer {
 
     @Override
@@ -83,15 +89,33 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 
 				String formClientId = form.getClientId(context);
 				String command;
-                if (menuItem.isAjax()) {
-                    UIParameter customUpdateParam = new UIParameter();
-                    customUpdateParam.setName("ice.customUpdate");
-                    customUpdateParam.setValue(clientId);
-                    menuItem.getChildren().add(customUpdateParam);
-                    command = buildAjaxRequest(context, menuItem);
-					menuItem.getChildren().remove(customUpdateParam);
-                } else {
-                    command = buildNonAjaxRequest(context, menuItem, formClientId, clientId);
+				
+				boolean hasAjaxBehavior = false;
+				
+				StringBuilder behaviors = new StringBuilder();
+				behaviors.append("this.id = '" + clientId + "'; (function() { "); // dynamically set the id to the node so that it can be handled by the submit functions 
+				// ClientBehaviors
+				Map<String,List<ClientBehavior>> behaviorEvents = menuItem.getClientBehaviors();
+				if(!behaviorEvents.isEmpty()) {
+					List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+					for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get("click").iterator(); behaviorIter.hasNext();) {
+						ClientBehavior behavior = behaviorIter.next();
+						if (behavior instanceof AjaxBehavior)
+							hasAjaxBehavior = true;
+						ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, menuItem, "click", clientId, params);
+						String script = behavior.getScript(cbc);    //could be null if disabled
+
+						if(script != null) {
+							behaviors.append(script);
+							behaviors.append(";");
+						}
+					}
+				}
+				behaviors.append(" })(null, {'ice.customUpdate':'" + clientId +"'});");
+				command = behaviors.toString();
+				
+                if (!hasAjaxBehavior) {
+                    command += buildNonAjaxRequest(context, menuItem, formClientId, clientId);
                     UIForm theForm = AjaxDisabledList.getContainingForm(menuItem);
                     if (null != theForm)  {
                         String disabledList = (String) theForm.getAttributes()

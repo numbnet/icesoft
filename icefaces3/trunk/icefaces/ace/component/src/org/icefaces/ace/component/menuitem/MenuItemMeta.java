@@ -23,6 +23,10 @@ import org.icefaces.ace.meta.baseMeta.UICommandMeta;
 
 import javax.faces.application.ResourceDependencies;
 
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
+
 @Component(
         tagName = "menuitem",
         componentClass = "org.icefaces.ace.component.menuitem.MenuItem",
@@ -34,6 +38,9 @@ import javax.faces.application.ResourceDependencies;
 )
 @ResourceDependencies({
 
+})
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="click", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
 })
 public class MenuItemMeta extends UICommandMeta {
     @Property(tlddoc = "Url to be navigated when menuitem is clicked.")
@@ -53,34 +60,6 @@ public class MenuItemMeta extends UICommandMeta {
 
     @Property(tlddoc = "Javascript event handler for click event.")
     private String onclick;
-
-    @Property(tlddoc = "Client side id of the component(s) to be updated after async partial submit request.")
-    private String update;
-
-    @Property(tlddoc = "Component id(s) to process partially instead of whole view.")
-    private String process;
-
-    @Property(tlddoc = "Javascript handler to execute before ajax request is begins.")
-    private String onstart;
-
-    @Property(tlddoc = "Javascript handler to execute when ajax request is completed.")
-    private String oncomplete;
-
-    @Property(tlddoc = "Javascript handler to execute when ajax request fails.")
-    private String onerror;
-
-    @Property(tlddoc = "Javascript handler to execute when ajax request succeeds.")
-    private String onsuccess;
-
-    @Property(tlddoc = "Global ajax requests are listened by ajaxStatus component," +
-            " setting global to false will not trigger ajaxStatus.", defaultValue = "true")
-    private boolean global;
-
-    @Property(tlddoc = "Specifies async mode.")
-    private boolean async;
-
-    @Property(tlddoc = "Specifies submit mode.", defaultValue = "true")
-    private boolean ajax;
 
     @Property(tlddoc = "Path of the menuitem image.")
     private String icon;

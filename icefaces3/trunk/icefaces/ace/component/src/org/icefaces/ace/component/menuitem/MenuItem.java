@@ -34,13 +34,41 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import java.util.Map;
+import java.util.List;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 
-public class MenuItem extends MenuItemBase implements org.icefaces.ace.api.AjaxSource, java.io.Serializable {
+
+public class MenuItem extends MenuItemBase implements java.io.Serializable {
 	
     public void decode(FacesContext facesContext) {
+	
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = getClientId(facesContext);
         if (params.containsKey(clientId)) this.queueEvent(new ActionEvent(this));
+
+        // decode bahaviors 
+		Map<String, List<ClientBehavior>> behaviors = getClientBehaviors();
+        if(behaviors.isEmpty()) {
+            return;
+        }
+		
+        String behaviorEvent = params.get("javax.faces.behavior.event");
+
+        if(null != behaviorEvent) {
+            List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
+
+            if(behaviors.size() > 0) {
+               String behaviorSource = params.get("javax.faces.source");
+
+               if(behaviorSource != null && behaviorSource.startsWith(clientId)) {
+                   for (ClientBehavior behavior: behaviorsForEvent) {
+                       behavior.decode(facesContext, this);
+                   }
+               }
+            }
+        }
     }
 
     public boolean shouldRenderChildren() {
