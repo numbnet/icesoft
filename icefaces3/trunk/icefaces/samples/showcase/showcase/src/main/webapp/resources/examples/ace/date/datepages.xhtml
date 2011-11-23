@@ -58,7 +58,7 @@
                                                pattern="MMM/dd/yyyy">
                     <ace:ajax event="dateSelect"
                                      listener="#{datePages.dateSelectListener}"
-                                     update="selected"/>
+                                     render="selected"/>
                 </ace:dateTimeEntry>
                 <h:selectOneMenu value="#{datePages.pages}">
                     <f:selectItem itemLabel="one page" itemValue="1"/>
