@@ -34,14 +34,6 @@
     <ui:param name="resourceValue" value="#{progress.exampleResource}"/>
     
     <ui:define name="example">
-        <p><b>Demo Use Cases:</b></p>
-        <p><b>1.</b> Click the "Start" button to simulate a long running task on the server that updates the completed status on the page.</p>
-        <p><b>2.</b> At any point click the "Stop" button to stop the long running task, or click "Reset" to put the progress back to 0%.</p>
-        <p>The progress bar component is very useful for notifying users of the status of long running tasks on the server. For example filtering search results, saving or uploading a large file, processing a complex algorithm, etc. can all be displayed with the progress bar.</p>
-        <p>From a developer perspective they can update the progress bar percentage at any point during their long running task, and use Ajax Push to display the update to the user's browser.</p>
-        <p>The size, labels, coloring, etc. of the progress bar can be customized.</p> 
-        <br/>
-    
         <h:form>
             <h:panelGrid columns="3">
                 <h:outputLabel for="progressOut" value="Progress Bar:"/>

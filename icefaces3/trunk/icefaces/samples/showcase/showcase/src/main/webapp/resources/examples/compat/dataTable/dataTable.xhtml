@@ -34,14 +34,6 @@
     <ui:param name="resourceValue" value="#{dataTable.exampleResource}"/>
     
     <ui:define name="example">
-        <p><b>Demo Use Cases:</b></p>
-        <p><b>1.</b> Sort the data table by clicking a header (such as Name) and observing the result.</p>
-        <p><b>2.</b> Page through the data by using the paginator buttons at the bottom of the data table.</p>
-        <p><b>3.</b> Resize the columns by clicking and dragging the thick gray bar between each column.</p>
-        <p>The data table component is a powerful improvement on the standard JSF dataTable. Additional functionality like sorting, pagination, resizing, row selection, scrolling, etc. are added.</p>
-        <p>In general a data table is used to display a list of data, such as records generated from a database.</p>
-        <br/>
-    
         <h:form>
             <ice:dataTable id="carTable"
                            value="#{dataTableSort.carsData}"

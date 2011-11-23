@@ -35,6 +35,7 @@
     
     <ui:define name="example">
         <h:form>
+            <h:panelGrid style="margin-left: auto; margin-right: auto;" width="100" border="1">
             <ice:outputMedia id="outputMedia"
                              player="windows"
                              source="#{media.sourceDir}/ICEfaces_Windows_Media.mov"
@@ -42,6 +43,7 @@
                 <f:param name="autostart" value="1"/>
                 <f:param name="showcontrols" value="1"/>
             </ice:outputMedia>
+            </h:panelGrid>
         </h:form>
     </ui:define>
 </ui:composition>

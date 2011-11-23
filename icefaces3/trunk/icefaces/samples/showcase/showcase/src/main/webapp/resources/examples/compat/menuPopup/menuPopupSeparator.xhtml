@@ -42,12 +42,10 @@
                 <h:selectBooleanCheckbox id="sepIn" value="#{menuPopupSeparator.hideSeparators}"/>
             </h:panelGrid>
             
-            <p>Right-click on the image below to display a menu popup that can display separators.</p>
-            <br/>
-            
-            <ice:panelGroup menuPopup="menuPopupSep">
+            <ice:panelGroup menuPopup="menuPopupSep" style="text-align: center;">
                 <h:graphicImage library="css/images" name="header.png"/>
             </ice:panelGroup>
+            <h:outputText value="Right-click on the image below to display a menu popup that can display icons."/>
             
             <ice:menuPopup id="menuPopupSep">
                 <ice:menuItemSeparator rendered="#{!menuPopupSeparator.hideSeparators}"/>

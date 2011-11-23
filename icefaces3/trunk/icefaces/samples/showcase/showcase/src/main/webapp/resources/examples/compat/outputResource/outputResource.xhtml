@@ -34,11 +34,6 @@
     <ui:param name="resourceValue" value="#{outputResource.exampleResource}"/>
     
     <ui:define name="example">
-        <p><b>Demo Use Cases:</b></p>
-        <p><b>1.</b> Click the "Download PDF" link to save a PDF file located on the server.</p>
-        <p>Traditionally allowing users access to file resources on the server has sometimes been a challenge. With the output resource component a developer can simply specify a path and the streaming of the resource to the user's browser will be handled automatically.</p>
-        <br/>
-    
         <h:form>
             <ice:outputResource id="downLink"
                                 resource="#{outputResource.pdfResource}"
