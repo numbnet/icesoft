@@ -39,13 +39,14 @@
         <h:form>
             <span class="top">
                 <ace:sliderEntry id="slide-entry"
-                    singleSubmit="true"
                     clickableRail="true"
                     style-class="top"
                     length="200px"
                     min="-30"
                     max="150"
-                    value="#{slider.sliderValue}" />
+                    value="#{slider.sliderValue}" >
+                    <ace:ajax event="slideend" execute="@this" render="@form" />
+                </ace:sliderEntry>
             </span>
             <div class="row" style="width:200px;">
                 <span class="top" style="width:200px;">

@@ -60,13 +60,15 @@
                 <span style="display:none;">#{sliderAsyncInput.xAxis}</span>
                 <ace:sliderEntry id="slide-entry"
                     clickableRail="true"
-                    singleSubmit="true"
                     style-class="top"
                     length="#{sliderAsyncInput.length}"
                     min="#{sliderAsyncInput.minValue}"
                     max="#{sliderAsyncInput.maxValue}"
                     value="#{sliderAsyncInput.sliderValue}"
-                    axis="#{sliderAsyncInput.xAxis ? 'x' : 'y'}"/>
+                    axis="#{sliderAsyncInput.xAxis ? 'x' : 'y'}">
+                    <ace:ajax event="slideend" execute="@this" render="@form" />
+                </ace:sliderEntry>
+                    
                     <h:outputText value="Value:" /><ice:inputText value="#{sliderAsyncInput.sliderValue}" />
                 </span>
                 <div class="row">
