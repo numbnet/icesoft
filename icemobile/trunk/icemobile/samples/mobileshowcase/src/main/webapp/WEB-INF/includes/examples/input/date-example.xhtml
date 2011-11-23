@@ -23,18 +23,30 @@
     <h4><h:outputText value="Date Spinner Input"/></h4>
     <h:form>
         <mobi:fieldsetGroup>
-
+           <!-- date spinner -->
             <mobi:fieldsetRow>
                 <h:outputLabel value="Date: "/>
                 <h:panelGroup style="float:right;">
                     <mobi:dateSpinner style="width:100px;"
-                                     value="#{dateSpinnerBean.dateInput}">
+                                      useNative="true"
+                                     value="#{dateBean.dateInput}">
                         <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
                     </mobi:dateSpinner>
                 </h:panelGroup>
             </mobi:fieldsetRow>
+            <!-- time spinner -->
             <mobi:fieldsetRow>
-                <mobi:commandButton buttonType="default" value="Submit" />
+                <h:outputLabel value="Time: "/>
+                <h:panelGroup style="float:right;">
+                    <mobi:timeSpinner style="width:100px;" timeZone="MST"
+                                      useNative="true"
+                                     value="#{dateBean.timeInput}">
+                    </mobi:timeSpinner>
+                </h:panelGroup>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <mobi:commandButton buttonType="default"
+                                    value="Submit" />
             </mobi:fieldsetRow>
 
         </mobi:fieldsetGroup>
@@ -46,8 +58,15 @@
         <mobi:fieldsetRow>
             <h:outputLabel value="Date:"/>
             <h:outputText styleClass="fr"
-                          value="#{dateSpinnerBean.dateInput}">
+                          value="#{dateBean.dateInput}">
                 <f:convertDateTime type="date" />
+            </h:outputText>
+        </mobi:fieldsetRow>
+        <mobi:fieldsetRow>
+            <h:outputLabel value="Time:"/>
+            <h:outputText styleClass="fr"
+                          value="#{dateBean.timeInput}">
+                <f:convertDateTime type="time" timeZone="MST" />
             </h:outputText>
         </mobi:fieldsetRow>
 

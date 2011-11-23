@@ -17,7 +17,7 @@
 package org.icemobile.samples.mobileshowcase.view.navigation;
 
 import org.icemobile.samples.mobileshowcase.view.examples.input.button.ButtonBean;
-import org.icemobile.samples.mobileshowcase.view.examples.input.dateSpinner.DateSpinnerBean;
+import org.icemobile.samples.mobileshowcase.view.examples.input.dateSpinner.DateBean;
 import org.icemobile.samples.mobileshowcase.view.examples.input.flipSwitch.FlipSwitchBean;
 import org.icemobile.samples.mobileshowcase.view.examples.input.geolocation.GeoLocationBean;
 import org.icemobile.samples.mobileshowcase.view.examples.input.input.InputBean;
@@ -43,8 +43,8 @@ import java.io.Serializable;
                         exampleBeanName = GeoLocationBean.BEAN_NAME),
                 @MenuLink(title = "menu.input.input.title",
                         exampleBeanName = InputBean.BEAN_NAME),
-                @MenuLink(title = "menu.input.dateSpinner.title",
-                        exampleBeanName = DateSpinnerBean.BEAN_NAME)
+                @MenuLink(title = "menu.input.date.title",
+                        exampleBeanName = DateBean.BEAN_NAME)
         })
 @ManagedBean(name = InputAndSelectionMenu.BEAN_NAME)
 @ApplicationScoped
