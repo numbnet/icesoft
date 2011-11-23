@@ -23,6 +23,9 @@ import javax.faces.application.ResourceDependency;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 @Component(
         tagName         = "panel",
@@ -44,6 +47,10 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
 	@ResourceDependency(library="icefaces.ace", name="wijmo/wijmo.js"),
 	@ResourceDependency(library="icefaces.ace", name="core/core.js"),
 	@ResourceDependency(library="icefaces.ace", name="panel/panel.js")
+})
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="toggle", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
+	@ClientEvent(name="close", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
 })
 
 public class PanelMeta extends UIPanelMeta {
