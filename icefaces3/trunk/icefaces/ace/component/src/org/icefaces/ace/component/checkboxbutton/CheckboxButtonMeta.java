@@ -54,7 +54,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         @ResourceDependency(name="button/assets/button-core.css",library="yui/2_8_2")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="click", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
 })
 public class CheckboxButtonMeta extends UISelectBooleanMeta {
 

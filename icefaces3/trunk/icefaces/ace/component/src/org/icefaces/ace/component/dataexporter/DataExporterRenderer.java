@@ -68,9 +68,9 @@ public class DataExporterRenderer extends CoreRenderer {
         Map<String,List<ClientBehavior>> behaviorEvents = exporter.getClientBehaviors();
         if(!behaviorEvents.isEmpty()) {
             List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
-			for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get("click").iterator(); behaviorIter.hasNext();) {
+			for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get("activate").iterator(); behaviorIter.hasNext();) {
 				ClientBehavior behavior = behaviorIter.next();
-				ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(facesContext, exporter, "click", clientId, params);
+				ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(facesContext, exporter, "activate", clientId, params);
 				String script = behavior.getScript(cbc);    //could be null if disabled
 
 				if(script != null) {

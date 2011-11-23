@@ -71,9 +71,9 @@ public class PrinterRenderer extends CoreRenderer {
         if(!behaviorEvents.isEmpty()) {
             String clientId = printer.getClientId(facesContext);
             List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
-			for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get("click").iterator(); behaviorIter.hasNext();) {
+			for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get("activate").iterator(); behaviorIter.hasNext();) {
 				ClientBehavior behavior = behaviorIter.next();
-				ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(facesContext, printer, "click", clientId, params);
+				ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(facesContext, printer, "activate", clientId, params);
 				String script = behavior.getScript(cbc);    //could be null if disabled
 
 				if(script != null) {

@@ -114,8 +114,8 @@ ice.ace.linkButton = {
         }
 		var behaviors = JSContext.getJSProps().behaviors;
 		if (behaviors) {
-			if (behaviors.click) {
-				behaviors.click.call(this);
+			if (behaviors.activate) {
+				behaviors.activate();
 			}
 		}
         // If there are actionListeners, don't do default behaviour
