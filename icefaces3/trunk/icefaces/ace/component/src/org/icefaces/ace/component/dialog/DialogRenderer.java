@@ -72,9 +72,9 @@ public class DialogRenderer extends CoreRenderer {
         String styleClass = dialog.getStyleClass();
 		if(styleClass != null) jb.entry("dialogClass", styleClass);
 		int width = dialog.getWidth();
-        if(width != Integer.MIN_VALUE) jb.entry("width", width);
+        if(width > 0) jb.entry("width", width);
 		int height = dialog.getHeight();
-        if(height != Integer.MIN_VALUE) jb.entry("height", height);
+        if(height > 0) jb.entry("height", height);
         if(!dialog.isDraggable()) jb.entry("draggable", false);
         if(dialog.isModal()) jb.entry("modal", true);
 		int zIndex = dialog.getZindex();
