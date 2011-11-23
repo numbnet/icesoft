@@ -37,7 +37,7 @@
                 <mobi:commandButton value="submit"
                                     actionListener="#{qrCodeBean.checkCodeForUrl}"
                                     style="float:right;"
-                                    type="important"/>
+                                    buttonType="important"/>
                 <div style="clear:both" />
                 <h:outputText styleClass="ehancedBrowserDisclaimer"
                         rendered="#{not qrCodeBean.enhancedBrowser}"
@@ -64,7 +64,7 @@
                 <mobi:inputText type="text" value="#{qrCodeBean.qrString}" />
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <mobi:commandButton value="Create" type="important"
+                <mobi:commandButton value="Create" buttonType="important"
                                     styleClass="fr" />
                 <div style="clear:both" />
             </mobi:fieldsetRow>

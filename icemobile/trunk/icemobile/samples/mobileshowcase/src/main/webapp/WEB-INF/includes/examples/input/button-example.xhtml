@@ -71,21 +71,34 @@
             <mobi:fieldsetRow style="float:left;width:95%;">
                 <mobi:commandButton style="float:left;"
                                     actionListener="#{buttonBean.buttonType}"
-                                    value="Default" type="default">
+                                    value="Default" buttonType="default">
                     <f:attribute name="buttonType" value="default"/>
                 </mobi:commandButton>
                 <mobi:commandButton style="float:left;"
                                     actionListener="#{buttonBean.buttonType}"
-                                    value="Important" type="important">
+                                    value="Important" buttonType="important">
                         <f:attribute name="buttonType" value="important"/>
                 </mobi:commandButton>
                 <mobi:commandButton style="float:left;"
                                     actionListener="#{buttonBean.buttonType}"
-                                    value="Attention" type="attention">
+                                    value="Attention" buttonType="attention">
                     <f:attribute name="buttonType" value="attention"/>
                 </mobi:commandButton>
                 <mobi:commandButton style="float:left;"
-                                    value="Disabled" type="" disabled="true" />
+                                    actionListener="#{buttonBean.buttonType}"
+                                    value="Plain" buttonType="">
+                    <f:attribute name="buttonType" value="Plain"/>
+                </mobi:commandButton>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow style="float:left;width:95%;">
+                <mobi:commandButton style="float:left;"
+                                    value="Disabled" buttonType="default" disabled="true" />
+                <mobi:commandButton style="float:left;"
+                                    value="Disabled" buttonType="important" disabled="true" />
+                <mobi:commandButton style="float:left;"
+                                    value="Disabled" buttonType="attention" disabled="true" />
+                <mobi:commandButton style="float:left;"
+                                    value="Disabled" disabled="true" />
             </mobi:fieldsetRow>
             <mobi:fieldsetRow style="float:left;width:95%;">
                 <h:outputLabel value="Selected Value: " />
