@@ -96,10 +96,8 @@ public class BridgeSetup implements SystemEventListener {
         ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
 
         String version = EnvUtils.isUniqueResourceURLs(context) ? String.valueOf(hashCode()) : null;
-
-        if (!containsResource("jsf.js", "javax.faces", context, "head")) {
-            root.addComponentResource(context, new JavascriptResourceOutput(resourceHandler, "jsf.js", "javax.faces", version), "head");
-        }
+        //jsf.js might be added already by a page or component
+        addOrReplaceResource(context, "jsf.js", "javax.faces", "head", new JavascriptResourceOutput(resourceHandler, "jsf.js", "javax.faces", version));
         if (EnvUtils.isICEpushPresent()) {
             root.addComponentResource(context, new JavascriptResourceOutput(resourceHandler, "icepush.js", null, version), "head");
         }
@@ -357,24 +355,30 @@ public class BridgeSetup implements SystemEventListener {
                         ". Resource name: " + name + ", library: " + library);
             }
         } else {
-            if (!containsResource(name, library, facesContext, target)) {
-                root.addComponentResource(facesContext, newResourceOutput(resourceHandler, rendererType, name, library, version), target);
-            }
+            UIComponent component = newResourceOutput(resourceHandler, rendererType, name, library, version);
+            addOrReplaceResource(facesContext, name, library, target, component);
         }
     }
 
-    private static boolean containsResource(String name, String library, FacesContext context, String target) {
-        List<UIComponent> componentResources = context.getViewRoot().getComponentResources(context, target);
-        for (UIComponent c : componentResources) {
+    public static void addOrReplaceResource(FacesContext context, String name, String library, String target, UIComponent component) {
+        UIViewRoot viewRoot = context.getViewRoot();
+        List<UIComponent> componentResources = viewRoot.getComponentResources(context, target);
+        int position = -1;
+        for (int i = 0; i < componentResources.size(); i++) {
+            UIComponent c = componentResources.get(i);
             Map<String, Object> attributes = c.getAttributes();
             String resourceName = (String) attributes.get("name");
             String resourceLibrary = (String) attributes.get("library");
             if (name.equals(resourceName) && library.equals(resourceLibrary)) {
-                return true;
+                position = i;
+                break;
             }
         }
-
-        return false;
+        if (position > -1) {
+            componentResources.set(position, component);
+        } else {
+            viewRoot.addComponentResource(context, component, target);
+        }
     }
 
     private static UIComponent newResourceOutput(ResourceHandler resourceHandler, String rendererType, String name, String library, String version) {
