@@ -24,7 +24,6 @@
 
 package org.icefaces.ace.component.datatable;
 
-import com.sun.servicetag.SystemEnvironment;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
 import org.icefaces.ace.component.rowexpander.RowExpander;
