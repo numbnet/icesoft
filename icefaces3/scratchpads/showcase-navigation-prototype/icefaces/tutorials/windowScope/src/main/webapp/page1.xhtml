@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>Window Scope - Page 1</title>
+</h:head>
+<h:body>
+	<h2>Page 1</h2>
+	<h:panelGrid id="grid" columns="2">
+		<h:outputLabel id="viewLbl" for="viewBean" value="View Bean:"  style="font-weight: bold;"/>
+		<h:outputText id="viewBean" value="#{viewBean} created #{viewBean.created}"/>
+		
+		<h:outputLabel id="windowLbl" for="windowBean" value="Window Bean:" style="font-weight: bold;"/>
+		<h:outputText id="windowBean" value="#{windowBean} created #{windowBean.created}"/>
+		
+		<h:outputLabel id="sessionLbl" for="sessionBean" value="Session Bean:" style="font-weight: bold;"/>
+		<h:outputText id="sessionBean" value="#{sessionBean} created #{sessionBean.created}"/>
+	</h:panelGrid>
+	
+	<h:form id="frm">
+		<h:panelGrid id="grid2" columns="4">
+			<h:commandButton id="page2" value="Redirect to Page 2" action="#{pageController.navigatePage2}"/>
+			<h:commandButton id="refresh" value="Refresh Page" action="#{pageController.navigatePage1}"/>
+			<h:commandButton id="action" value="Use an Action" action="#{pageController.action}"/>
+			<h:commandButton id="actionListener" value="Use an Action Listener" actionListener="#{pageController.actionListener}"/>
+		</h:panelGrid>
+	</h:form>
+</h:body>
+</html>

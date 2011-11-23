@@ -1,0 +1,312 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 6.0.0//EN" "http://www.liferay.com/dtd/liferay-portlet-app_6_0_0.dtd">
+
+<liferay-portlet-app>
+
+    <portlet>
+        <portlet-name>aceButtons</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>aceAccordion</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>aceConfirm</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>aceContext</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>aceDataExport</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>aceDataTable</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>aceFileEntry</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>aceMenu</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>aceMenuBar</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>aceNotification</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>acePanel</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>aceProgress</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>aceSlider</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>aceTab</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatAutoComplete</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatBorder</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatCalendar</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatChart</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatCollapsible</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatColumns</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatConfirmation</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatConnection</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatDataTable</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatDivider</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatDragDrop</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatEffect</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatEventPhase</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatExporter</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatMap</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatMedia</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatMenuBar</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatMenuPopup</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatOutputResource</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatPaginator</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatPopup</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatPositioned</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatProgress</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatRichText</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatSelector</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatSeries</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatStacking</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatTab</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatTooltip</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <portlet>
+        <portlet-name>compatTree</portlet-name>
+        <instanceable>true</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+	<role-mapper>
+		<role-name>administrator</role-name>
+		<role-link>Administrator</role-link>
+	</role-mapper>
+
+	<role-mapper>
+		<role-name>guest</role-name>
+		<role-link>Guest</role-link>
+	</role-mapper>
+
+	<role-mapper>
+		<role-name>power-user</role-name>
+		<role-link>Power User</role-link>
+	</role-mapper>
+
+	<role-mapper>
+		<role-name>user</role-name>
+		<role-link>User</role-link>
+	</role-mapper>
+    
+</liferay-portlet-app>
