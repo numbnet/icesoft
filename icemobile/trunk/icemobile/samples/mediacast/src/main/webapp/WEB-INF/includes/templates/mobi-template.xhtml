@@ -30,7 +30,8 @@
     <link href="./resources/images/favicon.ico" rel="shortcut icon" type="image/x-icon"></link>
     <link href="./resources/images/favicon.ico" rel="icon" type="image/x-icon"></link>
     <title>ICEfaces Mobile Media Demo</title>
-    <mobi:deviceStylesheet media="screen"/>
+    <h:outputScript library="org.icefaces.component.util" name="iscroll-min.js"/>
+    <mobi:deviceStylesheet media="screen" view="small" />
     <h:outputStylesheet library="css" name="photocast.css" media="screen"/>
 
 </h:head>
@@ -87,25 +88,24 @@
                 navigator.userAgent.indexOf('iPod') != -1 ||
                 navigator.userAgent.indexOf('iPad') != -1) {
 
-            if (navigator.userAgent.indexOf('iPhone OS 5_0') != -1) {
-                return;
+            if (navigator.userAgent.indexOf('iPhone OS 5_0') == -1) {
+
+                // setup icefaces callbacks bridge.
+                ice.onLoad(onLoadCallback);
+                ice.onUnload(unloadHandler);
+                ice.onAfterUpdate(afterUpdateCallback);
+
+                var supportsOrientationChange = "onorientationchange" in window,
+                        orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+                window.addEventListener(orientationEvent, afterUpdateCallback, false);
+
+                window.addEventListener('resize', function() {
+                    setTimeout(function () {
+                        ice.log.debug(ice.log, 'resize iscroll refresh');
+                        myScroll.refresh();
+                    }, 0);
+                });
             }
-
-            // setup icefaces callbacks bridge.
-            ice.onLoad(onLoadCallback);
-            ice.onUnload(unloadHandler);
-            ice.onAfterUpdate(afterUpdateCallback);
-
-            var supportsOrientationChange = "onorientationchange" in window,
-                    orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
-            window.addEventListener(orientationEvent, afterUpdateCallback, false);
-
-            window.addEventListener('resize', function() {
-                setTimeout(function () {
-                    ice.log.debug(ice.log, 'resize iscroll refresh');
-                    myScroll.refresh();
-                }, 0);
-            });
         }
 
     </script>

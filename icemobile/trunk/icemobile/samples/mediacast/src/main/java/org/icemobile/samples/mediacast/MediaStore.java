@@ -61,13 +61,13 @@ public class MediaStore implements Serializable {
      * @param photoMessage photo image to add to store.
      */
     public void addMedia(MediaMessage photoMessage) {
-        mediaStack.add(photoMessage);
+        mediaStack.addFirst(photoMessage);
         // keep the list of upload small. we don't want to break the bank!
         if (mediaStack.size() > MAX_CACHE_SIZE) {
             MediaMessage message = mediaStack.removeLast();
             message.dispose();
         }
-        mediaCarouselStack.add(mediaStack.peek());
+        mediaCarouselStack.addFirst(mediaStack.peek());
         if (mediaCarouselStack.size() > MAX_CAROUSEL_SIZE) {
             mediaCarouselStack.removeLast();
             // shared object reference with media stack so no cleanup necessary.
