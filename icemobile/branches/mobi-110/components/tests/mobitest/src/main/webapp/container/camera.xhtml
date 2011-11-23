@@ -29,6 +29,9 @@
     <h3>Camera Component</h3>
     <div style="border-radius: 15px; border: 1px dotted silver; max-width: 500px;">
         <h:form prependId="false" class="centered" enctype="multipart/form-data" >
+        <h:commandButton value="ICEmobileBud" onclick="window.location='icemobile://c=camera%3Fid%3Dnone&amp;r='+escape(window.location)+'&amp;JSESSIONID=#{session.id}'+'&amp;u='+escape('#{auxUpload.uploadURL}')+'&amp;p='+escape('');" />
+        <h:commandButton value="ICEmobileViewState" onclick="window.location='icemobile://c=camera%3Fid%3Dnone&amp;r='+escape(window.location)+'&amp;JSESSIONID=#{session.id}'+'&amp;u='+escape('#{auxUpload.uploadURL}')+'&amp;p='+escape('javax.faces.ViewState='+form['javax.faces.ViewState'].value);" />
+        <h:outputText value="#{auxUpload.uploadPath}" />
             <mobi:camera id="camera" value="#{cameraBean.cameraImage}"
                     valueChangeListener="#{cameraBean.methodOne}"/>
             <mobi:thumbnail for="camera"/>
