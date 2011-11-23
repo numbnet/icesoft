@@ -46,12 +46,9 @@
         </h:form>
         
         <h:form>
-            <p>Right-click on any of the words in the sentence below. A menu popup will be displayed that allows you to choose a style or color for each word.</p>
-            <br/>
-            
             <ice:panelSeries value="#{menuPopup.wordList}"
                              var="word"
-                             style="border: 1px solid #CDCDCD; padding: 10px;">
+                             style="border: 1px solid #CDCDCD; padding: 10px; text-align: center;">
                 <ice:panelGroup style="display: inline; padding-right: 5px;"
                                 menuPopup="menuPopupFormat">
                     <ice:outputText value="#{word.text}"

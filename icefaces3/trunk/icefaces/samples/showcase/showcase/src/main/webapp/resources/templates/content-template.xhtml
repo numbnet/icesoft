@@ -45,8 +45,9 @@ Available ui:params to pass:
         
         <div class="resources">
             <h:form>
-                <hr/>
-                <br/>
+                
+                <hr style="margin-top: 10px; margin-bottom: 10px;"/>
+                
                 <h:selectBooleanCheckbox id="stayCollapsedCheckbox" value="#{navigationModel.sourceCodeToggleStatus}">
                     <f:ajax execute="@this" render="sourceCodePanel"/>
                 </h:selectBooleanCheckbox>

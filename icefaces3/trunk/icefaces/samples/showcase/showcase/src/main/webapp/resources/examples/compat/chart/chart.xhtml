@@ -34,12 +34,6 @@
     <ui:param name="resourceValue" value="#{chart.exampleResource}"/>
     
     <ui:define name="example">
-        <p><b>Demo Use Cases:</b></p>
-        <p><b>1.</b> Observe the various charts.</p>
-        <p>The chart component (built on top of <a href="http://jcharts.sourceforge.net/" target="_blank">JCharts</a>) is a versatile and powerful way to render chart data in a variety of formats.</p>
-        <p>Colors, labels and legends, point style, etc. can all be customized which allows a developer to display information in the exact way they want.</p>
-        <br/>
-    
         <h:form>
             <h:panelGrid columns="2" rendered="#{chartCustom.model.areaMapEnabled}">
                 <h:outputLabel for="statusOut" value="Clicked:"/>

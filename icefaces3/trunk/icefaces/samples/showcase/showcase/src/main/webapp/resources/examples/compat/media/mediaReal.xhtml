@@ -35,6 +35,7 @@
     
     <ui:define name="example">
         <h:form>
+            <h:panelGrid style="margin-left: auto; margin-right: auto;" width="100" border="1">
             <ice:outputMedia id="outputMedia"
                              player="real"
                              source="#{media.sourceDir}/ICEfaces_Real.rpm"
@@ -43,6 +44,7 @@
                 <f:param name="controls" value="ImageWindow"/>
                 <f:param name="console" value="one"/>
             </ice:outputMedia>
+            </h:panelGrid>
         </h:form>
     </ui:define>
 </ui:composition>

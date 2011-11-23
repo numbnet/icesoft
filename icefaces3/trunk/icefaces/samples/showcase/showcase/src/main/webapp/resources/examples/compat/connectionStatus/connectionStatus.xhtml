@@ -34,14 +34,6 @@
     <ui:param name="resourceValue" value="#{connectionStatus.exampleResource}"/>
     
     <ui:define name="example">
-        <p><b>Demo Use Cases:</b></p>
-        <p><b>1.</b> Click "Long Event" to simulate a long running task on the server. Notice how the connection status component displays the active (or "working") status until the task is complete.</p>
-        <p><b>2.</b> Click "Disconnect Event" to clear the current session, which will put the connection status component into the disconnected status. After clicking this you will need to refresh your browser.</p>
-        <p>The connection status component is used to display information about the health of a user's session with the web application.</p>
-        <p>This can be useful if you have long running tasks and want to show the user that the server is still working.</p>
-        <p>Also warning of poor connectivity or a lost connection can help if the server crashes or the user's browser loses their internet connection.</p>
-        <br/>
-    
         <h:form>
             <h:panelGrid columns="2">
                 <h:outputLabel for="status" value="Connection Status:"/>

@@ -35,6 +35,7 @@
     
     <ui:define name="example">
         <h:form>
+            <h:panelGrid style="margin-left: auto; margin-right: auto;" width="100" border="1">
             <ice:outputMedia id="outputMedia"
                              player="quicktime"
                              source="#{media.sourceDir}/ICEfaces_Quicktime.mov"
@@ -42,6 +43,7 @@
                 <f:param name="autoplay" value="true"/>
                 <f:param name="controller" value="true"/>
             </ice:outputMedia>
+            </h:panelGrid>
         </h:form>
     </ui:define>
 </ui:composition>

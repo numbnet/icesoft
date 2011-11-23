@@ -41,13 +41,12 @@
                 <h:outputLabel for="iconIn" value="Hide Icons?"/>
                 <h:selectBooleanCheckbox id="iconIn" value="#{menuPopupIcons.hide}"/>
             </h:panelGrid>
-        
-            <p>Right-click on the image below to display a menu popup that can display icons.</p>
-            <br/>
             
-            <ice:panelGroup menuPopup="menuPopupIcon">
+            <ice:panelGroup menuPopup="menuPopupIcon" style="text-align: center;">
                 <h:graphicImage library="css/images" name="header.png"/>
             </ice:panelGroup>
+           
+           <h:outputText value="Right-click on the image below to display a menu popup that can display icons."/>
             
             <ice:menuPopup id="menuPopupIcon"
                            noIcons="#{menuPopupIcons.hide}">
