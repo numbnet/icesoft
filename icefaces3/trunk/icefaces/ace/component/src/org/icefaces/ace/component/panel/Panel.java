@@ -53,7 +53,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import java.util.Map;
 
-public class Panel extends PanelBase implements javax.faces.component.behavior.ClientBehaviorHolder {
+public class Panel extends PanelBase {
 
 	private static final String OPTIMIZED_PACKAGE = "org.icefaces.ace.component.";
 
