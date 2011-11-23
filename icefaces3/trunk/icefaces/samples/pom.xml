@@ -82,6 +82,12 @@
           <id>maven.org</id>
           <url>http://repo1.maven.org/maven2</url>
        </repository>
+<repository>
+  <id>jvnet-nexus-releases</id>
+  <name>jvnet-nexus-releases</name>
+  <url>https://maven.java.net/content/repositories/releases/</url>
+</repository>
+
   </repositories>
  <profiles>
     <profile>
