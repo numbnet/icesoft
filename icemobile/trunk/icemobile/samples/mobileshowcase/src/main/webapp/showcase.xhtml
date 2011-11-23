@@ -35,6 +35,7 @@
     <title>ICEfaces Mobile Showcase</title>
     <h:outputScript library="org.icefaces.component.util"
                     name="iscroll-min.js"/>
+    <h:outputScript library="org.icefaces.component.util" name="combined-min.js"/>
 
     <mobi:deviceStylesheet
             name="#{themeBean.currentTheme}" media="screen"/>
@@ -47,8 +48,6 @@
     <util:viewSelector defaulType="small"
                    small="/WEB-INF/includes/view/small.xhtml"
                    large="/WEB-INF/includes/view/large.xhtml" />
-
-    <!--<ui:include src="/WEB-INF/includes/navigation/menu.xhtml"/>-->
 
 </h:body>
 </html>
