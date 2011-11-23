@@ -49,7 +49,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 
-public class Dialog extends DialogBase implements javax.faces.component.behavior.ClientBehaviorHolder {
+public class Dialog extends DialogBase {
 
 	private static final String OPTIMIZED_PACKAGE = "org.icefaces.ace.component.";
 
