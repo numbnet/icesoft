@@ -24,6 +24,19 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+- (void)register   {
+    NSMutableDictionary *params = [nativeInterface parseQuery:currentParameters];
+    [nativeInterface multipartPost:params toURL:self.currentURL];
+
+    NSString *safariURL = self.currentURL;
+    if (nil != self.returnURL)  {
+        safariURL = self.returnURL;
+    }
+    [[UIApplication sharedApplication] 
+            openURL:[NSURL URLWithString:safariURL]];
+NSLog(@"PhotoUp registered and will open safari currentURL %@", safariURL);
+}
+
 - (void)completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName   {
         NSString *scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
         NSString *script = [NSString stringWithFormat:scriptTemplate, 
@@ -84,12 +97,25 @@ NSLog(@"Hitch cant play audio from an ID in the page");
 NSLog(@"Hitch would show a thumbnail");
 }
 
+
 - (void) dispatchCurrentCommand  {
     NSString *host = [[NSURL URLWithString:self.currentURL] host];
-    NSString *message = [[@"Upload photo to " stringByAppendingString:host]
-        stringByAppendingString:@"?" ];
+    NSString *message = @"Message";
+    NSString *title = @"Title";
+    NSArray *queryParts = [self.currentCommand 
+            componentsSeparatedByString:@"?"];
+    NSString *commandName = [queryParts objectAtIndex:0];
+    if ([@"camera" isEqualToString:commandName])  {
+        title = @"Photo Upload";
+        message = [[@"Upload photo to " stringByAppendingString:host]
+                stringByAppendingString:@"?" ];
+    } else if ([@"register" isEqualToString:commandName])  {
+        title = @"Register";
+        message = [[@"Register with server " stringByAppendingString:host]
+                stringByAppendingString:@"?" ];
+    }
     UIAlertView *alert = [[UIAlertView alloc] 
-            initWithTitle:@"Photo Upload" 
+            initWithTitle:title 
             message:message 
             delegate:self cancelButtonTitle:@"OK" 
             otherButtonTitles:@"Cancel",nil];

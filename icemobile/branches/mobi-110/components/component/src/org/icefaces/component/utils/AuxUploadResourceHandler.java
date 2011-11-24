@@ -16,6 +16,8 @@ import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.UUID;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,7 +25,7 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
     private static Logger log = Logger.getLogger(AuxUploadResourceHandler.class.getName());
     private static final String RESOURCE_KEY = "javax.faces.resource";
     private static String RESOURCE_PREFIX = "/javax.faces.resource/";
-    private static String AUX_PREFIX = "AUX";
+    private static String AUX_REQ_MAP_KEY = "AuxUploadResourceHandler-req-map";
     private ResourceHandler wrapped;
     private Resource tokenResource;
 
@@ -52,30 +54,54 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
         
     }
 
+    public static Map getAuxRequestMap()  {
+        Map auxRequestMap = (Map) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get(AUX_REQ_MAP_KEY);
+        return auxRequestMap;
+    }
+
     private void storeParts(ExternalContext externalContext)  {
         HttpServletRequest request = 
                 (HttpServletRequest) externalContext.getRequest();
         HttpSession session = request.getSession();
         try {
+            Map auxRequestMap = 
+                    (Map) session.getAttribute(AUX_REQ_MAP_KEY);
+            if (null == auxRequestMap)  {
+                auxRequestMap = new HashMap();
+            }
             for (Part part : request.getParts()) {
-System.out.println(part.getName() + " " + part.getContentType());
-if (null == part.getContentType())  {
-    System.out.println("getting as attribute "+ request.getParameter(part.getName()));
-}
-                if ("image/jpeg".equals(part.getContentType())) {
-                    String fileName = UUID.randomUUID().toString() + ".jpg";
-                    String dirPath = externalContext.getRealPath("/images") + "/";
-                    File dirFile = new File(dirPath);
-                    if (!dirFile.exists()) {
-                        dirFile.mkdir();
-                    }
-                    String fullPath = dirPath + fileName;
-                    part.write(fullPath);
-                    String imageURI = "/images/" + fileName;
-//                    session.setAttribute(IMAGE_KEY, imageURI);
-System.out.println("find it at " + imageURI);
+                String partType = part.getContentType();
+                String partName = part.getName();
+                if (null == partType)  {
+                    auxRequestMap.put(partName, 
+                            request.getParameter(part.getName()) );
+                } else {
+                    //see if we can keep the part instances beyond this request
+                    auxRequestMap.put(partName, part );
                 }
             }
+            
+            session.setAttribute(AUX_REQ_MAP_KEY, auxRequestMap);
+
+//System.out.println(part.getName() + " " + part.getContentType());
+//if (null == part.getContentType())  {
+//    System.out.println("getting as attribute "+ request.getParameter(part.getName()));
+//}
+//                if ("image/jpeg".equals(part.getContentType())) {
+//                    String fileName = UUID.randomUUID().toString() + ".jpg";
+//                    String dirPath = externalContext.getRealPath("/images") + "/";
+//                    File dirFile = new File(dirPath);
+//                    if (!dirFile.exists()) {
+//                        dirFile.mkdir();
+//                    }
+//                    String fullPath = dirPath + fileName;
+//                    part.write(fullPath);
+//                    String imageURI = "/images/" + fileName;
+////                    session.setAttribute(IMAGE_KEY, imageURI);
+//System.out.println("find it at " + imageURI);
+//                }
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
