@@ -57,9 +57,7 @@ import java.io.IOException;
 import java.util.*;
 
 @MandatoryResourceComponent("org.icefaces.ace.component.datatable.DataTable")
-public class
-
-        DataTableRenderer extends CoreRenderer {
+public class DataTableRenderer extends CoreRenderer {
     @Override
 	public void decode(FacesContext context, UIComponent component) {
         DataTable table = (DataTable) component;
@@ -72,6 +70,8 @@ public class
         else if (table.isPaginationRequest(context)) this.decodePageRequest(context, table);
         else if (table.isSortRequest(context)) this.decodeSortRequest(context, table, null, null);
         else if (table.isColumnReorderRequest(context)) this.decodeColumnReorderRequest(context, table);
+
+        decodeBehaviors(context, component);
 	}
 
     @Override
@@ -417,8 +417,10 @@ public class
         String newSortKeys = "";
 
         for (String key : sortKeys) {
-            if (newSortKeys.length() == 0) newSortKeys = columns.get(Integer.parseInt(key)).getClientId();
-            else newSortKeys += "," + columns.get(Integer.parseInt(key)).getClientId();
+            if (key.length() > 0) {
+                if (newSortKeys.length() == 0) newSortKeys = columns.get(Integer.parseInt(key)).getClientId();
+                else newSortKeys += "," + columns.get(Integer.parseInt(key)).getClientId();
+            }
         }
 
         return newSortKeys;
@@ -470,8 +472,6 @@ public class
 
         if (table.isSelectionEnabled()) encodeSelectionConfig(context, table);
 
-        //if (table.isColumnSelectionEnabled()) writer.write(",columnSelectionMode:'" + table.getColumnSelectionMode() + "'");
-
         //Panel expansion
         if (table.getPanelExpansion() != null) {
             writer.write(",panelExpansion:true");
@@ -498,6 +498,8 @@ public class
         if (table.isResizableColumns()) writer.write(",resizableColumns:true");
         if (table.isReorderableColumns()) writer.write(",reorderableColumns:true");
         if (table.isSingleSort()) writer.write(",singleSort:true");
+
+        encodeClientBehaviors(context, table);
 
         writer.write("});");
 		writer.endElement("script");
@@ -593,6 +595,7 @@ public class
 
     private void writeConfigPanelLaunchButton(ResponseWriter writer, UIComponent component, boolean first) throws IOException {
         String jsId = this.resolveWidgetVar(component);
+        String panelJsId = this.resolveWidgetVar(((DataTable)component).findTableConfigPanel(FacesContext.getCurrentInstance()));
         String clientId = ((DataTable)component).findTableConfigPanel(FacesContext.getCurrentInstance()).getClientId();
 
         writer.startElement(HTML.SPAN_ELEM, null);
@@ -616,7 +619,7 @@ public class
 
         writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
-        writer.writeText("ice.ace.jq(function() {\n" + "\tice.ace.jq(ice.ace.escapeClientId('" + clientId + "_tableconf_launch')).hover(function(event){ice.ace.jq(event.currentTarget).toggleClass('ui-state-hover'); event.stopPropagation(); }).click(function(event){ice.ace.jq(event.currentTarget).toggleClass('ui-state-active'); var panel = ice.ace.jq(ice.ace.escapeClientId('" + clientId + "_tableconf')); if (panel.is(':not(:visible)')) " + jsId + "_tableconf.submitTableConfig(event.currentTarget); event.stopPropagation(); });\n" + "});", null);
+        writer.writeText("ice.ace.jq(function() {\n" + "\tice.ace.jq(ice.ace.escapeClientId('" + clientId + "_tableconf_launch')).hover(function(event){ice.ace.jq(event.currentTarget).toggleClass('ui-state-hover'); event.stopPropagation(); }).click(function(event){ice.ace.jq(event.currentTarget).toggleClass('ui-state-active'); var panel = ice.ace.jq(ice.ace.escapeClientId('" + clientId + "')); if (panel.is(':not(:visible)')) " + panelJsId + ".submitTableConfig(event.currentTarget); else if (" + panelJsId + ".behaviors) if (" + panelJsId + ".behaviors.open) " + panelJsId + ".behaviors.open(); event.stopPropagation(); });\n" + "});", null);
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
@@ -1189,7 +1192,7 @@ public class
         String onRowSelectUpdate = table.getOnRowSelectUpdate() != null ? table.getOnRowSelectUpdate() : table.getUpdate();
         String onRowUnselectUpdate = table.getOnRowUnselectUpdate() != null ? table.getOnRowUnselectUpdate() : table.getUpdate();
 
-        if (table.getRowSelectListener() != null || onRowSelectUpdate != null) {
+        if (table.getRowSelectListener() != null || onRowSelectUpdate != null || table.hasSelectionClientBehaviour()) {
             writer.write(",instantSelect:true");
 
             if (onRowSelectUpdate != null)

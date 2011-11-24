@@ -6,6 +6,7 @@ ice.ace.TableConf = function (id, cfg) {
     this.tableId = ice.ace.escapeClientId(cfg.tableId);
     this.$this = ice.ace.jq(this.id);
     this.$table = ice.ace.jq(this.tableId);
+    this.behaviors = cfg.behaviors;
     this.cfg = cfg;
     this.sortOrder = [];
 
@@ -248,5 +249,12 @@ ice.ace.TableConf.prototype.submitTableConfig = function (target) {
     params[id+'_sortDirs'] = this.getSortAscending();
 
     options.params = params;
+
+    if (this.behaviors)
+        if (this.behaviors.submit) {
+            this.behaviors.submit(null, params);
+            return;
+        }
+
     ice.ace.AjaxRequest(options);
 }

@@ -51,6 +51,7 @@ ice.ace.DataTable = function(id, cfg) {
     this.tbody = this.jqId + '_data';
     this.delayedFilterCall = null;
     this.filterSource = null;
+    this.behaviors = cfg.behaviors;
     var rowEditors = this.getRowEditors();
 
     if (this.cfg.paginator) this.setupPaginator();
@@ -99,13 +100,13 @@ ice.ace.DataTable = function(id, cfg) {
  ######################################################################### */
 ice.ace.DataTable.prototype.setupFilterEvents = function() {
     var _self = this;
-    if (this.cfg.filterEvent == "enter") ice.ace.jq(this.jqId + ' th .ui-column-filter').die('keypress').live('keypress', function(event) {
+    if (this.cfg.filterEvent == "enter") ice.ace.jq(this.jqId + ' th .ui-column-filter').unbind('keypress').bind('keypress', function(event) {
         event.stopPropagation();
         if (event.which == 13) {
             _self.filter(event);
         }
     });
-    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.jqId + ' th .ui-column-filter').die('keyup').live('keyup', function(event) {
+    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.jqId + ' th .ui-column-filter').live('keyup').live('keyup', function(event) {
         var _event = event;
         if (event.which != 9) {
             if (_self.delayedFilterCall) clearTimeout(_self.delayedFilterCall);
@@ -126,7 +127,7 @@ ice.ace.DataTable.prototype.setupPaginator = function() {
 ice.ace.DataTable.prototype.setupSortEvents = function() {
     var _self = this;
     ice.ace.jq(this.jqId + ' th > div.ui-sortable-column .ui-sortable-control')
-            .unbind('click').bind("click",function(event, altY, altMeta) {
+            .die('click').live("click",function(event, altY, altMeta) {
                 var $this = ice.ace.jq(this),
                         topCarat = $this.find(".ui-icon-triangle-1-n")[0],
                         bottomCarat = $this.find(".ui-icon-triangle-1-s")[0],
@@ -235,7 +236,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
     // Pre-fade and bind keypress to kb-navigable sort icons
     ice.ace.jq(this.jqId + ' th > div.ui-sortable-column .ui-sortable-control')
             .find('.ui-icon-triangle-1-n')
-            .unbind('keypress').bind('keypress',function(event) {
+            .die('keypress').live('keypress',function(event) {
                 if (event.which == 32 || event.which == 13) {
                     var $currentTarget = ice.ace.jq(event.currentTarget);
                     $currentTarget.closest('.ui-sortable-control')
@@ -244,7 +245,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                 }}).not('.ui-toggled').fadeTo(0, 0.2);
     ice.ace.jq(this.jqId + ' th > div.ui-sortable-column .ui-sortable-control')
             .find('.ui-icon-triangle-1-s')
-            .unbind('keypress').bind('keypress',function(event) {
+            .die('keypress').live('keypress',function(event) {
                 if (event.which == 32 || event.which == 13) {
                     var $currentTarget = ice.ace.jq(event.currentTarget);
                     $currentTarget.closest('.ui-sortable-control')
@@ -432,7 +433,7 @@ ice.ace.DataTable.prototype.reorderColumns = function(oldIndex, newIndex) {
     var options = {
         source: this.id,
         execute: this.id,
-        render: this.id + " " + this.cfg.configPanel,
+        render: (this.cfg.configPanel) ? this.id + " " + this.cfg.configPanel : this.id,
         formId: this.cfg.formId
     };
 
@@ -447,6 +448,12 @@ ice.ace.DataTable.prototype.reorderColumns = function(oldIndex, newIndex) {
         });
         return false;
     };
+
+    if (this.behaviors)
+        if (this.behaviors.reorder) {
+            this.behaviors.reorder(null, params);
+            return;
+        }
 
     ice.ace.AjaxRequest(options);
 }
@@ -507,13 +514,19 @@ ice.ace.DataTable.prototype.paginate = function(newState) {
 
     options.params = params;
 
+    if (this.behaviors)
+        if (this.behaviors.page) {
+            this.behaviors.page(null,params);
+            return;
+        }
+
     ice.ace.AjaxRequest(options);
 }
 
 ice.ace.DataTable.prototype.sort = function(headerCells) {
     var options = {
         source: this.id,
-        render: this.id + " " + this.cfg.configPanel,
+        render: (this.cfg.configPanel) ? this.id + " " + this.cfg.configPanel : this.id,
         execute: this.id,
         formId: this.cfg.formId
     };
@@ -542,13 +555,19 @@ ice.ace.DataTable.prototype.sort = function(headerCells) {
 
     options.params = params;
 
+    if (this.behaviors)
+        if (this.behaviors.sort) {
+            this.behaviors.sort(null, params);
+            return;
+        }
+
     ice.ace.AjaxRequest(options);
 }
 
 ice.ace.DataTable.prototype.filter = function(evn) {
     var options = {
         source: this.id,
-        render: this.id  + " " + this.cfg.configPanel,
+        render: (this.cfg.configPanel) ? this.id + " " + this.cfg.configPanel : this.id,
         execute: this.id,
         formId: this.cfg.formId
     };
@@ -582,9 +601,9 @@ ice.ace.DataTable.prototype.filter = function(evn) {
         });
 
         // Search by id rather than $(evn.target) to get updated copy now in DOM
-        var newInput = ice.ace.jq(ice.ace.escapeClientId(ice.ace.jq(_self.filterSource).attr('id')));
+        //var newInput = ice.ace.jq(ice.ace.escapeClientId(ice.ace.jq(_self.filterSource).attr('id')));
         // Reset input value after focus to prevent selection of text
-        newInput.setCaretToEnd();
+        //newInput.setCaretToEnd();
 
         return false;
     };
@@ -594,6 +613,12 @@ ice.ace.DataTable.prototype.filter = function(evn) {
     params[this.id + "_filteredColumn"] =
             ice.ace.jq(this.filterSource).attr('id');
     options.params = params;
+
+    if (this.behaviors)
+        if (this.behaviors.filter) {
+            this.behaviors.filter(null, params);
+            return;
+        }
 
     ice.ace.AjaxRequest(options);
 }
@@ -625,6 +650,12 @@ ice.ace.DataTable.prototype.fireSelectEvent = function() {
         });
         return false;
     };
+
+    if (this.behaviors)
+        if (this.behaviors.select) {
+            this.behaviors.select(null, params);
+            return;
+        }
 
     ice.ace.AjaxRequest(options);
 }
@@ -659,6 +690,12 @@ ice.ace.DataTable.prototype.fireRowSelectEvent = function(rowId, deselectRowId) 
         return false;
     };
 
+    if (this.behaviors)
+        if (this.behaviors.select) {
+            this.behaviors.select(null, params);
+            return;
+        }
+
     ice.ace.AjaxRequest(options);
 }
 
@@ -681,6 +718,12 @@ ice.ace.DataTable.prototype.fireRowDeselectEvent = function(rowId) {
         });
         return false;
     };
+
+    if (this.behaviors)
+        if (this.behaviors.deselect) {
+            this.behaviors.deselect(null, params);
+            return;
+        }
 
     ice.ace.AjaxRequest(options);
 }
@@ -839,6 +882,12 @@ ice.ace.DataTable.prototype.sendPanelContractionRequest = function(row) {
         return false;
     };
 
+    if (this.behaviors)
+        if (this.behaviors.contract) {
+            this.behaviors.contract(null, params);
+            return;
+        }
+
     ice.ace.AjaxRequest(options);
 }
 
@@ -863,6 +912,12 @@ ice.ace.DataTable.prototype.sendRowContractionRequest = function(row) {
         if (_self.cfg.scrollable) _self.setupScrolling();
         return false;
     };
+
+    if (this.behaviors)
+        if (this.behaviors.contract) {
+            this.behaviors.contract(null, params);
+            return;
+        }
 
     ice.ace.AjaxRequest(options);
 }
@@ -891,6 +946,12 @@ ice.ace.DataTable.prototype.loadExpandedRows = function(row) {
     params[this.id + ':' + rowId + '_rowExpansion'] = true;
     options.params = params;
 
+    if (this.behaviors)
+        if (this.behaviors.expand) {
+            this.behaviors.expand(null, params);
+            return;
+        }
+
     ice.ace.AjaxRequest(options);
 }
 
@@ -918,6 +979,12 @@ ice.ace.DataTable.prototype.loadExpandedPanelContent = function(row) {
     params[this.id + ':' + rowId + '_rowExpansion'] = true;
     options.params = params;
 
+    if (this.behaviors)
+        if (this.behaviors.expand) {
+            this.behaviors.expand(null, params);
+            return;
+        }
+
     ice.ace.AjaxRequest(options);
 }
 
@@ -937,6 +1004,12 @@ ice.ace.DataTable.prototype.showEditors = function(element) {
         ice.ace.jq(element).hide();
         ice.ace.jq(element).siblings().show();
     });
+
+    if (this.behaviors)
+        if (this.behaviors.editStart) {
+            this.behaviors.editStart(null, params);
+            return;
+        }
 }
 
 ice.ace.DataTable.prototype.saveRowEdit = function(element) {
@@ -978,21 +1051,11 @@ ice.ace.DataTable.prototype.doRowEditCancelRequest = function(element) {
     if (this.cfg.onRowEditUpdate) { options.render += (" " + this.cfg.onRowEditUpdate); }
 
     options.onsuccess = function(responseXML) {
-        var xmlDoc = responseXML.documentElement,
-                extensions = xmlDoc.getElementsByTagName("extension");
+        var xmlDoc = responseXML.documentElement;
 
         _self.args = {};
-        for (i=0; i < extensions.length; i++) {
-            var extension = extensions[i];
-            if (extension.getAttributeNode('aceCallbackParam')) {
-                var jsonObj = ice.ace.jq.parseJSON(extension.firstChild.data);
 
-                for (var paramName in jsonObj)
-                    if (paramName) _self.args[paramName] = jsonObj[paramName];
-            }
-        }
-
-        if (!_self.args.validationFailed && _self.cfg.scrollable)
+        if (_self.cfg.scrollable)
             _self.setupScrolling();
 
         ice.ace.selectCustomUpdates(responseXML, function(id, content) {
@@ -1005,6 +1068,12 @@ ice.ace.DataTable.prototype.doRowEditCancelRequest = function(element) {
     var params = {};
     params[rowEditorId] = rowEditorId;
     options.params = params;
+
+    if (this.behaviors)
+        if (this.behaviors.editCancel) {
+            this.behaviors.editCancel(null, params);
+            return;
+        }
 
     ice.ace.AjaxRequest(options);
 }
@@ -1069,6 +1138,12 @@ ice.ace.DataTable.prototype.doRowEditRequest = function(element) {
     params[this.id + '_editedRowId'] = row.attr('id').split('_row_')[1];
 
     options.params = params;
+
+    if (this.behaviors)
+        if (this.behaviors.editSubmit) {
+            this.behaviors.editSubmit(null, params);
+            return;
+        }
 
     ice.ace.AjaxRequest(options);
 }

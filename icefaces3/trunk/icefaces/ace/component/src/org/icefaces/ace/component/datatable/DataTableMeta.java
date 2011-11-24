@@ -29,6 +29,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.model.DataModel;
 import java.util.ArrayList;
 import java.util.List;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
+
 
 @Component(
         tagName = "dataTable",
@@ -54,6 +56,20 @@ import java.util.List;
         @ResourceDependency(library="icefaces.ace", name="paginator/paginator.js"),
         @ResourceDependency(library="icefaces.ace", name="core/core.js"),
         @ResourceDependency(library="icefaces.ace", name="datatable/datatable.js")
+})
+@ClientBehaviorHolder(events = {
+        @ClientEvent(name="page", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@this"),
+        @ClientEvent(name="select", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@this"),
+        @ClientEvent(name="deselect", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@this"),
+        @ClientEvent(name="sort", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@this"),
+        @ClientEvent(name="filter", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@this"),
+        @ClientEvent(name="reorder", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@this"),
+        // Edit has custom render and execute, @none is just a null placeholder for additional update/execute fields
+        @ClientEvent(name="editStart", javadoc="...", tlddoc="...", defaultRender="@none", defaultExecute="@none"),
+        @ClientEvent(name="editSubmit", javadoc="...", tlddoc="...", defaultRender="@none", defaultExecute="@none"),
+        @ClientEvent(name="editCancel", javadoc="...", tlddoc="...", defaultRender="@none", defaultExecute="@none"),
+        @ClientEvent(name="expand", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@this"),
+        @ClientEvent(name="contract", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@this")
 })
 public class DataTableMeta extends UIDataMeta {
     /* ##################################################################### */

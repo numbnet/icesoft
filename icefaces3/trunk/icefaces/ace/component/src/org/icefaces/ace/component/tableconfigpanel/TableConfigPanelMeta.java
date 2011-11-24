@@ -36,11 +36,17 @@ import javax.faces.application.ResourceDependency;
     componentFamily = "org.icefaces.ace.TableConfigPanel",
     tlddoc = "")
 @ResourceDependencies({
-        @ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
-        @ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
-        @ResourceDependency(library="icefaces.ace", name="core/core.js"),
-        @ResourceDependency(library="icefaces.ace", name="tableconfigpanel/tableconfigpanel.js"),
-        @ResourceDependency(library="icefaces.ace", name="tableconfigpanel/tableconfigpanel.css")
+    @ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
+    @ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
+    @ResourceDependency(library="icefaces.ace", name="core/core.js"),
+    @ResourceDependency(library="icefaces.ace", name="tableconfigpanel/tableconfigpanel.js"),
+    @ResourceDependency(library="icefaces.ace", name="tableconfigpanel/tableconfigpanel.css")
+})
+
+@ClientBehaviorHolder(events = {
+    @ClientEvent(name="open", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
+    @ClientEvent(name="submit", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
+    @ClientEvent(name="cancel", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
 })
 public class TableConfigPanelMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Allow the configuration of column order." )
