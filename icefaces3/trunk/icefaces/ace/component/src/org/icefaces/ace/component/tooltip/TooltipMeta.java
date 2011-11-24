@@ -25,6 +25,9 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.baseMeta.UIOutputMeta;
 import javax.el.MethodExpression;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 @Component(
         tagName         = "tooltip",
@@ -43,6 +46,9 @@ import javax.el.MethodExpression;
 	@ResourceDependency(library="icefaces.ace", name="tooltip/jquery.qtip-1.0.0-rc3.js"),
 //    @ResourceDependency(library="icefaces.ace", name="tooltip/jquery.qtip.debug-1.0.0-rc3.js"),
 	@ResourceDependency(library="icefaces.ace", name="tooltip/tooltip.js")
+})
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="display", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
 })
 
 public class TooltipMeta extends UIOutputMeta {
