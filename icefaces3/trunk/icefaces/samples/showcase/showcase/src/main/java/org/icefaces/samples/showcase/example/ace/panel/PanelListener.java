@@ -26,11 +26,8 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
-import java.text.DateFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -61,7 +58,7 @@ import org.icefaces.ace.event.ToggleEvent;
 public class PanelListener extends ComponentExampleImpl<PanelListener> implements Serializable {
 
     public static final String BEAN_NAME = "panelListener";
-
+    private Format formatter = new SimpleDateFormat("HH:mm:ss");
     private String statusMessage = "No status yet.";
     
     public PanelListener() {
@@ -73,10 +70,10 @@ public class PanelListener extends ComponentExampleImpl<PanelListener> implement
     public void setStatusMessage(String statusMessage) { this.statusMessage = statusMessage; }
     
     public void close(CloseEvent event) {
-        statusMessage = System.currentTimeMillis() + ": Close Event " + event + " fired.";
+        statusMessage = "Close Event fired @ "+ formatter.format(new Date())+" local time";
     }
     
     public void toggle(ToggleEvent event) {
-        statusMessage = System.currentTimeMillis() + ": Toggle Event " + event + " fired.";
+        statusMessage = "Toggle Event fired @ "+ formatter.format(new Date());
     }
 }

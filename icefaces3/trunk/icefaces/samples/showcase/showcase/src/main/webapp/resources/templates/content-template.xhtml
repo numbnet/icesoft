@@ -32,7 +32,7 @@ Available ui:params to pass:
  resourceValue
 -->
     <div class="example">
-        <ace:panel header="#{title}">
+        <ace:panel header="#{title}" style="font-size: 10pt;">
         <div class="content">
             <div class="desc">
                 <ice:outputText value="#{description}" escape="false" nospan="true"/>
@@ -43,25 +43,22 @@ Available ui:params to pass:
         </div>
         </ace:panel>
         <div class="resources">
-            <h:form>
+            <h:form id="sourceCodeForm">
                 
                 <hr style="margin-top: 10px; margin-bottom: 10px;"/>
                 
-                <h:selectBooleanCheckbox id="stayCollapsedCheckbox" value="#{navigationModel.sourceCodeToggleStatus}">
-                    <f:ajax execute="@this" render="sourceCodePanel"/>
-                </h:selectBooleanCheckbox>
-                <h:outputLabel value="Keep source code panel collapsed" for="stayCollapsedCheckbox"/>
-                
-                <ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" header="Source Code">
-                <ace:tabSet clientSide="true" selectedIndex="0"
-                            rendered="#{not empty resourceValue}">
-                    <c:forEach items="#{resourceValue}"
-                               var="exRes">
-                        <ace:tabPane label="#{exRes.title}" styleClass="scrollx">
-                            <h:outputText escape="false" value="#{sourceCodeLoaderConnection[exRes.resource]}" />
-                        </ace:tabPane>
-                    </c:forEach>
-                </ace:tabSet>
+                <ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" toggleable="true" header="Source Code" style="font-size: 10pt;" >
+                    <ace:ajax event="toggle" process="@this"/>
+                    
+                    <ace:tabSet clientSide="true" selectedIndex="0"
+                                rendered="#{not empty resourceValue}">
+                        <c:forEach items="#{resourceValue}"
+                                   var="exRes">
+                            <ace:tabPane label="#{exRes.title}" styleClass="scrollx">
+                                <h:outputText escape="false" value="#{sourceCodeLoaderConnection[exRes.resource]}" />
+                            </ace:tabPane>
+                        </c:forEach>
+                    </ace:tabSet>
                 </ace:panel>
             </h:form>			
         </div>
