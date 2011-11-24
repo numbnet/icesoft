@@ -49,11 +49,17 @@ static char base64EncodingTable[64] = {
         [self camera:[params objectForKey:@"id"] 
                   maxwidth:[params objectForKey:@"maxwidth"]
                   maxheight:[params objectForKey:@"maxheight"] ];
+    } else if ([@"register" isEqualToString:commandName])  {
+        [self register];
     }
 
     return YES;
 }
 
+- (BOOL)register  {
+    [controller register];
+    return YES;
+}
 
 - (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw 
         maxheight: (NSString*)maxh {

@@ -19,6 +19,7 @@ package org.icefaces.component.camera;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
+import org.icefaces.component.utils.AuxUploadResourceHandler;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
@@ -85,10 +86,16 @@ public class CameraRenderer extends Renderer {
             //if it's a container upload then the name of part if <clientId>-file
             //if desktop browser it's just the clientId
             String partUploadName = clientId;
-            if (EnvUtils.isEnhancedBrowser(facesContext)){
+//            if (EnvUtils.isEnhancedBrowser(facesContext)){
                partUploadName+="-file";
-            }
+//            }
             Part part = request.getPart(partUploadName);
+            if (null == part)  {
+                Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
+System.out.println("choices " + auxMap);
+                part = (Part) auxMap.get(partUploadName);
+System.out.println("found aux part " + part.getName());
+            }
             if (part !=null){
                 String contentType = part.getContentType();
                 String fileName = java.util.UUID.randomUUID().toString();

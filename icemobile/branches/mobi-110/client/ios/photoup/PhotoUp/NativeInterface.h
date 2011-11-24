@@ -42,6 +42,7 @@
 
 - (BOOL)dispatch: (NSString*)command;
 - (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw maxheight: (NSString*)maxh;
+- (BOOL)register;
 - (BOOL)upload: (NSString*)formId;
 - (NSMutableDictionary*)parseQuery: (NSString*)queryString;
 - (void)showImagePicker: (UIImagePickerController*)picker;
