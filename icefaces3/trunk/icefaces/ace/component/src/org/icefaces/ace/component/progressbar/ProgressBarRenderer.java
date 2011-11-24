@@ -78,6 +78,7 @@ public class ProgressBarRenderer extends CoreRenderer {
 
             FacesContext.getCurrentInstance().renderResponse();
         }
+        decodeBehaviors(facesContext, progressBar);
     }
 
     @Override
@@ -139,6 +140,7 @@ public class ProgressBarRenderer extends CoreRenderer {
                     json.entry("disabled", true);
                 }
                 json.entry("hasChangeListener", hasChangeListener);
+                encodeClientBehaviors(facesContext, progressBar, json);
             json.endMap();
         json.endFunction();
         writer.write(json.toString());

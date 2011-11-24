@@ -24,6 +24,9 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 @Component(
         tagName = "progressBar",
@@ -42,6 +45,11 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
         @ResourceDependency(library="icefaces.ace", name="core/core.js"),
         @ResourceDependency(library="icefaces.ace", name="progressbar/progressbar.js")
+})
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="complete", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
+	@ClientEvent(name="cancel", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
+	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
 })
 public class ProgressBarMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Name of the client side widget.")
