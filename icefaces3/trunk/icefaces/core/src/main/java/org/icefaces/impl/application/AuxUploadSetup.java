@@ -58,4 +58,8 @@ public class AuxUploadSetup {
             externalContext.getRequestServerPort();
         return "http://" + urlPrefix + getUploadPath();
     }
+    
+    public boolean getEnabled()  {
+        return EnvUtils.isAuxUploadBrowser(FacesContext.getCurrentInstance());
+    }
 }
