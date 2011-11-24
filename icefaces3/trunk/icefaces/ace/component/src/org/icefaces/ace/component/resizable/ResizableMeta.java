@@ -28,6 +28,9 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import javax.el.MethodExpression;
 
 import org.icefaces.ace.event.ResizeEvent;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 @Component(
         tagName         = "resizable",
@@ -46,6 +49,9 @@ import org.icefaces.ace.event.ResizeEvent;
 	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
 	@ResourceDependency(library="icefaces.ace", name="core/core.js"),
 	@ResourceDependency(library="icefaces.ace", name="resizable/resizable.js")
+})
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="resize", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
 })
 
 public class ResizableMeta extends UIComponentBaseMeta {

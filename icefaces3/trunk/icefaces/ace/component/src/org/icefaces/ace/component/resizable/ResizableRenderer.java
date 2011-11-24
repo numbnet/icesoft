@@ -56,6 +56,7 @@ public class ResizableRenderer extends CoreRenderer {
             
             resizable.queueEvent(new ResizeEvent(resizable, width, height));
         }
+        decodeBehaviors(context, resizable);
     }
 
     @Override
@@ -127,6 +128,7 @@ public class ResizableRenderer extends CoreRenderer {
                 jb.entry("onResizeUpdate", ComponentUtils.findClientIds(context, resizable, onResizeUpdate));
         }
 		
+        encodeClientBehaviors(context, resizable, jb);
 		jb.endMap().endFunction();
 		writer.write(jb.toString());
 		
