@@ -387,10 +387,10 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
     widths = widths.reverse();
 
     // set table head & foot column widths
-    var headerSingleCols = ice.ace.jq(ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header thead th:not([colspan]) .ui-header-column').get().reverse());
-    if (headerSingleCols.size() == 0) headerSingleCols = ice.ace.jq(ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header thead th[colspan="1"] .ui-header-column').get().reverse());
-    var footerSingleCols = ice.ace.jq(ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer td:not([colspan]) .ui-footer-column').get().reverse());
-    if (footerSingleCols.size() == 0) ice.ace.jq(footerSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer td[colspan="1"] .ui-footer-column').get().reverse());
+    var headerSingleCols = ice.ace.jq(ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header thead th:not([colspan])').find('.ui-header-column:first').get().reverse());
+    if (headerSingleCols.size() == 0) headerSingleCols = ice.ace.jq(ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header thead th[colspan="1"]').find('.ui-header-column:first').get().reverse());
+    var footerSingleCols = ice.ace.jq(ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer td:not([colspan])').find('.ui-footer-column:first').get().reverse());
+    if (footerSingleCols.size() == 0) ice.ace.jq(footerSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer td[colspan="1"]').find('.ui-footer-column:first').get().reverse());
 
     var i  = 0;
     headerSingleCols.each(function() {
