@@ -80,6 +80,7 @@ ice.ace.ProgressBar.prototype.start = function() {
 }
 
 ice.ace.ProgressBar.prototype.fireCompleteEvent = function() {
+    var completeListener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.complete;
     clearInterval(this.progressPoll);
 
     var options = {
@@ -100,10 +101,15 @@ ice.ace.ProgressBar.prototype.fireCompleteEvent = function() {
     options.params = params;
 	
     ice.ace.AjaxRequest(options);
+    if (jQuery.isFunction(completeListener)) {
+//            completeListener.call(this, event);
+        completeListener();
+    }
 }
 
 ice.ace.ProgressBar.prototype.changeListener = function(ev, ui) {
     var data = ev.data, id = data.id;
+    var changeListener = data.cfg && data.cfg.behaviors && data.cfg.behaviors.change;
     var options = {
         source: id,
         execute: id,
@@ -119,9 +125,14 @@ ice.ace.ProgressBar.prototype.changeListener = function(ev, ui) {
     options.params = params;
 
     ice.ace.AjaxRequest(options);
+    if (jQuery.isFunction(changeListener)) {
+//            changeListener.call(this, event);
+        changeListener();
+    }
 };
 
 ice.ace.ProgressBar.prototype.cancel = function() {
+    var cancelListener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.cancel;
     clearInterval(this.progressPoll);
     var _self = this;
 
@@ -145,4 +156,8 @@ ice.ace.ProgressBar.prototype.cancel = function() {
     options.params = params;
 
     ice.ace.AjaxRequest(options);
+    if (jQuery.isFunction(cancelListener)) {
+//            cancelListener.call(this, event);
+        cancelListener();
+    }
 }
