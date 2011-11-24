@@ -374,8 +374,21 @@ public class BridgeSetup implements SystemEventListener {
                 break;
             }
         }
+
         if (position > -1) {
-            componentResources.set(position, component);
+            //componentResources list is unmodifiable so we need to go though a few hoops
+            //copy all component resources
+            List<UIComponent> componentResourcesCopy = new ArrayList<UIComponent>(componentResources);
+            //remove them all from the view root
+            for (UIComponent uiComponent : componentResourcesCopy) {
+                viewRoot.removeComponentResource(context, uiComponent, target);
+            }
+            //replace component at position
+            componentResourcesCopy.set(position, component);
+            //re-add them to the view root
+            for (UIComponent uiComponent : componentResourcesCopy) {
+                viewRoot.addComponentResource(context, uiComponent, target);
+            }
         } else {
             viewRoot.addComponentResource(context, component, target);
         }
