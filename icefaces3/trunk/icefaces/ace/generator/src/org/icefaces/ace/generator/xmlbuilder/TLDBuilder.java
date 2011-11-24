@@ -22,6 +22,8 @@ import java.lang.reflect.Field;
 import org.icefaces.ace.generator.utils.Utility;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.TagHandler;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Element;
 
@@ -55,7 +57,7 @@ public class TLDBuilder extends XMLBuilder{
         tag = getDocument().createElement("tag");        
         root.appendChild(tag);
         Element description = getDocument().createElement("description");
-        CDATASection descriptionCDATA = getDocument().createCDATASection( component.tlddoc());
+        CDATASection descriptionCDATA = getDocument().createCDATASection( component.tlddoc() + getClientEventsTlddoc(clazz));
         description.appendChild(descriptionCDATA);
         tag.appendChild(description);
         addNode(tag, "name", component.tagName());
@@ -113,4 +115,25 @@ public class TLDBuilder extends XMLBuilder{
         addNode(attribute, "type", field.getType().getName());
 
     }       
+	
+	private String getClientEventsTlddoc(Class clazz) {
+	
+        if (clazz.isAnnotationPresent(ClientBehaviorHolder.class)) {
+            ClientBehaviorHolder clientBehaviorHolder = (ClientBehaviorHolder) clazz.getAnnotation(ClientBehaviorHolder.class);
+			ClientEvent[] events = clientBehaviorHolder.events();
+			if (events.length > 0) {
+				StringBuilder builder = new StringBuilder();
+				builder.append("\n\nSupported client events:");
+				for (int i = 0; i < events.length; i++) {
+					builder.append("\n");
+					ClientEvent event = events[i];
+					builder.append(event.name());
+					builder.append(" - ");
+					builder.append(event.tlddoc());
+				}
+				return builder.toString();
+			}
+		}
+		return "";
+	}
 }
