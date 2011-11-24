@@ -34,12 +34,6 @@
     <ui:param name="resourceValue" value="#{series.exampleResource}"/>
     
     <ui:define name="example">
-        <p><b>Demo Use Cases:</b></p>
-        <p><b>1.</b> Observe the panel series component iteratively displaying a list of employee records.</p>
-        <p>The panel series component is an iterator that allows a developer to display an arbitrary list of data, similar to a data table (but without requiring an underlying HTML <i>table</i>).</p>
-        <p>Data can dynamically be added or removed to the list on the server and the changes will be reflected in the panel series. Also the style, displayed rows, etc. can be customized for the component.</p>
-        <br/>
-    
         <h:form>
             <ice:panelSeries value="#{seriesData.employees}"
                              var="employee"

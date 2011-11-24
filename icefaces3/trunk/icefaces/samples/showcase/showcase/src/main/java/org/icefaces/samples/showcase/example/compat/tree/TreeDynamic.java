@@ -68,20 +68,17 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class TreeDynamic extends ComponentExampleImpl<TreeDynamic> implements Serializable {
 	
-	public static final String BEAN_NAME = "treeDynamic";
-	
-	private Random randomizer = new Random(System.nanoTime());
-	private DefaultTreeModel model;
-	private DefaultMutableTreeNode parentChange;
-	
-	public TreeDynamic() {
-		super(TreeDynamic.class);
-	}
-	
-	@PostConstruct
-	protected void init() {
-	    model = TreeBean.generateRandomTree(1, 1, 5, 1);
-    }	
+    public static final String BEAN_NAME = "treeDynamic";
+
+    private Random randomizer = new Random(System.nanoTime());
+    private DefaultTreeModel model;
+    private DefaultMutableTreeNode parentChange;
+
+    public TreeDynamic() 
+    {
+        super(TreeDynamic.class);
+        model = TreeBean.generateRandomTree(1, 1, 5, 1);
+    }
 	
     public DefaultTreeModel getModel() { return model; }
     public DefaultMutableTreeNode getParentChange() { return parentChange; }

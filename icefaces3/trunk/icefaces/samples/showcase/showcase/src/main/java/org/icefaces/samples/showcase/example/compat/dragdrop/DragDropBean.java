@@ -25,12 +25,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
@@ -88,12 +85,12 @@ public class DragDropBean extends ComponentExampleImpl<DragDropBean> implements 
 	private List<DragDropItem> purchased = new ArrayList<DragDropItem>(0);
 	
 	public DragDropBean() {
-		super(DragDropBean.class);
+                    super(DragDropBean.class);
+                    init();
 	}
 	
-	@PostConstruct
 	private void init() {
-        dropEffect = new Highlight("#FDA505");
+                    dropEffect = new Highlight("#FDA505");
 	    dropEffect.setFired(true);
 	}
 	

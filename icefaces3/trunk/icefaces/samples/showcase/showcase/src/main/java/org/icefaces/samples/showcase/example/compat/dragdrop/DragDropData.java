@@ -27,11 +27,8 @@ import java.util.List;
 import java.util.Random;
 import java.text.NumberFormat;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 @ManagedBean(name= DragDropData.BEAN_NAME)
 @CustomScoped(value = "#{window}")
@@ -46,9 +43,9 @@ public class DragDropData implements Serializable {
 	
 	public DragDropData() {
 	    super();
+                    init();
 	}
 	
-	@PostConstruct
 	private void init() {
 	    priceFormatter = NumberFormat.getInstance();
 	    priceFormatter.setGroupingUsed(false);

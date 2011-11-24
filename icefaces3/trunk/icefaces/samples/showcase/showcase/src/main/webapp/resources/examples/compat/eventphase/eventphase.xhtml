@@ -35,13 +35,6 @@
     <ui:param name="resourceValue" value="#{eventphase.exampleResource}"/>
     
     <ui:define name="example">
-        <p><b>Demo Use Cases:</b></p>
-        <p><b>1.</b> Choose a Province and click Submit.</p>
-        <p>If setEventPhase is enabled, the capital City of the selected Province will automatically be set through a valueChangeListener that fires later in the JSF lifecycle because of setEventPhase.</p>
-        <p>However if setEventPhase is not enabled, the City will not be updated in the view. This is because the valueChangeListener fires earlier in the JSF lifecycle, and the City it sets is overwritten by the currently selected City on the page.</p>
-        <p>This process will work the same if a City is selected and Submit is clicked, except a matching Province will try to be set.</p>
-        <br/>
-    
         <h:form>
             <icecore:singleSubmit/>
             <h:panelGrid columns="3">

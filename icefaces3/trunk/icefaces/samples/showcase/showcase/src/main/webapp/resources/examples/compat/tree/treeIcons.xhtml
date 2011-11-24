@@ -38,10 +38,6 @@
             <h:commandButton value="Regenerate"
                              actionListener="#{tree.refreshTree}"/>
             <br/>
-            
-            <p>Custom folder and leaf icons to simulate camera images being organized in a tree.</p>
-            <p>These can be set inline in the page, or directly in the backing bean.</p>
-            
             <ice:tree value="#{tree.model}"
                       var="node"
                       hideRootNode="false"

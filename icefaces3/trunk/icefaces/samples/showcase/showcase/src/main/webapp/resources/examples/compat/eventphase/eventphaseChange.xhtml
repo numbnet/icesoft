@@ -35,16 +35,6 @@
     <ui:param name="resourceValue" value="#{eventphaseChange.exampleResource}"/>
     
     <ui:define name="example">
-        <p><b>Demo Use Cases:</b></p>
-        <p><b>1.</b> Check "Choose Random Number" to true. Then press "Submit".</p>
-        <p>In the Event Log you can see a number was generated and set through a valueChangeListener.
-        However the number was then overwritten by the rest of the lifecycle where the value in the inputText field was set into the bean.</p>
-        <p><b>2.</b> Check "Enable Set Event Phase" to true and press "Apply". Uncheck "Choose Random Number" and press "Submit".</p>
-        <p>Since setEventPhase has been enabled, we can try the use case again and see the difference.</p>
-        <p><b>3.</b> Check "Choose Random Number" to true. Then press "Submit".</p>
-        <p>In the Event Log you will now see that the normal lifecycle set applying the value in the inputText field to the bean. And then the valueChangeListener fires, since it was moved to a later lifecycle phase thanks to setEventPhase.</p>
-        <p>Now when the new random number is generated and set it isn't overwritten, and appears on the page as expected.</p>
-        <br/>
             
         <h:form>
             <icecore:singleSubmit/>

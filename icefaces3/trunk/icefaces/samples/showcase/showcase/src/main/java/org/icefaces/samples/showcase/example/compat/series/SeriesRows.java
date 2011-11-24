@@ -62,10 +62,10 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 public class SeriesRows extends ComponentExampleImpl<SeriesRows> implements Serializable {
 	
 	public static final String BEAN_NAME = "seriesRows";
-	public static final int DEFAULT_ROWS = 10;
+	public static final int DEFAULT_ROWS = 4;
 	
 	// Initially display less rows to show a difference from the other demos
-	public int rows = DEFAULT_ROWS/3;
+	public int rows = DEFAULT_ROWS/2;
 	
 	public SeriesRows() {
 		super(SeriesRows.class);

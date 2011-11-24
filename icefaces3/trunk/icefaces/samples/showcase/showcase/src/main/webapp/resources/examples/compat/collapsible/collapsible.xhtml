@@ -34,21 +34,19 @@
     <ui:param name="resourceValue" value="#{collapsible.exampleResource}"/>
     
     <ui:define name="example">
-        <p><b>Demo Use Cases:</b></p>
-        <p><b>1.</b> Click to expand/contract the "ICEfaces Ajax Push" collapsible header.</p>
-        <p>The collapsible component provides a simple way to implement the common use case of a rendered/unrendered area on the page.</p>
-        <p>Styling of the header can be customized, as can the label and images used.</p>
-        <br/>
-    
         <h:form>
             <ice:panelCollapsible expanded="#{collapsibleExpanded.expanded}">
                 <f:facet name="header">
-                    <h2>ICEfaces Ajax Push</h2>
+                    <h:panelGrid columns="2">
+                        <h:graphicImage value="/resources/css/images/collapsible-on.gif"/>
+                        <h:outputLabel value="ICEfaces Ajax Push" styleClass="panelHeaderStyle"/>
+                    </h:panelGrid>
                 </f:facet>
-                <h3>Definition</h3>
+                
+                <b>Definition</b>
                 <p>Ajax Push allows the application to incrementally update any part of the page at any time, for any group of clients. This is a small change in terms of the technical capabilities of Ajax applications, but it is a revolutionary change in terms of what applications can actually provide to users. Ajax Push is the key to building collaborative multi-user applications for the web.</p>
                 
-                <h3>Programming Model</h3>
+                <b>Programming Model</b>
                 
                 <p>Ajax Push can be added to an application with just two lines of code.</p>
                 <p>The org.icefaces.application.PushRenderer pushes page updates to groups of pages. To cause all pages in "someGroup" to be updated with the current server state, call:</p>
@@ -59,6 +57,7 @@
                 <pre>PushRenderer.addCurrentView("someGroup");</pre>
                 
                 <p>It really is as simple as that to add real-time collaboration to your JSF application.</p>
+                
             </ice:panelCollapsible>
         </h:form>
     </ui:define>

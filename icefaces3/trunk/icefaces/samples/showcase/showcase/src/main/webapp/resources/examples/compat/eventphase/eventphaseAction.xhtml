@@ -35,17 +35,6 @@
     <ui:param name="resourceValue" value="#{eventphaseAction.exampleResource}"/>
     
     <ui:define name="example">
-        <p><b>Demo Use Cases:</b></p>
-        <p><b>1.</b> Leave the inputText field blank and press the "Normal Action" button.</p>
-        <p>You will notice the validation fires as the normal JSF lifecycle is being completed.</p>
-        <p><b>2.</b> Leave the inputText field blank and press the "Set Event Phase Action" button.</p>
-        <p>In the Event Log you will see that the actionListener method was reached in the bean and no validation fired.</p>
-        <p>This is because setEventPhase has moved that actionListener from the end of the lifecycle to the start, before validation fires.</p>
-        <p>This is similar to adding the <i>immediate="true"</i> attribute to a component, but allows greater customization.</p>
-        <p><b>3.</b> Uncheck "Enable Set Event Phase" and press "Apply".</p>
-        <p><b>4.</b> Leave the inputText field blank and press the "Set Event Phase Action" button.</p>
-        <p>You can see that without setEventPhase the button is the same as "Normal Action" and will fire validation which blocks the actionListener from executing.</p>
-        <br/>
         
         <h:form>
             <icecore:singleSubmit/>

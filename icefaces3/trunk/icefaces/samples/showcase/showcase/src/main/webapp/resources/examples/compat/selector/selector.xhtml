@@ -34,13 +34,6 @@
     <ui:param name="resourceValue" value="#{selector.exampleResource}"/>
     
     <ui:define name="example">
-        <p><b>Demo Use Cases:</b></p>
-        <p><b>1.</b> Click a row in the data table to select it.</p>
-        <p><b>2.</b> Hold the Shift key and click multiple rows to select more than one row.</p>
-        <p>The data table row selector is used to select individual or multiple rows in a data table. A developer can manage what rows have been selected and act upon them, such as deleting all selected rows, editing an individual row, etc.</p>
-        <p>The color styling can be customized so that mousing over selected or deselected rows will display to the user and clicked rows are easy to see.</p>
-        <br/>
-    
         <h:form>
             <ice:dataTable value="#{selector.data}"
                            var="car"
