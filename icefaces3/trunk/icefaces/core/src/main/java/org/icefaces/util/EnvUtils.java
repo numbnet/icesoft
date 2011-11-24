@@ -25,6 +25,7 @@ import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
 import org.icefaces.impl.push.servlet.ProxyHttpServletRequest;
 import org.icefaces.impl.push.servlet.ProxyHttpServletResponse;
 import org.icefaces.impl.push.servlet.ProxySession;
+import org.icefaces.impl.application.AuxUploadResourceHandler;
 
 import javax.faces.application.Resource;
 import javax.faces.component.UIViewRoot;
@@ -421,6 +422,18 @@ public class EnvUtils {
             return cookie.getValue().startsWith(HYPERBROWSER);
         }
         return false;
+    }
+
+    /**
+     * Returns true if the browser is enhanced via auxiliary upload.
+     *
+     * @param facesContext The current FacesContext.
+     * @return true if browser supports auxiliary upload.
+     */
+    public static boolean isAuxUploadBrowser(FacesContext facesContext) {
+        boolean isAux = facesContext.getExternalContext().getSessionMap()
+            .containsKey(AuxUploadResourceHandler.AUX_REQ_MAP_KEY);
+        return isAux;
     }
 
     public static boolean isICEfacesView(FacesContext facesContext) {
