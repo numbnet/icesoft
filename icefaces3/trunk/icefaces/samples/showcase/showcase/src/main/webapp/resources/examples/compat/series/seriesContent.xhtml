@@ -50,7 +50,8 @@
             <ice:panelSeries value="#{seriesContent.items}"
                              var="item">
                  <br/>
-                 <h2>Content Item #{item} of #{seriesContent.type} Type</h2>
+                 <b>Content Item #{item} of #{seriesContent.type} Type</b>
+                 <br/>
                              
                  <h:panelGroup rendered="#{seriesContent.typeCalendar}">
                     <ice:selectInputDate renderAsPopup="false">
@@ -69,6 +70,7 @@
                  <h:panelGroup rendered="#{seriesContent.typeImages}">
                     <h:graphicImage library="css/images" name="header.png"/>
                  </h:panelGroup>
+                 
             </ice:panelSeries>
         </h:form>
     </ui:define>

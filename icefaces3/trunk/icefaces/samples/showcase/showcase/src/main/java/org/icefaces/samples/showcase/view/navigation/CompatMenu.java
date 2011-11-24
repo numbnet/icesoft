@@ -61,8 +61,8 @@ import java.io.Serializable;
 
 @Menu(
         title = "menu.compat.title", menuLinks = {
-            //@MenuLink(title = "menu.compat.columns.title", isDefault = true, exampleBeanName = ColumnsBean.BEAN_NAME),
-            @MenuLink(title = "menu.compat.exporter.title",  isDefault = true, exampleBeanName = ExporterBean.BEAN_NAME),
+            @MenuLink(title = "menu.compat.columns.title", isDefault = true, exampleBeanName = ColumnsBean.BEAN_NAME),
+            @MenuLink(title = "menu.compat.exporter.title", exampleBeanName = ExporterBean.BEAN_NAME),
             @MenuLink(title = "menu.compat.paginator.title", exampleBeanName = PaginatorBean.BEAN_NAME),
             @MenuLink(title = "menu.compat.dataTable.title", exampleBeanName = DataTableBean.BEAN_NAME),
             @MenuLink(title = "menu.compat.map.title", exampleBeanName = MapBean.BEAN_NAME),

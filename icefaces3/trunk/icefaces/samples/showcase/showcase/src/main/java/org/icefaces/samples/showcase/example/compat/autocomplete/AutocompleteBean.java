@@ -23,12 +23,10 @@ package org.icefaces.samples.showcase.example.compat.autocomplete;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.ArrayList;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import com.icesoft.faces.component.selectinputtext.TextChangeEvent;

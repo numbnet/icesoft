@@ -23,21 +23,14 @@ package org.icefaces.samples.showcase.example.compat.autocomplete;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.ArrayList;
-
-import javax.faces.bean.ViewScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
-
 import com.icesoft.faces.component.selectinputtext.TextChangeEvent;
-
+import javax.faces.bean.CustomScoped;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
-import org.icefaces.samples.showcase.metadata.annotation.Menu;
-import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -62,7 +55,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
         }
 )
 @ManagedBean(name= AutocompleteSimple.BEAN_NAME)
-@ViewScoped
+@CustomScoped(value = "#{window}")
 public class AutocompleteSimple extends ComponentExampleImpl<AutocompleteSimple> implements Serializable {
 	
 	public static final String BEAN_NAME = "autocompleteSimple";

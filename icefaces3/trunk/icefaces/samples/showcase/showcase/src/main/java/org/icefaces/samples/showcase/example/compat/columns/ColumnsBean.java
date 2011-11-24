@@ -25,12 +25,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
@@ -80,10 +77,10 @@ public class ColumnsBean extends ComponentExampleImpl<ColumnsBean> implements Se
 	private List<String> columnData;
 	
 	public ColumnsBean() {
-		super(ColumnsBean.class);
+                    super(ColumnsBean.class);
+                    init();
 	}
 	
-	@PostConstruct
 	private void init() {
 	    generateRows();
 	    generateColumns();

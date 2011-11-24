@@ -22,6 +22,8 @@
 package org.icefaces.samples.showcase.example.compat.collapsible;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 import javax.faces.bean.CustomScoped;
@@ -63,23 +65,28 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 public class CollapsibleEvent extends ComponentExampleImpl<CollapsibleEvent> implements Serializable {
 	
 	public static final String BEAN_NAME = "collapsibleEvent";
-	
+	private SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 	private Random randomizer = new Random(System.nanoTime());
-	private long lastFired;
+	private String lastFired;
 	private int lastNumber;
 	
 	public CollapsibleEvent() {
 		super(CollapsibleEvent.class);
 	}
+
+                public String getLastFired() {
+                    return lastFired;
+                }
+
+                public void setLastFired(String lastFired) {
+                    this.lastFired = lastFired;
+                }
 	
-	public long getLastFired() { return lastFired; }
-	public int getLastNumber() { return lastNumber; }
-	
-	public void setLastFired(long lastFired) { this.lastFired = lastFired; }
 	public void setLastNumber(int lastNumber) { this.lastNumber = lastNumber; }
+        	public int getLastNumber() { return lastNumber; }
 	
 	public void actionListener(ActionEvent event) {
-	    lastFired = System.currentTimeMillis();
+	    lastFired = formatter.format(new Date());
 	    lastNumber = 1+randomizer.nextInt(99);
 	}
 }

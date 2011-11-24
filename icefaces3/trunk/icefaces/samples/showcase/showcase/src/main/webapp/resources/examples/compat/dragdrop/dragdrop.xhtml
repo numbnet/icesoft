@@ -34,14 +34,6 @@
     <ui:param name="resourceValue" value="#{dragdrop.exampleResource}"/>
     
     <ui:define name="example">
-        <p><b>Demo Use Cases:</b></p>
-        <p><b>1.</b> Click and drag an item from the top list into the white shopping cart area below. This will populate the data table of current items, which simulates a user purchasing something from an online store.</p>
-        <p><b>2.</b> Click the "Return" button on an item to move it back into the "store" stock.</p>
-        <p>Drag and drop functionality is very useful for unique use cases in rich web applications. Instead of traditional web methods of add/remove buttons, drag and drop can be used instead.</p>
-        <p>Implementing drag and drop is simple for a developer as they can customize what happens during the drag and drop by using provided listeners.</p>
-        <p>Coupling drag and drop with the effect component is an elegant way to help users understand what is going on, as shown here with the orange highlight when an item is hovered over the cart.</p> 
-        <br/>
-    
         <h:form>
             <ice:panelSeries value="#{dragdropData.items}"
                              var="item">

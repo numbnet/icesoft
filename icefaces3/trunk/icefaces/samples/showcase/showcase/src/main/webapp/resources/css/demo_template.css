@@ -30,16 +30,19 @@ body {
 }
 
 p {
-    font-size: 10pt;
     text-align: left;
     line-height: 20px;
 }
 
 p+ul {
-    font-size: 10pt;
     text-align: left;
     margin-left: 20px;
     line-height: 20px;
+}
+
+.panelHeaderStyle
+{
+    font-weight: bold;
 }
 
 table { font-size: 1.0em; }
@@ -188,11 +191,11 @@ a:link, a:visited {
 
 /* Example - This would be alot easier if we could use the '>' selector unsupported by IE6 */
 .example {
-	float: left;
+    float: left;
     clear: left;
-	margin-top: 6px;
+    margin-top: 6px;
     /*border: 1px solid #ECECEC; Styling preference, and %100 width hides right border*/
-    width: 100%;   
+    width: 100%;
 }
 .example h2 { 
 	font-weight: bold; 
@@ -200,7 +203,7 @@ a:link, a:visited {
     margin: 6px;
 }
 /* Example Element Containers */
-.example span, .example div { margin: 6px;} 
+.example span, .example div { margin: 6px; font-size: 10pt;} 
 .example * span, .example * div { margin: 0;}
 div .resources { font-size: 10pt;}
 .content ul { padding:.5em 40px .5em 0; }

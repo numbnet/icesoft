@@ -28,9 +28,6 @@ import java.util.Random;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
 @ManagedBean(name= SeriesData.BEAN_NAME)
 @CustomScoped(value = "#{window}")
@@ -48,15 +45,8 @@ public class SeriesData implements Serializable {
 	    
 	    toReturn.add(makeEmployee(++baseId, "Dorothy", "Wentworth", "3517 Lighthouse Drive"));
 	    toReturn.add(makeEmployee(++baseId, "Leland", "Carreon", "3939 Smith Street"));
-        toReturn.add(makeEmployee(++baseId, "Stevie", "Parodi", "1164 Harper Street"));
-        toReturn.add(makeEmployee(++baseId, "Jennie", "Emory", "2489 James Street"));
-        toReturn.add(makeEmployee(++baseId, "Claudia", "Brunton", "2116 Brand Road"));
-        toReturn.add(makeEmployee(++baseId, "John", "Fears", "4625 5th Avenue"));
-        toReturn.add(makeEmployee(++baseId, "Vickie", "Miller", "4021 Kinchant St"));
-        toReturn.add(makeEmployee(++baseId, "Gerardo", "Stephens", "452 Alaska Hwy"));
-        toReturn.add(makeEmployee(++baseId, "Margaret", "Borchers", "4788 Wentz Avenue"));
-        toReturn.add(makeEmployee(++baseId, "Andrew", "Olvera", "1620 Waterton Avenue"));
-	    
+                    toReturn.add(makeEmployee(++baseId, "Stevie", "Parodi", "1164 Harper Street"));
+                    toReturn.add(makeEmployee(++baseId, "Jennie", "Emory", "2489 James Street"));
 	    return toReturn;
 	}
 	

@@ -83,12 +83,6 @@
     padding: 5px 0 0 5px;
 }
 
-.icePnlClpsblHdr h2 {
-    background: url("../resources/css/images/collapsible-on.gif") no-repeat scroll 3px 2px transparent;
-    margin: -2px 0 0 -2px;
-    padding: 5px 0 0 5px;
-}
-
 .iceRowSelSelected {
     background-color: #999999;
 }

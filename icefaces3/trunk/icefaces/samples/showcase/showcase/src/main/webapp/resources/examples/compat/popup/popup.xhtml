@@ -34,13 +34,6 @@
     <ui:param name="resourceValue" value="#{popup.exampleResource}"/>
     
     <ui:define name="example">
-        <p><b>Demo Use Cases:</b></p>
-        <p><b>1.</b> Click "Toggle Popup" to display a modal popup component with some basic information on it.</p>
-        <p><b>2.</b> Click the "X" button in the header of the displayed popup to close it.</p>
-        <p>The popup component allows a developer to display a modal or non-modal popup that can be dragged, automatically centered, etc.</p>
-        <p>This is useful for creating a web application that feels like a traditional desktop application. Critical information or error messages could be displayed in a modal popup, or inline editing could be allowed in a draggable popup that appears over a data table.</p>
-        <br/>
-    
         <h:form>
             <h:commandButton value="Toggle Popup"
                              actionListener="#{popup.toggleOpened}"/>

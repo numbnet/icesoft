@@ -32,7 +32,7 @@ Available ui:params to pass:
  resourceValue
 -->
     <div class="example">
-        <ace:panel header="#{title}" style="font-size: 10pt;">
+        <ace:panel header="#{title}">
         <div class="content">
             <div class="desc">
                 <ice:outputText value="#{description}" escape="false" nospan="true"/>
@@ -42,12 +42,13 @@ Available ui:params to pass:
             </div>
         </div>
         </ace:panel>
-        <div class="resources">
+        
             <h:form id="sourceCodeForm">
                 
                 <hr style="margin-top: 10px; margin-bottom: 10px;"/>
                 
-                <ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" toggleable="true" header="Source Code" style="font-size: 10pt;" >
+                <ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" toggleable="true" header="Source Code">
+                    <div class="resources">
                     <ace:ajax event="toggle" process="@this"/>
                     
                     <ace:tabSet clientSide="true" selectedIndex="0"
@@ -59,8 +60,8 @@ Available ui:params to pass:
                             </ace:tabPane>
                         </c:forEach>
                     </ace:tabSet>
+                    </div>
                 </ace:panel>
             </h:form>			
-        </div>
     </div>
 </ui:composition>

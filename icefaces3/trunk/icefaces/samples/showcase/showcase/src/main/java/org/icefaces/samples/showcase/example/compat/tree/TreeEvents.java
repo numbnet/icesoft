@@ -68,7 +68,7 @@ public class TreeEvents extends ComponentExampleImpl<TreeEvents> implements Seri
 	private String clicked = null;
 	
 	public TreeEvents() {
-		super(TreeEvents.class);
+                    super(TreeEvents.class);
 	}
 	
 	public String getListenerStatus() { return listenerStatus; }
