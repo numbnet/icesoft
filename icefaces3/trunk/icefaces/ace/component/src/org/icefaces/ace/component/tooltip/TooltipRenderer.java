@@ -63,6 +63,7 @@ public class TooltipRenderer extends CoreRenderer {
 
             FacesContext.getCurrentInstance().renderResponse();
         }
+        decodeBehaviors(facesContext, tooltip);
     }
 
     @Override
@@ -156,6 +157,7 @@ public class TooltipRenderer extends CoreRenderer {
 			.endMap()
 		.endMap();
 		
+        encodeClientBehaviors(facesContext, tooltip, jb);
 		jb.endMap().endFunction();
 		writer.write(jb.toString());	
 		

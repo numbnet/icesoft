@@ -22,7 +22,9 @@ ice.ace.Tooltip = function(cfg) {
 	this.jq.qtip(this.cfg);
 	
 	var self = this;
-	this.jq.qtip("api").beforeShow = function() { if (!ice.ace.Tooltips[self.target] && self.cfg.displayListener) { ice.ace.Tooltips[self.target] = true; self.triggerDisplayListener(); }};
+	this.jq.qtip("api").beforeShow = function() { if (!ice.ace.Tooltips[self.target] && self.cfg.displayListener) { ice.ace.Tooltips[self.target] = true; self.triggerDisplayListener(); }
+                                                  if (!ice.ace.Tooltips[self.target] && self.cfg.behaviors && self.cfg.behaviors.display) { ice.ace.Tooltips[self.target] = true; self.triggerDisplayListener2(); }
+    };
 	this.jq.qtip("api").onHide = function() { ice.ace.Tooltips[self.target] = false; };
 }
 
@@ -43,6 +45,13 @@ ice.ace.Tooltip.prototype.triggerDisplayListener = function() {
 	options.params = params;
 
 	ice.ace.AjaxRequest(options);
+}
+ice.ace.Tooltip.prototype.triggerDisplayListener2 = function() {
+    var listener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.display;
+    if (jQuery.isFunction(listener)) {
+//            listener.call(this, event);
+        listener();
+    }
 }
 
 /*
