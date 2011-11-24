@@ -16,6 +16,11 @@ import java.util.List;
 
 public class TableConfigPanelRenderer extends CoreRenderer {
     @Override
+    public void decode(FacesContext context, UIComponent component) {
+        decodeBehaviors(context, component);
+    }
+
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         TableConfigPanel panel = (TableConfigPanel)component;
 
@@ -26,6 +31,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         DataTable table = (DataTable)component.getTargetedDatatable();
         String tableId = table.getClientId(context);
         String clientId = component.getClientId(context);
+        String jsId = this.resolveWidgetVar(component);
         ResponseWriter writer = context.getResponseWriter();
         List<Column> columns = table.getColumns();
         int i;
@@ -40,7 +46,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         writer.writeText("Column Settings", null);
 
         writeConfigPanelOkButton(writer, clientId);
-        writeConfigPanelCloseButton(writer, clientId);
+        writeConfigPanelCloseButton(writer, clientId, jsId);
 
         writer.endElement(HTML.DIV_ELEM);
 
@@ -136,30 +142,6 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         writer.endElement(HTML.THEAD_ELEM);
     }
 
-    private void writeConfigPanelCloseButton(ResponseWriter writer, String clientId) throws IOException {
-        writer.startElement(HTML.SPAN_ELEM, null);
-        writer.writeAttribute(HTML.STYLE_ATTR, "float:right;", null);
-
-        writer.startElement(HTML.ANCHOR_ELEM, null);
-
-        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:0px 10px; text-align:left;";
-        writer.writeAttribute(HTML.STYLE_ELEM, style, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
-        writer.writeAttribute(HTML.HREF_ATTR, "#", null);
-        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"')).toggle()", null);
-        writer.writeAttribute(HTML.ID_ATTR, clientId +"_tableconf_close", null);
-
-
-        writer.startElement(HTML.SPAN_ELEM, null);
-
-        writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-close", null);
-        writer.writeText("table", null);
-
-        writer.endElement(HTML.SPAN_ELEM);
-        writer.endElement(HTML.ANCHOR_ELEM);
-        writer.endElement(HTML.SPAN_ELEM);
-    }
-
     private void writeConfigPanelOkButton(ResponseWriter writer, String clientId) throws IOException {
         writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.STYLE_ATTR, "float:right;", null);
@@ -177,6 +159,30 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         writer.startElement(HTML.SPAN_ELEM, null);
 
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-check", null);
+        writer.writeText("table", null);
+
+        writer.endElement(HTML.SPAN_ELEM);
+        writer.endElement(HTML.ANCHOR_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
+    }
+
+    private void writeConfigPanelCloseButton(ResponseWriter writer, String clientId, String jsId) throws IOException {
+        writer.startElement(HTML.SPAN_ELEM, null);
+        writer.writeAttribute(HTML.STYLE_ATTR, "float:right;", null);
+
+        writer.startElement(HTML.ANCHOR_ELEM, null);
+
+        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:0px 10px; text-align:left;";
+        writer.writeAttribute(HTML.STYLE_ELEM, style, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
+        writer.writeAttribute(HTML.HREF_ATTR, "#", null);
+        writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"')).toggle(); if (" + jsId + ".behavior) if (" + jsId + ".behavior.close) " + jsId + ".behavior.close();", null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId +"_tableconf_close", null);
+
+
+        writer.startElement(HTML.SPAN_ELEM, null);
+
+        writer.writeAttribute(HTML.CLASS_ATTR, "ui-icon ui-icon-close", null);
         writer.writeText("table", null);
 
         writer.endElement(HTML.SPAN_ELEM);
@@ -204,10 +210,11 @@ public class TableConfigPanelRenderer extends CoreRenderer {
                         "\tice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_close\"))" +
                         ".hover(function (event) {ice.ace.jq(event.currentTarget)" + ".toggleClass('ui-state-hover');})" +
                         ".click(function (event) {ice.ace.jq(ice.ace.escapeClientId(\"" + clientId + "_tableconf_launch\")).toggleClass('ui-state-active');});\n" +
-                        "\t var cfg = {reorderable :" + isReorderable + ", sortable :" + isSortable + ", singleSort:" + isSingleSort + ", tableId:'" + tableId + "'};" +
+                        "\t var cfg = {reorderable :" + isReorderable + ", sortable :" + isSortable + ", singleSort:" + isSingleSort + ", tableId:'" + tableId + "'", null);
+        encodeClientBehaviors(FacesContext.getCurrentInstance(), component);
+        writer.writeText("};" +
                         "\t" + jsId + " = new ice.ace.TableConf('" + clientId + "', cfg);\n" +
-                        "});"
-                , null);
+                        "});", null);
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
@@ -228,13 +235,15 @@ public class TableConfigPanelRenderer extends CoreRenderer {
             writer.startElement(HTML.ANCHOR_ELEM, null);
             if (column.getSortPriority() != null && column.isSortAscending())
                 writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_UP_CLASS + " ui-toggled", null);
-            else writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_UP_CLASS, null);            writer.writeAttribute(HTML.TABINDEX_ATTR, 0, null);
+            else writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_UP_CLASS, null);
+            writer.writeAttribute(HTML.TABINDEX_ATTR, 0, null);
             writer.endElement(HTML.ANCHOR_ELEM);
 
             writer.startElement(HTML.ANCHOR_ELEM, null);
             if (column.getSortPriority() != null && !column.isSortAscending())
                 writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_DOWN_CLASS + " ui-toggled", null);
-            else writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_DOWN_CLASS, null);            writer.writeAttribute(HTML.TABINDEX_ATTR, 0, null);
+            else writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_DOWN_CLASS, null);
+            writer.writeAttribute(HTML.TABINDEX_ATTR, 0, null);
             writer.endElement(HTML.ANCHOR_ELEM);
 
             writer.endElement(HTML.SPAN_ELEM);

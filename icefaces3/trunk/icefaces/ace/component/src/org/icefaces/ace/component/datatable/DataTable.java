@@ -45,6 +45,8 @@ import javax.el.MethodExpression;
 import javax.faces.application.Application;
 import javax.faces.application.NavigationHandler;
 import javax.faces.component.*;
+import javax.faces.component.behavior.AjaxBehavior;
+import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
@@ -159,20 +161,20 @@ public class DataTable extends DataTableBase {
 
     @Override
     protected DataModel getDataModel() {
-
         if (this.model != null) {
             return (model);
         }
 
+        Object current = getValue();
+
         // If existing tree check for changes or return cached model
         if (hasTreeDataModel() || newTreeDataModel) {
-            Object value = this.getValue();
-            if (newTreeDataModel) treeModel = new TreeDataModel((List)value);
+            treeModel = new TreeDataModel((List)current);
+            setDataModel(treeModel);
             newTreeDataModel = false;
             return treeModel;
         }
 
-        Object current = getValue();
         if (current == null) {
             setDataModel(new ListDataModel(Collections.EMPTY_LIST));
         } else if (current instanceof DataModel) {
@@ -190,7 +192,7 @@ public class DataTable extends DataTableBase {
         } else {
             setDataModel(new ScalarDataModel(current));
         }
-        
+
         return model;
     }
 
@@ -578,6 +580,15 @@ public class DataTable extends DataTableBase {
         return false;
     }
 
+    public boolean hasSelectionClientBehaviour() {
+        for (String eventId : getClientBehaviors().keySet()) {
+            if (eventId.equals("select") || eventId.equals("deselect")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     protected boolean hasFooterColumn(List<Column> columns) {
         for (Column column : columns)
             if (column.getFacet("footer") != null || column.getFooterText() != null)
@@ -733,11 +744,8 @@ public class DataTable extends DataTableBase {
 
     protected void loadLazyData() {
         LazyDataModel model = (LazyDataModel) getDataModel();
-        System.out.println("Get Rows: " + getRows());
         model.setPageSize(getRows());
         model.setWrappedData(model.load(getFirst(), getRows(), getSortCriteria(), getFilters()));
-        System.out.println("Get Page Size: " + model.getPageSize());
-        System.out.flush();
     }
 
 
@@ -1135,8 +1143,6 @@ public class DataTable extends DataTableBase {
             return isNested;
         } else return isNested;
     }
-
-
 
 
 
