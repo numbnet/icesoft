@@ -90,9 +90,10 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 			}
 		}
 		if (execute == null || "".equals(execute)) {
-			jb.entry("execute", clientId);
+			jb.entry("execute", "(arguments[1]) ? arguments[1] + ' ' + " + clientId + " : " + clientId);
 		} else {
-			jb.entry("execute", ComponentUtils.findClientIds(fc, component, execute));
+            String clientIds = ComponentUtils.findClientIds(fc, component, execute);
+			jb.entry("execute", "(arguments[1]) ? arguments[1] + ' ' + " + clientIds + " : " + clientIds);
 		}
 
         //render
@@ -107,7 +108,8 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 				render = "@all";
 			}
 		}
-		jb.entry("render", ComponentUtils.findClientIds(fc, component, render));
+        String clientIds = ComponentUtils.findClientIds(fc, component, render);
+		jb.entry("render", "(arguments[2]) ? arguments[2] + ' ' + " + clientIds + " : " + clientIds);
 
         //behavior event
 		jb.entry("event", behaviorContext.getEventName());
@@ -131,7 +133,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             jb.entry("oncomplete", "function(xhr, status, args){" + ajaxBehavior.getOncomplete() + ";}", true);
 
         //params
-        jb.entry("params", "arguments[1]", true);
+        jb.entry("params", "arguments[0]", true);
 		
 		jb.endMap().endFunction();
 

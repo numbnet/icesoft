@@ -390,7 +390,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
     var headerSingleCols = ice.ace.jq(ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header thead th:not([colspan])').find('.ui-header-column:first').get().reverse());
     if (headerSingleCols.size() == 0) headerSingleCols = ice.ace.jq(ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header thead th[colspan="1"]').find('.ui-header-column:first').get().reverse());
     var footerSingleCols = ice.ace.jq(ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer td:not([colspan])').find('.ui-footer-column:first').get().reverse());
-    if (footerSingleCols.size() == 0) ice.ace.jq(footerSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer td[colspan="1"]').find('.ui-footer-column:first').get().reverse());
+    if (footerSingleCols.size() == 0) footerSingleCols = ice.ace.jq(ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer td[colspan="1"]').find('.ui-footer-column:first').get().reverse());
 
     var i  = 0;
     headerSingleCols.each(function() {
@@ -451,7 +451,7 @@ ice.ace.DataTable.prototype.reorderColumns = function(oldIndex, newIndex) {
 
     if (this.behaviors)
         if (this.behaviors.reorder) {
-            this.behaviors.reorder(null, params);
+            this.behaviors.reorder(params);
             return;
         }
 
@@ -516,7 +516,7 @@ ice.ace.DataTable.prototype.paginate = function(newState) {
 
     if (this.behaviors)
         if (this.behaviors.page) {
-            this.behaviors.page(null,params);
+            this.behaviors.page(params);
             return;
         }
 
@@ -557,7 +557,7 @@ ice.ace.DataTable.prototype.sort = function(headerCells) {
 
     if (this.behaviors)
         if (this.behaviors.sort) {
-            this.behaviors.sort(null, params);
+            this.behaviors.sort(params);
             return;
         }
 
@@ -616,7 +616,7 @@ ice.ace.DataTable.prototype.filter = function(evn) {
 
     if (this.behaviors)
         if (this.behaviors.filter) {
-            this.behaviors.filter(null, params);
+            this.behaviors.filter(params);
             return;
         }
 
@@ -653,7 +653,7 @@ ice.ace.DataTable.prototype.fireSelectEvent = function() {
 
     if (this.behaviors)
         if (this.behaviors.select) {
-            this.behaviors.select(null, params);
+            this.behaviors.select(params);
             return;
         }
 
@@ -692,7 +692,7 @@ ice.ace.DataTable.prototype.fireRowSelectEvent = function(rowId, deselectRowId) 
 
     if (this.behaviors)
         if (this.behaviors.select) {
-            this.behaviors.select(null, params);
+            this.behaviors.select(params);
             return;
         }
 
@@ -721,7 +721,7 @@ ice.ace.DataTable.prototype.fireRowDeselectEvent = function(rowId) {
 
     if (this.behaviors)
         if (this.behaviors.deselect) {
-            this.behaviors.deselect(null, params);
+            this.behaviors.deselect(params);
             return;
         }
 
@@ -884,7 +884,7 @@ ice.ace.DataTable.prototype.sendPanelContractionRequest = function(row) {
 
     if (this.behaviors)
         if (this.behaviors.contract) {
-            this.behaviors.contract(null, params);
+            this.behaviors.contract(params);
             return;
         }
 
@@ -915,7 +915,7 @@ ice.ace.DataTable.prototype.sendRowContractionRequest = function(row) {
 
     if (this.behaviors)
         if (this.behaviors.contract) {
-            this.behaviors.contract(null, params);
+            this.behaviors.contract(params);
             return;
         }
 
@@ -948,7 +948,7 @@ ice.ace.DataTable.prototype.loadExpandedRows = function(row) {
 
     if (this.behaviors)
         if (this.behaviors.expand) {
-            this.behaviors.expand(null, params);
+            this.behaviors.expand(params);
             return;
         }
 
@@ -981,7 +981,7 @@ ice.ace.DataTable.prototype.loadExpandedPanelContent = function(row) {
 
     if (this.behaviors)
         if (this.behaviors.expand) {
-            this.behaviors.expand(null, params);
+            this.behaviors.expand(params);
             return;
         }
 
@@ -1007,7 +1007,7 @@ ice.ace.DataTable.prototype.showEditors = function(element) {
 
     if (this.behaviors)
         if (this.behaviors.editStart) {
-            this.behaviors.editStart(null, params);
+            this.behaviors.editStart(params);
             return;
         }
 }
@@ -1071,7 +1071,7 @@ ice.ace.DataTable.prototype.doRowEditCancelRequest = function(element) {
 
     if (this.behaviors)
         if (this.behaviors.editCancel) {
-            this.behaviors.editCancel(null, params);
+            this.behaviors.editCancel(params);
             return;
         }
 
@@ -1141,7 +1141,7 @@ ice.ace.DataTable.prototype.doRowEditRequest = function(element) {
 
     if (this.behaviors)
         if (this.behaviors.editSubmit) {
-            this.behaviors.editSubmit(null, params);
+            this.behaviors.editSubmit(params);
             return;
         }
 
