@@ -19,14 +19,18 @@ package org.icefaces.component.camera;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
+import org.icefaces.impl.application.AuxUploadResourceHandler;
+import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 
 import javax.faces.render.Renderer;
+import java.net.URLEncoder;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -88,7 +92,14 @@ public class CameraRenderer extends Renderer {
             if (EnvUtils.isEnhancedBrowser(facesContext)){
                partUploadName+="-file";
             }
+            if (EnvUtils.isAuxUploadBrowser(facesContext)) {
+               partUploadName+="-file";
+            }
             Part part = request.getPart(partUploadName);
+            if (null == part)  {
+                Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
+                part = (Part) auxMap.get(partUploadName);
+            }
             if (part !=null){
                 String contentType = part.getContentType();
                 String fileName = java.util.UUID.randomUUID().toString();
@@ -122,7 +133,10 @@ public class CameraRenderer extends Renderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         Camera camera = (Camera) uiComponent;
-        if (!EnvUtils.isEnhancedBrowser(facesContext)) {
+        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
+
+        if (!isEnhanced && !isAuxUpload) {
             writer.startElement(HTML.SPAN_ELEM, uiComponent);
             writer.startElement(HTML.INPUT_ELEM, uiComponent);
             writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_FILE, null);
@@ -130,7 +144,8 @@ public class CameraRenderer extends Renderer {
             writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
             writer.endElement(HTML.INPUT_ELEM);
             return;
-        }
+        } 
+
         // root element
         boolean disabled = camera.isDisabled();
         // span as per MobI-11
@@ -149,13 +164,31 @@ public class CameraRenderer extends Renderer {
         int width = camera.getMaxwidth();
         int height = camera.getMaxheight();
         //default value of unset in params is Integer.MIN_VALUE
-        if (width != Integer.MIN_VALUE || height != Integer.MIN_VALUE) {
-            String params = "'" + clientId + "','maxwidth=" + width + "&maxheight=" + height + "'";
-            String finalScript = "ice.camera(" + params + ");";
-            writer.writeAttribute(HTML.ONCLICK_ATTR, finalScript, null);
+        String script;
+        if (isAuxUpload)  {
+            ExternalContext externalContext = facesContext.getExternalContext();
+            AuxUploadSetup auxUpload = (AuxUploadSetup) externalContext
+                .getApplicationMap().get("auxUpload");
+            
+            String sessionID = EnvUtils.getSafeSession(facesContext).getId();
+            String uploadURL = auxUpload.getUploadURL();
+            String command = "camera?id=" + clientId;
+            script = "window.location='icemobile://c=" +
+                    URLEncoder.encode(command) + 
+                    "&r='+escape(window.location)+'&" +
+                    "JSESSIONID=" + sessionID + "&u=" + 
+                    URLEncoder.encode(uploadURL) + "';";
         } else {
-            writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.camera( '" + clientId + "' );", null);
+            if ( (width != Integer.MIN_VALUE) || 
+                    (height != Integer.MIN_VALUE) ) {
+                String params = "'" + clientId + "','maxwidth=" + width + 
+                        "&maxheight=" + height + "'";
+                script = "ice.camera(" + params + ");";
+            } else {
+                script = "ice.camera( '" + clientId + "' );";
+            }
         }
+        writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
         writer.writeText("camera", null);
         writer.endElement(HTML.BUTTON_ELEM);
 
