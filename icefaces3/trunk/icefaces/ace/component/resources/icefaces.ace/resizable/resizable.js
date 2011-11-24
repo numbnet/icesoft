@@ -65,6 +65,7 @@ ice.ace.Resizable = function(id, cfg) {
 }
 
 ice.ace.Resizable.prototype.fireAjaxResizeEvent = function(event, ui) {
+    var listener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.resize;
     var options = {
         source: this.id,
         execute: this.id,
@@ -83,4 +84,8 @@ ice.ace.Resizable.prototype.fireAjaxResizeEvent = function(event, ui) {
     options.params = params;
     
     ice.ace.AjaxRequest(options);
+    if (jQuery.isFunction(listener)) {
+//            listener.call(this, event);
+        listener();
+    }
 }
