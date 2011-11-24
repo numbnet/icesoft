@@ -106,7 +106,7 @@ ice.ace.DataTable.prototype.setupFilterEvents = function() {
             _self.filter(event);
         }
     });
-    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.jqId + ' th .ui-column-filter').live('keyup').live('keyup', function(event) {
+    else if (this.cfg.filterEvent == "change") ice.ace.jq(this.jqId + ' th .ui-column-filter').die('keyup').live('keyup', function(event) {
         var _event = event;
         if (event.which != 9) {
             if (_self.delayedFilterCall) clearTimeout(_self.delayedFilterCall);
