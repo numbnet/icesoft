@@ -93,24 +93,6 @@ ice.ace.Slider.prototype.onSlideEnd = function(event, ui) {
     if(this.cfg.onSlideEnd) {
         this.cfg.onSlideEnd.call(this, event, ui);
     }
-
-    if(this.cfg.ajaxSlide) {
-        var options = {
-            source : this.id,
-            execute: this.id + ' ' + this.cfg.input,
-            formId: this.cfg.formId
-        };
-
-        if(this.cfg.onSlideEndUpdate) {
-            options.render = this.cfg.onSlideEndUpdate;
-        }
-
-        var params = {};
-        params[this.id + '_ajaxSlide'] = true;
-        params[this.id + '_ajaxSlideValue'] = ui.value;
-
-        ice.ace.AjaxRequest(this.cfg.url, options, params);
-    }
 	
 	if (this.cfg.behaviors) {
 		if (this.cfg.behaviors.slideend) {
