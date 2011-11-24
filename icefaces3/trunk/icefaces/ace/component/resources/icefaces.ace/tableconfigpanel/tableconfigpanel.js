@@ -252,7 +252,7 @@ ice.ace.TableConf.prototype.submitTableConfig = function (target) {
 
     if (this.behaviors)
         if (this.behaviors.submit) {
-            this.behaviors.submit(null, params);
+            this.behaviors.submit(params);
             return;
         }
 
