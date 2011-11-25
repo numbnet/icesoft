@@ -25,288 +25,420 @@
 
 <liferay-portlet-app>
 
-    <portlet>
-        <portlet-name>aceButtons</portlet-name>
-        <instanceable>true</instanceable>
+<portlet>
+        <portlet-name>accordionPanel</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>aceAccordion</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>accordionPanelDynamic</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>aceConfirm</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>accordionPanelEffect</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>aceContext</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>button</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>aceDataExport</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>checkboxButton</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>aceDataTable</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>confirmationDialog</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>aceFileEntry</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>confirmationDialogEffect</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>aceMenu</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>confirmationDialogModal</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>aceMenuBar</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>contextMenu</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>aceNotification</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>contextMenuComponent</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>acePanel</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>contextMenuEffect</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>aceProgress</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>contextMenuTable</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>aceSlider</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataExporter</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>aceTab</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataExporterColumns</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatAutoComplete</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTable</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatBorder</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTableColumnReordering</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatCalendar</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTableConfigPanel</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatChart</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTableFiltering</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatCollapsible</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTableLazyLoading</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatColumns</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTableListener</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatConfirmation</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTablePaginator</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatConnection</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTablePanelExpansion</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatDataTable</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTableRowExpansion</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatDivider</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTableRowState</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatDragDrop</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTableScrolling</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatEffect</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTableSelector</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatEventPhase</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTableSorting</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatExporter</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTableStackable</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatMap</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dateAjax</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatMedia</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dateEntry</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatMenuBar</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dateNavigator</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatMenuPopup</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>datePages</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatOutputResource</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>datePopup</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatPaginator</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dialog</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatPopup</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dialogEffectsAndSize</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatPositioned</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>modalDialog</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatProgress</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dataTableIntegration</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatRichText</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>dragDropOverview</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatSelector</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>draggableOverview</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatSeries</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>fileEntryBasic</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatStacking</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>fileEntry</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatTab</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>fileEntryMultiple</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatTooltip</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>fileEntryValidation</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
     <portlet>
-        <portlet-name>compatTree</portlet-name>
-        <instanceable>true</instanceable>
+        <portlet-name>linkButton</portlet-name>
+        <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
-
-	<role-mapper>
-		<role-name>administrator</role-name>
-		<role-link>Administrator</role-link>
-	</role-mapper>
-
-	<role-mapper>
-		<role-name>guest</role-name>
-		<role-link>Guest</role-link>
-	</role-mapper>
-
-	<role-mapper>
-		<role-name>power-user</role-name>
-		<role-link>Power User</role-link>
-	</role-mapper>
-
-	<role-mapper>
-		<role-name>user</role-name>
-		<role-link>User</role-link>
-	</role-mapper>
-    
+    <portlet>
+        <portlet-name>maskedEntry</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>menu</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>menuDisplay</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>menuDynamic</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>menuEffect</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>menuEvents</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>menuType</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>menuBar</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>menuBarClick</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>menuBarDynamic</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>menuBarEffect</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>notificationPanel</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>panel</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>panelClose</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>panelHeader</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>panelListener</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>panelMenu</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>panelToggle</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>progressBar</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>progressBarClient</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>progressBarClientAndServer</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>progressBarPolling</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>progressBarPush</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>pushButton</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>resizable</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>resizeListener</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>slider-async-input</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>slider-async</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>slider-basic</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>slider</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>tabsetClientSide</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>tabsetProxy</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>tabsetServerSide</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>tabset</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>globalTooltip</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>toolTip</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <role-mapper>
+        <role-name>administrator</role-name>
+        <role-link>Administrator</role-link>
+    </role-mapper>
+    <role-mapper>
+        <role-name>guest</role-name>
+        <role-link>Guest</role-link>
+    </role-mapper>
+    <role-mapper>
+        <role-name>power-user</role-name>
+        <role-link>Power User</role-link>
+    </role-mapper>
+    <role-mapper>
+        <role-name>user</role-name>
+        <role-link>User</role-link>
+    </role-mapper>
 </liferay-portlet-app>

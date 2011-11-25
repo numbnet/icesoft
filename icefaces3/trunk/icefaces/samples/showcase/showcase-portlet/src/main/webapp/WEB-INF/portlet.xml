@@ -21,59 +21,22 @@
   ~ Contributor(s): _____________________.
   -->
 
-<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" 
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
              version="2.0"
 	         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	         xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
 
-    <portlet>
-        <portlet-name>aceButtons</portlet-name>
-        <display-name>ACE Buttons</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <!--<value>/resources/examples/ace/button/button.xhtml</value>-->
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>aceMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>buttonBean</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>ACE Buttons</title>
-            <short-title>Button</short-title>
-            <keywords>ICEfaces Component Suite Showcase ACE Buttons</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-            <!--<name>javax.portlet.renderHeaders</name>-->
-            <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>aceAccordion</portlet-name>
+<portlet>
+        <portlet-name>accordionPanel</portlet-name>
         <display-name>ACE Accordion Panel</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <!--<value>/resources/examples/ace/button/button.xhtml</value>-->
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>aceMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>accordionPanelBean</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/accordionpanel/accordionPanel.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -81,30 +44,109 @@
         </supports>
         <portlet-info>
             <title>ACE Accordion Panel</title>
-            <short-title>ACE Accordion Panel</short-title>
-            <keywords>ICEfaces Component Suite Showcase ACE Accordion Panel</keywords>
+            <short-title>ICEfaces Component Suite Showcase ACE Accordion Panel</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-            <!--<name>javax.portlet.renderHeaders</name>-->
-            <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
     <portlet>
-        <portlet-name>aceConfirm</portlet-name>
+        <portlet-name>accordionPanelDynamic</portlet-name>
+        <display-name>ACE Accordion Panel Dynamic</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/accordionpanel/accordionPanelDynamic.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Accordion Panel Dynamic</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Accordion Panel Dynamic</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>accordionPanelEffect</portlet-name>
+        <display-name>ACE Accordion Panel Effect</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/accordionpanel/accordionPanelEffect.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Accordion Panel Effect</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Accordion Panel Effect</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>button</portlet-name>
+        <display-name>ACE Button</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/button/button.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Button</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Button</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>checkboxButton</portlet-name>
+        <display-name>ACE Checkbox Button</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/checkboxButton/checkboxbutton.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Checkbox Button</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Checkbox Button</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>confirmationDialog</portlet-name>
         <display-name>ACE Confirmation Dialog</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>aceMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>confirmDialogBean</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/confirmationdialog/confirmationDialog.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -112,30 +154,65 @@
         </supports>
         <portlet-info>
             <title>ACE Confirmation Dialog</title>
-            <short-title>ACE Confirmation Dialog</short-title>
-            <keywords>ICEfaces Component Suite Showcase ACE Confirmation Dialog</keywords>
+            <short-title>ICEfaces Component Suite Showcase ACE Confirmation Dialog</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
     <portlet>
-        <portlet-name>aceContext</portlet-name>
+        <portlet-name>confirmationDialogEffect</portlet-name>
+        <display-name>ACE Confirmation Dialog Effect</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/confirmationdialog/confirmationDialogEffect.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Confirmation Dialog Effect</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Confirmation Dialog Effect</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>confirmationDialogModal</portlet-name>
+        <display-name>ACE Confirmation Dialog Modal</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/confirmationdialog/confirmationDialogModal.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Confirmation Dialog Modal</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Confirmation Dialog Modal</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>contextMenu</portlet-name>
         <display-name>ACE Context Menu</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>aceMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>contextMenuBean</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/contextMenu/contextMenu.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -143,61 +220,131 @@
         </supports>
         <portlet-info>
             <title>ACE Context Menu</title>
-            <short-title>ACE Context Menu</short-title>
-            <keywords>ICEfaces Component Suite Showcase ACE Context Menu</keywords>
+            <short-title>ICEfaces Component Suite Showcase ACE Context Menu</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
     <portlet>
-        <portlet-name>aceDataExport</portlet-name>
-        <display-name>ACE Data Export</display-name>
+        <portlet-name>contextMenuComponent</portlet-name>
+        <display-name>ACE Context Menu Component</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>aceMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>dataExporterBean</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/contextMenu/contextMenuComponent.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>ACE Data Export</title>
-            <short-title>ACE Data Export</short-title>
-            <keywords>ICEfaces Component Suite Showcase ACE Data Export</keywords>
+            <title>ACE Context Menu Component</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Context Menu Component</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
     <portlet>
-        <portlet-name>aceDataTable</portlet-name>
+        <portlet-name>contextMenuEffect</portlet-name>
+        <display-name>ACE Context Menu Effect</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/contextMenu/contextMenuEffect.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Context Menu Effect</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Context Menu Effect</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>contextMenuTable</portlet-name>
+        <display-name>ACE Context Menu Table</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/contextMenu/contextMenuTable.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Context Menu Table</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Context Menu Table</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataExporter</portlet-name>
+        <display-name>ACE Data Exporter</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataExporter/dataExporter.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Exporter</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Exporter</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataExporterColumns</portlet-name>
+        <display-name>ACE Data Exporter Columns</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataExporter/dataExporterColumns.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Exporter Columns</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Exporter Columns</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTable</portlet-name>
         <display-name>ACE Data Table</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>aceMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>dataTableBean</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTable.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -205,30 +352,571 @@
         </supports>
         <portlet-info>
             <title>ACE Data Table</title>
-            <short-title>ACE Data Table</short-title>
-            <keywords>ICEfaces Component Suite Showcase ACE Data Table</keywords>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
     <portlet>
-        <portlet-name>aceFileEntry</portlet-name>
+        <portlet-name>dataTableColumnReordering</portlet-name>
+        <display-name>ACE Data Table Column Reordering</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableColumnReordering.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Column Reordering</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Column Reordering</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableConfigPanel</portlet-name>
+        <display-name>ACE Data Table Config Panel</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableConfigPanel.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Config Panel</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Config Panel</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableFiltering</portlet-name>
+        <display-name>ACE Data Table Filtering</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableFiltering.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Filtering</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Filtering</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableLazyLoading</portlet-name>
+        <display-name>ACE Data Table Lazy Loading</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableLazyLoading.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Lazy Loading</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Lazy Loading</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableListener</portlet-name>
+        <display-name>ACE Data Table Listener</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableListener.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Listener</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Listener</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTablePaginator</portlet-name>
+        <display-name>ACE Data Table Paginator</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTablePaginator.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Paginator</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Paginator</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTablePanelExpansion</portlet-name>
+        <display-name>ACE Data Table Panel Expansion</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTablePanelExpansion.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Panel Expansion</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Panel Expansion</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableRowExpansion</portlet-name>
+        <display-name>ACE Data Table Row Expansion</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableRowExpansion.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Row Expansion</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Row Expansion</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableRowState</portlet-name>
+        <display-name>ACE Data Table Row State</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableRowState.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Row State</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Row State</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableScrolling</portlet-name>
+        <display-name>ACE Data Table Scrolling</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableScrolling.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Scrolling</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Scrolling</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableSelector</portlet-name>
+        <display-name>ACE Data Table Selector</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableSelector.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Selector</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Selector</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableSorting</portlet-name>
+        <display-name>ACE Data Table Sorting</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableSorting.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Sorting</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Sorting</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableStackable</portlet-name>
+        <display-name>ACE Data Table Stackable</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableStackable.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Stackable</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Stackable</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dateAjax</portlet-name>
+        <display-name>ACE Date Ajax</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/date/dateajax.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Date Ajax</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Date Ajax</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dateEntry</portlet-name>
+        <display-name>ACE Date Entry</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/date/dateentry.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Date Entry</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Date Entry</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dateNavigator</portlet-name>
+        <display-name>ACE Date Navigator</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/date/datenavigator.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Date Navigator</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Date Navigator</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>datePages</portlet-name>
+        <display-name>ACE Date Pages</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/date/datepages.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Date Pages</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Date Pages</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>datePopup</portlet-name>
+        <display-name>ACE Date Popup</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/date/datepopup.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Date Popup</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Date Popup</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dialog</portlet-name>
+        <display-name>ACE Dialog</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dialog/dialog.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Dialog</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Dialog</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dialogEffectsAndSize</portlet-name>
+        <display-name>ACE Dialog Effects And Size</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dialog/dialogEffectsAndSize.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Dialog Effects And Size</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Dialog Effects And Size</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>modalDialog</portlet-name>
+        <display-name>ACE Modal Dialog</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dialog/modalDialog.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Modal Dialog</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Modal Dialog</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dataTableIntegration</portlet-name>
+        <display-name>ACE Data Table Integration</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dragDrop/dataTableIntegration.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Integration</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Integration</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>dragDropOverview</portlet-name>
+        <display-name>ACE Drag Drop Overview</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dragDrop/dragDropOverview.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Drag Drop Overview</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Drag Drop Overview</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>draggableOverview</portlet-name>
+        <display-name>ACE Draggable Overview</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dragDrop/draggableOverview.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Draggable Overview</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Draggable Overview</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>fileEntryBasic</portlet-name>
+        <display-name>ACE File Entry Basic</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/fileentry/filebasic.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE File Entry Basic</title>
+            <short-title>ICEfaces Component Suite Showcase ACE File Entry Basic</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>fileEntry</portlet-name>
         <display-name>ACE File Entry</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>aceMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>fileEntry</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/fileentry/fileentry.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -236,30 +924,109 @@
         </supports>
         <portlet-info>
             <title>ACE File Entry</title>
-            <short-title>ACE File Entry</short-title>
-            <keywords>ICEfaces Component Suite Showcase ACE File Entry</keywords>
+            <short-title>ICEfaces Component Suite Showcase ACE File Entry</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
     <portlet>
-        <portlet-name>aceMenu</portlet-name>
+        <portlet-name>fileEntryMultiple</portlet-name>
+        <display-name>ACE File Entry Multiple</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/fileentry/multiple.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE File Entry Multiple</title>
+            <short-title>ICEfaces Component Suite Showcase ACE File Entry Multiple</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>fileEntryValidation</portlet-name>
+        <display-name>ACE File Entry Validation</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/fileentry/validation.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE File Entry Validation</title>
+            <short-title>ICEfaces Component Suite Showcase ACE File Entry Validation</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>linkButton</portlet-name>
+        <display-name>ACE Link Button</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/linkButton/linkbutton.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Link Button</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Link Button</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>maskedEntry</portlet-name>
+        <display-name>ACE Masked Entry</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/maskedEntry/maskedEntry.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Masked Entry</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Masked Entry</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>menu</portlet-name>
         <display-name>ACE Menu</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>aceMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>menuBean</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/menu/menu.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -267,30 +1034,131 @@
         </supports>
         <portlet-info>
             <title>ACE Menu</title>
-            <short-title>ACE Menu</short-title>
-            <keywords>ICEfaces Component Suite Showcase ACE Menu</keywords>
+            <short-title>ICEfaces Component Suite Showcase ACE Menu</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
     <portlet>
-        <portlet-name>aceMenuBar</portlet-name>
+        <portlet-name>menuDisplay</portlet-name>
+        <display-name>ACE Menu Display</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/menu/menuDisplay.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Menu Display</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Menu Display</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>menuDynamic</portlet-name>
+        <display-name>ACE Menu Dynamic</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/menu/menuDynamic.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Menu Dynamic</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Menu Dynamic</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>menuEffect</portlet-name>
+        <display-name>ACE Menu Effect</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/menu/menuEffect.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Menu Effect</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Menu Effect</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>menuEvents</portlet-name>
+        <display-name>ACE Menu Events</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/menu/menuEvents.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Menu Events</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Menu Events</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>menuType</portlet-name>
+        <display-name>ACE Menu Type</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/menu/menuType.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Menu Type</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Menu Type</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>menuBar</portlet-name>
         <display-name>ACE Menu Bar</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>aceMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>menuBarBean</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/menuBar/menuBar.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -298,30 +1166,87 @@
         </supports>
         <portlet-info>
             <title>ACE Menu Bar</title>
-            <short-title>ACE Menu Bar</short-title>
-            <keywords>ICEfaces Component Suite Showcase ACE Menu Bar</keywords>
+            <short-title>ICEfaces Component Suite Showcase ACE Menu Bar</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
     <portlet>
-        <portlet-name>aceNotification</portlet-name>
+        <portlet-name>menuBarClick</portlet-name>
+        <display-name>ACE Menu Bar Click</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/menuBar/menuBarClick.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Menu Bar Click</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Menu Bar Click</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>menuBarDynamic</portlet-name>
+        <display-name>ACE Menu Bar Dynamic</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/menuBar/menuBarDynamic.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Menu Bar Dynamic</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Menu Bar Dynamic</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>menuBarEffect</portlet-name>
+        <display-name>ACE Menu Bar Effect</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/menuBar/menuBarEffect.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Menu Bar Effect</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Menu Bar Effect</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>notificationPanel</portlet-name>
         <display-name>ACE Notification Panel</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>aceMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>notificationPanelBean</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/notificationpanel/notificationPanel.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -329,30 +1254,21 @@
         </supports>
         <portlet-info>
             <title>ACE Notification Panel</title>
-            <short-title>ACE Notification Panel</short-title>
-            <keywords>ICEfaces Component Suite Showcase ACE Notification Panel</keywords>
+            <short-title>ICEfaces Component Suite Showcase ACE Notification Panel</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
     <portlet>
-        <portlet-name>acePanel</portlet-name>
+        <portlet-name>panel</portlet-name>
         <display-name>ACE Panel</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>aceMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>panelBean</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/panel/panel.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -360,30 +1276,131 @@
         </supports>
         <portlet-info>
             <title>ACE Panel</title>
-            <short-title>ACE Panel</short-title>
-            <keywords>ICEfaces Component Suite Showcase ACE Panel</keywords>
+            <short-title>ICEfaces Component Suite Showcase ACE Panel</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
     <portlet>
-        <portlet-name>aceProgress</portlet-name>
+        <portlet-name>panelClose</portlet-name>
+        <display-name>ACE Panel Close</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/panel/panelClose.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Panel Close</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Panel Close</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>panelHeader</portlet-name>
+        <display-name>ACE Panel Header</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/panel/panelHeader.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Panel Header</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Panel Header</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>panelListener</portlet-name>
+        <display-name>ACE Panel Listener</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/panel/panelListener.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Panel Listener</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Panel Listener</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>panelMenu</portlet-name>
+        <display-name>ACE Panel Menu</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/panel/panelMenu.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Panel Menu</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Panel Menu</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>panelToggle</portlet-name>
+        <display-name>ACE Panel Toggle</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/panel/panelToggle.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Panel Toggle</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Panel Toggle</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>progressBar</portlet-name>
         <display-name>ACE Progress Bar</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>aceMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>progressBarBean</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/progressbar/progressBar.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -391,30 +1408,241 @@
         </supports>
         <portlet-info>
             <title>ACE Progress Bar</title>
-            <short-title>ACE Progress Bar</short-title>
-            <keywords>ICEfaces Component Suite Showcase ACE Progress Bar</keywords>
+            <short-title>ICEfaces Component Suite Showcase ACE Progress Bar</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
     <portlet>
-        <portlet-name>aceSlider</portlet-name>
+        <portlet-name>progressBarClient</portlet-name>
+        <display-name>ACE Progress Bar Client</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/progressbar/progressBarClient.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Progress Bar Client</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Progress Bar Client</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>progressBarClientAndServer</portlet-name>
+        <display-name>ACE Progress Bar Client And Server</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/progressbar/progressBarClientAndServer.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Progress Bar Client And Server</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Progress Bar Client And Server</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>progressBarPolling</portlet-name>
+        <display-name>ACE Progress Bar Polling</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/progressbar/progressBarPolling.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Progress Bar Polling</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Progress Bar Polling</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>progressBarPush</portlet-name>
+        <display-name>ACE Progress Bar Push</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/progressbar/progressBarPush.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Progress Bar Push</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Progress Bar Push</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>pushButton</portlet-name>
+        <display-name>ACE Push Button</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/pushButton/pushbutton.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Push Button</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Push Button</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>resizable</portlet-name>
+        <display-name>ACE Resizable</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/resizable/resizable.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Resizable</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Resizable</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>resizeListener</portlet-name>
+        <display-name>ACE Resize Listener</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/resizable/resizeListener.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Resize Listener</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Resize Listener</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>slider-async-input</portlet-name>
+        <display-name>ACE Slider-async-input</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/slider/slider-async-input.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Slider-async-input</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Slider-async-input</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>slider-async</portlet-name>
+        <display-name>ACE Slider-async</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/slider/slider-async.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Slider-async</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Slider-async</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>slider-basic</portlet-name>
+        <display-name>ACE Slider-basic</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/slider/slider-basic.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Slider-basic</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Slider-basic</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>slider</portlet-name>
         <display-name>ACE Slider</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>aceMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>slider</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/slider/slider.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -422,30 +1650,87 @@
         </supports>
         <portlet-info>
             <title>ACE Slider</title>
-            <short-title>ACE Slider</short-title>
-            <keywords>ICEfaces Component Suite Showcase ACE Slider</keywords>
+            <short-title>ICEfaces Component Suite Showcase ACE Slider</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
     <portlet>
-        <portlet-name>aceTab</portlet-name>
+        <portlet-name>tabsetClientSide</portlet-name>
+        <display-name>ACE Tabset Client Side</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/tab/tabset-client_side.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Tabset Client Side</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Tabset Client Side</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>tabsetProxy</portlet-name>
+        <display-name>ACE Tabset Proxy</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/tab/tabset-proxy.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Tabset Proxy</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Tabset Proxy</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>tabsetServerSide</portlet-name>
+        <display-name>ACE Tabset Server Side</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/tab/tabset-server_side.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Tabset Server Side</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Tabset Server Side</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>tabset</portlet-name>
         <display-name>ACE Tabset</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>aceMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>tabSet</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/tab/tabset.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -453,943 +1738,52 @@
         </supports>
         <portlet-info>
             <title>ACE Tabset</title>
-            <short-title>ACE Tabset</short-title>
-            <keywords>ICEfaces Component Suite Showcase ACE Tabset</keywords>
+            <short-title>ICEfaces Component Suite Showcase ACE Tabset</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
     <portlet>
-        <portlet-name>compatAutoComplete</portlet-name>
-        <display-name>Compat Auto Complete</display-name>
+        <portlet-name>globalTooltip</portlet-name>
+        <display-name>ACE Global Tooltip</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>autocomplete</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/tooltip/globalTooltip.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>Compat Auto Complete</title>
-            <short-title>Compat Auto Complete</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Auto Complete</keywords>
+            <title>ACE Global Tooltip</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Global Tooltip</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
     <portlet>
-        <portlet-name>compatBorder</portlet-name>
-        <display-name>Compat Border</display-name>
+        <portlet-name>toolTip</portlet-name>
+        <display-name>ACE Tool Tip</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
+            <value>/portlet-view.xhtml</value>
         </init-param>
         <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>border</value>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/tooltip/toolTip.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>Compat Border</title>
-            <short-title>Compat Border</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Border</keywords>
+            <title>ACE Tool Tip</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Tool Tip</short-title>
+            <keywords/>
         </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
     </portlet>
-
-    <portlet>
-        <portlet-name>compatCalendar</portlet-name>
-        <display-name>Compat Calendar</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>calendar</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Calendar</title>
-            <short-title>Compat Calendar</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Calendar</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatChart</portlet-name>
-        <display-name>Compat Chart</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>chart</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Chart</title>
-            <short-title>Compat Chart</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Chart</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatCollapsible</portlet-name>
-        <display-name>Compat Collapsible</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>collapsible</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Collapsible</title>
-            <short-title>Compat Collapsible</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Collapsible</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatColumns</portlet-name>
-        <display-name>Compat Columns</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>columns</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Columns</title>
-            <short-title>Compat Columns</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Columns</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatConfirmation</portlet-name>
-        <display-name>Compat Confirmation</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>confirmation</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Confirmation</title>
-            <short-title>Compat Confirmation</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Confirmation</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatConnection</portlet-name>
-        <display-name>Compat Connection Status</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>connectionStatus</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Connection Status</title>
-            <short-title>Compat Connection Status</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Connection Status</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatDataTable</portlet-name>
-        <display-name>Compat Data Table</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>dataTable</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Data Table</title>
-            <short-title>Compat Data Table</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Data Table</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatDivider</portlet-name>
-        <display-name>Compat Divider</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>divider</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Divider</title>
-            <short-title>Compat Divider</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Divider</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatDragDrop</portlet-name>
-        <display-name>Compat Drag and Drop</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>dragdrop</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Drag and Drop</title>
-            <short-title>Compat Drag and Drop</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Drag and Drop</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatEffect</portlet-name>
-        <display-name>Compat Effects</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>effectBean</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Effects</title>
-            <short-title>Compat Effects</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Effects</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatEventPhase</portlet-name>
-        <display-name>Compat Event Phase</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>eventphase</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Event Phase</title>
-            <short-title>Compat Event Phase</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Event Phase</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatExporter</portlet-name>
-        <display-name>Compat Exporter</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>exporter</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Exporter</title>
-            <short-title>Compat Exporter</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Exporter</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatMap</portlet-name>
-        <display-name>Compat Map</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>map</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Map</title>
-            <short-title>Compat Map</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Map</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatMedia</portlet-name>
-        <display-name>Compat Media</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>media</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Media</title>
-            <short-title>Compat Media</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Media</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatMenuBar</portlet-name>
-        <display-name>Compat Menu Bar</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>menuBar</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Menu Bar</title>
-            <short-title>Compat Menu Bar</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Menu Bar</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatMenuPopup</portlet-name>
-        <display-name>Compat Menu Popup</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>menuPopup</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Menu Popup</title>
-            <short-title>Compat Menu Popup</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Menu Popup</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatOutputResource</portlet-name>
-        <display-name>Compat Output Resource</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>outputResource</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Output Resource</title>
-            <short-title>Compat Output Resource</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Output Resource</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatPaginator</portlet-name>
-        <display-name>Compat Paginator</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>paginator</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Paginator</title>
-            <short-title>Compat Paginator</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Paginator</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatPopup</portlet-name>
-        <display-name>Compat Popup</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>popup</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Popup</title>
-            <short-title>Compat Popup</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Popup</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatPositioned</portlet-name>
-        <display-name>Compat Positioned</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>positioned</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Positioned</title>
-            <short-title>Compat Positioned</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Positioned</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatProgress</portlet-name>
-        <display-name>Compat Progress</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>progress</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Progress</title>
-            <short-title>Compat Progress</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Progress</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatRichText</portlet-name>
-        <display-name>Compat Rich Text</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>richtext</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Rich Text</title>
-            <short-title>Compat Rich Text</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Rich Text</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatSelector</portlet-name>
-        <display-name>Compat Selector</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>selector</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Selector</title>
-            <short-title>Compat Selector</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Selector</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatSeries</portlet-name>
-        <display-name>Compat Series</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>series</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Series</title>
-            <short-title>Compat Series</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Series</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatStacking</portlet-name>
-        <display-name>Compat Stacking</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>stacking</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Stacking</title>
-            <short-title>Compat Stacking</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Stacking</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatTab</portlet-name>
-        <display-name>Compat Tab</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>tab</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Tab</title>
-            <short-title>Compat Tab</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Tab</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatTooltip</portlet-name>
-        <display-name>Compat Tooltip</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>tooltip</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Tooltip</title>
-            <short-title>Compat Tooltip</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Tooltip</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
-    <portlet>
-        <portlet-name>compatTree</portlet-name>
-        <display-name>Compat Tree</display-name>
-        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
-        <init-param>
-            <name>javax.portlet.faces.defaultViewId.view</name>
-            <value>/showcase-portlet.xhtml</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.group</name>
-            <value>compatMenu</value>
-        </init-param>
-        <init-param>
-            <name>org.icefaces.samples.showcase.example</name>
-            <value>tree</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-            <portlet-mode>view</portlet-mode>
-        </supports>
-        <portlet-info>
-            <title>Compat Tree</title>
-            <short-title>Compat Tree</short-title>
-            <keywords>ICEfaces Component Suite Showcase Compat Tree</keywords>
-        </portlet-info>
-        <!--<container-runtime-option>-->
-        <!--<name>javax.portlet.renderHeaders</name>-->
-        <!--<value>true</value>-->
-        <!--</container-runtime-option>-->
-    </portlet>
-
 </portlet-app>

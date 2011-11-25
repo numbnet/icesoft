@@ -24,61 +24,90 @@
 
 <display>
 
-    <category name="ICEfaces2">
-
+<category name="ICEfaces3">
         <category name="Suite">
             <category name="ACE">
-                <portlet id="aceAccordion"/>
-                <portlet id="aceButtons"/>
-                <portlet id="aceConfirm"/>
-                <portlet id="aceContext"/>
-                <portlet id="aceDataExport"/>
-                <portlet id="aceDataTable"/>
-                <portlet id="aceFileEntry"/>
-                <portlet id="aceMenu"/>
-                <portlet id="aceMenuBar"/>
-                <portlet id="aceNotification"/>
-                <portlet id="acePanel"/>
-                <portlet id="aceProgress"/>
-                <portlet id="aceSlider"/>
-                <portlet id="aceTab"/>
+                <portlet id="accordionPanel"/>
+                <portlet id="accordionPanelDynamic"/>
+                <portlet id="accordionPanelEffect"/>
+                <portlet id="button"/>
+                <portlet id="checkboxButton"/>
+                <portlet id="confirmationDialog"/>
+                <portlet id="confirmationDialogEffect"/>
+                <portlet id="confirmationDialogModal"/>
+                <portlet id="contextMenu"/>
+                <portlet id="contextMenuComponent"/>
+                <portlet id="contextMenuEffect"/>
+                <portlet id="contextMenuTable"/>
+                <portlet id="dataExporter"/>
+                <portlet id="dataExporterColumns"/>
+                <portlet id="dataTable"/>
+                <portlet id="dataTableColumnReordering"/>
+                <portlet id="dataTableConfigPanel"/>
+                <portlet id="dataTableFiltering"/>
+                <portlet id="dataTableLazyLoading"/>
+                <portlet id="dataTableListener"/>
+                <portlet id="dataTablePaginator"/>
+                <portlet id="dataTablePanelExpansion"/>
+                <portlet id="dataTableRowExpansion"/>
+                <portlet id="dataTableRowState"/>
+                <portlet id="dataTableScrolling"/>
+                <portlet id="dataTableSelector"/>
+                <portlet id="dataTableSorting"/>
+                <portlet id="dataTableStackable"/>
+                <portlet id="dateAjax"/>
+                <portlet id="dateEntry"/>
+                <portlet id="dateNavigator"/>
+                <portlet id="datePages"/>
+                <portlet id="datePopup"/>
+                <portlet id="dialog"/>
+                <portlet id="dialogEffectsAndSize"/>
+                <portlet id="modalDialog"/>
+                <portlet id="dataTableIntegration"/>
+                <portlet id="dragDropOverview"/>
+                <portlet id="draggableOverview"/>
+                <portlet id="fileEntryBasic"/>
+                <portlet id="fileEntry"/>
+                <portlet id="fileEntryMultiple"/>
+                <portlet id="fileEntryValidation"/>
+                <portlet id="linkButton"/>
+                <portlet id="maskedEntry"/>
+                <portlet id="menu"/>
+                <portlet id="menuDisplay"/>
+                <portlet id="menuDynamic"/>
+                <portlet id="menuEffect"/>
+                <portlet id="menuEvents"/>
+                <portlet id="menuType"/>
+                <portlet id="menuBar"/>
+                <portlet id="menuBarClick"/>
+                <portlet id="menuBarDynamic"/>
+                <portlet id="menuBarEffect"/>
+                <portlet id="notificationPanel"/>
+                <portlet id="panel"/>
+                <portlet id="panelClose"/>
+                <portlet id="panelHeader"/>
+                <portlet id="panelListener"/>
+                <portlet id="panelMenu"/>
+                <portlet id="panelToggle"/>
+                <portlet id="progressBar"/>
+                <portlet id="progressBarClient"/>
+                <portlet id="progressBarClientAndServer"/>
+                <portlet id="progressBarPolling"/>
+                <portlet id="progressBarPush"/>
+                <portlet id="pushButton"/>
+                <portlet id="resizable"/>
+                <portlet id="resizeListener"/>
+                <portlet id="slider-async-input"/>
+                <portlet id="slider-async"/>
+                <portlet id="slider-basic"/>
+                <portlet id="slider"/>
+                <portlet id="tabsetClientSide"/>
+                <portlet id="tabsetProxy"/>
+                <portlet id="tabsetServerSide"/>
+                <portlet id="tabset"/>
+                <portlet id="globalTooltip"/>
+                <portlet id="toolTip"/>
             </category>
-
-            <category name="Compat">
-                <portlet id="compatAutoComplete"/>
-                <portlet id="compatBorder"/>
-                <portlet id="compatCalendar"/>
-                <portlet id="compatChart"/>
-                <portlet id="compatCollapsible"/>
-                <portlet id="compatColumns"/>
-                <portlet id="compatConfirmation"/>
-                <portlet id="compatConnection"/>
-                <portlet id="compatDataTable"/>
-                <portlet id="compatDivider"/>
-                <portlet id="compatDragDrop"/>
-                <portlet id="compatEffect"/>
-                <portlet id="compatEventPhase"/>
-                <portlet id="compatExporter"/>
-                <portlet id="compatMap"/>
-                <portlet id="compatMedia"/>
-                <portlet id="compatMenuBar"/>
-                <portlet id="compatMenuPopup"/>
-                <portlet id="compatOutputResource"/>
-                <portlet id="compatPaginator"/>
-                <portlet id="compatPopup"/>
-                <portlet id="compatPositioned"/>
-                <portlet id="compatProgress"/>
-                <portlet id="compatRichText"/>
-                <portlet id="compatSelector"/>
-                <portlet id="compatSeries"/>
-                <portlet id="compatStacking"/>
-                <portlet id="compatTab"/>
-                <portlet id="compatTooltip"/>
-                <portlet id="compatTree"/>
-            </category>
-
         </category>
-
     </category>
-
 </display>
