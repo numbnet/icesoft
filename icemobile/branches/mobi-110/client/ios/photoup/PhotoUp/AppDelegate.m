@@ -34,6 +34,9 @@
     }
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
+    if (nil != [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey])  {
+NSLog(@"PhotoUp launched via notification %@", [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey]);
+    }
     return YES;
 }
 
@@ -65,6 +68,7 @@
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
+    [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -96,6 +100,20 @@ NSLog(@"ICEmobileHitch found JSESSIONID %@", [params objectForKey:@"JSESSIONID"]
     [self.viewController dispatchCurrentCommand];
 
     return YES;
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken %@", deviceToken);
+    self.viewController.deviceToken = deviceToken;
+
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error  {
+    NSLog(@"didFailToRegisterForRemoteNotificationsWithError %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo  {
+    NSLog(@"didReceiveRemoteNotification %@", userInfo);
 }
 
 @end
