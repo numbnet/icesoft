@@ -46,7 +46,7 @@ public class AnimationBehaviorHandlerMeta {
     @Property(required=Required.no, tlddoc="CSS properties to transition to (e.g. {height:100, color:'#CCC'}).")
     private String to;
 
-    @Property(required=Required.no, tlddoc="Specifies an additional type of behaviour for the animation. Possible values are backIn, backOut, backBoth, bounceIn, bounceOut, bounceBoth, easeIn, easeInStrong, easeNone, easeBoth, easeBothStrong, easeOut, easeOutStrong, elasticIn, elasticOut, and elasticBoth.")
+    @Property(required=Required.no, tlddoc="Specifies the variation of the rate at which an animation progresses. Possible values are swing, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint, easeInSine, easeOutSine, easeInOutSine, easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc, easeInElastic, easeOutElastic, easeInOutElastic, easeInBack, easeOutBack, easeInOutBack, easeInBounce, easeOutBounce, easeInOutBounce.")
     private String easing;
 
     @Property(required=Required.no, tlddoc="Number of times the animation is to repeat.")

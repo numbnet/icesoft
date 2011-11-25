@@ -28,6 +28,7 @@ ice.ace.animation.run = function(args, options, speed, callback) {
 		node = jQuery(args.node);
 	}
 	var effectName = args.name.toLowerCase();
+	var easing = args.easing || 'easeOutQuad';
 
 	node.queue(function() {
 
@@ -37,10 +38,12 @@ ice.ace.animation.run = function(args, options, speed, callback) {
 			var duration = args.duration || 500;
 			
 			for (var i = 0; i < iterations; i++) {
-				node.animate(args.from, 0);
-				node.animate(args.to, duration);
+				node.animate(args.from, 0, easing);
+				node.animate(args.to, duration, easing);
 			}
 		} else {
+			if (!options) options = {};
+			if (!options.easing) options.easing = easing;
 			node.effect(effectName, options, speed, callback);
 		}
 		
