@@ -601,9 +601,9 @@ ice.ace.DataTable.prototype.filter = function(evn) {
         });
 
         // Search by id rather than $(evn.target) to get updated copy now in DOM
-        //var newInput = ice.ace.jq(ice.ace.escapeClientId(ice.ace.jq(_self.filterSource).attr('id')));
+        var newInput = ice.ace.jq(ice.ace.escapeClientId(ice.ace.jq(_self.filterSource).attr('id')));
         // Reset input value after focus to prevent selection of text
-        //newInput.setCaretToEnd();
+        newInput.setCaretToEnd();
 
         return false;
     };
