@@ -26,7 +26,6 @@ import org.icefaces.util.EnvUtils;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
-import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.bean.ManagedBean;
@@ -61,5 +60,9 @@ public class AuxUploadSetup {
     
     public boolean getEnabled()  {
         return EnvUtils.isAuxUploadBrowser(FacesContext.getCurrentInstance());
+    }
+    
+    public String getCloudPushId()  {
+        return auxHandler.getCloudPushId();
     }
 }

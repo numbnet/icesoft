@@ -45,23 +45,31 @@ import java.util.logging.Logger;
 public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
     private static Logger log = Logger.getLogger(AuxUploadResourceHandler.class.getName());
     public static String AUX_REQ_MAP_KEY = 
-            AuxUploadResourceHandler.class.getName() + "-request-map";
+            "iceAuxRequestMap";
+    public static String CLOUD_PUSH_KEY = 
+            "iceCloudPushId";
     private ResourceHandler wrapped;
-    private Resource tokenResource;
+    private Resource tokenResource = null;
 
     public AuxUploadResourceHandler(ResourceHandler wrapped)  {
         this.wrapped = wrapped;
-        tokenResource = createResource("icemobilebud.txt");
     }
 
     public ResourceHandler getWrapped() {
         return wrapped;
     }
 
+    private Resource getTokenResource()  {
+        if (null == tokenResource)  {
+            tokenResource = createResource("auxupload.txt");
+        }
+        return tokenResource;
+    }
+
     public void handleResourceRequest(FacesContext facesContext) throws IOException {
         ExternalContext externalContext = facesContext.getExternalContext();
     
-        if ( tokenResource.getRequestPath().equals(
+        if ( getTokenResource().getRequestPath().equals(
             getResourcePath(facesContext)) )  {
             storeParts(externalContext);
             externalContext.setResponseContentType("text/plain");
@@ -75,8 +83,22 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
     }
 
     public static Map getAuxRequestMap()  {
-        Map auxRequestMap = (Map) FacesContext.getCurrentInstance()
-                .getExternalContext().getSessionMap().get(AUX_REQ_MAP_KEY);
+        ExternalContext externalContext = FacesContext.getCurrentInstance()
+                .getExternalContext();
+        Map sessionMap = externalContext.getSessionMap();
+        Map requestMap = externalContext.getRequestMap();
+        Map auxRequestMap;
+        auxRequestMap = (Map) requestMap.get(AUX_REQ_MAP_KEY);
+        if (null != auxRequestMap)  {
+            return auxRequestMap;
+        }
+        auxRequestMap = (Map) sessionMap.get(AUX_REQ_MAP_KEY);
+        if (null != auxRequestMap)  {
+            //once the auxiliary upload is used, it is only valid
+            //for the current request to allow cleanup
+            requestMap.put(AUX_REQ_MAP_KEY, auxRequestMap);
+            sessionMap.remove(AUX_REQ_MAP_KEY);
+        }
         return auxRequestMap;
     }
 
@@ -98,6 +120,10 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
                 if (null == partType)  {
                     auxRequestMap.put(partName, 
                             request.getParameter(part.getName()) );
+                    if (CLOUD_PUSH_KEY.equals(partName))  {
+                        session.setAttribute(CLOUD_PUSH_KEY, 
+                                request.getParameter(part.getName()));
+                    }
                 } else {
                     auxRequestMap.put(partName, part );
                 }
@@ -111,7 +137,7 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
     }
 
     public String getTokenResourcePath()  {
-        return tokenResource.getRequestPath();
+        return getTokenResource().getRequestPath();
     }
 
     private static String getResourcePath(FacesContext facesContext)  {
@@ -121,6 +147,12 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
             path = externalContext.getRequestPathInfo();
         }
         return (externalContext.getRequestContextPath() + path);
+    }
+
+    public String getCloudPushId()  {
+        String cloudPushId = (String) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get(CLOUD_PUSH_KEY);
+        return cloudPushId;
     }
 
 }
