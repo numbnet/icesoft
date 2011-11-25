@@ -44,7 +44,7 @@ public class NavigationController implements Serializable {
      */
     public void navigate() {
         Map<String,String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        
+        //call to NavigationModelBean constructor
         navigate(map.get(NavigationModel.GROUP_PARAM),
                  map.get(NavigationModel.EXAMPLE_PARAM));
     }
@@ -89,7 +89,7 @@ public class NavigationController implements Serializable {
         newGroup = navigationModel.getComponentGroup();
         newExample = navigationModel.getComponentExample();
         
-        // Check whether we need to load the default navigation
+        // Check whether we need to load the default navigation (this portion is executed during application startup)
         if (newGroup == null && newExample == null) {
             loadDefaultNavigation(navigationModel);
         }
@@ -135,6 +135,13 @@ public class NavigationController implements Serializable {
                 loadDefaultNavigation(navigationModel);
             }
         }
+        //String test = navigationModel.getCurrentComponentGroup().;
+        //check if default page is a suite overview page
+//        if(beanName.endsWith("SuiteOverview"))
+//        {
+//            navigationModel.setRenderSourceCodePanel(false);
+//        }
+        
     }
 
     private void loadDefaultNavigation(NavigationModel navigationModel) {
