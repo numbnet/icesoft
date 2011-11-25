@@ -21,6 +21,7 @@ import org.icefaces.ace.meta.annotation.TagHandler;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.TagHandlerType;
 import org.icefaces.ace.meta.annotation.Required;
+import org.icefaces.ace.meta.annotation.Implementation;
 
 @TagHandler(
     tagName = "animation",
@@ -57,4 +58,7 @@ public class AnimationBehaviorHandlerMeta {
 
     @Property(required=Required.no, tlddoc="Length of effect in milliseconds")
     private Double duration;
+	
+    @Property(required=Required.no, tlddoc="Name of the event that will trigger the animation.", implementation=Implementation.EXISTS_IN_SUPERCLASS)
+    private String event;
 }
