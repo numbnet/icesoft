@@ -59,8 +59,8 @@ ice.ace.Slider = function(id, cfg) {
         this.jq.bind('slidestart', function(event, ui) {_self.cfg.onSlideStart.call(this, event, ui);});
     }
 	if (this.cfg.behaviors) {
-		if (this.cfg.behaviors.slidestart) {
-			this.jq.bind('slidestart', function(event, ui) { _self.cfg.behaviors.slidestart(); });
+		if (this.cfg.behaviors.slideStart) {
+			this.jq.bind('slidestart', function(event, ui) { _self.cfg.behaviors.slideStart(); });
 		}
 	}
 
@@ -95,8 +95,8 @@ ice.ace.Slider.prototype.onSlideEnd = function(event, ui) {
     }
 	
 	if (this.cfg.behaviors) {
-		if (this.cfg.behaviors.slideend) {
-			this.cfg.behaviors.slideend();
+		if (this.cfg.behaviors.slideEnd) {
+			this.cfg.behaviors.slideEnd();
 		}
 	}
 }

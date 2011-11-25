@@ -61,9 +61,9 @@ import javax.el.MethodExpression;
 	@ResourceDependency(library="icefaces.ace", name="sliderentry/slider.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="slidestart", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
+	@ClientEvent(name="slideStart", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
 	@ClientEvent(name="slide", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="slideend", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="slideEnd", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
 })
 public class SliderEntryMeta extends UIComponentBaseMeta {
 
