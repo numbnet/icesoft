@@ -59,14 +59,6 @@ public class PushButtonMeta extends UICommandMeta {
     
     @Property(tlddoc=" A localized user presentable name for this component. Used by aria.")
     private String label;
-
-	@Property(defaultValue="false",
-			tlddoc="When singleSubmit is true, triggering an action on this component will submit" +
-			" and execute this component only. Equivalent to <f:ajax execute='@this' render='@all'>." +
-			" When singleSubmit is false, triggering an action on this component will submit and execute " +
-			" the full form that this component is contained within." +
-			" The default value is false.")
-    private boolean singleSubmit;
 	
     @Property (defaultValue="false",
             tlddoc="disabled property. If true no input may be submitted via this" +

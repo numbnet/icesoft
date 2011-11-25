@@ -67,14 +67,6 @@ public class CheckboxButtonMeta extends UISelectBooleanMeta {
     				"for sam skin.")
     private String labelPosition; */
 
-	@Property(defaultValue="false",
-			tlddoc= "When singleSubmit is true, changing the value of this component" +
-					" will submit and execute this component only. Equivalent to " +
-					" execute=\"@this\" render=\"@all\" of the f ajax tag. " +
-					"When singleSubmit is false, no submit occurs. " +
-					"The default value is false.")
-    private boolean singleSubmit;
-
     @Property(tlddoc="style of the component, rendered on the root div of the component")
 	private String style;
 

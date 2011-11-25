@@ -54,9 +54,7 @@ public class SliderEntryRenderer extends CoreRenderer{
 		
         boolean foundInMap = false;
         if (requestParameterMap.containsKey(clientId+"_hidden")) {
-        	if (!slider.isSingleSubmit()) {
-        		foundInMap = true;
-        	}
+        	foundInMap = true;
         }
         
         //"ice.event.captured" should be holding the event source id
@@ -157,7 +155,6 @@ public class SliderEntryRenderer extends CoreRenderer{
 		if (tabindex != null) {
 			writer.write(",tabindex:" + tabindex.toString());
 		}
-		writer.write(",singleSubmit:" + slider.isSingleSubmit());
 		writer.write(",clickableRail:" + slider.isClickableRail());
 		
 		if(slider.isDisabled()) writer.write(",disabled:true");

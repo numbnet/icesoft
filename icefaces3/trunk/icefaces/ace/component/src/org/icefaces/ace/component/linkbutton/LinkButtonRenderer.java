@@ -179,7 +179,6 @@ public class LinkButtonRenderer extends CoreRenderer {
 
         JSONBuilder jBuild = JSONBuilder.create().
                                 beginMap().
-                                entry("singleSubmit", linkButton.isSingleSubmit()).
                                 entry("doAction", doAction).
                                 entry("hashCode",  sb.toString().hashCode()).
                                 entry("ariaEnabled", ariaEnabled);

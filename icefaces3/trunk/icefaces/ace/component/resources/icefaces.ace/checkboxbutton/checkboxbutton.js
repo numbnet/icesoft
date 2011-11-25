@@ -59,7 +59,6 @@ ice.ace.checkboxbutton = {
     
 		var onCheckedChange = function (e) {
            var context = ice.ace.getJSContext(clientId);
-           var singleSubmit= context.getJSFProps().singleSubmit;
            var postParameters = context.getJSFProps().postParameters;
            var params = function(parameter) {
                if (postParameters != null) {
@@ -69,10 +68,6 @@ ice.ace.checkboxbutton = {
                    }
                }
            };
-           YAHOO.log(" in onCheckedChange singleSubmit="+singleSubmit);
-           if (singleSubmit)
-                YAHOO.log("in onCheckedChange singleSubmit="+singleSubmit);
-            else YAHOO.log("  onCheckedChange no jsfProps.singleSubmit"+singleSubmit);
 		    buttonNode = document.getElementById(spanId);
 	        divNode = document.getElementById(clientId);
 			//get the current value of checked
@@ -83,16 +78,6 @@ ice.ace.checkboxbutton = {
 			hiddenField.value=submittedValue;
 
 	        YAHOO.log(" hidden Field="+clientId+"_hidden"+" has value="+hiddenField.value);
-
-	        if (singleSubmit) {
- 	         	YAHOO.log("single submit goes to server");
- 			    //e.target is null so have to set the target to the root of this button for submit
- 	         	e.target = buttonNode;
-                ice.se(e, divNode, params);
-            } else {
-             	YAHOO.log("single Submit is false doesn't go to server");
-                //no submit!! already updated the hidden field
-            }
 
 			var behaviors = context.getJSProps().behaviors;
 			if (behaviors) {
@@ -143,7 +128,6 @@ ice.ace.checkboxbutton = {
 	
    //delegate call to ice.yui.updateProperties(..)  with the reference of this lib
    updateProperties:function(clientId, jsProps, jsfProps, events) {        		
-        //YAHOO.log("updateProperties...checking jsfProps.singleSubmit="+jsfProps.singleSubmit);
 
         var context = ice.ace.getJSContext(clientId);
         if (context && context.isAttached()) {
@@ -155,9 +139,6 @@ ice.ace.checkboxbutton = {
             }
         }
        ice.ace.updateProperties(clientId, jsProps, jsfProps, events, this);
-       //     var JSContext = ice.ace.getJSContext(clientId);
-       //     var singleSubmit = JSContext.getJSFProps().singleSubmit;
-
    },
  
    //delegate call to ice.yui.getInstance(..) with the reference of this lib 

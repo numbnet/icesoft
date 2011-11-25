@@ -100,10 +100,6 @@ public class SliderEntry extends SliderEntryBase {
         }
         super.queueEvent(event);
     }
-	
-    public boolean isSingleSubmit() {
-        return Utils.superValueIfSet(this, getStateHelper(), PropertyKeys.singleSubmit.name(), super.isSingleSubmit(), Util.withinSingleSubmit(this));
-    }
 
 	protected FacesContext getFacesContext() {
 		return FacesContext.getCurrentInstance();

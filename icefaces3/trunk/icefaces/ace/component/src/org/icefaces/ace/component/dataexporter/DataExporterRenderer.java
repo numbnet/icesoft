@@ -80,11 +80,7 @@ public class DataExporterRenderer extends CoreRenderer {
 			}
 		}
 		onclick.append(" });");
-		if (exporter.isSingleSubmit()) {
-			onclick.append("ice.se(event,this);return false;");
-		} else {
-			onclick.append("ice.s(event,this);return false;");
-		}
+		onclick.append("ice.s(event,this);return false;");
 		writer.writeAttribute("onclick", onclick.toString(), null);
 		boolean hasChildren = exporter.getChildren().size() > 0;
 		String label = exporter.getLabel();
