@@ -76,11 +76,21 @@ if (!window.ice.mobile) {
         
         namespace.test = function(obj) {
             try {
-                var result = icefaces.test( obj, "argB=B Arg&argC=C arg" );
-                alert("Result at interface= " + result);
-                return result;
+                
+                if (namespace.push && namespace.push.pauseBlockingConnection ) {                     
+                     icefaces.logInContainer("pauseConnection present"); 
+                } else {                  
+                	 icefaces.logInContainer("pauseConnection missing"); 
+                } 
+                                     
+                if (icefaces.scan) {  
+                   icefaces.logInContainer("qrCode scanner present"); 
+                } else { 
+                   icefaces.logInContainer("qrCode scanner missing"); 
+                } 
+                
             } catch (e) {
-                alert ("Exception in 'test': " + e);
+                icefaces.logInContainer("Exception testing namespace: " + e );
             }
         }
 
@@ -122,10 +132,7 @@ if (!window.ice.mobile) {
 
             if (options) {
                 for (var p in options) {
-                    if ("function" != typeof(options[p]))  {
-                        tempInputs.push(
-                                ice.addHiddenFormField(formId, p, options[p]));
-                    }
+                    tempInputs.push(ice.addHiddenFormField(formId, p, options[p]));
                 }
             }
 
@@ -142,7 +149,6 @@ if (!window.ice.mobile) {
                 //was not a jsf upload
                 return;
             }
-
             var jsfResponse = {};
             var parser = new DOMParser();
             var xmlDoc = parser.parseFromString(unescape(data), "text/xml");
@@ -231,7 +237,6 @@ if (!window.ice.mobile) {
                 if (!el.disabled) {
                     switch (el.type) {
                     	case 'submit': 
-                    	case 'button': 
                     		break;
                         case 'text':
                         case 'password':
@@ -264,8 +269,9 @@ if (!window.ice.mobile) {
             }
             // concatenate the array
             return qString.join("");
+            
         }
-
+        
     })(window.ice)
 
     function addConnectionStatus() {
@@ -296,9 +302,10 @@ if (!window.ice.mobile) {
         // getIPCIframe();
         // document.body.appendChild(document.createTextNode("ice.mobile functions enabled."));
         addConnectionStatus();
+        var d = new Date(); 
     }
     //use below if loaded over network vs embedded use to eval this file
-//    document.addEventListener("DOMContentLoaded", init, false);
+    // document.addEventListener("DOMContentLoaded", init, false);
     init();
 
 }
