@@ -178,15 +178,11 @@
             <fileset dir="${resources}">
                 <include name="icefaces.ace/tabset/*.js"/>
                 <include name="icefaces.ace/pushbutton/*.js"/>
-                <include name="icefaces.ace/logger/*.js"/>
                 <include name="icefaces.ace/linkbutton/*.js"/>
                 <!--<include name="icefaces.ace/datetimeentry/*.js"/>-->
                 <include name="icefaces.ace/tableconfigpanel/*.js"/>
                 <include name="icefaces.ace/checkboxbutton/*.js"/>
-                <include name="icefaces.ace/animation/animation.js"/>
                 <exclude name="icefaces.ace/util/*.js"/>
-                <!-- Nothing uses this -->
-                <exclude name="icefaces.ace/animation/animation-v2.js"/>
                 <!-- Special case, since want to work without YUI dependency -->
                 <exclude name="icefaces.ace/fileentry/fileEntry.js"/>
             </fileset>

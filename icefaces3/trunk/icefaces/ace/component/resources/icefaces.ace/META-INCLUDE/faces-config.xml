@@ -31,6 +31,11 @@
 			<renderer-type>javax.faces.Head</renderer-type>
 			<renderer-class>org.icefaces.ace.renderkit.HeadRenderer</renderer-class>
 		</renderer>
+		<renderer>
+			<component-family>org.icefaces.ace.component</component-family>
+			<renderer-type>org.icefaces.ace.component.AnimationRenderer</renderer-type>
+			<renderer-class>org.icefaces.ace.component.animation.AnimationRenderer</renderer-class>
+		</renderer>
 	</render-kit>
 
 </faces-config>

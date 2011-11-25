@@ -35,8 +35,7 @@ import javax.faces.context.FacesContext;
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
 	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
-	@ResourceDependency(name="util/combined.js",library="icefaces.ace"),
-	@ResourceDependency(name="util/combined.css",library="icefaces.ace")
+	@ResourceDependency(name="animation/animation.js",library="icefaces.ace")
 })
 public class AnimationBehavior extends BehaviorBase {
     public final static String BEHAVIOR_ID = "org.icefaces.ace.animation.Animation";
