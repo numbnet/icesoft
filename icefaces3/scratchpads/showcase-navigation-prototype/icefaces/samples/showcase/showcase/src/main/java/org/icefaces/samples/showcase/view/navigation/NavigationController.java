@@ -38,20 +38,32 @@ import java.util.Map;
 @ApplicationScoped
 public class NavigationController implements Serializable {
     
-    //Revision 29329 version
-    //Revision 29329 version
-    public void navigate(ActionEvent event){
-        navigate();
+    /**
+     * Approach to navigation that will grab our params via the request map
+     * This is meant to be used with a full page refresh as metadata
+     */
+    public void navigate() {
+        Map<String,String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        
+        navigate(map.get(NavigationModel.GROUP_PARAM),
+                 map.get(NavigationModel.EXAMPLE_PARAM));
+    }
+    /**
+      * Approach to navigation that will try to grab f:attributes that were specified on a command component
+      * This is meant to be used with a commandLink
+      */
+    public void navigate(ActionEvent event) {
+        Object newGroup = FacesUtils.getFAttribute(event, NavigationModel.GROUP_PARAM);
+        Object newExample = FacesUtils.getFAttribute(event, NavigationModel.EXAMPLE_PARAM);
+        
+        navigate(newGroup == null ? null : newGroup.toString(),
+                 newExample == null ? null : newExample.toString());
     }
     
     /**
      * Main controller logic.
      */
-    public void navigate() {
-        Map<String,String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        String newGroup = map.get(NavigationModel.GROUP_PARAM);
-        String newExample = map.get(NavigationModel.EXAMPLE_PARAM);
-        
+    public void navigate(String newGroup, String newExample) {
         NavigationModel navigationModel = (NavigationModel)
                 FacesUtils.getManagedBean(NavigationModel.BEAN_NAME);
 
@@ -124,109 +136,7 @@ public class NavigationController implements Serializable {
             }
         }
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////
-    //Revision 29330 version (need a review)
-    
-    /**
-     * Approach to navigation that will grab our params via the request map
-     * This is meant to be used with a full page refresh as metadata
-     */
-//    public void navigate() {
-//        Map<String,String> map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-//        
-//        navigate(map.get(NavigationModel.GROUP_PARAM),
-//                 map.get(NavigationModel.EXAMPLE_PARAM));
-//    }
-    /**
-      * Approach to navigation that will try to grab f:attributes that were specified on a command component
-      * This is meant to be used with a commandLink
-      */
-//    public void navigate(ActionEvent event) {
-//        Object newGroup = FacesUtils.getFAttribute(event, NavigationModel.GROUP_PARAM);
-//        Object newExample = FacesUtils.getFAttribute(event, NavigationModel.EXAMPLE_PARAM);
-//        
-//        navigate(newGroup == null ? null : newGroup.toString(),
-//                 newExample == null ? null : newExample.toString());
-//    }
-    
-    /**
-     * Main controller logic.
-     */
-//    public void navigate(String newGroup, String newExample) {
-//        NavigationModel navigationModel = (NavigationModel)
-//                FacesUtils.getManagedBean(NavigationModel.BEAN_NAME);
-//
-//        // If our new component group is valid then set it into the navigationModel
-//        if (newGroup != null) {
-//            navigationModel.setComponentGroup(newGroup);
-//        }
-//        
-//        // If our new component example is valid then set it into the navigationModel
-//        if (newExample != null) {
-//            navigationModel.setComponentExample(newExample);
-//        }
-//        else {
-//            // Reset the example if the group changed and the example was null
-//            // This happens if the overall group menu was selected
-//            // Doing this will ensure that the default component example for the current group is set
-//            if (newGroup != null) {
-//                navigationModel.setComponentExample(newExample);
-//            }
-//        }
-//        
-//        // Update our group and example to the latest
-//        newGroup = navigationModel.getComponentGroup();
-//        newExample = navigationModel.getComponentExample();
-//        
-//        // Check whether we need to load the default navigation
-//        if (newGroup == null && newExample == null) {
-//            loadDefaultNavigation(navigationModel);
-//        }
-//        // Otherwise we may just need to load the example
-//        else if (newGroup != null && newExample == null) {
-//            Menu menu = (Menu)FacesUtils.getManagedBean(newGroup);
-//            if (menu != null) {
-//                navigationModel.setCurrentComponentGroup(menu);
-//                ComponentExampleImpl compExample = (ComponentExampleImpl)
-//                        FacesUtils.getManagedBean(menu.getDefaultExample().getExampleBeanName());
-//                if (compExample != null) {
-//                    navigationModel.setCurrentComponentExample(compExample);
-//                }
-//            } else {
-//                loadDefaultNavigation(navigationModel);
-//            }
-//        // Otherwise check if the group/example is valid at all
-//        } else {
-//            Object tmpGroup = FacesUtils.getManagedBean(newGroup);
-//            Object tmpExample = FacesUtils.getManagedBean(newExample);
-//            if ((tmpGroup != null && tmpGroup instanceof Menu) &&
-//                    (tmpExample != null && tmpExample instanceof ComponentExampleImpl)) {
-//                ComponentExampleImpl currentExample = navigationModel.getCurrentComponentExample();
-//                ComponentExampleImpl setExample = (ComponentExampleImpl)tmpExample;
-//                
-//                // Determine if we need to fire the effect
-//                // This is necessary when the overall demo was changed, so basically when the package is different
-//                // Although checking against packages is not the desired approach, there isn't another option for matching beans
-//                //  because they have no built-in idea of a parent-child heirarchy
-//                if (currentExample != null) {
-//                    if (!setExample.getClass().getPackage().equals(currentExample.getClass().getPackage())) {
-//                        setExample.prepareEffect();
-//                    }
-//                }
-//                else {
-//                    setExample.prepareEffect();
-//                }
-//                
-//                // Apply the new group and example
-//                navigationModel.setCurrentComponentGroup((Menu)tmpGroup);
-//                navigationModel.setCurrentComponentExample(setExample);
-//            } else {
-//                loadDefaultNavigation(navigationModel);
-//            }
-//        }
-//    }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////
     private void loadDefaultNavigation(NavigationModel navigationModel) {
         // load default pages.
         navigationModel.setCurrentComponentGroup((Menu)
