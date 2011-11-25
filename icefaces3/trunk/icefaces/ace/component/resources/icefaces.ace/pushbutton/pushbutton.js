@@ -88,18 +88,9 @@ ice.ace.pushbutton = {
             YAHOO.log(" in onClick and e.target=" + e.target);
             YAHOO.log("  buttonRoot=" + buttonRoot + "  buttonNode=" + buttonNode);
             var divRoot = document.getElementById(clientId);
-            //singleSubmit means button just submits itself and renders itself
-            //single submit false means that it submits the form
             var context = ice.ace.getJSContext(clientId);
-            var singleSubmit = context.getJSFProps().singleSubmit;
 
-            if (singleSubmit) {
-                YAHOO.log(" single submit is true for clientId=" + spanId);
-                ice.se(e, divRoot, params);
-            } else {
-                YAHOO.log("single Submit is false for clientId=" + spanId);
-                ice.s(e, divRoot, params);
-            }
+            ice.s(e, divRoot, params);
 			
 		var behaviors = context.getJSProps().behaviors;
 		if (behaviors) {

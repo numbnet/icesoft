@@ -128,7 +128,6 @@ public class CheckboxButtonRenderer extends CoreRenderer {
 		writer.endElement(HTML.SPAN_ELEM);  
 	    
 		writer.endElement(HTML.SPAN_ELEM);			
-		//hidden input for single submit=false
 		
 	    writer.startElement("input", uiComponent);
 	    writer.writeAttribute("type", "hidden", null);
@@ -164,7 +163,6 @@ public class CheckboxButtonRenderer extends CoreRenderer {
 					encodeClientBehaviors(facesContext, checkbox, jb);
                 jb.endMap().
                 beginMap().
-                    entry("singleSubmit", checkbox.isSingleSubmit()).
                     entry("hashCode", sb.toString().hashCode()).
                     entry("ariaEnabled", ariaEnabled);
         if (uiParamChildren != null) {

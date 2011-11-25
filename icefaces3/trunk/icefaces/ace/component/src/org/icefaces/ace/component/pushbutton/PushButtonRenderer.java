@@ -154,7 +154,6 @@ public class PushButtonRenderer extends CoreRenderer {
 
         jBuild = JSONBuilder.create().
                                 beginMap().
-                entry("singleSubmit", pushButton.isSingleSubmit()).
                 entry("ariaLabel", ariaLabel).
                 entry("hashCode",  sb.toString().hashCode()).
                 entry("ariaEnabled", ariaEnabled);

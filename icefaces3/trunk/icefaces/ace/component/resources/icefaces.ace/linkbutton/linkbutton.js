@@ -90,7 +90,6 @@ ice.ace.linkButton = {
     // Click handler visible from Renderer code 
     clickHandler : function (e, clientId) {
         var JSContext = ice.ace.getJSContext(clientId);
-        var singleSubmit = JSContext.getJSFProps().singleSubmit;
         var doAction = JSContext.getJSFProps().doAction;
         //YAHOO.log("--> Button.doAction = " + doAction);
 
@@ -105,13 +104,8 @@ ice.ace.linkButton = {
                 }
             }
         };
-        if (singleSubmit) {
-            //YAHOO.log("Single Submit on element: " + divRoot);
-            ice.se(e, divRoot, params );
-        } else {
-            //YAHOO.log("Full Submit on element: " + divRoot);
             ice.s(e, divRoot, params );
-        }
+
 		var behaviors = JSContext.getJSProps().behaviors;
 		if (behaviors) {
 			if (behaviors.activate) {
@@ -130,7 +124,6 @@ ice.ace.linkButton = {
             return true;
         }
         var JSContext = ice.ace.getJSContext(clientId);
-        var singleSubmit = JSContext.getJSFProps().singleSubmit;
         var doAction = JSContext.getJSFProps().doAction;
         //YAHOO.log("--> Button.doAction = " + doAction);
 
@@ -145,13 +138,15 @@ ice.ace.linkButton = {
                 }
             }
         };
-        if (singleSubmit) {
-            //YAHOO.log("Single Submit on element: " + divRoot);
-            ice.se(e, divRoot, params );
-        } else {
-            //YAHOO.log("Full Submit on element: " + divRoot);
             ice.s(e, divRoot, params );
-        }
+			
+		var behaviors = JSContext.getJSProps().behaviors;
+		if (behaviors) {
+			if (behaviors.activate) {
+				behaviors.activate();
+			}
+		}
+		
         // If there are actionListeners, don't do default behaviour
         if (doAction) {
             return false;

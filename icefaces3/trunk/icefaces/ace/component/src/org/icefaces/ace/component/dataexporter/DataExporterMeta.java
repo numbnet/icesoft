@@ -89,9 +89,6 @@ public class DataExporterMeta extends UIComponentBaseMeta {
 	@Property(required=Required.no, tlddoc="Exports only the currently selected rows instead of whole dataset.", defaultValue="false")
 	private boolean selectedRowsOnly;
 	
-	@Property(required=Required.no, tlddoc="When singleSubmit is true, no other components will be executed when triggering the data exporter action. Equivalent to <f:ajax execute='@this' render='@all'>.", defaultValue="false")
-	private boolean singleSubmit;
-	
     @Property(required=Required.no, tlddoc="Style class of the button element.")
     private String styleClass;  
 

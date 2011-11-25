@@ -121,12 +121,6 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
             tlddoc="If set to true, it will show min, mid and max value labels. The default value is false.")
     private boolean showLabels;
 	
-    @Property(defaultValue="false",
-            tlddoc="When singleSubmit is true, changing the value of this component will submit and execute this " +
-                    "component only (equivalent to &lt;f:ajax execute=\"@this\" render=\"@all\"&gt;). " +
-                    "When singleSubmit is false, no submit will occur. The default value is false.")
-    private boolean singleSubmit;
-	
     @Property(defaultValue="false", tlddoc="A flag indicating that conversion and validation of this component's value " +
             "should occur during Apply Request Values phase instead of Process Validations phase.")
     private boolean immediate;
