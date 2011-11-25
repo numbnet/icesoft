@@ -42,6 +42,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.imageio.ImageIO;
 
 import org.icefaces.application.PushRenderer;
+import org.icefaces.application.PushMessage;
 import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.util.EnvUtils;
 
@@ -66,7 +67,7 @@ public class CameraBean implements Serializable {
     private boolean bytesAvailable = false;
     private String messageFromAL = " ValueChangenListener fired for camera";
     private String contentType;
-    
+    private String MESSAGE = "New Photo";
     private static int sampleUploadCount = 1;
     int fileId = -1;
 	private int numberImages=0;
@@ -79,6 +80,12 @@ public class CameraBean implements Serializable {
     public void setIdToDelete(int fileId)  {
         this.fileId = fileId;
     }
+
+    public void setImagePush(Map image)  {
+        setCameraImage(image);
+        PushRenderer.render("camera", new PushMessage(MESSAGE));
+    }
+
     public void setCameraImage(Map cameraImage) {
         this.cameraImage = cameraImage;
         File imageFile;
