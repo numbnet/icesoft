@@ -311,18 +311,18 @@ public class DataTableMeta extends UIDataMeta {
     /* ##################################################################### */
     /* ########################## Ajax Update Prop. ######################## */
     /* ##################################################################### */
-    @Property(tlddoc = "ID of DOM node to re-render following events on this " +
-            "tree. None by default.")
-    private String update;
-    @Property(tlddoc = "ID of DOM node to re-render following row selection " +
-            "events on this tree. None by default.")
-    private String onRowSelectUpdate;
-    @Property(tlddoc = "ID of DOM node to re-render following row update " +
-            "events on this tree. None by default.")
-    private String onRowUnselectUpdate;
-    @Property(tlddoc = "ID of DOM node to re-render following row edit events " +
-            "on this tree. None by default.")
-    private String onRowEditUpdate;
+//    @Property(tlddoc = "ID of DOM node to re-render following events on this " +
+//            "tree. None by default.")
+//    private String update;
+//    @Property(tlddoc = "ID of DOM node to re-render following row selection " +
+//            "events on this tree. None by default.")
+//    private String onRowSelectUpdate;
+//    @Property(tlddoc = "ID of DOM node to re-render following row update " +
+//            "events on this tree. None by default.")
+//    private String onRowUnselectUpdate;
+//    @Property(tlddoc = "ID of DOM node to re-render following row edit events " +
+//            "on this tree. None by default.")
+//    private String onRowEditUpdate;
 
 
     @Property(tlddoc = "A map of your row data objects to UI states. Row-level " +
