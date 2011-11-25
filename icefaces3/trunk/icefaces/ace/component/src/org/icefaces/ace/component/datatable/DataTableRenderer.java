@@ -1199,12 +1199,9 @@ public class DataTableRenderer extends CoreRenderer {
             for (ClientBehavior cb : selectBehaviors) {
                 if (cb instanceof AjaxBehavior) {
                     AjaxBehavior ab = (AjaxBehavior)cb;
-                    System.out.println(allBehaviorsDisabled);
                     allBehaviorsDisabled = allBehaviorsDisabled && ab.isDisabled();
                 }
             }
-            System.out.println(allBehaviorsDisabled);
-            System.out.println("---");
 
             if (!allBehaviorsDisabled)
                 writer.write(",instantSelect:true");
