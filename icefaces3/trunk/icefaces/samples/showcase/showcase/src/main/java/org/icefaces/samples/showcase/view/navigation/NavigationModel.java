@@ -57,6 +57,8 @@ public class NavigationModel implements Serializable {
     
     //if set to true Source code panel in UI will stay expanded
     private boolean sourceCodeToggleStatus = false;
+    //if set to true Source code panel will not be rendered (usefull for Suite Overview Page)
+    private boolean renderSourceCodePanel =true;
 
     public NavigationModel() {
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -85,6 +87,7 @@ public class NavigationModel implements Serializable {
     
     
 //    IMPLEMENTATION OF THE ACCORDION PANEL SUITE MENU METHODS
+//    MUST BE MOVED TO NavigationController.navigate() method
 //    DO NOT REMOVE ! UNDER CONSTRUCTION    
 //    public void handlePaneChange(AccordionPaneChangeEvent event)
 //    {
@@ -183,5 +186,12 @@ public class NavigationModel implements Serializable {
 
     public void setSourceCodeToggleStatus(boolean sourceCodeToggleStatus) {
         this.sourceCodeToggleStatus = sourceCodeToggleStatus;
+    }
+    public boolean isRenderSourceCodePanel() {
+        return renderSourceCodePanel;
+    }
+
+    public void setRenderSourceCodePanel(boolean renderSourceCodePanel) {
+        this.renderSourceCodePanel = renderSourceCodePanel;
     }
 }
