@@ -26,12 +26,11 @@
 	    xmlns:ui="http://java.sun.com/jsf/facelets"
 	    xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<ui:insert name="metadata"/>
-	<ui:debug/>
+	
 	<h:head>
 		<title id="title">#{msgs['showcase.title']}</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/><!-- To 'fix' IE8 dynamic resize problem -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<h:outputStylesheet library="org.icefaces.component.skins" name="rime.css"/>
 		<ice:outputStyle href="./xmlhttp/css/rime/rime.css" />
 		<h:outputStylesheet library="css" name="demo_template.css"/>
 		<h:outputStylesheet library="css" name="override_styles.css"/>
@@ -42,29 +41,28 @@
 	<f:view contentType="text/html">
 		
 		<div id="container">
-
 			<div id="header">
 				<!-- top meta links -->
-				<ul id="meta-nav">
-					<li><a href="http://www.icesoft.com/">ICEsoft Technologies</a></li>
-					<li><a href="http://www.icefaces.org/">ICEfaces.org</a></li>
-					<li><a href="http://www.icefaces.org/JForum/">Forums</a></li>
-					<li><a href="http://wiki.icefaces.org/display/ICE/ICEfaces+2">Tutorials and Examples</a></li>
-				</ul>      
+				<!--<ul id="meta-nav">-->
+					<!--<li><a href="http://www.icesoft.com/">ICEsoft Technologies</a></li>-->
+					<!--<li><a href="http://www.icefaces.org/">ICEfaces.org</a></li>-->
+					<!--<li><a href="http://www.icefaces.org/JForum/">Forums</a></li>-->
+					<!--<li><a href="http://wiki.icefaces.org/display/ICE/ICEfaces+2">Tutorials and Examples</a></li>-->
+				<!--</ul>      -->
 				
 				<!-- logo -->
-				<a id="logo-button" href="/">Suite</a>
+				<!--<a id="logo-button" href="/">Suite</a>-->
 				
 				<!-- component group menu -->
-				<span id="main-nav">
-					<ul>
-						<ui:insert name="suite-select-menu">
-						<li class="first"><a href="/">ACE Components</a></li>
-						<li><a href="/">COMPAT Components</a></li>
-						<li class="last"><a href="/">EE Components</a></li>
-						</ui:insert>
-					</ul>
-				</span> 
+				<!--<span id="main-nav">-->
+					<!--<ul>-->
+						<!--<ui:insert name="suite-select-menu">-->
+						<!--<li class="first"><a href="/">ACE Components</a></li>-->
+						<!--<li><a href="/">ICE Components</a></li>-->
+						<!--<li class="last"><a href="/">EE Components</a></li>-->
+						<!--</ui:insert>-->
+					<!--</ul>-->
+				<!--</span> -->
 
 				<!-- component search 
 				<span id="search-group">
@@ -77,22 +75,22 @@
 
  
 
-			<div id="mid" class="full-width">
-				<span id="menu">
-					<div class="menuContainer">
-						<ui:insert name="suite-menu"/>
-					</div>
-				</span>
-				<span id="primary">
-					<div class="breadCrumbs"><!-- todo Implement bread crumbs
-	                    &gt; bread crumbs &gt; ...--> 
-	                </div>
-					<div class="themeSelect"><!-- todo implement theme selection, going to be tricky...
-	                    Theme Select--> 
-	                </div>
+			<div id="mid">
+				<!--<span id="menu">-->
+					<!--<div class="menuContainer">-->
+						<!--<ui:insert name="suite-menu"/>-->
+					<!--</div>-->
+				<!--</span>-->
+				<!--<span id="primary">-->
+					<!--<div class="breadCrumbs">&lt;!&ndash; todo Implement bread crumbs-->
+	                    <!--&gt; bread crumbs &gt; ...&ndash;&gt; -->
+	                <!--</div>-->
+					<!--<div class="themeSelect">&lt;!&ndash; todo implement theme selection, going to be tricky...-->
+	                    <!--Theme Select&ndash;&gt; -->
+	                <!--</div>-->
 	
 					<ui:insert name="component-example"/>
-				</span>
+				<!--</span>-->
 			</div>
 
 

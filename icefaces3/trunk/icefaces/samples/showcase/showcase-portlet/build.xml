@@ -42,11 +42,12 @@
     <import file="../build/common.xml"/>
 
     <property name="compat" value="true" />
+    <property name="ace" value="true" />
 
     <patternset id="portlet.files">
         <exclude name="**/*template.xhtml"/>
         <exclude name="**/*PortletUtil.java"/>
-        <exclude name="**/*view.xhtml"/>
+        <exclude name="**/portlet-view.xhtml"/>
         <exclude name="**/*liferay*"/>
         <exclude name="**/*portlet*"/>
         <exclude name="**/*web.xml"/>

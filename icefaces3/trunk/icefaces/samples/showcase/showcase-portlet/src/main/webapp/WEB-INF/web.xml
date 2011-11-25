@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+
 <!--
   ~ Version: MPL 1.1
   ~
@@ -24,12 +25,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-    <display-name>ICEfaces Component Showcase Portlets.</display-name>
+    <display-name>ICEfaces 3 Component Suite Demo</display-name>
 
     <description>
-        ICEfaces Component Showcase was designed to make developers aware
-        of the rich set of features available in the custom and extended
-        components.  This is the portlet version of the showcase.
     </description>
     
     <!-- Context Parameters used by the framework -->
@@ -40,7 +38,7 @@
 
     <context-param>
         <param-name>javax.faces.PROJECT_STAGE</param-name>
-        <param-value>Development</param-value>
+        <param-value>Production</param-value>
     </context-param>
 
     <context-param>
@@ -57,12 +55,22 @@
         <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
         <param-value>true</param-value>
     </context-param>
+
+    <context-param>
+        <param-name>org.apache.myfaces.REFRESH_TRANSIENT_BUILD_ON_PSS</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>org.apache.myfaces.REFRESH_TRANSIENT_BUILD_ON_PSS_PRESERVE_STATE</param-name>
+        <param-value>true</param-value>
+    </context-param>
     
     <context-param>
         <param-name>com.icesoft.faces.gmapKey</param-name>
         <param-value>ABQIAAAAnyVJpYb9Fn-DpQ355-7u3RRt_xk8THLBnsEGa1iENo1M77z_IxRSfO_8K2owIHx-GLAeupZ-GtB6gQ</param-value>
     </context-param>
-
+    
     <!-- Servlet declarations and mappings -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
