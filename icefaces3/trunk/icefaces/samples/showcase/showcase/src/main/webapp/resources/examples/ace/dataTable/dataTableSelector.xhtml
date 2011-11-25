@@ -64,8 +64,10 @@
                           stateMap="${dataTableSelector.stateMap}"
                           selectionMode="single"
                           dblClickSelect="#{dataTableSelector.dblClick}"
-                          update="#{dataTableSelector.instantUpdate ? 'selectForm:status' : 'none'}"
                           rendered="#{dataTableSelector.selectionMode eq 'single'}">
+                <ace:ajax event="select" render="@this selectForm:status" execute="@this"
+                        disabled="#{!dataTableSelector.instantUpdate}"/>
+               
                 <ace:column>
                     <f:facet name="header">
                        ID
@@ -123,8 +125,10 @@
                           stateMap="#{dataTableSelector.stateMap}"
                           selectionMode="multiple"
                           dblClickSelect="#{dataTableSelector.dblClick}"
-                          update="#{dataTableSelector.instantUpdate ? 'selectForm:status' : 'none'}"
                           rendered="#{dataTableSelector.selectionMode eq 'multiple'}">
+                <ace:ajax event="select" render="@this selectForm:status" execute="@this"
+                        disabled="#{!dataTableSelector.instantUpdate}"/>
+
                 <ace:column>
                     <f:facet name="header">
                        ID
@@ -182,8 +186,10 @@
                           cellSelection="#{dataTableSelector.singleCell}"
                           selectionMode="singlecell"
                           dblClickSelect="#{dataTableSelector.dblClick}"
-                          update="#{dataTableSelector.instantUpdate ? 'selectForm:status' : 'none'}"
                           rendered="#{dataTableSelector.selectionMode eq 'singlecell'}">
+                <ace:ajax event="select" render="@this selectForm:status" execute="@this"
+                        disabled="#{!dataTableSelector.instantUpdate}"/>
+
                 <ace:column>
                     <f:facet name="header">
                        ID
@@ -241,8 +247,10 @@
                           cellSelection="#{dataTableSelector.multiCell}"
                           selectionMode="#{dataTableSelector.selectionMode}"
                           dblClickSelect="#{dataTableSelector.dblClick}"
-                          update="#{dataTableSelector.instantUpdate ? 'selectForm:status' : 'none'}"
                           rendered="#{dataTableSelector.selectionMode eq 'multiplecell'}">
+                <ace:ajax event="select" render="@this selectForm:status" execute="@this"
+                        disabled="#{!dataTableSelector.instantUpdate}"/>
+
                 <ace:column>
                     <f:facet name="header">
                        ID

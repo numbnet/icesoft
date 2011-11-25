@@ -329,9 +329,9 @@ public class CoreRenderer extends Renderer {
                     domEvent = "click";
 
                 String script = "";
+                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
 				for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                     ClientBehavior behavior = behaviorIter.next();
-                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
                     script = behavior.getScript(cbc);    //could be null if disabled
 
                     if(script == null) {

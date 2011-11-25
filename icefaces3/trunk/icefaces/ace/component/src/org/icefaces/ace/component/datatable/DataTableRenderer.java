@@ -48,6 +48,8 @@ import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
+import org.icefaces.ace.component.ajax.AjaxBehavior;
+import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
@@ -494,7 +496,7 @@ public class DataTableRenderer extends CoreRenderer {
             if (table.getHeight() != Integer.MIN_VALUE) writer.write(",height:" + table.getHeight());
         }
 
-        if (table.getOnRowEditUpdate() != null) writer.write(",onRowEditUpdate:'" + ComponentUtils.findClientIds(context, form, table.getOnRowEditUpdate()) + "'");
+        //if (table.getOnRowEditUpdate() != null) writer.write(",onRowEditUpdate:'" + ComponentUtils.findClientIds(context, form, table.getOnRowEditUpdate()) + "'");
         if (table.isResizableColumns()) writer.write(",resizableColumns:true");
         if (table.isReorderableColumns()) writer.write(",reorderableColumns:true");
         if (table.isSingleSort()) writer.write(",singleSort:true");
@@ -1189,27 +1191,23 @@ public class DataTableRenderer extends CoreRenderer {
 
         if (table.isDblClickSelect()) writer.write(",dblclickSelect:true");
 
-        String onRowSelectUpdate = table.getOnRowSelectUpdate() != null ? table.getOnRowSelectUpdate() : table.getUpdate();
-        String onRowUnselectUpdate = table.getOnRowUnselectUpdate() != null ? table.getOnRowUnselectUpdate() : table.getUpdate();
+        List<ClientBehavior> selectBehaviors = table.getClientBehaviors().get("select");
 
-        if (table.getRowSelectListener() != null || onRowSelectUpdate != null || table.hasSelectionClientBehaviour()) {
-            writer.write(",instantSelect:true");
+        if (selectBehaviors != null) {
+            boolean allBehaviorsDisabled = true;
 
-            if (onRowSelectUpdate != null)
-                writer.write(",onRowSelectUpdate:'" + ComponentUtils.findClientIds(context, table, onRowSelectUpdate) + "'");
+            for (ClientBehavior cb : selectBehaviors) {
+                if (cb instanceof AjaxBehavior) {
+                    AjaxBehavior ab = (AjaxBehavior)cb;
+                    System.out.println(allBehaviorsDisabled);
+                    allBehaviorsDisabled = allBehaviorsDisabled && ab.isDisabled();
+                }
+            }
+            System.out.println(allBehaviorsDisabled);
+            System.out.println("---");
 
-            if (onRowUnselectUpdate != null)
-                writer.write(",onRowUnselectUpdate:'" + ComponentUtils.findClientIds(context, table, onRowUnselectUpdate) + "'");
-
-            if (table.getOnSelectStart() != null) writer.write(",onRowSelectStart:function() {" + table.getOnSelectStart() + "}");
-            if (table.getOnSelectComplete() != null) writer.write(",onRowSelectComplete:function(xhr, status, args) {" + table.getOnSelectComplete() + "}");
-            if (table.getOnRowSelectStart() != null) writer.write(",onRowSelectStart:function() {" + table.getOnRowSelectStart() + "}");
-            if (table.getOnRowSelectComplete() != null) writer.write(",onRowSelectComplete:function(xhr, status, args) {" + table.getOnRowSelectComplete() + "}");
-        }
-
-        if (table.getRowUnselectListener() != null) {
-            writer.write(",instantUnselect:true");
-            if (onRowUnselectUpdate != null) writer.write(",onRowUnselectUpdate:'" + ComponentUtils.findClientIds(context, table.getParent(), onRowUnselectUpdate) + "'");
+            if (!allBehaviorsDisabled)
+                writer.write(",instantSelect:true");
         }
     }
 
