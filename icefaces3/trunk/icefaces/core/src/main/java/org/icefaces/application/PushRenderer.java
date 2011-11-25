@@ -30,6 +30,7 @@ import org.icepush.PushConfiguration;
 import org.icepush.PushNotification;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -46,6 +47,16 @@ public class PushRenderer {
     private static Logger log = Logger.getLogger(PushRenderer.class.getName());
     public static final String ALL_SESSIONS = "PushRenderer.ALL_SESSIONS";
     private static final String MissingICEpushMessage = "ICEpush library missing. Push notification disabled.";
+    private static final PortableRenderer MissingICEpushPortableRenderer =
+        new PortableRenderer() {
+            public void render(final String group) {
+                log.warning(MissingICEpushMessage);
+            }
+
+            public void render(final String group, final PushOptions options) {
+                log.warning(MissingICEpushMessage);
+            }
+        };
 
     /**
      * Add the current view to the specified group. Groups
@@ -195,16 +206,30 @@ public class PushRenderer {
             };
         } else {
             log.warning(MissingICEpushMessage);
+            return MissingICEpushPortableRenderer;
+        }
+    }
 
-            return new PortableRenderer() {
-                public void render(String group) {
-                    log.warning(MissingICEpushMessage);
-                }
+    public static PortableRenderer getPortableRenderer(final ServletContext servletContext) {
+        if (EnvUtils.isICEpushPresent()) {
+            return
+                new PortableRenderer() {
+                    public void render(final String group) {
+                        PushContext pushContext = (PushContext)servletContext.getAttribute(PushContext.class.getName());
+                        if (pushContext == null) {
+                            log.fine("PushContext not initialized yet.");
+                        } else {
+                            pushContext.push(group);
+                        }
+                    }
 
-                public void render(String group, PushOptions options) {
-                    log.warning(MissingICEpushMessage);
-                }
-            };
+                    public void render(final String group, final PushOptions options) {
+                        PushIsolator.render(servletContext, group, options);
+                    }
+                };
+        } else {
+            log.warning(MissingICEpushMessage);
+            return MissingICEpushPortableRenderer;
         }
     }
 
@@ -244,4 +269,16 @@ class PushIsolator {
         }
     }
 
+    public static void render(final ServletContext servletContext, final String group, final PushOptions options) {
+        PushContext pushContext = (PushContext)servletContext.getAttribute(PushContext.class.getName());
+        if (pushContext == null) {
+            log.fine("PushContext not initialized yet.");
+        } else {
+            if (options instanceof PushMessage) {
+                pushContext.push(group, new PushNotification(options.getAttributes()));
+            } else {
+                pushContext.push(group, new PushConfiguration(options.getAttributes()));
+            }
+        }
+    }
 }
