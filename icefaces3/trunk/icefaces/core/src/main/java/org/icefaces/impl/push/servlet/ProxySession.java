@@ -118,8 +118,16 @@ public class ProxySession implements HttpSession {
     }
 
     public String getId() {
-        log.severe("ProxySession unsupported operation");
-        throw new UnsupportedOperationException();
+        Object sess = facesContext.getExternalContext().getSession(true);
+        Class clazz = sess.getClass();
+        String val = null;
+        try {
+            Method meth = clazz.getMethod("getId");
+            val = (String)meth.invoke(sess);
+        } catch (Exception e) {
+            log.warning("could not get id from PortletSession " + e);
+        }
+        return val;
     }
 
     public long getLastAccessedTime() {

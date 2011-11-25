@@ -36,9 +36,10 @@ import org.icefaces.ace.event.ProgressBarChangeEvent;
 import org.icefaces.application.PushRenderer;
 import org.icefaces.samples.showcase.example.ace.progressbar.utilityBeans.PushManagementBean;
 import org.icefaces.samples.showcase.example.ace.progressbar.utilityBeans.PushMessage;
+import org.icefaces.util.EnvUtils;
 
 
-@ComponentExample(
+ @ComponentExample(
         parent = ProgressBarBean.BEAN_NAME,
         title = "example.ace.progressBarPush.title",
         description = "example.ace.progressBarPush.description",
@@ -75,7 +76,7 @@ public class ProgressBarPush extends ComponentExampleImpl<ProgressBarPush> imple
     {
         super(ProgressBarPush.class);
         FacesContext fcontext = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession)fcontext.getExternalContext().getSession(false);
+        HttpSession session = EnvUtils.getSafeSession(fcontext);
         sessionId = session.getId();
         pushId = PUSH_GROUP + sessionId;
         time = System.currentTimeMillis();
