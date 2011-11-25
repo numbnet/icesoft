@@ -348,7 +348,16 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
             if (!"".equals(id)) {
                 String name;
                 if (parameters.containsKey(id)) {
-                    String value = ((String[]) parameters.get(id))[0];
+
+                    //The PortletFaces Bridge may return null rather than an empty
+                    //string as the default so we guard against that.
+                    String value = "";
+                    Object rawValue = parameters.get(id);
+                    if( rawValue != null){
+                        if(rawValue instanceof String[]){
+                            value =  ((String[])rawValue)[0];
+                        }
+                    }
                     //empty string is implied (default) when 'value' attribute is missing
                     if ("".equals(value)) {
                         inputElement.setAttribute("value", "");
