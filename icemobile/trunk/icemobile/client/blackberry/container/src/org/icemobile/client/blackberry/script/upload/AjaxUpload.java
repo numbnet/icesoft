@@ -54,6 +54,7 @@ public class AjaxUpload extends ScriptableFunction {
     private HttpRequestHandler mHandler; 
     private String mResult; 
     private static int uploadIndex;
+    private String START_OF_CDATA = "<![CDATA[";
 
     public AjaxUpload( ICEmobileContainer container ) { 
 
@@ -160,11 +161,17 @@ public class AjaxUpload extends ScriptableFunction {
                 public void run() { 
 
                     String response = mHandler.processAJAXRequest( mContainer.getCurrentURL(), null, content );
-                    ICEmobileContainer.TIME(startTime, "ajax.upload FormUpload");
+               
+                    ICEmobileContainer.TIME(startTime, "ajax.upload - FormUpload");
                     ICEmobileContainer.DEBUG("ajax.upload - Raw response: " + response);
-                    drh.setResult(response);
-                    if (response != null) { 
-                        mContainer.processResult( "AjaxUpload_" + uploadIndex++,  drh);
+               
+                    if (response.indexOf( "<error>") > -1) {
+                    	processError(response); 
+                    } else { 
+            			drh.setResult(response);
+            			if (response != null) { 
+            				mContainer.processResult( "AjaxUpload_" + uploadIndex++,  drh);
+            			}
                     }
                 }
             });
@@ -177,6 +184,21 @@ public class AjaxUpload extends ScriptableFunction {
         return Boolean.TRUE;
     }
 
+    private void processError(String response) { 
+    	
+    	int spos = response.indexOf( START_OF_CDATA );
+    	String error = null; 
+        if (spos > -1) { 
+        	spos += START_OF_CDATA.length(); 
+        	int epos  = response.indexOf("]]>", spos + 1 ); 
+        	if (epos > -1) { 
+        		error = response.substring(spos, epos); 
+        		ICEmobileContainer.DIALOG("Error in upload: " + error); 
+        	}
+        } else { 
+        	ICEmobileContainer.DIALOG("Error in upload... check container log for message contents");
+        }    	
+    }
    
     class DisposableResultHolder implements ResultHolder { 
 
