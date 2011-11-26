@@ -79,8 +79,7 @@ public class IntervalPushRenderer {
      */
     public IntervalPushRenderer() {
 
-        final PortableRenderer renderer = PushRenderer.getPortableRenderer(
-                FacesContext.getCurrentInstance());
+        final PortableRenderer renderer = PushRenderer.getPortableRenderer();
 
         renderTask = new TimerTask() {
             public void run() {

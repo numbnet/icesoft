@@ -174,20 +174,9 @@ public class PushRenderer {
      * @return application wide PortableRenderer instance
      */
     public static PortableRenderer getPortableRenderer() {
-        return getPortableRenderer(FacesContext.getCurrentInstance());
-    }
-
-    /**
-     * Create a PortableRenderer instance. PortableRenderer can trigger renderings
-     * in the context of the application.
-     * Once acquired it does not need a current FacesContext in order to function.
-     *
-     * @param context the FacesContext instance
-     * @return application wide PortableRenderer instance
-     */
-    public static PortableRenderer getPortableRenderer(FacesContext context) {
         if (EnvUtils.isICEpushPresent()) {
-            final Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
+            final Map<String, Object> applicationMap =
+                FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
             return new PortableRenderer() {
                 public void render(String group) {
                     //delay PushContext lookup until is needed
