@@ -48,7 +48,7 @@ public class SessionRenderer extends PushRenderer {
     public static class StartupListener implements SystemEventListener {
         public void processEvent(SystemEvent event) throws AbortProcessingException {
             try {
-                portableRenderer = PushRenderer.getPortableRenderer(FacesContext.getCurrentInstance());
+                portableRenderer = PushRenderer.getPortableRenderer();
             } catch (NoClassDefFoundError e) {
                 log.info("ICEpush library missing. Cannot enable push functionality.");
             }

@@ -61,7 +61,7 @@ public class LongTaskManager implements Serializable {
 	    PushRenderer.addCurrentSession(PUSH_GROUP);
 	    
 	    // Prepare the portable renderer
-	    renderer = PushRenderer.getPortableRenderer(FacesContext.getCurrentInstance());
+	    renderer = PushRenderer.getPortableRenderer();
 	    
 	    // Prep the generator
 	    randomizer = new Random(System.nanoTime());
