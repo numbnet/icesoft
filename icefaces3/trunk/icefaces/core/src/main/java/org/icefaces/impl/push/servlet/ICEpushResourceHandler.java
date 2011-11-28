@@ -143,7 +143,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
         } catch (Throwable t) {
             //no need to log this exception for optional Ajax Push, but may be
             //useful for diagnosing other failures
-            log.log(Level.INFO, "MainServlet not found in application scope: " + t);
+            log.log(Level.FINE, "MainServlet not found in application scope: " + t);
         }
     }
 
