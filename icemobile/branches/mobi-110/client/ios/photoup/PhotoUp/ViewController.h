@@ -20,6 +20,8 @@
     NSString *currentCommand;
     NSString *currentSessionId;
     NSData *deviceToken;
+    NSDictionary *confirmMessages;
+    NSDictionary *confirmTitles;
     UIProgressView *uploadProgress;
 }
 
@@ -30,6 +32,8 @@
 @property (retain) NSString *currentCommand;
 @property (retain) NSString *currentSessionId;
 @property (retain) NSData *deviceToken;
+@property (retain) NSDictionary *confirmMessages;
+@property (retain) NSDictionary *confirmTitles;
 @property (nonatomic, retain) IBOutlet UIProgressView *uploadProgress;
 - (void) dispatchCurrentCommand;
 

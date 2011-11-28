@@ -18,6 +18,15 @@
 @synthesize currentSessionId;
 @synthesize uploadProgress;
 @synthesize deviceToken;
+@synthesize confirmMessages;
+@synthesize confirmTitles;
+
+
+- (void) dealloc  {
+    [self.confirmTitles dealloc];
+    [self.confirmMessages dealloc];
+    [super dealloc];
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -26,15 +35,18 @@
 }
 
 - (void)register   {
-    const unsigned *tokenBytes = (unsigned int*) [deviceToken bytes];
-    NSString *hexToken = [NSString stringWithFormat:
-            @"apns:%08x%08x%08x%08x%08x%08x%08x%08x",
-            ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
-            ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
-            ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
-
     NSMutableDictionary *params = [nativeInterface parseQuery:currentParameters];
-    [params setValue:hexToken forKey:@"iceCloudPushId"];
+
+    if (nil != self.deviceToken)  {
+        const unsigned *tokenBytes = (unsigned int*) [self.deviceToken bytes];
+        NSString *hexToken = [NSString stringWithFormat:
+                @"apns:%08x%08x%08x%08x%08x%08x%08x%08x",
+                ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
+                ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
+                ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
+
+        [params setValue:hexToken forKey:@"iceCloudPushId"];
+    }
     [nativeInterface multipartPost:params toURL:self.currentURL];
 
     NSString *safariURL = self.currentURL;
@@ -108,21 +120,21 @@ NSLog(@"Hitch would show a thumbnail");
 
 
 - (void) dispatchCurrentCommand  {
-    NSString *host = [[NSURL URLWithString:self.currentURL] host];
-    NSString *message = @"Message";
-    NSString *title = @"Title";
     NSArray *queryParts = [self.currentCommand 
             componentsSeparatedByString:@"?"];
     NSString *commandName = [queryParts objectAtIndex:0];
-    if ([@"camera" isEqualToString:commandName])  {
-        title = @"Photo Upload";
-        message = [[@"Upload photo to " stringByAppendingString:host]
-                stringByAppendingString:@"?" ];
-    } else if ([@"register" isEqualToString:commandName])  {
-        title = @"Register";
-        message = [[@"Register with server " stringByAppendingString:host]
-                stringByAppendingString:@"?" ];
+
+    NSString *title = [self.confirmTitles objectForKey:commandName];
+    NSString *message = [self.confirmMessages objectForKey:commandName];
+    NSString *host = [[NSURL URLWithString:self.currentURL] host];
+    message = [[message stringByAppendingString:host] 
+            stringByAppendingString:@"?" ];
+
+    if (nil == title)  {
+        NSLog(@"Command not valid %@", self.currentCommand);
+        return;
     }
+
     UIAlertView *alert = [[UIAlertView alloc] 
             initWithTitle:title 
             message:message 
@@ -162,6 +174,20 @@ NSLog(@"Alert dismissed via button %d", buttonIndex);
     self.nativeInterface = [[NativeInterface alloc] init];
     self.nativeInterface.controller = self;
     self.nativeInterface.uploading = NO;
+    self.confirmTitles = [NSDictionary dictionaryWithObjectsAndKeys:
+            @"Register", @"register", 
+            @"Photo Upload", @"camera", 
+            @"Video Upload", @"camcorder", 
+            @"Audio Upload", @"microphone", 
+            @"QR Code Scan", @"scan", 
+            nil];
+    self.confirmMessages = [NSDictionary dictionaryWithObjectsAndKeys:
+            @"Register with server ", @"register", 
+            @"Upload photo to ", @"camera", 
+            @"Upload video to ", @"camcorder", 
+            @"Upload audio recording to ", @"microphone", 
+            @"Send QR Code to ", @"scan", 
+            nil];
 }
 
 - (void)viewDidUnload
