@@ -105,7 +105,7 @@
     <tag>
         <tag-name>singleSubmit</tag-name>
         <description>
-        This tag allows form submission from just the component generating the event and then update the page with any changes from all components (equivilant to <f:ajax execute="@this" render="@all").
+        This tag allows form submission from just the component generating the event and then update the page with any changes from all components (equivilant to 'f:ajax execute="@this" render="@all"').
         </description>
         <component>
             <component-type>javax.faces.Output</component-type>
