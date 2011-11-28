@@ -259,7 +259,8 @@ ice.ace.InputMask = function(id, cfg) {
     this.jqId = ice.ace.escapeClientId(id);
     this.jq = jQuery(this.jqId);
 
-    this.jq.mask(this.cfg.mask, this.cfg);
+    if (this.cfg.mask) // only add functionality if mask was provided, otherwise degrade to simple text input
+	this.jq.mask(this.cfg.mask, this.cfg);
 
     //Client behaviors
     if(this.cfg.behaviors) {
