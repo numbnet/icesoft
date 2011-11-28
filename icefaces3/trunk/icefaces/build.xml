@@ -148,7 +148,12 @@
         </subant>
         <move file="${bundle.dir.bin}/ace/component/build/doc/javadoc" tofile="${bundle.dir.bin}/docs/ace/api"/>
 
-        <!-- Create the TLD docs for compat, ace move them to the docs directory -->
+        <!-- Create the TLD docs for icecore, compat, ace move them to the docs directory -->
+        <subant target="tlddoc">
+            <fileset dir="${bundle.dir.bin}/core" includes="build.xml"/>
+        </subant>
+        <move file="${bundle.dir.bin}/core/build/doc/tld" tofile="${bundle.dir.bin}/docs/core/comps/tld"/>
+
         <subant target="tlddoc">
             <fileset dir="${bundle.dir.bin}/compat/components" includes="build.xml"/>
         </subant>

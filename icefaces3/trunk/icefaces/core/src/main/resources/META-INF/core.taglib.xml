@@ -21,6 +21,13 @@
   ~ Contributor(s): _____________________.
   -->
 
+<!--
+	!!! Special Note !!!
+	
+	Any updates made to this file must also be applied to the core.tld file.
+	These two files must be kept in sync.
+-->
+
 <facelet-taglib xmlns="http://java.sun.com/xml/ns/javaee"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd"
@@ -28,41 +35,37 @@
     <namespace>http://www.icefaces.org/icefaces/core</namespace>
     <tag>
         <tag-name>config</tag-name>
+        <description>
+			You can use the ICEfaces configuration tag to adjust behaviour on a per-page basis. These settings take precedence over corresponding application global settings specified via context-param entries in the web.xml.
+        </description>
         <handler-class>org.icefaces.impl.facelets.tag.icefaces.core.ConfigHandler</handler-class>
         <attribute>
             <description>
-                A value of "true" indicates that ICEfaces rendering Direct-to-DOM 
-                should be applied to the current view.
-                A value of "false" indicates that stock JSF rendering should be used.
-                "true" is the default, since the presences of this tag indicates
-                the use of ICEfaces.
+                A value of "true" indicates that ICEfaces rendering Direct-to-DOM should be applied to the current view.
+                A value of "false" indicates that stock JSF rendering should be used. The default value is "true", since the presence of this tag indicates the use of ICEfaces.
             </description>
             <name>render</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
-        
+
+<!-- *** Comment out ARIA support config. as it is not officially supported as of ICEfaces 3.0	        
         <attribute>
             <description>
-                A value of "true" indicates that ARIA support applied to the current view.
-                "true" is the default value. ARIA can be enabled application level by setting
-                following context parameter "org.icefaces.aria.enabled" to true in web.xml
-                If ARIA is enabled application level, this attribute can disable ARIA for 
-                current view.                
+                A value of "true" indicates that ARIA support will be applied to the current view. The default value is "true". 
+                ARIA support can also be enabled at an application level by setting the "org.icefaces.aria.enabled" context parameter to true in the web.xml file.
+                If ARIA is enabled application level, this attribute can disable ARIA for the current view.                
             </description>
             <name>ariaEnabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+-->
 
         <attribute>
             <description>
-                A space-delimited list of components that will have their requisite resources
-                pre-loaded on this page. The pre-loading allows the components to function
-                correctly even if they are later added to the page dynamically.  The values
-                "none" (which is the default) and "all" are also valid.  The value of this
-                attribute on a page takes precedence over the values specified by the context
-                parameter org.icefaces.mandatoryResourceConfiguration.
+                A space-delimited list of component tag-names (or fully qualified Java class-names) that will have their requisite resources pre-loaded on this page. The pre-loading allows the components to function correctly even if they are later added to the page dynamically.  The values "none" (which is the default) and "all" are also valid.  The value of this attribute on a page takes precedence over the values specified by the context
+                parameter org.icefaces.mandatoryResourceConfiguration in the web.xml file.
             </description>
             <name>mandatoryResource</name>
             <required>false</required>
@@ -73,8 +76,7 @@
             <description>
                 A value of "true" indicates that faces messages are persisted
                 across single submits.  This attribute takes precedence over the
-                org.icefaces.messagePersistence context parameter on a per view
-                basis.
+                org.icefaces.messagePersistence context parameter in the web.xml fule on a per-view basis.
             </description>
             <name>messagePersistence</name>
             <required>false</required>
@@ -84,12 +86,15 @@
 
     <tag>
         <tag-name>push</tag-name>
+        <description>
+			This tag can be used to configure push behavior on a per-view basis.
+        </description>
         <component>
             <component-type>org.icefaces.impl.component.Push</component-type>
         </component>
         <attribute>
             <description>
-                The group name the current view should be added to.
+                The push group name the current view should be added to.
             </description>
             <name>group</name>
             <required>true</required>
@@ -99,6 +104,9 @@
 
     <tag>
         <tag-name>singleSubmit</tag-name>
+        <description>
+        This tag allows form submission from just the component generating the event and then update the page with any changes from all components (equivilant to <f:ajax execute="@this" render="@all").
+        </description>
         <component>
             <component-type>javax.faces.Output</component-type>
             <renderer-type>org.icefaces.singleSubmit</renderer-type>
