@@ -21,6 +21,7 @@ import org.icefaces.component.utils.IceOutputResource;
 import javax.faces.application.Resource;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -28,7 +29,7 @@ import java.util.logging.Logger;
  * Photo represents one image upload.  Each message will normally have
  * three version, small, medium and large.
  */
-public class Media {
+public class Media implements Serializable {
 
     private static final Logger logger =
             Logger.getLogger(Media.class.toString());
