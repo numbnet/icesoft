@@ -130,6 +130,7 @@ public class ProgressBarRenderer extends CoreRenderer {
 
                     if(progressBar.getOnCompleteUpdate() != null) json.entry("onCompleteUpdate", ComponentUtils.findClientIds(facesContext, progressBar, progressBar.getOnCompleteUpdate()));
                     if(progressBar.getOnCancelUpdate() != null) json.entry("onCancelUpdate", ComponentUtils.findClientIds(facesContext, progressBar, progressBar.getOnCancelUpdate()));
+                    if(progressBar.getOnChangeUpdate() != null) json.entry("onChangeUpdate", ComponentUtils.findClientIds(facesContext, progressBar, progressBar.getOnChangeUpdate()));
                     if(progressBar.getOncomplete() != null) json.entry("oncomplete", "function(xhr, status, args) {" + progressBar.getOncomplete() + "}", true);
 
                 } else {

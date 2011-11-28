@@ -93,4 +93,7 @@ public class ProgressBarMeta extends UIComponentBaseMeta {
     @Property(expression = Expression.METHOD_EXPRESSION,
               tlddoc = "A server side listener to be invoked when a progress is cancelled.")
     private MethodExpression cancelListener;
+
+    @Property(tlddoc = "Specifies component(s) to update with ajax when progress is changed")
+    private String onChangeUpdate;
 }
