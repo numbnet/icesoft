@@ -19,13 +19,14 @@ package org.icemobile.samples.mediacast;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.io.File;
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * A new photo upload containing a small, medium and large photo data.
  */
-public class MediaMessage {
+public class MediaMessage implements Serializable {
 
     private static final Logger logger =
             Logger.getLogger(MediaMessage.class.toString());

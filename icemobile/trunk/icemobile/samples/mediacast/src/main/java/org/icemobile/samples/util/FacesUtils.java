@@ -28,6 +28,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -38,7 +39,7 @@ import java.util.Properties;
  * @author ICEsoft Technologies Inc.
  * @since 2.0
  */
-public class FacesUtils {
+public class FacesUtils implements Serializable{
 
     private static Properties buildProperties = null;
 
