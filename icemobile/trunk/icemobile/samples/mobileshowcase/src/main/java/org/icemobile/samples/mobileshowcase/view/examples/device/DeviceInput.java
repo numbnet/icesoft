@@ -19,10 +19,9 @@ package org.icemobile.samples.mobileshowcase.view.examples.device;
 import org.icefaces.component.utils.IceOutputResource;
 
 import javax.faces.application.Resource;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.util.Formatter;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -33,7 +32,7 @@ import java.util.logging.Logger;
  * {@link org.icemobile.samples.mobileshowcase.view.examples.device.microphone.MicrophoneBean}
  * {@link org.icemobile.samples.mobileshowcase.view.examples.device.camera.CameraBean}
  */
-public class DeviceInput {
+public class DeviceInput implements Serializable{
 
     private static final Logger logger =
             Logger.getLogger(DeviceInput.class.toString());
@@ -70,5 +69,37 @@ public class DeviceInput {
         fis.close();
 
         return bos.toByteArray();
+    }
+
+    // process video file to common output for cross platform playback.
+    public static File convertFileToExtensionType(File inputFile, String commandTemplate,
+                             String outputExtension) {
+        StringBuilder command = new StringBuilder();
+        try {
+            File converted = File.createTempFile("out", outputExtension);
+            Formatter formatter = new Formatter(command);
+            formatter.format(commandTemplate,
+                    inputFile.getAbsolutePath(),
+                    converted.getAbsolutePath());
+            Runtime runtime = Runtime.getRuntime();
+            Process process = runtime.exec(command.toString());
+            int exitValue = process.waitFor();
+            if (0 != exitValue) {
+                logger.log(Level.WARNING, "Transcoding failure: " + command);
+                StringBuilder errorString = new StringBuilder();
+                InputStream errorStream = process.getErrorStream();
+                byte[] buf = new byte[1000];
+                int len = -1;
+                while ((len = errorStream.read(buf)) > 0) {
+                    errorString.append(new String(buf, 0, len));
+                }
+                logger.log(Level.WARNING, errorString.toString());
+            }
+            return converted;
+        } catch (Exception e) {
+            //conversion fails, but we may proceed with original file
+            logger.log(Level.WARNING, command + " Error processing file.", e);
+        }
+        return null;
     }
 }

@@ -16,6 +16,7 @@
 
 package org.icemobile.samples.mobileshowcase.view.examples.device.microphone;
 
+import org.icemobile.samples.mobileshowcase.util.FacesUtils;
 import org.icemobile.samples.mobileshowcase.view.examples.device.DeviceInput;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
@@ -80,6 +81,9 @@ public class MicrophoneBean extends ExampleImpl<MicrophoneBean> implements
     public static final String FILE_KEY = "file";
     public static final String CONTENT_TYPE_KEY = "contentType";
 
+    private static final String videoConvertCommand = FacesUtils.getFacesParameter(
+            "org.icemobile.audioConvertCommand");
+
     // uploaded video will be stored as a resource.
     private Resource outputResource;
 
@@ -106,6 +110,11 @@ public class MicrophoneBean extends ExampleImpl<MicrophoneBean> implements
             if (audioFile != null) {
                 // copy the bytes into the resource object.
                 try {
+                    // optional conversion to common format is needed.
+                    if (videoConvertCommand != null){
+                        audioFile = DeviceInput.convertFileToExtensionType(
+                                audioFile, videoConvertCommand, ".m4a");
+                    }
                     outputResource = DeviceInput.createResourceObject(
                             audioFile, UUID.randomUUID().toString(),
                             (String) audioFileMap.get(CONTENT_TYPE_KEY));
