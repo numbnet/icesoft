@@ -27,6 +27,7 @@ package org.icemobile.samples.mobileshowcase.view.examples.device.camcorder;
  * the video file.
  */
 
+import org.icemobile.samples.mobileshowcase.util.FacesUtils;
 import org.icemobile.samples.mobileshowcase.view.examples.device.DeviceInput;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
@@ -83,6 +84,9 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
     public static final String FILE_KEY = "file";
     public static final String CONTENT_TYPE_KEY = "contentType";
 
+    private static final String videoConvertCommand = FacesUtils.getFacesParameter(
+                        "org.icemobile.videoConvertCommand");
+
     private Map camcorderImage = new HashMap();
     private File camcorderFile;
     // uploaded video will be stored as a resource.
@@ -109,10 +113,16 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
             if (camcorderFile != null){
                 disposeResources();
             }
+            // get the new video file
             camcorderFile = (File) camcorderImage.get(FILE_KEY);
             if (camcorderFile != null) {
                 // copy the bytes into the resource object.
                 try {
+                    // optional conversion to common format is needed.
+                    if (videoConvertCommand != null){
+                        camcorderFile = DeviceInput.convertFileToExtensionType(
+                                camcorderFile, videoConvertCommand, ".mp4");
+                    }
                     outputResource = DeviceInput.createResourceObject(
                             camcorderFile, UUID.randomUUID().toString(),
                             (String) camcorderImage.get(CONTENT_TYPE_KEY));
