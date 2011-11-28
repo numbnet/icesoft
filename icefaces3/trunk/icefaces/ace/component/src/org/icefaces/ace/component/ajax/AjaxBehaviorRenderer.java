@@ -90,10 +90,10 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 			}
 		}
 		if (execute == null || "".equals(execute)) {
-			jb.entry("execute", "(arguments[1]) ? arguments[1] + ' ' + " + clientId + " : " + clientId);
+			jb.entry("execute", "((arguments[1]) ? arguments[1] + ' ' + '" + clientId + "' : '" + clientId + "')", true);
 		} else {
             String clientIds = ComponentUtils.findClientIds(fc, component, execute);
-			jb.entry("execute", "(arguments[1]) ? arguments[1] + ' ' + " + clientIds + " : " + clientIds);
+			jb.entry("execute", "((arguments[1]) ? arguments[1] + ' ' + '" + clientIds + "' : '" + clientIds + "')", true);
 		}
 
         //render
@@ -109,7 +109,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 			}
 		}
         String clientIds = ComponentUtils.findClientIds(fc, component, render);
-		jb.entry("render", "(arguments[2]) ? arguments[2] + ' ' + " + clientIds + " : " + clientIds);
+		jb.entry("render", "((arguments[2]) ? arguments[2] + ' ' + '" + clientIds + "' : '" + clientIds + "')", true);
 
         //behavior event
 		jb.entry("event", behaviorContext.getEventName());
