@@ -38,9 +38,9 @@ ice.ace.ProgressBar = function(id, cfg) {
 
     this.qObj = ice.ace.jq(this.jqId);
     this.qObj.progressbar(this.cfg);
-    if (this.cfg.hasChangeListener) {
+//    if (this.cfg.hasChangeListener) {
         this.qObj.bind('progressbarchange', this, this.changeListener);
-    }
+//    }
 }
 
 ice.ace.ProgressBar.prototype.setValue = function(value) {
@@ -60,7 +60,8 @@ ice.ace.ProgressBar.prototype.start = function() {
             var options = {
                 source: _self.id,
                 execute: _self.id,
-                formId: _self.cfg._formId,
+                render: "@none",
+                formId: _self.cfg.formId,
                 async: true,
                 oncomplete: function(xhr, status, args) {
                     var value = args[_self.id + '_value'];
@@ -86,6 +87,7 @@ ice.ace.ProgressBar.prototype.fireCompleteEvent = function() {
     var options = {
         source: this.id,
         execute: this.id,
+        render: "@none",
         formId: this.cfg.formId,
         async: true
     };
@@ -109,13 +111,18 @@ ice.ace.ProgressBar.prototype.fireCompleteEvent = function() {
 
 ice.ace.ProgressBar.prototype.changeListener = function(ev, ui) {
     var data = ev.data, id = data.id;
-    var changeListener = data.cfg && data.cfg.behaviors && data.cfg.behaviors.change;
+    var cfg = data.cfg;
+    var changeListener = cfg && cfg.behaviors && cfg.behaviors.change;
     var options = {
         source: id,
         execute: id,
-        formId: data.cfg.formId,
+        render: "@none",
+        formId: cfg.formId,
         async: true
     };
+    if(cfg.onChangeUpdate) {
+        options.render = cfg.onChangeUpdate;
+    }
 
     var params = {};
     params[id + '_change'] = true;
@@ -139,6 +146,7 @@ ice.ace.ProgressBar.prototype.cancel = function() {
     var options = {
         source: this.id,
         execute: this.id,
+        render: "@none",
         formId: this.cfg.formId,
         async: true,
         oncomplete:function(xhr, status, args) {
