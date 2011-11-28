@@ -36,6 +36,10 @@
     <property name="dist.dir" location="${build.dir}/dist"/>
     <property name="javadocs.dir" location="${build.dir}/javadocs"/>
     <property name="product.info" value="org/icefaces/application/ProductInfo.java"/>
+    <property name="build.doc.dir" location="${build.dir}/doc"/>
+    <property name="build.api.doc.dir" location="${build.doc.dir}/api"/>
+    <property name="build.tld.doc.dir" location="${build.doc.dir}/tld"/>
+    <property name="tld.file" location="${meta.dir}/core.tld"/>
 
     <!-- Check which JSF implementation to use and set the appropriate sub-directory  -->
     <condition property="jsf.lib.dir" value="${lib.dir}/myfaces" else="${lib.dir}/mojarra">
@@ -50,6 +54,7 @@
     	
     <property name="javadoc.title" value="${product} ${product.lib} Java API Documentation" />
     <property name="javadoc.header" value="${product} ${product.lib} ${version.string}&lt;br&gt;Java API Documentation" />
+    <property name="tld.title" value="${product} ${product.lib} ${version.string} Tag Library Reference" />
 
     <tstamp>
         <format property="build.time" pattern="yyyy-MM-dd hh:mm:ss"/>
@@ -102,6 +107,26 @@
             <replacefilter token="@revision@"          value="${revision}"/>
         </replace>
     </target>
+
+    <target name="tlddoc">
+        <gen.tld.doc tld.file="${tld.file}"/>
+    </target>
+
+    <macrodef name="gen.tld.doc">
+        <attribute name="tld.file"/>
+        <sequential>
+            <delete dir="${build.tld.doc.dir}"/>
+            <java jar="${lib.dir}/tlddoc.jar" fork="true" failonerror="true">
+                <arg value="-d"/>
+                <arg value="${build.tld.doc.dir}"/>
+                <arg value="-doctitle"/>
+                <arg value="${tld.title}"/>
+                <arg value="-windowtitle"/>
+                <arg value="${tld.title}"/>
+                <arg value="@{tld.file}"/>
+            </java>
+        </sequential>
+    </macrodef>
 
     <target name="compile" depends="pre.compile" description="compile ICEfaces 2.0 classes">
         <javac srcdir="${java.dir}"
