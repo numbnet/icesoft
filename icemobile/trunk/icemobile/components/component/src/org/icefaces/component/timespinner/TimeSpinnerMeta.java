@@ -34,7 +34,6 @@ import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 
 public class TimeSpinnerMeta extends UIInputMeta {
 
-
     @Property(defaultValue = "hh:mm a", tlddoc = "TimeFormat pattern for localization")
     private String pattern;
 

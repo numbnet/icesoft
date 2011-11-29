@@ -17,12 +17,12 @@
 package org.icefaces.component.scan;
 
 
-import org.icefaces.component.utils.BaseInputRenderer;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
 import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.renderkit.BaseInputRenderer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

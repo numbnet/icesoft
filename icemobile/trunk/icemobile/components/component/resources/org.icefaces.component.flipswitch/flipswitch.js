@@ -20,8 +20,8 @@ if (!window['mobi']) {
 }
 
 mobi.flipper = {                
-        init: function(clientId, event, flipperEl, singleSubmit){
-              ice.log.debug(ice.log, 'clientId is '+clientId);               
+        init: function(clientId, event, flipperEl, singleSubmit, activate){
+              ice.log.debug(ice.log, 'clientId is '+clientId);
               if (flipperEl){
                 var oldClass = flipperEl.className;
                 var value = "off";
@@ -39,6 +39,13 @@ mobi.flipper = {
                 }
                 if (singleSubmit){
                     ice.se(event, clientId);
+                }
+                if (activate){
+                    ice.log.debug(ice.log, "trying to activate");
+                    if (mobi.submit) {
+                       ice.log.debug(ice.log, "in mobi submit before activate call");
+                       mobi.submit.activate(clientId);
+                    }
                 }
               }
               else{

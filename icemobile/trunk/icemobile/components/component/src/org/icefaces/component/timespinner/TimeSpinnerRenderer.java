@@ -15,9 +15,9 @@
  */
 package org.icefaces.component.timespinner;
 
-import org.icefaces.component.utils.BaseInputRenderer;
 import org.icefaces.component.utils.PassThruAttributeWriter;
 import org.icefaces.component.utils.Utils;
+import  org.icefaces.renderkit.BaseInputRenderer;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
@@ -36,7 +36,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class TimeSpinnerRenderer extends BaseInputRenderer  {
+public class TimeSpinnerRenderer extends BaseInputRenderer {
     private static Logger logger = Logger.getLogger(TimeSpinnerRenderer.class.getName());
     private static final String JS_NAME = "timespinner.js";
     private static final String JS_MIN_NAME = "timespinner-min.js";
@@ -187,8 +187,8 @@ public class TimeSpinnerRenderer extends BaseInputRenderer  {
         writer.endElement("div");
         writer.startElement("div", uiComponent);                            //entire selection container
         writer.writeAttribute("class", TimeSpinner.SELECT_CONT_CLASS, null);
-        //day
-        writer.startElement("div",uiComponent);                             //date select container
+        //hour
+        writer.startElement("div",uiComponent);                             //hour select container
         writer.writeAttribute("class", TimeSpinner.VALUE_CONT_CLASS, null);
         writer.startElement("div", uiComponent);                            //button increment
         writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CONT_CLASS, null);
@@ -199,11 +199,11 @@ public class TimeSpinnerRenderer extends BaseInputRenderer  {
         writer.writeAttribute(eventStr, "mobi.timespinner.hrUp('"+clientId+"');",null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button incr
-        writer.startElement("div", uiComponent);                          //day value
+        writer.startElement("div", uiComponent);                          //hour value
         writer.writeAttribute("class", TimeSpinner.SEL_VALUE_CLASS, null);
         writer.writeAttribute("id", clientId+"_hrInt",null);
         writer.write( String.valueOf(timeEntry.getHourInt())) ;
-        writer.endElement("div");                                         //end of day value
+        writer.endElement("div");                                         //end of hour value
         writer.startElement("div", uiComponent);                          //button decrement
         writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CONT_CLASS, null);
         writer.startElement("input", uiComponent);
@@ -214,8 +214,8 @@ public class TimeSpinnerRenderer extends BaseInputRenderer  {
         writer.endElement("input");
         writer.endElement("div");                                         //end button decrement
         writer.endElement("div");                                         //end of timeEntry select container
-        //month
-        writer.startElement("div",uiComponent);                             //month select container
+        //minute
+        writer.startElement("div",uiComponent);                             //minute select container
         writer.writeAttribute("class", TimeSpinner.VALUE_CONT_CLASS, null);
         writer.startElement("div", uiComponent);                            //button increment
         writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CONT_CLASS, null);
@@ -226,11 +226,11 @@ public class TimeSpinnerRenderer extends BaseInputRenderer  {
         writer.writeAttribute(eventStr, "mobi.timespinner.mUp('"+clientId+"');",null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button incr
-        writer.startElement("div", uiComponent);                          //month value
+        writer.startElement("div", uiComponent);                          //minute value
         writer.writeAttribute("class", TimeSpinner.SEL_VALUE_CLASS, null);
         writer.writeAttribute("id", clientId+"_mInt",null);
         writer.write( String.valueOf(timeEntry.getMinuteInt())) ;
-        writer.endElement("div");                                         //end of month value
+        writer.endElement("div");                                         //end of minute value
         writer.startElement("div", uiComponent);                          //button decrement
         writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CONT_CLASS, null);
         writer.startElement("input", uiComponent);
@@ -240,9 +240,9 @@ public class TimeSpinnerRenderer extends BaseInputRenderer  {
         writer.writeAttribute(eventStr, "mobi.timespinner.mDn('"+clientId+"');",null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button decrement
-        writer.endElement("div");                                         //end of month select container
-        //year
-        writer.startElement("div",uiComponent);                             //year select container
+        writer.endElement("div");                                         //end of minute  select container
+        //ampm
+        writer.startElement("div",uiComponent);                             //mpm select container
         writer.writeAttribute("class", TimeSpinner.VALUE_CONT_CLASS, null);
         writer.startElement("div", uiComponent);                            //button increment
         writer.writeAttribute("class", TimeSpinner.BUTTON_INC_CONT_CLASS, null);
@@ -267,7 +267,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer  {
         writer.writeAttribute(eventStr, "mobi.timespinner.ampmToggle('"+clientId+"');",null);
         writer.endElement("input");
         writer.endElement("div");                                         //end button decrement
-        writer.endElement("div");                                         //end of year select container
+        writer.endElement("div");                                         //end of ampm select container
 
         writer.endElement("div");                                         //end of selection container
         writer.startElement("div", uiComponent);                          //button container for set or cancel
@@ -358,14 +358,6 @@ public class TimeSpinnerRenderer extends BaseInputRenderer  {
         }
         return returnString;
     }
-
-
-    private boolean isValueBlank(String value) {
-		if(value == null)
-			return true;
-
-		return value.trim().equals("");
-	}
 
     private String encodeValue( TimeSpinner spinner,  String initialValue)  {
         String value = "";

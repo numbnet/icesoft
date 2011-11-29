@@ -18,15 +18,15 @@ package org.icefaces.component.flipswitch;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.PassThruAttributeWriter;
-import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.renderkit.CoreRenderer;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -41,7 +41,7 @@ import java.util.logging.Logger;
  * doesn't use a hidden field for it value instead takes advantage of param support of JSF2
  */
 //@MandatoryResourceComponent("org.icefaces.component.flipswitch.FlipSwitch")
-public class FlipSwitchRenderer extends Renderer {
+public class FlipSwitchRenderer extends CoreRenderer {
 
     private final static Logger logger = Logger.getLogger(FlipSwitchRenderer.class.getName());
     private static final String JS_NAME = "flipswitch.js";
@@ -76,6 +76,18 @@ public class FlipSwitchRenderer extends Renderer {
         String clientId = uiComponent.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();
         FlipSwitch flipswitch = (FlipSwitch) uiComponent;
+        ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
+        boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
+
+        if (hasBehaviors){
+            String cbhCall = this.encodeClientBehaviorEvents(facesContext, cbh);
+            writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
+            StringBuilder switchScript = new StringBuilder(255);
+            switchScript.append(cbhCall);
+            switchScript.append("};");
+            writer.write(cbhCall);
+            writer.endElement(HTML.SCRIPT_ELEM);
+        }
         Map contextMap = facesContext.getViewRoot().getViewMap();
         if (!contextMap.containsKey(JS_NAME)) {
              //check to see if Development or Project stage
@@ -83,7 +95,6 @@ public class FlipSwitchRenderer extends Renderer {
              if ( facesContext.isProjectStage(ProjectStage.Production)){
                     jsFname = JS_MIN_NAME;
              }
-             logger.info("NEED TO LOAD fname = "+jsFname);
              Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, JS_LIBRARY);
              String src = jsFile.getRequestPath();
              writer.startElement("script", uiComponent);
@@ -91,7 +102,7 @@ public class FlipSwitchRenderer extends Renderer {
              writer.writeAttribute("src", src, null);
              writer.endElement("script");
              contextMap.put(JS_NAME, "true");
-        } // else logger.info("ALREADY HAVE FLIPSWITCH JS LOADED");
+        }
         writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
@@ -106,10 +117,20 @@ public class FlipSwitchRenderer extends Renderer {
         PassThruAttributeWriter.renderBooleanAttributes(writer, uiComponent, flipswitch.getBooleanAttNames());
         String labelOn = flipswitch.getLabelOn();
         String labelOff = flipswitch.getLabelOff();
+//        String event = flipswitch.getDefaultEventName();
+        StringBuilder builder = new StringBuilder(255);
+        builder.append("mobi.flipper.init('").append(clientId).append("', event, this,");
+        if (flipswitch.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (hasBehaviors){
+            //for now all events for this equate to "activate" event
+            builder.append ("false , true);");
+        }
+        else
+            builder.append(flipswitch.isSingleSubmit()).append(", false);");
 
-        //       StringBuilder jsCall = this.writeJSCall(clientId, flipswitch);
-        writer.writeAttribute("onclick", "mobi.flipper.init('" + clientId + "', event, this," + flipswitch.isSingleSubmit() + ");", null);
-
+        writer.writeAttribute("onclick", builder.toString(), null);
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute("class", "mobi-flip-switch-txt", null);
         writer.write(labelOn);
@@ -122,7 +143,7 @@ public class FlipSwitchRenderer extends Renderer {
         writer.write(labelOff);
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.ANCHOR_ELEM);
-        //    writer.endElement(HTML.DIV_ELEM);
+
     }
 
     private void writeHiddenField(UIComponent uiComponent, String clientId,
@@ -152,30 +173,7 @@ public class FlipSwitchRenderer extends Renderer {
         }
     }
 
-    /*
-    * not currently being used.  Will switch to build in script if better performance.  For now leave
-    * in separate javascript file as easier to modify/debug
-    */
-    private StringBuilder writeJSCall(String clientId, FlipSwitch flipper) {
-        final StringBuilder script = new StringBuilder();
-        //first update the hidden field.  If class is on class then switch class to off and update hidden field to off
-        //otherwise, vice versa
-        StringBuilder hiddenField = new StringBuilder(clientId).append("_hidden");
-        script.append("var hidden = getElementById('").append(hiddenField).append("');").
-                append("if(this.className='").append(FlipSwitch.FLIPSWITCH_ON_CLASS).append("'){").
-                append("this.className='").append(FlipSwitch.FLIPSWITCH_OFF_CLASS).append(";").
-                append("if(hidden){hidden.value='on';}").
-                append("}else{").
-                append("this.className='").append(FlipSwitch.FLIPSWITCH_ON_CLASS).append("';").
-                append("if(hidden){hidden.value='off';}").
-                append("}");
 
-        if (flipper.isSingleSubmit()) {
-            script.append("ice.se(event, '").append(clientId).append("');");
-            //submit the div. as need the hidden field
-        }
-        return script;
-    }
 
     /**
      * will render it's own children

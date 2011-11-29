@@ -21,8 +21,6 @@ import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
 /**
- * copied over for ace and not used in alpha
- * <p/>
  * A utility class used to easily insert a script element into the markup. It allows the writing of the script in one
  * call or writing it out gradually.
  */

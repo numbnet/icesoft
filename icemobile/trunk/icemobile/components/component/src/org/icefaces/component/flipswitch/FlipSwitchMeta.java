@@ -16,9 +16,7 @@
 
 package org.icefaces.component.flipswitch;
 
-import org.icefaces.ace.meta.annotation.Component;
-import org.icefaces.ace.meta.annotation.Expression;
-import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UISelectBooleanMeta;
 
 import javax.el.MethodExpression;
@@ -45,8 +43,9 @@ import javax.el.MethodExpression;
         componentFamily = "org.icefaces.component.FlipSwitch",
         tlddoc = "The FlipSwitch is a component that enables the user to turn a feature on or off "                
 )
-
-
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
+})
 public class FlipSwitchMeta extends UISelectBooleanMeta {
 
     @Property(defaultValue = "false",

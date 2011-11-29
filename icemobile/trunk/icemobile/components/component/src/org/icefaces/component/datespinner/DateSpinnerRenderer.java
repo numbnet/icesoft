@@ -15,9 +15,9 @@
  */
 package org.icefaces.component.datespinner;
 
-import org.icefaces.component.utils.BaseInputRenderer;
 import org.icefaces.component.utils.PassThruAttributeWriter;
 import org.icefaces.component.utils.Utils;
+import org.icefaces.renderkit.BaseInputRenderer;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
@@ -37,7 +37,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-public class DateSpinnerRenderer extends BaseInputRenderer  {
+public class DateSpinnerRenderer extends BaseInputRenderer {
     private static Logger logger = Logger.getLogger(DateSpinnerRenderer.class.getName());
     private static final String JS_NAME = "datespinner.js";
     private static final String JS_MIN_NAME = "datespinner-min.js";
@@ -359,14 +359,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer  {
         }
         return returnString;
     }
-
-
-    private boolean isValueBlank(String value) {
-		if(value == null)
-			return true;
-
-		return value.trim().equals("");
-	}
 
     private String encodeValue( DateSpinner spinner,  String initialValue)  {
         String value = "";

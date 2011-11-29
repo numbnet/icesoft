@@ -16,8 +16,8 @@
 
 package org.icefaces.component.list;
 
-import org.icefaces.component.utils.BaseLayoutRenderer;
 import org.icefaces.component.utils.HTML;
+import org.icefaces.renderkit.BaseLayoutRenderer;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;

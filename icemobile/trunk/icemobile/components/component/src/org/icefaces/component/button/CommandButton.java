@@ -33,4 +33,9 @@ public class CommandButton extends CommandButtonBase {
     public static final String BACK_STYLE_CLASS = " mobi-button-back";
     public static final String ATTENTION_STYLE_CLASS = " mobi-button-attention";
     public static final String SELECTED_STYLE_CLASS = " mobi-button-selected";
+
+    public String getDefaultEventName(){
+        return "click";
+    }
+
 }

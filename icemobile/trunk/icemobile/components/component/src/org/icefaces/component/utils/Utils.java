@@ -20,15 +20,15 @@ import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.impl.util.DOMUtils;
 import org.icemobile.component.impl.SessionContext;
 
-import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.component.UIForm;
 import javax.faces.component.NamingContainer;
-import javax.faces.component.StateHelper;
+import javax.faces.FacesException;
 import javax.servlet.http.HttpServletRequest;
+import javax.faces.application.ProjectStage;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
@@ -98,26 +98,19 @@ public class Utils {
         return parent;
     }
 
+    /**
+     *   Copied over from ace ComponentUtils for ajax support
+     * @param component
+     * @return
+     */
+    public static UIComponent findParentForm(UIComponent component) {
+        UIComponent parent = component;
+        while (parent != null)
+            if (parent instanceof UIForm) break;
+            else parent = parent.getParent();
 
-    public static UIComponent findForm(UIComponent uiComponent) {
-        UIComponent parent = uiComponent.getParent();
-        while (parent != null && !(parent instanceof UIForm)) {
-            parent = findNamingContainer(parent);
-        }
         return parent;
     }
-
-
-    public static UIForm findParentForm(UIComponent comp) {
-        if (comp == null) {
-            return null;
-        }
-        if (comp instanceof UIForm) {
-            return (UIForm) comp;
-        }
-        return findParentForm(comp.getParent());
-    }
-
 
     public static void writeConcatenatedStyleClasses(ResponseWriter writer,
                                                      String componentClass, String applicationClass)
@@ -247,28 +240,56 @@ public class Utils {
         }
     }
 
+    /**
+     * taken from ace Util.ComponentUtils for ajax tag support Nov 20, 2011
+     * @param context
+     * @param component
+     * @param list
+     * @return
+     */
+    public static String findClientIds(FacesContext context, UIComponent component, String list) {
+        if (list == null) return "@none";
 
-    public static boolean superValueIfSet(UIComponent component, StateHelper sh, String attName, boolean superValue, boolean defaultValue) {
-        ValueExpression ve = component.getValueExpression(attName);
-        if (ve != null) {
-            return superValue;
-        }
-        String valuesKey = attName + "_rowValues";
-        Map clientValues = (Map) sh.get(valuesKey);
-        if (clientValues != null) {
-            String clientId = component.getClientId();
-            if (clientValues.containsKey(clientId)) {
-                return superValue;
+        String formattedList = formatKeywords(context, component, list);
+        String[] ids = formattedList.split("[,\\s]+");
+        StringBuilder buffer = new StringBuilder();
+
+        for (int i = 0; i < ids.length; i++) {
+            if (i != 0) buffer.append(" ");
+            String id = ids[i].trim();
+
+            if (id.equals("@all") || id.equals("@none")) buffer.append(id);
+            else {
+
+                UIComponent comp = component.findComponent(id);
+                if (comp != null) buffer.append(comp.getClientId(context));
+                else {
+                    if (context.getApplication().getProjectStage().equals(ProjectStage.Development)) {
+                        logger.log(Level.INFO, "Cannot find component with identifier \"{0}\" in view.", id);
+                    }
+                    buffer.append(id);
+                }
             }
         }
-        String defaultKey = attName + "_defaultValues";
-        Map defaultValues = (Map) sh.get(defaultKey);
-        if (defaultValues != null) {
-            if (defaultValues.containsKey("defValue")) {
-                return superValue;
-            }
+
+        return buffer.toString();
+    }
+    public static String formatKeywords(FacesContext facesContext, UIComponent component, String processRequest) {
+        String process = processRequest;
+
+        if (process.indexOf("@this") != -1)
+            process = process.replaceFirst("@this", component.getClientId(facesContext));
+        if (process.indexOf("@form") != -1) {
+            UIComponent form = findParentForm(component);
+            if (form == null)
+                throw new FacesException("Component " + component.getClientId(facesContext) + " needs to be enclosed in a form");
+
+            process = process.replaceFirst("@form", form.getClientId(facesContext));
         }
-        return defaultValue;
+        if (process.indexOf("@parent") != -1)
+            process = process.replaceFirst("@parent", component.getParent().getClientId(facesContext));
+
+        return process;
     }
 
     /**

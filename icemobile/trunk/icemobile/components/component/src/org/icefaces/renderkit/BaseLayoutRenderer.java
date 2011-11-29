@@ -1,4 +1,4 @@
-package org.icefaces.component.utils;
+package org.icefaces.renderkit;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

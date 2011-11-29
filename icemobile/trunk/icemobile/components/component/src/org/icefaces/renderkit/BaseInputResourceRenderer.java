@@ -13,20 +13,17 @@
  * See the License for the specific language governing permissions an
  * limitations under the License.
  */
-package org.icefaces.component.utils;
+package org.icefaces.renderkit;
 
 import javax.el.ValueExpression;
 import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
-import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.io.File;
 
 
 /**

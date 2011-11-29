@@ -15,25 +15,23 @@
  */
 package org.icefaces.component.inputText;
 
-import org.icefaces.component.utils.BaseInputRenderer;
+import org.icefaces.renderkit.BaseInputRenderer;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.PassThruAttributeWriter;
 import org.icefaces.render.MandatoryResourceComponent;
-import sun.java2d.pipe.SpanShapeRenderer;
 
-import javax.el.ValueExpression;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import org.icefaces.component.utils.Utils;
 import java.io.IOException;
 import java.util.Map;
+
+
 import java.util.logging.Logger;
+
 @MandatoryResourceComponent("org.icefaces.component.inputText.InputText")
 public class InputTextRenderer extends BaseInputRenderer {
     private final static Logger logger = Logger.getLogger(InputTextRenderer.class.getName());
@@ -54,8 +52,8 @@ public class InputTextRenderer extends BaseInputRenderer {
             }
             this.setSubmittedValue(inputText, submittedString);
         }
+        decodeBehaviors(facesContext, inputText);
     }
-
 
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
@@ -105,24 +103,35 @@ public class InputTextRenderer extends BaseInputRenderer {
         if (!isDateType) writer.writeAttribute("autocorrect", "off", null);
         else writer.writeAttribute("autocorrect", "on", null);
         writer.writeAttribute("autocapitalize", "off", null);
-        boolean singleSubmit = inputText.isSingleSubmit();
-        if (inputText.isDisabled())
+ //       boolean singleSubmit = inputText.isSingleSubmit();
+        boolean readOnly = inputText.isReadonly();
+        boolean disabled = inputText.isDisabled();
+        if (disabled)
             writer.writeAttribute("disabled", "disabled", null);
-        if (inputText.isReadonly())
+        if (readOnly)
             writer.writeAttribute("readonly", "readonly", null);
         //still need to implement styleClass
-        String jsCall = "ice.se(event, '" + clientId + "');";
 
-        if (singleSubmit){
-            writer.writeAttribute("onchange", jsCall, null);
-        }
         if (!componentType.equals("textarea")) {
             writer.writeAttribute(HTML.VALUE_ATTR, valueToRender, HTML.VALUE_ATTR);
         } else {
             writer.write(valueToRender);
         }
-        writer.endElement(componentType);
+        //ClientBehaviors
+        String event = inputText.getDefaultEventName(facesContext);
+        ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
+        boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
 
+        if (hasBehaviors){
+              String cbhCall = this.buildAjaxRequest(facesContext, cbh, event);
+              writer.writeAttribute(event, cbhCall, null);
+        }
+        else if (inputText.isSingleSubmit()){
+            String jsCall = "ice.se(event, '" + clientId + "');";
+            writer.writeAttribute(event, jsCall, null);
+        }
+        writer.endElement(componentType);
     }
+
 
 }
