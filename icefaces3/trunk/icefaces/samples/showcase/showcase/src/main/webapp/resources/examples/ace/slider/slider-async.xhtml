@@ -66,7 +66,7 @@
                     max="#{sliderAsync.maxValue}"
                     value="#{sliderAsync.sliderValue}"
                     axis="#{sliderAsync.xAxis ? 'x' : 'y'}">
-                    <ace:ajax event="slideend" execute="@this" render="@form" />
+                    <ace:ajax event="slideEnd" execute="@this" render="@form" />
                 </ace:sliderEntry>
                     
                     <h:outputText value="Value:" /><ice:outputText value="#{sliderAsync.sliderValue}" />
