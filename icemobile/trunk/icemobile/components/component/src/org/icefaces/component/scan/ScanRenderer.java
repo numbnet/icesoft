@@ -20,11 +20,15 @@ package org.icefaces.component.scan;
 import org.icefaces.component.utils.BaseInputRenderer;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
+import org.icefaces.impl.application.AuxUploadSetup;
+import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.ResponseWriter;
+import java.net.URLEncoder;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -43,8 +47,13 @@ public class ScanRenderer extends BaseInputRenderer {
         Map requestParameterMap = facesContext.getExternalContext()
                 .getRequestParameterMap();
         String valueId = clientId + "-text";
-        if (requestParameterMap.containsKey(valueId)) {
-            String submittedString = String.valueOf(requestParameterMap.get(valueId));
+        Object submitted = requestParameterMap.get(valueId);
+        if (null == submitted)  {
+            Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
+            submitted = auxMap.get(valueId);
+        }
+        if (null != submitted) {
+            String submittedString = String.valueOf(submitted);
             if (submittedString != null){
                 Object convertedValue = this.getConvertedValue(facesContext, uiComponent, submittedString);
                 this.setSubmittedValue(scan, convertedValue);
@@ -60,7 +69,9 @@ public class ScanRenderer extends BaseInputRenderer {
         Scan scan = (Scan) uiComponent;
         boolean disabled = scan.isDisabled();
         // span as per MobI-18
-        if (!EnvUtils.isEnhancedBrowser(facesContext)) {
+        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
+        if (!isEnhanced && !isAuxUpload) {
             writer.startElement(HTML.SPAN_ELEM, uiComponent);
             writer.startElement(HTML.INPUT_ELEM, uiComponent);
             writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_TEXT, null);
@@ -82,7 +93,24 @@ public class ScanRenderer extends BaseInputRenderer {
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
-        writer.writeAttribute("onclick", "ice.scan('" + clientId + "');", null);
+        String script;
+        if (isAuxUpload)  {
+            ExternalContext externalContext = facesContext.getExternalContext();
+            AuxUploadSetup auxUpload = (AuxUploadSetup) externalContext
+                .getApplicationMap().get("auxUpload");
+            
+            String sessionID = EnvUtils.getSafeSession(facesContext).getId();
+            String uploadURL = auxUpload.getUploadURL();
+            String command = "scan?id=" + clientId;
+            script = "window.location='icemobile://c=" +
+                    URLEncoder.encode(command) + 
+                    "&r='+escape(window.location)+'&" +
+                    "JSESSIONID=" + sessionID + "&u=" + 
+                    URLEncoder.encode(uploadURL) + "';";
+        } else {
+            script = "ice.scan('" + clientId + "');";
+        }
+        writer.writeAttribute("onclick", script, null);
         writer.endElement(HTML.INPUT_ELEM);
     }
 
