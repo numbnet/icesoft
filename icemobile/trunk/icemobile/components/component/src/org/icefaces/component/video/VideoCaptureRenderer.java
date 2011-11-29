@@ -19,14 +19,18 @@ package org.icefaces.component.video;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
+import org.icefaces.impl.application.AuxUploadResourceHandler;
+import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.component.utils.BaseInputResourceRenderer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.ResponseWriter;
-
 import javax.faces.event.ValueChangeEvent;
+
+import java.net.URLEncoder;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -73,8 +77,14 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
             if (EnvUtils.isEnhancedBrowser(facesContext)){
                partUploadName+="-file";
             }
+            if (EnvUtils.isAuxUploadBrowser(facesContext)) {
+               partUploadName+="-file";
+            }
             Part part = request.getPart(partUploadName);
-
+            if (null == part)  {
+                Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
+                part = (Part) auxMap.get(partUploadName);
+            }
             if (part !=null){
                 String contentType = part.getContentType();
                 String fileName = java.util.UUID.randomUUID().toString();
@@ -110,9 +120,11 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         VideoCapture video = (VideoCapture) uiComponent;
+        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
         // root element
         boolean disabled = video.isDisabled();
-        if (!EnvUtils.isEnhancedBrowser(facesContext)) {
+        if (!isEnhanced && !isAuxUpload) {
             writer.startElement(HTML.SPAN_ELEM, uiComponent);
             writer.startElement(HTML.INPUT_ELEM, uiComponent);
             writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_FILE, null);
@@ -138,45 +150,62 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
         int width = video.getMaxwidth();
         int height = video.getMaxheight();
         int maxtime = video.getMaxtime();
-        //default value of unset in params is Integer.MIN_VALUE
-        String params = "'" + clientId + "'";
-        //only commonality between iPhone and android is duration or maxTime
-        //simplify this scripting when devices have this implemented and is final api
-        int unset = Integer.MIN_VALUE;
-        int numParams = 0;
-        String attributeSeparator = "&";
-        if (maxtime != unset || width != unset || height != unset) {
-            params += ",'";
-        }
-        if (maxtime != unset) {
-            if (numParams > 0) {
-                params += attributeSeparator;
+
+        String script;
+        if (isAuxUpload)  {
+            ExternalContext externalContext = facesContext.getExternalContext();
+            AuxUploadSetup auxUpload = (AuxUploadSetup) externalContext
+                .getApplicationMap().get("auxUpload");
+            
+            String sessionID = EnvUtils.getSafeSession(facesContext).getId();
+            String uploadURL = auxUpload.getUploadURL();
+            String command = "camcorder?id=" + clientId;
+            script = "window.location='icemobile://c=" +
+                    URLEncoder.encode(command) + 
+                    "&r='+escape(window.location)+'&" +
+                    "JSESSIONID=" + sessionID + "&u=" + 
+                    URLEncoder.encode(uploadURL) + "';";
+        } else {
+            //default value of unset in params is Integer.MIN_VALUE
+            String params = "'" + clientId + "'";
+            //only commonality between iPhone and android is duration or maxTime
+            //simplify this scripting when devices have this implemented and is final api
+            int unset = Integer.MIN_VALUE;
+            int numParams = 0;
+            String attributeSeparator = "&";
+            if (maxtime != unset || width != unset || height != unset) {
+                params += ",'";
             }
-            params += "maxtime=" + maxtime;
-            numParams++;
-        }
-        if (width != Integer.MIN_VALUE) {
-            if (numParams > 0) {
-                params += attributeSeparator;
+            if (maxtime != unset) {
+                if (numParams > 0) {
+                    params += attributeSeparator;
+                }
+                params += "maxtime=" + maxtime;
+                numParams++;
             }
-            params += "maxwidth=" + width;
-            numParams++;
-        }
-        if (height != Integer.MIN_VALUE) {
-            if (numParams > 0) {
-                params += attributeSeparator;
+            if (width != Integer.MIN_VALUE) {
+                if (numParams > 0) {
+                    params += attributeSeparator;
+                }
+                params += "maxwidth=" + width;
+                numParams++;
             }
-            params += "maxheight=" + height;
-            numParams++;
+            if (height != Integer.MIN_VALUE) {
+                if (numParams > 0) {
+                    params += attributeSeparator;
+                }
+                params += "maxheight=" + height;
+                numParams++;
+            }
+            if (numParams > 0) {
+                params += "'";
+            }
+            script = "ice.camcorder(" + params + ");";
         }
-        if (numParams > 0) {
-            params += "'";
-        }
-        String finalScript = "ice.camcorder(" + params + ");";
         if (video.isDisabled()) {
             writer.writeAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR, null);
         }
-        writer.writeAttribute(HTML.ONCLICK_ATTR, finalScript, null);
+        writer.writeAttribute(HTML.ONCLICK_ATTR, script, null);
         writer.endElement("input");
 
     }
