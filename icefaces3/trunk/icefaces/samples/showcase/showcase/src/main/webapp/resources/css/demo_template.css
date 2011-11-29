@@ -29,14 +29,13 @@ body {
     text-align: center;  /* IE 6 Fix */
 }
 
-p {
-    text-align: left;
+p+ul {
     line-height: 20px;
+    margin-left: 20px;
 }
 
-p+ul {
+p {
     text-align: left;
-    margin-left: 20px;
     line-height: 20px;
 }
 
@@ -59,7 +58,7 @@ a:link, a:visited {
 
 
 #container { 
-	width: 980px;
+	width: 1020px;
 	margin: 0 auto; 
 } 
 
@@ -158,8 +157,8 @@ a:link, a:visited {
 	vertical-align: top;
 	display: inline-block;
     margin-right: 10px;
-    width: 190px;
-    font-size: 9pt;
+    width: 230px;
+    font-size: 8pt;
 }
 .menuContainer {
     -moz-border-radius: 5px;
@@ -197,10 +196,12 @@ a:link, a:visited {
     /*border: 1px solid #ECECEC; Styling preference, and %100 width hides right border*/
     width: 100%;
 }
-.example h2 { 
-	font-weight: bold; 
-	font-size: 15px; 
-    margin: 6px;
+.example h2 {
+                
+    font-weight: bold; 
+    font-size: 14px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 /* Example Element Containers */
 .example span, .example div { margin: 6px; font-size: 10pt;} 

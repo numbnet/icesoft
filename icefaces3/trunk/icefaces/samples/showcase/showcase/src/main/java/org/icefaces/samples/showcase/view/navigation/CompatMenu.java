@@ -24,6 +24,7 @@ package org.icefaces.samples.showcase.view.navigation;
 import org.icefaces.samples.showcase.example.compat.autocomplete.AutocompleteBean;
 import org.icefaces.samples.showcase.example.compat.border.BorderBean;
 import org.icefaces.samples.showcase.example.compat.calendar.CalendarBean;
+import org.icefaces.samples.showcase.example.compat.overview.IceSuiteOverviewBean;
 import org.icefaces.samples.showcase.example.compat.chart.ChartBean;
 import org.icefaces.samples.showcase.example.compat.collapsible.CollapsibleBean;
 import org.icefaces.samples.showcase.example.compat.columns.ColumnsBean;
@@ -61,7 +62,8 @@ import java.io.Serializable;
 
 @Menu(
         title = "menu.compat.title", menuLinks = {
-            @MenuLink(title = "menu.compat.columns.title", isDefault = true, exampleBeanName = ColumnsBean.BEAN_NAME),
+            @MenuLink(title = "menu.compat.iceSuiteOverview.title", isDefault = true, exampleBeanName = IceSuiteOverviewBean.BEAN_NAME),
+            @MenuLink(title = "menu.compat.columns.title", exampleBeanName = ColumnsBean.BEAN_NAME),
             @MenuLink(title = "menu.compat.exporter.title", exampleBeanName = ExporterBean.BEAN_NAME),
             @MenuLink(title = "menu.compat.paginator.title", exampleBeanName = PaginatorBean.BEAN_NAME),
             @MenuLink(title = "menu.compat.dataTable.title", exampleBeanName = DataTableBean.BEAN_NAME),

@@ -18,7 +18,7 @@
  *
  * Contributor(s): _____________________.
  */
-package org.icefaces.samples.showcase.example.ace.overview;
+package org.icefaces.samples.showcase.example.compat.overview;
 
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
@@ -27,37 +27,38 @@ import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 
 @ComponentExample(
-        title = "example.ace.aceSuiteOverview.title",
-        description = "example.ace.aceSuiteOverview.description",
-        example = "/resources/examples/ace/aceSuiteOverview/aceSuiteOverview.xhtml"
+        title = "example.compat.iceSuiteOverview.title",
+        description = "example.compat.iceSuiteOverview.description",
+        example = "/resources/examples/compat/iceSuiteOverview/iceSuiteOverview.xhtml"
 )
 @ExampleResources(
         resources ={
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
-                    title="aceSuiteOverview.xhtml",
-                    resource = "/resources/examples/ace/aceSuiteOverview/aceSuiteOverview.xhtml"),
+                    title="iceSuiteOverview.xhtml",
+                    resource = "/resources/examples/compat/iceSuiteOverview/iceSuiteOverview.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="AceSuiteOverview.java",
+                    title="IceSuiteOverview.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/overview/AceSuiteOverviewBean.java")
+                    "/example/compat/overview/IceSuiteOverviewBean.java")
         }
 )
 @Menu(
-	title = "menu.ace.aceSuiteOverview.subMenu.title",
+	title = "menu.compat.iceSuiteOverview.subMenu.title",
 	menuLinks = {
-                    @MenuLink(title = "menu.ace.aceSuiteOverview.subMenu.main", isDefault = true, exampleBeanName = AceSuiteOverviewBean.BEAN_NAME)
+                    @MenuLink(title = "menu.compat.iceSuiteOverview.subMenu.main", isDefault = true, exampleBeanName = IceSuiteOverviewBean.BEAN_NAME)
                 }
 )
-@ManagedBean(name= AceSuiteOverviewBean.BEAN_NAME)
+
+@ManagedBean(name= IceSuiteOverviewBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class AceSuiteOverviewBean extends ComponentExampleImpl<AceSuiteOverviewBean> implements Serializable 
+public class IceSuiteOverviewBean extends ComponentExampleImpl<IceSuiteOverviewBean> implements Serializable 
 {
-    public static final String BEAN_NAME = "aceSuiteOverview";
+    public static final String BEAN_NAME = "iceSuiteOverview";
     
-    public AceSuiteOverviewBean() 
+    public IceSuiteOverviewBean() 
     {
-        super(AceSuiteOverviewBean.class);
+        super(IceSuiteOverviewBean.class);
     }
 }

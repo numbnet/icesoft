@@ -79,78 +79,45 @@
         <!--
         ~ ACCORDION PANEL MAIN MENU IMPLEMENTATION UNDER CONSTRUCTION
          -->
-        <ui:remove>
         <h2>#{msgs[navigationModel.currentComponentGroup.title]}</h2>
-        <ace:accordion>
-            
-            <ace:accordionPane title="#{msgs[navigationModel.currentComponentGroup.menuLinks[0].title]}">
-                <h:link     title="#{msgs[navigationModel.currentComponentGroup.menuLinks[0].title]}"
-                                outcome="showcase"
-                                disabled="#{navigationModel.currentComponentGroup.menuLinks[0].disabled}"
-                                includeViewParams="true">
-                    
-                        <f:param name="grp" value="#{navigationModel.currentComponentGroup.beanName}"/>
-                        <f:param name="exp" value="#{navigationModel.currentComponentGroup.menuLinks[0].exampleBeanName}"/>
-                        #{msgs[navigationModel.currentComponentGroup.menuLinks[0].title]}
-                </h:link>
-                <br/>
-                <h:dataTable var="subMenuLink"
-                                      value="#{navigationModel.currentComponentExample.subMenuLinks}">
-                    <h:column>
-                        <ui:param name="beanName" value="#{subMenuLink.exampleBeanName}.title"/>
-                        <h:link title="#{msgs[subMenuLink.title]}" 
-                                outcome="showcase" 
-                                disabled="#{subMenuLink.disabled}"
-                                includeViewParams="true"
-                                class="#{(subMenuLink.exampleBeanName eq navigationModel.componentExample) ||
-                                         (navigationModel.componentExample eq null and subMenuLink['default'])
-                                       ? 'selected'
-                                       : ''}">
-                            <f:param name="grp" value="#{navigationModel.currentComponentGroup.beanName}"/>
-                            <f:param name="exp" value="#{subMenuLink.exampleBeanName}"/>
-                            #{msgs[subMenuLink.title]}
-                        </h:link>
-                    </h:column>
-                </h:dataTable>
-
-            </ace:accordionPane>
-            
-            <ace:accordionPane title="#{msgs[navigationModel.currentComponentGroup.menuLinks[1].title]}">
-                <h:link     title="#{msgs[navigationModel.currentComponentGroup.menuLinks[1].title]}"
-                                outcome="showcase"
-                                disabled="#{navigationModel.currentComponentGroup.menuLinks[1].disabled}"
-                                includeViewParams="true"
-                                >
-                        <f:param name="grp" value="#{navigationModel.currentComponentGroup.beanName}"/>
-                        <f:param name="exp" value="#{navigationModel.currentComponentGroup.menuLinks[1].exampleBeanName}"/>
-                        #{msgs[navigationModel.currentComponentGroup.menuLinks[1].title]}
-                </h:link>
-                <br/>
-                <h:dataTable var="subMenuLink"
-                                      value="#{navigationModel.currentComponentExample.subMenuLinks}">
-                    <h:column>
-                        <ui:param name="beanName" value="#{subMenuLink.exampleBeanName}.title"/>
-                        <h:link title="#{msgs[subMenuLink.title]}" 
-                                outcome="showcase" 
-                                disabled="#{subMenuLink.disabled}"
-                                includeViewParams="true"
-                                class="#{(subMenuLink.exampleBeanName eq navigationModel.componentExample) ||
-                                         (navigationModel.componentExample eq null and subMenuLink['default'])
-                                       ? 'selected'
-                                       : ''}">
-                            <f:param name="grp" value="#{navigationModel.currentComponentGroup.beanName}"/>
-                            <f:param name="exp" value="#{subMenuLink.exampleBeanName}"/>
-                            #{msgs[subMenuLink.title]}
-                        </h:link>
-                    </h:column>
-                </h:dataTable>
-            </ace:accordionPane>
+        
+        <h:form>
+            <ace:accordion effect="bounceslide" dynamic="true" paneChangeListener="#{navigationController.onMenuPaneChange}" activeIndex="#{navigationModel.currentActiveTabNumber}">
+                <c:forEach items="#{navigationModel.currentComponentGroup.menuLinks}" var="menuLink">
+                    <ace:accordionPane title="#{msgs[menuLink.title]}">
+                        <f:attribute name="grp" value="#{navigationModel.currentComponentGroup.beanName}"/>
+                        <f:attribute name="exp" value="#{menuLink.exampleBeanName}"/>
+                        <!--Command link implementation below can be replaced via row select listener -->
+                        <h:dataTable var="subMenuLink"
+                                      value="#{navigationModel.currentComponentExample.subMenuLinks}"
+                                      style="font-size: 8pt;">
+                            <h:column>
+                                <ui:param name="beanName" value="#{subMenuLink.exampleBeanName}.title"/>
+                                <h:commandLink actionListener="#{navigationController.navigate}"
+                                                            title="#{msgs[subMenuLink.title]}"
+                                                            disabled="#{subMenuLink.disabled}"
+                                                            class="#{(subMenuLink.exampleBeanName eq navigationModel.componentExample) ||
+                                                                    (navigationModel.componentExample eq null and subMenuLink['default'])
+                                                                    ? 'selected'
+                                                                    : ''}">
+                                    <h:outputText value="#{msgs[subMenuLink.title]}"/>
+                                    <f:attribute name="grp" value="#{navigationModel.currentComponentGroup.beanName}"/>
+                                    <f:attribute name="exp" value="#{subMenuLink.exampleBeanName}"/>
+                                </h:commandLink>
+                            </h:column>
+                        </h:dataTable>
+                    </ace:accordionPane>
+            </c:forEach>    
         </ace:accordion>
-        </ui:remove>
+        </h:form>
         <!--
         ~ ACCORDION PANEL MAIN MENU IMPLEMENTATION END
          -->
          
+         <!--
+        ~ Regular menu via links (swap ui:remove with accordion implementation to activate, also uncomment code responsible for animation effect firing in NavigaionController.navigate(String, String))
+         -->
+         <ui:remove>
         <h2>#{msgs[navigationModel.currentComponentGroup.title]}</h2>
         <ul>
             <!--
@@ -160,9 +127,6 @@
             <ui:repeat var="menuLink"
                        value="#{navigationModel.currentComponentGroup.menuLinks}">
                 <li>
-                    <!--
-                    ~ Value expression says - if none of the showcases selected return default set of link objects, otherwise return selected link objects.
-                    -->
                     <c:set var="mainSelected"
                                 value="#{(navigationModel.currentComponentExample['class']['package'] == window[menuLink.exampleBeanName]['class']['package']) ||
                                 (navigationModel.componentExample == null and menuLink['default']) ? 'selected' : '' }"/>
@@ -223,6 +187,7 @@
             </ui:repeat>
             </h:form>
         </ul>
+        </ui:remove>
     </ui:define>
 
     <ui:define name="component-example">
