@@ -18,8 +18,7 @@ package org.icefaces.component.carousel;
 
 
 import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.BaseLayoutRenderer;
-import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.renderkit.BaseLayoutRenderer;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
@@ -27,7 +26,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;

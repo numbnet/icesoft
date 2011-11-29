@@ -18,8 +18,102 @@
 if (!window['mobi']) {
     window.mobi = {};
 }
+mobi.BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
+mobi.PARTIAL_EVENT_PARAM = "javax.faces.partial.event";
+mobi.findForm = function(sourceId){
+     var node = document.getElementById(sourceId);
+     while (node.nodeName != "FORM" && node.parentNode){
+         node=node.parentNode;
+     }
+    ice.log.debug(ice.log, 'parent form node ='+node.name);
+    return node;
+};
+mobi.AjaxRequest = function(cfg) {
 
+    if(cfg.onstart && !cfg.onstart.call(this)) {
+       return;//cancel request
+    }
+    ice.log.debug(ice.log, 'creating ajax request');
+    var form = ice.ace.findForm(cfg.source);
+    if (form){
+        ice.log.debug(ice.log, 'found form with name='+form.name);
+        ice.log.debug(ice.log, ' length of forms ='+form.length);
+    }
 
+    var source = (typeof cfg.source == 'string') ? document.getElementById(cfg.source) : cfg.source;
+    var jsfExecute = cfg.execute || '@all';
+    var jsfRender = cfg.render || '@all';
+
+    ice.fullSubmit(jsfExecute, jsfRender, null, source || form[0], function(parameter) {
+        if(cfg.event) {
+            parameter(ice.ace.BEHAVIOR_EVENT_PARAM, cfg.event);
+
+            var domEvent = cfg.event;
+            if(cfg.event == 'valueChange') {
+                domEvent = 'change';
+            } else if (cfg.event == 'action') {
+                domEvent = 'click';
+            }
+
+            parameter(mobi.PARTIAL_EVENT_PARAM, domEvent);
+        } else {
+            parameter(cfg.source, cfg.source);
+        }
+
+        if(cfg.params) {
+            var cfgParams = cfg.params;
+            for(var p in cfgParams) {
+                parameter(p, cfgParams[p]);
+            }
+        }
+    }, function(onBeforeSubmit, onBeforeUpdate, onAfterUpdate, onNetworkError, onServerError) {
+        var context = {};
+        onAfterUpdate(function(responseXML) {
+            if (cfg.onsuccess && !cfg.onsuccess.call(context, responseXML, null /*status*/, null /*xhr*/)) {
+                return;
+            }
+            mobi.AjaxResponse.call(context, responseXML);
+        });
+        if (cfg.oncomplete) {
+            onAfterUpdate(function(responseXML) {
+                cfg.oncomplete.call(context, null /*xhr*/, null /*status*/, context.args);
+            });
+        }
+        if (cfg.onerror) {
+            onNetworkError(function(responseCode, errorDescription) {
+                cfg.onerror.call(context, null /*xhr*/, responseCode /*status*/, errorDescription /*error description*/)
+            });
+            onServerError(function(responseCode, responseText) {
+                cfg.onerror.call(context, null /*xhr*/, responseCode /*status*/, responseText /*error description*/)
+            });
+        }
+    });
+};
+
+mobi.AjaxResponse = function(responseXML) {
+    var xmlDoc = responseXML.documentElement;
+    var extensions = xmlDoc.getElementsByTagName("extension");
+    //can't do this unless the browser has JSON support ECMAScript 5
+    if (! (typeof(JSON) === 'object' &&
+            typeof(JSON.parse) === 'function')) {
+          // Native JSON parsing is not available.
+        ice.log.debug(ice.log,' do not have JSON support for parsing the response update');
+    }
+    this.args = {};
+    for(var i = 0, l = extensions.length; i < l; i++) {
+        var extension = extensions[i];
+        if (extension.getAttributeNode('aceCallbackParam')) {
+           // var jsonObj = ice.ace.jq.parseJSON(extension.firstChild.data);
+            //no jquery available so assuming ECMAScript 5 JSON
+            var jsonObj = JSON.parse(extension.firstChild.data);
+            for(var paramName in jsonObj) {
+                if(paramName) {
+                    this.args[paramName] = jsonObj[paramName];
+                }
+            }
+        }
+    }
+};
 function html5getViewState(form) {
     if (!form) {
         throw new Error("jsf.getViewState:  form must be set");

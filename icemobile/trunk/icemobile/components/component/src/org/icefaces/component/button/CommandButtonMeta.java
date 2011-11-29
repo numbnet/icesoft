@@ -16,10 +16,10 @@
 
 package org.icefaces.component.button;
 
-import org.icefaces.ace.meta.annotation.Component;
-import org.icefaces.ace.meta.annotation.Property;
-import org.icefaces.ace.meta.annotation.Required;
+import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UICommandMeta;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
 
 @Component(
         tagName = "commandButton",
@@ -36,9 +36,10 @@ import org.icefaces.ace.meta.baseMeta.UICommandMeta;
                 "to be true or false"
 )
 
-
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="click", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+})
 public class CommandButtonMeta extends UICommandMeta {
-
 
     @Property(defaultValue = "false",
             tlddoc = "When singleSubmit is true, triggering an action on this component will submit" +
@@ -68,6 +69,9 @@ public class CommandButtonMeta extends UICommandMeta {
     @Property(tlddoc = "Standard button type, button, submit, img etc.",
             required = Required.no)
     private String type;
+
+    @Property(defaultValue = "false", tlddoc = "immediate as per jsf specs")
+    private boolean immediate;
 
     @Property(defaultValue = "false", tlddoc = "Selected state of button, normally activated when parent component is a button group.")
     // todo move selected state out into CommandButtonGroup model. Would be nice if this was transparent.

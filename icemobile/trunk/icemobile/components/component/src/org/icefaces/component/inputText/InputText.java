@@ -18,6 +18,8 @@ package org.icefaces.component.inputText;
 
 import org.icefaces.component.utils.Attribute;
 
+import javax.faces.context.FacesContext;
+
 public class  InputText extends InputTextBase {
 
     //passthrough attributes for textArea
@@ -105,6 +107,11 @@ public class  InputText extends InputTextBase {
 	public Attribute[] getNumberAttributeNames() {
 		return numberAttributeNames;
 	}
-
+    public String getDefaultEventName(FacesContext facesContext){
+         if (org.icefaces.component.utils.Utils.isTouchEventEnabled(facesContext)) {
+             return "onblur";
+         }
+        else return "onchange";
+    }
 
 }

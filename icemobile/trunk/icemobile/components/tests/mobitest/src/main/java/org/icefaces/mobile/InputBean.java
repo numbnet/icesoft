@@ -164,6 +164,15 @@ public class InputBean implements Serializable {
         val+=checkTestParam("test2Param");
         this.setEventString(val);
     }
+    public void clear() {
+         this.eventString="clear";
+    }
+    public String getTestBool(){
+        if (boolean1){
+            return "have true value";
+        }
+        else return "False switch value";
+    }
 
     public String getEventString() {
         return eventString;
@@ -195,6 +204,7 @@ public class InputBean implements Serializable {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
     public int getNumberInput() {
         return numberInput;
     }

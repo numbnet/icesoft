@@ -13,17 +13,14 @@
  * See the License for the specific language governing permissions an
  * limitations under the License.
  */
-package org.icefaces.component.utils;
+package org.icefaces.renderkit;
 
 import javax.el.ValueExpression;
 import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.model.SelectItem;
-import javax.faces.render.Renderer;
 import java.io.IOException;
-import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,7 +28,7 @@ import java.util.logging.Logger;
 /**
  * copied over from ace project for mobility support.
  */
-public class BaseInputRenderer extends Renderer {
+public class BaseInputRenderer extends CoreRenderer {
     private static Logger logger = Logger.getLogger(BaseInputRenderer.class.getName());
 
 
@@ -61,6 +58,19 @@ public class BaseInputRenderer extends Renderer {
 
         return null;
     }
+
+    /**
+     * used by DateSpinner, TimeSpinner and DateTimeEntry components
+     * @param value
+     * @return
+     */
+    protected boolean isValueBlank(String value) {
+		if(value == null)
+			return true;
+
+		return value.trim().equals("");
+	}
+
 
     @Override
     public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent, Object submittedValue) throws ConverterException {
@@ -194,47 +204,5 @@ public class BaseInputRenderer extends Renderer {
         return null;
     }
 
-    protected List<SelectItem> getSelectItems(FacesContext facesContext, UIInput uiComponent) {
-        List<SelectItem> selectItems = new ArrayList<SelectItem>();
 
-        for (UIComponent child : uiComponent.getChildren()) {
-            if (child instanceof UISelectItem) {
-                UISelectItem uiSelectItem = (UISelectItem) child;
-
-                selectItems.add(new SelectItem(uiSelectItem.getItemValue(), uiSelectItem.getItemLabel()));
-            } else if (child instanceof UISelectItems) {
-                UISelectItems uiSelectItems = ((UISelectItems) child);
-                Object value = uiSelectItems.getValue();
-
-                if (value instanceof SelectItem[]) {
-                    selectItems.addAll(Arrays.asList((SelectItem[]) value));
-                } else if (value instanceof Map) {
-                    Map map = (Map) value;
-
-                    for (Object key : map.keySet()) {
-                        selectItems.add(new SelectItem(map.get(key), String.valueOf(key)));
-                    }
-                } else if (value instanceof Collection) {
-                    Collection collection = (Collection) value;
-                    String var = (String) uiSelectItems.getAttributes().get("var");
-
-                    if (var != null) {
-                        for (Object object : collection) {
-                            facesContext.getExternalContext().getRequestMap().put(var, object);
-                            String itemLabel = (String) uiSelectItems.getAttributes().get("itemLabel");
-                            Object itemValue = uiSelectItems.getAttributes().get("itemValue");
-
-                            selectItems.add(new SelectItem(itemValue, itemLabel));
-                        }
-                    } else {
-                        for (Object aCollection : collection) {
-                            selectItems.add((SelectItem) aCollection);
-                        }
-                    }
-                }
-            }
-        }
-
-        return selectItems;
-    }
 }

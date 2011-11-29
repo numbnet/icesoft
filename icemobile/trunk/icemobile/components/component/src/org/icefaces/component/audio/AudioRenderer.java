@@ -15,9 +15,9 @@
  */
 package org.icefaces.component.audio;
 
-import org.icefaces.component.utils.BaseResourceRenderer;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.PassThruAttributeWriter;
+import org.icefaces.renderkit.BaseResourceRenderer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

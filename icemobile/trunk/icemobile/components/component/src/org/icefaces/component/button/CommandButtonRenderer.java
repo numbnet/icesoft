@@ -17,7 +17,9 @@ package org.icefaces.component.button;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
+import org.icefaces.renderkit.CoreRenderer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
@@ -30,7 +32,7 @@ import java.util.logging.Logger;
 import java.util.List;
 
 
-public class CommandButtonRenderer extends Renderer {
+public class CommandButtonRenderer extends CoreRenderer {
     private static Logger logger = Logger.getLogger(CommandButtonRenderer.class.getName());
     List <UIParameter> uiParamChildren;
 
@@ -120,17 +122,24 @@ public class CommandButtonRenderer extends Renderer {
         if (uiParamChildren != null) {
              params += ","+Utils.asParameterString(uiParamChildren);
         }
+        ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
+        boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
+
         if (commandButton.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         } else {
             StringBuilder builder = new StringBuilder(255);
-            if (singleSubmit) {
+            if (hasBehaviors){
+                String cbhCall = this.buildAjaxRequest(facesContext, cbh, commandButton.getDefaultEventName());
+                builder.append(cbhCall);
+            } else if (singleSubmit) {
                 builder.append("ice.se(event, ").append(params).append(");");
-            } else {
+            } else {//default is standard submit
                 builder.append("ice.s(event, ").append(params).append(");");
             }
             writer.writeAttribute(HTML.ONCLICK_ATTR, builder.toString(), null);
         }
+
         writer.endElement(HTML.INPUT_ELEM);
     }
 }

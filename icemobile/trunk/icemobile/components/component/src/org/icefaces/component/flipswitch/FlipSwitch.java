@@ -50,5 +50,8 @@ public class FlipSwitch extends FlipSwitchBase {
 		return booleanAttNames;
 	}
 
+ /*   public String getDefaultEventName(){
+        return "activate";
+    } */
 
 }

@@ -22,7 +22,7 @@ import org.icefaces.component.utils.Utils;
 import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.util.EnvUtils;
-import org.icefaces.component.utils.BaseInputResourceRenderer;
+import org.icefaces.renderkit.BaseInputResourceRenderer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -34,7 +34,6 @@ import java.net.URLEncoder;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

@@ -22,6 +22,9 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+
 
 @Component(
         tagName = "inputText",
@@ -39,6 +42,10 @@ import javax.faces.application.ResourceDependency;
 
 @ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="blur", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all"),
+	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
 })
 public class InputTextMeta extends UIInputMeta {
 
