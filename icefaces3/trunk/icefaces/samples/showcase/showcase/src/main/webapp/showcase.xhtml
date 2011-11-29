@@ -82,7 +82,7 @@
         <h2>#{msgs[navigationModel.currentComponentGroup.title]}</h2>
         
         <h:form>
-            <ace:accordion effect="bounceslide" dynamic="true" paneChangeListener="#{navigationController.onMenuPaneChange}" activeIndex="#{navigationModel.currentActiveTabNumber}">
+            <ace:accordion effect="bounceslide" dynamic="true" paneChangeListener="#{navigationController.onMenuPaneChange}" activeIndex="#{navigationModel.activePaneIndex}">
                 <c:forEach items="#{navigationModel.currentComponentGroup.menuLinks}" var="menuLink">
                     <ace:accordionPane title="#{msgs[menuLink.title]}">
                         <f:attribute name="grp" value="#{navigationModel.currentComponentGroup.beanName}"/>
