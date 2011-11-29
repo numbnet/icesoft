@@ -117,7 +117,8 @@ public class SliderEntryRenderer extends CoreRenderer{
 		if (length.toLowerCase().indexOf("px") == -1) {
 			length += "px";
 		}
-		style += ";width:" + length + ";";
+		String dimension = "y".equals(slider.getAxis()) ? "height" : "width";
+		style += ";" + dimension + ":" + length + ";";
 		writer.writeAttribute("style", style , null);
 		if(slider.getStyleClass() != null) writer.writeAttribute("class", slider.getStyleClass(), null);
 		
@@ -150,6 +151,11 @@ public class SliderEntryRenderer extends CoreRenderer{
 		writer.write(",step:" + step);
 		String orientation = "y".equals(slider.getAxis()) ? "vertical" : "horizontal";
 		writer.write(",orientation:'" + orientation + "'");
+		String length = slider.getLength();
+		if (length.toLowerCase().indexOf("px") == -1) {
+			length += "px";
+		}
+		writer.write(",length:'" + length + "'");
 		
 		Integer tabindex = slider.getTabindex();
 		if (tabindex != null) {
