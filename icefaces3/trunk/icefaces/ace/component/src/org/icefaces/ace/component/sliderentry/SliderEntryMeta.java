@@ -64,7 +64,7 @@ import javax.el.MethodExpression;
 	@ClientEvent(name="slideStart", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
 	@ClientEvent(name="slide", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
 	@ClientEvent(name="slideEnd", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
+}, defaultEvent="slideEnd")
 public class SliderEntryMeta extends UIComponentBaseMeta {
 
 	@Property(tlddoc="")

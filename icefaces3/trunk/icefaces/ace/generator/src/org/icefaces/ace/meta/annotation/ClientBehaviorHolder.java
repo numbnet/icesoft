@@ -28,4 +28,6 @@ import java.lang.annotation.Target;
 public @interface ClientBehaviorHolder {
     
     ClientEvent[] events();
+	
+    String defaultEvent() default "";
 }

@@ -46,7 +46,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
+}, defaultEvent="activate")
 public class PrinterMeta extends UIComponentBaseMeta {
 
 	@Property(name="for", tlddoc="Specifies the id of the component to print.")

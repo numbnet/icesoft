@@ -54,7 +54,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
+}, defaultEvent="activate")
 public class PushButtonMeta extends UICommandMeta {
     
     @Property(tlddoc=" A localized user presentable name for this component. Used by aria.")
