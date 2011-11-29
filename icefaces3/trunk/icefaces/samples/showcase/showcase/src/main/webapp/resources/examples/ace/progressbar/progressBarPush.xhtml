@@ -43,11 +43,18 @@
                                                    usePolling="true"
                                                    pollingInterval="2000"
                                                    value="#{progressBarPush.progressValue}"
+                                                   onChangeUpdate="messages"
+                                                   onCompleteUpdate="messages"
                                                    completeListener="#{progressBarPush.completeListener}">
                     </ace:progressBar>
                     
                    <h:panelGroup>                                
-                       <h:commandButton value="start" onclick="progressBar.start();" action="#{progressBarPush.startProgress}"/>
+                       <h:commandButton value="start" onclick="progressBar.start();" action="#{progressBarPush.startProgress}">
+                           <f:ajax execute="@this" render="@none"/>
+                       </h:commandButton>
+                       <h:commandButton value="reset" type="button" onclick="progressBar.cancel();">
+                           <f:ajax execute="@none" render="@none"/>
+                       </h:commandButton>
                    </h:panelGroup>
                 </h:panelGrid>
             </ace:panel>
