@@ -26,7 +26,6 @@ import org.icefaces.samples.showcase.metadata.context.Menu;
 import org.icefaces.samples.showcase.util.FacesUtils;
 import org.icefaces.util.EnvUtils;
 
-//import javax.faces.bean.ViewScoped; - revision 29330 version
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
@@ -34,7 +33,6 @@ import javax.faces.context.FacesContext;
 import java.io.Serializable;
 
 @ManagedBean(name = NavigationModel.BEAN_NAME)
-//@ViewScoped - revision 29330 version
 @CustomScoped(value = "#{window}")
 public class NavigationModel implements Serializable {
 
@@ -47,7 +45,8 @@ public class NavigationModel implements Serializable {
 
     public static final String GROUP_KEY = "org.icefaces.samples.showcase.group";
     public static final String EXAMPLE_KEY = "org.icefaces.samples.showcase.example";
-
+    public static final String DEFAULT_VIEW_ID = "/showcase.jsf";
+    public static final int DEFAULT_MENU_TAB_INDEX = 0;
     // references to resolved menu and examples.
     private Menu currentComponentGroup;
     private ComponentExampleImpl currentComponentExample;
@@ -57,9 +56,11 @@ public class NavigationModel implements Serializable {
     
     //if set to true Source code panel in UI will stay expanded
     private boolean sourceCodeToggleStatus = false;
-    //if set to true Source code panel will not be rendered (usefull for Suite Overview Page)
-    private boolean renderSourceCodePanel =true;
-
+    //if set to false page will be displayed as Suite Overview Page (only description will be shown in the example area)
+    private boolean renderAsExample = true;
+    //saves selected tab number between redirects (if selected tab number is not saved, accordion menu will reset itself to the default index of 0)
+    private int currentActiveTabNumber = DEFAULT_MENU_TAB_INDEX;
+    
     public NavigationModel() {
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext ec = fc.getExternalContext();
@@ -85,69 +86,6 @@ public class NavigationModel implements Serializable {
         }
     }
     
-    
-//    IMPLEMENTATION OF THE ACCORDION PANEL SUITE MENU METHODS
-//    MUST BE MOVED TO NavigationController.navigate() method
-//    DO NOT REMOVE ! UNDER CONSTRUCTION    
-//    public void handlePaneChange(AccordionPaneChangeEvent event)
-//    {
-//          String tabId = event.getTab().getId();
-//          System.out.println("PANE CHANGE ID:"+tabId);
-////        //Invoke redirect
-////        FacesContext context = FacesContext.getCurrentInstance();
-////        ExternalContext extContext = context.getExternalContext();
-////        String viewId = getView();
-////        try {
-////            
-////                String charEncoding = extContext.getRequestCharacterEncoding();
-////                
-////                String groupParamName = URLEncoder.encode(GROUP_PARAM, charEncoding);
-////                String  groupParamValue = URLEncoder.encode(getGroupParamValue(event.getTab()), charEncoding);
-////                String exampleParamName = URLEncoder.encode(EXAMPLE_PARAM, charEncoding);
-////                String  exampleParamValue = URLEncoder.encode(getExampleParamValue(event.getTab()), charEncoding);
-////                
-////                viewId = extContext.getRequestContextPath() + viewId + '?' + groupParamName
-////                                + "=" + groupParamValue + "&"+exampleParamName+ "=" + exampleParamValue;
-////                
-////                String urlLink = context.getExternalContext().encodeActionURL(viewId);
-////                extContext.redirect(urlLink);
-////        } catch (IOException e) {
-////                extContext.log(getClass().getName() + ".invokeRedirect", e);
-////        }
-////        
-//    }
-//    
-//    private String getView() {
-//        String viewId = "/showcase.jsf"; // or look this up somewhere
-//        return viewId;
-//    }
-//    private String getGroupParamValue(AccordionPane tab)
-//    {
-//        Object param = tab.getAttributes().get("groupParamValue");
-//        return null;
-//    }
-//    private String getExampleParamValue(AccordionPane tab)
-//    {
-//        Object param = tab.getAttributes().get("exampleParamValue");
-//        return null;
-//    }
-
-    //    public void viewEvent() {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        Map map = context.getExternalContext().getRequestParameterMap();
-//        componentGroup = (String) map.get("grp");
-//        componentExample = (String) map.get("exp");
-//    }
-
-//    //    @PostConstruct
-//    public void initMetaData() {
-//        // assign default navigation
-//        currentComponentGroup = (AceMenu) FacesUtils.getManagedBean(DEFAULT_MENU);
-//        String beanName = currentComponentGroup.getDefaultExample().getExampleBeanName();
-//        currentComponentExample = (ComponentExampleImpl) FacesUtils.getManagedBean(beanName);
-//    }
-//    IMPLEMENTATION OF THE ACCORDION PANEL SUITE MENU END
-
     public Menu getCurrentComponentGroup() {
         return currentComponentGroup;
     }
@@ -187,11 +125,20 @@ public class NavigationModel implements Serializable {
     public void setSourceCodeToggleStatus(boolean sourceCodeToggleStatus) {
         this.sourceCodeToggleStatus = sourceCodeToggleStatus;
     }
-    public boolean isRenderSourceCodePanel() {
-        return renderSourceCodePanel;
+
+    public boolean isRenderAsExample() {
+        return renderAsExample;
     }
 
-    public void setRenderSourceCodePanel(boolean renderSourceCodePanel) {
-        this.renderSourceCodePanel = renderSourceCodePanel;
+    public void setRenderAsExample(boolean renderAsExample) {
+        this.renderAsExample = renderAsExample;
+    }
+
+    public int getCurrentActiveTabNumber() {
+        return currentActiveTabNumber;
+    }
+
+    public void setCurrentActiveTabNumber(int currentActiveTabNumber) {
+        this.currentActiveTabNumber = currentActiveTabNumber;
     }
 }

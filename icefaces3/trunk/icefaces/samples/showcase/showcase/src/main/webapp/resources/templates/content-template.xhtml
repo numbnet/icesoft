@@ -37,13 +37,13 @@ Available ui:params to pass:
             <div class="desc">
                 <ice:outputText value="#{description}" escape="false" nospan="true"/>
             </div>
-            <div class="instance">
+            <h:panelGroup layout="block" styleClass="instance" rendered="#{navigationModel.renderAsExample}">
                 <ui:insert name="example"/>
-            </div>
+            </h:panelGroup>
         </div>
         </ace:panel>
         
-        <h:form id="sourceCodeForm" rendered="#{navigationModel.renderSourceCodePanel}">
+        <h:form id="sourceCodeForm" rendered="#{navigationModel.renderAsExample}">
                 
                 <hr style="margin-top: 10px; margin-bottom: 10px;"/>
                 
