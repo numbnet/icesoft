@@ -177,19 +177,19 @@ public class NavigationController implements Serializable {
     //If example = regular showcase, set active acordion tab based on redirect request parameters and display full showcase (with description, example content and source code)
     private void renderUIbasedOnExample(String exampleDescription, NavigationModel navigationModel)
     {
-        int activeTabIndex = NavigationModel.DEFAULT_MENU_TAB_INDEX;
+        int index = NavigationModel.DEFAULT_MENU_TAB_INDEX;
         if(exampleDescription.equals(AceSuiteOverviewBean.BEAN_NAME) || exampleDescription.equals(IceSuiteOverviewBean.BEAN_NAME))
         {
             navigationModel.setRenderAsExample(false);
             //set accordion menu tab to the first one:
-            navigationModel.setCurrentActiveTabNumber(activeTabIndex);
+            navigationModel.setActivePaneIndex(index);
         }
         else
         {
             navigationModel.setRenderAsExample(true);
             //set accordion menu tab
-            activeTabIndex = findNewActiveTabIndex(exampleDescription, navigationModel);
-            navigationModel.setCurrentActiveTabNumber(activeTabIndex);
+            index = findActivePaneIndex(exampleDescription, navigationModel);
+            navigationModel.setActivePaneIndex(index);
         }
     }
 
@@ -230,7 +230,7 @@ public class NavigationController implements Serializable {
         }
     }
     
-    private int findNewActiveTabIndex(String exampleDescription, NavigationModel navigationModel) 
+    private int findActivePaneIndex(String exampleDescription, NavigationModel navigationModel) 
     {
          ArrayList<MenuLink> currentMenuStructure = navigationModel.getCurrentComponentGroup().getMenuLinks();
          int tabIndex = 0;
@@ -238,10 +238,14 @@ public class NavigationController implements Serializable {
          {
             if(menuItem.getExampleBeanName().equals(exampleDescription))
             {
-                navigationModel.setCurrentActiveTabNumber(tabIndex);
                 return tabIndex;
             }
             tabIndex++;
+         }
+         //if tabIndex was not returned by now, return current navigationModel.activePaneIndex (this happens when we switch from one example to another within same tab
+         if(tabIndex == currentMenuStructure.size())
+         {
+             tabIndex = navigationModel.getActivePaneIndex();
          }
          return tabIndex;
     }

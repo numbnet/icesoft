@@ -59,7 +59,7 @@ public class NavigationModel implements Serializable {
     //if set to false page will be displayed as Suite Overview Page (only description will be shown in the example area)
     private boolean renderAsExample = true;
     //saves selected tab number between redirects (if selected tab number is not saved, accordion menu will reset itself to the default index of 0)
-    private int currentActiveTabNumber = DEFAULT_MENU_TAB_INDEX;
+    private int activePaneIndex = DEFAULT_MENU_TAB_INDEX;
     
     public NavigationModel() {
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -134,11 +134,11 @@ public class NavigationModel implements Serializable {
         this.renderAsExample = renderAsExample;
     }
 
-    public int getCurrentActiveTabNumber() {
-        return currentActiveTabNumber;
+    public int getActivePaneIndex() {
+        return activePaneIndex;
     }
 
-    public void setCurrentActiveTabNumber(int currentActiveTabNumber) {
-        this.currentActiveTabNumber = currentActiveTabNumber;
+    public void setActivePaneIndex(int activePaneIndex) {
+        this.activePaneIndex = activePaneIndex;
     }
 }
