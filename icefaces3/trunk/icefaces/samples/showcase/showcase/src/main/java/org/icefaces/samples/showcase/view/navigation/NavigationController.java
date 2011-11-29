@@ -33,12 +33,10 @@ import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import javax.faces.component.UIComponent;
+import javax.faces.application.ViewHandler;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
-import org.icefaces.ace.component.accordion.Accordion;
-import org.icefaces.ace.component.accordion.AccordionPane;
 import org.icefaces.ace.event.AccordionPaneChangeEvent;
 import org.icefaces.samples.showcase.example.ace.overview.AceSuiteOverviewBean;
 import org.icefaces.samples.showcase.example.compat.overview.IceSuiteOverviewBean;
@@ -248,31 +246,31 @@ public class NavigationController implements Serializable {
          return tabIndex;
     }
     
-//    public static void refreshPage() {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        ViewHandler handler = context.getApplication().getViewHandler();
-//        String viewId = context.getViewRoot().getViewId();
-//        UIViewRoot root = handler.createView(context, viewId);
-//        
-//        root.setViewId(viewId);
-//        context.setViewRoot(root);
-//    }
-//    
-//    public static void reloadPage() {
-//        NavigationModel navigationModel = (NavigationModel)
-//                FacesUtils.getManagedBean(NavigationModel.BEAN_NAME);
-//                
-//        // Redirect to the current page with the current params
-//        loadPage("?" +
-//                 NavigationModel.GROUP_PARAM + "=" + navigationModel.getComponentGroup() +
-//                 "&" +
-//                 NavigationModel.EXAMPLE_PARAM + "=" + navigationModel.getComponentExample());
-//    }
-//    
-//    public static void loadPage(String page) {
-//        try {
-//            FacesContext.getCurrentInstance().getExternalContext().redirect(page);
-//        }catch (Throwable e) {
-//        }
-//    }
+    public static void refreshPage() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ViewHandler handler = context.getApplication().getViewHandler();
+        String viewId = context.getViewRoot().getViewId();
+        UIViewRoot root = handler.createView(context, viewId);
+        
+        root.setViewId(viewId);
+        context.setViewRoot(root);
+    }
+    
+    public static void reloadPage() {
+        NavigationModel navigationModel = (NavigationModel)
+                FacesUtils.getManagedBean(NavigationModel.BEAN_NAME);
+                
+        // Redirect to the current page with the current params
+        loadPage("?" +
+                 NavigationModel.GROUP_PARAM + "=" + navigationModel.getComponentGroup() +
+                 "&" +
+                 NavigationModel.EXAMPLE_PARAM + "=" + navigationModel.getComponentExample());
+    }
+    
+    public static void loadPage(String page) {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect(page);
+        }catch (Throwable e) {
+        }
+    }
 }
