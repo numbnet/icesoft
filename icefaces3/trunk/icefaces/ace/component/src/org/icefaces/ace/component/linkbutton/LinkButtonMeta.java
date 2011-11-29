@@ -51,7 +51,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
+}, defaultEvent="activate")
 public class LinkButtonMeta extends UICommandMeta {
 
     @Property(tlddoc = "href of link. If specified and actionListener is absent, linkButton works " +

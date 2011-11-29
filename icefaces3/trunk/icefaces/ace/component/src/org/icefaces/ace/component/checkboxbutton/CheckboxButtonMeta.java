@@ -55,7 +55,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
+}, defaultEvent="activate")
 public class CheckboxButtonMeta extends UISelectBooleanMeta {
 
     @Property(tlddoc="A label to be printed either on the buttton or to the left of it "+

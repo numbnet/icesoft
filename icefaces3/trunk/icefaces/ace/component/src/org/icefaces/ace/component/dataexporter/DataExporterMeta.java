@@ -50,7 +50,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
+}, defaultEvent="activate")
 public class DataExporterMeta extends UIComponentBaseMeta {
 
 	@Property(required=Required.yes, tlddoc="Server side id of the datatable whose date would be exported.")

@@ -59,6 +59,10 @@ public class ClientBehaviorHolder extends Behavior {
 		output.append("\n\t}");
 		output.append("\n\t\treturn eventNames;");
 		output.append("\n\t}\n");
+		
+		output.append("\n\tpublic String getDefaultEventName() {");
+		output.append("\n\t\treturn \"" + anno.defaultEvent() + "\";");
+		output.append("\n\t}\n");
 
 		output.append("\n\tMap<String, String> defaultRenderMap = null;");
 		output.append("\n\tpublic String getDefaultRender(String event) {");
@@ -81,11 +85,5 @@ public class ClientBehaviorHolder extends Behavior {
 		output.append("\n\t}");
 		output.append("\n\t\treturn defaultExecuteMap.get(event);");
 		output.append("\n\t}\n");
-		
-		/*
-		output.append("\n\tpublic String getDefaultEventName() {");
-		output.append("\n\t\treturn \"\";");		
-		output.append("\n\t}\n");
-		*/
 	}
 }

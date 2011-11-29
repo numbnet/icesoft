@@ -52,7 +52,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="valueChange", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
+}, defaultEvent="valueChange")
 public class MaskedEntryMeta extends HtmlInputTextMeta {
 
 	@Property(tlddoc="Name of the widget to access client side api")
