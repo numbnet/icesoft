@@ -17,6 +17,10 @@
 package org.icefaces.component.flipswitch;
 
 import org.icefaces.ace.meta.annotation.*;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
+
 import org.icefaces.ace.meta.baseMeta.UISelectBooleanMeta;
 
 import javax.el.MethodExpression;
