@@ -15,17 +15,18 @@
 */
 
 #import <Foundation/Foundation.h>
+#import <ZXingWidgetController.h>
 
-@protocol NativeInterfaceViewController <NSObject>
+@class NativeInterface;
 
-- (void) completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName;
-- (void) completePost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName;
-- (void) register;
-- (NSString *) prepareUpload:(NSString *)formID;
-- (NSString *) getFormData:(NSString *)formID;
-- (void) play:(NSString *)audioID;
-- (void) setThumbnail: (UIImage*)image at: (NSString *)thumbID;
-- (void) handleResponse:(NSString *)responseString;
-- (void) setProgress:(NSInteger)percent;
+@interface QRScanner : NSObject<ZXingDelegate>  {
+
+	NativeInterface *nativeInterface;
+
+}
+
+@property (retain) NativeInterface *nativeInterface;
+
+- (UIViewController*)scanController;
 
 @end

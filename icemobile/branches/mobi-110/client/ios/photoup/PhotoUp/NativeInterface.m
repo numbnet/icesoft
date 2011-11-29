@@ -15,6 +15,8 @@
 */
 
 #import "NativeInterface.h"
+#import "QRScanner.h"
+#import "MobileCoreServices/MobileCoreServices.h"
 
 @implementation NativeInterface
 
@@ -25,7 +27,9 @@
 @synthesize recording;
 @synthesize uploading;
 @synthesize receivedData;
+@synthesize qrScanner;
 @synthesize camPopover;
+@synthesize scanPopover;
 
 static char base64EncodingTable[64] = {
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -33,6 +37,21 @@ static char base64EncodingTable[64] = {
   'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
   'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'
 };
+
+- (id)init  {
+    self = [super init];
+    if (self) {
+        self.qrScanner = [[QRScanner alloc] init];
+        self.qrScanner.nativeInterface = self;
+    }
+    
+    return self;
+}
+
+- (void) dealloc  {
+    [self.qrScanner dealloc];
+    [super dealloc];
+}
 
 /*Return YES to indicate that the command was successfully dispatched
 */
@@ -45,12 +64,18 @@ static char base64EncodingTable[64] = {
         params = [self parseQuery:[queryParts objectAtIndex:1]];
     }
 
-    if ([@"camera" isEqualToString:commandName])  {
+    if ([@"register" isEqualToString:commandName])  {
+        [self register];
+    } else if ([@"camera" isEqualToString:commandName])  {
         [self camera:[params objectForKey:@"id"] 
                   maxwidth:[params objectForKey:@"maxwidth"]
                   maxheight:[params objectForKey:@"maxheight"] ];
-    } else if ([@"register" isEqualToString:commandName])  {
-        [self register];
+    } else if ([@"camcorder" isEqualToString:commandName])  {
+        [self camcorder:[params objectForKey:@"id"]];
+    } else if ([@"microphone" isEqualToString:commandName])  {
+        [self microphone:[params objectForKey:@"id"]];
+    } else if ([@"scan" isEqualToString:commandName])  {
+        [self scan:[params objectForKey:@"id"]];
     }
 
     return YES;
@@ -73,6 +98,21 @@ NSLog(@"called camera");
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera ])  {
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     }
+    [self showImagePicker:picker];
+    
+    return YES;
+}
+
+- (BOOL)camcorder: (NSString*)cameraId  {
+    self.activeDOMElementId = cameraId;
+    UIImagePickerController* picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.mediaTypes =  [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera ])  {
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    }
+ 
     [self showImagePicker:picker];
     
     return YES;
@@ -194,6 +234,42 @@ NSLog(@"called camera");
             stringByAppendingPathComponent:@"test.jpg"];
     [UIImageJPEGRepresentation(image, 0.7) writeToFile:imagePath atomically:NO];
     return imagePath;
+}
+
+
+- (BOOL)scan: (NSString*)scanId  {
+    self.activeDOMElementId = scanId;
+    NSLog(@"NativeInterface scan ");
+    UIViewController *scanController = [qrScanner scanController];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
+        if (nil == self.scanPopover)  {
+            scanPopover = [[UIPopoverController alloc] 
+                    initWithContentViewController:scanController];
+            self.scanPopover.popoverContentSize = CGSizeMake(320, 480);
+        }
+        [self.scanPopover presentPopoverFromRect:CGRectMake(200.0, 200.0, 0.0, 0.0) 
+                                 inView:self.controller.view
+               permittedArrowDirections:UIPopoverArrowDirectionAny 
+                               animated:YES];
+    } else {
+        [controller presentModalViewController:scanController animated:YES];
+    }
+    [scanController release];
+
+    return YES;
+}
+
+- (void)scanResult: (NSString*)text  {
+    [controller completePost:text forComponent:self.activeDOMElementId
+            withName:self.activeDOMElementId];
+}
+
+- (void)dismissScan {
+    if (nil != self.scanPopover)  {
+        [self.scanPopover dismissPopoverAnimated:YES];
+    } else {
+        [controller dismissModalViewControllerAnimated:YES];
+    }
 }
 
 - (BOOL)upload: (NSString*)formId  {

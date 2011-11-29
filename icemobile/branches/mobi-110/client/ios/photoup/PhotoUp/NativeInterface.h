@@ -18,6 +18,7 @@
 #import "NativeInterfaceViewController.h"
 
 @class MainViewController;
+@class QRScanner;
 
 @interface NativeInterface : NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
 
@@ -28,7 +29,9 @@
     BOOL recording;
     BOOL uploading;
     NSMutableData *receivedData;
+    QRScanner *qrScanner;
     UIPopoverController *camPopover;
+    UIPopoverController *scanPopover;
 }
 
 @property (retain) UIViewController<NativeInterfaceViewController> *controller;
@@ -38,11 +41,14 @@
 @property (nonatomic, assign) BOOL recording;
 @property (assign) BOOL uploading;
 @property (retain) NSMutableData *receivedData;
+@property (retain) QRScanner *qrScanner;
 @property (nonatomic, retain) UIPopoverController *camPopover;
+@property (nonatomic, retain) UIPopoverController *scanPopover;
 
 - (BOOL)dispatch: (NSString*)command;
 - (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw maxheight: (NSString*)maxh;
 - (BOOL)register;
+- (BOOL)scan: (NSString*)scanId;
 - (BOOL)upload: (NSString*)formId;
 - (NSMutableDictionary*)parseQuery: (NSString*)queryString;
 - (void)showImagePicker: (UIImagePickerController*)picker;
@@ -51,6 +57,8 @@
 - (UIImage*)scaleImage: (UIImage*)image toSize: (int)finalSize;
 - (UIImage*)scaleImage: (UIImage*)image maxWidth: (int)maxw maxHeight: (int)maxh ;
 - (NSString*)saveImage: (UIImage*)image;
+- (void)scanResult: (NSString*)text;
+- (void)dismissScan;
 - (NSString *) base64StringFromData: (NSData *)data;
 - (void)multipartPost: (NSDictionary *)parts toURL: (NSString *)url;
 

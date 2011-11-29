@@ -1,10 +1,18 @@
-//
-//  ViewController.m
-//  ICEmobileHitch
-//
-//  Created by Ted Goddard on 11-11-04.
-//  Copyright (c) 2011 ICEsoft Technologies, Inc. All rights reserved.
-//
+/*
+* Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions an
+* limitations under the License.
+*/
 
 #import "ViewController.h"
 #import "NativeInterface.h"
@@ -58,13 +66,9 @@
 NSLog(@"PhotoUp registered and will open safari currentURL %@", safariURL);
 }
 
-- (void)completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName   {
-        NSString *scriptTemplate = @"ice.addHidden(\"%@\", \"%@\", \"%@\");";
-        NSString *script = [NSString stringWithFormat:scriptTemplate, 
-                componentID, componentName, path];
-NSLog(@"Hitch just upload what would have been scripted %@", script);
+- (void)completePost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
     NSMutableDictionary *params = [nativeInterface parseQuery:currentParameters];
-    [params setValue:path forKey:componentName];
+    [params setValue:value forKey:componentName];
     [nativeInterface multipartPost:params toURL:self.currentURL];
 
     NSString *safariURL = self.currentURL;
@@ -74,6 +78,10 @@ NSLog(@"Hitch just upload what would have been scripted %@", script);
     [[UIApplication sharedApplication] 
             openURL:[NSURL URLWithString:safariURL]];
 NSLog(@"Hitch opened safari currentURL %@", safariURL);
+}
+
+- (void)completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName   {
+    [self completePost:path forComponent:componentID withName:componentName];
 }
 
 - (NSString *) prepareUpload:(NSString *)formID  {
