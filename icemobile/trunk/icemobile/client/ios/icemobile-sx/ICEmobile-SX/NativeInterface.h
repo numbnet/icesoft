@@ -32,6 +32,7 @@
     QRScanner *qrScanner;
     UIPopoverController *camPopover;
     UIPopoverController *scanPopover;
+    UIPopoverController *audioPopover;
 }
 
 @property (retain) UIViewController<NativeInterfaceViewController> *controller;
@@ -44,12 +45,15 @@
 @property (retain) QRScanner *qrScanner;
 @property (nonatomic, retain) UIPopoverController *camPopover;
 @property (nonatomic, retain) UIPopoverController *scanPopover;
+@property (nonatomic, retain) UIPopoverController *audioPopover;
 
 - (BOOL)dispatch: (NSString*)command;
 - (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw maxheight: (NSString*)maxh;
 - (BOOL)register;
 - (BOOL)scan: (NSString*)scanId;
 - (BOOL)upload: (NSString*)formId;
+- (BOOL)camcorder: (NSString*)cameraId;
+- (BOOL)microphone: (NSString*)micId;
 - (NSMutableDictionary*)parseQuery: (NSString*)queryString;
 - (void)showImagePicker: (UIImagePickerController*)picker;
 - (void)dismissImagePicker;

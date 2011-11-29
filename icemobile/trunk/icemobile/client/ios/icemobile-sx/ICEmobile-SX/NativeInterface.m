@@ -16,6 +16,7 @@
 
 #import "NativeInterface.h"
 #import "QRScanner.h"
+#import "AudioController.h"
 #import "MobileCoreServices/MobileCoreServices.h"
 
 @implementation NativeInterface
@@ -30,6 +31,7 @@
 @synthesize qrScanner;
 @synthesize camPopover;
 @synthesize scanPopover;
+@synthesize audioPopover;
 
 static char base64EncodingTable[64] = {
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -99,6 +101,31 @@ NSLog(@"called camera");
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     }
     [self showImagePicker:picker];
+    
+    return YES;
+}
+
+- (BOOL)microphone: (NSString*)micId  {
+    self.activeDOMElementId = micId;
+    UIView *controllerView = self.controller.view;
+
+
+    UIViewController *audioController = [[AudioController alloc] init];
+    [[NSBundle mainBundle] loadNibNamed:@"AudioController" owner:audioController options:nil];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
+        if (nil == self.audioPopover)  {
+            self.audioPopover = [[UIPopoverController alloc] 
+                    initWithContentViewController:audioController];
+            self.audioPopover.popoverContentSize = CGSizeMake(320, 480);
+        }
+        [self.audioPopover presentPopoverFromRect:CGRectMake(200.0, 200.0, 0.0, 0.0) 
+                                 inView:controllerView
+               permittedArrowDirections:UIPopoverArrowDirectionAny 
+                               animated:YES];
+    } else {
+        [controller presentModalViewController:audioController animated:YES];
+    }
+    [audioController release];
     
     return YES;
 }

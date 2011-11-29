@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		9C403FCC14845E4200FBA6BC /* QRScanner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C403FCB14845E4200FBA6BC /* QRScanner.mm */; };
+		9C4F8C3914859D3600A2B288 /* AudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4F8C3714859D3600A2B288 /* AudioController.m */; };
+		9C4F8C3A14859D3600A2B288 /* AudioController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C4F8C3814859D3600A2B288 /* AudioController.xib */; };
 		9C6E1973148560C300ADDAA7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6E1972148560C300ADDAA7 /* MobileCoreServices.framework */; };
 		9C77C78F147310B80079FDF5 /* NativeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C77C78D147310B80079FDF5 /* NativeInterface.m */; };
 		9C77C794147310F90079FDF5 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77C791147310F90079FDF5 /* icon-72.png */; };
@@ -44,6 +46,9 @@
 		9C403FC114845A2200FBA6BC /* ZXingWidget.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZXingWidget.xcodeproj; path = ../zxing/ZXingWidget/ZXingWidget.xcodeproj; sourceTree = "<group>"; };
 		9C403FCA14845E4200FBA6BC /* QRScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRScanner.h; sourceTree = "<group>"; };
 		9C403FCB14845E4200FBA6BC /* QRScanner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = QRScanner.mm; sourceTree = "<group>"; };
+		9C4F8C3614859D3600A2B288 /* AudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioController.h; sourceTree = "<group>"; };
+		9C4F8C3714859D3600A2B288 /* AudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioController.m; sourceTree = "<group>"; };
+		9C4F8C3814859D3600A2B288 /* AudioController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AudioController.xib; sourceTree = "<group>"; };
 		9C6E1972148560C300ADDAA7 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		9C77C78C147310B80079FDF5 /* NativeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeInterface.h; sourceTree = "<group>"; };
 		9C77C78D147310B80079FDF5 /* NativeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativeInterface.m; sourceTree = "<group>"; };
@@ -160,6 +165,9 @@
 				9CA51B7614730D120065F681 /* ViewController.m */,
 				9CA51B7814730D120065F681 /* ViewController_iPhone.xib */,
 				9CA51B7B14730D120065F681 /* ViewController_iPad.xib */,
+				9C4F8C3614859D3600A2B288 /* AudioController.h */,
+				9C4F8C3714859D3600A2B288 /* AudioController.m */,
+				9C4F8C3814859D3600A2B288 /* AudioController.xib */,
 				9CA51B6A14730D110065F681 /* Supporting Files */,
 			);
 			path = "ICEmobile-SX";
@@ -249,6 +257,7 @@
 				9C77C794147310F90079FDF5 /* icon-72.png in Resources */,
 				9C77C795147310F90079FDF5 /* icon.png in Resources */,
 				9C77C796147310F90079FDF5 /* icon@2x.png in Resources */,
+				9C4F8C3A14859D3600A2B288 /* AudioController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,6 +273,7 @@
 				9CA51B7714730D120065F681 /* ViewController.m in Sources */,
 				9C77C78F147310B80079FDF5 /* NativeInterface.m in Sources */,
 				9C403FCC14845E4200FBA6BC /* QRScanner.mm in Sources */,
+				9C4F8C3914859D3600A2B288 /* AudioController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
