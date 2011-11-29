@@ -19,22 +19,42 @@
  * Contributor(s): _____________________.
  */
 
-package com.icesoft.faces.utils;
+package org.icefaces.impl.component;
 
-import javax.faces.context.FacesContext;
+import java.io.Serializable;
 
 /**
- * StateHolder is used to hold the complete state of a UIComponent, and so
- *  is used sparingly. UIData, which is used for iterative container
- *  components, only saves the EditableValueHolder fields. So, there's a
- *  huge gap inbetween, of being able to store fields when in an iterative
- *  container. This interface is used by our UISeries to manage non-UIData
- *  state that any component might require, without having to save everything.
- * 
- * @author Mark Collette
+ * @author mcollette
+ * @since 1.8
  */
-public interface SeriesStateHolder {
-    public Object saveSeriesState(FacesContext facesContext);
-    
-    public void restoreSeriesState(FacesContext facesContext, Object state);
+public class VarStatus implements Serializable {
+    private int begin;
+    private int end;
+    private int index;
+
+    public VarStatus(int begin, int end, int index) {
+        this.begin = begin;
+        this.end = end;
+        this.index = index;
+    }
+
+    public int getBegin() {
+        return begin;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public boolean isFirst() {
+        return (begin == index);
+    }
+
+    public boolean isLast() {
+        return (end == index);
+    }
 }

@@ -24,7 +24,7 @@ package com.icesoft.faces.component.ext;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.IceExtended;
 import com.icesoft.faces.component.ext.taglib.Util;
-import com.icesoft.faces.component.panelseries.UISeries.RowEvent;
+import org.icefaces.impl.component.UISeriesBase.RowEvent;
 
 import javax.faces.component.ActionSource;
 import javax.faces.context.FacesContext;
