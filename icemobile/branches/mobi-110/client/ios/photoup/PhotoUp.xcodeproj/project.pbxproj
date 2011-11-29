@@ -7,10 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C403FCC14845E4200FBA6BC /* QRScanner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C403FCB14845E4200FBA6BC /* QRScanner.mm */; };
+		9C6E1973148560C300ADDAA7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6E1972148560C300ADDAA7 /* MobileCoreServices.framework */; };
 		9C77C78F147310B80079FDF5 /* NativeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C77C78D147310B80079FDF5 /* NativeInterface.m */; };
 		9C77C794147310F90079FDF5 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77C791147310F90079FDF5 /* icon-72.png */; };
 		9C77C795147310F90079FDF5 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77C792147310F90079FDF5 /* icon.png */; };
 		9C77C796147310F90079FDF5 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77C793147310F90079FDF5 /* icon@2x.png */; };
+		9C9314771485500C00B21FA1 /* libZXingWidget.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C403FC914845A2300FBA6BC /* libZXingWidget.a */; };
+		9C9314791485505200B21FA1 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C9314781485505200B21FA1 /* libiconv.dylib */; };
+		9C93147B1485506A00B21FA1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C93147A1485506A00B21FA1 /* AudioToolbox.framework */; };
+		9C93147D1485507900B21FA1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C93147C1485507900B21FA1 /* AVFoundation.framework */; };
+		9C93147F148556B100B21FA1 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C93147E148556B100B21FA1 /* CoreVideo.framework */; };
+		9C931481148556EC00B21FA1 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C931480148556EC00B21FA1 /* CoreMedia.framework */; };
 		9C97BADD1475A7BC000ECCA9 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C97BADC1475A7BC000ECCA9 /* icon.png */; };
 		9C97BADF1475A7D4000ECCA9 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C97BADE1475A7D4000ECCA9 /* icon@2x.png */; };
 		9CA51B6414730D110065F681 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA51B6314730D110065F681 /* UIKit.framework */; };
@@ -25,13 +33,32 @@
 		9CA7CEE11475A85C001804A3 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CA7CEE01475A85C001804A3 /* icon-72.png */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		9C403FC814845A2300FBA6BC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C403FC114845A2200FBA6BC /* ZXingWidget.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = ZXingWidget;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		9C403FC114845A2200FBA6BC /* ZXingWidget.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZXingWidget.xcodeproj; path = ../zxing/ZXingWidget/ZXingWidget.xcodeproj; sourceTree = "<group>"; };
+		9C403FCA14845E4200FBA6BC /* QRScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRScanner.h; sourceTree = "<group>"; };
+		9C403FCB14845E4200FBA6BC /* QRScanner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = QRScanner.mm; sourceTree = "<group>"; };
+		9C6E1972148560C300ADDAA7 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		9C77C78C147310B80079FDF5 /* NativeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeInterface.h; sourceTree = "<group>"; };
 		9C77C78D147310B80079FDF5 /* NativeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativeInterface.m; sourceTree = "<group>"; };
 		9C77C78E147310B80079FDF5 /* NativeInterfaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeInterfaceViewController.h; sourceTree = "<group>"; };
 		9C77C791147310F90079FDF5 /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-72.png"; sourceTree = "<group>"; };
 		9C77C792147310F90079FDF5 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		9C77C793147310F90079FDF5 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
+		9C9314781485505200B21FA1 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		9C93147A1485506A00B21FA1 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		9C93147C1485507900B21FA1 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		9C93147E148556B100B21FA1 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		9C931480148556EC00B21FA1 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		9C97BADC1475A7BC000ECCA9 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		9C97BADE1475A7D4000ECCA9 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		9CA51B5F14730D110065F681 /* PhotoUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,23 +83,48 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C6E1973148560C300ADDAA7 /* MobileCoreServices.framework in Frameworks */,
+				9C931481148556EC00B21FA1 /* CoreMedia.framework in Frameworks */,
+				9C93147F148556B100B21FA1 /* CoreVideo.framework in Frameworks */,
+				9C93147D1485507900B21FA1 /* AVFoundation.framework in Frameworks */,
+				9C93147B1485506A00B21FA1 /* AudioToolbox.framework in Frameworks */,
+				9C9314791485505200B21FA1 /* libiconv.dylib in Frameworks */,
 				9CA51B6414730D110065F681 /* UIKit.framework in Frameworks */,
 				9CA51B6614730D110065F681 /* Foundation.framework in Frameworks */,
 				9CA51B6814730D110065F681 /* CoreGraphics.framework in Frameworks */,
+				9C9314771485500C00B21FA1 /* libZXingWidget.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9C403FBF148459D800FBA6BC /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				9C403FC114845A2200FBA6BC /* ZXingWidget.xcodeproj */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		9C403FC214845A2200FBA6BC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9C403FC914845A2300FBA6BC /* libZXingWidget.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		9CA51B5414730D110065F681 = {
 			isa = PBXGroup;
 			children = (
+				9C403FBF148459D800FBA6BC /* Dependencies */,
 				9CA7CEE01475A85C001804A3 /* icon-72.png */,
 				9C97BADE1475A7D4000ECCA9 /* icon@2x.png */,
 				9C97BADC1475A7BC000ECCA9 /* icon.png */,
 				9CA51B6914730D110065F681 /* PhotoUp */,
 				9CA51B6214730D110065F681 /* Frameworks */,
+				9C9314781485505200B21FA1 /* libiconv.dylib */,
 				9CA51B6014730D110065F681 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,8 +140,13 @@
 		9CA51B6214730D110065F681 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9C6E1972148560C300ADDAA7 /* MobileCoreServices.framework */,
+				9C931480148556EC00B21FA1 /* CoreMedia.framework */,
+				9C93147C1485507900B21FA1 /* AVFoundation.framework */,
+				9C93147A1485506A00B21FA1 /* AudioToolbox.framework */,
 				9CA51B6314730D110065F681 /* UIKit.framework */,
 				9CA51B6514730D110065F681 /* Foundation.framework */,
+				9C93147E148556B100B21FA1 /* CoreVideo.framework */,
 				9CA51B6714730D110065F681 /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
@@ -104,6 +161,8 @@
 				9C77C78C147310B80079FDF5 /* NativeInterface.h */,
 				9C77C78D147310B80079FDF5 /* NativeInterface.m */,
 				9C77C78E147310B80079FDF5 /* NativeInterfaceViewController.h */,
+				9C403FCA14845E4200FBA6BC /* QRScanner.h */,
+				9C403FCB14845E4200FBA6BC /* QRScanner.mm */,
 				9CA51B7214730D120065F681 /* AppDelegate.h */,
 				9CA51B7314730D120065F681 /* AppDelegate.m */,
 				9CA51B7514730D120065F681 /* ViewController.h */,
@@ -165,12 +224,28 @@
 			mainGroup = 9CA51B5414730D110065F681;
 			productRefGroup = 9CA51B6014730D110065F681 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 9C403FC214845A2200FBA6BC /* Products */;
+					ProjectRef = 9C403FC114845A2200FBA6BC /* ZXingWidget.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				9CA51B5E14730D110065F681 /* PhotoUp */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		9C403FC914845A2300FBA6BC /* libZXingWidget.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libZXingWidget.a;
+			remoteRef = 9C403FC814845A2300FBA6BC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9CA51B5D14730D110065F681 /* Resources */ = {
@@ -200,6 +275,7 @@
 				9CA51B7414730D120065F681 /* AppDelegate.m in Sources */,
 				9CA51B7714730D120065F681 /* ViewController.m in Sources */,
 				9C77C78F147310B80079FDF5 /* NativeInterface.m in Sources */,
+				9C403FCC14845E4200FBA6BC /* QRScanner.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +359,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotoUp/PhotoUp-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					../zxing/cpp/core/src,
+					"../zxing/ZXingWidget/Classes/**",
+				);
 				INFOPLIST_FILE = "PhotoUp/PhotoUp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -295,6 +375,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotoUp/PhotoUp-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					../zxing/cpp/core/src,
+					"../zxing/ZXingWidget/Classes/**",
+				);
 				INFOPLIST_FILE = "PhotoUp/PhotoUp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
