@@ -78,9 +78,7 @@ public class SessionExpiredListener implements HttpSessionListener {
         if (EnvUtils.isICEpushPresent()) {
             ServletContext servletContext = session.getServletContext();
             PushContext pushContext = PushContext.getInstance(servletContext);
-            if( pushContext != null ){
-                pushContext.push(session.getId());
-            }
+            pushContext.push(session.getId());
         }
     }
 
