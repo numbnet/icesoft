@@ -25,8 +25,9 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.utils.SeriesStateHolder;
 import com.icesoft.util.CoreComponentUtils;
+
+import org.icefaces.impl.component.SeriesStateHolder;
 
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;

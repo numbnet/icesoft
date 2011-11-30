@@ -17,9 +17,10 @@ package com.icesoft.faces.component.paneltabset;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.utils.UpdatableProperty;
-import com.icesoft.faces.utils.SeriesStateHolder;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.panelseries.UISeries;
+
+import org.icefaces.impl.component.SeriesStateHolder;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
