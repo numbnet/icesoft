@@ -94,10 +94,10 @@ public class BridgeSetup implements SystemEventListener {
         UIViewRoot root = context.getViewRoot();
         ExternalContext externalContext = context.getExternalContext();
         ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-
+        Map collectedResourceComponents = new HashMap();
         String version = EnvUtils.isUniqueResourceURLs(context) ? String.valueOf(hashCode()) : null;
         //jsf.js might be added already by a page or component
-        addOrReplaceResource(context, "jsf.js", "javax.faces", "head", new JavascriptResourceOutput(resourceHandler, "jsf.js", "javax.faces", version));
+        addOrCollectReplacingResource(context, "jsf.js", "javax.faces", "head", new JavascriptResourceOutput(resourceHandler, "jsf.js", "javax.faces", version), collectedResourceComponents);
         if (EnvUtils.isICEpushPresent()) {
             root.addComponentResource(context, new JavascriptResourceOutput(resourceHandler, "icepush.js", null, version), "head");
         }
@@ -155,12 +155,12 @@ public class BridgeSetup implements SystemEventListener {
                     ResourceDependencies resDeps = compClass.getAnnotation(ResourceDependencies.class);
                     if (resDeps != null) {
                         for (ResourceDependency resDep : resDeps.value()) {
-                            addMandatoryResourceDependency(context, root, compClassName, addedResDeps, resDep, version);
+                            addMandatoryResourceDependency(context, root, compClassName, addedResDeps, resDep, version, collectedResourceComponents);
                         }
                     }
                     ResourceDependency resDep = compClass.getAnnotation(ResourceDependency.class);
                     if (resDep != null) {
-                        addMandatoryResourceDependency(context, root, compClassName, addedResDeps, resDep, version);
+                        addMandatoryResourceDependency(context, root, compClassName, addedResDeps, resDep, version, collectedResourceComponents);
                     }
                 } catch (Exception e) {
                     if (log.isLoggable(Level.WARNING)) {
@@ -170,11 +170,35 @@ public class BridgeSetup implements SystemEventListener {
                     }
                 }
             }
+
+            //replace collected resource mandatory components in on shot, otherwise MyFaces will keep re-adding
+            //the components registered directly by it
+            replaceCollectedResourceComponents(context, "head", collectedResourceComponents);
+            replaceCollectedResourceComponents(context, "body", collectedResourceComponents);
         }
 
         List<UIComponent> bodyResources = getBodyResources(context);
         for (UIComponent bodyResource : bodyResources) {
             root.addComponentResource(context, bodyResource, "body");
+        }
+    }
+
+    private void replaceCollectedResourceComponents(FacesContext context, String target, Map collectedResourceComponents) {
+        UIViewRoot root = context.getViewRoot();
+        List<UIComponent> components = new ArrayList<UIComponent>(root.getComponentResources(context, target));
+        for (UIComponent next : components) {
+            root.removeComponentResource(context, next, target);
+        }
+
+        for (UIComponent next : components) {
+            String name = (String) next.getAttributes().get("name");
+            String library = (String) next.getAttributes().get("library");
+            UIComponent c = (UIComponent) collectedResourceComponents.get(calculateKey(name, library, target));
+            if (c == null) {
+                root.addComponentResource(context, next, target);
+            } else {
+                root.addComponentResource(context, c, target);
+            }
         }
     }
 
@@ -330,18 +354,18 @@ public class BridgeSetup implements SystemEventListener {
 
     private static void addMandatoryResourceDependency(
             FacesContext facesContext, UIViewRoot root, String compClassName,
-            Set<ResourceDependency> addedResDeps, ResourceDependency resDep, String version) {
+            Set<ResourceDependency> addedResDeps, ResourceDependency resDep, String version, Map collectedResourceComponents) {
         if (addedResDeps.contains(resDep)) {
             return;
         }
         addedResDeps.add(resDep);
         addMandatoryResource(facesContext, root, compClassName, resDep.name(),
-                resDep.library(), version, resDep.target());
+                resDep.library(), version, resDep.target(), collectedResourceComponents);
     }
 
     private static void addMandatoryResource(FacesContext facesContext,
                                              UIViewRoot root, String compClassName, String name,
-                                             String library, String version, String target) {
+                                             String library, String version, String target, Map collectedResourceComponents) {
         if (target == null || target.length() == 0) {
             target = "head";
         }
@@ -356,11 +380,11 @@ public class BridgeSetup implements SystemEventListener {
             }
         } else {
             UIComponent component = newResourceOutput(resourceHandler, rendererType, name, library, version);
-            addOrReplaceResource(facesContext, name, library, target, component);
+            addOrCollectReplacingResource(facesContext, name, library, target, component, collectedResourceComponents);
         }
     }
 
-    public static void addOrReplaceResource(FacesContext context, String name, String library, String target, UIComponent component) {
+    public static void addOrCollectReplacingResource(FacesContext context, String name, String library, String target, UIComponent component, Map collectedResourceComponents) {
         UIViewRoot viewRoot = context.getViewRoot();
         List<UIComponent> componentResources = viewRoot.getComponentResources(context, target);
         int position = -1;
@@ -376,22 +400,15 @@ public class BridgeSetup implements SystemEventListener {
         }
 
         if (position > -1) {
-            //componentResources list is unmodifiable so we need to go though a few hoops
-            //copy all component resources
-            List<UIComponent> componentResourcesCopy = new ArrayList<UIComponent>(componentResources);
-            //remove them all from the view root
-            for (UIComponent uiComponent : componentResourcesCopy) {
-                viewRoot.removeComponentResource(context, uiComponent, target);
-            }
-            //replace component at position
-            componentResourcesCopy.set(position, component);
-            //re-add them to the view root
-            for (UIComponent uiComponent : componentResourcesCopy) {
-                viewRoot.addComponentResource(context, uiComponent, target);
-            }
+            //collect the component resource to replace it after all mandatory resources are read
+            collectedResourceComponents.put(calculateKey(name, library, target), component);
         } else {
             viewRoot.addComponentResource(context, component, target);
         }
+    }
+
+    private static String calculateKey(String name, String library, String target) {
+        return name + ":" + library + ":" + target;
     }
 
     private static UIComponent newResourceOutput(ResourceHandler resourceHandler, String rendererType, String name, String library, String version) {
