@@ -44,7 +44,7 @@ public class AutocompleteData implements Serializable {
     
     public static final String CITIES_FILENAME = "City-Names.txt";
 	public static final List<String> CITIES = readCityFile();
-	
+
 	/**
 	 * Method to read the list of cities from the file CITIES_FILENAME
 	 *  (which should be a text file with one city per line)
@@ -53,7 +53,7 @@ public class AutocompleteData implements Serializable {
 	private static List<String> readCityFile() {
 	    InputStream fileIn = null;
 	    BufferedReader in = null;
-	    
+                    
         try {
             // Get the file based on our current class path
             fileIn = AutocompleteData.class.getResourceAsStream(CITIES_FILENAME);

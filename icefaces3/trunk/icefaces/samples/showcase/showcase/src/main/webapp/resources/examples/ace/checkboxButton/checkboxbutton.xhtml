@@ -38,12 +38,14 @@
     <ui:define name="example">
         <h:form>
             
-            <ace:panel>
+            <ace:panel id="examplePanel">
                 <h:panelGrid columns="2" style="text-align: center;">
-                    <ace:checkboxButton value="#{checkboxButton.boxValue}"
-                                                       singleSubmit="true"/>
+                    <ace:checkboxButton value="#{checkboxButton.boxValue}">
+                        <ace:ajax execute="@this" event="activate"/>
+                    </ace:checkboxButton>    
                     <ace:pushButton value="Inspect Checkbox Value"
-                                                actionListener="#{checkboxButton.boxValueListener}" />
+                                                actionListener="#{checkboxButton.boxValueListener}">
+                    </ace:pushButton>
                 </h:panelGrid>
             </ace:panel>
                 

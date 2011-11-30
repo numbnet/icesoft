@@ -29,6 +29,17 @@
     position: relative;
 }
 
+.animationHolderStyle{
+    background-color: #0099ff;
+    color: #ffffff;
+    height: 50px;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 10pt;
+    width: 100%;
+    letter-spacing: 5px;
+}
+
 .conditionTxt{
     font-size:smaller;
     color: #808080;
