@@ -15,6 +15,7 @@
 */
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
 #import "NativeInterfaceViewController.h"
 
 @class MainViewController;
@@ -26,10 +27,12 @@
     NSString *activeDOMElementId;
     NSString *maxwidth;
     NSString *maxheight;
+    NSString *soundFilePath;
     BOOL recording;
     BOOL uploading;
     NSMutableData *receivedData;
     QRScanner *qrScanner;
+    AVAudioRecorder *soundRecorder;
     UIPopoverController *camPopover;
     UIPopoverController *scanPopover;
     UIPopoverController *audioPopover;
@@ -39,10 +42,12 @@
 @property (retain) NSString *activeDOMElementId;
 @property (retain) NSString *maxwidth;
 @property (retain) NSString *maxheight;
+@property (retain) NSString *soundFilePath;
 @property (nonatomic, assign) BOOL recording;
 @property (assign) BOOL uploading;
 @property (retain) NSMutableData *receivedData;
 @property (retain) QRScanner *qrScanner;
+@property (retain) AVAudioRecorder *soundRecorder;
 @property (nonatomic, retain) UIPopoverController *camPopover;
 @property (nonatomic, retain) UIPopoverController *scanPopover;
 @property (nonatomic, retain) UIPopoverController *audioPopover;
@@ -54,6 +59,10 @@
 - (BOOL)upload: (NSString*)formId;
 - (BOOL)camcorder: (NSString*)cameraId;
 - (BOOL)microphone: (NSString*)micId;
+- (void)recordStart;
+- (void)recordStop;
+- (void)recordDismiss;
+- (void)recordDone;
 - (NSMutableDictionary*)parseQuery: (NSString*)queryString;
 - (void)showImagePicker: (UIImagePickerController*)picker;
 - (void)dismissImagePicker;

@@ -8,9 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AudioController : UIViewController
+@class NativeInterface;
+
+@interface AudioController : UIViewController  {
+
+	NativeInterface *nativeInterface;
+
+}
+
+@property (retain) NativeInterface *nativeInterface;
 
 - (IBAction) doRecord;
+- (IBAction) doStop;
 - (IBAction) doDone;
 - (IBAction) doCancel;
 
