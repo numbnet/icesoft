@@ -49,7 +49,7 @@ Available ui:params to pass:
                 
                 <ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" toggleable="true" header="Source Code">
                     <div class="resources">
-                    <ace:ajax event="toggle" process="@this"/>
+                    <ace:ajax event="toggle" execute="@this"/>
                     
                     <ace:tabSet clientSide="true" selectedIndex="0"
                                 rendered="#{not empty resourceValue}">
