@@ -43,9 +43,9 @@
                           stateMap="#{dataTableListener.stateMap}"
                           selectionMode="single"
                           rowSelectListener="#{dataTableListener.selectListener}"
-                          rowUnselectListener="#{dataTableListener.deselectListener}"
-                          onRowSelectUpdate="listenerForm:eventLog"
-                          onRowUnselectUpdate="listenerForm:eventLog">
+                          rowUnselectListener="#{dataTableListener.deselectListener}">
+                <ace:ajax event="select" execute="@this listenerForm:eventLog" render="@this listenerForm:eventLog" />
+
                 <ace:column>
                     <f:facet name="header">
                        ID

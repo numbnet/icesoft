@@ -80,9 +80,10 @@
                           stateMap="${dataTableRowState.stateMap}"
                           value="#{dataTableSort.carsData}"
                           selectionMode="multiple"
-                          update="controls"
                           var="car"
                           rows="10">
+               <ace:ajax event="select" render="controls @this" execute="@this" />
+
                <ace:column headerText="Selectable">
                    <h:panelGroup style="#{rowState.selectable ? '' : 'display:none'}" styleClass="ui-icon ui-icon-check"/>
                    <h:panelGroup style="#{rowState.selectable ? 'display:none' : ''}" styleClass="ui-icon ui-icon-close"/>
