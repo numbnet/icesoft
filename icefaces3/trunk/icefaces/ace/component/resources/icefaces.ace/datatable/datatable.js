@@ -260,7 +260,7 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function() {
     if (this.cfg.selectionMode) {
         var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click',
                 selector = this.isCellSelectionEnabled() ? this.jqId + ' tbody.ui-datatable-data > tr > td'
-                        : this.jqId + ' tbody.ui-datatable-data > tr:not(.ui-unselectable)';
+                        : this.jqId + ' tbody.ui-datatable-data:first > tr:not(.ui-unselectable)';
 
         ice.ace.jq(selector)
                 .css('cursor', 'pointer')

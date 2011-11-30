@@ -337,6 +337,7 @@ public class DataTableRenderer extends CoreRenderer {
             String[] rowSelectValues = selection.split(",");
 
             for (String s : rowSelectValues) {
+                // Handle tree case indexes
                 if (s.indexOf(".") != -1 && model != null) {
                     int lastSepIndex = s.lastIndexOf('.');
                     model.setRootIndex(s.substring(0, lastSepIndex));
@@ -348,6 +349,7 @@ public class DataTableRenderer extends CoreRenderer {
                 if (!state.isSelected() && state.isSelectable())
                     state.setSelected(true);
 
+                // Cleanup after tree case indexes
                 if (model != null) model.setRootIndex(null);
             }
             table.setRowIndex(-1);
@@ -359,6 +361,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         int x = 0;
         for (String s : rowDeselectValues) {
+            // Handle tree case indexes
             if (s.indexOf(".") != -1 && model != null) {
                 int lastSepIndex = s.lastIndexOf('.');
                 model.setRootIndex(s.substring(0, lastSepIndex));
@@ -1277,6 +1280,11 @@ public class DataTableRenderer extends CoreRenderer {
 
         if (rootModel.getRowCount() > 0)
         while (rootModel.getRowIndex() < rootModel.getRowCount()) {
+//            System.out.println("----------");
+//            System.out.println(rootModel.getRootIndex());
+//            System.out.println(rootModel.getRowIndex());
+//            System.out.println("----------");
+
             if (rowVar != null) context.getExternalContext().getRequestMap().put(rowVar, rootModel.getRowData());
             if (rowIndexVar != null) context.getExternalContext().getRequestMap().put(rowIndexVar, rootModel.getRowIndex());
 
@@ -1329,6 +1337,7 @@ public class DataTableRenderer extends CoreRenderer {
                         encodeRowExpansion(context, table, columns, writer);
                     }
 
+                    rootModel = (TreeDataModel) table.getDataModel();
                     rootModel.setRootIndex(expandedRowId);
                     table.setRowIndex(rowIndex); // Row index will have come back different from row expansion.
                     context.getExternalContext().getRequestMap().put(clientId + "_expandedRowId", expandedRowId);
