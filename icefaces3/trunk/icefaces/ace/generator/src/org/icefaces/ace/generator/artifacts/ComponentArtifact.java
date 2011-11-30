@@ -33,8 +33,10 @@ import org.icefaces.ace.generator.utils.FileWriter;
 import org.icefaces.ace.generator.utils.Utility;
 import java.util.logging.Logger;
 
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
 
 import org.icefaces.ace.generator.utils.PropertyValues;
 
@@ -42,154 +44,225 @@ public class ComponentArtifact extends Artifact{
 
     private StringBuilder writer = new StringBuilder();
 
-	private List<Field> generatedComponentProperties = new ArrayList<Field>();
+    private List<Field> generatedComponentProperties = new ArrayList<Field>();
     private final static Logger Log = Logger.getLogger(ComponentArtifact.class.getName());
 
     public ComponentArtifact(ComponentContext componentContext) {
-		super(componentContext);
-	}
+        super(componentContext);
+    }
 
-	public List<Field> getGeneratedComponentProperties() {
-		return generatedComponentProperties;
-	}
+    public List<Field> getGeneratedComponentProperties() {
+        return generatedComponentProperties;
+    }
 
-	private void startComponentClass(Class clazz, Component component) {
-		//initialize
-		// add entry to faces-config
-		GeneratorContext.getInstance().getFacesConfigBuilder().addEntry(clazz, component);
-		GeneratorContext.getInstance().getFaceletTagLibBuilder().addTagInfo(clazz, component);
+    private void startComponentClass(Class clazz, Component component) {
+        //initialize
+        // add entry to faces-config
+        GeneratorContext.getInstance().getFacesConfigBuilder().addEntry(clazz, component);
+        GeneratorContext.getInstance().getFaceletTagLibBuilder().addTagInfo(clazz, component);
 
-		int classIndicator =  Utility.getClassName(component).lastIndexOf(".");
+        int classIndicator =  Utility.getClassName(component).lastIndexOf(".");
 
-		writer.append("package ");
-		writer.append(Utility.getClassName(component).substring(0, classIndicator));
-		writer.append(";\n\n");
-		writer.append("import java.io.IOException;\n");
-		writer.append("import java.util.List;\n");
-		writer.append("import java.util.ArrayList;\n");
-		writer.append("import java.util.Map;\n");
-		writer.append("import java.util.HashMap;\n");
-		writer.append("import java.util.Arrays;\n\n");
-		writer.append("import javax.faces.context.FacesContext;\n");
-		writer.append("import javax.el.MethodExpression;\n");
-		writer.append("import javax.el.ValueExpression;\n\n");
-		writer.append("import javax.faces.component.StateHelper;\n\n");
-		writer.append("import javax.faces.component.UIComponent;\n");
-		writer.append("import javax.faces.component.UIViewRoot;\n\n");
+        writer.append("package ");
+        writer.append(Utility.getClassName(component).substring(0, classIndicator));
+        writer.append(";\n\n");
+        writer.append("import java.io.IOException;\n");
+        writer.append("import java.util.List;\n");
+        writer.append("import java.util.ArrayList;\n");
+        writer.append("import java.util.Map;\n");
+        writer.append("import java.util.HashMap;\n");
+        writer.append("import java.util.Arrays;\n\n");
+        writer.append("import javax.faces.context.FacesContext;\n");
+        writer.append("import javax.el.MethodExpression;\n");
+        writer.append("import javax.el.ValueExpression;\n\n");
+        writer.append("import javax.faces.component.StateHelper;\n\n");
+        writer.append("import javax.faces.component.UIComponent;\n");
+        writer.append("import javax.faces.render.Renderer;\n");
+        writer.append("import javax.faces.component.NamingContainer;\n");
+        writer.append("import javax.faces.component.UINamingContainer;\n");
+        writer.append("import javax.faces.component.UniqueIdVendor;\n");
+        writer.append("import javax.faces.component.UIViewRoot;\n\n");
 //        writer.append("import org.icefaces.ace.util.PartialStateHolderImpl;\n\n");
 
-		writer.append("import javax.faces.application.ResourceDependencies;\n");
-		writer.append("import javax.faces.application.ResourceDependency;\n\n");
+        writer.append("import javax.faces.application.ResourceDependencies;\n");
+        writer.append("import javax.faces.application.ResourceDependency;\n\n");
 
 
-		for (Behavior behavior: getComponentContext().getBehaviors()) {
-			behavior.addImportsToComponent(writer);
-		}
-		writer.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
+        for (Behavior behavior: getComponentContext().getBehaviors()) {
+            behavior.addImportsToComponent(writer);
+        }
+        writer.append("/*\n * ******* GENERATED CODE - DO NOT EDIT *******\n */\n");
 
-		// copy @ResourceDependency annotations
-		if (clazz.isAnnotationPresent(ResourceDependencies.class)) {
-			writer.append("\n");
-			writer.append("@ResourceDependencies({\n");
+        // copy @ResourceDependency annotations
+        if (clazz.isAnnotationPresent(ResourceDependencies.class)) {
+            writer.append("\n");
+            writer.append("@ResourceDependencies({\n");
 
-			ResourceDependencies rd = (ResourceDependencies) clazz.getAnnotation(ResourceDependencies.class);
-			ResourceDependency[] rds = rd.value();
-			int rdsLength = rds.length;
-			for (int i = 0; i < rdsLength; i++) {
-				writer.append("\t@ResourceDependency(name=\"" + rds[i].name() + "\",library=\"" + rds[i].library() + "\",target=\"" + rds[i].target() + "\")");
-				if (i < (rdsLength-1)) {
-					writer.append(",");
-				}
-				writer.append("\n");
-			}
+            ResourceDependencies rd = (ResourceDependencies) clazz.getAnnotation(ResourceDependencies.class);
+            ResourceDependency[] rds = rd.value();
+            int rdsLength = rds.length;
+            for (int i = 0; i < rdsLength; i++) {
+                writer.append("\t@ResourceDependency(name=\"" + rds[i].name() + "\",library=\"" + rds[i].library() + "\",target=\"" + rds[i].target() + "\")");
+                if (i < (rdsLength-1)) {
+                    writer.append(",");
+                }
+                writer.append("\n");
+            }
 
-			writer.append("})");
-			writer.append("\n\n");
-		} else if (clazz.isAnnotationPresent(ResourceDependency.class)) {
-			ResourceDependency rd = (ResourceDependency) clazz.getAnnotation(ResourceDependency.class);
-			writer.append("@ResourceDependency(name=\"" + rd.name() + "\",library=\"" + rd.library() + "\",target=\"" + rd.target() + "\")\n\n");
-		}
+            writer.append("})");
+            writer.append("\n\n");
+        } else if (clazz.isAnnotationPresent(ResourceDependency.class)) {
+            ResourceDependency rd = (ResourceDependency) clazz.getAnnotation(ResourceDependency.class);
+            writer.append("@ResourceDependency(name=\"" + rd.name() + "\",library=\"" + rd.library() + "\",target=\"" + rd.target() + "\")\n\n");
+        }
 
-		writer.append("public class ");
-		writer.append(Utility.getClassName(component).substring(classIndicator+1));
-		writer.append(" extends ");
-		writer.append(component.extendsClass());
-		String interfaceNames = "";
-		for (Behavior behavior: getComponentContext().getBehaviors()) {
-			interfaceNames+=behavior.getInterfaceName()+",";
-		}
-		if (!"".equals(interfaceNames)) {
-			writer.append(" implements ");
-			writer.append(interfaceNames.subSequence(0, interfaceNames.length()-1));
-		}
+        writer.append("public class ");
+        writer.append(Utility.getClassName(component).substring(classIndicator+1));
+        writer.append(" extends ");
+        writer.append(component.extendsClass());
+        String interfaceNames = "";
+        for (Behavior behavior: getComponentContext().getBehaviors()) {
+            interfaceNames+=behavior.getInterfaceName()+",";
+        }
+        if (!"".equals(interfaceNames)) {
+            writer.append(" implements ");
+            writer.append(interfaceNames.subSequence(0, interfaceNames.length()-1));
+        }
 
-		writer.append("{\n");
+        writer.append("{\n");
 
-		writer.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.componentType() + "\";");
-		String rendererType = null;
-		if (!"null".equals(component.rendererType())) {
-			rendererType = "\""+ component.rendererType() + "\"";
-		}
+        writer.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.componentType() + "\";");
+        String rendererType = null;
+        if (!"null".equals(component.rendererType())) {
+            rendererType = "\""+ component.rendererType() + "\"";
+        }
 
-		writer.append("\n\tpublic static final String RENDERER_TYPE = "+ rendererType + ";\n");
+        writer.append("\n\tpublic static final String RENDERER_TYPE = "+ rendererType + ";\n");
 
-		writer.append("\n\tpublic String getFamily() {\n\t\treturn \"");
-		writer.append(Utility.getFamily(component));
-		writer.append("\";\n\t}\n\n");
+        writer.append("\n\tpublic String getFamily() {\n\t\treturn \"");
+        writer.append(Utility.getFamily(component));
+        writer.append("\";\n\t}\n\n");
 
-		writer.append("\n\tprivate static boolean isDisconnected(UIComponent component) {\n");
-		writer.append("\t\tUIComponent parent = component.getParent();\n");
-		writer.append("\t\tif (parent != null && parent instanceof UIViewRoot) {\n");
-		writer.append("\t\t\treturn false;\n");
-		writer.append("\t\t} else if (parent != null) {\n");
-		writer.append("\t\t\treturn isDisconnected(parent);\n");
-		writer.append("\t\t} else {\n");
-		writer.append("\t\t\treturn true;\n");
-		writer.append("\t\t}\n");
-		writer.append("\t}\n");
-	}
+        writer.append("\n\tprivate static boolean isDisconnected(UIComponent component) {\n");
+        writer.append("\t\tUIComponent parent = component.getParent();\n");
+        writer.append("\t\tif (parent != null && parent instanceof UIViewRoot) {\n");
+        writer.append("\t\t\treturn false;\n");
+        writer.append("\t\t} else if (parent != null) {\n");
+        writer.append("\t\t\treturn isDisconnected(parent);\n");
+        writer.append("\t\t} else {\n");
+        writer.append("\t\t\treturn true;\n");
+        writer.append("\t\t}\n");
+        writer.append("\t}\n");
 
+        
 
-	private void endComponentClass() {
-		for (Behavior behavior: getComponentContext().getBehaviors()) {
-			behavior.addCodeToComponent(writer);
-		}
-		writer.append("\n}");
-		createJavaFile();
-
-	}
-
-	private void createJavaFile() {
-		System.out.println("____________________________Creating component class_________________________");
-		Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
-		String componentClass =Utility.getClassName(component);
-		String fileName = componentClass.substring(componentClass.lastIndexOf('.')+1) + ".java";
-		System.out.println("____FileName "+ fileName);
-		String pack = componentClass.substring(0, componentClass.lastIndexOf('.'));
-		System.out.println("____package "+ pack);
-		String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
-		System.out.println("____path "+ path);
-		FileWriter.write("base", path, fileName, writer);
-		System.out.println("____________________________Creating component class ends_________________________");
-	}
+        writer.append("private UIComponent getNamingContainerAncestor() {\n");
+        writer.append("UIComponent namingContainer = this.getParent();\n");
+        writer.append("while (namingContainer != null) {\n");
+        writer.append("if (namingContainer instanceof NamingContainer) {\n");
+        writer.append("return namingContainer;\n");
+        writer.append("}\n");
+        writer.append("namingContainer = namingContainer.getParent();\n");
+        writer.append("}\n");
+        writer.append("return null;\n");
+        writer.append("}\n");
 
 
-	private void addProperties(List<Field> properties) {
+        writer.append("private String clientId = null;\n");
+        writer.append("public String getComponentId() {\n");
+        writer.append("FacesContext context = FacesContext.getCurrentInstance();\n");
+        writer.append("if (context == null) {\n");
+        writer.append("throw new NullPointerException();\n");
+        writer.append("}\n");
+
+        writer.append("// if the clientId is not yet set\n");
+        writer.append("if (this.clientId == null) {\n");
+        writer.append("UIComponent namingContainerAncestor =\n");
+        writer.append("this.getNamingContainerAncestor();\n");
+        writer.append("UIComponent parent = namingContainerAncestor;\n");
+        writer.append("String parentId = null;\n");
+
+        writer.append("// give the parent the opportunity to first\n");
+        writer.append("// grab a unique clientId\n");
+        writer.append("if (parent != null) {\n");
+        writer.append("parentId = parent.getContainerClientId(context);\n");
+        writer.append("}\n");
+
+        writer.append("// now resolve our own client id\n");
+        writer.append("this.clientId = getId();\n");
+        writer.append("if (this.clientId == null) {\n");
+        writer.append("String generatedId;\n");
+        writer.append("if (null != namingContainerAncestor &&\n");
+        writer.append("namingContainerAncestor instanceof UniqueIdVendor) {\n");
+        writer.append("generatedId = ((UniqueIdVendor)namingContainerAncestor).createUniqueId(context, null);\n");
+        writer.append("}\n");
+        writer.append("else {\n");
+        writer.append("generatedId = context.getViewRoot().createUniqueId();\n");
+        writer.append("}\n");
+        writer.append("setId(generatedId);\n");
+        writer.append("this.clientId = getId();\n");
+        writer.append("}\n");
+        writer.append("if (parentId != null) {\n");
+        writer.append("StringBuilder idBuilder =\n");
+        writer.append("new StringBuilder(parentId.length()\n");
+        writer.append(" + 1\n");
+        writer.append(" + this.clientId.length());\n");
+        writer.append("this.clientId = idBuilder.append(parentId)\n");
+        writer.append(".append(UINamingContainer.getSeparatorChar(context))\n");
+        writer.append(".append(this.clientId).toString();\n");
+        writer.append("}\n");
+
+        writer.append("// allow the renderer to convert the clientId\n");
+        writer.append("Renderer renderer = this.getRenderer(context);\n");
+        writer.append("if (renderer != null) {\n");
+        writer.append("this.clientId = renderer.convertClientId(context, this.clientId);\n");
+        writer.append("}\n");
+        writer.append("}\n");
+        writer.append("return this.clientId;\n");
+        writer.append("}\n\n");
+    }
+
+
+    private void endComponentClass() {
+        for (Behavior behavior: getComponentContext().getBehaviors()) {
+            behavior.addCodeToComponent(writer);
+        }
+        writer.append("\n}");
+        createJavaFile();
+
+    }
+
+    private void createJavaFile() {
+        System.out.println("____________________________Creating component class_________________________");
+        Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
+        String componentClass =Utility.getClassName(component);
+        String fileName = componentClass.substring(componentClass.lastIndexOf('.')+1) + ".java";
+        System.out.println("____FileName "+ fileName);
+        String pack = componentClass.substring(0, componentClass.lastIndexOf('.'));
+        System.out.println("____package "+ pack);
+        String path = pack.replace('.', '/') + '/'; //substring(0, pack.lastIndexOf('.'));
+        System.out.println("____path "+ path);
+        FileWriter.write("base", path, fileName, writer);
+        System.out.println("____________________________Creating component class ends_________________________");
+    }
+
+
+    private void addProperties(List<Field> properties) {
         generatedComponentProperties.addAll(properties);
-		addPropertyEnum();
-		addGetterSetter();
-	}
+        addPropertyEnum();
+        addGetterSetter();
+    }
 
-	private void addPropertyEnum() {
+    private void addPropertyEnum() {
 
-		writer.append("\n\tprotected enum PropertyKeys {\n");
-		for (Behavior behavior: getComponentContext().getBehaviors()) {
-			behavior.addPropertiesEnumToComponent(writer);
-		}
+        writer.append("\n\tprotected enum PropertyKeys {\n");
+        for (Behavior behavior: getComponentContext().getBehaviors()) {
+            behavior.addPropertiesEnumToComponent(writer);
+        }
         String propertyName;
-		Map<Field, PropertyValues> propertyValuesMap = getComponentContext().getPropertyValuesMap();
-		for (int i = 0; i < generatedComponentProperties.size(); i++){
-			PropertyValues propertyValues = propertyValuesMap.get(generatedComponentProperties.get(i));
+        Map<Field, PropertyValues> propertyValuesMap = getComponentContext().getPropertyValuesMap();
+        for (int i = 0; i < generatedComponentProperties.size(); i++){
+            PropertyValues propertyValues = propertyValuesMap.get(generatedComponentProperties.get(i));
 
             if (!"null".equalsIgnoreCase( propertyName = propertyValues.name))  {
                 propertyName += "Val(\"" + propertyName + "\")";
@@ -198,45 +271,45 @@ public class ComponentArtifact extends Artifact{
             }
             System.out.println("Processing property " + propertyName );
 
-			if (!propertyValues.isDelegatingProperty) {
-				writer.append("\t\t");
-				writer.append( propertyName );
-				writer.append(",\n");
-			}
-		}
-		Iterator<Field> fields = getComponentContext().getInternalFieldsForComponentClass().values().iterator();
-		while (fields.hasNext()) {
-			Field field = fields.next();
-			writer.append("\t\t");
-			writer.append( field.getName() );
-			writer.append(",\n");
-		}
-		writer.append("\t\t;\n");
-		writer.append("\t\tString toString;\n");
-		writer.append("\t\tPropertyKeys(String toString) { this.toString = toString; }\n");
-		writer.append("\t\tPropertyKeys() { }\n");
-		writer.append("\t\tpublic String toString() {\n");
-		writer.append("\t\t\treturn ((toString != null) ? toString : super.toString());\n");
-		writer.append("\t\t}\n\t}\n");
-	}
+            if (!propertyValues.isDelegatingProperty) {
+                writer.append("\t\t");
+                writer.append( propertyName );
+                writer.append(",\n");
+            }
+        }
+        Iterator<Field> fields = getComponentContext().getInternalFieldsForComponentClass().values().iterator();
+        while (fields.hasNext()) {
+            Field field = fields.next();
+            writer.append("\t\t");
+            writer.append( field.getName() );
+            writer.append(",\n");
+        }
+        writer.append("\t\t;\n");
+        writer.append("\t\tString toString;\n");
+        writer.append("\t\tPropertyKeys(String toString) { this.toString = toString; }\n");
+        writer.append("\t\tPropertyKeys() { }\n");
+        writer.append("\t\tpublic String toString() {\n");
+        writer.append("\t\t\treturn ((toString != null) ? toString : super.toString());\n");
+        writer.append("\t\t}\n\t}\n");
+    }
 
-	private void addGetterSetter() {
-		for (Behavior behavior: getComponentContext().getBehaviors()) {
-			behavior.addGetterSetter(this, writer);
-		}
-		for (int i = 0; i < generatedComponentProperties.size(); i++) {
-			Field field = generatedComponentProperties.get(i);
-			addGetterSetter(field);
-		}
-		//since generatedComponentProperties doesn't include inherited properties,
-		//here FieldsForTagClass is used. This part may need re-factor-ed later.
-		Iterator<String> iterator = getComponentContext().getFieldsForTagClass().keySet().iterator();
-		while (iterator.hasNext()){
-			Field field = getComponentContext().getFieldsForTagClass().get(iterator.next());
-			GeneratorContext.getInstance().getFaceletTagLibBuilder().addAttributeInfo(field);
-		}
+    private void addGetterSetter() {
+        for (Behavior behavior: getComponentContext().getBehaviors()) {
+            behavior.addGetterSetter(this, writer);
+        }
+        for (int i = 0; i < generatedComponentProperties.size(); i++) {
+            Field field = generatedComponentProperties.get(i);
+            addGetterSetter(field);
+        }
+        //since generatedComponentProperties doesn't include inherited properties,
+        //here FieldsForTagClass is used. This part may need re-factor-ed later.
+        Iterator<String> iterator = getComponentContext().getFieldsForTagClass().keySet().iterator();
+        while (iterator.hasNext()){
+            Field field = getComponentContext().getFieldsForTagClass().get(iterator.next());
+            GeneratorContext.getInstance().getFaceletTagLibBuilder().addAttributeInfo(field);
+        }
 
-	}
+    }
 
     /**
      * Add a getter/setter for the property for a given field. This method writes the
@@ -244,11 +317,11 @@ public class ComponentArtifact extends Artifact{
      * if the method name has a signature from EditableValueHolder that can't be changed.
      * @param field
      */
-	public void addGetterSetter(Field field) {
-		PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field);
+    public void addGetterSetter(Field field) {
+        PropertyValues prop = getComponentContext().getPropertyValuesMap().get(field);
 
-		boolean isBoolean = field.getType().getName().endsWith("boolean")||
-		field.getType().getName().endsWith("Boolean");
+        boolean isBoolean = field.getType().getName().endsWith("boolean")||
+                field.getType().getName().endsWith("Boolean");
 
 
         // primitive properties are supported (ones with values
@@ -258,9 +331,9 @@ public class ComponentArtifact extends Artifact{
         // or else the generated signiture clashes with the property names in
         // EditableValueHolder
         boolean isPrimitive = field.getType().isPrimitive() ||
-                              GeneratorContext.SpecialReturnSignatures.containsKey( field.getName().toString().trim() );
+                GeneratorContext.SpecialReturnSignatures.containsKey( field.getName().toString().trim() );
 
-          String returnAndArgumentType = field.getType().getName();
+        String returnAndArgumentType = field.getType().getName();
 
         // If primitive property, get the primitive return type
         // otherwise leave it as is.
@@ -270,10 +343,10 @@ public class ComponentArtifact extends Artifact{
             }
         }
 
-		String methodName;
+        String methodName;
         // The publicly exposed property name. Will differ from the field name
         // if the field name is a java keyword
-		String pseudoFieldName;
+        String pseudoFieldName;
         String camlCaseMethodName;
         if (!"null".equals(prop.name) ) {
             methodName = prop.name;
@@ -284,34 +357,34 @@ public class ComponentArtifact extends Artifact{
         }
         camlCaseMethodName = methodName.substring(0,1).toUpperCase() + methodName.substring(1);
 
-		//-------------------------------------
-		// writing Setter
+        //-------------------------------------
+        // writing Setter
         //-------------------------------------
 
-		addJavaDoc(pseudoFieldName, true, prop.javadocSet);
-		writer.append("\tpublic void set");
-		writer.append(camlCaseMethodName);
+        addJavaDoc(pseudoFieldName, true, prop.javadocSet);
+        writer.append("\tpublic void set");
+        writer.append(camlCaseMethodName);
 
         // Allow java autoconversion to deal with most of the conversion between
         // primitive types and Wrapper classes
-		writer.append("(");
+        writer.append("(");
         writer.append( returnAndArgumentType );
-		writer.append(" ");
-		writer.append(field.getName());
-		writer.append(") {");
+        writer.append(" ");
+        writer.append(field.getName());
+        writer.append(") {");
 
-		if (!prop.isDelegatingProperty) {
-			writer.append("\n\t\tValueExpression ve = getValueExpression(PropertyKeys.");
-			writer.append(pseudoFieldName);
-			writer.append(".name() );");
+        if (!prop.isDelegatingProperty) {
+            writer.append("\n\t\tValueExpression ve = getValueExpression(PropertyKeys.");
+            writer.append(pseudoFieldName);
+            writer.append(".name() );");
 //			writer.append("\n\t\tMap clientValues = null;");
-			writer.append("\n\t\tif (ve != null) {");
-			writer.append("\n\t\t\t// map of style values per clientId");
-			writer.append("\n\t\t\tve.setValue(getFacesContext().getELContext(), ");
-			writer.append( field.getName() );
-			writer.append(" );");
+            writer.append("\n\t\tif (ve != null) {");
+            writer.append("\n\t\t\t// map of style values per clientId");
+            writer.append("\n\t\t\tve.setValue(getFacesContext().getELContext(), ");
+            writer.append( field.getName() );
+            writer.append(" );");
 
-			writer.append("\n\t\t} else { ");
+            writer.append("\n\t\t} else { ");
 
 //		    writer.append("\n\t\t\tMap clientValues = (Map) sh.get(valuesKey); ");
 //
@@ -324,11 +397,11 @@ public class ComponentArtifact extends Artifact{
 //			writer.append("\n\t\t\t}");
             writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
 
-			writer.append("\n\t\t\tif (isDisconnected(this))  {");
+            writer.append("\n\t\t\tif (isDisconnected(this))  {");
             // Here,
 
             writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append( pseudoFieldName ).
-                                append(".name() + \"_defaultValues\";" );
+                    append(".name() + \"_defaultValues\";" );
             writer.append("\n\t\t\t\tMap clientDefaults = (Map) sh.get(defaultKey);");
 
             writer.append("\n\t\t\t\tif (clientDefaults == null");
@@ -342,8 +415,8 @@ public class ComponentArtifact extends Artifact{
             writer.append("\n\t\t\t\t} ");
 
 
-			writer.append("\n\t\t\t} else {");
-			writer.append("\n\t\t\t\tString clientId = getClientId();");
+            writer.append("\n\t\t\t} else {");
+            writer.append("\n\t\t\t\tString clientId = getComponentId();");
             writer.append("\n\t\t\t\tString valuesKey = PropertyKeys.").append( pseudoFieldName ).
                     append(".name() + \"_rowValues\"; ");
             writer.append("\n\t\t\t\tMap clientValues = (Map) sh.get(valuesKey); ");
@@ -366,18 +439,18 @@ public class ComponentArtifact extends Artifact{
             writer.append("\n\t\t\t\tsh.put(valuesKey, clientValues);" );
 
 
-			writer.append("\n\t\t\t}" );
-			writer.append("\n\t\t}" );
-		} else {
-			writer.append("\n\t\tsuper.set" + methodName + "(" + field.getName() + ");");
-		}
+            writer.append("\n\t\t\t}" );
+            writer.append("\n\t\t}" );
+        } else {
+            writer.append("\n\t\tsuper.set" + methodName + "(" + field.getName() + ");");
+        }
         writer.append("\n\t}\n" );
 
         //-----------------
-		//getter
+        //getter
         //-----------------
 
-		addJavaDoc(pseudoFieldName, false, prop.javadocGet);
+        addJavaDoc(pseudoFieldName, false, prop.javadocGet);
 
         // Internal value representation is always Wrapper type
         String internalType = returnAndArgumentType;
@@ -385,81 +458,81 @@ public class ComponentArtifact extends Artifact{
             internalType = GeneratorContext.InvWrapperTypes.get( returnAndArgumentType );
         }
 
-		writer.append("\tpublic ");
+        writer.append("\tpublic ");
         writer.append( returnAndArgumentType );
-		writer.append(" ");
+        writer.append(" ");
 
-		if (isBoolean) {
-			writer.append("is");
-		} else {
-			writer.append("get");
-		}
-		writer.append(camlCaseMethodName);
-		writer.append("() {");
+        if (isBoolean) {
+            writer.append("is");
+        } else {
+            writer.append("get");
+        }
+        writer.append(camlCaseMethodName);
+        writer.append("() {");
 
         if (!prop.isDelegatingProperty) {
-			// start of the code
-			writer.append("\n\t\t").append(internalType).append(" retVal = ");
+            // start of the code
+            writer.append("\n\t\t").append(internalType).append(" retVal = ");
 
-			// No defined default value is returned as the string "null". This has to
-			// be handled for various cases. primitives must have a default of some kind
-			// and Strings have to return null (not "null") to work.
-			String defaultValue = prop.defaultValue;
-			Log.fine("Evaluating field name: " + field.getName().toString().trim() + ", isPRIMITIVE " +
-							   isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
+            // No defined default value is returned as the string "null". This has to
+            // be handled for various cases. primitives must have a default of some kind
+            // and Strings have to return null (not "null") to work.
+            String defaultValue = prop.defaultValue;
+            Log.fine("Evaluating field name: " + field.getName().toString().trim() + ", isPRIMITIVE " +
+                    isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
 
-			if (isPrimitive && (defaultValue == null || defaultValue.equals("") || defaultValue.equals("null"))) {
-				defaultValue = GeneratorContext.PrimitiveDefaults.get( field.getType().toString().trim() );
-			}
+            if (isPrimitive && (defaultValue == null || defaultValue.equals("") || defaultValue.equals("null"))) {
+                defaultValue = GeneratorContext.PrimitiveDefaults.get( field.getType().toString().trim() );
+            }
 
             boolean needsQuotes = ((internalType.indexOf("String") > -1) || (internalType.indexOf("Object") > -1));
-			if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
-				writer.append("\"");
-			}
-			writer.append( defaultValue );
-			if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
-				writer.append("\"");
-			}
-			writer.append(";");
+            if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
+                writer.append("\"");
+            }
+            writer.append( defaultValue );
+            if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
+                writer.append("\"");
+            }
+            writer.append(";");
 
-			// Start of Value Expression code
-			writer.append("\n\t\tValueExpression ve = getValueExpression( PropertyKeys.");
-			writer.append( pseudoFieldName );
-			writer.append(".name() );");
+            // Start of Value Expression code
+            writer.append("\n\t\tValueExpression ve = getValueExpression( PropertyKeys.");
+            writer.append( pseudoFieldName );
+            writer.append(".name() );");
 
-			writer.append("\n\t\tif (ve != null) {" );
-			// For primitives, don't overwrite a default value with a null value obtained from
-			// the value expression. For the stateHelper, we're the ones putting those values
-			// into the map, hence a value wont be found there.
-			if (isPrimitive) {
-				writer.append("\n\t\t\tObject o = ve.getValue( getFacesContext().getELContext() );");
-				writer.append("\n\t\t\tif (o != null) { " );
-				writer.append("\n\t\t\t\tretVal = (").append( internalType ).append
-										   (") o; ");
-				writer.append("\n\t\t\t}");
-			} else {
-				writer.append("\n\t\t\t\tretVal = (").append( internalType ).append
-										   (") ve.getValue( getFacesContext().getELContext() ); ");
-			}
-			writer.append("\n\t\t} else {");
-			writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
-			writer.append("\n\t\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_rowValues\";");
-			writer.append("\n\t\t\tMap clientValues = (Map) sh.get(valuesKey);");
+            writer.append("\n\t\tif (ve != null) {" );
+            // For primitives, don't overwrite a default value with a null value obtained from
+            // the value expression. For the stateHelper, we're the ones putting those values
+            // into the map, hence a value wont be found there.
+            if (isPrimitive) {
+                writer.append("\n\t\t\tObject o = ve.getValue( getFacesContext().getELContext() );");
+                writer.append("\n\t\t\tif (o != null) { " );
+                writer.append("\n\t\t\t\tretVal = (").append( internalType ).append
+                        (") o; ");
+                writer.append("\n\t\t\t}");
+            } else {
+                writer.append("\n\t\t\t\tretVal = (").append( internalType ).append
+                        (") ve.getValue( getFacesContext().getELContext() ); ");
+            }
+            writer.append("\n\t\t} else {");
+            writer.append("\n\t\t\tStateHelper sh = getStateHelper(); ");
+            writer.append("\n\t\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_rowValues\";");
+            writer.append("\n\t\t\tMap clientValues = (Map) sh.get(valuesKey);");
             writer.append("\n\t\t\tboolean mapNoValue = false;");
-			// differentiate between the case where the map has clientId and it's value is null
-			// verses it not existing in the map at all.
+            // differentiate between the case where the map has clientId and it's value is null
+            // verses it not existing in the map at all.
             writer.append("\n\t\t\tif (clientValues != null) { ");
 
-			writer.append("\n\t\t\t\tString clientId = getClientId();");
-			writer.append("\n\t\t\t\tif (clientValues.containsKey( clientId ) ) { ");
-			writer.append("\n\t\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(clientId); ");
+            writer.append("\n\t\t\t\tString clientId = getComponentId();");
+            writer.append("\n\t\t\t\tif (clientValues.containsKey( clientId ) ) { ");
+            writer.append("\n\t\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(clientId); ");
             writer.append("\n\t\t\t\t} else { ");
             writer.append("\n\t\t\t\t\tmapNoValue=true;");
             writer.append("\n\t\t\t\t}");
             writer.append("\n\t\t\t}");
 
 
-			writer.append("\n\t\t\tif (mapNoValue || clientValues == null ) { ");
+            writer.append("\n\t\t\tif (mapNoValue || clientValues == null ) { ");
             writer.append("\n\t\t\t\tString defaultKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_defaultValues\";");
             writer.append("\n\t\t\t\tMap defaultValues = (Map) sh.get(defaultKey); ");
             writer.append("\n\t\t\t\tif (defaultValues != null) { ");
@@ -467,96 +540,96 @@ public class ComponentArtifact extends Artifact{
             writer.append("\n\t\t\t\t\t\tretVal = (").append(internalType).append(") defaultValues.get(\"defValue\"); ");
             writer.append("\n\t\t\t\t\t}");
             writer.append("\n\t\t\t\t}");
-			writer.append("\n\t\t\t}");
-			writer.append("\n\t\t}");
-			writer.append("\n\t\treturn retVal;");
-		} else {
-			writer.append("\n\t\treturn super.");
-			if (isBoolean) {
-				writer.append("is");
-			} else {
-				writer.append("get");
-			}
-			writer.append(methodName + "();");
-		}
+            writer.append("\n\t\t\t}");
+            writer.append("\n\t\t}");
+            writer.append("\n\t\treturn retVal;");
+        } else {
+            writer.append("\n\t\treturn super.");
+            if (isBoolean) {
+                writer.append("is");
+            } else {
+                writer.append("get");
+            }
+            writer.append(methodName + "();");
+        }
         writer.append("\n\t}\n");
-	}
+    }
 
 
-	private void addJavaDoc(String name, boolean isSetter, String doc) {
-		writer.append("\n\t/**\n");
-		if (isSetter) {
-			writer.append("\t* <p>Set the value of the <code>");
-		} else {
-			writer.append("\t* <p>Return the value of the <code>");
-		}
-		writer.append(name);
-		writer.append("</code> property.</p>");
-		if (doc != null && !"".equals(doc)) {
-			String[] lines = doc.split("\n");
-			writer.append("\n\t* <p>Contents:");
+    private void addJavaDoc(String name, boolean isSetter, String doc) {
+        writer.append("\n\t/**\n");
+        if (isSetter) {
+            writer.append("\t* <p>Set the value of the <code>");
+        } else {
+            writer.append("\t* <p>Return the value of the <code>");
+        }
+        writer.append(name);
+        writer.append("</code> property.</p>");
+        if (doc != null && !"".equals(doc)) {
+            String[] lines = doc.split("\n");
+            writer.append("\n\t* <p>Contents:");
 
-			for (int j=0; j < lines.length; j++){
-				if (j>0) {
-					writer.append("\n\t* ");
-				}
-				writer.append(lines[j]);
-				if (j == (lines.length-1)) {
-					writer.append("</p>");
-				}
-			}
-		}
-		writer.append("\n\t*/\n");
-	}
-
-
-
-	private void addFacet(Class clazz, Component component) {
-		Iterator<Field> iterator = getComponentContext().getFieldsForFacet().values().iterator();
-		while (iterator.hasNext()) {
-			Field field = iterator.next();
-			Facet facet = (Facet)field.getAnnotation(Facet.class);
-			String facetName = field.getName();
-			addJavaDoc(field.getName() + " facet", true, facet.javadocSet());
-			writer.append("\tpublic void set");
-			writer.append(field.getName().substring(0,1).toUpperCase());
-			writer.append(field.getName().substring(1));
-			writer.append("Facet");
-
-			writer.append("(");
-			writer.append(field.getType().getName());
-			writer.append(" ");
-			writer.append(field.getName());
-			writer.append(") {\n\t\tgetFacets().put(\"");
-			writer.append(facetName);
-			writer.append("\", ");
-			writer.append(field.getName());
-			writer.append(");\n");
-			writer.append("\t}\n");
+            for (int j=0; j < lines.length; j++){
+                if (j>0) {
+                    writer.append("\n\t* ");
+                }
+                writer.append(lines[j]);
+                if (j == (lines.length-1)) {
+                    writer.append("</p>");
+                }
+            }
+        }
+        writer.append("\n\t*/\n");
+    }
 
 
-			//getter
-			addJavaDoc(field.getName() + " facet", false, facet.javadocGet());
-			writer.append("\tpublic ");
-			writer.append(field.getType().getName());
-			writer.append(" ");
-			writer.append("get");
-			writer.append(field.getName().substring(0,1).toUpperCase());
-			writer.append(field.getName().substring(1));
-			writer.append("Facet");
-			writer.append("() {\n");
-			writer.append("\t\t return getFacet(\"");
-			writer.append(facetName);
-			writer.append("\");\n\t}\n");
 
-		}
+    private void addFacet(Class clazz, Component component) {
+        Iterator<Field> iterator = getComponentContext().getFieldsForFacet().values().iterator();
+        while (iterator.hasNext()) {
+            Field field = iterator.next();
+            Facet facet = (Facet)field.getAnnotation(Facet.class);
+            String facetName = field.getName();
+            addJavaDoc(field.getName() + " facet", true, facet.javadocSet());
+            writer.append("\tpublic void set");
+            writer.append(field.getName().substring(0,1).toUpperCase());
+            writer.append(field.getName().substring(1));
+            writer.append("Facet");
 
-	}
+            writer.append("(");
+            writer.append(field.getType().getName());
+            writer.append(" ");
+            writer.append(field.getName());
+            writer.append(") {\n\t\tgetFacets().put(\"");
+            writer.append(facetName);
+            writer.append("\", ");
+            writer.append(field.getName());
+            writer.append(");\n");
+            writer.append("\t}\n");
 
-	public void addFieldGetterSetter(Field field, org.icefaces.ace.meta.annotation.Field fieldAnnotation) {
 
-		boolean isBoolean = field.getType().getName().endsWith("boolean")||
-		field.getType().getName().endsWith("Boolean");
+            //getter
+            addJavaDoc(field.getName() + " facet", false, facet.javadocGet());
+            writer.append("\tpublic ");
+            writer.append(field.getType().getName());
+            writer.append(" ");
+            writer.append("get");
+            writer.append(field.getName().substring(0,1).toUpperCase());
+            writer.append(field.getName().substring(1));
+            writer.append("Facet");
+            writer.append("() {\n");
+            writer.append("\t\t return getFacet(\"");
+            writer.append(facetName);
+            writer.append("\");\n\t}\n");
+
+        }
+
+    }
+
+    public void addFieldGetterSetter(Field field, org.icefaces.ace.meta.annotation.Field fieldAnnotation) {
+
+        boolean isBoolean = field.getType().getName().endsWith("boolean")||
+                field.getType().getName().endsWith("Boolean");
 
 
         // primitive properties are supported (ones with values
@@ -566,9 +639,9 @@ public class ComponentArtifact extends Artifact{
         // or else the generated signiture clashes with the property names in
         // EditableValueHolder
         boolean isPrimitive = field.getType().isPrimitive() ||
-                              GeneratorContext.SpecialReturnSignatures.containsKey( field.getName().toString().trim() );
+                GeneratorContext.SpecialReturnSignatures.containsKey( field.getName().toString().trim() );
 
-          String returnAndArgumentType = field.getType().getName();
+        String returnAndArgumentType = field.getType().getName();
 
         // If primitive property, get the primitive return type
         // otherwise leave it as is.
@@ -578,120 +651,120 @@ public class ComponentArtifact extends Artifact{
             }
         }
 
-		String methodName;
+        String methodName;
         // The publicly exposed property name. Will differ from the field name
         // if the field name is a java keyword
-		String pseudoFieldName;
+        String pseudoFieldName;
         String camlCaseMethodName;
         methodName = field.getName();
         pseudoFieldName = methodName;
         camlCaseMethodName = methodName.substring(0,1).toUpperCase() + methodName.substring(1);
 
-		//-------------------------------------
-		// writing Setter
+        //-------------------------------------
+        // writing Setter
         //-------------------------------------
 
-		addJavaDoc(pseudoFieldName, true, fieldAnnotation.javadoc());
-		writer.append("\tpublic void set");
-		writer.append(camlCaseMethodName);
+        addJavaDoc(pseudoFieldName, true, fieldAnnotation.javadoc());
+        writer.append("\tpublic void set");
+        writer.append(camlCaseMethodName);
 
         // Allow java autoconversion to deal with most of the conversion between
         // primitive types and Wrapper classes
-		writer.append("(");
+        writer.append("(");
         writer.append( returnAndArgumentType );
-		writer.append(" ");
-		writer.append(field.getName());
-		writer.append(") {");
+        writer.append(" ");
+        writer.append(field.getName());
+        writer.append(") {");
 
-		writer.append("\n\t\tStateHelper sh = getStateHelper(); ");
-		writer.append("\n\t\tString clientId = getClientId();");
-		writer.append("\n\t\tString valuesKey = PropertyKeys.").append( pseudoFieldName ).
-				append(".name() + \"_rowValues\"; ");
-		writer.append("\n\t\tMap clientValues = (Map) sh.get(valuesKey); ");
-		writer.append("\n\t\tif (clientValues == null) {");
-		writer.append("\n\t\t\tclientValues = new HashMap(); ");
-		writer.append("\n\t\t}");
-		writer.append("\n\t\tclientValues.put(clientId, " ).append( field.getName().toString()).
-				append(");");
+        writer.append("\n\t\tStateHelper sh = getStateHelper(); ");
+        writer.append("\n\t\tString clientId = getComponentId();");
+        writer.append("\n\t\tString valuesKey = PropertyKeys.").append( pseudoFieldName ).
+                append(".name() + \"_rowValues\"; ");
+        writer.append("\n\t\tMap clientValues = (Map) sh.get(valuesKey); ");
+        writer.append("\n\t\tif (clientValues == null) {");
+        writer.append("\n\t\t\tclientValues = new HashMap(); ");
+        writer.append("\n\t\t}");
+        writer.append("\n\t\tclientValues.put(clientId, " ).append( field.getName().toString()).
+                append(");");
 
-		writer.append("\n\t\t//Always re-add the delta values to the map. JSF merges the values into the main map" );
-		writer.append("\n\t\t//and values are not state saved unless they're in the delta map. " );
+        writer.append("\n\t\t//Always re-add the delta values to the map. JSF merges the values into the main map" );
+        writer.append("\n\t\t//and values are not state saved unless they're in the delta map. " );
 
-		writer.append("\n\t\tsh.put(valuesKey, clientValues);" );
+        writer.append("\n\t\tsh.put(valuesKey, clientValues);" );
 
         writer.append("\n\t}\n" );
 
         //-----------------
-		//getter
+        //getter
         //-----------------
 
         addJavaDoc(pseudoFieldName, false, fieldAnnotation.javadoc());
-		// Internal value representation is always Wrapper type
+        // Internal value representation is always Wrapper type
         String internalType = returnAndArgumentType;
         if (GeneratorContext.InvWrapperTypes.containsKey( returnAndArgumentType ) ) {
             internalType = GeneratorContext.InvWrapperTypes.get( returnAndArgumentType );
         }
 
-		writer.append("\tpublic ");
+        writer.append("\tpublic ");
         writer.append( returnAndArgumentType );
-		writer.append(" ");
+        writer.append(" ");
 
-		if (isBoolean) {
-			writer.append("is");
-		} else {
-			writer.append("get");
-		}
-		writer.append(camlCaseMethodName);
-		writer.append("() {");
+        if (isBoolean) {
+            writer.append("is");
+        } else {
+            writer.append("get");
+        }
+        writer.append(camlCaseMethodName);
+        writer.append("() {");
 
-		// start of the code
-		writer.append("\n\t\t").append(internalType).append(" retVal = ");
+        // start of the code
+        writer.append("\n\t\t").append(internalType).append(" retVal = ");
 
-		// No defined default value is returned as the string "null". This has to
-		// be handled for various cases. primitives must have a default of some kind
-		// and Strings have to return null (not "null") to work.
-		String defaultValue = fieldAnnotation.defaultValue();
-		Log.fine("Evaluating field name: " + field.getName().toString().trim() + ", isPRIMITIVE " +
-						   isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
+        // No defined default value is returned as the string "null". This has to
+        // be handled for various cases. primitives must have a default of some kind
+        // and Strings have to return null (not "null") to work.
+        String defaultValue = fieldAnnotation.defaultValue();
+        Log.fine("Evaluating field name: " + field.getName().toString().trim() + ", isPRIMITIVE " +
+                isPrimitive + ", defaultValue:[" + defaultValue + "], isNull:" + (defaultValue == null));
 
-		if (isPrimitive && (defaultValue == null || defaultValue.equals("") || defaultValue.equals("null"))) {
-			defaultValue = GeneratorContext.PrimitiveDefaults.get( field.getType().toString().trim() );
-		}
+        if (isPrimitive && (defaultValue == null || defaultValue.equals("") || defaultValue.equals("null"))) {
+            defaultValue = GeneratorContext.PrimitiveDefaults.get( field.getType().toString().trim() );
+        }
 
-		boolean needsQuotes = ((internalType.indexOf("String") > -1) || (internalType.indexOf("Object") > -1));
-		if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
-			writer.append("\"");
-		}
-		writer.append( defaultValue );
-		if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
-			writer.append("\"");
-		}
-		writer.append(";");
+        boolean needsQuotes = ((internalType.indexOf("String") > -1) || (internalType.indexOf("Object") > -1));
+        if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
+            writer.append("\"");
+        }
+        writer.append( defaultValue );
+        if ( needsQuotes && (defaultValue != null ) && (!"null".equals(defaultValue)))  {
+            writer.append("\"");
+        }
+        writer.append(";");
 
-		writer.append("\n\t\tStateHelper sh = getStateHelper(); ");
-		writer.append("\n\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_rowValues\";");
-		writer.append("\n\t\tMap clientValues = (Map) sh.get(valuesKey);");
-		writer.append("\n\t\tif (clientValues != null) { ");
+        writer.append("\n\t\tStateHelper sh = getStateHelper(); ");
+        writer.append("\n\t\tString valuesKey = PropertyKeys.").append(pseudoFieldName).append(".name() + \"_rowValues\";");
+        writer.append("\n\t\tMap clientValues = (Map) sh.get(valuesKey);");
+        writer.append("\n\t\tif (clientValues != null) { ");
 
-		writer.append("\n\t\t\tString clientId = getClientId();");
-		writer.append("\n\t\t\tif (clientValues.containsKey( clientId ) ) { ");
-		writer.append("\n\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(clientId); ");
-		writer.append("\n\t\t\t}");
-		writer.append("\n\t\t}");
+        writer.append("\n\t\t\tString clientId = getComponentId();");
+        writer.append("\n\t\t\tif (clientValues.containsKey( clientId ) ) { ");
+        writer.append("\n\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(clientId); ");
+        writer.append("\n\t\t\t}");
+        writer.append("\n\t\t}");
 
-		writer.append("\n\t\treturn retVal;");
+        writer.append("\n\t\treturn retVal;");
 
         writer.append("\n\t}\n");
-	}
+    }
 
 
-	private void addInternalFields() {
-		Iterator<Field> fields = getComponentContext().getInternalFieldsForComponentClass().values().iterator();
-		while (fields.hasNext()) {
-			Field field = fields.next();
-			org.icefaces.ace.meta.annotation.Field fieldAnnotation = (org.icefaces.ace.meta.annotation.Field)field.getAnnotation(org.icefaces.ace.meta.annotation.Field.class);
-			addFieldGetterSetter(field, fieldAnnotation);
-		}
+    private void addInternalFields() {
+        Iterator<Field> fields = getComponentContext().getInternalFieldsForComponentClass().values().iterator();
+        while (fields.hasNext()) {
+            Field field = fields.next();
+            org.icefaces.ace.meta.annotation.Field fieldAnnotation = (org.icefaces.ace.meta.annotation.Field)field.getAnnotation(org.icefaces.ace.meta.annotation.Field.class);
+            addFieldGetterSetter(field, fieldAnnotation);
+        }
 /*
 		Map<String, Field> nonTransientProperties = new HashMap<String, Field>();
 		//write properties
@@ -777,40 +850,41 @@ public class ComponentArtifact extends Artifact{
 		}
 		writer.append("\t}\n");
 */
-	}
+    }
 
-	private void handleAttribute() {
-		writer.append("\tprivate void handleAttribute(String name, Object value) {\n");
-		writer.append("\t\tList<String> setAttributes = (List<String>) this.getAttributes().get(\"javax.faces.component.UIComponentBase.attributesThatAreSet\");\n");
-		writer.append("\t\tif (setAttributes == null) {\n");
-		writer.append("\t\t\tString cname = this.getClass().getName();\n");
-		writer.append("\t\t\tif (cname != null) {\n");
-		writer.append("\t\t\t\tsetAttributes = new ArrayList<String>(6);\n");
-		writer.append("\t\t\t\tthis.getAttributes().put(\"javax.faces.component.UIComponentBase.attributesThatAreSet\", setAttributes);\n");
-		writer.append("\t\t\t}\n\t\t}\n");
-		writer.append("\t\tif (setAttributes != null) {\n");
-		writer.append("\t\t\tif (value == null) {\n");
-		writer.append("\t\t\t\tValueExpression ve = getValueExpression(name);\n");
-		writer.append("\t\t\t\tif (ve == null) {\n");
-		writer.append("\t\t\t\t\tsetAttributes.remove(name);\n");
-		writer.append("\t\t\t\t}\n");
-		writer.append("\t\t\t} else if (!setAttributes.contains(name)) {\n");
-		writer.append("\t\t\t\tsetAttributes.add(name);\n");
-		writer.append("\t\t\t}\n");
-		writer.append("\t\t}\n");
-		writer.append("\t}\n");
-	}
+    private void handleAttribute() {
+        writer.append("\tprivate void handleAttribute(String name, Object value) {\n");
+        writer.append("\t\tList<String> setAttributes = (List<String>) this.getAttributes().get(\"javax.faces.component.UIComponentBase.attributesThatAreSet\");\n");
+        writer.append("\t\tif (setAttributes == null) {\n");
+        writer.append("\t\t\tString cname = this.getClass().getName();\n");
+        writer.append("\t\t\tif (cname != null) {\n");
+        writer.append("\t\t\t\tsetAttributes = new ArrayList<String>(6);\n");
+        writer.append("\t\t\t\tthis.getAttributes().put(\"javax.faces.component.UIComponentBase.attributesThatAreSet\", setAttributes);\n");
+        writer.append("\t\t\t}\n\t\t}\n");
+        writer.append("\t\tif (setAttributes != null) {\n");
+        writer.append("\t\t\tif (value == null) {\n");
+        writer.append("\t\t\t\tValueExpression ve = getValueExpression(name);\n");
+        writer.append("\t\t\t\tif (ve == null) {\n");
+        writer.append("\t\t\t\t\tsetAttributes.remove(name);\n");
+        writer.append("\t\t\t\t}\n");
+        writer.append("\t\t\t} else if (!setAttributes.contains(name)) {\n");
+        writer.append("\t\t\t\tsetAttributes.add(name);\n");
+        writer.append("\t\t\t}\n");
+        writer.append("\t\t}\n");
+        writer.append("\t}\n");
+    }
 
-	public void build() {
-		Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
-		startComponentClass(getComponentContext().getActiveClass(), component);
-		addProperties(getComponentContext().getPropertyFieldsForComponentClassAsList());
-		addFacet(getComponentContext().getActiveClass(), component);
-		addInternalFields();
-		handleAttribute();
-		endComponentClass();
-	}
+    public void build() {
+        Component component = (Component) getComponentContext().getActiveClass().getAnnotation(Component.class);
+        startComponentClass(getComponentContext().getActiveClass(), component);
+        addProperties(getComponentContext().getPropertyFieldsForComponentClassAsList());
+        addFacet(getComponentContext().getActiveClass(), component);
+        addInternalFields();
+        handleAttribute();
+        endComponentClass();
+    }
 
 
 
 }
+

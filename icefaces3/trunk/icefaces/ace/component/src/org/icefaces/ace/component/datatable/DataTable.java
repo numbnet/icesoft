@@ -239,26 +239,26 @@ public class DataTable extends DataTableBase {
         // This is not a EditableValueHolder, so no further processing is required
     }
 
-    @Override
-    public void processDecodes(FacesContext context) {
-        // Required to prevent input component processing on sort, filter, tableconf and pagination initiated submits.
-        if (isDataManipulationRequest(context) || isTableConfigurationRequest(context)) {
-            this.decode(context);
-            context.renderResponse();
-        } else {
-            if (context == null) {
-                throw new NullPointerException();
-            }
-            if (!isRendered()) {
-                return;
-            }
+        @Override
+        public void processDecodes(FacesContext context) {
+            // Required to prevent input component processing on sort, filter, tableconf and pagination initiated submits.
+            if (isDataManipulationRequest(context) || isTableConfigurationRequest(context)) {
+                this.decode(context);
+                context.renderResponse();
+            } else {
+                if (context == null) {
+                    throw new NullPointerException();
+                }
+                if (!isRendered()) {
+                    return;
+                }
 
-            pushComponentToEL(context, this);
-            //super.preDecode() - private and difficult to port
-            iterate(context, PhaseId.APPLY_REQUEST_VALUES);
-            decode(context);
-            popComponentFromEL(context);
-        }
+                pushComponentToEL(context, this);
+                //super.preDecode() - private and difficult to port
+                iterate(context, PhaseId.APPLY_REQUEST_VALUES);
+                decode(context);
+                popComponentFromEL(context);
+            }
 
         if (isFilterValueChanged() == true) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -285,7 +285,6 @@ public class DataTable extends DataTableBase {
         iterate(context, PhaseId.PROCESS_VALIDATIONS);
         app.publishEvent(context, PostValidateEvent.class, this);
         popComponentFromEL(context);
-
     }
 
     @Override
@@ -478,8 +477,6 @@ public class DataTable extends DataTableBase {
     public boolean isSortOrderChanged() {
         return sortOrderChanged;
     }
-
-
 
 
 
@@ -935,7 +932,7 @@ public class DataTable extends DataTableBase {
                             (hasRowExpansion && (rowState.getExpansionType() == RowState.ExpansionType.PANEL))
                                     || !hasRowExpansion))
                         if (panelExpander.visitTree(context, callback)) return true;
-                }
+                    }
             } else return false;
             offset++;
         }
@@ -1108,12 +1105,10 @@ public class DataTable extends DataTableBase {
                             .append(UINamingContainer.getSeparatorChar(context)).append(rootIndex)
                             .toString();
                 } else
-                    cid = clientIdBuilder.append(super.getClientId(context))
-                            .append(UINamingContainer.getSeparatorChar(context)).append(rowIndex)
-                            .toString();
+                    cid = clientIdBuilder.append(super.getClientId(context)).toString();
 
                 clientIdBuilder.setLength(0);
-            }
+                }
             return (cid);
         } else {
             if (!isNestedWithinUIData()) {
@@ -1221,7 +1216,7 @@ public class DataTable extends DataTableBase {
             if (!(kid instanceof TableConfigPanel) || !kid.isRendered()) {
                 continue;
             }
-            
+
             if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
                 kid.processDecodes(context);
             } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
@@ -1240,8 +1235,10 @@ public class DataTable extends DataTableBase {
         boolean inSubrows = false;
         RowPanelExpander panelExpander = getPanelExpansion();
         RowStateMap map = getStateMap();
+        RowState rowState;
+        Boolean expanded;
+        
         while (true) {
-
             // Have we processed the requested number of rows?
             if (!inSubrows) processed = processed + 1;
             if ((rows > 0) && (processed > rows)) {
@@ -1258,6 +1255,10 @@ public class DataTable extends DataTableBase {
                 }
                 else break; // Scrolled past the last row
             }
+
+            rowState = map.get(getRowData());
+            expanded = rowState.isExpanded();
+
             // Perform phase-specific processing as required
             // on the *children* of the UIColumn (facets have
             // been done a single time with rowIndex=-1 already)
@@ -1265,6 +1266,9 @@ public class DataTable extends DataTableBase {
                 for (UIComponent kid : getChildren()) {
                     if ((!(kid instanceof UIColumn) && !(kid instanceof RowPanelExpander))
                             || !kid.isRendered()) {
+                        continue;
+                    }
+                    if ((kid instanceof RowPanelExpander) && !expanded) {
                         continue;
                     }
                     if (kid.getChildCount() > 0) {
@@ -1285,8 +1289,7 @@ public class DataTable extends DataTableBase {
                     }
                 }
             }
-            RowState rowState = map.get(getRowData());
-            boolean expanded = rowState.isExpanded();
+
             if (expanded && hasTreeDataModel() && (panelExpander == null || rowState.getExpansionType() == RowState.ExpansionType.ROW)) {
                 if (treeModel.getCurrentRowChildCount() > 0) {
                     inSubrows = true;
