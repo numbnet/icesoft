@@ -212,4 +212,59 @@
         <antcall target="war.basic" />
     </target>
 
+    <property name="mojarra.project.name" value="mo" />
+    <property name="myfaces.project.name" value="my" />
+    <property name="tomcat7.dir" location="/Users/deryk/Apps/apache-tomcat-7.0.22" />
+
+    <target name="war.mo"
+            description="Generate mo.war using Mojarra"
+            depends="clean">
+        <antcall target="war.basic">
+            <param name="jsf" value="true" />
+            <param name="jsf.lib.dir" value="${mojarra.lib.dir}"/>
+        </antcall>
+        <move file="${dist.dir}/${ant.project.name}.war" tofile="${dist.dir}/${mojarra.project.name}.war"/>
+    </target>
+
+    <target name="war.my"
+            description="Generate my.war using MyFaces"
+            depends="clean">
+        <antcall target="war.basic">
+            <param name="jsf" value="true" />
+            <param name="jsf.lib.dir" value="${myfaces.lib.dir}"/>
+        </antcall>
+        <move file="${dist.dir}/${ant.project.name}.war" tofile="${dist.dir}/${myfaces.project.name}.war"/>
+    </target>
+
+    <target name="deploy.mo.tomcat7"
+            description="Deploy Mojarra version of app to Tomcat 7 webapps directory">
+        <antcall target="war.mo"/>
+        <copy todir="${tomcat7.dir}/webapps">
+            <fileset dir="${dist.dir}">
+                <include name="${mojarra.project.name}.war"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="mo"
+            description="Quick target for doing a Mojarra deploy to Tomcat 7"
+            depends="deploy.mo.tomcat7"/>
+
+    <target name="deploy.my.tomcat7"
+            description="Deploy MyFaces version of app to Tomcat 7 webapps directory">
+        <antcall target="war.my"/>
+        <copy todir="${tomcat7.dir}/webapps">
+            <fileset dir="${dist.dir}">
+                <include name="${myfaces.project.name}.war"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="my"
+            description="Quick target for doing a Mojarra deploy to Tomcat 7"
+            depends="deploy.my.tomcat7"/>
+
+    <target name="both"
+            description="Quick target for doing a dual deploy to Tomcat 7"
+            depends="mo, my"/>
 </project>

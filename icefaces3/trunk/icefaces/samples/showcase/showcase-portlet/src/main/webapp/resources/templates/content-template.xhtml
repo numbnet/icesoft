@@ -25,18 +25,43 @@
                 xmlns:ice="http://www.icesoft.com/icefaces/component"
                 xmlns:ace="http://www.icefaces.org/icefaces/components"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
-
+<!--
+Available ui:params to pass:
+ title
+ description
+ resourceValue
+-->
     <div class="example">
         <ace:panel header="#{title}">
         <div class="content">
             <div class="desc">
                 <ice:outputText value="#{description}" escape="false" nospan="true"/>
             </div>
-            <div class="instance">
+            <h:panelGroup layout="block" styleClass="instance" rendered="#{navigationModel.renderAsExample}">
                 <ui:insert name="example"/>
-            </div>
+            </h:panelGroup>
         </div>
         </ace:panel>
+        
+        <!--<h:form id="sourceCodeForm" rendered="#{navigationModel.renderAsExample}">-->
+                <!---->
+                <!--<hr style="margin-top: 10px; margin-bottom: 10px;"/>-->
+                <!---->
+                <!--<ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" toggleable="true" header="Source Code">-->
+                    <!--<div class="resources">-->
+                    <!--<ace:ajax event="toggle" process="@this"/>-->
+                    <!---->
+                    <!--<ace:tabSet clientSide="true" selectedIndex="0"-->
+                                <!--rendered="#{not empty resourceValue}">-->
+                        <!--<c:forEach items="#{resourceValue}"-->
+                                   <!--var="exRes">-->
+                            <!--<ace:tabPane label="#{exRes.title}" styleClass="scrollx">-->
+                                <!--<h:outputText escape="false" value="#{sourceCodeLoaderConnection[exRes.resource]}" />-->
+                            <!--</ace:tabPane>-->
+                        <!--</c:forEach>-->
+                    <!--</ace:tabSet>-->
+                    <!--</div>-->
+                <!--</ace:panel>-->
+            <!--</h:form>			-->
     </div>
-
 </ui:composition>
