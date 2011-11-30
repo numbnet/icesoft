@@ -21,7 +21,6 @@
 
 package org.icefaces.impl.event;
 
-import com.sun.tools.javac.comp.Env;
 import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.util.EnvUtils;
 
@@ -96,14 +95,14 @@ public class WindowAndViewIDSetup implements SystemEventListener {
         }
         HtmlForm htmlForm = (HtmlForm) source;
         String componentId = htmlForm.getId() + ID_SUFFIX;
-//        if (!partialStateSaving) {
+        if (!partialStateSaving) {
             for (UIComponent child : htmlForm.getChildren()) {
                 String id = child.getId();
                 if ((null != id) && id.endsWith(ID_SUFFIX)) {
                     return false;
                 }
             }
-//        }
+        }
         // Guard against duplicates within the same JSF lifecycle
         if (null != facesContext.getAttributes().get(componentId)) {
             return false;
