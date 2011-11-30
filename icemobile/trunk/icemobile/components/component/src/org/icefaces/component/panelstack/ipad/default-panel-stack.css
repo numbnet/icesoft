@@ -22,7 +22,7 @@
 
 .mobi-panel-stack-header {
     width: 100%;
-    z-index: 1;
+    z-index: 999;
 }
 
 .mobi-panel-stack-header {;
