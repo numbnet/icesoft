@@ -7,20 +7,30 @@
 //
 
 #import "AudioController.h"
+#import "NativeInterface.h"
 
 @implementation AudioController
 
+@synthesize nativeInterface;
 
 - (IBAction) doRecord  {
     NSLog(@"AudioController doRecord");
+    [self.nativeInterface recordStart];
+}
+
+- (IBAction) doStop  {
+    NSLog(@"AudioController doStop");
+    [self.nativeInterface recordStop];
 }
 
 - (IBAction) doDone  {
     NSLog(@"AudioController doDone");
+    [self.nativeInterface recordDone];
 }
 
 - (IBAction) doCancel  {
     NSLog(@"AudioController doCancel");
+    [self.nativeInterface recordDismiss];
 }
 
 

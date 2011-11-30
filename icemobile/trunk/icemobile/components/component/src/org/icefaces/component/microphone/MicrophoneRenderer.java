@@ -19,17 +19,21 @@ package org.icefaces.component.microphone;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
+import org.icefaces.impl.application.AuxUploadResourceHandler;
+import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.util.EnvUtils;
 
 
 import javax.faces.component.UIComponent;
 import javax.faces.render.Renderer;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
+import java.net.URLEncoder;
 import java.io.IOException;
 import java.io.File;
 import java.util.HashMap;
@@ -74,7 +78,14 @@ public class MicrophoneRenderer extends Renderer {
             if (EnvUtils.isEnhancedBrowser(facesContext)){
                partUploadName+="_mic-file";
             }
+            if (EnvUtils.isAuxUploadBrowser(facesContext)) {
+               partUploadName+="_mic-file";
+            }
             Part part = request.getPart(partUploadName);
+            if (null == part)  {
+                Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
+                part = (Part) auxMap.get(partUploadName);
+            }
             if (part !=null){
                 String contentType = part.getContentType();
                 String fileName = java.util.UUID.randomUUID().toString();
@@ -116,7 +127,10 @@ public class MicrophoneRenderer extends Renderer {
         Microphone microphone = (Microphone) uiComponent;
         boolean disabled = microphone.isDisabled();
         // span as per MobI-18
-        if (!EnvUtils.isEnhancedBrowser(facesContext)) {
+        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
+
+        if (!isEnhanced && !isAuxUpload) {
             writer.startElement(HTML.SPAN_ELEM, uiComponent);
             writer.startElement(HTML.INPUT_ELEM, uiComponent);
             writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_FILE, null);
@@ -140,7 +154,24 @@ public class MicrophoneRenderer extends Renderer {
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
-        writer.writeAttribute("onclick", this.writeJSCall(clientId, maxtime), null);
+        String script;
+        if (isAuxUpload)  {
+            ExternalContext externalContext = facesContext.getExternalContext();
+            AuxUploadSetup auxUpload = (AuxUploadSetup) externalContext
+                .getApplicationMap().get("auxUpload");
+            
+            String sessionID = EnvUtils.getSafeSession(facesContext).getId();
+            String uploadURL = auxUpload.getUploadURL();
+            String command = "microphone?id=" + clientId + "_mic";
+            script = "window.location='icemobile://c=" +
+                    URLEncoder.encode(command) + 
+                    "&r='+escape(window.location)+'&" +
+                    "JSESSIONID=" + sessionID + "&u=" + 
+                    URLEncoder.encode(uploadURL) + "';";
+        } else {
+            script = writeJSCall(clientId, maxtime).toString();
+        }
+        writer.writeAttribute("onclick", script, null);
 
         writer.writeAttribute("value", "record", null);
         writer.endElement("input");
