@@ -45,7 +45,14 @@ import org.icefaces.ace.meta.annotation.Property;
         "to handle input field validation together with file content " +
         "validation, for model coherency. As well, server push is not " +
         "necessary for receiving the rendered view from the lifecycle " +
-        "in which the files were uploaded.")
+        "in which the files were uploaded. The progress indicator is " +
+        "built-in, and will default to indeterminate mode. If server push " +
+        "is enabled, then the component will automatically push progress " +
+        "information to the indicator, and once that has been received, " +
+        "the indicator will automatically switch to display the incremental" +
+        "progress bar. The progress pushes are rate limited to be no more " +
+        "frequent than once every 2 seconds, and are only sent at 1% " +
+        "progress increments.")
 @ResourceDependencies({
 @ResourceDependency(name="fileentry/fileEntry.js",library="icefaces.ace"),
 @ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
