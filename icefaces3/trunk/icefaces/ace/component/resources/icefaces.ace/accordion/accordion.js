@@ -58,6 +58,7 @@ ice.ace.AccordionPanel.prototype.onTabChange = function(event, ui) {
     var panel = ui.newContent.get(0),
     listener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.panechange,
     shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
+    if (!panel) return;
 
     //Call user onTabChange callback
     if(this.cfg.onTabChange) {
