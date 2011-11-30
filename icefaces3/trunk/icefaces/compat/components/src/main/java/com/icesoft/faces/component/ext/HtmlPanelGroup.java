@@ -30,7 +30,7 @@ import com.icesoft.faces.component.paneltooltip.PanelTooltip;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.utils.SeriesStateHolder;
+import org.icefaces.impl.component.SeriesStateHolder;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;

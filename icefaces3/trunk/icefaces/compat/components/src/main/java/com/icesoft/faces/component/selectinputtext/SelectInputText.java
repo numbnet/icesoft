@@ -28,7 +28,8 @@ import com.icesoft.faces.component.ext.renderkit.FormRenderer;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
-import com.icesoft.faces.utils.SeriesStateHolder;
+
+import org.icefaces.impl.component.SeriesStateHolder;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
