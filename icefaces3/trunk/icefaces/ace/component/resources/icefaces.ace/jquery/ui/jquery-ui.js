@@ -4883,9 +4883,11 @@ $.extend( $.ui.accordion, {
 							( settings.now - settings.start ) / ( settings.end - settings.start );
 					}
 
-					options.toShow[ 0 ].style[ settings.prop ] =
-						( percentDone * showProps[ settings.prop ].value )
-						+ showProps[ settings.prop ].unit;
+                    var styleValue = ( percentDone * showProps[ settings.prop ].value );
+                    if (styleValue < 0) {
+                        styleValue = 0;
+                    }
+                    options.toShow[ 0 ].style[ settings.prop ] = styleValue + showProps[ settings.prop ].unit;
 				},
 				duration: options.duration,
 				easing: options.easing,
