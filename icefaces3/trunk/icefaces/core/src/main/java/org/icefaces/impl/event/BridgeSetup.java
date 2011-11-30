@@ -171,6 +171,7 @@ public class BridgeSetup implements SystemEventListener {
                 }
             }
 
+
             //replace collected resource mandatory components in on shot, otherwise MyFaces will keep re-adding
             //the components registered directly by it
             replaceCollectedResourceComponents(context, "head", collectedResourceComponents);
