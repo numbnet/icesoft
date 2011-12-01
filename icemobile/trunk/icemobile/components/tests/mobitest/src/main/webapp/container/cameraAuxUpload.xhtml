@@ -31,7 +31,8 @@
     <h3>Camera Component</h3>
     <div style="border-radius: 15px; border: 1px dotted silver; max-width: 500px;">
         <h:form prependId="false" class="centered" enctype="multipart/form-data" >
-            <h:commandButton value="ICEmobileBud" onclick="window.location='icemobile://c=camera%3Fid%3Dcamera&amp;r='+escape(window.location)+'&amp;JSESSIONID=#{session.id}'+'&amp;u='+escape('#{auxUpload.uploadURL}')+'&amp;p='+escape('');" />
+            <h:commandButton rendered="#{!auxUpload.enabled}"
+                onclick="mobi.registerAuxUpload('#{session.id}','#{auxUpload.uploadURL}');" value="Enable ICEmobile-SX" />
             <mobi:camera id="camera" value="#{cameraBean.imagePush}"
                     valueChangeListener="#{cameraBean.methodOne}"/>
             <mobi:thumbnail for="camera"/>
@@ -50,47 +51,12 @@
                 style="max-width:80%;padding-left:1px;padding-right:1px;" />
 		<div>
 		   <h:outputText value="#{cameraBean.numberImages}"/> images uploaded.
-           <br />
-           <h5>message from value change listener</h5>
-            <h:outputText value="#{cameraBean.messageFromAL}"/>
 		</div>
     </div>
 
     <br />
-    <input type="button" value="pause"
-            onclick="ice.push.connection.pauseConnection();" />
     <li><a href="../index.html">index page</a>
-    </li>
-<script>
-var iceCloudPushId = "#{auxUpload.cloudPushId}";
-if ("" != iceCloudPushId)  {
-    window.addEventListener("load", function() {
-        ice.push.parkInactivePushIds(iceCloudPushId);
-    }, false);
-    window.addEventListener("pagehide", function() {
-        ice.push.connection.pauseConnection();
-    }, false);
-    window.addEventListener("pageshow", function() {
-        ice.push.connection.resumeConnection();
-    }, false);
-}
-if (!#{auxUpload.enabled})  {
-    var auxiframe = document.getElementById('auxiframe');
-    var ampstr = unescape("%26");
-    if (null == auxiframe)  {
-        auxiframe = document.createElement('iframe');
-        auxiframe.setAttribute("id", "auxiframe");
-        auxiframe.setAttribute("style", "width:0px; height:0px; border: 0px");
-        auxiframe.setAttribute("src", 
-            "icemobile://c=register" + ampstr + "r=" +
-                escape(window.location) + ampstr + "JSESSIONID=#{session.id}" +
-                ampstr + "u=" + escape('#{auxUpload.uploadURL}')
-        );
-        document.body.appendChild(auxiframe);
-    }
-}
-</script>
-		
+    </li>		
 
 </h:body>
 </html>

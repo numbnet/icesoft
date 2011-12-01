@@ -114,6 +114,22 @@ mobi.AjaxResponse = function(responseXML) {
         }
     }
 };
+
+mobi.registerAuxUpload = function(sessionid, uploadURL)  {
+    var auxiframe = document.getElementById('auxiframe');
+    if (null == auxiframe)  {
+        auxiframe = document.createElement('iframe');
+        auxiframe.setAttribute("id", "auxiframe");
+        auxiframe.setAttribute("style", "width:0px; height:0px; border: 0px");
+        auxiframe.setAttribute("src", 
+            "icemobile://c=register&r=" +
+                escape(window.location) + "&JSESSIONID=" + sessionid +
+                "&u=" + escape(uploadURL)
+        );
+        document.body.appendChild(auxiframe);
+    }
+}
+
 function html5getViewState(form) {
     if (!form) {
         throw new Error("jsf.getViewState:  form must be set");
