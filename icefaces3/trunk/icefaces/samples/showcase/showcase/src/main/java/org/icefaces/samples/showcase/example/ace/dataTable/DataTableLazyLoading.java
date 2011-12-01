@@ -72,26 +72,13 @@ public class DataTableLazyLoading extends ComponentExampleImpl<DataTableLazyLoad
             public List<Car> load(int first, int pageSize, SortCriteria[] criteria, Map<String, String> filters) 
             {
                 List<Car> randomCars;
-                randomCars = generateRandomCars(pageSize);
+                VehicleGenerator generator = new VehicleGenerator();
+                randomCars = generator.getRandomCars(pageSize);
                 return randomCars;
             }
         };
         
         carsData.setRowCount(3000000);
-    }
-    /**@param carsToGenerate - this number is passed from the data Table on each navigation via paginator and represent amount of rows per page
-     */
-    private ArrayList<Car> generateRandomCars(int carsToGenerate) 
-    {
-        Random rand = new Random();
-        ArrayList<Car> listWithRandomCars = new ArrayList<Car>();
-        VehicleGenerator randomGenerator = new VehicleGenerator();
-        for (int i = 0; i < carsToGenerate; i++) 
-        {
-            Car randomCar = randomGenerator.generateCar();
-            listWithRandomCars.add(randomCar);
-        }
-        return listWithRandomCars;
     }
 
     public LazyDataModel<Car> getCarsData() {

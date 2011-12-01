@@ -19,30 +19,41 @@ public class VehicleGenerator implements Serializable
 
     public VehicleGenerator() 
     {
-        this.namesPool = generateVehicleName();
-        this.chassisPool = generateChassisName();
+        this.namesPool = getVehicleDescriptions();
+        this.chassisPool = getChassisDescriptions();
         this.randomizer = new Random(System.nanoTime());
         this.numberFormatter = makeFormatter();
     }
     
     
     
-    public Car generateCar()
+    public Car getRandomCar()
     {
         
         Car randomCar = new Car(randomizer.nextInt(10000000),
                                   generateName(),
                                   generateChassis(),
                                   generateWeight(),
-                                  generateAcceleration(),
+                                  getAccelerationValue(),
                                   generateMPG(),
                                   generateCost());
         
         return randomCar;
     }
     
+    public ArrayList<Car> getRandomCars(int quantity)
+    {
+        ArrayList<Car> listWithRandomCars = new ArrayList<Car>(quantity);
+        for (int i = 0; i < quantity; i++) 
+        {
+            Car randomCar = getRandomCar();
+            listWithRandomCars.add(randomCar);
+        }
+        return listWithRandomCars;
+    }
     
-    private List<String> generateVehicleName() 
+    
+    private List<String> getVehicleDescriptions() 
     {
         List<String> listWithNames = new ArrayList<String>();
         listWithNames.add("Spider");
@@ -67,7 +78,7 @@ public class VehicleGenerator implements Serializable
         return listWithNames;
     }
 
-    private List<String> generateChassisName() 
+    private List<String> getChassisDescriptions() 
     {
         List<String> listWithNames = new ArrayList<String>();
         listWithNames.add("Motorcycle");
@@ -109,7 +120,7 @@ public class VehicleGenerator implements Serializable
         return 1000+randomizer.nextInt(15000);
     }
 	
-    private int generateAcceleration() 
+    private int getAccelerationValue() 
     {
         return (1+randomizer.nextInt(3)) * 5;
     }
@@ -125,6 +136,11 @@ public class VehicleGenerator implements Serializable
         return Double.parseDouble(numberFormatter.format( ((double)(2000+randomizer.nextInt(40000))) + randomizer.nextDouble()) );
     }
 
-    
-    
+    public List<String> getChassisPool() {
+        return chassisPool;
+    }
+
+    public List<String> getNamesPool() {
+        return namesPool;
+    }
 }

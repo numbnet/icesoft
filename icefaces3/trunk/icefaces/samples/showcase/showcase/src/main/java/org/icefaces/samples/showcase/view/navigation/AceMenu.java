@@ -51,6 +51,7 @@ import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import org.icefaces.samples.showcase.example.ace.animation.AnimationBean;
 import org.icefaces.samples.showcase.example.ace.overview.AceSuiteOverviewBean;
+import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
 
 @Menu(
         title = "menu.ace.title", menuLinks = {
@@ -73,6 +74,7 @@ import org.icefaces.samples.showcase.example.ace.overview.AceSuiteOverviewBean;
                 @MenuLink(title = "menu.ace.menuBar.title", exampleBeanName = MenuBarBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.notificationpanel.title", exampleBeanName = NotificationPanelBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.panel.title", exampleBeanName = PanelBean.BEAN_NAME),
+                @MenuLink(title = "menu.ace.printer.title", exampleBeanName = PrinterBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.progressbar.title", exampleBeanName = ProgressBarBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.pushButton.title", exampleBeanName = PushButtonBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.resizable.title", exampleBeanName = ResizableBean.BEAN_NAME),
