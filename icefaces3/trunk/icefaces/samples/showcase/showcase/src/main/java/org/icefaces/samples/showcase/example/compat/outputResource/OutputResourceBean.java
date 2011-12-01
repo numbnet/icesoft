@@ -26,11 +26,15 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import java.net.URL;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.FileResource;
@@ -86,9 +90,11 @@ public class OutputResourceBean extends ComponentExampleImpl<OutputResourceBean>
 	public static final String CUSTOM_NAME = "Custom-Name.pdf";
 	public static final String PDF_NAME = "Training.pdf";
 	public static final String IMAGE_NAME = "ICEfaces-2.gif";
-	public static final Resource PDF_RESOURCE = loadResource(PDF_NAME);
-	public static final Resource NAMED_RESOURCE = new NamedResource(CUSTOM_NAME, getFile(PDF_NAME));
-	public static final Resource IMAGE_RESOURCE = loadResource(IMAGE_NAME);
+	public static final Resource PDF_RESOURCE = new MyResource(PDF_NAME);
+	public static final Resource NAMED_RESOURCE = new MyResource(CUSTOM_NAME, PDF_NAME);
+	public static final Resource IMAGE_RESOURCE = new MyResource(IMAGE_NAME);
+	
+	public static final String RESOURCE_PATH = "/resources/outputresource/";
 	
 	public OutputResourceBean() {
 		super(OutputResourceBean.class);
@@ -119,6 +125,14 @@ public class OutputResourceBean extends ComponentExampleImpl<OutputResourceBean>
 	    
 	    return null;
 	}
+	
+    public static byte[] toByteArray(InputStream input) throws IOException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        byte[] buf = new byte[4096];
+        int len = 0;
+        while ((len = input.read(buf)) > -1) output.write(buf, 0, len);
+        return output.toByteArray();
+    }
 }
 	
 class NamedResource implements Resource, Serializable {
@@ -145,3 +159,56 @@ class NamedResource implements Resource, Serializable {
     public void withOptions(Options arg0) throws IOException {
     }
 }
+
+class MyResource implements Resource, Serializable {
+	private String customName;
+    private String resourceName;
+    private InputStream inputStream;
+    private final Date lastModified;
+
+    public MyResource(String resourceName) {
+		this.customName = resourceName;
+        this.resourceName = resourceName;
+        this.lastModified = new Date();
+    }
+	
+    public MyResource(String customName, String resourceName) {
+        this.customName = customName;
+        this.resourceName = resourceName;
+        this.lastModified = new Date();
+    }
+
+    /**
+     * This intermediate step of reading in the files from the JAR, into a
+     * byte array, and then serving the Resource from the ByteArrayInputStream,
+     * is not strictly necessary, but serves to illustrate that the Resource
+     * content need not come from an actual file, but can come from any source,
+     * and also be dynamically generated. In most cases, applications need not
+     * provide their own concrete implementations of Resource, but can instead
+     * simply make use of com.icesoft.faces.context.ByteArrayResource,
+     * com.icesoft.faces.context.FileResource, com.icesoft.faces.context.JarResource.
+     */
+    public InputStream open() throws IOException {
+        if (inputStream == null) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+            InputStream stream = ec.getResourceAsStream(OutputResourceBean.RESOURCE_PATH + resourceName);
+            byte[] byteArray = OutputResourceBean.toByteArray(stream);
+            inputStream = new ByteArrayInputStream(byteArray);
+        } else {
+            inputStream.reset();
+        }
+        return inputStream;
+    }
+
+    public String calculateDigest() {
+        return customName;
+    }
+
+    public Date lastModified() {
+        return lastModified;
+    }
+
+    public void withOptions(Options arg0) throws IOException {
+    }
+}   
