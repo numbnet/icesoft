@@ -25,7 +25,7 @@
    <parent>
      <groupId>org.icefaces.samples</groupId>
      <artifactId>compat</artifactId>
-     <version>2.1.0.BETA2</version>
+     <version>3.0.0.RC1</version>
   </parent>
  
   <artifactId>component-showcase</artifactId>

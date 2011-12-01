@@ -28,7 +28,7 @@
 
     <display-name>Chat</display-name>
 
-    <description>A simple chat portlet that uses ICEfaces 2 and ICEpush.</description>
+    <description>A simple chat portlet that uses ICEfaces and ICEpush.</description>
 
     <context-param>
         <param-name>com.sun.faces.defaultResourceMaxAge</param-name>
