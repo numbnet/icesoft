@@ -242,7 +242,7 @@ public class EnvUtils {
      * "null" and indicates that no URI has been set and the default behaviour is taken when the Ajax Push connection is lost.
      * Setting a URI value tells ICEfaces to redirect to that view if the Ajax Push connection is lost.
      * <p/>
-     * Note: This value is only relevant when running ICEfaces 2 with the compatible component suite:
+     * Note: This value is only relevant when running ICEfaces 2+ with the compatible component suite:
      *
      * @param facesContext The current FacesContext instance used to access the application map.
      * @return Returns the current setting of org.icefaces.connectionLostRedirectURI.  The default is the String "null".
@@ -313,7 +313,7 @@ public class EnvUtils {
      * "null" and indicates that no URI has been set and the default behaviour is taken when the session expires.  Setting
      * a URI value tells ICEfaces to redirect to that view if the Ajax Push connection is lost.
      * <p/>
-     * Note: This value is only relevant when running ICEfaces 2 with the compatible component suite:
+     * Note: This value is only relevant when running ICEfaces 2+ with the compatible component suite:
      *
      * @param facesContext The current FacesContext instance used to access the application map.
      * @return Returns the current setting of org.icefaces.sessionExpiredRedirectURI.  The default is the String "null".
