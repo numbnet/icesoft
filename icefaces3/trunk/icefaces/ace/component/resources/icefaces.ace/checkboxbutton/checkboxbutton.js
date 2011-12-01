@@ -32,7 +32,7 @@ ice.ace.checkboxbutton = {
 	
 		if (state == 'hover') {
 			jQuery(this._button).addClass('ui-state-hover');
-		} else if (state == 'active' || state == 'checked') {
+		} else if (state == 'checked') {
 			jQuery(this._button).addClass('ui-state-active');
 		} else if (state == 'disabled') {
 			jQuery(this._button).addClass('ui-state-disabled ');
@@ -43,7 +43,7 @@ ice.ace.checkboxbutton = {
 	
 		if (state == 'hover') {
 			jQuery(this._button).removeClass('ui-state-hover');
-		} else if (state == 'active' || state == 'checked') {
+		} else if (state == 'checked') {
 			jQuery(this._button).removeClass('ui-state-active');
 		} else if (state == 'disabled') {
 			jQuery(this._button).removeClass('ui-state-disabled ');
