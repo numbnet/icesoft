@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[confirmationDialogBean.title]}"/>
+    <ui:param name="description" value="#{msgs[confirmationDialogBean.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[confirmationDialogBean.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{confirmationDialogBean.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{confirmationDialogBean.exampleResource}"/>
+
+    <ui:define name="example">
+        <h:form>
+            <icecore:singleSubmit/>
+            
+                <h:panelGrid columns="3" width="100%" style="text-align: left;">
+                    <h:outputLabel for="header" value="Header:"/>
+                    <h:inputText id="header" value="#{confirmationDialogBean.header}" required="true" maxlength="255"/>
+                    <h:message for="header"/>
+
+                    <h:outputLabel for="message" value="Message:"/>
+                    <h:inputText id="message" value="#{confirmationDialogBean.message}" required="true" maxlength="255"/>
+                    <h:message for="message"/>
+
+                    <h:outputLabel for="width" value="Width:"/>
+                    <h:inputText id="width" value="#{confirmationDialogBean.width}" required="true" maxlength="3"/>
+                    <h:message for="width"/>
+
+                    <h:outputLabel for="height" value="Height:"/>
+                    <h:inputText id="height" value="#{confirmationDialogBean.height}" required="true" maxlength="3"/>
+                    <h:message for="height"/>
+
+                    <h:outputLabel for="closable" value="Closable:"/>
+                    <h:selectBooleanCheckbox id="closable" value="#{confirmationDialogBean.closable}"/>
+                    <h:message for="closable"/>
+                </h:panelGrid>
+            
+            </h:form>
+            <h:form>
+                
+                <h:panelGrid width="100%" style="text-align: center;">
+                    <h:commandButton value="Display dialog" onclick="confirmation.show()" type="button"/>
+                    <h:outputText value="#{confirmationDialogBean.outcome}" rendered="#{confirmationDialogBean.outcome != null}"/>
+                </h:panelGrid>
+                
+                <ace:confirmationDialog widgetVar="confirmation"
+                                                                       message="#{confirmationDialogBean.message}"
+                                                                       header="#{confirmationDialogBean.header}"
+                                                                       width="#{confirmationDialogBean.width}"
+                                                                       height="#{confirmationDialogBean.height}"
+                                                                       closable="#{confirmationDialogBean.closable}"
+                                                                       position="center">
+                    <h:panelGrid width="100%" style="text-align: center;" columns="2" cellspacing="30">
+                        <h:commandButton value="Yes" onclick="confirmation.hide()" actionListener="#{confirmationDialogBean.yes}"/>
+                        <h:commandButton value="No" onclick="confirmation.hide()" actionListener="#{confirmationDialogBean.no}" />
+                    </h:panelGrid>
+                </ace:confirmationDialog>
+			
+            </h:form>
+    </ui:define>
+</ui:composition>
