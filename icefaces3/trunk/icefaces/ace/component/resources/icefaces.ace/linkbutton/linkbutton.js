@@ -104,7 +104,11 @@ ice.ace.linkButton = {
                 }
             }
         };
-            ice.s(e, divRoot, params );
+        if (doAction) {
+            ice.s(e, divRoot, params);
+        } else {
+            ice.se(e, divRoot, params );
+        }
 
 		var behaviors = JSContext.getJSProps().behaviors;
 		if (behaviors) {
@@ -138,7 +142,11 @@ ice.ace.linkButton = {
                 }
             }
         };
-            ice.s(e, divRoot, params );
+        if (doAction) {
+            ice.s(e, divRoot, params);
+        } else {
+            ice.se(e, divRoot, params );
+        }
 			
 		var behaviors = JSContext.getJSProps().behaviors;
 		if (behaviors) {
