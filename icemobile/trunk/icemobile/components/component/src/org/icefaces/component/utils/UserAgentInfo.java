@@ -75,6 +75,12 @@ public class UserAgentInfo {
         return result;
     }
 
+    public boolean sniffIOS(){
+        boolean result = sniffIphone() || sniffIpod() ||  sniffIpad();
+        logSniff(result, "iOS", userAgentString);
+        return result;
+    }
+
     public boolean sniffIOS5(){
         boolean result = userAgentString.indexOf(deviceIOS5) != -1;
         logSniff(result, "iOS5", userAgentString);

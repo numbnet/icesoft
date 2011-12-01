@@ -324,17 +324,27 @@ public class Utils {
     }
 
     /**
+     * Test for iOS
+     * @param context
+     * @return true if client is iOS
+     */
+    public static boolean isIOS() {
+        String userAgent = SessionContext.getSessionContext().getUserAgent();
+        UserAgentInfo uai = new UserAgentInfo(userAgent);
+        if (uai.sniffIOS()){
+            return true;
+        }
+        return false;
+    }
+
+    /**
      *  Some input components may have html5 support for iOS5 such as DateSpinner
      * @param context
      * @return true if request header denotes os 5_0
      */
-    public static boolean isIOS5 (FacesContext context) {
+    public static boolean isIOS5() {
         String userAgent = SessionContext.getSessionContext().getUserAgent();
-        UserAgentInfo uai = new UserAgentInfo(userAgent);
-        if (uai.sniffIOS5()){
-            return true;
-        }
-        return false;
+        return (new UserAgentInfo(userAgent)).sniffIOS();
     }
 
     private static DeviceType checkUserAgentInfo(UserAgentInfo uai) {
