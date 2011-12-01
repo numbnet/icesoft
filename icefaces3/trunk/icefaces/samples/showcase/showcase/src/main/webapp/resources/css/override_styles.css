@@ -96,3 +96,10 @@
     font-weight: bold;
 }
 
+.ui-datepicker { 
+    width: 17em; 
+    padding: .2em .2em 0;
+    display: none;
+    font-size: 9pt;
+}
+
