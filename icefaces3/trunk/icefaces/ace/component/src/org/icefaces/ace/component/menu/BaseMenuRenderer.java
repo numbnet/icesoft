@@ -114,18 +114,8 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 				behaviors.append(" })({'ice.customUpdate':'" + clientId +"'});");
 				command = behaviors.toString();
 				
-                if (!hasAjaxBehavior) {
-                    command += buildNonAjaxRequest(context, menuItem, formClientId, clientId);
-                    UIForm theForm = AjaxDisabledList.getContainingForm(menuItem);
-                    if (null != theForm)  {
-                        String disabledList = (String) theForm.getAttributes()
-                            .get(AjaxDisabledList.DISABLED_LIST);
-                        if (null == disabledList)  {
-                            disabledList = " ";
-                        }
-                        disabledList = disabledList + clientId + " ";
-                        theForm.getAttributes().put(AjaxDisabledList.DISABLED_LIST, disabledList);
-                    }
+                if (!hasAjaxBehavior && (menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0)) {
+					command += "ice.s(event, this);";
                 }
 
 				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
