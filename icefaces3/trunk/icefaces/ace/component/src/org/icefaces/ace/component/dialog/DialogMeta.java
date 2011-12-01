@@ -47,7 +47,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="close", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
+}, defaultEvent="close")
 
 public class DialogMeta extends UIPanelMeta {
 

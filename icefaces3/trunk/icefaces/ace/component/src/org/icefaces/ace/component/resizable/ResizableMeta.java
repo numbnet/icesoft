@@ -52,7 +52,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="resize", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
+}, defaultEvent="resize")
 
 public class ResizableMeta extends UIComponentBaseMeta {
 

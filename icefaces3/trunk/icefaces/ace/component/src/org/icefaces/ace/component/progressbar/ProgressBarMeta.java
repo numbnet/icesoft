@@ -50,7 +50,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	@ClientEvent(name="complete", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
 	@ClientEvent(name="cancel", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
 	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
+}, defaultEvent="complete")
 public class ProgressBarMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Name of the client side widget.")
     private String widgetVar;

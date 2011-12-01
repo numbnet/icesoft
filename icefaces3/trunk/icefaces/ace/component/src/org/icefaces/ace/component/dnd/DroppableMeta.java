@@ -41,7 +41,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 )
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="drop", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
+}, defaultEvent="drop")
 public class DroppableMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "The JavaScript component instance variable name.")
     String widgetVar;
