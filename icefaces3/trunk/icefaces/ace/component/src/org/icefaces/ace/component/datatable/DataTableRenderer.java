@@ -168,10 +168,11 @@ public class DataTableRenderer extends CoreRenderer {
             if (group != null) {
                 outer: for (UIComponent child : group.getChildren()) {
                     for (UIComponent headerRowChild : ((Row)child).getChildren()) {
-                        if (((Column)headerRowChild).getClientId(context).equals(sortKey)) {
-                            sortColumn = (Column) headerRowChild;
-                            break outer;
-                        }
+                        if (headerRowChild instanceof Column)
+                            if (headerRowChild.getClientId(context).equals(sortKey)) {
+                                sortColumn = (Column) headerRowChild;
+                                break outer;
+                            }
                     }
                 }
             } else {
