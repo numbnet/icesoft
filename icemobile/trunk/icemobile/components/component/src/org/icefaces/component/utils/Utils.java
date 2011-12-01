@@ -324,17 +324,23 @@ public class Utils {
     }
 
     /**
+     * Test for Android
+     * @return true if client is Android
+     */
+    public static boolean isAndroid() {
+        String userAgent = SessionContext.getSessionContext().getUserAgent();
+        UserAgentInfo uai = new UserAgentInfo(userAgent);
+        return (new UserAgentInfo(userAgent)).sniffAndroid();
+    }
+
+    /**
      * Test for iOS
-     * @param context
      * @return true if client is iOS
      */
     public static boolean isIOS() {
         String userAgent = SessionContext.getSessionContext().getUserAgent();
         UserAgentInfo uai = new UserAgentInfo(userAgent);
-        if (uai.sniffIOS()){
-            return true;
-        }
-        return false;
+        return (new UserAgentInfo(userAgent)).sniffIOS();
     }
 
     /**
@@ -344,7 +350,7 @@ public class Utils {
      */
     public static boolean isIOS5() {
         String userAgent = SessionContext.getSessionContext().getUserAgent();
-        return (new UserAgentInfo(userAgent)).sniffIOS();
+        return (new UserAgentInfo(userAgent)).sniffIOS5();
     }
 
     private static DeviceType checkUserAgentInfo(UserAgentInfo uai) {
