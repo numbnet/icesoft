@@ -139,7 +139,14 @@
                 <br /><span style="font-weight:bold;font-style:italic;">
                     ICEmobile container was not detected, native
                     device intregation will not be available.</span>
+             <ui:fragment rendered="#{mediaController.showSX}">
+                <br /><span>
+                <h:commandButton 
+                   styleClass="mobi-button mobi-button-important"
+                   onclick="mobi.registerAuxUpload('#{session.id}','#{auxUpload.uploadURL}');" value="Enable" />
+ ICEmobile-SX Surf Expander.</span>
             </ui:fragment>
+           </ui:fragment>
         </mobi:fieldsetRow>
     </mobi:fieldsetGroup>
 

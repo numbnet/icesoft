@@ -19,6 +19,7 @@ package org.icemobile.samples.mediacast;
 import org.icefaces.application.PushMessage;
 import org.icefaces.application.PushRenderer;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.component.utils.Utils;
 import org.icemobile.samples.mediacast.navigation.NavigationModel;
 import org.icemobile.samples.util.FacesUtils;
 
@@ -284,7 +285,23 @@ public class MediaController implements Serializable {
      * @return true if an ICEmobile enhancements are detected, otherwise false.
      */
     public boolean isEnhancedBrowser() {
-        return EnvUtils.isEnhancedBrowser(FacesContext.getCurrentInstance());
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
+        return isEnhanced || isAuxUpload;
+    }
+
+    /**
+     * Test to see if we should show activation for ICEmobile-SX.
+     *
+     * @return true if ICEmobile-SX activation should be displayed.
+     */
+    public boolean isShowSX() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
+        boolean isIOS = Utils.isIOS();
+        return (isIOS && !isEnhanced & !isAuxUpload);
     }
 
     private void processUploadedAudio(MediaMessage audioMessage, File audioFile) {
