@@ -36,6 +36,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 @ManagedBean(name= AutocompleteData.BEAN_NAME)
 @ApplicationScoped
@@ -45,6 +47,8 @@ public class AutocompleteData implements Serializable {
     public static final String CITIES_FILENAME = "City-Names.txt";
 	public static final List<String> CITIES = readCityFile();
 
+	public static final String RESOURCE_PATH = "/resources/selectinputtext/";
+	
 	/**
 	 * Method to read the list of cities from the file CITIES_FILENAME
 	 *  (which should be a text file with one city per line)
@@ -55,8 +59,9 @@ public class AutocompleteData implements Serializable {
 	    BufferedReader in = null;
                     
         try {
-            // Get the file based on our current class path
-            fileIn = AutocompleteData.class.getResourceAsStream(CITIES_FILENAME);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+            fileIn= ec.getResourceAsStream(AutocompleteData.RESOURCE_PATH + CITIES_FILENAME);
             
             if (fileIn != null) {
                 // Wrap in a buffered reader so we can parse it
