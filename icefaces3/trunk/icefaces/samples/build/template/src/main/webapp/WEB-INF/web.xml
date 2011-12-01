@@ -26,7 +26,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
     <display-name>
-        ICEfaces 2.0: Very Basic Application
+        ICEfaces: Very Basic Application
     </display-name>
 
     <context-param>

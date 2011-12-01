@@ -37,8 +37,8 @@
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>ICEfaces 2 Chat</title>
-            <short-title>ICEfaces 2 Chat</short-title>
+            <title>ICEfaces Chat</title>
+            <short-title>ICEfaces Chat</short-title>
             <keywords>icefaces portlet chat icepush</keywords>
         </portlet-info>
         <container-runtime-option>

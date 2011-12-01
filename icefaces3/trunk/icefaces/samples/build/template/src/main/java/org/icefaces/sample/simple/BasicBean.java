@@ -23,7 +23,7 @@ package org.icefaces.sample.simple;
 
 public class BasicBean {
 
-    private String message = "ICEfaces 2.0: " + getClass().getName();
+    private String message = "ICEfaces: " + getClass().getName();
 
     public String getMessage() {
         return message;

@@ -28,7 +28,7 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class AnnotatedBasicBean {
 
-    private String message = "ICEfaces 2.0: " + getClass().getName();
+    private String message = "ICEfaces: " + getClass().getName();
 
     public String getMessage() {
         return message;

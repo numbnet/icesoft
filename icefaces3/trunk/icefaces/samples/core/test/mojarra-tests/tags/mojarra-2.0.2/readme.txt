@@ -16,7 +16,7 @@ The icefaces.xml file is a new file and contains some custom properties and such
 The only modification is to set the icefaces.root property.  For example:
 
     <!--
-        Adjust this property to match the location of the ICEfaces 2 root in the repository
+        Adjust this property to match the location of the ICEfaces root in the repository
     -->
     <property name="icefaces.root"
               location="/Users/deryk/Repo/svn/ossrepo/icefaces/scratchpads/glimmer"/>
