@@ -42,7 +42,7 @@ import java.io.IOException;
 
 
 /**
- * This Test class is experimenting with the icefaces 2.0 auction application
+ * This Test class is experimenting with the icefaces auction application
  */
 public class AuctionTest extends TestCase {
 
