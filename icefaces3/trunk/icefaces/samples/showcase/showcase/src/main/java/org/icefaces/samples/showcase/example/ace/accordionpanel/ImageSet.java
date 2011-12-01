@@ -31,6 +31,8 @@ public class ImageSet implements Serializable
     public static final String GADGETS = "electronicsSet";
     public static final String FOOD = "groceriesSet";
     public static final String ARROWS = "navigationArrows";
+    public static final String PRINTER_IMAGE = "printer";
+    public static final String PICTURE_IMAGE = "pictureOfTheDay";
 
     
     public ArrayList<String> getImages(String imageSetType) 
@@ -66,5 +68,19 @@ public class ImageSet implements Serializable
             imageLocations.add("/resources/css/images/navigateBack.png");
         }        
         return imageLocations;
+    }
+    
+    public String getImage(String imageType)
+    {
+        String imageLocation = "";
+        if(imageType.equals(PRINTER_IMAGE))
+        {
+            imageLocation = "/resources/css/images/printerIcon.png";
+        }
+        else if(imageType.equals(PICTURE_IMAGE))
+        {
+            imageLocation = "/resources/css/images/rainbowCalgary.png";
+        }
+        return imageLocation;
     }
 }

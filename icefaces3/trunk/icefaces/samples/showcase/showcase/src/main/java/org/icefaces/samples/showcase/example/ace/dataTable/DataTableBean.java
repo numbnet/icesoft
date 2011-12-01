@@ -62,7 +62,8 @@ import java.io.Serializable;
                         @MenuLink(title = "menu.ace.dataTable.subMenu.rowstate", exampleBeanName = DataTableRowState.BEAN_NAME),
                         @MenuLink(title = "menu.ace.dataTable.subMenu.scrolling", exampleBeanName = DataTableScrolling.BEAN_NAME),
                         @MenuLink(title = "menu.ace.dataTable.subMenu.sorting", exampleBeanName = DataTableSorting.BEAN_NAME),
-                        @MenuLink(title = "menu.ace.dataTable.subMenu.configpanel", exampleBeanName = DataTableConfigPanel.BEAN_NAME)
+                        @MenuLink(title = "menu.ace.dataTable.subMenu.configpanel", exampleBeanName = DataTableConfigPanel.BEAN_NAME),
+                        @MenuLink(title = "menu.ace.dataTable.subMenu.rowEditing", exampleBeanName = DataTableRowEditing.BEAN_NAME)
             }
 )
 @ManagedBean(name= DataTableBean.BEAN_NAME)
