@@ -541,14 +541,7 @@ public class ComponentArtifact extends Artifact{
             writer.append("\n\t\t\t\t\t}");
             writer.append("\n\t\t\t\t}");
             writer.append("\n\t\t\t}");
-            writer.append("\n\t\t}");
-            
-            if (camlCaseMethodName.equals("StateMap")) {
-                writer.append("\n\t\t\tStateHelper sh = getStateHelper();");
-                writer.append("\n\t\tSystem.out.println(sh.get(\"stateMap_defaultValue\"));");
-                writer.append("\n\t\tSystem.out.println((sh.get(\"stateMap_rowValues\") != null) ? ((Map)sh.get(\"stateMap_rowValues\")).get(getComponentId()) : null);");
-            }
-            
+            writer.append("\n\t\t}");                       
             writer.append("\n\t\treturn retVal;");
         } else {
             writer.append("\n\t\treturn super.");
