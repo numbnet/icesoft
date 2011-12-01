@@ -136,6 +136,9 @@ public class PushButtonRenderer extends CoreRenderer {
         Integer tabindex = pushButton.getTabindex();
         if (ariaEnabled && tabindex == null) tabindex = 0;
 
+        javax.el.MethodExpression actionExpression = pushButton.getActionExpression();
+        javax.faces.event.ActionListener[] actionListeners = pushButton.getActionListeners();
+
         JSONBuilder jBuild = JSONBuilder.create().beginMap();
         // need to worry if label isn't set?
 	    jBuild.
@@ -154,6 +157,7 @@ public class PushButtonRenderer extends CoreRenderer {
 
         jBuild = JSONBuilder.create().
                                 beginMap().
+                entry("fullSubmit", actionExpression != null || actionListeners.length > 0).
                 entry("ariaLabel", ariaLabel).
                 entry("hashCode",  sb.toString().hashCode()).
                 entry("ariaEnabled", ariaEnabled);
