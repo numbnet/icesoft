@@ -156,70 +156,70 @@ public class ComponentArtifact extends Artifact{
 
         
 
-        writer.append("private UIComponent getNamingContainerAncestor() {\n");
-        writer.append("UIComponent namingContainer = this.getParent();\n");
-        writer.append("while (namingContainer != null) {\n");
-        writer.append("if (namingContainer instanceof NamingContainer) {\n");
-        writer.append("return namingContainer;\n");
-        writer.append("}\n");
-        writer.append("namingContainer = namingContainer.getParent();\n");
-        writer.append("}\n");
-        writer.append("return null;\n");
-        writer.append("}\n");
+        writer.append("\n\tprivate UIComponent getNamingContainerAncestor() {\n");
+        writer.append("\t\tUIComponent namingContainer = this.getParent();\n");
+        writer.append("\t\twhile (namingContainer != null) {\n");
+        writer.append("\t\t\tif (namingContainer instanceof NamingContainer) {\n");
+        writer.append("\t\t\t\treturn namingContainer;\n");
+        writer.append("\t\t\t}\n");
+        writer.append("\t\t\tnamingContainer = namingContainer.getParent();\n");
+        writer.append("\t\t}\n");
+        writer.append("\t\treturn null;\n");
+        writer.append("\t}\n");
 
 
-        writer.append("private String clientId = null;\n");
-        writer.append("public String getComponentId() {\n");
-        writer.append("FacesContext context = FacesContext.getCurrentInstance();\n");
-        writer.append("if (context == null) {\n");
-        writer.append("throw new NullPointerException();\n");
-        writer.append("}\n");
+        writer.append("\n\tprivate String clientId = null;\n");
+        writer.append("\tprotected String getComponentId() {\n");
+        writer.append("\t\tFacesContext context = FacesContext.getCurrentInstance();\n");
+        writer.append("\t\tif (context == null) {\n");
+        writer.append("\t\t\tthrow new NullPointerException();\n");
+        writer.append("\t\t}\n");
 
-        writer.append("// if the clientId is not yet set\n");
-        writer.append("if (this.clientId == null) {\n");
-        writer.append("UIComponent namingContainerAncestor =\n");
-        writer.append("this.getNamingContainerAncestor();\n");
-        writer.append("UIComponent parent = namingContainerAncestor;\n");
-        writer.append("String parentId = null;\n");
+        writer.append("\t\t// if the clientId is not yet set\n");
+        writer.append("\t\tif (this.clientId == null) {\n");
+        writer.append("\t\t\tUIComponent namingContainerAncestor =\n");
+        writer.append("\t\t\t\tthis.getNamingContainerAncestor();\n");
+        writer.append("\t\t\tUIComponent parent = namingContainerAncestor;\n");
+        writer.append("\t\t\tString parentId = null;\n\n");
 
-        writer.append("// give the parent the opportunity to first\n");
-        writer.append("// grab a unique clientId\n");
-        writer.append("if (parent != null) {\n");
-        writer.append("parentId = parent.getContainerClientId(context);\n");
-        writer.append("}\n");
+        writer.append("\t\t\t// give the parent the opportunity to first\n");
+        writer.append("\t\t\t// grab a unique clientId\n");
+        writer.append("\t\t\tif (parent != null) {\n");
+        writer.append("\t\t\t\tparentId = parent.getContainerClientId(context);\n");
+        writer.append("\t\t\t}\n\n");
 
-        writer.append("// now resolve our own client id\n");
-        writer.append("this.clientId = getId();\n");
-        writer.append("if (this.clientId == null) {\n");
-        writer.append("String generatedId;\n");
-        writer.append("if (null != namingContainerAncestor &&\n");
-        writer.append("namingContainerAncestor instanceof UniqueIdVendor) {\n");
-        writer.append("generatedId = ((UniqueIdVendor)namingContainerAncestor).createUniqueId(context, null);\n");
-        writer.append("}\n");
-        writer.append("else {\n");
-        writer.append("generatedId = context.getViewRoot().createUniqueId();\n");
-        writer.append("}\n");
-        writer.append("setId(generatedId);\n");
-        writer.append("this.clientId = getId();\n");
-        writer.append("}\n");
-        writer.append("if (parentId != null) {\n");
-        writer.append("StringBuilder idBuilder =\n");
-        writer.append("new StringBuilder(parentId.length()\n");
-        writer.append(" + 1\n");
-        writer.append(" + this.clientId.length());\n");
-        writer.append("this.clientId = idBuilder.append(parentId)\n");
-        writer.append(".append(UINamingContainer.getSeparatorChar(context))\n");
-        writer.append(".append(this.clientId).toString();\n");
-        writer.append("}\n");
+        writer.append("\t\t\t// now resolve our own client id\n");
+        writer.append("\t\t\tthis.clientId = getId();\n");
+        writer.append("\t\t\tif (this.clientId == null) {\n");
+        writer.append("\t\t\t\tString generatedId;\n");
+        writer.append("\t\t\t\tif (null != namingContainerAncestor &&\n");
+        writer.append("\t\t\t\t\tnamingContainerAncestor instanceof UniqueIdVendor) {\n");
+        writer.append("\t\t\t\t\tgeneratedId = ((UniqueIdVendor)namingContainerAncestor).createUniqueId(context, null);\n");
+        writer.append("\t\t\t\t}\n");
+        writer.append("\t\t\t\telse {\n");
+        writer.append("\t\t\t\t\tgeneratedId = context.getViewRoot().createUniqueId();\n");
+        writer.append("\t\t\t\t}\n");
+        writer.append("\t\t\t\tsetId(generatedId);\n");
+        writer.append("\t\t\t\tthis.clientId = getId();\n");
+        writer.append("\t\t\t}\n");
+        writer.append("\t\t\tif (parentId != null) {\n");
+        writer.append("\t\t\t\tStringBuilder idBuilder =\n");
+        writer.append("\t\t\t\t\tnew StringBuilder(parentId.length()\n");
+        writer.append("\t\t\t\t\t\t + 1\n");
+        writer.append("\t\t\t\t\t\t + this.clientId.length());\n");
+        writer.append("\t\t\t\tthis.clientId = idBuilder.append(parentId)\n");
+        writer.append("\t\t\t\t\t.append(UINamingContainer.getSeparatorChar(context))\n");
+        writer.append("\t\t\t\t\t.append(this.clientId).toString();\n");
+        writer.append("\t\t\t}\n\n");
 
-        writer.append("// allow the renderer to convert the clientId\n");
-        writer.append("Renderer renderer = this.getRenderer(context);\n");
-        writer.append("if (renderer != null) {\n");
-        writer.append("this.clientId = renderer.convertClientId(context, this.clientId);\n");
-        writer.append("}\n");
-        writer.append("}\n");
-        writer.append("return this.clientId;\n");
-        writer.append("}\n\n");
+        writer.append("\t\t\t// allow the renderer to convert the clientId\n");
+        writer.append("\t\t\tRenderer renderer = this.getRenderer(context);\n");
+        writer.append("\t\t\tif (renderer != null) {\n");
+        writer.append("\t\t\t\tthis.clientId = renderer.convertClientId(context, this.clientId);\n");
+        writer.append("\t\t\t}\n");
+        writer.append("\t\t}\n");
+        writer.append("\t\treturn this.clientId;\n");
+        writer.append("\t}\n\n");
     }
 
 
@@ -542,6 +542,13 @@ public class ComponentArtifact extends Artifact{
             writer.append("\n\t\t\t\t}");
             writer.append("\n\t\t\t}");
             writer.append("\n\t\t}");
+            
+            if (camlCaseMethodName.equals("StateMap")) {
+                writer.append("\n\t\t\tStateHelper sh = getStateHelper();");
+                writer.append("\n\t\tSystem.out.println(sh.get(\"stateMap_defaultValue\"));");
+                writer.append("\n\t\tSystem.out.println((sh.get(\"stateMap_rowValues\") != null) ? ((Map)sh.get(\"stateMap_rowValues\")).get(getComponentId()) : null);");
+            }
+            
             writer.append("\n\t\treturn retVal;");
         } else {
             writer.append("\n\t\treturn super.");
