@@ -53,7 +53,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         }
         String inputValue = context.getExternalContext().getRequestParameterMap().get(clientId+"_input");
         if (!isValueBlank(inputValue)){
-            if (Utils.isIOS5(context) && timeSpinner.isUseNative()){
+            if (Utils.isIOS5() && timeSpinner.isUseNative()){
                 //have to convert from 24 hour time and put in same format as mobi timeSpinner
                 String twelveHrString = convertToTwelve(inputValue);
                 if (null != twelveHrString){
@@ -72,7 +72,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = spinner.getClientId(context);
         String initialValue = getStringValueToRender(context, component);
-        if (spinner.isUseNative() && Utils.isIOS5(context)){
+        if (spinner.isUseNative() && Utils.isIOS5()){
             writer.startElement("input", component);
             writer.writeAttribute("type", "time", "type");
             writer.writeAttribute("id", clientId+"_input", "id");

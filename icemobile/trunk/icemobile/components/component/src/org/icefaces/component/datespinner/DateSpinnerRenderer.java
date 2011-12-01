@@ -64,7 +64,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = spinner.getClientId(context);
         String initialValue = getStringValueToRender(context, component);
-        if (spinner.isUseNative() && Utils.isIOS5(context)){
+        if (spinner.isUseNative() && Utils.isIOS5()){
             writer.startElement("input", component);
             writer.writeAttribute("type", "date", "type");
             writer.writeAttribute("id", clientId+"_input", "id");
