@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Progress Bar Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        </h:head>    <h:body>        <ice:form>
+            <ice:selectOneRadio value="#{mode.isIndeterminate}" partialSubmit="true" valueChangeListener="#{mode.modeChanged}">
+                <f:selectItems value="#{mode.availableModes}"></f:selectItems>
+            </ice:selectOneRadio>
+            
+            <ice:outputProgress value="#{mode.percent}" indeterminate="#{mode.isIndeterminatePrimitive}"></ice:outputProgress>
+                                
+            <!-- Render a start and stop button for determinate mode -->
+            <ice:panelGroup rendered="#{!mode.isIndeterminatePrimitive}">
+                <ice:commandButton value="Start" action="#{mode.startProgress}" rendered="#{!mode.isRunning}"></ice:commandButton>
+                <ice:commandButton value="Stop" action="#{mode.stopProgress}" rendered="#{mode.isRunning}"></ice:commandButton>
+            </ice:panelGroup>
+            
+            <!-- Don't bother giving a stop option for indeterminate mode -->
+            <ice:panelGroup rendered="#{mode.isIndeterminatePrimitive}">
+                <ice:commandButton value="Start" action="#{mode.startProgress}" disabled="#{mode.isRunning}"></ice:commandButton>
+            </ice:panelGroup>
+        		</ice:form>	</h:body></f:view></html>
