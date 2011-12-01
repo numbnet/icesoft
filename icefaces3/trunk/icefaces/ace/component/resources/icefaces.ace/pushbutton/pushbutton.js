@@ -90,7 +90,12 @@ ice.ace.pushbutton = {
             var divRoot = document.getElementById(clientId);
             var context = ice.ace.getJSContext(clientId);
 
-            ice.s(e, divRoot, params);
+            var fullSubmit = context.getJSFProps().fullSubmit;
+            if (fullSubmit) {
+                ice.s(e, divRoot, params);
+            } else {
+                ice.se(e, divRoot, params);
+            }
 			
 		var behaviors = context.getJSProps().behaviors;
 		if (behaviors) {
