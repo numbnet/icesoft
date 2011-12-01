@@ -51,7 +51,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="toggle", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
 	@ClientEvent(name="close", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
+}, defaultEvent="toggle")
 
 public class PanelMeta extends UIPanelMeta {
 

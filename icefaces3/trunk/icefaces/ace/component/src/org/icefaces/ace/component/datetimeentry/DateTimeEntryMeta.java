@@ -63,7 +63,7 @@ import javax.faces.application.ResourceDependency;
 	@ClientEvent(name="mouseup", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
 	@ClientEvent(name="select", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
 	@ClientEvent(name="dateSelect", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
+}, defaultEvent="dateSelect")
 public class DateTimeEntryMeta extends UIInputMeta {
     @Property(tlddoc = "Name of the client side widget.")
     private String widgetVar;
