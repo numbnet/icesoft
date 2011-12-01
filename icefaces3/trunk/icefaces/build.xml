@@ -201,6 +201,7 @@
         <delete dir="${bundle.dir.bin}/compat"/>
         <delete dir="${bundle.dir.bin}/core"/>
         <delete dir="${bundle.dir.bin}/test"/>
+        <delete dir="${bundle.dir.bin}/tutorials"/>
 
         <delete dir="${bundle.dir.bin}/samples/core/test"/>        
         <delete dir="${bundle.dir.bin}/samples/core/basic"/>
@@ -238,6 +239,7 @@
         <delete dir="${bundle.dir.src}/ace/test"/>
         <delete dir="${bundle.dir.src}/samples/core/basic"/>
         <delete dir="${bundle.dir.src}/samples/core/test"/>
+        <delete dir="${bundle.dir.src}/tutorials"/>
         <delete dir="${bundle.dir.src}/samples/compat/compat-basic"/>
         <delete dir="${bundle.dir.src}/samples/dist"/>
         
