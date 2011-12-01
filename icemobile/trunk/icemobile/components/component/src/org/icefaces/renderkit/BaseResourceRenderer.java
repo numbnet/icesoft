@@ -19,9 +19,11 @@ package org.icefaces.renderkit;
 
 import org.icefaces.application.ResourceRegistry;
 import org.icefaces.component.utils.IceOutputResource;
+import org.icefaces.component.utils.Utils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,8 +36,8 @@ public class BaseResourceRenderer extends Renderer {
     private static Logger logger = Logger.getLogger(BaseResourceRenderer.class.getName());
 
 
-    private String registerAndGetPath(String scope,
-                                      IceOutputResource iceResource) {
+    private String registerAndGetPath(FacesContext facesContext,
+            String scope, IceOutputResource iceResource) {
         String registeredPath = "";
         if (scope.equals("flash"))
             registeredPath = ResourceRegistry.addSessionResource(iceResource);
@@ -47,6 +49,13 @@ public class BaseResourceRenderer extends Renderer {
             registeredPath = ResourceRegistry.addViewResource(iceResource);
         else if (scope.equals("session"))
             registeredPath = ResourceRegistry.addSessionResource(iceResource);
+        if (Utils.isAndroid())  {
+            HttpSession session  = (HttpSession) facesContext
+                    .getExternalContext().getSession(false);
+            if (null != session)  {
+                registeredPath += ";jsessionid=" + session.getId();
+            }
+        }
         return registeredPath;
     }
 
@@ -85,7 +94,7 @@ public class BaseResourceRenderer extends Renderer {
             }
             //set name for resource to component?Hopefully user has created proper iceoutputresource object
             //for now just use session scope for testing
-            return registerAndGetPath(scope, iceResource);
+            return registerAndGetPath(facesContext, scope, iceResource);
         }
 //	 
         if (o instanceof byte[]) {
@@ -97,7 +106,8 @@ public class BaseResourceRenderer extends Renderer {
 //		              logger.info("\t\t mimeType="+this.mimeType);
 //		             // update the request headers in iceOutputResource class? as well as content
 //		        }
-            String registeredPath = registerAndGetPath(scope, ior);
+            String registeredPath = 
+                    registerAndGetPath(facesContext, scope, ior);
             if (logger.isLoggable(Level.FINE)) {
                 logger.fine("instance of byte array returning path=" + registeredPath + " with mimeType=" + ior.getContentType());
             }
