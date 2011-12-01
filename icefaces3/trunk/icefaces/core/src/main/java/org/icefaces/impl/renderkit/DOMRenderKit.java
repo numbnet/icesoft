@@ -61,7 +61,7 @@ public class DOMRenderKit extends RenderKitWrapper {
     private ArrayList<ExternalScript> customScriptRenderers = new ArrayList<ExternalScript>();
     private ArrayList<MandatoryResourceComponent> mandatoryResourceComponents = new ArrayList<MandatoryResourceComponent>();
 
-    //Announce ICEfaces 2.0
+    //Announce ICEfaces
     static {
         if (log.isLoggable(Level.INFO)) {
             log.info(new ProductInfo().toString());
