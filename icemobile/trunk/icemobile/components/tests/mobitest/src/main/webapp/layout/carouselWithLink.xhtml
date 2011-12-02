@@ -41,7 +41,7 @@
     <h:form id="carouselForm">
 	    <mobi:carousel id="carOne" value="#{carousel.imageList}" var="item" valueChangeListener="#{carousel.changedIndex}"
 	         selectedIten="#{carousel.selectedIndex}" singleSubmit="false">
-           <h:column id="hack">
+
 	        <h:panelGroup id="imgPanel">
                <mobi:commandButton id="btnOne" singleSubmit="true"
                                action="#{carousel.viewDetail}"
@@ -67,7 +67,7 @@
                </h:commandLink>
 
 	        </h:panelGroup>
-           </h:column>
+
 	    </mobi:carousel>
     </h:form>
     <br />

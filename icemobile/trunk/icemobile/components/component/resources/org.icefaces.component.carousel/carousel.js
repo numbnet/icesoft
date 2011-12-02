@@ -29,7 +29,7 @@ mobi.carousel = {
 	                if (this.carousels) {
 	                    ice.log.debug(ice.log, 'have existing carousel');
 	                //    this.carousels.destroy();
-	                    ice.mobi.refresh(clientId, singleSubmit);
+	                    mobi.refresh(clientId, singleSubmit);
 	                }
 	                else {
 	                    ice.log.debug(ice.log, 'onload create carousel');
@@ -89,9 +89,11 @@ mobi.carousel = {
 			   this.carousels.scrollToPage(currPageX);
                document.querySelector('.mobi-carousel-cursor-list > li.active').className = '';
                document.querySelector('.mobi-carousel-cursor-list > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
-			   setTimeout(function(){
+			//   setTimeout(function(){
 				   this.carousels.refresh();
-			   },0);
+               this.carousels.addEventListener()
+
+			 //  },0);
               
 		   }
 	   }
