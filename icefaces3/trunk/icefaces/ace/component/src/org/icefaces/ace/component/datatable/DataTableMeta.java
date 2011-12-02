@@ -69,8 +69,9 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         @ClientEvent(name="editSubmit", javadoc="...", tlddoc="...", defaultRender="@none", defaultExecute="@none"),
         @ClientEvent(name="editCancel", javadoc="...", tlddoc="...", defaultRender="@none", defaultExecute="@none"),
         @ClientEvent(name="expand", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@this"),
-        @ClientEvent(name="contract", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@this")
-})
+        @ClientEvent(name="contract", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@this")} ,
+        defaultEvent = "select"
+)
 public class DataTableMeta extends UIDataMeta {
     /* ##################################################################### */
     /* ############################ Misc. Prop. ############################ */

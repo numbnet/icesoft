@@ -46,8 +46,9 @@ import javax.faces.application.ResourceDependency;
 @ClientBehaviorHolder(events = {
     @ClientEvent(name="open", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
     @ClientEvent(name="submit", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-    @ClientEvent(name="cancel", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-})
+    @ClientEvent(name="cancel", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")},
+    defaultEvent = "submit"
+)
 public class TableConfigPanelMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Allow the configuration of column order." )
     boolean columnOrderingConfigurable;
