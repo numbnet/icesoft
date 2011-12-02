@@ -42,6 +42,13 @@
                 <h:outputText styleClass="ehancedBrowserDisclaimer"
                         rendered="#{not qrCodeBean.enhancedBrowser}"
                         value="#{msgs['example.device.disclaimer']}" />
+                 <ui:fragment rendered="#{qrCodeBean.showSX}">
+                    <br /><span>
+                    <h:commandButton 
+                       styleClass="mobi-button mobi-button-important"
+                       onclick="mobi.registerAuxUpload('#{session.id}','#{auxUpload.uploadURL}');" value="Enable" />
+     ICEmobile-SX Surf Expander.</span>
+                </ui:fragment>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel value="QR Code: "/>
