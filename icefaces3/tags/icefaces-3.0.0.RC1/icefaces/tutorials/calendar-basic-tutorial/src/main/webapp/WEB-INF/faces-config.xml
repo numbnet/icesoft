@@ -1,0 +1,19 @@
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0">
+	<application xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<locale-config>
+			<default-locale>en_US</default-locale>
+		</locale-config>
+	</application>
+    <validator xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <validator-id>dateRangeValidator</validator-id>
+        <validator-class>com.icesoft.icefaces.tutorial.component.selectinputdate.DateRangeValidator</validator-class>
+    </validator>
+	<managed-bean xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<description> Backing bean for dateSelect example.</description>
+		<managed-bean-name>dateSelect</managed-bean-name>
+		<managed-bean-class>
+			com.icesoft.icefaces.tutorial.component.selectinputdate.SelectInputDateBean 
+		</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+</faces-config>

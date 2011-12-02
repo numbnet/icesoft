@@ -1,0 +1,127 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	    		xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:ice="http://www.icesoft.com/icefaces/component"
+				template="/WEB-INF/layouts/standard.xhtml">
+<ui:define name="notes">
+	<p>
+		The form uses Ajax-based validations to redisplay server-side errors without refreshing the entire page.
+		The booking bean backing the form is a flow-scoped object (see <strong>booking-flow.xml</strong>).		
+	</p>
+</ui:define>
+<ui:define name="content">
+	<ice:form id="bookingForm">
+		<ice:panelGroup title="Hotel Reservation Form">
+			<ice:messages />
+			<div class="large">
+				${booking.hotel.name},
+				${booking.hotel.address}
+				${booking.hotel.city}, ${booking.hotel.state}, ${booking.hotel.zip}
+				${booking.hotel.country}
+			</div>
+			<hr/>
+			<div>
+				<div class="span-4 label">
+					<h:outputLabel for="price">Nightly Rate:</h:outputLabel>
+				</div>
+				<div class="span-14 last">
+					<p>
+						<h:outputText id="price" value="#{booking.hotel.price}">
+							<f:convertNumber type="currency" currencySymbol="$"/>
+						</h:outputText>
+					</p>
+				</div>					
+			</div>
+			<div class="field">
+				<div class="span-4">
+					<h:outputLabel for="checkinDate">Check In:</h:outputLabel>
+				</div>
+				<div class="span-5">
+					<p>
+						<ice:selectInputDate id="checkinDate" title="Check in date"
+							value="#{booking.checkinDate}" renderAsPopup="true" partialSubmit="false">
+                            <f:convertDateTime  pattern="MM-dd-yyyy" timeZone="EST"  />
+                        </ice:selectInputDate>
+	               	</p>
+				</div>
+				<div class="span-4">
+					<h:outputLabel for="checkoutDate">Check Out:</h:outputLabel>
+				</div>
+				<div class="span-5 last">
+					<p>
+						<ice:selectInputDate id="checkoutDate" title="Check out date"
+							value="#{booking.checkoutDate}" renderAsPopup="true" partialSubmit="false" >
+                            <f:convertDateTime  pattern="MM-dd-yyyy" timeZone="EST" />
+                        </ice:selectInputDate>
+					</p>
+				</div>
+			</div>
+			<div class="field">
+				<div class="span-4">
+					<h:outputLabel for="beds">Room Preference:</h:outputLabel>
+				</div>
+				<div class="span-5">
+					<p>
+						<h:selectOneMenu id="beds" value="#{booking.beds}">
+							<f:selectItems value="#{referenceData.bedOptions}"/>
+						</h:selectOneMenu>
+					</p>	
+				</div>
+				<div class="span-4">
+					<h:outputLabel for="smoking">Smoking:</h:outputLabel>
+				</div>
+				<div id="radio" class="span-5 last">
+					<h:selectOneRadio id="smoking" value="#{booking.smoking}" layout="pageDirection">
+						<f:selectItems value="#{referenceData.smokingOptions}"/>
+					</h:selectOneRadio>
+				</div>
+			</div>
+			<div class="field">
+				<div class="span-4">
+					<h:outputLabel for="creditCard">Credit Card Number:</h:outputLabel>
+				</div>
+				<div class="span-5">
+					<ice:panelGroup panelTooltip="ccPanelToolTip">
+						<ice:inputText id="creditCard" title="16-digit credit card number."  label="Credit card number" value="#{booking.creditCard}" />
+					</ice:panelGroup>
+				</div>
+				<div class="span-4">
+					<h:outputLabel for="creditCardName">Credit Card Name:</h:outputLabel>
+				</div>
+				<div class="span-5 last">
+					<p>
+						<h:inputText id="creditCardName" label="Credit card name" value="#{booking.creditCardName}"/>
+					</p>
+				</div>
+			</div>
+			<div class="field">
+				<div class="span-4">
+					<h:outputLabel for="creditCardExpiryMonth">Expiration Date:</h:outputLabel>
+				</div>
+				<div class="span-14 last">
+					<p>
+						<ice:selectOneMenu id="creditCardExpiryMonth" value="#{booking.creditCardExpiryMonth}" >
+							<f:selectItems value="#{referenceData.creditCardExpMonths}" />
+						</ice:selectOneMenu>&nbsp;
+						<ice:selectOneMenu id="creditCardExpiryYear" value="#{booking.creditCardExpiryYear}">
+							<f:selectItems value="#{referenceData.creditCardExpYears}"/>
+						</ice:selectOneMenu>
+					</p>
+				</div>
+			</div>
+			<div>
+				<ice:commandButton id="proceed" action="proceed" value="Proceed"  />
+				<ice:commandButton id="cancel" value="Cancel" action="cancel" immediate="true" />
+			</div>
+		</ice:panelGroup>
+        <ice:panelTooltip id="ccPanelToolTip">
+            <f:facet name="header">Credit Card Input Tip</f:facet>
+            <f:facet name="body">
+                <ice:outputText value="Enter Credit Card as 16-digit number only: e.g. 1234567890123456" />
+            </f:facet>
+        </ice:panelTooltip>
+	</ice:form>
+</ui:define>
+</ui:composition>
