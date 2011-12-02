@@ -216,7 +216,7 @@ var fullSubmit;
         var extractedElement = extractTarget(event);
         var eventElement = (extractedElement) ? extractedElement : 
                 triggeredBy($event(event, element));
-        if ( (eventElement.tagName) && 
+        if ( eventElement && (eventElement.tagName) && 
                 (toLowerCase(eventElement.tagName) == "form") ) {
             eventElement = element;
         }
@@ -286,7 +286,11 @@ var fullSubmit;
                 cancelDefaultAction(decoratedEvent);
             }
 
-            serializeEventToOptions(decoratedEvent, options);
+            try {
+                serializeEventToOptions(decoratedEvent, options);
+            } catch (e)  {
+                debug(logger, "Unable to serialize event " + e);
+            }
             serializeAdditionalParameters(additionalParameters, options);
 
             var form = formOf(element);
