@@ -188,4 +188,12 @@ function html5getViewState(form) {
 if (window.addEventListener)  {
     window.addEventListener( "load", 
     function() {jsf.getViewState = html5getViewState}, false );
+    
+    window.addEventListener("pagehide", function() { 
+        ice.push.connection.pauseConnection(); 
+    }, false); 
+    
+    window.addEventListener("pageshow", function() { 
+        ice.push.connection.resumeConnection(); 
+    }, false); 
 }
