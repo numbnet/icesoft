@@ -72,9 +72,7 @@
         <mobi:outputList id="commandLinkList" inset="true">
             <mobi:outputListItem type="group">commandLinks List</mobi:outputListItem>
             <mobi:outputListItems value="#{list.linksList}" var="cmdLnk">
-              <h:column>
                 <h:commandLink  value="#{cmdLnk.title}" action="#{cmdLnk.getAction}"/>
-              </h:column>
             </mobi:outputListItems>
         </mobi:outputList>
     </h:form>

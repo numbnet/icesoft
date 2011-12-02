@@ -3,6 +3,7 @@ package org.icefaces.component.list;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIDataMeta;
+import org.icefaces.ace.meta.baseMeta.UISeriesBaseMeta;
 
 
 @Component(
@@ -12,11 +13,11 @@ import org.icefaces.ace.meta.baseMeta.UIDataMeta;
         generatedClass = "org.icefaces.component.list.OutputListItemsBase",
         componentType = "org.icefaces.OutputListItems",
         rendererType = "org.icefaces.OutputListItemsRenderer",
-        extendsClass = "javax.faces.component.UIData",
+        extendsClass = "org.icefaces.impl.component.UISeriesBase",
         componentFamily = "org.icefaces.OutputListItems",
         tlddoc = "This mobility component is used within an outputlist tag to group lists of items."
 )
-public class OutputListItemsMeta extends UIDataMeta{
+public class OutputListItemsMeta extends UISeriesBaseMeta {
 
     @Property(defaultValue="false",
     		  tlddoc = "true enables padding around list group")
