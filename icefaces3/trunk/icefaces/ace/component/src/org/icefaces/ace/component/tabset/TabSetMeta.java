@@ -69,6 +69,12 @@ import java.util.List;
     @ResourceDependency(name="util/combined.js",library="icefaces.ace"),
     @ResourceDependency(name="util/combined.css",library="icefaces.ace")
 })
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="clientSideTabChange", defaultExecute="@none", defaultRender="@none",
+            tlddoc="When the tabSet has clientSide=true, and a tab change occurs"),
+	@ClientEvent(name="serverSideTabChange", defaultExecute="@all", defaultRender="@all",
+            tlddoc="When the tabSet has clientSide=false, and a tab change occurs")
+}, defaultEvent="serverSideTabChange")
 public class TabSetMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue="false", tlddoc="The default value of this " +
@@ -95,13 +101,6 @@ public class TabSetMeta extends UIComponentBaseMeta {
             "request will goto server to render requested tab, which allows " +
             "to send dynamic contents back.")
     private boolean clientSide;
-
-    @Property(defaultValue="false", tlddoc="The default value of this " +
-            "attribute is false, so in this case full submit is being used, " +
-            "where all component gets rendered and executed. If this " +
-            "attribute is set to true, then only this component gets " +
-            "executed and entire view gets rendered")
-    private boolean singleSubmit;
 
     @Property(defaultValue="true", tlddoc="This attribute comes into " +
             "effect when there is a validation error. By default it is set " +
