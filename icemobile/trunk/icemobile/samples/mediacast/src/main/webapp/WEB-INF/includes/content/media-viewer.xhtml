@@ -44,10 +44,6 @@
                     value="#{uploadModel.selectedPhoto.mediaURL}"
                     styleClass="imageViewer"
                     style="margin-bottom:10px;"/>
-            <br/>
-            <h:outputLink value="/mediacast/#{uploadModel.selectedPhoto.mediaURL}">
-                PLAY
-            </h:outputLink>
           </h:panelGroup>
           <h:panelGroup rendered="#{uploadModel.selectedPhoto.showAudio}" >
             <label>Audio:</label>

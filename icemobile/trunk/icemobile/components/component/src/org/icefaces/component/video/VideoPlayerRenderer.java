@@ -18,6 +18,7 @@
 package org.icefaces.component.video;
 
 import org.icefaces.component.utils.HTML;
+import org.icefaces.component.utils.Utils;
 import org.icefaces.renderkit.BaseResourceRenderer;
 
 import javax.faces.component.UIComponent;
@@ -72,7 +73,14 @@ public class VideoPlayerRenderer extends BaseResourceRenderer {
         }
         writer.writeAttribute("src", srcAttribute, null);
         writer.endElement("video");
-
+        if (!Utils.isIOS())  {
+            writer.startElement("br", uiComponent);
+            writer.endElement("br");
+            writer.startElement("a", uiComponent);
+            writer.writeAttribute("href", srcAttribute, null);
+            writer.writeText("PLAY", null);
+            writer.endElement("a");
+        }
     }
 
 
