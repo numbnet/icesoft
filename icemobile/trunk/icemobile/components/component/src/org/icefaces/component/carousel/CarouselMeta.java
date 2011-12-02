@@ -21,10 +21,12 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import org.icefaces.ace.meta.baseMeta.UISeriesBaseMeta;
 
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+
 
 
 @Component(
@@ -34,7 +36,7 @@ import javax.faces.application.ResourceDependency;
         generatedClass = "org.icefaces.component.carousel.CarouselBase",
         componentType = "org.icefaces.Carousel",
         rendererType = "org.icefaces.CarouselRenderer",
-        extendsClass = "javax.faces.component.UIData",
+        extendsClass = "org.icefaces.impl.component.UISeriesBase",
         componentFamily = "org.icefaces.Carousel",
         tlddoc = "This mobility component " +
                 "represents a grouping of a grouping of <li> tags that make up a scrollable " +
@@ -45,7 +47,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "org.icefaces.component.util", name = "iscroll-min.js"),
         @ResourceDependency(library = "org.icefaces.component.carousel", name = "carousel.js")
 })  */
-public class CarouselMeta extends UIComponentBaseMeta {
+public class CarouselMeta extends UISeriesBaseMeta {
 
     @Property(defaultValue = "false",
             tlddoc = "When singleSubmit is true, triggering an action on this component will submit" +
