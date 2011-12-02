@@ -36,7 +36,7 @@ public class TabSet extends TabSetBase {
     public void broadcast(FacesEvent event)
     throws AbortProcessingException {
         super.broadcast(event);
-        if (event != null) {
+        if (event != null && event instanceof ValueChangeEvent) {
             ValueExpression ve = getValueExpression("selectedIndex");
             if(isCancelOnInvalid()) {
                 getFacesContext().renderResponse();
@@ -51,7 +51,6 @@ public class TabSet extends TabSetBase {
             } else {
                 setSelectedIndex((Integer)((ValueChangeEvent)event).getNewValue());
             }
-            ValueChangeEvent e = (ValueChangeEvent)event;
             MethodExpression method = getTabChangeListener();
             if (method != null) {
                 method.invoke(getFacesContext().getELContext(), new Object[]{event});
@@ -70,8 +69,4 @@ public class TabSet extends TabSetBase {
         }
         super.queueEvent(event);
     }  
-
-    public boolean isSingleSubmit() {
-        return Utils.superValueIfSet(this, getStateHelper(), PropertyKeys.singleSubmit.name(), super.isSingleSubmit(), Util.withinSingleSubmit(this));
-    }
 }

@@ -97,6 +97,11 @@ ice.ace.tabset = {
             if (sJSFProps.isClientSide){
             	//YAHOO.log(" clientSide and currentIndex="+currentIndex);
             	ice.ace.clientState.set(clientId, currentIndex);
+                if (sJSFProps.behaviors) {
+                    if (sJSFProps.behaviors.clientSideTabChange) {
+                        sJSFProps.behaviors.clientSideTabChange();
+                    }
+                }
                 //console.info('Client side tab ');
             } else {
                 var targetElement = ice.ace.tabset.getTabIndexField(rootElem);
@@ -105,6 +110,23 @@ ice.ace.tabset = {
                 }            	
                 //logger.info('Server side tab '+ event);
                 try {
+                    var haveBehaviour = false;
+                    if (sJSFProps.behaviors) {
+                        if (sJSFProps.behaviors.serverSideTabChange) {
+                            haveBehaviour = true;
+
+                            var elementId = targetElement.id;
+                            //replace id with the id of tabset component, so the "execute" property can be set to tabset id
+                            targetElement.id = clientId;
+                            sJSFProps.behaviors.serverSideTabChange(params);
+                            //restore id
+                            targetElement.id = elementId;
+                        }
+                    }
+                    if (!haveBehaviour) {
+                        ice.submit(event, targetElement, params);
+                    }
+                    /*
                     if (sJSFProps.isSingleSubmit) {
                     	//backup id
                     	var elementId = targetElement.id;
@@ -116,6 +138,7 @@ ice.ace.tabset = {
                     } else {
                         ice.submit(event, targetElement, params);                    
                     }
+                    */
                 } catch(e) {
                     //logger.info(e);
                 }                

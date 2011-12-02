@@ -24,8 +24,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.render.Renderer;
 
+import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ARIA;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
@@ -36,7 +36,7 @@ import org.icefaces.util.EnvUtils;
 import org.icefaces.render.MandatoryResourceComponent;
 
 @MandatoryResourceComponent(tagName="tabSet", value="org.icefaces.ace.component.tabset.TabSet")
-public class TabSetRenderer extends Renderer{
+public class TabSetRenderer extends CoreRenderer {
     private static String YUI_TABSET_INDEX = "yti";
     public boolean getRendersChildren() {
         return true;
@@ -52,6 +52,7 @@ public class TabSetRenderer extends Renderer{
                         new Integer(old), index));
             }
         }
+        decodeBehaviors(facesContext, uiComponent);
     }
 
     /**
@@ -175,8 +176,7 @@ public class TabSetRenderer extends Renderer{
         		styleClass+= userDefinedClass.toString() ;
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, HTML.CLASS_ATTR);
         boolean isClientSide = tabSet.isClientSide();
-        boolean singleSubmit = tabSet.isSingleSubmit(); 
-		
+
 		String showEffect = tabSet.getShowEffect();
 		showEffect = showEffect == null || showEffect.trim().equals("") ? "" : showEffect;
 		int showEffectLength = tabSet.getShowEffectLength();
@@ -269,30 +269,26 @@ public class TabSetRenderer extends Renderer{
         boolean unexpected = (decSelIdx != null) &&
                 (decSelIdx.intValue() != selectedIndex);
 
-        StringBuilder call = new StringBuilder();
-        call.append("ice.ace.tabset.updateProperties('")
-        .append(clientId)
-        .append("', ")
-        .append(
-	        JSONBuilder.create().beginMap()
-	        .entry("orientation", orientation)
-			.entry("showEffect", showEffect)
-			.entry("showEffectLength", showEffectLength)
-	        .endMap().toString())
-        .append(", ")
-        .append(
-	        JSONBuilder.create().beginMap()
-	        .entry("isSingleSubmit", singleSubmit)
-	        .entry("isClientSide", isClientSide)
-	        .entry("aria", EnvUtils.isAriaEnabled(facesContext))
-	        .entry("selectedIndex", selectedIndex)
-            .entry("safeIds", safeIds)
-            .entry("overrideSelectedIndex",
-                    (unexpected ? System.currentTimeMillis() : 0))
-            .endMap().toString())
-        .append(");");
-       
-        ScriptWriter.insertScript(facesContext, uiComponent, call.toString());
+        JSONBuilder jb = JSONBuilder.create();
+        jb.beginFunction("ice.ace.tabset.updateProperties").
+        item(clientId).
+        beginMap().
+            entry("orientation", orientation).
+			entry("showEffect", showEffect).
+			entry("showEffectLength", showEffectLength).
+	    endMap().
+        beginMap().
+	        entry("isClientSide", isClientSide).
+	        entry("aria", EnvUtils.isAriaEnabled(facesContext)).
+	        entry("selectedIndex", selectedIndex).
+            entry("safeIds", safeIds).
+            entry("overrideSelectedIndex",
+                    (unexpected ? System.currentTimeMillis() : 0));
+            encodeClientBehaviors(facesContext, tabSet, jb);
+        jb.endMap().
+        endFunction();
+
+        ScriptWriter.insertScript(facesContext, uiComponent, jb.toString());
 
         writer.endElement(HTML.DIV_ELEM);
     }
