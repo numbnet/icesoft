@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[dataTablePanelExpansion.title]}"/>
+    <ui:param name="description" value="#{msgs[dataTablePanelExpansion.description]}"/>
+    <ui:param name="resourceValue" value="#{dataTablePanelExpansion.exampleResource}"/>
+
+    <ui:define name="example">
+        <h:form>
+            
+            <ace:dataTable   id="carTablePanelExpansion"
+                        value="#{dataTableSort.carsData}"
+                        var="car"
+                        rows="10">
+
+                <ace:column>
+                    <ace:expansionToggler />
+                </ace:column>
+
+                <ace:column headerText="ID">
+                    #{car.id}
+                </ace:column>
+                <ace:column headerText="Name">
+                    #{car.name}
+                </ace:column>
+                <ace:column headerText="Chassis">
+                    #{car.chassis}
+                </ace:column>
+                <ace:column headerText="Weight">
+                    #{car.weight}lbs.
+                </ace:column>
+                <ace:column headerText="Accel">
+                    #{car.acceleration}
+                </ace:column>
+                <ace:column headerText="MPG">
+                    #{car.mpg}
+                </ace:column>
+                <ace:column headerText="Cost">
+                    <ice:outputText value="#{car.cost}">
+                    <f:convertNumber    type="currency"
+                                        currencySymbol="$"
+                                        groupingUsed="true"
+                                        minFractionDigits="2"
+                                        maxFractionDigits="2"/>
+            </ice:outputText>
+                </ace:column>
+
+                <ace:panelExpansion>
+                    <h:outputText value="Cost Per Pound: " />
+                    <h:outputText value="#{car.cost /  car.weight}">
+                    <f:convertNumber     type="currency"
+                                        currencySymbol="$"
+                                        groupingUsed="true"
+                                        minFractionDigits="2"
+                                        maxFractionDigits="2"/>
+                    </h:outputText>
+                </ace:panelExpansion>
+            </ace:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
