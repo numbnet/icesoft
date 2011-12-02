@@ -94,8 +94,7 @@ public class UserAgentInfo {
     }
 
     public boolean sniffAndroid() {
-        boolean foundAndroid = userAgentString.contains(deviceAndroid) &&
-                userAgentString.contains("mobile safari");
+        boolean foundAndroid = userAgentString.contains(deviceAndroid);
 
         logSniff(foundAndroid, "Android Mobile", userAgentString);
         return foundAndroid;
