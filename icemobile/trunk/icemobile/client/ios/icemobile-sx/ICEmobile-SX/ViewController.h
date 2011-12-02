@@ -43,6 +43,8 @@
 @property (retain) NSDictionary *confirmMessages;
 @property (retain) NSDictionary *confirmTitles;
 @property (nonatomic, retain) IBOutlet UIProgressView *uploadProgress;
+
 - (void) dispatchCurrentCommand;
+- (void) reloadCurrentURL;
 
 @end

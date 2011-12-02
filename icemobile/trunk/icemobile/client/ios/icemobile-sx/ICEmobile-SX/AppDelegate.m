@@ -122,6 +122,7 @@ NSLog(@"ICEmobileHitch found JSESSIONID %@", [params objectForKey:@"JSESSIONID"]
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo  {
     NSLog(@"didReceiveRemoteNotification %@", userInfo);
+    [self.viewController reloadCurrentURL];
 }
 
 @end

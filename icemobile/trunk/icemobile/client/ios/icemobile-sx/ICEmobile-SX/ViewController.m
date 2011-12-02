@@ -57,13 +57,7 @@
     }
     [nativeInterface multipartPost:params toURL:self.currentURL];
 
-    NSString *safariURL = self.currentURL;
-    if (nil != self.returnURL)  {
-        safariURL = self.returnURL;
-    }
-    [[UIApplication sharedApplication] 
-            openURL:[NSURL URLWithString:safariURL]];
-NSLog(@"ICEmobile-SX registered and will open safari currentURL %@", safariURL);
+    [self reloadCurrentURL];
 }
 
 - (void)completePost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
@@ -71,13 +65,18 @@ NSLog(@"ICEmobile-SX registered and will open safari currentURL %@", safariURL);
     [params setValue:value forKey:componentName];
     [nativeInterface multipartPost:params toURL:self.currentURL];
 
+    [self reloadCurrentURL];
+}
+
+- (void) reloadCurrentURL  {
     NSString *safariURL = self.currentURL;
     if (nil != self.returnURL)  {
         safariURL = self.returnURL;
     }
+
+    NSLog(@"ICEmobile-SX will open %@", safariURL);
     [[UIApplication sharedApplication] 
             openURL:[NSURL URLWithString:safariURL]];
-NSLog(@"Hitch opened safari currentURL %@", safariURL);
 }
 
 - (void)completeFile:(NSString *)path forComponent:(NSString *)componentID withName:(NSString *)componentName   {
