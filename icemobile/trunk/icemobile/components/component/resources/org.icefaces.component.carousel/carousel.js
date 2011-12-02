@@ -29,7 +29,7 @@ mobi.carousel = {
 	                if (this.carousels) {
 	                    ice.log.debug(ice.log, 'have existing carousel');
 	                //    this.carousels.destroy();
-	                    mobi.refresh(clientId, singleSubmit);
+	                    mobi.carousel.refresh(clientId, singleSubmit);
 	                }
 	                else {
 	                    ice.log.debug(ice.log, 'onload create carousel');
@@ -78,7 +78,7 @@ mobi.carousel = {
 	   },
 	   refresh: function(clientId, singleSubmit){
 		   ice.log.debug(ice.log, 'refresh carousel');
-		   if (this.carousels!=null){
+		   if (this.carousels){
 			   var currPageX = 1;
 			   var hidden = document.getElementById(clientId+"_hidden");
 			   if (hidden){
@@ -91,7 +91,6 @@ mobi.carousel = {
                document.querySelector('.mobi-carousel-cursor-list > li:nth-child(' + (this.currPageX + 1) + ')').className = 'active';
 			//   setTimeout(function(){
 				   this.carousels.refresh();
-               this.carousels.addEventListener()
 
 			 //  },0);
               
