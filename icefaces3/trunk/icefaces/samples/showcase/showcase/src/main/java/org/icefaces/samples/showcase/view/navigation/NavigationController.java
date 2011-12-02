@@ -132,7 +132,8 @@ public class NavigationController implements Serializable {
                 if (compExample != null) {
                     navigationModel.setCurrentComponentExample(compExample);
                 }
-                renderUIbasedOnExample(navigationModel.getCurrentComponentGroup().getDefaultExample().getExampleBeanName(), navigationModel);
+//ENABLE/DISABLE CODE BELOW IF SWITCHING TO/FROM ACCORDION MENU TO THE REGULAR MENU(based on links) IN showcase.xhtml
+//                renderUIbasedOnExample(navigationModel.getCurrentComponentGroup().getDefaultExample().getExampleBeanName(), navigationModel);
             } else {
                 loadDefaultNavigation(navigationModel);
             }
@@ -147,32 +148,33 @@ public class NavigationController implements Serializable {
                 ComponentExampleImpl currentExample = navigationModel.getCurrentComponentExample();
                 ComponentExampleImpl setExample = (ComponentExampleImpl)tmpExample;
                 
-//ENABLE CODE BELOW IF SWITCH TO REGULAR MENU(based on links) HAS BEEN MADE IN showcase.xhtml
-// Determine if we need to fire the effect
-// This is necessary when the overall demo was changed, so basically when the package is different
-// Although checking against packages is not the desired approach, there isn't another option for matching beans
-//  because they have no built-in idea of a parent-child heirarchy
-//                if (currentExample != null) {
-//                    if (!setExample.getClass().getPackage().equals(currentExample.getClass().getPackage())) {
-//                        setExample.prepareEffect();
-//                    }
-//                }
-//                else {
-//                    setExample.prepareEffect();
-//                }
+        //ENABLE/DISABLE CODE BELOW IF SWITCHING TO/FROM ACCORDION MENU TO THE REGULAR MENU(based on links) IN showcase.xhtml
+        // Determine if we need to fire the effect
+        // This is necessary when the overall demo was changed, so basically when the package is different
+        // Although checking against packages is not the desired approach, there isn't another option for matching beans
+        //  because they have no built-in idea of a parent-child heirarchy
+                if (currentExample != null) {
+                    if (!setExample.getClass().getPackage().equals(currentExample.getClass().getPackage())) {
+                        setExample.prepareEffect();
+                    }
+                }
+                else {
+                    setExample.prepareEffect();
+                }
                 
                 // Apply the new group and example
                 navigationModel.setCurrentComponentGroup((Menu)tmpGroup);
                 navigationModel.setCurrentComponentExample(setExample);
+//ENABLE/DISABLE CODE BELOW IF SWITCHING TO/FROM ACCORDION MENU TO THE REGULAR MENU(based on links) IN showcase.xhtml
                 //determine if source code panel should show up or not
-                renderUIbasedOnExample(newExample, navigationModel);
+                //renderUIbasedOnExample(newExample, navigationModel);
             } else {
                 loadDefaultNavigation(navigationModel);
             }
         }
     }
     
-    //
+    //The method below is used with accordion main menu - DO NOT REMOVE
     //If example = overview showcase then set active accordion tab tab to 0 and only render description portion of the showcase
     //If example = regular showcase, set active acordion tab based on redirect request parameters and display full showcase (with description, example content and source code)
     private void renderUIbasedOnExample(String exampleDescription, NavigationModel navigationModel)
@@ -204,7 +206,8 @@ public class NavigationController implements Serializable {
         navigationModel.setCurrentComponentExample((ComponentExampleImpl)FacesUtils.getManagedBean(beanName));
         navigationModel.setComponentExample(beanName);
         navigationModel.getCurrentComponentGroup().getBeanName();
-        renderUIbasedOnExample(beanName, navigationModel);
+//ENABLE/DISABLE CODE BELOW IF SWITCHING TO/FROM ACCORDION MENU TO THE REGULAR MENU(based on links) IN showcase.xhtml
+        //renderUIbasedOnExample(beanName, navigationModel);
     }
     
     private String prepareRedirectURL(String groupParameterValue, String exampleParameterValue, ExternalContext extContext)

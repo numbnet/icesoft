@@ -79,6 +79,7 @@
         <!--
         ~ ACCORDION PANEL MAIN MENU IMPLEMENTATION UNDER CONSTRUCTION
          -->
+        <ui:remove>
         <h2>#{msgs[navigationModel.currentComponentGroup.title]}</h2>
         
         <h:form>
@@ -113,11 +114,11 @@
         <!--
         ~ ACCORDION PANEL MAIN MENU IMPLEMENTATION END
          -->
-         
+         </ui:remove>
          <!--
         ~ Regular menu via links (swap ui:remove with accordion implementation to activate, also uncomment code responsible for animation effect firing in NavigaionController.navigate(String, String))
          -->
-         <ui:remove>
+         
         <h2>#{msgs[navigationModel.currentComponentGroup.title]}</h2>
         <ul>
             <!--
@@ -187,7 +188,6 @@
             </ui:repeat>
             </h:form>
         </ul>
-        </ui:remove>
     </ui:define>
 
     <ui:define name="component-example">
