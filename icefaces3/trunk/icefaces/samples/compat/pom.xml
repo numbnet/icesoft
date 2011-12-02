@@ -32,10 +32,10 @@
   <name>ICEfaces Compat sample Parent</name>
   <description />
   <modules>
-<!--        <module>compat-basic</module> -->
-        <module>component-showcase</module>
         <module>auctionMonitor</module>
-        <module>component-showcase-portlets</module>
+<!--        <module>compat-basic</module> -->
+<!--        <module>component-showcase</module> -->
+<!--        <module>component-showcase-portlets</module> -->
   </modules>
   <dependencies>
    <!--  transitory nature of maven has icefaces poms defining all dependencies -->

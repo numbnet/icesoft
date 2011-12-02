@@ -188,6 +188,8 @@
             <fileset dir="${bundle.dir.bin}/samples/dist">
                 <include name="basic.war"/>
                 <include name="compat-basic.war"/>
+                <include name="component-showcase.war"/>
+                <include name="component-showcase-portlets.war"/>
             </fileset>
 
         </delete>
@@ -206,6 +208,8 @@
         <delete dir="${bundle.dir.bin}/samples/core/test"/>        
         <delete dir="${bundle.dir.bin}/samples/core/basic"/>
         <delete dir="${bundle.dir.bin}/samples/compat/compat-basic"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/"/>
+        <delete dir="${bundle.dir.bin}/samples/compat/component-showcase-portlets/"/>
 
         <delete dir="${bundle.dir.bin}/samples/showcase/showcase/build"/>
         <delete dir="${bundle.dir.bin}/samples/showcase/showcase-portlet/build"/> 
@@ -214,14 +218,10 @@
         <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/build"/>
         <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/lib"/>
         <delete dir="${bundle.dir.bin}/samples/compat/auctionMonitor/src/main/webapp/WEB-INF/classes"/>
-        <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/build"/>
-        <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/src/main/webapp/WEB-INF/lib"/>
-        <delete dir="${bundle.dir.bin}/samples/compat/component-showcase/src/main/webapp/WEB-INF/classes"/>
 
         <subant target="clean">
             <fileset dir="${bundle.dir.bin}/samples/showcase/showcase-portlet" includes="build.xml"/>
             <fileset dir="${bundle.dir.bin}/samples/core/chat-portlet" includes="build.xml"/>
-            <fileset dir="${bundle.dir.bin}/samples/compat/component-showcase-portlets" includes="build.xml"/>
         </subant>
 
     </target>
@@ -237,11 +237,13 @@
 
         <delete dir="${bundle.dir.src}/test"/>
         <delete dir="${bundle.dir.src}/ace/test"/>
-        <delete dir="${bundle.dir.src}/samples/core/basic"/>
-        <delete dir="${bundle.dir.src}/samples/core/test"/>
         <delete dir="${bundle.dir.src}/tutorials"/>
-        <delete dir="${bundle.dir.src}/samples/compat/compat-basic"/>
         <delete dir="${bundle.dir.src}/samples/dist"/>
+        <delete dir="${bundle.dir.src}/samples/core/test"/>        
+        <delete dir="${bundle.dir.src}/samples/core/basic"/>
+        <delete dir="${bundle.dir.src}/samples/compat/compat-basic"/>
+        <delete dir="${bundle.dir.src}/samples/compat/component-showcase/"/>
+        <delete dir="${bundle.dir.src}/samples/compat/component-showcase-portlets/"/>
         
     </target>
 
