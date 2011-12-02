@@ -126,9 +126,12 @@ public class DataTable extends DataTableBase {
     /*#######################################################################*/
     /*###################### Overridden API #################################*/
     /*#######################################################################*/
+    RowStateMap stateMap;
     @Override
     public RowStateMap getStateMap() {
-        RowStateMap stateMap = super.getStateMap();
+        if (stateMap != null) return stateMap;
+
+        stateMap = super.getStateMap();
         if (stateMap == null) {
             stateMap = new RowStateMap();
             super.setStateMap(stateMap);
@@ -295,6 +298,7 @@ public class DataTable extends DataTableBase {
     @Override
     public void setRowIndex(int index) {
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        
         super.setRowIndex(index);
         if (isRowAvailable()) {
             requestMap.put(getRowStateVar(), getStateMap().get(getRowData()));
@@ -806,6 +810,7 @@ public class DataTable extends DataTableBase {
                 }
             } finally {
                 this.popComponentFromEL(FacesContext.getCurrentInstance());
+                //TODO: Fix this duplication
                 this.setRowIndex(savedIndex);
                 if (visitRows) setRowIndex(savedIndex);
             }
@@ -835,7 +840,7 @@ public class DataTable extends DataTableBase {
         if (visitRows) setRowIndex(-1);
         if (getChildCount() > 0) {
             for (UIComponent column : getChildren()) {
-                if (column instanceof Column) {
+                if (column instanceof Column || column instanceof RowPanelExpander) {
                     VisitResult result = context.invokeVisitCallback(column, callback); // visit the column directly
                     if (result == VisitResult.COMPLETE) return true;
                     if (column.getFacetCount() > 0) {
@@ -878,34 +883,49 @@ public class DataTable extends DataTableBase {
         boolean hasPanelExpansion = (panelExpander != null);
         boolean hasRowExpansion = (rowExpander != null);
 
-        RowStateMap stateMap = this.getStateMap();
+        RowStateMap stateMap = null;
+
         if (visitRows) {
+            stateMap = this.getStateMap();
             rows = getRows();
             // If a indeterminate number of rows are shown, visit all rows.
             if (rows == 0) rows = getRowCount();
         }
 
+        while (true) {
+            if (visitRows) {
+                if (offset >= rows) break;
+                this.setRowIndex(first + offset);
+            }
 
-        while (offset < rows) {
-            this.setRowIndex(first + offset);
-            if (isRowAvailable()) {
-                RowState rowState = stateMap.get(getRowData());
+            if (!visitRows || isRowAvailable()) {
+                RowState rowState = null;
+                if (visitRows) rowState = stateMap.get(getRowData());
 
                 // Check for tree case
                 if (hasTreeDataModel()) {
                     String currentRootId = "";
-                    TreeDataModel dataModel = ((TreeDataModel)model);
+                    TreeDataModel dataModel = ((TreeDataModel)this.getDataModel());
                     // Handle row and loop down the tree if expanded.
                     try {
                         do {
                             if (log.isLoggable(Level.FINEST)) log.finest("Visiting Row Id: " + dataModel.getRowIndex());
-                            // Decodes row/node in tree case.
-                            for (Column c : getColumns()) if (c.visitTree(context, callback)) return true;
 
-                            if (hasPanelExpansion && rowState.isExpanded() && (
-                                    (hasRowExpansion && (rowState.getExpansionType() == RowState.ExpansionType.PANEL))
-                                    || !hasRowExpansion))
-                                if (panelExpander.visitTree(context, callback)) return true;
+                            // Visit row in tree case.
+                            if (getChildCount() > 0) {
+                                for (UIComponent kid : getChildren()) {
+                                    if (!(kid instanceof UIColumn) && !(kid instanceof RowPanelExpander)) {
+                                        continue;
+                                    }
+                                    if (kid.getChildCount() > 0) {
+                                        for (UIComponent grandkid : kid.getChildren()) {
+                                            if (grandkid.visitTree(context, callback)) {
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
 
                             // Handle recursive case
                             // If this row is expanded and has children, set it as the root & keep looping.
@@ -925,15 +945,26 @@ public class DataTable extends DataTableBase {
                             if (currentRootId.equals("")) break;
                         } while (true);
                     } finally { dataModel.setRootIndex(null); }
-                    // Decode row in plain model case.
                 } else {
-                    for (Column c : getColumns()) if (c.visitTree(context, callback)) return true;
-                    if (hasPanelExpansion && rowState.isExpanded() && (
-                            (hasRowExpansion && (rowState.getExpansionType() == RowState.ExpansionType.PANEL))
-                                    || !hasRowExpansion))
-                        if (panelExpander.visitTree(context, callback)) return true;
+                    // Visit row in plain model case.
+                    if (getChildCount() > 0) {
+                        for (UIComponent kid : getChildren()) {
+                            if (!(kid instanceof UIColumn) && !(kid instanceof RowPanelExpander)) {
+                                continue;
+                            }
+                            if (kid.getChildCount() > 0) {
+                                for (UIComponent grandkid : kid.getChildren()) {
+                                    if (grandkid.visitTree(context, callback)) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
                     }
+                }
             } else return false;
+
+            if (!visitRows) break;
             offset++;
         }
         return false;

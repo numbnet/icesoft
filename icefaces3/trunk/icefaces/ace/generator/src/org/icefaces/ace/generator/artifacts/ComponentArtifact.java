@@ -153,73 +153,6 @@ public class ComponentArtifact extends Artifact{
         writer.append("\t\t\treturn true;\n");
         writer.append("\t\t}\n");
         writer.append("\t}\n");
-
-        
-
-        writer.append("\n\tprivate UIComponent getNamingContainerAncestor() {\n");
-        writer.append("\t\tUIComponent namingContainer = this.getParent();\n");
-        writer.append("\t\twhile (namingContainer != null) {\n");
-        writer.append("\t\t\tif (namingContainer instanceof NamingContainer) {\n");
-        writer.append("\t\t\t\treturn namingContainer;\n");
-        writer.append("\t\t\t}\n");
-        writer.append("\t\t\tnamingContainer = namingContainer.getParent();\n");
-        writer.append("\t\t}\n");
-        writer.append("\t\treturn null;\n");
-        writer.append("\t}\n");
-
-
-        writer.append("\n\tprivate String clientId = null;\n");
-        writer.append("\tprotected String getComponentId() {\n");
-        writer.append("\t\tFacesContext context = FacesContext.getCurrentInstance();\n");
-        writer.append("\t\tif (context == null) {\n");
-        writer.append("\t\t\tthrow new NullPointerException();\n");
-        writer.append("\t\t}\n");
-
-        writer.append("\t\t// if the clientId is not yet set\n");
-        writer.append("\t\tif (this.clientId == null) {\n");
-        writer.append("\t\t\tUIComponent namingContainerAncestor =\n");
-        writer.append("\t\t\t\tthis.getNamingContainerAncestor();\n");
-        writer.append("\t\t\tUIComponent parent = namingContainerAncestor;\n");
-        writer.append("\t\t\tString parentId = null;\n\n");
-
-        writer.append("\t\t\t// give the parent the opportunity to first\n");
-        writer.append("\t\t\t// grab a unique clientId\n");
-        writer.append("\t\t\tif (parent != null) {\n");
-        writer.append("\t\t\t\tparentId = parent.getContainerClientId(context);\n");
-        writer.append("\t\t\t}\n\n");
-
-        writer.append("\t\t\t// now resolve our own client id\n");
-        writer.append("\t\t\tthis.clientId = getId();\n");
-        writer.append("\t\t\tif (this.clientId == null) {\n");
-        writer.append("\t\t\t\tString generatedId;\n");
-        writer.append("\t\t\t\tif (null != namingContainerAncestor &&\n");
-        writer.append("\t\t\t\t\tnamingContainerAncestor instanceof UniqueIdVendor) {\n");
-        writer.append("\t\t\t\t\tgeneratedId = ((UniqueIdVendor)namingContainerAncestor).createUniqueId(context, null);\n");
-        writer.append("\t\t\t\t}\n");
-        writer.append("\t\t\t\telse {\n");
-        writer.append("\t\t\t\t\tgeneratedId = context.getViewRoot().createUniqueId();\n");
-        writer.append("\t\t\t\t}\n");
-        writer.append("\t\t\t\tsetId(generatedId);\n");
-        writer.append("\t\t\t\tthis.clientId = getId();\n");
-        writer.append("\t\t\t}\n");
-        writer.append("\t\t\tif (parentId != null) {\n");
-        writer.append("\t\t\t\tStringBuilder idBuilder =\n");
-        writer.append("\t\t\t\t\tnew StringBuilder(parentId.length()\n");
-        writer.append("\t\t\t\t\t\t + 1\n");
-        writer.append("\t\t\t\t\t\t + this.clientId.length());\n");
-        writer.append("\t\t\t\tthis.clientId = idBuilder.append(parentId)\n");
-        writer.append("\t\t\t\t\t.append(UINamingContainer.getSeparatorChar(context))\n");
-        writer.append("\t\t\t\t\t.append(this.clientId).toString();\n");
-        writer.append("\t\t\t}\n\n");
-
-        writer.append("\t\t\t// allow the renderer to convert the clientId\n");
-        writer.append("\t\t\tRenderer renderer = this.getRenderer(context);\n");
-        writer.append("\t\t\tif (renderer != null) {\n");
-        writer.append("\t\t\t\tthis.clientId = renderer.convertClientId(context, this.clientId);\n");
-        writer.append("\t\t\t}\n");
-        writer.append("\t\t}\n");
-        writer.append("\t\treturn this.clientId;\n");
-        writer.append("\t}\n\n");
     }
 
 
@@ -416,7 +349,7 @@ public class ComponentArtifact extends Artifact{
 
 
             writer.append("\n\t\t\t} else {");
-            writer.append("\n\t\t\t\tString clientId = getComponentId();");
+            writer.append("\n\t\t\t\tString clientId = getClientId();");
             writer.append("\n\t\t\t\tString valuesKey = PropertyKeys.").append( pseudoFieldName ).
                     append(".name() + \"_rowValues\"; ");
             writer.append("\n\t\t\t\tMap clientValues = (Map) sh.get(valuesKey); ");
@@ -523,7 +456,7 @@ public class ComponentArtifact extends Artifact{
             // verses it not existing in the map at all.
             writer.append("\n\t\t\tif (clientValues != null) { ");
 
-            writer.append("\n\t\t\t\tString clientId = getComponentId();");
+            writer.append("\n\t\t\t\tString clientId = getClientId();");
             writer.append("\n\t\t\t\tif (clientValues.containsKey( clientId ) ) { ");
             writer.append("\n\t\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(clientId); ");
             writer.append("\n\t\t\t\t} else { ");
@@ -677,7 +610,7 @@ public class ComponentArtifact extends Artifact{
         writer.append(") {");
 
         writer.append("\n\t\tStateHelper sh = getStateHelper(); ");
-        writer.append("\n\t\tString clientId = getComponentId();");
+        writer.append("\n\t\tString clientId = getClientId();");
         writer.append("\n\t\tString valuesKey = PropertyKeys.").append( pseudoFieldName ).
                 append(".name() + \"_rowValues\"; ");
         writer.append("\n\t\tMap clientValues = (Map) sh.get(valuesKey); ");
@@ -746,7 +679,7 @@ public class ComponentArtifact extends Artifact{
         writer.append("\n\t\tMap clientValues = (Map) sh.get(valuesKey);");
         writer.append("\n\t\tif (clientValues != null) { ");
 
-        writer.append("\n\t\t\tString clientId = getComponentId();");
+        writer.append("\n\t\t\tString clientId = getClientId();");
         writer.append("\n\t\t\tif (clientValues.containsKey( clientId ) ) { ");
         writer.append("\n\t\t\t\tretVal = (").append(internalType).append(") clientValues.get(clientId); ");
         writer.append("\n\t\t\t}");

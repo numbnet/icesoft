@@ -516,6 +516,9 @@ public class DataTableRenderer extends CoreRenderer {
 		String clientId = table.getClientId(context);
         boolean scrollable = table.isScrollable();
 
+        // init statemap while row index == -1
+        table.getStateMap();
+
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
         containerClass = table.getStyleClass() != null
                             ? containerClass + " " + table.getStyleClass()
