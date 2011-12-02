@@ -355,8 +355,8 @@ public class Utils {
 
     private static DeviceType checkUserAgentInfo(UserAgentInfo uai) {
         if (uai.sniffIphone() || uai.sniffIpod()) return DeviceType.iphone;
-        if (uai.sniffAndroid()) return DeviceType.android;
         if (uai.sniffAndroidTablet()) return DeviceType.honeycomb;
+        if (uai.sniffAndroid()) return DeviceType.android;
         if (uai.sniffBlackberry()) return DeviceType.bberry;
         if (uai.sniffIpad()) return DeviceType.ipad;
         return DeviceType.DEFAULT;
