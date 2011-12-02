@@ -108,13 +108,13 @@
 	</tag>
 	
 	<tag>
-		<description><![CDATA[A value of "true" indicates that...]]></description>
+		<description><![CDATA[This tag allows form submission from just the component generating the event and then update the page with any changes from all components (equivilant to &lt;f:ajax execute=&quot;@this&quot; render=&quot;@all&quot;&gt;).]]></description>
 		<name>singleSubmit</name>
 		<tag-class/>
 		<body-content>JSP</body-content>
 	
 		<attribute>
-			<description><![CDATA[This tag allows form submission from just the component generating the event and then update the page with any changes from all components (equivilant to <f:ajax execute="@this" render="@all").]]></description>
+			<description><![CDATA[Perform a singleSubmit in reponse to blur events.]]></description>
 			<name>submitOnBlur</name>
 			<required>no</required>
 			<rtexprvalue>false</rtexprvalue>
