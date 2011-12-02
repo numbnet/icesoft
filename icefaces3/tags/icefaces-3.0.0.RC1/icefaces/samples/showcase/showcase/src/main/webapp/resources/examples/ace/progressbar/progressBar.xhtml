@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[progressBarBean.title]}"/>
+    <ui:param name="description" value="#{msgs[progressBarBean.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[progressBarBean.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{progressBarBean.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{progressBarBean.exampleResource}"/>
+
+    <ui:define name="example">
+        <h:form>
+            <ace:panel id="progressContent">
+                <h:panelGrid width="100%" style="text-align: center;">
+                    <ace:progressBar value="#{progressBarBean.progressValue}"/>
+                    <h:panelGrid  style="font-weight: bold;" width="100%">
+                            <h:outputText value="#{progressBarBean.message}"/>
+                            <h:panelGrid  style="margin-left: auto; margin-right: auto; height: 100px; width: 100%;">
+                                <h:graphicImage value="#{progressBarBean.currentImage}"/>
+                            </h:panelGrid>
+                            
+                            <h:outputText value="#{progressBarBean.imageDescription}"/>
+                    </h:panelGrid>
+              </h:panelGrid>
+            </ace:panel>
+            
+            <h:panelGrid width="100%" columns="2">
+                <h:panelGrid columns="2">
+                    <h:panelGroup>
+                        <h:graphicImage value="/resources/css/images/navigateBack.png"/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:commandLink     value="PREVIOUS"
+                                                        style="color: #0099ff;"
+                                                        actionListener="#{progressBarBean.returnToPreviousImage}">
+                            <f:ajax execute="@this" render="progressContent"/>
+                        </h:commandLink>
+                    </h:panelGroup>
+               </h:panelGrid>
+
+               <h:panelGrid columns="2" style="float: right;">
+                    <h:panelGroup>
+                        <h:commandLink     value="NEXT"
+                                                        style="color: #0099ff;"
+                                                        actionListener="#{progressBarBean.proceedToNextImage}">
+                            <f:ajax execute="@this" render="progressContent"/>
+                        </h:commandLink>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:graphicImage value="/resources/css/images/navigateForward.png"/>
+                    </h:panelGroup>
+                </h:panelGrid>
+             </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

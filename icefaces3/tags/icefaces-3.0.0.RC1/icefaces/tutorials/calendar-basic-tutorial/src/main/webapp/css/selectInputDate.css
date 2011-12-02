@@ -1,0 +1,42 @@
+.componentBox {
+    float: left;
+    padding: 0 0 0 0;
+}
+
+.exampleBox {
+    margin: 15px 15px 0 0;
+    padding: 15px;
+    background: #FFF;
+    border: 1px solid #d9d9d9;
+    display: block;
+    float:left;
+}
+
+.selectInputDateContainer{
+    width:475px;
+}
+
+.weekend a {
+    background-color: #999999;
+}
+
+.weekend a span {
+    color: white;
+}
+
+.august span {
+    font-weight: bold;
+}
+
+ul {
+    margin-left: 15px;
+    padding: 0;
+}
+
+li {
+    list-style: none;
+    background: url( '../xmlhttp/css/rime/css-images/bullet.gif' ) no-repeat 0 3px;
+    padding-left: 22px;
+    padding-bottom: 3px;
+}
+

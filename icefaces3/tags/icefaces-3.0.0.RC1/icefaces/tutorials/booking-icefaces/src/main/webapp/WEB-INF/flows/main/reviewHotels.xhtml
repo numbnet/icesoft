@@ -1,0 +1,51 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	    		xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:ice="http://www.icesoft.com/icefaces/component"
+				template="/WEB-INF/layouts/standard.xhtml">
+<ui:define name="notes">
+	<p>
+		This page uses the ICE faces data table backed by a Spring Web Flow managed bean.  The bean loads the model
+        data during the 'view-state' element 'on-render' when the view is first entered (see <strong>main-flow.xml</strong>).  Page navigation is Ajax-based and uses JSF 2 partial rendering.
+	</p>
+</ui:define>
+    <ui:define name="content">
+        <ice:form id="reviewHotelsForm">
+
+            <ice:dataTable id="hotels" var="hotel" value="#{hotels}"  rows="#{searchCriteria.pageSize}" >
+                <f:facet name="header">
+                    Hotel Search Results<br/>
+                    <h:commandLink value="Modify or start search again" action="changeSearch" styleClass="alt" />
+                </f:facet>
+                <ice:column>
+                    <f:facet name="header">
+                        <ice:outputText value="Name"/>
+                    </f:facet>
+                    #{hotel.name}
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">
+                        <ice:outputText value="Address"/>
+                    </f:facet>
+                    #{hotel.address}
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">City, State</f:facet>
+                    #{hotel.city}, #{hotel.state}, #{hotel.country}
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">
+                        <ice:outputText value="Zip"/>
+                    </f:facet>
+                    #{hotel.zip}
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">Action</f:facet>
+                    <ice:commandButton id="select" value="View" action="#{hotelModel.selectHotelAction}" />
+                </ice:column>
+            </ice:dataTable>
+        </ice:form>
+</ui:define>
+</ui:composition>

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:icecore="http://www.icefaces.org/icefaces/core">
+<h:head>
+	<title>Single Submit - Form</title>
+</h:head>
+<h:body>
+	<h:form>
+		<icecore:singleSubmit/>
+		<h:panelGrid columns="3">
+			<h:outputLabel for="name" value="Name:"/>
+			<h:inputText id="name" value="#{personBean.name}" required="true" maxlength="50"/>
+			<h:message for="name"/>
+			
+			<h:outputLabel for="age" value="Age:"/>
+			<h:inputText id="age" value="#{personBean.age}" required="true"
+						 size="2" maxlength="2">
+				<f:validateLongRange minimum="1" maximum="99"/>
+			</h:inputText>
+			<h:message for="age"/>
+			
+			<h:outputLabel for="gender" value="Gender:"/>
+			<h:selectOneMenu id="gender" value="#{personBean.gender}" required="true">
+				<f:selectItem noSelectionOption="true" itemValue="" itemLabel="--Select--"/>
+				<f:selectItem itemValue="Male"/>
+				<f:selectItem itemValue="Female"/>
+			</h:selectOneMenu>
+			<h:message for="gender"/>
+			
+			<h:outputLabel for="favorite" value="Favorite Food:"/>
+			<h:inputText id="favorite" value="#{personBean.favorite}" maxlength="225"/>
+			<h:message for="favorite"/>
+		</h:panelGrid>
+		
+		<h:commandButton value="Submit" actionListener="#{personBean.submitButton}"/>
+	</h:form>
+	
+	<br/>
+	
+	<h:panelGrid columns="2" border="1">
+		<f:facet name="header">
+			Person Information
+		</f:facet>
+		
+		<h:outputLabel for="nameOut" value="Name:"/>
+		<h:outputText id="nameOut" value="#{personBean.name}"/>
+		
+		<h:outputLabel for="ageOut" value="Age:"/>
+		<h:outputText id="ageOut" value="#{personBean.age}"/>
+		
+		<h:outputLabel for="genderOut" value="Gender:"/>
+		<h:outputText id="genderOut" value="#{personBean.gender}"/>
+		
+		<h:outputLabel for="favoriteOut" value="Favorite:"/>
+		<h:outputText id="favoriteOut" value="#{personBean.favorite}"/>
+	</h:panelGrid>
+</h:body>
+</html>

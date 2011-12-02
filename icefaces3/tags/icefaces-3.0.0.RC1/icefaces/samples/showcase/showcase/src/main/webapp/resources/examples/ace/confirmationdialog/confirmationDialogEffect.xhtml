@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[confirmationDialogEffectBean.title]}"/>
+    <ui:param name="description" value="#{msgs[confirmationDialogEffectBean.description]}"/>
+    <ui:param name="resourceValue" value="#{confirmationDialogEffectBean.exampleResource}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[confirmationDialogEffectBean.subMenuTitle]}"/>
+
+    <ui:define name="example">
+    <h:form>
+        
+            <icecore:singleSubmit/>
+            
+            <ace:panel id="inputPanel" header="Confirmation Dialog Effects">
+                <h:panelGrid columns="2" width="100%">
+                    <h:outputLabel id="onShowEffectLabel" for="onShowEffectSelector" value="Dialog show effect:"/>
+                    <h:selectOneMenu id="onShowEffectSelector" value="#{confirmationDialogEffectBean.showEffect}">
+                        <f:selectItem itemValue="blind" itemLabel="Blind Effect"/>
+                        <f:selectItem itemValue="bounce" itemLabel="Bounce Effect"/>
+                        <f:selectItem itemValue="clip" itemLabel="Clip Effect"/>
+                        <f:selectItem itemValue="explode" itemLabel="Explode Effect"/>
+                        <f:selectItem itemValue="fade" itemLabel="Fade Effect"/>
+                        <f:selectItem itemValue="highlight" itemLabel="Highlight Effect"/>
+                        <f:selectItem itemValue="puff" itemLabel="Puff Effect"/>
+                        <f:selectItem itemValue="pulsate" itemLabel="Pulsate Effect"/>
+                        <f:selectItem itemValue="scale" itemLabel="Scale Effect"/>
+                        <f:selectItem itemValue="shake" itemLabel="Shake Effect"/>
+                        <f:selectItem itemValue="slide" itemLabel="Slide Effect"/>
+                    </h:selectOneMenu>
+
+                    <h:outputLabel id="onHideEffectLabel" for="onHideEffectSelector" value="Dialog hide effect:"/>
+                    <h:selectOneMenu id="onHideEffectSelector" value="#{confirmationDialogEffectBean.hideEffect}">
+                        <f:selectItem itemValue="blind" itemLabel="Blind Effect"/>
+                        <f:selectItem itemValue="bounce" itemLabel="Bounce Effect"/>
+                        <f:selectItem itemValue="clip" itemLabel="Clip Effect"/>
+                        <f:selectItem itemValue="explode" itemLabel="Explode Effect"/>
+                        <f:selectItem itemValue="fade" itemLabel="Fade Effect"/>
+                        <f:selectItem itemValue="highlight" itemLabel="Highlight Effect"/>
+                        <f:selectItem itemValue="puff" itemLabel="Puff Effect"/>
+                        <f:selectItem itemValue="pulsate" itemLabel="Pulsate Effect"/>
+                        <f:selectItem itemValue="scale" itemLabel="Scale Effect"/>
+                        <f:selectItem itemValue="slide" itemLabel="Slide Effect"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+
+                <center>
+                    <h:commandButton value="Display Dialog"  onclick="confirmation.show();"/>
+                </center>
+            </ace:panel>
+
+            <br />
+             <center>
+                 <h:outputText value="#{confirmationDialogModalBean.outcome}" rendered="#{confirmationDialogModalBean.outcome != null}" />
+             </center>
+            
+            <ace:confirmationDialog widgetVar="confirmation"
+                                           showEffect="#{confirmationDialogEffectBean.showEffect}"
+                                           hideEffect="#{confirmationDialogEffectBean.hideEffect}"
+                                           header="Confirmation Dialog"
+                                           message="Confirm?"
+                                           width="300" height="200"
+                                           closable="true">
+
+                <h:panelGrid width="100%" style="text-align: center;" columns="2" cellspacing="30">
+                    <h:commandButton value="Yes" onclick="confirmation.hide()" actionListener="#{confirmationDialogModalBean.yes}"/>
+                    <h:commandButton value="No" onclick="confirmation.hide()" actionListener="#{confirmationDialogModalBean.no}" />
+                </h:panelGrid>
+
+            </ace:confirmationDialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

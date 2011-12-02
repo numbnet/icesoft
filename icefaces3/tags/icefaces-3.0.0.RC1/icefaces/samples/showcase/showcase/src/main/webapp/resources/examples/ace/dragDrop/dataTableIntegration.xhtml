@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[dataTableIntegrationBean.title]}"/>
+    <ui:param name="description" value="#{msgs[dataTableIntegrationBean.description]}"/>
+    <ui:param name="resourceValue" value="#{dataTableIntegrationBean.exampleResource}"/>
+
+    <ui:define name="example">
+       <h:form>
+           
+           <ace:dataTable id="shoppingList"
+                                    value="#{dataTableIntegrationBean.availableItems}"
+                                    var="availableItem">
+               
+                   <ace:column headerText="Picture">
+                       <h:graphicImage id="itemImg"
+                                                   value="#{availableItem.image}"
+                                                   styleClass="imageStyle">
+                           <ace:draggable revert="true" stack=".imageStyle" opacity="0.7"/>
+                       </h:graphicImage>
+                   </ace:column>
+
+                   <ace:column headerText="Description">
+                       <h:outputText value="#{availableItem.name}"/>
+                   </ace:column>
+
+                   <ace:column headerText="Type">
+                       <h:outputText value="#{availableItem.type}"/>
+                   </ace:column>
+
+                   <ace:column headerText="Price">
+                       <h:outputText value="#{availableItem.price}"/>
+                   </ace:column>
+               
+           </ace:dataTable>
+           
+           <br/>
+           <br/>
+           
+           <ace:panel id="shoppingCart" header="Shopping Cart" style="display: block; font-size: 12pt;">
+               
+               <h:outputText value="Shop with confedence ! To begin drag any item image above to the shopping cart."
+                                       rendered="#{empty dataTableIntegrationBean.purchasedItems}"/>
+               
+               <ace:dataTable value="#{dataTableIntegrationBean.purchasedItems}"
+                                        var="item"
+                                        rendered="#{not empty dataTableIntegrationBean.purchasedItems}">
+               
+                   <ace:column headerText="Description">
+                       <h:outputText value="#{item.name}"/>
+                   </ace:column>
+
+                   <ace:column headerText="Type">
+                       <h:outputText value="#{item.type}"/>
+                   </ace:column>
+               
+                   <ace:column headerText="Price">
+                       <h:outputText value="#{item.price}"/>
+                   </ace:column>
+                   
+               </ace:dataTable>
+               
+               <ace:droppable tolerance="touch"
+                                        datasource="shoppingList"
+                                        dropListener="#{dataTableIntegrationBean.handleDrop}"
+                                        onDropUpdate="shoppingCart, shoppingList, resetPanel"
+                                        activeStyleClass="slot"/>
+               
+                <br/>
+                
+           </ace:panel>
+           
+           <br/>
+               
+               <h:panelGrid id="resetPanel" width="100%">
+                   <h:commandButton value="Reset Cart"
+                                                   actionListener="#{dataTableIntegrationBean.resetShoppingCart}"
+                                                   style="width: 100%;"
+                                                   rendered="#{not empty dataTableIntegrationBean.purchasedItems}">
+                        <f:ajax execute="@this" render="@form"/>
+                    </h:commandButton>
+               </h:panelGrid>
+               
+           <br/>
+           
+        </h:form>
+        
+    </ui:define>
+</ui:composition>
