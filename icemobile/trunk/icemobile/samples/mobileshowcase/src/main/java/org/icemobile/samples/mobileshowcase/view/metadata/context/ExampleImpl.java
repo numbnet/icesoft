@@ -17,6 +17,7 @@
 package org.icemobile.samples.mobileshowcase.view.metadata.context;
 
 import org.icefaces.util.EnvUtils;
+import org.icefaces.component.utils.Utils;
 import org.icemobile.samples.mobileshowcase.util.FacesUtils;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.Destination;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.ResourceType;
@@ -139,9 +140,24 @@ public class ExampleImpl<T> implements Example, ExampleResources, ContextBase {
      * @return true if an ICEmobile enhancements are detected, otherwise false.
      */
     public boolean isEnhancedBrowser() {
-        return EnvUtils.isEnhancedBrowser(FacesContext.getCurrentInstance());
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
+        return isEnhanced || isAuxUpload;
     }
 
+    /**
+     * Test to see if we should show activation for ICEmobile-SX.
+     *
+     * @return true if ICEmobile-SX activation should be displayed.
+     */
+    public boolean isShowSX() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
+        boolean isIOS = Utils.isIOS();
+        return (isIOS && !isEnhanced & !isAuxUpload);
+    }
 
     public String getDescriptionPath() {
         return descriptionPath;
