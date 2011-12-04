@@ -104,6 +104,7 @@ ice.ace.DataTable.prototype.setupFilterEvents = function() {
         event.stopPropagation();
         if (event.which == 13) {
             _self.filter(event);
+            return false; // Don't run form level enter key handling
         }
     });
     else if (this.cfg.filterEvent == "change") ice.ace.jq(this.jqId + ' th .ui-column-filter').die('keyup').live('keyup', function(event) {
