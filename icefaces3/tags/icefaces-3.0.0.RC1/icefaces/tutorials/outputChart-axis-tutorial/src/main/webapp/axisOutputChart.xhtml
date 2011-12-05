@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ice="http://www.icesoft.com/icefaces/component" xmlns:icecore="http://www.icefaces.org/icefaces/core">    <f:view><h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>OutputChart Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        </h:head>    <h:body>        <ice:form>
+
+
+            <ice:panelGrid columns="2" style="width: 400px;">
+
+                <ice:panelGroup>
+                    <h4>
+                        <ice:outputText id="chartTitle" value="Chart Type:"></ice:outputText>
+                    </h4>
+                    <ice:selectOneMenu value="#{axisChartBean.type}" partialSubmit="true" valueChangeListener="#{axisChartBean.chartChanged}">
+                        <f:selectItems value="#{axisChartBean.chartList}"></f:selectItems>
+                    </ice:selectOneMenu>
+                </ice:panelGroup>
+                <!--
+                    panelGroup displayed when chart type is bar or barclustered to
+                    toggle horizontal or vertical chart orientation.
+                -->
+                <ice:panelGroup rendered="#{axisChartBean.orientationChange}">
+                    <h4>
+                        <ice:outputText value="Chart Orientation:"></ice:outputText>
+                    </h4>
+                    <ice:selectOneRadio value="false" valueChangeListener="#{axisChartBean.selectOrientation}" partialSubmit="true">
+                        <f:selectItem itemValue="true" itemLabel="Horizontal"></f:selectItem>
+                        <f:selectItem itemValue="false" itemLabel="Vertical"></f:selectItem>
+                    </ice:selectOneRadio>
+
+                </ice:panelGroup>
+            </ice:panelGrid>
+            <br />
+            <ice:outputText value="#{axisChartBean.clickedValue}"></ice:outputText>
+            <br />                
+            <ice:outputChart id="axisOutputChart" type="#{axisChartBean.type}" chartTitle="#{axisChartBean.type} Chart" yaxisTitle="#{axisChartBean.titleY}" xaxisTitle="#{axisChartBean.titleX}" xaxisLabels="#{axisChartBean.labels}" labels="#{axisChartBean.legendLabels}" colors="#{axisChartBean.paints}" data="#{axisChartBean.data}" actionListener="#{axisChartBean.imageClicked}" renderOnSubmit="#{axisChartBean.newChart}" horizontal="#{axisChartBean.horizontal}"></ice:outputChart>
+        
+    		</ice:form>	</h:body></f:view></html>
