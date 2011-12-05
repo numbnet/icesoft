@@ -21,11 +21,11 @@
 
 package org.icefaces.util;
 
+import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
 import org.icefaces.impl.push.servlet.ProxyHttpServletRequest;
 import org.icefaces.impl.push.servlet.ProxyHttpServletResponse;
 import org.icefaces.impl.push.servlet.ProxySession;
-import org.icefaces.impl.application.AuxUploadResourceHandler;
 
 import javax.faces.application.Resource;
 import javax.faces.component.UIViewRoot;
@@ -387,7 +387,7 @@ public class EnvUtils {
         if (null != overValue) {
             result = overValue;
         }
-        if (null != result)  {
+        if (null != result) {
             result = result.trim();
         }
         return result;
@@ -432,7 +432,7 @@ public class EnvUtils {
      */
     public static boolean isAuxUploadBrowser(FacesContext facesContext) {
         boolean isAux = facesContext.getExternalContext().getSessionMap()
-            .containsKey(AuxUploadResourceHandler.AUX_REQ_MAP_KEY);
+                .containsKey(AuxUploadResourceHandler.AUX_REQ_MAP_KEY);
         return isAux;
     }
 
@@ -541,7 +541,7 @@ public class EnvUtils {
         if (instanceofPortletSession(rawSess)) {
             return new ProxySession(fc);
         }
-        return (HttpSession)rawSess;
+        return (HttpSession) rawSess;
     }
 
     public static boolean isPushRequest(FacesContext facesContext) {
@@ -597,8 +597,12 @@ public class EnvUtils {
 
     public static boolean containsBeans(Map<String, Object> scopeMap) {
         //skip the objects saved in the map by ICEfaces framework while testing for the existence of beans
-        for (String value : scopeMap.keySet()) {
-            if (!value.startsWith("org.icefaces.impl")) {
+        for (Map.Entry entry : scopeMap.entrySet()) {
+            String key = (String) entry.getKey();
+            Object value = entry.getValue();
+            if (!key.startsWith("org.icefaces.impl") & !(
+                    (value instanceof String) || (value instanceof Character) ||
+                            (value instanceof Boolean) || (value instanceof Number))) {
                 return true;
             }
         }
