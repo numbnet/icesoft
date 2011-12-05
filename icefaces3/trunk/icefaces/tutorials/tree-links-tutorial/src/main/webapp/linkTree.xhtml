@@ -2,7 +2,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
         <title>Tree Component Tutorial</title>
         <link href="./xmlhttp/css/royale/royale.css" rel="stylesheet" type="text/css" />
-        </h:head>    <h:body>        <ice:form>
+        </h:head>    <h:body>        <ice:form id="frm">
             <ice:panelGroup styleClass="treeContainer">
                 <!--
                     This is a very links tree comprising of only text nodes.  The
@@ -13,8 +13,8 @@
                     <ice:treeNode>
                         <f:facet name="content">
                             <ice:panelGroup style="display: inline">
-                                <ice:outputLink value="#{item.userObject.url}" target="_blank">
-                                    <ice:outputText value="#{item.userObject.text}"></ice:outputText>
+                                <ice:outputLink id="lnk" value="#{item.userObject.url}" target="_blank">
+                                    <ice:outputText id="txt" value="#{item.userObject.text}"></ice:outputText>
                                 </ice:outputLink>
                             </ice:panelGroup>
                         </f:facet>
