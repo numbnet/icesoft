@@ -20,6 +20,13 @@ public class PropertyConstraintPredicate implements Predicate {
     }
 
     public boolean evaluate(Object object) {
-        return filterConstraint.applies(filterBy.getValue(facesContext.getELContext()).toString(), filterValue);
+        Object value = filterBy.getValue(facesContext.getELContext());
+
+        if (value != null)
+            return filterConstraint.applies(value.toString(), filterValue);
+        else if (filterValue != null && filterValue.length() > 0)
+            return false;
+        else
+            return true;
     }
 }
