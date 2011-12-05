@@ -1072,7 +1072,7 @@ ice.ace.DataTable.prototype.doRowEditCancelRequest = function(element) {
 
     if (this.behaviors)
         if (this.behaviors.editCancel) {
-            this.behaviors.editCancel(params);
+            this.behaviors.editCancel(params, null, options.render);
             return;
         }
 
@@ -1142,7 +1142,7 @@ ice.ace.DataTable.prototype.doRowEditRequest = function(element) {
 
     if (this.behaviors)
         if (this.behaviors.editSubmit) {
-            this.behaviors.editSubmit(params);
+            this.behaviors.editSubmit(params, options.execute, options.render);
             return;
         }
 
