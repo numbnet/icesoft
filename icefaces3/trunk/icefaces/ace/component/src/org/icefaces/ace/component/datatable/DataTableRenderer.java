@@ -550,6 +550,9 @@ public class DataTableRenderer extends CoreRenderer {
 
         encodeScript(context, table);
 
+        // Avoid sharing cached stateMap with other iterative instances
+        table.clearCachedStateMap();
+
         writer.endElement(HTML.DIV_ELEM);
 	}
 

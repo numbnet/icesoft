@@ -136,7 +136,15 @@ public class DataTable extends DataTableBase {
             stateMap = new RowStateMap();
             super.setStateMap(stateMap);
         }
+
         return stateMap;
+    }
+
+    // Allow renderer to void state map between iterations to avoid
+    // sharing stateMap due to caching
+    // (caching is necessary to avoid attempting to load a stateMap when the clientId contains a row index)
+    protected void clearCachedStateMap() {
+        stateMap = null;
     }
 
     @Override
@@ -300,7 +308,7 @@ public class DataTable extends DataTableBase {
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
         
         super.setRowIndex(index);
-        if (isRowAvailable()) {
+        if (isRowAvailable() && index > -1) {
             requestMap.put(getRowStateVar(), getStateMap().get(getRowData()));
         }
     }
