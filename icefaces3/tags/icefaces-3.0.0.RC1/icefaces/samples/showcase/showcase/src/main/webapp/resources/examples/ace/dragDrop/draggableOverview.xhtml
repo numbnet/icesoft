@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ace="http://www.icefaces.org/icefaces/components"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/resources/templates/content-template.xhtml">
+
+    <ui:param name="title" value="#{msgs[draggableOverviewBean.title]}"/>
+    <ui:param name="description" value="#{msgs[draggableOverviewBean.description]}"/>
+    <ui:param name="resourceValue" value="#{draggableOverviewBean.exampleResource}"/>
+
+    <ui:define name="example">
+       <h:form>
+           <icecore:singleSubmit/>
+           
+           <ace:panel id="draggableSetupPanel" header="Draggable Component Configuration Panel">
+                       
+                       <h:panelGrid columns="2" width="100%">
+                           <h:outputLabel id="axisMovementConstraintLabel" for="axisMovementConstraintSelector" value="Axis movement constraint:" />
+                        <h:selectOneMenu id="axisMovementConstraintSelector" value="#{draggableOverviewBean.axisMovementConstraint}" title="Limit dragging to either X(horizontal) or Y (vertical) axis">
+                            <f:selectItem itemValue="x or y" itemLabel="any direction"/>
+                            <f:selectItem itemValue="x" itemLabel="X axis only"/>
+                            <f:selectItem itemValue="y" itemLabel="Y axis only"/>
+                        </h:selectOneMenu>
+
+                        <h:outputLabel id="cloneHelperLabel" for="cloneHelperSelector" value="Clone helper mode:"/>
+                        <h:selectOneMenu id="cloneHelperSelector" value="#{draggableOverviewBean.helperMode}" title="Allow user to keep the component in original location while displaying its clone during dragging">
+                            <f:selectItem itemValue="original" itemLabel="no"/>
+                            <f:selectItem itemValue="clone" itemLabel="yes"/>
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel id="containmentConstraintLabel" for="containmentConstraintSelector" value="Containment:" />
+                        <h:selectOneMenu id="containmentConstraintSelector" value="#{draggableOverviewBean.containmentConstraint}" title="Force dragable component to stay within its parent container area">
+                            <f:selectItem itemValue="" itemLabel="no"/>
+                            <f:selectItem itemValue="parent" itemLabel="yes"/>
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel id="gridMovementLabel" for="gridMovementSelector" value="Grid movement mode:" />
+                        <h:selectOneMenu id="gridMovementSelector" value="#{draggableOverviewBean.gridMode}">
+                            <f:selectItem itemValue="1,1" itemLabel="none"/>
+                            <f:selectItem itemValue="10,40" itemLabel="10x40 pixels"/>
+                            <f:selectItem itemValue="50,100" itemLabel="50x100 pixels"/>
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel id="revertLabel" for="gridMovementSelector" value="Revert:"/>
+                        <h:selectOneMenu id="revertSelector" value="#{draggableOverviewBean.revert}" title="Enables the component to return back to its original location, when a draggable is not dropped onto a matching droppable">
+                            <f:selectItem itemValue="false" itemLabel="no"/>
+                            <f:selectItem itemValue="true" itemLabel="yes"/>
+                        </h:selectOneMenu>
+                        
+                        <h:outputLabel id="opacityLabel" for="gridMovementSelector" value="Opacity:"/>
+                        <h:selectOneMenu id="opacitySelector" value="#{draggableOverviewBean.opacity}" title="Set draggable component opacity during movment. Value must be between 0 and 1">
+                            <f:selectItem itemValue="1" itemLabel="1"/>
+                            <f:selectItem itemValue="0.5" itemLabel="0.5"/>
+                            <f:selectItem itemValue="0.2" itemLabel="0.2"/>
+                        </h:selectOneMenu>
+
+                    </h:panelGrid>
+                    
+                     
+           </ace:panel>
+           
+           <br/>
+           <br/>
+           
+           <ace:panel>
+               <h:graphicImage id="sampleImage" value="#{draggableOverviewBean.imageLocation}">
+                   <ace:draggable axis="#{draggableOverviewBean.axisMovementConstraint}"
+                                            helper="#{draggableOverviewBean.helperMode}"
+                                            containment="#{draggableOverviewBean.containmentConstraint}"
+                                            grid="#{draggableOverviewBean.gridMode}"
+                                            revert="#{draggableOverviewBean.revert}"
+                                            opacity="#{draggableOverviewBean.opacity}"/>
+               </h:graphicImage>
+           </ace:panel>
+           
+           
+           
+        </h:form>
+        
+    </ui:define>
+</ui:composition>
