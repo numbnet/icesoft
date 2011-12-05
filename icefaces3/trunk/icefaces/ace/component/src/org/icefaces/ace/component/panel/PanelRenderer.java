@@ -234,7 +234,6 @@ public class PanelRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", null);
-        writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", Panel.PANEL_TITLE_ICON_CLASS, null);
 
         writer.startElement("span", null);
