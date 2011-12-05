@@ -19,6 +19,7 @@ package org.icefaces.component.video;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
+import org.icefaces.component.utils.PassThruAttributeWriter;
 import org.icefaces.renderkit.BaseResourceRenderer;
 
 import javax.faces.component.UIComponent;
@@ -43,10 +44,19 @@ public class VideoPlayerRenderer extends BaseResourceRenderer {
 
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-        log.finer("working on element id=" + clientId);
-        //for now until we get resource working for byte[]
+
+        // apply component style class and append any user defined classes.
+        StringBuilder styleClass = new StringBuilder(VideoPlayer.VIDEO_CLASS);
+        if (video.getStyleClass() != null){
+            styleClass.append(" ").append(video.getStyleClass());
+        }
+        writer.writeAttribute("class", styleClass.toString(), null);
+        // apply style class
+        PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, video.getSpanPassThruAttributes());
 
         writer.startElement("video", uiComponent);
+        // pass though number attributes for span
+        PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, video.getVideoPassThruAttributes());
 
         if (video.isControls())
             writer.writeAttribute("controls", "controls", null);
@@ -78,7 +88,7 @@ public class VideoPlayerRenderer extends BaseResourceRenderer {
             writer.endElement("br");
             writer.startElement("a", uiComponent);
             writer.writeAttribute("href", srcAttribute, null);
-            writer.writeText("PLAY", null);
+            writer.writeText(video.getLinkLabel(), null);
             writer.endElement("a");
         }
     }
