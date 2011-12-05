@@ -97,7 +97,11 @@ public class BridgeSetup implements SystemEventListener {
         Map collectedResourceComponents = new HashMap();
         String version = EnvUtils.isUniqueResourceURLs(context) ? String.valueOf(hashCode()) : null;
         //jsf.js might be added already by a page or component
-        addOrCollectReplacingResource(context, "jsf.js", "javax.faces", "head", new JavascriptResourceOutput(resourceHandler, "jsf.js", "javax.faces", version), collectedResourceComponents);
+        JavascriptResourceOutput jsfResource = new JavascriptResourceOutput(resourceHandler, "jsf.js", "javax.faces", version);
+        //...in that case we need to add it anyway
+        root.addComponentResource(context, jsfResource);
+        //replace any jsf.js resources added by JSF
+        addOrCollectReplacingResource(context, "jsf.js", "javax.faces", "head", jsfResource, collectedResourceComponents);
         if (EnvUtils.isICEpushPresent()) {
             root.addComponentResource(context, new JavascriptResourceOutput(resourceHandler, "icepush.js", null, version), "head");
         }
@@ -172,7 +176,7 @@ public class BridgeSetup implements SystemEventListener {
             }
 
 
-            //replace collected resource mandatory components in on shot, otherwise MyFaces will keep re-adding
+            //replace collected resource mandatory components in one shot, otherwise MyFaces will keep re-adding
             //the components registered directly by it
             replaceCollectedResourceComponents(context, "head", collectedResourceComponents);
             replaceCollectedResourceComponents(context, "body", collectedResourceComponents);
@@ -414,13 +418,17 @@ public class BridgeSetup implements SystemEventListener {
 
     private static UIComponent newResourceOutput(ResourceHandler resourceHandler, String rendererType, String name, String library, String version) {
         if (JAVAX_FACES_RESOURCE_SCRIPT.endsWith(rendererType)) {
-            return new JavascriptResourceOutput(resourceHandler, name, library, version);
+            //use non transient components to match the behaviour of the replaced components
+            return new NonTransientJavascriptResourceOutput(resourceHandler, name, library, version);
         } else {
             return new ResourceOutput(rendererType, name, library);
         }
     }
 
     public static class ResourceOutput extends UIOutput {
+        public ResourceOutput() {
+        }
+
         public ResourceOutput(String rendererType, String name, String library) {
             setRendererType(rendererType);
             if (name != null && name.length() > 0) {
@@ -429,12 +437,16 @@ public class BridgeSetup implements SystemEventListener {
             if (library != null && library.length() > 0) {
                 getAttributes().put("library", library);
             }
-            setTransient(true);
+            //setTransient(true);
         }
     }
 
     private static class ReferencedScriptWriter extends UIOutputWriter {
         protected String script;
+
+        private ReferencedScriptWriter() {
+            script = "";
+        }
 
         public ReferencedScriptWriter(String script) {
             super();
@@ -460,7 +472,10 @@ public class BridgeSetup implements SystemEventListener {
         }
     }
 
-    private static class JavascriptResourceOutput extends ReferencedScriptWriter {
+    public static class JavascriptResourceOutput extends ReferencedScriptWriter {
+        public JavascriptResourceOutput() {
+        }
+
         public JavascriptResourceOutput(ResourceHandler resourceHandler, String name, String library, String version) {
             super("");
             String fixedLibraryName = library;
@@ -480,6 +495,43 @@ public class BridgeSetup implements SystemEventListener {
                 }
             }
             this.setTransient(true);
+        }
+    }
+
+    public static class NonTransientJavascriptResourceOutput extends JavascriptResourceOutput {
+        public NonTransientJavascriptResourceOutput() {
+        }
+
+        private NonTransientJavascriptResourceOutput(ResourceHandler resourceHandler, String name, String library, String version) {
+            super(resourceHandler, name, library, version);
+            Map attributes = getAttributes();
+            //save parameters in attributes since they are checked by the code replacing the @ResourceDepencency components
+            attributes.put("name", name);
+            attributes.put("library", library);
+            attributes.put("version", version);
+            setTransient(false);
+        }
+
+        public void restoreState(FacesContext context, Object state) {
+            //call method from super-class to restore the component attributes first
+            super.restoreState(context, state);
+            Map attributes = getAttributes();
+            String name = (String) attributes.get("name");
+            String library = (String) attributes.get("library");
+            String version = (String) attributes.get("version");
+
+            ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
+            Resource r = resourceHandler.createResource(name, library);
+            String path = r.getRequestPath();
+            if (version == null) {
+                script = path;
+            } else {
+                if (path.contains("?")) {
+                    script = path + "&v=" + version;
+                } else {
+                    script = path + "?v=" + version;
+                }
+            }
         }
     }
 
