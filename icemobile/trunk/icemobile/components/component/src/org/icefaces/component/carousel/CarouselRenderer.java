@@ -188,29 +188,39 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);
         //define mobi namespace if necessary
-        writer.write("if (!window['mobi']) {" +
-                " window.mobi = {};}\n");
-        writer.write("ice.onLoad(function() { " +
+        StringBuilder sObj = new StringBuilder(clientId);
+        sObj.append("',").append(singleSubmit).append(");");
+ /*       writer.write("if (!window['mobi']) {" +
+                " window.mobi = {};}\n");   */
+    /*    writer.write("ice.onLoad(function() { " +
+                "\n  ice.log.debug(ice.log, '.... ice.onLoad..... '); \n"  +
                 "mobi.carousel.loaded('" + clientId + "'," + singleSubmit + ");" +
-                "});\n");
-        writer.write("ice.onAfterUpdate(function() { " +
+                "});\n");   */
+   /*     writer.write("ice.onAfterUpdate(function() { " +
+                "\n  ice.log.debug(ice.log, '.... ice.onAfterUpdate..... '); \n"  +
                 "mobi.carousel.refresh('" + clientId + "'," + singleSubmit + ");" +
-                "});\n");
+                "});\n"); */
         writer.write("ice.onUnload(function(){" +
+     //           "\n  ice.log.debug(ice.log, '.... ice.onUnload..... '); \n"  +
                 "mobi.carousel.unloaded('" + clientId + "');" +
                 "});\n");
         writer.write("supportsOrientationChange = 'onorientationchange' in window," +
-                "orientationEvent = supportsOrientationChange ? 'orientationchange' : 'resize';");
+                "orientationEvent = supportsOrientationChange ? 'orientationchange' : 'resize';\n");
         writer.write("window.addEventListener(orientationEvent, function() {" +
+          //      "\n  ice.log.debug(ice.log, '.... orientationEvent..... '); \n"  +
                 "  setTimeout(function () { " +
                 "       mobi.carousel.refresh('" + clientId + "'," + singleSubmit + ");" +
                 "  }, 100); " +
-                " }, false);");
-        writer.write("mobi.carousel.loaded('" + clientId + "'," +
-                singleSubmit + ");");
+                " }, false);\n");
+        writer.write("" +
+         //       " ice.log.debug(ice.log, '.... just write..... '); \n"  +
+                "mobi.carousel.loaded('" + clientId + "'," +
+                singleSubmit + ");\n");
         //  document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-
-        //     document.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }, 200), false);
+  //      StringBuffer sb = new StringBuffer("document.addEventListener('DOMContentLoaded', setTimeout(function() {");
+   //     sb.append("mobi.carousel.loaded('").append(clientId).append("',").append(singleSubmit).append(");}, 200), false);") ;
+  //      logger.info("sb is="+sb.toString());
+    //    writer.write(sb.toString());
         writer.endElement("script");
     }
 
