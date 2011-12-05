@@ -479,6 +479,7 @@ NSLog(@"called camera");
 }
 
 - (void)multipartPost: (NSDictionary *)parts toURL: (NSString *)url  {
+    NSLog(@"multipartPost to %@", url);
     NSString *filename = @"changethisvalue.tmp";
     NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init] autorelease];
     [request setURL:[NSURL URLWithString:url]];
