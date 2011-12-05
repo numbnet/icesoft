@@ -56,16 +56,12 @@
         [params setValue:hexToken forKey:@"iceCloudPushId"];
     }
     [nativeInterface multipartPost:params toURL:self.currentURL];
-
-    [self reloadCurrentURL];
 }
 
 - (void)completePost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
     NSMutableDictionary *params = [nativeInterface parseQuery:currentParameters];
     [params setValue:value forKey:componentName];
     [nativeInterface multipartPost:params toURL:self.currentURL];
-
-    [self reloadCurrentURL];
 }
 
 - (void) reloadCurrentURL  {
@@ -111,10 +107,8 @@ NSLog(@"Native progress display %d", percent);
 }
 
 - (void) handleResponse:(NSString *)responseString  {
-//    NSString *scriptTemplate = @"ice.handleResponse(\"%@\");";
-//    NSString *script = [NSString stringWithFormat:scriptTemplate, [responseString 
-//            stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-NSLog(@"ICEmobile would have executed ice.handleResponse on %@", responseString);
+    NSLog(@"handleResponse received %@", responseString);
+    [self reloadCurrentURL];
 }
 
 - (void)play: (NSString*)audioId  {
