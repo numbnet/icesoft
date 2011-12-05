@@ -24,6 +24,18 @@ import java.util.logging.Logger;
 public class VideoPlayer extends VideoPlayerBase {
     private static final Logger logger =
             Logger.getLogger(VideoPlayer.class.toString());
+
+    public static final String VIDEO_CLASS = "mobi-video";
+
+    // string pass through attributes for wrapping span
+    private Attribute[] spanPassThruAttributes = {
+            new Attribute("style", null)};
+
+    // number pass though attributes for video element
+    private Attribute[] videoPassThruAttributes = {
+            new Attribute("height", null),
+            new Attribute("width", null)};
+
     private Attribute[] attributesNames = {
             new Attribute("controls", null),
             new Attribute("autoplay", null),
@@ -55,5 +67,11 @@ public class VideoPlayer extends VideoPlayerBase {
         this.booleanAttNames = booleanAttNames;
     }
 
+    public Attribute[] getVideoPassThruAttributes() {
+        return videoPassThruAttributes;
+    }
 
+    public Attribute[] getSpanPassThruAttributes() {
+        return spanPassThruAttributes;
+    }
 }

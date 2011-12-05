@@ -39,12 +39,12 @@ import javax.faces.application.ResourceDependencies;
 
 public class VideoPlayerMeta extends UIComponentBaseMeta {
 
-    @Property(defaultValue = "auto", tlddoc = "whether to preload the file accepted values are auto,none or metadata,  " +
-            "where metadata means preload just the metadata and auto leaves the broswer to " +
+    @Property(defaultValue = "auto", tlddoc = "whether to preload the file accepted values are auto,none or metadata;  " +
+            "where metadata means preload just the metadata and auto leaves the browser to " +
             "decide whether to preload the entire file")
     private String preload;
 
-    @Property(defaultValue = "true", tlddoc = "whether the controls are used or not")
+    @Property(defaultValue = "true", tlddoc = "whether the controls are displayed or not")
     private boolean controls;
 
     @Property(tlddoc = "value can be byte[] or String filename or Resource")
@@ -58,11 +58,11 @@ public class VideoPlayerMeta extends UIComponentBaseMeta {
     private boolean playsinline;
 
     @Property(defaultValue = "false",
-            tlddoc = "When disabled, audio is not activated")
+            tlddoc = "boolean, when disabled, audio is not activated")
     private boolean disabled;
 
     @Property(tlddoc = "tabindex of the component")
-    private Integer tabindex;
+    private int tabindex;
 
     @Property(tlddoc = "style will be rendered on the root element of this " +
             "component.")
@@ -75,10 +75,10 @@ public class VideoPlayerMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "name is used for resource registering")
     private String name;
 
-    @Property(tlddoc = "not sure if we are needing this yet or not")
+    @Property(tlddoc = "url of video stream to play")
     private String url;
 
-    @Property(tlddoc = "have not implemented the poster yet but this appears as a static photo until the video plays")
+    @Property(tlddoc = "not implemented, display a static photo until the video is played")
     private String poster;
 
     @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "maximum width of video area")
@@ -90,6 +90,9 @@ public class VideoPlayerMeta extends UIComponentBaseMeta {
     @Property(defaultValue = "session", tlddoc = "support for resource based video which can be registered in various scopes")
     private String scope;
 
-    @Property( tlddoc = " contentType or mimeType for video file")
+    @Property( tlddoc = "contentType or mimeType for video file")
     private String type;
+
+    @Property( tlddoc = "Label for link that launches a system video player")
+    private String linkLabel;
 }
