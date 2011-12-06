@@ -400,8 +400,12 @@ public class TableRenderer
             if (facetClass != null) {
                 th.setAttribute("class", facetClass);
             }
-            th.setAttribute("colspan",
-                            String.valueOf(getNumberOfChildColumns(uiComponent)));
+            int columns = getNumberOfChildColumns(uiComponent);
+            if (((HtmlDataTable)uiComponent).isResizable()) {
+            	columns+=(columns-1);
+            }
+        	th.setAttribute("colspan",
+                    String.valueOf(columns));            
             th.setAttribute("scope", "colgroup");
             domContext.setCursorParent(th);
             encodeParentAndChildren(facesContext, headerFacet);
