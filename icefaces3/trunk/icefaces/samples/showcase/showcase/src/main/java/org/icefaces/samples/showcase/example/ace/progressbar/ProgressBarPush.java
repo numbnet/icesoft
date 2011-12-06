@@ -28,11 +28,9 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
-import org.icefaces.ace.event.ProgressBarChangeEvent;
 import org.icefaces.application.PushRenderer;
 import org.icefaces.samples.showcase.example.ace.progressbar.utilityBeans.PushManagementBean;
 import org.icefaces.samples.showcase.example.ace.progressbar.utilityBeans.PushMessage;
