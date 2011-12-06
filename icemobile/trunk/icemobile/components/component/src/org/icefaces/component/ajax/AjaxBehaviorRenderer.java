@@ -74,7 +74,6 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         String source = behaviorContext.getSourceId();
 
         JSONBuilder jb = JSONBuilder.create();
-	//	jb.beginFunction("ice.ace.AjaxRequest");
         jb.beginFunction("mobi.AjaxRequest");
         //source
 		jb.beginMap()
@@ -111,14 +110,6 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
         //behavior event
 		jb.entry("event", behaviorContext.getEventName());
-
- /*       //async
-        if(ajaxBehavior.isAsync())
-            jb.entry("async", true);
-
-        //global
-        if(!ajaxBehavior.isGlobal())
-            jb.entry("global", false);   */
 
         //callbacks
         if(ajaxBehavior.getOnstart() != null)

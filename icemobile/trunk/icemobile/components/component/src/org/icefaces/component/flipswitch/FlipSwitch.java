@@ -39,8 +39,8 @@ public class FlipSwitch extends FlipSwitchBase {
             new Attribute("style", null)};
 
     private Attribute[] booleanAttNames = {new Attribute("required", null),
-            new Attribute("immediate", null),
-            new Attribute("singleSubmit", null)};
+            new Attribute("immediate", null)
+    };
  
     public Attribute[] getAttributesNames() {
         return attributesNames;

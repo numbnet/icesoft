@@ -145,7 +145,6 @@ public class CoreRenderer extends Renderer {
             StringBuilder req = new StringBuilder();
             req.append("mobi.submit = {");
 
-
             //make function
             List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
     //        req.append(",behaviors:{");
@@ -193,7 +192,7 @@ public class CoreRenderer extends Renderer {
      * Non-obstrusive way to apply client behaviors.
      * Behaviors are rendered as options to the client side widget and applied by widget to necessary dom element
      */
-     protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component, String eventDef) throws IOException {
+  /*   protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component, String eventDef) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
    //     System.out.println("encodeClientBehaviors");
         //ClientBehaviors
@@ -237,7 +236,54 @@ public class CoreRenderer extends Renderer {
 
             writer.write("}");
         }
-    }
+    } */
+    /**
+      * Non-obstrusive way to apply client behaviors.
+      * Behaviors are rendered as options to the client side widget and applied by widget to necessary dom element
+      */
+      protected StringBuilder encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component, String eventDef) throws IOException {
+         ResponseWriter writer = context.getResponseWriter();
+         StringBuilder sb = new StringBuilder(255);
+         //ClientBehaviors
+         Map<String,List<ClientBehavior>> behaviorEvents = component.getClientBehaviors();
+         if(!behaviorEvents.isEmpty()) {
+             String clientId = ((UIComponent) component).getClientId(context);
+             List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+
+             sb.append(",behaviors:{");
+
+             for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
+                 String event = eventIterator.next();
+                 String domEvent = event;
+                 if (null==event){
+                     event = eventDef;
+                 }
+                 if(event.equalsIgnoreCase("valueChange"))       //editable value holders
+                     domEvent = "change";
+                 else if(event.equalsIgnoreCase("action"))       //commands
+                     domEvent = "click";
+
+                 sb.append(domEvent + ":");
+                 sb.append("function() {");
+                 ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
+                 for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
+                     ClientBehavior behavior = behaviorIter.next();
+                     String script = behavior.getScript(cbc);    //could be null if disabled
+                     if(script != null) {
+                         sb.append(script);
+                     }
+                 }
+                 sb.append("}");
+
+                 if(eventIterator.hasNext()) {
+                     sb.append(",");
+                 }
+             }
+
+             sb.append("}");
+         }
+          return sb;
+     }
 
 
     protected void decodeBehaviors(FacesContext context, UIComponent component)  {

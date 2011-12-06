@@ -19,38 +19,40 @@ if (!window['mobi']) {
     window.mobi = {};
 }
 
-mobi.flipper = {                
-        init: function(clientId, event, flipperEl, singleSubmit, activate){
-              ice.log.debug(ice.log, 'clientId is '+clientId);
-              if (flipperEl){
-                var oldClass = flipperEl.className;
-                var value = "off";
-                if (oldClass.indexOf('-off ')>0){
-                	flipperEl.className='mobi-flip-switch mobi-flip-switch-on ';
-                	value = true;
-                }else{
-                	flipperEl.className='mobi-flip-switch mobi-flip-switch-off ';
-                	value = false;
+mobi.flipswitch = {
+    init: function(clientId, cfg){
+        this.id = clientId;
+        this.cfg = cfg;
+        this.flipperEl = cfg.elVal;
+        this.singleSubmit = cfg.singleSubmit;
+        var hasBehaviors = false;
+        if (this.cfg.behaviors){
+           hasBehaviors = true;
+        }
+        if (this.flipperEl){
+            var oldClass = this.flipperEl.className;
+            var value = "off";
+            if (oldClass.indexOf('-off ')>0){
+            	this.flipperEl.className='mobi-flip-switch mobi-flip-switch-on ';
+                value = true;
+            }else{
+             	this.flipperEl.className='mobi-flip-switch mobi-flip-switch-off ';
+               	value = false;
+            }
+            var hidden = this.id+"_hidden";
+            var thisEl = document.getElementById(hidden);
+            if (thisEl){
+               thisEl.value=value.toString();
+            }
+            if (this.singleSubmit){
+                    ice.se(event, this.id);
                 }
-                var hidden = clientId+"_hidden";
-                var thisEl = document.getElementById(hidden);
-                if (thisEl){
-                    thisEl.value=value.toString();
+            if (hasBehaviors){
+                if (this.cfg.behaviors.activate){
+                    this.cfg.behaviors.activate();
                 }
-                if (singleSubmit){
-                    ice.se(event, clientId);
-                }
-                if (activate){
-                    ice.log.debug(ice.log, "trying to activate");
-                    if (mobi.submit) {
-                       ice.log.debug(ice.log, "in mobi submit before activate call");
-                       mobi.submit.activate(clientId);
-                    }
-                }
-              }
-              else{
-                ice.log.debug(ice.log, 'do not have a switch element');
-              }
-
+            }
          }
-} ;
+    }
+};
+
