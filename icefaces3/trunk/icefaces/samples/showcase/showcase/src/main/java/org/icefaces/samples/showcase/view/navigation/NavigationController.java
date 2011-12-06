@@ -132,8 +132,7 @@ public class NavigationController implements Serializable {
                 if (compExample != null) {
                     navigationModel.setCurrentComponentExample(compExample);
                 }
-//ENABLE/DISABLE CODE BELOW IF SWITCHING TO/FROM ACCORDION MENU TO THE REGULAR MENU(based on links) IN showcase.xhtml
-//                renderUIbasedOnExample(navigationModel.getCurrentComponentGroup().getDefaultExample().getExampleBeanName(), navigationModel);
+                renderUIbasedOnExample(navigationModel.getCurrentComponentGroup().getDefaultExample().getExampleBeanName(), navigationModel);
             } else {
                 loadDefaultNavigation(navigationModel);
             }
@@ -165,9 +164,8 @@ public class NavigationController implements Serializable {
                 // Apply the new group and example
                 navigationModel.setCurrentComponentGroup((Menu)tmpGroup);
                 navigationModel.setCurrentComponentExample(setExample);
-//ENABLE/DISABLE CODE BELOW IF SWITCHING TO/FROM ACCORDION MENU TO THE REGULAR MENU(based on links) IN showcase.xhtml
-                //determine if source code panel should show up or not
-                //renderUIbasedOnExample(newExample, navigationModel);
+                //determine how shuite menu and example content should appear in UI
+                renderUIbasedOnExample(newExample, navigationModel);
             } else {
                 loadDefaultNavigation(navigationModel);
             }
@@ -179,20 +177,17 @@ public class NavigationController implements Serializable {
     //If example = regular showcase, set active acordion tab based on redirect request parameters and display full showcase (with description, example content and source code)
     private void renderUIbasedOnExample(String exampleDescription, NavigationModel navigationModel)
     {
-        int index = NavigationModel.DEFAULT_MENU_TAB_INDEX;
-        if(exampleDescription.equals(AceSuiteOverviewBean.BEAN_NAME) || exampleDescription.equals(IceSuiteOverviewBean.BEAN_NAME))
-        {
-            navigationModel.setRenderAsExample(false);
-            //set accordion menu tab to the first one:
-            navigationModel.setActivePaneIndex(index);
-        }
-        else
-        {
-            navigationModel.setRenderAsExample(true);
-            //set accordion menu tab
-            index = findActivePaneIndex(exampleDescription, navigationModel);
-            navigationModel.setActivePaneIndex(index);
-        }
+        //determine if example source code should appear in UI:
+        navigationModel.setRenderAsExample(isContentAnExample(exampleDescription));
+//ENABLE/DISABLE CODE BELOW IF SWITCHING TO/FROM ACCORDION MENU TO THE REGULAR MENU(based on links) IN showcase.xhtml
+//        if(navigationModel.isRenderAsExample()) {
+//            //set accordion menu tab
+//            navigationModel.setActivePaneIndex(findActivePaneIndex(exampleDescription, navigationModel));
+//        }
+//        else {
+//            //set accordion menu tab to the first one:
+//            navigationModel.setActivePaneIndex(NavigationModel.DEFAULT_MENU_TAB_INDEX);
+//        }
     }
 
     private void loadDefaultNavigation(NavigationModel navigationModel) 
@@ -206,8 +201,7 @@ public class NavigationController implements Serializable {
         navigationModel.setCurrentComponentExample((ComponentExampleImpl)FacesUtils.getManagedBean(beanName));
         navigationModel.setComponentExample(beanName);
         navigationModel.getCurrentComponentGroup().getBeanName();
-//ENABLE/DISABLE CODE BELOW IF SWITCHING TO/FROM ACCORDION MENU TO THE REGULAR MENU(based on links) IN showcase.xhtml
-        //renderUIbasedOnExample(beanName, navigationModel);
+        renderUIbasedOnExample(beanName, navigationModel);
     }
     
     private String prepareRedirectURL(String groupParameterValue, String exampleParameterValue, ExternalContext extContext)
@@ -278,6 +272,16 @@ public class NavigationController implements Serializable {
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect(page);
         }catch (Throwable e) {
+        }
+    }
+
+    private boolean isContentAnExample(String exampleDescription)
+    {
+        if(exampleDescription.equals(AceSuiteOverviewBean.BEAN_NAME) || exampleDescription.equals(IceSuiteOverviewBean.BEAN_NAME)) {
+            return false; 
+        }
+        else {
+            return true;
         }
     }
 }
