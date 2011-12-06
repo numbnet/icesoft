@@ -3545,11 +3545,20 @@ ToolTipPanelPopup = Class.create({
         var tooltip = $(this.tooltipCompId);
         var x = Event.pointerX(event);
         var y = Event.pointerY(event);
-        if (Position.within(this.src, x, y)) return; //ICE-6285
+        var includeScrollOffsets = Position.includeScrollOffsets;
+        Position.includeScrollOffsets = false;
+        if (Position.within(this.src, x, y))  {
+        	Position.includeScrollOffsets = includeScrollOffsets;
+        	return; //ICE-6285
+        }
         if (tooltip) {
-            if (Position.within(tooltip, x, y)) return; //ICE-3521
+            if (Position.within(tooltip, x, y)) {
+            	Position.includeScrollOffsets = includeScrollOffsets;
+            	return; //ICE-3521
+            }
             this.hidePopup(event);
         }
+        Position.includeScrollOffsets = includeScrollOffsets;
         this.state = "hide";
         this.populateFields();
         if (this.hideOn == "mouseout") {
