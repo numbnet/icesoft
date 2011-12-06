@@ -4812,7 +4812,8 @@ $.widget( "ui.accordion", {
 		this.toHide.removeClass( "ui-accordion-content-active" );
 		// Work around for rendering bug in IE (#5421)
 		if ( this.toHide.length ) {
-			this.toHide.parent()[0].className = this.toHide.parent()[0].className;
+			if (this.toHide.parent() && this.toHide.parent()[0]) // ICE-7497, prevents JS error
+				this.toHide.parent()[0].className = this.toHide.parent()[0].className;
 		}
 
 		this._trigger( "change", null, this.data );
