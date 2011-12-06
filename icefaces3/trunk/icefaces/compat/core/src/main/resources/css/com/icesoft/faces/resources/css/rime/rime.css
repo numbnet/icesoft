@@ -391,7 +391,7 @@ table.iceSelInpDate tbody tr td table{
     border-collapse: collapse;
 }
 
-.iceDatTblColHdr, .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol, .iceDatTblFtr {
+.iceDatTblColHdr, .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol, .iceDatTblFtr, .iceDatTblHdr {
 /* was iceTblHeader */
     text-align: center;
     font: 11px tahoma;
