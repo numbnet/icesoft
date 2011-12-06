@@ -67,6 +67,9 @@ public class FlipSwitchMeta extends UISelectBooleanMeta {
     @Property(tlddoc = "Boolean indicating if the component should be disabled.")
     private boolean disabled;
 
+    @Property(tlddoc=" Boolean indicating if the component allows entry to submit to server")
+    private boolean readonly;
+
     @Property(defaultValue="ON", tlddoc = "label for switch when on ...not sure if we will use this yet?")
     private String labelOn;
     @Property(defaultValue="OFF", tlddoc = "label for switch when off ...not sure if we will use this yet?")

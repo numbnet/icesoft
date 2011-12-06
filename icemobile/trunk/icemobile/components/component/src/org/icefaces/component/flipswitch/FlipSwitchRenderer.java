@@ -79,15 +79,6 @@ public class FlipSwitchRenderer extends CoreRenderer {
         ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
 
-        if (hasBehaviors){
-            String cbhCall = this.encodeClientBehaviorEvents(facesContext, cbh);
-            writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
-            StringBuilder switchScript = new StringBuilder(255);
-            switchScript.append(cbhCall);
-            switchScript.append("};");
-            writer.write(cbhCall);
-            writer.endElement(HTML.SCRIPT_ELEM);
-        }
         Map contextMap = facesContext.getViewRoot().getViewMap();
         if (!contextMap.containsKey(JS_NAME)) {
              //check to see if Development or Project stage
@@ -113,25 +104,33 @@ public class FlipSwitchRenderer extends CoreRenderer {
             styleClass = FlipSwitch.FLIPSWITCH_ON_CLASS;
         }
         writer.writeAttribute("class", styleClass, "class");
+
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent, flipswitch.getAttributesNames());
         PassThruAttributeWriter.renderBooleanAttributes(writer, uiComponent, flipswitch.getBooleanAttNames());
         String labelOn = flipswitch.getLabelOn();
         String labelOff = flipswitch.getLabelOff();
 //        String event = flipswitch.getDefaultEventName();
-        StringBuilder builder = new StringBuilder(255);
-        builder.append("mobi.flipper.init('").append(clientId).append("', event, this,");
-        if (flipswitch.isDisabled()) {
+        boolean disabled = flipswitch.isDisabled();
+        boolean readonly = flipswitch.isReadonly();
+        if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
-        if (hasBehaviors){
-            //for now all events for this equate to "activate" event
-            builder.append ("false , true);");
-        }
-        else
-            builder.append(flipswitch.isSingleSubmit()).append(", false);");
+        StringBuilder builder = new StringBuilder(255);
+        builder.append("mobi.flipswitch.init('").append(clientId).append("',{ event: event,elVal: this,");
+        builder.append("singleSubmit: ").append(flipswitch.isSingleSubmit());
 
-        writer.writeAttribute("onclick", builder.toString(), null);
+        if (hasBehaviors){
+            String behaviors = this.encodeClientBehaviors(facesContext, cbh, "click").toString();
+            behaviors = behaviors.replace("\"", "\'");
+            builder.append(behaviors);
+        }
+        builder.append("});");
+
+        String jsCall = builder.toString();
+        if (!disabled | !readonly)writer.writeAttribute("onclick", jsCall, null);
+        writer.writeAttribute("class", styleClass, "class");
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
+
         writer.writeAttribute("class", "mobi-flip-switch-txt", null);
         writer.write(labelOn);
         writer.endElement(HTML.SPAN_ELEM);
