@@ -130,9 +130,12 @@
 
             <ice:zip destfile="@{bundle.file}" update="true">
 
-                <!-- distributing test adds another 10mb to the download -->
+                <!-- trim any source or binaries used to build the components  -->
                 <zipfileset dir="." prefix="${bin.bundle.prefix}"  >
                     <exclude name="dist/"/>
+                    <exclude name="client/"/>
+                    <exclude name="components/"/>
+                    <exclude name="lib/generator/"/>
                 </zipfileset>
 
                 <add.zip.elements/>
