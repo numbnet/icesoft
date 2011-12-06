@@ -94,7 +94,7 @@
 }
 
 .ui-datatable .ui-sortable-column * .ui-sortable-column-icon {
-    position:absolute;
+    float:left;
     margin-left:-15px;
 }
 .ui-tableconf-body * .ui-sortable-column-icon {
