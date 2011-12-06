@@ -120,11 +120,11 @@
          -->
          
         <h2>#{msgs[navigationModel.currentComponentGroup.title]}</h2>
-        <ul>
             <!--
                     ~ navigationModel.currentComponentGroup.menuLinks - is an array with links to all showcases in a suite
             -->
             <h:form>
+            <ul>
             <ui:repeat var="menuLink"
                        value="#{navigationModel.currentComponentGroup.menuLinks}">
                 <li>
@@ -186,8 +186,8 @@
                     </ice:panelGroup>
                 </li>
             </ui:repeat>
+            </ul>
             </h:form>
-        </ul>
     </ui:define>
 
     <ui:define name="component-example">
