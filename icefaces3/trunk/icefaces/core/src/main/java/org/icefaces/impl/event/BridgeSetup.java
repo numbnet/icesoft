@@ -472,18 +472,17 @@ public class BridgeSetup implements SystemEventListener {
         }
     }
 
+    private static String fixResourceParameter(String value) {
+        return value == null || "".equals(value) ? null : value;
+    }
+
     public static class JavascriptResourceOutput extends ReferencedScriptWriter {
         public JavascriptResourceOutput() {
         }
 
         public JavascriptResourceOutput(ResourceHandler resourceHandler, String name, String library, String version) {
             super("");
-            String fixedLibraryName = library;
-            if ("".equals(library)) {
-                fixedLibraryName = null;
-            }
-
-            Resource r = resourceHandler.createResource(name, fixedLibraryName);
+            Resource r = resourceHandler.createResource(name, fixResourceParameter(library));
             String path = r.getRequestPath();
             if (version == null) {
                 script = path;
@@ -508,7 +507,9 @@ public class BridgeSetup implements SystemEventListener {
             //save parameters in attributes since they are checked by the code replacing the @ResourceDepencency components
             attributes.put("name", name);
             attributes.put("library", library);
-            attributes.put("version", version);
+            if (version != null) {
+                attributes.put("version", version);
+            }
             setTransient(false);
         }
 
@@ -521,7 +522,7 @@ public class BridgeSetup implements SystemEventListener {
             String version = (String) attributes.get("version");
 
             ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-            Resource r = resourceHandler.createResource(name, library);
+            Resource r = resourceHandler.createResource(name, fixResourceParameter(library));
             String path = r.getRequestPath();
             if (version == null) {
                 script = path;
