@@ -287,65 +287,76 @@ var ComponentIndicators;
     DefaultIndicators = function(configuration, setupID) {
         var container = document.getElementById(setupID).parentNode;
 
-        //disable core's default indicators/popups
-        container.configuration.disableDefaultErrorPopups = true;
+        //wire indicators only when the popups are not disabled by core
+        if (container.configuration.disableDefaultErrorPopups) {
+            indctrs = {
+                busy: NOOPIndicator,
+                sessionExpired: NOOPIndicator,
+                connectionLost: NOOPIndicator,
+                serverError: NOOPIndicator,
+                connectionTrouble: NOOPIndicator
+            }
+        } else {
+            //disable core's default indicators/popups
+            container.configuration.disableDefaultErrorPopups = true;
 
-        var connectionLostURI = configuration.connectionLostRedirectURI;
-        if (connectionLostURI == "null") {
-            connectionLostURI = null;
-        }
+            var connectionLostURI = configuration.connectionLostRedirectURI;
+            if (connectionLostURI == "null") {
+                connectionLostURI = null;
+            }
 
-        var sessionExpiredURI = configuration.sessionExpiredRedirectURI;
-        if (sessionExpiredURI == "null") {
-            sessionExpiredURI = null;
-        }
+            var sessionExpiredURI = configuration.sessionExpiredRedirectURI;
+            if (sessionExpiredURI == "null") {
+                sessionExpiredURI = null;
+            }
 
-        var connectionLostRedirect = connectionLostURI ? RedirectIndicator(connectionLostURI) : null;
-        var sessionExpiredRedirect = sessionExpiredURI ? RedirectIndicator(sessionExpiredURI) : null;
-        var messages = configuration.messages;
-        var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
-        var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
-        var busyIndicator = PointerIndicator(container);
-        var overlay = object(function(method) {
-            method(on, function(self) {
-                var overlay = container.ownerDocument.createElement('iframe');
-                overlay.setAttribute('src', 'about:blank');
-                overlay.setAttribute('frameborder', '0');
-                var overlayStyle = overlay.style;
-                overlayStyle.position = 'absolute';
-                overlayStyle.display = 'block';
-                overlayStyle.visibility = 'visible';
-                overlayStyle.backgroundColor = 'white';
-                overlayStyle.zIndex = '28000';
-                overlayStyle.top = '0';
-                overlayStyle.left = '0';
-                overlayStyle.opacity = 0.22;
-                overlayStyle.filter = 'alpha(opacity=22)';
-                container.appendChild(overlay);
+            var connectionLostRedirect = connectionLostURI ? RedirectIndicator(connectionLostURI) : null;
+            var sessionExpiredRedirect = sessionExpiredURI ? RedirectIndicator(sessionExpiredURI) : null;
+            var messages = configuration.messages;
+            var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
+            var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
+            var busyIndicator = PointerIndicator(container);
+            var overlay = object(function(method) {
+                method(on, function(self) {
+                    var overlay = container.ownerDocument.createElement('iframe');
+                    overlay.setAttribute('src', 'about:blank');
+                    overlay.setAttribute('frameborder', '0');
+                    var overlayStyle = overlay.style;
+                    overlayStyle.position = 'absolute';
+                    overlayStyle.display = 'block';
+                    overlayStyle.visibility = 'visible';
+                    overlayStyle.backgroundColor = 'white';
+                    overlayStyle.zIndex = '28000';
+                    overlayStyle.top = '0';
+                    overlayStyle.left = '0';
+                    overlayStyle.opacity = 0.22;
+                    overlayStyle.filter = 'alpha(opacity=22)';
+                    container.appendChild(overlay);
 
-                var resize = container.tagName.toLowerCase() == 'body' ?
-                    function() {
-                        overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-                        overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
-                    } :
-                    function() {
-                        overlayStyle.width = container.offsetWidth + 'px';
-                        overlayStyle.height = container.offsetHeight + 'px';
-                    };
-                resize();
-                onResize(window, resize);
+                    var resize = container.tagName.toLowerCase() == 'body' ?
+                        function() {
+                            overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
+                            overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+                        } :
+                        function() {
+                            overlayStyle.width = container.offsetWidth + 'px';
+                            overlayStyle.height = container.offsetHeight + 'px';
+                        };
+                    resize();
+                    onResize(window, resize);
+                });
+
+                method(off, noop);
             });
 
-            method(off, noop);
-        });
-
-        indctrs = {
-            busy: busyIndicator,
-            sessionExpired: sessionExpiredRedirect ? sessionExpiredRedirect : PopupIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, overlay),
-            connectionLost: connectionLostRedirect ? connectionLostRedirect : PopupIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, overlay),
-            serverError: PopupIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, overlay),
-            connectionTrouble: NOOPIndicator
-        };
+            indctrs = {
+                busy: busyIndicator,
+                sessionExpired: sessionExpiredRedirect ? sessionExpiredRedirect : PopupIndicator(messages.sessionExpired, messages.description, messages.buttonText, sessionExpiredIcon, overlay),
+                connectionLost: connectionLostRedirect ? connectionLostRedirect : PopupIndicator(messages.connectionLost, messages.description, messages.buttonText, connectionLostIcon, overlay),
+                serverError: PopupIndicator(messages.serverError, messages.description, messages.buttonText, connectionLostIcon, overlay),
+                connectionTrouble: NOOPIndicator
+            };
+        }
     };
 
     ComponentIndicators = function(workingID, idleID, troubleID, lostID, showPopups, displayHourglassWhenActive) {
