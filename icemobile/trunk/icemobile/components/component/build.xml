@@ -455,6 +455,17 @@
                           name="timespinner" skin="honeycomb"/>
         <includeresources dir="src/org/icefaces/component/timespinner/bberry"
                           name="timespinner" skin="bberry"/>
+        <!-- video- style definition -->
+        <includeresources dir="src/org/icefaces/component/video/ipad"
+                          name="video" skin="ipad"/>
+        <includeresources dir="src/org/icefaces/component/video/iphone"
+                          name="video" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/component/video/android"
+                          name="video" skin="android"/>
+        <includeresources dir="src/org/icefaces/component/video/honeycomb"
+                          name="video" skin="honeycomb"/>
+        <includeresources dir="src/org/icefaces/component/video/bberry"
+                          name="video" skin="bberry"/>
         <!-- Process sprites, if use.sprites is set -->
         <antcall target="sprites"/>
 
