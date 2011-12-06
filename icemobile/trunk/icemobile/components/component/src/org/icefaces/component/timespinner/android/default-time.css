@@ -15,10 +15,11 @@
  */
 .mobi-time-popup-btn{
     -webkit-appearance: none;
-    background-image: url('btn-calendar.png'); /** sprite-ref: sprite; */
+    background-image: url('btn-time.png'); /** sprite-ref: sprite; */
+    background-color: transparent;
     background-repeat: no-repeat;
-    width:27px;
-    height:24px;
+    width:28px;
+    height:26px;
     border: none;
     margin: 0 0 0 5px;
     cursor:pointer;
