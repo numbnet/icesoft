@@ -187,10 +187,15 @@ public class AccordionRenderer extends CoreRenderer {
 				writer.endElement("a");
 				writer.endElement("h3");
 				
+				String clientId = kid.getClientId(context);
+				
 				//content
 				writer.startElement("div", null);
-                writer.writeAttribute("id", kid.getClientId(context), null);
+                writer.writeAttribute("id", clientId, null);
 
+				writer.startElement("div", null);
+                writer.writeAttribute("id", clientId + "_content", null);
+				
                 if(acco.isDynamic()) {
                     if(i == activeIndex)
                         tab.encodeAll(context);
@@ -199,6 +204,7 @@ public class AccordionRenderer extends CoreRenderer {
                     tab.encodeAll(context);
                 }
                 
+				writer.endElement("div");
 				writer.endElement("div");
 			}
 		}
