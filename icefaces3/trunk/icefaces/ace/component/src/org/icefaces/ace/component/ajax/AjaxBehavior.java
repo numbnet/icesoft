@@ -141,6 +141,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
 
     public void setRender(String render) {
         this.render = render;
+        clearInitialState();
     }
 
     public MethodExpression getListener() {
@@ -149,6 +150,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
 
     public void setListener(MethodExpression listener) {
         this.listener = listener;
+        clearInitialState();
     }
 
     public boolean isDisabled() {
@@ -173,15 +175,14 @@ public class AjaxBehavior extends ClientBehaviorBase {
         return immediateSet;
     }
 
-    @Override
     public void broadcast(BehaviorEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext eLContext = context.getELContext();
 
-        if(listener != null) {
+        if (listener != null) {
             try {
                 listener.invoke(eLContext, null);       //no-arg listener
-            } catch(MethodNotFoundException e1) {
+            } catch (MethodNotFoundException e1) {
                 MethodExpression argListener = context.getApplication().getExpressionFactory().
                         createMethodExpression(eLContext, listener.getExpressionString(), null, new Class[]{event.getClass()});
 
@@ -189,4 +190,49 @@ public class AjaxBehavior extends ClientBehaviorBase {
             }
         }
     }
+
+    public Object saveState(FacesContext context) {
+        if (context == null) {
+            throw new NullPointerException();
+        }
+        Object[] values;
+
+        Object superState = super.saveState(context);
+
+        if (initialStateMarked()) {
+            if (superState == null) {
+                values = null;
+            } else {
+                values = new Object[] { superState };
+            }
+        } else {
+            values = new Object[3];
+
+            values[0] = superState;
+            values[1] = listener;
+            values[2] = render;
+        }
+
+        return values;
+    }
+
+    public void restoreState(FacesContext context, Object state) {
+        if (context == null) {
+            throw new NullPointerException();
+        }
+        if (state != null) {
+
+            Object[] values = (Object[]) state;
+            super.restoreState(context, values[0]);
+
+            if (values.length != 1) {
+                listener = (MethodExpression)values[1];
+                render = (String)values[2];
+
+                // If we saved state last time, save state again next time.
+                clearInitialState();
+            }
+        }
+    }
+
 }
