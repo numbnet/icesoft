@@ -47,7 +47,7 @@ public class AuxUploadSetup {
         application.setResourceHandler(auxHandler);
     }
 
-    public static AuxUploadSetup getCurrentInstance()  {
+    public static AuxUploadSetup getInstance()  {
         ExternalContext externalContext = FacesContext.getCurrentInstance()
                 .getExternalContext();
         AuxUploadSetup auxUpload = (AuxUploadSetup) externalContext

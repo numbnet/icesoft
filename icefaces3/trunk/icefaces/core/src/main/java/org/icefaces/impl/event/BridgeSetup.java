@@ -335,7 +335,7 @@ public class BridgeSetup implements SystemEventListener {
                                 EnvUtils.isAuxUploadBrowser(context);
                         if (isAuxUpload)  {
                             AuxUploadSetup auxUpload = 
-                                    AuxUploadSetup.getCurrentInstance();
+                                    AuxUploadSetup.getInstance();
                             String cloudPushId = auxUpload.getCloudPushId();
                             if (null != cloudPushId)  {
                                 writer.write(
