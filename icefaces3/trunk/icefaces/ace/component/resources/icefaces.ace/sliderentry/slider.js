@@ -116,3 +116,4 @@ ice.ace.Slider.prototype.enable = function() {
 ice.ace.Slider.prototype.disable = function() {
     this.jq.slider('disable');
 }
+
