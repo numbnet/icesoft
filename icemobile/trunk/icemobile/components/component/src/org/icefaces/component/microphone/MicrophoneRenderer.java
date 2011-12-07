@@ -27,7 +27,6 @@ import org.icefaces.util.EnvUtils;
 import javax.faces.component.UIComponent;
 import javax.faces.render.Renderer;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 import javax.servlet.ServletException;
@@ -156,9 +155,7 @@ public class MicrophoneRenderer extends Renderer {
         }
         String script;
         if (isAuxUpload)  {
-            ExternalContext externalContext = facesContext.getExternalContext();
-            AuxUploadSetup auxUpload = (AuxUploadSetup) externalContext
-                .getApplicationMap().get("auxUpload");
+            AuxUploadSetup auxUpload = AuxUploadSetup.getInstance();
             
             String sessionID = EnvUtils.getSafeSession(facesContext).getId();
             String uploadURL = auxUpload.getUploadURL();
