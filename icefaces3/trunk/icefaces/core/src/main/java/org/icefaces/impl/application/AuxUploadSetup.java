@@ -37,6 +37,7 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class AuxUploadSetup {
     private AuxUploadResourceHandler auxHandler;
+    private static String AUX_UPLOAD = "auxUpload";
 
     public AuxUploadSetup()  {
         Application application = FacesContext.getCurrentInstance()
@@ -44,6 +45,14 @@ public class AuxUploadSetup {
         ResourceHandler currentHandler = application.getResourceHandler();
         auxHandler = new AuxUploadResourceHandler(currentHandler);
         application.setResourceHandler(auxHandler);
+    }
+
+    public static AuxUploadSetup getCurrentInstance()  {
+        ExternalContext externalContext = FacesContext.getCurrentInstance()
+                .getExternalContext();
+        AuxUploadSetup auxUpload = (AuxUploadSetup) externalContext
+            .getApplicationMap().get(AUX_UPLOAD);
+        return auxUpload;
     }
 
     public String getUploadPath()  {
