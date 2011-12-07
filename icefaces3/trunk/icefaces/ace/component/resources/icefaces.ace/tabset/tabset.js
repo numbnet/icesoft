@@ -87,10 +87,20 @@ ice.ace.tabset = {
 							parameter('ice.focus', event.newValue.get('element').firstChild.id);
                             parameter('onevent', function(data) {
                                 if (data.status == 'success') {
-                                    //TODO
-                                   try {
-									document.getElementById(event.newValue.get('element').firstChild.id).focus();
-                                   } catch(e) {}    
+                                    // Ajax content transition. YUI content transition doesn't execute for server side cases
+                                    // allowing our component to trigger content transition when the server call succeeds.
+                                    if (event.newValue) {
+                                        event.newValue.set('contentVisible', true);
+                                    }
+                                    if (event.oldValue) {
+                                        event.oldValue.set('contentVisible', false);
+                                    }
+
+                                    ice.ace.jq(tabview._contentParent).css({opacity:1});
+
+                                    try {
+								    document.getElementById(event.newValue.get('element').firstChild.id).focus();
+                                   } catch(e) {}
                                 }
                             });
                         };
@@ -102,6 +112,7 @@ ice.ace.tabset = {
                         sJSFProps.behaviors.clientSideTabChange();
                     }
                 }
+                ice.ace.jq(tabview._contentParent).css({opacity:1});
                 //console.info('Client side tab ');
             } else {
                 var targetElement = ice.ace.tabset.getTabIndexField(rootElem);
@@ -137,13 +148,13 @@ ice.ace.tabset = {
                     	//restore id
                     	targetElement.id = elementId;
                     } else {
-                        ice.submit(event, targetElement, params);                    
+                        ice.submit(event, targetElement, params);
                     }
                     */
                 } catch(e) {
                     //logger.info(e);
-                }                
-            }//end if    
+                }
+            }//end if
        };//tabchange;
        
        //Check for aria support
@@ -230,12 +241,15 @@ ice.ace.tabset = {
        }
 
 	tabview.contentTransition = function(newTab, oldTab) {
-		if (newTab) {
-			newTab.set('contentVisible', true);
-		}
-		if (oldTab) {
-			oldTab.set('contentVisible', false);
-		}
+        // Server side handles its own content transition
+        if (jsfProps.isClientSide) {
+            if (newTab) {
+                newTab.set('contentVisible', true);
+            }
+            if (oldTab) {
+                oldTab.set('contentVisible', false);
+            }
+        }
 		// effect
 		if (jsfProps.isClientSide && jsProps.showEffect) {
 			var content = newTab.get('contentEl').childNodes[0];
@@ -248,6 +262,7 @@ ice.ace.tabset = {
 	   //console.info('effect >>> '+ jsfProps.effect );
  
 	   tabview.addListener('activeTabChange', tabChange);
+       tabview.addListener('beforeActiveTabChange', function (e) { ice.ace.jq(tabview._contentParent).css({opacity:0.4}); });
        bindYUI(tabview);
 
 	 }); // *** end of domready
