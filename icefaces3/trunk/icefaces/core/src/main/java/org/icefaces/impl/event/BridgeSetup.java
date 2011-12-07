@@ -29,6 +29,7 @@ import org.icefaces.impl.renderkit.DOMRenderKit;
 import org.icefaces.render.ExternalScript;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.impl.application.AuxUploadSetup;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceDependencies;
@@ -330,6 +331,18 @@ public class BridgeSetup implements SystemEventListener {
                         writer.write("ice.push.configuration.notifyURI=\"" + notifyResource.getRequestPath() + "\";");
                         writer.write("ice.push.configuration.addGroupMemberURI=\"" + addGroupMemberResource.getRequestPath() + "\";");
                         writer.write("ice.push.configuration.removeGroupMemberURI=\"" + removeGroupMemberResource.getRequestPath() + "\";");
+                        boolean isAuxUpload = 
+                                EnvUtils.isAuxUploadBrowser(context);
+                        if (isAuxUpload)  {
+                            AuxUploadSetup auxUpload = 
+                                    AuxUploadSetup.getCurrentInstance();
+                            String cloudPushId = auxUpload.getCloudPushId();
+                            if (null != cloudPushId)  {
+                                writer.write(
+                                        "window.addEventListener('load', function() { ice.push.parkInactivePushIds('" 
+                                        + cloudPushId + "'); }, false);");
+                            }
+                        }
                         writer.endElement("script");
                         writer.endElement("span");
                     }
