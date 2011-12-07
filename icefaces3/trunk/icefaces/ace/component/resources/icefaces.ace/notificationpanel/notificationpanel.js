@@ -33,7 +33,8 @@ ice.ace.NotificationBar = function(id, cfg) {
 	this.jq = ice.ace.escapeClientId(this.id);
 	
 	jQuery(this.jq).css(this.cfg.position,'0');
-	
+	jQuery(this.jq).css("left",'0');
+
 	jQuery(this.jq).appendTo(jQuery('body'));
 	
 	if(this.cfg.autoDisplay)
