@@ -133,11 +133,15 @@ public class ComponentArtifact extends Artifact{
 
         writer.append("\n\tpublic static final String COMPONENT_TYPE = \""+ component.componentType() + "\";");
         String rendererType = null;
-        if (!"null".equals(component.rendererType())) {
+        if (!"null".equals(component.rendererType()) && !"".equals(component.rendererType())) {
             rendererType = "\""+ component.rendererType() + "\"";
         }
 
         writer.append("\n\tpublic static final String RENDERER_TYPE = "+ rendererType + ";\n");
+
+        writer.append("\n\tpublic ");
+        writer.append(Utility.getClassName(component).substring(classIndicator+1));
+        writer.append("() {\n\t\tsuper();\n\t\tsetRendererType(RENDERER_TYPE);\n\t}\n");
 
         writer.append("\n\tpublic String getFamily() {\n\t\treturn \"");
         writer.append(Utility.getFamily(component));
