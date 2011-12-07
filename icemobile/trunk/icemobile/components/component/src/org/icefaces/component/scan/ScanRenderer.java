@@ -26,7 +26,6 @@ import org.icefaces.renderkit.BaseInputRenderer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.ResponseWriter;
 import java.net.URLEncoder;
 import java.io.IOException;
@@ -95,9 +94,7 @@ public class ScanRenderer extends BaseInputRenderer {
         }
         String script;
         if (isAuxUpload)  {
-            ExternalContext externalContext = facesContext.getExternalContext();
-            AuxUploadSetup auxUpload = (AuxUploadSetup) externalContext
-                .getApplicationMap().get("auxUpload");
+            AuxUploadSetup auxUpload = AuxUploadSetup.getInstance();
             
             String sessionID = EnvUtils.getSafeSession(facesContext).getId();
             String uploadURL = auxUpload.getUploadURL();
