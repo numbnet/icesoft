@@ -27,27 +27,18 @@
 package org.icemobile.client.blackberry.push;
 
 import net.rim.device.api.io.messaging.*;
-import net.rim.device.api.system.EventLogger;
-import net.rim.device.api.ui.component.Dialog;
 
 import java.io.IOException; 
 import java.io.InputStream;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.Logger;
 
 public class PushServiceListener implements MessageListener {
 
-    private ICEmobileContainer mContainer; 
-
-    public PushServiceListener(ICEmobileContainer container) {
-
-        mContainer = container; 
-
-    }
 
     public void onMessage(Destination dest, Message incomingMessage) {
 
-        ICEmobileContainer.DEBUG("onMessage");
+        Logger.DEBUG("bis.push - onMessage");
         String payload = null; 
         if  (incomingMessage instanceof ByteMessage) { 
             ByteMessage reply = (ByteMessage) incomingMessage; 
@@ -64,13 +55,13 @@ public class PushServiceListener implements MessageListener {
                 }
 
             } catch (IOException e) { 
-                ICEmobileContainer.ERROR("Exception in push listener: " + e);
+            	Logger.ERROR("bis.push - Exception in push listener: " + e);
             }
 
 
         }
         if (payload != null) { 
-            ICEmobileContainer.DEBUG("Message received ! : " + payload); 
+            Logger.DEBUG("bis.push - Message received ! : " + payload); 
         }
 
     }

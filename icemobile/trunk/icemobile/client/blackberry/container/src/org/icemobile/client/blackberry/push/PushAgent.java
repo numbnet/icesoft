@@ -35,7 +35,7 @@ import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
 import javax.microedition.io.ServerSocketConnection;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.Logger;
 
 import net.rim.device.api.io.IOUtilities;
 import net.rim.device.api.io.http.HttpServerConnection;
@@ -50,6 +50,24 @@ import net.rim.device.api.ui.component.Dialog;
 
 /**
  * Registers for and receives bis push messages.<br/>
+ * 
+ * This class is an adaptation of the publicly available PushReader example
+ * from RIM. It exists completely for demonstration purposes and doesn't integrate 
+ * very much with the container. <p/>
+ *  
+ * The details of blackberry network connectivity are very convoluted. A link on the 
+ * RIM forums makes the most sense and is recent enough to be relevant.  
+ * http://supportforums.blackberry.com/t5/Java-Development/
+ * Sample-HTTP-Connection-code-and-BIS-B-Access/m-p/653175/highlight/true#M133864   
+ * <p/>
+ * ICEsoft provides a demonstration push application with a publicly available application ID, but
+ * be forewarned, this application will expire regularly. ICEsoft's publicly visible servers use the same 
+ * application ID but if these do not match the code in this class, no notifications will arrive. 
+ * <p/>
+ * The FREENESS_SUFFIX is the talked about 'free' access to the public RIM BIS infrastructure 
+ * loophole that Peter Strange is talking about. It may work forever, or stop at any time. Developers 
+ * wishing for a dependable solution will integrate with a more permanent solution with permanent 
+ * network transport integration
  * 
  */
 public class PushAgent {
@@ -69,7 +87,7 @@ public class PushAgent {
     private static final String BIS_SUFFIX = ";deviceside=true;ConnectionUID=";
     private static final String MDS_SUFFIX = ";deviceside=false;";
     private static final String WIFI_SUFFIX = ";deviceside=true;interface=wifi";
-    private static final String TEST_FREENESS_SUFFIX = ";deviceside=false;ConnectionType=mds-public";
+    private static final String FREENESS_SUFFIX = ";deviceside=false;ConnectionType=mds-public";
     private String mConnectionSuffix;
 
     private boolean isWAP2 = false; 
@@ -86,15 +104,15 @@ public class PushAgent {
     public PushAgent() {
         // remove the coverage check if compiling for OS < 4.6
         if (!CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_BIS_B)) {
-            ICEmobileContainer.ERROR("BIS-B Push Coverage insufficient for registration");
+        	Logger.ERROR("BIS-B Push Coverage insufficient for registration");
             return;
         }
         if (DeviceInfo.isSimulator()) {
-            ICEmobileContainer.ERROR("Push Registration can only be done for real devices");
+        	Logger.ERROR("Push Registration can only be done for real devices");
             return;
         }
         //		mConnectionSuffix = WAP2_SUFFIX;
-        mConnectionSuffix = TEST_FREENESS_SUFFIX;
+        mConnectionSuffix = FREENESS_SUFFIX;
 
         ServiceBook sb = ServiceBook.getSB(); 
         ServiceRecord[] records = sb.findRecordsByCid("WPTCP"); 
@@ -112,7 +130,7 @@ public class PushAgent {
                     if ( (checkUID.toLowerCase().indexOf("wifi") == -1) && 
                             (checkUID.toLowerCase().indexOf("mms") == -1)) { 
                         //						mConnectionSuffix += checkUID; 
-//                        ICEmobileContainer.DEBUG("WAP2 Book entry found: " + checkUID);
+//                        Logger.DEBUG("WAP2 Book entry found: " + checkUID);
                         break;
                     }
                 }					
@@ -160,7 +178,7 @@ public class PushAgent {
          */
         public void run() {
             String url = "http://:" + PUSH_PORT  + mConnectionSuffix;
-//            ICEmobileContainer.DEBUG("Listening for push messages through '" + url + "'");
+//            Logger.DEBUG("Listening for push messages through '" + url + "'");
 
             try {
                 socket = (ServerSocketConnection) Connector.open(url);
@@ -169,7 +187,7 @@ public class PushAgent {
                 onListenError(ex);
             }
 
-            ICEmobileContainer.DEBUG("pushAgent - Reader ready for connection ");
+            Logger.DEBUG("pushAgent - Reader ready for connection ");
             while (running) {
                 try {
                     
@@ -178,9 +196,9 @@ public class PushAgent {
                     inputStream = conn.openInputStream();
                     pushInputStream = new MDSPushInputStream(conn, inputStream);
                     PushMessageReader.process(pushInputStream, conn);
-                    ICEmobileContainer.DEBUG("Message processed");
+                    Logger.DEBUG("Message processed");
                 } catch (Exception e) {
-                    ICEmobileContainer.ERROR("Exception reading push message: " + e);
+                	Logger.ERROR("Exception reading push message: " + e);
                     if (running) {
                         running = false;
                     }
@@ -188,7 +206,7 @@ public class PushAgent {
                     close(conn, pushInputStream, null);
                 }
             }
-            ICEmobileContainer.DEBUG("Stopped listening for push messages");
+            Logger.DEBUG("Stopped listening for push messages");
         }
 
         /**
@@ -196,7 +214,7 @@ public class PushAgent {
          */
         public void stopRunning() {
             
-            ICEmobileContainer.DEBUG("pushAgent - Stop called");
+            Logger.DEBUG("pushAgent - Stop called");
             running = false;
             close(socket, null, null);
         }
@@ -207,7 +225,7 @@ public class PushAgent {
          * @param ex
          */
         private void onListenError(final Exception ex) {
-            ICEmobileContainer.ERROR("pushAgent - Exception opening local port: " + ex);
+        	Logger.ERROR("pushAgent - Exception opening local port: " + ex);
         }
     }
 
@@ -277,7 +295,7 @@ public class PushAgent {
 
         //		final String registerUrl = formRegisterRequest(BPAS_URL, APP_ID, null) + mConnectionSuffix;
         final String registerUrl = url;
-        ICEmobileContainer.DEBUG("pushAgent - opening initial URL: " + registerUrl);
+        Logger.DEBUG("pushAgent - opening initial URL: " + registerUrl);
         /**
          * As the connection suffix is fixed I just use a Thread to call the connection code
          * 
@@ -290,22 +308,22 @@ public class PushAgent {
                     String response = new String(IOUtilities.streamToBytes(is));
                     close(httpConnection, is, null);
                     String nextUrl = formRegisterRequest(BPAS_URL, APP_ID, response) + mConnectionSuffix;
-                    ICEmobileContainer.DEBUG("pushAgent - Subsequent URL for registration: " + nextUrl);
+                    Logger.DEBUG("pushAgent - Subsequent URL for registration: " + nextUrl);
                     HttpConnection nextHttpConnection = (HttpConnection) Connector.open(nextUrl);
                     InputStream nextInputStream = nextHttpConnection.openInputStream();
                     response = new String(IOUtilities.streamToBytes(nextInputStream));
                     close(nextHttpConnection, is, null);
                     if (REGISTER_SUCCESSFUL.equals(response)) {
-                        ICEmobileContainer.DEBUG("Successfully registered to BIS push: " + response);
+                        Logger.DEBUG("Successfully registered to BIS push: " + response);
 
                     } else if ( USER_ALREADY_SUBSCRIBED.equals(response)) {					
-                        ICEmobileContainer.DEBUG("Welcome back to BIS push: " + response);
+                        Logger.DEBUG("Welcome back to BIS push: " + response);
                         isRegistered = true;
                     } else { 
-                        ICEmobileContainer.DEBUG("BPAS rejected registration: " + response);
+                        Logger.DEBUG("BPAS rejected registration: " + response);
                     }
                 } catch (IOException e) {
-                    ICEmobileContainer.DEBUG("IOException on register() " + e );
+                    Logger.DEBUG("IOException on register() " + e );
                 }
             }
         }.start();
@@ -335,13 +353,13 @@ public class PushAgent {
                     if (DEREGISTER_SUCCESSFUL.equals(response) || 
                             ALREADY_UNSUSCRIBED_BY_PROVIDER.equals(response) || 
                             ALREADY_UNSUSCRIBED_BY_USER.equals(response)) {
-                        ICEmobileContainer.DEBUG("UNRegistered successfully from BIS pushservice");
+                        Logger.DEBUG("UNRegistered successfully from BIS pushservice");
                         isRegistered = false;
                     } else {
-                        ICEmobileContainer.DEBUG("BPAS rejected DE-registration");
+                        Logger.DEBUG("BPAS rejected DE-registration");
                     }
                 } catch (IOException e) {
-                    ICEmobileContainer.DEBUG("IOException on DEregister() " + e );
+                    Logger.DEBUG("IOException on DEregister() " + e );
                 }
             }
         }.start();
