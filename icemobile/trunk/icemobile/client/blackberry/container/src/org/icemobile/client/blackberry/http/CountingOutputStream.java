@@ -30,11 +30,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Code borrowed from http://stackoverflow.com/questions/254719/file-upload-with-java-with-progress-bar
+ * Code reused from http://stackoverflow.com/questions/254719/file-upload-with-java-with-progress-bar
  * 
  * Currently unused as the upload request for Blackberry leverages 
- * the BrowserFieldRequest object, which doesn't expose hooks for this sort of 
- * thing. 
+ * the BrowserFieldRequest object, which doesn't expose fetching 
+ * an outputStream
  */
 public class CountingOutputStream  extends OutputStream {
 
