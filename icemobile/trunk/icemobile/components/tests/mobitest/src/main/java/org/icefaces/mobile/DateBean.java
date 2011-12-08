@@ -116,6 +116,9 @@ public class DateBean implements Serializable{
         String val = "DefaultEvent:";
         this.setEventString(val);
     }
+    public void clearDate(ActionEvent ae){
+        this.selectedDate=new Date();
+    }
 
     public Date getDate2() {
         return date2;

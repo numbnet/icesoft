@@ -134,4 +134,11 @@ public class DateSpinner extends DateSpinnerBase {
     protected FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
     }
+
+    public String getDefaultEventName(FacesContext facesContext){
+         if (org.icefaces.component.utils.Utils.isTouchEventEnabled(facesContext)) {
+             return "onblur";
+         }
+        else return "onchange";
+    }
 }

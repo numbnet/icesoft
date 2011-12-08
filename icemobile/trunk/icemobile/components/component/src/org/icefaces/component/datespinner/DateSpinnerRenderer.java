@@ -15,6 +15,8 @@
  */
 package org.icefaces.component.datespinner;
 
+import com.sun.tools.corba.se.idl.toJavaPortable.StringGen;
+import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.PassThruAttributeWriter;
 import org.icefaces.component.utils.Utils;
 import org.icefaces.renderkit.BaseInputRenderer;
@@ -22,6 +24,7 @@ import org.icefaces.renderkit.BaseInputRenderer;
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
@@ -47,14 +50,23 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+
         DateSpinner dateSpinner = (DateSpinner) component;
         String clientId = dateSpinner.getClientId(context);
         if(dateSpinner.isDisabled() || dateSpinner.isReadonly()) {
             return;
         }
-        String inputValue = context.getExternalContext().getRequestParameterMap().get(clientId+"_input");
+        String inputField = clientId+"_input";
+        if (dateSpinner.isUseNative() && Utils.isIOS5()) {
+            inputField=clientId;
+        }
+        String inputValue = context.getExternalContext().getRequestParameterMap().get(inputField);
+        String hiddenValue= context.getExternalContext().getRequestParameterMap().get(clientId+"_hidden");
         if(!isValueBlank(inputValue)) {
             dateSpinner.setSubmittedValue(inputValue);
+        }
+        else if (!isValueBlank(hiddenValue)) {
+            dateSpinner.setSubmittedValue(hiddenValue);
         }
     }
 
@@ -63,23 +75,23 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         DateSpinner spinner = (DateSpinner) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = spinner.getClientId(context);
+        ClientBehaviorHolder cbh = (ClientBehaviorHolder)component;
+        boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
+        boolean singleSubmit = spinner.isSingleSubmit();
         String initialValue = getStringValueToRender(context, component);
         if (spinner.isUseNative() && Utils.isIOS5()){
             writer.startElement("input", component);
             writer.writeAttribute("type", "date", "type");
-            writer.writeAttribute("id", clientId+"_input", "id");
-            writer.writeAttribute("name", clientId+"_input", "name");
+            writer.writeAttribute("id", clientId, "id");
+            writer.writeAttribute("name", clientId, "name");
             boolean disabled = spinner.isDisabled();
             boolean readonly = spinner.isReadonly();
-            boolean singleSubmit = spinner.isSingleSubmit();
+
             if (isValueBlank(initialValue)) {
-                try {
-                    Date aDate = new Date();
-                    SimpleDateFormat df2 = new SimpleDateFormat("yyyy-mm-dd");
-                    writer.writeAttribute("value",df2.parse(initialValue),"value");
-                } catch (ParseException pe){
-                    writer.writeAttribute("value", "2011-11-01", "value");
-                }
+                SimpleDateFormat df2 = new SimpleDateFormat("yyyy-mm-dd");
+                Date aDate = new Date();
+                writer.writeAttribute("value",df2.format(aDate),"value");
+
             }  else {
                 writer.writeAttribute("value", initialValue, "value");
             }
@@ -89,16 +101,19 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
             if (readonly){
                 writer.writeAttribute("readonly", component, "readonly");
             }
-            if (!disabled || !readonly && singleSubmit){
-                String jsCall =  "ice.se(event,'"+clientId+"');";
-                writer.writeAttribute("onblur", jsCall, null);
+            if (!readonly && !disabled && hasBehaviors){
+                String event = spinner.getDefaultEventName(context);
+                String cbhCall = this.buildAjaxRequest(context, cbh, event);
+                writer.writeAttribute("onblur", cbhCall, null);
+            }
+            else if (singleSubmit){
+                writer.writeAttribute("onblur", "ice.se(event, this);", null);
             }
             writer.endElement("input");
         }
         else {
             Map viewContextMap = context.getViewRoot().getViewMap();
             if (!viewContextMap.containsKey(JS_NAME)) {
-          //      logger.info("LOAD JS FOR DATESPINNER");
                 String jsFname = JS_NAME;
                 if ( context.isProjectStage(ProjectStage.Production)){
                     jsFname = JS_MIN_NAME;
@@ -111,18 +126,19 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
                 writer.writeAttribute("src", src, null);
                 writer.endElement("script");
                 viewContextMap.put(JS_NAME, "true");
-            } // else logger.info("DATESPINNER JS ALREADY LOADED");
+            }
 
             String value = this.encodeValue(spinner, initialValue);
-            encodeMarkup(context, component, value);
+            encodeMarkup(context, component, value, hasBehaviors);
             encodeScript(context, component);
         }
     }
 
-    protected void encodeMarkup(FacesContext context, UIComponent uiComponent, String value) throws IOException {
+    protected void encodeMarkup(FacesContext context, UIComponent uiComponent, String value, boolean hasBehaviors) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         DateSpinner dateEntry = (DateSpinner) uiComponent;
         String clientId = dateEntry.getClientId(context);
+        ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         String eventStr = "onclick";
         if (Utils.isTouchEventEnabled(context)){
             eventStr="ontouchstart";
@@ -138,14 +154,22 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         }
         //first do the input field and the button
         // build out first input field
+        writer.startElement("span", uiComponent);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("name", clientId, "name");
+        writer.writeAttribute("class", "mobi-date-wrapper", "class");
         writer.startElement("input", uiComponent);
         writer.writeAttribute("id", clientId + "_input", "id");
         writer.writeAttribute("name", clientId+"_input", "name");
+
         // apply class attribute and pass though attributes for style.
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent,
                 dateEntry.getCommonAttributeNames());
-        StringBuilder classNames = new StringBuilder(DateSpinner.INPUT_CLASS)
-                .append(" ").append(dateEntry.getStyleClass());
+        StringBuilder classNames = new StringBuilder(DateSpinner.INPUT_CLASS);
+        Object checker = dateEntry.getStyleClass();
+        if (null!=checker){
+              classNames.append(" ").append(dateEntry.getStyleClass());
+        }
         writer.writeAttribute("class", classNames.toString(), null);
         if (value!=null){
             writer.writeAttribute("value", value, null);
@@ -154,6 +178,13 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         if(dateEntry.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if(dateEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         writer.endElement("input");
+                     //hidden field to store state of current instance
+        writer.startElement("input", uiComponent);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("id", clientId + "_hidden", "id");
+        writer.writeAttribute("name", clientId + "_hidden", "name");
+        writer.endElement("input");
+        writer.endElement("span");
         // build out command button for show/hide of date select popup.
         writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "button", "type");
@@ -164,16 +195,14 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
             writer.writeAttribute("onclick", "mobi.datespinner.toggle('"+clientId+"');", null);
         }
         writer.endElement("input");
-        //hidden field to store state of current instance
-        writer.startElement("input", uiComponent);
-        writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("id", clientId + "_hidden", "id");
-        writer.writeAttribute("name", clientId + "_hidden", "name");
-        writer.endElement("input");
+
         // dive that is use to hide/show the popup screen black out.
         writer.startElement("div",uiComponent);
-        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("id", clientId + "_bg", "id");
+        writer.writeAttribute("name", clientId+"_bg", "name");
+    //    writer.writeAttribute("class", "mobi-date", "class");
         writer.endElement("div");
+
         // actual popup code.
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", clientId+"_popup", "id");
@@ -274,16 +303,27 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", "mobi-button mobi-button-default", null);
         writer.writeAttribute ("type", "button", "type");
         writer.writeAttribute("value", "Set", null);
-        //prep for singleSubmit in
+        //prep for singleSubmit
         boolean singleSubmit = dateEntry.isSingleSubmit();
-        writer.writeAttribute(eventStr, "mobi.datespinner.select('"+clientId+"',"+singleSubmit+");", null);
-   //     writer.writeAttribute(eventStr, "mobi.datespinner.select('"+clientId+"');", null);
+        StringBuilder builder = new StringBuilder(255);
+        builder.append("mobi.datespinner.select('").append(clientId).append("',{ event: event,");
+        builder.append("singleSubmit: ").append(singleSubmit);
+        if (hasBehaviors){
+            String behaviors = this.encodeClientBehaviors(context, cbh, "change").toString();
+            behaviors = behaviors.replace("\"", "\'");
+            builder.append(behaviors);
+        }
+        builder.append("});");
+        String jsCall = builder.toString();
+        if (!dateEntry.isDisabled() | !dateEntry.isReadonly()){
+            writer.writeAttribute("onclick", jsCall, null);
+        }
         writer.endElement("input");
         writer.startElement("input", uiComponent);
         writer.writeAttribute("class", "mobi-button mobi-button-default", null);
         writer.writeAttribute ("type", "button", "type");
         writer.writeAttribute("value", "Cancel", null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.close('"+clientId+"');", null);
+        writer.writeAttribute(eventStr, "mobi.datespinner.close('"+clientId+"_bg');", null);
         writer.endElement("input");
         writer.endElement("div");                                        //end of button container
 
@@ -299,8 +339,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         int yrInt = spinner.getYearInt();
         int mnthInt  = spinner.getMonthInt();
         int dateInt = spinner.getDayInt();
-        int yrStart = spinner.getYearStart();
-        int yrEnd = spinner.getYearEnd();
 
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);

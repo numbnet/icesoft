@@ -19,6 +19,9 @@ package org.icefaces.component.datespinner;
 import org.icefaces.ace.meta.annotation.*;
 
 import org.icefaces.ace.meta.baseMeta.UIInputMeta;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 
 
@@ -33,8 +36,10 @@ import org.icefaces.ace.meta.baseMeta.UIInputMeta;
         rendererType = "org.icefaces.component.DateSpinnerRenderer",
         tlddoc = "DateSpinner is an input component to provide a date for mobile components. ")
 
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
+}, defaultEvent="change")
 public class DateSpinnerMeta extends UIInputMeta {
-
 
     @Property(defaultValue = "yyyy-MM-dd", tlddoc = "DateFormat pattern for localization")
     private String pattern;
