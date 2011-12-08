@@ -77,16 +77,17 @@ if (!window.ice.mobile) {
         namespace.test = function(obj) {
             try {
                 
+                icefaces.logInContainer( "Starting test..."); 
                 if (namespace.push && namespace.push.pauseBlockingConnection ) {                     
                      icefaces.logInContainer("pauseConnection present"); 
                 } else {                  
                 	 icefaces.logInContainer("pauseConnection missing"); 
                 } 
                                      
-                if (icefaces.scan) {  
-                   icefaces.logInContainer("qrCode scanner present"); 
+                if (icefaces.shootPhoto) {  
+                   icefaces.logInContainer("shootPhoto present"); 
                 } else { 
-                   icefaces.logInContainer("qrCode scanner missing"); 
+                   icefaces.logInContainer("shootPhoto missing"); 
                 } 
                 
             } catch (e) {
@@ -302,7 +303,6 @@ if (!window.ice.mobile) {
         // getIPCIframe();
         // document.body.appendChild(document.createTextNode("ice.mobile functions enabled."));
         addConnectionStatus();
-        var d = new Date(); 
     }
     //use below if loaded over network vs embedded use to eval this file
     // document.addEventListener("DOMContentLoaded", init, false);

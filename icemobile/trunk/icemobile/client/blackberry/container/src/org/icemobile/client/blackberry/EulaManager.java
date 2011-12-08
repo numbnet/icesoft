@@ -15,18 +15,16 @@ import net.rim.device.api.ui.decor.BackgroundFactory;
 
 public class EulaManager {
 
-
     private String mEula; 
     
     private BrowserField mBrowserField; 
     private Screen mPopup; 
-    private ICEmobileContainer mContainer;
-   
+    private ContainerController mController;
 
-    public EulaManager(final ICEmobileContainer container) {
+    public EulaManager(final ContainerController controller) {
         
-        mContainer = container;
-        mEula = container.readLocalFileSystem(getClass(), "/eula.html");
+        mController = controller;
+        mEula = controller.readLocalFileSystem(getClass(), "/eula.html");
         
         // This may be somewhat problematic, but if the customer wishes no eula, 
         // don't try to show one, accept, and move on. 
@@ -56,8 +54,8 @@ public class EulaManager {
                 ui.popScreen( ui.getActiveScreen() ); 
                 mPopup.deleteAll();
                 mPopup = null;
-                container.accept();
-                container.init();
+                controller.acceptEula();
+                controller.init();
                 
             }        	
         }); 
@@ -73,18 +71,16 @@ public class EulaManager {
                     } catch (InterruptedException ie) {}
                     vfm.add(okButton);
                 } 
-                
             }
         } );        
-        
     }
 
     public void show() {
 
         if (mEula == null || mEula.trim().length()==0 ) { 
-            ICEmobileContainer.DEBUG("Skipping eula check");
-            mContainer.accept(); 
-            mContainer.init();
+        	Logger.DEBUG("Skipping eula check");
+            mController.acceptEula(); 
+            mController.init();
             return;
         }
         

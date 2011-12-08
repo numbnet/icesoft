@@ -39,7 +39,6 @@ import javax.microedition.io.file.FileSystemRegistry;
 import org.icemobile.client.blackberry.options.BlackberryOptionsProperties;
 import org.icemobile.client.blackberry.options.BlackberryOptionsProvider;
 import org.icemobile.client.blackberry.push.PushAgent;
-import org.icemobile.client.blackberry.script.audio.AudioPlayback;
 import org.icemobile.client.blackberry.script.audio.AudioRecorder;
 import org.icemobile.client.blackberry.script.camera.VideoController;
 import org.icemobile.client.blackberry.script.camera.WidgetCameraController;
@@ -60,14 +59,15 @@ import net.rim.device.api.browser.field.RenderingSession;
 import net.rim.device.api.browser.field2.BrowserField;
 import net.rim.device.api.browser.field2.BrowserFieldConfig;
 import net.rim.device.api.browser.field2.BrowserFieldConnectionManager;
+import net.rim.device.api.browser.field2.BrowserFieldController;
 import net.rim.device.api.browser.field2.BrowserFieldCookieManager;
+import net.rim.device.api.browser.field2.BrowserFieldHistory;
 import net.rim.device.api.browser.field2.BrowserFieldListener;
 import net.rim.device.api.browser.field2.BrowserFieldRequest;
 import net.rim.device.api.io.IOUtilities;
 import net.rim.device.api.io.http.HttpHeaders;
 import net.rim.device.api.script.ScriptEngine;
 import net.rim.device.api.script.Scriptable;
-import net.rim.device.api.script.ScriptableFunction;
 import net.rim.device.api.system.ApplicationManager;
 import net.rim.device.api.system.CoverageInfo;
 import net.rim.device.api.system.DeviceInfo;
@@ -76,7 +76,6 @@ import net.rim.device.api.system.EventLogger;
 import net.rim.device.api.system.SystemListener;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.component.BitmapField;
-import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
 
 import net.rim.blackberry.api.messagelist.*; 
@@ -85,7 +84,7 @@ import net.rim.blackberry.api.messagelist.*;
  * This class extends the UiApplication class, providing a
  * graphical user interface.
  */
-public class ICEmobileContainer extends UiApplication implements SystemListener {
+public class ICEmobileContainer extends UiApplication implements SystemListener, ContainerController {
 
     // Default, compile time, initial page. This value is passed to BlackberryOptionsProperties
     // during construction to be used if the Properties object is new
@@ -96,15 +95,14 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     // Some startup branding options
     private static final String LOADING_IMAGE = "ICEfaces-360x480.gif";
 
-    // Application GUID for logging; In Eclipse, type a string, select it and right click->"Convert String to Long"
-    // to create a unique GUID.
-    // Last used version -> "ICEmobileContainer 1.0 Beta" 
-    public static final long GUID = 0xd48f0ea85b8c7e00L; 
-
+    // Logging GUID code moved to Logger class
+   
     // Essential Webkit browser member variables 
     private BrowserField mBrowserField;
     private ScriptEngine mScriptEngine;
     private BrowserFieldCookieManager mBrowserCookieManager;
+    private BrowserFieldHistory mBrowserHistory;
+    private BrowserFieldController mBrowserController; 
     private String mInitialScript;
     private RenderingSession mRenderingSession;
 
@@ -112,17 +110,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     private BlackberryOptionsProperties mOptionsProperties; 
     private BlackberryOptionsProvider mOptionsProvider; 
 
-    // The ScriptExtension points 
-    private Scriptable mCameraController;
-    private Scriptable mAudioRecorder; 
-    private Scriptable mAudioPlayer;
-    private Scriptable mAjaxUpload;
-    private Scriptable mResultReader; 
-    private Scriptable mVideoController;
-    private Scriptable mQRCodeScanner; 
-    private Scriptable mJavascriptLogger; 
-
-    // load screen variables 
+        // load screen variables 
     private MainScreen mMainScreen;
     private EncodedImage mLoadingImage;
     
@@ -144,9 +132,8 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
 //    private PushServiceListener mPushServiceListener;
     private static ApplicationIndicator mAppIndicator; 
     
-    // Keeping track of the home page, and 
+    // Keeping track of the home page
     private String mCurrentHome;
-    private String mCurrentPage; 
     
     // Keeping track of page load times
     private String mCurrentlyLoadingDocument; 
@@ -154,9 +141,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     
     private boolean mRealDevice  = !DeviceInfo.isSimulator(); 
     
-    private Timer mJavascriptProbe = new Timer();
-    
-    private static long mStartTime;
+    private Element mScriptElement; 
     
     
     private Runnable mParkScriptRunner = new Runnable() { 
@@ -165,12 +150,10 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         	try {   
         		if (mParkScript != null && mRealDevice ) {
         			mScriptEngine.executeScript(mParkScript, null);
-        			TRACE( System.currentTimeMillis(),  "ICEmobile - parkScript success" );
-//        			mJavascriptProbe.cancel();
+        			Logger.TRACE( "ICEmobile - parkScript success" );
         		}
         	} catch (Throwable t) {
-        		TRACE(System.currentTimeMillis(), "ICEmobile - Park script: " + mParkScript + ",  failed");
-        		DEBUG("ICEmobile - Exception is: " + t);
+        		Logger.DEBUG("ICEmobile - ParkScript Exception is: " + t);
         	} 
         }
     }; 
@@ -221,7 +204,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     private void eulaCheck() {
         
         if (!mOptionsProperties.isEulaViewed()) { 
-            DEBUG("ICEmobile - Launching eula viewer");
+        	Logger.DEBUG("ICEmobile - Launching eula viewer");
             EulaManager em = new EulaManager(this); 
             em.show();            
         } else { 
@@ -238,21 +221,14 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
      * 
      * @param url 
      */
-    void init() {
+    public void init() {
 
-    	mStartTime = System.currentTimeMillis();
         mHistoryManager = new HistoryManager( HISTORY_SIZE );           
-
-        EventLogger.clearLog();
-        EventLogger.register(GUID, "ICE", EventLogger.VIEWER_STRING);
-        EventLogger.setMinimumLevel( EventLogger.DEBUG_INFO  );
 
         try { 
 
             mMainScreen = new ApplicationScreen(this);
             pushScreen(mMainScreen);
-
-            //enumerateStorageLocations();
 
             // Add loading screen and display ASAP
             mLoadingImage = EncodedImage.getEncodedImageResource( LOADING_IMAGE );
@@ -269,10 +245,10 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
 
             // This should put an error screen on the page. No sense continuing if the javascript isn't found
             if (mInitialScript == null) { 
-                ERROR( "interface.js NOT found");
+            	Logger.ERROR( "interface.js NOT found");
                 return; 
             } else { 
-                DEBUG("local js - length: " + mInitialScript.length());
+            	Logger.DEBUG("local js - length: " + mInitialScript.length());
             }
 
 
@@ -287,14 +263,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
             OptionsManager.registerOptionsProvider( mOptionsProvider );
 
 
-            // Perform BrowserField configuration 
-            BrowserFieldConfig bfc = new BrowserFieldConfig(); 
-            bfc.setProperty(BrowserFieldConfig.ENABLE_COOKIES, Boolean.TRUE);
-            bfc.setProperty(BrowserFieldConfig.ERROR_HANDLER, new FieldErrorHandler( mBrowserField ) );
-            bfc.setProperty(BrowserFieldConfig.ALLOW_CS_XHR, Boolean.TRUE);
-
-            mBrowserField = new BrowserField( bfc );
-            mMainScreen.add(mBrowserField);	
+            setupBrowserGui();	
 
 
             // Push registration will be performed here via one of two 
@@ -310,19 +279,20 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
             mAppIndicator = reg.getApplicationIndicator(); 
             //			mAppIndicator.set ( )
 
-            mBrowserCookieManager = mBrowserField.getCookieManager();			
+            			
 
             mBrowserField.addListener(new BrowserFieldListener() { 
                 public void documentLoaded( BrowserField field, Document document) { 
 
                     try { 
-                         TRACE(System.currentTimeMillis(), "DocumentLoaded: " + document.getBaseURI() );
+//                    	Logger.TRACE(System.currentTimeMillis(), mStartTime,  "DocumentLoaded: " + document.getBaseURI() );
 
                         final String uri = document.getBaseURI();
                         if (uri.indexOf("about:blank") == -1 ) { 		
                             
-                            if (uri != null && uri.equals(mCurrentlyLoadingDocument)) { 
-                                TIME(mDocumentStartTime, "ICEmobile loading page: " + uri );
+                            if (uri != null && uri.equals(mCurrentlyLoadingDocument)) {                       	
+                            
+                            	Logger.TIME(mDocumentStartTime,  "ICEmobile loading page: " + uri );
                             }
                             
                             mScriptEngine = mBrowserField.getScriptEngine();
@@ -340,50 +310,54 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                                         try {
                                             
                                             Document document = mBrowserField.getDocument();
-//                                            DEBUG("Document creation: uri: " + uri + ", document: " + document);
-                                            Element scriptElem = document.createElement("script");
-                                            scriptElem.setTextContent(mInitialScript);
+                                            mScriptElement  = document.createElement("script");
+                                            mScriptElement.setTextContent(mInitialScript);
                                             //append to head
                                             Element docElement = document.getDocumentElement();
                                             Node child = docElement.getFirstChild();  
                                             while ( child != null && ( !child.getNodeName().equalsIgnoreCase("head"))) { 
                                                 child = child.getNextSibling();
                                             }
-                                            
                                             if (child != null) { 
-//                                                DEBUG("Found true head element at: " + idx);
-                                                child.appendChild(scriptElem);
-                                            } 
-                             
-                                            ScriptableFunction myTestFunction = new ScriptableTest(null);
-                                            mScriptEngine.addExtension("icefaces.shootPhoto", mCameraController );
-                                            //											mScriptEngine.addExtension("icefaces.uploadPhoto", oldUploadPhoto );
-                                            mScriptEngine.addExtension("icefaces.test", myTestFunction );
-                                            mScriptEngine.addExtension("icefaces.toggleMic", mAudioRecorder);
-                                            mScriptEngine.addExtension("icefaces.playAudio", mAudioPlayer);
-                                            mScriptEngine.addExtension("icefaces.ajaxUpload", mAjaxUpload);
-                                            mScriptEngine.addExtension("icefaces.getResult", mResultReader);
-                                            mScriptEngine.addExtension("icefaces.shootVideo", mVideoController);
-                                            mScriptEngine.addExtension("icefaces.scan", mQRCodeScanner);
-                                            mScriptEngine.addExtension("icefaces.logInContainer", mJavascriptLogger);
-                                            DEBUG("ICEmobile - native script executed");
+                                                child.appendChild(mScriptElement);
+                                            }
+                                            
+                                            // TODO: convert to single dispatcher instance
+                                            mScriptEngine.addExtension("icefaces.shootPhoto", 
+                                            		new WidgetCameraController(ICEmobileContainer.this) );
+                                            mScriptEngine.addExtension("icefaces.test", 
+                                            		new ScriptableTest() );                                            
+                                            mScriptEngine.addExtension("icefaces.toggleMic", 
+                                            		new AudioRecorder (ICEmobileContainer.this));
+                                            mScriptEngine.addExtension("icefaces.ajaxUpload", 
+                                            		new AjaxUpload(ICEmobileContainer.this));
+                                            mScriptEngine.addExtension("icefaces.getResult", 
+                                            		new ScriptResultReader(ICEmobileContainer.this));
+                                            mScriptEngine.addExtension("icefaces.shootVideo", 
+                                            		new VideoController(ICEmobileContainer.this));
+                                            mScriptEngine.addExtension("icefaces.scan", 	
+                                            		new QRCodeScanner(ICEmobileContainer.this));
+                                            mScriptEngine.addExtension("icefaces.logInContainer", 
+                                            		new JavascriptDebugger());
+                                            Logger.DEBUG("ICEmobile - native script executed");
                                             invokeLater (mParkScriptRunner);
                                                 
 
                                         } catch (Throwable t) {
-                                            ERROR("ICEmobile - Error executing startup scripts: " + t + ", document: " + uri);
+                                        	Logger.ERROR("ICEmobile - Error executing startup scripts: " + t + ", document: " + uri);
                                         }
                                     } 
                                 });
-                            }                      
+                            } else { 
+                            	Logger.DEBUG("ICEmobile - NO SCRIPT ENGINE (ok at startup)");
+                            }
 
-                            mCurrentPage = uri;
                             mHistoryManager.addLocation(uri);
                             ((ApplicationScreen)mMainScreen).updateHistoryMenus();
 
                         } 
                     } catch (Exception e) { 
-                        ERROR("Exception in DocumentLoad: " + e);
+                    	Logger.ERROR("Exception in DocumentLoad: " + e);
                     }
                 } 
 
@@ -392,13 +366,16 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                 // }
                 //// Only change the script engine when a document is loaded.
                 public void documentCreated ( BrowserField field, ScriptEngine scriptEngine, Document document) { 
-                    //	DEBUG("Document created: " + document.getBaseURI());	
                     mCurrentlyLoadingDocument = document.getBaseURI(); 
                     mDocumentStartTime = System.currentTimeMillis();
                 }
-                //				
+                //	
+                
+                public void documentError(BrowserField field, Document document) { 
+                	Logger.ERROR("ICEmobile - Error in document: " + document.getBaseURI());
+                }
                 public void documentUnloading (BrowserField field, Document document) {
-                    DEBUG("Document unloading??? ");
+                	Logger.DEBUG("Document unloading??? ");
                 }
                 //				
                 //  public void downloadProgress (BrowserField field, ContentReadEvent readEvent) {					
@@ -412,28 +389,31 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
 
             instantiateScriptExtensions();
             loadPage( mCurrentHome );
-//            mJavascriptProbe.scheduleAtFixedRate(javascriptTester, 60000, 20000);
-                      
-
-
         } catch (Throwable e) { 
-            ERROR ("Error loading initial page: " + e);
-            Dialog.alert("ICEmobile - exception during init: " + e);
+        	Logger.ERROR ("Error loading initial page: " + e);
+            Logger.DIALOG("ICEmobile - exception during init: " + e);
         }
     }
+
+	private void setupBrowserGui() {
+		// Perform BrowserField configuration 
+		
+		BrowserFieldConfig bfc = new BrowserFieldConfig(); 
+		bfc.setProperty(BrowserFieldConfig.ENABLE_COOKIES, Boolean.TRUE);
+		bfc.setProperty(BrowserFieldConfig.ERROR_HANDLER, new FieldErrorHandler( mBrowserField ) );
+		bfc.setProperty(BrowserFieldConfig.ALLOW_CS_XHR, Boolean.TRUE);
+
+		mBrowserField = new BrowserField( bfc );
+		mBrowserController = mBrowserField.getController();
+		mBrowserCookieManager = mBrowserField.getCookieManager();
+		mMainScreen.add(mBrowserField);
+	}
 
     /**
      * Construct the custom script extensions based on capabilities flags.  
      */
     private void instantiateScriptExtensions() {
-        mAjaxUpload = new AjaxUpload(this );
-        mCameraController = new WidgetCameraController(this);
-        mAudioRecorder = new AudioRecorder(this);
-        mAudioPlayer = new AudioPlayback(this);
-        mResultReader = new ScriptResultReader( this );			
-        mVideoController = new VideoController( this );
-        mQRCodeScanner = new QRCodeScanner(this);
-        mJavascriptLogger = new JavascriptDebugger(); 
+       
     }
 
     /**
@@ -445,8 +425,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         Enumeration i = FileSystemRegistry.listRoots(); 
         while (i.hasMoreElements()) { 
             root = (String) i.nextElement(); 
-            DEBUG("File device: " + root);	
-
+            Logger.DEBUG("File device: " + root);	
         }
     }
 
@@ -469,7 +448,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
 
         mPushAgent.shutdown(); 
         mPushAgent = new PushAgent();
-        DEBUG("ICEmobile - PushAgent reset");
+        Logger.DEBUG("ICEmobile - PushAgent reset");
     }
 
 
@@ -478,10 +457,10 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
      * to load the intitial request must be used for all subsequent requests in order to maintain 
      * the correct cookie setup. 
      */
-    public InputConnection postRequest( String url, String request, HttpHeaders headers) throws Exception { 
+    public InputConnection postRequest( String request, HttpHeaders headers) throws Exception { 
 
         BrowserFieldConnectionManager bfconman = mBrowserField.getConnectionManager();
-        BrowserFieldRequest bfr = new BrowserFieldRequest(url, request.getBytes(), headers);
+        BrowserFieldRequest bfr = new BrowserFieldRequest(getCurrentURL(), request.getBytes(), headers);
         return bfconman.makeRequest(bfr);
     }
 
@@ -492,8 +471,6 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     /**
      * Get the quickURL. The quick URL is a persisted value used in the URL 
      * navigation menu. If it hasn't been defined, use the current URL. 
-     * Can't be kept in the menu, as those are 
-     * @param
      */
     public String getQuickURL() { 
         String u = mOptionsProperties.getQuickURL(); 
@@ -504,8 +481,9 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     }
     
     /**
-     * Set the QuickURL. This will persist the value
-     * @param url
+     * Set the QuickURL. This will persist the value in flash as well 
+     * as load the URL.  
+     * @param url URL to visit
      */
     public void setQuickURL(String url) { 
         if (url != null && url.trim().length() > 0) { 
@@ -515,6 +493,10 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         } 
     }
 
+    /**
+     * Set the state of the notification Icon in the application
+     * @param show true to show the icon.
+     */
     public static void showNotificationIcon(boolean show) { 
     	mAppIndicator.setVisible(show);
     }
@@ -534,9 +516,9 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
             String idType = id + "-file"; 
             String updateScript = "ice.addHiddenField('" + id + "' , '" + idType + "' , '"+ filename + "');";			
             insertHiddenScript( updateScript );
-            DEBUG("ICEmobile - Hidden File field inserted");
+            Logger.DEBUG("ICEmobile - Hidden File field inserted");
         } else { 
-            ERROR("ICEmobile - Captured filename is invalid ");
+        	Logger.ERROR("ICEmobile - Captured filename is invalid ");
         }			
     }
     
@@ -551,10 +533,10 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
             String idType = id + "-text"; 
             String updateScript = "ice.addHiddenField('" + id + "' , '" + idType + "' , ' "+ qrResult + "');";         
             insertHiddenScript( updateScript );
-            DEBUG("ICEmobile - QRCode text inserted");
+            Logger.DEBUG("ICEmobile - QRCode text inserted");
             
         } else { 
-            ERROR("ICEmobile - Invalid qrCode scan result" );
+        	Logger.ERROR("ICEmobile - Invalid qrCode scan result" );
         }           
     }
     
@@ -568,7 +550,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         try {               
             mScriptEngine.executeScript(script, null);
         } catch (Throwable e) {                         
-            ERROR ("ICEmobile - Error inserting field: " + e );
+        	Logger.ERROR ("ICEmobile - Error inserting field: " + e );
         }
     }
 
@@ -584,17 +566,17 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         try { 
             if (mScriptEngine != null) { 
                 mScriptEngine.executeScript(updateScript, null);
-                DEBUG("ICEmobile - Ajax response handled");
+                Logger.DEBUG("ICEmobile - Ajax response handled");
             } else { 
-                ERROR("ICEmobile Null ScriptEngine handling Ajax Response?");
+            	Logger.ERROR("ICEmobile Null ScriptEngine handling Ajax Response?");
             }
 
         } catch (Throwable t) {
 
             if (t.getMessage().indexOf("DOM" ) == -1) {  
-                ERROR( "ICEmobile - Error handling AJAX response: "  + t );
+            	Logger.ERROR( "ICEmobile - Error handling AJAX response: "  + t );
             } else { 
-                ERROR("DOM exception still occurs");
+            	Logger.ERROR("DOM exception still occurs");
             }
         }
     }
@@ -616,18 +598,15 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         if (id != null && id.length() > 0) {
 
             String thumbId = id + "-thumb";
-
             String updateScript = "ice.setThumbnail('" + thumbId + "' , 'data:image/jpg;base64," + 
             base64ImageBytes + "');";
-
             try { 
                 mScriptEngine.executeScript(updateScript, null);
-
             } catch (Throwable e) {							
-                ERROR ("ICEmobile - Exception inserting thumbnail image: " + e);
+            	Logger.ERROR ("ICEmobile - Exception inserting thumbnail image: " + e);
             }
         } else { 
-            ERROR("ICEmobile - Insert thumbnail - invalid id: " + id);
+        	Logger.ERROR("ICEmobile - Insert thumbnail - invalid id: " + id);
         }				
     }
 
@@ -639,22 +618,39 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     public void loadPage(final String url) { 
 
         if (checkNetworkAvailability()) { 
-            UiApplication.getUiApplication().invokeLater( new Runnable() {
-                public void run() { 
-                    mBrowserCookieManager.setCookie( url , "com.icesoft.user-agent=HyperBrowser/1.0");
-                    mBrowserField.requestContent( url );
-                }
-            });		
+        	navigateUsingFieldController(url); 
+//        	navigateUsingField(url);
         } else { 
-            DIALOG("Network Unavailable");
+        	Logger.DIALOG("Network Unavailable");
         }
-    }	
+    }
+    
+    private void navigateUsingFieldController( String url ) { 
+		try { 
+			BrowserFieldRequest bfr = new BrowserFieldRequest( url );
+			mBrowserCookieManager.setCookie( url , "com.icesoft.user-agent=HyperBrowser/1.0");
+			mBrowserController.handleNavigationRequest(bfr);
+			
+		} catch (Exception e) { 
+			Logger.ERROR("ICEmobile - exception requesting content: " + e);
+		}
+	}
+	
+	private void navigateUsingField(String url) { 
+		
+		try { 
+			mBrowserCookieManager.setCookie( url , "com.icesoft.user-agent=HyperBrowser/1.0");
+			mBrowserField.requestContent(url);
+		} catch (Exception e) { 
+			Logger.ERROR("ICEmobile - exception requesting content: " + e);
+		}
+	}
 
     /**
      * Suitable for the options page where we have exited the app and want 
      * to reload when we rejoin. 
      */
-    public void reloadApplication() { 
+    public void reloadApplicationOnReentry() { 
         mReloadOnActivate = true; 
     }
     
@@ -679,19 +675,23 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         // Use either an email notification (if desired) or the 
         // RIM push version
         if (mOptionsProperties.isUsingEmailNotification()) { 
-            mParkScript  = "if (ice.push) {ice.push.parkInactivePushIds" + argument + "}";      
-            mPauseScript  = "if (ice.push) {ice.push.pauseBlockingConnection" + argument + "}";       
+            mParkScript  = "if (ice.push) {ice.push.parkInactivePushIds" + argument;      
+            mPauseScript  = "if (ice.push) {ice.push.pauseBlockingConnection" + argument;       
         } else { 
-            mParkScript  = "if (ice.push) {ice.push.parkInactivePushIds"+ argument +"}";
-            mPauseScript = "if (ice.push) {ice.push.pauseBlockingConnection" + argument + "}";
+            mParkScript  = "if (ice.push) {ice.push.parkInactivePushIds"+ argument;
+            mPauseScript = "if (ice.push) {ice.push.pauseBlockingConnection" + argument;
         }
+        
+        mParkScript += "} else { icefaces.logInContainer('ICEmobile - parkInactivePushIds missing'); }";
+        mPauseScript += "} else { icefaces.logInContainer('ICEmobile - pauseBlocking missing'); }";
+        
     }
 
     /**
      * Suitable for the Menu system when we want to reload the page 
      * immediately from the application
      */
-    public void reloadApplicationImmediately() { 
+    public void reloadHomePage() { 
         loadPage ( mOptionsProperties.getHomeURL() );
     }
     
@@ -699,22 +699,16 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
      * Reload the current page. 
      */
     public void reloadCurrentPage() { 
-        loadPage( mCurrentPage );
+    	mBrowserField.refresh(); 
     }
     
-    /**
-     * Allow a borkened demo system to reset the audio recorder structure.
-     */
-    public void resetAudioSystem() { 
-        ((AudioRecorder)mAudioRecorder).resetAudioState();
-    }
-
+   
     /**
      * UIApplication activate override. 
      */
     public void activate() { 
 
-        // method gets called several times in contravention of docs on activate();
+        // method gets called several times which is not described in docs on activate();
         if (isForeground() ) { 
             // turn off the notification indicator if we're revisiting the app. 
             // However, it wont be defined if this is the first time entry. 
@@ -730,10 +724,10 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
             try { 
                 if (mScriptEngine != null && mRealDevice) { 
                     mScriptEngine.executeScript("if (ice.push) { ice.push.resumeBlockingConnection();}" , null);
-                    DEBUG("ICEmobile - resumed blocking connection");
+                    Logger.DEBUG("ICEmobile - resumed blocking connection");
                 }
             } catch (Throwable t) { 
-                ERROR("ICEmobile - resumeScript exception: " + t);
+            	Logger.ERROR("ICEmobile - resumeScript exception: " + t);
             }
         } 
     }
@@ -743,13 +737,12 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
         if (mPauseScript != null && mScriptEngine != null && mRealDevice) {
             try { 
                 mScriptEngine.executeScript(mPauseScript, null);
-                DEBUG ("ICEmobile - Paused blocking connection");
+                Logger.DEBUG ("ICEmobile - Paused blocking connection");
               
             } catch (Throwable t) { 
-                ERROR("ICEmobile - Exception pausing Blocking Connection: " + t);
+            	Logger.ERROR("ICEmobile - Exception pausing Blocking Connection: " + t);
             }
         }
-        
     }
 
 
@@ -773,7 +766,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
                 returnVal = new String(data); 
             }
         } catch (IOException ioe) { 
-            ICEmobileContainer.ERROR("Exception reading resource: " + ioe);
+        	Logger.ERROR("Exception reading resource: " + ioe);
         } finally { 
         
             try { 
@@ -788,7 +781,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
     /**
      * The eula has been accepted, persist the change. 
      */
-    void accept() { 
+    public void acceptEula() { 
         mOptionsProperties.setEulaViewed(true); 
         mOptionsProperties.save();
     }
@@ -798,87 +791,42 @@ public class ICEmobileContainer extends UiApplication implements SystemListener 
      * show sufficient coverage to operate. Should be checked before attempting 
      * to load pages, to prevent an endless black screen. 
      */
-    private boolean checkNetworkAvailability() { 
-
+    private boolean checkNetworkAvailability() {
+    	
         return  ( CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_DIRECT ) || 
                 CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_BIS_B) || 
-                CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_MDS) ); 
+                CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_MDS) );
     }
-
-    
-    
-
-    // ----------------------- Convenience logging methods
-
-    public static void DEBUG( String message) { 
-        EventLogger.logEvent(GUID, message.getBytes(), EventLogger.DEBUG_INFO);
-    }
-
-    public static void ERROR( String message) { 
-        EventLogger.logEvent(GUID, message.getBytes(), EventLogger.ERROR);
-    }	
-
-    public static void WARN(String message) { 
-        EventLogger.logEvent(GUID, message.getBytes(), EventLogger.WARNING);
-    }
-
-    public static void TIME( long startTime, String message) { 
-        DEBUG( message + " took: " + (System.currentTimeMillis() - startTime) + " ms"); 
-    }
-    public static void TRACE( long traceTime, String message) { 
-        DEBUG( message + " at: " + (traceTime - mStartTime) + " ms"); 
-    }
-    
-    public static void DIALOG(final String message) {
-        
-        UiApplication.getUiApplication().invokeLater(new Runnable() {
-            
-            public void run() { 
-                Dialog.alert(message);
-            }
-        });
-    }
-    
     
     // -------------------- System event methods ----------------------------
     
     public void batteryGood() {
-        DEBUG("BATTERY GOOD");
-        // TODO Auto-generated method stub
-        
+        Logger.DEBUG("BATTERY GOOD");
     }
 
     public void batteryLow() {
-        DEBUG("BATTERY LOW");
-        // TODO Auto-generated method stub
-        
+    	Logger.DEBUG("BATTERY LOW");
     }
 
     public void batteryStatusChange(int arg0) {
-        DEBUG ("BATTERY STATUS: " + arg0);
-        // TODO Auto-generated method stub
-        
+    	Logger.DEBUG ("BATTERY STATUS: " + arg0);
     }
 
     public void powerOff() {
-        DEBUG ("POWER OFF");
-        // TODO Auto-generated method stub    
+    	Logger.DEBUG ("POWER OFF");
     }
     
-    private TimerTask javascriptTester = new TimerTask () { 
-        public void run() { 
-            if (mScriptEngine != null) { 
-                try { 
-                    mScriptEngine.executeScript("ice.test();" , null);
-                } catch (Exception e) { 
-                    ERROR("ice.test - exception testing namespace: " + e); 
-                }
-            } else { 
-                DEBUG("ice.test - script engine is null!"); 
+    public void testJavascript() { 
+    	if (mScriptEngine != null) { 
+            try { 
+                mScriptEngine.executeScript("ice.test();" , null);
+                Logger.DEBUG("ice.test - run without exception");
+            } catch (Exception e) { 
+            	Logger.ERROR("ice.test - exception testing namespace: " + e); 
             }
-
+        } else { 
+        	Logger.DEBUG("ice.test - script engine is null!"); 
         }
-    };
-    
+    }    
 }
 

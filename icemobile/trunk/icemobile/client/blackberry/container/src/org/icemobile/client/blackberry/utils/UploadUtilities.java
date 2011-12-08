@@ -35,7 +35,7 @@ import java.util.Vector;
 import javax.microedition.io.Connector;
 import javax.microedition.io.file.FileConnection;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.Logger;
 
 public class UploadUtilities {
 
@@ -83,7 +83,6 @@ public class UploadUtilities {
         int spos = 0; 
 
         int epos = str.indexOf( delim ); 
-        String token;
         while (true) {
             // Catch the end case. Might be zero length, or might have to catch case when str= "aaa="
             if (epos == -1) { 
@@ -149,7 +148,6 @@ public class UploadUtilities {
         if (original.length() > spos) {
             retVal.append( original.substring(spos ));
         }
-
         return retVal.toString();
     }
 
@@ -176,7 +174,7 @@ public class UploadUtilities {
 
             }
         } catch (IOException ioe) { 
-            ICEmobileContainer.ERROR("readFile - Exception opening file: " + ioe + ", path of file: " +
+        	Logger.ERROR("readFile - Exception opening file: " + ioe + ", path of file: " +
                     fconn.getPath());
 
 
