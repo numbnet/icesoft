@@ -33,7 +33,7 @@ import net.rim.device.api.command.ReadOnlyCommandMetadata;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.util.StringProvider;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.ContainerController;
 
 /**
  * This MenuItem is intended to execute from the Blackberry 
@@ -42,21 +42,19 @@ import org.icemobile.client.blackberry.ICEmobileContainer;
  */
 public class BackMenuItem extends MenuItem {
 
-    private ICEmobileContainer mContainer; 
+    private ContainerController mController; 
 
-    public BackMenuItem(ICEmobileContainer container) { 
+    public BackMenuItem(ContainerController controller) { 
         super(new StringProvider("Back"), 3, 0);
-        mContainer = container;
+        mController = controller;
         super.setCommand( new Command( new BackHandler() ));
     }
-
     
 
     class BackHandler extends CommandHandler { 
 
         public void execute(ReadOnlyCommandMetadata metadata, Object context) { 
-            mContainer.back();
+            mController.back();
         }
     } 
-
 }

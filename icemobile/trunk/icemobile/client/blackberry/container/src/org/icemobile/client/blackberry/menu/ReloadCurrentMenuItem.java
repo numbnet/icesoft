@@ -33,7 +33,8 @@ import net.rim.device.api.command.ReadOnlyCommandMetadata;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.util.StringProvider;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.ContainerController;
+import org.icemobile.client.blackberry.Logger;
 
 /**
  * This MenuItem is intended to execute from the Blackberry 
@@ -43,11 +44,11 @@ import org.icemobile.client.blackberry.ICEmobileContainer;
  */
 public class ReloadCurrentMenuItem extends MenuItem {
 
-    private ICEmobileContainer mContainer; 
+    private ContainerController mController; 
 
-    public ReloadCurrentMenuItem(ICEmobileContainer container) { 
+    public ReloadCurrentMenuItem(ContainerController controller) { 
         super(new StringProvider("Reload"), 2, 0);
-        mContainer = container;
+        mController = controller;
         super.setCommand( new Command( new ReloadCurrentPageHandler() ));
     }
 
@@ -60,7 +61,8 @@ public class ReloadCurrentMenuItem extends MenuItem {
         }
 
         public void execute(ReadOnlyCommandMetadata metadata, Object context) { 
-            mContainer.reloadCurrentPage();
+        	Logger.DEBUG("menu.reload - Reloading current page" );
+            mController.reloadCurrentPage();
         }
     } 
 

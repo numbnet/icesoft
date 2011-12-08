@@ -26,13 +26,14 @@
  */ 
 package org.icemobile.client.blackberry.menu;
 
+import org.icemobile.client.blackberry.ContainerController;
+
 import net.rim.device.api.command.Command;
 import net.rim.device.api.command.CommandHandler;
 import net.rim.device.api.command.ReadOnlyCommandMetadata;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.util.StringProvider;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
 
 /**
  * This menu item allows users to reset the Push registration 
@@ -41,11 +42,11 @@ import org.icemobile.client.blackberry.ICEmobileContainer;
  */
 public class ResetPushMenuItem  extends MenuItem {
 
-    private ICEmobileContainer mContainer; 
+    private ContainerController mController; 
 
-    public ResetPushMenuItem(ICEmobileContainer container) { 
+    public ResetPushMenuItem(ContainerController controller ) { 
         super(new StringProvider("Reset BIS Push"), 4, 0);
-        mContainer = container;
+        mController = controller;
         super.setCommand( new Command( new ResetPushImmediateHandler() ));
     }
 
@@ -56,7 +57,7 @@ public class ResetPushMenuItem  extends MenuItem {
         }
 
         public void execute(ReadOnlyCommandMetadata metadata, Object context) { 
-            mContainer.resetPushAgent();
+            mController.resetPushAgent();
         }
     } 
 }
