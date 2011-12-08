@@ -27,16 +27,12 @@
 package org.icemobile.client.blackberry.push;
 
 import java.io.ByteArrayInputStream;
-
 import javax.microedition.io.Connection;
-
 import org.icemobile.client.blackberry.ICEmobileContainer;
-
+import org.icemobile.client.blackberry.Logger;
 import net.rim.device.api.io.Base64InputStream;
 import net.rim.device.api.io.http.HttpServerConnection;
 import net.rim.device.api.io.http.PushInputStream;
-import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.util.Arrays;
 
 /**
@@ -68,7 +64,6 @@ public final class PushMessageReader {
      * Reads the incoming push message from the given streams in the current thread and notifies controller to display the information.
      * 
      * @param piStream the Push Input Stream
-     *            
      * @param conn The Push Connection
      */
     public static void process(PushInputStream piStream, Connection conn) {
@@ -87,10 +82,8 @@ public final class PushMessageReader {
             String msgType = httpConn.getType();
             String encoding = httpConn.getEncoding();
 
-//            ICEmobileContainer.DEBUG("Message props: ID=" + msgId + ", Type=" + msgType + ", Encoding=" + encoding);
             ICEmobileContainer.showNotificationIcon(true);
 
-            boolean accept = true;
             if (!alreadyReceived(msgId)) {
                 byte[] binaryData;
 
@@ -99,20 +92,19 @@ public final class PushMessageReader {
                 }
 
                 if (msgType == null) {
-                    ICEmobileContainer.DEBUG("Message content type is NULL");
-                    accept = false;
+                    Logger.DEBUG("icePush - Message content type is NULL");
                 } else if (msgType.indexOf(MESSAGE_TYPE_TEXT) >= 0) {
                     
                     // a string 
                     int size = piStream.read(buffer);
                     binaryData = new byte[size];
                     System.arraycopy(buffer, 0, binaryData, 0, size);					
-                    ICEmobileContainer.DEBUG("icePush - Text message received: " + new String (binaryData));
+                    Logger.DEBUG("icePush - Text message received: " + new String (binaryData));
                     
                 } else if (msgType.indexOf(MESSAGE_TYPE_IMAGE) >= 0) {
                     // an image in binary or Base64 encoding
                     int size = piStream.read(buffer);
-                    ICEmobileContainer.DEBUG("icePush - image message received");
+                    Logger.DEBUG("icePush - image message received");
                     if (encoding != null && encoding.equalsIgnoreCase("base64")) {
                         // image is in Base64 encoding, decode it
                         Base64InputStream bis = new Base64InputStream(new ByteArrayInputStream(buffer, 0, size));
@@ -122,16 +114,15 @@ public final class PushMessageReader {
                     System.arraycopy(buffer, 0, binaryData, 0, size);					
                     // TODO report message
                 } else {
-                    ICEmobileContainer.DEBUG("Unknown message type " + msgType);
-                    accept = false;
+                    Logger.DEBUG("icePush - Unknown message type " + msgType);
                 }
             } else {
-                ICEmobileContainer.DEBUG("Received duplicate message with ID " + msgId);
+                Logger.DEBUG("icePush - Received duplicate message with ID " + msgId);
             }
             piStream.accept();
             
         } catch (Exception e) {
-            ICEmobileContainer.DEBUG("Failed to process push message: " + e);
+            Logger.DEBUG("Failed to process push message: " + e);
         } finally {
             PushAgent.close(conn, piStream, null);
         }

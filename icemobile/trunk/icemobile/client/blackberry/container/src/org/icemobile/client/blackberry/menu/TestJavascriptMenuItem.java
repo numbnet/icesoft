@@ -24,45 +24,45 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * 
  */ 
-package org.icemobile.client.blackberry.script.audio;
+package org.icemobile.client.blackberry.menu;
 
-import java.io.IOException;
 
-import javax.microedition.media.MediaException;
-import javax.microedition.media.Player;
-import javax.microedition.media.control.VolumeControl;
+import net.rim.device.api.command.Command;
+import net.rim.device.api.command.CommandHandler;
+import net.rim.device.api.command.ReadOnlyCommandMetadata;
+import net.rim.device.api.ui.MenuItem;
+import net.rim.device.api.util.StringProvider;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.ContainerController;
+import org.icemobile.client.blackberry.Logger;
 
-import net.rim.device.api.script.ScriptableFunction;
+/**
+ * This MenuItem is intended to execute from the Blackberry 
+ * menu system and allows reloading the current page, which 
+ * may not be the application home page
+ *
+ */
+public class TestJavascriptMenuItem extends MenuItem {
 
-public class AudioPlayback extends ScriptableFunction {
+    private ContainerController mController; 
 
-    private ICEmobileContainer mContainer; 
-
-    public AudioPlayback(ICEmobileContainer container) { 
-        mContainer = container; 
+    public TestJavascriptMenuItem(ContainerController controller) { 
+        super(new StringProvider("Check Javascript"), 2, 0);
+        mController = controller; 
+        super.setCommand( new Command( new CheckJavascriptHandler() ));
     }
 
-    public Object invoke( Object thiz, Object[] args) {	
+    
 
-        try { 
-            Player p = javax.microedition.media.Manager.createPlayer("http://10.10.10.100:9090/brogcast/images/hello.wav");
+    class CheckJavascriptHandler extends CommandHandler { 
 
-            p.realize(); 
-            VolumeControl volume = (VolumeControl) p.getControl("VolumeControl"); 
-
-            volume.setLevel(50);
-            p.prefetch(); 
-            p.start();
-
-        } catch (MediaException me) { 
-            ICEmobileContainer.ERROR("Exception in playback:" + me);
-        } catch (IOException ioe) { 
-            ICEmobileContainer.ERROR("IOException in playback: " + ioe);
+        public CheckJavascriptHandler () {
+            super();
         }
 
-        return Boolean.TRUE;
-    }
-
+        public void execute(ReadOnlyCommandMetadata metadata, Object context) { 
+        	Logger.DEBUG("Javascript.Test - starting test");
+            mController.testJavascript();
+        }
+    } 
 }
