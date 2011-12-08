@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+.mobi-time-wrapper{
+    display: inline-block;
+}
 .mobi-time-popup-btn{
     -webkit-appearance: none;
     background-image: url('btn-time.png'); /** sprite-ref: sprite; */

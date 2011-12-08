@@ -19,6 +19,9 @@ package org.icefaces.component.timespinner;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIInputMeta;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
 
 
 @Component(
@@ -32,6 +35,9 @@ import org.icefaces.ace.meta.baseMeta.UIInputMeta;
         rendererType = "org.icefaces.component.TimeSpinnerRenderer",
         tlddoc = "TimeSpinner is an input component to provide a time input for mobile components. ")
 
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
+}, defaultEvent="change")
 public class TimeSpinnerMeta extends UIInputMeta {
 
     @Property(defaultValue = "hh:mm a", tlddoc = "TimeFormat pattern for localization")
@@ -57,8 +63,8 @@ public class TimeSpinnerMeta extends UIInputMeta {
     @Property(tlddoc = "If true then this date time entry will be read-only and can not be entered.")
     private boolean readonly;
 
- /*   @Property(tlddoc = "If true then this date time entry will submit itself.")
-    private boolean singleSubmit;  */
+    @Property(tlddoc = "If true then this date time entry will submit itself.")
+    private boolean singleSubmit;
 
     @Property(defaultValue = "false", tlddoc ="if useNative is true then iOS5 devices will show the iOS5 builtin html5 date selection popup"+
             " if false then the mobi datespinner component is shown with native device styling.  This can be expanded if other device operating"+
