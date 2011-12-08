@@ -25,8 +25,9 @@ import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.component.UIOutput;
-import javax.faces.component.html.HtmlForm;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
@@ -49,7 +50,7 @@ public class WindowAndViewIDSetup implements SystemEventListener {
 
     public void processEvent(final SystemEvent event) throws AbortProcessingException {
         final FacesContext context = FacesContext.getCurrentInstance();
-        HtmlForm form = (HtmlForm) ((ComponentSystemEvent) event).getComponent();
+        UIForm form = (UIForm) ((ComponentSystemEvent) event).getComponent();
         String componentId = form.getId() + ID_SUFFIX;
         context.getAttributes().put(componentId, componentId);
 
@@ -86,22 +87,22 @@ public class WindowAndViewIDSetup implements SystemEventListener {
     }
 
     public boolean isListenerForSource(final Object source) {
-        if (!(source instanceof HtmlForm)) {
+        if (!(source instanceof UIForm)) {
             return false;
         }
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (!EnvUtils.isICEfacesView(facesContext)) {
             return false;
         }
-        HtmlForm htmlForm = (HtmlForm) source;
+        UIForm htmlForm = (UIForm) source;
         String componentId = htmlForm.getId() + ID_SUFFIX;
         if (!partialStateSaving) {
-            for (UIComponent child : htmlForm.getChildren()) {
-                String id = child.getId();
-                if ((null != id) && id.endsWith(ID_SUFFIX)) {
-                    return false;
-                }
+        for (UIComponent child : htmlForm.getChildren()) {
+            String id = child.getId();
+            if ((null != id) && id.endsWith(ID_SUFFIX)) {
+                return false;
             }
+        }
         }
         // Guard against duplicates within the same JSF lifecycle
         if (null != facesContext.getAttributes().get(componentId)) {
