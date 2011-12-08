@@ -36,17 +36,9 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.component.UINamingContainer;
 import javax.el.ValueExpression;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import java.util.List;
 import java.util.ArrayList;
 
-@ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
-	@ResourceDependency(library="icefaces.ace", name="core/core.js"),
-	@ResourceDependency(library="icefaces.ace", name="dnd/dragdrop.js")
-})
 public class Draggable extends DraggableBase {
 
 }

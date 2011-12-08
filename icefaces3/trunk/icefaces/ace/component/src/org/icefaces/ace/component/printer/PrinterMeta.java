@@ -40,9 +40,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 		tlddoc = "Printer allows sending a specific JSF component to the printer, not the whole page. It needs to be nested inside an h:commandButton or h:outputLink component."
         )
 @ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="core/core.js"),
-	@ResourceDependency(library="icefaces.ace", name="printer/printer.js")
+	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")

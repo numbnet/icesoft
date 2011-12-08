@@ -40,11 +40,8 @@ import javax.faces.application.ResourceDependency;
 @ResourceDependencies({
         @ResourceDependency(library = "icefaces.ace", name = "jquery/ui/jquery-ui.css"),
         @ResourceDependency(library = "icefaces.ace", name = "wijmo/wijmo.css"),
-        @ResourceDependency(library = "icefaces.ace", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "icefaces.ace", name = "jquery/ui/jquery-ui.js"),
-        @ResourceDependency(library = "icefaces.ace", name = "wijmo/wijmo.js"),
-        @ResourceDependency(library = "icefaces.ace", name = "core/core.js"),
-        @ResourceDependency(library = "icefaces.ace", name = "menu/menu.js")
+        @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+        @ResourceDependency(library = "icefaces.ace", name = "util/ace-menu.js")
 })
 public class ContextMenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Javascript variable name of the wrapped widget.")

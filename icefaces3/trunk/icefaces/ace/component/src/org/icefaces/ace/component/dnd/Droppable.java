@@ -38,17 +38,9 @@ import javax.faces.component.UINamingContainer;
 import javax.el.ValueExpression;
 import javax.el.MethodExpression;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import java.util.List;
 import java.util.ArrayList;
 
-@ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
-	@ResourceDependency(library="icefaces.ace", name="core/core.js"),
-	@ResourceDependency(library="icefaces.ace", name="dnd/dragdrop.js")
-})
 public class Droppable extends DroppableBase {
 	@Override
     public void broadcast(javax.faces.event.FacesEvent event) throws AbortProcessingException {

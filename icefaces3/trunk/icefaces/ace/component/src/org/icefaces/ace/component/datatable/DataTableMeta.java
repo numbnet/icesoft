@@ -50,12 +50,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         @ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
         @ResourceDependency(library="icefaces.ace", name="paginator/paginator.css"),
         @ResourceDependency(library="icefaces.ace", name="datatable/datatable.css"),
-        @ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
-        @ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
-        @ResourceDependency(library="icefaces.ace", name="yui/utilities/utilities.js"),
-        @ResourceDependency(library="icefaces.ace", name="paginator/paginator.js"),
-        @ResourceDependency(library="icefaces.ace", name="core/core.js"),
-        @ResourceDependency(library="icefaces.ace", name="datatable/datatable.js")
+        @ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
+        @ResourceDependency(library="icefaces.ace", name="util/ace-datatable.js")
 })
 @ClientBehaviorHolder(events = {
         @ClientEvent(name="page", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@this"),

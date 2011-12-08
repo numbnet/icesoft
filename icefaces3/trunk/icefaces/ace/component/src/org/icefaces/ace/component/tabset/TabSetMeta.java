@@ -61,13 +61,9 @@ import java.util.List;
 )
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
-	@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
-	@ResourceDependency(name="yahoo-dom-event/yahoo-dom-event.js",library="yui/2_8_2"),
-	@ResourceDependency(name="element/element-min.js",library="yui/2_8_2"),
-	@ResourceDependency(name="tabview/tabview-min.js",library="yui/2_8_2"),
-    @ResourceDependency(name="util/combined.js",library="icefaces.ace"),
-    @ResourceDependency(name="util/combined.css",library="icefaces.ace")
+    @ResourceDependency(name="util/combined.css",library="icefaces.ace"),
+	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+	@ResourceDependency(library = "icefaces.ace", name = "util/ace-yui.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="clientSideTabChange", defaultExecute="@none", defaultRender="@none",

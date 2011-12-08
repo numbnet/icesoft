@@ -22,6 +22,9 @@ import org.icefaces.ace.meta.annotation.DefaultValueType;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
 @Component(
     tagName = "draggable",
     componentClass = "org.icefaces.ace.component.dnd.Draggable",
@@ -33,6 +36,10 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
     componentFamily = "org.icefaces.ace.Draggable",
     tlddoc = "Enables an Id-specified component to be moved via dragging. Draggable component can cause events on droppable ones."
 )
+@ResourceDependencies({
+	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
+	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+})
 public class DraggableMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "The JavaScript component instance variable name.")
     String widgetVar;

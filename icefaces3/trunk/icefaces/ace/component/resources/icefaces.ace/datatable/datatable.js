@@ -1175,21 +1175,21 @@ ice.ace.DataTable.prototype.setupCellEditorEvents = function(rowEditors) {
 ice.ace.DataTable.prototype.writeSelections = function() {
     ice.ace.jq(this.selectionHolder).val(this.selection.join(','));
     ice.ace.jq(this.deselectionHolder).val(this.deselection.join(','));
-}
+};
 
 ice.ace.DataTable.prototype.isSingleSelection = function() {
     return this.cfg.selectionMode == 'single';
-}
+};
 
 ice.ace.DataTable.prototype.clearSelection = function() {
     this.selection = [];
     ice.ace.jq(this.selectionHolder).val('');
-}
+};
 
 ice.ace.DataTable.prototype.isSelectionEnabled = function() {
     return this.cfg.selectionMode != undefined || this.cfg.columnSelectionMode != undefined;
-}
+};
 
 ice.ace.DataTable.prototype.isCellSelectionEnabled = function() {
     return this.cfg.selectionMode === 'singlecell' || this.cfg.selectionMode === 'multiplecell';
-}
+};

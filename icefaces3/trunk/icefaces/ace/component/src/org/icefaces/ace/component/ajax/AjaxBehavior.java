@@ -46,8 +46,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.BehaviorEvent;
 
 @ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="core/core.js")
+	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js")
 })
 @FacesBehavior("org.icefaces.ace.component.AjaxBehavior")
 public class AjaxBehavior extends ClientBehaviorBase {

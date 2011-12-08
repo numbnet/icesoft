@@ -36,10 +36,8 @@ import javax.faces.application.ResourceDependency;
     componentFamily = "org.icefaces.ace.TableConfigPanel",
     tlddoc = "")
 @ResourceDependencies({
-    @ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
-    @ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
-    @ResourceDependency(library="icefaces.ace", name="core/core.js"),
-    @ResourceDependency(library="icefaces.ace", name="tableconfigpanel/tableconfigpanel.js"),
+	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+	@ResourceDependency(library = "icefaces.ace", name = "util/ace-datatable.js"),
     @ResourceDependency(library="icefaces.ace", name="tableconfigpanel/tableconfigpanel.css")
 })
 

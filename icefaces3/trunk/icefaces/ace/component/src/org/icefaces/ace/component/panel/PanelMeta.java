@@ -42,11 +42,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
 	@ResourceDependency(library="icefaces.ace", name="wijmo/wijmo.css"),
 	@ResourceDependency(library="icefaces.ace", name="panel/panel.css"),
-	@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
-	@ResourceDependency(library="icefaces.ace", name="wijmo/wijmo.js"),
-	@ResourceDependency(library="icefaces.ace", name="core/core.js"),
-	@ResourceDependency(library="icefaces.ace", name="panel/panel.js")
+	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="toggle", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
