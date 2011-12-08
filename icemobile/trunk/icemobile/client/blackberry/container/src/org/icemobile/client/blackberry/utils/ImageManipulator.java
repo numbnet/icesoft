@@ -48,7 +48,6 @@ import net.rim.device.api.ui.XYDimension;
  * context</li>
  * </ul>
  * 
- * @version 1.6 (December 2009)
  */
 public class ImageManipulator {
 

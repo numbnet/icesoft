@@ -39,11 +39,11 @@ public class FieldErrorHandler extends BrowserFieldErrorHandler {
     }
 
     public void displayContentError(String url, String errorMessage) { 
-        ICEmobileContainer.ERROR("FieldErrorHandler - URL error: " + errorMessage + ", URL: " + url );
+    	Logger.ERROR("FieldErrorHandler - URL error: " + errorMessage + ", URL: " + url );
     }
 
     public void displayContentError(String url, InputConnection connection, Throwable t) { 
-        ICEmobileContainer.ERROR("FieldErrorHandler - Stream error: " +  t + ", URL: " + url);
+    	Logger.ERROR("FieldErrorHandler - Stream error: " +  t + ", URL: " + url);
     }
 
     public BrowserField getBrowserField() { 
@@ -51,15 +51,15 @@ public class FieldErrorHandler extends BrowserFieldErrorHandler {
     }
 
     public void navigationRequestError(BrowserFieldRequest request, Throwable t) { 
-        ICEmobileContainer.ERROR("FieldErrorHandler - navigation request error : " + t);
+    	Logger.ERROR("FieldErrorHandler - navigation request error : " + t);
     }
 
     public void requestContentError(BrowserFieldRequest request, Throwable t) { 
-        ICEmobileContainer.ERROR("FieldErrorHandler - ResourceContent error"); 
+    	Logger.ERROR("FieldErrorHandler - ResourceContent error"); 
     }
 
     public InputConnection resourceRequestError(BrowserFieldRequest request, Throwable t) { 
-        ICEmobileContainer.ERROR("FieldErrorHandler - ResourceError connection");
+    	Logger.ERROR("FieldErrorHandler - ResourceError connection");
         return super.resourceRequestError(request, t);
     }
 }

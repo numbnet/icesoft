@@ -30,8 +30,8 @@ import org.icemobile.client.blackberry.menu.BackMenuItem;
 import org.icemobile.client.blackberry.menu.HistorySubMenuItem;
 import org.icemobile.client.blackberry.menu.ReloadCurrentMenuItem;
 import org.icemobile.client.blackberry.menu.ReloadHomeMenuItem;
-import org.icemobile.client.blackberry.menu.ResetAudioMenuItem;
-import org.icemobile.client.blackberry.menu.ResetPushMenuItem;
+//import org.icemobile.client.blackberry.menu.ResetPushMenuItem;
+//import org.icemobile.client.blackberry.menu.TestJavascriptMenuItem;
 import org.icemobile.client.blackberry.menu.URLEntryMenu;
 
 import net.rim.device.api.ui.MenuItem;
@@ -46,20 +46,18 @@ import net.rim.device.api.ui.menu.SubMenu;
   */
  public final class ApplicationScreen extends MainScreen {
      
-     private ICEmobileContainer mContainer; 
+     private ContainerController mController; 
      // Blackberry menu subclasses for the primary screen. Each subscreen will define 
      // context specific options within the Screen subclasses themselves. 
      private MenuItem mReloadMenu;        // reload Home page
      private MenuItem mReloadCurrentMenu; // reload current page 
-     private MenuItem mHistoryMenu;       // bring up page history submenu
      private MenuItem mURLMenu;           // allow user to manually define HOME_URL locally
                                           // without going into options system.
      
      
-     private MenuItem mResetAudioMenu;
-     private MenuItem mRerunScriptMenu;
-     private MenuItem mResetPushMenu;
+//     private MenuItem mResetPushMenu;
      private MenuItem mBackMenu; 
+//     private MenuItem mTestJavascriptMenu;
      
      
      private HistorySubMenuItem[] mHistorySubs;
@@ -67,9 +65,9 @@ import net.rim.device.api.ui.menu.SubMenu;
      /**
       * Creates a new MyScreen object
       */
-     public ApplicationScreen( ICEmobileContainer container ) {
+     public ApplicationScreen( ContainerController controller ) {
          super(); 
-         mContainer = container; 
+         mController = controller; 
          mHistorySubs = new HistorySubMenuItem[ ICEmobileContainer.HISTORY_SIZE ];
          loadMenus();
      }
@@ -90,12 +88,13 @@ import net.rim.device.api.ui.menu.SubMenu;
       */
      private void loadMenus() {
 
-         mReloadMenu = new ReloadHomeMenuItem(mContainer);         
-         mReloadCurrentMenu = new ReloadCurrentMenuItem(mContainer);
-         mResetAudioMenu = new ResetAudioMenuItem( mContainer); 
-         mResetPushMenu = new ResetPushMenuItem(mContainer);         
-         mBackMenu = new BackMenuItem(mContainer); 
-         mURLMenu = new URLEntryMenu(mContainer);
+         mReloadMenu = new ReloadHomeMenuItem(mController);         
+         mReloadCurrentMenu = new ReloadCurrentMenuItem(mController);
+//         mResetAudioMenu = new ResetAudioMenuItem( mContainer); 
+//         mResetPushMenu = new ResetPushMenuItem(mController);         
+         mBackMenu = new BackMenuItem(mController); 
+         mURLMenu = new URLEntryMenu(mController);
+//         mTestJavascriptMenu = new TestJavascriptMenuItem(mContainer);
          
         
          
@@ -109,6 +108,7 @@ import net.rim.device.api.ui.menu.SubMenu;
 //         menu.add (mResetAudioMenu);
 //    	 menu.add (mRerunScriptMenu);
     	 menu.add(mURLMenu);
+//    	 menu.add(mTestJavascriptMenu);
 //    	 menu.add(mResetPushMenu);  
     	 
     	 
@@ -125,7 +125,7 @@ import net.rim.device.api.ui.menu.SubMenu;
 
 	private void initSubmenuStructure() {
 		for (int idx = 0; idx < mHistorySubs.length; idx ++ ) { 
-    		 mHistorySubs[idx] = new HistorySubMenuItem( mContainer, "" );  
+    		 mHistorySubs[idx] = new HistorySubMenuItem( mController, "" );  
     	 }
 	} 
     	 
@@ -138,7 +138,7 @@ import net.rim.device.api.ui.menu.SubMenu;
     	 if (mHistorySubs[0] == null) { 
     		 initSubmenuStructure();
     	 }
-    	 String[] urlHistory = mContainer.getHistoryManager().getHistoryLocations();
+    	 String[] urlHistory = mController.getHistoryManager().getHistoryLocations();
     	 for (int idx = 0; idx < mHistorySubs.length; idx ++ ) { 
     		 if (idx >= urlHistory.length || urlHistory[idx] == null) { 
     			 break;

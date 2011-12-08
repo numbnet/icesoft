@@ -30,7 +30,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.Logger;
 
 import net.rim.device.api.i18n.SimpleDateFormat;
 import net.rim.device.api.io.Base64OutputStream;
@@ -151,7 +151,7 @@ public class FileUtils {
             returnVal = bos.toString();
             
         } catch (IOException ioe) { 
-            ICEmobileContainer.ERROR("Exception reading resource: " + resourcename + ": " + ioe);
+        	Logger.ERROR("Exception reading resource: " + resourcename + ": " + ioe);
         } finally { 
             if (b64os != null) {
                 try { 

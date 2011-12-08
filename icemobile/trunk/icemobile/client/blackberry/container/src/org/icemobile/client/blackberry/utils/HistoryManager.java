@@ -50,7 +50,6 @@ public class HistoryManager {
     
     public void addLocation( String url ) {
         
-        String item;
         int idx = mUrls.indexOf( url ); 
         if (idx > -1) { 
         	mUrls.removeElementAt(idx); 
