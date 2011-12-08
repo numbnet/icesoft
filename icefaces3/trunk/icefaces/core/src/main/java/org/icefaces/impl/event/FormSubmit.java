@@ -27,7 +27,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIOutput;
-import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.AbortProcessingException;
@@ -50,7 +49,7 @@ public class FormSubmit implements SystemEventListener {
     }
 
     public void processEvent(final SystemEvent event) throws AbortProcessingException {
-        final HtmlForm form = (HtmlForm) event.getSource();
+        final UIForm form = (UIForm) event.getSource();
         String componentId = form.getId() + CAPTURE_SUBMIT_SUFFIX;
 
         UIOutput scriptWriter = new UIOutputWriter() {
@@ -86,14 +85,14 @@ public class FormSubmit implements SystemEventListener {
     }
 
     public boolean isListenerForSource(final Object source) {
-        if (!(source instanceof HtmlForm)) {
+        if (!(source instanceof UIForm)) {
             return false;
         }
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (!EnvUtils.isICEfacesView(facesContext)) {
             return false;
         }
-        HtmlForm htmlForm = (HtmlForm) source;
+        UIForm htmlForm = (UIForm) source;
         if (htmlForm.getAttributes().get(DISABLE_CAPTURE_SUBMIT) != null) {
             return false;
         }
