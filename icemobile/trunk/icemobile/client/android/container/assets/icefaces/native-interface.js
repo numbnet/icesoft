@@ -115,6 +115,10 @@ if (!window.ice.mobile) {
         namespace.submitFunction = function(element, event, options) {
             var source = event ? event.target : element;
             var form = ice.formOf(source);
+            if (form.elements['javax.faces.source'])  {
+                //submit is in progress, but callback not completed by container
+                return;
+            }
             var formId = form.id;
             var sourceId = element ? element.id : event.target.id;
 
