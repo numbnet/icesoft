@@ -5,23 +5,22 @@ import java.util.Hashtable;
 import javax.microedition.media.Player;
 import javax.microedition.media.control.VideoControl;
 
+import org.icemobile.client.blackberry.ContainerController;
 import net.rim.device.api.amms.control.camera.EnhancedFocusControl;
 import net.rim.device.api.barcodelib.BitmapLuminanceSource;
 import net.rim.device.api.script.ScriptableFunction;
+import net.rim.device.api.system.Application;
 import net.rim.device.api.system.Bitmap;
-import net.rim.device.api.system.Display;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.UiApplication;
-import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.Logger;
 import org.icemobile.client.blackberry.utils.NameValuePair;
 import org.icemobile.client.blackberry.utils.UploadUtilities;
 
 import com.google.zxing.Binarizer;
 import com.google.zxing.BinaryBitmap;
-import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.GlobalHistogramBinarizer;
 import com.google.zxing.multi.MultipleBarcodeReader;
@@ -29,32 +28,26 @@ import com.google.zxing.multi.qrcode.QRCodeMultiReader;
 
 public class QRCodeScanner extends ScriptableFunction {
     
-    private ICEmobileContainer mContainer;
+    private ContainerController mContainer;
     private VideoControl mVideoControl;
-    private MainScreen mCameraScreen;
+    private MainScreen mScanScreen;
+    private Player mPlayer;
     
     // maxHeight and maxWidth are markup specified desired sizes and may be any size
-//    private int maxWidth = 640;
     private int maxWidth = 1024; 
-//    private int maxWidth = 2592; 
-    
-//    private int maxHeight = 480;
     private int maxHeight = 768; 
-//    private int maxHeight = 1944;
     private String mFieldId;
-    private int mThumbWidth; 
-    private int mThumbHeight;
     
     // These sizes are sizes of images captured by the camera phone (only 3 sizes supported)
     private int mCapturedWidth = 1024;
     private int mCapturedHeight = 768;
     
-   
-    private Player mPlayer; 
+//    private int mIndex;
+//    private int mLastTotalSize;   
+     
 
-    public QRCodeScanner(ICEmobileContainer container) { 
-        mContainer = container; 
-        mCameraScreen = new QRCameraScreen();
+    public QRCodeScanner(ContainerController controller) { 
+        mContainer = controller;      
     }   
 
     /**
@@ -65,10 +58,18 @@ public class QRCodeScanner extends ScriptableFunction {
      */
     public  Object invoke( Object thiz, Object[] args) { 
         
+//    	MemoryStats ms = Memory.getRAMStats(); 
+//    	
+//    	Logger.DEBUG("QRCode scan: " + mIndex++ + ", allocated: " + ms.getAllocated() + ", free: " + ms.getFree() + 
+//    			", total size: " + ms.getObjectSize() + ", needed: " + Memory.getMemoryNeeded() ); 
+//    	mLastTotalSize = ms.getObjectSize();
+    			
+    			
+    	
         Hashtable params = new Hashtable();
         String supportedEncodings = System.getProperty("video.snapshot.encodings"); 
         if (supportedEncodings.trim().length() == 0) { 
-            ICEmobileContainer.DIALOG("Photo capture not supported"); 
+        	Logger.DIALOG("Photo capture not supported"); 
             return Boolean.FALSE;
         }
         
@@ -82,13 +83,12 @@ public class QRCodeScanner extends ScriptableFunction {
             } 
             
         } else { 
-            ICEmobileContainer.ERROR("ice.qrCode - wrong number of arguments");
+        	Logger.ERROR("ice.qrCode - wrong number of arguments");
             return Boolean.FALSE; 
         }     
         
         try { 
 
-            mThumbWidth = mThumbHeight = 64; 
             NameValuePair temp; 
             
             temp = (NameValuePair) params.get("maxwidth");
@@ -101,13 +101,13 @@ public class QRCodeScanner extends ScriptableFunction {
             }
                 
         } catch (Exception e) { 
-            ICEmobileContainer.ERROR("ice.qrCode - size error in js: " + e);
+        	Logger.ERROR("ice.qrCode - size error in js: " + e);
         }
         
 
         String[] encodings = UploadUtilities.split(supportedEncodings, " "); 
 //        for (int idx = 0; idx < encodings.length; idx ++ ) { 
-//            ICEmobileContainer.DEBUG("- " + encodings[idx]);
+//            Logger.DEBUG("- " + encodings[idx]);
 //        }
         int [] encodingResolutions = parseEncodingStrings( encodings );        
         final int [] leastNecessaryResolution = findMinimumNecessary ( encodingResolutions, maxWidth, maxHeight); 
@@ -123,10 +123,10 @@ public class QRCodeScanner extends ScriptableFunction {
     private void invokeDeviceCamera(final int[] leastNecessaryResolution) {
         UiApplication.getUiApplication().invokeLater( new Runnable() {
             public void run() { 
-
-                mContainer.pushScreen(mCameraScreen);
+            	
                 try { 
-
+                	
+                	
                     // If there is a smaller size detected that can satisfy the needs, use it, or just 
                     // default to the devices default size. 
                     if (leastNecessaryResolution[0] != 0) { 
@@ -139,13 +139,12 @@ public class QRCodeScanner extends ScriptableFunction {
                         mPlayer = javax.microedition.media.Manager.createPlayer( "capture://video?encoding=jpeg" );
                     }
                     mPlayer.realize();
-
                     mVideoControl = (VideoControl) mPlayer.getControl("VideoControl");
 
                     if (mVideoControl != null) { 
 
                         Field videoField = (Field) mVideoControl.initDisplayMode
-                        (VideoControl.USE_GUI_PRIMITIVE, "net.rim.device.api.ui.Field");
+                        	(VideoControl.USE_GUI_PRIMITIVE, "net.rim.device.api.ui.Field");
                         mVideoControl.setDisplayFullScreen(true);
                         mVideoControl.setVisible(true);
 
@@ -156,13 +155,20 @@ public class QRCodeScanner extends ScriptableFunction {
                         if (efc.isAutoFocusSupported() && !efc.isAutoFocusLocked()) { 
 //                            efc.startAutoFocus();
                         } 
-                        if(videoField != null) {                       
-                            mCameraScreen.add(videoField);
+                        if(videoField != null) {        
+                        	mScanScreen = new QRCameraScreen();                            
+                            
+                            synchronized (Application.getEventLock()) { 
+                            	mScanScreen.add( videoField );
+                            	UiApplication.getUiApplication().pushScreen( mScanScreen );
+                            }
+                        } else { 
+                        	Logger.ERROR("Camera widget not found");
                         }
                     }
                 }
                 catch(Exception e) {        
-                    ICEmobileContainer.ERROR("ice.shootPhoto - Exception in image processing: " + e.toString());
+                	Logger.ERROR("ice.qrCode - Exception in image processing: " + e.toString());
                 }
 
             }});
@@ -186,10 +192,10 @@ public class QRCodeScanner extends ScriptableFunction {
                                 long startTime = System.currentTimeMillis();
                                 // Get the orientation at photo time, not when processing! 
                                 byte[] rawImage = mVideoControl.getSnapshot(null);
-                                synchronized (ICEmobileContainer.getEventLock()) { 
-                                    mContainer.popScreen( mCameraScreen );
+                                synchronized (Application.getEventLock()) { 
+                                	UiApplication.getUiApplication().popScreen( mScanScreen );
                                 } 
-                                ICEmobileContainer.TIME(startTime, "ice.qrCode capturing scan bytes" );   
+                                Logger.TIME(startTime, "ice.qrCode capturing scan bytes" );   
                                 
                                 startTime = System.currentTimeMillis();
                                 Bitmap qrcodeBitmap = Bitmap.
@@ -197,27 +203,25 @@ public class QRCodeScanner extends ScriptableFunction {
                                         0, 
                                         rawImage.length,
                                         1 );
-                                ICEmobileContainer.TIME(startTime, "ice.qrCode creating bitmap" );   
+                                Logger.TIME(startTime, "ice.qrCode creating bitmap" );   
                                 
                                 startTime = System.currentTimeMillis();
                                 Result[] results = processQRCodeBitmap(qrcodeBitmap);
                                 if (results.length == 0) { 
-                                        ICEmobileContainer.DIALOG("ice.qrCode found no codes in scan.. Please try again. ");                                               
+                                	Logger.DIALOG("ice.qrCode found no codes in scan.. Please try again. ");                                               
                                 } else { 
-                                    ICEmobileContainer.TIME(startTime, "ice.qrCode processing qrcode" );  
+                                	Logger.TIME(startTime, "ice.qrCode processing qrcode" );  
                                     mContainer.insertQRCodeScript( mFieldId, results[0].getText());
                                 }                                 
                                 
-                                ICEmobileContainer.DEBUG("ice.qrCode - done");
-
+//                                MemoryStats ms = Memory.getRAMStats(); 
+//                                Logger.DEBUG("ice.qrCode - done, delta consumed: " + (ms.getObjectSize() - mLastTotalSize)) ;
+                                
                             } catch(Exception e) {
-                                ICEmobileContainer.ERROR("ice.qrCode - exception: " + e);
+                            	Logger.ERROR("ice.qrCode - exception: " + e);
 //
                             } finally {
-                                synchronized (ICEmobileContainer.getEventLock()) { 
-                                    mCameraScreen.deleteAll();
-                                } 
-                                
+                                cleanup();                                
                             }
                         } 
                     });
@@ -225,30 +229,45 @@ public class QRCodeScanner extends ScriptableFunction {
             }           
             return handled;                
         }
+        
+        private void cleanup() { 
+        	synchronized ( Application.getEventLock()) {
+        		
+        		if (mScanScreen != null) { 
+        			mScanScreen.deleteAll();
+                    mScanScreen = null;
+        		}
+        		mVideoControl = null; 
+        		if (mPlayer != null) { 
+        			mPlayer.close(); 
+        			mPlayer = null; 
+        		}
+        	}     	
+        }
 
         private Result[] processQRCodeBitmap(Bitmap qrcodeBitmap)  {
             
             Result[] qrCodes = new Result[0];
             try { 
                 BitmapLuminanceSource bls = new BitmapLuminanceSource(qrcodeBitmap);
-                ICEmobileContainer.DEBUG("ice.qrCode - 1 of 4 BitmapLuminance obtained: width: " + 
+                Logger.DEBUG("ice.qrCode - 1 of 4 BitmapLuminance obtained: width: " + 
                         bls.getWidth() + ", height: " + bls.getHeight() +  
                         ", canCrop: " + bls.isCropSupported() + ", canRotate: " + bls.isRotateSupported());
                 
                 Binarizer lbb = new GlobalHistogramBinarizer( bls ); 
-                ICEmobileContainer.DEBUG("ice.qrCode - 2 of 4 Binarizer obtained"); 
+                Logger.DEBUG("ice.qrCode - 2 of 4 Binarizer obtained"); 
                 BinaryBitmap bb = new BinaryBitmap( lbb ); 
-                ICEmobileContainer.DEBUG("ice.qrCode - 3 of 4 BinaryBitmap obtained"); 
+                Logger.DEBUG("ice.qrCode - 3 of 4 BinaryBitmap obtained"); 
                 MultipleBarcodeReader mbr = new QRCodeMultiReader();
              
                 qrCodes = mbr.decodeMultiple(bb);
-                ICEmobileContainer.DEBUG("ice.qrCode - 4 of 4 BarcodeResult read, length: " + qrCodes.length); 
+                Logger.DEBUG("ice.qrCode - 4 of 4 BarcodeResult read, length: " + qrCodes.length); 
                 for (int idx = 0; idx < qrCodes.length; idx ++ ) { 
-                    ICEmobileContainer.DEBUG("ice.qrCode - found: " + qrCodes[idx].getText());                                   
+                    Logger.DEBUG("ice.qrCode - found: " + qrCodes[idx].getText());                                   
                 }
                 
             } catch (Exception e) { 
-                ICEmobileContainer.DEBUG("ice.qrCode - exception processing image: " + e);     
+                Logger.DEBUG("ice.qrCode - exception processing image: " + e);     
             }
             return qrCodes; 
         }       
@@ -287,96 +306,7 @@ public class QRCodeScanner extends ScriptableFunction {
         return returnVal;
     }
     
-    
-//    /** 
-//     * Currently unused. Could be used to select a file from the filesystem. 
-//     */
-//    private void invokePhotoGallery( ) { 
-//        
-//        
-//        String cameraPath = "file:///SDCard/BlackBerry/"; 
-//        if (cameraPath.startsWith("file:///")) { 
-//            cameraPath = cameraPath.substring("file:///".length() );
-//        }
-//        FileSelectorPopupScreen fsp = new FileSelectorPopupScreen(cameraPath, 
-//                new String[] { ".jpg" } );
-//        fsp.pickFile();
-//        String chosenImage = fsp.getFile(); 
-//        if (chosenImage == null) { 
-//            return; 
-//        }
-//        
-//        // So now I have an opened filename. Need to read, insert as thumbnail, and 
-//        processExistingFile(chosenImage);
-//        
-//        
-//    }
-    
-    
-//    /**
-//     * Handle the case where the user has chosen a file from the file system. 
-//     * @param filename name of the chosen file
-//     */
-//    private void processExistingFile( String filename ) { 
-//        
-//        FileConnection fc = null; 
-//        try { 
-//            fc = (FileConnection) Connector.open( filename );
-//            
-//            InputStream is = fc.openInputStream(); 
-//            byte[] data = IOUtilities.streamToBytes(is);               
-//            
-//        } catch (Exception e) { 
-//            if (fc != null)  { 
-//                try { 
-//                    fc.close(); 
-//                } catch (Exception io) {}
-//            }
-//        }        
-//        mContainer.insertHiddenFilenameScript(mFieldId, filename );         
-//    }
-//    
-    
- 
-    
-//    /**
-//     * If necessary, persist the raw data to a file
-//     * 
-//     * @param rawImage
-//     * @param localFilename
-//     */
-//    private void persistImage (byte rawImage[], String localFilename) { 
-//        
-//        FileConnection fconn = null;
-//        try { 
-//
-//            ICEmobileContainer.DEBUG("ice.shootPhoto - capture to: " + localFilename);
-//            fconn = (FileConnection) Connector.open(localFilename);
-//
-//            if (!fconn.exists()) {
-//                ICEmobileContainer.DEBUG("ice.shootPhoto - Must create file");
-//                fconn.create(); 
-//
-//                OutputStream os = fconn.openOutputStream();
-//                os.write( rawImage );
-//                os.close();
-//
-//            } else { 
-//                ICEmobileContainer.ERROR("ice.shootPhoto file already exists: " + localFilename);  
-//            }
-//
-//        } catch(Exception e) {
-//
-//            ICEmobileContainer.ERROR("ice.shootPhoto - persist exception: " + e);
-//
-//        } finally {
-//            try { 
-//                if (fconn != null) { 
-//                    fconn.close();
-//                }
-//            } catch (Exception e) { } 
-//        }       
-//    }
+
     
     /**
      * From the devices supported encodings, find the smallest choice that 

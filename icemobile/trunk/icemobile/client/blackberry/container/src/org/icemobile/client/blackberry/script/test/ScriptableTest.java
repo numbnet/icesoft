@@ -26,28 +26,26 @@
  */  
 package org.icemobile.client.blackberry.script.test;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+
+import org.icemobile.client.blackberry.Logger;
 
 import net.rim.device.api.script.ScriptableFunction;
-import net.rim.device.api.ui.component.Dialog;
 
 public class ScriptableTest extends ScriptableFunction {
 
-    ICEmobileContainer _container;
 
-    public ScriptableTest( ICEmobileContainer container ) { 
-        _container = container; 
+    public ScriptableTest( ) { 
     }
 
     public Object invoke( Object thiz, Object[] args) {
         if (args.length > 0) { 
             if (args[0] instanceof java.lang.String ) { 
-                Dialog.alert("Args[0] = " + (String) args[0]);
+                Logger.DIALOG("Args[0] = " + (String) args[0]);
             } else { 
-                Dialog.alert("Args[0] = " + args[0]);
+                Logger.DIALOG("Args[0] = " + args[0]);
             }
         }else { 
-            Dialog.alert("Zero args call");				
+            Logger.DIALOG("Zero args call");				
         } 
         return "Success";
     }

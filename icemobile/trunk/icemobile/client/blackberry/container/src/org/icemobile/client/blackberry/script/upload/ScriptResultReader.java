@@ -28,16 +28,15 @@ package org.icemobile.client.blackberry.script.upload;
 
 import net.rim.device.api.script.ScriptableFunction;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
-import org.icemobile.client.blackberry.utils.ResultHolder;
+import org.icemobile.client.blackberry.ContainerController;
 
 
 public class ScriptResultReader extends ScriptableFunction {
 
-    private ICEmobileContainer mContainer;
+    private ContainerController mController;
 
-    public ScriptResultReader(ICEmobileContainer container) { 
-        mContainer = container;
+    public ScriptResultReader(ContainerController controller) { 
+        mController = controller;
     }
 
     /**
@@ -47,8 +46,8 @@ public class ScriptResultReader extends ScriptableFunction {
     public Object invoke( Object thiz, Object[] args) {
 
         String responseKey = (String) args[0];
-        String result = mContainer.getPendingResponse( responseKey ).getResult();
-//        ICEmobileContainer.DEBUG("ice.upload - fetching response with key: " + responseKey +
+        String result = mController.getPendingResponse( responseKey ).getResult();
+//      Logger.DEBUG("ice.upload - fetching response with key: " + responseKey +
 //                ", result length: " + result.length());
         return result; 
 

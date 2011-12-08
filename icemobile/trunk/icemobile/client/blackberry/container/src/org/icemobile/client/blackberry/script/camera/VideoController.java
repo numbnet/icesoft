@@ -38,7 +38,8 @@ import javax.microedition.media.PlayerListener;
 import javax.microedition.media.control.RecordControl;
 import javax.microedition.media.control.VideoControl;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.ContainerController;
+import org.icemobile.client.blackberry.Logger;
 import org.icemobile.client.blackberry.utils.FileUtils;
 import org.icemobile.client.blackberry.utils.NameValuePair;
 import org.icemobile.client.blackberry.utils.UploadUtilities;
@@ -56,21 +57,14 @@ import net.rim.device.api.ui.container.MainScreen;
  */
 public class VideoController extends ScriptableFunction {
 
-
-    //private PhoneGap berryGap;
-    private ICEmobileContainer mContainer;
+    private ContainerController mController;
 
     private VideoRecordingScreen videoScreen;
-    private int mImageWidth;
-    private int mImageHeight; 
-    private int mThumbWidth; 
-    private int mThumbHeight;
-   
     private String mEncodedTick;
     
 
-    public VideoController(ICEmobileContainer container) { 
-        mContainer = container; 
+    public VideoController(ContainerController controller ) { 
+        mController = controller; 
         mEncodedTick = FileUtils.getImageResourceBase64("tick.png");       
         
     }	
@@ -97,7 +91,7 @@ public class VideoController extends ScriptableFunction {
             } 
             
         } else { 
-            ICEmobileContainer.ERROR("ice.video - wrong number of arguments");
+        	Logger.ERROR("ice.video - wrong number of arguments");
             return Boolean.FALSE; 
         }     
         
@@ -109,8 +103,10 @@ public class VideoController extends ScriptableFunction {
             maxTime = Integer.parseInt( temp.getValue() ); 
         }
         
-        videoScreen = new VideoRecordingScreen(mContainer, fieldId, maxTime, mEncodedTick ); 
-        mContainer.pushScreen(videoScreen);			
+        videoScreen = new VideoRecordingScreen(mController, fieldId, maxTime, mEncodedTick );
+        synchronized (UiApplication.getEventLock()) { 
+        	UiApplication.getUiApplication().pushScreen(videoScreen);			
+        }
         videoScreen.startRecording();
         return Boolean.TRUE;
     }	
@@ -119,15 +115,15 @@ public class VideoController extends ScriptableFunction {
 class VideoRecordingScreen extends MainScreen { 
 
     private VideoRecordingThread mRecordingThread;
-    private ICEmobileContainer mContainer; 
+    private ContainerController mController; 
     private String mFieldId;
     private Thread mTerminatorThread;
     private int mMaxTime;
     private String mIcon;
 
-    public VideoRecordingScreen(ICEmobileContainer container, String fieldId, int maxDuration, String icon ) { 
+    public VideoRecordingScreen(ContainerController container, String fieldId, int maxDuration, String icon ) { 
 
-        mContainer = container;		
+        mController = container;		
         mFieldId = fieldId;
         mMaxTime = maxDuration;
         mIcon = icon;
@@ -170,7 +166,7 @@ class VideoRecordingScreen extends MainScreen {
 
             } 
         } catch (Exception e) { 
-            ICEmobileContainer.ERROR("ice.video - Exception starting recording: " + e);
+        	Logger.ERROR("ice.video - Exception starting recording: " + e);
         }
     }
 
@@ -187,8 +183,10 @@ class VideoRecordingScreen extends MainScreen {
         
             final MainScreen removable = this;
             UiApplication.getUiApplication().invokeLater( new Runnable() {
-                public void run() { 
-                    mContainer.popScreen(removable);
+                public void run() {
+                	synchronized( UiApplication.getEventLock()) { 
+                		UiApplication.getUiApplication().popScreen(removable);
+                	}
                 }
             });
           
@@ -209,7 +207,7 @@ class VideoRecordingScreen extends MainScreen {
 
             try { 
 
-                ICEmobileContainer.DEBUG("ice.video - Recording thread is starting" );
+                Logger.DEBUG("ice.video - Recording thread is starting" );
                 mPlayer = javax.microedition.media.Manager
                 .createPlayer("capture://video?encoding=video/3gpp");
 
@@ -229,10 +227,10 @@ class VideoRecordingScreen extends MainScreen {
                     videoControl.setDisplaySize( Display.getWidth(), Display.getHeight() );
                 }
                 catch( MediaException me ) { 
-                    //ICEmobileContainer.DEBUG("Info. Setting displaySize not Supported");
+                    //Logger.DEBUG("Info. Setting displaySize not Supported");
                 }
 
-                synchronized (mContainer.getEventLock() ) {
+                synchronized (UiApplication.getEventLock() ) {
 
                     add(videoField);
 
@@ -240,14 +238,14 @@ class VideoRecordingScreen extends MainScreen {
 
                     FileConnection fc = (FileConnection) Connector.open(mVidCaptureFile);
                     if (fc.exists() ) { 
-                        ICEmobileContainer.DEBUG("ice.video - file: " + mVidCaptureFile + " exists"); 
+                        Logger.DEBUG("ice.video - file: " + mVidCaptureFile + " exists"); 
                     } else { 
-                        ICEmobileContainer.DEBUG("ice.video - Creating video filename: " + mVidCaptureFile);
+                        Logger.DEBUG("ice.video - Creating video filename: " + mVidCaptureFile);
                         fc.create();
                     }
                     mRecordStream = fc.openOutputStream(); 
 
-                    ICEmobileContainer.DEBUG("ice.video - Can write vidCapture file? " + fc.canWrite());
+                    Logger.DEBUG("ice.video - Can write vidCapture file? " + fc.canWrite());
                     fc.close();
 
                     // The direct location approach hangs on closing the file
@@ -260,18 +258,18 @@ class VideoRecordingScreen extends MainScreen {
                 } 
 
             } catch( IOException e ) {
-                ICEmobileContainer.ERROR("ice.video - IOException : " + e);
+            	Logger.ERROR("ice.video - IOException : " + e);
 
             } catch( MediaException mme ) { 
 
-                ICEmobileContainer.ERROR("ice.video - MediaException: " + mme);
+            	Logger.ERROR("ice.video - MediaException: " + mme);
             } catch (Throwable t) { 
-                ICEmobileContainer.DEBUG("ice.video - ERROR in video capture: " + t);
+                Logger.DEBUG("ice.video - ERROR in video capture: " + t);
             }
         } 		
 
         public void playerUpdate(Player player, String event, Object eventData) {  
-            ICEmobileContainer.DEBUG("ice.video - Player event " + event +
+            Logger.DEBUG("ice.video - Player event " + event +
                     ": " + eventData);
         }
 
@@ -292,12 +290,12 @@ class VideoRecordingScreen extends MainScreen {
                     mRecordStream.close();
                     mRecordControl = null;
 
-                    mContainer.insertThumbnail(mFieldId, VideoRecordingScreen.this.mIcon );					    	
-                    mContainer.insertHiddenFilenameScript(fieldId, mVidCaptureFile  );
-                    ICEmobileContainer.DEBUG("ice.video - done");
+                    mController.insertThumbnail(mFieldId, VideoRecordingScreen.this.mIcon );					    	
+                    mController.insertHiddenFilenameScript(fieldId, mVidCaptureFile  );
+                    Logger.DEBUG("ice.video - done");
                 }
             } catch (Throwable e) {                
-                ICEmobileContainer.ERROR("ice.video - Exception stopping recordingThread: " + e);
+            	Logger.ERROR("ice.video - Exception stopping recordingThread: " + e);
             }	
         }
         

@@ -32,7 +32,8 @@ import java.io.InputStream;
 import javax.microedition.io.Connector;
 import javax.microedition.io.file.FileConnection;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.ContainerController;
+import org.icemobile.client.blackberry.Logger;
 import org.icemobile.client.blackberry.http.HttpRequestHandler;
 import org.icemobile.client.blackberry.http.MultipartPostData;
 import org.icemobile.client.blackberry.utils.NameValuePair;
@@ -41,7 +42,6 @@ import org.icemobile.client.blackberry.utils.ResultHolder;
 import org.icemobile.client.blackberry.utils.UploadUtilities;
 
 import net.rim.device.api.script.ScriptableFunction;
-import net.rim.device.api.system.EventLogger;
 import net.rim.device.api.ui.UiApplication;
 
 /**
@@ -50,22 +50,21 @@ import net.rim.device.api.ui.UiApplication;
  */
 public class AjaxUpload extends ScriptableFunction {
 
-    private ICEmobileContainer mContainer;
+    private ContainerController mController;
     private HttpRequestHandler mHandler; 
-    private String mResult; 
     private static int uploadIndex;
     private String START_OF_CDATA = "<![CDATA[";
 
-    public AjaxUpload( ICEmobileContainer container ) { 
+    public AjaxUpload( ContainerController controller ) { 
 
-        mContainer = container; 
-        mHandler = new HttpRequestHandler(container);
+        mController = controller; 
+        mHandler = new HttpRequestHandler(controller);
     }
 
     public Object invoke( Object thiz, Object[] args) { 
 
         if (args.length != 1) { 
-            ICEmobileContainer.ERROR( "ajax.upload - wrong number of arguments:" + args.length);
+        	Logger.ERROR( "ajax.upload - wrong number of arguments:" + args.length);
             return Boolean.FALSE; 
         }
         String serializedForm = (String) args[0];
@@ -77,13 +76,13 @@ public class AjaxUpload extends ScriptableFunction {
         final long startTime = System.currentTimeMillis();
         
         try {
-//            ICEmobileContainer.DEBUG("ajax.upload - Serialized form:\n" + serializedForm);
+//            Logger.DEBUG("ajax.upload - Serialized form:\n" + serializedForm);
             NameValuePair[] params = UploadUtilities.getNameValuePairs(serializedForm, "=", "&");
             //Log.e("ICEutil", "NVP=" + params.length);
             for (int i=0; i<params.length; i++) {
                 if (params[i].getName().indexOf("file") > -1) {
                     String filename = HttpUtils.URLdecode(params[i].getValue());
-                    ICEmobileContainer.DEBUG("ajax.upload - File part encountered: " + filename);
+                    Logger.DEBUG("ajax.upload - File part encountered: " + filename);
 
                     if (filename.indexOf(".jpg")> -1 ) { 
                         byte[] imageBytes;
@@ -160,17 +159,17 @@ public class AjaxUpload extends ScriptableFunction {
             UiApplication.getUiApplication().invokeLater( new Runnable() { 
                 public void run() { 
 
-                    String response = mHandler.processAJAXRequest( mContainer.getCurrentURL(), null, content );
+                    String response = mHandler.processAJAXRequest( null, content );
                
-                    ICEmobileContainer.TIME(startTime, "ajax.upload - FormUpload");
-                    ICEmobileContainer.DEBUG("ajax.upload - Raw response: " + response);
+                    Logger.TIME(startTime, "ajax.upload FormUpload");
+                    Logger.DEBUG("ajax.upload - Raw response: " + response);
                
                     if (response.indexOf( "<error>") > -1) {
                     	processError(response); 
                     } else { 
             			drh.setResult(response);
             			if (response != null) { 
-            				mContainer.processResult( "AjaxUpload_" + uploadIndex++,  drh);
+            				mController.processResult( "AjaxUpload_" + uploadIndex++,  drh);
             			}
                     }
                 }
@@ -178,7 +177,7 @@ public class AjaxUpload extends ScriptableFunction {
 
 
         } catch (Exception e) { 
-            ICEmobileContainer.ERROR ("ajax.upload - Upload exception: " + e);
+        	Logger.ERROR ("ajax.upload - Upload exception: " + e);
             return Boolean.FALSE;
         }
         return Boolean.TRUE;
@@ -193,10 +192,10 @@ public class AjaxUpload extends ScriptableFunction {
         	int epos  = response.indexOf("]]>", spos + 1 ); 
         	if (epos > -1) { 
         		error = response.substring(spos, epos); 
-        		ICEmobileContainer.DIALOG("Error in upload: " + error); 
+        		Logger.DIALOG("Error in upload: " + error); 
         	}
         } else { 
-        	ICEmobileContainer.DIALOG("Error in upload... check container log for message contents");
+        	Logger.DIALOG("Error in upload... check container log for message contents");
         }    	
     }
    
@@ -208,7 +207,7 @@ public class AjaxUpload extends ScriptableFunction {
             if (result != null) { 
                 this.result = new String (result); 
             } else { 
-                ICEmobileContainer.ERROR("Null result in ajaxUpload" );
+            	Logger.ERROR("Null result in ajaxUpload" );
             }
         }
         

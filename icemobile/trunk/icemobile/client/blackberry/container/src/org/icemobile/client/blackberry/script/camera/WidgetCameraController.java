@@ -37,7 +37,8 @@ import javax.microedition.io.file.FileConnection;
 import javax.microedition.media.Player;
 import javax.microedition.media.control.VideoControl;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.ContainerController;
+import org.icemobile.client.blackberry.Logger;
 import org.icemobile.client.blackberry.utils.FileSelectorPopupScreen;
 import org.icemobile.client.blackberry.utils.NameValuePair;
 import org.icemobile.client.blackberry.utils.FileUtils;
@@ -48,6 +49,7 @@ import net.rim.device.api.amms.control.camera.EnhancedFocusControl;
 import net.rim.device.api.io.Base64OutputStream;
 import net.rim.device.api.io.IOUtilities;
 import net.rim.device.api.script.ScriptableFunction;
+import net.rim.device.api.system.Application;
 import net.rim.device.api.system.Bitmap;
 import net.rim.device.api.system.Display;
 import net.rim.device.api.system.JPEGEncodedImage;
@@ -70,7 +72,7 @@ import net.rim.device.api.ui.container.MainScreen;
 public class WidgetCameraController extends ScriptableFunction {
 
 
-    private ICEmobileContainer mContainer;
+    private ContainerController mController;
     private VideoControl mVideoControl;
     private MainScreen mCameraScreen;
     private int maxWidth = 640;
@@ -79,13 +81,12 @@ public class WidgetCameraController extends ScriptableFunction {
     private int mThumbWidth; 
     private int mThumbHeight;
     private int mCapturedWidth = 640;
-    private int mCapturedHeight = 480;
-    
+    private int mCapturedHeight = 480;   
    
     private Player mPlayer; 
 
-    public WidgetCameraController(ICEmobileContainer container) { 
-        mContainer = container; 
+    public WidgetCameraController(ContainerController controller) { 
+        mController = controller; 
         mCameraScreen = new CameraScreen();
     }	
 
@@ -116,7 +117,7 @@ public class WidgetCameraController extends ScriptableFunction {
             } 
             
         } else { 
-            ICEmobileContainer.ERROR("ice.shootPhoto - wrong number of arguments");
+        	Logger.ERROR("ice.shootPhoto - wrong number of arguments");
             return Boolean.FALSE; 
         }     
         
@@ -135,13 +136,13 @@ public class WidgetCameraController extends ScriptableFunction {
             }
                 
         } catch (Exception e) { 
-            ICEmobileContainer.ERROR("ice.shootPhoto - size error in js: " + e);
+        	Logger.ERROR("ice.shootPhoto - size error in js: " + e);
         }
         
 
         String[] encodings = UploadUtilities.split(supportedEncodings, " "); 
         for (int idx = 0; idx < encodings.length; idx ++ ) { 
-            ICEmobileContainer.DEBUG("- " + encodings[idx]);
+            Logger.DEBUG("- " + encodings[idx]);
         }
         int [] encodingResolutions = parseEncodingStrings( encodings );        
         final int [] leastNecessaryResolution = findMinimumNecessary ( encodingResolutions, maxWidth, maxHeight); 
@@ -158,7 +159,7 @@ public class WidgetCameraController extends ScriptableFunction {
     	UiApplication.getUiApplication().invokeLater( new Runnable() {
     		public void run() { 
 
-    			mContainer.pushScreen(mCameraScreen);
+    		
     			try { 
 
     				// If there is a smaller size detected that can satisfy the needs, use it, or just 
@@ -190,13 +191,16 @@ public class WidgetCameraController extends ScriptableFunction {
     					if (efc.isAutoFocusSupported() && !efc.isAutoFocusLocked()) { 
     						//efc.startAutoFocus();
     					} 
-    					if(videoField != null) {		               
-    						mCameraScreen.add(videoField);
+    					if(videoField != null) {	
+    						synchronized (UiApplication.getEventLock()) { 
+    							UiApplication.getUiApplication().pushScreen(mCameraScreen);
+    							mCameraScreen.add(videoField);
+    						}
     					}
     				}
     			}
     			catch(Exception e) {		
-    				ICEmobileContainer.ERROR("ice.shootPhoto - Exception in image processing: " + e.toString());
+    				Logger.ERROR("ice.shootPhoto - Exception in image processing: " + e.toString());
     			}
 
     		}});
@@ -243,13 +247,13 @@ public class WidgetCameraController extends ScriptableFunction {
                 				// Get the orientation at photo time, not when processing! 
                 				int capturedOrientation = Display.getOrientation(); 
                 				byte[] rawImage = mVideoControl.getSnapshot(null);
-                				synchronized (mContainer.getEventLock()) { 
-                                    mContainer.popScreen( mCameraScreen );
+                				synchronized (UiApplication.getEventLock()) { 
+                                    UiApplication.getUiApplication().popScreen( mCameraScreen );
                                 } 
-                				ICEmobileContainer.TIME(startTime, "ice.shootPhoto capturing bytes" );
+                				Logger.TIME(startTime, "ice.shootPhoto capturing bytes" );
                 				processThumbnail( rawImage, capturedOrientation ); 
                 				
-                				ICEmobileContainer.DEBUG("ice.shootPhoto - capture size: " + rawImage.length);
+                				Logger.DEBUG("ice.shootPhoto - capture size: " + rawImage.length);
                 				localFilename = FileUtils.getPictureFileURL("image.jpg");
 
                 				if (mCapturedWidth != maxWidth || mCapturedHeight != maxHeight) { 
@@ -262,17 +266,14 @@ public class WidgetCameraController extends ScriptableFunction {
                 				}
                 				startTime = System.currentTimeMillis(); 
                 				persistImage(rawImage, localFilename); 
-                                ICEmobileContainer.TIME(startTime, "ice.shootPhoto persisting image" );
-                				mContainer.insertHiddenFilenameScript(mFieldId, localFilename ); 
-                				ICEmobileContainer.DEBUG("ice.shootPhoto - done");
+                				Logger.TIME(startTime, "ice.shootPhoto persisting image" );
+                				mController.insertHiddenFilenameScript(mFieldId, localFilename ); 
+                				Logger.DEBUG("ice.shootPhoto - done");
                 			} catch(Exception e) {//
-                				ICEmobileContainer.ERROR("ice.shootPhoto - exception: " + e);
+                				Logger.ERROR("ice.shootPhoto - exception: " + e);
 //
                 			} finally {
-                			    synchronized (mContainer.getEventLock()) { 
-                                    mCameraScreen.deleteAll();
-                                } 
-                				
+                			   cleanup();                				
                 			}
                 		} 
                 	});
@@ -280,6 +281,21 @@ public class WidgetCameraController extends ScriptableFunction {
             }           
             return handled;                
         }		
+    }
+    
+    private void cleanup() { 
+    	synchronized ( Application.getEventLock()) {
+    		
+    		if (mCameraScreen != null) { 
+    			mCameraScreen.deleteAll();
+                mCameraScreen = null;
+    		}
+    		mVideoControl = null; 
+    		if (mPlayer != null) { 
+    			mPlayer.close(); 
+    			mPlayer = null; 
+    		}
+    	}     	
     }
     
     /**
@@ -340,7 +356,7 @@ public class WidgetCameraController extends ScriptableFunction {
      		}
     	}
     	
-    	mContainer.insertHiddenFilenameScript(mFieldId, filename ); 
+    	mController.insertHiddenFilenameScript(mFieldId, filename ); 
     	
     }
     
@@ -363,7 +379,7 @@ public class WidgetCameraController extends ScriptableFunction {
 		 * Graphics object big enough to do the work.
 		 */
 		
-		ICEmobileContainer.DEBUG("ice.shootPhoto - camera orientation = " + capturedOrientation);
+		Logger.DEBUG("ice.shootPhoto - camera orientation = " + capturedOrientation);
 		if (capturedOrientation == Display.ORIENTATION_PORTRAIT) {
 			thumbBitmap = ImageManipulator.rotate( thumbBitmap, -90);
 		}
@@ -371,7 +387,7 @@ public class WidgetCameraController extends ScriptableFunction {
 		JPEGEncodedImage thumb = JPEGEncodedImage.encode( thumbBitmap, 70 );
 //		MetaDataControl mdc = ((JPEGEncodedImage) thumb ).getMetaData();
 ////		String[] keys = mdc.getKeys();
-//		ICEmobileContainer.DEBUG("ice.shootPhoto - Orientation of rotated thumb = " +
+//		Logger.DEBUG("ice.shootPhoto - Orientation of rotated thumb = " +
 //				mdc.getKeyValue("orientation"));
 
 		byte thumbnailData[] = thumb.getData();
@@ -395,10 +411,11 @@ public class WidgetCameraController extends ScriptableFunction {
 			bos.flush();
 			bos.close();
 
-            ICEmobileContainer.TIME(startTime, "ice.shootPhoto writing thumb" );
-			mContainer.insertThumbnail(mFieldId, bos.toString() ); 
+			Logger.TIME(startTime, "ice.shootPhoto writing thumb" );
+			mController.insertThumbnail(mFieldId, bos.toString() );
+			
 		} catch (IOException ioe) { 
-			ICEmobileContainer.ERROR("ice.shootPhoto - Exception writing thumbnail: " + ioe);
+			Logger.ERROR("ice.shootPhoto - Exception writing thumbnail: " + ioe);
 		}    	
     }
     
@@ -414,11 +431,11 @@ public class WidgetCameraController extends ScriptableFunction {
     	FileConnection fconn = null;
     	try { 
 
-    		ICEmobileContainer.DEBUG("ice.shootPhoto - capture to: " + localFilename);
+    		Logger.DEBUG("ice.shootPhoto - capture to: " + localFilename);
     		fconn = (FileConnection) Connector.open(localFilename);
 
     		if (!fconn.exists()) {
-    			ICEmobileContainer.DEBUG("ice.shootPhoto - Must create file");
+    			Logger.DEBUG("ice.shootPhoto - Must create file");
     			fconn.create(); 
 
     			OutputStream os = fconn.openOutputStream();
@@ -426,12 +443,12 @@ public class WidgetCameraController extends ScriptableFunction {
     			os.close();
 
     		} else { 
-    			ICEmobileContainer.ERROR("ice.shootPhoto file already exists: " + localFilename);  
+    			Logger.ERROR("ice.shootPhoto file already exists: " + localFilename);  
     		}
 
     	} catch(Exception e) {
 
-    		ICEmobileContainer.ERROR("ice.shootPhoto - persist exception: " + e);
+    		Logger.ERROR("ice.shootPhoto - persist exception: " + e);
 
     	} finally {
     		try { 
