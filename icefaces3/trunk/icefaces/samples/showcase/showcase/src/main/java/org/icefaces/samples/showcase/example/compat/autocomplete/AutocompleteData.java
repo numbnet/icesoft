@@ -45,14 +45,21 @@ public class AutocompleteData implements Serializable {
     public static final String BEAN_NAME = "autocompleteData";
     
     public static final String CITIES_FILENAME = "City-Names.txt";
-	public static final List<String> CITIES = readCityFile();
+	public static List<String> cities;
 
 	public static final String RESOURCE_PATH = "/resources/selectinputtext/";
+
+    private static List<String> getCities(){
+        if( cities == null ){
+            cities = readCityFile();
+        }
+        return cities;
+    }
 	
 	/**
 	 * Method to read the list of cities from the file CITIES_FILENAME
 	 *  (which should be a text file with one city per line)
-	 * The read list will be stored as CITIES and can be referenced by any Autocomplete demo
+	 * The read list will be stored as cities and can be referenced by any Autocomplete demo
 	 */
 	private static List<String> readCityFile() {
 	    InputStream fileIn = null;
@@ -100,7 +107,7 @@ public class AutocompleteData implements Serializable {
 	 * This will return the full list of Cities wrapped in SelectItems
 	 */
 	public static List<SelectItem> wrapList() {
-	    return wrapList(null, CITIES);
+	    return wrapList(null, getCities());
 	}
 	
 	/**
@@ -108,7 +115,7 @@ public class AutocompleteData implements Serializable {
 	 * This will return the filtered list of Cities wrapped in SelectItems
 	 */
 	public static List<SelectItem> wrapList(String filter) {
-	    return wrapList(filter, CITIES);
+	    return wrapList(filter, getCities());
 	}
 	
 	/**
