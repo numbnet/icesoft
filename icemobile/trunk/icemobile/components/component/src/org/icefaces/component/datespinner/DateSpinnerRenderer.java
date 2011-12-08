@@ -338,7 +338,8 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         int yrInt = spinner.getYearInt();
         int mnthInt  = spinner.getMonthInt();
         int dateInt = spinner.getDayInt();
-
+        writer.startElement("span", uiComponent);
+        writer.writeAttribute("id", clientId+"_script", "id");
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);
         writer.write("mobi.datespinner.init('"+clientId+"',"+yrInt+","+mnthInt+","+dateInt+",'"+spinner.getPattern()+"');");
@@ -346,6 +347,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
                 "mobi.datespinner.unload('" + clientId + "');" +
                 "});\n");      */
         writer.endElement("script");
+        writer.endElement("span");
     }
 
 
