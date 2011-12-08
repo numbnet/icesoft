@@ -32,34 +32,34 @@ import net.rim.device.api.command.ReadOnlyCommandMetadata;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.util.StringProvider;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.ContainerController;
 
 /**
- * This menu item allows users to reset the Push registration 
- * structure during development  
+ * This menu item is used as a URL history submenu item 
+ * displaying a URL that had been visited previously. 
  *
  */
 public class HistorySubMenuItem  extends MenuItem {
 
-    private ICEmobileContainer mContainer; 
+    private ContainerController mController; 
     private String mUrl;
 
-    public HistorySubMenuItem(ICEmobileContainer container, String url) {
+    public HistorySubMenuItem(ContainerController controller, String url) {
     	
         super( new StringProvider( url ), 4, 0);
         mUrl = url;
-        mContainer = container;
-        super.setCommand( new Command( new ReloadPageHandler() ));
+        mController = controller;
+        super.setCommand( new Command( new LoadPageHandler() ));
     }
 
-    class ReloadPageHandler extends CommandHandler { 
+    class LoadPageHandler extends CommandHandler { 
 
-        public ReloadPageHandler () {
+        public LoadPageHandler () {
             super();
         }
 
         public void execute(ReadOnlyCommandMetadata metadata, Object context) { 
-            mContainer.loadPage( mUrl );
+            mController.loadPage( mUrl );
         }
     } 
     
@@ -77,5 +77,4 @@ public class HistorySubMenuItem  extends MenuItem {
     	}    	
     	super.setText(new StringProvider ( label ));
     }
-    
 }

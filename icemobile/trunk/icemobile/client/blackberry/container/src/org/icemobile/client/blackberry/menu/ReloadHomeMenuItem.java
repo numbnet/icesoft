@@ -33,6 +33,7 @@ import net.rim.device.api.command.ReadOnlyCommandMetadata;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.util.StringProvider;
 
+import org.icemobile.client.blackberry.ContainerController;
 import org.icemobile.client.blackberry.ICEmobileContainer;
 
 /**
@@ -40,19 +41,16 @@ import org.icemobile.client.blackberry.ICEmobileContainer;
  * menu system and allows reloading the main application URL 
  * without having switched 'from' the application as in the options 
  * case. 
- *
  */
 public class ReloadHomeMenuItem extends MenuItem {
 
-    private ICEmobileContainer mContainer; 
+    private ContainerController mController; 
 
-    public ReloadHomeMenuItem(ICEmobileContainer container) { 
+    public ReloadHomeMenuItem(ContainerController controller) { 
         super(new StringProvider("Home"), 1, 0);
-        mContainer = container;
+        mController = controller;
         super.setCommand( new Command( new ReloadPageImmediateHandler() ));
     }
-
-    
 
     class ReloadPageImmediateHandler extends CommandHandler { 
 
@@ -61,7 +59,7 @@ public class ReloadHomeMenuItem extends MenuItem {
         }
 
         public void execute(ReadOnlyCommandMetadata metadata, Object context) { 
-            mContainer.reloadApplicationImmediately();
+            mController.loadPage( ICEmobileContainer.HOME_URL );
         }
     } 
 

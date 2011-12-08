@@ -30,21 +30,18 @@ import net.rim.device.api.command.Command;
 import net.rim.device.api.command.CommandHandler;
 import net.rim.device.api.command.ReadOnlyCommandMetadata;
 import net.rim.device.api.system.Bitmap;
-import net.rim.device.api.ui.Color;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.XYEdges;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.EditField;
-import net.rim.device.api.ui.decor.Background;
-import net.rim.device.api.ui.decor.BackgroundFactory;
 import net.rim.device.api.ui.decor.Border;
 import net.rim.device.api.ui.decor.BorderFactory;
 import net.rim.device.api.util.StringProvider;
 import net.rim.device.api.ui.component.DialogClosedListener; 
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.ContainerController;
 
 /**
  * This MenuItem allows a user to type in a value for HOME_URL without going to
@@ -53,24 +50,22 @@ import org.icemobile.client.blackberry.ICEmobileContainer;
  */
 public class URLEntryMenu extends MenuItem {
 
-    private ICEmobileContainer mContainer;
+    private ContainerController mController;
     private EditField mURLField;
     
 
-    public URLEntryMenu(ICEmobileContainer container) {
+    public URLEntryMenu(ContainerController controller ) {
         super(new StringProvider("Open URL..."), 5, 0);
-        mContainer = container;
+        mController = controller;
         super.setCommand(new Command(new URLHandler()));
     }
 
     class URLHandler extends CommandHandler {
-
-        
         
         public void execute(ReadOnlyCommandMetadata metadata, Object context) {
             
             String url; 
-            url = mContainer.getQuickURL();
+            url = mController.getQuickURL();
             
             final Dialog newURLDialog = new 
                    Dialog(Dialog.D_OK_CANCEL,
@@ -84,7 +79,7 @@ public class URLEntryMenu extends MenuItem {
                 public void dialogClosed( Dialog dialog, int choice) { 
                     if (choice == Dialog.D_OK) { 
                         String url = mURLField.getText();                    
-                        mContainer.setQuickURL( url );
+                        mController.setQuickURL( url );
                     }
                 }            
             }); 
@@ -111,5 +106,4 @@ public class URLEntryMenu extends MenuItem {
            
         }
     }
-
 }
