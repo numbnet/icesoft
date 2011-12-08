@@ -216,8 +216,8 @@ ice.ace.getJSContext =  function(clientId) {
     if (component) {
         if (component['JSContext'])
             return component['JSContext'];
-        else
-            return JSContext[clientId];
+        //else
+            //return JSContext[clientId];
     }
     return null;
 };
