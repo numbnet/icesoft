@@ -15,7 +15,6 @@
  */
 package org.icefaces.component.datespinner;
 
-import com.sun.tools.corba.se.idl.toJavaPortable.StringGen;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.PassThruAttributeWriter;
 import org.icefaces.component.utils.Utils;
