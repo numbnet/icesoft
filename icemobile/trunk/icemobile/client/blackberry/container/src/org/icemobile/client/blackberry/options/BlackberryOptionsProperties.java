@@ -26,6 +26,7 @@
  */ 
 package org.icemobile.client.blackberry.options;
 
+import org.icemobile.client.blackberry.ContainerController;
 import org.icemobile.client.blackberry.ICEmobileContainer;
 import net.rim.device.api.system.PersistentObject;
 import net.rim.device.api.system.PersistentStore;
@@ -66,14 +67,13 @@ public class BlackberryOptionsProperties implements Persistable {
     // type a string and right click -> Convert String to Long 
     // When this value is changed, reference to previous persisted 
     // values is lost 
-    private static final long PERSISTENCE_ID = 0x34332c1a19646ecfL;
 
     //Persistent object wrapping the effective properties instance
     private static PersistentObject store;
 
     //Ensure that an effective properties set exists on startup.
     static {
-        store = PersistentStore.getPersistentObject(PERSISTENCE_ID);
+        store = PersistentStore.getPersistentObject( ContainerController.GUID );
         synchronized (store) {
             if (store.getContents() == null) {
                 store.setContents(new BlackberryOptionsProperties());
