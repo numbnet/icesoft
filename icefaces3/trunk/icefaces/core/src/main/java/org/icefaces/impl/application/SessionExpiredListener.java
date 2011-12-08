@@ -52,7 +52,7 @@ public class SessionExpiredListener implements HttpSessionListener {
         //If there is no FacesContext, then the session likely timed out of it's own accord rather
         //then being invalidated programmatically as part of a JSF lifecycle.  In that case,
         //we can't put an exception into the queue.
-        if (fc != null) {
+        if (fc != null && !fc.isReleased()) {
             Application app = fc.getApplication();
             if (app == null) {
                 ApplicationFactory factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
@@ -78,7 +78,9 @@ public class SessionExpiredListener implements HttpSessionListener {
         if (EnvUtils.isICEpushPresent()) {
             ServletContext servletContext = session.getServletContext();
             PushContext pushContext = PushContext.getInstance(servletContext);
-            pushContext.push(session.getId());
+            if( pushContext != null ){
+                pushContext.push(session.getId());
+            }
         }
     }
 
