@@ -26,10 +26,6 @@ ice.ace.escapeClientId = function(id) {
     return "#" + id.replace(/:/g,"\\:");
 };
 
-ice.ace.onContentReady = function(id, fn) {
-    YAHOO.util.Event.onContentReady(id, fn, window, true);
-};
-
 ice.ace.cleanWatermarks = function(){
     ice.ace.jq.watermark.hideAll();
 };

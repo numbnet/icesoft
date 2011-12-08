@@ -45,8 +45,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 		componentFamily  = "org.icefaces.ace.component",
 		tlddoc = "Utility to export data from a datatable as an Excel, PDF, XML or CSV document. This component renders an HTML button. More components and HTML elements can be nested inside this tag to give a different look to the button.")
 @ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="dataexporter/dataexporter.js")
+	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
+	@ResourceDependency(library="icefaces.ace", name="util/ace-datatable.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")

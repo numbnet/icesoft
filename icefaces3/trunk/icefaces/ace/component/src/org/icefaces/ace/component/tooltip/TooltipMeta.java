@@ -41,11 +41,9 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 		tlddoc = "Tooltip features a rich tooltip display with various events, effects, customization options and inline content display along with skinning options."
         )
 @ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="core/core.js"),
-	@ResourceDependency(library="icefaces.ace", name="tooltip/jquery.qtip-1.0.0-rc3.js"),
+	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 //    @ResourceDependency(library="icefaces.ace", name="tooltip/jquery.qtip.debug-1.0.0-rc3.js"),
-	@ResourceDependency(library="icefaces.ace", name="tooltip/tooltip.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="display", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")

@@ -126,3 +126,7 @@ ice.ace.util.createElement = function(parent, name) {
 ice.ace.util.removeElement = function(element) {
     element.parentNode.removeChild(element);
 };
+
+ice.ace.onContentReady = function(id, fn) {
+    YAHOO.util.Event.onContentReady(id, fn, window, true);
+};

@@ -43,10 +43,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
-	@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
-	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.js"),
-	@ResourceDependency(library="icefaces.ace", name="core/core.js"),
-	@ResourceDependency(library="icefaces.ace", name="accordion/accordion.js")
+	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
+	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="panechange", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")

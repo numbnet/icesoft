@@ -50,9 +50,18 @@
               location="${build}/exploded/META-INF/components.tld"/>
     <property name="tld.jar" location="${lib.dir}"/>
     <property name="smartsprites.basedir" location="../tools/smartsprites"/>
-    <property name="combined.js"
-              location="${resources}/icefaces.ace/util/combined.js"/>
-    <property name="combined.js.tmp" location="${combined.js}.tmp.js"/>
+	
+    <!-- combined resources -->
+    <property name="ace-yui.js" location="${resources}/icefaces.ace/util/ace-yui.js"/>
+    <property name="ace-yui.js.tmp" location="${ace-yui.js}.tmp.js"/>
+    <property name="ace-jquery.js" location="${resources}/icefaces.ace/util/ace-jquery.js"/>
+    <property name="ace-jquery.js.tmp" location="${ace-jquery.js}.tmp.js"/>
+    <property name="ace-datatable.js" location="${resources}/icefaces.ace/util/ace-datatable.js"/>
+    <property name="ace-datatable.js.tmp" location="${ace-datatable.js}.tmp.js"/>
+    <property name="ace-menu.js" location="${resources}/icefaces.ace/util/ace-menu.js"/>
+    <property name="ace-menu.js.tmp" location="${ace-menu.js}.tmp.js"/>
+    <property name="ace-components.js" location="${resources}/icefaces.ace/util/ace-components.js"/>
+    <property name="ace-components.js.tmp" location="${ace-components.js}.tmp.js"/>
 
     <property name="root.dir.path" location="${build}/skins/in"/>
     <property name="output.dir.path" location="${build}/skins/out"/>
@@ -169,23 +178,71 @@
     </target>
 
     <target name="res-js-combine">
-        <delete file="${combined.js.tmp}" verbose="true"/>
-        <concat destfile="${combined.js.tmp}" force="true" fixlastline="true">
-            <filelist dir="${resources}/icefaces.ace/util">
-                <file name="util.js"/>
-                <file name="component.js"/>
+        <!-- ace-yui.js -->
+        <delete file="${ace-yui.js.tmp}" verbose="true"/>
+        <concat destfile="${ace-yui.js.tmp}" force="true" fixlastline="true">
+            <filelist dir="${resources}">
+                <file name="yui/2_8_2/yahoo-dom-event/yahoo-dom-event.js"/>
+                <file name="yui/2_8_2/element/element.js"/>
+                <file name="yui/2_8_2/button/button.js"/>
+                <file name="yui/2_8_2/tabview/tabview.js"/>
+                <file name="icefaces.ace/util/util.js"/>
+                <file name="icefaces.ace/util/component.js"/>
+                <file name="icefaces.ace/tabset/tabset.js"/>
+                <file name="icefaces.ace/checkboxbutton/checkboxbutton.js"/>
+                <file name="icefaces.ace/linkbutton/linkbutton.js"/>
+                <file name="icefaces.ace/pushbutton/pushbutton.js"/>
             </filelist>
-            <fileset dir="${resources}">
-                <include name="icefaces.ace/tabset/*.js"/>
-                <include name="icefaces.ace/pushbutton/*.js"/>
-                <include name="icefaces.ace/linkbutton/*.js"/>
-                <!--<include name="icefaces.ace/datetimeentry/*.js"/>-->
-                <include name="icefaces.ace/tableconfigpanel/*.js"/>
-                <include name="icefaces.ace/checkboxbutton/*.js"/>
-                <exclude name="icefaces.ace/util/*.js"/>
-                <!-- Special case, since want to work without YUI dependency -->
-                <exclude name="icefaces.ace/fileentry/fileEntry.js"/>
-            </fileset>
+        </concat>
+        <!-- ace-jquery.js -->
+        <delete file="${ace-jquery.js.tmp}" verbose="true"/>
+        <concat destfile="${ace-jquery.js.tmp}" force="true" fixlastline="true" eol="crlf" encoding="UTF-8">
+            <filelist dir="${resources}">
+                <file name="icefaces.ace/jquery/jquery.js"/>
+                <file name="icefaces.ace/jquery/ui/jquery-ui.js"/>
+                <file name="icefaces.ace/core/core.js"/>
+            </filelist>
+        </concat>
+        <!-- ace-datatable.js -->
+        <delete file="${ace-datatable.js.tmp}" verbose="true"/>
+        <concat destfile="${ace-datatable.js.tmp}" force="true" fixlastline="true" eol="crlf" encoding="UTF-8">
+            <filelist dir="${resources}">
+                <file name="icefaces.ace/yui/utilities/utilities.js"/>
+                <file name="icefaces.ace/datatable/datatable.js"/>
+                <file name="icefaces.ace/paginator/paginator.js"/>
+                <file name="icefaces.ace/tableconfigpanel/tableconfigpanel.js"/>
+                <file name="icefaces.ace/dataexporter/dataexporter.js"/>
+            </filelist>
+        </concat>
+        <!-- ace-menu.js -->
+        <delete file="${ace-menu.js.tmp}" verbose="true"/>
+        <concat destfile="${ace-menu.js.tmp}" force="true" fixlastline="true">
+            <filelist dir="${resources}">
+                <file name="icefaces.ace/wijmo/wijmo.js"/>
+                <file name="icefaces.ace/menu/menu.js"/>
+            </filelist>
+        </concat>
+        <!-- ace-components.js -->
+        <delete file="${ace-components.js.tmp}" verbose="true"/>
+        <concat destfile="${ace-components.js.tmp}" force="true" fixlastline="true">
+            <filelist dir="${resources}">
+                <file name="icefaces.ace/datetimeentry/datetimeentry.js"/>
+                <file name="icefaces.ace/maskedentry/maskedentry.js"/>
+                <file name="icefaces.ace/dialog/dialog.js"/>
+                <file name="icefaces.ace/dnd/dragdrop.js"/>
+                <file name="icefaces.ace/progressbar/progressbar.js"/>
+                <file name="icefaces.ace/resizable/resizable.js"/>
+                <file name="icefaces.ace/sliderentry/slider.js"/>
+                <file name="icefaces.ace/confirmationdialog/confirmationdialog.js"/>
+                <file name="icefaces.ace/panel/panel.js"/>
+                <file name="icefaces.ace/animation/animation.js"/>
+                <file name="icefaces.ace/accordion/accordion.js"/>
+                <file name="icefaces.ace/notificationpanel/notificationpanel.js"/>
+                <file name="icefaces.ace/fileentry/fileEntry.js"/>
+                <file name="icefaces.ace/printer/printer.js"/>
+                <file name="icefaces.ace/tooltip/jquery.qtip-1.0.0-rc3.js"/>
+                <file name="icefaces.ace/tooltip/tooltip.js"/>
+            </filelist>
         </concat>
     </target>
 
@@ -195,18 +252,46 @@
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
-            <arg value="${combined.js}"/>
-            <arg value="${combined.js.tmp}"/>
+            <arg value="${ace-yui.js}"/>
+            <arg value="${ace-yui.js.tmp}"/>
+        </java>
+        <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
+            <arg line="--preserve-semi"/>
+            <arg value="-o"/>
+            <arg value="${ace-jquery.js}"/>
+            <arg value="${ace-jquery.js.tmp}"/>
+        </java>
+        <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
+            <arg line="--preserve-semi"/>
+            <arg value="-o"/>
+            <arg value="${ace-datatable.js}"/>
+            <arg value="${ace-datatable.js.tmp}"/>
+        </java>
+        <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
+            <arg line="--preserve-semi"/>
+            <arg value="-o"/>
+            <arg value="${ace-menu.js}"/>
+            <arg value="${ace-menu.js.tmp}"/>
+        </java>
+        <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
+            <arg line="--preserve-semi"/>
+            <arg value="-o"/>
+            <arg value="${ace-components.js}"/>
+            <arg value="${ace-components.js.tmp}"/>
         </java>
     </target>
 
     <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
         <echo message="Not compressing combined javascript code"/>
-        <move file="${combined.js.tmp}" tofile="${combined.js}" overwrite="yes">
-            <filterchain>
-                <stripjavacomments/>
-                <ignoreblank/>
-            </filterchain>
+        <move file="${ace-yui.js.tmp}" tofile="${ace-yui.js}" overwrite="yes">
+        </move>
+        <move file="${ace-jquery.js.tmp}" tofile="${ace-jquery.js}" overwrite="yes">
+        </move>
+        <move file="${ace-datatable.js.tmp}" tofile="${ace-datatable.js}" overwrite="yes">
+        </move>
+        <move file="${ace-menu.js.tmp}" tofile="${ace-menu.js}" overwrite="yes">
+        </move>
+        <move file="${ace-components.js.tmp}" tofile="${ace-components.js}" overwrite="yes">
         </move>
     </target>
 
@@ -333,6 +418,7 @@
                 <include name="META-INF/*"/>
                 <include name="META-INF/resources/org*/**"/>
                 <include name="META-INF/resources/icefaces.ace/**"/>
+                <!--
                 <include unless="exclude.unused.yui"
                          name="META-INF/resources/yui/**"/>
 
@@ -344,6 +430,7 @@
                          name="META-INF/resources/yui/2_8_2/button/**"/>
                 <include if="exclude.unused.yui"
                          name="META-INF/resources/yui/2_8_2/tabview/**"/>
+                -->
                 <!-- Instead of building the include list, we could build an exclude list, but that'd be even longer
                 <exclude if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/paginator/**"/>
                 <exclude if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/profiler/**"/>
@@ -382,10 +469,17 @@
         <delete dir="${dist}"/>
         <antcall target="clean-skins"/>
         <subant buildpath="${cssurlmapper.rootdir}" target="clean"/>
-	 	<delete file="${combined.js.tmp}" />
-	 	<delete file="${combined.js}" />
+	 	<delete file="${ace-yui.js.tmp}" />
+	 	<delete file="${ace-yui.js}" />
 	 	<delete file="${resources}/icefaces.ace/util/combined.css" />
-        
+	 	<delete file="${ace-jquery.js.tmp}" />
+	 	<delete file="${ace-jquery.js}" />
+	 	<delete file="${ace-datatable.js.tmp}" />
+	 	<delete file="${ace-datatable.js}" />
+	 	<delete file="${ace-menu.js.tmp}" />
+	 	<delete file="${ace-menu.js}" />
+	 	<delete file="${ace-components.js.tmp}" />
+	 	<delete file="${ace-components.js}" />        
     </target>
 
     <target name="skins"

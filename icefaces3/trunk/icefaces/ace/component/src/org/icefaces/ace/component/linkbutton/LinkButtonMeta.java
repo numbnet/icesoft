@@ -40,12 +40,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentFamily = "org.icefaces.ace.LinkButton"
 )
 @ResourceDependencies({
-		@ResourceDependency(name="yahoo-dom-event/yahoo-dom-event.js",library="yui/2_8_2"),
-		@ResourceDependency(name="element/element-min.js",library="yui/2_8_2"),
-		@ResourceDependency(name="button/button-min.js",library="yui/2_8_2"),
-        @ResourceDependency(name="util/combined.js",library="icefaces.ace"),
-		@ResourceDependency(library="icefaces.ace", name="jquery/jquery.js"),
-        @ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
+		@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
+        @ResourceDependency(name="util/ace-yui.js",library="icefaces.ace"),
         @ResourceDependency(library="icefaces.ace", name="linkbutton/linkbutton.css"),
 		@ResourceDependency(name="button/assets/button-core.css",library="yui/2_8_2")
 })

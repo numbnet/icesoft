@@ -37,9 +37,8 @@ import javax.faces.application.ResourceDependency;
                  "of JSF content can be placed inside notification panel.")
 @ResourceDependencies({
         @ResourceDependency(library = "icefaces.ace", name = "notificationpanel/notificationpanel.css"),
-        @ResourceDependency(library = "icefaces.ace", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "icefaces.ace", name = "core/core.js"),
-        @ResourceDependency(library = "icefaces.ace", name = "notificationpanel/notificationpanel.js")
+        @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+        @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 public class NotificationPanelMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Name of the client side widget.")
