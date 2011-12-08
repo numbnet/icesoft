@@ -28,22 +28,21 @@ package org.icemobile.client.blackberry.http;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 
-import javax.microedition.io.HttpConnection;
 import javax.microedition.io.InputConnection;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.ContainerController;
+import org.icemobile.client.blackberry.Logger;
 
 import net.rim.device.api.io.Base64OutputStream;
 import net.rim.device.api.io.http.HttpHeaders;
 
 public class HttpRequestHandler {
 
-    private ICEmobileContainer mContainer; 
+    private ContainerController mController; 
 
-    public HttpRequestHandler (ICEmobileContainer container) { 
-        mContainer = container;
+    public HttpRequestHandler (ContainerController controller) { 
+        mController = controller;
     }
 
     /**
@@ -59,12 +58,8 @@ public class HttpRequestHandler {
      *        Parts for the upload
      * @return returns the result string read from the input stream 
      */
-    public String processAJAXRequest(String url,  
-            String authToken, 
+    public String processAJAXRequest(String authToken, 
             MultipartPostData request) { 
-
-        HttpConnection hc = null ;
-        OutputStream os = null;
 
         String type = request.getContentType();		
 
@@ -95,7 +90,7 @@ public class HttpRequestHandler {
 
             // This doesn't lend itself very well to the progress meter. 
             InputConnection ic = 
-                mContainer.postRequest( url, bos.toString(), headers);
+                mController.postRequest( bos.toString(), headers);
             InputStream inputStream = ic.openInputStream();
             StringBuffer sb = new StringBuffer();
 
@@ -105,7 +100,7 @@ public class HttpRequestHandler {
             }
             return sb.toString();
         } catch (Exception e) {
-            ICEmobileContainer.ERROR("Exception in HTTPRequest processing: " + e.getMessage());
+        	Logger.ERROR("Exception in HTTPRequest processing: " + e.getMessage());
         }
         return null;
     }
