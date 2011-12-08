@@ -31,7 +31,8 @@ import java.util.Hashtable;
 import javax.microedition.media.Player;
 import javax.microedition.media.control.RecordControl;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+import org.icemobile.client.blackberry.ContainerController;
+import org.icemobile.client.blackberry.Logger;
 import org.icemobile.client.blackberry.utils.FileUtils;
 import org.icemobile.client.blackberry.utils.NameValuePair;
 import org.icemobile.client.blackberry.utils.UploadUtilities;
@@ -40,7 +41,7 @@ import net.rim.device.api.script.ScriptableFunction;
 
 public class AudioRecorder extends ScriptableFunction {
 
-    private ICEmobileContainer mContainer;
+    private ContainerController mController;
     private AudioRecorderThread mRecorderThread;
 
     private String mCurrentFilename;
@@ -60,8 +61,8 @@ public class AudioRecorder extends ScriptableFunction {
 
 
 
-    public AudioRecorder (ICEmobileContainer container) {
-        mContainer = container;
+    public AudioRecorder (ContainerController controller) {
+        mController = controller;
     }
 
     /** 
@@ -70,7 +71,7 @@ public class AudioRecorder extends ScriptableFunction {
     public void resetAudioState() { 
 
         if (mRecorderThread != null) { 
-            mRecorderThread.stop();
+            mRecorderThread.stopRecording();
             mRecorderThread = null;
 
         }
@@ -88,7 +89,7 @@ public class AudioRecorder extends ScriptableFunction {
             } 
             
         } else { 
-            ICEmobileContainer.ERROR("ice.audio - wrong number of arguments");
+        	Logger.ERROR("ice.audio - wrong number of arguments");
             return Boolean.FALSE; 
         }     
         
@@ -98,30 +99,30 @@ public class AudioRecorder extends ScriptableFunction {
         if (temp != null) {
             mMaxDuration = Integer.parseInt( temp.getValue() ); 
         } else { 
-            ICEmobileContainer.DEBUG("ice.audio indefinite recording");
+            Logger.DEBUG("ice.audio indefinite recording");
         }
 
         synchronized (lockObject) { 
             try { 
                 if ( mDeviceState == idle) { 
                     mDeviceState = starting; 
-                    ICEmobileContainer.DEBUG( "ice.audio - IDLE -> Starting");
+                    Logger.DEBUG( "ice.audio - IDLE -> Starting");
                     mRecorderThread =  new AudioRecorderThread();
                     mRecorderThread.start(); 
 
                 } else if (mDeviceState == recording){
 
-                    ICEmobileContainer.DEBUG( "ice.audio - Recording->Stopping");
-                    mRecorderThread.stop();
+                    Logger.DEBUG( "ice.audio - Recording->Stopping");
+                    mRecorderThread.stopRecording();
                     mRecorderThread = null;
 
                 } else if (mDeviceState == starting) { 
-                    ICEmobileContainer.DEBUG( "ice.audio - Still Starting");
+                    Logger.DEBUG( "ice.audio - Still Starting");
                 } else if (mDeviceState == stopping) { 
-                    ICEmobileContainer.DEBUG( "ice.audio - Still Stopping");
+                    Logger.DEBUG( "ice.audio - Still Stopping");
                 }
             } catch (Exception e) {  
-                ICEmobileContainer.ERROR("Exception recording audio: " + e);
+            	 Logger.ERROR("Exception recording audio: " + e);
             }
         }
         return Boolean.TRUE;		
@@ -151,7 +152,7 @@ public class AudioRecorder extends ScriptableFunction {
 
                     recordControl.startRecord(); 
                     player.start();	
-                    ICEmobileContainer.DEBUG( "ice.audio - Starting -> Recording");
+                    Logger.DEBUG( "ice.audio - Starting -> Recording");
 
                     if (mMaxDuration > 0) { 
                         mTerminatorThread = new Thread("Recording Terminator") { 
@@ -159,7 +160,7 @@ public class AudioRecorder extends ScriptableFunction {
 
                                 try {  
                                     Thread.sleep( mMaxDuration * 1000);
-                                    stop();
+                                    stopRecording();
                                 } catch (InterruptedException i) { }                                
                             }
                         };
@@ -169,12 +170,12 @@ public class AudioRecorder extends ScriptableFunction {
                     mDeviceState = recording;
 
                 } catch (Exception ioe) { 
-                    ICEmobileContainer.ERROR("ice.audio - Exception capturing audio: " + ioe);
+                	Logger.ERROR("ice.audio - Exception capturing audio: " + ioe);
                 }
             }
         }
 
-        public void stop() { 
+        public void stopRecording() { 
 
             synchronized (lockObject) { 
                 
@@ -191,15 +192,15 @@ public class AudioRecorder extends ScriptableFunction {
                     if (recordControl != null) { 
                         recordControl.stopRecord();
                         recordControl.commit();
-                        ICEmobileContainer.DEBUG( "ice.audio - Stopped");
-                        ICEmobileContainer.DEBUG( "ice.audio recorded in: " + mCurrentFilename);
+                        Logger.DEBUG( "ice.audio - Stopped");
+                        Logger.DEBUG( "ice.audio recorded in: " + mCurrentFilename);
 
                         // If this went ok, insert the hidden field. 					
-                        mContainer.insertHiddenFilenameScript(mFieldId, mCurrentFilename);
-                        ICEmobileContainer.DEBUG( "ice.audio - inserted audio clip");
+                        mController.insertHiddenFilenameScript(mFieldId, mCurrentFilename);
+                        Logger.DEBUG( "ice.audio - inserted audio clip");
                     }
                 } catch (Exception e) { 
-                    ICEmobileContainer.ERROR("Exception stopping: " + e);
+                	Logger.ERROR("Exception stopping: " + e);
                 } finally { 
                     player = null;
                     recordControl = null;
