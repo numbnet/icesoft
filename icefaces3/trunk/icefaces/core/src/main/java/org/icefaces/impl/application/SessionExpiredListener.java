@@ -51,19 +51,27 @@ public class SessionExpiredListener implements HttpSessionListener {
 
         //If there is no FacesContext, then the session likely timed out of it's own accord rather
         //then being invalidated programmatically as part of a JSF lifecycle.  In that case,
-        //we can't put an exception into the queue.
-        if (fc != null && !fc.isReleased()) {
-            Application app = fc.getApplication();
-            if (app == null) {
-                ApplicationFactory factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
-                app = factory.getApplication();
-            }
+        //we can't put an exception into the queue.  There are also times when the FacesContext is not null
+        //but it's also not in a state where in can be used to publish an event (typically see this in
+        //portals).  In these cases, we simply catch the exception and log a warning.
+        if (fc != null) {
+            try {
+                Application app = fc.getApplication();
+                if (app == null) {
+                    ApplicationFactory factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
+                    app = factory.getApplication();
+                }
 
-            ExceptionQueuedEventContext ctxt =
-                    new ExceptionQueuedEventContext(fc, new SessionExpiredException("Session has expired"));
-            app.publishEvent(fc, ExceptionQueuedEvent.class, ctxt);
+                ExceptionQueuedEventContext ctxt =
+                        new ExceptionQueuedEventContext(fc, new SessionExpiredException("Session has expired"));
+                app.publishEvent(fc, ExceptionQueuedEvent.class, ctxt);
+            } catch (Exception e) {
+                LOGGER.log( Level.WARNING, "could not publish SessionExpiredException: " + e.getMessage());
+            }
         }
+
         HttpSession session = httpSessionEvent.getSession();
+
         try {
             // Not everything might be available to us anymore from the session, causing a possible exception.
             WindowScopeManager.disposeWindows(session);
