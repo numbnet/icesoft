@@ -122,7 +122,7 @@ public class InputTextRenderer extends BaseInputRenderer {
         ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
 
-        if (hasBehaviors){
+        if (!disabled && !readOnly && hasBehaviors){
               String cbhCall = this.buildAjaxRequest(facesContext, cbh, event);
               writer.writeAttribute(event, cbhCall, null);
         }

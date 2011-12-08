@@ -118,7 +118,6 @@ mobi.datespinner = {
              this.updateDate(clientId);
         },
         updateDate: function(clientId){
-            var hiddenEl = document.getElementById(clientId+"_hidden");
             var dId = clientId+"_dInt";
             var dEl = document.getElementById(dId);
             var mInt = this.getIntValue(clientId+"_mInt");
@@ -163,7 +162,16 @@ mobi.datespinner = {
                 return parseInt(stringEl);
             } else return 1;
         },
-        select: function(clientId, singleSubmit){
+        select: function(clientId, cfg){
+            this.cfg = cfg;
+            var singleSubmit = this.cfg.singleSubmit;
+            var event = this.cfg.event;
+            var hasBehaviors = false;
+            var behaviors =this.cfg.behaviors;
+            if (behaviors){
+                hasBehaviors = true;
+            }
+      //
             var inputEl = document.getElementById(clientId+'_input');
             var hiddenEl = document.getElementById(clientId+'_hidden');
             var dInt = this.getIntValue(clientId+"_dInt");
@@ -194,9 +202,14 @@ mobi.datespinner = {
             }
             hiddenEl.value = dateStr;
             inputEl.value = dateStr;
- /*           if (singleSubmit){
-                ice.se(null, clientId);
-            } */
+            if (hasBehaviors){
+                if (behaviors.change){
+                    behaviors.change();
+                }
+            }
+            if (!hasBehaviors && singleSubmit){
+                ice.se(event, clientId);
+            }
             this.close(clientId);
         },
         toggle: function(clientId){
@@ -207,12 +220,13 @@ mobi.datespinner = {
             }
         },
         open: function(clientId){
-            document.getElementById(clientId).className = "mobi-date-bg";
+            var idPanel = clientId+"_bg";
+            document.getElementById(idPanel).className = "mobi-date-bg";
             document.getElementById(clientId+"_popup").className = "mobi-date-container";
             this.opened[clientId]= true;
         },
         close: function(clientId){
-            document.getElementById(clientId).className = "mobi-date";
+            document.getElementById(clientId+"_bg").className = "mobi-date";
             document.getElementById(clientId+"_popup").className = "mobi-date-container-hide";
             this.opened[clientId]= false;
         },
