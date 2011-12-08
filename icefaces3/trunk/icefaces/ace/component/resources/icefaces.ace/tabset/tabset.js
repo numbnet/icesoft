@@ -27,7 +27,7 @@ ice.ace.tabset = {
 		 YAHOO.util.Event.onDOMReady(function () {
 		 var Dom = YAHOO.util.Dom;
 	
-       var tabview = new YAHOO.widget.TabView(clientId), cachedOldTab = null;
+       var tabview = new YAHOO.widget.TabView(clientId), cachedOldTabs = [];
        tabview.set('orientation', jsProps.orientation);
 
        //if tabset is client side, lets find out if the state is already stored.
@@ -89,16 +89,18 @@ ice.ace.tabset = {
                                 if (data.status == 'success') {
                                     // Ajax content transition. YUI content transition doesn't execute for server side cases
                                     // allowing our component to trigger content transition when the server call succeeds.
-                                    if (event.newValue) {
-                                        event.newValue.set('contentVisible', true);
-                                    }
                                     if (event.oldValue) {
                                         event.oldValue.set('contentVisible', false);
-                                    } else if (cachedOldTab) {
+                                    } else if (cachedOldTabs.length > 0) {
                                         // When using caching, event.oldValue is undefined in this function
                                         // thus we use a reference to the old tab cached during the standard contentTransition.
-                                        cachedOldTab.set('contentVisible', false);
-                                        cachedOldTab = null;
+                                        for (var i = 0; i < cachedOldTabs.length; i++)
+                                                cachedOldTabs[i].set('contentVisible', false);
+                                        cachedOldTabs = [];
+                                    }
+
+                                    if (event.newValue) {
+                                        event.newValue.set('contentVisible', true);
                                     }
 
                                     ice.ace.jq(tabview._contentParent).css({opacity:1});
@@ -258,7 +260,7 @@ ice.ace.tabset = {
             // Cache old tab provided in contentTransition during server side case
             // transition attempted following server side call is passed null reference to oldTab
             // thus oldTab will be cached here until use by the request success callback
-            cachedOldTab = oldTab;
+            cachedOldTabs.push(oldTab);
         }
 		// effect
 		if (jsfProps.isClientSide && jsProps.showEffect) {
