@@ -8,11 +8,6 @@ mobi.timespinner = {
           var intAmPm = parseInt(aSel);
           var intMinute = parseInt(mSel);
           var intHr= parseInt(hrSel);
-          ice.log.debug(ice.log, 'val of intAmpm ='+intAmPm);
-          var ampm = 'AM';
-          if (intAmPm >0){
-            ampm = 'PM';
-          }
           if (format){
               this.pattern[clientId] = format;
               ice.log.debug(ice.log, ' pattern change not yet implemented ='+this.pattern);
@@ -28,6 +23,11 @@ mobi.timespinner = {
           if (hrEl){
               hrEl.innerHTML=intHr;
           }
+          var ampm = 'AM';
+          if (intAmPm >0){
+            ampm = 'PM';
+          }
+   //       ice.log.debug(ice.log, 'val of intAmpm ='+intAmPm + ' ampm = '+ampm);
           if (ampmEl){
               ampmEl.innerHTML=ampm;
           }
@@ -126,13 +126,26 @@ mobi.timespinner = {
                 return parseInt(stringEl);
             } else return 1;
         },
-        select: function(clientId){
+        select: function(clientId, cfg){
+            this.cfg = cfg;
+            var singleSubmit = this.cfg.singleSubmit;
+            var event = this.cfg.event;
+            var hasBehaviors = false;
+            var behaviors =this.cfg.behaviors;
+            if (behaviors){
+                hasBehaviors = true;
+            }
             var inputEl = document.getElementById(clientId+'_input');
             var titleEl = document.getElementById(clientId+'_title');
             inputEl.value = titleEl.innerHTML;
- /*           if (singleSubmit){
-                ice.se(null, clientId);
-            } */
+            if (hasBehaviors){
+                if (behaviors.change){
+                    behaviors.change();
+                }
+            }
+            if (!hasBehaviors && singleSubmit){
+                ice.se(event, clientId);
+            }
             this.close(clientId);
         },
         toggle: function(clientId){
@@ -143,12 +156,12 @@ mobi.timespinner = {
             }
         },
         open: function(clientId){
-            document.getElementById(clientId).className = "mobi-time-bg";
+            document.getElementById(clientId+'_bg').className = "mobi-time-bg";
             document.getElementById(clientId+"_popup").className = "mobi-time-container";
             this.opened[clientId]= true;
         },
         close: function(clientId){
-            document.getElementById(clientId).className = "mobi-time";
+            document.getElementById(clientId+'_bg').className = "mobi-time";
             document.getElementById(clientId+"_popup").className = "mobi-time-container-hide";
             this.opened[clientId]= false;
         },

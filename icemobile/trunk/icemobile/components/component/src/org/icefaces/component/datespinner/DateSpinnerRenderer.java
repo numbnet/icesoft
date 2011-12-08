@@ -52,7 +52,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
 
         DateSpinner dateSpinner = (DateSpinner) component;
         String clientId = dateSpinner.getClientId(context);
-        if(dateSpinner.isDisabled() || dateSpinner.isReadonly()) {
+        if(dateSpinner.isDisabled()) {
             return;
         }
         String inputField = clientId+"_input";
@@ -198,7 +198,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         // dive that is use to hide/show the popup screen black out.
         writer.startElement("div",uiComponent);
         writer.writeAttribute("id", clientId + "_bg", "id");
-        writer.writeAttribute("name", clientId+"_bg", "name");
     //    writer.writeAttribute("class", "mobi-date", "class");
         writer.endElement("div");
 
@@ -314,7 +313,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         }
         builder.append("});");
         String jsCall = builder.toString();
-        if (!dateEntry.isDisabled() | !dateEntry.isReadonly()){
+        if (!dateEntry.isDisabled() || !dateEntry.isReadonly()){
             writer.writeAttribute("onclick", jsCall, null);
         }
         writer.endElement("input");

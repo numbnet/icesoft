@@ -39,20 +39,26 @@
     <ui:include src="/WEB-INF/includes/composite/theme-switcher.xhtml"/>
 
     <h3>timeSpinner</h3>
-
+    <h:form id="selectForm">
+         <h:outputLabel for="selectSingle" value="Check box for singleSubmit true:"/>
+         <h:selectBooleanCheckbox id="selectSingle" title="singleSubmit" value="#{date.singleSubmit}">
+             <f:ajax execute="@this" render="@all"/>
+         </h:selectBooleanCheckbox>
+     </h:form>
     <h:form id="dateForm" >
 
-        <h5> built in conversion for yyyy-MM-dd pattern</h5>
+        <h5> built in conversion only </h5>
          <h:outputText value="A. time"/>
 
          <mobi:timeSpinner id="timeId" value="#{date.time1}"  timeZone="Mountain Standard Time"
-                          title="time input field">
-         </mobi:timeSpinner>
-               <!--   <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>    -->
+                          singleSubmit="#{date.singleSubmit}"
+                          title="time input field"/>
+
 
        <h5>this one has useNative as true...also has built in conversion</h5>
        <h:outputLabel for="timeIOS5" value="B. iOS5 capable:"/>
-        <mobi:timeSpinner id="timeIOS5" useNative="true" value="#{date.time2}" title="date ios5 cap">
+        <mobi:timeSpinner id="timeIOS5" useNative="true" value="#{date.time2}" title="date ios5 cap"
+                 singleSubmit="#{date.singleSubmit}">
         </mobi:timeSpinner>
 
           <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>

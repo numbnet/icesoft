@@ -22,6 +22,7 @@ import  org.icefaces.renderkit.BaseInputRenderer;
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
@@ -48,22 +49,18 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         TimeSpinner timeSpinner = (TimeSpinner) component;
         String clientId = timeSpinner.getClientId(context);
-        if(timeSpinner.isDisabled() || timeSpinner.isReadonly()) {
+        if(timeSpinner.isDisabled() ) {
             return;
         }
-        String inputValue = context.getExternalContext().getRequestParameterMap().get(clientId+"_input");
-        if (!isValueBlank(inputValue)){
-            if (Utils.isIOS5() && timeSpinner.isUseNative()){
-                //have to convert from 24 hour time and put in same format as mobi timeSpinner
-                String twelveHrString = convertToTwelve(inputValue);
-                if (null != twelveHrString){
-                    timeSpinner.setSubmittedValue(twelveHrString);
-                }
-            }
-            else  {
-                timeSpinner.setSubmittedValue(inputValue);
-            }
+        String inputField = clientId+"_input";
+        if (timeSpinner.isUseNative() && Utils.isIOS5()) {
+            inputField=clientId;
         }
+        String inputValue = context.getExternalContext().getRequestParameterMap().get(inputField);
+        if(!isValueBlank(inputValue)) {
+            timeSpinner.setSubmittedValue(inputValue);
+        }
+
     }
 
     @Override
@@ -71,6 +68,9 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         TimeSpinner spinner = (TimeSpinner) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = spinner.getClientId(context);
+        ClientBehaviorHolder cbh = (ClientBehaviorHolder)component;
+        boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
+        boolean singleSubmit = spinner.isSingleSubmit();
         String initialValue = getStringValueToRender(context, component);
         if (spinner.isUseNative() && Utils.isIOS5()){
             writer.startElement("input", component);
@@ -81,17 +81,11 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
             boolean readonly = spinner.isReadonly();
             String defaultPattern = "HH:mm";
             SimpleDateFormat df2 = new SimpleDateFormat(defaultPattern);
-      //      boolean singleSubmit = spinner.isSingleSubmit();
             if (isValueBlank(initialValue)) {
-                try {
-                    Date aDate = new Date();
-                    writer.writeAttribute("value",df2.format(aDate),"value");
-                } catch (Exception e){
-                    writer.writeAttribute("value", "02:10", "value");
-                }
+                Date aDate = new Date();
+                writer.writeAttribute("value",df2.format(aDate),"value");
             }  else {
-                String twenty4HrVal = convertStringInput("EEE MMM dd hh:mm:ss zzz yyyy", "HH:mm", initialValue);
-                writer.writeAttribute("value", twenty4HrVal, "value");
+                writer.writeAttribute("value", initialValue, "value");
             }
             if (disabled){
                 writer.writeAttribute("disabled", component, "disabled");
@@ -99,16 +93,19 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
             if (readonly){
                 writer.writeAttribute("readonly", component, "readonly");
             }
-        /*    if (!disabled || !readonly && singleSubmit){
-                String jsCall =  "ice.se(event,'"+clientId+"');";
-                writer.writeAttribute("onblur", jsCall, null);
-            }  */
+            if (!readonly && !disabled && hasBehaviors){
+                String event = spinner.getDefaultEventName(context);
+                String cbhCall = this.buildAjaxRequest(context, cbh, event);
+                writer.writeAttribute("onblur", cbhCall, null);
+            }
+            else if (singleSubmit){
+                writer.writeAttribute("onblur", "ice.se(event, this);", null);
+            }
             writer.endElement("input");
         }
         else {
             Map viewContextMap = context.getViewRoot().getViewMap();
             if (!viewContextMap.containsKey(JS_NAME)) {
-          //      logger.info("LOAD JS FOR DATESPINNER");
                 String jsFname = JS_NAME;
                 if ( context.isProjectStage(ProjectStage.Production)){
                     jsFname = JS_MIN_NAME;
@@ -121,17 +118,19 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
                 writer.writeAttribute("src", src, null);
                 writer.endElement("script");
                 viewContextMap.put(JS_NAME, "true");
-            } // else logger.info("DATESPINNER JS ALREADY LOADED");
+            }
+
             String value = this.encodeValue(spinner, initialValue);
-            encodeMarkup(context, component, value);
+            encodeMarkup(context, component, value, hasBehaviors);
             encodeScript(context, component);
         }
     }
 
-    protected void encodeMarkup(FacesContext context, UIComponent uiComponent, String value) throws IOException {
+    protected void encodeMarkup(FacesContext context, UIComponent uiComponent, String value, boolean hasBehaviors) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         TimeSpinner timeEntry = (TimeSpinner) uiComponent;
         String clientId = timeEntry.getClientId(context);
+        ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         String eventStr = "onclick";
         if (Utils.isTouchEventEnabled(context)){
             eventStr="ontouchstart";
@@ -145,6 +144,10 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         }
         //first do the input field and the button
         // build out first input field
+        writer.startElement("span", uiComponent);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("name", clientId, "name");
+        writer.writeAttribute("class", "mobi-time-wrapper", "class");
         writer.startElement("input", uiComponent);
         writer.writeAttribute("id", clientId + "_input", "id");
         writer.writeAttribute("name", clientId+"_input", "name");
@@ -162,6 +165,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         if(timeEntry.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if(timeEntry.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         writer.endElement("input");
+        writer.endElement("span");
         // build out command button for show/hide of date select popup.
         writer.startElement("input", uiComponent);
         writer.writeAttribute("type", "button", "type");
@@ -174,7 +178,8 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.endElement("input");
         // div that is use to hide/show the popup screen black out.
         writer.startElement("div",uiComponent);
-        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("id", clientId + "_bg", "id");
+    //    writer.writeAttribute("class", "mobi-date", "class");
         writer.endElement("div");
         // actual popup code.
         writer.startElement("div", uiComponent);
@@ -256,7 +261,11 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.startElement("div", uiComponent);                          //year value
         writer.writeAttribute("class", TimeSpinner.SEL_VALUE_CLASS, null);
         writer.writeAttribute("id", clientId+"_ampmInt",null);
-        writer.write( String.valueOf(timeEntry.getAmpm())) ;
+        String ampm = "AM";
+        if (timeEntry.getAmpm()>0){
+            ampm="PM";
+        }
+        writer.write(ampm) ;
         writer.endElement("div");                                         //end of year value
         writer.startElement("div", uiComponent);                          //button decrement
         writer.writeAttribute("class", TimeSpinner.BUTTON_DEC_CONT_CLASS, null);
@@ -276,10 +285,21 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", "mobi-button mobi-button-default", null);
         writer.writeAttribute ("type", "button", "type");
         writer.writeAttribute("value", "Set", null);
-        //prep for singleSubmit in
- //       boolean singleSubmit = timeEntry.isSingleSubmit();
- //       writer.writeAttribute(eventStr, "mobi.timespinner.select('"+clientId+"',"+singleSubmit+");", null);
-        writer.writeAttribute(eventStr, "mobi.timespinner.select('"+clientId+"');", null);
+        //prep for singleSubmit
+        boolean singleSubmit = timeEntry.isSingleSubmit();
+        StringBuilder builder = new StringBuilder(255);
+        builder.append("mobi.timespinner.select('").append(clientId).append("',{ event: event,");
+        builder.append("singleSubmit: ").append(singleSubmit);
+        if (hasBehaviors){
+            String behaviors = this.encodeClientBehaviors(context, cbh, "change").toString();
+            behaviors = behaviors.replace("\"", "\'");
+            builder.append(behaviors);
+        }
+        builder.append("});");
+        String jsCall = builder.toString();
+        if (!timeEntry.isDisabled() || !timeEntry.isReadonly()){
+            writer.writeAttribute("onclick", jsCall, null);
+        }
         writer.endElement("input");
         writer.startElement("input", uiComponent);
         writer.writeAttribute("class", "mobi-button mobi-button-default", null);
@@ -301,12 +321,13 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         int hourInt = spinner.getHourInt();
         int minuteInt  = spinner.getMinuteInt();
         int ampm = spinner.getAmpm();
-
+        writer.startElement("span", uiComponent);
+        writer.writeAttribute("id", clientId+"_script", "id");
         writer.startElement("script", null);
         writer.writeAttribute("text", "text/javascript", null);
         writer.write("mobi.timespinner.init('"+clientId+"',"+hourInt+","+minuteInt+","+ampm+",'"+spinner.getPattern()+"');");
-
         writer.endElement("script");
+        writer.endElement("span");
     }
 
 

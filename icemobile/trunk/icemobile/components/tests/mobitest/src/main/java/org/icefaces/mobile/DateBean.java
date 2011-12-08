@@ -118,6 +118,11 @@ public class DateBean implements Serializable{
     }
     public void clearDate(ActionEvent ae){
         this.selectedDate=new Date();
+        this.date2 = new Date();
+    }
+    public void clearTime(ActionEvent ae){
+        this.time1 = new Date();
+        this.time2 = new Date();
     }
 
     public Date getDate2() {
