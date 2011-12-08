@@ -70,45 +70,43 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
                 facesContext.getExternalContext().getRequest();
         boolean isValid=false;
 
+        String partUploadName = clientId;
+        if (EnvUtils.isEnhancedBrowser(facesContext)){
+           partUploadName+="-file";
+        }
+        if (EnvUtils.isAuxUploadBrowser(facesContext)) {
+           partUploadName+="-file";
+        }
+        Part part = null;
         try {
-            String partUploadName = clientId;
-            if (EnvUtils.isEnhancedBrowser(facesContext)){
-               partUploadName+="-file";
+            part = request.getPart(partUploadName);
+        } catch (ServletException e)  {
+            //ignore ServletException here since auxUpload is not multipart
+        }
+        if (null == part)  {
+            Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
+            part = (Part) auxMap.get(partUploadName);
+        }
+        if (part !=null){
+            String contentType = part.getContentType();
+            String fileName = java.util.UUID.randomUUID().toString();
+            if (part.getSize()<=0){
+               isValid=false;
+            }else {
+               isValid = true;
             }
-            if (EnvUtils.isAuxUploadBrowser(facesContext)) {
-               partUploadName+="-file";
+            if ("video/mp4".equals(contentType)) {
+                fileName += ".mp4";
+            } else if ("video/mpeg".equals(contentType)) {
+                fileName = fileName + ".mp4";
+            } else if ("video/mov".equals(contentType)) {
+                fileName += ".mov";
+            } else if ("video/3gpp".equals(contentType)) {
+                fileName +=".3gp";
+            } else {
+                fileName+=".oth";
             }
-            Part part = request.getPart(partUploadName);
-            if (null == part)  {
-                Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
-                part = (Part) auxMap.get(partUploadName);
-            }
-            if (part !=null){
-                String contentType = part.getContentType();
-                String fileName = java.util.UUID.randomUUID().toString();
-                if (part.getSize()<=0){
-                   isValid=false;
-                }else {
-                   isValid = true;
-                }
-                if ("video/mp4".equals(contentType)) {
-                    fileName += ".mp4";
-                } else if ("video/mpeg".equals(contentType)) {
-                    fileName = fileName + ".mp4";
-                } else if ("video/mov".equals(contentType)) {
-                    fileName += ".mov";
-                } else if ("video/3gpp".equals(contentType)) {
-                    fileName +=".3gp";
-                } else {
-                    fileName+=".oth";
-                }
-                Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
-            }
-        } catch (ServletException e) {
-            logger.warning("ServletException decoding video stream: " + e);
-            isValid=false;
-            //ServletException is discarded since it indicates
-            //form-encoded rather than multipart
+            Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
         }
         return isValid;
     }

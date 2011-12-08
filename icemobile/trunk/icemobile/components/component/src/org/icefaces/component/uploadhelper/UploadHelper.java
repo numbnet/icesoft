@@ -33,7 +33,10 @@ public class UploadHelper extends UploadHelperBase {
 
     public void setInView(boolean inView) {
         super.setInView(inView);
-        if (EnvUtils.isEnhancedBrowser(FacesContext.getCurrentInstance())) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
+        if (isEnhanced || isAuxUpload) {
             return;
         }
         //the desktop case becomes non-ajax and multipart

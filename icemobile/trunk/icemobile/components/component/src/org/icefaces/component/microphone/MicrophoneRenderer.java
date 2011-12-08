@@ -72,51 +72,49 @@ public class MicrophoneRenderer extends Renderer {
         HttpServletRequest request = (HttpServletRequest)
                 facesContext.getExternalContext().getRequest();
         boolean isValid=false;
-        try {
-            String partUploadName = clientId;
-            if (EnvUtils.isEnhancedBrowser(facesContext)){
-               partUploadName+="_mic-file";
-            }
-            if (EnvUtils.isAuxUploadBrowser(facesContext)) {
-               partUploadName+="_mic-file";
-            }
-            Part part = request.getPart(partUploadName);
-            if (null == part)  {
-                Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
-                part = (Part) auxMap.get(partUploadName);
-            }
-            if (part !=null){
-                String contentType = part.getContentType();
-                String fileName = java.util.UUID.randomUUID().toString();
-                if (part.getSize()<=0){
-                   isValid=false;
-                }else {
-                   isValid = true;
-                }
-                if ("audio/wav".equals(contentType) || "audio/x-wav".equals(contentType)) {
-                    fileName = fileName + ".wav";
-                } else if (contentType.endsWith("mp4")) {
-                    fileName = fileName + ".mp4";
-                } else if ("audio/x-m4a".equals(contentType)) {
-                    fileName = fileName + ".m4a";
-                } else if ("audio/mpeg".equals(contentType)) {
-                    fileName = fileName + ".mp3";
-                } else if ("audio/amr".equals(contentType)) {
-                    fileName = fileName + ".amr";
-                } else {
-                    fileName+=".oth";
-                }
-                Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
 
-            }
-            return isValid;
-        } catch (ServletException e) {
-            logger.finer("Exception decoding audio stream: " + e);
-            //ServletException is discarded since it indicates
-            //form-encoded rather than multipart
-            return isValid;
+        String partUploadName = clientId;
+        if (EnvUtils.isEnhancedBrowser(facesContext)){
+           partUploadName+="_mic-file";
         }
+        if (EnvUtils.isAuxUploadBrowser(facesContext)) {
+           partUploadName+="_mic-file";
+        }
+        Part part = null;
+        try {
+            part = request.getPart(partUploadName);
+        } catch (ServletException e)  {
+            //ignore ServletException here since auxUpload is not multipart
+        }
+        if (null == part)  {
+            Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
+            part = (Part) auxMap.get(partUploadName);
+        }
+        if (part !=null){
+            String contentType = part.getContentType();
+            String fileName = java.util.UUID.randomUUID().toString();
+            if (part.getSize()<=0){
+               isValid=false;
+            }else {
+               isValid = true;
+            }
+            if ("audio/wav".equals(contentType) || "audio/x-wav".equals(contentType)) {
+                fileName = fileName + ".wav";
+            } else if (contentType.endsWith("mp4")) {
+                fileName = fileName + ".mp4";
+            } else if ("audio/x-m4a".equals(contentType)) {
+                fileName = fileName + ".m4a";
+            } else if ("audio/mpeg".equals(contentType)) {
+                fileName = fileName + ".mp3";
+            } else if ("audio/amr".equals(contentType)) {
+                fileName = fileName + ".amr";
+            } else {
+                fileName+=".oth";
+            }
+            Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
 
+        }
+        return isValid;
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)

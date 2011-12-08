@@ -84,46 +84,45 @@ public class CameraRenderer extends Renderer {
                 facesContext.getExternalContext().getRequest();
         boolean isValid=false;
 
-        try {
-            //if it's a container upload then the name of part if <clientId>-file
-            //if desktop browser it's just the clientId
-            String partUploadName = clientId;
-            if (EnvUtils.isEnhancedBrowser(facesContext)){
-               partUploadName+="-file";
-            }
-            if (EnvUtils.isAuxUploadBrowser(facesContext)) {
-               partUploadName+="-file";
-            }
-            Part part = request.getPart(partUploadName);
-            if (null == part)  {
-                Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
-                part = (Part) auxMap.get(partUploadName);
-            }
-            if (part !=null){
-                String contentType = part.getContentType();
-                String fileName = java.util.UUID.randomUUID().toString();
-                if (part.getSize()<=0){
-                   isValid=false;
-                }else {
-                   isValid = true;
-                }
-                if ("image/jpeg".equals(contentType)|| "image/jpg".equals(contentType)) {
-                    fileName += ".jpg";
-                }
-                else if ("image/png".equals(contentType)) {
-                    fileName += ".png";
-                }
-                else {  /*if not jpeg or png give it filename of oth for other */
-                    fileName += ".oth";
-                }
-                Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
-            }
-            return isValid;
-        } catch (ServletException e) {
-            //ServletException is discarded since it indicates
-            //form-encoded rather than multipart
-            return isValid;
+        //if it's a container upload then the name of part if <clientId>-file
+        //if desktop browser it's just the clientId
+        String partUploadName = clientId;
+        if (EnvUtils.isEnhancedBrowser(facesContext)){
+           partUploadName+="-file";
         }
+        if (EnvUtils.isAuxUploadBrowser(facesContext)) {
+           partUploadName+="-file";
+        }
+        Part part = null;
+        try {
+            part = request.getPart(partUploadName);
+        } catch (ServletException e)  {
+            //ignore ServletException here since auxUpload is not multipart
+        }
+        if (null == part)  {
+            Map auxMap = AuxUploadResourceHandler.getAuxRequestMap();
+            part = (Part) auxMap.get(partUploadName);
+        }
+        if (part !=null){
+            String contentType = part.getContentType();
+            String fileName = java.util.UUID.randomUUID().toString();
+            if (part.getSize()<=0){
+               isValid=false;
+            }else {
+               isValid = true;
+            }
+            if ("image/jpeg".equals(contentType)|| "image/jpg".equals(contentType)) {
+                fileName += ".jpg";
+            }
+            else if ("image/png".equals(contentType)) {
+                fileName += ".png";
+            }
+            else {  /*if not jpeg or png give it filename of oth for other */
+                fileName += ".oth";
+            }
+            Utils.createMapOfFile(map, request, part, fileName, contentType, facesContext);
+        }
+        return isValid;
     }
 
 
