@@ -87,7 +87,6 @@ public class WidgetCameraController extends ScriptableFunction {
 
     public WidgetCameraController(ContainerController controller) { 
         mController = controller; 
-        mCameraScreen = new CameraScreen();
     }	
 
     /**
@@ -97,9 +96,6 @@ public class WidgetCameraController extends ScriptableFunction {
      * 
      */
     public  Object invoke( Object thiz, Object[] args) { 
-
-    	
-    	
         Hashtable params = new Hashtable();
         String supportedEncodings = System.getProperty("video.snapshot.encodings"); 
         if (supportedEncodings.trim().length() == 0) { 
@@ -193,6 +189,7 @@ public class WidgetCameraController extends ScriptableFunction {
     					} 
     					if(videoField != null) {	
     						synchronized (UiApplication.getEventLock()) { 
+    							mCameraScreen = new CameraScreen();                      
     							UiApplication.getUiApplication().pushScreen(mCameraScreen);
     							mCameraScreen.add(videoField);
     						}
