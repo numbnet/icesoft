@@ -26,7 +26,8 @@
  */ 
 package org.icemobile.client.blackberry.options;
 
-import org.icemobile.client.blackberry.ICEmobileContainer;
+
+import org.icemobile.client.blackberry.ContainerController;
 
 import net.rim.blackberry.api.options.OptionsProvider;
 import net.rim.device.api.command.Command;
@@ -50,7 +51,7 @@ import net.rim.device.api.ui.decor.BackgroundFactory;
 
 public class BlackberryOptionsProvider implements OptionsProvider {
 
-    private ICEmobileContainer mContainer; 
+    private ContainerController mController; 
     private BlackberryOptionsProperties mOptionsProperties;
     private EditField mUrlField;
     private ObjectChoiceField mRecentURLs;
@@ -68,8 +69,8 @@ public class BlackberryOptionsProvider implements OptionsProvider {
         return "ICEmobile Container 1.0 Beta";
     }
 
-    public BlackberryOptionsProvider (ICEmobileContainer container) {
-        this.mContainer = container; 		
+    public BlackberryOptionsProvider (ContainerController controller ) {
+        this.mController = controller; 		
         this.mOptionsProperties = BlackberryOptionsProperties.fetch();	
 
     }
@@ -198,7 +199,7 @@ public class BlackberryOptionsProvider implements OptionsProvider {
     class ReloadPageHandler extends CommandHandler { 
 
         public void execute(ReadOnlyCommandMetadata metadata, Object context) { 
-            mContainer.reloadApplication();
+            mController.reloadApplicationOnReentry();
         }
     } 
 
@@ -217,6 +218,6 @@ public class BlackberryOptionsProvider implements OptionsProvider {
             mOptionsProperties.setEmailNotification( mEmailNotification.getText() );   
         }
         mOptionsProperties.save(); 				        
-        mContainer.optionsChanged(); 
+        mController.optionsChanged(); 
     }
 }
