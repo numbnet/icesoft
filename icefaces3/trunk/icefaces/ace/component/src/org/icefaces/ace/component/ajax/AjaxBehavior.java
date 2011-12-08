@@ -56,10 +56,10 @@ public class AjaxBehavior extends ClientBehaviorBase {
     private String execute;
     private boolean global = true;
     private boolean async = false;
-    private String oncomplete;
-    private String onerror;
-    private String onsuccess;
-    private String onstart;
+    private String onComplete;
+    private String onError;
+    private String onSuccess;
+    private String onStart;
     private MethodExpression listener;
     private boolean immediate = false;
     private boolean disabled = false;
@@ -95,36 +95,36 @@ public class AjaxBehavior extends ClientBehaviorBase {
         this.global = global;
     }
 
-    public String getOncomplete() {
-        return oncomplete;
+    public String getOnComplete() {
+        return onComplete;
     }
 
-    public void setOncomplete(String oncomplete) {
-        this.oncomplete = oncomplete;
+    public void setOnComplete(String onComplete) {
+        this.onComplete = onComplete;
     }
 
-    public String getOnstart() {
-        return onstart;
+    public String getOnStart() {
+        return onStart;
     }
 
-    public void setOnstart(String onstart) {
-        this.onstart = onstart;
+    public void setOnStart(String onStart) {
+        this.onStart = onStart;
     }
 
-    public String getOnsuccess() {
-        return onsuccess;
+    public String getOnSuccess() {
+        return onSuccess;
     }
 
-    public void setOnsuccess(String onsuccess) {
-        this.onsuccess = onsuccess;
+    public void setOnSuccess(String onSuccess) {
+        this.onSuccess = onSuccess;
     }
 
-    public String getOnerror() {
-        return onerror;
+    public String getOnError() {
+        return onError;
     }
 
-    public void setOnerror(String onerror) {
-        this.onerror = onerror;
+    public void setOnError(String onError) {
+        this.onError = onError;
     }
 
     public String getExecute() {

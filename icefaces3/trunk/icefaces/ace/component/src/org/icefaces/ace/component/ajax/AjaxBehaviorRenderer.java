@@ -123,14 +123,14 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             jb.entry("global", false);
 
         //callbacks
-        if(ajaxBehavior.getOnstart() != null)
-            jb.entry("onstart", "function(xhr){" + ajaxBehavior.getOnstart() + ";}", true);
-        if(ajaxBehavior.getOnerror() != null)
-            jb.entry("onerror", "function(xhr, status, error){" + ajaxBehavior.getOnerror() + ";}", true);
-        if(ajaxBehavior.getOnsuccess() != null)
-            jb.entry("onsuccess", "function(data, status, xhr, args){" + ajaxBehavior.getOnsuccess() + ";}", true);
-        if(ajaxBehavior.getOncomplete() != null)
-            jb.entry("oncomplete", "function(xhr, status, args){" + ajaxBehavior.getOncomplete() + ";}", true);
+        if(ajaxBehavior.getOnStart() != null)
+            jb.entry("onstart", "function(xhr){" + ajaxBehavior.getOnStart() + ";}", true);
+        if(ajaxBehavior.getOnError() != null)
+            jb.entry("onerror", "function(xhr, status, error){" + ajaxBehavior.getOnError() + ";}", true);
+        if(ajaxBehavior.getOnSuccess() != null)
+            jb.entry("onsuccess", "function(data, status, xhr, args){" + ajaxBehavior.getOnSuccess() + ";}", true);
+        if(ajaxBehavior.getOnComplete() != null)
+            jb.entry("oncomplete", "function(xhr, status, args){" + ajaxBehavior.getOnComplete() + ";}", true);
 
         //params
         jb.entry("params", "arguments[0]", true);
