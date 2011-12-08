@@ -27,7 +27,7 @@ ice.ace.tabset = {
 		 YAHOO.util.Event.onDOMReady(function () {
 		 var Dom = YAHOO.util.Dom;
 	
-       var tabview = new YAHOO.widget.TabView(clientId);  
+       var tabview = new YAHOO.widget.TabView(clientId), cachedOldTab = null;
        tabview.set('orientation', jsProps.orientation);
 
        //if tabset is client side, lets find out if the state is already stored.
@@ -94,6 +94,11 @@ ice.ace.tabset = {
                                     }
                                     if (event.oldValue) {
                                         event.oldValue.set('contentVisible', false);
+                                    } else if (cachedOldTab) {
+                                        // When using caching, event.oldValue is undefined in this function
+                                        // thus we use a reference to the old tab cached during the standard contentTransition.
+                                        cachedOldTab.set('contentVisible', false);
+                                        cachedOldTab = null;
                                     }
 
                                     ice.ace.jq(tabview._contentParent).css({opacity:1});
@@ -249,6 +254,11 @@ ice.ace.tabset = {
             if (oldTab) {
                 oldTab.set('contentVisible', false);
             }
+        } else {
+            // Cache old tab provided in contentTransition during server side case
+            // transition attempted following server side call is passed null reference to oldTab
+            // thus oldTab will be cached here until use by the request success callback
+            cachedOldTab = oldTab;
         }
 		// effect
 		if (jsfProps.isClientSide && jsProps.showEffect) {
