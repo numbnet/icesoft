@@ -246,9 +246,11 @@ version: 2.8.2r1
         contentTransition: function(newTab, oldTab) {
             if (newTab) {
                 newTab.set('contentVisible', true);
+                newTab.set(ACTIVE, true);
             }
             if (oldTab) {
                 oldTab.set('contentVisible', false);
+                oldTab.set(ACTIVE, false);
             }
         },
         
@@ -347,18 +349,11 @@ version: 2.8.2r1
                 value: attr.activeTab,
                 method: function(tab) {
                     var activeTab = this.get(ACTIVE_TAB);
-                    
-                    if (tab) {
-                        tab.set(ACTIVE, true);
-                    }
-                    
-                    if (activeTab && activeTab !== tab) {
-                        activeTab.set(ACTIVE, false);
-                    }
-                    
+
                     if (activeTab && tab !== activeTab) { // no transition if only 1
                         this.contentTransition(tab, activeTab);
                     } else if (tab) {
+                        tab.set(ACTIVE, true);
                         tab.set('contentVisible', true);
                     }
                 },
