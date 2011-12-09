@@ -27,7 +27,8 @@ public enum ResourceType implements Serializable {
     java,
     xhtml,
     tld,
-    href;
+    href,
+    wiki;
 
     public static final ResourceType DEFAULT = ResourceType.java;
 }

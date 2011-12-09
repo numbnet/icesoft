@@ -47,6 +47,7 @@ public class ComponentExampleImpl<T> implements ComponentExample, ExampleResourc
     private ArrayList<ExampleResource> xhtmlResources;
     private ArrayList<ExampleResource> tldResources;
     private ArrayList<ExampleResource> externalResources;
+    private ArrayList<ExampleResource> wikiResources;
 
     private String subMenuTitle;
     private ArrayList<MenuLink> subMenuLinks;
@@ -60,31 +61,51 @@ public class ComponentExampleImpl<T> implements ComponentExample, ExampleResourc
         xhtmlResources = new ArrayList<ExampleResource>();
         tldResources = new ArrayList<ExampleResource>();
         externalResources = new ArrayList<ExampleResource>();
+        wikiResources = new ArrayList<ExampleResource>();
         subMenuLinks = new ArrayList<MenuLink>();
     }
 
     @PostConstruct
     public void initMetaData() {
-        // copy data over for the example properties
-        if (parentClass.isAnnotationPresent(
-                org.icefaces.samples.showcase.metadata.annotation.ComponentExample.class)) {
-            org.icefaces.samples.showcase.metadata.annotation.ComponentExample componentExample =
-                    parentClass.getAnnotation(org.icefaces.samples.showcase.metadata.annotation.ComponentExample.class);
+        //Start scan for Class<T> parentClass annotations and use data from them to initialize ComponentExampleImpl object variables
+        if (parentClass.isAnnotationPresent(org.icefaces.samples.showcase.metadata.annotation.ComponentExample.class)) 
+        {
+            processComponentExampleAnnotation();
+        }
+        // build up the separate lists of ExampleResources assigned to this class.
+        if (parentClass.isAnnotationPresent(org.icefaces.samples.showcase.metadata.annotation.ComponentExample.class)) {
+            processExampleResourcesAnnotation();
+        }
+        if (parentClass.isAnnotationPresent(org.icefaces.samples.showcase.metadata.annotation.ExampleResources.class)) {
+            processExampleResourcesAnnotation();
+        }
+        processMenuAnnotation(parentClass.isAnnotationPresent( org.icefaces.samples.showcase.metadata.annotation.Menu.class));
+        
+        // Create the effect used when this item is expanded
+        effect = new SlideDown();
+        effect.setDuration(0.8f);
+        effect.setFired(true);
+    }
+    
+    private void processComponentExampleAnnotation()
+    {
+        org.icefaces.samples.showcase.metadata.annotation.ComponentExample componentExample = parentClass.getAnnotation(org.icefaces.samples.showcase.metadata.annotation.ComponentExample.class);
             parent = componentExample.parent();
             title = componentExample.title();
             description = componentExample.description();
             example = componentExample.example();
-        }
-        // build up the separate lists of ExampleResources assigned to this class.
-        if (parentClass.isAnnotationPresent(
-                org.icefaces.samples.showcase.metadata.annotation.ComponentExample.class)) {
-            org.icefaces.samples.showcase.metadata.annotation.ExampleResources exampleResources =
-                    parentClass.getAnnotation(org.icefaces.samples.showcase.metadata.annotation.ExampleResources.class);
-            org.icefaces.samples.showcase.metadata.annotation.ExampleResource[] resources =
-                    exampleResources.resources();
+    }
+    
+    private void processExampleResourcesAnnotation()
+    {
+        if(exampleResource.isEmpty())
+        {
+            org.icefaces.samples.showcase.metadata.annotation.ExampleResources exampleResources = parentClass.getAnnotation(org.icefaces.samples.showcase.metadata.annotation.ExampleResources.class);
+            org.icefaces.samples.showcase.metadata.annotation.ExampleResource[] resources = exampleResources.resources();
             ExampleResource tmpResource;
-            for (org.icefaces.samples.showcase.metadata.annotation.ExampleResource resource :
-                    resources){
+
+            for (org.icefaces.samples.showcase.metadata.annotation.ExampleResource resource : resources)
+            {
                 tmpResource = new ExampleResource(resource.title(), resource.resource(), resource.type());
                 exampleResource.add(tmpResource);
                 if (resource.type().equals(ResourceType.href)){
@@ -96,22 +117,29 @@ public class ComponentExampleImpl<T> implements ComponentExample, ExampleResourc
                 }else if (resource.type().equals(ResourceType.xhtml)){
                     xhtmlResources.add(tmpResource);
                 }
+                else if (resource.type().equals(ResourceType.wiki)){
+                    wikiResources.add(tmpResource);
+                }
             }
         }
-        if (parentClass.isAnnotationPresent(
-                org.icefaces.samples.showcase.metadata.annotation.Menu.class)) {
-            org.icefaces.samples.showcase.metadata.annotation.Menu menu =
-                    parentClass.getAnnotation(org.icefaces.samples.showcase.metadata.annotation.Menu.class);
+    }
+    
+    private void processMenuAnnotation(boolean annotationExist)
+    {
+        if(annotationExist)
+        {
+            org.icefaces.samples.showcase.metadata.annotation.Menu menu = parentClass.getAnnotation(org.icefaces.samples.showcase.metadata.annotation.Menu.class);
             subMenuTitle = menu.title();
             org.icefaces.samples.showcase.metadata.annotation. MenuLink[] menuLinks =  menu.menuLinks();
             MenuLink menuLink;
-            for (org.icefaces.samples.showcase.metadata.annotation.MenuLink link : menuLinks ){
-                menuLink = new MenuLink(link.title(), link.isDefault(),
-                        link.isNew(), link.isDisabled(), link.exampleBeanName());
+            for (org.icefaces.samples.showcase.metadata.annotation.MenuLink link : menuLinks )
+            {
+                menuLink = new MenuLink(link.title(), link.isDefault(), link.isNew(), link.isDisabled(), link.exampleBeanName());
                 subMenuLinks.add(menuLink);
             }
         }
-        else {
+        else
+        {
             // If we don't have a submenu link annotation then check if we have a parent
             // If we have a parent then try to use their submenu links
             // This would be for something like BorderLayout associating itself with the parent of BorderBean
@@ -119,11 +147,6 @@ public class ComponentExampleImpl<T> implements ComponentExample, ExampleResourc
                 subMenuLinks = ((ComponentExampleImpl)FacesUtils.getManagedBean(parent)).getSubMenuLinks();
             }
         }
-        
-        // Create the effect used when this item is expanded
-        effect = new SlideDown();
-        effect.setDuration(0.8f);
-        effect.setFired(true);
     }
 
     public String getId() {
@@ -156,6 +179,10 @@ public class ComponentExampleImpl<T> implements ComponentExample, ExampleResourc
 
     public ArrayList<ExampleResource> getTldResources() {
         return tldResources;
+    }
+    
+    public ArrayList<ExampleResource> getWikiResources() {
+        return wikiResources;
     }
 
     public ArrayList<ExampleResource> getExternalResources() {

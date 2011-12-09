@@ -33,6 +33,9 @@
     <ui:param name="title" value="#{msgs[modalDialogBean.title]}"/>
     <ui:param name="description" value="#{msgs[modalDialogBean.description]}"/>
     <ui:param name="resourceValue" value="#{modalDialogBean.exampleResource}"/>
+    
+    <ui:param name="wikiResources" value="#{dialogResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{dialogResources.tldResources}"/>
 
     <ui:define name="example">
         <h:form id="inputForm">
