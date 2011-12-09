@@ -67,6 +67,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         else if (!isValueBlank(hiddenValue)) {
             dateSpinner.setSubmittedValue(hiddenValue);
         }
+        decodeBehaviors(context, dateSpinner);
     }
 
     @Override
