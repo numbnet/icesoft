@@ -39,9 +39,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 		tlddoc = "Panel is a generic grouping component that also supports toggling, closing and options menu. Both Close and Toggle events can be listened on server side with ajax listeners."
         )
 @ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
-	@ResourceDependency(library="icefaces.ace", name="wijmo/wijmo.css"),
-	@ResourceDependency(library="icefaces.ace", name="panel/panel.css"),
+	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })

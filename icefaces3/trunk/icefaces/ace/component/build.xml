@@ -196,7 +196,7 @@
         </concat>
         <!-- ace-jquery.js -->
         <delete file="${ace-jquery.js.tmp}" verbose="true"/>
-        <concat destfile="${ace-jquery.js.tmp}" force="true" fixlastline="true" eol="crlf" encoding="UTF-8">
+        <concat destfile="${ace-jquery.js.tmp}" force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="icefaces.ace/jquery/jquery.js"/>
                 <file name="icefaces.ace/jquery/ui/jquery-ui.js"/>
@@ -205,7 +205,7 @@
         </concat>
         <!-- ace-datatable.js -->
         <delete file="${ace-datatable.js.tmp}" verbose="true"/>
-        <concat destfile="${ace-datatable.js.tmp}" force="true" fixlastline="true" eol="crlf" encoding="UTF-8">
+        <concat destfile="${ace-datatable.js.tmp}" force="true" fixlastline="true">
             <filelist dir="${resources}">
                 <file name="icefaces.ace/yui/utilities/utilities.js"/>
                 <file name="icefaces.ace/datatable/datatable.js"/>
@@ -255,30 +255,35 @@
             <arg value="${ace-yui.js}"/>
             <arg value="${ace-yui.js.tmp}"/>
         </java>
+        <delete file="${ace-yui.js.tmp}" verbose="true"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-jquery.js}"/>
             <arg value="${ace-jquery.js.tmp}"/>
         </java>
+        <delete file="${ace-jquery.js.tmp}" verbose="true"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-datatable.js}"/>
             <arg value="${ace-datatable.js.tmp}"/>
         </java>
+        <delete file="${ace-datatable.js.tmp}" verbose="true"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-menu.js}"/>
             <arg value="${ace-menu.js.tmp}"/>
         </java>
+        <delete file="${ace-menu.js.tmp}" verbose="true"/>
         <java jar="${lib.dir}/yui-compressor.jar" fork="yes">
             <arg line="--preserve-semi"/>
             <arg value="-o"/>
             <arg value="${ace-components.js}"/>
             <arg value="${ace-components.js.tmp}"/>
         </java>
+        <delete file="${ace-components.js.tmp}" verbose="true"/>
     </target>
 
     <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
@@ -300,6 +305,10 @@
                 verbose="true"/>
         <concat destfile="${resources}/icefaces.ace/util/combined.css"
                 force="true" fixlastline="true">
+            <filelist dir="${resources}">
+                <file name="yui/2_8_2/button/assets/button-core.css"/>
+                <file name="icefaces.ace/jquery/ui/jquery-ui.css"/>
+            </filelist>
             <fileset dir="${resources}">
                 <include name="icefaces.ace/*/*.css"/>
                 <exclude name="icefaces.ace/util/*.css"/>

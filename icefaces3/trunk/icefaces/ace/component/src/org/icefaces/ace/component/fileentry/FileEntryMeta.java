@@ -54,9 +54,8 @@ import org.icefaces.ace.meta.annotation.Property;
         "frequent than once every 2 seconds, and are only sent at 1% " +
         "progress increments.")
 @ResourceDependencies({
-@ResourceDependency(name="util/ace-components.js",library="icefaces.ace"),
-@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
-@ResourceDependency(name="fileentry/fileEntry.css",library="icefaces.ace")
+	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
+@ResourceDependency(name="util/ace-components.js",library="icefaces.ace")
 })
 public class FileEntryMeta extends UIComponentBaseMeta {
     /*

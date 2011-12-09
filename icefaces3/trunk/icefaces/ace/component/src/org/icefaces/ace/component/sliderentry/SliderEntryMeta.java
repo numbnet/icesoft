@@ -54,7 +54,7 @@ import javax.el.MethodExpression;
                 "<a href=\"http://wiki.icefaces.org/display/ICE/SliderEntry\">Wiki doc</a>."
         )
 @ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
+	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })

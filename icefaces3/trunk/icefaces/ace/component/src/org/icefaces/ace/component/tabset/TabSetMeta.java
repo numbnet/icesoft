@@ -60,7 +60,6 @@ import java.util.List;
         "on the bottom, top, left, or right of the TabSet."
 )
 @ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
     @ResourceDependency(name="util/combined.css",library="icefaces.ace"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-yui.js")
