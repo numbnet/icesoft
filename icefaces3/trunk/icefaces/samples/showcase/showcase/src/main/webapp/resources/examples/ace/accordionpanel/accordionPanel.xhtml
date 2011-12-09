@@ -35,12 +35,15 @@
     <ui:param name="subMenuTitle" value="#{msgs[accordionPanelBean.subMenuTitle]}"/>
     <ui:param name="subMenuLinks" value="#{accordionPanelBean.subMenuLinks}"/>
     <ui:param name="resourceValue" value="#{accordionPanelBean.exampleResource}"/>
+    
+    <ui:param name="wikiResources" value="#{accordionPanelResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{accordionPanelResources.tldResources}"/>
 
     <ui:define name="example">
         <h:form>
             <ace:accordion collapsible="true">
                 <ace:accordionPane title="My To Do List">  
-                    <ol type="1" style="font-family: Gill, Helvetica, sans-serif; font-weight: bold;">
+                    <ol type="1" style="font-weight: bold;">
                         <li>Buy groceries</li>
                         <li>Review picture of the day</li>
                         <li>Send invitations</li>

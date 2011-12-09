@@ -35,7 +35,9 @@
     <ui:param name="subMenuTitle" value="#{msgs[tabSet.subMenuTitle]}"/>
     <ui:param name="subMenuLinks" value="#{tabSet.subMenuLinks}"/>
     <ui:param name="resourceValue" value="#{tabSet.exampleResource}"/>
-
+    
+    <ui:param name="wikiResources" value="#{tabSetResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{tabSetResources.tldResources}"/>
 
     <ui:define name="example">
 		<icecore:config mandatoryResource="fileEntry" />

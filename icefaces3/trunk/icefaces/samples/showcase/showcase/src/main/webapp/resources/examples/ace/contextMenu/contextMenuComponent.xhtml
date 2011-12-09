@@ -33,6 +33,9 @@
     <ui:param name="title" value="#{msgs[contextMenuComponent.title]}"/>
     <ui:param name="description" value="#{msgs[contextMenuComponent.description]}"/>
     <ui:param name="resourceValue" value="#{contextMenuComponent.exampleResource}"/>
+    
+    <ui:param name="wikiResources" value="#{contextMenuResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{contextMenuResources.tldResources}"/>
 
     <ui:define name="example">
         <h:form>

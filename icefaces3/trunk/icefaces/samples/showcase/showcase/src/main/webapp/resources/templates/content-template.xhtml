@@ -41,6 +41,20 @@ Available ui:params to pass:
                 <ui:insert name="example"/>
             </h:panelGroup>
         </div>
+        <f:facet name="options">  
+            <ace:menu>
+                <ace:submenu label="TLD Documentation">
+                <c:forEach items="#{tldResources}" var="tld">
+                   <ace:menuitem value="#{tld.title}" url="#{tld.resource}" target="_blank" icon="ui-icon ui-icon-home"/>
+                </c:forEach>
+            </ace:submenu>
+                <ace:submenu label="WIKI Documentation">
+                <c:forEach items="#{wikiResources}" var="wiki">
+                   <ace:menuitem value="#{wiki.title}" url="#{wiki.resource}" target="_blank" icon="ui-icon ui-icon-home"/>
+                </c:forEach>
+            </ace:submenu>
+        </ace:menu>  
+        </f:facet>  
         </ace:panel>
         
         <h:form id="sourceCodeForm" rendered="#{navigationModel.renderAsExample}">

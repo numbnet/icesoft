@@ -33,6 +33,9 @@
     <ui:param name="title" value="#{msgs[resizeListenerBean.title]}"/>
     <ui:param name="description" value="#{msgs[resizeListenerBean.description]}"/>
     <ui:param name="resourceValue" value="#{resizeListenerBean.exampleResource}"/>
+    
+    <ui:param name="wikiResources" value="#{resizableResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{resizableResources.tldResources}"/>
 
     <ui:define name="example">
         <h:form id="form">

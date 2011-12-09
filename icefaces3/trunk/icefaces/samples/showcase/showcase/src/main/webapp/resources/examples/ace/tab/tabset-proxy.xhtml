@@ -35,6 +35,9 @@
     <ui:param name="subMenuLinks" value="#{tabSet.subMenuLinks}"/>
     <ui:param name="resourceValue" value="#{tabProxy.exampleResource}"/>
     
+    <ui:param name="wikiResources" value="#{tabSetResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{tabSetResources.tldResources}"/>
+    
     <ui:define name="example">
         <span class="row">
             <ace:tabSet id="myTabSet" cancelOnInvalid="#{not tabProxy.invalidSwitch}" clientSide="false">
