@@ -560,7 +560,9 @@ public class DataTable extends DataTableBase {
         SortCriteria[] criterias = new SortCriteria[sortableColumns.size()];
         int i = 0;
         for (Column c : sortableColumns) {
-            criterias[i] = new SortCriteria(c.getValueExpression("sortBy"), c.isSortAscending());
+            Comparator<Object> comp = c.getSortFunction();
+            if (comp == null) criterias[i] = new SortCriteria(c.getValueExpression("sortBy"), c.isSortAscending());
+            else criterias[i] = new SortCriteria(c.getValueExpression("sortBy"), c.isSortAscending(), comp);
             i++;
         }
         return criterias;

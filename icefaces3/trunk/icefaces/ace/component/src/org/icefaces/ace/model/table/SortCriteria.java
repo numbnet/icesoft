@@ -23,7 +23,7 @@ import javax.el.ValueExpression;
 import java.util.Comparator;
 
 public class SortCriteria {
-    private Comparator<Object> compartor;
+    private Comparator<Object> comparator;
     private ValueExpression expression;
 	private String propertyName;
 	private boolean ascending;
@@ -34,7 +34,14 @@ public class SortCriteria {
 		this.ascending = ascending;
         this.propertyName = ComponentUtils.resolveField(expression);
 	}
-	
+
+    public SortCriteria(ValueExpression expression, boolean ascending, Comparator<Object> comparator) {
+        this.expression = expression;
+        this.ascending = ascending;
+        this.propertyName = ComponentUtils.resolveField(expression);
+        this.comparator = comparator;
+    }
+
 	public String getPropertyName() {
 		return propertyName;
     }
@@ -55,11 +62,11 @@ public class SortCriteria {
         this.expression = expression;
     }
 
-    public Comparator<Object> getCompartor() {
-        return compartor;
+    public Comparator<Object> getComparator() {
+        return comparator;
     }
 
-    public void setCompartor(Comparator<Object> compartor) {
-        this.compartor = compartor;
+    public void setComparator(Comparator<Object> comparator) {
+        this.comparator = comparator;
     }
 }
