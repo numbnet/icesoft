@@ -314,7 +314,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         }
         builder.append("});");
         String jsCall = builder.toString();
-        if (!dateEntry.isDisabled() || !dateEntry.isReadonly()){
+        if (!dateEntry.isDisabled() && !dateEntry.isReadonly()){
             writer.writeAttribute("onclick", jsCall, null);
         }
         writer.endElement("input");
