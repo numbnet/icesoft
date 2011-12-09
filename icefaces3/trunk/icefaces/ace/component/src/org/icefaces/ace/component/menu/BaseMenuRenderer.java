@@ -115,7 +115,24 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 				command = behaviors.toString();
 				
                 if (!hasAjaxBehavior && (menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0)) {
-					command += "ice.s(event, this);";
+					command += "ice.s(event, this";
+					
+					StringBuilder parameters = new StringBuilder();
+					parameters.append(",function(p){");
+					for(UIComponent child : menuItem.getChildren()) {
+						if(child instanceof UIParameter) {
+							UIParameter param = (UIParameter) child;
+							
+							parameters.append("p('");
+							parameters.append(param.getName());
+							parameters.append("','");
+							parameters.append(String.valueOf(param.getValue()));
+							parameters.append("');");
+						}
+					}
+					parameters.append("});");
+					
+					command += parameters.toString();
                 }
 
 				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
