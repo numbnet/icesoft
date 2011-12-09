@@ -60,7 +60,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         if(!isValueBlank(inputValue)) {
             timeSpinner.setSubmittedValue(inputValue);
         }
-
+        decodeBehaviors(context, timeSpinner);
     }
 
     @Override

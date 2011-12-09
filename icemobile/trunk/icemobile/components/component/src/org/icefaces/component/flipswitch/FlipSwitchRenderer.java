@@ -64,6 +64,7 @@ public class FlipSwitchRenderer extends CoreRenderer {
             boolean submittedValue = isChecked(submittedString);
             flipswitch.setSubmittedValue(submittedValue);
         }
+        decodeBehaviors(facesContext, flipswitch);
     }
 
     // The encodeEnd method, in the renderer, is responsible for rendering
