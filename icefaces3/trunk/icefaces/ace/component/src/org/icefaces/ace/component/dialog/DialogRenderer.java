@@ -87,7 +87,7 @@ public class DialogRenderer extends CoreRenderer {
 		String hideEffect = dialog.getHideEffect();
         if(hideEffect != null) jb.entry("hide", hideEffect);
         if(!dialog.isCloseOnEscape()) jb.entry("closeOnEscape", false);
-        if(dialog.isAppendToBody()) jb.entry("appendToBody", true);
+//        if(dialog.isAppendToBody()) jb.entry("appendToBody", true);
         if(!dialog.isClosable()) jb.entry("closable", false);
         if(!dialog.isShowHeader()) jb.entry("showHeader", false);
 

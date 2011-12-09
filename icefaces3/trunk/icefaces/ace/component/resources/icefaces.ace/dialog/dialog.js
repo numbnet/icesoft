@@ -76,9 +76,9 @@ ice.ace.Dialog = function(id, cfg) {
     }
 
     //Relocate dialog to body if appendToBody is true
-    if(this.cfg.appendToBody) {
-        this.jq.parent().appendTo(document.body);
-    }
+//    if(this.cfg.appendToBody) {
+//        this.jq.parent().appendTo(document.body);
+//    }
 
     //Apply focus to first input initially
     if(this.cfg.isVisible) {

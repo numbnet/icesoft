@@ -36,7 +36,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.Dialog",
         rendererType    = "org.icefaces.ace.component.DialogRenderer",
 		componentFamily = "org.icefaces.ace.Dialog",
-		tlddoc = "Dialog is a container component that can overlay other elements on page. Dialog has several customization options such as modal, resize, width, height, position."
+		tlddoc = "Dialog is a container component that can overlay other elements on page. Dialog has several customization options such as modal, resize, width, height, position." +
+                " If position of dialog is out of place, try putting it as last child of body."
         )
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
@@ -44,7 +45,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="close", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="close", javadoc="...", tlddoc="triggered when the panel is closed.", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="close")
 
 public class DialogMeta extends UIPanelMeta {
@@ -106,8 +107,8 @@ public class DialogMeta extends UIPanelMeta {
 	@Property(tlddoc="Javascript code to be executed when hiding the dialog")
 	private String onHide;
 	
-	@Property(tlddoc="Boolean value that specifies whether the dialog should be appended to the page body (default false)", defaultValue="false")
-	private boolean appendToBody;
+//	@Property(tlddoc="Boolean value that specifies whether the dialog should be appended to the page body (default false)", defaultValue="false")
+//	private boolean appendToBody;
 	
 	@Property(tlddoc="Boolean value that specifies whether the dialog should have a header (default true)", defaultValue="true")
 	private boolean showHeader;
