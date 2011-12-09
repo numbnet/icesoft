@@ -52,9 +52,9 @@ public class SingleExpressionComparator implements Comparator {
 			else if(value2 == null)
 				return -1;
 
-			int result = (criteria.getCompartor() == null)
+			int result = (criteria.getComparator() == null)
                     ? ((Comparable) value1).compareTo(value2)
-                    : criteria.getCompartor().compare(value1, value2);
+                    : criteria.getComparator().compare(value1, value2);
 			
 			return criteria.isAscending() ? result : -1 * result;
 			
