@@ -59,7 +59,7 @@
                 <!-- can't be in ice:outputText either -->
                 <span style="display:none;">#{sliderAsyncInput.xAxis}</span>
                 <ace:sliderEntry id="slide-entry"
-                    clickableRail="true"
+                    clickableRail="#{sliderAsyncInput.clickableRail}"
                     style-class="top"
                     length="#{sliderAsyncInput.length}"
                     min="#{sliderAsyncInput.minValue}"
