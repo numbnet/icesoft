@@ -17,6 +17,9 @@
 
 package org.icefaces.ace.component.notificationpanel;
 
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
@@ -34,12 +37,17 @@ import javax.faces.application.ResourceDependency;
         componentType = "org.icefaces.ace.component.NotificationPanel",
         rendererType = "org.icefaces.ace.component.NotificationPanelRenderer",
         tlddoc = "NotificationPanel displays a multipurpose fixed positioned panel for notification. Any group " +
-                 "of JSF content can be placed inside notification panel.")
+                 "of JSF content can be placed inside notification panel. " +
+                "If position of panel is out of place, try putting it as last child of body.")
 @ResourceDependencies({
 		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="close", tlddoc="triggered when the panel is closed", defaultRender="@all", defaultExecute="@all"),
+	@ClientEvent(name="display", tlddoc="triggered when the panel is displayed", defaultRender="@all", defaultExecute="@all")
+}, defaultEvent="close")
 public class NotificationPanelMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Name of the client side widget.")
     private String widgetVar;
@@ -59,6 +67,6 @@ public class NotificationPanelMeta extends UIComponentBaseMeta {
     @Property(defaultValue = "normal", tlddoc = "Speed of the effect, \"slow\", \"normal\" or \"fast\".")
     private String effectSpeed;
 
-    @Property(defaultValue = "false", tlddoc = "")
-    private boolean autoDisplay;
+    @Property(defaultValue = "false", tlddoc = "Set visibility from the server")
+    private boolean visible;
 }
