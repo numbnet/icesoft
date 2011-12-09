@@ -32,11 +32,13 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.content.res.Configuration;
 import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Build;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.JsResult;
@@ -65,6 +67,9 @@ import org.icemobile.client.android.c2dm.C2dmHandler;
 import org.icemobile.client.android.qrcode.CaptureActivity;
 import org.icemobile.client.android.qrcode.CaptureJSInterface;
 import org.icemobile.client.android.qrcode.Intents;
+import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+import android.graphics.Paint;
 
 public class ICEmobileContainer extends Activity 
     implements SharedPreferences.OnSharedPreferenceChangeListener,
@@ -116,6 +121,8 @@ public class ICEmobileContainer extends Activity
     private boolean isNetworkUp;
     private ConnectionChangeService connectionChangeService;
     private AlertDialog networkDialog;
+    private boolean accelerated;
+    private boolean c2dmIntent=false;
 
     /** Called when the activity is first created. */
     @Override
@@ -163,6 +170,8 @@ public class ICEmobileContainer extends Activity
 
 	/* Establish initial container configuration */
 	prefs = PreferenceManager.getDefaultSharedPreferences(this);
+	accelerated = prefs.getBoolean("accelerate", false);
+	setHwAccelerate(accelerated, false);
 	includeUtil();
 	includeQRCode();
 	if (INCLUDE_CAMERA) includeCamera();
@@ -215,10 +224,13 @@ public class ICEmobileContainer extends Activity
     @Override
     protected void onResume() {
 	super.onResume();
+	utilInterface.loadURL("javascript:ice.push.resumeBlockingConnection();");
 	if (!newURL.equals(currentURL)) {
 	    loadUrl();
-	} else {
-	    utilInterface.loadURL("javascript:ice.push.resumeBlockingConnection();");
+	} else if ((c2dmIntent) ||
+		   (mC2dmHandler != null && mC2dmHandler.clearPendingNotification())) {
+	    c2dmIntent = false;
+	    mWebView.reload();
 	}
     }
 
@@ -230,11 +242,16 @@ public class ICEmobileContainer extends Activity
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+	c2dmIntent = intent.getIntExtra("c2dm",0) == 1;
+    }
+
+    @Override
     protected void onStop() {
 	historyManager.save();
 	super.onStop();
     }
-
+ 
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	MenuInflater inflater = getMenuInflater();
@@ -246,6 +263,7 @@ public class ICEmobileContainer extends Activity
 	public boolean onOptionsItemSelected(MenuItem item) {
 	switch (item.getItemId()) {
 	case R.id.reload:
+	    mWebView.clearCache(true);
 	    mWebView.reload();
 	    return true;
 	case R.id.preferences:
@@ -315,6 +333,11 @@ public class ICEmobileContainer extends Activity
 	    }
 	} else if (key.equals(PREFERENCE_PROGRESS_BAR_KEY)) {
             showLoadProgress = prefs.getBoolean(PREFERENCE_PROGRESS_BAR_KEY, true);
+	} else if (key.equals("accelerate")) {
+	    if (accelerated != prefs.getBoolean("accelerate", false)) {
+		accelerated = !accelerated;
+		setHwAccelerate(accelerated, true);
+	    }
         }
     }
 
@@ -490,6 +513,57 @@ public class ICEmobileContainer extends Activity
 	}
 	mC2dmHandler.start(C2DM_SENDER);
     }
+
+    private void setHwAccelerate(boolean accel, boolean restart) {
+	String version = Build.VERSION.RELEASE;
+	/* Only applies after API 11 */
+	    
+	if (version.compareTo("3.") >= 0) {
+	    int swFlag, hwFlag, hwAccelFlag;
+	    try {
+		Field hw = View.class.getField("LAYER_TYPE_HARDWARE");
+		Field sw = View.class.getField("LAYER_TYPE_SOFTWARE");
+		hwFlag = hw.getInt(null);
+		swFlag = sw.getInt(null);
+		Field hwAccel = WindowManager.LayoutParams.class.getField("FLAG_HARDWARE_ACCELERATED");
+		hwAccelFlag = hwAccel.getInt(null);
+	    } catch (Exception e) {
+		Log.e("ICEmobile", "Could not get HW Acceleration flags. Hard coding them.");
+		hwFlag = 2;
+		swFlag = 1;
+		hwAccelFlag = 16777216;
+	    }
+
+	    try {
+		Method setLayerType = WebView.class.getMethod("setLayerType", 
+							      new Class[]{int.class, Paint.class});
+
+		Paint paint=null;
+		if (accel) {
+		    getWindow().setFlags(hwAccelFlag, hwAccelFlag);
+		    Object[] params = new Object[] {hwFlag,paint};
+		    setLayerType.invoke(mWebView,params);
+		} else {
+		    Object[] params = new Object[] {swFlag,paint};
+		    setLayerType.invoke(mWebView,params);
+		}
+		if (restart) {
+		    // Force activity to be recreated;
+		    Method recreateMethod;
+		    try {
+			recreateMethod = Activity.class.getMethod("recreate", new Class[0]);
+			recreateMethod.invoke(self, new Object[0]);
+		    } catch (Exception e) {
+			finish();
+		    }
+		}
+	    } catch (Exception e) {
+		Log.e("ICEmobile", "Could not set HW acceleration.");
+	    }
+
+	}
+    }
+
 
     private class HistoryManager {
 	private File historyFile;
