@@ -36,9 +36,9 @@ import javax.faces.application.ResourceDependency;
     componentFamily = "org.icefaces.ace.TableConfigPanel",
     tlddoc = "")
 @ResourceDependencies({
+	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-	@ResourceDependency(library = "icefaces.ace", name = "util/ace-datatable.js"),
-    @ResourceDependency(library="icefaces.ace", name="tableconfigpanel/tableconfigpanel.css")
+	@ResourceDependency(library = "icefaces.ace", name = "util/ace-datatable.js")
 })
 
 @ClientBehaviorHolder(events = {

@@ -36,7 +36,7 @@ import javax.faces.application.ResourceDependency;
         tlddoc = "NotificationPanel displays a multipurpose fixed positioned panel for notification. Any group " +
                  "of JSF content can be placed inside notification panel.")
 @ResourceDependencies({
-        @ResourceDependency(library = "icefaces.ace", name = "notificationpanel/notificationpanel.css"),
+		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })

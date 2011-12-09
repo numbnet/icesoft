@@ -44,10 +44,9 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 		       "of the button - in the case of rime style."
         )
 @ResourceDependencies({
+        @ResourceDependency(name="util/combined.css",library="icefaces.ace"),
         @ResourceDependency(name="util/ace-yui.js",library="icefaces.ace"),
-		@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-        @ResourceDependency(library="icefaces.ace", name="checkboxbutton/checkboxbutton.css"),
-        @ResourceDependency(name="button/assets/button-core.css",library="yui/2_8_2")
+		@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")

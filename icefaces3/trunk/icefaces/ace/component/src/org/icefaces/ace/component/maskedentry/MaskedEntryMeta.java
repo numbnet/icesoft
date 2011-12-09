@@ -45,7 +45,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         )
 
 @ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="forms/forms.css"),
+	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
 	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
 	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })

@@ -39,8 +39,7 @@ import javax.faces.application.ResourceDependency;
         tlddoc = "DateTimeEntry is an input component to provide a date in various ways. Other than basic " +
                 "features datetimeentry supports paging, localization, ajax selection and more.")
 @ResourceDependencies({
-        @ResourceDependency(library = "icefaces.ace", name = "forms/forms.css"),
-        @ResourceDependency(library = "icefaces.ace", name = "jquery/ui/jquery-ui.css"),
+		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })

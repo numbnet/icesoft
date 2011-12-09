@@ -39,7 +39,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 		tlddoc = "Dialog is a container component that can overlay other elements on page. Dialog has several customization options such as modal, resize, width, height, position."
         )
 @ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
+	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
 	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
 	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })

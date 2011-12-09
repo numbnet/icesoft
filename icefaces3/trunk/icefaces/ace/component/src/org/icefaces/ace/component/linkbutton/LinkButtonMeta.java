@@ -40,10 +40,9 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentFamily = "org.icefaces.ace.LinkButton"
 )
 @ResourceDependencies({
+		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
 		@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-        @ResourceDependency(name="util/ace-yui.js",library="icefaces.ace"),
-        @ResourceDependency(library="icefaces.ace", name="linkbutton/linkbutton.css"),
-		@ResourceDependency(name="button/assets/button-core.css",library="yui/2_8_2")
+        @ResourceDependency(name="util/ace-yui.js",library="icefaces.ace")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")

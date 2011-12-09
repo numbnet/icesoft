@@ -43,11 +43,9 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	         "to be true or false"
         )
 @ResourceDependencies({
+	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
-	@ResourceDependency(library = "icefaces.ace", name = "util/ace-yui.js"),
-    @ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
-    @ResourceDependency(library="icefaces.ace", name="pushbutton/pushbutton.css"),
-	@ResourceDependency(name="button/assets/button-core.css",library="yui/2_8_2")
+	@ResourceDependency(library = "icefaces.ace", name = "util/ace-yui.js")
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")

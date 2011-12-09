@@ -40,7 +40,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         tlddoc = "ProgressBar is a process status indicator that can either work purely on client side or " +
                  "interact with server side using ajax.")
 @ResourceDependencies({
-        @ResourceDependency(library="icefaces.ace", name="jquery/ui/jquery-ui.css"),
+	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
