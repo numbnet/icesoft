@@ -110,8 +110,28 @@ public class BridgeSetup implements SystemEventListener {
 
         RenderKit rk = context.getRenderKit();
         if (rk instanceof DOMRenderKit) {
-            // If the context param is not null then make sure it's true
             DOMRenderKit drk = (DOMRenderKit) rk;
+			
+            // load special resource dependencies
+            List<String> specialResourceComponents = drk.getSpecialResourceComponents();
+            for (String compClassName : specialResourceComponents) {
+                try {
+                    Class<UIComponent> compClass = (Class<UIComponent>)
+                            Class.forName(compClassName);
+					UIComponent component = compClass.newInstance();
+					if (component != null) {
+						root.addComponentResource(context, component, "head");
+					}
+                } catch (Exception e) {
+                    if (log.isLoggable(Level.WARNING)) {
+                        log.log(Level.WARNING, "When processing special " +
+                                "resource components, could not create instance " +
+                                "of '" + compClassName + "'");
+                    }
+                }
+            }
+			
+            // If the context param is not null then make sure it's true
             List<ExternalScript> scriptRenderers = drk.getCustomRenderScripts();
             String contextParamName;
             String value = "";
