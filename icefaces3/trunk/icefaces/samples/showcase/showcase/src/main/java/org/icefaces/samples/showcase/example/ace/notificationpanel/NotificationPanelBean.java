@@ -27,6 +27,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import java.io.Serializable;
 
 @ComponentExample(
@@ -63,8 +64,9 @@ public class NotificationPanelBean extends ComponentExampleImpl<NotificationPane
     private String imageLocation;
     private String imageDescription;
     private boolean render;
-    
-    public NotificationPanelBean() 
+    private boolean visible;
+
+    public NotificationPanelBean()
     {
         super(NotificationPanelBean.class);
         initializeBeanVariables();
@@ -72,6 +74,7 @@ public class NotificationPanelBean extends ComponentExampleImpl<NotificationPane
     
    public void showAppropriateButton(ActionEvent e)
    {
+       visible = !visible;
        if(render)
        { render = false; }
        else
@@ -110,5 +113,21 @@ public class NotificationPanelBean extends ComponentExampleImpl<NotificationPane
 
     public void setRender(boolean render) {
         this.render = render;
+    }
+
+    public void closeListener(AjaxBehaviorEvent event) {
+        visible = false;
+    }
+
+    public void displayListener(AjaxBehaviorEvent event) {
+        visible = true;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

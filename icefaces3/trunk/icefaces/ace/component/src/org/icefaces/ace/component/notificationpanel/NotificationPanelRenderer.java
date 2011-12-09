@@ -91,9 +91,9 @@ public class NotificationPanelRenderer extends CoreRenderer {
                 entry("effect", bar.getEffect()).
                 entry("effectSpeed", bar.getEffectSpeed());
 
-                if(bar.isAutoDisplay())
-                    json.entry("autoDisplay", true);
+                    json.entry("visible", bar.isVisible());
 
+                encodeClientBehaviors(facesContext, bar, json);
             json.endMap();
         json.endFunction();
         writer.write(json.toString());
@@ -109,4 +109,10 @@ public class NotificationPanelRenderer extends CoreRenderer {
 	public boolean getRendersChildren() {
 		return true;
 	}
+
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        super.decode(context, component);
+        decodeBehaviors(context, component);
+    }
 }
