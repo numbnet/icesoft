@@ -19,7 +19,7 @@ if (!window['mobi']) {
 }
 mobi.carousel = {
 	  acarousel: null,
-	  loaded: function(clientId, singleSubmit){
+	  loaded: function(clientId, cfg){
 	            var carouselId = clientId+'_carousel';
 	            //carousel iscroll loading
 	        //    ice.log.debug(ice.log, 'in the carouselLoaded method clientId is '+clientId);
@@ -35,9 +35,7 @@ mobi.carousel = {
 	                    momentum: false,
 	                    hScrollbar: false, 
 	                    onScrollEnd: function () {
-                           // ice.log.debug(ice.log, 'onScrollEnd and current page is='+this.currPageX);
-                            var hidden = document.getElementById(clientId+'_hidden');
-                            mobi.carousel.scrollUpdate(clientId, singleSubmit, this.currPageX);
+                            mobi.carousel.scrollUpdate(clientId, this.currPageX, cfg);
     	                }
 	                 });
 	                }
@@ -51,23 +49,43 @@ mobi.carousel = {
 	           this.acarousel = null;
 	       }
 	   }, 
-	   scrollUpdate: function(clientId, singleSubmit, pageVal){
-           document.querySelector('.mobi-carousel-cursor-list > li.active').className = '';
-           document.querySelector('.mobi-carousel-cursor-list > li:nth-child(' + (pageVal + 1) + ')').className = 'active';
-       //    ice.log.debug(ice.log, 'scrollUpdate and current page is='+pageVal);
+	   scrollUpdate: function(clientId, pageVal, cfg){
+            //only update if different than last one.
+  //         ice.log.debug(ice.log, 'scrollUpdate and current page is='+pageVal);
            var hidden = document.getElementById(clientId+'_hidden');
-           if (hidden){                               
-           	hidden.value=pageVal;
-      //     	ice.log.debug(ice.log, 'set hidden.value = '+hidden.value);
+           var changedVal = false;
+           if (hidden){
+               var temp = hidden.value;
+               if (temp!=pageVal){
+                    changedVal = true;
+                    hidden.value=pageVal;
+                    ice.log.debug(ice.log, 'old hidden='+temp+ ' updated to hidden.value = '+hidden.value);
+                    document.querySelector('.mobi-carousel-cursor-list > li.active').className = '';
+                    document.querySelector('.mobi-carousel-cursor-list > li:nth-child(' + (pageVal + 1) + ')').className = 'active';
+               }
            }
-           if (singleSubmit){
-           	ice.se(null, clientId);
-           } 
+           if (changedVal){
+               var behaviors = cfg.behaviors;
+               var hasBehaviors = false;
+                if (behaviors){
+                    hasBehaviors = true;
+                }
+               var singleSubmit = cfg.singleSubmit;
+               if (hasBehaviors){
+                   ice.log.debug(ice.log, ' HAS BEHAVIORS');
+                  if (behaviors.change){
+                        behaviors.change();
+                    }
+                }
+                if (!hasBehaviors && singleSubmit){
+                    ice.se(null, clientId);
+                }
+           }
 	   },
-	   refresh: function(clientId, singleSubmit){
+	   refresh: function(clientId, cfg){
 		   if (this.acarousel){
-               ice.log.debug(ice.log, "  have a carousel to refresh");
-			   var currPageX = 1;
+               ice.log.debug(ice.log, "  have a carousel to refresh from hidden value");
+			   var currPageX = 0;
 			   var hidden = document.getElementById(clientId+"_hidden");
 			   if (hidden){
 				   currPageX = hidden.value;
@@ -86,10 +104,19 @@ mobi.carousel = {
            if (!this.acarousel){
            //    ice.log.debug(ice.log, "REFRESH HAS NO OBJECT FOR CAROUSEL clientId="+clientId+' ss -'+singleSubmit);
                this.acarousel=null;
-               this.loaded(clientId, singleSubmit);
+               this.loaded(clientId, cfg);
            }
 
 	   }
 
 }
 
+ice.onUnload(function(){mobi.carousel.unloaded('carOne');});
+supportsOrientationChange = 'onorientationchange' in window,orientationEvent = supportsOrientationChange ? 'orientationchange' : 'resize';
+window.addEventListener(orientationEvent, function() {
+    setTimeout(function () {
+        mobi.carousel.refresh('carOne',{
+            event: event, singleSubmit: false});
+    }, 100);
+}, false);
+mobi.carousel.loaded('carOnecarOne',{ event: event, singleSubmit: false});

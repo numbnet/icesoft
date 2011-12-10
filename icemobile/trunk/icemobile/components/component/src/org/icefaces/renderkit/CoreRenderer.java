@@ -64,15 +64,9 @@ public class CoreRenderer extends Renderer {
             String clientId = ((UIComponent) component).getClientId(context);
 
             StringBuilder req = new StringBuilder();
-  //          req.append("ice.ace.AjaxRequest(");
 
-		    // node
-	//	    req.append("{node:this");
-
-            //source
-   //         req.append("{source:").append("'").append(clientId).append("'");
             List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
-     //       req.append(",behaviors:{");
+
             for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
 
                 String event = eventIterator.next();
@@ -86,28 +80,20 @@ public class CoreRenderer extends Renderer {
                 else if(event.equalsIgnoreCase("action"))       //commands
                     domEvent = "click";
 
-    //            req.append(domEvent + ":");
 
-    //            req.append("function() {");
                 for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                     ClientBehavior behavior = behaviorIter.next();
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
                     String script = behavior.getScript(cbc);    //could be null if disabled
 
                     if(script != null) {
-      //                  System.out.println(" adding script piece="+script);
                         req.append(script);
                     }
                 }
-            //    req.append("}");
-
                 if(eventIterator.hasNext()) {
                     req.append(",");
                 }
             }
-
-        //    req.append("}");
-     //       System.out.println("creating ajax script of "+req.toString());
             return req.toString();
 
 
@@ -132,111 +118,8 @@ public class CoreRenderer extends Renderer {
 
 
 
-    protected String encodeClientBehaviorEvents(FacesContext context, ClientBehaviorHolder component){
-    //ClientBehaviors
-  //      System.out.println("encode CBH events for component="+component.getClass().getName()+" has size=" +
-  //             component.getEventNames().size());
-        Map<String,List<ClientBehavior>> behaviorEvents = component.getClientBehaviors();
-        if (behaviorEvents.isEmpty()){
-            return null;
-        }
-            String clientId = ((UIComponent) component).getClientId(context);
-
-            StringBuilder req = new StringBuilder();
-            req.append("mobi.submit = {");
-
-            //make function
-            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
-    //        req.append(",behaviors:{");
-     //       System.out.println(" size of params list = "+params.size());
-            for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
-
-                String event = eventIterator.next();
-	             // event
-		         req.append(event).append(":");
-
-                String domEvent = event;
-                if(event.equalsIgnoreCase("valueChange"))       //editable value holders
-                    domEvent = "change";
-                else if(event.equalsIgnoreCase("action"))       //commands
-                    domEvent = "click";
-
-    //            req.append(domEvent + ":");
-                req.append("function(clientId){");
-       //         req.append("function() {");
-                for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
-                    ClientBehavior behavior = behaviorIter.next();
-                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
-                    String script = behavior.getScript(cbc);    //could be null if disabled
-
-                    if(script != null) {
-                 //       System.out.println(" adding script piece="+script);
-                        req.append(script);
-                    }
-                }
-            //    req.append("}");
-
-                if(eventIterator.hasNext()) {
-                    req.append(",");
-                }
-            }
-
-            req.append("}};");
-       //     System.out.println("creating script of ="+req.toString());
-            return req.toString();
 
 
-    }
-
-    /**
-     * Non-obstrusive way to apply client behaviors.
-     * Behaviors are rendered as options to the client side widget and applied by widget to necessary dom element
-     */
-  /*   protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component, String eventDef) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-   //     System.out.println("encodeClientBehaviors");
-        //ClientBehaviors
-        Map<String,List<ClientBehavior>> behaviorEvents = component.getClientBehaviors();
-        if(!behaviorEvents.isEmpty()) {
-            String clientId = ((UIComponent) component).getClientId(context);
-            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
-
-            writer.write(",behaviors:{");
-
-            for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
-                String event = eventIterator.next();
-                String domEvent = event;
-
-                if (null!=event){
-                    domEvent=eventDef;
-                }
-                if(event.equalsIgnoreCase("valueChange"))       //editable value holders
-                    domEvent = "change";
-                else if(event.equalsIgnoreCase("action"))       //commands
-                    domEvent = "click";
-
-                writer.write(domEvent + ":");
-
-                writer.write("function() {");
-                for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
-                    ClientBehavior behavior = behaviorIter.next();
-                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
-                    String script = behavior.getScript(cbc);    //could be null if disabled
-
-                    if(script != null) {
-                        writer.write(script);
-                    }
-                }
-                writer.write("}");
-
-                if(eventIterator.hasNext()) {
-                    writer.write(",");
-                }
-            }
-
-            writer.write("}");
-        }
-    } */
     /**
       * Non-obstrusive way to apply client behaviors.
       * Behaviors are rendered as options to the client side widget and applied by widget to necessary dom element

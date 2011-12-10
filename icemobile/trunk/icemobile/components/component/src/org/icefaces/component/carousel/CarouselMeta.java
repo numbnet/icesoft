@@ -20,8 +20,10 @@ package org.icefaces.component.carousel;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.Expression;
-import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import org.icefaces.ace.meta.baseMeta.UISeriesBaseMeta;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
@@ -42,7 +44,9 @@ import javax.faces.application.ResourceDependency;
                 "represents a grouping of a grouping of <li> tags that make up a scrollable " +
                 "array of pictures, touch enabled. "
 )
-
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
+})
 /**@ResourceDependencies({
         @ResourceDependency(library = "org.icefaces.component.util", name = "iscroll-min.js"),
         @ResourceDependency(library = "org.icefaces.component.carousel", name = "carousel.js")
