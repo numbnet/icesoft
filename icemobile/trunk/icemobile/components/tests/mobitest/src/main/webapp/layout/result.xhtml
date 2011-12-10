@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-        xml:lang="en" lang="en">
-<head>
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <title>MOBI-62 outputlist test</title>
+
     <title> output from propertyActionListener test</title>
-</head>
+</h:head>
   <h:body>
 
     	<h1>JSF 2 setPropertyActionListener example</h1>
 
-	#{carousel.propertyAL}
-
-    </h:body></html>
+	<h:outputText id="outVal" value="#{carousel.propertyAL}"/>
+               <br />
+     <a href="../layoutComponents.html">index page</a>
+    </h:body>
+</html>

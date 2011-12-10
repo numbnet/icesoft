@@ -23,6 +23,7 @@ import org.icefaces.renderkit.BaseLayoutRenderer;
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
@@ -101,7 +102,6 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         if ( facesContext.isProjectStage(ProjectStage.Production)){
             jsFname = fname+"-min.js";
         }
-     //   logger.info("NEED TO LOAD fname = "+jsFname);
         Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, library);
         String src = jsFile.getRequestPath();
         writer.startElement("script", uiComponent);
@@ -144,7 +144,7 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         String clientId = uiComponent.getClientId(facesContext);
         Carousel carousel = (Carousel) uiComponent;
         int selected = carousel.getSelectedItem();
-
+        String savedId = carousel.getId();
         encodeCarouselList(carousel, facesContext);
         //no javascript tag for this component
         //check to ensure children are all of type OutputListItem
@@ -179,27 +179,29 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         writer.endElement(HTML.DIV_ELEM);
         this.encodeHiddenSelected(facesContext, clientId, selected);
         writer.endElement(HTML.DIV_ELEM);
-        renderScript(carousel, facesContext, clientId);
+        ((Carousel) uiComponent).setRowIndex(-1);
+        renderScript(uiComponent, facesContext, clientId);
     }
 
-    private void renderScript(Carousel carousel, FacesContext facesContext, String clientId) throws IOException {
+    private void renderScript(UIComponent uiComponent, FacesContext facesContext, String clientId) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
+        Carousel carousel = (Carousel) uiComponent;
+        ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         boolean singleSubmit = carousel.isSingleSubmit();
         writer.startElement("script", null);
+        writer.writeAttribute("id", clientId+"_script", "id");
         writer.writeAttribute("text", "text/javascript", null);
         //define mobi namespace if necessary
-        StringBuilder sObj = new StringBuilder(clientId);
-        sObj.append("',").append(singleSubmit).append(");");
- /*       writer.write("if (!window['mobi']) {" +
-                " window.mobi = {};}\n");   */
-    /*    writer.write("ice.onLoad(function() { " +
-                "\n  ice.log.debug(ice.log, '.... ice.onLoad..... '); \n"  +
-                "mobi.carousel.loaded('" + clientId + "'," + singleSubmit + ");" +
-                "});\n");   */
-   /*     writer.write("ice.onAfterUpdate(function() { " +
-                "\n  ice.log.debug(ice.log, '.... ice.onAfterUpdate..... '); \n"  +
-                "mobi.carousel.refresh('" + clientId + "'," + singleSubmit + ");" +
-                "});\n"); */
+        StringBuilder builder = new StringBuilder(255);
+        builder.append(clientId).append("',{ singleSubmit: ").append(singleSubmit);
+        boolean hasBehaviors = !carousel.getClientBehaviors().isEmpty();
+        if (hasBehaviors){
+            String behaviors = encodeClientBehaviors(facesContext, cbh, "change").toString();
+            behaviors = behaviors.replace("\"", "\'");
+            builder.append(behaviors);
+        }
+        builder.append("});");
+
         writer.write("ice.onUnload(function(){" +
      //           "\n  ice.log.debug(ice.log, '.... ice.onUnload..... '); \n"  +
                 "mobi.carousel.unloaded('" + clientId + "');" +
@@ -209,18 +211,10 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         writer.write("window.addEventListener(orientationEvent, function() {" +
           //      "\n  ice.log.debug(ice.log, '.... orientationEvent..... '); \n"  +
                 "  setTimeout(function () { " +
-                "       mobi.carousel.refresh('" + clientId + "'," + singleSubmit + ");" +
-                "  }, 100); " +
+                "       mobi.carousel.refresh('" + builder.toString() +
+                "  \n}, 100); " +
                 " }, false);\n");
-        writer.write("" +
-         //       " ice.log.debug(ice.log, '.... just write..... '); \n"  +
-                "mobi.carousel.loaded('" + clientId + "'," +
-                singleSubmit + ");\n");
-        //  document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-  //      StringBuffer sb = new StringBuffer("document.addEventListener('DOMContentLoaded', setTimeout(function() {");
-   //     sb.append("mobi.carousel.loaded('").append(clientId).append("',").append(singleSubmit).append(");}, 200), false);") ;
-  //      logger.info("sb is="+sb.toString());
-    //    writer.write(sb.toString());
+        writer.write( "mobi.carousel.loaded('" +  builder.toString());
         writer.endElement("script");
     }
 

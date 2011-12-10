@@ -2,11 +2,11 @@ package org.icefaces.renderkit;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.render.Renderer;
+import org.icefaces.renderkit.CoreRenderer;
 import java.io.IOException;
 
 
-public class BaseLayoutRenderer extends Renderer {
+public class BaseLayoutRenderer extends CoreRenderer {
     /*
         in order to use these must have empty encodeChildren method in Renderer.
      */
