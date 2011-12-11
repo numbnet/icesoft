@@ -76,7 +76,9 @@
                 <br/>
                 <ace:panel header="Notification Panel Example" footer="Source: Wikipedia" >
                     <h:panelGrid columns="2" cellspacing="20">
-                        <h:graphicImage value="#{notificationPanelBean.imageLocation}" style="text-align: right;"/>
+                        <h:graphicImage value="#{notificationPanelBean.imageLocation}"
+                                        alt="#{notificationPanelBean.imageAlt}"
+                                        style="text-align: right;"/>
                         <h:outputText value="#{notificationPanelBean.imageDescription}"
                                                 style="font-size: 12pt; font-weight: normal; text-align: left; display: block;"/>
                     </h:panelGrid>

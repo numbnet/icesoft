@@ -58,27 +58,22 @@ import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 @CustomScoped(value = "#{window}")
 public class PrinterBean extends ComponentExampleImpl< PrinterBean > implements Serializable {
     public static final String BEAN_NAME = "printerBean";
-    private String imageLocation;
+    private ImageSet.ImageInfo image;
     private List<Car> cars;
-    private String printerIcon;
+    private ImageSet.ImageInfo printerIcon;
     
     
     public PrinterBean() 
     {
         super(PrinterBean.class);
-        ImageSet set = new ImageSet();
-        imageLocation = set.getImage(ImageSet.PICTURE_IMAGE);
-        printerIcon = set.getImage(ImageSet.PRINTER_IMAGE);
+        image = ImageSet.getImage(ImageSet.ImageSelect.PICTURE);
+        printerIcon = ImageSet.getImage(ImageSet.ImageSelect.PRINTER);
         VehicleGenerator generator = new VehicleGenerator();
         cars = generator.getRandomCars(10);
     }
 
-    public String getImageLocation() {
-        return imageLocation;
-    }
-
-    public void setImageLocation(String imageLocation) {
-        this.imageLocation = imageLocation;
+    public ImageSet.ImageInfo getImage() {
+        return image;
     }
 
     public List<Car> getCars() {
@@ -89,11 +84,7 @@ public class PrinterBean extends ComponentExampleImpl< PrinterBean > implements 
         this.cars = cars;
     }
 
-    public String getPrinterIcon() {
+    public ImageSet.ImageInfo getPrinterIcon() {
         return printerIcon;
-    }
-
-    public void setPrinterIcon(String printerIcon) {
-        this.printerIcon = printerIcon;
     }
 }

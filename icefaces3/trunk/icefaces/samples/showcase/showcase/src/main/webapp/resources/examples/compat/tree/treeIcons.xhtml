@@ -45,7 +45,8 @@
                 <ice:treeNode>
                     <f:facet name="icon">
                         <h:graphicImage library="css/images"
-                                        name="#{node.userObject.leaf ? 'tree-custom-leaf.png' : 'tree-custom-folder.png'}"/>
+                                        name="#{node.userObject.leaf ? 'tree-custom-leaf.png' : 'tree-custom-folder.png'}"
+                                        alt="#{node.userObject.leaf ? 'File' : 'Folder'}"/>
                     </f:facet>
                     <f:facet name="content">
                         #{node.userObject.text}

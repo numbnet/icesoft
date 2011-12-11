@@ -44,7 +44,7 @@
             
             <ace:panel id="panel">
                 <h:panelGrid columns="2" width="100%">
-                    <h:graphicImage id="image" value="#{printerBean.imageLocation}"/>
+                    <h:graphicImage id="image" value="#{printerBean.image.path}" alt="#{printerBean.image.description}"/>
                 
                 
                 
@@ -80,20 +80,20 @@
             <ace:panel>
                 <h:panelGrid style="text-align: center; margin-left: auto; margin-right: auto;" columns="3" width="50%">
                     <h:panelGrid columns="2">
-                        <h:graphicImage value="#{printerBean.printerIcon}"/>
+                        <h:graphicImage value="#{printerBean.printerIcon.path}" alt="#{printerBean.printerIcon.description}"/>
                         <h:commandLink value="print image">
                             <ace:printer for="image"/>
                         </h:commandLink>
                     </h:panelGrid>
                     <h:panelGrid columns="2">
-                        <h:graphicImage value="#{printerBean.printerIcon}"/>
+                        <h:graphicImage value="#{printerBean.printerIcon.path}" alt="#{printerBean.printerIcon.description}"/>
                         <h:commandLink value="print table">
                             <ace:printer for="carTable"/>
                         </h:commandLink>
                     </h:panelGrid>
                     
                     <h:panelGrid columns="2">
-                        <h:graphicImage value="#{printerBean.printerIcon}"/>
+                        <h:graphicImage value="#{printerBean.printerIcon.path}" alt="#{printerBean.printerIcon.description}"/>
                         <h:commandLink value="print both">
                             <ace:printer for="panel"/>
                         </h:commandLink>

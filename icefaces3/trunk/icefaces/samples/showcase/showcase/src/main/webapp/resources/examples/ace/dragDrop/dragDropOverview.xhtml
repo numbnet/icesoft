@@ -51,7 +51,7 @@
                     <ace:column headerText="Sort us please">
                         <ace:panel id="item" header="#{draggableItem.name}">
                             <h:panelGrid>
-                                <h:graphicImage id="itemImg" value="#{draggableItem.image}"/>
+                                <h:graphicImage id="itemImg" value="#{draggableItem.image}" alt="#{draggableItem.name}"/>
                             </h:panelGrid>
                             <ace:draggable forValue="item" revert="true" opacity="0.5" scope="#{draggableItem.type}"/>
                         </ace:panel>

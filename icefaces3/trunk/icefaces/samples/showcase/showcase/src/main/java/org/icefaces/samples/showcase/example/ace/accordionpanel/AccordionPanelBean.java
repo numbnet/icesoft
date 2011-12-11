@@ -81,7 +81,7 @@ public class AccordionPanelBean extends ComponentExampleImpl<AccordionPanelBean>
         ArrayList<Item> list = new ArrayList<Item>();
         list.add(new Item(1, "Aubergine", "/resources/css/images/dragdrop/aubergine.png", "Fruits and Vegetables", 1.99d, 10));
         list.add(new Item(2, "Capsicum", "/resources/css/images/dragdrop/capsicum.png", "Fruits and Vegetables", 0.99d, 4));
-        list.add(new Item(3, "Chilli", "/resources/css/images/dragdrop/chilli.png", "Oriental", 3.25, 2));
+        list.add(new Item(3, "Chili", "/resources/css/images/dragdrop/chilli.png", "Oriental", 3.25, 2));
         list.add(new Item(4, "Eggs", "/resources/css/images/dragdrop/egg.png", "Dairy", 5.99, 40));
         list.add(new Item(5, "Orange", "/resources/css/images/dragdrop/orange.png", "Fruits and Vegetables", 9.99d, 15));
         

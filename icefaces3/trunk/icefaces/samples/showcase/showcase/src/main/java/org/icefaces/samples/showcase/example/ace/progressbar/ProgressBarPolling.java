@@ -114,10 +114,10 @@ public class ProgressBarPolling extends ComponentExampleImpl<ProgressBarPolling>
     private ArrayList<UploadObject> populatePendingUploads() {
         //note: UploadObject.widgetVarName MUST BE UNIQUE
         ArrayList<UploadObject> uploadList = new ArrayList<UploadObject>();
-        uploadList.add( new UploadObject(0, "Laptop", "/resources/css/images/dragdrop/laptop.png", "laptop",false,false,false) );
-        uploadList.add( new UploadObject(0, "PDA", "/resources/css/images/dragdrop/pda.png", "pda",false,false,false));
-        uploadList.add( new UploadObject(0, "Monitor", "/resources/css/images/dragdrop/monitor.png", "monitor",false,false,false) );
-        uploadList.add( new UploadObject(0, "Desktop", "/resources/css/images/dragdrop/desktop.png", "desktop",false,false,false) );
+        uploadList.add( new UploadObject(0, "Laptop", "/resources/css/images/dragdrop/laptop.png", "Laptop",false,false,false) );
+        uploadList.add( new UploadObject(0, "PDA", "/resources/css/images/dragdrop/pda.png", "PDA",false,false,false));
+        uploadList.add( new UploadObject(0, "Monitor", "/resources/css/images/dragdrop/monitor.png", "Monitor",false,false,false) );
+        uploadList.add( new UploadObject(0, "Desktop", "/resources/css/images/dragdrop/desktop.png", "Desktop",false,false,false) );
         Collections.shuffle(uploadList);
         return uploadList;
     }

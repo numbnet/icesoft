@@ -21,6 +21,7 @@
 
 package org.icefaces.samples.showcase.example.ace.tooltip;
 
+import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -61,7 +62,7 @@ public class TooltipOverviewBean extends ComponentExampleImpl<TooltipOverviewBea
     private String tooltipEffect;
     private Integer tooltipShowDelay;
     private Integer tooltipHideDelay;
-    private String imageLocation;
+    private ImageSet.ImageInfo image;
     private String tooltipTargetPosition;
     private String tooltipPosition;
     private Integer showEffectLength;
@@ -71,7 +72,7 @@ public class TooltipOverviewBean extends ComponentExampleImpl<TooltipOverviewBea
     public TooltipOverviewBean() 
     {
         super(TooltipOverviewBean.class);
-        imageLocation = "/resources/css/images/rainbowCalgary.png";
+        image = ImageSet.getImage(ImageSet.ImageSelect.PICTURE);
     }
 
     public String getTooltipEffect() {
@@ -80,12 +81,8 @@ public class TooltipOverviewBean extends ComponentExampleImpl<TooltipOverviewBea
     public void setTooltipEffect(String tooltipEffect) {
         this.tooltipEffect = tooltipEffect;
     }
-    public String getImageLocation() {
-        return imageLocation;
-    }
-
-    public void setImageLocation(String imageLocation) {
-        this.imageLocation = imageLocation;
+    public ImageSet.ImageInfo getImage() {
+        return image;
     }
 
     public Integer getTooltipHideDelay() {

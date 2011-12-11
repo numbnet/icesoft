@@ -27,60 +27,83 @@ import java.util.ArrayList;
 
 public class ImageSet implements Serializable
 {
-    public static final String CARS = "carSet";
-    public static final String GADGETS = "electronicsSet";
-    public static final String FOOD = "groceriesSet";
-    public static final String ARROWS = "navigationArrows";
-    public static final String PRINTER_IMAGE = "printer";
-    public static final String PICTURE_IMAGE = "pictureOfTheDay";
-
-    
-    public ArrayList<String> getImages(String imageSetType) 
+    public static ArrayList<ImageInfo> getImages(ImagesSelect imageSetType)
     {
-        ArrayList<String> imageLocations = new ArrayList<String>();
+        ArrayList<ImageInfo> imageLocations = new ArrayList<ImageInfo>();
         
-        if(imageSetType.equals(CARS))
+        if(imageSetType.equals(ImagesSelect.CARS))
         {
-            imageLocations.add("/resources/css/images/dragdrop/bmw.png");
-            imageLocations.add("/resources/css/images/dragdrop/camaro.png");
-            imageLocations.add("/resources/css/images/dragdrop/chevroletImpala.png");
-            imageLocations.add("/resources/css/images/dragdrop/pickupTruck.png");
-            imageLocations.add("/resources/css/images/dragdrop/vwBeatle.png");
+            imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/bmw.png", "BMW"));
+            imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/camaro.png", "Camaro"));
+            imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/chevroletImpala.png", "Chevrolet Impala"));
+            imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/pickupTruck.png", "Pickup Truck"));
+            imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/vwBeatle.png", "VW Beatle"));
         }
-        else if(imageSetType.equals(GADGETS))
+        else if(imageSetType.equals(ImagesSelect.GADGETS))
         {
-            imageLocations.add("/resources/css/images/dragdrop/laptop.png");
-            imageLocations.add("/resources/css/images/dragdrop/pda.png");
-            imageLocations.add("/resources/css/images/dragdrop/monitor.png");
-            imageLocations.add("/resources/css/images/dragdrop/desktop.png");
+            imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/laptop.png", "Laptop"));
+            imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/pda.png", "PDA"));
+            imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/monitor.png", "Monitor"));
+            imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/desktop.png", "Desktop"));
         }
-        else if(imageSetType.equals(FOOD))
+        else if(imageSetType.equals(ImagesSelect.FOOD))
         {
-            imageLocations.add("/resources/css/images/dragdrop/aubergine.png");
-            imageLocations.add("/resources/css/images/dragdrop/capsicum.png");
-            imageLocations.add("/resources/css/images/dragdrop/chilli.png");
-            imageLocations.add("/resources/css/images/dragdrop/egg.png");
-            imageLocations.add("/resources/css/images/dragdrop/orange.png");
+            imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/aubergine.png", "Aubergine"));
+            imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/capsicum.png", "Capsicum"));
+            imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/chilli.png", "Chili"));
+            imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/egg.png", "Egg"));
+            imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/orange.png", "Orange"));
         }
-        else if(imageSetType.equals(ARROWS))
+        else if(imageSetType.equals(ImagesSelect.ARROWS))
         {
-            imageLocations.add("/resources/css/images/navigateNext.png");
-            imageLocations.add("/resources/css/images/navigateBack.png");
+            imageLocations.add(new ImageInfo("/resources/css/images/navigateNext.png", "Navigate Next"));
+            imageLocations.add(new ImageInfo("/resources/css/images/navigateBack.png", "Navigate Back"));
         }        
         return imageLocations;
     }
     
-    public String getImage(String imageType)
+    public static ImageInfo getImage(ImageSelect imageType)
     {
-        String imageLocation = "";
-        if(imageType.equals(PRINTER_IMAGE))
+        ImageInfo image = null;
+        if(imageType.equals(ImageSelect.PRINTER))
         {
-            imageLocation = "/resources/css/images/printerIcon.png";
+            image = new ImageInfo("/resources/css/images/printerIcon.png", "Printer");
         }
-        else if(imageType.equals(PICTURE_IMAGE))
+        else if(imageType.equals(ImageSelect.PICTURE))
         {
-            imageLocation = "/resources/css/images/rainbowCalgary.png";
+            image = new ImageInfo("/resources/css/images/rainbowCalgary.png", "Calgary");
         }
-        return imageLocation;
+        return image;
+    }
+
+
+    public enum ImagesSelect {
+        CARS,
+        GADGETS,
+        FOOD,
+        ARROWS
+    }
+
+    public enum ImageSelect {
+        PRINTER,
+        PICTURE
+    }
+
+    public static class ImageInfo implements Serializable {
+        private String path;
+        private String description;
+
+        ImageInfo(String path, String description) {
+            this.path = path;
+            this.description = description;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public String getDescription() {
+            return description;
+        }
     }
 }

@@ -47,10 +47,10 @@
                     <h:panelGrid  style="font-weight: bold;" width="100%">
                             <h:outputText value="#{progressBarBean.message}"/>
                             <h:panelGrid  style="margin-left: auto; margin-right: auto; height: 100px; width: 100%;">
-                                <h:graphicImage value="#{progressBarBean.currentImage}"/>
+                                <h:graphicImage value="#{progressBarBean.currentImage.path}" alt="#{progressBarBean.currentImage.description}"/>
                             </h:panelGrid>
                             
-                            <h:outputText value="#{progressBarBean.imageDescription}"/>
+                            <h:outputText value="#{progressBarBean.currentImage.description}"/>
                     </h:panelGrid>
               </h:panelGrid>
             </ace:panel>
@@ -58,7 +58,7 @@
             <h:panelGrid width="100%" columns="2">
                 <h:panelGrid columns="2">
                     <h:panelGroup>
-                        <h:graphicImage value="/resources/css/images/navigateBack.png"/>
+                        <h:graphicImage value="/resources/css/images/navigateBack.png" alt="Previous"/>
                     </h:panelGroup>
                     <h:panelGroup>
                         <h:commandLink     value="PREVIOUS"
@@ -78,7 +78,7 @@
                         </h:commandLink>
                     </h:panelGroup>
                     <h:panelGroup>
-                        <h:graphicImage value="/resources/css/images/navigateForward.png"/>
+                        <h:graphicImage value="/resources/css/images/navigateForward.png" alt="Next"/>
                     </h:panelGroup>
                 </h:panelGrid>
              </h:panelGrid>
