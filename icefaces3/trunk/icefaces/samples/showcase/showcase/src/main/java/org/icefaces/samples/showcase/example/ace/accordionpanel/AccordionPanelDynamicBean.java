@@ -57,9 +57,9 @@ public class AccordionPanelDynamicBean extends ComponentExampleImpl<AccordionPan
 {
     public static final String BEAN_NAME = "accordionPanelDynamicBean";
     
-    private ArrayList<String> imagesOfCars;
-    private ArrayList<String> imagesOfElectronicDevices;
-    private ArrayList<String> imagesOfFood;
+    private ArrayList<ImageSet.ImageInfo> imagesOfCars;
+    private ArrayList<ImageSet.ImageInfo> imagesOfElectronicDevices;
+    private ArrayList<ImageSet.ImageInfo> imagesOfFood;
     private String tabChangeDescriptor;
     
     private HashMap<String, Integer> counters;
@@ -102,10 +102,9 @@ public class AccordionPanelDynamicBean extends ComponentExampleImpl<AccordionPan
     /////////////////////////////////////////////////PRIVATE METHODS BEGIN//////////////////////////////////////////////////
     private void initializeInstanceVariables() 
     {
-        ImageSet set = new ImageSet();
-        this.imagesOfElectronicDevices = set.getImages(ImageSet.GADGETS);
-        this.imagesOfCars = set.getImages(ImageSet.CARS);
-        this.imagesOfFood = set.getImages(ImageSet.FOOD);
+        this.imagesOfElectronicDevices = ImageSet.getImages(ImageSet.ImagesSelect.GADGETS);
+        this.imagesOfCars = ImageSet.getImages(ImageSet.ImagesSelect.CARS);
+        this.imagesOfFood = ImageSet.getImages(ImageSet.ImagesSelect.FOOD);
         this.counters = new HashMap<String, Integer>();
         tabChangeDescriptor = setTabChangeDescriptor();
     }
@@ -115,7 +114,7 @@ public class AccordionPanelDynamicBean extends ComponentExampleImpl<AccordionPan
     }
     
     //////////////////////////////////////////////////GETTERS&SETTERS BEGIN////////////////////////////////////////////////
-    public ArrayList<String> getImagesOfCars() 
+    public ArrayList<ImageSet.ImageInfo> getImagesOfCars()
     {
         return imagesOfCars;
     }
@@ -124,12 +123,7 @@ public class AccordionPanelDynamicBean extends ComponentExampleImpl<AccordionPan
         return imagesOfCars != null ? imagesOfCars.size():0;
     }
 
-    public void setImagesOfCars(ArrayList<String> imagesOfCars) 
-    {
-        this.imagesOfCars = imagesOfCars;
-    }
-
-    public ArrayList<String> getImagesOfElectronicDevices() 
+    public ArrayList<ImageSet.ImageInfo> getImagesOfElectronicDevices()
     {
         return imagesOfElectronicDevices;
     }
@@ -138,21 +132,12 @@ public class AccordionPanelDynamicBean extends ComponentExampleImpl<AccordionPan
         return imagesOfElectronicDevices != null? imagesOfElectronicDevices.size():0;
     }
 
-    public void setImagesOfElectronicDevices(ArrayList<String> imagesOfElectronicDevices) 
-    {
-        this.imagesOfElectronicDevices = imagesOfElectronicDevices;
-    }
-
-    public ArrayList<String> getImagesOfFood() {
+    public ArrayList<ImageSet.ImageInfo> getImagesOfFood() {
         return imagesOfFood;
     }
 
     public int getImagesOfFoodSize(){
         return imagesOfFood != null ? imagesOfFood.size(): 0;
-    }
-
-    public void setImagesOfFood(ArrayList<String> imagesOfFood) {
-        this.imagesOfFood = imagesOfFood;
     }
 
     public String getTabChangeDescriptor() {

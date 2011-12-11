@@ -64,18 +64,16 @@ import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
 public class ProgressBarBean extends ComponentExampleImpl<ProgressBarBean> implements Serializable {
     public static final String BEAN_NAME = "progressBarBean";
     
-    private ArrayList<String> imagesOfCars;
+    private ArrayList<ImageSet.ImageInfo> imagesOfCars;
     private Integer progressValue;
-    private String currentImage;
+    private ImageSet.ImageInfo currentImage;
     private int currentIndex;
-    private String imageDescription;
     private String message;
 
     public ProgressBarBean() {
         super(ProgressBarBean.class);
         
-        ImageSet set = new ImageSet();
-        this.imagesOfCars = set.getImages(ImageSet.CARS);
+        this.imagesOfCars = ImageSet.getImages(ImageSet.ImagesSelect.CARS);
         currentIndex = 0;
         setBeanVariables(currentIndex);
     }
@@ -103,7 +101,6 @@ public class ProgressBarBean extends ComponentExampleImpl<ProgressBarBean> imple
     {
         this.progressValue = findProgressValue(currentIndex);
         this.currentImage = imagesOfCars.get(currentIndex);
-        this.imageDescription = findImageDescription(currentImage);
         this.message = "Image " +(currentIndex+1)+" out of "+imagesOfCars.size();
     }
     
@@ -121,12 +118,8 @@ public class ProgressBarBean extends ComponentExampleImpl<ProgressBarBean> imple
         return ++indexValue*(100/imagesOfCars.size());
     }
 
-    public ArrayList<String> getImagesOfCars() {
+    public ArrayList<ImageSet.ImageInfo> getImagesOfCars() {
         return imagesOfCars;
-    }
-
-    public void setImagesOfCars(ArrayList<String> imagesOfCars) {
-        this.imagesOfCars = imagesOfCars;
     }
 
     public Integer getProgressValue() {
@@ -137,20 +130,8 @@ public class ProgressBarBean extends ComponentExampleImpl<ProgressBarBean> imple
         this.progressValue = progressValue;
     }
 
-    public String getCurrentImage() {
+    public ImageSet.ImageInfo getCurrentImage() {
         return currentImage;
-    }
-
-    public void setCurrentImage(String currentImage) {
-        this.currentImage = currentImage;
-    }
-
-    public String getImageDescription() {
-        return imageDescription;
-    }
-
-    public void setImageDescription(String imageDescription) {
-        this.imageDescription = imageDescription;
     }
     
     public String getMessage() {

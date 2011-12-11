@@ -22,6 +22,7 @@
 package org.icefaces.samples.showcase.example.ace.dragDrop;
 
 
+import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -53,7 +54,7 @@ import java.io.Serializable;
 public class DraggableOverviewBean extends ComponentExampleImpl<DraggableOverviewBean> implements Serializable
 {
     public static final String BEAN_NAME = "draggableOverviewBean";
-    private String imageLocation;
+    private ImageSet.ImageInfo image;
     
     private String axisMovementConstraint;
     private String helperMode;
@@ -65,7 +66,7 @@ public class DraggableOverviewBean extends ComponentExampleImpl<DraggableOvervie
     public DraggableOverviewBean()
     {
         super(DraggableOverviewBean.class);
-        imageLocation = "/resources/css/images/rainbowCalgary.png";
+        image = ImageSet.getImage(ImageSet.ImageSelect.PICTURE);
         axisMovementConstraint = "x or y";
         helperMode = "original";
         containmentConstraint = "";
@@ -74,12 +75,8 @@ public class DraggableOverviewBean extends ComponentExampleImpl<DraggableOvervie
         opacity = 1d;
     }
 
-    public String getImageLocation() {
-        return imageLocation;
-    }
-
-    public void setImageLocation(String imageLocation) {
-        this.imageLocation = imageLocation;
+    public ImageSet.ImageInfo getImage() {
+        return image;
     }
 
     public String getAxisMovementConstraint() {

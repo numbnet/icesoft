@@ -92,7 +92,8 @@
            <br/>
            
            <ace:panel>
-               <h:graphicImage id="sampleImage" value="#{draggableOverviewBean.imageLocation}">
+               <h:graphicImage id="sampleImage" value="#{draggableOverviewBean.image.path}"
+                               alt="#{draggableOverviewBean.image.description}">
                    <ace:draggable axis="#{draggableOverviewBean.axisMovementConstraint}"
                                             helper="#{draggableOverviewBean.helperMode}"
                                             containment="#{draggableOverviewBean.containmentConstraint}"

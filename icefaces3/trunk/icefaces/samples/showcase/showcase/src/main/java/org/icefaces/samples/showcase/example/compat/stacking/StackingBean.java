@@ -77,6 +77,7 @@ public class StackingBean extends ComponentExampleImpl<StackingBean> implements 
 	    new SelectItem("webmc", "WebMC Presenter")
 	};
 	private String selectedDemo = availableDemos[0].getValue().toString();
+    private String selectedDescription = availableDemos[0].getLabel();
 	
 	public StackingBean() {
 		super(StackingBean.class);
@@ -85,5 +86,16 @@ public class StackingBean extends ComponentExampleImpl<StackingBean> implements 
 	public SelectItem[] getAvailableDemos() { return availableDemos; }
 	public String getSelectedDemo() { return selectedDemo; }
 	
-	public void setSelectedDemo(String selectedDemo) { this.selectedDemo = selectedDemo; }
+	public void setSelectedDemo(String selectedDemo) {
+        this.selectedDemo = selectedDemo;
+        for (SelectItem si : availableDemos) {
+            if (si.getValue().equals(selectedDemo)) {
+                selectedDescription = si.getLabel();
+                return;
+            }
+        }
+        selectedDescription = selectedDemo;
+    }
+
+    public String getSelectedDescription() { return selectedDescription; }
 }

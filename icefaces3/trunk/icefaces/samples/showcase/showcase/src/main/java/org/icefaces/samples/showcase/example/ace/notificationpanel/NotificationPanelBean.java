@@ -62,6 +62,7 @@ public class NotificationPanelBean extends ComponentExampleImpl<NotificationPane
     public static final String BEAN_NAME = "notificationPanelBean";
     
     private String imageLocation;
+    private String imageAlt;
     private String imageDescription;
     private boolean render;
     private boolean visible;
@@ -84,6 +85,7 @@ public class NotificationPanelBean extends ComponentExampleImpl<NotificationPane
    private void initializeBeanVariables() 
     {
         imageLocation = "/resources/css/images/dragdrop/vwBeatle.png";
+        imageAlt = "VW Beatle";
         imageDescription = "The Volkswagen Type 1, widely known as the Volkswagen Beetle and Volkswagen Bug, is an economy car"
                                 + " produced by the German auto maker Volkswagen (VW) from 1938."
                                 + " With over 21 million manufactured in an air-cooled, rear-engined, rear-wheel drive configuration,"
@@ -97,6 +99,14 @@ public class NotificationPanelBean extends ComponentExampleImpl<NotificationPane
 
     public void setImageDescription(String imageDescription) {
         this.imageDescription = imageDescription;
+    }
+
+    public String getImageAlt() {
+        return imageAlt;
+    }
+
+    public void setImageAlt(String imageAlt) {
+        this.imageAlt = imageAlt;
     }
 
     public String getImageLocation() {
