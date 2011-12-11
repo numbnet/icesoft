@@ -118,7 +118,7 @@ public class ConfirmationDialogRenderer extends CoreRenderer {
 		if(hideEffect != null) jb.entry("hide", hideEffect);
 		if(!dialog.isCloseOnEscape()) jb.entry("closeOnEscape", false);
 		if(!dialog.isClosable()) jb.entry("closable", false);
-        if(dialog.isAppendToBody()) jb.entry("appendToBody", true);
+//        if(dialog.isAppendToBody()) jb.entry("appendToBody", true);
 		
 		//Position
 		String position = dialog.getPosition();	
