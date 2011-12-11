@@ -33,7 +33,8 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
         componentType   = "org.icefaces.ace.component.ConfirmationDialog",
         rendererType    = "org.icefaces.ace.component.ConfirmationDialogRenderer",
 		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "Displays a dialog that asks users to confirm or cancel their actions."
+		tlddoc = "Displays a dialog that asks users to confirm or cancel their actions." +
+                " If position of dialog is out of place, try putting it as last child of body."
         )
 
 @ResourceDependencies({
@@ -89,6 +90,6 @@ public class ConfirmationDialogMeta extends UIPanelMeta {
 	@Property(tlddoc="Specifies if close button should be displayed or not.", defaultValue="true")
 	private boolean closable;
 	
-	@Property(tlddoc="Appends dialog as a child of document body.", defaultValue="false")
-	private boolean appendToBody;
+//	@Property(tlddoc="Appends dialog as a child of document body.", defaultValue="false")
+//	private boolean appendToBody;
 }
