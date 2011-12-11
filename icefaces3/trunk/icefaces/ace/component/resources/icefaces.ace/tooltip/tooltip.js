@@ -62,6 +62,7 @@ jQuery.fn.qtip.styles['defaults'].color=undefined;
 jQuery.fn.qtip.styles['defaults'].tip.background=undefined;
 jQuery.fn.qtip.styles['defaults'].title.background=undefined;
 jQuery.fn.qtip.styles['defaults'].title.fontWeight = undefined;
+jQuery.fn.qtip.styles['defaults'].width.max = Number.MAX_VALUE;
 
 ice.ace.Tooltip.prototype.ThemeRoller = {
     border: {
