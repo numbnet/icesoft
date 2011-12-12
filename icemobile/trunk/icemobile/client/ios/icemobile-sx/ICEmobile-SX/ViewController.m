@@ -25,6 +25,7 @@
 @synthesize currentCommand;
 @synthesize currentSessionId;
 @synthesize uploadProgress;
+@synthesize uploadLabel;
 @synthesize deviceToken;
 @synthesize confirmMessages;
 @synthesize confirmTitles;
@@ -101,7 +102,14 @@ NSLog(@"Hitch just upload what would have been scripted %@", script);
     return @"unkown";
 }
 
+- (void) hideProgress  {
+    uploadLabel.hidden = YES;
+    uploadProgress.hidden = YES;
+}
+
 - (void) setProgress:(NSInteger)percent  {
+    uploadLabel.hidden = NO;
+    uploadProgress.hidden = NO;
     [uploadProgress setProgress:percent / 100.0f];
 NSLog(@"Native progress display %d", percent);
 }
