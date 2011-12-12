@@ -1017,37 +1017,11 @@ public class DataTable extends DataTableBase {
     private Object[] values;
 
     public Object saveState(FacesContext context) {
-        if (context == null) {
-            throw new NullPointerException();
-        }
-        if (values == null) {
-            values = new Object[7];
-        }
-        values[0] = super.saveState(context);
-        values[1] = clearDataModel;
-        values[2] = filteredData;
-        values[3] = sortOrderChanged;
-        values[4] = treeModel;
-        values[5] = valueHashCode;
-        values[6] = filterValueChanged;
-        return (values);
+        return super.saveState(context);
     }
 
     public void restoreState(FacesContext context, Object state) {
-        if (context == null) {
-            throw new NullPointerException();
-        }
-        if (state == null) {
-            return;
-        }
-        values = (Object[]) state;
-        super.restoreState(context, values[0]);
-        clearDataModel = (java.lang.Boolean) values[1];
-        filteredData = (java.util.List) values[2];
-        sortOrderChanged = (java.lang.Boolean) values[3];
-        treeModel = (org.icefaces.ace.model.table.TreeDataModel) values[4];
-        valueHashCode = (java.lang.Integer) values[5];
-        filterValueChanged = (java.lang.Boolean) values[6];
+        super.restoreState(context,state);
     }
 
 
