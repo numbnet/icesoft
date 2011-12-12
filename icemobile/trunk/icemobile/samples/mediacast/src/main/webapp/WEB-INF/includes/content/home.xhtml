@@ -82,8 +82,8 @@
                 <mobi:fieldsetRow styleClass="vcentered">
                     <mobi:camera id="camera" value="#{uploadModel.mediaMap}"/>
                     <h:panelGroup 
-                            style="display:inline-block;height:70px;" >
-                        <mobi:thumbnail for="camera"/>
+                            style="display:inline-block;" >
+                        <mobi:thumbnail for="camera" style="width:65px;height:65px;" />
                     </h:panelGroup>
                 </mobi:fieldsetRow>
             </ui:fragment>
@@ -96,7 +96,7 @@
                 <mobi:fieldsetRow styleClass="vcentered" >
                     <mobi:camcorder id="camcorder"
                                     value="#{uploadModel.video}"/>
-                    <mobi:thumbnail style="height:70px" for="camcorder"/>
+                    <mobi:thumbnail style="width:65px;height:65px;" for="camcorder"/>
                 </mobi:fieldsetRow>
             </ui:fragment>
             <!-- upload/caputre for sound. -->
@@ -147,7 +147,7 @@
                 <h:commandButton 
                    styleClass="mobi-button mobi-button-important"
                    onclick="mobi.registerAuxUpload('#{session.id}','#{auxUpload.uploadURL}');" value="Enable" />
- ICEmobile-SX Surf Expander.</span>
+                        ICEmobile-SX Surf Expander.</span>
             </ui:fragment>
            </ui:fragment>
         </mobi:fieldsetRow>
