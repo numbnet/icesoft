@@ -84,8 +84,7 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
     public static final String FILE_KEY = "file";
     public static final String CONTENT_TYPE_KEY = "contentType";
 
-    private static final String videoConvertCommand = FacesUtils.getFacesParameter(
-                        "org.icemobile.videoConvertCommand");
+    private String videoConvertCommand;
 
     private Map camcorderImage = new HashMap();
     private File camcorderFile;
@@ -97,6 +96,9 @@ public class CamcorderBean extends ExampleImpl<CamcorderBean> implements
 
     public CamcorderBean() {
         super(CamcorderBean.class);
+        // check if video conversion should be
+        videoConvertCommand =
+                FacesUtils.getFacesParameter("org.icemobile.videoConvertCommand");
     }
 
     /**
