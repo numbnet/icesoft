@@ -87,32 +87,35 @@ ice.ace.tabset = {
 							//parameter('ice.focus', event.newValue.get('element').firstChild.id);
                             parameter('onevent', function(data) {
                                 if (data.status == 'success' && event.newValue == cachedNewTab) {
-                                    // Ajax content transition. YUI content transition doesn't execute for server side cases
-                                    // allowing our companonent to trigger content transition when the server call succeeds.
-                                    if (event.oldValue) {
-                                        event.oldValue.set('contentVisible', false);
-                                        event.oldValue.set('active', false);
-                                    } else if (cachedOldTabs.length > 0) {
-                                        // When using caching, event.oldValue is undefined in this function
-                                        // thus we use a reference to the old tab cached during the standard contentTransition.
-                                        for (var i = 0; i < cachedOldTabs.length; i++) {
-                                            cachedOldTabs[i].set('contentVisible', false);
-                                            cachedOldTabs[i].set('active', false);
+                                    if (!rootElem.suppressServerSideTransition) {
+                                        // Ajax content transition. YUI content transition doesn't execute for server side cases
+                                        // allowing our companonent to trigger content transition when the server call succeeds.
+                                        if (event.oldValue) {
+                                            event.oldValue.set('contentVisible', false);
+                                            event.oldValue.set('active', false);
+                                        } else if (cachedOldTabs.length > 0) {
+                                            // When using caching, event.oldValue is undefined in this function
+                                            // thus we use a reference to the old tab cached during the standard contentTransition.
+                                            for (var i = 0; i < cachedOldTabs.length; i++) {
+                                                cachedOldTabs[i].set('contentVisible', false);
+                                                cachedOldTabs[i].set('active', false);
+                                            }
+                                            cachedOldTabs = [];
                                         }
-                                        cachedOldTabs = [];
+
+                                        if (event.newValue) {
+                                            event.newValue.set('contentVisible', true);
+                                            event.newValue.set('active', true);
+                                        }
+
+                                        try {
+                                            document.getElementById(event.newValue.get('element').firstChild.id).focus();
+                                        } catch(e) {}
                                     }
 
-                                    if (event.newValue) {
-                                        event.newValue.set('contentVisible', true);
-                                        event.newValue.set('active', true);
-                                    }
-
+                                    rootElem.suppressServerSideTransition = null;
                                     ice.ace.jq(tabview._contentParent).css({opacity:1});
                                     cachedNewTab = null;
-
-                                    try {
-								    document.getElementById(event.newValue.get('element').firstChild.id).focus();
-                                   } catch(e) {}
                                 }
                             });
                         };
@@ -260,11 +263,11 @@ ice.ace.tabset = {
         if (jsfProps.isClientSide) {
             if (newTab) {
                 newTab.set('contentVisible', true);
-                newTab.set(ACTIVE, true);
+                newTab.set('active', true);
             }
             if (oldTab) {
                 oldTab.set('contentVisible', false);
-                oldTab.set(ACTIVE, false);
+                oldTab.set('active', false);
             }
             document.getElementById(newTab.get('element').firstChild.id).focus();
         } else {
@@ -371,13 +374,13 @@ ice.ace.tabset = {
            }
            else {
                var tabviewObj = context.getComponent();
-               var lastKnownIndex = context.getJSFProps().selectedIndex;
                var index = jsfProps.selectedIndex;
                var objIndex = tabviewObj.get('activeIndex');
 
                if (index != objIndex) {
                    var rootElem = document.getElementById(clientId);
                    rootElem.suppressTabChange = true;
+                   rootElem.suppressServerSideTransition = true;
                    //tabviewObj.removeListener('activeTabChange');
                    if (!jsfProps.isClientSide){
                        tabviewObj.set('activeIndex', index);
