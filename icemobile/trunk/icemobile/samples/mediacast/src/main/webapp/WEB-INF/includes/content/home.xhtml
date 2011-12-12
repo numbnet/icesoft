@@ -81,7 +81,10 @@
                 </mobi:fieldsetRow>
                 <mobi:fieldsetRow styleClass="vcentered">
                     <mobi:camera id="camera" value="#{uploadModel.mediaMap}"/>
-                    <mobi:thumbnail style="height:70px" for="camera"/>
+                    <h:panelGroup 
+                            style="display:inline-block;height:70px;" >
+                        <mobi:thumbnail for="camera"/>
+                    </h:panelGroup>
                 </mobi:fieldsetRow>
             </ui:fragment>
 
