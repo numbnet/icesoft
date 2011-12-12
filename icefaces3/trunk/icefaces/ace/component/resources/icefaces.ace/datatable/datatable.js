@@ -550,7 +550,11 @@ ice.ace.DataTable.prototype.sort = function(headerCells) {
     });
     params[this.id + "_sortKeys"] = sortKeys;
     ice.ace.jq.each(headerCells, function() {
-        sortDirs.push(ice.ace.jq(this).find('.ui-icon-triangle-1-n').hasClass('ui-toggled'));
+        // Have to "refind" the elements by id, as in IE browsers, the dom
+        // elements referenced by headerCells return undefined for
+        // .hasClass('ui-toggled')
+        sortDirs.push(ice.ace.jq(ice.ace.escapeClientId(ice.ace.jq(this).attr('id')))
+                .find('.ui-icon-triangle-1-n').hasClass('ui-toggled'));
     });
     params[this.id + "_sortDirs"] = sortDirs;
 
