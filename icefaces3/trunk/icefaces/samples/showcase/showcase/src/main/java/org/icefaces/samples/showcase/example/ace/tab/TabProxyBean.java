@@ -30,6 +30,11 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
+import java.util.HashMap;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 
 @ComponentExample(
         parent = TabSetBean.BEAN_NAME,
@@ -57,7 +62,17 @@ public class TabProxyBean extends ComponentExampleImpl<TabProxyBean>
 
     private String exampleText = "";
     private boolean invalidSwitch = false;
-    private boolean secondTabSelection;
+    private int secondTabSelection;
+    HashMap<String, Integer> options;
+    
+    
+    public void validateSelection(FacesContext context, UIComponent component, Object value) throws ValidatorException{
+        Integer submitedValue = (Integer)value;
+        System.out.println("Submited value: " +submitedValue);
+        if(submitedValue<0){
+             throw new ValidatorException(new FacesMessage("You must select one of the options"));
+        }
+    }
 
     public boolean isInvalidSwitch() {
         return invalidSwitch;
@@ -75,15 +90,28 @@ public class TabProxyBean extends ComponentExampleImpl<TabProxyBean>
         this.exampleText = exampleText;
     }
 
-    public boolean isSecondTabSelection() {
+    public int getSecondTabSelection() {
         return secondTabSelection;
     }
 
-    public void setSecondTabSelection(boolean secondTabSelection) {
+    public void setSecondTabSelection(int secondTabSelection) {
         this.secondTabSelection = secondTabSelection;
     }
-    
+
     public TabProxyBean() {
         super(TabProxyBean.class);
+        options = new HashMap<String, Integer>();
+        options.put("yes", 1);
+        options.put("no", 1);
     }
+
+    public HashMap<String, Integer> getOptions() {
+        return options;
+    }
+
+    public void setOptions(HashMap<String, Integer> options) {
+        this.options = options;
+    }
+    
+    
 }

@@ -45,7 +45,7 @@
                     <f:facet name="label">Text Entry</f:facet>
                     <h:form>
                         <ace:tabSetProxy for="myTabSet"/>
-                        <h:panelGrid columns="2">
+                        <h:panelGrid columns="2" styleClass="centeredPanelGrid">
                             <h:outputLabel value="Some Text:" />
                             <h:inputText required="true" value="#{tabProxy.exampleText}" requiredMessage="You must enter some text before selecting any other tab"/>   
                         </h:panelGrid>
@@ -57,13 +57,16 @@
                     
                     <h:form id="proxyForm2">
                         <ace:tabSetProxy for="myTabSet" />
-                        <h:outputText value="You entered: #{tabProxy.exampleText}"/>            
-                        <h:panelGrid columns="2">
-                            <h:selectOneMenu value="#{tabProxy.secondTabSelection}" required="true"> 
-                                <f:selectItem itemValue="true" itemLabel="Yes" />
-                                <f:selectItem itemValue="false" itemLabel="No" />
-                            </h:selectOneMenu>
-                            <h:outputText value="Would You like to save it?"/>
+                        <h:panelGrid styleClass="centeredPanelGrid">
+                            <h:outputText value="You entered: #{tabProxy.exampleText}"/>
+                            <h:panelGroup>
+                                <h:selectOneMenu value="#{tabProxy.secondTabSelection}" validator="#{tabProxy.validateSelection}">
+                                    <f:selectItem itemLabel="-choose one-" itemValue="-1"/>
+                                    <f:selectItems value="#{tabProxy.options}" var="option" itemLabel="#{option.key}" itemValue="#{option.value}"/>
+                                </h:selectOneMenu>
+                                <h:outputText value=" - "/>
+                                <h:outputText value="Would You like to save it?"/>
+                            </h:panelGroup>
                         </h:panelGrid>
                     </h:form>
                 </ace:tabPane>
@@ -73,14 +76,16 @@
                     
                      <h:form id="proxyForm3" >
                         <ace:tabSetProxy id="tsProxyThree" for="myTabSet" />
-                        <h:outputText rendered="#{tabProxy.secondTabSelection}"
-                                            value="You successfully saved: #{tabProxy.exampleText}"/>
-                        <h:outputText rendered="#{not tabProxy.secondTabSelection}"
+                        <h:outputText rendered="#{tabProxy.secondTabSelection eq 1}"
+                                                value="You successfully saved: #{tabProxy.exampleText}"/>
+                        <h:outputText rendered="#{tabProxy.secondTabSelection eq 0}"
                                             value="Your entry has not been saved"/>
                     </h:form>
                 </ace:tabPane>
             </ace:tabSet>
         
+        <h:panelGrid styleClass="centeredPanelGrid">
             <h:messages style="color: #ff3333; font-weight: bold;"/>
+        </h:panelGrid>
     </ui:define>
 </ui:composition>
