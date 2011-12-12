@@ -62,8 +62,6 @@ public class AccordionPanelDynamicBean extends ComponentExampleImpl<AccordionPan
     private ArrayList<ImageSet.ImageInfo> imagesOfFood;
     private String tabChangeDescriptor;
     
-    private HashMap<String, Integer> counters;
-    
     public AccordionPanelDynamicBean() 
     {
         super(AccordionPanelDynamicBean.class);
@@ -73,30 +71,7 @@ public class AccordionPanelDynamicBean extends ComponentExampleImpl<AccordionPan
     ////////////////////////////////////////////ON TAB CHANGE EVENT BEGIN/////////////////////////////////////////////////
     public void onPaneChange(AccordionPaneChangeEvent event)
     {  
-        String tabId = event.getTab().getId();
-        
-        Integer viewCounter = counters.get(tabId);
-        //if tab does not exist in hash map
-        if (viewCounter == null) 
-        {
-            viewCounter = new Integer(0);
-            viewCounter++;
-            counters.put(tabId, viewCounter);
-        }
-        //otherwise
-        else
-        {
-            viewCounter++;
-            counters.put(tabId, viewCounter);
-        }
-        tabChangeDescriptor = event.getTab().getTitle() + " tab activated: " + viewCounter +" time(s)";
-    }
-    
-    /////////////////////////////////////////////////ACTION LISTENERS BEGIN//////////////////////////////////////////////////
-    public void resetViewCount(ActionEvent e)
-    {
-        counters = new java.util.HashMap<String, Integer>();
-        tabChangeDescriptor = setTabChangeDescriptor();
+        tabChangeDescriptor = event.getTab().getTitle();
     }
     
     /////////////////////////////////////////////////PRIVATE METHODS BEGIN//////////////////////////////////////////////////
@@ -105,12 +80,6 @@ public class AccordionPanelDynamicBean extends ComponentExampleImpl<AccordionPan
         this.imagesOfElectronicDevices = ImageSet.getImages(ImageSet.ImagesSelect.GADGETS);
         this.imagesOfCars = ImageSet.getImages(ImageSet.ImagesSelect.CARS);
         this.imagesOfFood = ImageSet.getImages(ImageSet.ImagesSelect.FOOD);
-        this.counters = new HashMap<String, Integer>();
-        tabChangeDescriptor = setTabChangeDescriptor();
-    }
-    
-    private String setTabChangeDescriptor() {
-        return "Click on any tab to start counting !";
     }
     
     //////////////////////////////////////////////////GETTERS&SETTERS BEGIN////////////////////////////////////////////////
@@ -141,7 +110,10 @@ public class AccordionPanelDynamicBean extends ComponentExampleImpl<AccordionPan
     }
 
     public String getTabChangeDescriptor() {
-        return tabChangeDescriptor;
+        if(tabChangeDescriptor == null)
+            return "Click on any pane to fire an event";
+        else
+            return tabChangeDescriptor;
     }
 
     public void setTabChangeDescriptor(String tabChangeDescriptor) {

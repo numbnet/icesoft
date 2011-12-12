@@ -34,6 +34,9 @@
     <ui:param name="description" value="#{msgs[exporterType.description]}"/>
     <ui:param name="resourceValue" value="#{exporterType.exampleResource}"/>
     
+    <ui:param name="wikiResources" value="#{compatComponentsResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{compatComponentsResources.tldResources}"/>
+    
     <ui:define name="example">
         <h:form>
             <icecore:singleSubmit/>

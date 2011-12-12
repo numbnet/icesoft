@@ -67,28 +67,24 @@ import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 public class CheckboxButtonBean extends ComponentExampleImpl<CheckboxButtonBean> implements Serializable {
 
     public static final String BEAN_NAME = "checkboxButton";
-
-    private boolean boxValue = true;
-
-    public boolean isBoxValue() {
-        return boxValue;
-    }
-
-    public void setBoxValue(boolean boxValue) {
-        this.boxValue = boxValue;
-    }
-
-    public void boxValueListener(ActionEvent e) {
-        boolean isCheckboxedChecked = boxValue; // or e.getComponent().getSelected()
-
-        if (isCheckboxedChecked) {
-            FacesUtils.addInfoMessage("The checkbox is selected!");
-        } else {
-            FacesUtils.addInfoMessage("The checkbox is not selected.");
-        }
-    }
+    private boolean selected = true;
 
     public CheckboxButtonBean() {
         super(CheckboxButtonBean.class);
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+    
+    public String getBoxValueDescription() {
+        if(selected)
+            return "selected";
+        else
+            return "unselected";
     }
 }

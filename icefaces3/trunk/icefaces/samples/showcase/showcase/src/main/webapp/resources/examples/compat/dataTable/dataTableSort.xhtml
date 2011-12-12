@@ -33,6 +33,9 @@
     <ui:param name="description" value="#{msgs[dataTableSort.description]}"/>
     <ui:param name="resourceValue" value="#{dataTableSort.exampleResource}"/>
     
+    <ui:param name="wikiResources" value="#{compatComponentsResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{compatComponentsResources.tldResources}"/>
+    
     <ui:define name="example">
         <h:form>
             <ice:dataTable value="#{dataTableSort.carsData}"

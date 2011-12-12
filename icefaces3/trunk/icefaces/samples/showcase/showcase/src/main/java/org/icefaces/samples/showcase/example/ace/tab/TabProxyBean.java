@@ -57,24 +57,7 @@ public class TabProxyBean extends ComponentExampleImpl<TabProxyBean>
 
     private String exampleText = "";
     private boolean invalidSwitch = false;
-    private boolean uploadRequired = true;
-    private boolean fileEntryRequired = true;
-
-    public boolean isFileEntryRequired() {
-        return fileEntryRequired;
-    }
-
-    public void setFileEntryRequired(boolean fileEntryRequired) {
-        this.fileEntryRequired = fileEntryRequired;
-    }
-
-    public boolean isUploadRequired() {
-        return uploadRequired;
-    }
-
-    public void setUploadRequired(boolean uploadRequired) {
-        this.uploadRequired = uploadRequired;
-    }
+    private boolean secondTabSelection;
 
     public boolean isInvalidSwitch() {
         return invalidSwitch;
@@ -92,6 +75,14 @@ public class TabProxyBean extends ComponentExampleImpl<TabProxyBean>
         this.exampleText = exampleText;
     }
 
+    public boolean isSecondTabSelection() {
+        return secondTabSelection;
+    }
+
+    public void setSecondTabSelection(boolean secondTabSelection) {
+        this.secondTabSelection = secondTabSelection;
+    }
+    
     public TabProxyBean() {
         super(TabProxyBean.class);
     }

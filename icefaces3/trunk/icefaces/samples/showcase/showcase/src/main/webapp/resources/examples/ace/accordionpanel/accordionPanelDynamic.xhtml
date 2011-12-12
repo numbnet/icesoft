@@ -40,7 +40,7 @@
     <ui:define name="example">
         <h:form id="form">
                 
-                    <ace:accordion id="panel" paneChangeListener="#{accordionPanelDynamicBean.onPaneChange}" onPaneChangeUpdate="counterPanel">
+                    <ace:accordion id="panel" paneChangeListener="#{accordionPanelDynamicBean.onPaneChange}" onPaneChangeUpdate="feedbackHolder">
                         <ace:accordionPane title="Electronic Devices" id="electronicDevices">
                             <ace:panel>
                                 <h:panelGrid columns="#{accordionPanelDynamicBean.imagesOfElectronicDevicesSize}" width="100%">
@@ -79,14 +79,10 @@
             
                 <br/>
 
-                <h:panelGrid id="counterPanel" width="100%" cellpadding="10" style="text-align: center;">
-                    <h:outputText value="#{accordionPanelDynamicBean.tabChangeDescriptor}" />
-                    <h:commandButton value="Reset counters" actionListener="#{accordionPanelDynamicBean.resetViewCount}">
-                        <f:ajax execute="@this" render="counterPanel"/>
-                    </h:commandButton>
+                <h:panelGrid id="feedbackHolder" styleClass="centeredPanelGrid">
+                    <h:outputText value="#{accordionPanelDynamicBean.tabChangeDescriptor}" style="font-weight: bold;"/>
                 </h:panelGrid>
                 
-            
         </h:form>
     </ui:define>
 </ui:composition>
