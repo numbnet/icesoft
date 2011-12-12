@@ -516,6 +516,11 @@ class DOMPartialRenderCallback implements VisitCallback {
         DOMResponseWriter domWriter = (DOMResponseWriter)
                 facesContext.getResponseWriter();
         Node oldSubtree = domWriter.seekSubtree(clientId);
+        if (null == oldSubtree)  {
+            log.warning("Subtree rendering for " + clientId +
+                " could not be found and is being ignored.");
+            return VisitResult.REJECT;
+        }
         try {
             component.encodeAll(facesContext);
             Node newSubtree = domWriter.getDocument().getElementById(clientId);
