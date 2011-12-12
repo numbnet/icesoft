@@ -33,6 +33,9 @@
     <ui:param name="description" value="#{msgs[collapsible.description]}"/>
     <ui:param name="resourceValue" value="#{collapsible.exampleResource}"/>
     
+    <ui:param name="wikiResources" value="#{compatComponentsResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{compatComponentsResources.tldResources}"/>
+    
     <ui:define name="example">
         <h:form>
             <ice:panelCollapsible expanded="#{collapsibleExpanded.expanded}">

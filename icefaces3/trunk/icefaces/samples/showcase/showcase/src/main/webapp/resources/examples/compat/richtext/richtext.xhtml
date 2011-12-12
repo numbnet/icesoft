@@ -33,6 +33,9 @@
     <ui:param name="description" value="#{msgs[richtext.description]}"/>
     <ui:param name="resourceValue" value="#{richtext.exampleResource}"/>
     
+    <ui:param name="wikiResources" value="#{compatComponentsResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{compatComponentsResources.tldResources}"/>
+    
     <ui:define name="example">
         <h:form>
             <ice:inputRichText value="#{richtext.text}"

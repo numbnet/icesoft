@@ -42,17 +42,16 @@
         <h:form>
             
             <ace:panel id="examplePanel">
-                <h:panelGrid columns="2" style="text-align: center;">
-                    <ace:checkboxButton value="#{checkboxButton.boxValue}">
-                        <ace:ajax execute="@this" event="activate"/>
-                    </ace:checkboxButton>    
-                    <ace:pushButton value="Inspect Checkbox Value"
-                                                actionListener="#{checkboxButton.boxValueListener}">
-                    </ace:pushButton>
+                <h:panelGrid styleClass="centeredPanelGrid">
+                    <ace:checkboxButton value="#{checkboxButton.selected}">
+                        <ace:ajax execute="@this" event="activate" render="valueDescription"/>
+                    </ace:checkboxButton>
+                    <h:panelGroup>
+                        <h:outputText value="The checkbox is "/>
+                        <h:outputText id="valueDescription" value="#{checkboxButton.boxValueDescription}" style="font-weight: bold;"/>
+                    </h:panelGroup>
                 </h:panelGrid>
             </ace:panel>
-                
-            <h:messages/>
             
         </h:form>
     </ui:define>

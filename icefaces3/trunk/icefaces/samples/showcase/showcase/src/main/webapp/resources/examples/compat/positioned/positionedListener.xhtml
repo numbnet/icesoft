@@ -33,6 +33,9 @@
     <ui:param name="description" value="#{msgs[positionedListener.description]}"/>
     <ui:param name="resourceValue" value="#{positionedListener.exampleResource}"/>
     
+    <ui:param name="wikiResources" value="#{compatComponentsResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{compatComponentsResources.tldResources}"/>
+    
     <ui:define name="example">
         <h:form>
             <ice:panelPositioned value="#{positionedData.availableFoods}"

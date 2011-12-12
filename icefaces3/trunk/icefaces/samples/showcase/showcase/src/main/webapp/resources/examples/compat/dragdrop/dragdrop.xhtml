@@ -33,6 +33,9 @@
     <ui:param name="description" value="#{msgs[dragdrop.description]}"/>
     <ui:param name="resourceValue" value="#{dragdrop.exampleResource}"/>
     
+    <ui:param name="wikiResources" value="#{compatComponentsResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{compatComponentsResources.tldResources}"/>
+    
     <ui:define name="example">
         <h:form>
             <ice:panelSeries value="#{dragdropData.items}"

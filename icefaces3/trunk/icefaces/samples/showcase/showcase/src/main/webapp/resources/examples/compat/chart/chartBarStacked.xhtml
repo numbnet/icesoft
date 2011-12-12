@@ -33,6 +33,9 @@
     <ui:param name="description" value="#{msgs[chartBarStacked.description]}"/>
     <ui:param name="resourceValue" value="#{chartBarStacked.exampleResource}"/>
     
+    <ui:param name="wikiResources" value="#{compatComponentsResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{compatComponentsResources.tldResources}"/>
+    
     <ui:define name="example">
         <h:form>
             <h:panelGrid columns="2" rendered="#{chartBarStacked.model.areaMapEnabled}">

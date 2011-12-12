@@ -39,62 +39,48 @@
     <ui:param name="tldResources" value="#{tabSetResources.tldResources}"/>
     
     <ui:define name="example">
-        <span class="row">
+            
             <ace:tabSet id="myTabSet" cancelOnInvalid="#{not tabProxy.invalidSwitch}" clientSide="false">
                 <ace:tabPane>
-                    <f:facet name="label">My First Proxy Tab</f:facet>
-
+                    <f:facet name="label">Text Entry</f:facet>
                     <h:form>
-                        <ace:tabSetProxy for="myTabSet" />
-                        <p>Note that the tab-specific forms will submit on tab-change to prevent the loss of data.</p>
-                        <h:inputText value="#{tabProxy.exampleText}" />
+                        <ace:tabSetProxy for="myTabSet"/>
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="Some Text:" />
+                            <h:inputText required="true" value="#{tabProxy.exampleText}" requiredMessage="You must enter some text before selecting any other tab"/>   
+                        </h:panelGrid>
                     </h:form>
                 </ace:tabPane>
+                
                 <ace:tabPane>
-                    <f:facet name="label">My Second Proxy Tab</f:facet>
-
-                    <h:form>
-                        <div style="width:45%; margin:5px;" class="top options">
-                            <ul>
-                                <li>Switch Tabs When Form Invalid:<h:selectBooleanCheckbox value="#{tabProxy.invalidSwitch}" /></li>
-                            </ul>
-                            <h:commandButton value="Set Options"/>
-                        </div>
-                    </h:form>
-
-                    <h:form id="secondTab">
+                    <f:facet name="label">Entered Text</f:facet>
+                    
+                    <h:form id="proxyForm2">
                         <ace:tabSetProxy for="myTabSet" />
-                        <p>
-                        <ice:outputText value="This tabPane uses an ace:fileEntry component with the required attribute
-                                             defaulting to true. This means even though we have a control in this form
-                                             to toggle 'required', we can't use it without submitting a file at the
-                                             same time. Working to avoid that validation dependency requires
-                                             multiple forms, an immediate listener or singleSubmit be used." />
-                        </p>
-                        <div>
-                            Required: <h:selectBooleanCheckbox value="#{tabProxy.fileEntryRequired}" />
-                            <ace:fileEntry id="fileEntry" required="#{tabProxy.fileEntryRequired}" />
-                        </div>
-                        <h:commandButton value="Upload"/>
-                        <p>The third tab contains a control to toggle 'required' on the FileEntry component. Enable
-                        "Switch Tabs When Form Invalid" to ignore the validation on FileEntry and switch to that tab.</p>
+                        <h:outputText value="You entered: #{tabProxy.exampleText}"/>            
+                        <h:panelGrid columns="2">
+                            <h:selectOneMenu value="#{tabProxy.secondTabSelection}" required="true"> 
+                                <f:selectItem itemValue="true" itemLabel="Yes" />
+                                <f:selectItem itemValue="false" itemLabel="No" />
+                            </h:selectOneMenu>
+                            <h:outputText value="Would You like to save it?"/>
+                        </h:panelGrid>
                     </h:form>
                 </ace:tabPane>
+                
                 <ace:tabPane>
-                    <f:facet name="label">My Third Server Proxy Tab</f:facet>
-
-                    <h:form>
-                        File Upload Required:<h:selectBooleanCheckbox value="#{tabProxy.fileEntryRequired}" /><br/>
-                        <h:commandButton value="Set Options"/>
-                        <ace:tabSetProxy for="myTabSet" />
+                    <f:facet name="label">Outcome</f:facet>
+                    
+                     <h:form id="proxyForm3" >
+                        <ace:tabSetProxy id="tsProxyThree" for="myTabSet" />
+                        <h:outputText rendered="#{tabProxy.secondTabSelection}"
+                                            value="You successfully saved: #{tabProxy.exampleText}"/>
+                        <h:outputText rendered="#{not tabProxy.secondTabSelection}"
+                                            value="Your entry has not been saved"/>
                     </h:form>
                 </ace:tabPane>
             </ace:tabSet>
-            </span>
-            <div id="messagesdiv" class="row">
-                <span class="messages top">
-                    <h:messages/>
-                </span>
-            </div>
+        
+            <h:messages style="color: #ff3333; font-weight: bold;"/>
     </ui:define>
 </ui:composition>

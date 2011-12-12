@@ -33,6 +33,9 @@
     <ui:param name="description" value="#{msgs[chartBarClustered.description]}"/>
     <ui:param name="resourceValue" value="#{chartBarClustered.exampleResource}"/>
     
+    <ui:param name="wikiResources" value="#{compatComponentsResources.wikiResources}"/>
+    <ui:param name="tldResources" value="#{compatComponentsResources.tldResources}"/>
+    
     <ui:define name="example">
         <h:form>
             <h:panelGrid columns="2" rendered="#{chartBarClustered.model.areaMapEnabled}">

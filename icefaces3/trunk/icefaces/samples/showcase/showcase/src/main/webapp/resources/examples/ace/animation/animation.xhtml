@@ -42,84 +42,96 @@
     <ui:define name="example">
         
             <h:form>
-                <h:panelGrid style="text-align: center;" width="100%">
-                    <h:commandButton value="Reset All Examples" style="height: 30px; font-weight: bold;">
-                        <f:ajax render="@form"/>
-                    </h:commandButton>
-                </h:panelGrid>
-            
-            
-            <h:panelGrid width="100%">
-                <ace:panel>
-                    <h:panelGrid styleClass="animationHolderStyle" >
+                
+                <h:panelGrid columns="3" width="400px;" style="margin-left: auto; margin-right: auto;">
+                        
+                    <h:panelGrid styleClass="animationHolderStyle">
+                        <h:panelGrid>
                             <h:outputText value="Blind Effect"/>
-                            <ace:animation event="click" name="blind" iterations="3"/>
+                            <h:graphicImage value="/resources/css/images/letters/a-blue.png"/>
+                            <ace:animation event="click" name="blind"/>
+                        </h:panelGrid>
                     </h:panelGrid>
-                </ace:panel>
-
-                <ace:panel>
-                    <h:panelGrid styleClass="animationHolderStyle" >
-                            <h:outputText value="Clip Effect"/>
-                            <ace:animation event="click" name="clip"/>
+                    
+                    <h:panelGrid styleClass="animationHolderStyle">
+                        <h:panelGrid>
+                              <h:outputText value="Clip Effect"/>
+                              <h:graphicImage value="/resources/css/images/letters/n-black.png"/>
+                              <ace:animation event="click" name="clip"/>
+                        </h:panelGrid>
                     </h:panelGrid>
-                </ace:panel>
-
-                <ace:panel>
-                    <h:panelGrid styleClass="animationHolderStyle" >
+                    
+                    <h:panelGrid styleClass="animationHolderStyle">
+                        <h:panelGrid>
                             <h:outputText value="Explode Effect"/>
+                            <h:graphicImage value="/resources/css/images/letters/i-darkgreen.png"/>
                             <ace:animation event="click" name="explode"/>
+                        </h:panelGrid>
                     </h:panelGrid>
-                </ace:panel>
-
-                <ace:panel>
-                    <h:panelGrid styleClass="animationHolderStyle" >
+                    
+                    <h:panelGrid styleClass="animationHolderStyle">
+                        <h:panelGrid>
                             <h:outputText value="Fade Effect"/>
+                            <h:graphicImage value="/resources/css/images/letters/m-blue.png"/>
                             <ace:animation event="click" name="fade" />
+                        </h:panelGrid>
                     </h:panelGrid>
-                </ace:panel>
-
-                <ace:panel>
-                    <h:panelGrid styleClass="animationHolderStyle" >
+                    
+                    <h:panelGrid styleClass="animationHolderStyle">
+                        <h:panelGrid>
                             <h:outputText value="Puff Effect"/>
+                            <h:graphicImage value="/resources/css/images/letters/a-black.png"/>
                             <ace:animation event="click" name="puff" />
+                        </h:panelGrid>
                     </h:panelGrid>
-                </ace:panel>
-
-                <ace:panel>
-                    <h:panelGrid styleClass="animationHolderStyle" >
+                    
+                    <h:panelGrid styleClass="animationHolderStyle">
+                        <h:panelGrid>
                             <h:outputText value="Slide Effect"/>
+                            <h:graphicImage value="/resources/css/images/letters/t-darkgreen.png"/>
                             <ace:animation event="click" name="slide" />
+                        </h:panelGrid>
                     </h:panelGrid>
-                </ace:panel>
-
-                <ace:panel>
-                    <h:panelGrid styleClass="animationHolderStyle" >
+                    
+                    
+                    <h:panelGrid styleClass="animationHolderStyle">
+                        <h:panelGrid>
                             <h:outputText value="Bounce Effect"/>
+                            <h:graphicImage value="/resources/css/images/letters/i-blue.png"/>
                             <ace:animation event="click" name="bounce" />
+                        </h:panelGrid>
                     </h:panelGrid>
-                </ace:panel>
-
-                <ace:panel>
-                    <h:panelGrid styleClass="animationHolderStyle" >
-                        <h:outputText value="Highlight Effect"/>
-                        <ace:animation event="click" name="highlight" iterations="3"/>
+                    
+                    <h:panelGrid styleClass="animationHolderStyle">
+                        <h:panelGrid>
+                            <h:outputText value="Highlight Effect"/>
+                            <h:graphicImage value="/resources/css/images/letters/o-black.png"/>
+                            <ace:animation event="click" name="highlight"/>
+                        </h:panelGrid>
                     </h:panelGrid>
-                </ace:panel>
-
-                <ace:panel>
-                    <h:panelGrid styleClass="animationHolderStyle" >
+                    
+                    <h:panelGrid styleClass="animationHolderStyle">
+                        <h:panelGrid>
                             <h:outputText value="Pulsate Effect"/>
+                            <h:graphicImage value="/resources/css/images/letters/n-darkgreen.png"/>
                             <ace:animation event="click" name="pulsate" />
+                        </h:panelGrid>
                     </h:panelGrid>
-                </ace:panel>
-
-                <ace:panel>
-                    <h:panelGrid styleClass="animationHolderStyle" >
+                    
+                    <h:panelGrid styleClass="animationHolderStyle">
+                    </h:panelGrid>
+                    <h:panelGrid styleClass="animationHolderStyle">
+                        <h:panelGrid>
                             <h:outputText value="Shake Effect"/>
+                            <h:graphicImage value="/resources/css/images/letters/s-black.png"/>
                             <ace:animation event="click" name="shake" />
+                        </h:panelGrid>
                     </h:panelGrid>
-                </ace:panel>
-            </h:panelGrid>
+                    <h:panelGrid styleClass="animationHolderStyle">
+                    </h:panelGrid>
+                    
+                </h:panelGrid>
+                
         </h:form>
     </ui:define>
 </ui:composition>

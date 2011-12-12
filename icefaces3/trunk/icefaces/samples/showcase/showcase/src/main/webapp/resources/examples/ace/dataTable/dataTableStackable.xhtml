@@ -40,8 +40,9 @@
     <ui:define name="example">
         <h:form>
            <ace:dataTable id="carTable"
-                          value="#{dataTableSort.carsData}"
-                          var="car">
+                                    value="#{dataTableSort.carsData}"
+                                    rows="8"
+                                    var="car">
                 <ace:column sortBy="#{car.id}">
                     <f:facet name="header">
                        ID
