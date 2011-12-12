@@ -123,6 +123,7 @@ public class ICEmobileContainer extends Activity
     private AlertDialog networkDialog;
     private boolean accelerated;
     private boolean c2dmIntent=false;
+    private boolean reloadOnC2dm=true;
 
     /** Called when the activity is first created. */
     @Override
@@ -202,9 +203,11 @@ public class ICEmobileContainer extends Activity
 	    switch(requestCode){
 	    case TAKE_PHOTO_CODE:
 		mCameraHandler.gotPhoto();
+		reloadOnC2dm = false;
 		break;
 	    case TAKE_VIDEO_CODE:
 		mVideoHandler.gotVideo(data);
+		reloadOnC2dm = false;
 		break;
 	    case HISTORY_CODE:
 		newURL = data.getStringExtra("url");
@@ -216,6 +219,7 @@ public class ICEmobileContainer extends Activity
             utilInterface.loadURL(
                     "javascript:ice.addHidden(ice.currentScanId, ice.currentScanId + '-text', '" +
                     scanResult + "');");
+	    reloadOnC2dm = false;
 		break;
 	    }
 	}
@@ -230,7 +234,11 @@ public class ICEmobileContainer extends Activity
 	} else if ((c2dmIntent) ||
 		   (mC2dmHandler != null && mC2dmHandler.clearPendingNotification())) {
 	    c2dmIntent = false;
-	    mWebView.reload();
+	    if (reloadOnC2dm) {
+		mWebView.reload();
+	    } else {
+		reloadOnC2dm = true;
+	    }
 	}
     }
 
