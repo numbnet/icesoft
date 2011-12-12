@@ -45,7 +45,7 @@
             <icecore:singleSubmit/>
             
             <ace:panel header="Tooltip Component Configuration Panel">
-                <h:panelGrid columns="2" width="100%">
+                <h:panelGrid columns="2" styleClass="centeredPanelGridWithLeftJustifiedText">
                        <h:outputLabel id="tooltipEffectLabel" for="tooltipEffectSelector" value="Effect:" />
                         <h:selectOneMenu id="tooltipEffectSelector" value="#{tooltipOverviewBean.tooltipEffect}">
                             <f:selectItem itemValue="fade" itemLabel="Fade Effect"/>
@@ -55,16 +55,16 @@
                    
                         <h:outputLabel id="tooltipShowDelayLabel" for="tooltipShowDelaySelector" value="Show Delay:" />
                         <h:selectOneMenu id="tooltipShowDelaySelector" value="#{tooltipOverviewBean.tooltipShowDelay}">
-                            <f:selectItem itemValue="0" itemLabel="none"/>
+                            <f:selectItem itemValue="500" itemLabel="0.5 seconds"/>
+                            <f:selectItem itemValue="1000" itemLabel="1 second"/>
                             <f:selectItem itemValue="2000" itemLabel="2 seconds"/>
-                            <f:selectItem itemValue="4000" itemLabel="4 seconds"/>
                         </h:selectOneMenu>
                    
                        <h:outputLabel id="tooltipHideDelayLabel" for="tooltipHideDelaySelector" value="Hide Delay:" />
                         <h:selectOneMenu id="tooltipHideDelaySelector" value="#{tooltipOverviewBean.tooltipHideDelay}">
-                            <f:selectItem itemValue="0" itemLabel="none"/>
+                            <f:selectItem itemValue="500" itemLabel="0.5 seconds"/>
+                            <f:selectItem itemValue="1000" itemLabel="1 second"/>
                             <f:selectItem itemValue="2000" itemLabel="2 seconds"/>
-                            <f:selectItem itemValue="4000" itemLabel="4 seconds"/>
                         </h:selectOneMenu>
                    
                         <h:outputLabel id="tooltipShowEffectLengthDelayLabel" for="tooltipShowEffectLengthSelector" value="Show Effect Length:" />

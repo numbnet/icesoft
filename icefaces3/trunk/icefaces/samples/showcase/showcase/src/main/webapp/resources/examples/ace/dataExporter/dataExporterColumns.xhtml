@@ -40,10 +40,10 @@
     <ui:define name="example">
         <h:form>
             <icecore:singleSubmit/>
-            <h:panelGrid columns="3">
+            <ace:panel>
+                <h:panelGrid columns="3" styleClass="centeredPanelGrid">
                 <h:outputLabel for="exportIn" value="Columns to Exclude from Import:"/>
-                <h:selectManyCheckbox id="exportIn" value="#{dataExporterColumns.chosenColumns}"
-                                      layout="pageDirection">
+                <h:selectManyCheckbox id="exportIn" value="#{dataExporterColumns.chosenColumns}">
                       <f:selectItem itemValue="0" itemLabel="ID"/>
                       <f:selectItem itemValue="1" itemLabel="Name"/>
                       <f:selectItem itemValue="2" itemLabel="Chassis"/>
@@ -53,7 +53,9 @@
                       <f:selectItem itemValue="6" itemLabel="Cost"/>
                 </h:selectManyCheckbox>
                 <h:message for="exportIn"/>
-            </h:panelGrid>
+                </h:panelGrid>
+            </ace:panel>
+            
         </h:form>
         
         <h:form>
@@ -67,7 +69,7 @@
                     <f:selectItem itemValue="pdf" itemLabel="PDF"/>
                     <f:selectItem itemValue="xml" itemLabel="XML"/>
                 </h:selectOneRadio>
-                    <ace:dataExporter label="Export File" type="#{dataExporterBean.type}" target="carTable" fileName="cars" excludeColumns="#{dataExporterColumns.chosenColumnsString}"/>
+                <ace:dataExporter label="Export File" type="#{dataExporterBean.type}" target="carTable" fileName="cars" excludeColumns="#{dataExporterColumns.chosenColumnsString}"/>
                 <h:message for="typeIn"/>
             </h:panelGrid>
             

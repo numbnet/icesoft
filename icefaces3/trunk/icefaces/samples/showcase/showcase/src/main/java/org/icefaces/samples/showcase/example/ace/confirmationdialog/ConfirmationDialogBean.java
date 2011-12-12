@@ -63,68 +63,21 @@ import java.io.Serializable;
 @CustomScoped(value = "#{window}")
 public class ConfirmationDialogBean extends ComponentExampleImpl<ConfirmationDialogBean> implements Serializable {
     public static final String BEAN_NAME = "confirmationDialogBean";
-    
-	private String message = "Message";
-	private String header = "Header";
-	private int width = 300;
-	private int height = 200;
-    private boolean closable = false;
+    private String outcome = null;
 
     public ConfirmationDialogBean() {
         super(ConfirmationDialogBean.class);
     }
-	
-	private String outcome = null;
-	
-	public void yes(ActionEvent actionEvent) { 
-		outcome = "You clicked 'yes'";
-	}
-	
-	public void no(ActionEvent actionEvent) { 
-		outcome = "You clicked 'no'";
-	}
-	
-	public String getOutcome() {
-		return outcome;
-	}
     
-	public String getMessage() {
-		return message;
-	}
-	
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
-	public String getHeader() {
-		return header;
-	}
-	
-	public void setHeader(String header) {
-		this.header = header;
-	}
-	
-	public int getWidth() {
-		return width;
-	}
-	
-	public void setWidth(int width) {
-		this.width = width;
-	}
-	
-	public int getHeight() {
-		return height;
-	}
-	
-	public void setHeight(int height) {
-		this.height = height;
-	}
-	
-	public boolean getClosable() {
-		return closable;
-	}
-	
-	public void setClosable(boolean closable) {
-		this.closable = closable;
-	}
+    public void yes(ActionEvent actionEvent) { 
+            outcome = "You are sure";
+    }
+
+    public void no(ActionEvent actionEvent) { 
+            outcome = "You are not sure";
+    }
+
+    public String getOutcome() {
+            return outcome;
+    }
 }

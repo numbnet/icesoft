@@ -42,9 +42,7 @@
         <h:form>
             <h:panelGrid width="100%" style="text-align: center;">
                 <h:commandButton value="Display dialog" onclick="confirmation.show()" type="button"/>
-                <h:outputText value="#{confirmationDialogModalBean.outcome}" rendered="#{confirmationDialogModalBean.outcome != null}" />
             </h:panelGrid>
-    
         
             <ace:confirmationDialog widgetVar="confirmation"
                                             modal="true"
@@ -56,8 +54,8 @@
                                             closeOnEscape="false">
                 
                 <h:panelGrid width="100%" style="text-align: center;" columns="2" cellspacing="30">
-                    <h:commandButton value="Yes" onclick="confirmation.hide()" actionListener="#{confirmationDialogModalBean.yes}"/>
-                    <h:commandButton value="No" onclick="confirmation.hide()" actionListener="#{confirmationDialogModalBean.no}" />
+                    <h:commandButton value="Yes" onclick="confirmation.hide()"/>
+                    <h:commandButton value="No" onclick="confirmation.hide()"/>
                 </h:panelGrid>
             </ace:confirmationDialog>
 
