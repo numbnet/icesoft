@@ -88,6 +88,13 @@
     margin-right: auto;
 }
 
+.centeredPanelGridWithLeftJustifiedText
+{
+    text-align: left;  
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .ice-checkboxbutton .ui-state-hover
 {
     background: transparent;

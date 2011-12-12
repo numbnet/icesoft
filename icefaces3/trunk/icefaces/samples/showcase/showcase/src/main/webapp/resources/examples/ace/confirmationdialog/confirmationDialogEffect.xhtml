@@ -44,8 +44,8 @@
             <icecore:singleSubmit/>
             
             <ace:panel id="inputPanel" header="Confirmation Dialog Effects">
-                <h:panelGrid columns="2" width="100%">
-                    <h:outputLabel id="onShowEffectLabel" for="onShowEffectSelector" value="Dialog show effect:"/>
+                <h:panelGrid columns="2" styleClass="centeredPanelGridWithLeftJustifiedText">
+                    <h:outputLabel id="onShowEffectLabel" for="onShowEffectSelector" value="Show effect:"/>
                     <h:selectOneMenu id="onShowEffectSelector" value="#{confirmationDialogEffectBean.showEffect}">
                         <f:selectItem itemValue="blind" itemLabel="Blind Effect"/>
                         <f:selectItem itemValue="bounce" itemLabel="Bounce Effect"/>
@@ -59,8 +59,13 @@
                         <f:selectItem itemValue="shake" itemLabel="Shake Effect"/>
                         <f:selectItem itemValue="slide" itemLabel="Slide Effect"/>
                     </h:selectOneMenu>
-
-                    <h:outputLabel id="onHideEffectLabel" for="onHideEffectSelector" value="Dialog hide effect:"/>
+                    <h:panelGroup>
+                        <br/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <br/>
+                    </h:panelGroup>
+                    <h:outputLabel id="onHideEffectLabel" for="onHideEffectSelector" value="Hide effect:"/>
                     <h:selectOneMenu id="onHideEffectSelector" value="#{confirmationDialogEffectBean.hideEffect}">
                         <f:selectItem itemValue="blind" itemLabel="Blind Effect"/>
                         <f:selectItem itemValue="bounce" itemLabel="Bounce Effect"/>
@@ -75,27 +80,24 @@
                     </h:selectOneMenu>
                 </h:panelGrid>
 
+                <br/>
+                
                 <center>
                     <h:commandButton value="Display Dialog"  onclick="confirmation.show();"/>
                 </center>
             </ace:panel>
 
-            <br />
-             <center>
-                 <h:outputText value="#{confirmationDialogModalBean.outcome}" rendered="#{confirmationDialogModalBean.outcome != null}" />
-             </center>
-            
             <ace:confirmationDialog widgetVar="confirmation"
                                            showEffect="#{confirmationDialogEffectBean.showEffect}"
                                            hideEffect="#{confirmationDialogEffectBean.hideEffect}"
                                            header="Confirmation Dialog"
                                            message="Confirm?"
-                                           width="300" height="200"
+                                           width="200" height="200"
                                            closable="true">
 
                 <h:panelGrid width="100%" style="text-align: center;" columns="2" cellspacing="30">
-                    <h:commandButton value="Yes" onclick="confirmation.hide()" actionListener="#{confirmationDialogModalBean.yes}"/>
-                    <h:commandButton value="No" onclick="confirmation.hide()" actionListener="#{confirmationDialogModalBean.no}" />
+                    <h:commandButton value="Yes" onclick="confirmation.hide()"/>
+                    <h:commandButton value="No" onclick="confirmation.hide()"/>
                 </h:panelGrid>
 
             </ace:confirmationDialog>
