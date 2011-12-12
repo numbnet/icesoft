@@ -464,7 +464,7 @@ public class DataTableRenderer extends CoreRenderer {
 
 		writer.startElement("script", table);
 		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
-        writer.write(this.resolveWidgetVar(table) + " = new ice.ace.DataTable('" + clientId + "',{");
+        writer.write("var " + this.resolveWidgetVar(table) + " = new ice.ace.DataTable('" + clientId + "',{");
 
         UIComponent form = ComponentUtils.findParentForm(context, table);
         if (form == null) throw new FacesException("DataTable : \"" + clientId + "\" must be inside a form element.");
