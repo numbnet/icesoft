@@ -99,7 +99,6 @@ public class DOMRenderKit extends RenderKitWrapper {
      * @param r
      */
     public void addRenderer(String family, String rendererType, Renderer r) {
-
         Class clazz = r.getClass();
         ExternalScript ec = (ExternalScript) clazz.getAnnotation(ExternalScript.class);
         if (ec != null) {
@@ -134,6 +133,11 @@ public class DOMRenderKit extends RenderKitWrapper {
 //				}
 
         Renderer renderer = "javax.faces.Form".equals(family) ? new FormBoost(r) : r;
+        if ("javax.faces.Message".equals(family) && "javax.faces.Message".equals(rendererType)) {
+            renderer = new MessageRenderer(r);
+        } else if ("javax.faces.Messages".equals(family) && "javax.faces.Messages".equals(rendererType)) {
+            renderer = new MessagesRenderer(r);
+        }
         super.addRenderer(family, rendererType, renderer);
     }
 
@@ -220,6 +224,34 @@ public class DOMRenderKit extends RenderKitWrapper {
                 super.encodeEnd(context, component);
             }
 
+        }
+    }
+
+    private class MessageRenderer extends RendererWrapper {
+        private MessageRenderer(Renderer renderer) {
+            super(renderer);
+        }
+
+        public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+            ResponseWriter writer = context.getResponseWriter();
+            writer.startElement("span", component);
+            writer.writeAttribute("id", component.getClientId(context), "id");
+            super.encodeEnd(context, component);
+            writer.endElement("span");
+        }
+    }
+
+    private class MessagesRenderer extends RendererWrapper {
+        private MessagesRenderer(Renderer renderer) {
+            super(renderer);
+        }
+
+        public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+            ResponseWriter writer = context.getResponseWriter();
+            writer.startElement("div", component);
+            writer.writeAttribute("id", component.getClientId(context), "id");
+            super.encodeEnd(context, component);
+            writer.endElement("div");
         }
     }
 }
