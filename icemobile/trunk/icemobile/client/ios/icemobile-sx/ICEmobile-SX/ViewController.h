@@ -31,6 +31,7 @@
     NSDictionary *confirmMessages;
     NSDictionary *confirmTitles;
     UIProgressView *uploadProgress;
+    UILabel *uploadLabel;
 }
 
 @property (retain) NativeInterface *nativeInterface;
@@ -43,8 +44,10 @@
 @property (retain) NSDictionary *confirmMessages;
 @property (retain) NSDictionary *confirmTitles;
 @property (nonatomic, retain) IBOutlet UIProgressView *uploadProgress;
+@property (nonatomic, retain) IBOutlet UILabel *uploadLabel;
 
 - (void) dispatchCurrentCommand;
 - (void) reloadCurrentURL;
+- (void) hideProgress;
 
 @end
