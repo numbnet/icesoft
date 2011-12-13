@@ -37,8 +37,8 @@ public class DataExporter extends DataExporterBase {
 			try {
 				FacesContext facesContext = getFacesContext();
 				Exporter exporter = ExporterFactory.getExporterForType(getType());
-				//UIComponent target = event.getComponent().findComponent(tableId);
-				UIComponent targetComponent = findComponent(facesContext.getViewRoot(), getTarget());
+				UIComponent targetComponent = event.getComponent().findComponent(getTarget());
+				if (targetComponent == null) targetComponent = findComponentCustom(facesContext.getViewRoot(), getTarget());
 
 				if (targetComponent == null) throw new FacesException("Cannot find component \"" + getTarget() + "\" in view.");
 				if (!(targetComponent instanceof DataTable)) throw new FacesException("Unsupported datasource target:\"" + targetComponent.getClass().getName() + "\", exporter must target a ACE DataTable.");
@@ -63,14 +63,14 @@ public class DataExporter extends DataExporterBase {
 
         return indexes;
 	}
-	
-	private UIComponent findComponent(UIComponent base, String id) {
+
+	private UIComponent findComponentCustom(UIComponent base, String id) {
 
 		if (base.getId().equals(id)) return base;
 		java.util.List<UIComponent> children = base.getChildren();
 		UIComponent result = null;
 		for (UIComponent child : children) {
-			result = findComponent(child, id);
+			result = findComponentCustom(child, id);
 			if (result != null) break;
 		}
 		return result;
