@@ -134,8 +134,19 @@ public class DataExporterColumns extends ComponentExampleImpl<DataExporterColumn
         this.chosenColumns = chosenColumns;
         //creaate an array with unselected columns based on all options and chosen columns
         ArrayList<Integer> unselectedColumns = processSelection(options, chosenColumns);
-        //convert ArrayList into array[] and parse it as String
-        Object [] array = unselectedColumns.toArray();
-        chosenColumnsString = parseArrayToCommas( Arrays.copyOf(array, array.length, Integer[].class));
+        //convert ArrayList<Integer> into Integer[] and parse it as String
+        Integer[] arrayWithIntegers = convertIntoArray(unselectedColumns);
+        
+        //Integer[] testArray = Arrays.copyOf(array, array.length, Integer[].class); -- does not work on JDK 1.5
+        chosenColumnsString = parseArrayToCommas( arrayWithIntegers);
+    }
+
+    private Integer[] convertIntoArray(ArrayList<Integer> unselectedColumns) 
+    {
+        Integer[] outcome = new Integer[unselectedColumns.size()];
+        for(int i=0; i <unselectedColumns.size(); i++)
+            outcome[i] = unselectedColumns.get(i);
+        
+        return outcome;
     }
 }
