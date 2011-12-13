@@ -239,7 +239,7 @@ if (!window.ice.icefaces) {
                 switch (e.status) {
                     case 'begin':
                         //trigger notification only when submit is user-initiated
-                        if (source && viewIDOf(source) != source.id) {
+                        if (!source || viewIDOf(source) != source.id) {
                             broadcast(perRequestOnBeforeSubmitListeners, [ source ]);
                         }
                         break;
