@@ -25,12 +25,13 @@ import org.icemobile.samples.mobileshowcase.util.FacesUtils;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.Map;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ViewSelector implements Serializable{
 
     private boolean smallView;
