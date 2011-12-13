@@ -170,6 +170,12 @@ ice.ace.ContextMenu = function(id, cfg) {
     this.cfg.select = function(event, ui) {
         _self.jq.wijmenu('deactivate');
     };
+	
+	if (ice.ace.jq.browser.msie) { // ICE-7532 not supported in IE
+		if (this.cfg.animation) { 
+			delete this.cfg.animation;
+		}
+	}
 
     this.jq.wijmenu(this.cfg);
 
