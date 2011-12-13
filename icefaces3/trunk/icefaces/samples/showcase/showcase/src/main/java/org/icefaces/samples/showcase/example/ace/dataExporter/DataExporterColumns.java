@@ -27,7 +27,10 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @ComponentExample(
         parent = DataExporterBean.BEAN_NAME,
@@ -53,37 +56,86 @@ import java.util.Arrays;
 public class DataExporterColumns extends ComponentExampleImpl<DataExporterColumns> implements Serializable {
     public static final String BEAN_NAME = "dataExporterColumns";
     
-    private String[] chosenColumns = {"0", "3", "5"};
-    private String chosenColumnsString = "0,3,5";
+    private String[] chosenColumns;
+    private String chosenColumnsString;
+    private Map<String, Integer> options;
+    private String type;
     
     public DataExporterColumns() {
         super(DataExporterColumns.class);
+        initializeVariables();
     }
     
-    public String[] getChosenColumns() { return chosenColumns; }
-    public String getChosenColumnsString() { return chosenColumnsString; }
+    /////////////---- PRIVATE METHODS BEGIN
     
-    public void setChosenColumns(String[] chosenColumns) {
-        this.chosenColumns = chosenColumns;
+    private void initializeVariables() {
+        this.options = new LinkedHashMap<String, Integer> ();
+        this.options.put("ID", 0);
+        this.options.put("Name", 1);
+        this.options.put("Chassis", 2);
+        this.options.put("Weight", 3);
+        this.options.put("Accel", 4);
+        this.options.put("MPG", 5);
+        this.options.put("Cost", 6);
         
-        chosenColumnsString = parseArrayToCommas(this.chosenColumns);
+        chosenColumns = new String[]{"0", "3", "5"};
+        chosenColumnsString = "0,3,5";
+        type = "csv";
     }
-    public void setChosenColumnsString(String chosenColumnsString) { this.chosenColumnsString = chosenColumnsString; }
     
-    private String parseArrayToCommas(String[] array) {
+    /*
+     * This method creates an outcome in such a way that next is true:
+     * outcome and choosenOptions are subsets of availableOptions set
+     * outcome and choosenOptions does not have common elements (you can say that they are oposite in the context of availableOptions set)
+     */
+    private ArrayList<Integer> processSelection(Map<String, Integer> availableOptions, String[] choosenOptions) 
+    {
+        ArrayList<Integer> outcome = new ArrayList<Integer>();
+        boolean conditionExist;
+        for (Integer availableOption: availableOptions.values()) {
+            conditionExist = false;
+            for (String choosenOption : choosenOptions) {
+                if(availableOption == Integer.parseInt(choosenOption)) {
+                    conditionExist = true;
+                    break;
+                }
+            }
+            if(!conditionExist)
+                outcome.add(availableOption);
+        }
+        return outcome;
+    }
+    
+    private String parseArrayToCommas(Integer[] array) {
         if ((array != null) && (array.length > 0)) {
             Arrays.sort(array);
             
             StringBuilder sb = new StringBuilder(array.length * 2);
-            for (String currentColumn : array) {
+            for (Integer currentColumn : array) {
                 sb.append(currentColumn);
                 sb.append(",");
             }
             sb.deleteCharAt(sb.length()-1); // Remove the trailing comma
-            
             return sb.toString();
         }
-        
         return "";
+    }
+    
+    /////////////---- GETTERS & SETTERS BEGIN
+    public String getChosenColumnsString() { return chosenColumnsString; }
+    public Map<String, Integer> getOptions() { return options; }
+    public String getType() { return type; }
+    public String[] getChosenColumns() { return chosenColumns; }
+    
+    public void setChosenColumnsString(String chosenColumnsString) { this.chosenColumnsString = chosenColumnsString; }
+    public void setOptions(Map<String, Integer> options) { this.options = options; }
+    public void setType(String type) { this.type = type; }
+    public void setChosenColumns(String[] chosenColumns) {
+        this.chosenColumns = chosenColumns;
+        //creaate an array with unselected columns based on all options and chosen columns
+        ArrayList<Integer> unselectedColumns = processSelection(options, chosenColumns);
+        //convert ArrayList into array[] and parse it as String
+        Object [] array = unselectedColumns.toArray();
+        chosenColumnsString = parseArrayToCommas( Arrays.copyOf(array, array.length, Integer[].class));
     }
 }

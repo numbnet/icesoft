@@ -41,62 +41,52 @@
 
     <ui:define name="example">
         <h:form>
-            <h:panelGrid columns="4">
-                <h:outputLabel for="typeIn" value="Export File Type:"/>
-                <h:selectOneRadio id="typeIn" value="#{dataExporterBean.type}" required="true">
-                    <f:ajax disabled="false"/>
-                    <f:selectItem itemValue="csv" itemLabel="CSV"/>
-                    <f:selectItem itemValue="xls" itemLabel="XLS"/>
-                    <f:selectItem itemValue="pdf" itemLabel="PDF"/>
-                    <f:selectItem itemValue="xml" itemLabel="XML"/>
-                </h:selectOneRadio>
-                    <ace:dataExporter label="Export File" type="#{dataExporterBean.type}" target="carTable" fileName="cars" excludeColumns="#{dataExporterColumns.chosenColumnsString}"/>
-                <h:message for="typeIn"/>
-            </h:panelGrid>
-            
+            <ace:panel>
+                <h:panelGrid columns="2" styleClass="centeredPanelGrid">
+                        <h:outputLabel for="typeIn" value="Export As:"/>
+                        <h:selectOneRadio id="typeIn" value="#{dataExporterBean.type}" required="true">
+                            <f:ajax disabled="false"/>
+                            <f:selectItem itemValue="csv" itemLabel="CSV"/>
+                            <f:selectItem itemValue="pdf" itemLabel="PDF"/>
+                            <f:selectItem itemValue="xml" itemLabel="XML"/>
+                        </h:selectOneRadio>
+                </h:panelGrid>
+                <h:panelGrid styleClass="centeredPanelGrid">
+                    <ace:dataExporter label="Export File" type="#{dataExporterBean.type}" target="carTable" fileName="cars"/>
+                </h:panelGrid>
+            </ace:panel>
+        </h:form>
+        <br/>
+        <h:form>
            <ace:dataTable id="carTable"
-                          value="#{dataTableSort.carsData}"
-                          var="car" >
-                <ace:column>
-                    <f:facet name="header">
-                       ID
-                    </f:facet>
+                                    value="#{dataTableSort.carsData}"
+                                    var="car" >
+               
+               <ace:column headerText="ID">
                     <h:outputText value="#{car.id}" />
                 </ace:column>
-                <ace:column>
-                    <f:facet name="header">
-                       Name
-                    </f:facet>
+               
+                <ace:column headerText="Name">
                     <h:outputText value="#{car.name}" />
                 </ace:column>
-                <ace:column>
-                    <f:facet name="header">
-                       Chassis
-                    </f:facet>
+               
+                <ace:column headerText="Chassis">
                     <h:outputText value="#{car.chassis}"/>
                 </ace:column>
-                <ace:column>
-                    <f:facet name="header">
-                       Weight
-                    </f:facet>
+               
+                <ace:column headerText="Weight">
                     <h:outputText value="#{car.weight}lbs."/>
                 </ace:column>
-                <ace:column>
-                    <f:facet name="header">
-                       Accel
-                    </f:facet>
+               
+                <ace:column headerText="Accel">
                     <h:outputText value="#{car.acceleration}"/>
                 </ace:column>
-                <ace:column>
-                    <f:facet name="header">
-                       MPG
-                    </f:facet>
+               
+                <ace:column headerText="MPG">
                     <h:outputText value="#{car.mpg}"/>
                 </ace:column>
-                <ace:column>
-                    <f:facet name="header">
-                       Cost
-                    </f:facet>
+               
+                <ace:column headerText="Cost">
                     <ice:outputText value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
@@ -105,6 +95,7 @@
                                          maxFractionDigits="2"/>
                     </ice:outputText>
                 </ace:column>
+               
             </ace:dataTable>
         </h:form>
     </ui:define>

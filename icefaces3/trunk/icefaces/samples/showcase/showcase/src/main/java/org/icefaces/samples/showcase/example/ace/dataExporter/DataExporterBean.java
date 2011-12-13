@@ -23,16 +23,9 @@ package org.icefaces.samples.showcase.example.ace.dataExporter;
 
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
-
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @ComponentExample(
         title = "example.ace.dataExporter.title",
@@ -66,11 +59,11 @@ import java.util.Date;
 @CustomScoped(value = "#{window}")
 public class DataExporterBean extends ComponentExampleImpl<DataExporterBean> implements Serializable {
     public static final String BEAN_NAME = "dataExporterBean";
-    
-    private String type = "csv";
+    private String type;
 
     public DataExporterBean() {
         super(DataExporterBean.class);
+        this.type = "xls";
     }
     
     public String getType() { return type; }
