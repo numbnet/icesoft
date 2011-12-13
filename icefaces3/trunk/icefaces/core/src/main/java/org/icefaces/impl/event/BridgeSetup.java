@@ -97,7 +97,9 @@ public class BridgeSetup implements SystemEventListener {
         Map collectedResourceComponents = new HashMap();
         String version = EnvUtils.isUniqueResourceURLs(context) ? String.valueOf(hashCode()) : null;
 
-        //add mandatory resources, replace any resources previously added by JSF
+        // add special resources first (e.g. themes)
+		addSpecialResources(context);
+		//add mandatory resources, replace any resources previously added by JSF
         addMandatoryResources(context, collectedResourceComponents, version);
         //jsf.js might be added already by a page or component
         UIOutput jsfResource = new JavascriptResourceOutput(resourceHandler, "jsf.js", "javax.faces", version);
@@ -117,6 +119,32 @@ public class BridgeSetup implements SystemEventListener {
             root.addComponentResource(context, bodyResource, "body");
         }
     }
+	
+	private void addSpecialResources(FacesContext context) {
+        UIViewRoot root = context.getViewRoot();
+        RenderKit rk = context.getRenderKit();	
+		DOMRenderKit drk = (DOMRenderKit) rk;
+		
+		if (rk instanceof DOMRenderKit) {
+			List<String> specialResourceComponents = drk.getSpecialResourceComponents();
+			for (String compClassName : specialResourceComponents) {
+				try {
+					Class<UIComponent> compClass = (Class<UIComponent>)
+							Class.forName(compClassName);
+					UIComponent component = compClass.newInstance();
+					if (component != null) {
+						root.addComponentResource(context, component, "head");
+					}
+				} catch (Exception e) {
+					if (log.isLoggable(Level.WARNING)) {
+						log.log(Level.WARNING, "When processing special " +
+								"resource components, could not create instance " +
+								"of '" + compClassName + "'");
+					}
+				}
+			}
+		}
+	}
 
     private void addMandatoryResources(FacesContext context, Map collectedResourceComponents, String version) {
         UIViewRoot root = context.getViewRoot();
