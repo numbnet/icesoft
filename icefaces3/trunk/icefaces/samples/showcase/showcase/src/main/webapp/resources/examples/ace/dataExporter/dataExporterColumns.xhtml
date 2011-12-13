@@ -38,62 +38,68 @@
     <ui:param name="tldResources" value="#{dataExporterResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
-            <icecore:singleSubmit/>
+        
             <ace:panel>
-                <h:panelGrid columns="3" styleClass="centeredPanelGrid">
-                <h:outputLabel for="exportIn" value="Columns to Exclude from Import:"/>
+                <h:panelGrid styleClass="centeredPanelGridWithLeftJustifiedText">
+                <h:form>
+                    <h:panelGrid columns="2">
+                            <h:outputLabel for="typeIn" value="Export As:"/>
+                            <h:selectOneRadio id="typeIn" value="#{dataExporterColumns.type}" required="true">
+                                <f:ajax disabled="false"/>
+                                <f:selectItem itemValue="csv" itemLabel="CSV"/>
+                                <f:selectItem itemValue="pdf" itemLabel="PDF"/>
+                                <f:selectItem itemValue="xml" itemLabel="XML"/>
+                            </h:selectOneRadio>
+                    </h:panelGrid>
+                </h:form>
+                
+                <h:form>
+                <icecore:singleSubmit/>
+                <h:panelGrid columns="2">
+                <h:outputLabel for="exportIn" value="With Columns:"/>
                 <h:selectManyCheckbox id="exportIn" value="#{dataExporterColumns.chosenColumns}">
-                      <f:selectItem itemValue="0" itemLabel="ID"/>
-                      <f:selectItem itemValue="1" itemLabel="Name"/>
-                      <f:selectItem itemValue="2" itemLabel="Chassis"/>
-                      <f:selectItem itemValue="3" itemLabel="Weight"/>
-                      <f:selectItem itemValue="4" itemLabel="Accel"/>
-                      <f:selectItem itemValue="5" itemLabel="MPG"/>
-                      <f:selectItem itemValue="6" itemLabel="Cost"/>
+                    <f:selectItems value="#{dataExporterColumns.options}"
+                                            var="column"
+                                            itemLabel="#{column.key}"
+                                            itemValue="#{column.value}"/>
                 </h:selectManyCheckbox>
-                <h:message for="exportIn"/>
+                </h:panelGrid>
+                <h:panelGrid styleClass="centeredPanelGrid">
+                    <ace:dataExporter label="Export File" type="#{dataExporterColumns.type}" target="carTable" fileName="cars" excludeColumns="#{dataExporterColumns.chosenColumnsString}"/>
+                </h:panelGrid>
+                </h:form>
                 </h:panelGrid>
             </ace:panel>
-            
-        </h:form>
         
+        <br/>
         <h:form>
-            
-            <h:panelGrid columns="4">
-                <h:outputLabel for="typeIn" value="Export File Type:"/>
-                <h:selectOneRadio id="typeIn" value="#{dataExporterBean.type}" required="true">
-                    <f:ajax disabled="false"/>
-                    <f:selectItem itemValue="csv" itemLabel="CSV"/>
-                    <f:selectItem itemValue="xls" itemLabel="XLS"/>
-                    <f:selectItem itemValue="pdf" itemLabel="PDF"/>
-                    <f:selectItem itemValue="xml" itemLabel="XML"/>
-                </h:selectOneRadio>
-                <ace:dataExporter label="Export File" type="#{dataExporterBean.type}" target="carTable" fileName="cars" excludeColumns="#{dataExporterColumns.chosenColumnsString}"/>
-                <h:message for="typeIn"/>
-            </h:panelGrid>
-            
            <ace:dataTable id="carTable"
                           value="#{dataTableSort.carsData}"
                           var="car">
-               <ace:column headerText="ID">
+                <ace:column headerText="ID">
                     <h:outputText value="#{car.id}" />
                 </ace:column>
+               
                <ace:column headerText="Name">
                     <h:outputText value="#{car.name}" />
                 </ace:column>
+               
                 <ace:column headerText="Chassis">
                     <h:outputText value="#{car.chassis}" />
                 </ace:column>
+               
                 <ace:column headerText="Weight">
                     <h:outputText value="#{car.weight}lbs." />
                 </ace:column>
+               
                 <ace:column headerText="Accel">
                     <h:outputText value="#{car.acceleration}" />
                 </ace:column>
+               
                 <ace:column headerText="MPG">
                     <h:outputText value="#{car.mpg}" />
                 </ace:column>
+               
                 <ace:column headerText="Cost">
                     <ice:outputText value="#{car.cost}">
                         <f:convertNumber type="currency"
