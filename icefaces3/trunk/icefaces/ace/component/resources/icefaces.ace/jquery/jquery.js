@@ -8848,7 +8848,13 @@ jQuery.fn.extend({
 
 	offsetParent: function() {
 		return this.map(function() {
-			var offsetParent = this.offsetParent || document.body;
+            // trap IE "Unspecified error." (ICE-7491)
+            var offsetParent;
+            try {
+                offsetParent = this.offsetParent;
+            } catch(ex) {
+            }
+			offsetParent = offsetParent || document.body;
 			while ( offsetParent && (!rroot.test(offsetParent.nodeName) && jQuery.css(offsetParent, "position") === "static") ) {
 				offsetParent = offsetParent.offsetParent;
 			}
