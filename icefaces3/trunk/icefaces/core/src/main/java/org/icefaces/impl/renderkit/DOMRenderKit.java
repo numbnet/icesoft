@@ -74,6 +74,7 @@ public class DOMRenderKit extends RenderKitWrapper {
         this.delegate = delegate;
         FacesContext facesContext = FacesContext.getCurrentInstance();
         deltaSubmit = EnvUtils.isDeltaSubmit(facesContext);
+/*
         try {
             modifiedMessageRenderer = 
                     (Renderer) Class.forName(MESSAGE_CLASS).newInstance();
@@ -86,6 +87,7 @@ public class DOMRenderKit extends RenderKitWrapper {
         } catch (Throwable t)  {
             log.fine("No override for Messages Renderer " + t.toString());
         }
+*/
     }
 
     public RenderKit getWrapped() {
@@ -146,6 +148,7 @@ public class DOMRenderKit extends RenderKitWrapper {
         if (renderer == null) {
             return renderer;
         }
+/*
         String className = renderer.getClass().getName();
         if (className.equals("com.sun.faces.renderkit.html_basic.MessageRenderer"))  {
             return modifiedMessageRenderer;
@@ -153,6 +156,7 @@ public class DOMRenderKit extends RenderKitWrapper {
         if (className.equals("com.sun.faces.renderkit.html_basic.MessagesRenderer"))  {
             return modifiedMessagesRenderer;
         }
+*/
         return renderer;
     }
 
