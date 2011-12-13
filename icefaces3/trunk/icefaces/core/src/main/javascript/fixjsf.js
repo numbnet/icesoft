@@ -48,11 +48,15 @@
     }
 
     function unescapeHtml(text) {
-        var temp = document.createElement("div");
-        temp.innerHTML = text;
-        var result = temp.firstChild.data;
-        temp.removeChild(temp.firstChild);
-        return result;
+        if (text) {
+            var temp = document.createElement("div");
+            temp.innerHTML = text;
+            var result = temp.firstChild.data;
+            temp.removeChild(temp.firstChild);
+            return result;
+        } else {
+            return text;
+        }
     }
 
     var scriptElementMatcher = /<script[^>]*>([\S\s]*?)<\/script>/igm;
@@ -118,6 +122,20 @@
             document.title = extractTagContent('title', rootUpdate.firstChild.data);
         }
     });
+
+    //ICE-7129 -- remove included iframes before updating the element to avoid a hard crash in IE8
+    namespace.onBeforeUpdate(function(updates) {
+        each(updates.getElementsByTagName('update'), function(update) {
+            var id = update.getAttribute('id');
+            var updatedElement = lookupElementById(id);
+            if (updatedElement) {
+                each(updatedElement.getElementsByTagName('iframe'), function(iframe) {
+                    iframe.parentNode.removeChild(iframe);
+                });
+            }
+        });
+    });
+
 
     if (!/MSIE/.test(navigator.userAgent)) {
         namespace.onBeforeUpdate(function(content) {

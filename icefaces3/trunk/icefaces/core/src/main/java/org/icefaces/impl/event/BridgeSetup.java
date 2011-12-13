@@ -21,6 +21,7 @@
 
 package org.icefaces.impl.event;
 
+import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.impl.application.LazyPushManager;
 import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.impl.push.SessionViewManager;
@@ -29,7 +30,6 @@ import org.icefaces.impl.renderkit.DOMRenderKit;
 import org.icefaces.render.ExternalScript;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
-import org.icefaces.impl.application.AuxUploadSetup;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceDependencies;
@@ -93,70 +93,38 @@ public class BridgeSetup implements SystemEventListener {
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         UIViewRoot root = context.getViewRoot();
-        ExternalContext externalContext = context.getExternalContext();
         ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
         Map collectedResourceComponents = new HashMap();
         String version = EnvUtils.isUniqueResourceURLs(context) ? String.valueOf(hashCode()) : null;
+
+        //add mandatory resources, replace any resources previously added by JSF
+        addMandatoryResources(context, collectedResourceComponents, version);
         //jsf.js might be added already by a page or component
-        JavascriptResourceOutput jsfResource = new JavascriptResourceOutput(resourceHandler, "jsf.js", "javax.faces", version);
-        //...in that case we need to add it anyway
-        root.addComponentResource(context, jsfResource);
-        //replace any jsf.js resources added by JSF
+        UIOutput jsfResource = new JavascriptResourceOutput(resourceHandler, "jsf.js", "javax.faces", version);
+        //add jsf.js resource or replace it if already added by JSF
         addOrCollectReplacingResource(context, "jsf.js", "javax.faces", "head", jsfResource, collectedResourceComponents);
+        //add ICEpush code only when needed
         if (EnvUtils.isICEpushPresent()) {
             root.addComponentResource(context, new JavascriptResourceOutput(resourceHandler, "icepush.js", null, version), "head");
         }
+        //always add ICEfaces bridge code
         root.addComponentResource(context, new JavascriptResourceOutput(resourceHandler, "bridge.js", null, version), "head");
+        //add custom scripts added by different component renderers
+        addCustomScripts(context);
 
+        List<UIComponent> bodyResources = getBodyResources(context);
+        for (UIComponent bodyResource : bodyResources) {
+            root.addComponentResource(context, bodyResource, "body");
+        }
+    }
+
+    private void addMandatoryResources(FacesContext context, Map collectedResourceComponents, String version) {
+        UIViewRoot root = context.getViewRoot();
         RenderKit rk = context.getRenderKit();
         if (rk instanceof DOMRenderKit) {
             DOMRenderKit drk = (DOMRenderKit) rk;
-			
-            // load special resource dependencies
-            List<String> specialResourceComponents = drk.getSpecialResourceComponents();
-            for (String compClassName : specialResourceComponents) {
-                try {
-                    Class<UIComponent> compClass = (Class<UIComponent>)
-                            Class.forName(compClassName);
-					UIComponent component = compClass.newInstance();
-					if (component != null) {
-						root.addComponentResource(context, component, "head");
-					}
-                } catch (Exception e) {
-                    if (log.isLoggable(Level.WARNING)) {
-                        log.log(Level.WARNING, "When processing special " +
-                                "resource components, could not create instance " +
-                                "of '" + compClassName + "'");
-                    }
-                }
-            }
-			
-            // If the context param is not null then make sure it's true
-            List<ExternalScript> scriptRenderers = drk.getCustomRenderScripts();
-            String contextParamName;
-            String value = "";
-            int i = 0;
-            for (ExternalScript es : scriptRenderers) {
-                i++;
-                contextParamName = es.contextParam();
-                boolean insertHere = true;
-                // If present, the context param must be true for rendering
-                // but if not present, always insert the script. Annotation default is "Null"
-                if (!contextParamName.equals("Null")) {
-                    value = externalContext.getInitParameter(contextParamName);
-                    insertHere = (value != null && !value.equalsIgnoreCase(""));
-                }
-                if (insertHere) {
-                    UIOutput externalScript = new ReferencedScriptWriter(es.scriptURL() + value);
-                    externalScript.setTransient(true);
-                    String externalScriptId = "external-script-" + i;
-                    externalScript.setId(externalScriptId);
-                    externalScript.getAttributes().put("name", externalScriptId);
-                    root.addComponentResource(context, externalScript, "head");
-                }
-            }
-
-            Set<ResourceDependency> addedResDeps = new HashSet<ResourceDependency>();
+            ExternalContext externalContext = context.getExternalContext();
+            Set<ResourceDependency> addedResourceDependencies = new HashSet<ResourceDependency>();
             List<MandatoryResourceComponent> mandatoryResourceComponents = drk.getMandatoryResourceComponents();
             String resourceConfig = EnvUtils.getMandatoryResourceConfig(context);
             //pad with spaces to allow contains checking
@@ -173,19 +141,19 @@ public class BridgeSetup implements SystemEventListener {
                 }
                 try {
                     Class<UIComponent> compClass = (Class<UIComponent>) Class.forName(compClassName);
-                    // Iterate over ResourceDependencies, ResourceDependency 
-                    // annotations, creating ResourceOutput components for 
+                    // Iterate over ResourceDependencies, ResourceDependency
+                    // annotations, creating ResourceOutput components for
                     // each unique one, so they'll add the mandatory
                     // resources.
-                    ResourceDependencies resDeps = compClass.getAnnotation(ResourceDependencies.class);
-                    if (resDeps != null) {
-                        for (ResourceDependency resDep : resDeps.value()) {
-                            addMandatoryResourceDependency(context, root, compClassName, addedResDeps, resDep, version, collectedResourceComponents);
+                    ResourceDependencies resourceDependencies = compClass.getAnnotation(ResourceDependencies.class);
+                    if (resourceDependencies != null) {
+                        for (ResourceDependency resDep : resourceDependencies.value()) {
+                            addMandatoryResourceDependency(context, root, compClassName, addedResourceDependencies, resDep, version, collectedResourceComponents);
                         }
                     }
-                    ResourceDependency resDep = compClass.getAnnotation(ResourceDependency.class);
-                    if (resDep != null) {
-                        addMandatoryResourceDependency(context, root, compClassName, addedResDeps, resDep, version, collectedResourceComponents);
+                    ResourceDependency resourceDependency = compClass.getAnnotation(ResourceDependency.class);
+                    if (resourceDependency != null) {
+                        addMandatoryResourceDependency(context, root, compClassName, addedResourceDependencies, resourceDependency, version, collectedResourceComponents);
                     }
                 } catch (Exception e) {
                     if (log.isLoggable(Level.WARNING)) {
@@ -202,10 +170,37 @@ public class BridgeSetup implements SystemEventListener {
             replaceCollectedResourceComponents(context, "head", collectedResourceComponents);
             replaceCollectedResourceComponents(context, "body", collectedResourceComponents);
         }
+    }
 
-        List<UIComponent> bodyResources = getBodyResources(context);
-        for (UIComponent bodyResource : bodyResources) {
-            root.addComponentResource(context, bodyResource, "body");
+    private void addCustomScripts(FacesContext context) {
+        RenderKit rk = context.getRenderKit();
+        if (rk instanceof DOMRenderKit) {
+            UIViewRoot root = context.getViewRoot();
+            ExternalContext externalContext = context.getExternalContext();
+            DOMRenderKit drk = (DOMRenderKit) rk;
+            List<ExternalScript> scriptRenderers = drk.getCustomRenderScripts();
+            String contextParamName;
+            String value = "";
+            int i = 0;
+            for (ExternalScript es : scriptRenderers) {
+                i++;
+                contextParamName = es.contextParam();
+                boolean insertHere = true;
+                // If present, the context param must be true for rendering
+                // but if not present, always insert the script. Annotation default is "Null"
+                if (!contextParamName.equals("Null")) {
+                    value = externalContext.getInitParameter(contextParamName);
+                    insertHere = (value != null && !value.equalsIgnoreCase(""));
+                }
+                if (insertHere) {
+                    UIOutput externalScript = new ReferencedScriptWriter(es.scriptURL() + value, true);
+                    externalScript.setTransient(true);
+                    String externalScriptId = "external-script-" + i;
+                    externalScript.setId(externalScriptId);
+                    externalScript.getAttributes().put("name", externalScriptId);
+                    root.addComponentResource(context, externalScript, "head");
+                }
+            }
         }
     }
 
@@ -351,16 +346,16 @@ public class BridgeSetup implements SystemEventListener {
                         writer.write("ice.push.configuration.notifyURI=\"" + notifyResource.getRequestPath() + "\";");
                         writer.write("ice.push.configuration.addGroupMemberURI=\"" + addGroupMemberResource.getRequestPath() + "\";");
                         writer.write("ice.push.configuration.removeGroupMemberURI=\"" + removeGroupMemberResource.getRequestPath() + "\";");
-                        boolean isAuxUpload = 
+                        boolean isAuxUpload =
                                 EnvUtils.isAuxUploadBrowser(context);
-                        if (isAuxUpload)  {
-                            AuxUploadSetup auxUpload = 
+                        if (isAuxUpload) {
+                            AuxUploadSetup auxUpload =
                                     AuxUploadSetup.getInstance();
                             String cloudPushId = auxUpload.getCloudPushId();
-                            if (null != cloudPushId)  {
+                            if (null != cloudPushId) {
                                 writer.write(
-                                        "window.addEventListener('load', function() { ice.push.parkInactivePushIds('" 
-                                        + cloudPushId + "'); }, false);");
+                                        "window.addEventListener('load', function() { ice.push.parkInactivePushIds('"
+                                                + cloudPushId + "'); }, false);");
                             }
                         }
                         writer.endElement("script");
@@ -476,21 +471,24 @@ public class BridgeSetup implements SystemEventListener {
 
     private static class ReferencedScriptWriter extends UIOutputWriter {
         protected String script;
+        protected boolean outputClientID;
 
         private ReferencedScriptWriter() {
             script = "";
         }
 
-        public ReferencedScriptWriter(String script) {
+        public ReferencedScriptWriter(String script, boolean outputClientID) {
             super();
             this.script = script;
+            this.outputClientID = outputClientID;
             this.setTransient(true);
         }
 
         public void encode(ResponseWriter writer, FacesContext context) throws IOException {
-            String clientID = getClientId(context);
             writer.startElement("script", this);
-            writer.writeAttribute("id", clientID, null);
+            if (outputClientID) {
+                writer.writeAttribute("id", getClientId(context), null);
+            }
             //define potential script entries
             //encode URL, some portals are rewriting the URLs radically
             writer.writeAttribute("src", context.getExternalContext().encodeResourceURL(script), null);
@@ -514,7 +512,6 @@ public class BridgeSetup implements SystemEventListener {
         }
 
         public JavascriptResourceOutput(ResourceHandler resourceHandler, String name, String library, String version) {
-            super("");
             Resource r = resourceHandler.createResource(name, fixResourceParameter(library));
             String path = r.getRequestPath();
             if (version == null) {
@@ -527,6 +524,7 @@ public class BridgeSetup implements SystemEventListener {
                 }
             }
             this.setTransient(true);
+            this.outputClientID = false;
         }
     }
 
@@ -539,7 +537,9 @@ public class BridgeSetup implements SystemEventListener {
             Map attributes = getAttributes();
             //save parameters in attributes since they are checked by the code replacing the @ResourceDepencency components
             attributes.put("name", name);
-            attributes.put("library", library);
+            if (library != null) {
+                attributes.put("library", library);
+            }
             if (version != null) {
                 attributes.put("version", version);
             }
