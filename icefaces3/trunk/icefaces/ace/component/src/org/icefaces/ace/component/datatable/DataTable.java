@@ -57,7 +57,6 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
 import javax.faces.event.PreValidateEvent;
 import javax.faces.model.*;
-import javax.swing.tree.TreeModel;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -154,8 +153,8 @@ public class DataTable extends DataTableBase {
         if (superValue != null) superValueHash = superValue.hashCode();
         else return null;
 
-        if (valueHashCode == null || superValueHash != valueHashCode) {
-            valueHashCode = superValueHash;
+        if (getValueHashCode() == null || superValueHash != getValueHashCode()) {
+            setValueHashCode(superValueHash);
             applySorting();
             if (getFilteredData() != null) applyFilters();
             if (superValue != null && superValue instanceof List) {
@@ -180,13 +179,9 @@ public class DataTable extends DataTableBase {
 
         // If existing tree check for changes or return cached model
         if (hasTreeDataModel() || newTreeDataModel) {
-            treeModel = new TreeDataModel((List)current);
-            setDataModel(treeModel);
+            setDataModel(new TreeDataModel((List)current));
             newTreeDataModel = false;
-            return treeModel;
-        }
-
-        if (current == null) {
+        } else if (current == null) {
             setDataModel(new ListDataModel(Collections.EMPTY_LIST));
         } else if (current instanceof DataModel) {
             setDataModel((DataModel) current);
@@ -252,7 +247,11 @@ public class DataTable extends DataTableBase {
 
         @Override
         public void processDecodes(FacesContext context) {
-
+            // Required to prevent input component processing on sort, filter, tableconf and pagination initiated submits.
+            if (isDataManipulationRequest(context) || isTableConfigurationRequest(context)) {
+                this.decode(context);
+                context.renderResponse();
+            } else {
                 if (context == null) {
                     throw new NullPointerException();
                 }
@@ -265,6 +264,7 @@ public class DataTable extends DataTableBase {
                 iterate(context, PhaseId.APPLY_REQUEST_VALUES);
                 decode(context);
                 popComponentFromEL(context);
+            }
 
         if (isFilterValueChanged() == true) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -301,15 +301,15 @@ public class DataTable extends DataTableBase {
     @Override
     public void setRowIndex(int index) {
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
-        
+
         super.setRowIndex(index);
         if (isRowAvailable() && index > -1) {
             requestMap.put(getRowStateVar(), getStateMap().get(getRowData()));
         }
     }
 
-    
-    
+
+
 
 
     /*#######################################################################*/
@@ -344,7 +344,7 @@ public class DataTable extends DataTableBase {
      * @return true, if a TreeDataModel instance is the result of getDataModel()
      */
     public Boolean hasTreeDataModel() {
-        return (treeModel != null);
+        return (model instanceof TreeDataModel);
     }
 
     /**
@@ -405,7 +405,7 @@ public class DataTable extends DataTableBase {
     /**
      * Generates a list of DataTable Column children intended to render the header, either from the header segement, or
      * from the normal grouping of columns.
-     * @return List of ACE Column Components.
+     * @return List of ACE Column  Components.
      */
     public List<Column> getHeaderColumns() {
         return null;
@@ -464,7 +464,7 @@ public class DataTable extends DataTableBase {
      * to the data model; resorting the table according to the new settings.
      */
     public void applySorting() {
-        sortOrderChanged = true;
+        setSortOrderChanged(true);
     }
 
     /**
@@ -473,18 +473,13 @@ public class DataTable extends DataTableBase {
      */
     public void applyFilters() {
         setFilteredData(null);
-        clearDataModel = true;
-        filterValueChanged = true;
+        setClearDataModel(true);
+        setFilterValueChanged(true);
     }
 
-    public boolean isFilterValueChanged() {
-        return (isConstantRefilter()) ? true : filterValueChanged;
+    public Boolean isFilterValueChanged() {
+        return (isConstantRefilter()) ? true : super.isFilterValueChanged();
     }
-
-    public boolean isSortOrderChanged() {
-        return sortOrderChanged;
-    }
-
 
 
     /*#######################################################################*/
@@ -573,10 +568,6 @@ public class DataTable extends DataTableBase {
         return map;
     }
 
-    protected List getFilteredData() {
-        return this.filteredData;
-    }
-
     protected boolean hasHeaders() {
         for (UIComponent c : getChildren()) {
             if (c instanceof Column && ((c.getFacet("header") != null) || (((Column)c).getHeaderText() != null))) return true;
@@ -620,10 +611,6 @@ public class DataTable extends DataTableBase {
             //else if (columnSelectionMode != null)
             //return columnSelectionMode.equalsIgnoreCase("single");
         else return false;
-    }
-
-    protected void setFilteredData(List list) {
-        this.filteredData = list;
     }
 
     protected TableConfigPanel findTableConfigPanel(FacesContext context) {
@@ -676,7 +663,7 @@ public class DataTable extends DataTableBase {
                     Collections.sort(list, new MultipleExpressionComparator(criterias, rowVar));
             }
         }
-        sortOrderChanged = false;
+        setSortOrderChanged(false);
     }
 
     protected List processFilters(FacesContext context) {
@@ -742,9 +729,9 @@ public class DataTable extends DataTableBase {
             setRowIndex(-1);
             if (rowVar != null) context.getExternalContext().getRequestMap().remove(rowVar);
             context.getExternalContext().getRequestMap().remove(getRowStateVar());
-            return filteredData;
+            return  filteredData;
         } finally {
-            this.filterValueChanged = false;
+            setFilterValueChanged(false);
         }
     }
 
@@ -990,62 +977,8 @@ public class DataTable extends DataTableBase {
     /*#######################################################################*/
     /*############### Fields & Custom State Saving Impl #####################*/
     /*#######################################################################*/
-    protected java.lang.Boolean clearDataModel = false;
-    // Subset of value reevaluated when necessary, see constantRefilter for more details.
-    protected java.util.List filteredData;
-    // Flag to process sorting, occurs pre-render, set true when a sort request comes in
-    // by modifying a sort control, when applySorting() is called, or when the hashCode of
-    // value changes. Initializes to true to enable the first render to process default sort
-    // state set in the facelet source.
-    protected java.lang.Boolean sortOrderChanged = true;
-    // Cached treeModel reference evaluated when valueHashCode changes and the value is of the type
-    protected org.icefaces.ace.model.table.TreeDataModel treeModel;
-    // Detect when the hashCode of value hash changed to trigger check for TreeDataModel handling
-    protected java.lang.Integer valueHashCode;
-    // Flag to process filtering, occurs pre-render, set true when a filter request comes in
-    // by modifying a filter input field, when applyFiltering() is called, or when the hashCode
-    // of value changes. Initializes to true to enable the first render to process default filter
-    // state set in the facelet source.
-    protected java.lang.Boolean filterValueChanged = true;
+
     private TableConfigPanel panel;
-
-    private Object[] values;
-
-    public Object saveState(FacesContext context) {
-        if (context == null) {
-            throw new NullPointerException();
-        }
-        if (values == null) {
-            values = new Object[7];
-        }
-        values[0] = super.saveState(context);
-        values[1] = clearDataModel;
-        values[2] = filteredData;
-        values[3] = sortOrderChanged;
-        values[4] = treeModel;
-        values[5] = valueHashCode;
-        values[6] = filterValueChanged;
-        return (values);
-    }
-
-    public void restoreState(FacesContext context, Object state) {
-        if (context == null) {
-            throw new NullPointerException();
-        }
-        if (state == null) {
-            return;
-        }
-        values = (Object[]) state;
-        super.restoreState(context, values[0]);
-        clearDataModel = (java.lang.Boolean) values[1];
-        filteredData = (java.util.List) values[2];
-        sortOrderChanged = (java.lang.Boolean) values[3];
-        treeModel = (org.icefaces.ace.model.table.TreeDataModel) values[4];
-        valueHashCode = (java.lang.Integer) values[5];
-        filterValueChanged = (java.lang.Boolean) values[6];
-    }
-
-
 
 
 
@@ -1273,7 +1206,8 @@ public class DataTable extends DataTableBase {
         RowStateMap map = getStateMap();
         RowState rowState;
         Boolean expanded;
-        
+        TreeDataModel treeDataModel;
+
         while (true) {
             // Have we processed the requested number of rows?
             if (!inSubrows) processed = processed + 1;
@@ -1284,12 +1218,14 @@ public class DataTable extends DataTableBase {
             // Expose the current row in the specified request attribute
             setRowIndex(++rowIndex);
             if (!isRowAvailable()) {
-                if (treeModel != null && treeModel.isRootIndexSet()) {
-                    rowIndex = treeModel.pop()+1;
-                    setRowIndex(rowIndex);
-                    if (!treeModel.isRootIndexSet()) inSubrows = false;
-                }
-                else break; // Scrolled past the last row
+                if (model instanceof TreeDataModel) {
+                    treeDataModel = (TreeDataModel)model;
+                    if (treeDataModel.isRootIndexSet()) {
+                        rowIndex = treeDataModel.pop()+1;
+                        setRowIndex(rowIndex);
+                        if (!treeDataModel.isRootIndexSet()) inSubrows = false;
+                    } else break;
+                } else break; // Scrolled past the last row
             }
 
             rowState = map.get(getRowData());
@@ -1327,12 +1263,13 @@ public class DataTable extends DataTableBase {
             }
 
             if (expanded && hasTreeDataModel() && (panelExpander == null || rowState.getExpansionType() == RowState.ExpansionType.ROW)) {
-                if (treeModel.getCurrentRowChildCount() > 0) {
+                treeDataModel = (TreeDataModel)model;
+                if (treeDataModel.getCurrentRowChildCount() > 0) {
                     inSubrows = true;
-                    treeModel.setRootIndex(
-                            treeModel.getRootIndex().equals("") ?
+                    treeDataModel.setRootIndex(
+                            treeDataModel.getRootIndex().equals("") ?
                                     ""+getRowIndex() :
-                                    treeModel.getRootIndex() + "." + getRowIndex());
+                                    treeDataModel.getRootIndex() + "." + getRowIndex());
                     rowIndex = -1;
                 }
             }

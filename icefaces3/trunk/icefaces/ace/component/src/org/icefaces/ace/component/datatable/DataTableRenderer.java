@@ -94,14 +94,14 @@ public class DataTableRenderer extends CoreRenderer {
 
         if (table.isFilterValueChanged()) {
             table.setFilteredData(null);
-            table.clearDataModel = true;
+            table.setClearDataModel(true);
             table.setFilteredData(table.processFilters(context));
         }
 
         // Force regeneration of data model pre-render if flag set
-        if (table.clearDataModel) {
+        if (table.isClearDataModel()) {
             table.setModel(null);
-            table.clearDataModel = false;
+            table.setClearDataModel(false);
         }
 
         if (table.isScrollingRequest(context))
