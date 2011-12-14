@@ -252,11 +252,7 @@ public class DataTable extends DataTableBase {
 
         @Override
         public void processDecodes(FacesContext context) {
-            // Required to prevent input component processing on sort, filter, tableconf and pagination initiated submits.
-            if (isDataManipulationRequest(context) || isTableConfigurationRequest(context)) {
-                this.decode(context);
-                context.renderResponse();
-            } else {
+
                 if (context == null) {
                     throw new NullPointerException();
                 }
@@ -269,7 +265,6 @@ public class DataTable extends DataTableBase {
                 iterate(context, PhaseId.APPLY_REQUEST_VALUES);
                 decode(context);
                 popComponentFromEL(context);
-            }
 
         if (isFilterValueChanged() == true) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
