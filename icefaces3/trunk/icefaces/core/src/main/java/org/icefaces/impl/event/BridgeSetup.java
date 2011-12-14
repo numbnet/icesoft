@@ -97,8 +97,20 @@ public class BridgeSetup implements SystemEventListener {
         Map collectedResourceComponents = new HashMap();
         String version = EnvUtils.isUniqueResourceURLs(context) ? String.valueOf(hashCode()) : null;
 
+        // temporarily remove custom resources on the page
+		List<UIComponent> customResources = new ArrayList<UIComponent>(root.getComponentResources(context, "head"));
+        for (UIComponent next : customResources) {
+            root.removeComponentResource(context, next, "head");
+        }
+		
         // add special resources first (e.g. themes)
 		addSpecialResources(context);
+		
+		// re-add custom resources
+		for (UIComponent next : customResources) {
+			root.addComponentResource(context, next, "head");
+		}
+		
 		//add mandatory resources, replace any resources previously added by JSF
         addMandatoryResources(context, collectedResourceComponents, version);
         //jsf.js might be added already by a page or component
