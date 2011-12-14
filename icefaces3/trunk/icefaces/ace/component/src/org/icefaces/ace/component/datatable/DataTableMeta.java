@@ -103,10 +103,24 @@ public class DataTableMeta extends UIDataMeta {
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean singleSort;
 
+    @Property(tlddoc = "A map of your row data objects to UI states. Row-level " +
+            "features (selection, expansion, etc.) are manipulable through this repository.")
+    private RowStateMap stateMap;
+
     // ID of the configPanel that has been associated with this table, used for
     // component lookups during decodes.
-    @Field
-    protected java.lang.String tableConfigPanel;
+    @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
+    protected String tableConfigPanel;
+    @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
+    protected List filteredData;
+    @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
+    protected Integer valueHashCode;
+    @Field(defaultValue = "false", defaultValueIsStringLiteral = false)
+    protected Boolean clearDataModel;
+    @Field(defaultValue = "true", defaultValueIsStringLiteral = false)
+    protected Boolean sortOrderChanged;
+    @Field(defaultValue = "true", defaultValueIsStringLiteral = false)
+    protected Boolean filterValueChanged;
 
 
 
@@ -194,7 +208,7 @@ public class DataTableMeta extends UIDataMeta {
 
 
 
-    
+
     /* ##################################################################### */
     /* ####################### Javascript Callbacks ######################## */
     /* ##################################################################### */
@@ -298,29 +312,4 @@ public class DataTableMeta extends UIDataMeta {
     @Property(tlddoc = "A list of integers representing a rendering order for " +
             "the Column children of the datatable.")
     private List<Integer> columnOrdering;
-
-
-
-
-
-    /* ##################################################################### */
-    /* ########################## Ajax Update Prop. ######################## */
-    /* ##################################################################### */
-//    @Property(tlddoc = "ID of DOM node to re-render following events on this " +
-//            "tree. None by default.")
-//    private String update;
-//    @Property(tlddoc = "ID of DOM node to re-render following row selection " +
-//            "events on this tree. None by default.")
-//    private String onRowSelectUpdate;
-//    @Property(tlddoc = "ID of DOM node to re-render following row update " +
-//            "events on this tree. None by default.")
-//    private String onRowUnselectUpdate;
-//    @Property(tlddoc = "ID of DOM node to re-render following row edit events " +
-//            "on this tree. None by default.")
-//    private String onRowEditUpdate;
-
-
-    @Property(tlddoc = "A map of your row data objects to UI states. Row-level " +
-            "features (selection, expansion, etc.) are manipulable through this repository.")
-    private RowStateMap stateMap;
 }

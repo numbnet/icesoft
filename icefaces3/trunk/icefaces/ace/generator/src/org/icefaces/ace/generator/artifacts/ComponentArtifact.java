@@ -571,7 +571,7 @@ public class ComponentArtifact extends Artifact{
 
         // primitive properties are supported (ones with values
         // even if no default is specified in the Meta). Wrapper properties
-        // (null default and settable values) are also supported
+        // (null defaul`t and settable values) are also supported
         // There are four property names which must be forced to be primitive                                L
         // or else the generated signiture clashes with the property names in
         // EditableValueHolder
@@ -621,8 +621,8 @@ public class ComponentArtifact extends Artifact{
         writer.append("\n\t\tif (clientValues == null) {");
         writer.append("\n\t\t\tclientValues = new HashMap(); ");
         writer.append("\n\t\t}");
-        writer.append("\n\t\tclientValues.put(clientId, " ).append( field.getName().toString()).
-                append(");");
+        writer.append("\n\t\tif (" + field.getName().toString() + " != null) clientValues.put(clientId, " + field.getName().toString() + ");");
+        writer.append("\n\t\telse clientValues.remove(clientId);");
 
         writer.append("\n\t\t//Always re-add the delta values to the map. JSF merges the values into the main map" );
         writer.append("\n\t\t//and values are not state saved unless they're in the delta map. " );
