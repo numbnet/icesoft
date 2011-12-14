@@ -153,6 +153,10 @@ ice.ace.AjaxRequest = function(cfg) {
     }
 
     var source = (typeof cfg.source == 'string') ? document.getElementById(cfg.source) : cfg.source;
+	if (!document.getElementById(cfg.source)) {
+		source = cfg.node;
+		source.id = cfg.source;
+	}
     var jsfExecute = cfg.execute || '@all';
     var jsfRender = cfg.render || '@all';
 

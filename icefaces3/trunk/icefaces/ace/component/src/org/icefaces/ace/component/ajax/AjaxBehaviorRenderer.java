@@ -135,6 +135,9 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         //params
         jb.entry("params", "arguments[0]", true);
 		
+		// node reference
+		jb.entry("node", "arguments[3]", true);
+		
 		jb.endMap().endFunction();
 
         return jb.toString();
