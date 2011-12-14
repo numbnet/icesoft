@@ -95,28 +95,6 @@
     margin-right: auto;
 }
 
-.ice-checkboxbutton .ui-state-hover
-{
-    background: transparent;
-    border: 0px;
-}
-
-.ice-checkboxbutton .ui-state-active {
-    background: url("/resources/css/images/success24.png") no-repeat;
-    border: 1px;
-    border-style:  solid;
-}
-
-.ice-checkboxbutton .ui-state-default{
-    background: transparent;
-    border: 1px;
-    border-style:  solid;
-}
-
-
-
-
-
 .newBid {
     background-color: yellow;
 }
