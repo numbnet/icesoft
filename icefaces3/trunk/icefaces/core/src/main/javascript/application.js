@@ -308,6 +308,9 @@ if (!window.ice.icefaces) {
                 try {
                     var source = e.source;
                     var form = formOf(source);
+                    if (form.id)  {
+                        form = document.getElementById(form.id);
+                    }
                     isICEfacesEvent = form['ice.view'] || form['ice.window'];
                 } catch (ex) {
                     //ignore failure to find forms since that usually occurs after the update is applied
