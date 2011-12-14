@@ -99,10 +99,10 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         // Force regeneration of data model pre-render if flag set
-        if (table.isClearDataModel()) {
+        //if (table.isClearDataModel()) {
             table.setModel(null);
             table.setClearDataModel(false);
-        }
+        //}
 
         if (table.isScrollingRequest(context))
             encodeLiveRows(context, table);
@@ -1019,6 +1019,7 @@ public class DataTableRenderer extends CoreRenderer {
     }
 
     protected void encodeRow(FacesContext context, DataTable table, List<Column> columns, String clientId, int rowIndex, String parentIndex, String rowIndexVar) throws IOException {
+        //System.out.println(clientId + ": " + rowIndex);
         table.setRowIndex(rowIndex);
         if (!table.isRowAvailable()) return;
         if (rowIndexVar != null) context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);

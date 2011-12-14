@@ -166,7 +166,7 @@ public class DataTable extends DataTableBase {
         }
 
         List filteredValue = getFilteredData();
-        return (filteredValue != null) ? filteredValue : super.getValue();
+        return (filteredValue != null) ? filteredValue : superValue;
     }
 
     @Override
@@ -207,7 +207,7 @@ public class DataTable extends DataTableBase {
     protected void setDataModel(DataModel dataModel) {
         this.model = dataModel;
     }
-
+ 
     @Override
     public void broadcast(javax.faces.event.FacesEvent event) throws AbortProcessingException {
         super.broadcast(event);
