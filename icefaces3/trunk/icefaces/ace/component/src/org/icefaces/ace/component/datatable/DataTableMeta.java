@@ -107,6 +107,19 @@ public class DataTableMeta extends UIDataMeta {
             "features (selection, expansion, etc.) are manipulable through this repository.")
     private RowStateMap stateMap;
 
+    @Property(tlddoc = "Enable the decoding of child components during table feature " +
+            "requests. The table attempts to decode children whenever it is executed, " +
+            "meaning whenever a parent region is submitted, or the table submits itself " +
+            "to paginate, make a selection, reorder columns, or any other feature. " +
+            "Decoding children during feature requests can result in unwanted input " +
+            "submission (during pagination for example), so by default this component " +
+            "suppresses child decoding whenever submitting itself. To decode the " +
+            "children of the table, use the row editing feature for row-scoped input " +
+            "decoding, submit the form (or other table parent) for broad submission " +
+            "or enable this option to submit during all table operations.",
+            defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    private Boolean alwaysExecuteContents;
+
     // ID of the configPanel that has been associated with this table, used for
     // component lookups during decodes.
     @Field(defaultValue = "null", defaultValueIsStringLiteral = false)

@@ -45,8 +45,6 @@ import javax.el.MethodExpression;
 import javax.faces.application.Application;
 import javax.faces.application.NavigationHandler;
 import javax.faces.component.*;
-import javax.faces.component.behavior.AjaxBehavior;
-import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
@@ -247,8 +245,8 @@ public class DataTable extends DataTableBase {
 
         @Override
         public void processDecodes(FacesContext context) {
-            // Required to prevent input component processing on sort, filter, tableconf and pagination initiated submits.
-            if (isDataManipulationRequest(context) || isTableConfigurationRequest(context)) {
+            // Required to prevent input component processing on filter and pagination initiated submits.
+            if (!isAlwaysExecuteContents() && isTableFeatureRequest(context)) {
                 this.decode(context);
                 context.renderResponse();
             } else {
@@ -493,7 +491,7 @@ public class DataTable extends DataTableBase {
     protected boolean isInstantSelectionRequest(FacesContext x)   { return isIdPrefixedParamSet("_instantSelectedRowIndex", x); }
     protected boolean isInstantUnselectionRequest(FacesContext x) { return isIdPrefixedParamSet("_instantUnselectedRowIndex", x); }
     protected boolean isScrollingRequest(FacesContext x)          { return isIdPrefixedParamSet("_scrolling", x); }
-    protected boolean isDataManipulationRequest(FacesContext x)   { return isPaginationRequest(x) || isFilterRequest(x); }
+    protected boolean isTableFeatureRequest(FacesContext x)       { return isColumnReorderRequest(x) || isScrollingRequest(x) || isInstantUnselectionRequest(x) || isInstantSelectionRequest(x) || isPaginationRequest(x) || isFilterRequest(x) || isSortRequest(x) || isTableConfigurationRequest(x); }
 
 
     protected Map<String,Column> getFilterMap() {
