@@ -93,7 +93,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 				boolean hasAjaxBehavior = false;
 				
 				StringBuilder behaviors = new StringBuilder();
-				behaviors.append("this.id = '" + clientId + "'; var self = this; (function() { "); // dynamically set the id to the node so that it can be handled by the submit functions 
+				behaviors.append("var self = this; setTimeout(function() { var f = function(){"); // dynamically set the id to the node so that it can be handled by the submit functions 
 				// ClientBehaviors
 				Map<String,List<ClientBehavior>> behaviorEvents = menuItem.getClientBehaviors();
 				if(!behaviorEvents.isEmpty()) {
@@ -111,7 +111,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 						}
 					}
 				}
-				behaviors.append(" })({'ice.customUpdate':'" + clientId +"'}, null, null, self);");
+				behaviors.append("}; f({'ice.customUpdate':'" + clientId +"'}, null, null, self); }, 100);");
 				command = behaviors.toString();
 				
                 if (!hasAjaxBehavior && (menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0)) {
