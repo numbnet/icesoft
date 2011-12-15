@@ -32,35 +32,58 @@ public class PositionBean implements Serializable {
 
     private Double latitude = 0.00;
     private Double longitude=0.00;
- 
+    private Double altitude = 0.00;
+    private boolean singleSubmit=false;
+    private int errorCode = -1;
 
  
     public void submitForm(ActionEvent event){
-    	System.out.println("submitting form");
+    	//System.out.println("submitting form");
     }
-
-
 
 	public Double getLatitude() {
 		return latitude;
 	}
 
-
-
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
-
-
 
 	public Double getLongitude() {
 		return longitude;
 	}
 
-
-
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
-    
+
+    public boolean isSingleSubmit() {
+        return singleSubmit;
+    }
+
+    public Double getAltitude() {
+        return altitude;
+    }
+
+    public void setAltitude(Double altitude) {
+        this.altitude = altitude;
+    }
+
+    public int getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public void setSingleSubmit(boolean singleSubmit) {
+        this.singleSubmit = singleSubmit;
+    }
+    public void clear(ActionEvent ae){
+        this.latitude=0.00;
+        this.longitude=0.00;
+        this.errorCode = -1;
+        this.altitude = 0.00;
+    }
 }
