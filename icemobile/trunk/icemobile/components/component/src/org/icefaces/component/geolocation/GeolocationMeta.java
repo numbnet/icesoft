@@ -17,6 +17,8 @@
 package org.icefaces.component.camera;
 
 
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
@@ -36,7 +38,9 @@ import javax.faces.application.ResourceDependencies;
                 " of longitude and latitude, heading, speed and altitude via" +
                 " html5 navigator api"
 )
-
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
+}, defaultEvent="activate")
 public class GeolocationMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "latitude of mobile device in decimal degrees")
@@ -44,20 +48,6 @@ public class GeolocationMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "longitude of mobile device in decimal degrees")
     private Double longitude;
-
-    @Property(tlddoc = "altitude of mobile device in decimal degrees")
-    private Double altitude;
-
-    @Property(tlddoc = "direction of travel mobile device in degrees" +
-            " where 0<=heading<360 degrees counting clockwise relative to true north")
-    private Double heading;
-
-    @Property(tlddoc = "current ground speed of mobile device in meters per second")
-    private Double speed;
-
-    @Property(defaultValue = "0", tlddoc = "code of error message where 1 is PERMISSION_DENIED, 2 is POSIITON_UNAVAILABLE" +
-            " 3 is TIMEOUT")
-    private int messageCode;
 
     @Property(defaultValue = "false",
             tlddoc = "When disabled, geolocation is not activated")

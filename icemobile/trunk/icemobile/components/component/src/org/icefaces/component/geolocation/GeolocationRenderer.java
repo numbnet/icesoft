@@ -17,8 +17,12 @@
 package org.icefaces.component.geolocation;
 
 import org.icefaces.component.utils.HTML;
+import org.icefaces.renderkit.CoreRenderer;
 
+import javax.faces.application.ProjectStage;
+import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
@@ -28,8 +32,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class GeolocationRenderer extends Renderer {
+public class GeolocationRenderer extends CoreRenderer {
     private static Logger log = Logger.getLogger(GeolocationRenderer.class.getName());
+    private static final String JS_NAME = "geolocation.js";
+    private static final String JS_MIN_NAME = "geolocation-min.js";
+    private static final String JS_LIBRARY = "org.icefaces.component.geolocation";
 
     @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -42,7 +49,7 @@ public class GeolocationRenderer extends Renderer {
         //    if (clientId.equals(source)) {
         try {
             if (!geolocation.isDisabled()) {
-                //MOBI-11 requirement is to decode the height and width values
+                //MOBI-11 requirement is to decode the  values
                 String nameHidden = clientId + "_field";
                 String locationString = String.valueOf(requestParameterMap.get(nameHidden));
                 if (null != locationString || !("null".equals(locationString))){
@@ -61,7 +68,6 @@ public class GeolocationRenderer extends Renderer {
                         }
                         String longString = params[1];
                         if (null != longString) {
-//                            log.info("longString=" + longString);
                             try {
                                 Double longitude = Double.parseDouble(longString);
                                 geolocation.setLongitude(longitude);
@@ -70,6 +76,7 @@ public class GeolocationRenderer extends Renderer {
                                 geolocation.setLongitude(0.0);
                             }
                         }
+                        decodeBehaviors(facesContext, geolocation);
                     }
                 }
             }
@@ -80,12 +87,14 @@ public class GeolocationRenderer extends Renderer {
     }
 
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
+        Geolocation locator = (Geolocation) uiComponent;
+        ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
+        boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
         // root element
-
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 
@@ -93,21 +102,29 @@ public class GeolocationRenderer extends Renderer {
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_locHidden", null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId + "_field", null);
+        boolean disabled = locator.isDisabled();
+        boolean singleSubmit = locator.isSingleSubmit();
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
         writer.endElement("input");
-        String fnCall = "document.getElementById(\"" + clientId + "_locHidden\").value=pos.coords.latitude+\",\"+pos.coords.longitude;";
-        String finalScript = "navigator.geolocation.getCurrentPosition(function(pos) { " + fnCall + "} );";
-        writer.startElement("script", uiComponent);
-        writer.write(finalScript);
-        writer.endElement("script");
-        //       ScriptWriter.insertScript(facesContext, uiComponent,finalScript);
-
-    }
-
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
-//        String clientId = uiComponent.getClientId(facesContext);
-//        Geolocation Geolocation = (Geolocation) uiComponent;
+        if (!disabled ) {
+            StringBuilder sb = new StringBuilder(255);
+            String fnCall = "document.getElementById(\"" + clientId + "_locHidden\").value=pos.coords.latitude+\",\"+pos.coords.longitude;";
+            sb.append(fnCall);
+            if ( hasBehaviors){
+                  sb.append(this.buildAjaxRequest(facesContext, cbh, "activate"));
+            }
+            else if (singleSubmit){
+                String ssCall = "ice.se(null, '"+clientId+"');";
+                sb.append(ssCall);
+            }
+            String finalScript = "navigator.geolocation.getCurrentPosition(function(pos) { " +  sb.toString() + "} );";
+            writer.startElement("script", uiComponent);
+            writer.writeAttribute("id", clientId+"_script", "id");
+            writer.write(finalScript);
+            writer.endElement("script");
+        }
 
         writer.endElement(HTML.SPAN_ELEM);
     }
