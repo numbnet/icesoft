@@ -64,7 +64,6 @@ public class ResizeListenerBean extends ComponentExampleImpl<ResizeListenerBean>
     
     public void handleResizeEvent(ResizeEvent event)
     {
-        System.out.println("Hello world!");
         resizeParameters = "My size changed to: "+event.getWidth() +" x "+ event.getHeight();
     }
 
