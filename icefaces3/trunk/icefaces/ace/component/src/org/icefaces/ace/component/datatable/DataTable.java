@@ -110,7 +110,6 @@ public class DataTable extends DataTableBase {
     public static final String COLUMN_RESIZER_CLASS = "ui-column-resizer";
 
     private Map<String, Column> filterMap;
-    private Boolean newTreeDataModel = false;
 
     static {
         try {
@@ -157,9 +156,6 @@ public class DataTable extends DataTableBase {
             if (getFilteredData() != null) applyFilters();
             if (superValue != null && superValue instanceof List) {
                 List list = (List)superValue;
-                if (list.size() > 0 && list.get(0) instanceof Map.Entry) {
-                    newTreeDataModel = true;
-                }
             }
         }
 
@@ -176,15 +172,16 @@ public class DataTable extends DataTableBase {
         Object current = getValue();
 
         // If existing tree check for changes or return cached model
-        if (hasTreeDataModel() || newTreeDataModel) {
-            setDataModel(new TreeDataModel((List)current));
-            newTreeDataModel = false;
-        } else if (current == null) {
+        if (current == null) {
             setDataModel(new ListDataModel(Collections.EMPTY_LIST));
         } else if (current instanceof DataModel) {
             setDataModel((DataModel) current);
         } else if (current instanceof List) {
-            setDataModel(new ListDataModel((List) current));
+            List list = (List)current;
+            if (list.size() > 0 && list.get(0) instanceof Map.Entry)
+                setDataModel(new TreeDataModel(list));
+            else
+                setDataModel(new ListDataModel(list));
         } else if (Object[].class.isAssignableFrom(current.getClass())) {
             setDataModel(new ArrayDataModel((Object[]) current));
         } else if (current instanceof ResultSet) {
@@ -301,7 +298,7 @@ public class DataTable extends DataTableBase {
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
 
         super.setRowIndex(index);
-        if (isRowAvailable() && index > -1) {
+        if (index > -1 && isRowAvailable()) {
             requestMap.put(getRowStateVar(), getStateMap().get(getRowData()));
         }
     }
