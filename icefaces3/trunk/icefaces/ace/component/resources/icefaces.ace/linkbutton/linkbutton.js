@@ -104,9 +104,14 @@ ice.ace.linkButton = {
                 }
             }
         };
+        var evTarget = e.target || e.srcElement;
+        if (evTarget.nodeType == 3) {
+            evTarget = evTarget.parentNode;
+        }
+        var hrefAttr = YAHOO.util.Dom.getAttribute(evTarget, "href");
         if (doAction) {
             ice.s(e, divRoot, params);
-        } else {
+        } else if(!hrefAttr) {
             ice.se(e, divRoot, params );
         }
 
