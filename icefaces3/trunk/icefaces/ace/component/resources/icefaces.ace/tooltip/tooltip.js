@@ -30,10 +30,8 @@ ice.ace.Tooltip = function(cfg) {
 }
 
 ice.ace.Tooltip.prototype.triggerDisplayListener = function() {
-
-	formId = this.jq.parents('form:first').attr('id');
-
-	var options = {
+	var formId = this.jq.parents('form:first').attr('id'),
+	    options = {
 		source: this.cfg.id,
 		execute: this.cfg.id,
 		formId: formId,
