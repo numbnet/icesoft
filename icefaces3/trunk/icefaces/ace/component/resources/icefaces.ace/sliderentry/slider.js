@@ -67,10 +67,14 @@ ice.ace.Slider = function(id, cfg) {
     //Slide end handler
     this.jq.bind('slidestop', function(event, ui) {_self.onSlideEnd(event, ui);});
 
+    
     // This call required to init slider when inside tabset on IE browsers.
     // Else slider remains hidden until some tab action occurs.
     var jq = this.jq;
-    window.setTimeout(function () { jq.slider('enable'); } , 1);
+    if (this.cfg.disabled)
+        window.setTimeout(function () { jq.slider('disable'); } , 1);
+    else
+        window.setTimeout(function () { jq.slider('enable'); } , 1);
 }
 
 ice.ace.Slider.prototype.onSlide = function(event, ui) {
