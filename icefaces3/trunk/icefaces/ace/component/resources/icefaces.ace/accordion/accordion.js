@@ -56,8 +56,7 @@ ice.ace.AccordionPanel = function(id, cfg) {
  */
 ice.ace.AccordionPanel.prototype.onTabChange = function(event, ui) {
     var panel = ui.newContent.get(0),
-    listener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.panechange,
-    shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
+        shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
     if (!panel) return;
 
     //Call user onTabChange callback
@@ -74,10 +73,6 @@ ice.ace.AccordionPanel.prototype.onTabChange = function(event, ui) {
     else {
         if (this.cfg.ajaxTabChange) {
             this.fireAjaxTabChangeEvent(panel);
-        }
-        if (jQuery.isFunction(listener)) {
-//            listener.call(this, event);
-            listener();
         }
     }
 }
@@ -134,7 +129,8 @@ ice.ace.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
     var options = {
         source: this.id,
         execute: this.id
-    };
+    },
+    listener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.panechange;
 
     if(this.cfg.onTabChangeUpdate) {
         options.render = this.cfg.onTabChangeUpdate;
@@ -146,7 +142,9 @@ ice.ace.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
 
     options.params = params;
 
-    ice.ace.AjaxRequest(options);
+    if (jQuery.isFunction(listener)) {
+        listener(options);
+    } else ice.ace.AjaxRequest(options);
 }
 
 ice.ace.AccordionPanel.prototype.markAsLoaded = function(panel) {

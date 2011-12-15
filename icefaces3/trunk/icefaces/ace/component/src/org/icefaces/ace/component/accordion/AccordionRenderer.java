@@ -110,9 +110,15 @@ public class AccordionRenderer extends CoreRenderer {
 		ResponseWriter writer = context.getResponseWriter();
 		String clientId = acco.getClientId(context);
         int activeIndex = acco.getActiveIndex();
+        boolean isDynamic = acco.isDynamic();
+
         boolean hasTabChangeListener = acco.getPaneChangeListener() != null;
-		boolean isDynamic = acco.isDynamic();
- 		
+        for (String eventId : acco.getClientBehaviors().keySet()) {
+            if (eventId.equals("panechange")) {
+                hasTabChangeListener = true;
+            }
+        }
+
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
