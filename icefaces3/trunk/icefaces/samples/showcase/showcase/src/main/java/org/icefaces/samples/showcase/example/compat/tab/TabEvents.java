@@ -75,7 +75,7 @@ public class TabEvents extends ComponentExampleImpl<TabEvents> implements Serial
 	
 	public void setStatus(String status) { this.status = status; }
 	
-	public void paneChangeListener(TabChangeEvent event) {
+	public void tabChangeListener(TabChangeEvent event) {
 	    status = "Tab changed from index " + event.getOldTabIndex() + " to index " +
 	             event.getNewTabIndex() + ".";
 	}
