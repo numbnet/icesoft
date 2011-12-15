@@ -29,10 +29,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
-import javax.faces.context.FacesContext;
 
 @ManagedBean(name= LongTaskPool.BEAN_NAME)
 @ApplicationScoped

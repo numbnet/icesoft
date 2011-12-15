@@ -41,43 +41,57 @@
         <h:form>
             <ace:panel> 
                 <h:panelGrid width="100%" style="text-align: center;" columns="1">
-                    <ace:progressBar   id="myProgressBar"
-                                                   widgetVar="progressBar"
-                                                   usePolling="true"
-                                                   pollingInterval="2000"
-                                                   value="#{progressBarPush.progressValue}"
-                                                   onChangeUpdate="messages"
-                                                   onCompleteUpdate="messages"
-                                                   completeListener="#{progressBarPush.completeListener}">
-                    </ace:progressBar>
+                    <h:panelGrid columns="2" styleClass="centeredPanelGrid">
+                        <h:outputText value="Progress "/>
+                        <h:outputText value="@ #{task.progress} %" rendered="#{task.progress ne 100 and task.taskRunning}" style="font-weight: bold;"/>    
+                        <h:outputText value="completed" rendered="#{task.progress eq 100}" style="font-weight: bold;"/>
+                        <h:outputText value="paused" rendered="#{(task.progress gt 0 and task.progress lt 100) and !task.taskRunning}" style="font-weight: bold;"/>
+                        <h:outputText value="stopped" rendered="#{(task.progress eq 0) and !task.taskRunning}" style="font-weight: bold;"/>
+                    </h:panelGrid>
                     
-                   <h:panelGroup>                                
-                       <h:commandButton value="start" onclick="progressBar.start();" action="#{progressBarPush.startProgress}">
-                           <f:ajax execute="@this" render="@none"/>
-                       </h:commandButton>
-                       <h:commandButton value="reset" type="button" onclick="progressBar.cancel();">
-                           <f:ajax execute="@none" render="@none"/>
-                       </h:commandButton>
-                   </h:panelGroup>
+                    <ace:progressBar   id="myProgressBar"
+                                                   value="#{task.progress}"/>
+                    
+                    
+                    <h:panelGrid columns="2" style="text-align: center; margin-left: auto; margin-right: auto; width: 150px; height: 50px;">                                
+                        <h:commandLink  actionListener="#{progressBarPush.startTask}"
+                                                     rendered="#{!task.taskRunning}"
+                                                     disabled="#{task.taskRunning}">
+                            <h:graphicImage value="/resources/css/images/player/play.png"/>
+                        </h:commandLink>
+                        <h:commandLink  actionListener="#{task.resetTask}"
+                                                 rendered="#{!task.taskRunning}"
+                                                 disabled="#{task.taskRunning}">
+                            <h:graphicImage value="/resources/css/images/player/stop.png"/>
+                        </h:commandLink>
+                        <h:commandLink  actionListener="#{task.stopTask}"
+                                                 rendered="#{task.taskRunning}"
+                                                 disabled="#{!task.taskRunning}">
+                            <h:graphicImage value="/resources/css/images/player/pause.png"/>
+                        </h:commandLink>
+                    
+                   </h:panelGrid>
                 </h:panelGrid>
             </ace:panel>
             
-            <ace:panel>
-                <h:dataTable id="messages" var="message" value="#{pushManagementBean.messages}" width="100%" style="text-align: center;">
-                    <h:column>
-                        <f:facet name="header">
-                            Session ID
-                        </f:facet>
-                        <h:outputText value="#{message.id}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            Message
-                        </f:facet>
-                        <h:outputText value="#{message.description}"/>
-                    </h:column>
-                </h:dataTable>
-            </ace:panel>
+            <ui:remove>
+                <ace:panel>
+                    <h:dataTable id="messages" var="message" value="#{pushManagementBean.messages}" width="100%" style="text-align: center;">
+                        <h:column>
+                            <f:facet name="header">
+                                Session ID
+                            </f:facet>
+                            <h:outputText value="#{message.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                Message
+                            </f:facet>
+                            <h:outputText value="#{message.description}"/>
+                        </h:column>
+                    </h:dataTable>
+                </ace:panel>
+            </ui:remove>
         </h:form>
     </ui:define>
 </ui:composition>

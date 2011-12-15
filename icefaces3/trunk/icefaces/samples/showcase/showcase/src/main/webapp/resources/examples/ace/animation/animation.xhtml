@@ -50,6 +50,7 @@
                             <h:outputText value="Blind Effect"/>
                             <h:graphicImage value="/resources/css/images/letters/a-blue.png"/>
                             <ace:animation event="click" name="blind"/>
+                            <ace:animation event="click" name="highlight"/>
                         </h:panelGrid>
                     </h:panelGrid>
                     
@@ -58,22 +59,24 @@
                               <h:outputText value="Clip Effect"/>
                               <h:graphicImage value="/resources/css/images/letters/n-black.png"/>
                               <ace:animation event="click" name="clip"/>
+                              <ace:animation event="click" name="highlight"/>
                         </h:panelGrid>
                     </h:panelGrid>
                     
                     <h:panelGrid styleClass="animationHolderStyle">
                         <h:panelGrid>
-                            <h:outputText value="Explode Effect"/>
+                            <h:outputText value="Shake Effect"/>
                             <h:graphicImage value="/resources/css/images/letters/i-darkgreen.png"/>
-                            <ace:animation event="click" name="explode"/>
+                            <ace:animation event="click" name="shake" />
                         </h:panelGrid>
                     </h:panelGrid>
-                    
+                                     
                     <h:panelGrid styleClass="animationHolderStyle">
                         <h:panelGrid>
                             <h:outputText value="Fade Effect"/>
                             <h:graphicImage value="/resources/css/images/letters/m-blue.png"/>
                             <ace:animation event="click" name="fade" />
+                            <ace:animation event="click" name="highlight"/>
                         </h:panelGrid>
                     </h:panelGrid>
                     
@@ -82,6 +85,7 @@
                             <h:outputText value="Puff Effect"/>
                             <h:graphicImage value="/resources/css/images/letters/a-black.png"/>
                             <ace:animation event="click" name="puff" />
+                            <ace:animation event="click" name="highlight"/>
                         </h:panelGrid>
                     </h:panelGrid>
                     
@@ -120,13 +124,16 @@
                     
                     <h:panelGrid styleClass="animationHolderStyle">
                     </h:panelGrid>
+                    
                     <h:panelGrid styleClass="animationHolderStyle">
                         <h:panelGrid>
-                            <h:outputText value="Shake Effect"/>
+                            <h:outputText value="Explode Effect"/>
                             <h:graphicImage value="/resources/css/images/letters/s-black.png"/>
-                            <ace:animation event="click" name="shake" />
+                            
+                            <ace:animation event="click" name="explode"/>
                         </h:panelGrid>
                     </h:panelGrid>
+   
                     <h:panelGrid styleClass="animationHolderStyle">
                     </h:panelGrid>
                     
