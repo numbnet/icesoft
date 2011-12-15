@@ -52,6 +52,8 @@ implements JMSConnection {
     protected JMSAdapter jmsAdapter;
 
     protected Topic topic;
+    protected String userName;
+    protected String password;
     protected TopicConnection topicConnection;
     protected TopicSession topicSession;
     protected int acknowledgeMode;
@@ -59,7 +61,7 @@ implements JMSConnection {
     protected boolean connected = false;
 
     protected AbstractJMSConnection(
-        final Topic topic, final JMSAdapter jmsAdapter,
+        final Topic topic, final String userName, final String password, final JMSAdapter jmsAdapter,
         final int acknowledgeMode)
     throws IllegalArgumentException {
         if (topic == null) {
@@ -70,6 +72,8 @@ implements JMSConnection {
                 new IllegalArgumentException("jmsAdapter is null");
         }
         this.topic = topic;
+        this.userName = userName;
+        this.password = password;
         this.jmsAdapter = jmsAdapter;
         this.acknowledgeMode = acknowledgeMode;
     }
@@ -114,9 +118,15 @@ implements JMSConnection {
         if (!connected) {
             synchronized (connectionLock) {
                 if (!connected) {
-                    topicConnection =
-                        jmsAdapter.getTopicConnectionFactory().
-                            createTopicConnection();
+                    if (userName != null && password != null) {
+                        topicConnection =
+                            jmsAdapter.getTopicConnectionFactory().
+                                createTopicConnection(userName, password);
+                    } else {
+                        topicConnection =
+                            jmsAdapter.getTopicConnectionFactory().
+                                createTopicConnection();
+                    }
                     topicSession =
                         topicConnection.createTopicSession(
                             false, acknowledgeMode);

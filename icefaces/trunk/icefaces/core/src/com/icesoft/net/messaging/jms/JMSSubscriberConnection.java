@@ -72,9 +72,9 @@ implements JMSConnection {
     private boolean started = false;
 
     public JMSSubscriberConnection(
-        final Topic topic, final JMSAdapter jmsAdapter)
+        final Topic topic, final String userName, final String password, final JMSAdapter jmsAdapter)
     throws IllegalArgumentException {
-        super(topic, jmsAdapter, Session.CLIENT_ACKNOWLEDGE);
+        super(topic, userName, password, jmsAdapter, Session.CLIENT_ACKNOWLEDGE);
     }
 
     public void addMessageHandler(final MessageHandler messageHandler) {

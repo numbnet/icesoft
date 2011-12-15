@@ -31,6 +31,8 @@
  */
 package com.icesoft.net.messaging.jms;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
 import com.icesoft.net.messaging.AbstractMessageServiceAdapter;
 import com.icesoft.net.messaging.Message;
 import com.icesoft.net.messaging.MessageHandler;
@@ -62,6 +64,8 @@ extends AbstractMessageServiceAdapter
 implements MessageServiceAdapter {
     private static final Log LOG = LogFactory.getLog(JMSAdapter.class);
 
+    private final Configuration configuration;
+
     private JMSProviderConfiguration[] jmsProviderConfigurations;
     private int index = -1;
 
@@ -71,11 +75,11 @@ implements MessageServiceAdapter {
     public JMSAdapter(final ServletContext servletContext)
     throws IllegalArgumentException {
         super(servletContext);
+        configuration = new ServletContextConfiguration("com.icesoft.net.messaging", servletContext);
         String _messagingProperties =
             servletContext.getInitParameter(MESSAGING_PROPERTIES);
         if (LOG.isDebugEnabled()) {
-            LOG.debug(
-                "Messaging Properties (web.xml): " + _messagingProperties);
+            LOG.debug("Messaging Properties (web.xml): " + _messagingProperties);
         }
         if (_messagingProperties != null) {
             try {
@@ -87,10 +91,7 @@ implements MessageServiceAdapter {
                     };
             } catch (IOException exception) {
                 if (LOG.isErrorEnabled()) {
-                    LOG.error(
-                        "An error occurred " +
-                            "while reading properties: " + _messagingProperties,
-                        exception);
+                    LOG.error("An error occurred while reading properties: " + _messagingProperties, exception);
                 }
             }
         }
@@ -189,7 +190,10 @@ implements MessageServiceAdapter {
                         // throws NamingException.
                         _jmsPublisherConnection =
                             new JMSPublisherConnection(
-                                lookUpTopic(topicName), this);
+                                lookUpTopic(topicName),
+                                configuration.getAttribute("userName", null),
+                                configuration.getAttribute("password", null),
+                                this);
                     } catch (NamingException exception) {
                         throw new MessageServiceException(exception);
                     }
@@ -311,7 +315,10 @@ implements MessageServiceAdapter {
                         // throws NamingException.
                         _jmsSubscriberConnection =
                             new JMSSubscriberConnection(
-                                lookUpTopic(topicName), this);
+                                lookUpTopic(topicName),
+                                configuration.getAttribute("userName", null),
+                                configuration.getAttribute("password", null),
+                                this);
                     } catch (NamingException exception) {
                         throw new MessageServiceException(exception);
                     }
