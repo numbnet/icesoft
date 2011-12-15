@@ -33,6 +33,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 @ComponentExample(
         parent = ConfirmationDialogBean.BEAN_NAME,
@@ -60,15 +61,33 @@ public class ConfirmationDialogEffectBean extends ComponentExampleImpl<Confirmat
     private String showEffect;
     private String hideEffect;
     private String outcome;
+    private LinkedHashMap<String, String> effects;
 
     public ConfirmationDialogEffectBean() {
         super(ConfirmationDialogEffectBean.class);
         outcome = null;
-        showEffect = "blind";
-        hideEffect = "blind";
+        
+        effects = initializeDialogEffects();
+        showEffect = effects.get("Fade");
+        hideEffect = effects.get("Fade");
     }
 
-    
+        private LinkedHashMap<String, String> initializeDialogEffects() 
+        {
+            LinkedHashMap<String, String> list = new LinkedHashMap<String, String>();
+            list.put("Fade", "fade");
+            list.put("Highlight", "highlight");
+            list.put("Blind", "blind");
+            list.put("Bounce", "bounce");
+            list.put("Clip", "clip");
+            list.put("Explode", "explode");
+            list.put("Puff", "puff");
+            list.put("Pulsate", "pulsate");
+            list.put("Scale", "scale");
+            list.put("Shake", "shake");
+            list.put("Slide", "slide");
+            return list;
+    }
 
     public void yes(ActionEvent actionEvent) { 
             outcome = "You clicked 'yes'";
@@ -96,5 +115,13 @@ public class ConfirmationDialogEffectBean extends ComponentExampleImpl<Confirmat
 
     public void setShowEffect(String showEffect) {
         this.showEffect = showEffect;
+    }
+
+    public LinkedHashMap<String, String> getEffects() {
+        return effects;
+    }
+
+    public void setEffects(LinkedHashMap<String, String> effects) {
+        this.effects = effects;
     }
 }
