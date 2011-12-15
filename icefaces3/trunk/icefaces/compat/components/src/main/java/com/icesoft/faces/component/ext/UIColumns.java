@@ -179,29 +179,6 @@ public class UIColumns extends UISeries {
         }
     }
 
-    public int getRowId() {
-        if (getParent() != null &&
-            ((HtmlDataTable) getParent()).getRowIndex() >= 0) {
-            return ((HtmlDataTable) getParent()).getRowIndex();
-        } else {
-            return 0;
-        }
-    }
-
-    public String getClientId(FacesContext context) {
-        if (context == null) {
-            throw new NullPointerException();
-        }
-        String baseClientId = super.getClientId(context);
-        if (getRowIndex() >= 0) {
-            return (baseClientId + NamingContainer.SEPARATOR_CHAR +
-                    getRowIndex() + getRowId());
-        } else {
-            return (baseClientId);
-        }
-
-    }
-
     private transient Object values[];
     public void restoreState(FacesContext context, Object state) {
         values = (Object[])state;

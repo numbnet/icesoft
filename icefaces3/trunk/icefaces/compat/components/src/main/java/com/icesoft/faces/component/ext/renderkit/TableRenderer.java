@@ -163,7 +163,7 @@ public class TableRenderer
                 childColumnHasFacetWithName(uiData, facet);
         Element thead = null;
         if (headerFacet != null || childHeaderFacetExists) {
-            String clientId = uiData.getClientId(facesContext);
+            String clientId = uiData.getContainerClientId(facesContext);
             thead = domContext.createElement(tag);
             thead.setAttribute(HTML.ID_ATTR, ClientIdPool.get
                     (clientId + NamingContainer.SEPARATOR_CHAR + tag));
@@ -183,8 +183,8 @@ public class TableRenderer
                     if (!uiData.isClientOnly()) {
                         Element clientOnly = domContext.createElement(HTML.INPUT_ELEM);
                         clientOnly.setAttribute(HTML.TYPE_ATTR, "hidden");
-                        clientOnly.setAttribute(HTML.ID_ATTR, uiData.getClientId(facesContext) + "clientOnly");
-                        clientOnly.setAttribute(HTML.NAME_ATTR, uiData.getClientId(facesContext) + "clientOnly");
+                        clientOnly.setAttribute(HTML.ID_ATTR, clientId + "clientOnly");
+                        clientOnly.setAttribute(HTML.NAME_ATTR, clientId + "clientOnly");
                         root.appendChild(clientOnly);
                         uiData.resetResizableTblColumnsWidthIndex();
                     }
@@ -444,7 +444,7 @@ public class TableRenderer
                 tr.appendChild(handlerTd);
             }
             Element columnHeaderDiv = domContext.createElement(HTML.DIV_ELEM);
-            columnHeaderDiv.setAttribute(HTML.ID_ATTR, ClientIdPool.get(htmlDataTable.getClientId(facesContext)+
+            columnHeaderDiv.setAttribute(HTML.ID_ATTR, ClientIdPool.get(htmlDataTable.getContainerClientId(facesContext)+
 				UINamingContainer.getSeparatorChar(facesContext)+"hdrDv"+ columnIndex)); 
             th.appendChild(columnHeaderDiv);
             if (htmlDataTable.isResizable()) {
@@ -522,7 +522,7 @@ public class TableRenderer
                 Element cursorParent = th;
                 if (htmlDataTable.isResizable()) {
                     Element columnHeaderDiv = domContext.createElement(HTML.DIV_ELEM);
-                    columnHeaderDiv.setAttribute(HTML.ID_ATTR, ClientIdPool.get(htmlDataTable.getClientId(facesContext)+
+                    columnHeaderDiv.setAttribute(HTML.ID_ATTR, ClientIdPool.get(htmlDataTable.getContainerClientId(facesContext)+
 						UINamingContainer.getSeparatorChar(facesContext)+"hdrDv"+ columnIndex)); 
                     th.appendChild(columnHeaderDiv);
                     width = htmlDataTable.getNextResizableTblColumnWidth();
@@ -578,7 +578,7 @@ public class TableRenderer
                 DOMContext.getDOMContext(facesContext, uiComponent);
         Element root = (Element) domContext.getRootNode();
         Element originalRoot = root;
-        String clientId = uiComponent.getClientId(facesContext);
+        String clientId = uiComponent.getContainerClientId(facesContext);
         
         boolean scrollable = isScrollable(uiComponent); 
         if (scrollable) {
@@ -650,7 +650,7 @@ public class TableRenderer
 
         UIComponent form = DomBasicRenderer.findForm(uiComponent);
         String formId = form == null ? "" : form.getClientId(facesContext);
-        String paramId = getSelectedRowParameterName(uiComponent.getClientId(facesContext));
+        String paramId = getSelectedRowParameterName(uiComponent.getContainerClientId(facesContext));
         if (rowSelectorFound) {
             FormRenderer.addHiddenField(facesContext, paramId + "ctrKy");            
             FormRenderer.addHiddenField(facesContext, paramId + "sftKy");
@@ -673,12 +673,12 @@ public class TableRenderer
             
 
             Element clickedRowField = domContext.createElement(HTML.INPUT_ELEM);
-            String clickedRowParam = getClickedRowParameterName(uiComponent.getClientId(facesContext));
+            String clickedRowParam = getClickedRowParameterName(uiComponent.getContainerClientId(facesContext));
             clickedRowField.setAttribute(HTML.TYPE_ATTR, "hidden");
             clickedRowField.setAttribute(HTML.NAME_ATTR, clickedRowParam); 
             
             Element clickCountField = domContext.createElement(HTML.INPUT_ELEM);
-            String clickCountParam = getClickCountParameterName(uiComponent.getClientId(facesContext));
+            String clickCountParam = getClickCountParameterName(uiComponent.getContainerClientId(facesContext));
             clickCountField.setAttribute(HTML.TYPE_ATTR, "hidden");
             clickCountField.setAttribute(HTML.NAME_ATTR, clickCountParam); 
             
@@ -717,8 +717,8 @@ public class TableRenderer
                     } else {
                         String delay = String.valueOf(rowSelector.getDblClickDelay().intValue());
                         tr.setAttribute("onclick", "Ice.registerClick(this,'"
-                            + getClickedRowParameterName(uiComponent.getClientId(facesContext)) + "','"
-                            + getClickCountParameterName(uiComponent.getClientId(facesContext)) + "',"
+                            + getClickedRowParameterName(uiComponent.getContainerClientId(facesContext)) + "','"
+                            + getClickCountParameterName(uiComponent.getContainerClientId(facesContext)) + "',"
                             + "'" +uiData.getRowIndex()+ "','"+ formId +"',"+delay+",true,event,"+rowSelectionUseEvent+","
                             + "'"+ paramId +"','" + toggleClass + "');");
                         tr.setAttribute("ondblclick", "Ice.registerDblClick(this);");
@@ -727,8 +727,8 @@ public class TableRenderer
                     if (rowSelector.getClickListener() != null || rowSelector.getClickAction() != null) {
                         String delay = String.valueOf(rowSelector.getDblClickDelay().intValue());
                         tr.setAttribute("onclick", "Ice.registerClick(this,'"
-                            + getClickedRowParameterName(uiComponent.getClientId(facesContext)) + "','"
-                            + getClickCountParameterName(uiComponent.getClientId(facesContext)) + "',"
+                            + getClickedRowParameterName(uiComponent.getContainerClientId(facesContext)) + "','"
+                            + getClickCountParameterName(uiComponent.getContainerClientId(facesContext)) + "',"
                             + "'" +uiData.getRowIndex()+ "','"+ formId +"',"+delay+",false);");
                         tr.setAttribute("ondblclick", "Ice.registerDblClick(this);");
                     }
@@ -740,7 +740,7 @@ public class TableRenderer
                     tr.setAttribute("onmousedown", "return Ice.preventTextSelection(event);");
                 }
             }
-            String id = uiComponent.getClientId(facesContext);
+            String id = uiComponent.getContainerClientId(facesContext);
             tr.setAttribute(HTML.ID_ATTR, ClientIdPool.get(id));
             Element anchor = domContext.createElement(HTML.ANCHOR_ELEM);
             if (rowSelectorFound) {

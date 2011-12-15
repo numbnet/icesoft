@@ -293,9 +293,24 @@ public class HtmlDataTable
                 if (kid instanceof UIColumn) {
                     restoreChildState(facesContext, kid);
                 }
+                else {
+                    resetChildClientId(facesContext, kid); 
+                }
             }
         }
     }
+
+    protected void resetChildClientId(FacesContext facesContext,
+                                     UIComponent component) {
+        String id = component.getId();
+        System.out.println("UISeriesBase.restoreChildState()  Doer: " + getClass().getSimpleName() + "  On: " + component.getClass().getSimpleName() + "  id: " + id);
+        component.setId(id);
+        Iterator children = component.getFacetsAndChildren();
+        while (children.hasNext()) {
+            resetChildClientId(facesContext, (UIComponent) children.next());
+        }
+    }
+
 
     /**
      * <p>Save state information for all descendant components, as described for

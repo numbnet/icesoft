@@ -295,7 +295,7 @@ public class TableRenderer extends DomBasicRenderer {
             }
             // render another row
             Element tr = domContext.createElement("tr");
-            tr.setAttribute("id", uiComponent.getClientId(facesContext));
+            tr.setAttribute("id", uiComponent.getContainerClientId(facesContext));
             tbody.appendChild(tr);
             // if row styles exist, then render the appropriate one
             if (rowStylesMaxIndex >= 0) {

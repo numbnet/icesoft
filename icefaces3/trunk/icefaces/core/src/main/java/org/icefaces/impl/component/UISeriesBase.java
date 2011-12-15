@@ -21,6 +21,7 @@
 
 package org.icefaces.impl.component;
 
+import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.*;
@@ -47,6 +48,8 @@ import java.util.Map;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitResult;
+import javax.faces.render.Renderer;
+import javax.faces.view.Location;
 import java.util.Collection;
 
 
@@ -56,6 +59,8 @@ import java.util.Collection;
  * column component as a first child.
  */
 public class UISeriesBase extends HtmlDataTable implements SeriesStateHolder {
+    private static final String SHARED_STRING_BUILDER_KEY
+            = "javax.faces.component.UIComponentBase.SHARED_STRING_BUILDER";
     private static Class javax_servlet_jsp_jstl_sql_Result_class = null;
     static {
         try {
@@ -65,6 +70,8 @@ public class UISeriesBase extends HtmlDataTable implements SeriesStateHolder {
         catch(Exception e) {}
     }
 
+    private String clientId = null;
+    
     protected transient DataModel dataModel = null;
     private int rowIndex = -1;
     protected Map savedChildren = new HashMap();
@@ -216,6 +223,12 @@ public class UISeriesBase extends HtmlDataTable implements SeriesStateHolder {
         super.setValueBinding(name, binding);
     }
 
+    public void setId(String id) {
+        super.setId(id);
+        this.clientId = null;
+        //System.out.println("UISeriesBase.setId()  " + id);
+    }
+
     /**
      * @see javax.faces.component.UIData#getClientId(FacesContext)
      */
@@ -224,23 +237,192 @@ public class UISeriesBase extends HtmlDataTable implements SeriesStateHolder {
             throw new NullPointerException();
         }
 
-        String baseClientId = super.getClientId(context);
+        if (clientId != null)
+            return clientId;
 
-        if (getRowIndex() >= 0) {
-            //this extra if is to produce the same ids among myfaces and sunri
-            //myfaces uses the getRowIndex() and SunRI directly using the rowIndex
-            //variable inside its getClientId()
-            if (!baseClientId.endsWith(
-                    "" + NamingContainer.SEPARATOR_CHAR + getRowIndex())) {
-                return (baseClientId + NamingContainer.SEPARATOR_CHAR +
-                        getRowIndex());
+        //boolean idWasNull = false;
+        String id = getId();
+        if (id == null) {
+            // Although this is an error prone side effect, we automatically create a new id
+            // just to be compatible to the RI
+
+            // The documentation of UniqueIdVendor says that this interface should be implemented by
+            // components that also implements NamingContainer. The only component that does not implement
+            // NamingContainer but UniqueIdVendor is UIViewRoot. Anyway we just can't be 100% sure about this
+            // fact, so it is better to scan for the closest UniqueIdVendor. If it is not found use
+            // viewRoot.createUniqueId, otherwise use UniqueIdVendor.createUniqueId(context,seed).
+            UniqueIdVendor parentUniqueIdVendor = findParentUniqueIdVendor(this);
+            if (parentUniqueIdVendor == null) {
+                UIViewRoot viewRoot = context.getViewRoot();
+                if (viewRoot != null) {
+                    id = viewRoot.createUniqueId();
+                }
+                else {
+                    // The RI throws a NPE
+                    String location = getComponentLocation(this);
+                    throw new FacesException("Cannot create clientId. No id is assigned for component"
+                            + " to create an id and UIViewRoot is not defined: "
+                            + getPathToComponent(this)
+                            + (location != null ? " created from: " + location : ""));
+                }
             }
-            return (baseClientId);
-        } else {
-            return (baseClientId);
+            else {
+                id = parentUniqueIdVendor.createUniqueId(context, null);
+            }
+            setId(id);
+            // We remember that the id was null and log a warning down below
+            // idWasNull = true;
         }
+        UIComponent namingContainer = findParentNamingContainer(this, false);
+        if (namingContainer != null) {
+            String containerClientId = namingContainer.getContainerClientId(context);
+            if (containerClientId != null) {
+                StringBuilder bld = getSharedStringBuilder(context);
+                clientId = bld.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
+            }
+            else {
+                clientId = id;
+            }
+        }
+        else {
+            clientId = id;
+        }
+        Renderer renderer = getRenderer(context);
+        if (renderer != null) {
+            clientId = renderer.convertClientId(context, clientId);
+        }
+
+        return clientId;
     }
 
+    /**
+     * Logic for this method is borrowed from MyFaces
+     *
+     * @param facesContext
+     * @return
+     */
+    @Override
+    public String getContainerClientId(FacesContext facesContext) {
+        String clientId = getClientId(facesContext);
+
+        int rowIndex = getRowIndex();
+        if (rowIndex == -1) {
+            //System.out.println("UISeries.getContainerClientId [NOT ITER] : " + getClass().getSimpleName() + " : " + clientId);
+            return clientId;
+        }
+
+        StringBuilder bld = getSharedStringBuilder(facesContext);
+        String ret = bld.append(clientId).append(UINamingContainer.getSeparatorChar(facesContext)).append(rowIndex).toString();
+        //System.out.println("UISeries.getContainerClientId [ITER] : " + getClass().getSimpleName() + " : " + ret);
+        return ret;
+    }
+
+    /**
+     * Logic for this method is borrowed from MyFaces
+     *
+     * @param facesContext
+     * @return
+     */
+    private static StringBuilder getSharedStringBuilder(FacesContext facesContext) {
+        Map<Object, Object> attributes = facesContext.getAttributes();
+        StringBuilder sb = (StringBuilder) attributes.get(SHARED_STRING_BUILDER_KEY);
+        if (sb == null) {
+            sb = new StringBuilder();
+            attributes.put(SHARED_STRING_BUILDER_KEY, sb);
+        }
+        sb.setLength(0);
+        return sb;
+    }
+
+    /**
+     * Logic for this method is borrowed from MyFaces
+     *
+     * @param component
+     * @return
+     */
+    private String getComponentLocation(UIComponent component) {
+        Location location = (Location) component.getAttributes().get(UIComponent.VIEW_LOCATION_KEY);
+        if (location != null) {
+            return location.toString();
+        }
+        return null;
+    }
+
+    private String getPathToComponent(UIComponent component) {
+        StringBuffer buf = new StringBuffer();
+
+        if (component == null) {
+            buf.append("{Component-Path : ");
+            buf.append("[null]}");
+            return buf.toString();
+        }
+
+        getPathToComponent(component, buf);
+
+        buf.insert(0, "{Component-Path : ");
+        buf.append("}");
+
+        return buf.toString();
+    }
+
+    private void getPathToComponent(UIComponent component, StringBuffer buf) {
+        if (component == null) {
+            return;
+        }
+
+        StringBuffer intBuf = new StringBuffer();
+
+        intBuf.append("[Class: ");
+        intBuf.append(component.getClass().getName());
+        if (component instanceof UIViewRoot) {
+            intBuf.append(",ViewId: ");
+            intBuf.append(((UIViewRoot) component).getViewId());
+        }
+        else {
+            intBuf.append(",Id: ");
+            intBuf.append(component.getId());
+        }
+        intBuf.append("]");
+
+        buf.insert(0, intBuf.toString());
+
+        getPathToComponent(component.getParent(), buf);
+    }
+
+    static UniqueIdVendor findParentUniqueIdVendor(UIComponent component) {
+        UIComponent parent = component.getParent();
+
+        while (parent != null) {
+            if (parent instanceof UniqueIdVendor) {
+                return (UniqueIdVendor) parent;
+            }
+            parent = parent.getParent();
+        }
+        return null;
+    }
+
+    static UIComponent findParentNamingContainer(UIComponent component, boolean returnRootIfNotFound) {
+        UIComponent parent = component.getParent();
+        if (returnRootIfNotFound && parent == null) {
+            return component;
+        }
+        while (parent != null) {
+            if (parent instanceof NamingContainer) {
+                return parent;
+            }
+            if (returnRootIfNotFound) {
+                UIComponent nextParent = parent.getParent();
+                if (nextParent == null) {
+                    return parent; // Root
+                }
+                parent = nextParent;
+            }
+            else {
+                parent = parent.getParent();
+            }
+        }
+        return null;
+    }
 
     /**
      * @see javax.faces.component.UIData#queueEvent(FacesEvent)
@@ -503,6 +685,7 @@ public class UISeriesBase extends HtmlDataTable implements SeriesStateHolder {
     protected void restoreChildState(FacesContext facesContext,
                                      UIComponent component) {
         String id = component.getId();
+        //System.out.println("UISeriesBase.restoreChildState()  Doer: " + getClass().getSimpleName() + "  On: " + component.getClass().getSimpleName() + "  id: " + id);
         if (!isValid(id)) {
             return;
         }
