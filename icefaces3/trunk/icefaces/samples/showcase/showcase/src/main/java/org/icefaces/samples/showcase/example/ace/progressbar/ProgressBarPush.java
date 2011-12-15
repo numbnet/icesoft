@@ -27,14 +27,10 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
+import javax.faces.event.ActionEvent;
 
-import org.icefaces.application.PushRenderer;
-import org.icefaces.samples.showcase.example.ace.progressbar.utilityBeans.PushManagementBean;
-import org.icefaces.samples.showcase.example.ace.progressbar.utilityBeans.PushMessage;
-import org.icefaces.util.EnvUtils;
+import org.icefaces.samples.showcase.example.compat.progress.LongTaskManager;
+import org.icefaces.samples.showcase.util.FacesUtils;
 
 
  @ComponentExample(
@@ -52,116 +48,26 @@ import org.icefaces.util.EnvUtils;
             // Java Source
             @ExampleResource(type = ResourceType.java,
                     title="ProgressBarPush.java",
-                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/progressbar/ProgressBarPush.java")
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/progressbar/ProgressBarPush.java"),
+            @ExampleResource(type = ResourceType.java,
+                    title="LongTaskManager.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/compat/progress/LongTaskManager.java")
         }
 )
 @ManagedBean(name= ProgressBarPush.BEAN_NAME)
 @CustomScoped(value = "#{window}")
 public class ProgressBarPush extends ComponentExampleImpl<ProgressBarPush> implements Serializable {
     
-    private static final String PUSH_GROUP = "myPushGroup";
     public static final String BEAN_NAME = "progressBarPush";
-    
-    @ManagedProperty(value="#{pushManagementBean}")
-    private PushManagementBean pushManagementBean;
-    
-    private String sessionId;
-    private String pushId;
-    private int progressValue;
-    private long time;
     
     public ProgressBarPush() 
     {
         super(ProgressBarPush.class);
-        FacesContext fcontext = FacesContext.getCurrentInstance();
-        HttpSession session = EnvUtils.getSafeSession(fcontext);
-        sessionId = session.getId();
-        pushId = PUSH_GROUP + sessionId;
-        time = System.currentTimeMillis();
-        PushRenderer.addCurrentSession(pushId);
     }
     
-    public String startProgress()
+    public void startTask(ActionEvent event) 
     {
-        clearAllMessages();
-        if(progressValue!=0)
-            progressValue = 0;
-        String message = "Progress has been started! ";
-        addMessageToPushManager(message);
-        if(progressValue !=100 || progressValue > 100) {
-              message = progressValue + "% complete ...";
-              addMessageToPushManager(message);
-        }
-        PushRenderer.render(pushId);
-        return null;
-    }
-    
-    private void updateTime()
-    {
-        time = System.currentTimeMillis();
-    }
-    
-    public void completeListener() 
-    {
-        String message = "Progress has been completed !";
-        addMessageToPushManager(message);
-        PushRenderer.render(pushId);
-    }
-    
-    private void addMessageToPushManager(String messageToAdd)
-    {
-        PushMessage message = new PushMessage();
-        message.setId(sessionId);
-        message.setDescription(messageToAdd);
-        pushManagementBean.addMessage(message);
-    }
-
-    public int getProgressValue() 
-    {
-        if(!pushManagementBean.getMessages().isEmpty())
-        {
-            int lastIndex = pushManagementBean.getMessages().size() -1;
-            PushMessage lastMessage = pushManagementBean.getMessages().get(lastIndex);
-            if(lastMessage.getId().equals(this.sessionId)&&progressValue<100)
-            {
-                long difference = System.currentTimeMillis() - time;
-                if(difference>=2000)
-                {
-                    progressValue+=10;
-                    updateTime();
-                    if(progressValue !=100 || progressValue > 100) 
-                    {
-                        String message = progressValue + "% complete ...";
-                        addMessageToPushManager(message);
-                        PushRenderer.render(pushId);
-                    }
-                }
-            }
-        }
-        return progressValue;
-    }
-
-    public void setProgressValue(int progressValue) {
-        this.progressValue = progressValue;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public PushManagementBean getPushManagementBean() {
-        return pushManagementBean;
-    }
-
-    public void setPushManagementBean(PushManagementBean pushManagementBean) {
-        this.pushManagementBean = pushManagementBean;
-    }
-
-    private void clearAllMessages() {
-        pushManagementBean.clearMessages();
+        LongTaskManager threadBean = (LongTaskManager)FacesUtils.getManagedBean(LongTaskManager.BEAN_NAME);
+        threadBean.startThread(10, 10, 1000);
     }
 }
