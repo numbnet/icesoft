@@ -82,10 +82,8 @@ ice.ace.Resizable.prototype.fireAjaxResizeEvent = function(event, ui) {
     params[this.id + '_height'] = ui.helper.height();
 
     options.params = params;
-    
-    ice.ace.AjaxRequest(options);
+
     if (jQuery.isFunction(listener)) {
-//            listener.call(this, event);
-        listener();
-    }
+        listener(options);
+    } else ice.ace.AjaxRequest(options);
 }
