@@ -70,10 +70,8 @@ ice.ace.Droppable.prototype.setupDropHandler = function() {
 
         options.params = params;
 
-        ice.ace.AjaxRequest(options);
         if (jQuery.isFunction(dropListener)) {
-            dropListener.call();
-//            dropListener();
-        }
+            dropListener(options);
+        } else ice.ace.AjaxRequest(options);
     };
 }
