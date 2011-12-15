@@ -159,44 +159,49 @@ public class ServerUtility {
         if (servletContext == null) {
             return null;
         }
-        try {
-            String _servletContextPath;
-            String _path =
-                servletContext.getResource("/WEB-INF/web.xml").getPath();
-            String _serverInfo = servletContext.getServerInfo();
-            if (_serverInfo.startsWith("jetty")) {
-                _servletContextPath =
-                    _path.substring(
-                        _path.indexOf("__") + 2,
-                        _path.lastIndexOf("__"));
-            } else if (
-                _serverInfo.startsWith("WebLogic") &&
-                (
-                    _serverInfo.indexOf("9.") != -1 ||
-                    _serverInfo.indexOf("10.") != -1
-                )) {
+        if (servletContext.getMajorVersion() >= 2 &&
+            servletContext.getMinorVersion() >= 5) {
 
-                int _index = _path.lastIndexOf("/");
-                for (int i = 0; i < 3; i++) {
-                    _index = _path.lastIndexOf("/", _index - 1);
-                }
-                _servletContextPath =
-                    _path.substring(
-                        _path.lastIndexOf("/", _index - 1) + 1, _index);
-            } else {
-                int _index = _path.lastIndexOf("/", _path.lastIndexOf("/") - 1);
-                _servletContextPath =
-                    _path.substring(
-                        _path.lastIndexOf("/", _index - 1) + 1, _index);
-                if (_serverInfo.startsWith("WebLogic")) {
+            return servletContext.getContextPath();
+        } else {
+            try {
+                String _servletContextPath;
+                String _path = servletContext.getResource("/WEB-INF/web.xml").getPath();
+                String _serverInfo = servletContext.getServerInfo();
+                if (_serverInfo.startsWith("jetty")) {
                     _servletContextPath =
-                        _servletContextPath.substring(
-                            0, _servletContextPath.indexOf(".war"));
+                        _path.substring(
+                            _path.indexOf("__") + 2,
+                            _path.lastIndexOf("__"));
+                } else if (
+                    _serverInfo.startsWith("WebLogic") &&
+                    (
+                        _serverInfo.indexOf("9.") != -1 ||
+                        _serverInfo.indexOf("10.") != -1
+                    )) {
+
+                    int _index = _path.lastIndexOf("/");
+                    for (int i = 0; i < 3; i++) {
+                        _index = _path.lastIndexOf("/", _index - 1);
+                    }
+                    _servletContextPath =
+                        _path.substring(
+                            _path.lastIndexOf("/", _index - 1) + 1, _index);
+                } else {
+                    int _index = _path.lastIndexOf("/", _path.lastIndexOf("/") - 1);
+                    _servletContextPath =
+                        _path.substring(
+                            _path.lastIndexOf("/", _index - 1) + 1, _index);
+                    if (_serverInfo.startsWith("WebLogic")) {
+                        _servletContextPath =
+                            _servletContextPath.substring(
+                                0, _servletContextPath.indexOf(".war"));
+                    }
                 }
+                return _servletContextPath;
+            } catch (MalformedURLException exception) {
+                return null;
             }
-            return _servletContextPath;
-        } catch (MalformedURLException exception) {
-            return null;
         }
     }
 }
