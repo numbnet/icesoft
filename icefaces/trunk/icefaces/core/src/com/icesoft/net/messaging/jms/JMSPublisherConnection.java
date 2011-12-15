@@ -57,9 +57,9 @@ implements JMSConnection {
     private TopicPublisher topicPublisher;
 
     public JMSPublisherConnection(
-        final Topic topic, final JMSAdapter jmsAdapter)
+        final Topic topic, final String userName, final String password, final JMSAdapter jmsAdapter)
     throws IllegalArgumentException {
-        super(topic, jmsAdapter, Session.AUTO_ACKNOWLEDGE);
+        super(topic, userName, password, jmsAdapter, Session.AUTO_ACKNOWLEDGE);
     }
 
     public void close()
