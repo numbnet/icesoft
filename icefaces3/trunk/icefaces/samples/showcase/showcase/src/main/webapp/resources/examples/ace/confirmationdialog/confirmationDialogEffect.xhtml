@@ -47,17 +47,10 @@
                 <h:panelGrid columns="2" styleClass="centeredPanelGridWithLeftJustifiedText">
                     <h:outputLabel id="onShowEffectLabel" for="onShowEffectSelector" value="Show effect:"/>
                     <h:selectOneMenu id="onShowEffectSelector" value="#{confirmationDialogEffectBean.showEffect}">
-                        <f:selectItem itemValue="blind" itemLabel="Blind Effect"/>
-                        <f:selectItem itemValue="bounce" itemLabel="Bounce Effect"/>
-                        <f:selectItem itemValue="clip" itemLabel="Clip Effect"/>
-                        <f:selectItem itemValue="explode" itemLabel="Explode Effect"/>
-                        <f:selectItem itemValue="fade" itemLabel="Fade Effect"/>
-                        <f:selectItem itemValue="highlight" itemLabel="Highlight Effect"/>
-                        <f:selectItem itemValue="puff" itemLabel="Puff Effect"/>
-                        <f:selectItem itemValue="pulsate" itemLabel="Pulsate Effect"/>
-                        <f:selectItem itemValue="scale" itemLabel="Scale Effect"/>
-                        <f:selectItem itemValue="shake" itemLabel="Shake Effect"/>
-                        <f:selectItem itemValue="slide" itemLabel="Slide Effect"/>
+                        <f:selectItems value="#{confirmationDialogEffectBean.effects}"
+                                                var="effect"
+                                                itemValue="#{effect.value}"
+                                                itemLabel="#{effect.key}"/>
                     </h:selectOneMenu>
                     <h:panelGroup>
                         <br/>
@@ -67,16 +60,10 @@
                     </h:panelGroup>
                     <h:outputLabel id="onHideEffectLabel" for="onHideEffectSelector" value="Hide effect:"/>
                     <h:selectOneMenu id="onHideEffectSelector" value="#{confirmationDialogEffectBean.hideEffect}">
-                        <f:selectItem itemValue="blind" itemLabel="Blind Effect"/>
-                        <f:selectItem itemValue="bounce" itemLabel="Bounce Effect"/>
-                        <f:selectItem itemValue="clip" itemLabel="Clip Effect"/>
-                        <f:selectItem itemValue="explode" itemLabel="Explode Effect"/>
-                        <f:selectItem itemValue="fade" itemLabel="Fade Effect"/>
-                        <f:selectItem itemValue="highlight" itemLabel="Highlight Effect"/>
-                        <f:selectItem itemValue="puff" itemLabel="Puff Effect"/>
-                        <f:selectItem itemValue="pulsate" itemLabel="Pulsate Effect"/>
-                        <f:selectItem itemValue="scale" itemLabel="Scale Effect"/>
-                        <f:selectItem itemValue="slide" itemLabel="Slide Effect"/>
+                        <f:selectItems value="#{confirmationDialogEffectBean.effects}"
+                                                var="effect"
+                                                itemValue="#{effect.value}"
+                                                itemLabel="#{effect.key}"/>
                     </h:selectOneMenu>
                 </h:panelGrid>
 
