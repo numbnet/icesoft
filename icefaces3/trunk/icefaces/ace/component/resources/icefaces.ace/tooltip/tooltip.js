@@ -19,6 +19,9 @@ ice.ace.Tooltip = function(cfg) {
 	this.cfg.position.adjust = { y: adjustY, x: 0 };*/
 	
 	this.jq = jQuery(this.target);
+    if (this.jq.length <= 0) {
+        return;
+    }
 	this.jq.qtip(this.cfg);
 	
 	var self = this;
