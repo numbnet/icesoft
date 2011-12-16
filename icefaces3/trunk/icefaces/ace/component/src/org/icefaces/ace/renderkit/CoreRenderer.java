@@ -227,14 +227,6 @@ public class CoreRenderer extends Renderer {
             req.append(",render:'").append(ComponentUtils.findClientIds(context, component, source.getUpdate())).append("'");
         }
 
-        //async
-        if(source.isAsync())
-            req.append(",async:true");
-
-        //global
-        if(!source.isGlobal())
-            req.append(",global:false");
-
         //callbacks
         if(source.getOnstart() != null)
             req.append(",onstart:function(){").append(source.getOnstart()).append(";}");

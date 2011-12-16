@@ -114,14 +114,6 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         //behavior event
 		jb.entry("event", behaviorContext.getEventName());
 
-        //async
-        if(ajaxBehavior.isAsync())
-            jb.entry("async", true);
-
-        //global
-        if(!ajaxBehavior.isGlobal())
-            jb.entry("global", false);
-
         //callbacks
         if(ajaxBehavior.getOnStart() != null)
             jb.entry("onstart", "function(xhr){" + ajaxBehavior.getOnStart() + ";}", true);

@@ -53,8 +53,6 @@ public class AjaxBehavior extends ClientBehaviorBase {
 
     private String render;
     private String execute;
-    private boolean global = true;
-    private boolean async = false;
     private String onComplete;
     private String onError;
     private String onSuccess;
@@ -76,22 +74,6 @@ public class AjaxBehavior extends ClientBehaviorBase {
     @Override
     public Set<ClientBehaviorHint> getHints() {
         return HINTS;
-    }
-    
-    public boolean isAsync() {
-        return async;
-    }
-
-    public void setAsync(boolean async) {
-        this.async = async;
-    }
-
-    public boolean isGlobal() {
-        return global;
-    }
-
-    public void setGlobal(boolean global) {
-        this.global = global;
     }
 
     public String getOnComplete() {

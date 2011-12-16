@@ -44,8 +44,4 @@ public interface AjaxSource {
 	public String getUpdate();
 	
 	public String getProcess();
-	
-	public boolean isGlobal();
-	
-	public boolean isAsync();
 }
