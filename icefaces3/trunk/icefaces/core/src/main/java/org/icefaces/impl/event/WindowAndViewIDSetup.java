@@ -49,10 +49,8 @@ public class WindowAndViewIDSetup implements SystemEventListener {
     }
 
     public void processEvent(final SystemEvent event) throws AbortProcessingException {
-        final FacesContext context = FacesContext.getCurrentInstance();
         UIForm form = (UIForm) ((ComponentSystemEvent) event).getComponent();
         String componentId = form.getId() + ID_SUFFIX;
-        context.getAttributes().put(componentId, componentId);
 
         UIOutput output = new UIOutputWriter() {
             public void encode(ResponseWriter writer, FacesContext context) throws IOException {
@@ -105,8 +103,10 @@ public class WindowAndViewIDSetup implements SystemEventListener {
         }
         }
         // Guard against duplicates within the same JSF lifecycle
-        if (null != facesContext.getAttributes().get(componentId)) {
-            return false;
+        for (UIComponent comp : htmlForm.getChildren()) {
+            if (componentId.equals(comp.getId())) {
+                return false;
+            }
         }
         return true;
     }
