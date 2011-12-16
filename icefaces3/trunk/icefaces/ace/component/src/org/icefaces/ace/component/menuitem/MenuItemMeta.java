@@ -28,7 +28,7 @@ import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 @Component(
-        tagName = "menuitem",
+        tagName = "menuItem",
         componentClass = "org.icefaces.ace.component.menuitem.MenuItem",
         generatedClass = "org.icefaces.ace.component.menuitem.MenuItemBase",
         extendsClass = "javax.faces.component.UICommand",

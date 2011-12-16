@@ -41,37 +41,37 @@
         <h:form>
             <ace:menu type="tiered">
                 <ace:submenu label="Actions">
-                    <ace:menuitem value="Basic Action" 
+                    <ace:menuItem value="Basic Action" 
                                   action="#{menuEvents.ourAction}" icon="ui-icon">
                                   <ace:ajax event="activate" execute="@this" render="color message" />
-                    </ace:menuitem>
-                    <ace:menuitem value="Basic Listener" 
+                    </ace:menuItem>
+                    <ace:menuItem value="Basic Listener" 
                                   actionListener="#{menuEvents.ourActionListener}" icon="ui-icon">
                                   <ace:ajax event="activate" execute="@this" render="color message" />
-                    </ace:menuitem>
+                    </ace:menuItem>
                 </ace:submenu>
                 <ace:submenu label="Example">
-                    <ace:menuitem id="red" value="Color to Red" 
+                    <ace:menuItem id="red" value="Color to Red" 
                                   actionListener="#{menuEvents.applyColor}" icon="ui-icon">
                                   <ace:ajax event="activate" execute="@this" render="color message" />
-                    </ace:menuitem>
-                    <ace:menuitem id="green" value="Color to Green" 
+                    </ace:menuItem>
+                    <ace:menuItem id="green" value="Color to Green" 
                                   actionListener="#{menuEvents.applyColor}" icon="ui-icon">
                                   <ace:ajax event="activate" execute="@this" render="color message" />
-                    </ace:menuitem>
-                    <ace:menuitem id="blue" value="Color to Blue" 
+                    </ace:menuItem>
+                    <ace:menuItem id="blue" value="Color to Blue" 
                                   actionListener="#{menuEvents.applyColor}" icon="ui-icon">
                                   <ace:ajax event="activate" execute="@this" render="color message" />
-                    </ace:menuitem>
+                    </ace:menuItem>
                 </ace:submenu>                
                 <ace:submenu label="Links">
-                    <ace:menuitem value="ICEfaces" url="http://www.icefaces.org" target="_blank"
+                    <ace:menuItem value="ICEfaces" url="http://www.icefaces.org" target="_blank"
                                   icon="ui-icon ui-icon-home"/>
-                    <ace:menuitem value="ICEpush" url="http://www.icepush.org" target="_blank"
+                    <ace:menuItem value="ICEpush" url="http://www.icepush.org" target="_blank"
                                   icon="ui-icon ui-icon-home"/>
-                    <ace:menuitem value="ICEpdf" url="http://www.icepdf.org" target="_blank"
+                    <ace:menuItem value="ICEpdf" url="http://www.icepdf.org" target="_blank"
                                   icon="ui-icon ui-icon-home"/>
-                    <ace:menuitem value="ICEsoft" url="http://www.icesoft.com" target="_blank"
+                    <ace:menuItem value="ICEsoft" url="http://www.icesoft.com" target="_blank"
                                   icon="ui-icon ui-icon-home"/>
                 </ace:submenu>
             </ace:menu>

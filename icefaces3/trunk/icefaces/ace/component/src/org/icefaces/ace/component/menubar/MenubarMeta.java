@@ -27,7 +27,7 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
 @Component(
-        tagName = "menubar",
+        tagName = "menuBar",
         componentClass = "org.icefaces.ace.component.menubar.Menubar",
         rendererClass = "org.icefaces.ace.component.menubar.MenubarRenderer",
         generatedClass = "org.icefaces.ace.component.menubar.MenubarBase",
