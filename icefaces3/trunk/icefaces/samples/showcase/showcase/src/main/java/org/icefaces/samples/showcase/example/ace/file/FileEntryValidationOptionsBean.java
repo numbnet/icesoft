@@ -63,29 +63,16 @@ public class FileEntryValidationOptionsBean extends ComponentExampleImpl<FileEnt
 
     private boolean maxFileSizeSet = false;
     private Integer maxFileSize = 0;
-    private String maxFileSizeMessage = "The uploaded file is too large.";
-    private boolean required = false;
-    private String requiredMessage = "";
-    private boolean disabled = false;
-    private boolean useCustomValidator = false;
 
-    // Invalidate and delete any files not named test.txt
-    public void exampleCustomValidator(FileEntryEvent entryEvent) {
-        if (!useCustomValidator) return;
-        FileEntryResults results = ((FileEntry)entryEvent.getComponent()).getResults();
-        for (FileEntryResults.FileInfo file : results.getFiles()) {
-            if (file.getSize() < 1200) file.updateStatus(file.getStatus(), true, true);
-            FacesUtils.addErrorMessage("Example Validator: File deleted. Size less than 1200 hundred bytes.");
-        }
-    }
-
-    public boolean isUseCustomValidator() {
-        return useCustomValidator;
-    }
-
-    public void setUseCustomValidator(boolean useCustomValidator) {
-        this.useCustomValidator = useCustomValidator;
-    }
+//    // Invalidate and delete any files not named test.txt
+//    public void exampleCustomValidator(FileEntryEvent entryEvent) {
+//        if (!useCustomValidator) return;
+//        FileEntryResults results = ((FileEntry)entryEvent.getComponent()).getResults();
+//        for (FileEntryResults.FileInfo file : results.getFiles()) {
+//            if (file.getSize() < 1200) file.updateStatus(file.getStatus(), true, true);
+//            FacesUtils.addErrorMessage("Example Validator: File deleted. Size less than 1200 hundred bytes.");
+//        }
+//    }
 
     public Integer getMaxFileSize() {
         return maxFileSize;
@@ -93,30 +80,6 @@ public class FileEntryValidationOptionsBean extends ComponentExampleImpl<FileEnt
 
     public void setMaxFileSize(Integer maxFileSize) {
         this.maxFileSize = maxFileSize;
-    }
-
-    public boolean isDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
-    }
-
-    public String getRequiredMessage() {
-        return requiredMessage;
-    }
-
-    public void setRequiredMessage(String requiredMessage) {
-        this.requiredMessage = requiredMessage;
-    }
-
-    public boolean isRequired() {
-        return required;
-    }
-
-    public void setRequired(boolean required) {
-        this.required = required;
     }
 
     public boolean isMaxFileSizeSet() {
@@ -131,22 +94,8 @@ public class FileEntryValidationOptionsBean extends ComponentExampleImpl<FileEnt
         return maxFileSize + " (bytes)";
     }
 
-    public void setMaxFileSizeString(String maxFileSize) {
-        Scanner s = new Scanner(maxFileSize);
-        try {
-            this.maxFileSize = s.nextInt();
-        } catch (Exception e) {
-            this.maxFileSize = 0;
-            FacesUtils.addErrorMessage("Max file size could not be set to: " + maxFileSize);
-        }
-    }
-
     public String getMaxFileSizeMessage() {
-        return maxFileSizeMessage;
-    }
-
-    public void setMaxFileSizeMessage(String maxFileSizeMessage) {
-        this.maxFileSizeMessage = maxFileSizeMessage;
+        return "File size can not exeed "+(maxFileSize/102400)*100+" KB";
     }
 
     public FileEntryValidationOptionsBean() {

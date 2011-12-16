@@ -30,6 +30,8 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.File;
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.util.LinkedHashMap;
 
 @ComponentExample(
         title = "example.ace.fileentry.title",
@@ -71,46 +73,59 @@ import java.io.Serializable;
 })
 @ManagedBean(name= FileEntryBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class FileEntryBean extends ComponentExampleImpl<FileEntryBean>
-        implements Serializable {
+public class FileEntryBean extends ComponentExampleImpl<FileEntryBean> implements Serializable {
 
     public static final String BEAN_NAME = "fileEntry";
+    private LinkedHashMap <String, String> fileData;
+    
 
-    public FileEntryBean() {
+    public FileEntryBean()  
+    {
         super(FileEntryBean.class);
     }                                       
 
-	public void sampleListener(FileEntryEvent e) {
-		FileEntry fe = (FileEntry)e.getComponent();
-		FileEntryResults results = fe.getResults();
-		File parent = null;
+    public void sampleListener(FileEntryEvent e) 
+    {
+        FileEntry fe = (FileEntry)e.getComponent();
+        FileEntryResults results = fe.getResults();
+        File parent = null;
         StringBuilder m = null;
-
-		for (FileEntryResults.FileInfo i : results.getFiles()) {
+        
+    //get data About File
+    
+        for (FileEntryResults.FileInfo i : results.getFiles()) 
+        {
             parent = i.getFile().getParentFile();
             m = new StringBuilder(512);
-            m.append("The uploaded file \"");
-            m.append(i.getFileName());
-            m.append("\" was ");
-            m.append(i.getSize());
-            m.append(" bytes in size.");
-            FacesUtils.addInfoMessage(fe.getClientId(), m.toString());
-		}                                                          
 
-		if (parent != null) {
+            m.append("File Name: ");
+            m.append(i.getFileName());
+            FacesUtils.addInfoMessage(fe.getClientId(), m.toString());
+            m = new StringBuilder(512);
+            m.append("File Size: ");
+            m.append(i.getSize());
+            m.append(" bytes");
+            FacesUtils.addInfoMessage(fe.getClientId(), m.toString());
+        }                                                          
+
+        if (parent != null) 
+        {
             m = new StringBuilder(128);
             long dirSize = 0;
             int fileCount = 0;
-            for (File file : parent.listFiles()) {
+            for (File file : parent.listFiles()) 
+            {
                 fileCount++;
                 dirSize += file.length();
             }
-            m.append("The upload directory now contains ");
+            m.append("Total Files In Upload Directory: ");
             m.append(fileCount);
-            m.append(" file(s) that total ");
+            FacesUtils.addInfoMessage(fe.getClientId(), m.toString());
+            m = new StringBuilder(128);
+            m.append("Total Size of Files In Directory: ");
             m.append(dirSize);
-            m.append(" bytes in size.");
+            m.append(" bytes");
             FacesUtils.addInfoMessage(fe.getClientId(), m.toString());
         }
-	}	
+    }
 }

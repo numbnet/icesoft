@@ -21,6 +21,7 @@
 
 package org.icefaces.samples.showcase.example.ace.accordionpanel;
 
+import com.sun.org.apache.xerces.internal.impl.dv.dtd.ListDatatypeValidator;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -29,6 +30,7 @@ import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @ComponentExample(
@@ -68,15 +70,17 @@ public class AccordionPanelBean extends ComponentExampleImpl<AccordionPanelBean>
     
     private List<Item> items;
     private String imageLocation;
+    private LinkedHashMap <String, Integer> toDoList;
     
     public AccordionPanelBean() 
     {
         super(AccordionPanelBean.class);
-        items = initializeListWithItems();
+        items = populateListWithItems();
+        toDoList = populateToDoList();
         imageLocation = "/resources/css/images/rainbowCalgary.png";
     }
     
-    private ArrayList<Item> initializeListWithItems() 
+    private ArrayList<Item> populateListWithItems() 
    {
         ArrayList<Item> list = new ArrayList<Item>();
         list.add(new Item(1, "Aubergine", "/resources/css/images/dragdrop/aubergine.png", "Fruits and Vegetables", 1.99d, 10));
@@ -89,6 +93,18 @@ public class AccordionPanelBean extends ComponentExampleImpl<AccordionPanelBean>
         
         return list;
     }
+    
+    private LinkedHashMap <String, Integer> populateToDoList()
+    {
+        LinkedHashMap <String, Integer> list = new LinkedHashMap <String, Integer>();
+        list.put("Buy groceries",1);
+        list.put("Review picture of the day",2);
+        list.put("Send invitations",3);
+        list.put("Call John",4);
+        list.put("Check calendar",5);
+        return list;
+    }
+    
 
     public List<Item> getItems() {
         return items;
@@ -105,5 +121,12 @@ public class AccordionPanelBean extends ComponentExampleImpl<AccordionPanelBean>
     public void setImageLocation(String imageLocation) {
         this.imageLocation = imageLocation;
     }
-    
+
+    public LinkedHashMap <String, Integer> getToDoList() {
+        return toDoList;
+    }
+
+    public void setToDoList(LinkedHashMap <String, Integer> toDoList) {
+        this.toDoList = toDoList;
+    }
 }

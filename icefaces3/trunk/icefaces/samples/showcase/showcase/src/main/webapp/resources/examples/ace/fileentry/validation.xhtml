@@ -39,48 +39,35 @@
     <ui:param name="tldResources" value="#{fileEntryResources.tldResources}"/>
 
     <ui:define name="example">
-        <div class="instance">
-        <span class="row">
-            <h:form>
-                <div class="top options">
-                    <ul>
-                        <li>Max Size:<h:inputText value="#{fileEntryValidation.maxFileSizeString}" /></li>
-                        <li>
-                            Max Message:
-                            <h:inputText value="#{fileEntryValidation.maxFileSizeMessage}"
-                                         disabled="#{fileEntryValidation.maxFileSizeSet}" />
-                        </li>
-                        <li>
-                            Use Custom Validator:
-                            <h:selectBooleanCheckbox value="#{fileEntryValidation.useCustomValidator}"/>
-                        </li>
-                        <li>File Required:<h:selectBooleanCheckbox value="#{fileEntryValidation.required}"/></li>
-                        <li>Input Disabled:<h:selectBooleanCheckbox value="#{fileEntryValidation.disabled}"/></li>
-                    </ul>
-                    <h:commandButton value="Set Options"/>
-                </div>
-            </h:form>
-            <h:form>
-                <span class="top">
+        <h:form id="example-form">
+            <ace:panel>
+                <h:panelGrid styleClass="centeredPanelGrid" columns="3">
+                        <h:outputText value="Select File Size"/>
+                        <ace:sliderEntry id="slide-entry"
+                                                clickableRail="true"
+                                                min="0"
+                                                max="1024000"
+                                                stepPercent="10"
+                                                value="#{fileEntryValidation.maxFileSize}">
+                                <ace:ajax event="slideEnd" execute="@this" render="@form" />
+                        </ace:sliderEntry>
+                        <h:outputText id="maxUploadSize" value=" #{(fileEntryValidation.maxFileSize/102400)*100} KB" style="font-weight: bold;"/>
+                    </h:panelGrid>
+           
+               <h:panelGrid styleClass="centeredPanelGrid" width="100%">
                     <ace:fileEntry id="file-entry"
-                        style-class="top"
-                        fileEntryListener="#{fileEntryValidation.exampleCustomValidator}"
-                        maxFileSize="#{fileEntryValidation.maxFileSize}"
-                        maxFileSizeMessage="#{fileEntryValidation.maxFileSizeMessage}"
-                        required="#{fileEntryValidation.required}"
-                        disabled="#{fileEntryValidation.disabled}"
-                        requiredMessage="#{fileEntryValidation.requiredMessage}" />
-                </span>
-                <div class="row">
-                    <span class="top">
-                        <h:commandButton class="submit" type="submit" value="Send File"/>
-                    </span>
-                    <span class="messages top">
-                        <h:messages/>
-                    </span>
-                </div>
-            </h:form>
-        </span>
-        </div>
+                                     maxFileSize="#{fileEntryValidation.maxFileSize}"
+                                     maxFileSizeMessage="#{fileEntryValidation.maxFileSizeMessage}"/>
+                </h:panelGrid>
+           
+                <h:panelGrid styleClass="centeredPanelGrid">
+                     <h:commandButton type="submit" value="Send File"/>
+                </h:panelGrid>
+                
+                <br/>
+                <h:messages/>
+       </ace:panel>
+            
+        </h:form>
     </ui:define>
 </ui:composition>

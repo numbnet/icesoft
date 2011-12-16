@@ -42,14 +42,13 @@
     <ui:define name="example">
         <h:form>
             <ace:accordion collapsible="true">
-                <ace:accordionPane title="My To Do List">  
-                    <ol type="1" style="font-weight: bold;">
-                        <li>Buy groceries</li>
-                        <li>Review picture of the day</li>
-                        <li>Send invitations</li>
-                        <li>Call John</li>
-                        <li>Check calendar</li>
-                    </ol>
+                <ace:accordionPane title="My To Do List">
+                        <h:selectManyCheckbox layout="pageDirection" selectedClass="selectedCheckBox" onchange="submit();">
+                                <f:selectItems value="#{accordionPanelBean.toDoList}"
+                                                    var="listItem"
+                                                    itemValue="#{listItem.value}"
+                                                    itemLabel="#{listItem.key}"/>
+                        </h:selectManyCheckbox>
                 </ace:accordionPane>
 
                 <ace:accordionPane title="My Shopping List">

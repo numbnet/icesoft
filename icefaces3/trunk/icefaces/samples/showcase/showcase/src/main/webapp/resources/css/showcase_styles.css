@@ -29,6 +29,10 @@
     position: relative;
 }
 
+.headerFontStyle
+{
+    font-weight: bolder; font-family: Verdana, sans-serif;
+}
 
 .animationHolderStyle{
     width: 138px;
@@ -93,6 +97,27 @@
     text-align: left;  
     margin-left: auto;
     margin-right: auto;
+}
+
+.selectedCheckBox
+{
+    font-weight: bold;
+    color:#009933;
+}
+
+span#examplePanel_menu.ui-icon.ui-icon-gear{
+    background: url("/resources/css/images/informationIcon.png") no-repeat;
+}
+
+a.ui-panel-titlebar-icon.ui-corner-all.ui-state-default
+{
+    background-color: transparent;
+    border: 0px;
+}
+/*CSS hack in order to display documentation menu properly and prevent it from showing up every time the page is refreshed (style="width:200px;" on a menu component is causing this problem)*/
+div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix
+{
+    width: 200px;
 }
 
 .ice-checkboxbutton .ui-state-hover
