@@ -59,11 +59,7 @@ ice.ace.pushbutton = {
         if (jsProps.type) {
             button.set('button', jsProps.type);
         }
-/*
-        if (!jsProps.tabindex) {
-            button.set('tabindex', jsProps.tabindex);
-        }
-*/
+
 
         if (jsfProps.disabled) {
             button.set("disabled", true);
@@ -89,20 +85,19 @@ ice.ace.pushbutton = {
             YAHOO.log("  buttonRoot=" + buttonRoot + "  buttonNode=" + buttonNode);
             var divRoot = document.getElementById(clientId);
             var context = ice.ace.getJSContext(clientId);
-
+            var behaviors = context.getJSProps().behaviors;
             var fullSubmit = context.getJSFProps().fullSubmit;
-            if (fullSubmit) {
+
+            if (behaviors && behaviors.activate) {
+                // Convert core style params into ace style params
+                var p = {};
+                params(function(name, value) { p[name] = value; });
+                behaviors.activate(p);
+            } else if (fullSubmit) {
                 ice.s(e, divRoot, params);
             } else {
                 ice.se(e, divRoot, params);
             }
-			
-		var behaviors = context.getJSProps().behaviors;
-		if (behaviors) {
-			if (behaviors.activate) {
-				behaviors.activate();
-			}
-		}
         };
 
         buttonRoot = document.getElementById(spanId);
@@ -138,7 +133,6 @@ ice.ace.pushbutton = {
            }
        }
 	   ice.ace.updateProperties(clientId, jsProps, jsfProps, events, this);
-       //ice.ace.updateProperties(clientId, jsProps, jsfProps, events, this);
    },
  
    //delegate call to ice.yui.getInstance(..) with the reference of this lib 
