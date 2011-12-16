@@ -53,29 +53,29 @@
             </ace:panel>
             
             <ace:contextMenu for="intro">
-                <ace:menuitem value="Copy" icon="ui-icon ui-icon-disk" style="font-size: small;"
+                <ace:menuItem value="Copy" icon="ui-icon ui-icon-disk" style="font-size: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Text Copy" />
-                </ace:menuitem>
-                <ace:menuitem value="Translate" icon="ui-icon ui-icon-arrowrefresh-1-w" style="font-style: small;"
+                </ace:menuItem>
+                <ace:menuItem value="Translate" icon="ui-icon ui-icon-arrowrefresh-1-w" style="font-style: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Text Translation" />
-                </ace:menuitem>
+                </ace:menuItem>
             </ace:contextMenu>
             
             <ace:contextMenu for="button">
-                <ace:menuitem value="Click" icon="ui-icon ui-icon-disk" style="font-size: small;"
+                <ace:menuItem value="Click" icon="ui-icon ui-icon-disk" style="font-size: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Click" />
-                </ace:menuitem>
-                <ace:menuitem value="Status" icon="ui-icon" style="font-size: small;"
+                </ace:menuItem>
+                <ace:menuItem value="Status" icon="ui-icon" style="font-size: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Status Check" />
-                </ace:menuitem>
-                <ace:menuitem value="Refresh" icon="ui-icon ui-icon-arrowrefresh-1-w" style="font-size: small;"
+                </ace:menuItem>
+                <ace:menuItem value="Refresh" icon="ui-icon ui-icon-arrowrefresh-1-w" style="font-size: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Page Refresh" />
-                </ace:menuitem>
+                </ace:menuItem>
             </ace:contextMenu>
         </h:form>
     </ui:define>
