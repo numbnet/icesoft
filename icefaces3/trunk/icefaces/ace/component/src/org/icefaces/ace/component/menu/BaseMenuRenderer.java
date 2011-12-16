@@ -111,7 +111,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 						}
 					}
 				}
-				behaviors.append("}; f({'ice.customUpdate':'" + clientId +"'}, null, null, self); }, 100);");
+				behaviors.append("}; f({'ice.customUpdate':'" + clientId +"'}, null, null, self); }, 10);");
 				command = behaviors.toString();
 				
                 if (!hasAjaxBehavior && (menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0)) {
