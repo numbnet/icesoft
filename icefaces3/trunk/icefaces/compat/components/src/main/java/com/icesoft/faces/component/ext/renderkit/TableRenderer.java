@@ -650,7 +650,7 @@ public class TableRenderer
 
         UIComponent form = DomBasicRenderer.findForm(uiComponent);
         String formId = form == null ? "" : form.getClientId(facesContext);
-        String paramId = getSelectedRowParameterName(uiComponent.getContainerClientId(facesContext));
+        String paramId = getSelectedRowParameterName(facesContext, uiData);
         if (rowSelectorFound) {
             FormRenderer.addHiddenField(facesContext, paramId + "ctrKy");            
             FormRenderer.addHiddenField(facesContext, paramId + "sftKy");
@@ -673,12 +673,12 @@ public class TableRenderer
             
 
             Element clickedRowField = domContext.createElement(HTML.INPUT_ELEM);
-            String clickedRowParam = getClickedRowParameterName(uiComponent.getContainerClientId(facesContext));
+            String clickedRowParam = getClickedRowParameterName(facesContext, uiData);
             clickedRowField.setAttribute(HTML.TYPE_ATTR, "hidden");
             clickedRowField.setAttribute(HTML.NAME_ATTR, clickedRowParam); 
             
             Element clickCountField = domContext.createElement(HTML.INPUT_ELEM);
-            String clickCountParam = getClickCountParameterName(uiComponent.getContainerClientId(facesContext));
+            String clickCountParam = getClickCountParameterName(facesContext, uiData);
             clickCountField.setAttribute(HTML.TYPE_ATTR, "hidden");
             clickCountField.setAttribute(HTML.NAME_ATTR, clickCountParam); 
             
@@ -717,8 +717,8 @@ public class TableRenderer
                     } else {
                         String delay = String.valueOf(rowSelector.getDblClickDelay().intValue());
                         tr.setAttribute("onclick", "Ice.registerClick(this,'"
-                            + getClickedRowParameterName(uiComponent.getContainerClientId(facesContext)) + "','"
-                            + getClickCountParameterName(uiComponent.getContainerClientId(facesContext)) + "',"
+                            + getClickedRowParameterName(facesContext, uiData) + "','"
+                            + getClickCountParameterName(facesContext, uiData) + "',"
                             + "'" +uiData.getRowIndex()+ "','"+ formId +"',"+delay+",true,event,"+rowSelectionUseEvent+","
                             + "'"+ paramId +"','" + toggleClass + "');");
                         tr.setAttribute("ondblclick", "Ice.registerDblClick(this);");
@@ -727,8 +727,8 @@ public class TableRenderer
                     if (rowSelector.getClickListener() != null || rowSelector.getClickAction() != null) {
                         String delay = String.valueOf(rowSelector.getDblClickDelay().intValue());
                         tr.setAttribute("onclick", "Ice.registerClick(this,'"
-                            + getClickedRowParameterName(uiComponent.getContainerClientId(facesContext)) + "','"
-                            + getClickCountParameterName(uiComponent.getContainerClientId(facesContext)) + "',"
+                            + getClickedRowParameterName(facesContext, uiData) + "','"
+                            + getClickCountParameterName(facesContext, uiData) + "',"
                             + "'" +uiData.getRowIndex()+ "','"+ formId +"',"+delay+",false);");
                         tr.setAttribute("ondblclick", "Ice.registerDblClick(this);");
                     }
@@ -1030,22 +1030,18 @@ public class TableRenderer
         return false;
     }
 
-    public static String getSelectedRowParameterName(String dataTableId) {
-        // strip the last ':' because the Datatables client Id changes for each iterator
-        int i = dataTableId.lastIndexOf(UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()));
-        dataTableId = dataTableId.substring(0, i);
+    public static String getSelectedRowParameterName(FacesContext facesContext, HtmlDataTable dataTable) {
+        String dataTableId = dataTable.getClientId(facesContext);
         return dataTableId + SELECTED_ROWS;
     }
     
-    public static String getClickedRowParameterName(String dataTableId) {
-        int i = dataTableId.lastIndexOf(UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()));
-        dataTableId = dataTableId.substring(0, i);
+    public static String getClickedRowParameterName(FacesContext facesContext, HtmlDataTable dataTable) {
+        String dataTableId = dataTable.getClientId(facesContext);
         return dataTableId + CLICKED_ROW;
     }
     
-    public static String getClickCountParameterName(String dataTableId) {
-        int i = dataTableId.lastIndexOf(UINamingContainer.getSeparatorChar(FacesContext.getCurrentInstance()));
-        dataTableId = dataTableId.substring(0, i);
+    public static String getClickCountParameterName(FacesContext facesContext, HtmlDataTable dataTable) {
+        String dataTableId = dataTable.getClientId(facesContext);
         return dataTableId + CLICK_COUNT;
     }    
 

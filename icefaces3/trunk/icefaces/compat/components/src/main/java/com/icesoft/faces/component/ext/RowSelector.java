@@ -331,16 +331,15 @@ public class RowSelector extends UIPanel {
         // Check for row selection in its parent table hidden field
         HtmlDataTable dataTable = getParentDataTable(this);
 
-        String dataTableId = dataTable.getClientId(facesContext);
         String selectedRowsParameter =
-                TableRenderer.getSelectedRowParameterName(dataTableId);
+                TableRenderer.getSelectedRowParameterName(facesContext, dataTable);
         Map requestMap = facesContext.getExternalContext()
                                         .getRequestParameterMap();
         String selectedRows = (String) requestMap.get(selectedRowsParameter);
         boolean isCtrlKey = "true".equals(requestMap.get(selectedRowsParameter+"ctrKy"));
         boolean isShiftKey = "true".equals(requestMap.get(selectedRowsParameter+"sftKy"));        
-        String clickedRowParameter = TableRenderer.getClickedRowParameterName(dataTableId);
-        String clickCountParameter = TableRenderer.getClickCountParameterName(dataTableId);
+        String clickedRowParameter = TableRenderer.getClickedRowParameterName(facesContext, dataTable);
+        String clickCountParameter = TableRenderer.getClickCountParameterName(facesContext, dataTable);
         String clickedRowIndex = (String) requestMap.get(clickedRowParameter);
         String clickCount = (String) requestMap.get(clickCountParameter);
         ClickActionEvent clickActionEvent = null;
