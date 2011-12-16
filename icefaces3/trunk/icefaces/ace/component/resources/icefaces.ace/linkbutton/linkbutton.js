@@ -109,18 +109,19 @@ ice.ace.linkButton = {
             evTarget = evTarget.parentNode;
         }
         var hrefAttr = YAHOO.util.Dom.getAttribute(evTarget, "href");
-        if (doAction) {
-            ice.s(e, divRoot, params);
+
+        var behaviors = JSContext.getJSProps().behaviors;
+        if (behaviors && behaviors.activate) {
+            // Convert core style params into ace style params
+            var p = {};
+            params(function(name, value) { p[name] = value; });
+            behaviors.activate(p);
+        } else if (doAction) {
+           ice.s(e, divRoot, params);
         } else if(!hrefAttr) {
             ice.se(e, divRoot, params );
         }
 
-		var behaviors = JSContext.getJSProps().behaviors;
-		if (behaviors) {
-			if (behaviors.activate) {
-				behaviors.activate();
-			}
-		}
         // If there are actionListeners, don't do default behaviour
         if (doAction) {
             return false;
@@ -147,18 +148,17 @@ ice.ace.linkButton = {
                 }
             }
         };
-        if (doAction) {
+        var behaviors = JSContext.getJSProps().behaviors;
+        if (behaviors && behaviors.activate) {
+            // Convert core style params into ace style params
+            var p = {};
+            params(function(name, value) { p[name] = value; });
+            behaviors.activate(p);
+        } else if (doAction) {
             ice.s(e, divRoot, params);
         } else {
             ice.se(e, divRoot, params );
         }
-			
-		var behaviors = JSContext.getJSProps().behaviors;
-		if (behaviors) {
-			if (behaviors.activate) {
-				behaviors.activate();
-			}
-		}
 		
         // If there are actionListeners, don't do default behaviour
         if (doAction) {
