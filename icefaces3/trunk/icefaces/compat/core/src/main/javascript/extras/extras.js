@@ -2255,13 +2255,13 @@ Autocompleter.Base.prototype = {
                         Position.clone(element, update, {setHeight: false, offsetTop: element.offsetHeight});
                         update.clonePosition(element.parentNode, {setTop:false, setWidth:false, setHeight:false,
                             offsetLeft: element.offsetLeft - element.parentNode.offsetLeft});
-                        if (ieEngine == 7 || ieEngine == 8) {
+                        if (ieEngine >= 7) {
                             var savedPos = element.style.position;
                             element.style.position = "relative";
                             update.style.left = element.offsetLeft + "px";
                             if (ieEngine == 7) {
                                 update.style.top = (element.offsetTop + element.offsetHeight) + "px";
-                            } else if (ieEngine == 8) {
+                            } else {
                                 var scrollTop = element.cumulativeScrollOffset().top - document.documentElement.scrollTop;
                                 update.style.top = (element.offsetTop - scrollTop + element.offsetHeight) + "px";
                             }
