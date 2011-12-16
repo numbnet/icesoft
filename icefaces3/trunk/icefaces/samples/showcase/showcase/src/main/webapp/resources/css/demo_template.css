@@ -192,7 +192,7 @@ a:link, a:visited {
 .example {
     float: left;
     clear: left;
-    margin-top: 6px;
+    margin-top: -5px;
     /*border: 1px solid #ECECEC; Styling preference, and %100 width hides right border*/
     width: 100%;
 }
