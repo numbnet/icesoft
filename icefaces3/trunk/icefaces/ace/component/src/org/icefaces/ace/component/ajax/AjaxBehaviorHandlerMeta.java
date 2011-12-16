@@ -42,9 +42,6 @@ public class AjaxBehaviorHandlerMeta {
 	@Property(required=Required.no, tlddoc="Boolean value that determines the phaseId, when true actions are processed at apply_request_values, when false at invoke_application phase.")
 	private boolean immediate;
 	
-	@Property(required=Required.no, tlddoc="When set to true, ajax requests are not queued.")
-	private boolean async;
-	
 	@Property(required=Required.no, tlddoc="Component(s) to execute in ajax request.")
 	private String execute;
 	
@@ -62,9 +59,6 @@ public class AjaxBehaviorHandlerMeta {
 	
 	@Property(required=Required.no, tlddoc="Javascript handler to execute when ajax request fails.")
 	private String onError;
-	
-	@Property(required=Required.no, tlddoc="Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.")
-	private boolean global;
 	
 	@Property(required=Required.no, tlddoc="Disables ajax behavior.")
 	private boolean disabled;
