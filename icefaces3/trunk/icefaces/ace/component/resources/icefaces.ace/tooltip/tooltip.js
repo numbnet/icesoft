@@ -5,7 +5,10 @@ ice.ace.Tooltips = {};
 ice.ace.Tooltip = function(cfg) {
 	this.cfg = cfg;
 	this.target = "";
-	
+
+    if (this.cfg.behaviors === undefined)
+        this.cfg.behaviors = {};
+
 	if(this.cfg.global) {
 		this.target = "*[title]";
 	}else {
