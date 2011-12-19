@@ -39,6 +39,7 @@ import org.icefaces.ace.event.SlideEndEvent;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
+import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.faces.event.ValueChangeEvent;
@@ -138,39 +139,44 @@ public class SliderEntryRenderer extends CoreRenderer{
 		writer.startElement("script", slider);
 		writer.writeAttribute("type", "text/javascript", null);
 
-		writer.write(this.resolveWidgetVar(slider) + " = new ice.ace.Slider('" + clientId + "', {");
-		writer.write("value:" + slider.getValue());
-		writer.write(",input:'" + clientId + "_hidden" + "'");
+		JSONBuilder jb = JSONBuilder.create();
+		writer.write(this.resolveWidgetVar(slider) + " = new ");
+		jb.beginFunction("ice.ace.Slider")
+			.item(clientId)
+			.beginMap()
+			.entry("value", slider.getValue())
+			.entry("input", clientId + "_hidden");
 		int min = slider.getMin();
-		writer.write(",min:" + min);
+		jb.entry("min", min);
 		int max = slider.getMax();
-		writer.write(",max:" + max);
-		writer.write(",animate:" + slider.isAnimate());
+		jb.entry("max", max);
+		jb.entry("animate", slider.isAnimate());
 		float stepPercent = slider.getStepPercent();
 		float step = ((max - min) * stepPercent) / (float) 100;
-		writer.write(",step:" + step);
+		jb.entry("step", step);
 		String orientation = "y".equals(slider.getAxis()) ? "vertical" : "horizontal";
-		writer.write(",orientation:'" + orientation + "'");
+		jb.entry("orientation", orientation);
 		String length = slider.getLength();
 		if (length.toLowerCase().indexOf("px") == -1) {
 			length += "px";
 		}
-		writer.write(",length:'" + length + "'");
+		jb.entry("length", length);
 		
 		Integer tabindex = slider.getTabindex();
 		if (tabindex != null) {
-			writer.write(",tabindex:" + tabindex.toString());
+			jb.entry("tabindex", tabindex.toString());
 		}
-		writer.write(",clickableRail:" + slider.isClickableRail());
+		jb.entry("clickableRail", slider.isClickableRail());
 		
-		if(slider.isDisabled()) writer.write(",disabled:true");
-        if(slider.getOnSlideStart() != null) writer.write(",onSlideStart:function(event, ui) {" + slider.getOnSlideStart() + "}");
-        if(slider.getOnSlide() != null) writer.write(",onSlide:function(event, ui) {" + slider.getOnSlide() + "}");
-        if(slider.getOnSlideEnd() != null) writer.write(",onSlideEnd:function(event, ui) {" + slider.getOnSlideEnd() + "}");
+		if(slider.isDisabled()) jb.entry("disabled", true);
+        if(slider.getOnSlideStart() != null) jb.entry("onSlideStart", "function(event, ui) {" + slider.getOnSlideStart() + "}", true);
+        if(slider.getOnSlide() != null) jb.entry("onSlide", "function(event, ui) {" + slider.getOnSlide() + "}", true);
+        if(slider.getOnSlideEnd() != null) jb.entry("onSlideEnd", "function(event, ui) {" + slider.getOnSlideEnd() + "}", true);
 		
-		encodeClientBehaviors(context, slider);
+		encodeClientBehaviors(context, slider, jb);
 		
-		writer.write("});");
+        jb.endMap().endFunction();
+		writer.write(jb.toString());
 	
 		writer.endElement("script");
 	}
