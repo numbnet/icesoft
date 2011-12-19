@@ -228,14 +228,14 @@ public class CoreRenderer extends Renderer {
         }
 
         //callbacks
-        if(source.getOnstart() != null)
-            req.append(",onstart:function(){").append(source.getOnstart()).append(";}");
-        if(source.getOnerror() != null)
-            req.append(",onerror:function(xhr, status, error){").append(source.getOnerror()).append(";}");
-        if(source.getOnsuccess() != null)
-            req.append(",onsuccess:function(data, status, xhr, args){").append(source.getOnsuccess()).append(";}");
-        if(source.getOncomplete() != null)
-            req.append(",oncomplete:function(xhr, status, args){").append(source.getOncomplete()).append(";}");
+        if(source.getOnStart() != null)
+            req.append(",onstart:function(){").append(source.getOnStart()).append(";}");
+        if(source.getOnError() != null)
+            req.append(",onerror:function(xhr, status, error){").append(source.getOnError()).append(";}");
+        if(source.getOnSuccess() != null)
+            req.append(",onsuccess:function(data, status, xhr, args){").append(source.getOnSuccess()).append(";}");
+        if(source.getOnComplete() != null)
+            req.append(",oncomplete:function(xhr, status, args){").append(source.getOnComplete()).append(";}");
 
         //params
         boolean firstParam = true, hasParam = false;

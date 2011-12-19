@@ -33,13 +33,13 @@ package org.icefaces.ace.api;
  */
 public interface AjaxSource {
 
-	public String getOnstart();
+	public String getOnStart();
 	
-	public String getOncomplete();
+	public String getOnComplete();
 	
-	public String getOnsuccess();
+	public String getOnSuccess();
 	
-	public String getOnerror();
+	public String getOnError();
 	
 	public String getUpdate();
 	
