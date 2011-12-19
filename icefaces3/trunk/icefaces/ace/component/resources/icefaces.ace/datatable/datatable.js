@@ -368,7 +368,7 @@ ice.ace.DataTable.prototype.setupResizableColumns = function() {
     var widths = ice.ace.getCookie(this.columnWidthsCookie);
     if (widths) {
         widths = widths.split(',');
-        for (var i in widths) {
+        for (var i = 0; i < widths.length; i++) {
             ice.ace.jq(columns.get(i)).css('width', widths[i]);
         }
     }
