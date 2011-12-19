@@ -29,27 +29,30 @@
     xmlns:ui="http://java.sun.com/jsf/facelets" 
     template="/resources/templates/content-template.xhtml">
     
-    <ui:param name="title" value="#{msgs[fileEntryBasic.title]}"/>
-    <ui:param name="description" value="#{msgs[fileEntryBasic.description]}"/>
-    <ui:param name="subMenuTitle" value="#{msgs[fileEntry.subMenuTitle]}"/>
-    <ui:param name="subMenuLinks" value="#{fileEntry.subMenuLinks}"/>
-    <ui:param name="resourceValue" value="#{fileEntryBasic.exampleResource}"/>
+    <ui:param name="title" value="#{msgs[fileEntryListener.title]}"/>
+    <ui:param name="description" value="#{msgs[fileEntryListener.description]}"/>
+    <ui:param name="subMenuTitle" value="#{msgs[fileEntryListener.subMenuTitle]}"/>
+    <ui:param name="subMenuLinks" value="#{fileEntryListener.subMenuLinks}"/>
+    <ui:param name="resourceValue" value="#{fileEntryListener.exampleResource}"/>
     
     <ui:param name="wikiResources" value="#{fileEntryResources.wikiResources}"/>
     <ui:param name="tldResources" value="#{fileEntryResources.tldResources}"/>
 
     <ui:define name="example">
         <h:form id="example-form">
-            <span>
-                <ace:fileEntry id="file-entry" style-class="top" />
-            </span>
             
-            <div class="row">
-                <h:commandButton class="submit top" type="submit" value="Send File" />                                  
-                <span class="messages top">
-                    <h:messages />
-                </span>
-            </div>
+            <ace:panel>
+               <h:panelGrid styleClass="centeredPanelGrid">
+                    <ace:fileEntry id="fileEntry"
+                                           fileEntryListener="#{fileEntryListener.customValidator}"/>
+               </h:panelGrid>
+                
+                <h:panelGrid styleClass="centeredPanelGrid">
+                     <h:commandButton type="submit" value="Send File"/>
+                     <h:message for="example-form:fileEntry" infoClass="infoMessage" errorClass="errorMessage"/>
+                </h:panelGrid>
+       </ace:panel>
+            
         </h:form>
     </ui:define>
 </ui:composition>

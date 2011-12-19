@@ -26,13 +26,10 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
-import org.icefaces.samples.showcase.util.FacesUtils;
 
-import org.icefaces.ace.component.fileentry.*;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
-import java.util.Scanner;
 
 @ComponentExample(
         parent = FileEntryBean.BEAN_NAME,
@@ -63,16 +60,6 @@ public class FileEntryValidationOptionsBean extends ComponentExampleImpl<FileEnt
 
     private boolean maxFileSizeSet = false;
     private Integer maxFileSize = 0;
-
-//    // Invalidate and delete any files not named test.txt
-//    public void exampleCustomValidator(FileEntryEvent entryEvent) {
-//        if (!useCustomValidator) return;
-//        FileEntryResults results = ((FileEntry)entryEvent.getComponent()).getResults();
-//        for (FileEntryResults.FileInfo file : results.getFiles()) {
-//            if (file.getSize() < 1200) file.updateStatus(file.getStatus(), true, true);
-//            FacesUtils.addErrorMessage("Example Validator: File deleted. Size less than 1200 hundred bytes.");
-//        }
-//    }
 
     public Integer getMaxFileSize() {
         return maxFileSize;

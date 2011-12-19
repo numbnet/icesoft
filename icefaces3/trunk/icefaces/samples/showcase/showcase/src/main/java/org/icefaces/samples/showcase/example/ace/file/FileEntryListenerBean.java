@@ -21,8 +21,6 @@
 
 package org.icefaces.samples.showcase.example.ace.file;
 
-import org.icefaces.samples.showcase.metadata.annotation.Menu;
-import org.icefaces.samples.showcase.metadata.annotation.MenuLink;                                                                       
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -31,37 +29,57 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
+import org.icefaces.ace.component.fileentry.FileEntry;
+import org.icefaces.ace.component.fileentry.FileEntryEvent;
+import org.icefaces.ace.component.fileentry.FileEntryResults;
+import org.icefaces.samples.showcase.util.FacesUtils;
 
 @ComponentExample(
         parent = FileEntryBean.BEAN_NAME,
-        title = "example.ace.fileentry.basic.title",
-        description = "example.ace.fileentry.basic.description",
-        example = "/resources/examples/ace/fileentry/filebasic.xhtml"
+        title = "example.ace.fileentry.listener.title",
+        description = "example.ace.fileentry.listener.description",
+        example = "/resources/examples/ace/fileentry/fileEntryListener.xhtml"
 )
 @ExampleResources(
 resources ={
     // xhtml
     @ExampleResource(type = ResourceType.xhtml,
-            title="filebasic.xhtml",
+            title="fileEntryListener.xhtml",
             resource = "/resources/examples/ace/"+
-                       "fileentry/filebasic.xhtml"),
+                       "fileentry/fileEntryListener.xhtml"),
     // Java Source
     @ExampleResource(type = ResourceType.java,
-            title="FileEntryBasicBean.java",
+            title="FileEntryListenerBean.java",
             resource = "/WEB-INF/classes/org/icefaces/samples/"+
-                       "showcase/example/ace/file/FileEntryBasicBean.java")
+                       "showcase/example/ace/file/FileEntryListenerBean.java")
 }
 )
-@ManagedBean(name= FileEntryBasicBean.BEAN_NAME)
+@ManagedBean(name= FileEntryListenerBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class FileEntryBasicBean extends ComponentExampleImpl<FileEntryBasicBean>
-        implements Serializable {
+public class FileEntryListenerBean extends ComponentExampleImpl<FileEntryListenerBean> implements Serializable 
+{
+    public static final String BEAN_NAME = "fileEntryListener";
 
-    public static final String BEAN_NAME = "fileEntryBasic";
-
-    public FileEntryBasicBean() {
-        super(FileEntryBasicBean.class);
+    public FileEntryListenerBean() {
+        super(FileEntryListenerBean.class);
+    }
+    
+    // Invalidate and delete any files not named test.txt
+    public void customValidator(FileEntryEvent entryEvent)
+    {
+        FileEntryResults results = ((FileEntry)entryEvent.getComponent()).getResults();
+        for (FileEntryResults.FileInfo file : results.getFiles()) 
+        {
+            if(!file.getContentType().equals("application/pdf"))
+            {
+                file.updateStatus(file.getStatus(), true, true);
+                FacesUtils.addErrorMessage("example-form:fileEntry","Only PDF files can be uploaded. Your upload has been cancelled.");
+            }
+            else
+            {
+                FacesUtils.addInfoMessage("example-form:fileEntry", "Your file has been uploaded");
+            }
+        }
     }
 }
