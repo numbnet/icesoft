@@ -49,20 +49,16 @@ public class TooltipRenderer extends CoreRenderer {
         String clientId = tooltip.getClientId(facesContext);
         Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
 
-		if(params.containsKey(clientId)) {
-            if (params.containsKey(clientId + "_displayListener")) {
-
-                if (tooltip.getDisplayListener() != null) {
-                    tooltip.getDisplayListener().invoke(facesContext.getELContext(), null);
-                }
-
-            } else {
-                //RequestContext.getCurrentInstance().addCallbackParam(tooltip.getClientId(facesContext) + "_value", tooltip.getValue());
-
+		//if(params.containsKey(clientId)) {
+        if (params.containsKey(clientId + "_displayListener")) {
+            if (tooltip.getDisplayListener() != null) {
+                tooltip.getDisplayListener().invoke(facesContext.getELContext(), null);
             }
-
-            FacesContext.getCurrentInstance().renderResponse();
+        } else {
+            //RequestContext.getCurrentInstance().addCallbackParam(tooltip.getClientId(facesContext) + "_value", tooltip.getValue());
         }
+        //FacesContext.getCurrentInstance().renderResponse();
+        //}
         decodeBehaviors(facesContext, tooltip);
     }
 
@@ -92,6 +88,7 @@ public class TooltipRenderer extends CoreRenderer {
 		String clientId = tooltip.getClientId(facesContext);
 		
 		writer.startElement("script", null);
+        writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
         writer.write("jQuery(function() {");
