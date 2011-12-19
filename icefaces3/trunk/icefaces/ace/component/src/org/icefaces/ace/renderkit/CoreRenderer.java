@@ -27,15 +27,12 @@
  */
 package org.icefaces.ace.renderkit;
 
-import org.icefaces.ace.api.AjaxSource;
-import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.Constants;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIParameter;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -206,83 +203,6 @@ public class CoreRenderer extends Renderer {
 		return value.trim().equals("");
 	}
 	
-    protected String buildAjaxRequest(FacesContext context, AjaxSource source) {
-        UIComponent component = (UIComponent) source;
-
-        StringBuilder req = new StringBuilder();
-        req.append("ice.ace.ab(");
-
-		// node
-		req.append("{node:this");
-		
-        //source
-        req.append(",source:").append("'").append(component.getClientId(context)).append("'");
-
-        //process
-        String process = source.getProcess() != null ? ComponentUtils.findClientIds(context, component, source.getProcess()) : "@all";
-        req.append(",execute:'").append(process).append("'");
-
-        //update
-        if(source.getUpdate() != null) {
-            req.append(",render:'").append(ComponentUtils.findClientIds(context, component, source.getUpdate())).append("'");
-        }
-
-        //callbacks
-        if(source.getOnStart() != null)
-            req.append(",onstart:function(){").append(source.getOnStart()).append(";}");
-        if(source.getOnError() != null)
-            req.append(",onerror:function(xhr, status, error){").append(source.getOnError()).append(";}");
-        if(source.getOnSuccess() != null)
-            req.append(",onsuccess:function(data, status, xhr, args){").append(source.getOnSuccess()).append(";}");
-        if(source.getOnComplete() != null)
-            req.append(",oncomplete:function(xhr, status, args){").append(source.getOnComplete()).append(";}");
-
-        //params
-        boolean firstParam = true, hasParam = false;
-
-        for(UIComponent child : component.getChildren()) {
-            if(child instanceof UIParameter) {
-                UIParameter parameter = (UIParameter) child;
-                hasParam = true;
-
-                if(firstParam) {
-                    firstParam = false;
-                    req.append(",params:{");
-                } else {
-                    req.append(",");
-                }
-
-                req.append("'").append(parameter.getName()).append("':'").append(parameter.getValue()).append("'");
-            }
-        }
-
-        if(hasParam) {
-            req.append("}");
-        }
-
-        req.append("});");
-
-        return req.toString();
-    }
-	
-	protected String buildNonAjaxRequest(FacesContext facesContext, UIComponent component, String formId, String decodeParam) {		
-        StringBuilder request = new StringBuilder();
-
-        request.append("ice.ace").append(addSubmitParam(formId, decodeParam, decodeParam));
-		
-		for(UIComponent child : component.getChildren()) {
-			if(child instanceof UIParameter) {
-                UIParameter param = (UIParameter) child;
-
-                request.append(addSubmitParam(formId, param.getName(), String.valueOf(param.getValue())));
-			}
-		}
-
-		request.append(".submit('").append(formId).append("');");
-		
-		return request.toString();
-	}
-
     protected String addSubmitParam(String parent, String name, String value) {
         StringBuilder builder = new StringBuilder();
 
