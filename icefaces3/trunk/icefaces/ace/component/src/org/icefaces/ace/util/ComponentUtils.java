@@ -209,38 +209,31 @@ public class ComponentUtils {
         return "#" + id.replaceAll(":", "\\\\\\\\:");
     }
 
-    public static String formatKeywords(FacesContext facesContext, UIComponent component, String processRequest) {
-        String process = processRequest;
-
-        if (process.indexOf("@this") != -1)
-            process = process.replaceFirst("@this", component.getClientId(facesContext));
-/*
-        if (process.indexOf("@form") != -1) {
-            UIComponent form = ComponentUtils.findParentForm(facesContext, component);
-            if (form == null)
-                throw new FacesException("Component " + component.getClientId(facesContext) + " needs to be enclosed in a form");
-
-            process = process.replaceFirst("@form", form.getClientId(facesContext));
-        }
-*/
-        if (process.indexOf("@parent") != -1)
-            process = process.replaceFirst("@parent", component.getParent().getClientId(facesContext));
-
-        return process;
-    }
-
     public static String findClientIds(FacesContext context, UIComponent component, String list) {
         if (list == null) return "@none";
 
-        String formattedList = formatKeywords(context, component, list);
-        String[] ids = formattedList.split("[,\\s]+");
+        //System.out.println("ComponentUtils.findClientIds()  component.clientId: " + component.getClientId(context) + "  list: " + list);
+
+        String[] ids = list.split("[,\\s]+");
         StringBuilder buffer = new StringBuilder();
 
         for (int i = 0; i < ids.length; i++) {
             if (i != 0) buffer.append(" ");
             String id = ids[i].trim();
+            //System.out.println("ComponentUtils.findClientIds()    ["+i+"]  id: " + id);
 
-            if (id.equals("@all") || id.equals("@none")) buffer.append(id);
+            if (id.equals("@all") || id.equals("@none")) {
+                //System.out.println("ComponentUtils.findClientIds()    ["+i+"]  " + id);
+                buffer.append(id);
+            }
+            else if (id.equals("@this")) {
+                //System.out.println("ComponentUtils.findClientIds()    ["+i+"]  @this  : " + component.getClientId(context));
+                buffer.append(component.getClientId(context));
+            }
+            else if (id.equals("@parent")) {
+                //System.out.println("ComponentUtils.findClientIds()    ["+i+"]  @parent: " + component.getParent().getClientId(context));
+                buffer.append(component.getParent().getClientId(context));
+            }
             else if (id.equals("@form")) {
                 UIComponent form = ComponentUtils.findParentForm(context, component);
                 if (form == null)
@@ -249,9 +242,11 @@ public class ComponentUtils {
                 buffer.append(form.getClientId(context));
             }
             else {
-
                 UIComponent comp = component.findComponent(id);
-                if (comp != null) buffer.append(comp.getClientId(context));
+                //System.out.println("ComponentUtils.findClientIds()    ["+i+"]  comp   : " + (comp == null ? "null" : comp.getClientId(context)));
+                if (comp != null) {
+                    buffer.append(comp.getClientId(context));
+                }
                 else {
                     if (context.getApplication().getProjectStage().equals(ProjectStage.Development)) {
                         logger.log(Level.INFO, "Cannot find component with identifier \"{0}\" in view.", id);
