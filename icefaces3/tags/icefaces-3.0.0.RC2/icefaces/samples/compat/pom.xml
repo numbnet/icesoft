@@ -25,7 +25,7 @@
   <parent>
      <groupId>org.icefaces.samples</groupId>
      <artifactId>samples-parent</artifactId>
-     <version>3.0.0.RC1</version>
+     <version>3.0.0.RC2</version>
   </parent>
   <artifactId>compat</artifactId>
   <packaging>pom</packaging>

@@ -26,17 +26,17 @@
     <parent>
         <groupId>org.icefaces.samples</groupId>
         <artifactId>icefaces-showcase</artifactId>
-        <version>3.0.0.RC1</version>
+        <version>3.0.0.RC2</version>
     </parent>
 
     <artifactId>showcase-portlet</artifactId>
     <packaging>war</packaging>
     <name>ICEfaces 3 Showcase Portlets</name>
     <url>http://www.icefaces.org/</url>
-    <version>3.0.0.RC1</version>
+    <version>3.0.0.RC2</version>
     <properties>
         <private.demo>true</private.demo>
-        <icefaces.version>3.0.0.RC1</icefaces.version>
+        <icefaces.version>3.0.0.RC2</icefaces.version>
         <jsf.version>2.1.4</jsf.version>
         <parent.root>../comp-suite</parent.root>
     </properties>
