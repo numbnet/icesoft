@@ -41,8 +41,8 @@
     <ui:define name="example">
         <h:form id="example-form">
             <ace:panel>
-                <h:panelGrid styleClass="centeredPanelGrid" columns="3">
-                        <h:outputText value="Select File Size"/>
+                <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing" columns="3">
+                        <h:outputText value="Select Max File Size:"/>
                         <ace:sliderEntry id="slide-entry"
                                                 clickableRail="true"
                                                 min="0"
@@ -54,18 +54,19 @@
                         <h:outputText id="maxUploadSize" value=" #{(fileEntryValidation.maxFileSize/102400)*100} KB" style="font-weight: bold;"/>
                     </h:panelGrid>
            
-               <h:panelGrid styleClass="centeredPanelGrid" width="100%">
+               <h:panelGrid styleClass="centeredPanelGrid">
                     <ace:fileEntry id="file-entry"
                                      maxFileSize="#{fileEntryValidation.maxFileSize}"
-                                     maxFileSizeMessage="#{fileEntryValidation.maxFileSizeMessage}"/>
+                                     maxFileSizeMessage="#{fileEntryValidation.maxFileSizeMessage}"
+                                     required="true"
+                                     requiredMessage="You must select a file to upload"
+                                     label ="File Entry"/>
                 </h:panelGrid>
            
                 <h:panelGrid styleClass="centeredPanelGrid">
                      <h:commandButton type="submit" value="Send File"/>
+                     <h:messages layout="table" infoClass="infoMessage" errorClass="errorMessage"/>
                 </h:panelGrid>
-                
-                <br/>
-                <h:messages/>
        </ace:panel>
             
         </h:form>

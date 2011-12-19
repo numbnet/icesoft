@@ -55,21 +55,9 @@ import java.util.LinkedHashMap;
 @Menu(
 	title = "menu.ace.fileentry.subMenu.title",
 	menuLinks = {
-            @MenuLink(title = "menu.ace.fileentry.subMenu.main",
-                    isDefault = true,
-                    exampleBeanName = FileEntryBean.BEAN_NAME), 
-	        @MenuLink(title = "menu.ace.fileentry.subMenu.basic",
-	                exampleBeanName = FileEntryBasicBean.BEAN_NAME),     
-	        @MenuLink(title = "menu.ace.fileentry.subMenu.validation",
-                    exampleBeanName = FileEntryValidationOptionsBean.BEAN_NAME)
-            /*
-	        @MenuLink(title = "menu.ace.fileentry.subMenu.multiple",
-                    isDisabled = true,
-                    exampleBeanName = FileEntryMultipleBean.BEAN_NAME),
-	        @MenuLink(title = "menu.ace.fileentry.subMenu.failpop",
-                    isDisabled = true,
-	                exampleBeanName = FileEntryFailPopBean.BEAN_NAME)
-            */
+                    @MenuLink(title = "menu.ace.fileentry.subMenu.main", isDefault = true, exampleBeanName = FileEntryBean.BEAN_NAME), 
+                    @MenuLink(title = "menu.ace.fileentry.subMenu.listener", exampleBeanName = FileEntryListenerBean.BEAN_NAME),     
+                    @MenuLink(title = "menu.ace.fileentry.subMenu.validation",exampleBeanName = FileEntryValidationOptionsBean.BEAN_NAME)
 })
 @ManagedBean(name= FileEntryBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
