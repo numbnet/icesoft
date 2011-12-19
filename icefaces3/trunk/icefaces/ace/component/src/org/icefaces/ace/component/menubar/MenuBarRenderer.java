@@ -42,10 +42,10 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-@MandatoryResourceComponent(tagName="menubar", value="org.icefaces.ace.component.menubar.Menubar")
-public class MenubarRenderer extends BaseMenuRenderer {
+@MandatoryResourceComponent(tagName="menubar", value="org.icefaces.ace.component.menubar.MenuBar")
+public class MenuBarRenderer extends BaseMenuRenderer {
 
-    private final static Logger logger = Logger.getLogger(MenubarRenderer.class.getName());
+    private final static Logger logger = Logger.getLogger(MenuBarRenderer.class.getName());
 
     @Override
 	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -60,7 +60,7 @@ public class MenubarRenderer extends BaseMenuRenderer {
 	
 	protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
-        Menubar menubar = (Menubar) abstractMenu;
+        MenuBar menubar = (MenuBar) abstractMenu;
 		String clientId = menubar.getClientId(context);
 		String widgetVar = this.resolveWidgetVar(menubar);
 
@@ -92,7 +92,7 @@ public class MenubarRenderer extends BaseMenuRenderer {
 
 	protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
-        Menubar menubar = (Menubar) abstractMenu;
+        MenuBar menubar = (MenuBar) abstractMenu;
 		String clientId = menubar.getClientId(context);
 
         writer.startElement("div", menubar);

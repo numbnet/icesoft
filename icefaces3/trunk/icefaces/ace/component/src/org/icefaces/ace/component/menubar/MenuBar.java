@@ -34,7 +34,7 @@ package org.icefaces.ace.component.menubar;
 
 import javax.faces.context.FacesContext;
 
-public class Menubar extends MenubarBase {
+public class MenuBar extends MenuBarBase {
 	protected FacesContext getFacesContext() {
 		return FacesContext.getCurrentInstance();
 	}
