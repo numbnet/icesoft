@@ -28,13 +28,13 @@ import javax.faces.application.ResourceDependency;
 
 @Component(
         tagName = "menuBar",
-        componentClass = "org.icefaces.ace.component.menubar.Menubar",
-        rendererClass = "org.icefaces.ace.component.menubar.MenubarRenderer",
-        generatedClass = "org.icefaces.ace.component.menubar.MenubarBase",
+        componentClass = "org.icefaces.ace.component.menubar.MenuBar",
+        rendererClass = "org.icefaces.ace.component.menubar.MenuBarRenderer",
+        generatedClass = "org.icefaces.ace.component.menubar.MenuBarBase",
         extendsClass = "org.icefaces.ace.component.menu.AbstractMenu",
         componentFamily = "org.icefaces.ace.component.Menu",
-        componentType = "org.icefaces.ace.component.Menubar",
-        rendererType = "org.icefaces.ace.component.MenubarRenderer",
+        componentType = "org.icefaces.ace.component.MenuBar",
+        rendererType = "org.icefaces.ace.component.MenuBarRenderer",
         tlddoc = "Menubar is a horizontal navigation component."
 )
 @ResourceDependencies({
@@ -42,7 +42,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-menu.js")
 })
-public class MenubarMeta extends UIComponentBaseMeta {
+public class MenuBarMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Javascript variable name of the wrapped widget.")
     private String widgetVar;
 
