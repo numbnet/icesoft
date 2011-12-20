@@ -21,6 +21,7 @@
 
 package org.icefaces.samples.showcase.example.ace.pushButton;
 
+import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet.ImageInfo;
 import org.icefaces.samples.showcase.metadata.annotation.Menu;
 import org.icefaces.samples.showcase.metadata.annotation.MenuLink;                                                                       
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
@@ -36,6 +37,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import java.io.IOException;
 import java.io.Serializable;
+import org.icefaces.ace.component.animation.Blind;
+import org.icefaces.ace.component.animation.Effect;
+import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
 
 
 @ComponentExample(
@@ -66,49 +70,31 @@ import java.io.Serializable;
 
 @ManagedBean(name= PushButtonBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class PushButtonBean extends ComponentExampleImpl<PushButtonBean>
-        implements Serializable {
+public class PushButtonBean extends ComponentExampleImpl<PushButtonBean> implements Serializable {
 
     public static final String BEAN_NAME = "pushButton";
 
-    private String exampleValue = "";
-    private String listenerNavigation = "showcase.jsf?grp=aceMenu&exp=linkButton";
-    private String navActionValue = "overview";
-
-    public void addMessage() {
-        FacesUtils.addInfoMessage("This button didn't submit or validate the rest of the form.");
+    private String exampleValue;
+    ImageSet.ImageInfo currentImage;
+    
+    public PushButtonBean() {
+        super(PushButtonBean.class);
+         currentImage = ImageSet.getRandomImage();
     }
-
-    public void navListener(ActionEvent e) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        try {
-            FacesUtils.getExternalContext().dispatch(listenerNavigation);
-        } catch (IOException e1) {
-            FacesUtils.addErrorMessage("Path \""+listenerNavigation+"\" could not be read.");
-            e1.printStackTrace();
-        }
+    
+    public String executeAction() {
+        //application logic can be added here
+        return null;
     }
-
-    public String getNavAction() { return navAction(); }
-
-    public String navAction() {
-        return "linkButton";
+    
+    public void executeListener(ActionEvent event) 
+    {
+        currentImage = ImageSet.getRandomImage();
     }
-
-    public String getNavActionValue() {
-        return navActionValue;
-    }
-
-    public void setNavActionValue(String navActionValue) {
-        this.navActionValue = navActionValue;
-    }
-
-    public String getListenerNavigation() {
-        return listenerNavigation;
-    }
-
-    public void setListenerNavigation(String listenerNavigation) {
-        this.listenerNavigation = listenerNavigation;
+    
+    public void addMessage(ActionEvent event) 
+    {
+        FacesUtils.addInfoMessage("This button didn't submited or validated Required Field. Change current tabPane to invoke input field validation.");
     }
 
     public String getExampleValue() {
@@ -119,7 +105,11 @@ public class PushButtonBean extends ComponentExampleImpl<PushButtonBean>
         this.exampleValue = exampleValue;
     }
 
-    public PushButtonBean() {
-        super(PushButtonBean.class);
+    public ImageInfo getCurrentImage() {
+        return currentImage;
+    }
+
+    public void setCurrentImage(ImageInfo currentImage) {
+        this.currentImage = currentImage;
     }
 }

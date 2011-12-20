@@ -39,51 +39,45 @@
     <ui:param name="tldResources" value="#{pushButtonResources.tldResources}"/>
 
     <ui:define name="example">
-        <span class="row" style="position:relative;">
-            <span class="top options" style="width:40%;">
-                <h:form>
-                     <ul>
-                         <li>
-                            Action Name: <h:inputText styleClass="full-width"
-                                                      value="#{pushButton.navActionValue}" />
-                         </li>
-                         <li style="font-size:8pt;">The names of the other button components are navigation
-                                                    actions from this page. Look at the web.xml for more details.<br/>
-                                                    Ex."overview", "checkbox", "link"</li>
-                         <li>
-                            Listener URL: <h:inputText styleClass="full-width"
-                                                       value="#{pushButton.listenerNavigation}" />
-                         </li>
-                    </ul>
-                </h:form>
-            </span>
-            <span style="width:48%; display:inline-block;">
-                <h:form>
-                    <p style="font-size:8pt; padding:5px 0px;">Action navigation occurs even when validation fails.</p>
-                    <ace:pushButton value="Action Navigation"
-                                    action="#{pushButton.navAction}">
-                        <f:param name="grp" value="aceMenu"/>
-                        <f:param name="exp" value="linkButton" />
-                    </ace:pushButton>
-                    Required Field: <h:inputText required="true"
-                                                 styleClass="full-width"
-                                                 requiredMessage="The text box above must have a value to submit the form
-                                                 or execute listeners on controls not set to immediate."
-                                                 value="#{pushButton.exampleValue}" />
-                    <span class="ace-inline">
-                        <ace:pushButton style="margin-top:4px;" value="Submit Form"/>
-                        <ace:pushButton value="Listener Navigation"
-                                        actionListener="#{pushButton.navListener}"/>
-                    </span>
-                    <p style="font-size:8pt; padding:5px 0px;">SingleSubmit is set true on the button below.</p>
-                    <ace:pushButton actionListener="#{pushButton.addMessage}"
-                                    singleSubmit="true"
-                                    value="Run Listener w/o Submit" />
-                </h:form>
-            </span>
-            <span style="display:inline-block; padding-left:10px;">
-                <h:messages/>
-            </span>
-        </span>
+        <h:form>
+            <ace:tabSet>
+                <ace:tabPane label="Action Navigation" >
+                    <ace:panel>
+                        <h:panelGrid styleClass="centeredPanelGrid">
+                            <ace:pushButton value="go to link button example" action="#{pushButton.executeAction}">
+                                <f:param name="grp" value="aceMenu"/>
+                                <f:param name="exp" value="linkButton" />
+                            </ace:pushButton>
+                        </h:panelGrid>
+                    </ace:panel>
+                </ace:tabPane>
+                <ace:tabPane label="Action Listener">
+                    <ace:panel>
+                        <h:panelGrid styleClass="centeredPanelGrid">
+                            <h:panelGrid  style="height: 110px; width: 300px;">
+                                <h:graphicImage value="#{pushButton.currentImage.path}" alt="#{pushButton.currentImage.description}"/>
+                            </h:panelGrid>
+                            <ace:pushButton value="change image" actionListener="#{pushButton.executeListener}"/>
+                        </h:panelGrid>
+                    </ace:panel>
+                </ace:tabPane>
+                
+                <ace:tabPane label="Listener w/o submit">
+                    <ace:panel>
+                        <h:panelGrid columns="3">
+                            <h:outputLabel value="*Required Field: "/>
+                            <h:inputText required="true"
+                                                  requiredMessage="Required Field can not be left empty"
+                                                  value="#{pushButton.exampleValue}"/>
+                            <ace:pushButton value="execute button listener only" actionListener="#{pushButton.addMessage}" immediate="true"/>
+                        </h:panelGrid>
+                    </ace:panel>
+                </ace:tabPane>
+            </ace:tabSet>
+        </h:form>
+        
+        <h:panelGrid styleClass="centeredPanelGrid">
+           <h:messages layout="table" infoClass="infoMessage" errorClass="errorMessage"/>
+        </h:panelGrid>
     </ui:define>
 </ui:composition>
