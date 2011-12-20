@@ -56,40 +56,42 @@ ice.ace.DataTable = function(id, cfg) {
 
     if (this.cfg.paginator) this.setupPaginator();
 
-    this.setupSortEvents();
+    if (!this.cfg.disabled) {
+        this.setupSortEvents();
 
-    if (this.cfg.selectionMode || this.cfg.columnSelectionMode) {
-        this.selectionHolder = this.jqId + '_selection';
-        this.deselectionHolder = this.jqId + '_deselection';
-        var preselection = ice.ace.jq(this.jqId + '_selection').val();
-        this.selection = (preselection == "") ? [] : preselection.split(',');
-        this.deselection = [];
-        this.setupSelectionEvents();
-    }
+        if (this.cfg.selectionMode || this.cfg.columnSelectionMode) {
+            this.selectionHolder = this.jqId + '_selection';
+            this.deselectionHolder = this.jqId + '_deselection';
+            var preselection = ice.ace.jq(this.jqId + '_selection').val();
+            this.selection = (preselection == "") ? [] : preselection.split(',');
+            this.deselection = [];
+            this.setupSelectionEvents();
+        }
 
-    if (this.cfg.configPanel)
-        if (this.cfg.configPanel.startsWith(":"))
-            this.cfg.configPanel = this.cfg.configPanel.substring(1);
+        if (this.cfg.configPanel)
+            if (this.cfg.configPanel.startsWith(":"))
+                this.cfg.configPanel = this.cfg.configPanel.substring(1);
 
-    if (this.cfg.panelExpansion) this.setupPanelExpansionEvents();
+        if (this.cfg.panelExpansion) this.setupPanelExpansionEvents();
 
-    if (this.cfg.rowExpansion) this.setupRowExpansionEvents();
+        if (this.cfg.rowExpansion) this.setupRowExpansionEvents();
 
-    if (this.cfg.scrollable) this.setupScrolling();
+        if (this.cfg.scrollable) this.setupScrolling();
 
-    if (rowEditors.length > 0) this.setupCellEditorEvents(rowEditors);
+        if (rowEditors.length > 0) this.setupCellEditorEvents(rowEditors);
 
-    if (this.cfg.resizableColumns) this.setupResizableColumns();
+        if (this.cfg.resizableColumns) this.setupResizableColumns();
 
-    // blur and keyup are handled by the xhtml on____ attributes, and written by the renderer
-    if (this.cfg.filterEvent != "blur" && this.cfg.filterEvent != "keyup")
-        this.setupFilterEvents();
+        // blur and keyup are handled by the xhtml on____ attributes, and written by the renderer
+        if (this.cfg.filterEvent != "blur" && this.cfg.filterEvent != "keyup")
+            this.setupFilterEvents();
 
-    if (this.cfg.reorderableColumns) {
-        this.reorderStart = 0;
-        this.reorderEnd = 0;
-        this.setupReorderableColumns();
-    }
+        if (this.cfg.reorderableColumns) {
+            this.reorderStart = 0;
+            this.reorderEnd = 0;
+            this.setupReorderableColumns();
+        }
+    } else this.setupDisabledStyling();
 }
 
 
@@ -121,7 +123,7 @@ ice.ace.DataTable.prototype.setupFilterEvents = function() {
 ice.ace.DataTable.prototype.setupPaginator = function() {
     var paginator = this.cfg.paginator;
 
-    paginator.subscribe('changeRequest', this.paginate, null, this);
+    if (!this.cfg.disabled) paginator.subscribe('changeRequest', this.paginate, null, this);
     paginator.render();
 }
 
@@ -422,6 +424,31 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
     var maxWidth = isNaN(theadElement.parentNode.clientWidth) ? tbodyElement.parentNode.clientWidth : theadElement.parentNode.clientWidth;
     var containerWidth = (bodyContainerEl.scrollHeight > bodyContainerEl.clientHeight) ? (maxWidth + 18) + "px" : "auto";
     ice.ace.jq(this.jqId).css('width', containerWidth);
+}
+
+ice.ace.DataTable.prototype.setupDisabledStyling = function() {
+    // Fade out controls
+    ice.ace.jq(this.jqId + ' > table > tbody.ui-datatable-data > tr > td a.ui-row-toggler, ' +
+               this.jqId + ' > table > thead th .ui-column-filter, ' +
+               this.jqId + ' > table > thead > th > div.ui-sortable-column .ui-sortable-control, ' +
+               this.jqId + ' > table > tbody.ui-datatable-data tr td span.ui-row-editor .ui-icon'
+               ).css({opacity:0.4});
+
+    // Add pagination disabled style
+    ice.ace.jq(this.jqId + ' > .ui-paginator .ui-icon, ' +
+               this.jqId + ' > .ui-paginator .ui-paginator-current-page, ' +
+               this.jqId + ' > table > thead .ui-tableconf-button a').each(function () {
+        ice.ace.jq(this).parent().addClass('ui-state-disabled');
+    });
+
+    // Disable filter text entry
+    ice.ace.jq(this.jqId + ' > table > thead th .ui-column-filter').keypress(function () {
+        return false;
+    });
+
+    // Row style
+    ice.ace.jq(this.jqId + ' > table > tbody.ui-datatable-data:first > tr > td')
+        .css({backgroundColor:'#EDEDED', opacity:0.8});
 }
 
 
@@ -1159,6 +1186,7 @@ ice.ace.DataTable.prototype.getRowEditors = function() {
 
 ice.ace.DataTable.prototype.setupCellEditorEvents = function(rowEditors) {
     var _self = this;
+
     // unbind and rebind these events.
     var showEditors = function(event) { event.stopPropagation(); _self.showEditors(event.target); },
         saveRowEditors = function(event) { event.stopPropagation(); _self.saveRowEdit(event.target); },

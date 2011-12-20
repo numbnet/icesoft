@@ -74,6 +74,10 @@ public class DataTableMeta extends UIDataMeta {
             "Must be unique among components on a page. ")
     private String widgetVar;
 
+    @Property(tlddoc = "Disable all features of the data table.", defaultValue = "false",
+            defaultValueType= DefaultValueType.EXPRESSION)
+    private boolean disabled;
+
     @Property(tlddoc = "The request-scope attribute (if any) under which the data " +
         "object index for the current row will be exposed when iterating.")
     private String rowIndexVar;
