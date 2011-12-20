@@ -228,7 +228,7 @@ public class ICEmobileContainer extends Activity
     @Override
     protected void onResume() {
 	super.onResume();
-	utilInterface.loadURL("javascript:ice.push.resumeBlockingConnection();");
+	utilInterface.loadURL("javascript:ice.push.connection.resumeConnection();");
 	if (!newURL.equals(currentURL)) {
 	    loadUrl();
 	} else if ((c2dmIntent) ||
@@ -246,7 +246,7 @@ public class ICEmobileContainer extends Activity
     protected void onPause() {
 	super.onPause();
 	mAudioPlayer.release();
-	utilInterface.loadURL("javascript:ice.push.pauseBlockingConnection('" + getCloudNotificationId() + "');");
+	utilInterface.loadURL("javascript:ice.push.connection.pauseConnection();");
     }
 
     @Override
