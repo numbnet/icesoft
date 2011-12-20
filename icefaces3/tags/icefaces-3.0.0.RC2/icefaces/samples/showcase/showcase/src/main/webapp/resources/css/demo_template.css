@@ -80,7 +80,7 @@ a:link, a:visited {
 #meta-nav li.first { padding-left: 0; }
 
 #logo-button {
-    background: url("../resources/css/images/header.png") no-repeat;
+    background: url("#{resource['css/images/header.png']}") no-repeat;
 	background-position:center top;
     width: 14%;
 	display: inline-block;
@@ -93,7 +93,7 @@ a:link, a:visited {
 
 /* nav menu. */
 #main-nav {
-    background: url("../resources/css/images/comp_select_bg.png") repeat;
+    background: url("#{resource['css/images/comp_select_bg.png']}") repeat;
     background-color: #d3d3d3;
 	-moz-border-radius: 3px 3px 3px 3px;
 	border-radius:3px;
@@ -105,7 +105,7 @@ a:link, a:visited {
 #main-nav ul { width: 543px; }
 #main-nav li { display: inline; }
 #main-nav li a {
-    background: url("../resources/css/images/comp_select_div.png") no-repeat right;
+    background: url("#{resource['css/images/comp_select_div.png']}") no-repeat right;
     display: inline-block;
     font-size: 13px;
     color: #FFFFFF;
@@ -121,7 +121,7 @@ a:link, a:visited {
 
 /* search bar*/
 #search-group  {
-    background: url("../resources/css/images/comp_search_bg.png") repeat;
+    background: url("#{resource['css/images/comp_search_bg.png']}") repeat;
 	background-color: #d3d3d3;             
 	text-align: center;
 	display: inline-block;

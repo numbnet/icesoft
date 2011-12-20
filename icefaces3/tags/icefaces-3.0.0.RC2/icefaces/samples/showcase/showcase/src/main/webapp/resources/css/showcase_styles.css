@@ -148,7 +148,7 @@
 }
 
 span#examplePanel_menu.ui-icon.ui-icon-gear{
-    background: url("/resources/css/images/informationIcon.png") no-repeat;
+    background: url("#{resource['css/images/informationIcon.png']}") no-repeat;
 }
 
 a.ui-panel-titlebar-icon.ui-corner-all.ui-state-default
@@ -169,7 +169,7 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix
 }
 
 .ice-checkboxbutton .ui-state-active {
-    background: url("/resources/css/images/success24.png") no-repeat;
+    background: url("#{resource['css/images/success24.png']}") no-repeat;
     border: 1px;
     border-style:  solid;
 }
@@ -327,7 +327,7 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix
 
 .positionedElement {
     cursor: move;
-    background: url("../resources/css/images/positioned-bgslice.gif") repeat-x scroll left top #FFFFFF;
+    background: url("#{resource['css/images/positioned-bgslice.gif']}") repeat-x scroll left top #FFFFFF;
     border: 1px solid #D9D9D9;
     color: #484848;
     font-weight: normal;
@@ -337,7 +337,7 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix
 }
 
 .positionedElement .moveLabel {
-    background: url("../resources/css/images/move-arrow.gif") no-repeat scroll left center transparent;
+    background: url("#{resource['css/images/move-arrow.gif']}") no-repeat scroll left center transparent;
     vertical-align: middle;
     height: 22px;
     padding-left: 25px;
@@ -390,7 +390,7 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix
 }
 
 .progressPurpleFill {
-    background: url("../resources/css/images/purple-progress-slice.jpg") repeat-x scroll left top transparent;
+    background: url("#{resource['css/images/purple-progress-slice.jpg']}") repeat-x scroll left top transparent;
     background-color: #864BB9;
     height: 25px;
 }
