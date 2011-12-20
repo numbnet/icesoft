@@ -26,6 +26,7 @@
 @synthesize currentSessionId;
 @synthesize uploadProgress;
 @synthesize uploadLabel;
+@synthesize linkView;
 @synthesize deviceToken;
 @synthesize confirmMessages;
 @synthesize confirmTitles;
@@ -105,9 +106,11 @@ NSLog(@"Hitch just upload what would have been scripted %@", script);
 - (void) hideProgress  {
     uploadLabel.hidden = YES;
     uploadProgress.hidden = YES;
+    linkView.hidden = NO;
 }
 
 - (void) setProgress:(NSInteger)percent  {
+    linkView.hidden = YES;
     uploadLabel.hidden = NO;
     uploadProgress.hidden = NO;
     [uploadProgress setProgress:percent / 100.0f];
@@ -172,6 +175,20 @@ NSLog(@"Hitch would show a thumbnail");
     }
 NSLog(@"Alert dismissed via button %d", buttonIndex);
 
+}
+
+- (IBAction) doMediacast  {
+    NSLog(@"ViewController doMediacast");
+    [[UIApplication sharedApplication] 
+            openURL:[NSURL 
+                    URLWithString:@"http://mediacast.icemobile.org"]];
+}
+
+- (IBAction) doMobileshowcase  {
+    NSLog(@"ViewController doMobileshowcase");
+    [[UIApplication sharedApplication] 
+            openURL:[NSURL 
+                    URLWithString:@"http://mobileshowcase.icemobile.org"]];
 }
 
 #pragma mark - View lifecycle
