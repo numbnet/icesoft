@@ -73,10 +73,14 @@ implements Handler, Runnable {
 
     public void handle() {
         if (executeQueue == null) {
-            run();
+            handleNow();
         } else {
             executeQueue.execute(this);
         }
+    }
+
+    public void handleNow() {
+        run();
     }
 
     public void shutdown() {

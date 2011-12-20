@@ -31,7 +31,7 @@
  */
 package org.icefaces.push.server;
 
-import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
+import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -85,10 +85,31 @@ implements
     public String getServletContextPath(final String iceFacesId) {
         synchronized (sessionMap) {
             if (sessionMap.containsKey(iceFacesId)) {
-                return ((Session)sessionMap.get(iceFacesId)).servletContextPath;
+                return getSessionContext(iceFacesId).getServletContextPath();
             }
         }
         return null;
+    }
+
+    public SessionContext getSessionContext(final String iceFacesId) {
+        synchronized (sessionMap) {
+            return (SessionContext)sessionMap.get(iceFacesId);
+        }
+    }
+
+    public Set getSessionContextSet(final Set iceFacesIdSet) {
+        synchronized (sessionMap) {
+            Set _sessionContextSet = new HashSet();
+            Iterator _iceFacesIds = iceFacesIdSet.iterator();
+            int _size = iceFacesIdSet.size();
+            for (int i = 0; i < _size; i++) {
+                SessionContext _sessionContext = getSessionContext((String)_iceFacesIds.next());
+                if (_sessionContext != null) {
+                    _sessionContextSet.add(_sessionContext);
+                }
+            }
+            return _sessionContextSet;
+        }
     }
 
     public UpdatedViewsManager getUpdatedViewsManager() {
@@ -132,7 +153,7 @@ implements
             cleanUp(iceFacesId);
             if (!sessionMap.containsKey(iceFacesId)) {
                 sessionMap.put(
-                    iceFacesId, new Session(servletContextPath, iceFacesId));
+                    iceFacesId, new SessionContext(servletContextPath, iceFacesId));
             }
         }
     }
@@ -160,7 +181,7 @@ implements
         synchronized (sessionMap) {
             _hasViews =
                 sessionMap.containsKey(iceFacesId) &&
-                !((Session)sessionMap.get(iceFacesId)).viewNumberSet.isEmpty();
+                getSessionContext(iceFacesId).hasViewNumbers();
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("Has Views [" + iceFacesId + "]: " + _hasViews);
@@ -217,12 +238,18 @@ implements
      */
     public void sendUpdatedViews(final UpdatedViews updatedViews) {
         synchronized (sessionMap) {
-            if (isValid(updatedViews.getICEfacesID())) {
-                updatedViewsManager.push(updatedViews);
-                Handler _handler =
-                    requestManager.pull(updatedViews.getICEfacesID());
-                if (_handler != null) {
-                    _handler.handle();
+            String _iceFacesId = updatedViews.getICEfacesID();
+            if (isValid(_iceFacesId)) {
+                ReentrantLock _lock = getSessionContext(_iceFacesId).getLock();
+                _lock.lock();
+                try {
+                    updatedViewsManager.push(updatedViews);
+                    Handler _handler = requestManager.pull(_iceFacesId);
+                    if (_handler != null) {
+                        _handler.handleNow();
+                    }
+                } finally {
+                    _lock.unlock();
                 }
             }
         }
@@ -241,10 +268,9 @@ implements
         }
         synchronized (sessionMap) {
             if (sessionMap.containsKey(iceFacesId)) {
-                Set _viewNumberSet =
-                    ((Session)sessionMap.get(iceFacesId)).viewNumberSet;
-                if (_viewNumberSet.contains(viewNumber)) {
-                    _viewNumberSet.remove(viewNumber);
+                SessionContext _sessionContext = getSessionContext(iceFacesId);
+                if (_sessionContext.hasViewNumber(viewNumber)) {
+                    _sessionContext.removeViewNumber(viewNumber);
                     updatedViewsManager.remove(iceFacesId, viewNumber);
                     if (!hasViews(iceFacesId)) {
                         Handler _handler = requestManager.pull(iceFacesId);
@@ -270,10 +296,9 @@ implements
         }
         synchronized (sessionMap) {
             if (sessionMap.containsKey(iceFacesId)) {
-                Set _viewNumberSet =
-                    ((Session)sessionMap.get(iceFacesId)).viewNumberSet;
-                if (!_viewNumberSet.contains(viewNumber)) {
-                    _viewNumberSet.add(viewNumber);
+                SessionContext _sessionContext = getSessionContext(iceFacesId);
+                if (!_sessionContext.hasViewNumber(viewNumber)) {
+                    _sessionContext.addViewNumber(viewNumber);
                 }
             }
         }
@@ -314,20 +339,6 @@ implements
         private Record(final String iceFacesId, final long timestamp) {
             this.iceFacesId = iceFacesId;
             this.timestamp = timestamp;
-        }
-    }
-
-    private static class Session {
-        private final Set viewNumberSet = new HashSet();
-
-        private String servletContextPath;
-        private String iceFacesId;
-
-        private Session(
-            final String servletContextPath, final String iceFacesId) {
-
-            this.servletContextPath = servletContextPath;
-            this.iceFacesId = iceFacesId;
         }
     }
 }

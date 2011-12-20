@@ -47,5 +47,7 @@ extends Runnable {
 
     void handle();
 
+    void handleNow();
+
     void shutdown();
 }
