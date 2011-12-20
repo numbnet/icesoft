@@ -32,6 +32,7 @@
     NSDictionary *confirmTitles;
     UIProgressView *uploadProgress;
     UILabel *uploadLabel;
+    UIView *linkView;
 }
 
 @property (retain) NativeInterface *nativeInterface;
@@ -45,9 +46,12 @@
 @property (retain) NSDictionary *confirmTitles;
 @property (nonatomic, retain) IBOutlet UIProgressView *uploadProgress;
 @property (nonatomic, retain) IBOutlet UILabel *uploadLabel;
+@property (nonatomic, retain) IBOutlet UIView *linkView;
 
 - (void) dispatchCurrentCommand;
 - (void) reloadCurrentURL;
 - (void) hideProgress;
+- (IBAction) doMediacast;
+- (IBAction) doMobileshowcase;
 
 @end
