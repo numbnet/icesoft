@@ -143,7 +143,7 @@ ice.ace.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
     options.params = params;
 
     if (jQuery.isFunction(listener)) {
-        listener(options);
+        listener(options.params);
     } else ice.ace.AjaxRequest(options);
 }
 
