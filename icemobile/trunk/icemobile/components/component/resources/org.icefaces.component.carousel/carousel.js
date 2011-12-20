@@ -110,13 +110,3 @@ mobi.carousel = {
 	   }
 
 }
-
-ice.onUnload(function(){mobi.carousel.unloaded('carOne');});
-supportsOrientationChange = 'onorientationchange' in window,orientationEvent = supportsOrientationChange ? 'orientationchange' : 'resize';
-window.addEventListener(orientationEvent, function() {
-    setTimeout(function () {
-        mobi.carousel.refresh('carOne',{
-            event: event, singleSubmit: false});
-    }, 100);
-}, false);
-mobi.carousel.loaded('carOnecarOne',{ event: event, singleSubmit: false});
