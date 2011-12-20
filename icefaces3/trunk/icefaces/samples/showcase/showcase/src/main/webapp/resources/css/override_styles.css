@@ -78,7 +78,7 @@
 }
 
 .icePnlClpsblColpsdHdr h2 {
-    background: url("../resources/css/images/collapsible-off.gif") no-repeat scroll 3px 2px transparent;
+    background: url("#{resource['css/images/collapsible-off.gif']}") no-repeat scroll 3px 2px transparent;
     margin: -2px 0 0 -2px;
     padding: 5px 0 0 5px;
 }
@@ -91,7 +91,7 @@
 .ui-progressbar-value
 {
     border: 1px solid #000000/*{borderColorHeader}*/;
-    background: url("../resources/css/images/progressBarBackground.png") repeat-x scroll 0 0 #D8D8D8;
+    background: url("#{resource['css/images/progressBarBackground.png']}") repeat-x scroll 0 0 #D8D8D8;
     color: black/*{fcHeader}*/;
     font-weight: bold;
 }
