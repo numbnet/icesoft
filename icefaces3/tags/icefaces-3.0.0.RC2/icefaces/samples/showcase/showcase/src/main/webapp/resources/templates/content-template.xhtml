@@ -45,12 +45,12 @@ Available ui:params to pass:
                 <ace:menu rendered="#{navigationModel.renderAsExample}">
                     <ace:submenu label="WIKI Documentation">
                         <c:forEach items="#{wikiResources}" var="wiki">
-                           <ace:menuitem value="#{wiki.title}" url="#{wiki.resource}" target="_blank"/>
+                           <ace:menuItem value="#{wiki.title}" url="#{wiki.resource}" target="_blank"/>
                         </c:forEach>
                     </ace:submenu>
                     <ace:submenu label="TLD Documentation">
                         <c:forEach items="#{tldResources}" var="tld">
-                           <ace:menuitem value="#{tld.title}" url="#{tld.resource}" target="_blank"/>
+                           <ace:menuItem value="#{tld.title}" url="#{tld.resource}" target="_blank"/>
                         </c:forEach>
                     </ace:submenu>
                 </ace:menu>  
