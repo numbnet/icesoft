@@ -28,6 +28,7 @@
 package org.icefaces.component.ajax;
 
 import javax.faces.view.facelets.BehaviorConfig;
+import javax.faces.view.facelets.BehaviorHandler;
 import javax.faces.view.facelets.MetaRuleset;
 import org.icefaces.ace.facelets.MethodRule;
 

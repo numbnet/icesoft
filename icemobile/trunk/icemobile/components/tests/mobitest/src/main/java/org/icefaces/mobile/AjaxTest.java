@@ -3,6 +3,9 @@ package org.icefaces.mobile;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,6 +14,8 @@ import java.util.ArrayList;
 public class AjaxTest implements Serializable{
 
     private ArrayList itemList= new ArrayList();
+    private String compToFind="carForm:carOne";
+    private boolean found = false;
 
       public AjaxTest(){
           itemList.add(new Item("Item A1", "Item A2"));
@@ -19,7 +24,15 @@ public class AjaxTest implements Serializable{
            itemList.add(new Item("Item D1", "Item D2"));
        }
 
-       private String input="test";
+    public String getCompToFind() {
+        return compToFind;
+    }
+
+    public void setCompToFind(String compToFind) {
+        this.compToFind = compToFind;
+    }
+
+    private String input="test";
        private Double sliderValue = 0.0;
        private int valueA = 0;
        private int valueB = 0;
@@ -79,7 +92,20 @@ public class AjaxTest implements Serializable{
            valueB = 0;
        }
 
+       public void findComp(){
+           found = false;
+           FacesContext fc = FacesContext.getCurrentInstance();
+           UIViewRoot view = fc.getViewRoot();
+           UIComponent uic = (UIComponent)view.findComponent(this.compToFind);
+           if (null != uic){
+               found=true;
+               System.out.println("found component "+compToFind+" with id from uic="+uic.getClientId());
+           }
+       }
 
+       public boolean getFound(){
+           return this.found;
+       }
        public ArrayList getItemList() {
            return itemList;
        }

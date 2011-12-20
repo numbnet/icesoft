@@ -49,7 +49,7 @@ import javax.el.MethodExpression;
 )
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
-})
+}, defaultEvent="activate")
 public class FlipSwitchMeta extends UISelectBooleanMeta {
 
     @Property(defaultValue = "false",

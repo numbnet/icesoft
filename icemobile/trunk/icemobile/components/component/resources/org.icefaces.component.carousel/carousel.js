@@ -29,7 +29,7 @@ mobi.carousel = {
 	                    mobi.carousel.refresh(clientId, singleSubmit);
 	                }
 	                else {
-	                //    ice.log.debug(ice.log, 'CREATE onload carousel');
+	                    ice.log.debug(ice.log, 'CREATE onload carousel');
 	                    this.acarousels = new iScroll(carouselId, {
 	                    snap: 'li',
 	                    momentum: false,

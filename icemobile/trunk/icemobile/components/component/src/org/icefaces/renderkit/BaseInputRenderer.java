@@ -59,17 +59,6 @@ public class BaseInputRenderer extends CoreRenderer {
         return null;
     }
 
-    /**
-     * used by DateSpinner, TimeSpinner and DateTimeEntry components
-     * @param value
-     * @return
-     */
-    protected boolean isValueBlank(String value) {
-		if(value == null)
-			return true;
-
-		return value.trim().equals("");
-	}
 
 
     @Override

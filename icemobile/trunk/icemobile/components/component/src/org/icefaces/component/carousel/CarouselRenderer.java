@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-//@MandatoryResourceComponent("org.icefaces.component.carousel.Carousel")
+
 public class CarouselRenderer extends BaseLayoutRenderer {
     private static Logger logger = Logger.getLogger(CarouselRenderer.class.getName());
     private static final String JS_NAME = "carousel";
@@ -53,6 +53,7 @@ public class CarouselRenderer extends BaseLayoutRenderer {
                     carousel.setSelectedItem(selected);
                     uiComponent.queueEvent(new ValueChangeEvent(uiComponent,
                             old, selected));
+                    decodeBehaviors(facesContext, carousel);
                 }
 
             } catch (NumberFormatException e) {
@@ -66,6 +67,7 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         String clientId = uiComponent.getClientId(facesContext);
         Carousel carousel = (Carousel) uiComponent;
         //check to ensure children are all of type OutputListItem
+
         writer.startElement("span", uiComponent);
         writer.writeAttribute("id", clientId+"_jscript","id");
         Map contextMap = facesContext.getViewRoot().getViewMap();
@@ -76,6 +78,9 @@ public class CarouselRenderer extends BaseLayoutRenderer {
             writeJSResource(JS_NAME, JS_LIBRARY, facesContext, uiComponent, writer);
         }
         writer.endElement("span");
+        writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        writer.writeAttribute("id", clientId, "ui");
+        writer.writeAttribute("name", clientId, "name");
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_carousel", HTML.ID_ATTR);
         String userDefinedClass = carousel.getStyleClass();
@@ -153,8 +158,8 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         writer.endElement(HTML.DIV_ELEM);
         //now do the paginator for the carousel
         writer.startElement(HTML.DIV_ELEM, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_list", HTML.ID_ATTR);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId+"_list", HTML.NAME_ATTR);
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute("class", Carousel.CAROUSEL_CURSOR_CLASS, null);
         writer.startElement(HTML.DIV_ELEM, uiComponent);
@@ -179,6 +184,7 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         writer.endElement(HTML.DIV_ELEM);
         this.encodeHiddenSelected(facesContext, clientId, selected);
         writer.endElement(HTML.DIV_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
         ((Carousel) uiComponent).setRowIndex(-1);
         renderScript(uiComponent, facesContext, clientId);
     }

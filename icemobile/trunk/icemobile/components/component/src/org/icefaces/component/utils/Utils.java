@@ -249,48 +249,48 @@ public class Utils {
      */
     public static String findClientIds(FacesContext context, UIComponent component, String list) {
         if (list == null) return "@none";
-
-        String formattedList = formatKeywords(context, component, list);
-        String[] ids = formattedList.split("[,\\s]+");
-        StringBuilder buffer = new StringBuilder();
+        String[] ids = list.split("[,\\s]+");
+           StringBuilder buffer = new StringBuilder();
 
         for (int i = 0; i < ids.length; i++) {
-            if (i != 0) buffer.append(" ");
-            String id = ids[i].trim();
-
-            if (id.equals("@all") || id.equals("@none")) buffer.append(id);
-            else {
-
-                UIComponent comp = component.findComponent(id);
-                if (comp != null) buffer.append(comp.getClientId(context));
-                else {
-                    if (context.getApplication().getProjectStage().equals(ProjectStage.Development)) {
-                        logger.log(Level.INFO, "Cannot find component with identifier \"{0}\" in view.", id);
-                    }
-                    buffer.append(id);
-                }
-            }
+           if (i != 0) buffer.append(" ");
+           String id = ids[i].trim();
+           //System.out.println("ComponentUtils.findClientIds()    ["+i+"]  id: " + id);
+           if (id.equals("@all") || id.equals("@none")) {
+                   //System.out.println("ComponentUtils.findClientIds()    ["+i+"]  " + id);
+                   buffer.append(id);
+           }
+           else if (id.equals("@this")) {
+                   //System.out.println("ComponentUtils.findClientIds()    ["+i+"]  @this  : " + component.getClientId(context));
+               buffer.append(component.getClientId(context));
+           }
+           else if (id.equals("@parent")) {
+                   //System.out.println("ComponentUtils.findClientIds()    ["+i+"]  @parent: " + component.getParent().getClientId(context));
+               buffer.append(component.getParent().getClientId(context));
+           }
+           else if (id.equals("@form")) {
+               UIComponent form = Utils.findParentForm(component);
+               if (form == null)
+                       throw new FacesException("Component " + component.getClientId(context) + " needs to be enclosed in a form");
+                   buffer.append(form.getClientId(context));
+           }
+           else {
+               UIComponent comp = component.findComponent(id);
+                   //System.out.println("ComponentUtils.findClientIds()    ["+i+"]  comp   : " + (comp == null ? "null" : comp.getClientId(context)));
+               if (comp != null) {
+                       buffer.append(comp.getClientId(context));
+               }
+               else {
+                  if (context.getApplication().getProjectStage().equals(ProjectStage.Development)) {
+                           logger.log(Level.INFO, "Cannot find component with identifier \"{0}\" in view.", id);
+                   }
+                       buffer.append(id);
+               }
+           }
         }
-
         return buffer.toString();
     }
-    public static String formatKeywords(FacesContext facesContext, UIComponent component, String processRequest) {
-        String process = processRequest;
 
-        if (process.indexOf("@this") != -1)
-            process = process.replaceFirst("@this", component.getClientId(facesContext));
-        if (process.indexOf("@form") != -1) {
-            UIComponent form = findParentForm(component);
-            if (form == null)
-                throw new FacesException("Component " + component.getClientId(facesContext) + " needs to be enclosed in a form");
-
-            process = process.replaceFirst("@form", form.getClientId(facesContext));
-        }
-        if (process.indexOf("@parent") != -1)
-            process = process.replaceFirst("@parent", component.getParent().getClientId(facesContext));
-
-        return process;
-    }
 
     /**
      * requires the ability to find the user-agent string and accept string from requestHeaders to determine
@@ -345,7 +345,6 @@ public class Utils {
 
     /**
      *  Some input components may have html5 support for iOS5 such as DateSpinner
-     * @param context
      * @return true if request header denotes os 5_0
      */
     public static boolean isIOS5() {
