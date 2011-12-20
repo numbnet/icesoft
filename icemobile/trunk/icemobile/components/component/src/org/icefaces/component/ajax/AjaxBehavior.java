@@ -45,20 +45,18 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.BehaviorEvent;
 
-@ResourceDependencies({
+/*@ResourceDependencies({
 	@ResourceDependency(library="org.icefaces.component.utils", name="component.js")
-})
+})    */
 @FacesBehavior("org.icefaces.ace.component.AjaxBehavior")
 public class AjaxBehavior extends ClientBehaviorBase {
 
     private String render;
     private String execute;
- //   private boolean global = true;
-//    private boolean async = false;
-    private String oncomplete;
-    private String onerror;
-    private String onsuccess;
-    private String onstart;
+    private String onComplete;
+    private String onError;
+    private String onSuccess;
+    private String onStart;
     private MethodExpression listener;
     private boolean immediate = false;
     private boolean disabled = false;
@@ -77,53 +75,37 @@ public class AjaxBehavior extends ClientBehaviorBase {
     public Set<ClientBehaviorHint> getHints() {
         return HINTS;
     }
-    
- /*   public boolean isAsync() {
-        return async;
+
+    public String getOnComplete() {
+        return onComplete;
     }
 
-    public void setAsync(boolean async) {
-        this.async = async;
+    public void setOnComplete(String onComplete) {
+        this.onComplete = onComplete;
     }
 
-    public boolean isGlobal() {
-        return global;
+    public String getOnStart() {
+        return onStart;
     }
 
-    public void setGlobal(boolean global) {
-        this.global = global;
-    } */
-
-    public String getOncomplete() {
-        return oncomplete;
+    public void setOnStart(String onStart) {
+        this.onStart = onStart;
     }
 
-    public void setOncomplete(String oncomplete) {
-        this.oncomplete = oncomplete;
+    public String getOnSuccess() {
+        return onSuccess;
     }
 
-    public String getOnstart() {
-        return onstart;
+    public void setOnSuccess(String onSuccess) {
+        this.onSuccess = onSuccess;
     }
 
-    public void setOnstart(String onstart) {
-        this.onstart = onstart;
+    public String getOnError() {
+        return onError;
     }
 
-    public String getOnsuccess() {
-        return onsuccess;
-    }
-
-    public void setOnsuccess(String onsuccess) {
-        this.onsuccess = onsuccess;
-    }
-
-    public String getOnerror() {
-        return onerror;
-    }
-
-    public void setOnerror(String onerror) {
-        this.onerror = onerror;
+    public void setOnError(String onError) {
+        this.onError = onError;
     }
 
     public String getExecute() {
@@ -140,6 +122,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
 
     public void setRender(String render) {
         this.render = render;
+        clearInitialState();
     }
 
     public MethodExpression getListener() {
@@ -148,6 +131,7 @@ public class AjaxBehavior extends ClientBehaviorBase {
 
     public void setListener(MethodExpression listener) {
         this.listener = listener;
+        clearInitialState();
     }
 
     public boolean isDisabled() {
@@ -172,7 +156,6 @@ public class AjaxBehavior extends ClientBehaviorBase {
         return immediateSet;
     }
 
-    @Override
     public void broadcast(BehaviorEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext eLContext = context.getELContext();
@@ -188,4 +171,49 @@ public class AjaxBehavior extends ClientBehaviorBase {
             }
         }
     }
+
+    public Object saveState(FacesContext context) {
+        if (context == null) {
+            throw new NullPointerException();
+        }
+        Object[] values;
+
+        Object superState = super.saveState(context);
+
+        if (initialStateMarked()) {
+            if (superState == null) {
+                values = null;
+            } else {
+                values = new Object[] { superState };
+            }
+        } else {
+            values = new Object[3];
+
+            values[0] = superState;
+            values[1] = listener;
+            values[2] = render;
+        }
+
+        return values;
+    }
+
+    public void restoreState(FacesContext context, Object state) {
+        if (context == null) {
+            throw new NullPointerException();
+        }
+        if (state != null) {
+
+            Object[] values = (Object[]) state;
+            super.restoreState(context, values[0]);
+
+            if (values.length != 1) {
+                listener = (MethodExpression)values[1];
+                render = (String)values[2];
+
+                // If we saved state last time, save state again next time.
+                clearInitialState();
+            }
+        }
+    }
+
 }

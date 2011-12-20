@@ -34,7 +34,7 @@ mobi.AjaxRequest = function(cfg) {
        return;//cancel request
     }
     ice.log.debug(ice.log, 'creating ajax request');
-    var form = ice.ace.findForm(cfg.source);
+    var form = mobi.findForm(cfg.source);
     if (form){
         ice.log.debug(ice.log, 'found form with name='+form.name);
         ice.log.debug(ice.log, ' length of forms ='+form.length);
@@ -46,7 +46,7 @@ mobi.AjaxRequest = function(cfg) {
 
     ice.fullSubmit(jsfExecute, jsfRender, null, source || form[0], function(parameter) {
         if(cfg.event) {
-            parameter(ice.ace.BEHAVIOR_EVENT_PARAM, cfg.event);
+            parameter(mobi.BEHAVIOR_EVENT_PARAM, cfg.event);
 
             var domEvent = cfg.event;
             if(cfg.event == 'valueChange') {
@@ -128,7 +128,7 @@ mobi.registerAuxUpload = function(sessionid, uploadURL)  {
         );
         document.body.appendChild(auxiframe);
     }
-}
+};
 
 function html5getViewState(form) {
     if (!form) {
@@ -186,9 +186,10 @@ function html5getViewState(form) {
 };
 
 if (window.addEventListener)  {
-    window.addEventListener( "load", 
-    function() {jsf.getViewState = html5getViewState}, false );
-    
+    window.addEventListener( "load",
+    function() {jsf.getViewState = html5getViewState}
+        , false );
+
     window.addEventListener("pagehide", function() { 
         ice.push.connection.pauseConnection(); 
     }, false); 

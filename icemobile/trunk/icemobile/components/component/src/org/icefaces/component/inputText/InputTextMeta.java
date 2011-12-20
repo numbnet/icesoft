@@ -47,7 +47,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="blur", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all"),
 	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
-})
+}, defaultEvent="change")
 public class InputTextMeta extends UIInputMeta {
 
     //at this time list and autocomplete are not supported on webkit safari mobile

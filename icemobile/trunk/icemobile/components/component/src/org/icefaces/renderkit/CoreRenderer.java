@@ -27,13 +27,11 @@
  */
 package org.icefaces.renderkit;
 
-import org.icefaces.ace.api.AjaxSource;
-import org.icefaces.component.utils.Utils;
-import org.icefaces.ace.JSONBuilder;
+
 
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
+
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -61,27 +59,25 @@ public class CoreRenderer extends Renderer {
             return null;
         }
 
-            String clientId = ((UIComponent) component).getClientId(context);
+        String clientId = ((UIComponent) component).getClientId(context);
 
-            StringBuilder req = new StringBuilder();
+        StringBuilder req = new StringBuilder();
 
-            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+        List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
 
-            for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
+        for(Iterator<String> eventIterator = behaviorEvents.keySet().iterator(); eventIterator.hasNext();) {
 
                 String event = eventIterator.next();
 
                 String domEvent = event;
-                if (null != inEvent) {
+            if (null != inEvent) {
                     domEvent=inEvent;
-                }
-                else if(event.equalsIgnoreCase("valueChange"))       //editable value holders
-                    domEvent = "change";
-                else if(event.equalsIgnoreCase("action"))       //commands
-                    domEvent = "click";
-
-
-                for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
+            }
+            else if(event.equalsIgnoreCase("valueChange"))       //editable value holders
+                domEvent = "change";
+            else if(event.equalsIgnoreCase("action"))       //commands
+                domEvent = "click";
+            for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                     ClientBehavior behavior = behaviorIter.next();
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
                     String script = behavior.getScript(cbc);    //could be null if disabled
@@ -89,35 +85,29 @@ public class CoreRenderer extends Renderer {
                     if(script != null) {
                         req.append(script);
                     }
-                }
-                if(eventIterator.hasNext()) {
-                    req.append(",");
-                }
             }
-            return req.toString();
-
+            if(eventIterator.hasNext()) {
+                req.append(",");
+            }
+        }
+        return req.toString();
 
     }
 
-    protected String addSubmitParam(String parent, String name, String value) {
-        StringBuilder builder = new StringBuilder();
 
-        builder.append(".addSubmitParam('")
-                    .append(parent).append("','")
-                    .append(name)
-                    .append("','")
-                    .append(value)
-                    .append("')");
+    public boolean isValueEmpty(String value) {
+		if (value == null || "".equals(value))
+			return true;
 
-        return builder.toString();
-    }
-	
-	protected String escapeText(String value) {
-		return value == null ? "" : value.replaceAll("'", "\\\\'");
+		return false;
 	}
 
+	public boolean isValueBlank(String value) {
+		if(value == null)
+			return true;
 
-
+		return value.trim().equals("");
+	}
 
 
     /**
@@ -170,16 +160,13 @@ public class CoreRenderer extends Renderer {
 
 
     protected void decodeBehaviors(FacesContext context, UIComponent component)  {
-
         if(!(component instanceof ClientBehaviorHolder)) {
             return;
         }
-
         Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
         if(behaviors.isEmpty()) {
             return;
         }
-
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String behaviorEvent = params.get("javax.faces.behavior.event");
 

@@ -41,14 +41,15 @@
 
     <p>using value of list for items</p>
     <h:form id="carForm">
+        <ui:debug/>
 	    <mobi:carousel id="carOne" value="#{carousel.imageList}" var="item" valueChangeListener="#{carousel.changedIndex}"
 	         selectedIten="#{carousel.selectedIndex}" >
+            <mobi:ajax event="change" execute="#{ajaxTest.execute}" render="#{ajaxTest.render}" />
 	        <h:panelGroup id="imgPanel">
 	            <h:graphicImage id="innerImg" value="#{item.imageUrl}"
 	                            height="#{item.height}"/>
 	            <span id="imgStyle" style="#{item.style}">#{item.title}</span>
 	        </h:panelGroup>
-            <mobi:ajax event="change" execute="#{ajaxTest.execute}" render="#{ajaxTest.render}" />
 	    </mobi:carousel>
         <h3>OutputArea for testing</h3>
                     <br/>
@@ -58,7 +59,13 @@
                     <br />
     </h:form>
     <br />
-
+    <h:form id="findForm">
+        <br />
+        <h:commandButton id="findBtn" value="FindCarousel" action="#{ajaxTest.findComp}"/>
+        <br />
+        <h5> value of found is:-</h5>
+        <h:outputText id="fndID" value="#{ajaxTest.found}" />
+    </h:form>
     <div id="outputId">
            <h:outputText  id="outVal" value="updated selectedIndex to #{carousel.selectedIndex}"/>
     </div>
