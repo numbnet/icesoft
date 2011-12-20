@@ -94,7 +94,7 @@ public class NotificationBean extends ExampleImpl<NotificationBean> implements
     // Notification message values.
     private String subject = "ICEmobile Notification";
     private String message = "This is a  message from  ICEmobile.";
-    private int notificationDelay = 15;
+    private int notificationDelay = 5;
 
     // echo strings that are only set when the push is executed in the future.
     private String echoedSubject;
