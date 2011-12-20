@@ -1,0 +1,53 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<!DOCTYPE html >
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:util="http://java.sun.com/jsf/composite/components"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+      xmlns:icecore="http://www.icefaces.org/icefaces/core">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <link href="./resources/images/favicon.ico" rel="shortcut icon"
+          type="image/x-icon"></link>
+    <link href="./resources/images/favicon.ico" rel="icon"
+          type="image/x-icon"></link>
+    <title>ICEfaces Mobile Showcase</title>
+    <h:outputScript library="org.icefaces.component.util"
+                    name="iscroll-min.js"/>
+    <h:outputScript library="org.icefaces.component.util" name="combined-min.js"/>
+
+    <mobi:deviceStylesheet
+            name="#{themeBean.currentTheme}" media="screen"/>
+    <h:outputStylesheet library="css" name="showcase.css" media="screen"/>
+
+</h:head>
+<h:body>
+
+    <!-- select small or large -->
+    <util:viewSelector defaulType="small"
+                   small="/WEB-INF/includes/view/small.xhtml"
+                   large="/WEB-INF/includes/view/large.xhtml" />
+
+</h:body>
+</html>
