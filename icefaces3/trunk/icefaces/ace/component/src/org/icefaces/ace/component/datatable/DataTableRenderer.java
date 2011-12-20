@@ -504,6 +504,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (table.isResizableColumns()) writer.write(",resizableColumns:true");
         if (table.isReorderableColumns()) writer.write(",reorderableColumns:true");
         if (table.isSingleSort()) writer.write(",singleSort:true");
+        if (table.isDisabled()) writer.write(",disabled:true");
 
         encodeClientBehaviors(context, table);
 
@@ -1170,7 +1171,8 @@ public class DataTableRenderer extends CoreRenderer {
         writer.write(",initialPage:" + table.getPage());
         writer.write(",containers:[" + paginatorContainers + "]");
 
-        if (table.getPageCount() != 10) writer.write(",pageLinks:" + table.getPageCount());
+        if (table.isDisabled()) writer.write(",pageLinks:" + 1);
+        else if (table.getPageCount() != 10) writer.write(",pageLinks:" + table.getPageCount());
         if (table.getPaginatorTemplate() != null) writer.write(",template:'" + table.getPaginatorTemplate() + "'");
         if (table.getRowsPerPageTemplate() != null) writer.write(",rowsPerPageOptions : [" + table.getRowsPerPageTemplate() + "]");
         if (table.getCurrentPageReportTemplate() != null)writer.write(",pageReportTemplate:'" + table.getCurrentPageReportTemplate() + "'");
