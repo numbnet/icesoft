@@ -22,9 +22,6 @@
 package org.icefaces.samples.showcase.example.compat.effect;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.Calendar;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
