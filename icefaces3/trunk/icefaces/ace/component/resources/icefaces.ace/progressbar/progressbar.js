@@ -103,7 +103,7 @@ ice.ace.ProgressBar.prototype.fireCompleteEvent = function() {
     options.params = params;
 	    
     if (jQuery.isFunction(completeListener)) {
-        completeListener(options);
+        completeListener(options.params);
     } else ice.ace.AjaxRequest(options);
 }
 
@@ -130,7 +130,7 @@ ice.ace.ProgressBar.prototype.changeListener = function(ev, ui) {
     options.params = params;
 
     if (jQuery.isFunction(changeListener)) {
-        changeListener(options);
+        changeListener(options.params);
     } else ice.ace.AjaxRequest(options);
 };
 
@@ -160,6 +160,6 @@ ice.ace.ProgressBar.prototype.cancel = function() {
     options.params = params;
 
     if (jQuery.isFunction(cancelListener)) {
-        cancelListener(options);
+        cancelListener(options.params);
     } else ice.ace.AjaxRequest(options);
 }
