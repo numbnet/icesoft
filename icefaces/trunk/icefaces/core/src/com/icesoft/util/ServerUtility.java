@@ -69,8 +69,8 @@ public class ServerUtility {
             return null;
         }
         String _localAddr = null;
-        if (servletContext.getMajorVersion() >= 2 &&
-            servletContext.getMinorVersion() >= 4) {
+        if (servletContext.getMajorVersion() > 2 ||
+            (servletContext.getMajorVersion() == 2 && servletContext.getMinorVersion() >= 4)) {
 
             try {
                 // Returns null in a portal environment.
@@ -92,8 +92,8 @@ public class ServerUtility {
         if (request == null || servletContext == null) {
             return null;
         }
-        if (servletContext.getMajorVersion() >= 2 &&
-            servletContext.getMinorVersion() >= 4) {
+        if (servletContext.getMajorVersion() > 2 ||
+            (servletContext.getMajorVersion() == 2 && servletContext.getMinorVersion() >= 4)) {
 
             return request.getLocalAddr();
         } else {
@@ -111,8 +111,8 @@ public class ServerUtility {
             return -1;
         }
         int _localPort = 0;
-        if (servletContext.getMajorVersion() >= 2 &&
-            servletContext.getMinorVersion() >= 4) {
+        if (servletContext.getMajorVersion() > 2 ||
+            (servletContext.getMajorVersion() == 2 && servletContext.getMinorVersion() >= 4)) {
 
             _localPort = request.getLocalPort(); // returns 0 in portal env.
         }
@@ -159,8 +159,8 @@ public class ServerUtility {
         if (servletContext == null) {
             return null;
         }
-        if (servletContext.getMajorVersion() >= 2 &&
-            servletContext.getMinorVersion() >= 5) {
+        if (servletContext.getMajorVersion() > 2 ||
+            (servletContext.getMajorVersion() == 2 && servletContext.getMinorVersion() >= 5)) {
 
             return servletContext.getContextPath();
         } else {
