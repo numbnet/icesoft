@@ -40,68 +40,7 @@
     <ui:param name="tldResources" value="#{tooltipResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
-            
-            <icecore:singleSubmit/>
-            
-            <ace:panel header="Tooltip Component Configuration Panel">
-                <h:panelGrid columns="2" styleClass="centeredPanelGridWithLeftJustifiedText">
-                       <h:outputLabel id="tooltipEffectLabel" for="tooltipEffectSelector" value="Effect:" />
-                        <h:selectOneMenu id="tooltipEffectSelector" value="#{tooltipOverviewBean.tooltipEffect}">
-                            <f:selectItem itemValue="fade" itemLabel="Fade Effect"/>
-                            <f:selectItem itemValue="slide" itemLabel="Slide Effect"/>
-                            <f:selectItem itemValue="grow" itemLabel="Grow Effect"/>
-                        </h:selectOneMenu>
-                   
-                        <h:outputLabel id="tooltipShowDelayLabel" for="tooltipShowDelaySelector" value="Show Delay:" />
-                        <h:selectOneMenu id="tooltipShowDelaySelector" value="#{tooltipOverviewBean.tooltipShowDelay}">
-                            <f:selectItem itemValue="500" itemLabel="0.5 seconds"/>
-                            <f:selectItem itemValue="1000" itemLabel="1 second"/>
-                            <f:selectItem itemValue="2000" itemLabel="2 seconds"/>
-                        </h:selectOneMenu>
-                   
-                       <h:outputLabel id="tooltipHideDelayLabel" for="tooltipHideDelaySelector" value="Hide Delay:" />
-                        <h:selectOneMenu id="tooltipHideDelaySelector" value="#{tooltipOverviewBean.tooltipHideDelay}">
-                            <f:selectItem itemValue="500" itemLabel="0.5 seconds"/>
-                            <f:selectItem itemValue="1000" itemLabel="1 second"/>
-                            <f:selectItem itemValue="2000" itemLabel="2 seconds"/>
-                        </h:selectOneMenu>
-                   
-                        <h:outputLabel id="tooltipShowEffectLengthDelayLabel" for="tooltipShowEffectLengthSelector" value="Show Effect Length:" />
-                        <h:selectOneMenu id="tooltipShowEffectLengthSelector" value="#{tooltipOverviewBean.showEffectLength}">
-                            <f:selectItem itemValue="100" itemLabel="100 ms"/>
-                            <f:selectItem itemValue="500" itemLabel="500 ms"/>
-                            <f:selectItem itemValue="1000" itemLabel="1 second"/>
-                            <f:selectItem itemValue="2000" itemLabel="2 seconds"/>
-                        </h:selectOneMenu>
-                   
-                        <h:outputLabel id="tooltipHideEffectLengthDelayLabel" for="tooltipHideEffectLengthSelector" value="Hide Effect Length:" />
-                        <h:selectOneMenu id="tooltipHideEffectLengthSelector" value="#{tooltipOverviewBean.hideEffectLength}">
-                            <f:selectItem itemValue="100" itemLabel="100 ms"/>
-                            <f:selectItem itemValue="500" itemLabel="500 ms"/>
-                            <f:selectItem itemValue="1000" itemLabel="1 second"/>
-                            <f:selectItem itemValue="2000" itemLabel="2 seconds"/>
-                        </h:selectOneMenu>
-                   
-                       <h:outputLabel id="tooltipTargetPositionLabel" for="tooltiptooltipTargetPositionSelector" value="Position relative to tooltip target:" />
-                        <h:selectOneMenu id="tooltiptooltipTargetPositionSelector" value="#{tooltipOverviewBean.tooltipTargetPosition}">
-                            <f:selectItem itemValue="bottomRight" itemLabel="Bottom Right"/>
-                            <f:selectItem itemValue="bottomLeft" itemLabel="Bottom Left"/>
-                            <f:selectItem itemValue="topRight" itemLabel="Top Right"/>
-                            <f:selectItem itemValue="topLeft" itemLabel="Top Left"/>
-                        </h:selectOneMenu>
-                   
-                       <h:outputLabel id="tooltipPositionLabel" for="tooltiptooltipPositionSelector" value="Tooltip position:" />
-                       <h:selectOneMenu id="tooltiptooltipPositionSelector" value="#{tooltipOverviewBean.tooltipPosition}">
-                            <f:selectItem itemValue="topLeft" itemLabel="Top Left"/>
-                            <f:selectItem itemValue="topRight" itemLabel="Top Right"/>
-                            <f:selectItem itemValue="bottomLeft" itemLabel="Bottom Left"/>
-                            <f:selectItem itemValue="bottomRight" itemLabel="Bottom Right"/>
-                        </h:selectOneMenu>
-               </h:panelGrid>
-           </ace:panel>
-           
-           <br/>
+        <h:form>            
            <br/>
            <ace:panel>
                <h:panelGrid style="text-align: center;" width="100%">
@@ -110,19 +49,19 @@
                    </h:panelGrid>
                    
                    <ace:tooltip id="tooltip" for="text"
-                                       showEffect="#{tooltipOverviewBean.tooltipEffect}"
-                                       hideEffect="#{tooltipOverviewBean.tooltipEffect}"
-                                       showDelay="#{tooltipOverviewBean.tooltipShowDelay}"
-                                       hideDelay="#{tooltipOverviewBean.tooltipHideDelay}"
-                                       position="#{tooltipOverviewBean.tooltipPosition}"
-                                       targetPosition="#{tooltipOverviewBean.tooltipTargetPosition}"
-                                       showEffectLength="#{tooltipOverviewBean.showEffectLength}"
-                                       hideEffectLength="#{tooltipOverviewBean.hideEffectLength}">
+                                       showEffect="fade"
+                                       hideEffect="fade"
+                                       showDelay="500"
+                                       hideDelay="500"
+                                       position="BottomRight"
+                                       targetPosition="TopRight"
+                                       showEffectLength="300"
+                                       hideEffectLength="300">
                                        
                           <h:panelGrid style="text-align: center"> 
                                <h:graphicImage id="sampleImage" value="#{tooltipOverviewBean.image.path}"
                                        alt="#{tooltipOverviewBean.image.description}"/>
-                               <h:outputText value="This image with double rainbows was made in August of 2010 in the city of Calgary"/>
+                               <h:outputText value="Double rainbows!"/>
                            </h:panelGrid>
                     </ace:tooltip>
                </h:panelGrid>
