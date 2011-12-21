@@ -113,7 +113,7 @@ if (!window.ice.mobile) {
          //override primitive submit function
         namespace.submitFunction = function(element, event, options) {
             var source = event ? event.target : element;
-            var form = ice.formOf(source);
+            var form = ice.formOf(element);
             var formId = form.id;
             var sourceId = element ? element.id : event.target.id;
 
