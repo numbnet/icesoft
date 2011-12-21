@@ -74,8 +74,15 @@ public class PDFExporter extends Exporter {
                 document.open();
             }
 	        
-			PdfPTable pdfTable = exportPDFTable(table, pageOnly,excludeColumns, encodingType, includeHeaders, includeFooters, selectedRowsOnly);
-	    	document.add(pdfTable);
+			List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
+			if (columns.size() > 0) {
+				PdfPTable pdfTable = exportPDFTable(table, pageOnly,excludeColumns, encodingType, includeHeaders, includeFooters, selectedRowsOnly);
+				document.add(pdfTable);
+			} else {
+				PdfPTable pdfTable = new PdfPTable(1);
+				pdfTable.addCell(new Paragraph(""));
+				document.add(pdfTable);
+			}
 	    	
 	    	if (postProcessor != null) {
 	    		postProcessor.invoke(facesContext.getELContext(), new Object[]{document});
