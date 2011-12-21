@@ -41,7 +41,7 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
-        <portlet-name>button</portlet-name>
+        <portlet-name>animation</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
@@ -136,6 +136,11 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
+        <portlet-name>dataTableRowEditing</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
         <portlet-name>dataTableRowExpansion</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
@@ -221,7 +226,7 @@
         <ajaxable>false</ajaxable>
     </portlet>
     <portlet>
-        <portlet-name>fileEntryBasic</portlet-name>
+        <portlet-name>fileEntryListener</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>
@@ -332,6 +337,11 @@
     </portlet>
     <portlet>
         <portlet-name>panelToggle</portlet-name>
+        <instanceable>false</instanceable>
+        <ajaxable>false</ajaxable>
+    </portlet>
+    <portlet>
+        <portlet-name>printerOverview</portlet-name>
         <instanceable>false</instanceable>
         <ajaxable>false</ajaxable>
     </portlet>

@@ -93,8 +93,8 @@
         </portlet-info>
     </portlet>
     <portlet>
-        <portlet-name>button</portlet-name>
-        <display-name>ACE Button</display-name>
+        <portlet-name>animation</portlet-name>
+        <display-name>ACE Animation</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
@@ -102,15 +102,15 @@
         </init-param>
         <init-param>
             <name>org.icefaces.demo.viewPath</name>
-            <value>/resources/examples/ace/button/button.xhtml</value>
+            <value>/resources/examples/ace/animation/animation.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>ACE Button</title>
-            <short-title>ICEfaces Component Suite Showcase ACE Button</short-title>
+            <title>ACE Animation</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Animation</short-title>
             <keywords/>
         </portlet-info>
     </portlet>
@@ -511,6 +511,28 @@
         </portlet-info>
     </portlet>
     <portlet>
+        <portlet-name>dataTableRowEditing</portlet-name>
+        <display-name>ACE Data Table Row Editing</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/dataTable/dataTableRowEditing.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Data Table Row Editing</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Data Table Row Editing</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
         <portlet-name>dataTableRowExpansion</portlet-name>
         <display-name>ACE Data Table Row Expansion</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
@@ -885,8 +907,8 @@
         </portlet-info>
     </portlet>
     <portlet>
-        <portlet-name>fileEntryBasic</portlet-name>
-        <display-name>ACE File Entry Basic</display-name>
+        <portlet-name>fileEntryListener</portlet-name>
+        <display-name>ACE File Entry Listener</display-name>
         <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
         <init-param>
             <name>javax.portlet.faces.defaultViewId.view</name>
@@ -894,15 +916,15 @@
         </init-param>
         <init-param>
             <name>org.icefaces.demo.viewPath</name>
-            <value>/resources/examples/ace/fileentry/filebasic.xhtml</value>
+            <value>/resources/examples/ace/fileentry/fileEntryListener.xhtml</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
             <portlet-mode>view</portlet-mode>
         </supports>
         <portlet-info>
-            <title>ACE File Entry Basic</title>
-            <short-title>ICEfaces Component Suite Showcase ACE File Entry Basic</short-title>
+            <title>ACE File Entry Listener</title>
+            <short-title>ICEfaces Component Suite Showcase ACE File Entry Listener</short-title>
             <keywords/>
         </portlet-info>
     </portlet>
@@ -1387,6 +1409,28 @@
         <portlet-info>
             <title>ACE Panel Toggle</title>
             <short-title>ICEfaces Component Suite Showcase ACE Panel Toggle</short-title>
+            <keywords/>
+        </portlet-info>
+    </portlet>
+    <portlet>
+        <portlet-name>printerOverview</portlet-name>
+        <display-name>ACE Printer Overview</display-name>
+        <portlet-class>org.portletfaces.bridge.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/portlet-view.xhtml</value>
+        </init-param>
+        <init-param>
+            <name>org.icefaces.demo.viewPath</name>
+            <value>/resources/examples/ace/printer/printerOverview.xhtml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>ACE Printer Overview</title>
+            <short-title>ICEfaces Component Suite Showcase ACE Printer Overview</short-title>
             <keywords/>
         </portlet-info>
     </portlet>
