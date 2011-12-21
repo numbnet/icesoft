@@ -95,9 +95,14 @@
             
             <ace:contextMenu for="carTable">
                 <ace:menuItem value="Undo All" icon="ui-icon ui-icon-arrowrefresh-1-w"
-                              actionListener="#{dataTableDynamic.restoreDefault}"/>
+                              actionListener="#{dataTableDynamic.restoreDefault}" >
+                              <ace:ajax />
+                </ace:menuItem>              
                 <ace:menuItem value="Add Cars" icon="ui-icon ui-icon-disk"
-                              actionListener="#{dataTableDynamic.bulkAdd}"/>  
+                              actionListener="#{dataTableDynamic.bulkAdd}" >  
+                              <ace:ajax />
+                </ace:menuItem>              
+                              
             </ace:contextMenu>
         </h:form>
     </ui:define>
