@@ -71,7 +71,7 @@ ice.ace.Droppable.prototype.setupDropHandler = function() {
         options.params = params;
 
         if (jQuery.isFunction(dropListener)) {
-            dropListener(options);
+            dropListener(options.params);
         } else ice.ace.AjaxRequest(options);
     };
 }

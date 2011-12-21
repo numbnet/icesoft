@@ -48,7 +48,7 @@ ice.ace.Tooltip.prototype.triggerDisplayListener = function() {
 
     var listener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.display;
     if (jQuery.isFunction(listener)) {
-        listener(options['params']);
+        listener(options.params);
     } else ice.ace.AjaxRequest(options);
 }
 
