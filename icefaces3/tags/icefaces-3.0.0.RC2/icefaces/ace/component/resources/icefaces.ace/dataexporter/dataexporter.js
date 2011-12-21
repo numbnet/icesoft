@@ -47,6 +47,7 @@ ice.ace.DataExporter.prototype.url = function(url) {
 ice.ace.DataExporter.shouldOpenPopUp = function() {
 	if (ice.ace.jq.browser.msie) 
 		if (ice.ace.jq.browser.version < 8)
-			return true;
+			if (navigator.userAgent.indexOf("Trident/5") < 0) // detects IE9, regardless of compatibility mode
+				return true;
 	return false;
 }
