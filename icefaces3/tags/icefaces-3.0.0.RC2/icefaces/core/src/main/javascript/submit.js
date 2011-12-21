@@ -85,91 +85,95 @@ var fullSubmit;
         var viewID = viewIDOf(element);
         var form = document.getElementById(viewID);
         var clonedElements = [];
+        try {
+            var clonedElement = form.appendChild(element.cloneNode(true));
+            append(clonedElements, clonedElement);
 
-        var clonedElement = form.appendChild(element.cloneNode(true));
-        append(clonedElements, clonedElement);
-
-        var tagName = toLowerCase(element.nodeName);
-        //copy state which IE won't copy during cloning
-        if (tagName == 'input') {
-            if (element.type == 'radio') {
-                clonedElement.checked = element.checked;
-                execute = fixExecuteParameter(execute,element);
-            }
-            if (element.type == 'checkbox') {
-                clonedElement.checked = element.checked;
-                //copy the rest of checkboxes with the same name and their state
-                var name = element.name;
-                each(element.form.elements, function(checkbox) {
-                    if (checkbox.name == name && checkbox != element) {
-                        var checkboxClone = form.appendChild(checkbox.cloneNode(true));
-                        append(clonedElements, checkboxClone);
-                        checkboxClone.checked = checkbox.checked;
-                    }
+            var tagName = toLowerCase(element.nodeName);
+            //copy state which IE won't copy during cloning
+            if (tagName == 'input') {
+                if (element.type == 'radio') {
+                    clonedElement.checked = element.checked;
+                    execute = fixExecuteParameter(execute,element);
+                }
+                if (element.type == 'checkbox') {
+                    clonedElement.checked = element.checked;
+                    //copy the rest of checkboxes with the same name and their state
+                    var name = element.name;
+                    each(element.form.elements, function(checkbox) {
+                        if (checkbox.name == name && checkbox != element) {
+                            var checkboxClone = form.appendChild(checkbox.cloneNode(true));
+                            append(clonedElements, checkboxClone);
+                            checkboxClone.checked = checkbox.checked;
+                        }
+                    });
+                    execute = fixExecuteParameter(execute,element);
+                }
+            } else if (tagName == 'select') {
+                var clonedOptions = clonedElement.options;
+                each(element.options, function(option, i) {
+                    clonedOptions[i].selected = option.selected;
                 });
-                execute = fixExecuteParameter(execute,element);
             }
-        } else if (tagName == 'select') {
-            var clonedOptions = clonedElement.options;
-            each(element.options, function(option, i) {
-                clonedOptions[i].selected = option.selected;
-            });
+
+            event = event || null;
+            var onBeforeSubmitListeners = [];
+            var onBeforeUpdateListeners = [];
+            var onAfterUpdateListeners = [];
+            var onNetworkErrorListeners = [];
+            var onServerErrorListeners = [];
+            if (callbacks) {
+                callbacks(
+                    curry(append, onBeforeSubmitListeners),
+                    curry(append, onBeforeUpdateListeners),
+                    curry(append, onAfterUpdateListeners),
+                    curry(append, onNetworkErrorListeners),
+                    curry(append, onServerErrorListeners)
+                );
+            }
+            var options = {
+                execute: execute,
+                render: render,
+                onevent: submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners),
+                onerror: submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners),
+                'ice.window': namespace.window,
+                'ice.view': viewID,
+                'ice.focus': currentFocus
+            };
+            var decoratedEvent = $event(event, element);
+
+            if (isKeyEvent(decoratedEvent) && isEnterKey(decoratedEvent)) {
+                cancelBubbling(decoratedEvent);
+                cancelDefaultAction(decoratedEvent);
+            }
+
+            serializeEventToOptions(decoratedEvent, options);
+            serializeAdditionalParameters(additionalParameters, options);
+
+            debug(logger, join([
+                'partial submit to ' + encodedURLOf(form),
+                'javax.faces.execute: ' + execute,
+                'javax.faces.render: ' + render,
+                'javax.faces.source: ' + element.id,
+                'view ID: ' + viewID,
+                'event type: ' + type(decoratedEvent)
+            ], '\n'));
+            namespace.submitFunction(clonedElement, event, options);
+        } finally {
+            if (window.myfaces)  {
+                //myfaces queue does not serialize
+                //until the request is sent, so we must delay
+                append(onAfterUpdateListeners, function() {
+                    each(clonedElements, function(c) {
+                        form.removeChild(c);
+                       });
+                });
+            } else {
+                each(clonedElements, function(c) {
+                    form.removeChild(c);
+                });
+            }
         }
-
-        event = event || null;
-        var onBeforeSubmitListeners = [];
-        var onBeforeUpdateListeners = [];
-        var onAfterUpdateListeners = [];
-        var onNetworkErrorListeners = [];
-        var onServerErrorListeners = [];
-        if (callbacks) {
-            callbacks(
-                curry(append, onBeforeSubmitListeners),
-                curry(append, onBeforeUpdateListeners),
-                curry(append, onAfterUpdateListeners),
-                curry(append, onNetworkErrorListeners),
-                curry(append, onServerErrorListeners)
-            );
-        }
-        var options = {
-            execute: execute,
-            render: render,
-            onevent: submitEventBroadcaster(onBeforeSubmitListeners, onBeforeUpdateListeners, onAfterUpdateListeners),
-            onerror: submitErrorBroadcaster(onNetworkErrorListeners, onServerErrorListeners),
-            'ice.window': namespace.window,
-            'ice.view': viewID,
-            'ice.focus': currentFocus
-        };
-        var decoratedEvent = $event(event, element);
-
-        if (isKeyEvent(decoratedEvent) && isEnterKey(decoratedEvent)) {
-            cancelBubbling(decoratedEvent);
-            cancelDefaultAction(decoratedEvent);
-        }
-
-        serializeEventToOptions(decoratedEvent, options);
-        serializeAdditionalParameters(additionalParameters, options);
-
-        debug(logger, join([
-            'partial submit to ' + encodedURLOf(form),
-            'javax.faces.execute: ' + execute,
-            'javax.faces.render: ' + render,
-            'javax.faces.source: ' + element.id,
-            'view ID: ' + viewID,
-            'event type: ' + type(decoratedEvent)
-        ], '\n'));
-
-        //ICE-7562: wait until after updates to remove children from our
-        //          synthetic form to appease MyFaces requests that might
-        //          have been in the queue before being sent.
-        append(onAfterUpdateListeners, function() {
-            each(clonedElements, function(c) {
-                form.removeChild(c);
-               });
-        });
-
-        namespace.submitFunction(clonedElement, event, options);
-
     }
 
     singleSubmitExecuteThis = function(event, idorelement, additionalParameters, callbacks) {
