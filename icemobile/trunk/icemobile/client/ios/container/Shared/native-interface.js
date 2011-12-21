@@ -85,6 +85,13 @@ if (!window.ice.mobile) {
 
             if ("@this" === options.execute)  {
                 options.execute = sourceId;
+            } else if ("@form" === options.execute)  {
+                options.execute = formId;
+            }
+            if ("@this" === options.render)  {
+                options.render = sourceId;
+            } else if ("@form" === options.render)  {
+                options.render = formId;
             }
             if (!options.execute)  {
                 options.execute = "@all";
