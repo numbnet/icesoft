@@ -27,14 +27,11 @@
 	    xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<ui:insert name="metadata"/>
 	
-	<h:head>
-		<title id="title">#{msgs['showcase.title']}</title>
-		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/><!-- To 'fix' IE8 dynamic resize problem -->
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		<h:outputStylesheet library="css" name="demo_template.css"/>
-		<h:outputStylesheet library="css" name="override_styles.css"/>
-		<h:outputStylesheet library="css" name="showcase_styles.css"/>
-	</h:head>
+    <h:head>
+        <title id="title">#{msgs['showcase.title']}</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/><!-- To 'fix' IE8 dynamic resize problem -->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    </h:head>
 	
 	<h:body styleClass="suite ice-skin-rime">
 	<f:view contentType="text/html">
@@ -45,15 +42,19 @@
 					<ui:insert name="component-example"/>
 			</div>
 
-			<div id="footer">
-				<ul class="footer-nav">
-					<li><a>about</a></li>
-					<li><a>contact</a></li>
-					<li><a>components....</a></li>
-				</ul>
-				<p>&#xA9; 2011 ICEsoft Technologies Inc.</p>
-			</div>
+			<!--<div id="footer">-->
+				<!--<ul class="footer-nav">-->
+					<!--<li><a>about</a></li>-->
+					<!--<li><a>contact</a></li>-->
+					<!--<li><a>components....</a></li>-->
+				<!--</ul>-->
+				<!--<p>&#xA9; 2011 ICEsoft Technologies Inc.</p>-->
+			<!--</div>-->
 		</div>
     </f:view>
+        <ice:outputStyle href="./xmlhttp/css/rime/rime.css" />
+        <h:outputStylesheet library="css" name="demo_template.css"/>
+        <h:outputStylesheet library="css" name="override_styles.css"/>
+        <h:outputStylesheet library="css" name="showcase_styles.css"/>
 	</h:body>
 </html>

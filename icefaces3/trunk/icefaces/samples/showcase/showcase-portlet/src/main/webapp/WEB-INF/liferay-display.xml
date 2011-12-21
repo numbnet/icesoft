@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
   ~ Version: MPL 1.1
   ~
@@ -30,7 +30,7 @@
                 <portlet id="accordionPanel"/>
                 <portlet id="accordionPanelDynamic"/>
                 <portlet id="accordionPanelEffect"/>
-                <portlet id="button"/>
+                <portlet id="animation"/>
                 <portlet id="checkboxButton"/>
                 <portlet id="confirmationDialog"/>
                 <portlet id="confirmationDialogEffect"/>
@@ -49,6 +49,7 @@
                 <portlet id="dataTableListener"/>
                 <portlet id="dataTablePaginator"/>
                 <portlet id="dataTablePanelExpansion"/>
+                <portlet id="dataTableRowEditing"/>
                 <portlet id="dataTableRowExpansion"/>
                 <portlet id="dataTableRowState"/>
                 <portlet id="dataTableScrolling"/>
@@ -66,7 +67,7 @@
                 <portlet id="dataTableIntegration"/>
                 <portlet id="dragDropOverview"/>
                 <portlet id="draggableOverview"/>
-                <portlet id="fileEntryBasic"/>
+                <portlet id="fileEntryListener"/>
                 <portlet id="fileEntry"/>
                 <portlet id="fileEntryMultiple"/>
                 <portlet id="fileEntryValidation"/>
@@ -89,6 +90,7 @@
                 <portlet id="panelListener"/>
                 <portlet id="panelMenu"/>
                 <portlet id="panelToggle"/>
+                <portlet id="printerOverview"/>
                 <portlet id="progressBar"/>
                 <portlet id="progressBarClient"/>
                 <portlet id="progressBarClientAndServer"/>

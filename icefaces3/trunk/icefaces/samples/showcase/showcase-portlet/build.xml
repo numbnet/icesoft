@@ -45,6 +45,7 @@
     <property name="ace" value="true" />
 
     <patternset id="portlet.files">
+        <exclude name="**/*demo_template.css"/>
         <exclude name="**/*template.xhtml"/>
         <exclude name="**/*PortletUtil.java"/>
         <exclude name="**/portlet-view.xhtml"/>

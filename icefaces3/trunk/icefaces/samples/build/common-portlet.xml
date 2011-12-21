@@ -29,9 +29,7 @@
     <property name="parent.web.dir" location="${parent.dir}/src/main/webapp"/>
 
     <patternset id="portlet.jars">
-        <include name="jsf*.jar"/>
-        <include name="portletfaces*.jar"/>
-        <include name="slf4j*.jar"/>
+        <include name="*.jar"/>
     </patternset>
 
     <patternset id="portlet.files"/>
@@ -48,13 +46,19 @@
 
     <target name="copy.parent.resources">
         <copy todir="${java.dir}">
-          <fileset dir="${parent.java.dir}"/>
+            <fileset dir="${parent.java.dir}">
+                <patternset refid="portlet.files"/>
+            </fileset>
         </copy>
         <copy todir="${res.dir}">
-          <fileset dir="${parent.res.dir}"/>
+            <fileset dir="${parent.res.dir}">
+                <patternset refid="portlet.files"/>
+            </fileset>
         </copy>
         <copy todir="${web.dir}">
-          <fileset dir="${parent.web.dir}"/>
+            <fileset dir="${parent.web.dir}">
+                <patternset refid="portlet.files"/>
+            </fileset>
         </copy>
     </target>
 
