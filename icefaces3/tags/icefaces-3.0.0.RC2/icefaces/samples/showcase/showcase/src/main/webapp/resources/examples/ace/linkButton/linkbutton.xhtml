@@ -44,14 +44,14 @@
                 <ace:tabPane label="Action / Static Navigation">
                     <ace:panel>
                         <h:panelGrid styleClass="centeredPanelGrid">
-                            <ace:linkButton value="go to push button example via action" 
+                            <ace:linkButton value="Go to the pushButton example via action" 
                                             action="#{linkButton.executeAction}"
                                             style="text-decoration: underline;">
                                 <f:param name="grp" value="aceMenu"/>
                                 <f:param name="exp" value="pushButton" />
                             </ace:linkButton>
                             
-                            <ace:linkButton value="go to push button example statically"
+                            <ace:linkButton value="Go to the pushButton example statically"
                                             href="#{linkButton.staticNavigation}" 
                                             style="text-decoration: underline;"/>
                             
@@ -71,20 +71,6 @@
                     </ace:panel>
                 </ace:tabPane>
                 
-                <ace:tabPane label="Listener w/o submit">
-                    <ace:panel>
-                        <h:panelGrid columns="3">
-                            <h:outputLabel value="*Required Field: "/>
-                            <h:inputText required="true"
-                                                  requiredMessage="Required Field can not be left empty"
-                                                  value="#{linkButton.exampleValue}"/>
-                            <ace:linkButton value="execute link listener only"
-                                                    actionListener="#{linkButton.addMessage}"
-                                                    immediate="true"
-                                                    style="text-decoration: underline;"/>
-                        </h:panelGrid>
-                    </ace:panel>
-                </ace:tabPane>
             </ace:tabSet>
         </h:form>
         
