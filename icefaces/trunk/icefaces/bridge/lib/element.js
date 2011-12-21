@@ -43,6 +43,8 @@
         return container;
     };
 
+    var scriptElementMatcher = /<script[^>]*>([\S\s]*?)<\/script>/igm;
+
     This.Update = Object.subclass({
         initialize: function(element) {
             this.element = element;
@@ -64,6 +66,14 @@
                 html.push(tag);
                 html.push('>');
             };
+
+            var contentElement = this.element.getElementsByTagName('content')[0];
+            this.text = contentElement.firstChild ?
+                contentElement.firstChild.data.replace(/<\!\#cdata\#/g, '<![CDATA[').replace(/\#\#>/g, ']]>') : '';
+            //collect scripts
+            this.scripts = this.text.match(scriptElementMatcher);
+            //strip scripts
+            this.text = this.text.replace(scriptElementMatcher, '');
         },
 
         eachAttribute: function(iterator) {
@@ -74,9 +84,11 @@
         },
 
         content: function() {
-            var contentElement = this.element.getElementsByTagName('content')[0];
-            return contentElement.firstChild ?
-                   contentElement.firstChild.data.replace(/<\!\#cdata\#/g, '<![CDATA[').replace(/\#\#>/g, ']]>') : '';
+            return this.text;
+        },
+
+        scriptTags: function() {
+            return this.scripts ? this.scripts : [];
         },
 
         asHTML: function() {
@@ -239,108 +251,119 @@
             return new This.Element(e);
         switch (e.nodeName.toLowerCase()) {
             case 'textarea':
-            case 'input': return new This.InputElement(e);
+            case 'input':
+                return new This.InputElement(e);
             case 'thead':
             case 'tfoot':
             case 'tbody':
             case 'th':
             case 'td':
-            case 'tr': return new This.TableCellElement(e);
-            case 'button': return new This.ButtonElement(e);
-            case 'select': return new This.SelectElement(e);
-            case 'form': return new This.FormElement(e);
-            case 'body': return new This.BodyElement(e);
-            case 'script': return new This.ScriptElement(e);
-            case 'title': return new This.TitleElement(e);
-            case 'a': return new This.AnchorElement(e);
-            case 'iframe': return new This.IFrameElement(e);
-            default : return new This.Element(e);
+            case 'tr':
+                return new This.TableCellElement(e);
+            case 'button':
+                return new This.ButtonElement(e);
+            case 'select':
+                return new This.SelectElement(e);
+            case 'form':
+                return new This.FormElement(e);
+            case 'body':
+                return new This.BodyElement(e);
+            case 'script':
+                return new This.ScriptElement(e);
+            case 'title':
+                return new This.TitleElement(e);
+            case 'a':
+                return new This.AnchorElement(e);
+            case 'iframe':
+                return new This.IFrameElement(e);
+            default :
+                return new This.Element(e);
         }
     };
 
     This.ElementStyleProperties =
-    ['background',
-        'backgroundAttachment',
-        'backgroundColor',
-        'backgroundImage',
-        'backgroundPosition',
-        'backgroundRepeat',
-        'border',
-        'borderBottom',
-        'borderBottomColor',
-        'borderBottomStyle',
-        'borderBottomWidth',
-        'borderColor',
-        'borderLeft',
-        'borderLeftColor',
-        'borderLeftStyle',
-        'borderLeftWidth',
-        'borderRight',
-        'borderRightColor',
-        'borderRightStyle',
-        'borderRightWidth',
-        'borderStyle',
-        'borderTop',
-        'borderTopColor',
-        'borderTopStyle',
-        'borderTopWidth',
-        'borderWidth',
-        'clear',
-        'clip',
-        'color',
-        'cursor',
-        'display',
-        'filter',
-        'font',
-        'fontFamily',
-        'fontSize',
-        'fontVariant',
-        'fontWeight',
-        'height',
-        'left',
-        'letterSpacing',
-        'lineHeight',
-        'listStyle',
-        'listStyleImage',
-        'listStylePosition',
-        'listStyleType',
-        'margin',
-        'marginBottom',
-        'marginLeft',
-        'marginRight',
-        'marginTop',
-        'overflow',
-        'padding',
-        'paddingBottom',
-        'paddingLeft',
-        'paddingRight',
-        'paddingTop',
-        'pageBreakAfter',
-        'pageBreakBefore',
-        'position',
-        'styleFloat',
-        'textAlign',
-        'textDecoration',
-        'textDecorationBlink',
-        'textDecorationLineThrough',
-        'textDecorationNone',
-        'textDecorationOverline',
-        'textDecorationUnderline',
-        'textIndent',
-        'textTransform',
-        'top',
-        'verticalAlign',
-        'visibility',
-        'width',
-        'zIndex'];
+        ['background',
+            'backgroundAttachment',
+            'backgroundColor',
+            'backgroundImage',
+            'backgroundPosition',
+            'backgroundRepeat',
+            'border',
+            'borderBottom',
+            'borderBottomColor',
+            'borderBottomStyle',
+            'borderBottomWidth',
+            'borderColor',
+            'borderLeft',
+            'borderLeftColor',
+            'borderLeftStyle',
+            'borderLeftWidth',
+            'borderRight',
+            'borderRightColor',
+            'borderRightStyle',
+            'borderRightWidth',
+            'borderStyle',
+            'borderTop',
+            'borderTopColor',
+            'borderTopStyle',
+            'borderTopWidth',
+            'borderWidth',
+            'clear',
+            'clip',
+            'color',
+            'cursor',
+            'display',
+            'filter',
+            'font',
+            'fontFamily',
+            'fontSize',
+            'fontVariant',
+            'fontWeight',
+            'height',
+            'left',
+            'letterSpacing',
+            'lineHeight',
+            'listStyle',
+            'listStyleImage',
+            'listStylePosition',
+            'listStyleType',
+            'margin',
+            'marginBottom',
+            'marginLeft',
+            'marginRight',
+            'marginTop',
+            'overflow',
+            'padding',
+            'paddingBottom',
+            'paddingLeft',
+            'paddingRight',
+            'paddingTop',
+            'pageBreakAfter',
+            'pageBreakBefore',
+            'position',
+            'styleFloat',
+            'textAlign',
+            'textDecoration',
+            'textDecorationBlink',
+            'textDecorationLineThrough',
+            'textDecorationNone',
+            'textDecorationOverline',
+            'textDecorationUnderline',
+            'textIndent',
+            'textTransform',
+            'top',
+            'verticalAlign',
+            'visibility',
+            'width',
+            'zIndex'];
 
     This.InputElementAttributes =
         //core and i18n attributes (except 'id' and 'style' attributes)
-    ['className', 'title', 'lang',
-        //input element attributes
-        'name', 'value', 'checked', 'disabled', 'readOnly',
-        'size', 'maxLength', 'src', 'alt', 'useMap', 'isMap',
-        'tabIndex', 'accessKey', 'accept'];
+        ['className', 'title', 'lang',
+            //input element attributes
+            'name', 'value', 'checked', 'disabled', 'readOnly',
+            'size', 'maxLength', 'src', 'alt', 'useMap', 'isMap',
+            'tabIndex', 'accessKey', 'accept'];
     //'dir' attribute cannot be updated dynamically in IE 7
     //'type' attribute cannot be updated dynamically in Firefox 2.0
 
@@ -408,9 +431,13 @@
                 case 'submit':
                 case 'hidden':
                 case 'password':
-                case 'text': query.add(this.element.name, this.element.value); break;
+                case 'text':
+                    query.add(this.element.name, this.element.value);
+                    break;
                 case 'checkbox':
-                case 'radio': if (this.element.checked) query.add(this.element.name, this.element.value || 'on'); break;
+                case 'radio':
+                    if (this.element.checked) query.add(this.element.name, this.element.value || 'on');
+                    break;
             }
         },
 
@@ -431,9 +458,10 @@
         },
 
         serializeOn: function(query) {
-            $enumerate(this.element.options).select(function(option) {
-                return option.selected;
-            }).each(function(selectedOption) {
+            $enumerate(this.element.options).select(
+                function(option) {
+                    return option.selected;
+                }).each(function(selectedOption) {
                 var value = selectedOption.value || (selectedOption.value == '' ? '' : selectedOption.text);
                 query.add(this.element.name, value);
             }.bind(this));
