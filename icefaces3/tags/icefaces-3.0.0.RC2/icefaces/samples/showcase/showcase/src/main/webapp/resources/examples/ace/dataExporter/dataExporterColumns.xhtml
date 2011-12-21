@@ -65,6 +65,8 @@
                                             itemValue="#{column.value}"/>
                 </h:selectManyCheckbox>
                 </h:panelGrid>
+                </h:form>
+                <h:form>
                 <h:panelGrid styleClass="centeredPanelGrid">
                     <ace:dataExporter label="Export File" type="#{dataExporterColumns.type}" target="carTable" fileName="cars" excludeColumns="#{dataExporterColumns.chosenColumnsString}"/>
                 </h:panelGrid>
