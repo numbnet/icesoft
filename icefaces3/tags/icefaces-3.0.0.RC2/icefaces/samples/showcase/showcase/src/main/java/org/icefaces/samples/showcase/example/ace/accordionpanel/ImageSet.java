@@ -24,6 +24,7 @@ package org.icefaces.samples.showcase.example.ace.accordionpanel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.*;
 
 public class ImageSet implements Serializable
 {
@@ -56,7 +57,7 @@ public class ImageSet implements Serializable
         }
         else if(imageSetType.equals(ImagesSelect.ARROWS))
         {
-            imageLocations.add(new ImageInfo("/resources/css/images/navigateNext.png", "Navigate Next"));
+            imageLocations.add(new ImageInfo("/resources/css/images/navigateForward.png", "Navigate Forward"));
             imageLocations.add(new ImageInfo("/resources/css/images/navigateBack.png", "Navigate Back"));
         }        
         return imageLocations;
@@ -74,6 +75,18 @@ public class ImageSet implements Serializable
             image = new ImageInfo("/resources/css/images/rainbowCalgary.png", "Calgary");
         }
         return image;
+    }
+    
+    public static ImageInfo getRandomImage()
+    {
+        //get all available image sets
+        ImagesSelect[] availableSets = ImagesSelect.values();
+        //pick one of available sets randomly
+        ImagesSelect randomValue = availableSets[(int)(Math.random()*availableSets.length)];
+        //get Images from that set
+        ArrayList<ImageInfo> randomSet =  getImages(randomValue);
+        //Randomly pick one of the images from that set 
+        return randomSet.get((int)(Math.random()*randomSet.size()));
     }
 
 
