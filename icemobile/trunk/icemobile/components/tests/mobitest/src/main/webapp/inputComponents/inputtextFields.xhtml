@@ -153,5 +153,18 @@
 	<li><a href="../inputComponents.html">index page</a>
 	</li>
 
+    <script type="text/javascript">
+        if (window.addEventListener)  {
+             window.addEventListener( "load",
+             function() {
+                 function noop() {};
+                 ice.setFocus = noop;
+                 ice.sf = noop;
+                 ice.applyFocus = noop;
+                 ice.af = noop;
+             } , false );
+      }
+
+    </script>
 </h:body>
 </html>
