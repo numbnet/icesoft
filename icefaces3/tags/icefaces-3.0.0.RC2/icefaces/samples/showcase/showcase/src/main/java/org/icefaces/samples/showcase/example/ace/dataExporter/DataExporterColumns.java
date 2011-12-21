@@ -79,7 +79,7 @@ public class DataExporterColumns extends ComponentExampleImpl<DataExporterColumn
         this.options.put("Cost", 6);
         
         chosenColumns = new String[]{"0", "3", "5"};
-        chosenColumnsString = "0,3,5";
+        setChosenColumns(chosenColumns);
         type = "csv";
     }
     
