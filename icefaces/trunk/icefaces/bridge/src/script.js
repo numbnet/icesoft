@@ -32,6 +32,44 @@
 
 [ Ice.Script = new Object, Ice.Ajax.Client ].as(function(This, Client) {
 
+    function globalEval(src) {
+        if (window.execScript) {
+            window.execScript(src);
+        } else {
+            (function() {
+                window.eval.call(window, src);
+            })();
+        }
+    }
+
+    function extractScriptContent(html) {
+        var start = new RegExp('\<script[^\<]*\>', 'g').exec(html);
+        var end = new RegExp('\<\/script\>', 'g').exec(html);
+        if (start && end && start.index > -1 && end.index > -1) {
+            var tagWithContent = html.substring(start.index, end.index + end[0].length);
+            return tagWithContent.substring(tagWithContent.indexOf('>') + 1, tagWithContent.lastIndexOf('<'));
+        } else {
+            return '';
+        }
+    }
+
+    function extractSrcAttribute(html) {
+        var result = html.match(/src="([\S]*?)"/im);
+        return result ? result[1] : null;
+    }
+
+    function unescapeHtml(text) {
+        if (text) {
+            var temp = document.createElement("div");
+            temp.innerHTML = text;
+            var result = temp.firstChild.data;
+            temp.removeChild(temp.firstChild);
+            return result;
+        } else {
+            return text;
+        }
+    }
+
     //todo: should this code be part of Element.replaceHtml method?    
     This.Loader = Object.subclass({
         initialize: function(logger) {
@@ -45,23 +83,24 @@
             }.bind(this));
         },
 
-        searchAndEvaluateScripts: function(element) {
-            $enumerate(element.getElementsByTagName('script')).each(function(s) {
-                this.evaluateScript(s);
+        evaluateScripts: function(scriptTags) {
+            $enumerate(scriptTags).each(function(script) {
+                this.evaluateScript(script);
             }.bind(this));
         },
 
         evaluateScript: function(script) {
-            var uri = script.src;
+            var uri = extractSrcAttribute(script);
             if (uri) {
-                if (!this.referencedScripts.include(script.src)) {
+                uri = unescapeHtml(uri);
+                if (!this.referencedScripts.include(uri)) {
                     this.logger.debug('loading : ' + uri);
                     this.client.getSynchronously(uri, '', function(request) {
                         request.on(Ice.Connection.OK, function() {
                             this.referencedScripts.push(uri);
                             this.logger.debug('evaluating script at : ' + uri);
                             try {
-                                eval(request.content());
+                                globalEval(request.content());
                             } catch (e) {
                                 this.logger.warn('Failed to evaluate script located at: ' + uri, e);
                             }
@@ -69,10 +108,10 @@
                     }.bind(this));
                 }
             } else {
-                var code = script.innerHTML;
+                var code = extractScriptContent(script);
                 this.logger.debug('evaluating script : ' + code);
                 try {
-                    eval(code);
+                    globalEval(code);
                 } catch (e) {
                     this.logger.warn('Failed to evaluate script: \n' + code, e);
                 }
