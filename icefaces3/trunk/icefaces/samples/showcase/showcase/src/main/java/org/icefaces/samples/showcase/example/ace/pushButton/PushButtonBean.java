@@ -33,12 +33,8 @@ import org.icefaces.samples.showcase.util.FacesUtils;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import java.io.IOException;
 import java.io.Serializable;
-import org.icefaces.ace.component.animation.Blind;
-import org.icefaces.ace.component.animation.Effect;
 import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
 
 
@@ -94,7 +90,7 @@ public class PushButtonBean extends ComponentExampleImpl<PushButtonBean> impleme
     
     public void addMessage(ActionEvent event) 
     {
-        FacesUtils.addInfoMessage("This button didn't submited or validated Required Field. Change current tabPane to invoke input field validation.");
+        FacesUtils.addInfoMessage("This button didn't submited or validated Required Field. Empty input field and change current tabPane to invoke its validation.");
     }
 
     public String getExampleValue() {

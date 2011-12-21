@@ -33,10 +33,10 @@ import org.icefaces.samples.showcase.util.FacesUtils;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import java.io.IOException;
 import java.io.Serializable;
+import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
+import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet.ImageInfo;
 
 @ComponentExample(
         title = "example.ace.linkButton.title",
@@ -70,60 +70,46 @@ import java.io.Serializable;
 public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean> implements Serializable {
 
     public static final String BEAN_NAME = "linkButton";
-
-    private String navActionValue = "overview";
-    private String staticNavigation = "showcase.jsf?grp=aceMenu&exp=checkboxButton";
-    private String listenerNavigation = "showcase.jsf?grp=aceMenu&exp=checkboxButton";
-    private String requiredField =  "";
-
-    public void addMessage() {
-        FacesUtils.addInfoMessage("This button didn't submit or validate the rest of the form.");
+    private String staticNavigation;
+    
+    private String exampleValue;
+    ImageSet.ImageInfo currentImage;
+    
+    public LinkButtonBean() {
+        super(LinkButtonBean.class);
+        staticNavigation  = "showcase.jsf?grp=aceMenu&exp=pushButton";
+        currentImage = ImageSet.getRandomImage();
+    }
+    
+    public String executeAction() {
+        //application logic can be added here
+        return null;
+    }
+    
+    public void executeListener(ActionEvent event) 
+    {
+        currentImage = ImageSet.getRandomImage();
+    }
+    
+    public void addMessage(ActionEvent event) 
+    {
+        FacesUtils.addInfoMessage("This link didn't submited or validated Required Field. Empty input field and change current tabPane to invoke its validation.");
     }
 
-    public void navListener(ActionEvent e) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        try {
-            FacesUtils.getExternalContext().dispatch(listenerNavigation);
-        } catch (IOException e1) {
-            FacesUtils.addErrorMessage("Path \""+listenerNavigation+"\" could not be read.");
-            e1.printStackTrace();
-        }
+    public String getExampleValue() {
+        return exampleValue;
     }
 
-    public String navAction() {
-        return "checkboxButton";
+    public void setExampleValue(String exampleValue) {
+        this.exampleValue = exampleValue;
     }
 
-    public String getNavAction() {
-        return navAction();
+    public ImageInfo getCurrentImage() {
+        return currentImage;
     }
 
-    public String getRequiredField() {
-        return requiredField;
-    }
-
-    public void setRequiredField(String requiredField) {
-        this.requiredField = requiredField;
-    }
-
-    public void setNavAction(String navAction) {
-        this.navActionValue = navAction;
-    }
-
-    public String getNavActionValue() {
-        return navActionValue;
-    }
-
-    public void setNavActionValue(String navAction) {
-        this.navActionValue = navAction;
-    }
-
-    public String getListenerNavigation() {
-        return listenerNavigation;
-    }
-
-    public void setListenerNavigation(String listenerNavigation) {
-        this.listenerNavigation = listenerNavigation;
+    public void setCurrentImage(ImageInfo currentImage) {
+        this.currentImage = currentImage;
     }
 
     public String getStaticNavigation() {
@@ -132,9 +118,5 @@ public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean> impleme
 
     public void setStaticNavigation(String staticNavigation) {
         this.staticNavigation = staticNavigation;
-    }
-
-    public LinkButtonBean() {
-        super(LinkButtonBean.class);
     }
 }
