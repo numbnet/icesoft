@@ -88,12 +88,11 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 				}
 
 				String formClientId = form.getClientId(context);
-				String command;
 				
 				boolean hasAjaxBehavior = false;
 				
-				StringBuilder behaviors = new StringBuilder();
-				behaviors.append("var self = this; setTimeout(function() { var f = function(){"); // dynamically set the id to the node so that it can be handled by the submit functions 
+				StringBuilder command = new StringBuilder();
+				command.append("var self = this; setTimeout(function() { var f = function(){"); // dynamically set the id to the node so that it can be handled by the submit functions 
 				// ClientBehaviors
 				Map<String,List<ClientBehavior>> behaviorEvents = menuItem.getClientBehaviors();
 				if(!behaviorEvents.isEmpty()) {
@@ -106,16 +105,15 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 						String script = behavior.getScript(cbc);    //could be null if disabled
 
 						if(script != null) {
-							behaviors.append(script);
-							behaviors.append(";");
+							command.append(script);
+							command.append(";");
 						}
 					}
 				}
-				behaviors.append("}; f(null, null, null, self); }, 10);");
-				command = behaviors.toString();
+				command.append("}; ");
 				
                 if (!hasAjaxBehavior && (menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0)) {
-					command += "ice.s(event, this";
+					command.append("self.id = '" + clientId + "'; ice.s(event, self");
 					
 					StringBuilder parameters = new StringBuilder();
 					parameters.append(",function(p){");
@@ -132,12 +130,17 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 					}
 					parameters.append("});");
 					
-					command += parameters.toString();
-                }
+					command.append(parameters.toString());
+                } else {
+					command.append("f(null, null, null, self);"); // call behaviors function
+				}
+				
+				command.append("}, 10);"); // close timeout
 
-				command = menuItem.getOnclick() == null ? command : menuItem.getOnclick() + ";" + command;
+				String customOnclick = menuItem.getOnclick();
+				String onclick = customOnclick == null ? command.toString() : customOnclick + ";" + command.toString();
 
-				writer.writeAttribute("onclick", command, null);
+				writer.writeAttribute("onclick", onclick, null);
 			}
 
             if(icon != null) {
