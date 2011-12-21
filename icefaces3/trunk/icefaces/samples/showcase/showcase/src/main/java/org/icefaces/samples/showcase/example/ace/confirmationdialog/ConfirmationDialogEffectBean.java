@@ -27,12 +27,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedHashMap;
 
 @ComponentExample(
@@ -84,7 +79,6 @@ public class ConfirmationDialogEffectBean extends ComponentExampleImpl<Confirmat
             list.put("Puff", "puff");
             list.put("Pulsate", "pulsate");
             list.put("Scale", "scale");
-            list.put("Shake", "shake");
             list.put("Slide", "slide");
             return list;
     }
