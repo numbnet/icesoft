@@ -39,49 +39,58 @@
     <ui:param name="tldResources" value="#{linkButtonResources.tldResources}"/>
 
     <ui:define name="example">
-        <span class="row" style="position:relative;">
-            <span class="top options" style="width:40%">
-                <h:form>
-                     <ul>
-                         <li>
-                            Action Name: <h:inputText styleClass="full-width" value="#{linkButton.navActionValue}" />
-                         </li>
-                         <li style="font-size:8pt;">The names of the other button components are navigation
-                                                    actions from this page. Look at the web.xml for more details.<br/>
-                                                    Ex."overview", "checkbox", "push"</li>
-                         <li>
-                            Listener URL: <h:inputText styleClass="full-width" value="#{linkButton.listenerNavigation}" />
-                        </li>
-                        <li>
-                            Static Navigation URL: <h:inputText styleClass="full-width" value="#{linkButton.staticNavigation}" />
-                        </li>
-                    </ul>
-                </h:form>
-            </span>
-            <span style="display:inline-block; width:49%">
-                <h:form>
-                    <p style="font-size:8pt; padding:2px 0px;">Action &amp; Static navigation occurs even when validation fails.</p>
-                    <ace:linkButton value="Action Navigation" action="#{linkButton.navAction}">
-                        <f:param name="grp" value="aceMenu"/>
-                        <f:param name="exp" value="#{linkButton.navAction}" />
-                    </ace:linkButton>
-                    <ace:linkButton value="Static Navigation" href="#{linkButton.staticNavigation}" />
-                    Required Field: <h:inputText required="true"
-                                                 styleClass="full-width"
-                                                 requiredMessage="The text box above must have a value to submit the form
-                                                 or execute listeners on controls not set to immediate."
-                                                 value="#{linkButton.requiredField}"/>
-                    <span class="ace-inline">
-                        <ace:linkButton value="Submit Form" />
-                        <ace:linkButton value="Listener Navigation" actionListener="#{linkButton.navListener}"/>
-                    </span>
-                    <p style="font-size:8pt; padding:2px 0px;">SingleSubmit is set true on the button below.</p>
-                    <ace:linkButton actionListener="#{linkButton.addMessage}"
-                                    singleSubmit="true"
-                                    value="Run Listener w/o Submit" />
-                </h:form>
-            </span>
-        </span>
-        <h:messages style="padding-left:10px"/>
+        <h:form>
+            <ace:tabSet>
+                <ace:tabPane label="Action / Static Navigation">
+                    <ace:panel>
+                        <h:panelGrid styleClass="centeredPanelGrid">
+                            <ace:linkButton value="go to push button example via action" 
+                                            action="#{linkButton.executeAction}"
+                                            style="text-decoration: underline;">
+                                <f:param name="grp" value="aceMenu"/>
+                                <f:param name="exp" value="pushButton" />
+                            </ace:linkButton>
+                            
+                            <ace:linkButton value="go to push button example statically"
+                                            href="#{linkButton.staticNavigation}" 
+                                            style="text-decoration: underline;"/>
+                            
+                        </h:panelGrid>
+                    </ace:panel>
+                </ace:tabPane>
+                <ace:tabPane label="Action Listener">
+                    <ace:panel>
+                        <h:panelGrid styleClass="centeredPanelGrid">
+                            <h:panelGrid  style="height: 110px; width: 300px;">
+                                <h:graphicImage value="#{linkButton.currentImage.path}" alt="#{linkButton.currentImage.description}"/>
+                            </h:panelGrid>
+                            <ace:linkButton value="change image" 
+                                            actionListener="#{linkButton.executeListener}"
+                                            style="text-decoration: underline;"/>
+                        </h:panelGrid>
+                    </ace:panel>
+                </ace:tabPane>
+                
+                <ace:tabPane label="Listener w/o submit">
+                    <ace:panel>
+                        <h:panelGrid columns="3">
+                            <h:outputLabel value="*Required Field: "/>
+                            <h:inputText required="true"
+                                                  requiredMessage="Required Field can not be left empty"
+                                                  value="#{linkButton.exampleValue}"/>
+                            <ace:linkButton value="execute link listener only"
+                                                    actionListener="#{linkButton.addMessage}"
+                                                    immediate="true"
+                                                    style="text-decoration: underline;"/>
+                        </h:panelGrid>
+                    </ace:panel>
+                </ace:tabPane>
+            </ace:tabSet>
+        </h:form>
+        
+        <h:panelGrid styleClass="centeredPanelGrid">
+           <h:messages layout="table" infoClass="infoMessage" errorClass="errorMessage"/>
+        </h:panelGrid>
+        
     </ui:define>
 </ui:composition>
