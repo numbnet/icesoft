@@ -46,7 +46,7 @@ ice.ace.DataExporter.prototype.url = function(url) {
 }
 ice.ace.DataExporter.shouldOpenPopUp = function() {
 	if (ice.ace.jq.browser.msie) 
-		if (ice.ace.jq.browser.version < 8)
+		if (navigator.userAgent.indexOf("Trident/5") < 0) // detects IE9
 			return true;
 	return false;
 }
