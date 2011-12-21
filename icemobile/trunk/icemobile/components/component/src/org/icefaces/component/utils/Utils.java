@@ -306,8 +306,9 @@ public class Utils {
     }
 
     /**
-     * used by DateSpinner to detect which type of events to use
-     * mobile devices get touch events
+     * used by DateSpinner and timeSpinner to detect which type of events to use
+     * mobile devices get touch events Note that Blackberry and android pad
+     * are still using generic events
      * @param context
      * @return   true if mobile device
      */
@@ -316,6 +317,7 @@ public class Utils {
         UserAgentInfo uai = new UserAgentInfo(userAgent);
   //          commenting out Blackberry at this time as support of touch events is problematic
   //          if (uai.sniffIphone() || uai.sniffAndroid() || uai.sniffBlackberry()
+        if (uai.sniffAndroidTablet())return false;
         if (uai.sniffIphone() || uai.sniffAndroid() ||
                uai.sniffIpad() || uai.sniffIpod()) {
             return true;
