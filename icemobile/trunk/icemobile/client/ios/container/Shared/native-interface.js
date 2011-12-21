@@ -83,13 +83,23 @@ if (!window.ice.mobile) {
             var formId = form.id;
             var sourceId = element ? element.id : event.target.id;
 
+            if ("@this" === options.execute)  {
+                options.execute = sourceId;
+            }
+            if (!options.execute)  {
+                options.execute = "@all";
+            }
+            if (!options.render)  {
+                options.render = "@all";
+            }
+
             tempInputs = [];
             tempInputs.push(ice.addHiddenFormField(formId, 
                     "javax.faces.source", sourceId));
             tempInputs.push(ice.addHiddenFormField(formId, 
-                    "javax.faces.partial.execute", "@all"));
+                    "javax.faces.partial.execute", options.execute));
             tempInputs.push(ice.addHiddenFormField(formId, 
-                    "javax.faces.partial.render", "@all"));
+                    "javax.faces.partial.render", options.render));
             tempInputs.push(ice.addHiddenFormField(formId, 
                     "javax.faces.partial.ajax", "true"));
             if (event) {
