@@ -44,7 +44,7 @@
                 <ace:tabPane label="Action Navigation" >
                     <ace:panel>
                         <h:panelGrid styleClass="centeredPanelGrid">
-                            <ace:pushButton value="go to link button example" action="#{pushButton.executeAction}">
+                            <ace:pushButton value="Go to the linkButton example" action="#{pushButton.executeAction}">
                                 <f:param name="grp" value="aceMenu"/>
                                 <f:param name="exp" value="linkButton" />
                             </ace:pushButton>
@@ -61,19 +61,7 @@
                         </h:panelGrid>
                     </ace:panel>
                 </ace:tabPane>
-                
-                <ace:tabPane label="Listener w/o submit">
-                    <ace:panel>
-                        <h:panelGrid columns="3">
-                            <h:outputLabel value="*Required Field: "/>
-                            <h:inputText required="true"
-                                                  requiredMessage="Required Field can not be left empty"
-                                                  value="#{pushButton.exampleValue}"/>
-                            <ace:pushButton value="execute button listener only" actionListener="#{pushButton.addMessage}" immediate="true"/>
-                        </h:panelGrid>
-                    </ace:panel>
-                </ace:tabPane>
-            </ace:tabSet>
+\            </ace:tabSet>
         </h:form>
         
         <h:panelGrid styleClass="centeredPanelGrid">
