@@ -63,7 +63,7 @@ public class DataExporterBean extends ComponentExampleImpl<DataExporterBean> imp
 
     public DataExporterBean() {
         super(DataExporterBean.class);
-        this.type = "xls";
+        this.type = "csv";
     }
     
     public String getType() { return type; }
