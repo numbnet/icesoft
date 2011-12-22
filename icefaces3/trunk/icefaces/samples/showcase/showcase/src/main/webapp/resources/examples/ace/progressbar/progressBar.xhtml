@@ -58,7 +58,7 @@
             <h:panelGrid width="100%" columns="2">
                 <h:panelGrid columns="2">
                     <h:panelGroup>
-                        <h:graphicImage value="/resources/css/images/navigateBack.png" alt="Previous"/>
+                        <h:graphicImage value="#{progressBarBean.arrowBackwardImage.path}" alt="#{progressBarBean.arrowBackwardImage.description}"/>
                     </h:panelGroup>
                     <h:panelGroup>
                         <h:commandLink     value="PREVIOUS"
@@ -78,7 +78,7 @@
                         </h:commandLink>
                     </h:panelGroup>
                     <h:panelGroup>
-                        <h:graphicImage value="/resources/css/images/navigateForward.png" alt="Next"/>
+                        <h:graphicImage value="#{progressBarBean.arrowForwardImage.path}" alt="#{progressBarBean.arrowForwardImage.description}"/>
                     </h:panelGroup>
                 </h:panelGrid>
              </h:panelGrid>

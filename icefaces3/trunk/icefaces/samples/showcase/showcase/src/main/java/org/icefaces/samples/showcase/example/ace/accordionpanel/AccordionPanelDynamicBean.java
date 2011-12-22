@@ -28,8 +28,6 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import javax.faces.event.ActionEvent;
 import org.icefaces.ace.event.AccordionPaneChangeEvent;
 
 @ComponentExample(

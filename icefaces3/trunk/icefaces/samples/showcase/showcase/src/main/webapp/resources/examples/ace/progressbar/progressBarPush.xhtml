@@ -57,17 +57,17 @@
                         <h:commandLink  actionListener="#{progressBarPush.startTask}"
                                                      rendered="#{!task.taskRunning}"
                                                      disabled="#{task.taskRunning}">
-                            <h:graphicImage value="/resources/css/images/player/play.png"/>
+                            <h:graphicImage value="#{progressBarPush.playImage.path}" alt="#{progressBarPush.playImage.description}"/>
                         </h:commandLink>
                         <h:commandLink  actionListener="#{task.resetTask}"
                                                  rendered="#{!task.taskRunning}"
                                                  disabled="#{task.taskRunning}">
-                            <h:graphicImage value="/resources/css/images/player/stop.png"/>
+                            <h:graphicImage value="#{progressBarPush.stopImage.path}" alt="#{progressBarPush.stopImage.description}"/>
                         </h:commandLink>
                         <h:commandLink  actionListener="#{task.stopTask}"
                                                  rendered="#{task.taskRunning}"
                                                  disabled="#{!task.taskRunning}">
-                            <h:graphicImage value="/resources/css/images/player/pause.png"/>
+                            <h:graphicImage value="#{progressBarPush.pauseImage.path}" alt="#{progressBarPush.pauseImage.description}"/>
                         </h:commandLink>
                     
                    </h:panelGrid>

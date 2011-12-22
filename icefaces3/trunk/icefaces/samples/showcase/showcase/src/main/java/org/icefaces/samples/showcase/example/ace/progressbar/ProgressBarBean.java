@@ -21,6 +21,7 @@
 
 package org.icefaces.samples.showcase.example.ace.progressbar;
 
+import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet.ImageInfo;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -69,11 +70,15 @@ public class ProgressBarBean extends ComponentExampleImpl<ProgressBarBean> imple
     private ImageSet.ImageInfo currentImage;
     private int currentIndex;
     private String message;
+    private ImageSet.ImageInfo arrowForwardImage;
+    private ImageSet.ImageInfo arrowBackwardImage;
 
     public ProgressBarBean() {
         super(ProgressBarBean.class);
         
         this.imagesOfCars = ImageSet.getImages(ImageSet.ImagesSelect.CARS);
+        this.arrowForwardImage = ImageSet.getImage(ImageSet.ImageSelect.FORWARD_ARROW);
+        this.arrowBackwardImage = ImageSet.getImage(ImageSet.ImageSelect.BACKWARD_ARROW);
         currentIndex = 0;
         setBeanVariables(currentIndex);
     }
@@ -136,5 +141,21 @@ public class ProgressBarBean extends ComponentExampleImpl<ProgressBarBean> imple
     
     public String getMessage() {
             return message;
+    }
+
+    public ImageInfo getArrowBackwardImage() {
+        return arrowBackwardImage;
+    }
+
+    public void setArrowBackwardImage(ImageInfo arrowBackwardImage) {
+        this.arrowBackwardImage = arrowBackwardImage;
+    }
+
+    public ImageInfo getArrowForwardImage() {
+        return arrowForwardImage;
+    }
+
+    public void setArrowForwardImage(ImageInfo arrowForwardImage) {
+        this.arrowForwardImage = arrowForwardImage;
     }
 }
