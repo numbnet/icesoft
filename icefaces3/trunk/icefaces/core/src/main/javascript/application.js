@@ -309,7 +309,10 @@ if (!window.ice.icefaces) {
                     var source = e.source;
                     var form = formOf(source);
                     if (form.id)  {
-                        form = document.getElementById(form.id);
+                        var foundForm = document.getElementById(form.id);
+                        if (foundForm)  {
+                            form = foundForm;
+                        }
                     }
                     isICEfacesEvent = form['ice.view'] || form['ice.window'];
                 } catch (ex) {
