@@ -18,7 +18,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	  package="org.icemobile.client.android"
-	  android:versionCode="4"
+	  android:versionCode="5"
 	  android:versionName="1.0 Beta 3">
   <permission android:name="org.icemobile.client.android.permission.C2D_MESSAGE"
 	      android:protectionLevel="signature" />
