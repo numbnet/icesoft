@@ -86,9 +86,11 @@ public class TooltipRenderer extends CoreRenderer {
 		boolean global = tooltip.isGlobal();
 		String owner = getTarget(facesContext, tooltip);
 		String clientId = tooltip.getClientId(facesContext);
-		
+
+        writer.startElement("span",null);
+        writer.writeAttribute("id", clientId + "_script", null);
+
 		writer.startElement("script", null);
-        writer.writeAttribute("id", clientId, null);
 		writer.writeAttribute("type", "text/javascript", null);
 		
         writer.write("jQuery(function() {");
@@ -160,7 +162,8 @@ public class TooltipRenderer extends CoreRenderer {
 		
 		writer.write("});");	
 		
-		writer.endElement("script");
+        writer.endElement("script");
+        writer.endElement("span");
 	}
 	
 	protected String getTarget(FacesContext facesContext, Tooltip tooltip) {
