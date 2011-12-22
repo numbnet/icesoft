@@ -269,7 +269,9 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
             // Push registration will be performed here via one of two 
             // mechanisms
             //            setupPushListener();
-            mPushAgent = new PushAgent();
+            if (mRealDevice) { 
+            	mPushAgent = new PushAgent();
+            }
 
             ApplicationIndicatorRegistry reg = ApplicationIndicatorRegistry.getInstance(); 
             EncodedImage image = EncodedImage.getEncodedImageResource("icemobile-icon-32x32.png"); 
@@ -387,7 +389,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
             }); 				
 
 
-            instantiateScriptExtensions();
+         
             loadPage( mCurrentHome );
         } catch (Throwable e) { 
         	Logger.ERROR ("Error loading initial page: " + e);
@@ -566,7 +568,6 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
         try { 
             if (mScriptEngine != null) { 
                 mScriptEngine.executeScript(updateScript, null);
-                Logger.DEBUG("ICEmobile - Ajax response handled");
             } else { 
             	Logger.ERROR("ICEmobile Null ScriptEngine handling Ajax Response?");
             }
@@ -662,6 +663,8 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
     	mOptionsProperties = BlackberryOptionsProperties.fetch();
         mCurrentHome = mOptionsProperties.getHomeURL();
         
+//        Logger.DEBUG("optionsChanged - useEmail: " + mOptionsProperties.isUsingEmailNotification());
+        
         String argument; 
         if (mOptionsProperties.isUsingEmailNotification()) { 
             argument = "('mail:" + 
@@ -674,17 +677,13 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
         
         // Use either an email notification (if desired) or the 
         // RIM push version
-        if (mOptionsProperties.isUsingEmailNotification()) { 
-            mParkScript  = "if (ice.push) {ice.push.parkInactivePushIds" + argument;      
-            mPauseScript  = "if (ice.push) {ice.push.pauseBlockingConnection" + argument;       
-        } else { 
-            mParkScript  = "if (ice.push) {ice.push.parkInactivePushIds"+ argument;
-            mPauseScript = "if (ice.push) {ice.push.pauseBlockingConnection" + argument;
-        }
+        mParkScript  = "ice.push.parkInactivePushIds" + argument;      
         
-        mParkScript += "} else { icefaces.logInContainer('ICEmobile - parkInactivePushIds missing'); }";
-        mPauseScript += "} else { icefaces.logInContainer('ICEmobile - pauseBlocking missing'); }";
-        
+        mPauseScript  = "try { ice.push.connection.pauseConnection(); " + 
+        	"icefaces.logInContainer('ice.push.connection.pauseConnection success'); " +  
+        	" } catch (e) { icefaces.logInContainer('ice.js - Exception pausing Connection: ' + e); }";
+
+        invokeLater (mParkScriptRunner);
     }
 
     /**
@@ -723,8 +722,7 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
             
             try { 
                 if (mScriptEngine != null && mRealDevice) { 
-                    mScriptEngine.executeScript("if (ice.push) { ice.push.resumeBlockingConnection();}" , null);
-                    Logger.DEBUG("ICEmobile - resumed blocking connection");
+                    mScriptEngine.executeScript("if (ice.push) { ice.push.connection.resumeConnection(); icefaces.logInContainer('ice.push.connection.resumeConnection success'); }" , null);
                 }
             } catch (Throwable t) { 
             	Logger.ERROR("ICEmobile - resumeScript exception: " + t);
@@ -734,13 +732,12 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
 
     public void deactivate() { 		
         
-        if (mPauseScript != null && mScriptEngine != null && mRealDevice) {
+    	if (mPauseScript != null && mScriptEngine != null && mRealDevice) {
             try { 
                 mScriptEngine.executeScript(mPauseScript, null);
-                Logger.DEBUG ("ICEmobile - Paused blocking connection");
               
             } catch (Throwable t) { 
-            	Logger.ERROR("ICEmobile - Exception pausing Blocking Connection: " + t);
+            	Logger.ERROR("ICEmobile - Exception pausing Connection: " + t);
             }
         }
     }
@@ -793,9 +790,13 @@ public class ICEmobileContainer extends UiApplication implements SystemListener,
      */
     private boolean checkNetworkAvailability() {
     	
-        return  ( CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_DIRECT ) || 
-                CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_BIS_B) || 
-                CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_MDS) );
+    	if (mRealDevice) { 
+    		return  ( CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_DIRECT ) || 
+    				CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_BIS_B) || 
+    				CoverageInfo.isCoverageSufficient(CoverageInfo.COVERAGE_MDS) );
+    	} else { 
+    		return true;
+    	}
     }
     
     // -------------------- System event methods ----------------------------
