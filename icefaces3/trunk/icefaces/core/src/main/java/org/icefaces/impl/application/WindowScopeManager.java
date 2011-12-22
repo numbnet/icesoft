@@ -27,6 +27,7 @@ import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.util.EnvUtils;
 
 import javax.annotation.PreDestroy;
+import javax.faces.application.Application;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExceptionHandler;
@@ -471,7 +472,22 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
     }
 
     public static class DetermineOrDisposeScope implements PhaseListener {
-        private Timer timer = new Timer("WindowScopeManager timer");
+        private Timer timer = new Timer("WindowScopeManager timer", true);
+
+        public DetermineOrDisposeScope() {
+            FacesContext context = FacesContext.getCurrentInstance();
+            Application application = context.getApplication();
+            //shutdown timer
+            application.subscribeToEvent(PreDestroyApplicationEvent.class, new SystemEventListener() {
+                public boolean isListenerForSource(Object source) {
+                    return true;
+                }
+
+                public void processEvent(SystemEvent event) {
+                    timer.cancel();
+                }
+            });
+        }
 
         public void afterPhase(final PhaseEvent event) {
             FacesContext facesContext = event.getFacesContext();
