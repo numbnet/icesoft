@@ -24,7 +24,6 @@ package org.icefaces.samples.showcase.example.ace.accordionpanel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.*;
 
 public class ImageSet implements Serializable
 {
@@ -55,11 +54,6 @@ public class ImageSet implements Serializable
             imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/egg.png", "Egg"));
             imageLocations.add(new ImageInfo("/resources/css/images/dragdrop/orange.png", "Orange"));
         }
-        else if(imageSetType.equals(ImagesSelect.ARROWS))
-        {
-            imageLocations.add(new ImageInfo("/resources/css/images/navigateForward.png", "Navigate Forward"));
-            imageLocations.add(new ImageInfo("/resources/css/images/navigateBack.png", "Navigate Back"));
-        }        
         return imageLocations;
     }
     
@@ -74,6 +68,27 @@ public class ImageSet implements Serializable
         {
             image = new ImageInfo("/resources/css/images/rainbowCalgary.png", "Calgary");
         }
+        else if(imageType.equals(ImageSelect.FORWARD_ARROW))
+        {
+            image = new ImageInfo("/resources/css/images/navigateForward.png", "Navigate Forward");
+        }        
+        else if(imageType.equals(ImageSelect.BACKWARD_ARROW))
+        {
+            image = new ImageInfo("/resources/css/images/navigateBack.png", "Navigate Back");
+        }
+        else if(imageType.equals(ImageSelect.PLAY))
+        {
+            image = new ImageInfo("/resources/css/images/player/play.png", "Play");
+        }        
+        else if(imageType.equals(ImageSelect.STOP))
+        {
+            image = new ImageInfo("/resources/css/images/player/stop.png", "Stop");
+        }        
+        else if(imageType.equals(ImageSelect.PAUSE))
+        {
+            image = new ImageInfo("/resources/css/images/player/pause.png", "Pause");
+        }        
+        
         return image;
     }
     
@@ -94,12 +109,16 @@ public class ImageSet implements Serializable
         CARS,
         GADGETS,
         FOOD,
-        ARROWS
     }
 
     public enum ImageSelect {
         PRINTER,
-        PICTURE
+        PICTURE,
+        FORWARD_ARROW,
+        BACKWARD_ARROW,
+        PLAY,
+        STOP,
+        PAUSE
     }
 
     public static class ImageInfo implements Serializable {

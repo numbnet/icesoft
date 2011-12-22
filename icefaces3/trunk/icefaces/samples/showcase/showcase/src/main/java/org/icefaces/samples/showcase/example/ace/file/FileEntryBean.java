@@ -21,6 +21,7 @@
 
 package org.icefaces.samples.showcase.example.ace.file;
 
+import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet.ImageInfo;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import org.icefaces.samples.showcase.util.FacesUtils;
@@ -30,8 +31,8 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.File;
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.util.LinkedHashMap;
+import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
 
 @ComponentExample(
         title = "example.ace.fileentry.title",
@@ -65,11 +66,12 @@ public class FileEntryBean extends ComponentExampleImpl<FileEntryBean> implement
 
     public static final String BEAN_NAME = "fileEntry";
     private LinkedHashMap <String, String> fileData;
-    
+    private ImageSet.ImageInfo arrowImage;
 
     public FileEntryBean()  
     {
         super(FileEntryBean.class);
+        arrowImage = ImageSet.getImage(ImageSet.ImageSelect.FORWARD_ARROW);
     }                                       
 
     public void sampleListener(FileEntryEvent e) 
@@ -116,4 +118,14 @@ public class FileEntryBean extends ComponentExampleImpl<FileEntryBean> implement
             FacesUtils.addInfoMessage(fe.getClientId(), m.toString());
         }
     }
+
+    public ImageInfo getArrowImage() {
+        return arrowImage;
+    }
+
+    public void setArrowImage(ImageInfo arrowImage) {
+        this.arrowImage = arrowImage;
+    }
+    
+    
 }
