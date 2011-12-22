@@ -27,6 +27,7 @@ public class DateBean implements Serializable{
     private TimeZone zone;
     private boolean rendered;
     private String eventString="none";
+    private String timeZone = "America/Edmonton";
     private List<DateNtry> dateList = new  ArrayList <DateNtry>();
 
     public DateBean() {
@@ -34,6 +35,8 @@ public class DateBean implements Serializable{
         dateList.add(new DateNtry("dateTwo"));
         dateList.add(new DateNtry("dateThree"));
         try{
+            this.timeZone = java.util.TimeZone.getDefault().getID();
+         //   System.out.println(" timeZone="+timeZone+" id = "+java.util.TimeZone.getDefault().getID());
             this.pattern = "yyyy-MM-dd";
             selectedDate = new SimpleDateFormat("yyyy-M-d H:m z").parse("2008-4-30 13:9 Pacific Daylight Time");
 
@@ -96,7 +99,14 @@ public class DateBean implements Serializable{
     public void setRequired(boolean required) {
         this.required = required;
     }
-    
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
 
     public boolean isRendered() {
         return rendered;
