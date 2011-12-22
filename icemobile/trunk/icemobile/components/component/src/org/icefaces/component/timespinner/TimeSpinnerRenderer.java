@@ -54,11 +54,16 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         }
         String inputField = clientId+"_input";
         if (timeSpinner.isUseNative() && Utils.isIOS5()) {
-            inputField=clientId;
-        }
-        String inputValue = context.getExternalContext().getRequestParameterMap().get(inputField);
-        if(!isValueBlank(inputValue)) {
-            timeSpinner.setSubmittedValue(inputValue);
+            String inputValue = context.getExternalContext().getRequestParameterMap().get(clientId);
+            String twelveHrString = convertToTwelve(inputValue);
+                if (null != twelveHrString){
+                    timeSpinner.setSubmittedValue(twelveHrString);
+            }
+        } else {
+            String inputValue = context.getExternalContext().getRequestParameterMap().get(inputField);
+            if(!isValueBlank(inputValue)) {
+                timeSpinner.setSubmittedValue(inputValue);
+            }
         }
         decodeBehaviors(context, timeSpinner);
     }
@@ -75,8 +80,8 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         if (spinner.isUseNative() && Utils.isIOS5()){
             writer.startElement("input", component);
             writer.writeAttribute("type", "time", "type");
-            writer.writeAttribute("id", clientId+"_input", "id");
-            writer.writeAttribute("name", clientId+"_input", "name");
+            writer.writeAttribute("id", clientId, "id");
+            writer.writeAttribute("name", clientId, "name");
             boolean disabled = spinner.isDisabled();
             boolean readonly = spinner.isReadonly();
             String defaultPattern = "HH:mm";
