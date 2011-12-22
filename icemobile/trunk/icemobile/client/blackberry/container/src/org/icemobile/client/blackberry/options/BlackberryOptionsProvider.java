@@ -65,7 +65,8 @@ public class BlackberryOptionsProvider implements OptionsProvider {
 
 
     public String getTitle() {
-        return "ICEmobile Container 1.0 GA";
+        // TODO Auto-generated method stub
+        return "ICEmobileContainer 1.0 RC1";
     }
 
     public BlackberryOptionsProvider (ContainerController controller ) {
