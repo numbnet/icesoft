@@ -44,9 +44,10 @@
             
             <ace:panel id="examplePanel">
                 <h:panelGrid styleClass="centeredPanelGrid">
-                    <ace:checkboxButton value="#{checkboxButton.selected}">
+                    <ace:checkboxButton id="checkBox" value="#{checkboxButton.selected}">
                         <ace:ajax execute="@this" event="activate" render="valueDescription"/>
-                    </ace:checkboxButton>
+                   </ace:checkboxButton>
+                    
                     <h:panelGroup>
                         <h:outputText value="The checkbox is "/>
                         <h:outputText id="valueDescription" value="#{checkboxButton.boxValueDescription}" style="font-weight: bold;"/>
