@@ -134,12 +134,12 @@ public class SliderEntryMeta extends UIComponentBaseMeta {
     private int value;
 	
     @Property (
-            tlddoc="The length of slider control in pixels (px)." +
+            tlddoc="The length of slider bar." +
             "Note: If the range of the slider (max-min) is greater than the length, " +
             "then the slider can not accurately represent every value in the range. " +
             "If the discrepancy is too great, then arrow key stepping may not " +
             "precisely reflect the stepPercent property.",
-            defaultValue="150" )
+            defaultValue="150px" )
     private String length;
 	
     @Property( 
