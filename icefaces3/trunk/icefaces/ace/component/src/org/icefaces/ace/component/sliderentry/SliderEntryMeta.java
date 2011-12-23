@@ -48,92 +48,128 @@ import javax.el.MethodExpression;
         componentType = "org.icefaces.ace.component.SliderEntry",
         rendererType = "org.icefaces.ace.component.SliderEntryRenderer",
         componentFamily="org.icefaces.ace.SliderEntry",
-        tlddoc="The Slider Entry is a component that enables the user to adjust values in a finite range along a " +
-                "horizontal or vertical axis. It can be used as a visual replacement for an input box that takes a " +
-                "number as input. For more information, see the " +
-                "<a href=\"http://wiki.icefaces.org/display/ICE/SliderEntry\">Wiki doc</a>."
+        tlddoc="<p>The Slider Entry is a component that enables the user to adjust values in a finite range along a " +
+                "horizontal or vertical axis via dragging the slider control along the slider bar, or pressing the " +
+                "arrow-keys. It can be used as a visual replacement for an input box that takes a " +
+                "number as input.<p>For more information, see the " +
+                "<a href=\"http://wiki.icefaces.org/display/ICE/SliderEntry\">SliderEntry Wiki Documentation</a>."
         )
+
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
+
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="slideStart", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="slide", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="slideEnd", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
-}, defaultEvent="slideEnd")
+	@ClientEvent( name="slideStart",
+		javadoc="Fired when a drag operation on the slider control is initiated.",
+		tlddoc="Fired when a drag operation on the slider control is initiated.",
+		defaultRender="@all", defaultExecute="@all" ),
+	@ClientEvent( name="slide",
+		javadoc="Fired each time the the slider control is moved during a drag operation.",
+		tlddoc="Fired each time the the slider control is moved during a drag operation.",
+		defaultRender="@all", defaultExecute="@all"),
+	@ClientEvent( name="slideEnd",
+		javadoc="Fired when a drag operation is completed by releasing the slider control (default event).",
+		tlddoc="Fired when a drag operation is completed by releasing the slider control (default event).", 
+		defaultRender="@all", defaultExecute="@all") },
+	defaultEvent="slideEnd" )
+	
 public class SliderEntryMeta extends UIComponentBaseMeta {
 
-	@Property(tlddoc="")
+	@Property( tlddoc="The JavaScript object name that implements the client-side JavaScript API for this component." )
 	private String widgetVar;
 	
-	@Property(tlddoc="", defaultValue="0")
+	@Property( 
+		tlddoc="The minimum int value that can be selected in the value-entry range represented by the slider bar.",
+		defaultValue="0" )
 	private int min;
 	
-	@Property(tlddoc="", defaultValue="100")
+	@Property( 
+		tlddoc="The maximum int value that can be selected in the value-entry range represented by the slider bar.", 
+		defaultValue="100" )
 	private int max;
 	
-	@Property(tlddoc="")
+	@Property( 
+		tlddoc="Custom inline CSS styles to use for this component. These styles are generally applied to the root DOM element of the component. This is intended for per-component basic style customizations. Note that due to browser CSS precedence rules, CSS rendered on a DOM element will take precedence over the external stylesheets used to provide the ThemeRoller theme on this component. If the CSS properties applied with this attribute do not affect the DOM element you want to style, you may need to create a custom theme styleClass for the theme CSS class that targets the particular DOM elements you wish to customize.")
 	private String style;
 	
-	@Property(tlddoc="")
+	@Property( 
+		tlddoc="Custom CSS style class(es) to use for this component. These style classes can be defined in your page or in a theme CSS file.")
 	private String styleClass;
 	
-	@Property(tlddoc="", defaultValue="true")
+	@Property( 
+		tlddoc="Defines whether or not the slider control will use an animated transition to move to a new location on the slider rail.",
+		defaultValue="true" )
 	private boolean animate;
 	
-	@Property(tlddoc="", defaultValue="x")
+	@Property( 
+		tlddoc="The orientation that the slider is rendered in, either vertical ('y'), or horizontal ('x').",
+		defaultValue="x" )
 	private String axis;
 	
-	@Property(tlddoc="", defaultValue="1f")
+	@Property( 
+		tlddoc="The amount to move the slider position in response to keyboard arrow-key input. This float value represents a percentage of the value-entry range defined by the min and max attributes. For example, with min='0', max='50', and stepPercent='10', each arrow keypress will increment/decrement the slider value by 5 (10% of 50).",
+		defaultValue="1f" )
 	private float stepPercent;
 	
-	@Property(tlddoc="", defaultValue="false")
+	@Property( 
+		tlddoc="Defines whether or not the component is disabled. When disabled='true', this component is unable to receive focus and cannot be interacted with by the user.",
+		defaultValue="false" )
 	private boolean disabled;
 	
-	@Property(tlddoc="")
+	@Property( tlddoc="This event is fired when a drag operation on the slider control is initiated." )
 	private String onSlideStart;
 	
-	@Property(tlddoc="")
+	@Property( tlddoc="This event is fired each time the the slider control is moved during a drag operation." )
 	private String onSlide;
 	
-	@Property(tlddoc="")
+	@Property( tlddoc="This event is fired when a drag operation is completed by releasing the slider control." )
 	private String onSlideEnd;
 	
-    @Property (tlddoc="The value of slider, default is 0.", defaultValue="0")
+    @Property ( 
+    	tlddoc="The value of the slider control.",
+    	defaultValue="0" )
     private int value;
 	
-    @Property (defaultValue="150px",
-            tlddoc="The physical length of slider, in pixels, default is 150px. " +
+    @Property (
+            tlddoc="The length of slider control in pixels (px)." +
             "Note: If the range of the slider (max-min) is greater than the length, " +
             "then the slider can not accurately represent every value in the range. " +
-            "If the discrepancy is too great, then arrow key stepping will not " +
-            "precisely reflect the stepPercent property.")
+            "If the discrepancy is too great, then arrow key stepping may not " +
+            "precisely reflect the stepPercent property.",
+            defaultValue="150" )
     private String length;
 	
-    @Property(defaultValue="true", tlddoc="Allows clicking on the rail to move the thumb. Default is true.")
+    @Property( 
+    	tlddoc="Defines whether or not a mouse-click at a location along the slider rail should reposition the slider contorl to that location (and adjust the value accordingly).",
+    	defaultValue="true")
     private boolean clickableRail;
 	
-    @Property(defaultValue="false",
-            tlddoc="If set to true, it will show min, mid and max value labels. The default value is false.")
+    @Property( 
+    	tlddoc="Defines whether or not labels for the min, mid, and max values should be rendered along the slider rail.",
+    	defaultValue = "false")
     private boolean showLabels;
 	
-    @Property(defaultValue="false", tlddoc="A flag indicating that conversion and validation of this component's value " +
-            "should occur during Apply Request Values phase instead of Process Validations phase.")
+    @Property(
+    	tlddoc="Defines whether or not conversion and validation of this component's value " +
+            "should occur during Apply Request Values phase instead of Process Validations phase.",
+    	defaultValue="false" )
     private boolean immediate;
 	
-    @Property (tlddoc="tabindex of the component")
+    @Property ( tlddoc="The browser tabindex (int) of the component.")
     private Integer tabindex;
 	
     // A MethodExpression Property is a special type, that does not generate
     //  the same code, as it does not use a ValueExpression, but instead
     //  describes a method to be called, and the parameter to pass to it.
-    @Property(expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
-    tlddoc = "MethodExpression representing a value change listener method that will be notified when a new value has " +
+    @Property(
+    	expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="javax.faces.event.ValueChangeEvent",
+    	tlddoc = "MethodExpression representing a value change listener method that will be notified when a new value has " +
             "been set for this input component. The expression must evaluate to a public method that takes a " +
             "ValueChangeEvent  parameter, with a return type of void, or to a public method that takes no arguments " +
             "with a return type of void. In the latter case, the method has no way of easily knowing what the new value " +
-            "is, but this can be useful in cases where a notification is needed that \"this value changed\".")
+            "is, but this can be useful in cases where a notification is needed that \"this value changed\"." )
     private MethodExpression valueChangeListener;
 }
