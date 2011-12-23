@@ -33,6 +33,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIColumn;
@@ -61,11 +62,11 @@ public class XMLExporter extends Exporter {
 		List<String> headers;
 		ColumnGroup columnGroup = getColumnGroupHeader(table);
 		if (columnGroup != null) {
-			headers = getHeadersFromColumnGroup(columnGroup, table, excludeColumns);
+			headers = getHeadersFromColumnGroup(columnGroup, columns, table, excludeColumns);
 		} else {
-			headers = getFacetTexts(table, ColumnType.HEADER);
+			headers = getFacetTexts(columns, ColumnType.HEADER);
 		}
-    	List<String> footers = getFacetTexts(table, ColumnType.FOOTER);
+    	List<String> footers = getFacetTexts(columns, ColumnType.FOOTER);
     	String var = table.getVar().toLowerCase();
     	
     	builder.append("<?xml version=\"1.0\"?>\n");
@@ -136,17 +137,29 @@ public class XMLExporter extends Exporter {
 		}
 	}	
 	
-	private List<String> getFacetTexts(UIData data, ColumnType columnType) {
+	private List<String> getFacetTexts(List<UIColumn> columns, ColumnType columnType) {
 		List<String> facets = new ArrayList<String>();
 		 
-        for (int i = 0; i < data.getChildCount(); i++) {
-            UIComponent child = (UIComponent) data.getChildren().get(i);
-            
-            if (child instanceof UIColumn && child.isRendered()) {
-            	UIColumn column = (UIColumn) child;
-				facets.add(extractValueToDisplay(column, columnType));
-            }
-        }
+		for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
+			UIColumn uiColumn = iterator.next();
+			UIComponent facet = uiColumn.getFacet(columnType.facet());
+			if (facet != null) {
+				facets.add(exportValue(FacesContext.getCurrentInstance(), facet));
+			} else {
+				String value = "";
+				if (uiColumn instanceof Column) {
+					Column column = (Column) uiColumn;
+					if (columnType == ColumnType.HEADER) {
+						String headerText = column.getHeaderText();
+						value = headerText != null ? headerText : "";
+					} else if (columnType == ColumnType.FOOTER) {
+						String footerText = column.getFooterText();
+						value = footerText != null ? footerText : "";
+					}
+				}
+				facets.add(value);
+			}
+		}
         return facets;
 	}
 	
@@ -173,7 +186,7 @@ public class XMLExporter extends Exporter {
 		}
 	}
 	
-	private List<String> getHeadersFromColumnGroup(ColumnGroup columnGroup, UIData data, int[] excludeColumns) {
+	private List<String> getHeadersFromColumnGroup(ColumnGroup columnGroup, List<UIColumn> columns, UIData data, int[] excludeColumns) {
 	
 		ArrayList<Row> rows = (ArrayList<Row>) getRows(columnGroup);
 		int size = rows.size();
@@ -186,7 +199,7 @@ public class XMLExporter extends Exporter {
 			}
 			return values;
 		} else {
-			return getFacetTexts(data, ColumnType.HEADER);
+			return getFacetTexts(columns, ColumnType.HEADER);
 		}
 	}
 
