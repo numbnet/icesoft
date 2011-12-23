@@ -59,14 +59,14 @@ import java.io.Serializable;
 public class TooltipOverviewBean extends ComponentExampleImpl<TooltipOverviewBean> implements Serializable {
     
     public static final String BEAN_NAME = "tooltipOverviewBean";
-    private String tooltipEffect;
-    private Integer tooltipShowDelay;
-    private Integer tooltipHideDelay;
+    private String tooltipEffect = "slide";
+    private Integer tooltipShowDelay = 1000;
+    private Integer tooltipHideDelay = 2000;
     private ImageSet.ImageInfo image;
-    private String tooltipTargetPosition;
-    private String tooltipPosition;
-    private Integer showEffectLength;
-    private Integer hideEffectLength;
+    private String tooltipTargetPosition = "topRight";
+    private String tooltipPosition = "bottomRight";
+    private Integer showEffectLength = 2000;
+    private Integer hideEffectLength = 1000;
     
     
     public TooltipOverviewBean() 
