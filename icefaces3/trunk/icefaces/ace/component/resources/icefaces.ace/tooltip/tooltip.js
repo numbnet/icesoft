@@ -3,6 +3,10 @@ ice.ace.Tooltips = {};
  *  Tooltip Widget
  */
 ice.ace.Tooltip = function(cfg) {
+    var callee = arguments.callee, id = cfg.id, prevTooltip = callee[id];
+    if (prevTooltip) {
+        prevTooltip.jq.qtip("destroy");
+    }
 	this.cfg = cfg;
 	this.target = "";
 
@@ -30,7 +34,8 @@ ice.ace.Tooltip = function(cfg) {
 	var self = this;
 	this.jq.qtip("api").beforeShow = function() { if (!ice.ace.Tooltips[self.target] && (self.cfg.displayListener || self.cfg.behaviors.display)) { ice.ace.Tooltips[self.target] = true; self.triggerDisplayListener(); }};
 	this.jq.qtip("api").onHide = function() { ice.ace.Tooltips[self.target] = false; };
-}
+    callee[id] = this;
+};
 
 ice.ace.Tooltip.prototype.triggerDisplayListener = function() {
 	var formId = this.jq.parents('form:first').attr('id'),
@@ -50,7 +55,7 @@ ice.ace.Tooltip.prototype.triggerDisplayListener = function() {
     if (jQuery.isFunction(listener)) {
         listener(options.params);
     } else ice.ace.AjaxRequest(options);
-}
+};
 
 /*
  * ThemeRoller integration for qtip
