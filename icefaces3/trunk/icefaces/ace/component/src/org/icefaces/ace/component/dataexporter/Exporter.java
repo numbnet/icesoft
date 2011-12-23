@@ -146,8 +146,8 @@ public abstract class Exporter {
 				if (hasExpansionToggler) continue;
 				
 				if (column.isRendered()) {
+					rowColumnIndex++;
 					if (excludedColumns == null || Arrays.binarySearch(excludedColumns, columnIndex) < 0) {
-						rowColumnIndex++;
 						if (rowColumnIndex < rowColumns.size()) {
 							UIColumn rowColumn = rowColumns.get(rowColumnIndex);
 							if (rowColumn != null) {
