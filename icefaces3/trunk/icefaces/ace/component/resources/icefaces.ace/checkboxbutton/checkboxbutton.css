@@ -24,7 +24,7 @@
 	}
 	
 .ice-checkboxbutton .yui-button button,.ice-checkboxbutton .yui-button a{
-	padding:0 10px;
+	padding:0 2px;
 	font-size:93%;
 	line-height:2;
 	*line-height:1.7;
@@ -37,3 +37,5 @@
 	*line-height:1.875;
 	*padding-bottom:1px;
 	}
+
+.ui-icon-unchecked { background-position: -160px 0; }

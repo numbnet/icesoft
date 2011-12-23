@@ -30,12 +30,20 @@ ice.ace.checkboxbutton = {
 	   
 	button.addStateCSSClasses = function(state) {
 	
+		var node = jQuery(this._button);
+		// add span for icon
+		if (!node.find('.ui-icon').get(0)) {
+			node.prepend(jQuery('<span />').addClass('ui-icon').addClass('ui-icon-unchecked'));
+		}
+	
 		if (state == 'hover') {
 			jQuery(this._button).addClass('ui-state-hover');
 		} else if (state == 'checked') {
-			jQuery(this._button).addClass('ui-state-active');
+			var node = jQuery(this._button);
+			node.addClass('ui-state-active');
+			node.find('.ui-icon').removeClass('ui-icon-unchecked').addClass('ui-icon-check');
 		} else if (state == 'disabled') {
-			jQuery(this._button).addClass('ui-state-disabled ');
+			jQuery(this._button).addClass('ui-state-disabled');
 		}
 	};
 	
@@ -44,9 +52,11 @@ ice.ace.checkboxbutton = {
 		if (state == 'hover') {
 			jQuery(this._button).removeClass('ui-state-hover');
 		} else if (state == 'checked') {
-			jQuery(this._button).removeClass('ui-state-active');
+			var node = jQuery(this._button);
+			node.removeClass('ui-state-active');
+			node.find('.ui-icon').removeClass('ui-icon-check').addClass('ui-icon-unchecked');
 		} else if (state == 'disabled') {
-			jQuery(this._button).removeClass('ui-state-disabled ');
+			jQuery(this._button).removeClass('ui-state-disabled');
 		}
 	};
 
@@ -88,6 +98,16 @@ ice.ace.checkboxbutton = {
 		};
 
 		button.on("checkedChange", onCheckedChange);
+		
+		// add icon element
+		var addIcon = function() {
+			if(jsProps.checked) {
+				button.addStateCSSClasses('checked');
+			} else {
+				button.addStateCSSClasses('');
+			}
+		};
+		setTimeout(addIcon, 10);
 
 	    if (jsfProps.aria) {
 	         //add roles and attributes to the YUI slider widget
