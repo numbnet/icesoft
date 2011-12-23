@@ -99,8 +99,8 @@ public class TLDBuilder extends XMLBuilder{
         // ICE-6209 Append the default value to the description, if present
         String defaultVal = propertyValues.defaultValue;
         if (! "null".endsWith(defaultVal)) {
-        	des += (meaningfulDes) ? ", default Value = " : "default value = ";
-            des += defaultVal;
+        	des += (meaningfulDes) ? " Default = '" : "Default = '";
+            des += defaultVal + "'.";
             meaningfulDes = true;
         }
 
@@ -123,14 +123,19 @@ public class TLDBuilder extends XMLBuilder{
 			ClientEvent[] events = clientBehaviorHolder.events();
 			if (events.length > 0) {
 				StringBuilder builder = new StringBuilder();
-				builder.append("\n\nSupported client events:");
+				builder.append("<hr><table border='1' cellpadding='3' cellspacing='0' width='100%'>");
+				builder.append("<tr bgcolor='#CCCCFF' class='TableHeadingColor'><td colspan='2'><font size='+2'><b>Client Events</b></font></td></tr>");
+
 				for (int i = 0; i < events.length; i++) {
-					builder.append("\n");
+					builder.append("<tr><td>");
 					ClientEvent event = events[i];
 					builder.append(event.name());
-					builder.append(" - ");
+					builder.append("</td><td>");
 					builder.append(event.tlddoc());
+					builder.append("</td></tr>");
 				}
+				builder.append("</table><i>Client events can be used with Client Behaviors and the ace:ajax tag.</i><br>");
+
 				return builder.toString();
 			}
 		}
