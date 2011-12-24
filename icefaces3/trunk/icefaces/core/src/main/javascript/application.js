@@ -308,9 +308,9 @@ if (!window.ice.icefaces) {
                 try {
                     var source = e.source;
                     var form = formOf(source);
-                    if (form.id)  {
+                    if (form.id) {
                         var foundForm = document.getElementById(form.id);
-                        if (foundForm)  {
+                        if (foundForm) {
                             form = foundForm;
                         }
                     }
@@ -546,13 +546,32 @@ if (!window.ice.icefaces) {
             });
         });
 
+        function containsFormElements(e) {
+            var type = toLowerCase(e.nodeName);
+            if ((type == 'input' && e.name != 'javax.faces.ViewState') ||
+                type == 'select' ||
+                type == 'textarea' ||
+                type == 'form') {
+                return true;
+            } else {
+                var inputs = e.getElementsByTagName('input');
+                if ((notEmpty(inputs) && inputs[0].name != 'javax.faces.ViewState') ||
+                    notEmpty(e.getElementsByTagName('select')) ||
+                    notEmpty(e.getElementsByTagName('textarea'))) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
         //recalculate delta submit previous parameters for the updated forms, if necessary
         namespace.onAfterUpdate(function(updates) {
             var recalculatedForms = HashSet();
             each(updates.getElementsByTagName('update'), function(update) {
                 var id = update.getAttribute('id');
                 var e = lookupElementById(id);
-                if (e) {
+                if (e && containsFormElements(e)) {
                     try {
                         var form = formOf(e);
                         if (not(contains(recalculatedForms, form)) && deltaSubmit(form)) {
