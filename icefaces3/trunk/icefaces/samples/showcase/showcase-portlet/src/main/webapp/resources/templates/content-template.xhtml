@@ -25,14 +25,9 @@
                 xmlns:ice="http://www.icesoft.com/icefaces/component"
                 xmlns:ace="http://www.icefaces.org/icefaces/components"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
-<!--
-Available ui:params to pass:
- title
- description
- resourceValue
--->
+
     <div class="example">
-        <ace:panel header="#{title}">
+        <ace:panel header="#{title}" id="examplePanel">
         <div class="content">
             <div class="desc">
                 <ice:outputText value="#{description}" escape="false" nospan="true"/>
@@ -41,41 +36,7 @@ Available ui:params to pass:
                 <ui:insert name="example"/>
             </h:panelGroup>
         </div>
-            <!--<f:facet name="options" >  -->
-                <!--<ace:menu rendered="#{navigationModel.renderAsExample}">-->
-                    <!--<ace:submenu label="WIKI Documentation">-->
-                        <!--<c:forEach items="#{wikiResources}" var="wiki">-->
-                           <!--<ace:menuitem value="#{wiki.title}" url="#{wiki.resource}" target="_blank"/>-->
-                        <!--</c:forEach>-->
-                    <!--</ace:submenu>-->
-                    <!--<ace:submenu label="TLD Documentation">-->
-                        <!--<c:forEach items="#{tldResources}" var="tld">-->
-                           <!--<ace:menuitem value="#{tld.title}" url="#{tld.resource}" target="_blank"/>-->
-                        <!--</c:forEach>-->
-                    <!--</ace:submenu>-->
-                <!--</ace:menu>  -->
-            <!--</f:facet>  -->
         </ace:panel>
         
-        <!--<h:form id="sourceCodeForm" rendered="#{navigationModel.renderAsExample}">-->
-                <!---->
-                <!--<hr style="margin-top: 10px; margin-bottom: 10px;"/>-->
-                <!---->
-                <!--<ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" toggleable="true" header="Source Code">-->
-                    <!--<div class="resources">-->
-                    <!--<ace:ajax event="toggle" process="@this"/>-->
-                    <!---->
-                    <!--<ace:tabSet clientSide="true" selectedIndex="0"-->
-                                <!--rendered="#{not empty resourceValue}">-->
-                        <!--<c:forEach items="#{resourceValue}"-->
-                                   <!--var="exRes">-->
-                            <!--<ace:tabPane label="#{exRes.title}" styleClass="scrollx">-->
-                                <!--<h:outputText escape="false" value="#{sourceCodeLoaderConnection[exRes.resource]}" />-->
-                            <!--</ace:tabPane>-->
-                        <!--</c:forEach>-->
-                    <!--</ace:tabSet>-->
-                    <!--</div>-->
-                <!--</ace:panel>-->
-            <!--</h:form>	-->
     </div>
 </ui:composition>
