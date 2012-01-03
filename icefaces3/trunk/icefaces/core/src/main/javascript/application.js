@@ -254,21 +254,6 @@ if (!window.ice.icefaces) {
                     case 'success':
                         var xmlContent = e.responseXML;
                         broadcast(perRequestOnAfterUpdateListeners, [ xmlContent, source ]);
-                        var updates = xmlContent.documentElement.firstChild.childNodes;
-                        var updateDescriptions = collect(updates, function(update) {
-                            var id = update.getAttribute('id');
-                            var detail = update.nodeName + (id ? '["' + id + '"]' : '');
-                            //will require special case for insert operation
-                            if ("update" == update.nodeName) {
-                                detail += ': ' + substring(update.firstChild.data, 0, 40) + '....';
-                            } else if ("insert" == update.nodeName) {
-                                var location = update.firstChild.getAttribute('id');
-                                var text = update.firstChild.firstChild.data;
-                                detail += ': ' + update.firstChild.nodeName + ' ' + location + ': ' + substring(text, 0, 40) + '....';
-                            }
-                            return detail;
-                        });
-                        debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
                         break;
                 }
             };
@@ -325,8 +310,34 @@ if (!window.ice.icefaces) {
             };
         }
 
+
+        function logReceivedUpdates(e) {
+            if ('success' == e.status) {
+                var xmlContent = e.responseXML;
+                var updates = xmlContent.documentElement.firstChild.childNodes;
+                var updateDescriptions = collect(updates, function(update) {
+                    var id = update.getAttribute('id');
+                    var updateType = update.nodeName;
+                    var detail = updateType + (id ? '["' + id + '"]' : '');
+                    //will require special case for insert operation
+                    if ('update' == updateType) {
+                        detail += ': ' + substring(update.firstChild.data, 0, 40) + '....';
+                    } else if ('insert' == updateType) {
+                        var location = update.firstChild.getAttribute('id');
+                        var text = update.firstChild.firstChild.data;
+                        detail += ': ' + update.firstChild.nodeName + ' ' + location + ': ' + substring(text, 0, 40) + '....';
+                    } else if ('eval' == updateType) {
+                        detail += ': ' + substring(update.firstChild.data, 0, 40) + '....';
+                    }
+                    return detail;
+                });
+                debug(logger, 'applied updates >>\n' + join(updateDescriptions, '\n'));
+            }
+        }
+
         jsf.ajax.addOnEvent(filterICEfacesEvents(submitEventBroadcaster(beforeSubmitListeners, beforeUpdateListeners, afterUpdateListeners)));
         jsf.ajax.addOnError(filterICEfacesEvents(submitErrorBroadcaster(networkErrorListeners, serverErrorListeners)));
+        jsf.ajax.addOnEvent(logReceivedUpdates);
 
         //include submit.js
         namespace.se = singleSubmitExecuteThis;
