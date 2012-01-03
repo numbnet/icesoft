@@ -6615,8 +6615,9 @@ $.widget("ui.dialog", {
 		// determine the height of all the non-content elements
 		nonContentHeight = this.uiDialog.css({
 				height: 'auto',
-				width: options.width
-			})
+                minWidth: options.minWidth,
+                width: options.width
+        })
 			.height();
 		minContentHeight = Math.max( 0, options.minHeight - nonContentHeight );
 		
