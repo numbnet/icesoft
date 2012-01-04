@@ -164,13 +164,23 @@ if (!window.ice.icefaces) {
             return hiddenInput;
         }
 
+        function appendOrReplaceHiddenInputElement(form, name, value, defaultValue) {
+            var element = form[name];
+            if (!element) {
+                appendHiddenInputElement(form, name, value, defaultValue);
+            } else if (element.value != value) {
+                element.parentNode.removeChild(element);
+                appendHiddenInputElement(form, name, value, defaultValue);
+            }
+        }
+
         var viewIDs = [];
 
         function retrieveUpdate(viewID) {
             append(viewIDs, viewID);
             var form = lookupElementById(viewID);
-            appendHiddenInputElement(form, 'ice.view', viewID);
-            appendHiddenInputElement(form, 'ice.window', namespace.window);
+            appendOrReplaceHiddenInputElement(form, 'ice.view', viewID);
+            appendOrReplaceHiddenInputElement(form, 'ice.window', namespace.window);
 
             return function() {
                 var form = lookupElementById(viewID);
