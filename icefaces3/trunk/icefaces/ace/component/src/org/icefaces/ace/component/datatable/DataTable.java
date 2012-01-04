@@ -478,8 +478,6 @@ public class DataTable extends DataTableBase {
      * refiltering the data model to meet the new criteria.
      */
     public void applyFilters() {
-        setFilteredData(null);
-        setClearDataModel(true);
         setFilterValueChanged(true);
     }
 
@@ -1215,6 +1213,10 @@ public class DataTable extends DataTableBase {
         RowState rowState;
         Boolean expanded;
         TreeDataModel treeDataModel;
+
+        // Without this call, at times iteration will use an unfiltered data model
+        // during iteration.
+        getDataModel();
 
         while (true) {
             // Have we processed the requested number of rows?

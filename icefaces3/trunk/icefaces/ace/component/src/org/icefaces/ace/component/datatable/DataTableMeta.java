@@ -132,8 +132,6 @@ public class DataTableMeta extends UIDataMeta {
     protected List filteredData;
     @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
     protected Integer valueHashCode;
-    @Field(defaultValue = "false", defaultValueIsStringLiteral = false)
-    protected Boolean clearDataModel;
     @Field(defaultValue = "true", defaultValueIsStringLiteral = false)
     protected Boolean sortOrderChanged;
     @Field(defaultValue = "true", defaultValueIsStringLiteral = false)

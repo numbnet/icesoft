@@ -92,17 +92,11 @@ public class DataTableRenderer extends CoreRenderer {
         if (table.isSortOrderChanged())
             table.processSorting();
 
-        if (table.isFilterValueChanged()) {
-            table.setFilteredData(null);
-            table.setClearDataModel(true);
+        if (table.isFilterValueChanged())
             table.setFilteredData(table.processFilters(context));
-        }
 
-        // Force regeneration of data model pre-render if flag set
-        //if (table.isClearDataModel()) {
-            table.setModel(null);
-            table.setClearDataModel(false);
-        //}
+        // Force regeneration of data model pre-render
+        table.setModel(null);
 
         if (table.isScrollingRequest(context))
             encodeLiveRows(context, table);
@@ -197,7 +191,6 @@ public class DataTableRenderer extends CoreRenderer {
         Column filteredColumn = null;
 
         // Ensure this refiltering occurs on the original data
-        table.setFilteredData(null);
         table.setFirst(0);
         table.setPage(1);
 
