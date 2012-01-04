@@ -704,6 +704,8 @@ public class DataTable extends DataTableBase {
 
             List filteredData = new ArrayList();
             setFilteredData(null);
+            setModel(null);
+
             DataModel model = getDataModel();
             TreeDataModel treeModel = hasTreeDataModel() ? (TreeDataModel)model : null;
             String rowVar = getVar();
