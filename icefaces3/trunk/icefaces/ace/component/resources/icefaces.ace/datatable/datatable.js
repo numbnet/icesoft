@@ -531,6 +531,7 @@ ice.ace.DataTable.prototype.paginate = function(newState) {
         ice.ace.selectCustomUpdates(responseXML, function(id, content) {
             ice.ace.AjaxUtils.updateElement(id, content);
         });
+        _self.resizeScrolling();
 
         return false;
     };

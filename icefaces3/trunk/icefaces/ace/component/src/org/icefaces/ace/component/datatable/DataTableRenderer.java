@@ -1042,7 +1042,10 @@ public class DataTableRenderer extends CoreRenderer {
 
             for (Column kid : columns) {
                 if (kid.isRendered()) {
-                    encodeRegularCell(context, table, columns, kid, clientId, selected, (rowIndex == 0));
+                    table.setRowIndex(-1);
+                    boolean topRow = (table.getPage() - 1) * table.getRows() == rowIndex;
+                    table.setRowIndex(rowIndex);
+                    encodeRegularCell(context, table, columns, kid, clientId, selected, topRow);
                 }
             }
 
