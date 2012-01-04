@@ -72,7 +72,16 @@ public class PushButtonRenderer extends CoreRenderer {
 		// root element
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-		writer.writeAttribute(HTML.CLASS_ATTR, "ice-pushbutton", null);
+        String styleClass = pushButton.getStyleClass();
+        String styleClassVal = "";
+        if (styleClass != null && styleClass.trim().length() > 0) {
+            styleClassVal = " " + styleClass;
+        }
+		writer.writeAttribute(HTML.CLASS_ATTR, "ice-pushbutton" + styleClassVal, null);
+        String style = pushButton.getStyle();
+        if (style != null && style.trim().length() > 0) {
+            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+        }
         
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);
@@ -85,7 +94,7 @@ public class PushButtonRenderer extends CoreRenderer {
 	 	
 		// button element
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
-        String styleClass = (String) pushButton.getStyleClass();
+//        String styleClass = (String) pushButton.getStyleClass();
         if (null != styleClass) {
 			writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
 		}
