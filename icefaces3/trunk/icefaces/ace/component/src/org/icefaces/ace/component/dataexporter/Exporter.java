@@ -200,14 +200,8 @@ public abstract class Exporter {
             }
 
         } else if (component instanceof EditableValueHolder) {
-            //Object submittedValue = ((EditableValueHolder)component).getSubmittedValue();
-            //if (submittedValue != null) return submittedValue.toString();
 			EditableValueHolder editableValueHolder = (EditableValueHolder) component;
-			Object submittedValue = editableValueHolder.getSubmittedValue();
-			
-			if (submittedValue != null) return submittedValue.toString();
-			
-			Object value = editableValueHolder.getValue();
+            Object value = editableValueHolder.getValue();
 			
 			if (value == null) return "";
 			

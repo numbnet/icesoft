@@ -28,6 +28,7 @@ import org.icefaces.render.MandatoryResourceComponent;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.event.PhaseId;
 import java.util.*;
 
 @MandatoryResourceComponent(tagName="dataExporter", value="org.icefaces.ace.component.dataexporter.DataExporter")
@@ -43,7 +44,8 @@ public class DataExporterRenderer extends CoreRenderer {
 			String source = String.valueOf(requestParameterMap.get("ice.event.captured"));
 			if (clientId.equals(source)) {
 				exporter.setSource(clientId);
-				exporter.queueEvent(new ActionEvent(exporter));
+                // Generate resources in invoke application. After all decoding is finished.
+                exporter.queueEvent(new ActionEvent(exporter) {{ setPhaseId(PhaseId.INVOKE_APPLICATION); }});
 			}
 		}
 		
@@ -58,28 +60,6 @@ public class DataExporterRenderer extends CoreRenderer {
 		
 		writer.startElement("button", null);
 		writer.writeAttribute("id", clientId, null);
-		
-		StringBuilder onclick = new StringBuilder("new ice.ace.DataExporter('" + clientId + "',");
-		onclick.append(" function() { ");
-        // ClientBehaviors
-        Map<String,List<ClientBehavior>> behaviorEvents = exporter.getClientBehaviors();
-        if(!behaviorEvents.isEmpty()) {
-            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
-			for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get("activate").iterator(); behaviorIter.hasNext();) {
-				ClientBehavior behavior = behaviorIter.next();
-				ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(facesContext, exporter, "activate", clientId, params);
-				String script = behavior.getScript(cbc);    //could be null if disabled
-
-				if(script != null) {
-					onclick.append(script);
-					onclick.append(";");
-				}
-			}
-		}
-		onclick.append(" });");
-		onclick.append("ice.s(event,this);return false;");
-		writer.writeAttribute("onclick", onclick.toString(), null);
-		
 		String styleClass = exporter.getStyleClass();
 		if (styleClass != null) writer.writeAttribute("class", styleClass, null);
 		String style = exporter.getStyle();
@@ -113,6 +93,27 @@ public class DataExporterRenderer extends CoreRenderer {
 		
 		// themeroller support
 		writer.write("ice.ace.jq(ice.ace.escapeClientId('" + clientId + "')).button();");
+		
+		StringBuilder onclick = new StringBuilder("new ice.ace.DataExporter('" + clientId + "',");
+		onclick.append(" function() { ");
+        // ClientBehaviors
+        Map<String,List<ClientBehavior>> behaviorEvents = exporter.getClientBehaviors();
+        if(!behaviorEvents.isEmpty()) {
+            List<ClientBehaviorContext.Parameter> params = Collections.emptyList();
+			for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get("activate").iterator(); behaviorIter.hasNext();) {
+				ClientBehavior behavior = behaviorIter.next();
+				ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(facesContext, exporter, "activate", clientId, params);
+				String script = behavior.getScript(cbc);    //could be null if disabled
+
+				if(script != null) {
+					onclick.append(script);
+					onclick.append(";");
+				}
+			}
+		}
+		onclick.append(" });");
+		onclick.append("ice.s(event,this);return false;");
+		writer.write("ice.ace.jq(ice.ace.escapeClientId('" + clientId + "')).click(function(){" + onclick.toString() + "});");
 		
 		// load file
 		String path = exporter.getPath(clientId);
