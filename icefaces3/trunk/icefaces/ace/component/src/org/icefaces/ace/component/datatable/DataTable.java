@@ -26,6 +26,7 @@ package org.icefaces.ace.component.datatable;
 
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
+import org.icefaces.ace.component.row.Row;
 import org.icefaces.ace.component.rowexpander.RowExpander;
 import org.icefaces.ace.component.rowpanelexpander.RowPanelExpander;
 import org.icefaces.ace.component.tableconfigpanel.TableConfigPanel;
@@ -368,33 +369,61 @@ public class DataTable extends DataTableBase {
 
     /**
      * Generates the list of DataTable Column children, reordered according to the
+     * column ordering property, or the header ColumnGroup columns in page order.
+     * @param headColumns Enable to return the header columns in page order
+     * @return List of ACE Column Components.
+     */
+    public List<Column> getColumns(boolean headColumns) {
+        if (headColumns) {
+            ArrayList<Column> columns = new ArrayList<Column>();
+
+            for (UIComponent child : getChildren())
+                if (child instanceof ColumnGroup && ((ColumnGroup)child).getType() == "header") {
+                    for (UIComponent gchild : child.getChildren()) {
+                        if (gchild instanceof Row) {
+                            for (UIComponent ggchild : gchild.getChildren()) {
+                                if (ggchild instanceof Column) {
+                                    columns.add((Column)ggchild);
+                                }
+                            }
+                        }
+                    }
+                }
+            return columns;
+        } else {
+            ArrayList<Column> columns = new ArrayList<Column>();
+            List<Integer> columnOrdering = generateColumnOrdering();
+
+            ArrayList<Column> unordered = new ArrayList<Column>();
+            Stack childStack = new Stack<UIComponent>();
+            childStack.add(this);
+            while (!childStack.empty()) {
+                for (UIComponent child : ((UIComponent)childStack.pop()).getChildren()) {
+                    if (!(child instanceof ColumnGroup) && !(child instanceof Column) && !(child instanceof DataTable)) {
+                        if (child.getChildren().size() > 0) childStack.add(child);
+                    } else if (child instanceof Column) unordered.add((Column) child);
+                }
+            }
+
+            // Allow the ordering to grow beyond the current set of columns,
+            // to allow persistence of order during column swaps.
+            while (columnOrdering.size() < unordered.size()) columnOrdering.add(columnOrdering.size());
+
+            for (Integer i : columnOrdering)
+                if (i < unordered.size()) columns.add(unordered.get(i));
+
+            return columns;
+        }
+    }
+
+    /**
+     * Generates the list of DataTable Column children, reordered according to the
      * column ordering property. Note this list doesn't return Column components used
      * in a ColumnGroup to define the header.
      * @return List of ACE Column Components.
      */
     public List<Column> getColumns() {
-        ArrayList<Column> columns = new ArrayList<Column>();
-        List<Integer> columnOrdering = generateColumnOrdering();
-
-        ArrayList<Column> unordered = new ArrayList<Column>();
-        Stack childStack = new Stack<UIComponent>();
-        childStack.add(this);
-        while (!childStack.empty()) {
-            for (UIComponent child : ((UIComponent)childStack.pop()).getChildren()) {
-                if (!(child instanceof ColumnGroup) && !(child instanceof Column) && !(child instanceof DataTable)) {
-                    if (child.getChildren().size() > 0) childStack.add(child);
-                } else if (child instanceof Column) unordered.add((Column) child);
-            }
-        }
-
-        // Allow the ordering to grow beyond the current set of columns,
-        // to allow persistence of order during column swaps.
-        while (columnOrdering.size() < unordered.size()) columnOrdering.add(columnOrdering.size());
-
-        for (Integer i : columnOrdering)
-            if (i < unordered.size()) columns.add(unordered.get(i));
-
-        return columns;
+        return getColumns(false);
     }
 
     /**
@@ -451,6 +480,10 @@ public class DataTable extends DataTableBase {
             c.setSortPriority(null);
             c.setSortAscending(false);
         }
+        for (Column c : getColumns(true)) {
+            c.setSortPriority(null);
+            c.setSortAscending(false);
+        }
     }
 
     /**
@@ -459,6 +492,9 @@ public class DataTable extends DataTableBase {
      */
     public void resetFilters() {
         for (Column c : getColumns()) {
+            c.setFilterValue("");
+        }
+        for (Column c : getColumns(true)) {
             c.setFilterValue("");
         }
         setFilterValue("");
