@@ -443,6 +443,17 @@ public class DataTable extends DataTableBase {
     }
 
     /**
+     * Blanks the sortPriority and set to false the sortAscending property of each Column
+     * component.
+     */
+    public void resetSorting() {
+        for (Column c : getColumns()) {
+            c.setSortPriority(null);
+            c.setSortAscending(false);
+        }
+    }
+
+    /**
      * Blanks the filterValue property of each Column component and removes the
      * presently filtered set of data.
      */
