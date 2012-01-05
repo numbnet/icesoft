@@ -43,7 +43,7 @@ public class LinkButtonRenderer extends CoreRenderer {
 
     List <UIParameter> uiParamChildren;
 	
-	private static String[] excludedAttributes = {"onclick", "onkeydown", "hreflang", "href", "target"};
+	private static String[] excludedAttributes = {"onclick", "onkeydown", "hreflang", "href", "target", "style"};
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
@@ -74,12 +74,21 @@ public class LinkButtonRenderer extends CoreRenderer {
 
         writer.startElement(HTML.DIV_ELEM, uiComponent );
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-		writer.writeAttribute(HTML.CLASS_ATTR, "ice-linkbutton", null);
+        String styleClass = linkButton.getStyleClass();
+        String styleClassVal = "";
+        if (styleClass != null && styleClass.trim().length() > 0) {
+            styleClassVal = " " + styleClass;
+        }
+		writer.writeAttribute(HTML.CLASS_ATTR, "ice-linkbutton" + styleClassVal, null);
+        String style = linkButton.getStyle();
+        if (style != null && style.trim().length() > 0) {
+            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+        }
 
         //writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);
-        String styleClass = "yui-button yui-link-button ui-button ui-widget";
+        styleClass = "yui-button yui-link-button ui-button ui-widget";
         boolean disabled = linkButton.isDisabled();
         if (disabled) {
             styleClass += " yui-button-disabled yui-link-button-disabled";
@@ -98,10 +107,6 @@ public class LinkButtonRenderer extends CoreRenderer {
 
         // button element
         writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
-        String myStyleClass = linkButton.getStyleClass();
-        if ((myStyleClass != null) && (!"".equals(myStyleClass) )) {
-            writer.writeAttribute(HTML.CLASS_ATTR, myStyleClass, null);
-        } 
 
 		renderPassThruAttributes(facesContext, linkButton, HTML.LINK_ATTRS, excludedAttributes);
 		

@@ -93,13 +93,9 @@ public class PushButtonRenderer extends CoreRenderer {
 	 	
 		// button element
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
-//        String styleClass = (String) pushButton.getStyleClass();
-        if (null != styleClass) {
-			writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
-		}
 		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
 		
-		renderPassThruAttributes(facesContext, pushButton, HTML.BUTTON_ATTRS);
+		renderPassThruAttributes(facesContext, pushButton, HTML.BUTTON_ATTRS, new String[]{"style"});
 
         // ICE-6418 Write the id out to be the same as the eventual munged YUI id.
 		writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
