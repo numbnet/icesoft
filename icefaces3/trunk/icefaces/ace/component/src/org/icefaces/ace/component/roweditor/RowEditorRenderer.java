@@ -28,10 +28,10 @@
 package org.icefaces.ace.component.roweditor;
 
 import org.icefaces.ace.component.datatable.DataTable;
+import org.icefaces.ace.component.datatable.DataTableConstants;
 import org.icefaces.ace.event.RowEditCancelEvent;
 import org.icefaces.ace.event.RowEditEvent;
 import org.icefaces.ace.model.table.RowState;
-import org.icefaces.ace.model.table.TreeDataModel;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -74,7 +74,7 @@ public class RowEditorRenderer extends CoreRenderer {
             ResponseWriter writer = context.getResponseWriter();
             writer.startElement(HTML.SPAN_ELEM, null);
             writer.writeAttribute("id", component.getClientId(context), null);
-            writer.writeAttribute("class", DataTable.ROW_EDITOR_CLASS, null);
+            writer.writeAttribute("class", DataTableConstants.ROW_EDITOR_CLASS, null);
     
             writer.startElement("a", null);
             writer.writeAttribute("class", "ui-icon ui-icon-pencil", null);

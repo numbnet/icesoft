@@ -47,6 +47,8 @@ import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.NavigationHandler;
 import javax.faces.component.*;
+import javax.faces.component.behavior.AjaxBehavior;
+import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
@@ -72,48 +74,12 @@ import javax.faces.view.Location;
 public class DataTable extends DataTableBase {
     private static Logger log = Logger.getLogger(DataTable.class.getName());
     private static Class SQL_RESULT = null;
-    public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
-    public static final String COLUMN_HEADER_CLASS = "ui-widget-header";
-    public static final String COLUMN_HEADER_CONTAINER_CLASS = "ui-header-column";
-    public static final String COLUMN_FOOTER_CLASS = "ui-widget-header";
-    public static final String COLUMN_FOOTER_CONTAINER_CLASS = "ui-footer-column";
-    public static final String DATA_CLASS = "ui-datatable-data ui-widget-content";
-    public static final String EMPTY_DATA_CLASS = "ui-datatable-data-empty";
-    public static final String ROW_CLASS = "";
-    public static final String HEADER_CLASS = "ui-datatable-header ui-widget-header ui-corner-tl ui-corner-tr";
-    public static final String HEADER_RIGHT_CLASS = "ui-header-right";
-    public static final String FOOTER_CLASS = "ui-datatable-footer ui-widget-header ui-corner-bl ui-corner-br";
-    public static final String HEAD_TEXT_CLASS = "ui-header-text";
-    public static final String SORTABLE_COLUMN_CLASS = "ui-sortable-column";
-    public static final String SORTABLE_COLUMN_CONTROL_CLASS = "ui-sortable-control";
-    public static final String SORTABLE_COLUMN_ICON_CONTAINER = "ui-sortable-column-icon";
-    public static final String SORTABLE_COLUMN_ICON_UP_CLASS = "ui-icon ui-icon-triangle-1-n";
-    public static final String SORTABLE_COLUMN_ICON_DOWN_CLASS = "ui-icon ui-icon-triangle-1-s";
-    public static final String SORTABLE_COLUMN_ORDER_CLASS = "ui-sortable-column-order";
-    public static final String COLUMN_FILTER_CLASS = "ui-column-filter";
-    public static final String UNSELECTABLE_ROW_CLASS = "ui-unselectable";
-    public static final String REORDERABLE_COL_CLASS = "ui-reorderable-col";
-    public static final String EXPANDED_ROW_CLASS = "ui-expanded-row";
-    public static final String EXPANDED_ROW_CONTENT_CLASS = "ui-expanded-row-content";
-    public static final String ROW_PANEL_TOGGLER_CLASS = "ui-row-panel-toggler";
-    public static final String ROW_TOGGLER_CLASS = "ui-row-toggler";
-    public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
-    public static final String CELL_EDITOR_CLASS = "ui-cell-editor";
-    public static final String CELL_EDITOR_INPUT_CLASS = "ui-cell-editor-input";
-    public static final String CELL_EDITOR_OUTPUT_CLASS = "ui-cell-editor-output";
-    public static final String ROW_EDITOR_COLUMN_CLASS = "ui-row-editor-column";
-    public static final String ROW_EDITOR_CLASS = "ui-row-editor";
-    public static final String SELECTION_COLUMN_CLASS = "ui-selection-column";
-    public static final String EVEN_ROW_CLASS = "ui-datatable-even";
-    public static final String ODD_ROW_CLASS = "ui-datatable-odd";
-    public static final String SCROLLABLE_X_CLASS = "ui-datatable-scroll-x";
-    public static final String SCROLLABLE_CONTAINER_CLASS = "ui-datatable-scrollable";
-    public static final String SCROLLABLE_HEADER_CLASS = "ui-datatable-scrollable-header";
-    public static final String SCROLLABLE_BODY_CLASS = "ui-datatable-scrollable-body";
-    public static final String SCROLLABLE_FOOTER_CLASS = "ui-datatable-scrollable-footer";
-    public static final String COLUMN_RESIZER_CLASS = "ui-column-resizer";
 
+    // Cached results
     private Map<String, Column> filterMap;
+    private TableConfigPanel panel;
+    private RowStateMap stateMap;
+    private DataModel model;
 
     static {
         try {
@@ -126,7 +92,6 @@ public class DataTable extends DataTableBase {
     /*#######################################################################*/
     /*###################### Overridden API #################################*/
     /*#######################################################################*/
-    RowStateMap stateMap;
     @Override
     public RowStateMap getStateMap() {
         if (stateMap != null) return stateMap;
@@ -201,7 +166,6 @@ public class DataTable extends DataTableBase {
         return model;
     }
 
-    private DataModel model;
     @Override
     protected void setDataModel(DataModel dataModel) {
         this.model = dataModel;
@@ -244,26 +208,26 @@ public class DataTable extends DataTableBase {
         // This is not a EditableValueHolder, so no further processing is required
     }
 
-        @Override
-        public void processDecodes(FacesContext context) {
-            // Required to prevent input component processing on filter and pagination initiated submits.
-            if (!isAlwaysExecuteContents() && isTableFeatureRequest(context)) {
-                this.decode(context);
-                context.renderResponse();
-            } else {
-                if (context == null) {
-                    throw new NullPointerException();
-                }
-                if (!isRendered()) {
-                    return;
-                }
-
-                pushComponentToEL(context, this);
-                //super.preDecode() - private and difficult to port
-                iterate(context, PhaseId.APPLY_REQUEST_VALUES);
-                decode(context);
-                popComponentFromEL(context);
+    @Override
+    public void processDecodes(FacesContext context) {
+        // Required to prevent input component processing on filter and pagination initiated submits.
+        if (!isAlwaysExecuteContents() && isTableFeatureRequest(context)) {
+            this.decode(context);
+            context.renderResponse();
+        } else {
+            if (context == null) {
+                throw new NullPointerException();
             }
+            if (!isRendered()) {
+                return;
+            }
+
+            pushComponentToEL(context, this);
+            //super.preDecode() - private and difficult to port
+            iterate(context, PhaseId.APPLY_REQUEST_VALUES);
+            decode(context);
+            popComponentFromEL(context);
+        }
 
         if (isFilterValueChanged() == true) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -380,18 +344,16 @@ public class DataTable extends DataTableBase {
         if (headColumns) {
             ArrayList<Column> columns = new ArrayList<Column>();
 
-            for (UIComponent child : getChildren())
-                if (child instanceof ColumnGroup && ((ColumnGroup)child).getType() == "header") {
+            for (UIComponent child : getColumnGroup("header").getChildren()) {
+                if (child instanceof Row) {
                     for (UIComponent gchild : child.getChildren()) {
-                        if (gchild instanceof Row) {
-                            for (UIComponent ggchild : gchild.getChildren()) {
-                                if (ggchild instanceof Column) {
-                                    columns.add((Column)ggchild);
-                                }
-                            }
+                        if (gchild instanceof Column) {
+                            columns.add((Column)gchild);
                         }
                     }
                 }
+            }
+
             return columns;
         } else {
             ArrayList<Column> columns = new ArrayList<Column>();
@@ -621,11 +583,20 @@ public class DataTable extends DataTableBase {
     }
 
     public boolean hasSelectionClientBehaviour() {
-        for (String eventId : getClientBehaviors().keySet()) {
-            if (eventId.equals("select") || eventId.equals("deselect")) {
-                return true;
-            }
-        }
+        List<ClientBehavior> selectBehaviors = getClientBehaviors().get("select");
+
+        for (ClientBehavior b : selectBehaviors)
+            if (b instanceof AjaxBehavior)
+                if (!((AjaxBehavior) b).isDisabled())
+                    return true;
+
+        List<ClientBehavior> deselectBehaviors = getClientBehaviors().get("deselect");
+
+        for (ClientBehavior b : deselectBehaviors)
+            if (b instanceof AjaxBehavior)
+                if (!((AjaxBehavior) b).isDisabled())
+                    return true;
+
         return false;
     }
 
@@ -648,11 +619,8 @@ public class DataTable extends DataTableBase {
 
     protected boolean isSingleSelectionMode() {
         String selectionMode = this.getSelectionMode();
-        //String columnSelectionMode = this.getColumnSelectionMode();
         if (selectionMode != null)
             return selectionMode.equalsIgnoreCase("single") || selectionMode.equalsIgnoreCase("singlecell");
-            //else if (columnSelectionMode != null)
-            //return columnSelectionMode.equalsIgnoreCase("single");
         else return false;
     }
 
@@ -1014,16 +982,6 @@ public class DataTable extends DataTableBase {
         // non-empty collection means we need to visit our children.
         return (!idsToVisit.isEmpty());
     }
-
-
-
-
-
-    /*#######################################################################*/
-    /*############### Fields & Custom State Saving Impl #####################*/
-    /*#######################################################################*/
-
-    private TableConfigPanel panel;
 
 
 

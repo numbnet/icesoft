@@ -34,8 +34,8 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.model.DataModel;
 
 import org.icefaces.ace.component.datatable.DataTable;
+import org.icefaces.ace.component.datatable.DataTableConstants;
 import org.icefaces.ace.model.table.RowState;
-import org.icefaces.ace.model.table.RowStateWrapper;
 import org.icefaces.ace.model.table.TreeDataModel;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
@@ -66,12 +66,12 @@ public class ExpansionTogglerRenderer extends CoreRenderer {
 
             if (isPanel && isRow) {
                 if (rowState.getExpansionType() == RowState.ExpansionType.PANEL)
-                    togglerClass += DataTable.ROW_PANEL_TOGGLER_CLASS;
+                    togglerClass += DataTableConstants.ROW_PANEL_TOGGLER_CLASS;
                 else if (rowState.getExpansionType() == RowState.ExpansionType.ROW)
-                    togglerClass += DataTable.ROW_TOGGLER_CLASS;
+                    togglerClass += DataTableConstants.ROW_TOGGLER_CLASS;
             }
-            else if (isPanel) { togglerClass += DataTable.ROW_PANEL_TOGGLER_CLASS; }
-            else if (isRow) { togglerClass += DataTable.ROW_TOGGLER_CLASS; }
+            else if (isPanel) { togglerClass += DataTableConstants.ROW_PANEL_TOGGLER_CLASS; }
+            else if (isRow) { togglerClass += DataTableConstants.ROW_TOGGLER_CLASS; }
 
             if (expanded) togglerClass += " ui-icon-circle-triangle-s";
             else togglerClass += " ui-icon-circle-triangle-e";
