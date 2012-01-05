@@ -67,11 +67,21 @@ public class DataTableRenderer extends CoreRenderer {
         if (table.isSelectionEnabled())
             this.decodeSelection(context, table);
 
-        if (table.isFilterRequest(context)) this.decodeFilters(context, table);
-        else if (table.isTableConfigurationRequest(context)) this.decodeTableConfigurationRequest(context, table);
-        else if (table.isPaginationRequest(context)) this.decodePageRequest(context, table);
-        else if (table.isSortRequest(context)) this.decodeSortRequest(context, table, null, null);
-        else if (table.isColumnReorderRequest(context)) this.decodeColumnReorderRequest(context, table);
+
+        if (table.isFilterRequest(context))
+            this.decodeFilters(context, table);
+
+        else if (table.isTableConfigurationRequest(context))
+            this.decodeTableConfigurationRequest(context, table);
+
+        else if (table.isPaginationRequest(context))
+            this.decodePageRequest(context, table);
+
+        else if (table.isSortRequest(context))
+            this.decodeSortRequest(context, table, null, null);
+
+        else if (table.isColumnReorderRequest(context))
+            this.decodeColumnReorderRequest(context, table);
 
         decodeBehaviors(context, component);
 	}
@@ -455,7 +465,7 @@ public class DataTableRenderer extends CoreRenderer {
 		String clientId = table.getClientId(context);
         String filterEvent = table.getFilterEvent();
 
-		writer.startElement("script", table);
+		writer.startElement(HTML.SCRIPT_ELEM, table);
 		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
         writer.write("var " + this.resolveWidgetVar(table) + " = new ice.ace.DataTable('" + clientId + "',{");
 
@@ -465,23 +475,37 @@ public class DataTableRenderer extends CoreRenderer {
         writer.write("formId:'" + form.getClientId(context) + "'");
         writer.write(",filterEvent:'" + filterEvent + "'");
         
-        if (table.getTableConfigPanel() != null) writer.write(",configPanel:'" + table.getTableConfigPanel() + "'");
+        if (table.getTableConfigPanel() != null)
+            writer.write(",configPanel:'" + table.getTableConfigPanel() + "'");
 
-        if (table.isPaginator()) encodePaginatorConfig(context, table);
+        if (table.isPaginator())
+            encodePaginatorConfig(context, table);
 
-        if (table.isSelectionEnabled()) encodeSelectionConfig(context, table);
+        if (table.isSelectionEnabled()) {
+            writer.write(",selectionMode:'" + table.getSelectionMode() + "'");
+
+            if (table.isDblClickSelect())
+                writer.write(",dblclickSelect:true");
+
+            if (table.hasSelectionClientBehaviour())
+                writer.write(",instantSelect:true");
+        }
 
         //Panel expansion
         if (table.getPanelExpansion() != null) {
             writer.write(",panelExpansion:true");
-            if (table.getOnExpandStart() != null) writer.write(",onExpandStart:function(row) {" + table.getOnExpandStart() + "}");
+            if (table.getOnExpandStart() != null)
+                writer.write(",onExpandStart:function(row) {" + table.getOnExpandStart() + "}");
         }
+
 
         //Row expansion
         if (table.getRowExpansion() != null) {
             writer.write(",rowExpansion:true");
-            if (table.getOnExpandStart() != null) writer.write(",onExpandStart:function(row) {" + table.getOnExpandStart() + "}");
+            if (table.getOnExpandStart() != null)
+                writer.write(",onExpandStart:function(row) {" + table.getOnExpandStart() + "}");
         }
+
 
         //Scrolling
         if (table.isScrollable()) {
@@ -502,7 +526,7 @@ public class DataTableRenderer extends CoreRenderer {
         encodeClientBehaviors(context, table);
 
         writer.write("});");
-		writer.endElement("script");
+		writer.endElement(HTML.SCRIPT_ELEM);
 	}
 
 	protected void encodeEntierty(FacesContext context, DataTable table) throws IOException{
@@ -513,7 +537,10 @@ public class DataTableRenderer extends CoreRenderer {
         // init statemap while row index == -1
         table.getStateMap();
 
-        String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
+        String containerClass = scrollable
+                ? DataTableConstants.CONTAINER_CLASS + " " + DataTableConstants.SCROLLABLE_CONTAINER_CLASS
+                : DataTableConstants.CONTAINER_CLASS;
+
         containerClass = table.getStyleClass() != null
                             ? containerClass + " " + table.getStyleClass()
                             : containerClass;
@@ -529,7 +556,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         if ((style = table.getStyle()) != null) writer.writeAttribute(HTML.STYLE_ELEM, style, HTML.STYLE_ELEM);
 
-        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
+        encodeFacet(context, table, table.getHeader(), DataTableConstants.HEADER_CLASS);
 
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) encodePaginatorMarkup(context, table, "top");
 
@@ -538,7 +565,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) encodePaginatorMarkup(context, table, "bottom");
 
-        encodeFacet(context, table, table.getFooter(), DataTable.FOOTER_CLASS);
+        encodeFacet(context, table, table.getFooter(), DataTableConstants.FOOTER_CLASS);
 
         if (table.isSelectionEnabled()) encodeSelectionAndDeselectionHolder(context, table);
 
@@ -575,7 +602,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         if (table.hasHeaders()) {
             writer.startElement(HTML.DIV_ELEM, null);
-            writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SCROLLABLE_HEADER_CLASS, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SCROLLABLE_HEADER_CLASS, null);
             writer.startElement(HTML.TABLE_ELEM, null);
             encodeTableHead(context, table, columns);
             writer.endElement(HTML.TABLE_ELEM);
@@ -583,7 +610,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         writer.startElement(HTML.DIV_ELEM, null);
-        String scrollClass = DataTable.SCROLLABLE_X_CLASS + " " + DataTable.SCROLLABLE_BODY_CLASS;
+        String scrollClass = DataTableConstants.SCROLLABLE_X_CLASS + " " + DataTableConstants.SCROLLABLE_BODY_CLASS;
         writer.writeAttribute(HTML.CLASS_ATTR, scrollClass, null);
         writer.writeAttribute(HTML.STYLE_ELEM, "height:" + table.getHeight() + "px", null);
         writer.startElement(HTML.TABLE_ELEM, null);
@@ -592,7 +619,7 @@ public class DataTableRenderer extends CoreRenderer {
         writer.endElement(HTML.DIV_ELEM);
 
         writer.startElement(HTML.DIV_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SCROLLABLE_FOOTER_CLASS, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SCROLLABLE_FOOTER_CLASS, null);
         writer.startElement(HTML.TABLE_ELEM, null);
         encodeTableFoot(context, table, columns);
         writer.endElement(HTML.TABLE_ELEM);
@@ -644,17 +671,18 @@ public class DataTableRenderer extends CoreRenderer {
         if (!isCurrStacked) {
             String style = column.getStyle();
             String styleClass = column.getStyleClass();
-            String columnClass = DataTable.COLUMN_HEADER_CLASS;
-            columnClass = (table.isReorderableColumns() && column.isReorderable()) ? columnClass + " " + DataTable.REORDERABLE_COL_CLASS : columnClass;
+            String columnClass = DataTableConstants.COLUMN_HEADER_CLASS;
+            columnClass = (table.isReorderableColumns() && column.isReorderable()) ? columnClass + " " + DataTableConstants.REORDERABLE_COL_CLASS : columnClass;
             columnClass = styleClass != null ? columnClass + " " + styleClass : columnClass;
 
             writer.startElement("th", null);
             writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
 
             if (style != null) writer.writeAttribute(HTML.STYLE_ELEM, style, null);
-            if (column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
-            if (column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
+            if (column.getRowspan() != 1) writer.writeAttribute(HTML.ROWSPAN_ATTR, column.getRowspan(), null);
+            if (column.getColspan() != 1) writer.writeAttribute(HTML.COLSPAN_ATTR, column.getColspan(), null);
         }
+
         else {
             writer.startElement("hr", null);
             writer.endElement("hr");
@@ -664,8 +692,8 @@ public class DataTableRenderer extends CoreRenderer {
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 
-        String columnClass = DataTable.COLUMN_HEADER_CONTAINER_CLASS;
-        columnClass = isSortable ? columnClass + " " + DataTable.SORTABLE_COLUMN_CLASS : columnClass;
+        String columnClass = DataTableConstants.COLUMN_HEADER_CONTAINER_CLASS;
+        columnClass = isSortable ? columnClass + " " + DataTableConstants.SORTABLE_COLUMN_CLASS : columnClass;
 
         writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
         writer.startElement(HTML.DIV_ELEM, null);
@@ -699,7 +727,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         writer.startElement(HTML.SPAN_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, DataTable.HEAD_TEXT_CLASS, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.HEAD_TEXT_CLASS, null);
 
         //Header content
         UIComponent header = column.getFacet("header");
@@ -761,7 +789,7 @@ public class DataTableRenderer extends CoreRenderer {
 
     private void writeHeaderRightSideControls(ResponseWriter writer, FacesContext context, DataTable table, Column column, boolean sortable, boolean last) throws IOException {
         writer.startElement(HTML.SPAN_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, DataTable.HEADER_RIGHT_CLASS, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.HEADER_RIGHT_CLASS, null);
 
         //Sort icon
         if (sortable) writeSortControl(writer, context, table, column);
@@ -775,24 +803,24 @@ public class DataTableRenderer extends CoreRenderer {
 
     private void writeSortControl(ResponseWriter writer, FacesContext context, DataTable table, Column column) throws IOException {
         writer.startElement(HTML.SPAN_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_CONTROL_CLASS, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_CONTROL_CLASS, null);
 
         // Write carats
         writer.startElement(HTML.SPAN_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_CONTAINER, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_CONTAINER, null);
 
         writer.startElement(HTML.ANCHOR_ELEM, null);
         writer.writeAttribute(HTML.TABINDEX_ATTR, 0, null);
         if (column.getSortPriority() != null && column.isSortAscending())
-            writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_UP_CLASS + " ui-toggled", null);
-        else writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_UP_CLASS, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_UP_CLASS + " ui-toggled", null);
+        else writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_UP_CLASS, null);
         writer.endElement(HTML.ANCHOR_ELEM);
 
         writer.startElement(HTML.ANCHOR_ELEM, null);
         writer.writeAttribute(HTML.TABINDEX_ATTR, 0, null);
         if (column.getSortPriority() != null && !column.isSortAscending())
-            writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_DOWN_CLASS + " ui-toggled", null);
-        else writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_DOWN_CLASS, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_DOWN_CLASS + " ui-toggled", null);
+        else writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_DOWN_CLASS, null);
         writer.endElement(HTML.ANCHOR_ELEM);
 
         writer.endElement(HTML.SPAN_ELEM);
@@ -800,10 +828,10 @@ public class DataTableRenderer extends CoreRenderer {
 
         // Write Sort Order Integer
         writer.startElement(HTML.SPAN_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ORDER_CLASS, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ORDER_CLASS, null);
         if (table.isSingleSort()) writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
         else if (column.getSortPriority() != null) writer.writeText(column.getSortPriority(), null);
-        else writer.write("&#160;");
+        else writer.write(HTML.NBSP_ENTITY);
 
         writer.endElement(HTML.SPAN_ELEM);
 
@@ -819,7 +847,7 @@ public class DataTableRenderer extends CoreRenderer {
         String filterFunction = widgetVar + ".filter(event)";
         String filterStyleClass = column.getFilterStyleClass();
         String filterEvent = table.getFilterEvent();
-        filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_FILTER_CLASS : DataTable.COLUMN_FILTER_CLASS + " " + filterStyleClass;
+        filterStyleClass = filterStyleClass == null ? DataTableConstants.COLUMN_FILTER_CLASS : DataTableConstants.COLUMN_FILTER_CLASS + " " + filterStyleClass;
 
         if (column.getValueExpression("filterOptions") == null) {
             String filterValue = column.getFilterValue() != null ? column.getFilterValue() : "";
@@ -877,13 +905,13 @@ public class DataTableRenderer extends CoreRenderer {
         if (!isCurrStacked) {
             String style = column.getStyle();
             String styleClass = column.getStyleClass();
-            String footerClass = styleClass != null ? DataTable.COLUMN_FOOTER_CLASS + " " + styleClass : DataTable.COLUMN_FOOTER_CLASS;
+            String footerClass = styleClass != null ? DataTableConstants.COLUMN_FOOTER_CLASS + " " + styleClass : DataTableConstants.COLUMN_FOOTER_CLASS;
 
             writer.startElement(HTML.TD_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, footerClass, null);
             if (style != null) writer.writeAttribute(HTML.STYLE_ELEM, style, null);
-            if (column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
-            if (column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
+            if (column.getRowspan() != 1) writer.writeAttribute(HTML.ROWSPAN_ATTR, column.getRowspan(), null);
+            if (column.getColspan() != 1) writer.writeAttribute(HTML.COLSPAN_ATTR, column.getColspan(), null);
         }
         else {
             writer.startElement("hr", null);
@@ -892,7 +920,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         //Container
         writer.startElement(HTML.DIV_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, DataTable.COLUMN_FOOTER_CONTAINER_CLASS, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.COLUMN_FOOTER_CONTAINER_CLASS, null);
 
         //Footer content
         UIComponent facet = column.getFacet("footer");
@@ -922,7 +950,7 @@ public class DataTableRenderer extends CoreRenderer {
         ColumnGroup group = table.getColumnGroup("header");
         if (group != null) headContainer = group.getChildren();
 
-        writer.startElement("thead", null);
+        writer.startElement(HTML.THEAD_ELEM, null);
         writer.startElement(HTML.TR_ELEM, null);
 
         // For each row of a col group, or child of a datatable
@@ -965,7 +993,7 @@ public class DataTableRenderer extends CoreRenderer {
             firstHeadElement = false;
         } while (headElementIterator.hasNext());
         writer.endElement(HTML.TR_ELEM);
-        writer.endElement("thead");
+        writer.endElement(HTML.THEAD_ELEM);
     }
 
     protected void encodeTableBody(FacesContext context, DataTable table, List<Column> columns) throws IOException {
@@ -982,9 +1010,9 @@ public class DataTableRenderer extends CoreRenderer {
         int rowCountToRender = rows == 0 ? rowCount : rows;
         boolean hasData = rowCount > 0;
 
-        String tbodyClass = hasData ? DataTable.DATA_CLASS : DataTable.EMPTY_DATA_CLASS;
+        String tbodyClass = hasData ? DataTableConstants.DATA_CLASS : DataTableConstants.EMPTY_DATA_CLASS;
 
-        writer.startElement("tbody", null);
+        writer.startElement(HTML.TBODY_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_data", null);
         writer.writeAttribute(HTML.CLASS_ATTR, tbodyClass, null);
 
@@ -993,7 +1021,7 @@ public class DataTableRenderer extends CoreRenderer {
                 encodeRow(context, table, columns, clientId, i, null, rowIndexVar, (page - 1) * rows == i);
         else encodeEmptyMessage(table, writer, columns);
 
-        writer.endElement("tbody");
+        writer.endElement(HTML.TBODY_ELEM);
 		table.setRowIndex(-1);
 		if (rowIndexVar != null) context.getExternalContext().getRequestMap().remove(rowIndexVar);
     }
@@ -1002,10 +1030,10 @@ public class DataTableRenderer extends CoreRenderer {
         String emptyMessage = table.getEmptyMessage();
         if (emptyMessage != null) {
             writer.startElement(HTML.TR_ELEM, null);
-            writer.writeAttribute(HTML.CLASS_ATTR, DataTable.ROW_CLASS, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.ROW_CLASS, null);
 
             writer.startElement(HTML.TD_ELEM, null);
-            writer.writeAttribute("colspan", columns.size(), null);
+            writer.writeAttribute(HTML.COLSPAN_ATTR, columns.size(), null);
             writer.write(emptyMessage);
             writer.endElement(HTML.TD_ELEM);
 
@@ -1029,9 +1057,9 @@ public class DataTableRenderer extends CoreRenderer {
         if (visible) {
             ResponseWriter writer = context.getResponseWriter();
             String userRowStyleClass = table.getRowStyleClass();
-            String expandedClass = expanded ? DataTable.EXPANDED_ROW_CLASS : "";
-            String unselectableClass = unselectable ? DataTable.UNSELECTABLE_ROW_CLASS : "";
-            String rowStyleClass = rowIndex % 2 == 0 ? DataTable.ROW_CLASS + " " + DataTable.EVEN_ROW_CLASS : DataTable.ROW_CLASS + " " + DataTable.ODD_ROW_CLASS;
+            String expandedClass = expanded ? DataTableConstants.EXPANDED_ROW_CLASS : "";
+            String unselectableClass = unselectable ? DataTableConstants.UNSELECTABLE_ROW_CLASS : "";
+            String rowStyleClass = rowIndex % 2 == 0 ? DataTableConstants.ROW_CLASS + " " + DataTableConstants.EVEN_ROW_CLASS : DataTableConstants.ROW_CLASS + " " + DataTableConstants.ODD_ROW_CLASS;
 
             if (selected && table.getSelectionMode() != null) rowStyleClass = rowStyleClass + " ui-selected ui-state-highlight";
             if (userRowStyleClass != null) rowStyleClass = rowStyleClass + " " + userRowStyleClass;
@@ -1096,7 +1124,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         CellEditor editor = column.getCellEditor();
         String columnStyleClass = column.getStyleClass();
-        if (editor != null) columnStyleClass = columnStyleClass == null ? DataTable.EDITABLE_COLUMN_CLASS : DataTable.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
+        if (editor != null) columnStyleClass = columnStyleClass == null ? DataTableConstants.EDITABLE_COLUMN_CLASS : DataTableConstants.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
         if (columnStyleClass != null) writer.writeAttribute(HTML.CLASS_ATTR, columnStyleClass, null);
         column.encodeAll(context);
 
@@ -1113,7 +1141,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         if (!shouldRender) return;
 
-        writer.startElement("tfoot", null);
+        writer.startElement(HTML.TFOOT_ELEM, null);
 
         if (group != null) {
             for (UIComponent child : group.getChildren()) {
@@ -1136,7 +1164,7 @@ public class DataTableRenderer extends CoreRenderer {
             }
             writer.endElement(HTML.TR_ELEM);
         }
-        writer.endElement("tfoot");
+        writer.endElement(HTML.TFOOT_ELEM);
     }
 
     protected void encodeFacet(FacesContext context, DataTable table, UIComponent facet, String styleClass) throws IOException {
@@ -1190,29 +1218,6 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_paginator" + position, null);
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
         writer.endElement(HTML.DIV_ELEM);
-    }
-
-    protected void encodeSelectionConfig(FacesContext context, DataTable table) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.write(",selectionMode:'" + table.getSelectionMode() + "'");
-
-        if (table.isDblClickSelect()) writer.write(",dblclickSelect:true");
-
-        List<ClientBehavior> selectBehaviors = table.getClientBehaviors().get("select");
-
-        if (selectBehaviors != null) {
-            boolean allBehaviorsDisabled = true;
-
-            for (ClientBehavior cb : selectBehaviors) {
-                if (cb instanceof AjaxBehavior) {
-                    AjaxBehavior ab = (AjaxBehavior)cb;
-                    allBehaviorsDisabled = allBehaviorsDisabled && ab.isDisabled();
-                }
-            }
-
-            if (!allBehaviorsDisabled)
-                writer.write(",instantSelect:true");
-        }
     }
 
     protected void encodeSelectionAndDeselectionHolder(FacesContext context, DataTable table) throws IOException {
@@ -1299,15 +1304,15 @@ public class DataTableRenderer extends CoreRenderer {
             boolean visible = rowState.isVisible();
             context.getExternalContext().getRequestMap().put(table.getRowStateVar(), rowState);
 
-            String expandedClass = expanded ? DataTable.EXPANDED_ROW_CLASS : "";
-            String alternatingClass = (rootModel.getRowIndex() % 2 == 0) ? DataTable.EVEN_ROW_CLASS : DataTable.ODD_ROW_CLASS;
+            String expandedClass = expanded ? DataTableConstants.EXPANDED_ROW_CLASS : "";
+            String alternatingClass = (rootModel.getRowIndex() % 2 == 0) ? DataTableConstants.EVEN_ROW_CLASS : DataTableConstants.ODD_ROW_CLASS;
             String selectionClass = (selected && table.getSelectionMode() != null) ? "ui-selected ui-state-highlight" : "";
-            String unselectableClass = unselectable ? DataTable.UNSELECTABLE_ROW_CLASS : "";
+            String unselectableClass = unselectable ? DataTableConstants.UNSELECTABLE_ROW_CLASS : "";
 
             if (visible) {
                 writer.startElement(HTML.TR_ELEM, null);
                 writer.writeAttribute(HTML.ID_ATTR, clientId + "_row_" + expandedRowId + "." + rootModel.getRowIndex(), null);
-                writer.writeAttribute(HTML.CLASS_ATTR, DataTable.ROW_CLASS + " " + alternatingClass + " " + selectionClass + " " + expandedClass + " " + unselectableClass, null);
+                writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.ROW_CLASS + " " + alternatingClass + " " + selectionClass + " " + expandedClass + " " + unselectableClass, null);
 
                 for (Column kid : columns) {
                     if (kid.isRendered()) {
@@ -1382,10 +1387,10 @@ public class DataTableRenderer extends CoreRenderer {
         table.getStateMap().get(table.getRowData()).setExpanded(true);
 
         writer.startElement(HTML.TR_ELEM, null);
-        writer.writeAttribute(HTML.CLASS_ATTR, DataTable.EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content " + DataTable.UNSELECTABLE_ROW_CLASS , null);
+        writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content " + DataTableConstants.UNSELECTABLE_ROW_CLASS , null);
 
         writer.startElement(HTML.TD_ELEM, null);
-        writer.writeAttribute("colspan", table.getColumns().size(), null);
+        writer.writeAttribute(HTML.COLSPAN_ATTR, table.getColumns().size(), null);
         table.getPanelExpansion().encodeAll(context);
 
         writer.endElement(HTML.TD_ELEM);

@@ -31,7 +31,8 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.icefaces.ace.component.datatable.DataTable;
+
+import org.icefaces.ace.component.datatable.DataTableConstants;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.render.MandatoryResourceComponent;
 
@@ -45,15 +46,15 @@ public class CellEditorRenderer extends CoreRenderer {
         
         writer.startElement("span", null);
         writer.writeAttribute("id", component.getClientId(context), null);
-        writer.writeAttribute("class", DataTable.CELL_EDITOR_CLASS, null);
+        writer.writeAttribute("class", DataTableConstants.CELL_EDITOR_CLASS, null);
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", DataTable.CELL_EDITOR_OUTPUT_CLASS, null);
+        writer.writeAttribute("class", DataTableConstants.CELL_EDITOR_OUTPUT_CLASS, null);
         editor.getFacet("output").encodeAll(context);
         writer.endElement("span");
 
         writer.startElement("span", null);
-        writer.writeAttribute("class", DataTable.CELL_EDITOR_INPUT_CLASS, null);
+        writer.writeAttribute("class", DataTableConstants.CELL_EDITOR_INPUT_CLASS, null);
         editor.getFacet("input").encodeAll(context);
         writer.endElement("span");
 

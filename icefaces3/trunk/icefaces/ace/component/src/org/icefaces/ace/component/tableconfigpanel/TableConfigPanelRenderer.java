@@ -18,15 +18,13 @@ package org.icefaces.ace.component.tableconfigpanel;
 
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.datatable.DataTable;
+import org.icefaces.ace.component.datatable.DataTableConstants;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.HTML;
-import org.icefaces.render.MandatoryResourceComponent;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.List;
 
@@ -242,23 +240,23 @@ public class TableConfigPanelRenderer extends CoreRenderer {
             writer.writeAttribute(HTML.CLASS_ATTR, "ui-tableconf-sort-cont", null);
 
             writer.startElement(HTML.SPAN_ELEM, null);
-            writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_CONTROL_CLASS, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_CONTROL_CLASS, null);
 
             // Write carats
             writer.startElement(HTML.SPAN_ELEM, null);
-            writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_CONTAINER, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_CONTAINER, null);
 
             writer.startElement(HTML.ANCHOR_ELEM, null);
             if (column.getSortPriority() != null && column.isSortAscending())
-                writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_UP_CLASS + " ui-toggled", null);
-            else writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_UP_CLASS, null);
+                writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_UP_CLASS + " ui-toggled", null);
+            else writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_UP_CLASS, null);
             writer.writeAttribute(HTML.TABINDEX_ATTR, 0, null);
             writer.endElement(HTML.ANCHOR_ELEM);
 
             writer.startElement(HTML.ANCHOR_ELEM, null);
             if (column.getSortPriority() != null && !column.isSortAscending())
-                writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_DOWN_CLASS + " ui-toggled", null);
-            else writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ICON_DOWN_CLASS, null);
+                writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_DOWN_CLASS + " ui-toggled", null);
+            else writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ICON_DOWN_CLASS, null);
             writer.writeAttribute(HTML.TABINDEX_ATTR, 0, null);
             writer.endElement(HTML.ANCHOR_ELEM);
 
@@ -266,9 +264,9 @@ public class TableConfigPanelRenderer extends CoreRenderer {
 
             // Write Sort Order Integer
             writer.startElement(HTML.SPAN_ELEM, null);
-            writer.writeAttribute(HTML.CLASS_ATTR, DataTable.SORTABLE_COLUMN_ORDER_CLASS, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ORDER_CLASS, null);
             if (column.getSortPriority() != null) writer.writeText(column.getSortPriority(), null);
-            else writer.write("&#160;");
+            else writer.write(HTML.NBSP_ENTITY);
             writer.endElement(HTML.SPAN_ELEM);
 
             writer.endElement(HTML.SPAN_ELEM);
