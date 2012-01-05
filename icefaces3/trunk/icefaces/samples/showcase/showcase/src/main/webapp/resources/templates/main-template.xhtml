@@ -25,7 +25,10 @@
     <h:head>
         <title id="title">#{msgs['showcase.title']}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        
+        <h:outputStylesheet library="css" name="demo_template.css"/>
+        <h:outputStylesheet library="css" name="override_styles.css"/>
+        <h:outputStylesheet library="css" name="showcase_styles.css"/>
+        <ice:outputStyle href="./xmlhttp/css/rime/rime.css" />
     </h:head>
 
     <h:body styleClass="suite ice-skin-rime">
@@ -97,9 +100,5 @@
             </div>
             
         </f:view>
-        <ice:outputStyle href="./xmlhttp/css/rime/rime.css" />
-        <h:outputStylesheet library="css" name="demo_template.css"/>
-        <h:outputStylesheet library="css" name="override_styles.css"/>
-        <h:outputStylesheet library="css" name="showcase_styles.css"/>
     </h:body>
 </html>
