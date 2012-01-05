@@ -665,7 +665,7 @@ public class UISeriesBase extends HtmlDataTable implements SeriesStateHolder {
     private boolean isNestedWithinUIData() {
         UIComponent parent = this;
         while (null != (parent = parent.getParent())) {
-            if (parent instanceof UIData) {
+            if (parent instanceof UIData || "facelets.ui.Repeat".equals(parent.getRendererType())) {
                 return true;
             }
         }
