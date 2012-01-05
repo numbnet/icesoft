@@ -1,6 +1,6 @@
 /*
 * Original Code developed and contributed by Prime Technology.
-* Subsequent Code Modifications Copyright 2011 ICEsoft Technologies Canada Corp. (c)
+* Subsequent Code Modifications Copyright 2011-2012 ICEsoft Technologies Canada Corp. (c)
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
