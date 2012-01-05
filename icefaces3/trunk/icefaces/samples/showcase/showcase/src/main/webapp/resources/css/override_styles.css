@@ -78,11 +78,6 @@
     padding: 5px 0 0 5px;
 }
 
-.iceRowSelSelected {
-    background-color: #999999;
-}
-
-
 .ui-progressbar-value
 {
     border: 1px solid #000000/*{borderColorHeader}*/;

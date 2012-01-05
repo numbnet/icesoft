@@ -47,38 +47,50 @@
             <ice:dataTable value="#{selector.data}"
                            var="car"
                            rows="#{tableData.defaultRows}"
-                           width="100%" cellspacing="1" cellpadding="5"
-                           columnClasses="tableIdCol,tableNameCol,tableChassisCol,
-                                          tableWeightCol,tableAccelCol,tableMpgCol,tableCostCol">
+                           width="100%" cellspacing="1" cellpadding="5">
                 <ice:column>
                     <ice:rowSelector value="#{car.selected}"
                                      multiple="true"
                                      toggleOnInput="#{selectorToggle.enable}"/>
-                    <f:facet name="header">ID</f:facet>
-                    #{car.id}
+                    <f:facet name="header">
+                        <ice:outputText value="ID"/>
+                    </f:facet>
+                    <ice:outputText value="#{car.id}"/>
                 </ice:column>
                 <ice:column>
-                    <f:facet name="header">Input</f:facet>
+                    <f:facet name="header">
+                        <ice:outputText value="Input"/>
+                    </f:facet>
                     <h:inputText/>
                 </ice:column>
                 <ice:column>
-                    <f:facet name="header">Button</f:facet>
+                    <f:facet name="header">
+                        <ice:outputText value="Button"/>
+                    </f:facet>
                     <h:commandButton value="Button"/>
                 </ice:column>
                 <ice:column>
-                    <f:facet name="header">Weight</f:facet>
-                    #{car.weight}lbs.
+                    <f:facet name="header">
+                        <ice:outputText value="Weight (lbs)"/>
+                    </f:facet>
+                    <ice:outputText value="#{car.weight}"/>
                 </ice:column>
                 <ice:column>
-                    <f:facet name="header">Accel</f:facet>
-                    #{car.acceleration}
+                    <f:facet name="header">
+                        <ice:outputText value="Accel"/>
+                    </f:facet>
+                    <ice:outputText value="#{car.acceleration}"/>
+               </ice:column>
+               <ice:column>
+                    <f:facet name="header">
+                        <ice:outputText value="MPG"/>
+                    </f:facet>
+                   <ice:outputText value="#{car.mpg}"/>
                 </ice:column>
                 <ice:column>
-                    <f:facet name="header">MPG</f:facet>
-                    #{car.mpg}
-                </ice:column>
-                <ice:column>
-                    <f:facet name="header">Cost</f:facet>
+                    <f:facet name="header">
+                        <ice:outputText value="Cost"/>
+                    </f:facet>
                     <ice:outputText value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
