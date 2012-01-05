@@ -24,6 +24,7 @@
 
 package org.icefaces.ace.component.datatable;
 
+import org.icefaces.ace.component.ajax.AjaxBehavior;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
 import org.icefaces.ace.component.row.Row;
@@ -47,7 +48,6 @@ import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.NavigationHandler;
 import javax.faces.component.*;
-import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
@@ -213,7 +213,6 @@ public class DataTable extends DataTableBase {
         // Required to prevent input component processing on filter and pagination initiated submits.
         if (!isAlwaysExecuteContents() && isTableFeatureRequest(context)) {
             this.decode(context);
-            context.renderResponse();
         } else {
             if (context == null) {
                 throw new NullPointerException();
@@ -585,17 +584,21 @@ public class DataTable extends DataTableBase {
     public boolean hasSelectionClientBehaviour() {
         List<ClientBehavior> selectBehaviors = getClientBehaviors().get("select");
 
+        if (selectBehaviors != null)
         for (ClientBehavior b : selectBehaviors)
-            if (b instanceof AjaxBehavior)
+            if (b instanceof AjaxBehavior) {
                 if (!((AjaxBehavior) b).isDisabled())
                     return true;
+            }
 
         List<ClientBehavior> deselectBehaviors = getClientBehaviors().get("deselect");
 
+        if (deselectBehaviors != null)
         for (ClientBehavior b : deselectBehaviors)
-            if (b instanceof AjaxBehavior)
+            if (b instanceof AjaxBehavior) {
                 if (!((AjaxBehavior) b).isDisabled())
                     return true;
+            }
 
         return false;
     }
