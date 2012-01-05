@@ -78,8 +78,17 @@ public class CheckboxButtonRenderer extends CoreRenderer {
 		// root element
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-		writer.writeAttribute(HTML.CLASS_ATTR, "ice-checkboxbutton", null);
-        
+        String styleClass = checkbox.getStyleClass();
+        String styleClassVal = "";
+        if (styleClass != null && styleClass.trim().length() > 0) {
+            styleClassVal = " " + styleClass;
+        }
+		writer.writeAttribute(HTML.CLASS_ATTR, "ice-checkboxbutton" + styleClassVal, null);
+        String style = checkbox.getStyle();
+        if (style != null && style.trim().length() > 0) {
+            writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
+        }
+
 		writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId+"_span", null);      
         String yuiBaseClass= "yui-button yui-checkboxbutton-button ui-button ui-widget ui-state-default";
@@ -104,11 +113,7 @@ public class CheckboxButtonRenderer extends CoreRenderer {
 	 	
 		// button element
 		writer.startElement(HTML.BUTTON_ELEM, uiComponent);
-        String styleClass = (String) checkbox.getStyleClass();
-        if (null != styleClass) {
-			writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
-		}
-		renderPassThruAttributes(facesContext, checkbox, HTML.BUTTON_ATTRS);
+		renderPassThruAttributes(facesContext, checkbox, HTML.BUTTON_ATTRS, new String[]{"style"});
 		
 		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
 		writer.writeAttribute(HTML.NAME_ATTR, clientId+"_button", null);
