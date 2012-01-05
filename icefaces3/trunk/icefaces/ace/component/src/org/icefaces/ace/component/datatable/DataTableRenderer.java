@@ -977,6 +977,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         int rows = table.getRows();
 		int first = table.getFirst();
+        int page = table.getPage();
         int rowCount = table.getRowCount();
         int rowCountToRender = rows == 0 ? rowCount : rows;
         boolean hasData = rowCount > 0;
@@ -989,7 +990,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         if (hasData)
             for (int i = first; i < (first + rowCountToRender); i++)
-                encodeRow(context, table, columns, clientId, i, null, rowIndexVar);
+                encodeRow(context, table, columns, clientId, i, null, rowIndexVar, (page - 1) * rows == i);
         else encodeEmptyMessage(table, writer, columns);
 
         writer.endElement("tbody");
@@ -1012,7 +1013,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeRow(FacesContext context, DataTable table, List<Column> columns, String clientId, int rowIndex, String parentIndex, String rowIndexVar) throws IOException {
+    protected void encodeRow(FacesContext context, DataTable table, List<Column> columns, String clientId, int rowIndex, String parentIndex, String rowIndexVar, boolean topRow) throws IOException {
         //System.out.println(clientId + ": " + rowIndex);
         table.setRowIndex(rowIndex);
         if (!table.isRowAvailable()) return;
@@ -1042,9 +1043,6 @@ public class DataTableRenderer extends CoreRenderer {
 
             for (Column kid : columns) {
                 if (kid.isRendered()) {
-                    table.setRowIndex(-1);
-                    boolean topRow = (table.getPage() - 1) * table.getRows() == rowIndex;
-                    table.setRowIndex(rowIndex);
                     encodeRegularCell(context, table, columns, kid, clientId, selected, topRow);
                 }
             }
@@ -1403,7 +1401,7 @@ public class DataTableRenderer extends CoreRenderer {
         String rowIndexVar = table.getRowIndexVar();
 
         for (int i = scrollOffset; i < (scrollOffset + table.getRows()); i++)
-            encodeRow(context, table, table.getColumns(), clientId, i, null, rowIndexVar);
+            encodeRow(context, table, table.getColumns(), clientId, i, null, rowIndexVar, i == 0);
     }
 
     private boolean isCurrColumnStacked(List comps, Column currCol) {
