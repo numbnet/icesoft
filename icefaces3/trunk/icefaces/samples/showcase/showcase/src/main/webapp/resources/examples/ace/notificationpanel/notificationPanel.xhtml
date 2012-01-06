@@ -60,25 +60,20 @@
             <ace:notificationPanel widgetVar="myNoteBar" visible="#{notificationPanelBean.visible}"
                                                 position="top"
                                                 effect="slide" effectSpeed="slow"
-                                                style="height: 300px; width: 98%; color: #666; background-color: #ffc; border: 2px solid #fc0;">
+                                                style="height: 125px; width: 98%; color: #666; background-color: #ffc; border: 2px solid #fc0;">
                 <ace:ajax event="close" execute="@this" render="@form" listener="#{notificationPanelBean.closeListener}"/>
                 <ace:ajax event="display" execute="@this" render="@form" listener="#{notificationPanelBean.displayListener}"/>
                 <f:facet name="close">
                     <div class="ui-icon ui-icon-closethick"></div>
                 </f:facet>  
-                <br/>
-                <br/>
-                <br/>
-                <ace:panel header="Notification Panel Example" footer="Source: Wikipedia" >
-                    <h:panelGrid columns="2" cellspacing="20">
-                        <h:graphicImage value="#{notificationPanelBean.imageLocation}"
-                                        alt="#{notificationPanelBean.imageAlt}"
-                                        style="text-align: right;"/>
-                        <h:outputText value="#{notificationPanelBean.imageDescription}"
-                                                style="font-size: 12pt; font-weight: normal; text-align: left; display: block;"/>
-                    </h:panelGrid>
-                    <ace:draggable/>
-                </ace:panel>    
+                
+                <h:panelGrid columns="2" cellspacing="20">
+                   <h:graphicImage value="#{notificationPanelBean.imageLocation}"
+                                                alt="#{notificationPanelBean.imageAlt}"
+                                                style="text-align: right;"/>
+                   <h:outputText value="#{notificationPanelBean.imageDescription}"
+                                           style="text-align: left; display: block;"/>
+                </h:panelGrid>
             </ace:notificationPanel>  
         </h:form>
     </ui:define>

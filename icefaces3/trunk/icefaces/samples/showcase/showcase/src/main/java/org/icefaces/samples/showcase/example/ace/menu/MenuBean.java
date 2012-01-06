@@ -22,11 +22,10 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
-import java.text.DateFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 @ComponentExample(
@@ -67,8 +66,49 @@ import java.util.Date;
 @CustomScoped(value = "#{window}")
 public class MenuBean extends ComponentExampleImpl<MenuBean> implements Serializable {
     public static final String BEAN_NAME = "menuBean";
-
+    public final String DEFAULT_MESSAGE = "please select any menu item on the left";
+    private Format formatter;
+    private String message;
+    private ArrayList<String> list;
+    
     public MenuBean() {
         super(MenuBean.class);
+        formatter = new SimpleDateFormat("HH:mm:ss");
+
+        list = new ArrayList<String>();
+        list.add(DEFAULT_MESSAGE);
     }
+    
+    public void fireAction(ActionEvent event) 
+    {
+        
+        String [] results = event.getComponent().getParent().getClientId().split(":");
+        message= results[results.length-1].toUpperCase() + " > ";
+        results = event.getComponent().getClientId().split(":");
+        message += results[results.length-1].toUpperCase();
+        message += " - selected @ "+formatter.format(new Date()) + " (server time)";
+        
+        if(list.get(0).equals(DEFAULT_MESSAGE))
+        {
+            list.clear();
+        }
+        if (list.size()>15)
+        {
+            list.clear();
+            list.add(message);
+        }
+        else
+        {
+            list.add(message);
+        }
+    }
+
+    public ArrayList<String> getList() {
+        return list;
+    }
+
+    public void setList(ArrayList<String> list) {
+        this.list = list;
+    }
+ 
 }

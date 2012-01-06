@@ -65,10 +65,10 @@ public class PanelListener extends ComponentExampleImpl<PanelListener> implement
     public void setStatusMessage(String statusMessage) { this.statusMessage = statusMessage; }
     
     public void close(CloseEvent event) {
-        statusMessage = "Close Event fired @ "+ formatter.format(new Date())+" local time";
+        statusMessage = "Close Event fired @ "+ formatter.format(new Date())+" server time";
     }
     
     public void toggle(ToggleEvent event) {
-        statusMessage = "Toggle Event fired @ "+ formatter.format(new Date());
+        statusMessage = "Toggle Event fired @ "+ formatter.format(new Date())+ " server time";
     }
 }

@@ -39,54 +39,16 @@
             <h:panelGrid columns="3">
                 <h:outputLabel for="typeIn" value="Type of Menu:"/>
                 <h:selectOneRadio id="typeIn" required="true" value="#{menuType.type}">
-                    <f:selectItems value="#{menuType.availableTypes}"/>
+                    <f:selectItems value="#{menuType.availableTypes}"
+                                                    var="listItem"
+                                                    itemValue="#{listItem.value}"
+                                                    itemLabel="#{listItem.key}"/>
+                    <f:ajax execute="@this" render="@form"/>
                 </h:selectOneRadio>
                 <h:message for="typeIn"/>
             </h:panelGrid>
-        </h:form>
         
-        <h:form>
-            <ace:menu type="plain" rendered="#{menuType.type eq 'plain'}">
-                <ace:submenu label="File">
-                    <ace:menuItem value="New" icon="ui-icon"/>
-                    <ace:menuItem value="Open" icon="ui-icon"/>
-                    <ace:menuItem value="Save" icon="ui-icon ui-icon-disk"/>
-                    <ace:menuItem value="Delete" icon="ui-icon ui-icon-close"/>
-                </ace:submenu>
-                <ace:submenu label="View">
-                    <ace:menuItem value="Horizontal" icon="ui-icon"/>
-                    <ace:menuItem value="Vertical" icon="ui-icon"/>
-                    <ace:menuItem value="Fill" icon="ui-icon"/>
-                </ace:submenu>
-                <ace:submenu label="Links">
-                    <ace:menuItem value="ICEfaces" url="http://www.icefaces.org" target="_blank" icon="ui-icon ui-icon-home"/>
-                    <ace:menuItem value="ICEpush" url="http://www.icepush.org" target="_blank" icon="ui-icon ui-icon-home"/>
-                    <ace:menuItem value="ICEpdf" url="http://www.icepdf.org" target="_blank" icon="ui-icon ui-icon-home"/>
-                    <ace:menuItem value="ICEsoft" url="http://www.icesoft.com" target="_blank" icon="ui-icon ui-icon-home"/>
-                </ace:submenu>
-            </ace:menu>
-            
-            <ace:menu type="tiered" rendered="#{menuType.type eq 'tiered'}">
-                <ace:submenu label="File">
-                    <ace:menuItem value="New" icon="ui-icon"/>
-                    <ace:menuItem value="Open" icon="ui-icon"/>
-                    <ace:menuItem value="Save" icon="ui-icon ui-icon-disk"/>
-                    <ace:menuItem value="Delete" icon="ui-icon ui-icon-close"/>
-                </ace:submenu>
-                <ace:submenu label="View">
-                    <ace:menuItem value="Horizontal" icon="ui-icon"/>
-                    <ace:menuItem value="Vertical" icon="ui-icon"/>
-                    <ace:menuItem value="Fill" icon="ui-icon"/>
-                </ace:submenu>
-                <ace:submenu label="Links">
-                    <ace:menuItem value="ICEfaces" url="http://www.icefaces.org" target="_blank" icon="ui-icon ui-icon-home"/>
-                    <ace:menuItem value="ICEpush" url="http://www.icepush.org" target="_blank" icon="ui-icon ui-icon-home"/>
-                    <ace:menuItem value="ICEpdf" url="http://www.icepdf.org" target="_blank" icon="ui-icon ui-icon-home"/>
-                    <ace:menuItem value="ICEsoft" url="http://www.icesoft.com" target="_blank" icon="ui-icon ui-icon-home"/>
-                </ace:submenu>
-            </ace:menu>
-
-            <ace:menu type="sliding" rendered="#{menuType.type eq 'sliding'}">
+            <ace:menu type="#{menuType.type}">
                 <ace:submenu label="File">
                     <ace:menuItem value="New" icon="ui-icon"/>
                     <ace:menuItem value="Open" icon="ui-icon"/>

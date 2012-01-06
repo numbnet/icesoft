@@ -22,13 +22,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
-import javax.faces.model.SelectItem;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @ComponentExample(
         parent = MenuBean.BEAN_NAME,
@@ -68,16 +62,11 @@ public class MenuEvents extends ComponentExampleImpl<MenuEvents> implements Seri
     public void setCurrentColor(String currentColor) { this.currentColor = currentColor; }
     
     public String ourAction() {
-        System.out.println("Fired Menu Action");
-        
         message = "Fired Action.";
-        
         return null;
     }
     
     public void ourActionListener(ActionEvent event) {
-        System.out.println("Fired Menu Action Listener");
-        
         message = "Fired Action Listener.";
     }
     

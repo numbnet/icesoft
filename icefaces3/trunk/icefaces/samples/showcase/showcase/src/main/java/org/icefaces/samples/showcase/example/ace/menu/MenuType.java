@@ -21,14 +21,10 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.ValueChangeEvent;
+
 import java.io.Serializable;
+import java.util.LinkedHashMap;
 import javax.faces.model.SelectItem;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @ComponentExample(
         parent = MenuBean.BEAN_NAME,
@@ -54,18 +50,25 @@ import java.util.Date;
 public class MenuType extends ComponentExampleImpl<MenuType> implements Serializable {
     public static final String BEAN_NAME = "menuType";
     
-    private static final SelectItem[] availableTypes = { new SelectItem("plain", "Plain"),
-                                                         new SelectItem("tiered", "Tiered"),
-                                                         new SelectItem("sliding", "Sliding") };
-    
-    private String type = availableTypes[0].getValue().toString();
+    private LinkedHashMap <String, String> availableTypes;
+    private String type;
     
     public MenuType() {
         super(MenuType.class);
+        availableTypes = populateAvailableTypes();
+        type = availableTypes.get("Plain");
     }
     
-    public SelectItem[] getAvailableTypes() { return availableTypes; }
+    private LinkedHashMap <String, String> populateAvailableTypes()
+    {
+        LinkedHashMap <String, String> list = new LinkedHashMap <String, String>();
+        list.put("Plain","plain");
+        list.put("Tiered","tiered");
+        list.put("Sliding","sliding");
+        return list;
+    }
+
+    public LinkedHashMap<String, String> getAvailableTypes() { return availableTypes; }
     public String getType() { return type; }
-    
     public void setType(String type) { this.type = type; }
 }
