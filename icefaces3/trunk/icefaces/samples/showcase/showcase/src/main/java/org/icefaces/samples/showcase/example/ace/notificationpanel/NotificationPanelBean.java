@@ -84,7 +84,7 @@ public class NotificationPanelBean extends ComponentExampleImpl<NotificationPane
         imageDescription = "The Volkswagen Type 1, widely known as the Volkswagen Beetle and Volkswagen Bug, is an economy car"
                                 + " produced by the German auto maker Volkswagen (VW) from 1938."
                                 + " With over 21 million manufactured in an air-cooled, rear-engined, rear-wheel drive configuration,"
-                                + " the Beetle is the longest-running and most-manufactured automobile of a single design platform anywhere in the world.";
+                                + " the Beetle is the longest-running and most-manufactured automobile of a single design platform anywhere in the world. (source: Wikipedia)";
         render = true;
     }
    
