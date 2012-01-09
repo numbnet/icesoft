@@ -40,6 +40,7 @@ import javax.el.MethodExpression;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import javax.faces.event.AjaxBehaviorEvent;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -48,11 +49,13 @@ public class Resizable extends ResizableBase{
 	private static final String OPTIMIZED_PACKAGE = "org.icefaces.ace.component.";
 
 	public void broadcast(javax.faces.event.FacesEvent event) throws AbortProcessingException {
-		super.broadcast(event);
+        if (event instanceof AjaxBehaviorEvent) {
+            super.broadcast(event);
+            return;
+        }
 
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+        FacesContext facesContext = FacesContext.getCurrentInstance();
 		MethodExpression me = getResizeListener();
-
 		if (me != null) {
 			me.invoke(facesContext.getELContext(), new Object[] {event});
 		}

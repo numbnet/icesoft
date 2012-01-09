@@ -40,7 +40,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.Resizable",
         rendererType    = "org.icefaces.ace.component.ResizableRenderer",
 		componentFamily = "org.icefaces.ace.Resizable",
-		tlddoc = "Resizable component can give resizable behavior to any JSF component."
+		tlddoc = "Resizable component can give resizable behavior to any JSF component." +
+                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Resizable\">Resizable Wiki Documentation</a>."
         )
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
@@ -48,7 +49,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="resize", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="resize", javadoc="Fired at the end of a resize operation (default event).", tlddoc="Fired at the end of a resize operation (default event).", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="resize")
 
 public class ResizableMeta extends UIComponentBaseMeta {
