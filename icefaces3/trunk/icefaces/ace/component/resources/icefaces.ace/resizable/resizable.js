@@ -28,10 +28,14 @@
 */
 
 ice.ace.Resizable = function(id, cfg) {
+    var listener = cfg && cfg.behaviors && cfg.behaviors.resize;
     this.id = id;
     this.cfg = cfg;
     this.target = ice.ace.escapeClientId(this.cfg.target);
 
+    if (jQuery.isFunction(listener)) {
+        this.cfg.ajaxResize = true;
+    }
     if(this.cfg.ajaxResize) {
         this.cfg.formId = ice.ace.jq(this.target).parents('form:first').attr('id');
     }
@@ -46,23 +50,23 @@ ice.ace.Resizable = function(id, cfg) {
         if(_self.cfg.ajaxResize) {
             _self.fireAjaxResizeEvent(event, ui);
         }
-    }
+    };
 
     this.cfg.start = function(event, ui) {
         if(_self.cfg.onStart) {
             _self.cfg.onStart.call(_self, event, ui);
         }
-    }
+    };
     
     this.cfg.resize = function(event, ui) {
         if(_self.cfg.onResize) {
             _self.cfg.onResize.call(_self, event, ui);
         }
-    }
+    };
 
     jQuery(this.target).resizable(this.cfg);
     
-}
+};
 
 ice.ace.Resizable.prototype.fireAjaxResizeEvent = function(event, ui) {
     var listener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.resize;
@@ -86,4 +90,4 @@ ice.ace.Resizable.prototype.fireAjaxResizeEvent = function(event, ui) {
     if (jQuery.isFunction(listener)) {
         listener(options.params);
     } else ice.ace.AjaxRequest(options);
-}
+};

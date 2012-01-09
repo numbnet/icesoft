@@ -67,6 +67,8 @@ public class ResizableRenderer extends CoreRenderer {
 		UIComponent target = findTarget(context, resizable);
         String targetId = target.getClientId(context);
 
+        writer.startElement("span",null);
+        writer.writeAttribute("id", clientId, null);
 		writer.startElement("script", resizable);
 		writer.writeAttribute("type", "text/javascript", null);
 
@@ -135,6 +137,7 @@ public class ResizableRenderer extends CoreRenderer {
 		writer.write("});");
 		
 		writer.endElement("script");
+        writer.endElement("span");
 	}
 
     protected UIComponent findTarget(FacesContext context, Resizable resizable) {
