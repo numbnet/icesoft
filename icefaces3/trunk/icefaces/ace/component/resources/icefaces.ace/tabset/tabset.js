@@ -396,6 +396,20 @@ ice.ace.tabset = {
                }
            }
        }
+
+       ice.ace.getInstance(clientId, function(yuiComp) {
+           var oldDisabledTabIndexes = oldJSFProps ? oldJSFProps['disabledTabs'] : [];
+           var disabledTabDiff = oldDisabledTabIndexes.diff(jsfProps['disabledTabs']).concat(jsfProps['disabledTabs'].diff(oldDisabledTabIndexes));
+           if (disabledTabDiff.length > 0) {
+               var component = yuiComp,
+                   tabs = component.get('tabs');
+
+               for (var i = 0; i < disabledTabDiff.length; i++) {
+                   tabs[disabledTabDiff[i]].set('disabled', ice.ace.jq.inArray(disabledTabDiff[i], jsfProps['disabledTabs']) > -1);
+               }
+           }
+       }, lib, jsProps, jsfProps);
+
        ice.ace.updateProperties(clientId, jsProps, jsfProps, events, lib);
        });
    },
