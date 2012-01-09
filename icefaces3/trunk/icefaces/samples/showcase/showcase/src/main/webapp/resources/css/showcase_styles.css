@@ -155,6 +155,12 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix
     width: 175px;
 }
 
+/* avoid applying hack above to ace:menuBar */
+div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.wijmo-wijmenu-horizontal
+{
+    width: 100%;
+}
+
 .ice-checkboxbutton .ui-state-hover
 {
     background: url("#{resource['css/images/checkGrey.png']}") no-repeat;
