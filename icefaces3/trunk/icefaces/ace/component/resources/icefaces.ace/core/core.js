@@ -21,6 +21,15 @@ ice.ace.jq = jQuery.noConflict();
 // this object pulled apart so as no to overwrite existing members of ice.ace that
 // may come before it. Alternatively the generator could explictly add core.js earlier
 // in the merged script than most.
+
+
+// Useful prototypes
+// TODO: find better home for this and other util functions s
+Array.prototype.diff = function(a) {
+    return this.filter(function(i) {return !(a.indexOf(i) > -1);});
+};
+
+
 ice.ace.escapeClientId = function(id) {
     return "#" + id.replace(/:/g,"\\:");
 };

@@ -116,7 +116,7 @@ public class TabSetRenderer extends CoreRenderer {
                 if (EnvUtils.isAriaEnabled(facesContext)) {
                     writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABLIST_ROLE, ARIA.ROLE_ATTR);  
                 }
-                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null, null);
+                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null, null, null);
             writer.endElement(HTML.UL_ELEM);
               
         } else if ("top".equals(tabSet.getOrientation())) {
@@ -126,7 +126,7 @@ public class TabSetRenderer extends CoreRenderer {
                 if (EnvUtils.isAriaEnabled(facesContext)) {
                     writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABLIST_ROLE, ARIA.ROLE_ATTR);  
                 }                
-                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null, null);
+                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null, null, null);
             writer.endElement(HTML.UL_ELEM);
             
             
@@ -141,7 +141,7 @@ public class TabSetRenderer extends CoreRenderer {
                 if (EnvUtils.isAriaEnabled(facesContext)) {
                     writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABLIST_ROLE, ARIA.ROLE_ATTR);  
                 }                
-                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null, null);
+                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null, null, null);
             writer.endElement(HTML.UL_ELEM);
             
             
@@ -188,10 +188,11 @@ public class TabSetRenderer extends CoreRenderer {
 
         // The tabs that are depicted as clickable by the user
         List<String> clickableTabs = new ArrayList<String>();
+        ArrayList<Integer> disabledTabs = new ArrayList<Integer>();
         Map<String, TabPaneCache> tabPaneClientId2Cache =
                 new HashMap<String, TabPaneCache>();
         doTabs(facesContext, uiComponent, Do.GET_CLIENT_IDS, clickableTabs,
-                tabPaneClientId2Cache);
+                tabPaneClientId2Cache, disabledTabs);
 
         // The tabs whose contents we need to render. Subset of clickableTabs,
         // where the order has a different meaning: [safeIndex] -> tabClientId
@@ -281,6 +282,12 @@ public class TabSetRenderer extends CoreRenderer {
 	        entry("aria", EnvUtils.isAriaEnabled(facesContext)).
 	        entry("selectedIndex", selectedIndex).
             entry("safeIds", safeIds).
+            beginArray("disabledTabs");
+
+            for (Integer i : disabledTabs)
+                jb.item(i);
+
+            jb.endArray().
             entry("overrideSelectedIndex",
                     (unexpected ? System.currentTimeMillis() : 0));
             encodeClientBehaviors(facesContext, tabSet, jb);
@@ -309,12 +316,12 @@ public class TabSetRenderer extends CoreRenderer {
                 // Statically cached, so render nothing, and have the DOM diff
                 // check nothing and update nothing
                 doTabs(facesContext, tabSet, Do.RENDER_CONTENT_DIV_BY_CLIENT_ID,
-                        visitedTabClientIds.subList(index, index+1), null);
+                        visitedTabClientIds.subList(index, index+1), null, null);
             } else {
 //System.out.println("TabSetRenderer  RENDER  contents   : " + tabClientId);
                 // Dynamically cached, or not cached but rendered regardless
                 doTabs(facesContext, tabSet, Do.RENDER_CONTENTS_BY_CLIENT_ID,
-                        visitedTabClientIds.subList(index, index+1), null);
+                        visitedTabClientIds.subList(index, index+1), null, null);
             }
         }
         writer.endElement(HTML.DIV_ELEM);
@@ -362,7 +369,7 @@ public class TabSetRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.ID_ATTR, clientId+ "li"+ index, HTML.ID_ATTR);
         UIComponent labelFacet = ((TabPane)tab).getLabelFacet();
 		String styleClass = "";
-        if (tabSet.isDisabled() || ((TabPane) tab).isDisabled()) {
+        if (tabSet.isDisabled()) {
 			styleClass += "ui-state-disabled";
         } else {
 			styleClass += "ui-state-default";
@@ -431,7 +438,8 @@ public class TabSetRenderer extends CoreRenderer {
      */
     private void doTabs(FacesContext facesContext, UIComponent uiComponent,
             Do d, List<String> clickableTabs,
-            Map<String, TabPaneCache> tabPaneClientId2Cache) throws IOException{
+            Map<String, TabPaneCache> tabPaneClientId2Cache,
+            ArrayList<Integer> disabledTabs) throws IOException{
     	TabSet tabSet = (TabSet) uiComponent;
         Iterator children = tabSet.getChildren().iterator();
         int index = -1;
@@ -442,7 +450,7 @@ public class TabSetRenderer extends CoreRenderer {
                 if (child.isRendered()) {
                     index++;
                     doTab(facesContext, tabSet, (TabPane) child, index, d,
-                            clickableTabs, tabPaneClientId2Cache);
+                            clickableTabs, tabPaneClientId2Cache, disabledTabs);
                 }
             //if tabs component found, iterate through its modal and render all child.
             } else if (child instanceof Tabs) {
@@ -466,7 +474,7 @@ public class TabSetRenderer extends CoreRenderer {
                             if (nextChild instanceof TabPane && nextChild.isRendered()) {
                                 index++;
                                 doTab(facesContext, tabSet, (TabPane) nextChild, index, d,
-                                        clickableTabs, tabPaneClientId2Cache);
+                                        clickableTabs, tabPaneClientId2Cache, disabledTabs);
                             }
                         }
                     }
@@ -480,7 +488,8 @@ public class TabSetRenderer extends CoreRenderer {
 
     private void doTab(FacesContext facesContext, TabSet tabSet, TabPane tab,
             int index, Do d, List<String> clickableTabs,
-            Map<String, TabPaneCache> tabPaneClientId2Cache) throws IOException {
+            Map<String, TabPaneCache> tabPaneClientId2Cache,
+            ArrayList<Integer> disabledTabs) throws IOException {
         if(Do.RENDER_LABEL.equals(d)) {
             renderTabNav(facesContext, tabSet, tab, index);
         } else if(Do.RENDER_CONTENTS.equals(d)) {
@@ -492,6 +501,7 @@ public class TabSetRenderer extends CoreRenderer {
             TabPaneCache cache = orig.resolve(facesContext, tab);
             tabPaneClientId2Cache.put(clientId, cache);
             TabPaneCache revert = cache.getRevertTo();
+            if (tab.isDisabled()) disabledTabs.add(index);
             if (revert != null && revert != orig) {
                 tab.setCache(revert.getNamed());
             }
