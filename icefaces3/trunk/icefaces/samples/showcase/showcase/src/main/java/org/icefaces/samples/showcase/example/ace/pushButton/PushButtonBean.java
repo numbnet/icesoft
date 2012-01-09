@@ -64,8 +64,6 @@ import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
 public class PushButtonBean extends ComponentExampleImpl<PushButtonBean> implements Serializable {
 
     public static final String BEAN_NAME = "pushButton";
-
-    private String exampleValue;
     ImageSet.ImageInfo currentImage;
     
     public PushButtonBean() {
@@ -83,19 +81,6 @@ public class PushButtonBean extends ComponentExampleImpl<PushButtonBean> impleme
         currentImage = ImageSet.getRandomImage();
     }
     
-    public void addMessage(ActionEvent event) 
-    {
-        FacesUtils.addInfoMessage("This button didn't submited or validated Required Field. Empty input field and change current tabPane to invoke its validation.");
-    }
-
-    public String getExampleValue() {
-        return exampleValue;
-    }
-
-    public void setExampleValue(String exampleValue) {
-        this.exampleValue = exampleValue;
-    }
-
     public ImageInfo getCurrentImage() {
         return currentImage;
     }

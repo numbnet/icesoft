@@ -34,44 +34,51 @@
 
     <ui:define name="example">
         <h:form>
-            <icecore:singleSubmit/>
+            <ace:panel styleClass="menuLogStyle">
+                <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing" columns="2"> 
+                    <h:outputLabel value="Effect Type:" for="effectType"/>
+                    <h:selectOneMenu    id="effectType"
+                                        value="#{menuEffect.effectName}"
+                                        valueChangeListener="#{menuEffect.changeMenuEffect}">
+                        <f:selectItems value="#{menuEffect.availableEffects}"
+                                       var="type"
+                                       itemValue="#{type.value}"
+                                       itemLabel="#{type.key}"/>
+                        <f:ajax execute="@this" render="@form" event="change"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="Effect Duration (#{menuEffect.effectDuration} ms):" for="effectDuration"/>
+                    <h:panelGroup>
+                        <ace:sliderEntry id="effectDuration"
+                                             clickableRail="true"
+                                             min="100"
+                                             max="1100"
+                                             value="#{menuEffect.effectDuration}"
+                                             showLabels="true"
+                                             stepPercent="25">
+                            <ace:ajax event="slideEnd" execute="@this" render="@form" />
+                        </ace:sliderEntry>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </ace:panel>
             
-            <h:panelGrid columns="3">
-                <h:outputLabel for="effectIn" value="Transition Effect:"/>
-                <h:selectOneRadio id="effectIn" required="true" value="#{menuEffect.effectName}">
-                    <f:selectItems value="#{menuEffect.availableEffects}"/>
-                </h:selectOneRadio>
-                <h:message for="effectIn"/>
-                
-                <h:outputLabel for="durationIn" value="Effect Duration (50-2000 milliseconds):"/>
-                <h:inputText id="durationIn" value="#{menuEffect.effectDuration}"
-                             required="true" size="4" maxlength="4">
-                     <f:validateLongRange minimum="50" maximum="2000"/>
-                </h:inputText>
-                <h:message for="durationIn"/>
+            <h:panelGrid  styleClass="menuStyle">
+            <ace:menu type="tiered"
+                      effect="#{menuEffect.effectName}"
+                      effectDuration="#{menuEffect.effectDuration}">
+
+                    <ace:submenu label="File">
+                        <ace:menuItem value="New" icon="ui-icon"/>
+                        <ace:menuItem value="Open" icon="ui-icon"/>
+                        <ace:menuItem value="Save" icon="ui-icon ui-icon-disk"/>
+                        <ace:menuItem value="Delete" icon="ui-icon ui-icon-close"/>
+                    </ace:submenu>
+                    <ace:submenu label="View">
+                        <ace:menuItem value="Horizontal" icon="ui-icon"/>
+                        <ace:menuItem value="Vertical" icon="ui-icon"/>
+                        <ace:menuItem value="Fill" icon="ui-icon"/>
+                    </ace:submenu>
+                </ace:menu>
             </h:panelGrid>
-        </h:form>
-        
-        <h:form>
-            <ace:menu type="tiered" effect="#{menuEffect.effectName}" effectDuration="#{menuEffect.effectDuration}">
-                <ace:submenu label="File">
-                    <ace:menuItem value="New" icon="ui-icon"/>
-                    <ace:menuItem value="Open" icon="ui-icon"/>
-                    <ace:menuItem value="Save" icon="ui-icon ui-icon-disk"/>
-                    <ace:menuItem value="Delete" icon="ui-icon ui-icon-close"/>
-                </ace:submenu>
-                <ace:submenu label="View">
-                    <ace:menuItem value="Horizontal" icon="ui-icon"/>
-                    <ace:menuItem value="Vertical" icon="ui-icon"/>
-                    <ace:menuItem value="Fill" icon="ui-icon"/>
-                </ace:submenu>
-                <ace:submenu label="Links">
-                    <ace:menuItem value="ICEfaces" url="http://www.icefaces.org" target="_blank" icon="ui-icon ui-icon-home"/>
-                    <ace:menuItem value="ICEpush" url="http://www.icepush.org" target="_blank" icon="ui-icon ui-icon-home"/>
-                    <ace:menuItem value="ICEpdf" url="http://www.icepdf.org" target="_blank" icon="ui-icon ui-icon-home"/>
-                    <ace:menuItem value="ICEsoft" url="http://www.icesoft.com" target="_blank" icon="ui-icon ui-icon-home"/>
-                </ace:submenu>
-            </ace:menu>
         </h:form>
     </ui:define>
 </ui:composition>

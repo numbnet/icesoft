@@ -34,8 +34,14 @@
 
     <ui:define name="example">
         <h:form>
-            <h:outputText id="mouseOver" value="Mouse Over to Show"
-                          style="font-size: 16px; border: 1px solid black; padding: 5px;"/>
+            <ace:panel>
+                <h:panelGrid styleClass="centeredPanelGrid">
+                    <h:outputText id="mouseOver"
+                                  value="Mouse Over to Show"
+                                  style="font-size: 16px; border: 1px solid black; padding: 5px;"/>
+                </h:panelGrid>
+            </ace:panel>
+            
             <ace:menu position="dynamic" trigger="mouseOver" my="left top" at="left bottom" triggerEvent="mouseenter">
                 <ace:submenu label="Items">
                     <ace:menuItem value="Item 1" icon="ui-icon"/>

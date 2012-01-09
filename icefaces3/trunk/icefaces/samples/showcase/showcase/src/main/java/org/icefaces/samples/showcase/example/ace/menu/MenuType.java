@@ -16,6 +16,7 @@
 
 package org.icefaces.samples.showcase.example.ace.menu;
 
+
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -23,8 +24,13 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
 import java.io.Serializable;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
-import javax.faces.model.SelectItem;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 @ComponentExample(
         parent = MenuBean.BEAN_NAME,
@@ -49,16 +55,54 @@ import javax.faces.model.SelectItem;
 @CustomScoped(value = "#{window}")
 public class MenuType extends ComponentExampleImpl<MenuType> implements Serializable {
     public static final String BEAN_NAME = "menuType";
-    
+    public final String DEFAULT_MESSAGE = "please select any menu item on the left";
+    public final int MAX_LIST_SIZE = 17;
     private LinkedHashMap <String, String> availableTypes;
     private String type;
+    
+    private Format formatter;
+    private String message;
+    private ArrayList<String> list;
+    
     
     public MenuType() {
         super(MenuType.class);
         availableTypes = populateAvailableTypes();
         type = availableTypes.get("Plain");
+        formatter = new SimpleDateFormat("HH:mm:ss");
+        list = new ArrayList<String>(MAX_LIST_SIZE);
+        list.add(DEFAULT_MESSAGE);
     }
     
+    public void changeMenuType(ValueChangeEvent e)
+    {
+        type = availableTypes.get((String)e.getNewValue());
+    }
+    
+    public void fireAction(ActionEvent event) 
+    {
+        String [] results = event.getComponent().getParent().getClientId().split(":");
+        message= results[results.length-1].toUpperCase() + " > ";
+        results = event.getComponent().getClientId().split(":");
+        message += results[results.length-1].toUpperCase();
+        message += " - selected @ "+formatter.format(new Date()) + " (server time)";
+        
+        if(list.get(0).equals(DEFAULT_MESSAGE))
+        {
+            list.clear();
+        }
+        if (list.size()<MAX_LIST_SIZE)
+        {
+            list.add(message);
+            
+        }
+        else
+        {
+            list.clear();
+            list.add(message);
+        }
+    }
+
     private LinkedHashMap <String, String> populateAvailableTypes()
     {
         LinkedHashMap <String, String> list = new LinkedHashMap <String, String>();
@@ -68,7 +112,12 @@ public class MenuType extends ComponentExampleImpl<MenuType> implements Serializ
         return list;
     }
 
-    public LinkedHashMap<String, String> getAvailableTypes() { return availableTypes; }
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
+    public LinkedHashMap<String, String> getAvailableTypes() {return availableTypes;}
+    public void setAvailableTypes(LinkedHashMap<String, String> availableTypes) {this.availableTypes = availableTypes;}
+
+    public String getType() {return type;}
+    public void setType(String type) {this.type = type;}
+    
+    public ArrayList<String> getList() {return list;}
+    public void setList(ArrayList<String> list) {this.list = list;}
 }
