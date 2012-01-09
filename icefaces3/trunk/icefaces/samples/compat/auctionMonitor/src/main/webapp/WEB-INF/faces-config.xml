@@ -109,7 +109,7 @@
             com.icesoft.applications.faces.auctionMonitor.beans.UserBean
         </managed-bean-class>
         <managed-bean-scope>
-            view
+            #{window}
         </managed-bean-scope>
     </managed-bean>
 
