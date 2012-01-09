@@ -34,47 +34,42 @@
 
     <ui:define name="example">
         <h:form>
-            <ace:menu type="tiered">
-                <ace:submenu label="Actions">
-                    <ace:menuItem value="Basic Action" 
-                                  action="#{menuEvents.ourAction}" icon="ui-icon">
-                                  <ace:ajax event="activate" execute="@this" render="color message" />
-                    </ace:menuItem>
-                    <ace:menuItem value="Basic Listener" 
-                                  actionListener="#{menuEvents.ourActionListener}" icon="ui-icon">
-                                  <ace:ajax event="activate" execute="@this" render="color message" />
-                    </ace:menuItem>
-                </ace:submenu>
-                <ace:submenu label="Example">
-                    <ace:menuItem id="red" value="Color to Red" 
-                                  actionListener="#{menuEvents.applyColor}" icon="ui-icon">
-                                  <ace:ajax event="activate" execute="@this" render="color message" />
-                    </ace:menuItem>
-                    <ace:menuItem id="green" value="Color to Green" 
-                                  actionListener="#{menuEvents.applyColor}" icon="ui-icon">
-                                  <ace:ajax event="activate" execute="@this" render="color message" />
-                    </ace:menuItem>
-                    <ace:menuItem id="blue" value="Color to Blue" 
-                                  actionListener="#{menuEvents.applyColor}" icon="ui-icon">
-                                  <ace:ajax event="activate" execute="@this" render="color message" />
-                    </ace:menuItem>
-                </ace:submenu>                
-                <ace:submenu label="Links">
-                    <ace:menuItem value="ICEfaces" url="http://www.icefaces.org" target="_blank"
-                                  icon="ui-icon ui-icon-home"/>
-                    <ace:menuItem value="ICEpush" url="http://www.icepush.org" target="_blank"
-                                  icon="ui-icon ui-icon-home"/>
-                    <ace:menuItem value="ICEpdf" url="http://www.icepdf.org" target="_blank"
-                                  icon="ui-icon ui-icon-home"/>
-                    <ace:menuItem value="ICEsoft" url="http://www.icesoft.com" target="_blank"
-                                  icon="ui-icon ui-icon-home"/>
-                </ace:submenu>
-            </ace:menu>
+            <h:panelGrid  styleClass="menuStyle">
+                <ace:menu type="plain">
+                    <ace:submenu label="Actions">
+                        <ace:menuItem value="Basic Action" 
+                                      action="#{menuEvents.ourAction}" icon="ui-icon">
+                                      <ace:ajax event="activate" execute="@this" render="color message" />
+                        </ace:menuItem>
+                        <ace:menuItem value="Basic Listener" 
+                                      actionListener="#{menuEvents.ourActionListener}" icon="ui-icon">
+                                      <ace:ajax event="activate" execute="@this" render="color message" />
+                        </ace:menuItem>
+                    </ace:submenu>
+                    <ace:submenu label="Example">
+                        <ace:menuItem id="red" value="Color to Red" 
+                                      actionListener="#{menuEvents.applyColor}" icon="ui-icon">
+                                      <ace:ajax event="activate" execute="@this" render="color message" />
+                        </ace:menuItem>
+                        <ace:menuItem id="green" value="Color to Green" 
+                                      actionListener="#{menuEvents.applyColor}" icon="ui-icon">
+                                      <ace:ajax event="activate" execute="@this" render="color message" />
+                        </ace:menuItem>
+                        <ace:menuItem id="blue" value="Color to Blue" 
+                                      actionListener="#{menuEvents.applyColor}" icon="ui-icon">
+                                      <ace:ajax event="activate" execute="@this" render="color message" />
+                        </ace:menuItem>
+                    </ace:submenu>                
+                </ace:menu>
+            </h:panelGrid>
             
-            <h:outputText id="message" value="Current Status: #{menuEvents.message}"/>
-            <br/>
-            <h:outputText id="color" value="Color: #{menuEvents.currentColor}"
+            <ace:panel styleClass="menuLogStyle">
+                <h:panelGrid>
+                    <h:outputText id="message" value="Current Status: #{menuEvents.message}"/>
+                    <h:outputText id="color" value="Color: #{menuEvents.currentColor}"
                           style="color: #{menuEvents.currentColor};"/>
+                </h:panelGrid>
+            </ace:panel>            
         </h:form>
     </ui:define>
 </ui:composition>

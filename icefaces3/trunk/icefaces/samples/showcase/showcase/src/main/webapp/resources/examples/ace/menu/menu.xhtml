@@ -36,11 +36,9 @@
 
     <ui:define name="example">
         <h:form id="form">
-            <h:panelGrid  style="display: inline-block; width: 28%;">
-                
+            <h:panelGrid  styleClass="menuStyle">
                 <ace:menu type="plain" id="exampleMenu" >
                         <ace:submenu label="File" id="file">
-                            
                             <ace:menuItem id="new"
                                           value="New" 
                                           actionListener="#{menuBean.fireAction}"
@@ -65,8 +63,8 @@
                                           icon="ui-icon ui-icon-close">
                                 <ace:ajax event="activate" execute="@this" render="message" />
                             </ace:menuItem>
-                            
                         </ace:submenu>
+                    
                         <ace:submenu id="view" label="View">
                             <ace:menuItem id="horizontal"
                                           value="Horizontal"
@@ -87,16 +85,17 @@
                                 <ace:ajax event="activate" execute="@this" render="message" />
                             </ace:menuItem>
                         </ace:submenu>
+                    
                         <ace:submenu label="Links">
                             <ace:menuItem value="ICEfaces" url="http://www.icefaces.org" target="_blank" icon="ui-icon ui-icon-home"/>
                             <ace:menuItem value="ICEpush" url="http://www.icepush.org" target="_blank" icon="ui-icon ui-icon-home"/>
                             <ace:menuItem value="ICEpdf" url="http://www.icepdf.org" target="_blank" icon="ui-icon ui-icon-home"/>
                             <ace:menuItem value="ICEsoft" url="http://www.icesoft.com" target="_blank" icon="ui-icon ui-icon-home"/>
                         </ace:submenu>
-                    </ace:menu>
-                   
+                    </ace:menu>       
             </h:panelGrid>
-            <ace:panel style="display: inline-block; vertical-align: top; width: 70%; text-align: left;" header="Menu Selections Log">
+            
+            <ace:panel  header="Menu Selections Log" styleClass="menuLogStyle">
                 <h:dataTable id="message" value="#{menuBean.list}" var="message">
                     <h:column>
                         <h:outputText value="#{message}"/>

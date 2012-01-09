@@ -67,6 +67,7 @@ import java.util.Date;
 public class MenuBean extends ComponentExampleImpl<MenuBean> implements Serializable {
     public static final String BEAN_NAME = "menuBean";
     public final String DEFAULT_MESSAGE = "please select any menu item on the left";
+    public final int MAX_LIST_SIZE = 17;
     private Format formatter;
     private String message;
     private ArrayList<String> list;
@@ -75,13 +76,12 @@ public class MenuBean extends ComponentExampleImpl<MenuBean> implements Serializ
         super(MenuBean.class);
         formatter = new SimpleDateFormat("HH:mm:ss");
 
-        list = new ArrayList<String>();
+        list = new ArrayList<String>(MAX_LIST_SIZE);
         list.add(DEFAULT_MESSAGE);
     }
     
     public void fireAction(ActionEvent event) 
     {
-        
         String [] results = event.getComponent().getParent().getClientId().split(":");
         message= results[results.length-1].toUpperCase() + " > ";
         results = event.getComponent().getClientId().split(":");
@@ -92,13 +92,13 @@ public class MenuBean extends ComponentExampleImpl<MenuBean> implements Serializ
         {
             list.clear();
         }
-        if (list.size()>15)
+        if (list.size()<MAX_LIST_SIZE)
         {
-            list.clear();
             list.add(message);
         }
         else
         {
+            list.clear();
             list.add(message);
         }
     }

@@ -66,8 +66,6 @@ public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean> impleme
 
     public static final String BEAN_NAME = "linkButton";
     private String staticNavigation;
-    
-    private String exampleValue;
     ImageSet.ImageInfo currentImage;
     
     public LinkButtonBean() {
@@ -86,19 +84,6 @@ public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean> impleme
         currentImage = ImageSet.getRandomImage();
     }
     
-    public void addMessage(ActionEvent event) 
-    {
-        FacesUtils.addInfoMessage("This link didn't submited or validated Required Field. Empty input field and change current tabPane to invoke its validation.");
-    }
-
-    public String getExampleValue() {
-        return exampleValue;
-    }
-
-    public void setExampleValue(String exampleValue) {
-        this.exampleValue = exampleValue;
-    }
-
     public ImageInfo getCurrentImage() {
         return currentImage;
     }

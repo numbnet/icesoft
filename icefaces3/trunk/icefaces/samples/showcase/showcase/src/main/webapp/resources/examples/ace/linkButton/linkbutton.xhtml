@@ -65,27 +65,7 @@
                         </h:panelGrid>
                     </ace:panel>
                 </ace:tabPane>
-                
-                <ace:tabPane label="Listener w/o submit">
-                    <ace:panel>
-                        <h:panelGrid columns="3">
-                            <h:outputLabel value="*Required Field: "/>
-                            <h:inputText required="true"
-                                                  requiredMessage="Required Field can not be left empty"
-                                                  value="#{linkButton.exampleValue}"/>
-                            <ace:linkButton value="execute link listener only"
-                                                    actionListener="#{linkButton.addMessage}"
-                                                    immediate="true"
-                                                    style="text-decoration: underline;"/>
-                        </h:panelGrid>
-                    </ace:panel>
-                </ace:tabPane>
             </ace:tabSet>
         </h:form>
-        
-        <h:panelGrid styleClass="centeredPanelGrid">
-           <h:messages layout="table" infoClass="infoMessage" errorClass="errorMessage"/>
-        </h:panelGrid>
-        
     </ui:define>
 </ui:composition>
