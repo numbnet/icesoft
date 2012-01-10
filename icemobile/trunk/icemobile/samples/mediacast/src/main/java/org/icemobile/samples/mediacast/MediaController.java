@@ -18,6 +18,7 @@ package org.icemobile.samples.mediacast;
 
 import org.icefaces.application.PushMessage;
 import org.icefaces.application.PushRenderer;
+import org.icefaces.application.PortableRenderer;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.component.utils.Utils;
 import org.icemobile.samples.mediacast.navigation.NavigationModel;
@@ -60,8 +61,10 @@ public class MediaController implements Serializable {
     private String videoConvertCommand;
     private String audioConvertCommand;
     private String thumbConvertCommand;
+    private PortableRenderer portableRenderer;
 
     public MediaController() {
+        portableRenderer = PushRenderer.getPortableRenderer();
         BufferedImage image;
         InputStream imageStream;
         ExternalContext externalContext =
@@ -162,7 +165,7 @@ public class MediaController implements Serializable {
                 mediaStore.addMedia(photoMessage);
                 try {
                     String body = photoMessage.getComment();
-                    PushRenderer.render(RENDER_GROUP,
+                    portableRenderer.render(RENDER_GROUP,
                             new PushMessage(subject, body));
                 } catch (Exception e) {
                     logger.log(Level.WARNING, "Media message was not sent to recipients.");
