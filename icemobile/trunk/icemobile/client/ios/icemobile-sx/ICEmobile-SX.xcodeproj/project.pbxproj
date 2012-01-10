@@ -10,6 +10,14 @@
 		9C403FCC14845E4200FBA6BC /* QRScanner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C403FCB14845E4200FBA6BC /* QRScanner.mm */; };
 		9C4F8C3914859D3600A2B288 /* AudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4F8C3714859D3600A2B288 /* AudioController.m */; };
 		9C4F8C3A14859D3600A2B288 /* AudioController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C4F8C3814859D3600A2B288 /* AudioController.xib */; };
+		9C5CD04314BCBCA70070662F /* camcorder.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5CD03B14BCBCA70070662F /* camcorder.png */; };
+		9C5CD04414BCBCA70070662F /* camcorder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5CD03C14BCBCA70070662F /* camcorder@2x.png */; };
+		9C5CD04514BCBCA70070662F /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5CD03D14BCBCA70070662F /* camera.png */; };
+		9C5CD04614BCBCA70070662F /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5CD03E14BCBCA70070662F /* camera@2x.png */; };
+		9C5CD04714BCBCA70070662F /* microphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5CD03F14BCBCA70070662F /* microphone.png */; };
+		9C5CD04814BCBCA70070662F /* microphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5CD04014BCBCA70070662F /* microphone@2x.png */; };
+		9C5CD04914BCBCA70070662F /* qr.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5CD04114BCBCA70070662F /* qr.png */; };
+		9C5CD04A14BCBCA70070662F /* qr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5CD04214BCBCA70070662F /* qr@2x.png */; };
 		9C6E1973148560C300ADDAA7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6E1972148560C300ADDAA7 /* MobileCoreServices.framework */; };
 		9C77C78F147310B80079FDF5 /* NativeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C77C78D147310B80079FDF5 /* NativeInterface.m */; };
 		9C77C794147310F90079FDF5 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C77C791147310F90079FDF5 /* icon-72.png */; };
@@ -49,6 +57,14 @@
 		9C4F8C3614859D3600A2B288 /* AudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioController.h; sourceTree = "<group>"; };
 		9C4F8C3714859D3600A2B288 /* AudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioController.m; sourceTree = "<group>"; };
 		9C4F8C3814859D3600A2B288 /* AudioController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AudioController.xib; sourceTree = "<group>"; };
+		9C5CD03B14BCBCA70070662F /* camcorder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camcorder.png; sourceTree = "<group>"; };
+		9C5CD03C14BCBCA70070662F /* camcorder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camcorder@2x.png"; sourceTree = "<group>"; };
+		9C5CD03D14BCBCA70070662F /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		9C5CD03E14BCBCA70070662F /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera@2x.png"; sourceTree = "<group>"; };
+		9C5CD03F14BCBCA70070662F /* microphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = microphone.png; sourceTree = "<group>"; };
+		9C5CD04014BCBCA70070662F /* microphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "microphone@2x.png"; sourceTree = "<group>"; };
+		9C5CD04114BCBCA70070662F /* qr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qr.png; sourceTree = "<group>"; };
+		9C5CD04214BCBCA70070662F /* qr@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "qr@2x.png"; sourceTree = "<group>"; };
 		9C6E1972148560C300ADDAA7 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		9C77C78C147310B80079FDF5 /* NativeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeInterface.h; sourceTree = "<group>"; };
 		9C77C78D147310B80079FDF5 /* NativeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativeInterface.m; sourceTree = "<group>"; };
@@ -151,9 +167,6 @@
 		9CA51B6914730D110065F681 /* ICEmobile-SX */ = {
 			isa = PBXGroup;
 			children = (
-				9C77C791147310F90079FDF5 /* icon-72.png */,
-				9C77C792147310F90079FDF5 /* icon.png */,
-				9C77C793147310F90079FDF5 /* icon@2x.png */,
 				9C77C78C147310B80079FDF5 /* NativeInterface.h */,
 				9C77C78D147310B80079FDF5 /* NativeInterface.m */,
 				9C77C78E147310B80079FDF5 /* NativeInterfaceViewController.h */,
@@ -168,6 +181,17 @@
 				9C4F8C3614859D3600A2B288 /* AudioController.h */,
 				9C4F8C3714859D3600A2B288 /* AudioController.m */,
 				9C4F8C3814859D3600A2B288 /* AudioController.xib */,
+				9C5CD03B14BCBCA70070662F /* camcorder.png */,
+				9C5CD03C14BCBCA70070662F /* camcorder@2x.png */,
+				9C5CD03D14BCBCA70070662F /* camera.png */,
+				9C5CD03E14BCBCA70070662F /* camera@2x.png */,
+				9C5CD03F14BCBCA70070662F /* microphone.png */,
+				9C5CD04014BCBCA70070662F /* microphone@2x.png */,
+				9C5CD04114BCBCA70070662F /* qr.png */,
+				9C5CD04214BCBCA70070662F /* qr@2x.png */,
+				9C77C791147310F90079FDF5 /* icon-72.png */,
+				9C77C792147310F90079FDF5 /* icon.png */,
+				9C77C793147310F90079FDF5 /* icon@2x.png */,
 				9CA51B6A14730D110065F681 /* Supporting Files */,
 			);
 			path = "ICEmobile-SX";
@@ -258,6 +282,14 @@
 				9C77C795147310F90079FDF5 /* icon.png in Resources */,
 				9C77C796147310F90079FDF5 /* icon@2x.png in Resources */,
 				9C4F8C3A14859D3600A2B288 /* AudioController.xib in Resources */,
+				9C5CD04314BCBCA70070662F /* camcorder.png in Resources */,
+				9C5CD04414BCBCA70070662F /* camcorder@2x.png in Resources */,
+				9C5CD04514BCBCA70070662F /* camera.png in Resources */,
+				9C5CD04614BCBCA70070662F /* camera@2x.png in Resources */,
+				9C5CD04714BCBCA70070662F /* microphone.png in Resources */,
+				9C5CD04814BCBCA70070662F /* microphone@2x.png in Resources */,
+				9C5CD04914BCBCA70070662F /* qr.png in Resources */,
+				9C5CD04A14BCBCA70070662F /* qr@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

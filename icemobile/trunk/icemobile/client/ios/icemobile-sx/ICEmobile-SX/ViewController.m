@@ -27,14 +27,18 @@
 @synthesize uploadProgress;
 @synthesize uploadLabel;
 @synthesize linkView;
+@synthesize urlField;
+@synthesize actionSelector;
 @synthesize deviceToken;
 @synthesize confirmMessages;
 @synthesize confirmTitles;
+@synthesize commandNames;
 
 
 - (void) dealloc  {
     [self.confirmTitles dealloc];
     [self.confirmMessages dealloc];
+    [self.commandNames dealloc];
     [super dealloc];
 }
 
@@ -191,6 +195,23 @@ NSLog(@"Alert dismissed via button %d", buttonIndex);
                     URLWithString:@"http://mobileshowcase.icemobile.org"]];
 }
 
+- (IBAction) chooseAction  {
+    NSLog(@"ViewController chooseAction %d", actionSelector.selectedSegmentIndex);
+    self.currentURL = urlField.text;
+    [urlField resignFirstResponder];
+    self.returnURL = self.currentURL;
+    self.currentParameters = nil;
+    NSString *theCommand = [self.commandNames 
+            objectAtIndex:actionSelector.selectedSegmentIndex];
+    self.currentCommand = [NSString stringWithFormat:@"%@?id=undefined", theCommand];
+    [actionSelector setSelectedSegmentIndex:-1];
+    [self dispatchCurrentCommand];
+}
+
+- (IBAction) returnPressed  {
+    NSLog(@"ViewController returnPressed");
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -213,6 +234,12 @@ NSLog(@"Alert dismissed via button %d", buttonIndex);
             @"Upload video to ", @"camcorder", 
             @"Upload audio recording to ", @"microphone", 
             @"Send QR Code to ", @"scan", 
+            nil];
+    self.commandNames = [NSArray arrayWithObjects:
+            @"camera", 
+            @"camcorder", 
+            @"microphone", 
+            @"scan", 
             nil];
 }
 
