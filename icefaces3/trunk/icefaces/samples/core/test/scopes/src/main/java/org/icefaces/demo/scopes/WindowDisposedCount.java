@@ -29,7 +29,7 @@ import org.icefaces.bean.WindowDisposed;
 
 @ManagedBean(name = "WindowDisposedCount")
 @SessionScoped
-public class WindowDisposedCount {
+public class WindowDisposedCount implements Serializable {
     int value = 0;
 
     public int getValue()  {
