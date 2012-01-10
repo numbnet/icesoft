@@ -40,6 +40,7 @@ import javax.el.MethodExpression;
 import javax.faces.event.AbortProcessingException;
 import java.util.List;
 import java.util.ArrayList;
+import org.icefaces.ace.event.DragDropEvent;
 
 public class Droppable extends DroppableBase {
 	@Override
@@ -49,7 +50,7 @@ public class Droppable extends DroppableBase {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		MethodExpression me = getDropListener();
 
-		if (me != null) {
+		if (me != null && event instanceof DragDropEvent) {
 			me.invoke(facesContext.getELContext(), new Object[] {event});
 		}
 	}
