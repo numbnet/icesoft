@@ -40,7 +40,7 @@ import java.util.logging.Logger;
  * Stateless controller which handles the camera file uploads
  * via the new ICEfaces mobi components.
  */
-@ManagedBean(name = MediaController.BEAN_NAME)
+@ManagedBean(name = MediaController.BEAN_NAME, eager = true)
 @ApplicationScoped
 public class MediaController implements Serializable {
 
@@ -113,19 +113,11 @@ public class MediaController implements Serializable {
     }
 
     /**
-     * Process the file uploaded by the camera component.  If the file processing
-     * is correct a push notification goes out to all active sessions.
+     * Expose upload() to non-JSF invocation
      *
      * @return null no jsf navigation takes place.
      */
-    public String upload() {
-        // session scope model bean
-        UploadModel uploadModel = (UploadModel)
-                FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
-        // application scoped image cache bean
-        MediaStore mediaStore = (MediaStore)
-                FacesUtils.getManagedBean(MediaStore.BEAN_NAME);
-
+    public String processUpload(UploadModel uploadModel, MediaStore mediaStore)  {
         String selectedMediaInput = uploadModel.getSelectedMediaInput();
         String contentType = (String) uploadModel.getMediaMap().get("contentType");
 
@@ -190,6 +182,23 @@ public class MediaController implements Serializable {
         uploadModel.setComment("");
 
         return null;
+    }
+
+    /**
+     * Process the file uploaded by the camera component.  If the file processing
+     * is correct a push notification goes out to all active sessions.
+     *
+     * @return null no jsf navigation takes place.
+     */
+    public String upload() {
+        // session scope model bean
+        UploadModel uploadModel = (UploadModel)
+                FacesUtils.getManagedBean(UploadModel.BEAN_NAME);
+        // application scoped image cache bean
+        MediaStore mediaStore = (MediaStore)
+                FacesUtils.getManagedBean(MediaStore.BEAN_NAME);
+
+        return processUpload(uploadModel, mediaStore);
     }
 
     /**
