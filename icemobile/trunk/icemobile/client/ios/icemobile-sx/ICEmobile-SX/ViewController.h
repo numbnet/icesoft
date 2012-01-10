@@ -30,9 +30,12 @@
     NSData *deviceToken;
     NSDictionary *confirmMessages;
     NSDictionary *confirmTitles;
+    NSArray *commandNames;
     UIProgressView *uploadProgress;
     UILabel *uploadLabel;
     UIView *linkView;
+    UITextField *urlField;
+    UISegmentedControl *actionSelector;
 }
 
 @property (retain) NativeInterface *nativeInterface;
@@ -44,14 +47,19 @@
 @property (retain) NSData *deviceToken;
 @property (retain) NSDictionary *confirmMessages;
 @property (retain) NSDictionary *confirmTitles;
+@property (retain) NSArray *commandNames;
 @property (nonatomic, retain) IBOutlet UIProgressView *uploadProgress;
 @property (nonatomic, retain) IBOutlet UILabel *uploadLabel;
 @property (nonatomic, retain) IBOutlet UIView *linkView;
+@property (nonatomic, retain) IBOutlet UITextField *urlField;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *actionSelector;
 
 - (void) dispatchCurrentCommand;
 - (void) reloadCurrentURL;
 - (void) hideProgress;
 - (IBAction) doMediacast;
 - (IBAction) doMobileshowcase;
+- (IBAction) chooseAction;
+- (IBAction) returnPressed;
 
 @end
