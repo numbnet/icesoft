@@ -32,47 +32,39 @@
 
 package com.icesoft.faces.component.dataexporter;
 
+import com.icesoft.faces.application.D2DViewHandler;
+import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.commandsortheader.CommandSortHeader;
+import com.icesoft.faces.component.ext.RowSelector;
+import com.icesoft.faces.component.ext.UIColumn;
+import com.icesoft.faces.component.ext.UIColumns;
+import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.component.outputresource.OutputResource;
+import com.icesoft.faces.context.FileResource;
+import com.icesoft.faces.context.ResourceRegistry;
+import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.util.CoreUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.faces.component.*;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.el.ValueBinding;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.faces.component.UICommand;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.component.UISelectBoolean;
-import javax.faces.component.UISelectMany;
-import javax.faces.component.UISelectOne;
-import javax.faces.component.ValueHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.el.ValueBinding;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-
-import com.icesoft.faces.component.ext.UIColumns;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.icesoft.faces.application.D2DViewHandler;
-import com.icesoft.faces.component.CSS_DEFAULT;
-import com.icesoft.faces.component.ext.RowSelector;
-import com.icesoft.faces.component.ext.UIColumn;
-import com.icesoft.faces.component.ext.taglib.Util;
-import com.icesoft.faces.component.outputresource.OutputResource;
-import com.icesoft.faces.context.FileResource;
-import com.icesoft.faces.context.Resource;
-import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.util.CoreUtils;
-import com.icesoft.faces.component.commandsortheader.CommandSortHeader;
-
 public class DataExporter extends OutputResource {
     public static final String COMPONENT_FAMILY = "com.icesoft.faces.DataExporter";
-	public static final String COMPONENT_TYPE = "com.icesoft.faces.DataExporter";
-	public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.DataExporterRenderer";
-	private final Log log = LogFactory.getLog(DataExporter.class);
-	
+    public static final String COMPONENT_TYPE = "com.icesoft.faces.DataExporter";
+    public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.DataExporterRenderer";
+    private final Log log = LogFactory.getLog(DataExporter.class);
+
     private static final OutputTypeHandler NoopOutputHandler = new OutputTypeHandler("no-data") {
         public void writeHeaderCell(String text, int col) {
         }
@@ -84,37 +76,38 @@ public class DataExporter extends OutputResource {
         }
     };
 
-	private boolean readyToExport = false;
+    private boolean readyToExport = false;
 
-	private String _for;
-	private String type;
-	private String clickToCreateFileText;
-	private String _origType;
-	private transient OutputTypeHandler outputTypeHandler;
-	private String _origFor;
-	private transient OutputTypeHandler _origOutputTypeHandler;
-	private transient int _origDataModelHash = 0;
-	public final static String EXCEL_TYPE = "excel";
-	public final static String CSV_TYPE = "csv";
-	private Boolean ignorePagination;
+    private String _for;
+    private String type;
+    private String clickToCreateFileText;
+    private String _origType;
+    private transient OutputTypeHandler outputTypeHandler;
+    private String _origFor;
+    private transient OutputTypeHandler _origOutputTypeHandler;
+    private transient int _origDataModelHash = 0;
+    public final static String EXCEL_TYPE = "excel";
+    public final static String CSV_TYPE = "csv";
+    private Boolean ignorePagination;
     private Boolean renderLabelAsButton;
     private String styleClass;
     private String includeColumns;
     private int rows = Integer.MIN_VALUE;
     private int first = Integer.MIN_VALUE;
     private String popupBlockerLabel;
-	public DataExporter() {
-	}
-	
-	   /*
-     * (non-Javadoc)
-     * 
-     * @see javax.faces.component.UIComponent#getFamily()
-     */
+
+    public DataExporter() {
+    }
+
+    /*
+    * (non-Javadoc)
+    *
+    * @see javax.faces.component.UIComponent#getFamily()
+    */
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
-    
+
     public String getComponentType() {
         return COMPONENT_TYPE;
     }
@@ -127,160 +120,161 @@ public class DataExporter extends OutputResource {
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
     }
-    
-	public UIData getUIData() {
-		String forStr = getFor();
-		UIData forComp = (UIData)D2DViewHandler.findComponent(forStr, this);
 
-		if (forComp == null) {
-			throw new IllegalArgumentException(
-					"could not find UIData referenced by attribute @for = '"
-							+ forStr + "'");
-		} else if (!(forComp instanceof UIData)) {
-			throw new IllegalArgumentException(
-					"uiComponent referenced by attribute @for = '" + forStr
-							+ "' must be of type " + UIData.class.getName()
-							+ ", not type " + forComp.getClass().getName());
-		}
-		//compare with cached DataModel to check for updates
-		if( _origDataModelHash != 0 && _origDataModelHash != forComp.getValue().hashCode()){
-			reset();
-		}
-		if (!isIgnorePagination() && ((first != Integer.MIN_VALUE && first != forComp.getFirst()) ||
-		        (rows != Integer.MIN_VALUE && rows != forComp.getRows()))  ) {
-		    reset(); 
-		}
-		
+    public UIData getUIData() {
+        String forStr = getFor();
+        UIData forComp = (UIData) D2DViewHandler.findComponent(forStr, this);
 
-		Object value = forComp.getValue();
-		if (null != value) {
-		    _origDataModelHash = forComp.getValue().hashCode();
-		}
-		return forComp;
-	}
-	
-	private void reset(){
-		this.readyToExport = false;
-		this.resource = null;
-	}
-	
-	public String getFor() {
-		if (_for != null) {
-			if( !_for.equals(this._origFor))
-				reset();
-			this._origFor = _for;
-			return _for;
-		}
-		ValueBinding vb = getValueBinding("for");
-		String newFor = null;
-		if( vb != null ){
-			newFor = (String) vb.getValue(getFacesContext());
-			if( newFor != null && !newFor.equals(this._origFor))
-				reset();
-			this._origFor = newFor;
-		}
-		
-		return newFor;
-	}
+        if (forComp == null) {
+            throw new IllegalArgumentException(
+                    "could not find UIData referenced by attribute @for = '"
+                            + forStr + "'");
+        } else if (!(forComp instanceof UIData)) {
+            throw new IllegalArgumentException(
+                    "uiComponent referenced by attribute @for = '" + forStr
+                            + "' must be of type " + UIData.class.getName()
+                            + ", not type " + forComp.getClass().getName());
+        }
+        //compare with cached DataModel to check for updates
+        if (_origDataModelHash != 0 && _origDataModelHash != forComp.getValue().hashCode()) {
+            reset();
+        }
+        if (!isIgnorePagination() && ((first != Integer.MIN_VALUE && first != forComp.getFirst()) ||
+                (rows != Integer.MIN_VALUE && rows != forComp.getRows()))) {
+            reset();
+        }
 
-	public void setFor(String forValue) {
-		if( forValue != null && !forValue.equals(_for))
-			this.resource = null;
-		_for = forValue;
-	}
-	
-	public String getType(){
-		if (type != null) {
-			if( !type.equals(this._origType))
-				reset();
-			this._origType = type;
-			return type;
-		}
-		ValueBinding vb = getValueBinding("type");
-		String newType = null;
-		if( vb != null ){
-			newType = (String) vb.getValue(getFacesContext());
-			if( newType != null && !newType.equals(this._origType))
-				reset();
-			this._origType = newType;
-		}
-		return newType;
-	}
-	
-	public void setType(String type){
-		if( type != null && !type.equals(this.type))
-			reset();
-		this.type = type;
-	}
 
-	public boolean isReadyToExport() {
-		return readyToExport;
-	}
+        Object value = forComp.getValue();
+        if (null != value) {
+            _origDataModelHash = forComp.getValue().hashCode();
+        }
+        return forComp;
+    }
 
-	public void setReadyToExport(boolean readyToExport) {
-		this.readyToExport = readyToExport;
-	}
-	
-	/**
-	 * @deprecated
-	 */
-	public String getClickToCreateFileText() {
-		if (this.clickToCreateFileText != null) {
-			return clickToCreateFileText;
-		}
-		ValueBinding vb = getValueBinding("clickToCreateFileText");
-		return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-	}
+    private void reset() {
+        this.readyToExport = false;
+        this.resource = null;
+    }
 
-     /**
+    public String getFor() {
+        if (_for != null) {
+            if (!_for.equals(this._origFor))
+                reset();
+            this._origFor = _for;
+            return _for;
+        }
+        ValueBinding vb = getValueBinding("for");
+        String newFor = null;
+        if (vb != null) {
+            newFor = (String) vb.getValue(getFacesContext());
+            if (newFor != null && !newFor.equals(this._origFor))
+                reset();
+            this._origFor = newFor;
+        }
+
+        return newFor;
+    }
+
+    public void setFor(String forValue) {
+        if (forValue != null && !forValue.equals(_for))
+            this.resource = null;
+        _for = forValue;
+    }
+
+    public String getType() {
+        if (type != null) {
+            if (!type.equals(this._origType))
+                reset();
+            this._origType = type;
+            return type;
+        }
+        ValueBinding vb = getValueBinding("type");
+        String newType = null;
+        if (vb != null) {
+            newType = (String) vb.getValue(getFacesContext());
+            if (newType != null && !newType.equals(this._origType))
+                reset();
+            this._origType = newType;
+        }
+        return newType;
+    }
+
+    public void setType(String type) {
+        if (type != null && !type.equals(this.type))
+            reset();
+        this.type = type;
+    }
+
+    public boolean isReadyToExport() {
+        return readyToExport;
+    }
+
+    public void setReadyToExport(boolean readyToExport) {
+        this.readyToExport = readyToExport;
+    }
+
+    /**
      * @deprecated
      */
-	public void setClickToCreateFileText(String clickToCreateFileText) {
-		this.clickToCreateFileText = clickToCreateFileText;
-	}
+    public String getClickToCreateFileText() {
+        if (this.clickToCreateFileText != null) {
+            return clickToCreateFileText;
+        }
+        ValueBinding vb = getValueBinding("clickToCreateFileText");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
 
-	public OutputTypeHandler getOutputTypeHandler() {
-		ValueBinding vb = getValueBinding("outputTypeHandler");
-		OutputTypeHandler newOutputHandler = null;
-		if( vb != null ){
-			newOutputHandler = (OutputTypeHandler) vb.getValue(getFacesContext());
-			if( newOutputHandler != null && newOutputHandler != this._origOutputTypeHandler)
-				reset();
-			this._origOutputTypeHandler = newOutputHandler;
-		}
-		return newOutputHandler;
-	}
-
-	public void setOutputTypeHandler(OutputTypeHandler outputTypeHandler) {
-		if( outputTypeHandler != null && outputTypeHandler != this.outputTypeHandler)
-			reset();
-		this.outputTypeHandler = outputTypeHandler;
-	}
-	
-    private transient Object values[];
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
+    /**
+     * @deprecated
      */
+    public void setClickToCreateFileText(String clickToCreateFileText) {
+        this.clickToCreateFileText = clickToCreateFileText;
+    }
+
+    public OutputTypeHandler getOutputTypeHandler() {
+        ValueBinding vb = getValueBinding("outputTypeHandler");
+        OutputTypeHandler newOutputHandler = null;
+        if (vb != null) {
+            newOutputHandler = (OutputTypeHandler) vb.getValue(getFacesContext());
+            if (newOutputHandler != null && newOutputHandler != this._origOutputTypeHandler)
+                reset();
+            this._origOutputTypeHandler = newOutputHandler;
+        }
+        return newOutputHandler;
+    }
+
+    public void setOutputTypeHandler(OutputTypeHandler outputTypeHandler) {
+        if (outputTypeHandler != null && outputTypeHandler != this.outputTypeHandler)
+            reset();
+        this.outputTypeHandler = outputTypeHandler;
+    }
+
+    private transient Object values[];
+
+    /*
+    * (non-Javadoc)
+    *
+    * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
+    */
     public Object saveState(FacesContext context) {
 
-        if(values == null){
+        if (values == null) {
             values = new Object[14];
         }
         values[0] = super.saveState(context);
         values[1] = _for;
         values[2] = type;
         values[3] = clickToCreateFileText;
-        values[4] = readyToExport? Boolean.TRUE : Boolean.FALSE;
+        values[4] = readyToExport ? Boolean.TRUE : Boolean.FALSE;
         values[5] = _origType;
         values[6] = _origFor;
-        values[7] = ignorePagination; 
-        values[8] = renderLabelAsButton;     
+        values[7] = ignorePagination;
+        values[8] = renderLabelAsButton;
         values[9] = styleClass;
-        values[10] = includeColumns;         
-        values[11] = new Integer(rows); 
-        values[12] = new Integer(first); 
+        values[10] = includeColumns;
+        values[11] = new Integer(rows);
+        values[12] = new Integer(first);
         values[13] = popupBlockerLabel;
         return ((Object) (values));
     }
@@ -297,44 +291,52 @@ public class DataExporter extends OutputResource {
         _for = (String) values[1];
         type = (String) values[2];
         clickToCreateFileText = (String) values[3];
-        readyToExport = ((Boolean) values[4]).booleanValue();        
+        readyToExport = ((Boolean) values[4]).booleanValue();
         _origType = (String) values[5];
-        _origFor = (String)values[6];
-        ignorePagination = (Boolean)values[7]; 
-        renderLabelAsButton = (Boolean)values[8];  
-        styleClass = (String)values[9];  
-        includeColumns = (String)values[10];    
-        rows = ((Integer)values[11]).intValue(); 
-        first = ((Integer)values[12]).intValue();  
-        popupBlockerLabel = (String)values[13];         
+        _origFor = (String) values[6];
+        ignorePagination = (Boolean) values[7];
+        renderLabelAsButton = (Boolean) values[8];
+        styleClass = (String) values[9];
+        includeColumns = (String) values[10];
+        rows = ((Integer) values[11]).intValue();
+        first = ((Integer) values[12]).intValue();
+        popupBlockerLabel = (String) values[13];
     }
-    
+
     public String getLabel() {
         String label = super.getLabel();
         if (label == null) {
             if (resource instanceof FileResource)
-            label = ((FileResource)resource).getFile().getName();
+                label = ((FileResource) resource).getFile().getName();
         }
         return label;
     }
-	
+
     public void broadcast(FacesEvent event)
-    throws AbortProcessingException {
+            throws AbortProcessingException {
         super.broadcast(event);
         if (event != null) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             String type = getType();
             UIData uiData = getUIData();
-			File output = createFile(facesContext, type, uiData);
-			setResource(new FileResource(output));
-			getResource();
+            final File output = createFile(facesContext, type, uiData);
+            final FileResource fileResource = new FileResource(output);
+            final ResourceRegistry resourceRegistry = (ResourceRegistry) FacesContext.getCurrentInstance();
+            fileResource.onClose(new Runnable() {
+                public void run() {
+                    resourceRegistry.deregisterResource(fileResource);
+                    output.delete();
+                }
+            });
+            setResource(fileResource);
+            getResource();
             JavascriptContext.addJavascriptCall(facesContext, "Ice.DataExporters['" + getClientId(facesContext) + "'].url('" + getPath() + "');");
         }
-    }    
+    }
 
     private File createFile(FacesContext fc, String type, UIData uiData) {
         OutputTypeHandler outputHandler = null;
-        String path = CoreUtils.getRealPath(fc, "/export"); 
+        String path = CoreUtils.getRealPath(fc, "/export");
         File exportDir = new File(path);
         if (!exportDir.exists())
             exportDir.mkdirs();
@@ -358,17 +360,17 @@ public class DataExporter extends OutputResource {
     }
 
     private String encodeParentAndChildrenAsString(FacesContext fc,
-            UIComponent uic) {
+                                                   UIComponent uic) {
         StringBuffer str = new StringBuffer();
-		if (uic instanceof CommandSortHeader) {
-			if (uic.getChildCount() > 0) {
-				Iterator iter = uic.getChildren().iterator();
-				while (iter.hasNext()) {
-					UIComponent child = (UIComponent) iter.next();
-					str.append(encodeParentAndChildrenAsString(fc, child));
-				}
-			}		
-		}
+        if (uic instanceof CommandSortHeader) {
+            if (uic.getChildCount() > 0) {
+                Iterator iter = uic.getChildren().iterator();
+                while (iter.hasNext()) {
+                    UIComponent child = (UIComponent) iter.next();
+                    str.append(encodeParentAndChildrenAsString(fc, child));
+                }
+            }
+        }
         Object value = uic.getAttributes().get("value");
         if (value == null) {
             ValueBinding vb = uic.getValueBinding("value");
@@ -377,28 +379,28 @@ public class DataExporter extends OutputResource {
             }
         }
         if (value == null) {
-        	return str.toString();
+            return str.toString();
         }
         Converter converter = null;
-        if(uic instanceof ValueHolder) {
-        	converter = ((ValueHolder)uic).getConverter();
+        if (uic instanceof ValueHolder) {
+            converter = ((ValueHolder) uic).getConverter();
         }
-        if(converter == null) {
-        	converter = FacesContext.getCurrentInstance().getApplication().createConverter(value.getClass());
+        if (converter == null) {
+            converter = FacesContext.getCurrentInstance().getApplication().createConverter(value.getClass());
         }
-        if(converter != null) {
-        	str.append(converter.getAsString(FacesContext.getCurrentInstance(), uic, value));
+        if (converter != null) {
+            str.append(converter.getAsString(FacesContext.getCurrentInstance(), uic, value));
         } else {
-        	str.append(value);
+            str.append(value);
         }
         //don't process selectItems or f:param for uiCommand)
-        if (uic instanceof UISelectBoolean || 
-        		uic instanceof UISelectMany || 
-        		uic instanceof UISelectOne||
-        		uic instanceof UICommand){
-        	return str.toString();
-        }        
-        
+        if (uic instanceof UISelectBoolean ||
+                uic instanceof UISelectMany ||
+                uic instanceof UISelectOne ||
+                uic instanceof UICommand) {
+            return str.toString();
+        }
+
         if (uic.getChildCount() > 0) {
             Iterator iter = uic.getChildren().iterator();
             while (iter.hasNext()) {
@@ -416,8 +418,7 @@ public class DataExporter extends OutputResource {
             UIComponent kid = (UIComponent) kids.next();
             if ((kid instanceof UIColumn) && kid.isRendered()) {
                 results.add(kid);
-            }
-            else if (kid instanceof UIColumns) {
+            } else if (kid instanceof UIColumns) {
                 results.add(kid);
             }
         }
@@ -425,18 +426,18 @@ public class DataExporter extends OutputResource {
     }
 
     private void renderToHandler(OutputTypeHandler outputHandler,
-            UIData uiData, FacesContext fc) {
+                                 UIData uiData, FacesContext fc) {
 
         try {
             int rowIndex = 0;
-            int numberOfRowsToDisplay = 0;  
+            int numberOfRowsToDisplay = 0;
             if (!isIgnorePagination()) {
                 rowIndex = uiData.getFirst();
                 numberOfRowsToDisplay = uiData.getRows();
                 first = rowIndex;
                 rows = numberOfRowsToDisplay;
             }
- 
+
             int countOfRowsDisplayed = 0;
             uiData.setRowIndex(rowIndex);
             String[] includeColumnsArray = null;
@@ -445,11 +446,11 @@ public class DataExporter extends OutputResource {
                 includeColumnsArray = includeColumns.split(",");
             List columns = getRenderedChildColumnsList(uiData);
 //System.out.println("DataExporter.renderToHandler()  columns.size: " + columns.size());
-                
+
             // write header
 //System.out.println("DataExporter.renderToHandler()  HEADERS");
             processAllColumns(
-                fc, outputHandler, columns, includeColumnsArray, -1, false);
+                    fc, outputHandler, columns, includeColumnsArray, -1, false);
 
 //System.out.println("DataExporter.renderToHandler()  ROWS");
             while (uiData.isRowAvailable()) {
@@ -460,8 +461,8 @@ public class DataExporter extends OutputResource {
 
                 // render the child columns; each one in a td
                 processAllColumns(fc, outputHandler, columns,
-                    includeColumnsArray, countOfRowsDisplayed, false);
-                
+                        includeColumnsArray, countOfRowsDisplayed, false);
+
                 // keep track of rows displayed
                 countOfRowsDisplayed++;
                 // maintain the row index property on the underlying UIData
@@ -476,16 +477,17 @@ public class DataExporter extends OutputResource {
             // write footer
 //System.out.println("DataExporter.renderToHandler()  FOOTERS");
             processAllColumns(fc, outputHandler, columns,
-                includeColumnsArray, countOfRowsDisplayed, true);
-            
+                    includeColumnsArray, countOfRowsDisplayed, true);
+
             outputHandler.flushFile();
         } catch (Exception e) {
             log.error("renderToHandler()", e);
         }
     }
-    
-    public void addInfo() {}
-    
+
+    public void addInfo() {
+    }
+
     /**
      * <p>Set the value of the <code>ignorePagination</code> property.</p>
      */
@@ -503,8 +505,8 @@ public class DataExporter extends OutputResource {
         ValueBinding vb = getValueBinding("ignorePagination");
         return vb != null ? ((Boolean) vb.getValue(getFacesContext()))
                 .booleanValue() : false;
-    }   
-    
+    }
+
     /**
      * <p>Set the value of the <code>renderLabelAsButton</code> property.</p>
      */
@@ -523,18 +525,18 @@ public class DataExporter extends OutputResource {
         return vb != null ? ((Boolean) vb.getValue(getFacesContext()))
                 .booleanValue() : false;
     }
-    
+
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
     }
-    
+
     public String getStyleClass() {
-        return Util.getQualifiedStyleClass(this, 
+        return Util.getQualifiedStyleClass(this,
                 styleClass,
                 CSS_DEFAULT.DATAEXPORTER_DEFAULT_STYLE_CLASS,
                 "styleClass");
-    } 
-    
+    }
+
     protected void processAllColumns(FacesContext fc,
                                      OutputTypeHandler outputHandler,
                                      List columns,
@@ -544,7 +546,7 @@ public class DataExporter extends OutputResource {
         if (includeColumnsArray != null) {
 //System.out.println("DataExporter.processAllColumns()  COLUMNS ARRAY");
             renderInUserDefinedOrder(fc, outputHandler, columns,
-                includeColumnsArray, 0, countOfRowsDisplayed, footer);
+                    includeColumnsArray, 0, countOfRowsDisplayed, footer);
         } else {
 //System.out.println("DataExporter.processAllColumns()  COLUMNS ITERATING");
             int colIndex = 0;
@@ -556,27 +558,24 @@ public class DataExporter extends OutputResource {
                     if (countOfRowsDisplayed == -1) {
 //System.out.println("DataExporter.processAllColumns()    HEADER CELL");
                         processColumnHeader(
-                            fc, outputHandler, nextColumn, colIndex);
-                    }
-                    else if (footer) {
+                                fc, outputHandler, nextColumn, colIndex);
+                    } else if (footer) {
 //System.out.println("DataExporter.processAllColumns()    FOOTER CELL");
                         processColumnFooter(fc, outputHandler, nextColumn,
-                            colIndex, countOfRowsDisplayed);
-                    }
-                    else {
+                                colIndex, countOfRowsDisplayed);
+                    } else {
 //System.out.println("DataExporter.processAllColumns()    CELL");
                         processColumn(fc, outputHandler, nextColumn, colIndex,
-                            countOfRowsDisplayed);                        
+                                countOfRowsDisplayed);
                     }
                     colIndex++;
-                }
-                else if (nextColumn instanceof UIColumns) {
+                } else if (nextColumn instanceof UIColumns) {
                     UIColumns nextColumns = (UIColumns) nextColumn;
                     int colsSpecificIndex = nextColumns.getFirst();
                     int count = nextColumns.getRows();
                     int colsSpecificLast = (count == 0) ?
-                        (Integer.MAX_VALUE - 1) :
-                        (colsSpecificIndex + count - 1);
+                            (Integer.MAX_VALUE - 1) :
+                            (colsSpecificIndex + count - 1);
 //System.out.println("DataExporter.processAllColumns()  UIColumns  first: " + colsSpecificIndex + "  rows: " + count);
                     while (colsSpecificIndex <= colsSpecificLast) {
                         nextColumns.setRowIndex(colsSpecificIndex);
@@ -586,17 +585,15 @@ public class DataExporter extends OutputResource {
                         if (countOfRowsDisplayed == -1) {
 //System.out.println("DataExporter.processAllColumns()    HEADER CELL  colIndex: " + colIndex);
                             processColumnHeader(
-                                fc, outputHandler, nextColumn, colIndex);
-                        }
-                        else if (footer) {
+                                    fc, outputHandler, nextColumn, colIndex);
+                        } else if (footer) {
 //System.out.println("DataExporter.processAllColumns()    FOOTER CELL  colIndex: " + colIndex);
                             processColumnFooter(fc, outputHandler, nextColumn,
-                                colIndex, countOfRowsDisplayed);
-                        }
-                        else {
+                                    colIndex, countOfRowsDisplayed);
+                        } else {
 //System.out.println("DataExporter.processAllColumns()    CELL  colIndex: " + colIndex);
                             processColumn(fc, outputHandler, nextColumn,
-                                colIndex, countOfRowsDisplayed);
+                                    colIndex, countOfRowsDisplayed);
                         }
                         colsSpecificIndex++;
                         colIndex++;
@@ -606,36 +603,36 @@ public class DataExporter extends OutputResource {
             }
         }
     }
-    
-    protected void processColumnHeader(FacesContext fc, 
-                                    OutputTypeHandler outputHandler,
-                                    UIComponent uiColumn, int colIndex) {
+
+    protected void processColumnHeader(FacesContext fc,
+                                       OutputTypeHandler outputHandler,
+                                       UIComponent uiColumn, int colIndex) {
         UIComponent headerComp = uiColumn.getFacet("header");
         if (headerComp != null) {
             String headerText = encodeParentAndChildrenAsString(fc, headerComp);
             if (headerText != null) {
                 outputHandler.writeHeaderCell(headerText, colIndex);
             }
-        }        
+        }
     }
-    
-    protected void processColumnFooter(FacesContext fc, 
-                                    OutputTypeHandler outputHandler,
-                                    UIComponent uiColumn, int colIndex,
-                                    int countOfRowsDisplayed) {
+
+    protected void processColumnFooter(FacesContext fc,
+                                       OutputTypeHandler outputHandler,
+                                       UIComponent uiColumn, int colIndex,
+                                       int countOfRowsDisplayed) {
         UIComponent footerComp = uiColumn.getFacet("footer");
         if (footerComp != null) {
             Object output = encodeParentAndChildrenAsString(fc, footerComp);
             if (output != null) {
                 outputHandler.writeFooterCell(output, colIndex, countOfRowsDisplayed);
             }
-        }        
+        }
     }
-    
-    protected void processColumn(FacesContext fc, 
-            OutputTypeHandler outputHandler,
-            UIComponent uiColumn, int colIndex,
-            int countOfRowsDisplayed) {
+
+    protected void processColumn(FacesContext fc,
+                                 OutputTypeHandler outputHandler,
+                                 UIComponent uiColumn, int colIndex,
+                                 int countOfRowsDisplayed) {
         StringBuffer stringOutput = new StringBuffer();
 
         Iterator childrenOfThisColumn = uiColumn.getChildren()
@@ -649,18 +646,18 @@ public class DataExporter extends OutputResource {
                         nextChild));
                 //a blank to separate 
                 if (childrenOfThisColumn.hasNext()) {
-                    stringOutput.append(' '); 
+                    stringOutput.append(' ');
                 }
             }
 
         }
         outputHandler.writeCell(stringOutput.toString(), colIndex, countOfRowsDisplayed);
-        
+
     }
-    
-    
+
+
     /**
-      */
+     */
     public String getIncludeColumns() {
         if (this.includeColumns != null) {
             return includeColumns;
@@ -669,21 +666,21 @@ public class DataExporter extends OutputResource {
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
-     /**
+    /**
      */
     public void setIncludeColumns(String includeColumns) {
         this.includeColumns = includeColumns;
-    }    
-    
+    }
+
     protected void renderInUserDefinedOrder(FacesContext fc,
-            OutputTypeHandler outputHandler, 
-            List columns,
-            String[] includeColumnsArray,
-            int colIndex,
-            int countOfRowsDisplayed,
-            boolean footer) {
+                                            OutputTypeHandler outputHandler,
+                                            List columns,
+                                            String[] includeColumnsArray,
+                                            int colIndex,
+                                            int countOfRowsDisplayed,
+                                            boolean footer) {
         UIComponent previousColumn = null;
-        for (int i=0; i<includeColumnsArray.length; i++) {
+        for (int i = 0; i < includeColumnsArray.length; i++) {
 //System.out.println("DataExporter.renderInUserDefinedOrder()  includeColumnsArray["+i+"]: " + includeColumnsArray[i]);
             int userIndex = 0;
             try {
@@ -705,8 +702,7 @@ public class DataExporter extends OutputResource {
                         break;
                     }
                     runningIndex++;
-                }
-                else if (runningComp instanceof UIColumns) {
+                } else if (runningComp instanceof UIColumns) {
 //System.out.println("DataExporter.renderInUserDefinedOrder()    Check UIColumns");
                     UIColumns runningCols = (UIColumns) runningComp;
                     // If rows is specified, so it's possible to know if 
@@ -715,16 +711,15 @@ public class DataExporter extends OutputResource {
                     if (runningColsSize != 0) {
 //System.out.println("DataExporter.renderInUserDefinedOrder()      rows specified");
                         if (userIndex >= runningIndex &&
-                            userIndex < runningIndex + runningColsSize) {
+                                userIndex < runningIndex + runningColsSize) {
                             int colsSpecificIndex = userIndex - runningIndex +
-                                runningCols.getFirst();
+                                    runningCols.getFirst();
                             runningIndex = userIndex;
                             runningCols.setRowIndex(colsSpecificIndex);
 //System.out.println("DataExporter.renderInUserDefinedOrder()      MATCH  colsSpecificIndex: " + colsSpecificIndex);
                             nextColumn = runningCols;
                             break;
-                        }
-                        else {
+                        } else {
 //System.out.println("DataExporter.renderInUserDefinedOrder()      beyond rows");
                             runningIndex += runningColsSize;
                         }
@@ -750,46 +745,46 @@ public class DataExporter extends OutputResource {
                         if (nextColumn != null) {
                             break;
                         }
-                        
+
                         // If we just scanned through runningCols, and aren't 
                         // using it, clean it up, unless we're going to already
                         if (nextColumn == null &&
-                            runningCols != previousColumn) {
+                                runningCols != previousColumn) {
                             runningCols.setRowIndex(-1);
                         }
                     }
                 }
             }
-            
+
             if (nextColumn == null) {
-                log.info("["+userIndex +"] is invalid column index. Column index is 0 based and should be less then from "+ runningIndex);
+                log.info("[" + userIndex + "] is invalid column index. Column index is 0 based and should be less then from " + runningIndex);
                 continue;
             }
-            
+
             // If we're switching away from a UIColumns, clean it up
             if (previousColumn != null &&
-                nextColumn != previousColumn &&
-                previousColumn instanceof UIColumns) {
-                ((UIColumns)previousColumn).setRowIndex(-1);
+                    nextColumn != previousColumn &&
+                    previousColumn instanceof UIColumns) {
+                ((UIColumns) previousColumn).setRowIndex(-1);
             }
             previousColumn = nextColumn;
-            
+
             if (countOfRowsDisplayed == -1) {
                 processColumnHeader(fc, outputHandler, nextColumn, colIndex);
             } else if (footer) {
                 processColumnFooter(fc, outputHandler, nextColumn, colIndex,
-                    countOfRowsDisplayed);
+                        countOfRowsDisplayed);
             } else {
                 processColumn(fc, outputHandler, nextColumn, colIndex, countOfRowsDisplayed);
             }
-            colIndex++; 
+            colIndex++;
         }
-        
-        
+
+
         // Cleanup any trailing UIColumns
         if (previousColumn != null &&
-            previousColumn instanceof UIColumns) {
-            ((UIColumns)previousColumn).setRowIndex(-1);
+                previousColumn instanceof UIColumns) {
+            ((UIColumns) previousColumn).setRowIndex(-1);
         }
     }
 
@@ -803,5 +798,5 @@ public class DataExporter extends OutputResource {
 
     public void setPopupBlockerLabel(String popupBlockerLabel) {
         this.popupBlockerLabel = popupBlockerLabel;
-    }    
+    }
 }
