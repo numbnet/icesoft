@@ -885,7 +885,15 @@ public class DataTable extends DataTableBase {
         int rows = 0;
         int offset = 0;
         int first = getFirst();
-        Object model = this.getDataModel();
+
+        // The cached data model that is used in myFaces may
+        // have been generated from incorrect getValue() results (I assume)
+        // causing it to mistakenly contain 0 rows.
+        // This is a fix until a more general one is available.
+        if (getRowCount() == 0) setDataModel(null);
+
+        // Get / Regenerate cached data model.
+        Object model = getDataModel();
         RowPanelExpander panelExpander = getPanelExpansion();
         RowExpander rowExpander = getRowExpansion();
         boolean hasPanelExpansion = (panelExpander != null);
@@ -1382,7 +1390,6 @@ public class DataTable extends DataTableBase {
         TreeDataModel treeDataModel;
 
         // Without this call, at times iteration will use an unfiltered data model
-        // during iteration.
         getDataModel();
 
         while (true) {
