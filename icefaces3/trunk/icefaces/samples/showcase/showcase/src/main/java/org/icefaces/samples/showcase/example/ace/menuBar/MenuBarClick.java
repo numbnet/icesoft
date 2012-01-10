@@ -21,14 +21,8 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
-import javax.faces.model.SelectItem;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 @ComponentExample(
         parent = MenuBarBean.BEAN_NAME,
@@ -53,11 +47,12 @@ import java.util.Date;
 @CustomScoped(value = "#{window}")
 public class MenuBarClick extends ComponentExampleImpl<MenuBarClick> implements Serializable {
     public static final String BEAN_NAME = "aceMenuBarClick";
-    
-    private boolean clickToDisplay = true;
+    private boolean clickToDisplay;
     
     public MenuBarClick() {
         super(MenuBarClick.class);
+        
+        clickToDisplay = false;
     }
     
     public boolean getClickToDisplay() { return clickToDisplay; }

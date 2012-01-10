@@ -34,36 +34,52 @@
 
     <ui:define name="example">
         <h:form>
-            <icecore:singleSubmit/>
+            <ace:panel>
+                <h:panelGrid style="width: 100%" columns="2"> 
+                    <h:panelGrid columns="2" styleClass="centeredPanelGrid">
+                        <h:outputLabel value="Effect Type: " for="effectType"/>
+                        <h:selectOneMenu    id="effectType"
+                                            value="#{menuBarEffect.effectName}"
+                                            valueChangeListener="#{menuBarEffect.changemenuBarEffect}">
+                            <f:selectItems value="#{menuBarEffect.availableEffects}"
+                                           var="type"
+                                           itemValue="#{type.value}"
+                                           itemLabel="#{type.key}"/>
+                            <f:ajax execute="@this" render="@form" event="change"/>
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                    
+                    <h:panelGrid columns="2" styleClass="centeredPanelGrid">
+                        <h:outputLabel value="Effect Duration (#{menuBarEffect.effectDuration} ms): " for="effectDuration"/>
+                        <h:panelGroup>
+                            <ace:sliderEntry id="effectDuration"
+                                                 clickableRail="true"
+                                                 min="100"
+                                                 max="1100"
+                                                 value="#{menuBarEffect.effectDuration}"
+                                                 showLabels="true"
+                                                 stepPercent="25">
+                                <ace:ajax event="slideEnd" execute="@this" render="@form" />
+                            </ace:sliderEntry>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </ace:panel>
             
-            <h:panelGrid columns="3">
-                <h:outputLabel for="effectIn" value="Transition Effect:"/>
-                <h:selectOneRadio id="effectIn" required="true" value="#{menuBarEffect.effectName}">
-                    <f:selectItems value="#{menuBarEffect.availableEffects}"/>
-                </h:selectOneRadio>
-                <h:message for="effectIn"/>
-                
-                <h:outputLabel for="durationIn" value="Effect Duration (50-2000 milliseconds):"/>
-                <h:inputText id="durationIn" value="#{menuBarEffect.effectDuration}"
-                             required="true" size="4" maxlength="4">
-                     <f:validateLongRange minimum="50" maximum="2000"/>
-                </h:inputText>
-                <h:message for="durationIn"/>
-            </h:panelGrid>
-        </h:form>
-    
-        <h:form>
-             <ace:menuBar autoSubmenuDisplay="true"
-                          effect="#{menuBarEffect.effectName}" effectDuration="#{menuBarEffect.effectDuration}">
+            <br/>
+            
+           <ace:menuBar autoSubmenuDisplay="true"
+                          effect="#{menuBarEffect.effectName}"
+                          effectDuration="#{menuBarEffect.effectDuration}">
+                 
                  <ace:menuItem value="Home" url="http://www.icefaces.org" target="_blank" icon="ui-icon ui-icon-home" />
                  <ace:submenu label="File" icon="ui-icon ui-icon-document">  
                      <ace:submenu label="New" icon="ui-icon ui-icon-contact">  
                          <ace:menuItem value="Window"/>  
                          <ace:menuItem value="Tab"/>  
                      </ace:submenu>
-                     <ace:menuItem value="Open Location"/>
-                     <ace:menuItem value="Open File"/>
-                     <ace:menuItem value="Close Tab"/>
+                     <ace:menuItem value="Open"/>
+                     <ace:menuItem value="Close"/>
                      <ace:menuItem value="Print"/>
                      <ace:menuItem value="Quit"/>
                  </ace:submenu>
@@ -83,10 +99,10 @@
                      <ace:menuItem value="Page Info"/>
                  </ace:submenu>
                  
-                 <ace:submenu label="Help" icon="ui-icon ui-icon-help">  
+                 <ace:submenu label="Help" icon="ui-icon ui-icon-help">
                      <ace:menuItem value="Contents"/>
-                     <ace:menuItem value="About"/>
                      <ace:menuItem value="Translate"/>
+                     <ace:menuItem value="About"/>
                  </ace:submenu>
              </ace:menuBar>
         </h:form>

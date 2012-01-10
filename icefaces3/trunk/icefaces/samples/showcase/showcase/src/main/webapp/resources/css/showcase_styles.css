@@ -162,16 +162,16 @@ a.ui-panel-titlebar-icon.ui-corner-all.ui-state-default
     background-color: transparent;
     border: 0px;
 }
-/*CSS hack in order to display documentation menu properly and prevent it from showing up every time the page is refreshed (style="width:200px;" on a menu component is causing this problem)*/
+/*CSS hack in order to display documentation menu properly and prevent it from showing up every time the page is refreshed (setting style="width:175px;" on ace:menu component located in the templates/content-template.xhtml is causing this problem)*/
 div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix
 {
     width: 175px;
 }
 
-/* avoid applying hack above to ace:menuBar */
+/* prevent hack above to show ace:menuBar in the vertical layout instead of horizontal)*/
 div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.wijmo-wijmenu-horizontal
 {
-    width: 100%;
+    width: auto;
 }
 
 .ice-checkboxbutton .ui-state-hover
