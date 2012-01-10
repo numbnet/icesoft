@@ -21,14 +21,9 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
+import java.util.LinkedHashMap;
 import javax.faces.model.SelectItem;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @ComponentExample(
         parent = MenuBarBean.BEAN_NAME,
@@ -53,18 +48,29 @@ import java.util.Date;
 @CustomScoped(value = "#{window}")
 public class MenuBarEffect extends ComponentExampleImpl<MenuBarEffect> implements Serializable {
     public static final String BEAN_NAME = "menuBarEffect";
+    public static final String DEFAULT_EFFECT = "Slide";
     
-    private SelectItem[] availableEffects = { new SelectItem("fade", "Fade"),
-                                              new SelectItem("slide", "Slide") };
-    
-    private String effectName = availableEffects[0].getValue().toString();
-    private int effectDuration = 400;
+    private LinkedHashMap <String, String> availableEffects;
+    private String effectName;
+    private int effectDuration;
     
     public MenuBarEffect() {
         super(MenuBarEffect.class);
+        
+        availableEffects = populateAvailableEffects();
+        effectName = availableEffects.get(DEFAULT_EFFECT);
+        effectDuration = 400;
     }
     
-    public SelectItem[] getAvailableEffects() { return availableEffects; }
+    private LinkedHashMap<String, String> populateAvailableEffects() 
+    {
+        LinkedHashMap <String, String> list = new LinkedHashMap <String, String>();
+        list.put("Slide","slide");
+        list.put("Fade", "fade");
+        return list;
+    }
+    
+    public LinkedHashMap<String, String> getAvailableEffects() {return availableEffects;}
     public String getEffectName() { return effectName; }
     public int getEffectDuration() { return effectDuration; }
     

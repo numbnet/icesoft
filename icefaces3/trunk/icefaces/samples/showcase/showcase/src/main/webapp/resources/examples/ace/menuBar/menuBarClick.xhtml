@@ -34,26 +34,27 @@
 
     <ui:define name="example">
         <h:form>
-            <icecore:singleSubmit/>
-            
-            <h:panelGrid columns="3">
-                <h:selectBooleanCheckbox id="clickIn" value="#{aceMenuBarClick.clickToDisplay}"/>
-                <h:outputLabel for="clickIn" value="Auto display menu on mouse over?"/>
+            <h:panelGrid columns="2" width="100%">
+                <ace:panel>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel for="switch" value="Auto display menu: "/>
+                        <h:selectOneRadio   id="switch"
+                                                        value="#{aceMenuBarClick.clickToDisplay}">
+                                        <f:selectItem itemLabel="ON" itemValue="true"/>
+                                        <f:selectItem itemLabel="OFF" itemValue="false"/>
+                                        <f:ajax execute="@this" render="@form" event="change"/>
+                        </h:selectOneRadio>
+                    </h:panelGrid>
+                </ace:panel>
                 
-                <h:message for="clickIn"/>
-            </h:panelGrid>
-        </h:form>
-    
-        <h:form>
-             <ace:menuBar autoSubmenuDisplay="#{aceMenuBarClick.clickToDisplay}">
-                 <ace:submenu label="File" icon="ui-icon ui-icon-document">  
+                <ace:menuBar autoSubmenuDisplay="#{aceMenuBarClick.clickToDisplay}">
+                    <ace:submenu label="File" icon="ui-icon ui-icon-document">  
                      <ace:submenu label="New" icon="ui-icon ui-icon-contact">  
                          <ace:menuItem value="Window"/>  
                          <ace:menuItem value="Tab"/>  
                      </ace:submenu>
-                     <ace:menuItem value="Open Location"/>
-                     <ace:menuItem value="Open File"/>
-                     <ace:menuItem value="Close Tab"/>
+                     <ace:menuItem value="Open"/>
+                     <ace:menuItem value="Close"/>
                      <ace:menuItem value="Print"/>
                      <ace:menuItem value="Quit"/>
                  </ace:submenu>
@@ -75,10 +76,11 @@
                  
                  <ace:submenu label="Help" icon="ui-icon ui-icon-help">  
                      <ace:menuItem value="Contents"/>
-                     <ace:menuItem value="About"/>
                      <ace:menuItem value="Translate"/>
+                     <ace:menuItem value="About"/>
                  </ace:submenu>
              </ace:menuBar>
+                </h:panelGrid>
         </h:form>
     </ui:define>
 </ui:composition>

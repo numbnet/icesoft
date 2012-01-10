@@ -38,8 +38,7 @@
                 <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing" columns="2"> 
                     <h:outputLabel value="Effect Type:" for="effectType"/>
                     <h:selectOneMenu    id="effectType"
-                                        value="#{menuEffect.effectName}"
-                                        valueChangeListener="#{menuEffect.changeMenuEffect}">
+                                        value="#{menuEffect.effectName}">
                         <f:selectItems value="#{menuEffect.availableEffects}"
                                        var="type"
                                        itemValue="#{type.value}"
