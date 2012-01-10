@@ -86,7 +86,12 @@ public class DroppableRenderer extends CoreRenderer {
         String clientId = droppable.getClientId(context);
         String onDropUpdate = droppable.getOnDropUpdate();
 
-        writer.startElement("script", droppable);
+        // empty node with client id, needed for AJAX request
+		writer.startElement("span", droppable);
+		writer.writeAttribute("id", clientId, null);
+		writer.endElement("span");
+		
+		writer.startElement("script", droppable);
         writer.writeAttribute("type", "text/javascript", null);
 
         writer.write("ice.ace.jq(function() {");
