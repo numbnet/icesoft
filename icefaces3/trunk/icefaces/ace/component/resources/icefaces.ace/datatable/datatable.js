@@ -656,7 +656,7 @@ ice.ace.DataTable.prototype.filter = function(evn) {
     ice.ace.AjaxRequest(options);
 }
 
-ice.ace.DataTable.prototype.fireSelectEvent = function() {
+ice.ace.DataTable.prototype.fireCellSelectEvent = function(isDeselect) {
     var options = {
         source: this.id,
         execute: this.id,
@@ -685,10 +685,14 @@ ice.ace.DataTable.prototype.fireSelectEvent = function() {
     };
 
     if (this.behaviors)
-        if (this.behaviors.select) {
+        if (this.behaviors.select && !isDeselect) {
             this.behaviors.select(params);
             return;
+        } else if (this.behaviors.deselect && isDeselect) {
+            this.behaviors.deselect(params);
+            return;
         }
+
 
     ice.ace.AjaxRequest(options);
 }
@@ -711,7 +715,7 @@ ice.ace.DataTable.prototype.fireRowSelectEvent = function(rowId, deselectRowId) 
     });
 
     var params = {},
-            _self = this;
+        _self = this;
     params[this.id + '_instantSelectedRowIndex'] = rowId;
     if (deselectRowId) params[this.id + '_instantUnselectedRowIndex'] = deselectRowId;
 
@@ -780,7 +784,7 @@ ice.ace.DataTable.prototype.onRowClick = function(event, rowElement) {
 
 ice.ace.DataTable.prototype.selectRow = function(row) {
     var rowId = row.attr('id').split('_row_')[1],
-            deselectRowId = undefined;
+        deselectRowId = undefined;
 
     //unselect previous selection
     if (this.isSingleSelection()) {
@@ -847,7 +851,7 @@ ice.ace.DataTable.prototype.selectCell = function(cell) {
     cell.addClass('ui-state-highlight ui-selected');
     this.selection.push(rowId + '#' + columnIndex);
     this.writeSelections();
-    if (this.cfg.instantSelect) this.fireSelectEvent();
+    if (this.cfg.instantSelect) this.fireCellSelectEvent(false);
 }
 
 ice.ace.DataTable.prototype.unselectCell = function(cell) {
@@ -858,7 +862,7 @@ ice.ace.DataTable.prototype.unselectCell = function(cell) {
     cell.removeClass('ui-selected ui-state-highlight ui-state-hover');
     this.selection = ice.ace.jq.grep(this.selection, function(c) { return c != cellId; });
     this.writeSelections();
-    if (this.cfg.instantSelect) this.fireSelectEvent();
+    if (this.cfg.instantSelect) this.fireCellSelectEvent(true);
 }
 
 
