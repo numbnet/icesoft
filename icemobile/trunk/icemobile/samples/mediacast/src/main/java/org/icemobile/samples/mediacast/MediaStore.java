@@ -26,7 +26,7 @@ import java.util.List;
  * Simple in memory image cache which stores an uploaded image and a scaled
  * thumbnail version of it.
  */
-@ManagedBean(name = MediaStore.BEAN_NAME)
+@ManagedBean(name = MediaStore.BEAN_NAME, eager = true)
 @ApplicationScoped
 public class MediaStore implements Serializable {
 
