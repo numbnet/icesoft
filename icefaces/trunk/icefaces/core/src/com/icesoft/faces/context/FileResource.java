@@ -32,14 +32,12 @@
 
 package com.icesoft.faces.context;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Date;
 
 public class FileResource implements Resource {
     private File file;
+    private Runnable onClose;
 
     public FileResource(File file) {
         this.file = file;
@@ -54,7 +52,7 @@ public class FileResource implements Resource {
     }
 
     public InputStream open() throws IOException {
-        return new FileInputStream(file);
+        return new NotifyingFileInputStream(file);
     }
 
     public void withOptions(Options options) throws IOException {
@@ -67,7 +65,27 @@ public class FileResource implements Resource {
      *
      * @return A reference to the File object
      */
-    public File getFile(){
-    	return file;
+    public File getFile() {
+        return file;
+    }
+
+    public void onClose(Runnable callback) {
+        onClose = callback;
+    }
+
+    private class NotifyingFileInputStream extends FileInputStream {
+        public NotifyingFileInputStream(File file) throws FileNotFoundException {
+            super(file);
+        }
+
+        public void close() throws IOException {
+            try {
+                super.close();
+            } finally {
+                if (onClose != null) {
+                    onClose.run();
+                }
+            }
+        }
     }
 }
