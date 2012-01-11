@@ -656,176 +656,99 @@ ice.ace.DataTable.prototype.filter = function(evn) {
     ice.ace.AjaxRequest(options);
 }
 
-ice.ace.DataTable.prototype.fireCellSelectEvent = function(isDeselect) {
-    var options = {
-        source: this.id,
-        execute: this.id,
-        formId: this.cfg.formId
-    };
+ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, element) {
+    // Get Id(s) //
+    var targetId, deselectedId;
+    if (type == 'row') {
+        targetId = element.attr('id').split('_row_')[1];
+    }
+    else if (type == 'cell') {
+        var rowId = element.parent().attr('id').split('_row_')[1],
+            columnIndex = element.index();
+        targetId = rowId + '#' + columnIndex;
+    }
 
+    // Sync State //
+    this.readSelections();
 
-    if (this.cfg.onRowSelectUpdate) options.render = this.cfg.onRowSelectUpdate;
-    if (this.cfg.onRowSelectStart) options.onstart = ice.ace.bind(this, function() {
-        this.cfg.onRowSelectStart.apply(this, arguments);
-        return true;
-    });
-    if (this.cfg.onRowSelectComplete) options.oncomplete = ice.ace.bind(this, function() {
-        this.cfg.onRowSelectComplete.apply(this, arguments);
-        return true;
-    });
-    var params = {},
+    // Adjust State //
+    if (!deselection) {
+        if (this.isSingleSelection()) {
+            // If single selection unselect previous selection
+            if (type == 'row') {
+                element.siblings('.ui-selected').removeClass('ui-selected ui-state-highlight ui-state-hover');
+                this.deselection = [];
+                deselectedId = this.selection[0];
+                this.deselection.push(deselectedId);
+            }
+            else if (type == 'cell') {
+                ice.ace.jq(this.jqId + ' tbody.ui-datatable-data td').removeClass('ui-selected ui-state-highlight ui-state-hover');
+            }
+            // This selection will be the only member of the delta
+            this.selection = [];
+        }
+
+        // Add selected styling
+        element.addClass('ui-state-highlight ui-selected');
+        // Filter id from deselection delta
+        this.deselection = ice.ace.jq.grep(this.deselection, function(r) { return r != targetId; });
+        // Add filter id to selection delta
+        this.selection.push(targetId);
+    } else {
+        // Remove selected styling
+        element.removeClass('ui-selected ui-state-highlight ui-state-hover');
+        // Remove from selection
+        this.selection = ice.ace.jq.grep(this.selection, function(r) { return r != targetId; });
+        // Add to deselection
+        this.deselection.push(targetId);
+    }
+
+    // Write State //
+    this.writeSelections();
+
+    // Submit State //
+    if (this.cfg.instantSelect) {
+        var options = {
+            source: this.id,
+            execute: this.id,
+            formId: this.cfg.formId
+        };
+
+        var params = {},
             _self = this;
 
-    options.params = params;
-    options.onsuccess = function(responseXML) {
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            if (id != _self.id) ice.ace.AjaxUtils.updateElement(id, content);
-        });
-        return false;
-    };
-
-    if (this.behaviors)
-        if (this.behaviors.select && !isDeselect) {
-            this.behaviors.select(params);
-            return;
-        } else if (this.behaviors.deselect && isDeselect) {
-            this.behaviors.deselect(params);
-            return;
+        if (type == 'row') {
+            if (!deselection) {
+                // Submit selected index and deselection if single selection enabled
+                params[this.id + '_instantSelectedRowIndex'] = targetId;
+                if (deselectedId) params[this.id + '_instantUnselectedRowIndex'] = deselectedId;
+            } else {
+                // Submit deselected index
+                params[this.id + '_instantUnselectedRowIndex'] = targetId;
+            }
         }
 
+        options.params = params;
 
-    ice.ace.AjaxRequest(options);
+        if (this.behaviors)
+            if (this.behaviors.select && !deselection) {
+                this.behaviors.select(params);
+                return;
+            } else if (this.behaviors.deselect && deselection) {
+                this.behaviors.deselect(params);
+                return;
+            }
+
+        ice.ace.AjaxRequest(options);
+    }
 }
 
-ice.ace.DataTable.prototype.fireRowSelectEvent = function(rowId, deselectRowId) {
-    var options = {
-        source: this.id,
-        execute: this.id,
-        formId: this.cfg.formId
-    };
-
-    if (this.cfg.onRowSelectUpdate) options.render = this.cfg.onRowSelectUpdate;
-    if (this.cfg.onRowSelectStart) options.onstart = ice.ace.bind(this, function() {
-        this.cfg.onRowSelectStart.apply(this, arguments);
-        return true;
-    });
-    if (this.cfg.onRowSelectComplete) options.oncomplete = ice.ace.bind(this, function() {
-        this.cfg.onRowSelectComplete.apply(this, arguments);
-        return true;
-    });
-
-    var params = {},
-        _self = this;
-    params[this.id + '_instantSelectedRowIndex'] = rowId;
-    if (deselectRowId) params[this.id + '_instantUnselectedRowIndex'] = deselectRowId;
-
-    options.params = params;
-    options.onsuccess = function(responseXML) {
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            if (id != _self.id) ice.ace.AjaxUtils.updateElement(id, content);
-        });
-        return false;
-    };
-
-    if (this.behaviors)
-        if (this.behaviors.select) {
-            this.behaviors.select(params);
-            return;
-        }
-
-    ice.ace.AjaxRequest(options);
-}
-
-ice.ace.DataTable.prototype.fireRowDeselectEvent = function(rowId) {
-    var options = {
-        source: this.id,
-        execute: this.id,
-        formId: this.cfg.formId
-    };
-
-    if (this.cfg.onRowUnselectUpdate) options.render = this.cfg.onRowUnselectUpdate;
-    var params = {},
-            _self = this;
-    params[this.id + '_instantUnselectedRowIndex'] = rowId;
-
-    options.params = params;
-    options.onsuccess = function(responseXML) {
-        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
-            if (id != _self.id) ice.ace.AjaxUtils.updateElement(id, content);
-        });
-        return false;
-    };
-
-    if (this.behaviors)
-        if (this.behaviors.deselect) {
-            this.behaviors.deselect(params);
-            return;
-        }
-
-    ice.ace.AjaxRequest(options);
-}
-
-
-
-
-
-/* #########################################################################
- ########################### Selection Events ############################
- ######################################################################### */
 ice.ace.DataTable.prototype.onRowClick = function(event, rowElement) {
     //Check if rowclick triggered this event not an element in row content
     if (ice.ace.jq(event.target).is('td,span,div')) {
         var row = ice.ace.jq(rowElement);
-
-        if (row.hasClass('ui-selected')) this.unselectRow(row);
-        else this.selectRow(row);
-    }
-}
-
-ice.ace.DataTable.prototype.selectRow = function(row) {
-    var rowId = row.attr('id').split('_row_')[1],
-        deselectRowId = undefined;
-
-    //unselect previous selection
-    if (this.isSingleSelection()) {
-        row.siblings('.ui-selected').removeClass('ui-selected ui-state-highlight ui-state-hover');
-        this.deselection = [];
-        deselectRowId = this.selection[0];
-        this.deselection.push(deselectRowId);
-        this.selection = [];
-    }
-
-    //add to selection
-    row.addClass('ui-state-highlight ui-selected');
-    this.deselection = ice.ace.jq.grep(this.deselection, function(r) { return r != rowId; });
-    this.selection.push(rowId);
-
-    //save state
-    this.writeSelections();
-    if (this.cfg.instantSelect) this.fireRowSelectEvent(rowId, deselectRowId);
-}
-
-ice.ace.DataTable.prototype.unselectRow = function(row) {
-    var rowId = row.attr('id').split('_row_')[1];
-
-    //remove visual style
-    row.removeClass('ui-selected ui-state-highlight ui-state-hover');
-
-    if (this.isSingleSelection()) this.deselection = [];
-
-    //remove from selection
-    this.selection = ice.ace.jq.grep(this.selection, function(r) { return r != rowId; });
-    this.deselection.push(rowId);
-
-    //save state
-    this.writeSelections();
-    if (this.cfg.instantSelect) {
-        this.fireRowDeselectEvent(rowId);
-        if (this.isSingleSelection()) {
-            this.deselection = [];
-            this.selection = [];
-            this.writeSelections();
-        }
+        if (row.hasClass('ui-selected')) this.doSelectionEvent('row', true, row);
+        else this.doSelectionEvent('row', false, row);
     }
 }
 
@@ -833,36 +756,9 @@ ice.ace.DataTable.prototype.onCellClick = function(event, cellElement) {
     //Check if rowclick triggered this event not an element in row content
     if (ice.ace.jq(event.target).is('div,td,span')) {
         var cell = ice.ace.jq(cellElement);
-        if (cell.hasClass('ui-selected')) this.unselectCell(cell);
-        else this.selectCell(cell);
+        if (cell.hasClass('ui-selected')) this.doSelectionEvent('cell', true, cell);
+        else this.doSelectionEvent('cell', false, cell);
     }
-}
-
-ice.ace.DataTable.prototype.selectCell = function(cell) {
-    var rowId = cell.parent().attr('id').split('_row_')[1],
-            columnIndex = cell.index();
-
-    //unselect previous selection
-    if (this.cfg.selectionMode === 'singlecell') {
-        ice.ace.jq(this.jqId + ' tbody.ui-datatable-data td').removeClass('ui-selected ui-state-highlight ui-state-hover');
-        this.selection = [];
-    }
-
-    cell.addClass('ui-state-highlight ui-selected');
-    this.selection.push(rowId + '#' + columnIndex);
-    this.writeSelections();
-    if (this.cfg.instantSelect) this.fireCellSelectEvent(false);
-}
-
-ice.ace.DataTable.prototype.unselectCell = function(cell) {
-    var rowId = cell.parent().attr('id').split('_row_')[1],
-            columnIndex = cell.index(),
-            cellId = rowId + '#' + columnIndex;
-
-    cell.removeClass('ui-selected ui-state-highlight ui-state-hover');
-    this.selection = ice.ace.jq.grep(this.selection, function(c) { return c != cellId; });
-    this.writeSelections();
-    if (this.cfg.instantSelect) this.fireCellSelectEvent(true);
 }
 
 
@@ -1210,12 +1106,21 @@ ice.ace.DataTable.prototype.setupCellEditorEvents = function(rowEditors) {
  ########################## Selection Helpers ############################
  ######################################################################### */
 ice.ace.DataTable.prototype.writeSelections = function() {
+    // Writes selection state to hidden field for submission
     ice.ace.jq(this.selectionHolder).val(this.selection.join(','));
     ice.ace.jq(this.deselectionHolder).val(this.deselection.join(','));
 };
 
+ice.ace.DataTable.prototype.readSelections = function() {
+    // Reading clears JS selected state following delta field submissions
+    var selectionVal = ice.ace.jq(this.selectionHolder).val(),
+        deselectionVal = ice.ace.jq(this.deselectionHolder).val();
+    this.selection = (selectionVal == '') ? [] : selectionVal.split(',');
+    this.deselection = (deselectionVal == '') ? [] : deselectionVal.split(',');
+}
+
 ice.ace.DataTable.prototype.isSingleSelection = function() {
-    return this.cfg.selectionMode == 'single';
+    return this.cfg.selectionMode == 'single' || this.cfg.selectionMode === 'singlecell';
 };
 
 ice.ace.DataTable.prototype.clearSelection = function() {
