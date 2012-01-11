@@ -57,7 +57,6 @@ ice.ace.AccordionPanel = function(id, cfg) {
 ice.ace.AccordionPanel.prototype.onTabChange = function(event, ui) {
     var panel = ui.newContent.get(0),
         shouldLoad = this.cfg.dynamic && !this.isLoaded(panel);
-    if (!panel) return;
 
     //Call user onTabChange callback
     if(this.cfg.onTabChange) {
@@ -92,11 +91,13 @@ ice.ace.AccordionPanel.prototype.loadDynamicTab = function(panel) {
     options.onsuccess = function(responseXML) {
         ice.ace.selectCustomUpdates(responseXML, function(id, content) {
             if(id == _self.id){
-                jQuery(panel).html(content);
+			if (panel) {
+				jQuery(panel).html(content);
 
-                if(_self.cfg.cache) {
-                    _self.markAsLoaded(panel);
-                }
+				if(_self.cfg.cache) {
+					_self.markAsLoaded(panel);
+				}
+			}
 
             }
             else {
@@ -110,7 +111,8 @@ ice.ace.AccordionPanel.prototype.loadDynamicTab = function(panel) {
 
     var params = {};
     params[this.id + '_contentLoad'] = true;
-    params[this.id + '_newTab'] = panel.id;
+    if (panel) params[this.id + '_newTab'] = panel.id;
+    params[this.id + '_active'] = this.stateHolder.val();
     params['ice.customUpdate'] = this.id;
 
     if(this.cfg.ajaxTabChange) {
@@ -138,7 +140,8 @@ ice.ace.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
 
     var params = {};
     params[this.id + '_tabChange'] = true;
-    params[this.id + '_newTab'] = panel.id;
+    if (panel) params[this.id + '_newTab'] = panel.id;
+    params[this.id + '_active'] = this.stateHolder.val();
 
     options.params = params;
 
