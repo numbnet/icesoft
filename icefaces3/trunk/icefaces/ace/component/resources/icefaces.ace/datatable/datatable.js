@@ -59,11 +59,10 @@ ice.ace.DataTable = function(id, cfg) {
     if (!this.cfg.disabled) {
         this.setupSortEvents();
 
-        if (this.cfg.selectionMode || this.cfg.columnSelectionMode) {
+        if (this.cfg.selectionMode) {
             this.selectionHolder = this.jqId + '_selection';
             this.deselectionHolder = this.jqId + '_deselection';
-            var preselection = ice.ace.jq(this.jqId + '_selection').val();
-            this.selection = (preselection == "") ? [] : preselection.split(',');
+            this.selection = [];
             this.deselection = [];
             this.setupSelectionEvents();
         }
@@ -258,29 +257,26 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
 }
 
 ice.ace.DataTable.prototype.setupSelectionEvents = function() {
-    var _self = this;
-    //Row mouseover, mouseout, click
-    if (this.cfg.selectionMode) {
-        var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click',
-                selector = this.isCellSelectionEnabled() ? this.jqId + ' tbody.ui-datatable-data > tr > td'
-                        : this.jqId + ' tbody.ui-datatable-data:first > tr:not(.ui-unselectable)';
+    var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click',
+        selector = this.isCellSelectionEnabled()
+                ? this.jqId + ' tbody.ui-datatable-data > tr > td'
+                : this.jqId + ' tbody.ui-datatable-data:first > tr:not(.ui-unselectable)';
 
-        ice.ace.jq(selector)
-                .css('cursor', 'pointer')
-                .die()
-                .live('mouseover', function() {
-                    var element = ice.ace.jq(this);
-                    if (!element.hasClass('ui-selected')) element.addClass('ui-state-hover');
-                })
-                .live('mouseout', function() {
-                    var element = ice.ace.jq(this);
-                    if (!element.hasClass('ui-selected')) element.removeClass('ui-state-hover');
-                })
-                .live(selectEvent, function(event) {
-                    if (this.nodeName == 'TR') _self.onRowClick(event, this);
-                    else _self.onCellClick(event, this);
-                });
-    }
+    ice.ace.jq(selector)
+            .css('cursor', 'pointer')
+            .die()
+            .live('mouseover', function() {
+                var element = ice.ace.jq(this);
+                if (!element.hasClass('ui-selected')) element.addClass('ui-state-hover');
+            })
+            .live('mouseout', function() {
+                var element = ice.ace.jq(this);
+                if (!element.hasClass('ui-selected')) element.removeClass('ui-state-hover');
+            })
+            .live(selectEvent, function(event) {
+                if (this.nodeName == 'TR') _self.onRowClick(event, this);
+                else _self.onCellClick(event, this);
+            });
 }
 
 ice.ace.DataTable.prototype.setupReorderableColumns = function() {
@@ -800,7 +796,7 @@ ice.ace.DataTable.prototype.sendPanelContractionRequest = function(row) {
         render: this.id,
         formId: this.cfg.formId
     },
-     rowId = row.attr('id').split('_row_')[1];
+            rowId = row.attr('id').split('_row_')[1];
     _self = this;
 
     var params = {};
@@ -940,7 +936,7 @@ ice.ace.DataTable.prototype.showEditors = function(element) {
 
     if (this.behaviors)
         if (this.behaviors.editStart) {
-            this.behaviors.editStart(params);
+            this.behaviors.editStart();
             return;
         }
 }
@@ -1090,9 +1086,9 @@ ice.ace.DataTable.prototype.setupCellEditorEvents = function(rowEditors) {
 
     // unbind and rebind these events.
     var showEditors = function(event) { event.stopPropagation(); _self.showEditors(event.target); },
-        saveRowEditors = function(event) { event.stopPropagation(); _self.saveRowEdit(event.target); },
-        cancelRowEditors = function(event) { event.stopPropagation(); _self.cancelRowEdit(event.target); },
-        inputCellKeypress = function(event) { if (event.which == 13) return false; };
+            saveRowEditors = function(event) { event.stopPropagation(); _self.saveRowEdit(event.target); },
+            cancelRowEditors = function(event) { event.stopPropagation(); _self.cancelRowEdit(event.target); },
+            inputCellKeypress = function(event) { if (event.which == 13) return false; };
     rowEditors.find('a.ui-icon-pencil').die().live('click', showEditors).live('keyup', function(event) { if (event.which == 32 || event.which == 13) { showEditors(event); }} );
     rowEditors.find('a.ui-icon-check').die().live('click', saveRowEditors).live('keyup', function(event) { if (event.which == 32 || event.which == 13) { saveRowEditors(event); }} );
     rowEditors.find('a.ui-icon-close').die().live('click', cancelRowEditors).live('keyup', function(event) { if (event.which == 32 || event.which == 13) { cancelRowEditors(event); }} );
@@ -1123,15 +1119,15 @@ ice.ace.DataTable.prototype.isSingleSelection = function() {
     return this.cfg.selectionMode == 'single' || this.cfg.selectionMode === 'singlecell';
 };
 
-ice.ace.DataTable.prototype.clearSelection = function() {
-    this.selection = [];
-    ice.ace.jq(this.selectionHolder).val('');
-};
-
 ice.ace.DataTable.prototype.isSelectionEnabled = function() {
-    return this.cfg.selectionMode != undefined || this.cfg.columnSelectionMode != undefined;
+    return this.cfg.selectionMode != undefined;
 };
 
 ice.ace.DataTable.prototype.isCellSelectionEnabled = function() {
     return this.cfg.selectionMode === 'singlecell' || this.cfg.selectionMode === 'multiplecell';
+};
+
+ice.ace.DataTable.prototype.clearSelection = function() {
+    this.selection = [];
+    ice.ace.jq(this.selectionHolder).val('');
 };
