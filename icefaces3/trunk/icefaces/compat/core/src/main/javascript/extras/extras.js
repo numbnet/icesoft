@@ -5593,28 +5593,43 @@ Ice.simulateBlur = function(ele, anc) {
 Ice.DataExporters = {};
 Ice.DataExporter = function(id) {
 	this.id = id;
-	Ice.DataExporters[this.id] = this;
-	if (Ice.DataExporter.shouldOpenPopUp()) {
-		this.window = window.open('','','width=400,height=150');
-		this.window.document.write('<html><head><title>Data export file loader</title></head><body id="body"></body></html>');
-		this.body = this.window.document.getElementById('body');
-		this.body.innerHTML = '<p>Please wait while the file you requested is generated...</p>';
-		this.window.focus();
+	if (!Ice.DataExporters[this.id]) {
+		Ice.DataExporters[this.id] = this;
+		if (Ice.DataExporter.shouldOpenPopUp()) {
+			if (!this.window) {
+				this.openWindow();
+			}
+		}
+	} else {
+		if (Ice.DataExporter.shouldOpenPopUp()) {
+			var instance = Ice.DataExporters[this.id];
+			if (instance.window.closed) {
+				instance.openWindow();
+			}
+			instance.body.innerHTML = '<p>Please wait while your file is generated...</p>';
+			instance.window.focus();
+		}
 	}
-}
+};
+Ice.DataExporter.prototype.openWindow = function() {
+	this.window = window.open('','','width=400,height=150');
+	this.window.document.write('<html><head><title>Data export file loader</title></head><body id="body"></body></html>');
+	this.body = this.window.document.getElementById('body');
+	this.body.innerHTML = '<p>Please wait while your file is generated...</p>';
+};
 Ice.DataExporter.prototype.url = function(url) {
 	if (Ice.DataExporter.shouldOpenPopUp()) {
-		this.body.innerHTML = this.body.innerHTML + '<p>The file is ready. Click link below to download.</p>'
-			+ '<a href="' + url + '">Download File</a>';
+		this.body.innerHTML = '<p>Click link below to download file.</p>'
+			+ '<a href="' + url + '">Download</a>';
 		this.window.focus();
 	} else {
 		var iframe = document.createElement('iframe');
 		iframe.setAttribute('src', url);
 		iframe.style.display = 'none';
 		document.body.appendChild(iframe);
+		Ice.DataExporters[this.id] = null;
 	}
-	Ice.DataExporters[this.id] = null;
-}
+};
 Ice.DataExporter.shouldOpenPopUp = function() {
 	if (Prototype.Browser.IE) {
 		var version = parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5));
@@ -5622,7 +5637,7 @@ Ice.DataExporter.shouldOpenPopUp = function() {
 			return true;
 	}
 	return false;
-}
+};
 
 Ice.tblRowFocus = function(anc, singleSelection) {
     var parent = anc.parentNode.parentNode;
