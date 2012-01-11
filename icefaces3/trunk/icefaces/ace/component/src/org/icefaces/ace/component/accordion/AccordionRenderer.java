@@ -58,7 +58,7 @@ public class AccordionRenderer extends CoreRenderer {
                 acco.setActiveIndex(Integer.valueOf(activeIndex));
 		}
 
-        if(acco.isTabChangeRequest(context)) {
+        if(acco.isTabChangeRequest(context) && acco.getActiveIndex() >= 0) {
             AccordionPaneChangeEvent changeEvent = new AccordionPaneChangeEvent(acco, acco.findTabToLoad(context));
             changeEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
 
@@ -75,7 +75,7 @@ public class AccordionRenderer extends CoreRenderer {
         if(acco.isContentLoadRequest(context)) {
             AccordionPane tabToLoad = (AccordionPane) acco.findTabToLoad(context);
 
-            tabToLoad.encodeAll(context);
+            if (tabToLoad != null) tabToLoad.encodeAll(context);
         }else {
             encodeMarkup(context, acco);
             encodeScript(context, acco);
