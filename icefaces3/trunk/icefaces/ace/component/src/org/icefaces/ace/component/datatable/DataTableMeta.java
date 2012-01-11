@@ -85,7 +85,7 @@ public class DataTableMeta extends UIDataMeta {
             " state object for the current row will be exposed when iterating.", defaultValue = "rowState")
     private String rowStateVar;
 
-    @Property(tlddoc = "Enables lazy loading. Expects the 'value' property reference " +
+    @Property(tlddoc = "Enables lazy loading. Lazy loading expects the 'value' property to reference " +
             "an instance of LazyDataModel, an interface to support incremental fetching of " +
             "table entities.")
     private boolean lazy;
@@ -93,20 +93,19 @@ public class DataTableMeta extends UIDataMeta {
     @Property(defaultValue="0",
             defaultValueType= DefaultValueType.EXPRESSION,
             implementation=Implementation.GENERATE,
-            tlddoc="The number of rows (starting with the one identified by the " +
-                    "first property) to be displayed, or zero to display the entire " +
+            tlddoc="The number of rows to be displayed, or zero to display the entire " +
                     "set of available rows.")
     private int rows;
 
-    @Property(tlddoc = "Message to render when there are no records to display.")
+    @Property(tlddoc = "Define a string to render when there are no records to display.")
     private String emptyMessage;
     
-    @Property(tlddoc = "Disable sorting for multiple columns at once. Sorting " +
+    @Property(tlddoc = "Disables sorting for multiple columns at once. Sorting " +
             "is enabled by the use of sortBy on ace:column components.",
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean singleSort;
 
-    @Property(tlddoc = "A map of your row data objects to UI states. Row-level " +
+    @Property(tlddoc = "Defines a map of your row data objects to UI states. Row-level " +
             "features (selection, expansion, etc.) are manipulable through this repository.")
     private RowStateMap stateMap;
 
@@ -143,14 +142,13 @@ public class DataTableMeta extends UIDataMeta {
     /* ##################################################################### */
     /* ########################## Style Properties ######################### */
     /* ##################################################################### */
-    @Property(tlddoc = "Additional CSS rules to be applied to this component.")
+    @Property(tlddoc = "Custom inline CSS styles to use for this component. These styles are generally applied to the root DOM element of the component. This is intended for per-component basic style customizations. Note that due to browser CSS precedence rules, CSS rendered on a DOM element will take precedence over the external stylesheets used to provide the ThemeRoller theme on this component. If the CSS properties applied with this attribute do not affect the DOM element you want to style, you may need to create a custom theme styleClass for the theme CSS class that targets the particular DOM elements you wish to customize.")
     private String style;
 
-    @Property(tlddoc = "Supplementary CSS classes to add to those already applied" +
-            " on this component.")
+    @Property(tlddoc = "Custom CSS style class(es) to use for this component. These style classes can be defined in your page or in a theme CSS file.")
     private String styleClass;
 
-    @Property(tlddoc = "Adds the following style to each row of the dataTable. " +
+    @Property(tlddoc = "Define css classes for each row of the dataTable. " +
             "EL can be used in this attribute to produce conditional row styling.")
     private String rowStyleClass;
 
@@ -188,15 +186,15 @@ public class DataTableMeta extends UIDataMeta {
     /* ##################################################################### */
     /* ############################# Pagination ############################ */
     /* ##################################################################### */
-    @Property(tlddoc = "Comma separated integer values that define the options " +
+    @Property(tlddoc = "Defines a list of comma separated integer values that represent the options " +
             "for \"number of items per page\" presented to the user.")
     private String rowsPerPageTemplate;
 
-    @Property(tlddoc = "Coded string defining the layout of the text displaying" +
+    @Property(tlddoc = "Defines a coded string representing the layout of the text displaying" +
             " the current page. Default is: \"{currentPage} of {totalPages}\".")
     private String currentPageReportTemplate;
 
-    @Property(tlddoc = "Coded string defining the controls available as part of" +
+    @Property(tlddoc = "Defines a coded string representing the controls available as part of" +
             " the paginator. Default is: \"{FirstPageLink} {PrevgetSEliousPageLink} " +
             "{PageLinks} {NextPageLink} {LastPageLink}\".")
     private String paginatorTemplate;
@@ -205,43 +203,19 @@ public class DataTableMeta extends UIDataMeta {
             "options are top, bottom, or the default, both.", defaultValue = "both")
     private String paginatorPosition;
 
-    @Property(tlddoc = "Always display the paginator, even when fewer then 1 page " +
+    @Property(tlddoc = "Defines whether the paginator always displays, even when fewer then 1 page " +
             "full of items are displayed.")
     private boolean paginatorAlwaysVisible;
 
-    @Property(tlddoc = "Maximum number of individual page links to display in paginator.",
+    @Property(tlddoc = "Defines the maximum number of individual page links to display in paginator.",
             defaultValue = "10", defaultValueType = DefaultValueType.EXPRESSION)
     private Integer pageCount;
 
-    @Property(tlddoc = "Enables pagination on the table.")
-    private boolean paginator;
-
-    @Property(tlddoc = "Index of the current page, beginning at 1.")
+    @Property(tlddoc = "Defines the index of the current page, beginning at 1.")
     private int page;
 
-
-
-
-
-    /* ##################################################################### */
-    /* ####################### Javascript Callbacks ######################## */
-    /* ##################################################################### */
-    @Property(tlddoc = "Javascript handler to run on the firing of a table " +
-            "row or cell selection event.")
-    private String onSelectStart;
-
-    @Property(tlddoc = "Javascript handler to run on the completion of a table " +
-            "row or cell selection ajax event.")
-    private String onSelectComplete;
-
-    @Property(tlddoc = "Javascript handler to run on the firing of a row selection event.")
-    private String onRowSelectStart;
-
-    @Property(tlddoc = "Javascript handler to run on the completion of a row selection ajax event.")
-    private String onRowSelectComplete;
-
-    @Property(tlddoc = "Javascript handler to run on the firing of a row expansion event.")
-    private String onExpandStart;
+    @Property(tlddoc = "Enables pagination on the table.")
+    private boolean paginator;
 
 
 
@@ -250,15 +224,15 @@ public class DataTableMeta extends UIDataMeta {
     /* ##################################################################### */
     /* ########################## Scrolling Prop. ########################## */
     /* ##################################################################### */
-    @Property(tlddoc = "Fixed height for the table in pixels. Must be set to " +
+    @Property(tlddoc = "Defines a fixed height for the table in pixels. Must be set to " +
             "use vertical scrolling.")
     private Integer height;
 
-    @Property(tlddoc = "When enabled, table overflows the fixed height and adds " +
-            "a scrollbar. Note: Used in combination with multi-row headers defined by a ColumnGroup" +
+    @Property(tlddoc = "Enabling renders a table that overflows the fixed height and adds " +
+            "a scrollbar. Note, used in combination with multi-row headers defined by a ColumnGroup" +
             "component, it is assumed that every body column of the table will have a associated " +
             "single column spanning header column on the bottom row of the multi-row header. This is " +
-            "to allow for appropriate sizing of the column the associated header.")
+            "to allow for appropriate sizing of the scrollable column and the associated header td.")
     private boolean scrollable;
 
     @Property(tlddoc = "Enables the table to insert additional rows as " +
@@ -273,16 +247,16 @@ public class DataTableMeta extends UIDataMeta {
     /* ##################################################################### */
     /* ########################## Selection Prop. ########################## */
     /* ##################################################################### */
-    @Property(tlddoc = "Code word indicating method of table element selection." +
+    @Property(tlddoc = "Defines a code word indicating method of table element selection." +
             " Available values include: \"multiple\", \"single\"," +
             " \"cellblock\", \"cellrange\" and \"singlecell\".")
     private String selectionMode;
 
-    @Property(tlddoc = "Require a double-click to fire row/column/cell selection events.")
-    private boolean dblClickSelect;
+    @Property(tlddoc = "Enable to require a double-click to fire row/cell selection events.")
+    private boolean doubleClickSelect;
 
-    @Property(tlddoc = "An object to be populated with the backing object " +
-            "corresponding to selected table cells. In the case of multiple " +
+    @Property(tlddoc = "Defines an object to be populated with the backing object " +
+            "representing selected table cells. In the case of multiple " +
             "element selection, it's expected that this object will be an implementer" +
             " of the List interface.")
     private Object cellSelection;
@@ -294,17 +268,17 @@ public class DataTableMeta extends UIDataMeta {
     /* ##################################################################### */
     /* ########################## Filtering Prop. ########################## */
     /* ##################################################################### */
-    @Property(tlddoc = "Force creation of the filtered data set from the bound " +
+    @Property(tlddoc = "Enable to force creation of the filtered data set from the bound " +
             "value every render. Alternately attempt to use hashCodes of the " +
             "value property to detect changes and prompt refiltering.",
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean constantRefilter;
 
-    @Property(tlddoc="Javascript event on which to trigger filter event, ex. " +
+    @Property(tlddoc="Defines the Javascript event on which to trigger filter event, ex. " +
             "\'keyup\', \'blur\', \'change\' and \'enter\'.", defaultValue="change")
     private String filterEvent;
 
-    @Property(tlddoc="The input to the global filter, coming from the client, or " +
+    @Property(tlddoc="Defines the input to the column non-specific filter, coming from the client, or " +
             "from the app via a value binding.")
     private String filterValue;
 
@@ -323,7 +297,7 @@ public class DataTableMeta extends UIDataMeta {
             "dragging.")
     private boolean reorderableColumns;
 
-    @Property(tlddoc = "A list of integers representing a rendering order for " +
-            "the Column children of the datatable.")
+    @Property(tlddoc = "Defines a list of integers representing a rendering order for " +
+            "the Column children of the table.")
     private List<Integer> columnOrdering;
 }

@@ -484,7 +484,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (table.isSelectionEnabled()) {
             writer.write(",selectionMode:'" + table.getSelectionMode() + "'");
 
-            if (table.isDblClickSelect())
+            if (table.isDoubleClickSelect())
                 writer.write(",dblclickSelect:true");
 
             if (table.hasSelectionClientBehaviour())
@@ -494,16 +494,12 @@ public class DataTableRenderer extends CoreRenderer {
         //Panel expansion
         if (table.getPanelExpansion() != null) {
             writer.write(",panelExpansion:true");
-            if (table.getOnExpandStart() != null)
-                writer.write(",onExpandStart:function(row) {" + table.getOnExpandStart() + "}");
         }
 
 
         //Row expansion
         if (table.getRowExpansion() != null) {
             writer.write(",rowExpansion:true");
-            if (table.getOnExpandStart() != null)
-                writer.write(",onExpandStart:function(row) {" + table.getOnExpandStart() + "}");
         }
 
 
