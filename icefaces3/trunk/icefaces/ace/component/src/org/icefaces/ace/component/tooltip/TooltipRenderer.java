@@ -70,13 +70,13 @@ public class TooltipRenderer extends CoreRenderer {
 		if(tooltip.getValue() == null) {
 			ResponseWriter writer = facesContext.getResponseWriter();
 			String clientId = tooltip.getClientId(facesContext);
-			
+
 			writer.startElement("div", null);
 			writer.writeAttribute("id", clientId + "_content", null);
 			writer.writeAttribute("style", "display:none;", null);
 			
 			renderChildren(facesContext, tooltip);
-			
+
 			writer.endElement("div");
 		}
 	}
@@ -88,25 +88,25 @@ public class TooltipRenderer extends CoreRenderer {
 		String clientId = tooltip.getClientId(facesContext);
 
         writer.startElement("span",null);
-        writer.writeAttribute("id", clientId + "_script", null);
+        writer.writeAttribute("id", clientId, null);
 
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
-		
+
         writer.write("jQuery(function() {");
-			
+
 		writer.write(this.resolveWidgetVar(tooltip) + " = new ");
-		
+
 		JSONBuilder jb = JSONBuilder.create();
 		jb.beginFunction("ice.ace.Tooltip")
 			.beginMap()
 				.entry("global", global)
 				.entry("id", clientId)
 				.entry("displayListener", (tooltip.getDisplayListener() != null));
-        
+
 		if(!global) {
 			jb.entry("forComponent", owner);
-			writer.write(jb.toString()); 
+			writer.write(jb.toString());
 			writer.write(",content:");
 			if(tooltip.getValue() == null)
 				writer.write("document.getElementById('" + clientId + "_content').innerHTML");
@@ -115,13 +115,13 @@ public class TooltipRenderer extends CoreRenderer {
 				writer.write(ComponentUtils.getStringValueToRender(facesContext, tooltip).replaceAll("'", "\\\\'"));
 				writer.write("'");
 			}
-				
+
 			writer.write(",");
 		} else {
-			writer.write(jb.toString()); 
+			writer.write(jb.toString());
 			writer.write(",");
 		}
-		
+
 		jb = JSONBuilder.create();
 		//Events
 		jb.beginMap("show")
@@ -134,7 +134,7 @@ public class TooltipRenderer extends CoreRenderer {
 				.entry("type", tooltip.getShowEffect())
 			.endMap()
 		.endMap();
-		
+
 		jb.beginMap("hide")
 			.beginMap("when")
 				.entry("event", tooltip.getHideEvent())
@@ -145,7 +145,7 @@ public class TooltipRenderer extends CoreRenderer {
 				.entry("type", tooltip.getHideEffect())
 			.endMap()
 		.endMap();
-	
+
 		//Position
 		jb.beginMap("position");
         String container = owner == null ? "document.body" : "jQuery(ice.ace.escapeClientId('" + owner +"')).parent()";
@@ -155,23 +155,23 @@ public class TooltipRenderer extends CoreRenderer {
 				.entry("tooltip", tooltip.getPosition())
 			.endMap()
 		.endMap();
-		
+
         encodeClientBehaviors(facesContext, tooltip, jb);
 		jb.endMap().endFunction();
-		writer.write(jb.toString());	
-		
-		writer.write("});");	
-		
+		writer.write(jb.toString());
+
+		writer.write("});");
+
         writer.endElement("script");
         writer.endElement("span");
 	}
-	
+
 	protected String getTarget(FacesContext facesContext, Tooltip tooltip) {
 		if(tooltip.isGlobal())
 			return null;
 		else {
 			String _for = tooltip.getFor();
-			
+
 			String forElement = tooltip.getForElement();
 			if(_for != null) {
 				UIComponent forComponent = tooltip.findComponent(_for);
@@ -179,7 +179,7 @@ public class TooltipRenderer extends CoreRenderer {
 					throw new FacesException("Cannot find component \"" + _for + "\" in view.");
 				else
 					return forComponent.getClientId(facesContext);
-				
+
 			} else if(forElement != null) {
 				return forElement;
 			} else {
