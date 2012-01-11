@@ -853,8 +853,6 @@ ice.ace.DataTable.prototype.sendRowContractionRequest = function(row) {
 }
 
 ice.ace.DataTable.prototype.loadExpandedRows = function(row) {
-    if (this.cfg.onExpandStart) this.cfg.onExpandStart.call(this, row);
-
     var options = {
         source: this.id,
         execute: this.id,
@@ -886,8 +884,6 @@ ice.ace.DataTable.prototype.loadExpandedRows = function(row) {
 }
 
 ice.ace.DataTable.prototype.loadExpandedPanelContent = function(row) {
-    if (this.cfg.onExpandStart) this.cfg.onExpandStart.call(this, row);
-
     var options = {
         source: this.id,
         execute: this.id,
