@@ -18,6 +18,7 @@ package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import org.w3c.dom.Element;
 
 import javax.faces.FacesException;
@@ -62,16 +63,32 @@ public class CommandLinkRenderer extends com.icesoft.faces.renderkit.dom_html_ba
     }
 
     private String getJavaScriptPartialOnClickString(FacesContext facesContext, UIComponent uiComponent, Map parameters) {
+        String str1 = "";
+        String str2 = "";
+        //myfaces queue does not serialize
+        //until the request is sent, so we must delay
+        if (ImplementationUtil.isMyFaces()) {
+            str1 = "ice.onAfterUpdate(function() {";
+            str2 = "});";
+        }
         return com.icesoft.faces.renderkit.dom_html_basic.CommandLinkRenderer
                 .getJavascriptHiddenFieldSetters(facesContext, (UICommand) uiComponent, parameters) +
                 "iceSubmitPartial(form,this,event);" +
-                getJavascriptHiddenFieldReSetters(facesContext, (UICommand) uiComponent, parameters) + "return false;";
+                str1 + getJavascriptHiddenFieldReSetters(facesContext, (UICommand) uiComponent, parameters) + str2 + "return false;";
     }
 
     private String getJavaScriptOnClickString(FacesContext facesContext, UIComponent uiComponent, Map parameters) {
+        String str1 = "";
+        String str2 = "";
+        //myfaces queue does not serialize
+        //until the request is sent, so we must delay
+        if (ImplementationUtil.isMyFaces()) {
+            str1 = "ice.onAfterUpdate(function() {";
+            str2 = "});";
+        }
         return com.icesoft.faces.renderkit.dom_html_basic.CommandLinkRenderer
                 .getJavascriptHiddenFieldSetters(facesContext, (UICommand) uiComponent, parameters) +
                 "iceSubmit(form,this,event);" +
-                getJavascriptHiddenFieldReSetters(facesContext, (UICommand) uiComponent, parameters) + "return false;";
+                str1 + getJavascriptHiddenFieldReSetters(facesContext, (UICommand) uiComponent, parameters) + str2 + "return false;";
     }
 }
