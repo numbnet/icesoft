@@ -257,6 +257,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
 }
 
 ice.ace.DataTable.prototype.setupSelectionEvents = function() {
+    var _self = this;
     var selectEvent = this.cfg.dblclickSelect ? 'dblclick' : 'click',
         selector = this.isCellSelectionEnabled()
                 ? this.jqId + ' tbody.ui-datatable-data > tr > td'
