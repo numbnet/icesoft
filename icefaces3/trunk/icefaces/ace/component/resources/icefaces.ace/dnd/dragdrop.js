@@ -71,6 +71,7 @@ ice.ace.Droppable.prototype.setupDropHandler = function() {
         options.params = params;
 
         if (jQuery.isFunction(dropListener)) {
+            options.params[_self.id] = _self.id; // also triggers drop listener, if any
             dropListener(options.params);
         } else ice.ace.AjaxRequest(options);
     };
