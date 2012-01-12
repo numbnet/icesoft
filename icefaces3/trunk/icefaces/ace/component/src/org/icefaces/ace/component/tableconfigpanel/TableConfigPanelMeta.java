@@ -47,23 +47,23 @@ import javax.faces.application.ResourceDependency;
     defaultEvent = "submit"
 )
 public class TableConfigPanelMeta extends UIComponentBaseMeta {
-    @Property(tlddoc = "Allow the configuration of column order." )
+    @Property(tlddoc = "Enable the configuration of column order." )
     boolean columnOrderingConfigurable;
 //    @Property(tlddoc = "Allow the configuration of column size.")
 //    boolean columnSizingConfigurable;
-    @Property(tlddoc = "Allow the configuration of column visibility.")
+    @Property(tlddoc = "Enable the configuration of column visibility.")
     boolean columnVisibilityConfigurable;
-    @Property(tlddoc = "Allow the configuration of column headerText properties.")
+    @Property(tlddoc = "Enable the configuration of column headerText properties.")
     boolean columnNameConfigurable;
-    @Property(tlddoc = "Allow the configuration of column sorting priority and directions.")
+    @Property(tlddoc = "Enable the configuration of column sorting priority and directions.")
     boolean columnSortingConfigurable;
-    @Property(name = "for", tlddoc="Component ID of the DataTable this ConfigPanel manipulates.")
+    @Property(name = "for", tlddoc="Defines the component ID of the DataTable this ConfigPanel manipulates.")
     String forTarget;
-    @Property(tlddoc = "Hides columns with configurable property set to false.",
+    @Property(tlddoc = "Enable to hide columns with configurable property set to false, rather than render them with a disabled style.",
               defaultValue = "false",
               defaultValueType = DefaultValueType.EXPRESSION)
     boolean hideDisabledRows;
-    @Property(tlddoc = "Display modes for the 'open' control panel button. Available: paginator-button, first-col, last-col, plain",
+    @Property(tlddoc = "Defines the display mode for the 'open' control panel button. Available modes: paginator-button, first-col, last-col, plain",
               defaultValue = "first-col")
     String type;
 }
