@@ -45,7 +45,7 @@ public class ContextMenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Javascript variable name of the wrapped widget.")
     private String widgetVar;
 
-    @Property(name = "for", tlddoc = "Id of the component to attach to.")
+    @Property(name = "for", tlddoc = "Server side id of the component to attach to.")
     private String forValue;
 
     @Property(tlddoc = "Style of the main container element.")
@@ -58,7 +58,7 @@ public class ContextMenuMeta extends UIComponentBaseMeta {
     private int zindex;
 
     @Property(tlddoc = "Sets the effect for the menu display, default value is FADE. Possible values are" +
-            " \"FADE\", \"SLIDE\", \"NONE\". Use \"NONE\" to disable animation at all.", defaultValue = "fade")
+            " \"FADE\", \"SLIDE\", \"NONE\". Use \"NONE\" to disable animation at all. Note: in the 3.0 release, this attribute is not applicable to IE browsers; the \"SLIDE\" effect will always be applied by default.", defaultValue = "fade")
     private String effect;
 
     @Property(tlddoc = "Sets the effect duration in seconds.", defaultValue = "400")

@@ -36,7 +36,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         extendsClass    = "javax.faces.component.UICommand",
         componentType   = "org.icefaces.ace.component.LinkButton",
         rendererType    = "org.icefaces.ace.component.LinkButtonRenderer",
-        componentFamily = "org.icefaces.ace.LinkButton"
+        componentFamily = "org.icefaces.ace.LinkButton",
+		tlddoc = ""
 )
 @ResourceDependencies({
 		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
@@ -44,32 +45,32 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         @ResourceDependency(name="util/ace-yui.js",library="icefaces.ace")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="activate", javadoc="", tlddoc="Triggers when the button is clicked or pressed by any other means.", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="activate")
 public class LinkButtonMeta extends UICommandMeta {
 
-    @Property(tlddoc = "href of link. If specified and actionListener is absent, linkButton works " +
-                       "as normal anchor. If specified and actionListener is present, linkButton works " +
-                       "as AJAX event source, but href may be opened in a new tab or window")
+    @Property(tlddoc = "Href attribute of the anchor element. If specified and actionListener is absent, linkButton works " +
+                       "as a normal anchor. If specified and actionListener is present, linkButton works " +
+                       "as AJAX event source, but href may be opened in a new tab or window.")
     private String href;
 
-    @Property(tlddoc ="standard HTML href language attribute")
+    @Property(tlddoc ="Standard HTML href language attribute.")
     private String hrefLang;
 
-    @Property (defaultValue="false", tlddoc="If true, disables the YUI component on the page.")
+    @Property (defaultValue="false", tlddoc="If true, clicking the button does not send a request to the server, and also no page is loaded if href attribute was specified.")
     private boolean disabled;
 
-    @Property (tlddoc="This property defines the link text visible in the component", implementation= Implementation.GENERATE,
+    @Property (tlddoc="This property defines the link text visible in the component.", implementation= Implementation.GENERATE,
     defaultValue="Default Anchor Label")
     private Object value; 
 
-    @Property (tlddoc="tabindex of the component")
+    @Property (tlddoc="Tabindex of the component.")
     private Integer tabindex;
 
-    @Property(tlddoc="The CSS style class of the component")
+    @Property(tlddoc="The CSS style class of the component, rendered on the root div of the component.")
     private String styleClass;
 
-    @Property(tlddoc="the inline style of the component")
+    @Property(tlddoc="The inline style of the component, rendered on the root div of the component.")
     private String style;
 
     @Property(tlddoc="If the link is a traditional anchor, this is the traditional target attribute")

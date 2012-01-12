@@ -38,9 +38,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 		componentFamily= "org.icefaces.ace.CheckboxButton",
 		tlddoc="This component allows entry of a button which "+
 		       "supports browsers that see checkbox as true or false, "+
-		       "yes or no, on or off.  LabelPosition property allows label "+
-		       "to be placed on the button-in case of sam style, or to the left "+
-		       "of the button - in the case of rime style."
+		       "yes or no, on or off. The Themeroller check icon will be displayed by default when the checkbox is checked. Override the .ui-icon-check class to display a different image."
         )
 @ResourceDependencies({
         @ResourceDependency(name="util/combined.css",library="icefaces.ace"),
@@ -48,12 +46,11 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 		@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="activate", javadoc="", tlddoc="Triggers when the button is clicked or pressed by any other means.", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="activate")
 public class CheckboxButtonMeta extends UISelectBooleanMeta {
 
-    @Property(tlddoc="A label to be printed either on the buttton or to the left of it "+
-    		" according to labelPosition parameter")
+    @Property(tlddoc="Label to be displayed on the button.")
     private String label;
 
 /*    @Property(defaultValue="left",
@@ -61,17 +58,16 @@ public class CheckboxButtonMeta extends UISelectBooleanMeta {
     				"for sam skin.")
     private String labelPosition; */
 
-    @Property(tlddoc="style of the component, rendered on the root div of the component")
+    @Property(tlddoc="The inline style of the component, rendered on the root div of the component.")
 	private String style;
 
-    @Property(tlddoc="style class of the component, rendered on the root div of the component.")
+    @Property(tlddoc="The CSS style class of the component, rendered on the root div of the component.")
 	private String styleClass;
 
-    @Property (tlddoc="tabindex of the component")
+    @Property (tlddoc="Tabindex of the component.")
     private Integer tabindex;
 
     @Property (defaultValue="false",
-    		tlddoc="disabled property. If true no input may be submitted via this" +
-    				" component.  Is required by aria")
+    		tlddoc="If true no input may be submitted via this component.")
     private boolean disabled;
 }

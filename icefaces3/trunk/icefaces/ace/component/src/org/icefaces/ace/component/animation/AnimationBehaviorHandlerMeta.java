@@ -30,14 +30,14 @@ import org.icefaces.ace.meta.annotation.Implementation;
     extendsClass = "javax.faces.view.facelets.BehaviorHandler",
 	behaviorId = "org.icefaces.ace.animation.Animation",
 	behaviorClass = "org.icefaces.ace.component.animation.AnimationBehavior",
-    tlddoc="Animation is based on jQuery effects utilities."
+    tlddoc="Animation can be applied to components that implement the ClientBehaviorHolder interface. Animations are based on jQuery effects utilities."
 )
 public class AnimationBehaviorHandlerMeta {
 
-    @Property(required=Required.no, tlddoc="Boolean value that specifies whether to run the application or not.")
+    @Property(required=Required.no, tlddoc="(Deprecated) Boolean value that specifies whether to run the application or not.")
     private boolean run;
 
-    @Property(required=Required.no, tlddoc="The name of the animation, if using pre-defined animations like 'fade' and 'highlight' (Use 'anim' for free-form animations or simply omit this attribute).")
+    @Property(required=Required.no, tlddoc="The name of the effect, when using pre-defined effects like 'fade' and 'highlight'. Use 'anim' for free-form animations or simply omit this attribute.")
     private String name;
 
     @Property(required=Required.no, tlddoc="CSS properties to transition from (e.g. {height:20, color:'#222'}).")
@@ -49,13 +49,13 @@ public class AnimationBehaviorHandlerMeta {
     @Property(required=Required.no, tlddoc="Specifies the variation of the rate at which an animation progresses. Possible values are swing, easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint, easeInSine, easeOutSine, easeInOutSine, easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc, easeInElastic, easeOutElastic, easeInOutElastic, easeInBack, easeOutBack, easeInOutBack, easeInBounce, easeOutBounce, easeInOutBounce.")
     private String easing;
 
-    @Property(required=Required.no, tlddoc="Number of times the animation is to repeat.")
+    @Property(required=Required.no, tlddoc="Number of times the animation is to be repeated.")
     private Integer iterations;
 
     @Property(required=Required.no, tlddoc="The Effect object that contains the effect specifications to apply.")
     private Effect effectObject;
 
-    @Property(required=Required.no, tlddoc="Length of effect in milliseconds")
+    @Property(required=Required.no, tlddoc="Length of effect in milliseconds. The default value is 500 for free-form animations and varies for pre-defined effects.")
     private Double duration;
 	
     @Property(required=Required.no, tlddoc="Name of the event that will trigger the animation.", implementation=Implementation.EXISTS_IN_SUPERCLASS)
