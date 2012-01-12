@@ -67,7 +67,7 @@ public class MenuButtonMeta extends UIComponentBaseMeta {
             " \"FADE\", \"SLIDE\", \"NONE\". Use \"NONE\" to disable animation at all.", defaultValue = "fade")
     private String effect;
 
-    @Property(tlddoc = "Sets the effect duration in seconds.", defaultValue = "400")
+    @Property(tlddoc = "Sets the effect duration in milliseconds.", defaultValue = "400")
     private int effectDuration;
 
     @Property(tlddoc = "zindex property to control overlapping with other elements.", defaultValue = "1")

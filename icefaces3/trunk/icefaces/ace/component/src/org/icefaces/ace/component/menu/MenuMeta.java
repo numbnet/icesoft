@@ -51,13 +51,13 @@ public class MenuMeta extends UIComponentBaseMeta {
             "as it will be called multiple times, in every lifecycle.")
     private MenuModel model;
 
-    @Property
+    @Property(tlddoc="Server side id of the component whose triggerEvent will show the menu, when position is dynamic.")
     private String trigger;
 
-    @Property
+    @Property(tlddoc="When position is dynamic, this attribute specifies the corner of the menu to align with trigger element (examples: \"top left\", \"bottom right\").")
     private String my;
 
-    @Property
+    @Property(tlddoc="When position is dynamic, this attribute specifies the corner of trigger element to align with menu (examples: \"top left\", \"bottom right\").")
     private String at;
 
     @Property(tlddoc = "Sets the way menu is placed on the page, when \"static\" menu is displayed in the normal flow," +
@@ -68,14 +68,14 @@ public class MenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Sets the tiered mode, when set to true menu will be rendered in different tiers.")
     private boolean tiered;
 
-    @Property(defaultValue = "plain")
+    @Property(tlddoc = "Type of menu, valid values are \"plain\", tiered and \"sliding\".", defaultValue = "plain")
     private String type;
 
     @Property(tlddoc = "Sets the effect for the menu display, default value is FADE. Possible values are" +
             " \"FADE\", \"SLIDE\", \"NONE\". Use \"NONE\" to disable animation at all.", defaultValue = "fade")
     private String effect;
 
-    @Property(tlddoc = "Sets the effect duration in seconds.", defaultValue = "400")
+    @Property(tlddoc = "Sets the effect duration in milliseconds.", defaultValue = "400")
     private int effectDuration;
 
     @Property(tlddoc = "Style of the main container element.")
@@ -87,13 +87,13 @@ public class MenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "zindex property to control overlapping with other elements.", defaultValue = "1")
     private int zindex;
 
-    @Property(defaultValue = "Back")
+    @Property(tlddoc="Label for the 'back' link (only applies to sliding menus).", defaultValue = "Back")
     private String backLabel;
 
-    @Property(defaultValue = "200")
+    @Property(tlddoc="Maximum height (in pixels) for the menu (only applies to sliding menus).", defaultValue = "200")
     private int maxHeight;
 
-    @Property(defaultValue = "click")
+    @Property(tlddoc="Event that will trigger the menu to show, when position is dynamic.", defaultValue = "click")
     private String triggerEvent;
 
     private AbstractMenu am; // need this for solving dependence on AbstractMenu when compiling MenuBase

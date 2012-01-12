@@ -58,7 +58,7 @@ public class MenuBarMeta extends UIComponentBaseMeta {
             " \"FADE\", \"SLIDE\", \"NONE\". Use \"NONE\" to disable animation at all.", defaultValue = "fade")
     private String effect;
 
-    @Property(tlddoc = "Sets the effect duration in seconds.", defaultValue = "400")
+    @Property(tlddoc = "Sets the effect duration in milliseconds.", defaultValue = "400")
     private int effectDuration;
 
     @Property(tlddoc = "Style of the main container element.")
