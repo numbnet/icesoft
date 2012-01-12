@@ -39,6 +39,7 @@ import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.FixedXMLContentHandler;
+import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -48,6 +49,7 @@ import java.util.Map;
 
 public class SendUpdates implements Server {
     private static final Log LOG = LogFactory.getLog(SendUpdates.class);
+    private static final NotFoundHandler NOT_FOUND = new NotFoundHandler("");
     private static final Command NOOP = new NOOP();
     private Map commandQueues;
     private PageTest pageTest;
@@ -64,7 +66,16 @@ public class SendUpdates implements Server {
         if (!pageTest.isLoaded()) {
             request.respondWith(new ReloadResponse(""));
         } else {
-            request.respondWith(new Handler(commandQueues, request));
+            try {
+                request.respondWith(new Handler(commandQueues, request));
+            } catch (RuntimeException exception) {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("An error occurred while trying to respond: " + exception.getMessage(), exception);
+                } else if (LOG.isDebugEnabled()) {
+                    LOG.debug("An error occurred while trying to respond: " + exception.getMessage());
+                }
+                request.respondWith(NOT_FOUND);
+            }
         }
     }
 
