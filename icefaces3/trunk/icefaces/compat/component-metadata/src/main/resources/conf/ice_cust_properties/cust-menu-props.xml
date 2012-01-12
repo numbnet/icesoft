@@ -142,6 +142,21 @@
 </property>
 
 <property>
+    <description>
+       <![CDATA[<p>
+        By default (false) the sub menus positions are adjusted properly when in scrollable browser window.
+        When set to true, sub menus positions are adjusetd in scrollable divs but not in scrollable browser window.</p>
+        ]]>
+    </description>
+    <property-name>scrollableDivMode</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <default-value>false</default-value>
+    </property-extension>
+</property>
+
+<property>
 	<description>
 
 		Flag indicating that this component's value must be converted
