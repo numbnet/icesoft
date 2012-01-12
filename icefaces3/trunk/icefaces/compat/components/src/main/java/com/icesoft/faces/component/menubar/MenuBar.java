@@ -92,6 +92,7 @@ public class MenuBar extends UICommand implements NamingContainer {
     private String noIcons;
     private Boolean displayOnClick;
     private Boolean keyboardNavigationEnabled;        
+    private Boolean scrollableDivMode;
     /**
      * default no args constructor
      */
@@ -386,18 +387,33 @@ public class MenuBar extends UICommand implements NamingContainer {
         return false;
     }
 
+    public void setScrollableDivMode(boolean scrollableDivMode) {
+        this.scrollableDivMode = Boolean.valueOf(scrollableDivMode);
+    }
+
+    public boolean isScrollableDivMode() {
+        if (scrollableDivMode != null) {
+            return scrollableDivMode.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("scrollableDivMode");
+        if (vb != null) {
+            return ((Boolean) vb.getValue(getFacesContext())).booleanValue();
+        }
+        return false;
+    }
+
     public void encodeBegin(FacesContext context) throws IOException {
         if (isKeyboardNavigationEnabled()) {
             String call = "new Ice.MenuBarKeyNavigator('" + 
             getClientId(context) +"', " +
-            isDisplayOnClick() +");";
+            isDisplayOnClick() + ", " + isScrollableDivMode() +");";
             JavascriptContext.addJavascriptCall(context, call);
         }
         super.encodeBegin(context);
     }
 
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[9];
+        Object values[] = new Object[10];
         values[0] = super.saveState(context);
         values[1] = displayOnClick;
         values[2] = imageDir;
@@ -407,6 +423,7 @@ public class MenuBar extends UICommand implements NamingContainer {
         values[6] = style;
         values[7] = styleClass;
         values[8] = keyboardNavigationEnabled;        
+        values[9] = scrollableDivMode;
         return values;
     }
 
@@ -421,6 +438,7 @@ public class MenuBar extends UICommand implements NamingContainer {
         style = (String) values[6];
         styleClass = (String) values[7];
         keyboardNavigationEnabled = (Boolean) values[8];          
+        scrollableDivMode = (Boolean) values[9];
     }
     
     public boolean invokeOnComponent(FacesContext context, String clientId,
