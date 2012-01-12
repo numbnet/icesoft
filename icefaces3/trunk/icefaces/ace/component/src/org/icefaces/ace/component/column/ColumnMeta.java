@@ -1,4 +1,6 @@
-/*
+import org.icefaces.ace.meta.annotation.Property;
+
+*
  * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,43 +45,42 @@ import java.util.Comparator;
 
 public class ColumnMeta extends UIColumnMeta {
 
-	@Property(tlddoc="Additional CSS rules to be applied to this component.")
+    @Property(tlddoc = "Custom inline CSS styles to use for this component. These styles are generally applied to the root DOM element of the component. This is intended for per-component basic style customizations. Note that due to browser CSS precedence rules, CSS rendered on a DOM element will take precedence over the external stylesheets used to provide the ThemeRoller theme on this component. If the CSS properties applied with this attribute do not affect the DOM element you want to style, you may need to create a custom theme styleClass for the theme CSS class that targets the particular DOM elements you wish to customize.")
 	private String style;
-	
-	@Property(tlddoc="Supplementary CSS classes to add to those already " +
-            "applied on this component.")
+
+    @Property(tlddoc = "Custom CSS style class(es) to use for this component. These style classes can be defined in your page or in a theme CSS file.")
 	private String styleClass;
 	
 	@Property(expression = Expression.VALUE_EXPRESSION,
-            tlddoc="When sorting this column use this ValueExpression as the " +
-            "value of this row. Setting this variable for a column enables sorting.")
+            tlddoc="Defines a value expression representing the value of this column per row when sorting. " +
+                   "Setting this variable for a column enables sorting.")
 	private Object sortBy;
 	
 	@Property(expression = Expression.VALUE_EXPRESSION,
-            tlddoc="An alternate method of sorting. Sort this column using a " +
+            tlddoc="Defines an alternate method of sorting. Sort this column using a " +
             "Comparator<Object> object that takes the sortBy values of this column as input.")
 	private Comparator sortFunction;
 
 	@Property(expression = Expression.VALUE_EXPRESSION,
-            tlddoc="When filtering this column use this ValueExpression as the " +
-            "value of this row. Setting this variable for a column enables filtering.")
+            tlddoc="Defines a ValueExpression of the value of this row to use when filtering this column. " +
+                   "Setting this variable for a column enables filtering.")
 	private Object filterBy;
 
-    @Property(tlddoc="The string input filtering this column, coming from the client, or from " +
+    @Property(tlddoc="Defines the string input filtering this column, coming from the client, or from " +
             "the application via a value binding.")
     private String filterValue;
     
-	@Property(tlddoc="Additional CSS rules to be applied to the filter text input.")
+	@Property(tlddoc="Defines additional CSS rules to be applied to the filter text input.")
 	private String filterStyle;
 	
-	@Property(tlddoc="Supplementary CSS classes to add to those already " +
+	@Property(tlddoc="Defines supplementary CSS classes to add to those already " +
             "applied on this component.")
 	private String filterStyleClass;
 	
-	@Property(tlddoc="A collection of SelectItem objects for use as filter choices.")
+	@Property(tlddoc="Defines a collection of SelectItem objects for use as filter choices.")
 	private Object filterOptions;
 	
-	@Property(tlddoc="Method of filter comparison used, default is \"startsWith\". " +
+	@Property(tlddoc="Defines the method of filter comparison used, default is \"startsWith\". " +
             "Types available include: \"contains\", \"exact\", \"startsWith\" and \"endsWith\".", defaultValue="startsWith")
 	private String filterMatchMode;
 	
@@ -91,10 +92,10 @@ public class ColumnMeta extends UIColumnMeta {
             "significant to Column components within a column group.", defaultValue="1")
 	private int colspan;
 	
-	@Property(tlddoc="A plain text header with less effort than adding a facet.")
+	@Property(tlddoc="Defines a plain text header with less effort than adding a facet.")
 	private String headerText;
 	
-	@Property(tlddoc="A plain text footer with less effort than adding a facet.")
+	@Property(tlddoc="Defines a  plain text footer with less effort than adding a facet.")
 	private String footerText;
 
     @Property(tlddoc="When enabled, this column is rendered underneath the previous column.")
@@ -119,8 +120,8 @@ public class ColumnMeta extends UIColumnMeta {
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean sortAscending;
 
-    @Property(tlddoc="Allows per-column control of column ordering when the " +
-            "feature (\"reorderableColumns\") is enabled at the table level.",
+    @Property(tlddoc="Enables per-column control of column ordering when the " +
+            "attribute (\"reorderableColumns\") is true at the table level.",
             defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean reorderable;
 }

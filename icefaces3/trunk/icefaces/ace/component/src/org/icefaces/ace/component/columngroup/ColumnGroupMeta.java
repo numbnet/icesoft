@@ -31,6 +31,6 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
     tlddoc = "A grouping of column and row components to furnish table segments specified by the 'type' attribute."
 )
 public class ColumnGroupMeta extends UIComponentBaseMeta {
-    @Property(tlddoc= "Indicator of the segment of the table these components will be used to rendered. Available values are header and footer.")
+    @Property(tlddoc= "Defines which segment of the table this component and its child columns will be used to render. Valid values are 'header' and 'footer'.")
     private String type;
 }
