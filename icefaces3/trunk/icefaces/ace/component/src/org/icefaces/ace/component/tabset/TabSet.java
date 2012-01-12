@@ -16,16 +16,18 @@
 
 package org.icefaces.ace.component.tabset;
 
-import org.icefaces.ace.util.Utils;
-import org.icefaces.impl.util.Util;
-
 import javax.el.ELException;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TabSet extends TabSetBase {
     
@@ -67,5 +69,45 @@ public class TabSet extends TabSetBase {
             }
         }
         super.queueEvent(event);
-    }  
+    }
+
+    public void processDecodes(FacesContext context) {
+        if (!isRendered()) {
+            return;
+        }
+        setPreDecodeSelectedIndex(getSelectedIndex());
+        super.processDecodes(context);
+    }
+
+    /**
+     * When a tabSet is in server mode, and changes tabs from the old one to
+     * the new one, the old one is executed and the new one is rendered. In
+     * client mode, if the server has been contacted, they all execute. This
+     * method is used by the TabPane(s) to control their execution.
+     * @param tabPane
+     */
+    boolean isExecutingTabPaneContents(FacesContext context, TabPane tabPane) {
+        if (this.isClientSide()) {
+            return true;
+        }
+        Integer executeIndex = getPreDecodeSelectedIndex();
+//System.out.println("isExecutingTabPaneContents()  executeIndex: " + executeIndex + "  tabPane.clientId: " + tabPane.getClientId(context));
+        if (executeIndex == null) {
+            return true;
+        }
+        List<String> tabPaneClientIds = new ArrayList<String>();
+        try {
+            TabSetRenderer.doTabs(context, this,
+                    TabSetRenderer.Do.GET_CLIENT_IDS_ONLY, tabPaneClientIds,
+                    null, null);
+//System.out.println("isExecutingTabPaneContents()    tabPaneClientIds[executeIndex]: " + tabPaneClientIds.get(executeIndex));
+        } catch(IOException e) {
+            throw new FacesException("Problem retrieving list of TabPane children of TabSet", e);
+        }
+        String tabPaneClientId = tabPane.getClientId(context);
+        boolean ret = executeIndex >= 0 && executeIndex < tabPaneClientIds.size() &&
+                tabPaneClientIds.get(executeIndex).equals(tabPaneClientId);
+//System.out.println("isExecutingTabPaneContents()    ret: " + ret);
+        return ret;
+    }
 }

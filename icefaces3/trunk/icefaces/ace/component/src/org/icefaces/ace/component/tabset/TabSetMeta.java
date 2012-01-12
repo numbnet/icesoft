@@ -132,6 +132,11 @@ public class TabSetMeta extends UIComponentBaseMeta {
     @Field(javadoc="Maintains the record of which tabs have been visited")
     private List visitedTabClientIds;
 
+    @Field(javadoc="This retains the selectedIndex from the beginning of " +
+            "the lifecycle, so that when in server mode, only this tabPane's " +
+            "contents will execute.")
+    private Integer preDecodeSelectedIndex;
+
     @Facets
     class FacetsMeta{
         @Facet
