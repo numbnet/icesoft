@@ -37,9 +37,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         rendererType    = "org.icefaces.ace.component.PushButtonRenderer",
 		componentFamily = "org.icefaces.ace.PushButton",
 	    tlddoc = "This component allows entry of a complete form or just itself. " +
-	         "It has athe same functionality of a regular jsf command button " +
-	         "but without having to add extra attributes other than determining singleSubmit " +
-	         "to be true or false"
+	         "It has the same functionality of a regular jsf command button " +
+	         "but without having to add extra attributes."
         )
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
@@ -47,24 +46,22 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-yui.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="activate", javadoc="", tlddoc="Triggers when the button is clicked or pressed by any other means.", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="activate")
 public class PushButtonMeta extends UICommandMeta {
     
-    @Property(tlddoc=" A localized user presentable name for this component. Used by aria.")
+    @Property(tlddoc="A localized user presentable name for this component.")
     private String label;
 	
-    @Property (defaultValue="false",
-            tlddoc="disabled property. If true no input may be submitted via this" +
-    				"component.  Is required by aria specs")
+    @Property (defaultValue="false", tlddoc="If true, no input may be submitted via this component.")
     private boolean disabled;
     
-    @Property (tlddoc="tabindex of the component")
+    @Property (tlddoc="Tabindex of the component.")
     private Integer tabindex;
   
-    @Property(tlddoc="style class of the component, rendered on the div root of the component")
+    @Property(tlddoc="The CSS style class of the component, rendered on the root div of the component.")
     private String styleClass;  
 
-    @Property(tlddoc="style of the component, rendered on the div root of the component")
+    @Property(tlddoc="The inline style of the component, rendered on the root div of the component.")
     private String style;
 }

@@ -48,38 +48,38 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	@ResourceDependency(library="icefaces.ace", name="util/ace-datatable.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="activate", javadoc="", tlddoc="Triggers when the button is clicked or pressed by any other means.", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="activate")
 public class DataExporterMeta extends UIComponentBaseMeta {
 
-	@Property(required=Required.yes, tlddoc="Server side id of the datatable whose date would be exported.")
+	@Property(required=Required.yes, tlddoc="Server side id of the dataTable component whose data would be exported.")
 	private String target;
 	
 	@Property(required=Required.yes, tlddoc="Export type: \"xls\",\"pdf\",\"csv\", \"xml\".")
 	private String type;
 	
-	@Property(required=Required.yes, tlddoc="Filename of the generated export file, defaults to datatable server side id.")
+	@Property(required=Required.yes, tlddoc="Filename of the generated export file (defaults to dataTable server side id).")
 	private String fileName;
 
 	@Property(required=Required.no, tlddoc="The text that will appear on the button that will trigger the data export. Default value is 'Export' (only if the component contains no children).")
 	private String label;
 	
-	@Property(required=Required.no, tlddoc="Exports only current page instead of whole dataset.", defaultValue="false")
+	@Property(required=Required.no, tlddoc="Exports only current page instead of whole data set.", defaultValue="false")
 	private boolean pageOnly;
 	
-	@Property(required=Required.no, tlddoc="Comma separated list(if more than one) of column indexes to be excluded from export.")
+	@Property(required=Required.no, tlddoc="Comma separated list (if more than one) of column indexes (zero-relative) to be excluded from export.")
 	private String excludeColumns;
 	
-	@Property(required=Required.no, tlddoc="PreProcessor for the exported document.", expression = Expression.METHOD_EXPRESSION)
+	@Property(required=Required.no, tlddoc="Public void method to invoke before the PDF or XLS document starts to be populated. It must take an Object argument. The object will be of type com.lowagie.text.Document for PDF documents and of type org.apache.poi.ss.usermodel.Workbook for XLS documents.", expression = Expression.METHOD_EXPRESSION)
 	private MethodExpression preProcessor;
 	
-	@Property(required=Required.no, tlddoc="PostProcessor for the exported document.", expression = Expression.METHOD_EXPRESSION)
+	@Property(required=Required.no, tlddoc="Public void method to invoke after the PDF or XLS document has been be populated. It must take an Object argument. The object will be of type com.lowagie.text.Document for PDF documents and of type org.apache.poi.ss.usermodel.Workbook for XLS documents.", expression = Expression.METHOD_EXPRESSION)
 	private MethodExpression postProcessor;
 	
 	@Property(required=Required.no, tlddoc="Character encoding to use.", defaultValue="UTF-8")
 	private String encoding;
 	
-	@Property(required=Required.no, tlddoc="Boolean value to specify whether column headers should be included at the top of the file.", defaultValue="true")
+	@Property(required=Required.no, tlddoc="Boolean value to specify whether column headers should be included at the top of the file. This is not applicable to the XML format.", defaultValue="true")
 	private boolean includeHeaders;
 	
 	@Property(required=Required.no, tlddoc="Boolean value to specify whether column footers should be included at the bottom of the file.", defaultValue="true")
