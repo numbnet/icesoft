@@ -77,7 +77,6 @@ public class Dialog extends DialogBase {
             CloseEvent closeEvent = new CloseEvent(this, ((AjaxBehaviorEvent) event).getBehavior());
             closeEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
             super.queueEvent(closeEvent);
-            context.renderResponse();       //just process the close event and skip to response
         } else {
             super.queueEvent(event);
         }
