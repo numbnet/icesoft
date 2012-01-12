@@ -169,6 +169,8 @@ if (!window.ice.icefaces) {
             }
         }
 
+        //marker for push initiated requests
+        var pushInitiatedRequest = false;
         var viewIDs = [];
 
         function retrieveUpdate(viewID) {
@@ -182,6 +184,7 @@ if (!window.ice.icefaces) {
                 //form is missing after navigating to a non-icefaces page
                 if (form) {
                     try {
+                        pushInitiatedRequest = true;
                         debug(logger, 'picking updates for view ' + viewID);
                         jsf.ajax.request(form, null, {'ice.submit.type': 'ice.push', render: '@all'});
                     } catch (e) {
@@ -244,7 +247,7 @@ if (!window.ice.icefaces) {
                 switch (e.status) {
                     case 'begin':
                         //trigger notification only when submit is user-initiated
-                        if (!source || viewIDOf(source) != source.id) {
+                        if (!pushInitiatedRequest) {
                             broadcast(perRequestOnBeforeSubmitListeners, [ source ]);
                         }
                         break;
@@ -259,6 +262,7 @@ if (!window.ice.icefaces) {
                     case 'success':
                         var xmlContent = e.responseXML;
                         broadcast(perRequestOnAfterUpdateListeners, [ xmlContent, source ]);
+                        pushInitiatedRequest = false;
                         break;
                 }
             };
@@ -587,7 +591,7 @@ if (!window.ice.icefaces) {
             each(updates.getElementsByTagName('update'), function(update) {
                 var id = update.getAttribute('id');
                 var e = lookupElementById(id);
-                if (e && containsFormElements(e)) {
+                if (e && (containsFormElements(e) || !pushInitiatedRequest)) {
                     try {
                         var form = formOf(e);
                         if (not(contains(recalculatedForms, form)) && deltaSubmit(form)) {
