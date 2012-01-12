@@ -191,6 +191,10 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
     border: 0px;
 }
 
+.ice-linkbutton .yui-button a {
+    border: 1px solid transparent;
+}
+
 .ice-pushbutton .yui-button button {
     border: 1px solid transparent;
 }
