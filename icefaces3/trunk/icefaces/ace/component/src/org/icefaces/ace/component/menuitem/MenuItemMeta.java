@@ -39,7 +39,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="activate", javadoc="", tlddoc="Triggers when the menu item is clicked or selected by any other means.", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="activate")
 public class MenuItemMeta extends UICommandMeta {
     @Property(tlddoc = "Url to be navigated when menuitem is clicked.")
@@ -57,7 +57,7 @@ public class MenuItemMeta extends UICommandMeta {
     @Property(tlddoc = "StyleClass of the menuitem label.")
     private String styleClass;
 
-    @Property(tlddoc = "Javascript event handler for click event.")
+    @Property(tlddoc = "Javascript event handler for click event. If this function explicitly returns 'false', then the request to the server will be cancelled.")
     private String onclick;
 
     @Property(tlddoc = "Path of the menuitem image.")

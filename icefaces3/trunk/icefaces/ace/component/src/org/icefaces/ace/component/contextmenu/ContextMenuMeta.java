@@ -61,7 +61,7 @@ public class ContextMenuMeta extends UIComponentBaseMeta {
             " \"FADE\", \"SLIDE\", \"NONE\". Use \"NONE\" to disable animation at all. Note: in the 3.0 release, this attribute is not applicable to IE browsers; the \"SLIDE\" effect will always be applied by default.", defaultValue = "fade")
     private String effect;
 
-    @Property(tlddoc = "Sets the effect duration in seconds.", defaultValue = "400")
+    @Property(tlddoc = "Sets the effect duration in milliseconds.", defaultValue = "400")
     private int effectDuration;
 
     @Property(tlddoc = "MenuModel instance to create menus programmatically. " +
