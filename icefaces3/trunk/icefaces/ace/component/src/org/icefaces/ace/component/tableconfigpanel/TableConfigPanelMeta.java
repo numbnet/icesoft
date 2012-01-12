@@ -41,9 +41,12 @@ import javax.faces.application.ResourceDependency;
 })
 
 @ClientBehaviorHolder(events = {
-    @ClientEvent(name="open", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-    @ClientEvent(name="submit", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-    @ClientEvent(name="cancel", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")},
+    @ClientEvent(name="open", javadoc="Fired when the TableConfigPanel is shown.",
+            tlddoc="Fired when the TableConfigPanel is shown.", defaultRender="@all", defaultExecute="@all"),
+    @ClientEvent(name="submit", javadoc="Fired when the TableConfigPanel submits its changes and closes.",
+            tlddoc="Fired when the TableConfigPanel submits its changes and closes.", defaultRender="@all", defaultExecute="@all"),
+    @ClientEvent(name="cancel", javadoc="Fired when the TableConfigPanel cancel its changes and closes.",
+            tlddoc="Fired when the TableConfigPanel cancel its changes and closes.", defaultRender="@all", defaultExecute="@all")},
     defaultEvent = "submit"
 )
 public class TableConfigPanelMeta extends UIComponentBaseMeta {
