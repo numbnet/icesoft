@@ -358,7 +358,7 @@ public class TabSetRenderer extends CoreRenderer {
    /*
     * renders tab headers 
     */
-    private void renderTabNav(FacesContext facesContext, TabSet tabSet, UIComponent tab, int index) throws IOException {
+    private static void renderTabNav(FacesContext facesContext, TabSet tabSet, UIComponent tab, int index) throws IOException {
 
     	String clientId = tab.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();
@@ -413,7 +413,7 @@ public class TabSetRenderer extends CoreRenderer {
     /*
      * Renders tab contents/body
      */
-    private void renderTabBody(FacesContext facesContext, 
+    private static void renderTabBody(FacesContext facesContext,
             TabSet tabSet, UIComponent tab, int index, Do d) throws IOException {
         String clientId = tab.getClientId(facesContext);
         ResponseWriter writer = facesContext.getResponseWriter();
@@ -436,7 +436,7 @@ public class TabSetRenderer extends CoreRenderer {
     /*
      * Render children of tabset component
      */
-    private void doTabs(FacesContext facesContext, UIComponent uiComponent,
+    static void doTabs(FacesContext facesContext, UIComponent uiComponent,
             Do d, List<String> clickableTabs,
             Map<String, TabPaneCache> tabPaneClientId2Cache,
             ArrayList<Integer> disabledTabs) throws IOException{
@@ -486,7 +486,7 @@ public class TabSetRenderer extends CoreRenderer {
         }
     }
 
-    private void doTab(FacesContext facesContext, TabSet tabSet, TabPane tab,
+    private static void doTab(FacesContext facesContext, TabSet tabSet, TabPane tab,
             int index, Do d, List<String> clickableTabs,
             Map<String, TabPaneCache> tabPaneClientId2Cache,
             ArrayList<Integer> disabledTabs) throws IOException {
@@ -501,7 +501,9 @@ public class TabSetRenderer extends CoreRenderer {
             TabPaneCache cache = orig.resolve(facesContext, tab);
             tabPaneClientId2Cache.put(clientId, cache);
             TabPaneCache revert = cache.getRevertTo();
-            if (tab.isDisabled()) disabledTabs.add(index);
+            if (tab.isDisabled()) {
+                disabledTabs.add(index);
+            }
             if (revert != null && revert != orig) {
                 tab.setCache(revert.getNamed());
             }
@@ -513,9 +515,12 @@ public class TabSetRenderer extends CoreRenderer {
             if (clickableTabs.contains(tab.getClientId(facesContext))) {
                 renderTabBody(facesContext, tabSet, tab, index, d);
             }
+        } else if(Do.GET_CLIENT_IDS_ONLY.equals(d)) {
+            String clientId = tab.getClientId(facesContext);
+            clickableTabs.add(clientId);
         }
     }
-    
+
     private int getRenderedChildCount(UIComponent uiComponent) {
     	int count = 0;
     	for (UIComponent component: uiComponent.getChildren()) {
@@ -526,11 +531,13 @@ public class TabSetRenderer extends CoreRenderer {
     	return count;
     }
 
-    private static enum Do {
+
+    static enum Do {
         RENDER_LABEL,
         RENDER_CONTENTS,
         RENDER_CONTENTS_BY_CLIENT_ID,
         RENDER_CONTENT_DIV_BY_CLIENT_ID,
-        GET_CLIENT_IDS
+        GET_CLIENT_IDS,
+        GET_CLIENT_IDS_ONLY
     }
 }
