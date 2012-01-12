@@ -58,6 +58,8 @@ import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.SocketException;
 import java.net.URI;
 
@@ -216,7 +218,16 @@ public class MainServlet extends HttpServlet {
             if (errorClassname.startsWith("org.mortbay.jetty")) {
                 throw e;
             }
-            throw new RuntimeException("wrapped Exception: " + errorClassname, e);
+            response.setStatus(404);
+            response.setHeader("Content-Type", "text/plain; charset=UTF-8");
+            Writer writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
+            writer.write("");
+            writer.flush();
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("An error occurred while trying to respond: " + e.getMessage(), e);
+            } else if (LOG.isDebugEnabled()) {
+                LOG.debug("An error occurred while trying to respond: " + e.getMessage());
+            }
         } catch (Exception e) {
             throw new ServletException(e);
         } finally {

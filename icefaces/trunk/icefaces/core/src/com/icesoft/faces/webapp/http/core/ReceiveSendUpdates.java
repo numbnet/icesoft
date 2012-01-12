@@ -37,6 +37,7 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.util.pooling.CSSNamePool;
 import com.icesoft.util.pooling.ClientIdPool;
@@ -62,12 +63,7 @@ public class ReceiveSendUpdates implements Server {
             response.writeBody().write("Cannot match view instance. 'ice.view' parameter is missing.".getBytes());
         }
     };
-    private static final ResponseHandler MalformedParameterHandler = new ResponseHandler() {
-        public void respond(Response response) throws Exception {
-            response.setStatus(500);
-            response.writeBody().write("Cannot lookup view instance. 'ice.view' parameter is malformed.".getBytes());
-        }
-    };
+    private static final NotFoundHandler NotFoundHandler = new NotFoundHandler("");
     private static Lifecycle lifecycle;
 
     static {
@@ -92,7 +88,7 @@ public class ReceiveSendUpdates implements Server {
         if (viewNumber == null) {
             request.respondWith(MissingParameterHandler);
         } else if (!ViewIdVerifier.isValid(viewNumber)) {
-            request.respondWith(MalformedParameterHandler);
+            request.respondWith(NotFoundHandler);
         } else {
             if (!pageTest.isLoaded()) {
                 request.respondWith(new ReloadResponse(""));
