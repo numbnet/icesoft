@@ -1,6 +1,4 @@
-import org.icefaces.ace.meta.annotation.Property;
-
-*
+/*
  * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +16,7 @@ import org.icefaces.ace.meta.annotation.Property;
 
 package org.icefaces.ace.component.column;
 
+import org.icefaces.ace.meta.annotation.Property;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.el.ValueExpression;
