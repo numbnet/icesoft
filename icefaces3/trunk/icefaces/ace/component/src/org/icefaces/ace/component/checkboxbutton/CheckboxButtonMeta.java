@@ -36,9 +36,10 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType  = "org.icefaces.ace.component.CheckboxButton",
         rendererType   = "org.icefaces.ace.component.CheckboxButtonRenderer",
 		componentFamily= "org.icefaces.ace.CheckboxButton",
-		tlddoc="This component allows entry of a button which "+
+		tlddoc="The Checkbox Button is a component that allows entry of a button which "+
 		       "supports browsers that see checkbox as true or false, "+
-		       "yes or no, on or off. The Themeroller check icon will be displayed by default when the checkbox is checked. Override the .ui-icon-check class to display a different image."
+		       "yes or no, on or off. The Themeroller check icon will be displayed by default when the checkbox is checked. Override the .ui-icon-check class to display a different image." +
+               "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/CheckboxButton\">CheckboxButton Wiki Documentation</a>."
         )
 @ResourceDependencies({
         @ResourceDependency(name="util/combined.css",library="icefaces.ace"),
@@ -46,7 +47,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 		@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="activate", javadoc="", tlddoc="Triggers when the button is clicked or pressed by any other means.", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="activate", javadoc="Fired when the button is clicked or pressed by any other means (default event).", tlddoc="Fired when the button is clicked or pressed by any other means (default event).", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="activate")
 public class CheckboxButtonMeta extends UISelectBooleanMeta {
 

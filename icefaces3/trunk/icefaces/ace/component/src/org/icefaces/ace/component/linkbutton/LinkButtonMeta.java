@@ -37,7 +37,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.LinkButton",
         rendererType    = "org.icefaces.ace.component.LinkButtonRenderer",
         componentFamily = "org.icefaces.ace.LinkButton",
-		tlddoc = ""
+		tlddoc = "The Link Button is a component that functions like an HTML link." +
+                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/LinkButton\">LinkButton Wiki Documentation</a>."
 )
 @ResourceDependencies({
 		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
@@ -45,7 +46,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         @ResourceDependency(name="util/ace-yui.js",library="icefaces.ace")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="activate", javadoc="", tlddoc="Triggers when the button is clicked or pressed by any other means.", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="activate", javadoc="Fired when the button is clicked or pressed by any other means (default event).", tlddoc="Fired when the button is clicked or pressed by any other means (default event).", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="activate")
 public class LinkButtonMeta extends UICommandMeta {
 
