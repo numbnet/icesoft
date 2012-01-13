@@ -40,19 +40,7 @@ visibility:hidden;
 padding:0;
 }
 
-.yui-navset .yui-content .ui-tabs-hide {
-border:0;
-height:0;
-width:0;
-position:absolute;
-left:-999999px;
-overflow:hidden;
-visibility:hidden;
-padding:0;
-}
-
 .yui-navset .yui-hidden { display:none; }
-.yui-navset .ui-tabs-hide { display:none; }
 
 .yui-navset .yui-navset-left .yui-nav,.yui-navset .yui-navset-right .yui-nav,.yui-navset-left .yui-nav,.yui-navset-right .yui-nav {
 width:6em;
