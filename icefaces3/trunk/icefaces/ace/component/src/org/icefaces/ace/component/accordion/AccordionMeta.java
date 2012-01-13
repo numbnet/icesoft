@@ -37,7 +37,9 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.Accordion",
         rendererType    = "org.icefaces.ace.component.AccordionRenderer",
 		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "Container component that displays content in a stacked format."
+		tlddoc = "The Accordion is a container component that displays contents in a stacked format." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/Accordion\">Accordion Wiki Documentation</a>."
         )
 
 @ResourceDependencies({
@@ -46,7 +48,10 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="panechange", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="panechange",
+            javadoc="Fired when the active accordion pane is changed (default event).",
+            tlddoc="Fired when the active accordion pane is changed (default event).",
+            defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="panechange")
 
 public class AccordionMeta extends UIPanelMeta {
