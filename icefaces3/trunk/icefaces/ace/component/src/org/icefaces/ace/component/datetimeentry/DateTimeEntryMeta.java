@@ -35,39 +35,25 @@ import javax.faces.application.ResourceDependency;
         componentFamily = "org.icefaces.ace.component.DateTimeEntry",
         componentType = "org.icefaces.ace.component.DateTimeEntry",
         rendererType = "org.icefaces.ace.component.DateTimeEntryRenderer",
-        tlddoc = "DateTimeEntry is an input component to provide a date in various ways. Other than basic " +
-                "features datetimeentry supports paging, localization, ajax selection and more.")
+        tlddoc = "The DateTime Entry is a component that allows the user to configure and input a date and/or time in various ways." +
+                 "<p>For more information, see the " +
+                "<a href=\"http://wiki.icefaces.org/display/ICE/DateTimeEntry\">DateTimeEntry Wiki Documentation</a>.")
 @ResourceDependencies({
 		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="blur", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="valueChange", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="click", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="dblclick", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="focus", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="keydown", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="keypress", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="keyup", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="mousedown", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="mousemove", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="mouseout", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="mouseover", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="mouseup", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="select", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="dateSelect", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="dateSelect", javadoc="Fired when a date is selected from the calendar (default event).", tlddoc="Fired when a date is selected from the calendar (default event).", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="dateSelect")
 public class DateTimeEntryMeta extends UIInputMeta {
     @Property(tlddoc = "Name of the client side widget.")
     private String widgetVar;
 
-    @Property(tlddoc = "Sets calendar's minimum visible date.")
+    @Property(tlddoc = "Set a minimum selectable date. Date string or java.util.Date object. Default is no limit.")
     private Object mindate;
 
-    @Property(tlddoc = "Sets calendar's maximum visible date.")
+    @Property(tlddoc = "Set a maximum selectable date. Date string or java.util.Date object. Default is no limit.")
     private Object maxdate;
 
     @Property(defaultValue = "1", tlddoc = "Enables multiple page rendering.")
@@ -79,7 +65,7 @@ public class DateTimeEntryMeta extends UIInputMeta {
     @Property(defaultValue = "MM/dd/yyyy", tlddoc = "DateFormat pattern for localization")
     private String pattern;
 
-    @Property(tlddoc = "Locale to be used for labels and conversion.")
+    @Property(tlddoc = "Locale to be used for labels and conversion. Locale string or java.util.Locale object. Default is locale of view root.")
     private Object locale;
 
     @Property(tlddoc = "Icon of the popup button.")
@@ -102,10 +88,11 @@ public class DateTimeEntryMeta extends UIInputMeta {
             "Default is false without time component and true with time component.")
     private Boolean showButtonPanel;
 
-    @Property(tlddoc = "Effect to use when displaying and showing the popup calendar.")
+    @Property(tlddoc = "Name of the animation used to show/hide the calendar. Use \"show\", \"slideDown\", \"fadeIn\", any of the show/hide " +
+            "<a href=\"http://docs.jquery.com/UI/Effects\">jQuery UI effects</a>, or \"\" for no animation.", defaultValue = "show")
     private String effect;
 
-    @Property(defaultValue = "normal", tlddoc = "Duration of the effect.")
+    @Property(defaultValue = "normal", tlddoc = "Control the speed at which the calendar appears, it may be a time in milliseconds or a string representing one of the three predefined speeds (\"slow\", \"normal\", \"fast\").")
     private String effectDuration;
 
     @Property(defaultValue = "focus", tlddoc = "Client side event that displays the popup calendar.")
@@ -120,37 +107,39 @@ public class DateTimeEntryMeta extends UIInputMeta {
     @Property(tlddoc = "Enables selection of days belonging to other months.")
     private boolean selectOtherMonths;
 
-    @Property(tlddoc = "")
+    @Property(tlddoc = "Control the range of years displayed in the year drop-down: either relative to today's year (-nn:+nn)," +
+            " relative to the currently selected year (c-nn:c+nn), absolute (nnnn:nnnn), or combinations of these formats (nnnn:-nn).",
+            defaultValue = "c-10:c+10")
     private String yearRange;
 
-    @Property(tlddoc = "")
+    @Property(tlddoc = "Specifies whether to display/input time only.", defaultValue = "false")
     private boolean timeOnly;
 
-    @Property(defaultValue = "1", tlddoc = "")
+    @Property(defaultValue = "1", tlddoc = "Increment/decrement steps when hour slider is dragged.")
     private int stepHour;
 
-    @Property(defaultValue = "1", tlddoc = "")
+    @Property(defaultValue = "1", tlddoc = "Increment/decrement steps when minute slider is dragged.")
     private int stepMinute;
 
-    @Property(defaultValue = "1", tlddoc = "")
+    @Property(defaultValue = "1", tlddoc = "Increment/decrement steps when second slider is dragged.")
     private int stepSecond;
 
-    @Property(defaultValue = "0", tlddoc = "")
+    @Property(defaultValue = "0", tlddoc = "Set the hour range.")
     private int minHour;
 
-    @Property(defaultValue = "23", tlddoc = "")
+    @Property(defaultValue = "23", tlddoc = "Set the hour range.")
     private int maxHour;
 
-    @Property(defaultValue = "0", tlddoc = "")
+    @Property(defaultValue = "0", tlddoc = "Set the minute range.")
     private int minMinute;
 
-    @Property(defaultValue = "59", tlddoc = "")
+    @Property(defaultValue = "59", tlddoc = "Set the minute range.")
     private int maxMinute;
 
-    @Property(defaultValue = "0", tlddoc = "")
+    @Property(defaultValue = "0", tlddoc = "Set the second range.")
     private int minSecond;
 
-    @Property(defaultValue = "59", tlddoc = "")
+    @Property(defaultValue = "59", tlddoc = "Set the second range.")
     private int maxSecond;
 
     @Property(tlddoc = "style will be rendered on a root element of this component")
@@ -159,13 +148,13 @@ public class DateTimeEntryMeta extends UIInputMeta {
     @Property(tlddoc = "style class will be rendered on a root element of this component")
     private String styleClass;
 
-    @Property(tlddoc = "If true then this date time entry will be disabled and can not be entered.")
+    @Property(tlddoc = "If true then this date time entry will be disabled and can not be entered.", defaultValue = "false")
     private boolean disabled;
 
     @Property(tlddoc = "If true then this date time entry will be read-only and can not be entered.")
     private boolean readonly;
 
-    @Property(tlddoc = "Set to true to disable hover styling to improve performance. Default is false.")
+    @Property(tlddoc = "Set to true to disable hover styling to improve performance.", defaultValue = "false")
     private boolean disableHoverStyling;
 
     @Property(defaultValue = "0", tlddoc = "Zero-based offset indicating which month should be displayed in the leftmost position.")
