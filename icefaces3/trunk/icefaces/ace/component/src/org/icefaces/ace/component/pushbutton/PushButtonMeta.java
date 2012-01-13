@@ -36,9 +36,10 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.PushButton",
         rendererType    = "org.icefaces.ace.component.PushButtonRenderer",
 		componentFamily = "org.icefaces.ace.PushButton",
-	    tlddoc = "This component allows entry of a complete form or just itself. " +
+	    tlddoc = "The Push Button is a component that allows entry of a complete form or just itself. " +
 	         "It has the same functionality of a regular jsf command button " +
-	         "but without having to add extra attributes."
+	         "but without having to add extra attributes." +
+             "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/PushButton\">PushButton Wiki Documentation</a>."
         )
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
@@ -46,7 +47,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-yui.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="activate", javadoc="", tlddoc="Triggers when the button is clicked or pressed by any other means.", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="activate", javadoc="Fired when the button is clicked or pressed by any other means (default event).", tlddoc="Fired when the button is clicked or pressed by any other means (default event).", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="activate")
 public class PushButtonMeta extends UICommandMeta {
     

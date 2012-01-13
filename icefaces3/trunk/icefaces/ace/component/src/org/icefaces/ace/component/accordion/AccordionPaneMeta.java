@@ -33,7 +33,7 @@ import javax.faces.application.ResourceDependency;
 		componentFamily = "org.icefaces.ace.component",
 		tlddoc = "The AccordionPane is a component used by accordion as a container to display contents." +
                  "<p>For more information, see the " +
-                "<a href=\"http://wiki.icefaces.org/display/ICE/AccordionPane\">AccordionPane Wiki Documentation</a>"
+                "<a href=\"http://wiki.icefaces.org/display/ICE/AccordionPane\">AccordionPane Wiki Documentation</a>."
         )
 
 @ResourceDependencies({
