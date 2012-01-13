@@ -89,12 +89,6 @@ public class AccordionMeta extends UIPanelMeta {
 	@Property(tlddoc="Server side listener to invoke when active pane changes", expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="org.icefaces.ace.event.AccordionPaneChangeEvent")
 	private MethodExpression paneChangeListener;
 	
-	@Property(tlddoc="Component(s) to update with ajax after dynamic pane change.")
-	private String onPaneChangeUpdate;
-	
-	@Property(tlddoc="Client side callback to invoke when active pane changes.")
-	private String onPaneChange;
-	
 	@Property(tlddoc="Defines the toggle mode.", defaultValue="false")
 	private boolean dynamic;
 	
