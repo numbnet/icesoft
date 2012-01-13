@@ -138,8 +138,6 @@ public class AccordionRenderer extends CoreRenderer {
 		if(acco.isCollapsible()) jb.entry("collapsible", true);
 		if(acco.isFillSpace()) jb.entry("fillSpace", true);
 		if(acco.isDisabled()) jb.entry("disabled", true);
-		String onTabChange = acco.getOnPaneChange();
-        if(onTabChange != null) jb.entry("onTabChange", "function(event, ui) {" + onTabChange + "}", true);
 
         if(isDynamic || hasTabChangeListener) {
             jb.entry("cache", acco.isCache());
@@ -147,10 +145,6 @@ public class AccordionRenderer extends CoreRenderer {
 
         if(hasTabChangeListener) {
             jb.entry("ajaxTabChange", true);
-
-            if(acco.getOnPaneChangeUpdate() != null) {
-                jb.entry("onTabChangeUpdate", ComponentUtils.findClientIds(context, acco, acco.getOnPaneChangeUpdate()));
-            }
         }
         encodeClientBehaviors(context, acco, jb);
 
