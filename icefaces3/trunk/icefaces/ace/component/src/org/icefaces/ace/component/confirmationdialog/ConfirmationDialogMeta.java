@@ -32,8 +32,9 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
         componentType   = "org.icefaces.ace.component.ConfirmationDialog",
         rendererType    = "org.icefaces.ace.component.ConfirmationDialogRenderer",
 		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "Displays a dialog that asks users to confirm or cancel their actions." +
-                " If position of dialog is out of place, try putting it as last child of body."
+		tlddoc = "The Confirmation Dialog is a component that displays a dialog that asks users to confirm or cancel their actions." +
+                " If position of dialog is out of place, try putting it as last child of body." +
+                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/ConfirmationDialog\">ConfirmationDialog Wiki Documentation</a>."
         )
 
 @ResourceDependencies({
@@ -53,7 +54,7 @@ public class ConfirmationDialogMeta extends UIPanelMeta {
 	@Property(tlddoc="Text for the header.")
 	private String header;
 	
-	@Property(tlddoc="Message severity for the dislayed icon.", defaultValue="alert")
+	@Property(tlddoc="Message severity for the dislayed icon. Value can be whatever is appended to \".ui-icon-\" in the theme stylesheet.", defaultValue="alert")
 	private String severity;
 	
 	@Property(tlddoc="Controls draggability.", defaultValue="true")
@@ -74,10 +75,10 @@ public class ConfirmationDialogMeta extends UIPanelMeta {
 	@Property(tlddoc="Style class of the dialog container.")
 	private String styleClass;
 	
-	@Property(tlddoc="Effect to use when showing the dialog.")
+	@Property(tlddoc="Effect to use when showing the dialog. Standard jQuery effects like \"slide\".")
 	private String showEffect;
 	
-	@Property(tlddoc="Effect to use when hiding the dialog.")
+	@Property(tlddoc="Effect to use when hiding the dialog. Standard jQuery effects like \"slide\".")
 	private String hideEffect;
 	
 	@Property(tlddoc="Specifies where the dialog should be displayed. Possible values: \n1) a single string representing position within viewport: 'center', 'left', 'right', 'top', 'bottom'.\n2) an array containing an x,y coordinate pair in pixel offset from left, top corner of viewport (e.g. [350,100])\n3) an array containing x,y position string values (e.g. ['right','top'] for top right corner).")

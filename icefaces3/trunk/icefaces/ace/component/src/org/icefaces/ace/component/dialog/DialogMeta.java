@@ -35,8 +35,9 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.Dialog",
         rendererType    = "org.icefaces.ace.component.DialogRenderer",
 		componentFamily = "org.icefaces.ace.Dialog",
-		tlddoc = "Dialog is a container component that can overlay other elements on page. Dialog has several customization options such as modal, resize, width, height, position." +
-                " If position of dialog is out of place, try putting it as last child of body."
+		tlddoc = "The Dialog is a container component that can overlay other elements on page. Dialog has several customization options such as modal, resize, width, height, position." +
+                " If position of dialog is out of place, try putting it as last child of body." +
+                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Dialog\">Dialog Wiki Documentation</a>."
         )
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
@@ -44,7 +45,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="close", javadoc="...", tlddoc="triggered when the panel is closed.", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="close", javadoc="Fired when the panel is closed (default event).", tlddoc="Fired when the panel is closed (default event).", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="close")
 
 public class DialogMeta extends UIPanelMeta {
@@ -67,10 +68,10 @@ public class DialogMeta extends UIPanelMeta {
 	@Property(tlddoc="visible can be used to toggle visibility on the server, rendered should not be used that way, setting rendered=false on a visible modal dialog will not remove the modality layer, visible=false must be set first (or client-side JS function called)", defaultValue="false")
 	private boolean visible;
 
-	@Property(tlddoc="Width of the element in pixels. Default is auto. If auto, resizable should be false, or resizing may hehave erratically. If auto, IE7 may not size or position properly.", defaultValue="Integer.MIN_VALUE")
+	@Property(tlddoc="Width of the element in pixels. Default (not specified or value <= 0) is auto. If auto, resizable should be false, or resizing may hehave erratically. If auto, IE7 may not size or position properly.", defaultValue="Integer.MIN_VALUE")
 	private int width;
 	
-	@Property(tlddoc="Height of the element in pixels. Default is auto. If auto, resizable should be false, or resizing may hehave erratically. If auto, IE7 may not size or position properly.", defaultValue="Integer.MIN_VALUE")
+	@Property(tlddoc="Height of the element in pixels. Default (not specified or value <= 0) is auto. If auto, resizable should be false, or resizing may hehave erratically. If auto, IE7 may not size or position properly.", defaultValue="Integer.MIN_VALUE")
 	private int height;
 
 	@Property(tlddoc="zindex property to control overlapping with other elements", defaultValue="1000")
@@ -85,19 +86,19 @@ public class DialogMeta extends UIPanelMeta {
 	@Property(tlddoc="Style class of the main container of dialog")
 	private String styleClass;
 	
-	@Property(tlddoc="Effect to be displayed when showing the dialog")
+	@Property(tlddoc="Effect to be displayed when showing the dialog. Standard jQuery effects like \"slide\".")
 	private String showEffect;
 	
-	@Property(tlddoc="Effect to be displayed when hiding the dialog")
+	@Property(tlddoc="Effect to be displayed when hiding the dialog. Standard jQuery effects like \"slide\".")
 	private String hideEffect;
 	
 	@Property(tlddoc="Specifies where the dialog should be displayed. Possible values: \n1) a single string representing position within viewport: 'center', 'left', 'right', 'top', 'bottom'.\n2) an array containing an x,y coordinate pair in pixel offset from left, top corner of viewport (e.g. [350,100])\n3) an array containing x,y position string values (e.g. ['right','top'] for top right corner).")
 	private String position;
 	
-	@Property(tlddoc="Boolean value that Specifies whether the dialog should close when it has focus and the user presses the escape (ESC) key (default true).", defaultValue="true")
+	@Property(tlddoc="Boolean value that Specifies whether the dialog should close when it has focus and the user presses the escape (ESC) key.", defaultValue="true")
 	private boolean closeOnEscape;
 	
-	@Property(tlddoc="Boolean value that specifies whether the dialog should have a close button in the header (default true)", defaultValue="true")
+	@Property(tlddoc="Boolean value that specifies whether the dialog should have a close button in the header.", defaultValue="true")
 	private boolean closable;
 	
 	@Property(tlddoc="Javascript code to be executed when showing the dialog")
