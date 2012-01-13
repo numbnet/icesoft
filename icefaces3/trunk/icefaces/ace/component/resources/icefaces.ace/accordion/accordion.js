@@ -49,6 +49,8 @@ ice.ace.AccordionPanel = function(id, cfg) {
     this.jq.bind('accordionchangestart', function(event, ui) {
         _self.onTabChange(event, ui);
     });
+    
+    setTimeout(function() { _self.jq.accordion('resize'); }, 100); // for calculating correct heights when inside tabSet
 }
 
 /**
@@ -86,7 +88,7 @@ ice.ace.AccordionPanel.prototype.loadDynamicTab = function(panel) {
         ice.ace.selectCustomUpdates(responseXML, function(id, content) {
             if(id == _self.id){
 			if (panel) {
-				jQuery(panel).html(content);
+				jQuery(panel).children('div').html(content);
 
 				if(_self.cfg.cache) {
 					_self.markAsLoaded(panel);
