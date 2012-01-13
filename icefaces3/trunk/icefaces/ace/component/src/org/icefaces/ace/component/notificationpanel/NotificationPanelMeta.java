@@ -35,17 +35,18 @@ import javax.faces.application.ResourceDependency;
         componentFamily = "org.icefaces.ace.component.NotificationPanel",
         componentType = "org.icefaces.ace.component.NotificationPanel",
         rendererType = "org.icefaces.ace.component.NotificationPanelRenderer",
-        tlddoc = "NotificationPanel displays a multipurpose fixed positioned panel for notification. Any group " +
+        tlddoc = "The Notification Panel is a component that displays a multipurpose fixed positioned panel for notification. Any group " +
                  "of JSF content can be placed inside notification panel. " +
-                "If position of panel is out of place, try putting it as last child of body.")
+                 "If position of panel is out of place, try putting it as last child of body." +
+                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/NotificationPanel\">NotificationPanel Wiki Documentation</a>.")
 @ResourceDependencies({
 		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
         @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="close", tlddoc="triggered when the panel is closed", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="display", tlddoc="triggered when the panel is displayed", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="close", tlddoc="Fired when the panel is closed (default event).", defaultRender="@all", defaultExecute="@all"),
+	@ClientEvent(name="display", tlddoc="Fired when the panel is displayed.", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="close")
 public class NotificationPanelMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Name of the client side widget.")
