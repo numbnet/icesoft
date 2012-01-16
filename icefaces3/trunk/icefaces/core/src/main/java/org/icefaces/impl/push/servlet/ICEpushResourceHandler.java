@@ -237,7 +237,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
                 } catch (IOException e) {
                     //capture & log Tomcat specific exception
                     if (e.getClass().getName().endsWith("ClientAbortException")) {
-                        log.fine("Browser closed the connection prematurely.");
+                        log.fine("Browser closed the connection prematurely for " + requestURI);
                     } else {
                         throw e;
                     }
