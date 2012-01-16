@@ -46,8 +46,13 @@ ice.ace.ConfirmDialog = function(id, cfg) {
 			if (hide == 'highlight' || hide == 'bounce' || hide == 'pulsate')
 				this.cfg.hide = null;
 			if (browser == 'ie7')
-				if (hide == 'puff' || hide == 'scale')
+				if (hide == 'puff')
 					this.cfg.hide = null;
+		}
+		var show = this.cfg.show;
+		if (show && browser == 'ie7') {
+			if (show == 'puff' || show == 'scale')
+				this.cfg.show = null;
 		}
 	}
 
