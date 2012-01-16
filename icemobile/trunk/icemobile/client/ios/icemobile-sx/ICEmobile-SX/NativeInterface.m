@@ -34,6 +34,7 @@
 @synthesize scanPopover;
 @synthesize audioPopover;
 @synthesize soundRecorder;
+@synthesize popoverSource;
 
 static char base64EncodingTable[64] = {
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
@@ -49,6 +50,7 @@ static char base64EncodingTable[64] = {
         self.qrScanner.nativeInterface = self;
         NSString *tempDir = NSTemporaryDirectory ();
         self.soundFilePath = [tempDir stringByAppendingString: @"sound.mp4"];
+        self.popoverSource = CGRectMake(200.0, 200.0, 0.0, 0.0);
     }
     
     return self;
@@ -124,7 +126,7 @@ NSLog(@"called camera");
                     initWithContentViewController:audioController];
             self.audioPopover.popoverContentSize = CGSizeMake(320, 480);
         }
-        [self.audioPopover presentPopoverFromRect:CGRectMake(200.0, 200.0, 0.0, 0.0) 
+        [self.audioPopover presentPopoverFromRect:popoverSource 
                                  inView:controllerView
                permittedArrowDirections:UIPopoverArrowDirectionAny 
                                animated:YES];
@@ -264,8 +266,7 @@ NSLog(@"called camera");
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)  {
         self.camPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
         //[picker release];
-        [self.camPopover presentPopoverFromRect:
-                CGRectMake(200.0, 200.0, 0.0, 0.0) 
+        [self.camPopover presentPopoverFromRect:popoverSource
                 inView:self.controller.view
                 permittedArrowDirections:UIPopoverArrowDirectionAny 
                 animated:YES];
@@ -340,7 +341,7 @@ NSLog(@"called camera");
                     initWithContentViewController:scanController];
             self.scanPopover.popoverContentSize = CGSizeMake(320, 480);
         }
-        [self.scanPopover presentPopoverFromRect:CGRectMake(200.0, 200.0, 0.0, 0.0) 
+        [self.scanPopover presentPopoverFromRect:popoverSource
                                  inView:self.controller.view
                permittedArrowDirections:UIPopoverArrowDirectionAny 
                                animated:YES];
@@ -524,6 +525,18 @@ NSLog(@"called camera");
     }
 
     return;
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error  {
+    NSLog(@"didFailWithError %@", error);
+    UIAlertView *alert = [[UIAlertView alloc] 
+            initWithTitle:@"Connection Failure" 
+            message:error.localizedDescription
+            delegate:nil cancelButtonTitle:@"OK" 
+            otherButtonTitles:nil];
+
+    [alert show];
+    [alert release];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response  {

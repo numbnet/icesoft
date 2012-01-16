@@ -162,18 +162,25 @@ NSLog(@"Hitch would show a thumbnail");
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
 
-    if (buttonIndex == 0){
-        NSString *host = [[NSURL URLWithString:self.currentURL] host];
+    if (buttonIndex == 0) {
+        NSURL *theURL = [NSURL URLWithString:self.currentURL];
+        NSString *host = [theURL host];
+        NSString *contextPath = [[theURL pathComponents] objectAtIndex:1];
+        NSString *cookiePath = [[@"/" stringByAppendingString:contextPath]
+                stringByAppendingString:@"/"];
+NSLog(@"setCookie contextPath %@ ", contextPath );
+
         NSDictionary *properties = [[NSDictionary alloc] initWithObjectsAndKeys:
                 @"JSESSIONID", NSHTTPCookieName,
                 currentSessionId, NSHTTPCookieValue,
-                @"/", NSHTTPCookiePath,
+                cookiePath, NSHTTPCookiePath,
                 host, NSHTTPCookieDomain,
                 nil ];
 
         NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:properties];
         NSLog(@"setCookie %@ ", cookie );
         [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie: cookie];
+NSLog(@"currentCookies %@ ", [NSHTTPCookieStorage sharedHTTPCookieStorage].cookies );
 
         [nativeInterface dispatch:self.currentCommand];
     }
@@ -203,6 +210,15 @@ NSLog(@"Alert dismissed via button %d", buttonIndex);
     self.currentParameters = nil;
     NSString *theCommand = [self.commandNames 
             objectAtIndex:actionSelector.selectedSegmentIndex];
+    CGRect selectionFrame = actionSelector.frame;
+    selectionFrame = [actionSelector.superview convertRect:selectionFrame 
+            toView:self.view];
+    CGFloat cellWidth = 
+            selectionFrame.size.width / actionSelector.numberOfSegments;
+    CGFloat popOffset = selectionFrame.origin.x + 
+            cellWidth * actionSelector.selectedSegmentIndex;
+    self.nativeInterface.popoverSource = CGRectMake(popOffset, 
+            selectionFrame.origin.y, cellWidth, selectionFrame.size.height);
     self.currentCommand = [NSString stringWithFormat:@"%@?id=undefined", theCommand];
     [actionSelector setSelectedSegmentIndex:-1];
     [self dispatchCurrentCommand];
@@ -278,6 +294,10 @@ NSLog(@"Alert dismissed via button %d", buttonIndex);
     } else {
         return YES;
     }
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event  {
+    [urlField resignFirstResponder];
 }
 
 @end

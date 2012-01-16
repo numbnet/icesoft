@@ -36,6 +36,7 @@
     UIPopoverController *camPopover;
     UIPopoverController *scanPopover;
     UIPopoverController *audioPopover;
+    CGRect popoverSource;
 }
 
 @property (retain) UIViewController<NativeInterfaceViewController> *controller;
@@ -51,6 +52,7 @@
 @property (nonatomic, retain) UIPopoverController *camPopover;
 @property (nonatomic, retain) UIPopoverController *scanPopover;
 @property (nonatomic, retain) UIPopoverController *audioPopover;
+@property (nonatomic, assign) CGRect popoverSource;
 
 - (BOOL)dispatch: (NSString*)command;
 - (BOOL)camera: (NSString*)cameraId maxwidth: (NSString*)maxw maxheight: (NSString*)maxh;
