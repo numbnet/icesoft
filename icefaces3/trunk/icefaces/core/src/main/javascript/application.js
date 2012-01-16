@@ -357,13 +357,38 @@ if (!window.ice.icefaces) {
 
         namespace.setupBridge = function(setupID, viewID, windowID, configuration) {
             var container = document.getElementById(setupID).parentNode;
+            container.setupCount = container.setupCount ? (container.setupCount + 1) : 1;
             container.configuration = configuration;
             container.configuration.viewID = viewID;
             namespace.window = windowID;
             if (configuration.sendDisposeWindow) {
                 onBeforeUnload(window, disposeWindow(viewID));
             }
+
             setupDefaultIndicators(container, configuration);
+
+            if (container.setupCount == 1) {
+                //recalculate delta submit previous parameters for the updated forms, if necessary
+                namespace.onAfterUpdate(function(updates) {
+                    var formsWithUpdatedInputElements = select(collect(updates.getElementsByTagName('update'), function(update) {
+                        var id = update.getAttribute('id');
+                        return lookupElementById(id);
+                    }), function(e) {
+                        return e && containsFormElements(e);
+                    });
+
+                    each(container.getElementsByTagName('form'), function(form) {
+                        try {
+                            if (deltaSubmit(form) && (contains(formsWithUpdatedInputElements, form) || !pushInitiatedRequest)) {
+                                debug(logger, 'recalculate initial parameters for updated form["' + form.id + '"]');
+                                form.previousParameters = HashSet(jsf.getViewState(form).split('&'));
+                            }
+                        } catch (ex) {
+                            //cannot find enclosing form, some updates are for elements located outside forms
+                        }
+                    });
+                });
+            }
         };
 
         namespace.setupPush = function(viewID) {
@@ -584,27 +609,6 @@ if (!window.ice.icefaces) {
                 }
             }
         }
-
-        //recalculate delta submit previous parameters for the updated forms, if necessary
-        namespace.onAfterUpdate(function(updates) {
-            var recalculatedForms = HashSet();
-            each(updates.getElementsByTagName('update'), function(update) {
-                var id = update.getAttribute('id');
-                var e = lookupElementById(id);
-                if (e && (containsFormElements(e) || !pushInitiatedRequest)) {
-                    try {
-                        var form = formOf(e);
-                        if (not(contains(recalculatedForms, form)) && deltaSubmit(form)) {
-                            debug(logger, 'recalculate initial parameters for updated form["' + form.id + '"]');
-                            form.previousParameters = HashSet(jsf.getViewState(form).split('&'));
-                            append(recalculatedForms, form);
-                        }
-                    } catch (ex) {
-                        //cannot find enclosing form, some updates are for elements located outside forms
-                    }
-                }
-            });
-        });
 
         //determine which elements are not present after an update, invoke corresponding callback when element was removed
         namespace.onAfterUpdate(function(updates) {
