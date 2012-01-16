@@ -487,7 +487,7 @@ public class DataTableRenderer extends CoreRenderer {
             if (table.isDoubleClickSelect())
                 writer.write(",dblclickSelect:true");
 
-            if (table.hasSelectionClientBehaviour())
+            if (table.hasSelectionClientBehaviour() || (table.getRowSelectListener() != null) || (table.getRowUnselectListener() != null))
                 writer.write(",instantSelect:true");
         }
 
