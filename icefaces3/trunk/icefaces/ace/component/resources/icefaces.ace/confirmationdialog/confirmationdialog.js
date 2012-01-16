@@ -38,6 +38,14 @@ ice.ace.ConfirmDialog = function(id, cfg) {
     this.cfg.resizable = false;
     this.cfg.autoOpen = false;
 
+	if (ice.ace.ConfirmDialog.isIE7()) {
+		var hide = this.cfg.hide;
+		if (hide) {
+			if (hide == 'highlight' || hide == 'bounce' || hide == 'pulsate' || hide == 'puff')
+				this.cfg.hide = null;
+		}
+	}
+
     //Remove scripts to prevent duplicate widget issues
     this.jq.find("script").remove();
 
@@ -66,4 +74,12 @@ ice.ace.ConfirmDialog.prototype.show = function() {
 
 ice.ace.ConfirmDialog.prototype.hide = function() {
     this.jq.dialog('close');
+};
+
+ice.ace.ConfirmDialog.isIE7 = function() {
+	if (ice.ace.jq.browser.msie) 
+		if (ice.ace.jq.browser.version < 8)
+			if (navigator.userAgent.indexOf("Trident/5") < 0) // detects IE9, regardless of compatibility mode
+				return true;
+	return false;
 };
