@@ -37,7 +37,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.Tooltip",
         rendererType    = "org.icefaces.ace.component.TooltipRenderer",
 		componentFamily = "org.icefaces.ace.Tooltip",
-		tlddoc = "Tooltip features a rich tooltip display with various events, effects, customization options and inline content display along with skinning options."
+		tlddoc = "The Tooltip is a component that displays a tooltip with various events, effects and customization options." +
+                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Tooltip\">Tooltip Wiki Documentation</a>."
         )
 @ResourceDependencies({
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
@@ -45,7 +46,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 //    @ResourceDependency(library="icefaces.ace", name="tooltip/jquery.qtip.debug-1.0.0-rc3.js"),
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="display", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="display", javadoc="Fired before the tooltip is shown (default event).", tlddoc="Fired before the tooltip is shown (default event).", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="display")
 
 public class TooltipMeta extends UIOutputMeta {
@@ -53,43 +54,43 @@ public class TooltipMeta extends UIOutputMeta {
 	@Property(tlddoc="Name of the widget to access client side api")
 	private String widgetVar;
 
-	@Property(tlddoc="Boolean value that makes tooltip global, which uses title attributes of elements in page to create the tooltip.", defaultValue="false")
+	@Property(tlddoc="Boolean value specifying whether to create tooltips for all elements with a title attribute using the title attribute value.", defaultValue="false")
 	private boolean global;
 
-	@Property(tlddoc="The corner of the target element by which to position the tooltip by (default bottomRight)", defaultValue="bottomRight")
+	@Property(tlddoc="The corner of the target element by which to position the tooltip by. E.g. topLeft, bottomRight. See <a href=\"http://craigsworks.com/projects/qtip/docs/tutorials/#position\">positioning</a> for all possible values.", defaultValue="bottomRight")
 	private String targetPosition;
 
-	@Property(tlddoc="The corner of the tooltip to position in relation to the target's corner (defult topLeft)", defaultValue="topLeft")
+	@Property(tlddoc="The corner of the tooltip to position in relation to the target's corner. E.g. topLeft, bottomRight. See <a href=\"http://craigsworks.com/projects/qtip/docs/tutorials/#position\">positioning</a> for all possible values.", defaultValue="topLeft")
 	private String position;
 
-	@Property(tlddoc="The mouse event that the tooltip will be displayed (default mouseover)", defaultValue="mouseover")
+	@Property(tlddoc="Event which will trigger the showing of the tooltip. Possible values are DOM events, such as \"mouseover\", documented under <a href=\"http://docs.jquery.com/Events/bind#typedatafn\">jQuery's Event: bind()</a>.", defaultValue="mouseover")
 	private String showEvent;
 
-	@Property(tlddoc="The delay time of the tooltip display in milliseconds (default 140)", defaultValue="140")
+	@Property(tlddoc="Time in milliseconds by which to delay the showing of the tooltip.", defaultValue="140")
 	private int showDelay;
 
-	@Property(tlddoc="The show effect of the tooltip (default fade)", defaultValue="fade")
+	@Property(tlddoc="Effect to use upon showing the tooltip e.g. fade, slide or grow.", defaultValue="fade")
 	private String showEffect;
 
-	@Property(tlddoc="Duration to display the show effect (default 500)", defaultValue="500")
+	@Property(tlddoc="Length of time in milliseconds the show effect will last for.", defaultValue="500")
 	private int showEffectLength;
 
-	@Property(tlddoc="The mouse event that the tooltip will be closed (default mouseout)", defaultValue="mouseout")
+	@Property(tlddoc="Event which will trigger the hiding of the tooltip. Possible values are DOM events, such as \"mouseout\", documented under <a href=\"http://docs.jquery.com/Events/bind#typedatafn\">jQuery's Event: bind()</a>.", defaultValue="mouseout")
 	private String hideEvent;
 
-	@Property(tlddoc="The delay time of the tooltip hide in milliseconds (default 0)", defaultValue="0")
+	@Property(tlddoc="Time in milliseconds by which to delay the hiding of the tooltip.", defaultValue="0")
 	private int hideDelay;
 
-	@Property(tlddoc="The hide effect of the tooltip (default fade)", defaultValue="fade")
+	@Property(tlddoc="Effect to use upon hiding the tooltip e.g. fade, slide or grow.", defaultValue="fade")
 	private String hideEffect;
 
-	@Property(tlddoc="Duration to display the hide effect (default 500)", defaultValue="500")
+	@Property(tlddoc="Length of time in milliseconds the hide effect will last for.", defaultValue="500")
 	private int hideEffectLength;
 
-	@Property(name="for", tlddoc="Specifies the id of the component that will display the tooltip")
+	@Property(name="for", tlddoc="Specifies the id of the component that will display the tooltip. Ignored if \"global\" is true.")
 	private String forValue;
 
-	@Property(tlddoc="Specifies the id of the element that will display the tooltip")
+	@Property(tlddoc="Specifies the id (id won't be converted to a client-side id) of the element that will display the tooltip. Applicable only if \"for\" component is not specified. Ignored if \"global\" is true.")
 	private String forElement;
 
     @Property(expression = Expression.METHOD_EXPRESSION,
