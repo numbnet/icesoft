@@ -40,7 +40,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.Resizable",
         rendererType    = "org.icefaces.ace.component.ResizableRenderer",
 		componentFamily = "org.icefaces.ace.Resizable",
-		tlddoc = "Resizable component can give resizable behavior to any JSF component." +
+		tlddoc = "The Resizable is a component that makes another component resizable." +
                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Resizable\">Resizable Wiki Documentation</a>."
         )
 @ResourceDependencies({
@@ -54,31 +54,31 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 public class ResizableMeta extends UIComponentBaseMeta {
 
-	@Property(tlddoc="Name of the widget to access client side api")
+	@Property(tlddoc="Name of the widget to access client-side API.")
 	private String widgetVar;
 	
-	@Property(name="for", tlddoc="Specifies the id of the component to make resizable")
+	@Property(name="for", tlddoc="Specifies the id of the component to make resizable.")
 	private String forValue;
 	
-	@Property(tlddoc="Boolean value that specifies whether the aspect ratio of the component should be maintained when resizing", defaultValue="false")
+	@Property(tlddoc="Boolean value that specifies whether the aspect ratio of the component should be maintained when resizing.", defaultValue="false")
 	private boolean aspectRatio;
 	
-	@Property(tlddoc="Boolean value that specifies whether the resizable should use a proxy", defaultValue="false")
+	@Property(tlddoc="If set to true, the CSS class \"ui-resizable-proxy\" will be added to the helper element used to outline the resize.", defaultValue="false")
 	private boolean proxy;
 	
-	@Property(tlddoc="Handles to use, any combination of 't', 'b', 'r', 'l', 'bl', 'br', 'tl', 'tr' is valid, shortcut \"all\" enables all handlers.")
+	@Property(tlddoc="Handles to use, any combination of 't', 'b', 'r', 'l', 'bl', 'br', 'tl', 'tr' is valid, shortcut \"all\" enables all handles.")
 	private String handles;
 	
-	@Property(tlddoc="Boolean value that specifies whether a ghost should be used to resize the component", defaultValue="false")
+	@Property(tlddoc="If set to true, a semi-transparent helper element is shown for resizing.", defaultValue="false")
 	private boolean ghost;
 	
-	@Property(tlddoc="Boolean value that specifies whether the resizing should be animated", defaultValue="false")
+	@Property(tlddoc="Boolean value that specifies whether the resizing should be animated.", defaultValue="false")
 	private boolean animate;
 	
-	@Property(tlddoc="Specifies the effect to display when resizing the component (default swing)", defaultValue="swing")
+	@Property(tlddoc="Easing effect for animating. \"linear\" or \"swing\". Easing plugins or functions can add more effects.", defaultValue="swing")
 	private String effect;
 	
-	@Property(tlddoc="specifies the duration of the effect", defaultValue="normal")
+	@Property(tlddoc="Duration time for animating, in milliseconds. Other possible values: \"slow\", \"normal\", \"fast\".", defaultValue="normal")
 	private String effectDuration;
 	
 	@Property(tlddoc="Maximum width of the resizable", defaultValue="Integer.MAX_VALUE")
@@ -93,7 +93,7 @@ public class ResizableMeta extends UIComponentBaseMeta {
 	@Property(tlddoc="Minimum height of the resizable", defaultValue="Integer.MIN_VALUE")
 	private int minHeight;
 	
-	@Property(tlddoc="Boolean value that specifies whether the resizable should be restricted to its parent's boundaries", defaultValue="false")
+	@Property(tlddoc="Boolean value that specifies whether the resizable should be restricted to its parent's boundaries.", defaultValue="false")
 	private boolean containment;
 	
 	@Property(tlddoc="Size in pixels of the increments in which the resizable should increase/decrease its size", defaultValue="1")
@@ -102,16 +102,16 @@ public class ResizableMeta extends UIComponentBaseMeta {
 	@Property(tlddoc="Component(s) to update after AJAX call caused by resizing event.")
 	private String onResizeUpdate;
 	
-	@Property(expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="org.icefaces.ace.event.ResizeEvent", tlddoc="Action listener for the resizing event")
+	@Property(expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="org.icefaces.ace.event.ResizeEvent", tlddoc="Listener for the end of resize event.")
 	private MethodExpression resizeListener;
 	
-	@Property(tlddoc="Javascript code to be executed when the user starts resizing the component")
+	@Property(tlddoc="Javascript code to be executed at the start of a resize operation.")
 	private String onStart;
 	
-	@Property(tlddoc="Javascript code to be executed when resizing is done")
+	@Property(tlddoc="Javascript code to be executed during the resize, on the drag of the resize handle.")
 	private String onResize;
 	
-	@Property(tlddoc="Javascript code to be executed when the user stops resizing the component")
+	@Property(tlddoc="Javascript code to be executed at the end of a resize operation.")
 	private String onStop;
     
 }
