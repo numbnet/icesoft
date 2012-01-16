@@ -20,15 +20,21 @@
 
 @interface AudioController : UIViewController  {
 
-	NativeInterface *nativeInterface;
+    NativeInterface *nativeInterface;
+    UISegmentedControl *recordControl;
+    UISegmentedControl *submitControl;
 
 }
 
 @property (retain) NativeInterface *nativeInterface;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *recordControl;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *submitControl;
 
 - (IBAction) doRecord;
 - (IBAction) doStop;
 - (IBAction) doDone;
 - (IBAction) doCancel;
+- (IBAction) recordAction;
+- (IBAction) submitAction;
 
 @end

@@ -20,6 +20,8 @@
 @implementation AudioController
 
 @synthesize nativeInterface;
+@synthesize recordControl;
+@synthesize submitControl;
 
 - (IBAction) doRecord  {
     NSLog(@"AudioController doRecord");
@@ -39,6 +41,33 @@
 - (IBAction) doCancel  {
     NSLog(@"AudioController doCancel");
     [self.nativeInterface recordDismiss];
+}
+
+- (IBAction) recordAction  {
+    NSLog(@"AudioController recordAction ");
+    if (0 == recordControl.selectedSegmentIndex)  {
+        [self doRecord];
+        return;
+    }
+    if (1 == recordControl.selectedSegmentIndex)  {
+        [self doStop];
+        [recordControl setSelectedSegmentIndex:-1];
+        return;
+    }
+}
+
+- (IBAction) submitAction  {
+    NSLog(@"AudioController submitAction");
+    if (0 == submitControl.selectedSegmentIndex)  {
+        [self doCancel];
+        [submitControl setSelectedSegmentIndex:-1];
+        return;
+    }
+    if (1 == submitControl.selectedSegmentIndex)  {
+        [self doDone];
+        [submitControl setSelectedSegmentIndex:-1];
+        return;
+    }
 }
 
 
