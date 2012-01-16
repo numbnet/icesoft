@@ -16,15 +16,11 @@
 
 package org.icefaces.impl.push.servlet;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
+import org.icefaces.impl.event.DebugTagListener;
+import org.icefaces.util.EnvUtils;
+import org.icepush.PushContext;
+import org.icepush.servlet.MainServlet;
+import org.icepush.util.ExtensionRegistry;
 
 import javax.faces.FactoryFinder;
 import javax.faces.application.Resource;
@@ -40,12 +36,15 @@ import javax.faces.lifecycle.LifecycleFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.icefaces.impl.event.DebugTagListener;
-import org.icefaces.util.EnvUtils;
-import org.icepush.PushContext;
-import org.icepush.servlet.MainServlet;
-import org.icepush.util.ExtensionRegistry;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class ICEpushResourceHandler extends ResourceHandlerWrapper implements PhaseListener {
     private static final Logger log = Logger.getLogger(ICEpushResourceHandler.class.getName());
@@ -69,7 +68,7 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
 
     public ICEpushResourceHandler(final ResourceHandler resourceHandler) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        final ServletContext servletContext = (ServletContext)facesContext.getExternalContext().getContext();
+        final ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
         String projectStage = servletContext.getInitParameter("javax.faces.PROJECT_STAGE");
         if (projectStage != null && !projectStage.equals("Production")) {
             facesContext.getApplication().subscribeToEvent(PostAddToViewEvent.class, new DebugTagListener());
@@ -233,7 +232,16 @@ public class ICEpushResourceHandler extends ResourceHandlerWrapper implements Ph
                     throw new RuntimeException(e);
                 }
             } else {
-                resourceHandler.handleResourceRequest(facesContext);
+                try {
+                    resourceHandler.handleResourceRequest(facesContext);
+                } catch (IOException e) {
+                    //capture & log Tomcat specific exception
+                    if (e.getClass().getName().endsWith("ClientAbortException")) {
+                        log.fine("Browser closed the connection prematurely.");
+                    } else {
+                        throw e;
+                    }
+                }
             }
         }
 
