@@ -38,11 +38,16 @@ ice.ace.ConfirmDialog = function(id, cfg) {
     this.cfg.resizable = false;
     this.cfg.autoOpen = false;
 
-	if (ice.ace.ConfirmDialog.isIE7()) {
+	// disable unsupported effects in IE
+	var browser = ice.ace.ConfirmDialog.browser();
+	if (browser == 'ie7' || browser == 'ie8') {
 		var hide = this.cfg.hide;
 		if (hide) {
-			if (hide == 'highlight' || hide == 'bounce' || hide == 'pulsate' || hide == 'puff')
+			if (hide == 'highlight' || hide == 'bounce' || hide == 'pulsate')
 				this.cfg.hide = null;
+			if (browser == 'ie7')
+				if (hide == 'puff' || hide == 'scale')
+					this.cfg.hide = null;
 		}
 	}
 
@@ -76,10 +81,14 @@ ice.ace.ConfirmDialog.prototype.hide = function() {
     this.jq.dialog('close');
 };
 
-ice.ace.ConfirmDialog.isIE7 = function() {
+ice.ace.ConfirmDialog.browser = function() {
 	if (ice.ace.jq.browser.msie) 
-		if (ice.ace.jq.browser.version < 8)
+		if (ice.ace.jq.browser.version < 8) {
 			if (navigator.userAgent.indexOf("Trident/5") < 0) // detects IE9, regardless of compatibility mode
-				return true;
-	return false;
+				return 'ie7';
+		} else {
+			if (ice.ace.jq.browser.version < 9)
+				return 'ie8';
+		}
+	return '';
 };
