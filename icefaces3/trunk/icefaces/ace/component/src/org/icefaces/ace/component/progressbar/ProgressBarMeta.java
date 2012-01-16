@@ -36,17 +36,18 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentFamily = "org.icefaces.ace.component.ProgressBar",
         componentType = "org.icefaces.ace.component.ProgressBar",
         rendererType = "org.icefaces.ace.component.ProgressBarRenderer",
-        tlddoc = "ProgressBar is a process status indicator that can either work purely on client side or " +
-                 "interact with server side using ajax.")
+        tlddoc = "The Progress Bar is a process status indicator that can either work purely on client side or " +
+                 "interact with server side using ajax." +
+                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/ProgressBar\">ProgressBar Wiki Documentation</a>.")
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="complete", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="cancel", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="complete", javadoc="Fired when the value of the progressbar reaches the maximum value (default event).", tlddoc="Fired when the value of the progressbar reaches the maximum value (default event).", defaultRender="@all", defaultExecute="@all"),
+	@ClientEvent(name="cancel", javadoc="Fired when the progress process is cancelled by calling cancel().", tlddoc="Fired when the progress process is cancelled by calling cancel().", defaultRender="@all", defaultExecute="@all"),
+	@ClientEvent(name="change", javadoc="Fired when the value of the progressbar changes.", tlddoc="Fired when the value of the progressbar changes.", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="complete")
 public class ProgressBarMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Name of the client side widget.")
@@ -70,7 +71,7 @@ public class ProgressBarMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Style class of the main container element.")
     private String styleClass;
 
-    @Property(tlddoc = "")
+    @Property(tlddoc = "JavaScript to be executed after executing complete listener(s).")
     private String oncomplete;
 
     @Property(tlddoc = "Specifies component(s) to update with ajax when progress is completed")
@@ -81,7 +82,7 @@ public class ProgressBarMeta extends UIComponentBaseMeta {
     private MethodExpression completeListener;
 
     @Property(expression = Expression.METHOD_EXPRESSION, methodExpressionArgument = "org.icefaces.ace.event.ProgressBarChangeEvent",
-            tlddoc = "Listener to be called when the value of the progressbar changes.")
+            tlddoc = "A server side listener to be invoked when the value of the progress bar changes.")
     private MethodExpression changeListener;
 
     @Property(tlddoc = "Specifies component(s) to update with ajax when progress is cancelled")
