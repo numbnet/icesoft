@@ -79,8 +79,8 @@
                                            closable="true">
 
                 <h:panelGrid width="100%" style="text-align: center;" columns="2" cellspacing="30">
-                    <h:commandButton value="Yes" onclick="confirmation.hide();"/>
-                    <h:commandButton value="No" onclick="confirmation.hide();"/>
+                    <h:commandButton value="Yes" onclick="confirmation.hide();return false;"/>
+                    <h:commandButton value="No" onclick="confirmation.hide();return false;"/>
                 </h:panelGrid>
 
             </ace:confirmationDialog>
