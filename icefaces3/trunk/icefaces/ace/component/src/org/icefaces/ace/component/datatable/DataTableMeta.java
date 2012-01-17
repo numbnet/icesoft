@@ -133,12 +133,6 @@ public class DataTableMeta extends UIDataMeta {
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean alwaysExecuteContents;
 
-    @Property(tlddoc = "Enable to force the update of the entire table during sorting and " +
-            "filtering. This is intended as a performance optimization in enviroments with " +
-            "compromized Javascript performance and large tables.",
-            defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
-    private boolean forceTableUpdate;
-
     // ID of the configPanel that has been associated with this table, used for
     // component lookups during decodes.
     @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
