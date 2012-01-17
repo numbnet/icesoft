@@ -42,7 +42,10 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.DataExporter",
         rendererType    = "org.icefaces.ace.component.DataExporterRenderer",
 		componentFamily  = "org.icefaces.ace.component",
-		tlddoc = "Utility to export data from a datatable as an Excel, PDF, XML or CSV document. This component renders an HTML button. More components and HTML elements can be nested inside this tag to give a different look to the button.")
+		tlddoc = "Utility to export data from a datatable as an Excel, PDF, XML or CSV document. This component renders an HTML button. More components and HTML elements can be nested inside this tag to give a different look to the button." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/DataExporter\">DataExporter Wiki Documentation</a>."
+)
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
 	@ResourceDependency(library="icefaces.ace", name="util/ace-datatable.js")

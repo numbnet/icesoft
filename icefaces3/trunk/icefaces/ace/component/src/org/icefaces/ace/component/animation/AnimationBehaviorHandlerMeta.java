@@ -30,7 +30,9 @@ import org.icefaces.ace.meta.annotation.Implementation;
     extendsClass = "javax.faces.view.facelets.BehaviorHandler",
 	behaviorId = "org.icefaces.ace.animation.Animation",
 	behaviorClass = "org.icefaces.ace.component.animation.AnimationBehavior",
-    tlddoc="Animation can be applied to components that implement the ClientBehaviorHolder interface. Animations are based on jQuery effects utilities."
+    tlddoc="Animation can be applied to components that implement the ClientBehaviorHolder interface. Animations are based on jQuery effects utilities." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/Animation\">Animation Wiki Documentation</a>."
 )
 public class AnimationBehaviorHandlerMeta {
 

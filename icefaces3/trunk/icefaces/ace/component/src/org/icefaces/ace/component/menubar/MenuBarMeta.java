@@ -34,7 +34,9 @@ import javax.faces.application.ResourceDependency;
         componentFamily = "org.icefaces.ace.component.Menu",
         componentType = "org.icefaces.ace.component.MenuBar",
         rendererType = "org.icefaces.ace.component.MenuBarRenderer",
-        tlddoc = "Menubar is a horizontal navigation component."
+        tlddoc = "Menubar is a horizontal navigation component." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/Menu+and+Menubar\">MenuBar Wiki Documentation</a>."
 )
 @ResourceDependencies({
 		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
