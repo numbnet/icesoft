@@ -133,6 +133,12 @@ public class DataTableMeta extends UIDataMeta {
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean alwaysExecuteContents;
 
+    @Property(tlddoc = "Enable to force the update of the entire table during sorting and " +
+            "filtering. This is intended as a performance optimization in enviroments with " +
+            "compromized Javascript performance and large tables.",
+            defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
+    private boolean forceTableUpdate;
+
     // ID of the configPanel that has been associated with this table, used for
     // component lookups during decodes.
     @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
@@ -145,6 +151,9 @@ public class DataTableMeta extends UIDataMeta {
     protected Boolean sortOrderChanged;
     @Field(defaultValue = "true", defaultValueIsStringLiteral = false)
     protected Boolean filterValueChanged;
+    // Used to force update of entire table container when using forceTableUpdate
+    @Field(defaultValue = "0", defaultValueIsStringLiteral = false)
+    protected Integer forcedUpdateCounter;
 
 
 

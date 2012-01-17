@@ -570,6 +570,13 @@ public class DataTableRenderer extends CoreRenderer {
         // Avoid sharing cached stateMap with other iterative instances
         table.clearCachedStateMap();
 
+        if (table.isForceTableUpdate()) {
+            writer.startElement(HTML.DIV_ELEM, null);
+            writer.writeAttribute(HTML.STYLE_ATTR, "display:none;",null);
+            writer.writeText(table.getForcedUpdateCounter(), null);
+            writer.endElement(HTML.DIV_ELEM);
+        }
+
         writer.endElement(HTML.DIV_ELEM);
 	}
 

@@ -677,6 +677,7 @@ public class DataTable extends DataTableBase {
                     Collections.sort(list, new MultipleExpressionComparator(criterias, rowVar));
             }
         }
+        setForcedUpdateCounter(getForcedUpdateCounter()+1);
         setSortOrderChanged(false);
     }
 
@@ -747,6 +748,7 @@ public class DataTable extends DataTableBase {
             context.getExternalContext().getRequestMap().remove(getRowStateVar());
             return  filteredData;
         } finally {
+            setForcedUpdateCounter(getForcedUpdateCounter()+1);
             setFilterValueChanged(false);
         }
     }
