@@ -37,6 +37,7 @@ import com.icesoft.faces.component.ext.HtmlCommandButton;
 import com.icesoft.faces.component.ext.renderkit.FormRenderer;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.util.DOMUtils;
 
 import org.krysalis.jcharts.Chart;
 import org.krysalis.jcharts.imageMap.ImageMapArea;
@@ -49,6 +50,7 @@ import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
+
 import javax.faces.event.FacesEvent;
 import javax.faces.event.ActionListener;
 
@@ -436,11 +438,16 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
 
     void generateClientSideImageMap(DOMContext domContext, Element map) {
         if (isClientSideImageMap()) {
+            String clientId = getClientId(getFacesContext());
+            int i = 0;
             Iterator area = getGeneratedImageMapArea().values().iterator();
             while (area.hasNext()) {
                 ImageMapArea areaMap = (ImageMapArea) area.next();
-                Text areaNode = domContext.createTextNode(areaMap.toHTML(
-                        "title ='" + areaMap.getLengendLabel() +
+
+                //unescape overall insertion, but ensure label is escaped
+                Text areaNode = domContext.createTextNodeUnescaped(areaMap.toHTML(
+                         "id='"+ clientId + i++ + "' "+
+                        "title ='" + DOMUtils.escapeAnsi(areaMap.getLengendLabel()) +
                         "' href=\"javascript:;\" onclick=\"document.forms['" +
                         getParentFormId() + "']['" + ICE_CHART_COMPONENT +
                         "'].value='" + getClientId(getFacesContext()) +

@@ -75,7 +75,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             Element scrpt = domContext.createElement(HTML.SCRIPT_ELEM);
             scrpt.setAttribute(HTML.TYPE_ATTR, "text/javascript");
             String customConfig =  (inputRichText.getCustomConfigPath() == null)? "": inputRichText.getCustomConfigPath();
-            scrpt.appendChild(domContext.createTextNode("renderEditor('"+ ClientIdPool.get(clientId) +"', '"+ inputRichText.getToolbar() +"'," +
+            scrpt.appendChild(domContext.createTextNodeUnescaped("renderEditor('"+ ClientIdPool.get(clientId) +"', '"+ inputRichText.getToolbar() +"'," +
             		"'"+ inputRichText.getLanguage()+"'," +
             		"'"+ inputRichText.getSkin().toLowerCase()+"'," +
             		"'"+ inputRichText.getHeight() + "'," +

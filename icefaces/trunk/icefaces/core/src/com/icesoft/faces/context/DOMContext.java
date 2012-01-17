@@ -37,6 +37,7 @@ package com.icesoft.faces.context;
 
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.ConfigurationException;
+import com.icesoft.faces.util.DOMUtils;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -284,13 +285,28 @@ public class DOMContext implements java.io.Serializable {
     /**
      * <p/>
      * Creates a <code>Text</code> node given the specified string. </p>
+     * The output is escaped.
      *
      * @param cData The data for the node.
      * @return The new <code>Text</code> object.
      */
     public Text createTextNode(String cData) {
-        return document.createTextNode(cData);
+        return document.createTextNode(DOMUtils.escapeAnsi(cData));
     }
+
+    /**
+     * <p/>
+     * Creates a <code>Text</code> node given the specified string. 
+     * The output is not escaped, so the calling code must be carefully
+     * audited to ensure that application data is not passed in directly.</p>
+     *
+     * @param cData The data for the node.
+     * @return The new <code>Text</code> object.
+     */
+    public Text createTextNodeUnescaped(String cData) {
+         return document.createTextNode(cData);
+     }
+
 
     /**
      * <p/>
