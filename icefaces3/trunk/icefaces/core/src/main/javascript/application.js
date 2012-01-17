@@ -302,11 +302,9 @@ if (!window.ice.icefaces) {
                 try {
                     var source = e.source;
                     var form = formOf(source);
-                    if (form.id) {
-                        var foundForm = document.getElementById(form.id);
-                        if (foundForm) {
-                            form = foundForm;
-                        }
+                    //test if form still exists -- could have been removed by the update, this element being detached from document
+                    if (form && form.id) {
+                        form = document.getElementById(form.id);
                     }
                     isICEfacesEvent = form['ice.view'] || form['ice.window'];
                 } catch (ex) {
