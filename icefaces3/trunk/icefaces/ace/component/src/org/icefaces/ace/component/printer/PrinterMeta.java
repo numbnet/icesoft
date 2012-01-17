@@ -36,14 +36,16 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.Printer",
         rendererType    = "org.icefaces.ace.component.PrinterRenderer",
 		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "Printer allows sending a specific JSF component to the printer, not the whole page. It needs to be nested inside an h:commandButton or h:outputLink component."
+		tlddoc = "Printer allows sending a specific JSF component to the printer, not the whole page. It needs to be nested inside an h:commandButton or h:outputLink component." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/Printer\">Printer Wiki Documentation</a>."
         )
 @ResourceDependencies({
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="activate", javadoc="Fired when the parent component is clicked or activated via the keyboard (default event).", tlddoc="Fired when the parent component is clicked or activated via the keyboard (default event).", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="activate")
 public class PrinterMeta extends UIComponentBaseMeta {
 

@@ -40,7 +40,9 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.MaskedEntry",
         rendererType    = "org.icefaces.ace.component.MaskedEntryRenderer",
 		componentFamily = "org.icefaces.ace.MaskedEntry",
-		tlddoc = "Text input component that forces input to be formatted in a specific way."
+		tlddoc = "Text input component that forces input to be formatted in a specific way." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/MaskedEntry\">MaskedEntry Wiki Documentation</a>."
         )
 
 @ResourceDependencies({
@@ -49,7 +51,8 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	@ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="valueChange", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="valueChange", javadoc="Fired every time the value of the text input changes (default event).", 
+	tlddoc="Fired every time the value of the text input changes (default event).", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="valueChange")
 public class MaskedEntryMeta extends HtmlInputTextMeta {
 
