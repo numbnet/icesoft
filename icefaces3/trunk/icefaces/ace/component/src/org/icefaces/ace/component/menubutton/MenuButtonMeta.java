@@ -34,7 +34,9 @@ import javax.faces.application.ResourceDependency;
         componentFamily = "org.icefaces.ace.component.Menu",
         componentType = "org.icefaces.ace.component.MenuButton",
         rendererType = "org.icefaces.ace.component.MenuButtonRenderer",
-        tlddoc = "MenuButton displays different commands in a popup menu."
+        tlddoc = "MenuButton displays different commands in a popup menu." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/MenuButton\">MenuButton Wiki Documentation</a>."
 )
 @ResourceDependencies({
 		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),

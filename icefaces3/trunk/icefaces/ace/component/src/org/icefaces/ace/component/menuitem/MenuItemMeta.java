@@ -33,7 +33,9 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         extendsClass = "javax.faces.component.UICommand",
         componentFamily = "org.icefaces.ace.component.Menu",
         componentType = "org.icefaces.ace.component.MenuItem",
-        tlddoc = "MenuItem is used by various menu components"
+        tlddoc = "MenuItem is used by various menu components" +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/MenuItem\">MenuItem Wiki Documentation</a>."
 )
 @ResourceDependencies({
 

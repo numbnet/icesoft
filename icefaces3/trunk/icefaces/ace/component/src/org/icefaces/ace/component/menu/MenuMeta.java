@@ -34,7 +34,9 @@ import javax.faces.application.ResourceDependency;
         componentType = "org.icefaces.ace.component.Menu",
         rendererType = "org.icefaces.ace.component.MenuRenderer",
         tlddoc = "Menu is a navigation component with various customized modes like multi tiers, overlay " +
-                "and nested menus."
+                "and nested menus." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/Menu+and+Menubar\">Menu Wiki Documentation</a>."
 )
 @ResourceDependencies({
 		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),

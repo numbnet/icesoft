@@ -31,7 +31,9 @@ import javax.el.MethodExpression;
     extendsClass = "javax.faces.view.facelets.BehaviorHandler",
 	behaviorId = "org.icefaces.ace.component.AjaxBehavior",
 	behaviorClass = "org.icefaces.ace.component.ajax.AjaxBehavior",
-    tlddoc = "Applied on components that support client behaviors similar to the standard f:ajax behavior."
+    tlddoc = "Applied on components that support client behaviors similar to the standard f:ajax behavior." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/Ajax\">Ajax Wiki Documentation</a>."
 )
 public class AjaxBehaviorHandlerMeta {
 

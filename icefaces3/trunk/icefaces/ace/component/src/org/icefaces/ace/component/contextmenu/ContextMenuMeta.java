@@ -34,7 +34,9 @@ import javax.faces.application.ResourceDependency;
         componentFamily = "org.icefaces.ace.component.Menu",
         componentType = "org.icefaces.ace.component.ContextMenu",
         rendererType = "org.icefaces.ace.component.ContextMenuRenderer",
-        tlddoc = "ContextMenu provides a popup menu that is displayed on mouse right-click event."
+        tlddoc = "ContextMenu provides a popup menu that is displayed on mouse right-click event." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/ContextMenu\">ContextMenu Wiki Documentation</a>."
 )
 @ResourceDependencies({
 		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
