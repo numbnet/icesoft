@@ -27,7 +27,9 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
         extendsClass = "javax.faces.component.UIComponentBase",
         componentFamily = "org.icefaces.ace.component.Menu",
         componentType = "org.icefaces.ace.component.Submenu",
-        tlddoc = "Submenu is nested in a menu component and represents a navigation group."
+        tlddoc = "Submenu is nested in a menu component and represents a navigation group." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/Submenu\">Submenu Wiki Documentation</a>."
 )
 public class SubmenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Label of the submenu header.")

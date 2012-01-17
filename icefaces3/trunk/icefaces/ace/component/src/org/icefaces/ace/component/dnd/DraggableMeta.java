@@ -33,7 +33,9 @@ import javax.faces.application.ResourceDependency;
     componentType = "org.icefaces.ace.component.Draggable",
     rendererType = "org.icefaces.ace.component.DraggableRenderer",
     componentFamily = "org.icefaces.ace.Draggable",
-    tlddoc = "Enables an Id-specified component to be moved via dragging. Draggable component can cause events on droppable ones."
+    tlddoc = "Enables an Id-specified component to be moved via dragging. Draggable component can cause events on droppable ones." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/Draggable\">Draggable Wiki Documentation</a>."
 )
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),

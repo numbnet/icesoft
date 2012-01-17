@@ -35,7 +35,9 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.Panel",
         rendererType    = "org.icefaces.ace.component.PanelRenderer",
 		componentFamily = "org.icefaces.ace.Panel",
-		tlddoc = "Panel is a generic grouping component that also supports toggling, closing and options menu. Both Close and Toggle events can be listened on server side with ajax listeners."
+		tlddoc = "Panel is a generic grouping component that also supports toggling, closing and options menu. Both Close and Toggle events can be listened on server side with ajax listeners." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/Panel\">Panel Wiki Documentation</a>."
         )
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
@@ -43,8 +45,9 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="toggle", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all"),
-	@ClientEvent(name="close", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="toggle", javadoc="Fired when the toggle button is activated to expand or compress the panel (default event).",
+	tlddoc="Fired when the toggle button is activated to expand or compress the panel (default event).", defaultRender="@all", defaultExecute="@all"),
+	@ClientEvent(name="close", javadoc="Fired when the close button is activated to remove the panel from view.", tlddoc="Fired when the close button is activated to remove the panel from view.", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="toggle")
 
 public class PanelMeta extends UIPanelMeta {

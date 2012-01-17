@@ -39,10 +39,13 @@ import javax.faces.application.ResourceDependency;
     componentType = "org.icefaces.ace.component.Droppable",
     rendererType = "org.icefaces.ace.component.DroppableRenderer",
     componentFamily = "org.icefaces.ace.Droppable",
-    tlddoc = "Enables an Id-specified component as an area that can have Droppable moved onto it to raise events."
+    tlddoc = "Enables an Id-specified component as an area that can have Droppable moved onto it to raise events." +
+                 "<p>For more information, see the " +
+                 "<a href=\"http://wiki.icefaces.org/display/ICE/Droppable\">Droppable Wiki Documentation</a>."
 )
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="drop", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
+	@ClientEvent(name="drop", javadoc="Fired when a draggable component is dropped on this droppable component (default event).", 
+	tlddoc="Fired when a draggable component is dropped on this droppable component (default event).", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="drop")
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
