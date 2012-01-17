@@ -64,6 +64,7 @@ import android.net.Uri;
 import android.content.ActivityNotFoundException;
 
 import org.icemobile.client.android.c2dm.C2dmHandler;
+import org.icemobile.client.android.c2dm.C2dmRegistrationHandler;
 import org.icemobile.client.android.qrcode.CaptureActivity;
 import org.icemobile.client.android.qrcode.CaptureJSInterface;
 import org.icemobile.client.android.qrcode.Intents;
@@ -73,7 +74,7 @@ import android.graphics.Paint;
 
 public class ICEmobileContainer extends Activity 
     implements SharedPreferences.OnSharedPreferenceChangeListener,
-	       ConnectionChangeListener {
+	       ConnectionChangeListener, C2dmRegistrationHandler {
 
     /* Container configuration constants */
     protected static final String HOME_URL = "http://www.icemobile.org/demos.html";
@@ -257,6 +258,10 @@ public class ICEmobileContainer extends Activity
     @Override
     protected void onStop() {
 	historyManager.save();
+	try {
+	    self.unbindService(mConnection);
+	} catch (Exception e) {
+	}
 	super.onStop();
     }
  
@@ -349,6 +354,15 @@ public class ICEmobileContainer extends Activity
         }
     }
 
+    public void handleC2dmRegistration(String id) {
+	setCloudNotificationId();
+    }
+
+    protected void setCloudNotificationId() {
+	Log.e("ICEmobile", "Setting cloud push: " + getCloudNotificationId());
+	utilInterface.loadURL("javascript:ice.push.parkInactivePushIds('" + 
+			      getCloudNotificationId() + "');");
+    }
 
     protected String getCloudNotificationId() {
 	String id=null;
@@ -386,7 +400,7 @@ public class ICEmobileContainer extends Activity
         @Override  
         public void onPageFinished(WebView view, String url){
             view.loadUrl("javascript:eval(' ' + window.ICEassets.loadAssetFile('native-interface.js'));");  
-	    utilInterface.loadURL("javascript:ice.push.parkInactivePushIds('" + getCloudNotificationId() + "');");
+	    setCloudNotificationId();
 	    utilInterface.setUrl(url);
 	    historyManager.add(url);
 	    currentURL = url;
@@ -517,7 +531,7 @@ public class ICEmobileContainer extends Activity
 
     private void includeC2dm() {
 	if (mC2dmHandler == null) {
-	    mC2dmHandler = new C2dmHandler(this, R.drawable.c2dm_icon, "ICE", "ICEmobile", "C2DM Notification");
+	    mC2dmHandler = new C2dmHandler(this, R.drawable.c2dm_icon, "ICE", "ICEmobile", "C2DM Notification",this);
 	}
 	mC2dmHandler.start(C2DM_SENDER);
     }
