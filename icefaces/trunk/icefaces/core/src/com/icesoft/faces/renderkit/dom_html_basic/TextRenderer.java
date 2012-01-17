@@ -126,7 +126,7 @@ public class TextRenderer extends DomBasicInputRenderer {
      */
     private void renderTextNode(DOMContext domContext) {
         if (!domContext.isInitialized()) {
-            Node root = domContext.getDocument().createTextNode("");
+            Node root = domContext.createTextNode("");
             domContext.setRootNode(root);
         } else if (!(domContext.getRootNode() instanceof Text)) {
             // Need to switch from a root span to a root text node.
@@ -135,7 +135,7 @@ public class TextRenderer extends DomBasicInputRenderer {
             // from non-null to null.
             domContext.getRootNode().getParentNode()
                     .removeChild(domContext.getRootNode());
-            domContext.setRootNode(domContext.getDocument().createTextNode(""));
+            domContext.setRootNode(domContext.createTextNode(""));
         }
     }
 
@@ -199,8 +199,8 @@ public class TextRenderer extends DomBasicInputRenderer {
                 && rootNode.getFirstChild() instanceof Text) {
                 ((Text) rootNode.getFirstChild()).setData(currentValue);
             } else {
-                Text text = domContext.getDocument()
-                        .createTextNode(currentValue);
+                //escaping performed by valueTextRequiresEscape above
+                Text text = domContext.createTextNodeUnescaped(currentValue);
                 rootNode.appendChild(text);
             }
         } else {

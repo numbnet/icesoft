@@ -133,7 +133,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
                     }
                     nextTD = domContext.createElement("td");
                     nextTR.appendChild(nextTD);
-                    Text label = domContext.getDocument()
+                    Text label = domContext
                             .createTextNode(nextSelectItem.getLabel());
                     nextTD.appendChild(label);
                 }
@@ -230,7 +230,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         	Element label = domContext.createElement("label");
             label.setAttribute(HTML.FOR_ATTR, itemId);
             Text textNode =
-                domContext.getDocument().createTextNode(selectItem.getLabel());
+                domContext.createTextNode(selectItem.getLabel());
             label.appendChild(textNode);            
             td.appendChild(label);
         }

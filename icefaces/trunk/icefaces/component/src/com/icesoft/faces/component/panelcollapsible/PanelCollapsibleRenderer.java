@@ -121,7 +121,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
             if (tabindex != null) {
                 anchor.setAttribute(HTML.TABINDEX_ATTR, tabindex);
             }
-            anchor.appendChild(domContext.createTextNode("<img src='"+ CoreUtils.resolveResourceURL(facesContext,
+            anchor.appendChild(domContext.createTextNodeUnescaped("<img src='"+ CoreUtils.resolveResourceURL(facesContext,
                         "/xmlhttp/css/xp/css-images/spacer.gif") + "' \\>"));
             div.appendChild(anchor);
         }

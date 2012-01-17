@@ -141,7 +141,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         }
         String itemLabel = selectItem.getLabel();
         if (itemLabel != null) {
-            Text labelText = domContext.getDocument().createTextNode(itemLabel);
+            Text labelText = domContext.createTextNode(itemLabel);
             label.appendChild(labelText);
         }
     }

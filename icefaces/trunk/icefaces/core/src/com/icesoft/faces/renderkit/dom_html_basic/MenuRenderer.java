@@ -327,9 +327,8 @@ public class MenuRenderer extends DomBasicInputRenderer {
             option.setAttribute("disabled", "disabled");
         }
 
-        Document doc = domContext.getDocument();
         String label = selectItem.getLabel();
-        Text labelNode = doc.createTextNode(label == null ? valueString : label);
+        Text labelNode = domContext.createTextNode(label == null ? valueString : label);
         option.appendChild(labelNode);
     }
 
