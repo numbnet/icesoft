@@ -50,19 +50,13 @@ ice.ace.Droppable.prototype.setupDropHandler = function() {
     
     this.cfg.drop = function(event, ui) {
         var dropListener = _self.cfg && _self.cfg.behaviors && _self.cfg.behaviors.drop;
-        if(_self.cfg.onDrop) {
-            _self.cfg.onDrop.call(this, event, ui);
-        }
 
         var options = {
             source: _self.id,
             execute: _self.id,
+            render: '@none',
             formId: _self.cfg.formId
         };
-
-        if(_self.cfg.onDropUpdate) {
-            options.render = _self.cfg.onDropUpdate;
-        }
 	
         var params = {};
         params[_self.id + "_dragId"] = ui.draggable.attr('id');

@@ -84,7 +84,6 @@ public class DroppableRenderer extends CoreRenderer {
         Droppable droppable = (Droppable) component;
         String target = findTarget(context, droppable).getClientId(context);
         String clientId = droppable.getClientId(context);
-        String onDropUpdate = droppable.getOnDropUpdate();
 
         // empty node with client id, needed for AJAX request
 		writer.startElement("span", droppable);
@@ -102,16 +101,12 @@ public class DroppableRenderer extends CoreRenderer {
         if(droppable.isDisabled()) writer.write(",disabled:true");
         if(droppable.getHoverStyleClass() != null) writer.write(",hoverClass:'" + droppable.getHoverStyleClass() + "'");
         if(droppable.getActiveStyleClass() != null) writer.write(",activeClass:'" + droppable.getActiveStyleClass() + "'");
-        if(droppable.getOnDrop() != null) writer.write(",onDrop:" + droppable.getOnDrop());
         if(droppable.getAccept() != null) writer.write(",accept:'" + droppable.getAccept() + "'");
         if(droppable.getScope() != null) writer.write(",scope:'" + droppable.getScope() + "'");
         if(droppable.getTolerance() != null) writer.write(",tolerance:'" + droppable.getTolerance() + "'");
 
-        if(droppable.getDropListener() != null && onDropUpdate != null) {
+        if(droppable.getDropListener() != null) {
             writer.write(",ajaxDrop:true");
-
-            if (onDropUpdate != null)
-                writer.write(",onDropUpdate:'" + ComponentUtils.findClientIds(context, droppable, onDropUpdate) + "'");
         }
 
         encodeClientBehaviors(context, droppable);
