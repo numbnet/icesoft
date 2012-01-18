@@ -22,15 +22,21 @@
     <parent>
        <groupId>org.icefaces.samples</groupId>
        <artifactId>core</artifactId>
-       <version>3.0.0.RC1</version>
+       <version>3.0.0</version>
     </parent>
     <artifactId>chat-portlet</artifactId>
     <packaging>war</packaging>
-    <name>ICEfaces 2 Chat Portlet sample</name>
+    <name>ICEfaces Chat Portlet sample</name>
     <properties>
         <parent.root>../chat</parent.root>
         <pluto.version>2.0.2</pluto.version>
     </properties>
+    <repositories>
+         <repository>
+			<id>maven2-repository-portletfaces.org</id>
+			<url>http://repository.portletfaces.org/content/repositories/portletfaces-releases</url>
+		</repository>
+    </repositories>
     <build>
         <finalName>${artifactId}</finalName>
         <plugins>
