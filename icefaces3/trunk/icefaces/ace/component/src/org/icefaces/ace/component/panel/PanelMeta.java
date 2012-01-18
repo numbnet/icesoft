@@ -46,43 +46,43 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 })
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="toggle", javadoc="Fired when the toggle button is activated to expand or compress the panel (default event).",
-	tlddoc="Fired when the toggle button is activated to expand or compress the panel (default event).", defaultRender="@all", defaultExecute="@all"),
+	tlddoc="Fired when the toggle button is activated to expand or collapse the panel (default event).", defaultRender="@all", defaultExecute="@all"),
 	@ClientEvent(name="close", javadoc="Fired when the close button is activated to remove the panel from view.", tlddoc="Fired when the close button is activated to remove the panel from view.", defaultRender="@all", defaultExecute="@all")
 }, defaultEvent="toggle")
 
 public class PanelMeta extends UIPanelMeta {
 
-	@Property(tlddoc="Name of the widget to access client side api")
+	@Property(tlddoc="Name of the widget variable to access the client side api.")
 	private String widgetVar;
 	
-	@Property(tlddoc="Header text of the panel")
+	@Property(tlddoc="Header text of the panel.")
 	private String header;
 	
-	@Property(tlddoc="Footer text of the panel")
+	@Property(tlddoc="Footer text of the panel.")
 	private String footer;
 	
-	@Property(tlddoc="Boolean value that specifies whether the panel's open and close states can be toggled", defaultValue="false")
+	@Property(tlddoc="Boolean value that specifies whether to display a button to toggle between the expanded and collapsed states of the panel.", defaultValue="false")
 	private boolean toggleable;
 	
-	@Property(tlddoc="Integer value that specifies the duration of the transition between states", defaultValue="1000")
+	@Property(tlddoc="Integer value that specifies the duration of the transition between states.", defaultValue="1000")
 	private int toggleSpeed;
 	
-	@Property(tlddoc="Style to apply to the container element")
+	@Property(tlddoc="Style to apply to the container element.")
 	private String style;
 	
-	@Property(tlddoc="Style class to apply to the container element")
+	@Property(tlddoc="Style class to apply to the container element.")
 	private String styleClass;
 	
-	@Property(tlddoc="Boolean value that specifies whether the panel is collapsed", defaultValue="false")
+	@Property(tlddoc="Boolean value that specifies whether the panel is collapsed.", defaultValue="false")
 	private boolean collapsed;
 	
-	@Property(tlddoc="Boolean value that specifies whether the panel has a close button", defaultValue="false")
+	@Property(tlddoc="Boolean value that specifies whether the panel has a close button.", defaultValue="false")
 	private boolean closable;
 	
-	@Property(tlddoc="Integer value that specifies the duration of the closing animation", defaultValue="1000")
+	@Property(tlddoc="Integer value that specifies the duration of the closing animation.", defaultValue="1000")
 	private int closeSpeed;
 	
-	@Property(tlddoc="Boolean value that specifies whether the panel is visible", defaultValue="true")
+	@Property(tlddoc="Boolean value that specifies whether the panel is visible.", defaultValue="true")
 	private boolean visible;
     
 }

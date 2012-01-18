@@ -56,7 +56,7 @@ public class DraggableMeta extends UIComponentBaseMeta {
     String stack;
     @Property(tlddoc = "Defines the drag movement of this component as though snapping to a grid in defined intervals. Ex: '20x20', measured in pixels.")
     String grid;
-    @Property(tlddoc = "This arbitrary keyword allows sets of dragabbles and droppables to be associated with each other exclusively.")
+    @Property(tlddoc = "This arbitrary keyword allows sets of dragabbles and droppables with the same keyword to be associated with each other exclusively.")
     String scope;
     @Property(tlddoc = "Cursor style to set when this component is being dragged. See <a href=\"http://www.quirksmode.org/css/cursor.html\">this page</a> for a reference of what cursor styles your browser supports.")
     String cursor;
@@ -69,7 +69,7 @@ public class DraggableMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "Enable 'snap to droppable' behavior for this component.")
     boolean snap;
-    @Property(tlddoc = "Which edges on elements to snap to. Possible values include: outer, innter and both.")
+    @Property(tlddoc = "Specifies which edges on elements to snap to. Possible values include: outer, inner and both.")
     String snapMode;
     @Property(tlddoc = "Distance in pixels from the droppable edges at which snapping should occur.")
     int snapTolerance;
@@ -82,13 +82,14 @@ public class DraggableMeta extends UIComponentBaseMeta {
     boolean revert;
 
     // Intended to take function as well, should look at extending this.
-    @Property(tlddoc = "Another element can be moved during the dragging event by setting this option. Options are 'original' or 'clone'.")
+    @Property(tlddoc = "Specifies which element to move during the dragging event
+	. Possible values are 'original' or 'clone'.")
     String helper;
     @Property(tlddoc = "The z-index to set for the helper object.")
     int zindex;
 
     @Property(defaultValue = "1.0",
               defaultValueType = DefaultValueType.EXPRESSION,
-              tlddoc = "The opacity for the helper during dragging; 0.00 - 1.00.")
+              tlddoc = "The opacity for the helper during dragging. Values can range from 0.00 to 1.00.")
     Double opacity;
 }
