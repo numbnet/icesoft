@@ -39,7 +39,7 @@ import javax.faces.application.ResourceDependency;
     componentType = "org.icefaces.ace.component.Droppable",
     rendererType = "org.icefaces.ace.component.DroppableRenderer",
     componentFamily = "org.icefaces.ace.Droppable",
-    tlddoc = "Enables an Id-specified component as an area that can have Droppable moved onto it to raise events." +
+    tlddoc = "Allows a specified component to act as an area where Draggable items can be moved onto and register the event." +
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/Droppable\">Droppable Wiki Documentation</a>."
 )
@@ -55,21 +55,21 @@ public class DroppableMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "The JavaScript component instance variable name.")
     String widgetVar;
     @Property(name = "for",
-              tlddoc = "Id of the component to add droppable behavior to.")
+              tlddoc = "Id of the component to add the droppable behavior to.")
     String forValue;
 
-    @Property(tlddoc = "Class to apply to droppable when an acceptable draggable is hovering.")
+    @Property(tlddoc = "Class to apply to the droppable component when an acceptable draggable is hovering.")
     String hoverStyleClass;
-    @Property(tlddoc = "Class to apply to droppable when an acceptable draggable is dropped.")
+    @Property(tlddoc = "Class to apply to the droppable component when an acceptable draggable is dropped.")
     String activeStyleClass;
 
     @Property(tlddoc = "JQuery selector to define the set of acceptable draggables.")
     String accept;
-    @Property(tlddoc = "This keyword allows sets of dragabbles and droppables to be associated with each other exclusively.")
+    @Property(tlddoc = "This keyword allows sets of dragabbles and droppables with the same keyword to be associated with each other exclusively.")
     String scope;
     @Property(tlddoc = "This arbitrary keyword specifies the method of checking if a draggable is 'over' the droppable, possible values include: fit (drag must be smaller), intersect (drag must cover > 50%). pointer (cursor must be inside drop) and touch (any of the drop touches).")
     String tolerance;
-    @Property(tlddoc = "Allows you to set the ID of an ACE UIData component and that will provide a Java object as input for the drop event. That object is the defined by matching the sibling index of the droppable to an object at that index in the UIData component backing.")
+    @Property(tlddoc = "Allows you to set the ID of an ACE UIData component and that will provide a Java object as input for the drop event. That object is defined by matching the sibling index of the droppable to an object at that index in the UIData component backing.")
     String datasource;
 
     @Property(tlddoc = "ID of DOM node to re-render following drop events.")

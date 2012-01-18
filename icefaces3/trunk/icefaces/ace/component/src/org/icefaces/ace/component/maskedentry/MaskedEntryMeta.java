@@ -40,7 +40,7 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType   = "org.icefaces.ace.component.MaskedEntry",
         rendererType    = "org.icefaces.ace.component.MaskedEntryRenderer",
 		componentFamily = "org.icefaces.ace.MaskedEntry",
-		tlddoc = "Text input component that forces input to be formatted in a specific way." +
+		tlddoc = "MaskedEntry is an input component that forces text input to be entered according to a specified format." +
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/MaskedEntry\">MaskedEntry Wiki Documentation</a>."
         )
@@ -56,13 +56,13 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
 }, defaultEvent="valueChange")
 public class MaskedEntryMeta extends HtmlInputTextMeta {
 
-	@Property(tlddoc="Name of the widget to access client side api")
+	@Property(tlddoc="Name of the widget variable to access client side api.")
     private String widgetVar;
 	
-	@Property(required=Required.yes, tlddoc="Masked input for separating input texts with given pattern. \nThese mask definitions can be used: \na - Represents an alpha character (A-Z,a-z) \n9 - Represents a numeric character (0-9) \n* - Represents an alphanumeric character (A-Z,a-z,0-9)")
+	@Property(required=Required.yes, tlddoc="Masked input for separating input texts with given pattern. \nThese mask definitions can be used: \na - Represents an alpha character (A-Z,a-z) \n9 - Represents a numeric character (0-9) \n* - Represents an alphanumeric character (A-Z,a-z,0-9).")
 	private String mask;
 	
-	@Property(tlddoc="Seperator and placeholder in input")
+	@Property(tlddoc="Separator and placeholder in input.")
 	private String placeHolder;
 	
 }

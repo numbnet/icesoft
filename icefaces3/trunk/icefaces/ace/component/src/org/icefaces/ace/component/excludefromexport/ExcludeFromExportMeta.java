@@ -26,7 +26,7 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
         extendsClass = "javax.faces.component.UIComponentBase",
         componentType = "org.icefaces.ace.component.ExcludeFromExport",
         componentFamily = "org.icefaces.ace.component",
-        tlddoc = "Embedding this component inside any component causes the data exporter to avoid including the values of such component in the exported file." +
+        tlddoc = "Embedding this component inside any component causes the data exporter to avoid including the values of such component in the exported file. It has no other effects." +
                  "<p>For more information, see the " +
                  "<a href=\"http://wiki.icefaces.org/display/ICE/ExcludeFromExport\">ExcludeFromExport Wiki Documentation</a>."
 )
