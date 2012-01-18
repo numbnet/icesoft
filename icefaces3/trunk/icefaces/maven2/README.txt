@@ -1,7 +1,7 @@
 ICEfaces Maven2 Support
 
-If this is a source distribution, you will NEED to build the jars first so they are residing in the 
-lib directories of their respective folders!!!
+NOTE: If this is a source distribution, you will NEED to build the jars first so they are residing in the 
+lib directories of their respective folders.
 
 The following utilities are provided:
 
@@ -9,10 +9,8 @@ The following utilities are provided:
 2) ant target "get-maven" will copy off the internet (make sure you have internet access)  the required jar to run maven from ant, to icefaces/lib
 3) ant target "install" will install icefaces-push, icefaces, icefaces-compat and icefaces-ace jar and poms to your local repository.  
 
-This really isn't necessary if you can use the snapshot repository at
-http://server.ice:8888/svn/ossrepo/maven2/snapshots
-Once the release has been made, it will take a day or so for the proper entries to be accessed.
-
+This really isn't necessary if you can use the release repository at
+http://server.ice:8888/svn/ossrepo/maven2/releases
 
 NOTE: The instructions above assume that you have previously installed maven2.
 
