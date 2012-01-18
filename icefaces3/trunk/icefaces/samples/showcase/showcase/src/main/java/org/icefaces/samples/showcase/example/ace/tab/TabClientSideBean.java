@@ -22,7 +22,6 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
-import org.icefaces.samples.showcase.util.FacesUtils;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
@@ -40,6 +39,13 @@ import java.io.Serializable;
             @ExampleResource(type = ResourceType.xhtml,
                     title="tabset-client_side.xhtml",
                     resource = "/resources/examples/ace/tab/tabset-client_side.xhtml"),
+            // Java Source
+            @ExampleResource(type = ResourceType.java,
+                    title="TabSetBean.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/tab/TabSetBean.java"),
+            @ExampleResource(type = ResourceType.java,
+                        title = "ImageSet.java",
+                        resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/accordionpanel/ImageSet.java"),
             @ExampleResource(type = ResourceType.java,
                     title="TabClientSideBean.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/tab/TabClientSideBean.java")
@@ -47,30 +53,9 @@ import java.io.Serializable;
 )
 @ManagedBean(name = TabClientSideBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class TabClientSideBean extends ComponentExampleImpl<TabClientSideBean>
-        implements Serializable {
+public class TabClientSideBean extends ComponentExampleImpl<TabClientSideBean> implements Serializable {
 
     public static final String BEAN_NAME = "tabClientSide";
-
-    private boolean fastTabs = true; // Add delay (large image, backend wait etc.) to tab loading make tabset difference clear
-
-    public String getSlowDownTab() {
-        try { Thread.sleep(2000); }
-        catch (Exception e) {
-            FacesUtils.addErrorMessage("Server-side tab waiting could not finish.");
-        }
-        return "";
-    }
-
-    public void setSlowDownTab(String slowDownTab) {}
-
-    public boolean isFastTabs() {
-        return fastTabs;
-    }
-
-    public void setFastTabs(boolean fastTabs) {
-        this.fastTabs = fastTabs;
-    }
 
     public TabClientSideBean() {
         super(TabClientSideBean.class);

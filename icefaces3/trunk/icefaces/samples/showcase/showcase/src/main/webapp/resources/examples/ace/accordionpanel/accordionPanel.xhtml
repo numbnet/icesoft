@@ -49,10 +49,6 @@
                 <ace:accordionPane title="My Shopping List">
                      <ace:dataTable   value="#{accordionPanelBean.items}"
                                                 var="item">
-                         
-                            <ace:column headerText="#">
-                                <h:outputText value="#{item.id}"/>
-                            </ace:column>
                             <ace:column headerText="Picture">
                                 <h:graphicImage id="itemImg" value="#{item.image}" alt="#{item.name}"/>
                             </ace:column>

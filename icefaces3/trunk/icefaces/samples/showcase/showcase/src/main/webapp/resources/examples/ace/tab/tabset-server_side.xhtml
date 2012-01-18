@@ -26,45 +26,40 @@
     
     <ui:param name="title" value="#{msgs[tabServerSide.title]}"/>
     <ui:param name="description" value="#{msgs[tabServerSide.description]}"/>
-    <ui:param name="subMenuTitle" value="#{msgs[tabSet.subMenuTitle]}"/>
-    <ui:param name="subMenuLinks" value="#{tabSet.subMenuLinks}"/>
     <ui:param name="resourceValue" value="#{tabServerSide.exampleResource}"/>
     
     <ui:param name="wikiResources" value="#{tabSetResources.wikiResources}"/>
     <ui:param name="tldResources" value="#{tabSetResources.tldResources}"/>
 
     <ui:define name="example">
-        <span class="row">
         <h:form>
-            <div style="width:45%" class="top options">
-                <ul>
-                    <li>Use Fast Loading Tabs:<h:selectBooleanCheckbox value="#{tabServerSide.fastTabs}" /></li>
-                </ul>
-                <h:commandButton value="Set Options"/>
-            </div>
-        </h:form>
-        </span>
+            <ace:tabSet clientSide="false" style="clear:both;">
+                <ace:tabPane>
+                    <f:facet name="label">My First Server Tab</f:facet>
+                    <h:outputText value="First Tab Body" />
+                    <h:outputText value="#{tabServerSide.slowDownTab}"
+                                  rendered="#{not tabServerSide.fastTabs}" />
+                </ace:tabPane>
+                <ace:tabPane>
+                    <f:facet name="label">My Second Server Tab</f:facet>
+                    <h:outputText value="Second Body" />
+                    <h:outputText value="#{tabServerSide.slowDownTab}"
+                                  rendered="#{not tabServerSide.fastTabs}" />
+                </ace:tabPane>
+                <ace:tabPane>
+                    <f:facet name="label">My Third Server Tab</f:facet>
+                    <h:outputText value="Third Body" />
+                    <h:outputText value="#{tabServerSide.slowDownTab}"
+                                  rendered="#{not tabServerSide.fastTabs}" />
+                </ace:tabPane>
+            </ace:tabSet>
+            </h:form>
             <h:form>
-                    <ace:tabSet clientSide="false" style="clear:both;">
-                        <ace:tabPane>
-                            <f:facet name="label">My First Server Tab</f:facet>
-                            <h:outputText value="First Tab Body" />
-                            <h:outputText value="#{tabServerSide.slowDownTab}"
-                                          rendered="#{not tabServerSide.fastTabs}" />
-                        </ace:tabPane>
-                        <ace:tabPane>
-                            <f:facet name="label">My Second Server Tab</f:facet>
-                            <h:outputText value="Second Body" />
-                            <h:outputText value="#{tabServerSide.slowDownTab}"
-                                          rendered="#{not tabServerSide.fastTabs}" />
-                        </ace:tabPane>
-                        <ace:tabPane>
-                            <f:facet name="label">My Third Server Tab</f:facet>
-                            <h:outputText value="Third Body" />
-                            <h:outputText value="#{tabServerSide.slowDownTab}"
-                                          rendered="#{not tabServerSide.fastTabs}" />
-                        </ace:tabPane>
-                    </ace:tabSet>
+                <h:panelGrid columns="3" style="border-spacing: 10px;">
+                    <h:selectBooleanCheckbox value="#{tabServerSide.fastTabs}"/>
+                    <h:outputText value="Use Fast Loading Tabs"/>
+                    <h:commandButton value="Set" type="submit"/>
+                </h:panelGrid>
             </h:form>
     </ui:define>
 </ui:composition>
