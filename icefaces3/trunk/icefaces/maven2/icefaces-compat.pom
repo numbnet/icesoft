@@ -21,16 +21,24 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.icefaces</groupId>
   <artifactId>icefaces-compat</artifactId>
-  <version>3.0.0.RC1</version>
+  <version>3.0.0</version>
   <packaging>jar</packaging>
   <name>ICEfaces 1.x Compatibility Library</name>
   <url>http://www.icefaces.org</url> 
   <description>ICEfaces Components and ICEfaces 1.8.x Compatibility APIs.</description> 
+  <licenses>
+    <license>
+      <name>Apache License Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <dependencies>
     <dependency>
       <groupId>org.icefaces</groupId>
       <artifactId>icefaces</artifactId>
-      <version>3.0.0.RC1</version>
+      <version>3.0.0</version>
     </dependency>       
 
     <dependency>
