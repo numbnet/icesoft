@@ -173,6 +173,12 @@ public class DataTable extends DataTableBase {
  
     @Override
     public void broadcast(javax.faces.event.FacesEvent event) throws AbortProcessingException {
+        // The data model that is used in myFaces may have been generated
+        // from incorrect getValue() results (I assume) causing it to
+        // mistakenly contain 0 rows or the data of a previous ui:repeat
+        // iteration.
+        setDataModel(null);
+
         super.broadcast(event);
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -239,7 +245,6 @@ public class DataTable extends DataTableBase {
 
     @Override
     public void processValidators(FacesContext context) {
-
         if (context == null) {
             throw new NullPointerException();
         }
@@ -888,11 +893,11 @@ public class DataTable extends DataTableBase {
         int offset = 0;
         int first = getFirst();
 
-        // The cached data model that is used in myFaces may
-        // have been generated from incorrect getValue() results (I assume)
-        // causing it to mistakenly contain 0 rows.
-        // This is a fix until a more general one is available.
-        if (getRowCount() == 0) setDataModel(null);
+        // The data model that is used in myFaces may have been generated
+        // from incorrect getValue() results (I assume) causing it to
+        // mistakenly contain 0 rows or the data of a previous ui:repeat
+        // iteration.
+        setDataModel(null);
 
         // Get / Regenerate cached data model.
         Object model = getDataModel();
@@ -1323,6 +1328,14 @@ public class DataTable extends DataTableBase {
     /*#################### UIData iterate() impl. ###########################*/
     /*#######################################################################*/
     private void iterate(FacesContext context, PhaseId phaseId) {
+        // The data model that is used in myFaces may have been generated
+        // from incorrect getValue() results (I assume) causing it to
+        // mistakenly contain 0 rows or the data of a previous ui:repeat
+        // iteration.
+        setDataModel(null);
+
+        // Regenerate data model (MyFaces has at times had a null model cached)
+        getDataModel();
         // Process each facet of this component exactly once
         setRowIndex(-1);
         if (getFacetCount() > 0) {
@@ -1391,9 +1404,6 @@ public class DataTable extends DataTableBase {
         Boolean expanded;
         TreeDataModel treeDataModel;
 
-        // Without this call, at times iteration will use an unfiltered data model
-        getDataModel();
-
         while (true) {
             // Have we processed the requested number of rows?
             if (!inSubrows) processed = processed + 1;
@@ -1403,6 +1413,7 @@ public class DataTable extends DataTableBase {
 
             // Expose the current row in the specified request attribute
             setRowIndex(++rowIndex);
+
             if (!isRowAvailable()) {
                 if (model instanceof TreeDataModel) {
                     treeDataModel = (TreeDataModel)model;
