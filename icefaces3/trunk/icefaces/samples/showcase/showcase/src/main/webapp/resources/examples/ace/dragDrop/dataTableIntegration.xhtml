@@ -91,8 +91,9 @@
                <ace:droppable tolerance="touch"
                                         datasource="shoppingList"
                                         dropListener="#{dataTableIntegrationBean.handleDrop}"
-                                        onDropUpdate="shoppingCart, shoppingList, resetPanel"
-                                        activeStyleClass="slot"/>
+                                        activeStyleClass="slot">
+				<ace:ajax execute="@this" render="shoppingCart shoppingList resetPanel" />
+			</ace:droppable>
                
                 <br/>
                 

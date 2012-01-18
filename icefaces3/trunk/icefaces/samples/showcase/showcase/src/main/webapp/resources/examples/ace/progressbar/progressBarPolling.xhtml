@@ -72,8 +72,8 @@
                                                                 usePolling="true"
                                                                 pollingInterval="2000"
                                                                 value="#{upload.progressValue}"
-                                                                completeListener="#{progressBarPolling.completeListener}"
-                                                                onCompleteUpdate=":exampleForm">
+                                                                completeListener="#{progressBarPolling.completeListener}">
+							<ace:ajax event="complete" execute="@this" render="@form" />
                                  </ace:progressBar>
                              </ace:column>
 
