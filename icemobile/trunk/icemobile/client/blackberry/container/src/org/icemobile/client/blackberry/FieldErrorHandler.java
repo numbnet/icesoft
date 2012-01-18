@@ -51,15 +51,15 @@ public class FieldErrorHandler extends BrowserFieldErrorHandler {
     }
 
     public void navigationRequestError(BrowserFieldRequest request, Throwable t) { 
-    	Logger.ERROR("FieldErrorHandler - navigation request error : " + t);
+    	Logger.ERROR("FieldErrorHandler - navigationRequestError : " + t);
     }
 
     public void requestContentError(BrowserFieldRequest request, Throwable t) { 
-    	Logger.ERROR("FieldErrorHandler - ResourceContent error"); 
+    	Logger.ERROR("FieldErrorHandler - ResourceContentError: " + t); 
     }
 
     public InputConnection resourceRequestError(BrowserFieldRequest request, Throwable t) { 
-    	Logger.ERROR("FieldErrorHandler - ResourceError connection");
+    	Logger.ERROR("FieldErrorHandler - ResourceRequestError: " + t);
         return super.resourceRequestError(request, t);
     }
 }
