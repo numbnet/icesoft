@@ -45,6 +45,7 @@ import net.rim.device.api.script.ScriptableFunction;
 import net.rim.device.api.system.Display;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.container.MainScreen;
 
 
@@ -100,9 +101,12 @@ public class VideoController extends ScriptableFunction {
         }
 
         videoScreen = new VideoRecordingScreen(mController, fieldId, maxTime, mEncodedTick);
-        synchronized (UiApplication.getEventLock()) {
-            UiApplication.getUiApplication().pushScreen(videoScreen);
-        }
+        UiApplication.getUiApplication().invokeLater(new Runnable() {
+            public void run() {
+                UiApplication.getUiApplication().pushScreen(videoScreen);
+            }
+        });
+
         videoScreen.startRecording();
         return Boolean.TRUE;
     }
