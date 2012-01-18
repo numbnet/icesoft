@@ -23,15 +23,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  * 
- */ 
+ */
 package org.icemobile.client.blackberry.script.camera;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Hashtable;
 
-import javax.microedition.io.Connector;
-import javax.microedition.io.file.FileConnection;
 import javax.microedition.media.MediaException;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
@@ -52,8 +49,7 @@ import net.rim.device.api.ui.container.MainScreen;
 
 
 /**
- * This class is the scriptExtension for video recording 
- *
+ * This class is the scriptExtension for video recording
  */
 public class VideoController extends ScriptableFunction {
 
@@ -61,243 +57,239 @@ public class VideoController extends ScriptableFunction {
 
     private VideoRecordingScreen videoScreen;
     private String mEncodedTick;
-    
 
-    public VideoController(ContainerController controller ) { 
-        mController = controller; 
-        mEncodedTick = FileUtils.getImageResourceBase64("tick.png");       
-        
-    }	
+
+    public VideoController(ContainerController controller) {
+        mController = controller;
+        mEncodedTick = FileUtils.getImageResourceBase64("tick.png");
+
+    }
 
     /**
-     * Capture some video. The return value from this call is TRUE if the 
-     * invocation went ok. The actual results will be defined later via an asynchronous 
-     * callback. 
-     * 
-     * @return true if video control launched ok, false if not. 
+     * Capture some video. The return value from this call is TRUE if the
+     * invocation went ok. The actual results will be defined later via an asynchronous
+     * callback.
+     *
+     * @return true if video control launched ok, false if not.
      */
-    public  Object invoke( Object thiz, Object[] args) { 
+    public Object invoke(Object thiz, Object[] args) {
 
-        
+
         String fieldId = null;
         Hashtable params = new Hashtable();
-        if (args.length == 2) { 
+        if (args.length == 2) {
             fieldId = (String) args[0];
-         
-            if (args[1] instanceof Object) { 
+
+            if (args[1] instanceof Object) {
                 // 'undefined' object indicates arguments not being passed 
-            } else { 
-                params = UploadUtilities.getNameValuePairHash((String)args[1], "=", "&");
-            } 
-            
-        } else { 
-        	Logger.ERROR("ice.video - wrong number of arguments");
-            return Boolean.FALSE; 
-        }     
-        
-        NameValuePair temp; 
-        
+            } else {
+                params = UploadUtilities.getNameValuePairHash((String) args[1], "=", "&");
+            }
+
+        } else {
+            Logger.ERROR("ice.video - wrong number of arguments");
+            return Boolean.FALSE;
+        }
+
+        NameValuePair temp;
+
         int maxTime = 0;
         temp = (NameValuePair) params.get("maxtime");
         if (temp != null) {
-            maxTime = Integer.parseInt( temp.getValue() ); 
+            maxTime = Integer.parseInt(temp.getValue());
         }
-        
-        videoScreen = new VideoRecordingScreen(mController, fieldId, maxTime, mEncodedTick );
-        synchronized (UiApplication.getEventLock()) { 
-        	UiApplication.getUiApplication().pushScreen(videoScreen);			
+
+        videoScreen = new VideoRecordingScreen(mController, fieldId, maxTime, mEncodedTick);
+        synchronized (UiApplication.getEventLock()) {
+            UiApplication.getUiApplication().pushScreen(videoScreen);
         }
         videoScreen.startRecording();
         return Boolean.TRUE;
-    }	
+    }
 }
 
-class VideoRecordingScreen extends MainScreen { 
+class VideoRecordingScreen extends MainScreen {
 
     private VideoRecordingThread mRecordingThread;
-    private ContainerController mController; 
+    private ContainerController mController;
     private String mFieldId;
     private Thread mTerminatorThread;
     private int mMaxTime;
     private String mIcon;
 
-    public VideoRecordingScreen(ContainerController container, String fieldId, int maxDuration, String icon ) { 
+    public VideoRecordingScreen(ContainerController container, String fieldId,
+                                int maxDuration, String icon) {
 
-        mController = container;		
+        mController = container;
         mFieldId = fieldId;
         mMaxTime = maxDuration;
         mIcon = icon;
 
     }
-    protected boolean invokeAction(int action) { 
+
+    protected boolean invokeAction(int action) {
 
         boolean handled = super.invokeAction(action);
-        if(!handled) { 
+        if (!handled) {
 
-            if(action == ACTION_INVOKE) {
-                stopRecording(mFieldId);                
+            if (action == ACTION_INVOKE) {
+                stopRecording(mFieldId);
                 return true;
             }
         }
         return handled;
     }
 
-    
 
     // Can be invoked from outside
     public void startRecording() {
-        
-        try { 
+
+        try {
             mRecordingThread = new VideoRecordingThread();
             mRecordingThread.start();
 
-            if (mMaxTime > 0) { 
-                mTerminatorThread = new Thread("Recording Terminator") { 
-                    public void run() { 
-                        try {  
-                     
-                            Thread.sleep( mMaxTime * 1000);
-                            stopRecording( mFieldId );
+            if (mMaxTime > 0) {
+                mTerminatorThread = new Thread("Recording Terminator") {
+                    public void run() {
+                        try {
 
-                        } catch (InterruptedException i) { }  
+                            Thread.sleep(mMaxTime * 1000);
+                            stopRecording(mFieldId);
+
+                        } catch (InterruptedException i) {
+                        }
                     }
                 };
                 mTerminatorThread.start();
 
-            } 
-        } catch (Exception e) { 
-        	Logger.ERROR("ice.video - Exception starting recording: " + e);
+            }
+        } catch (Exception e) {
+            Logger.ERROR("ice.video - Exception starting recording: " + e);
         }
     }
 
+
     /**
-     * Synchronized call for stopping the recording. Maybe called from 
-     * terminator thread or from UI so needs to be threadsafe. 
-     * @param fieldId 
+     * Synchronized call for stopping the recording. Maybe called from
+     * terminator thread or from UI so needs to be threadsafe.
+     *
+     * @param fieldId
      */
     public synchronized void stopRecording(String fieldId) {
-        
-        if (mRecordingThread != null) { 
+
+        if (mRecordingThread != null) {
             mRecordingThread.stop(fieldId);
-        
-        
+
+
             final MainScreen removable = this;
-            UiApplication.getUiApplication().invokeLater( new Runnable() {
+            UiApplication.getUiApplication().invokeLater(new Runnable() {
                 public void run() {
-                	synchronized( UiApplication.getEventLock()) { 
-                		UiApplication.getUiApplication().popScreen(removable);
-                	}
+                    synchronized (UiApplication.getEventLock()) {
+                        UiApplication.getUiApplication().popScreen(removable);
+                    }
                 }
             });
-          
             mRecordingThread = null;
-        }        
-        
+        }
     }
 
-    private class VideoRecordingThread extends Thread implements PlayerListener { 
+    private class VideoRecordingThread extends Thread implements
+            PlayerListener {
 
-        private Player mPlayer; 
+        private Player mPlayer;
         private RecordControl mRecordControl;
-        private OutputStream mRecordStream;
         private String mVidCaptureFile;
 
 
-        public void run() { 
+        public void run() {
 
-            try { 
+            try {
 
-                Logger.DEBUG("ice.video - Recording thread is starting" );
+                Logger.DEBUG("ice.video - Recording thread is starting");
                 mPlayer = javax.microedition.media.Manager
-                .createPlayer("capture://video?encoding=video/3gpp");
+                                  .createPlayer("capture://video?encoding=video/3gpp");
 
                 mPlayer.addPlayerListener(this);
                 mPlayer.realize();
 
                 VideoControl videoControl = (VideoControl)
-                mPlayer.getControl("VideoControl");
+                                                    mPlayer.getControl("VideoControl");
 
-                mRecordControl = (RecordControl) mPlayer.getControl( "RecordControl" );   
+                mRecordControl = (RecordControl) mPlayer.getControl("RecordControl");
                 Field videoField = (Field)
-                videoControl.initDisplayMode(VideoControl.USE_GUI_PRIMITIVE,
-                "net.rim.device.api.ui.Field");
+                                           videoControl.initDisplayMode(VideoControl.USE_GUI_PRIMITIVE,
+                                                                               "net.rim.device.api.ui.Field");
 
 
                 try {
-                    videoControl.setDisplaySize( Display.getWidth(), Display.getHeight() );
-                }
-                catch( MediaException me ) { 
+                    videoControl.setDisplaySize(Display.getWidth(), Display.getHeight());
+                } catch (MediaException me) {
                     //Logger.DEBUG("Info. Setting displaySize not Supported");
                 }
 
-                synchronized (UiApplication.getEventLock() ) {
+                synchronized (UiApplication.getEventLock()) {
 
                     add(videoField);
-
                     mVidCaptureFile = FileUtils.getVideoFileURL("video.3gp");
 
-                    FileConnection fc = (FileConnection) Connector.open(mVidCaptureFile);
-                    if (fc.exists() ) { 
-                        Logger.DEBUG("ice.video - file: " + mVidCaptureFile + " exists"); 
-                    } else { 
-                        Logger.DEBUG("ice.video - Creating video filename: " + mVidCaptureFile);
-                        fc.create();
-                    }
-                    mRecordStream = fc.openOutputStream(); 
-
-                    Logger.DEBUG("ice.video - Can write vidCapture file? " + fc.canWrite());
-                    fc.close();
-
                     // The direct location approach hangs on closing the file
-                    // mRecordControl.setRecordLocation(filename );
-                    mRecordControl.setRecordStream(mRecordStream);
+                    mRecordControl.setRecordLocation(mVidCaptureFile);
 
                     // These two operate in concert.
-                    mRecordControl.startRecord(); 
+                    mRecordControl.startRecord();
                     mPlayer.start();
-                } 
+                }
 
-            } catch( IOException e ) {
-            	Logger.ERROR("ice.video - IOException : " + e);
+            } catch (IOException e) {
+                Logger.ERROR("ice.video - IOException : " + e);
 
-            } catch( MediaException mme ) { 
-
-            	Logger.ERROR("ice.video - MediaException: " + mme);
-            } catch (Throwable t) { 
+            } catch (MediaException mme) {
+                Logger.ERROR("ice.video - MediaException: " + mme);
+            } catch (Throwable t) {
                 Logger.DEBUG("ice.video - ERROR in video capture: " + t);
             }
-        } 		
-
-        public void playerUpdate(Player player, String event, Object eventData) {  
-            Logger.DEBUG("ice.video - Player event " + event +
-                    ": " + eventData);
         }
+
+        public void playerUpdate(Player player, String event,
+                                 Object eventData) {
+            Logger.DEBUG("Player event: " + event +
+                                 ": " + eventData);
+        }
+
 
         /**
          * Stop the videoRecordingThread
+         *
          * @param fieldId Field to insert thumbnail as
          */
-        public void stop(String fieldId) { 
+        public void stop(String fieldId) {
 
-            try {       
-                if (mPlayer != null) {
-                    mPlayer.close(); 
-                    mPlayer = null; 
-                }
-                if (mRecordControl != null) {              
-                    //  _recordControl.stopRecord();  // Implicitly done by commit. 
+            try {
+//                
+                if (mRecordControl != null) {
+                    mRecordControl.stopRecord();  // Implicitly done by commit. 
                     mRecordControl.commit();
-                    mRecordStream.close();
                     mRecordControl = null;
 
-                    mController.insertThumbnail(mFieldId, VideoRecordingScreen.this.mIcon );					    	
-                    mController.insertHiddenFilenameScript(fieldId, mVidCaptureFile  );
+                    if (mPlayer != null) {
+                        int state = mPlayer.getState();
+
+                        Logger.DEBUG("ice.video - Closing player, state = : " + state);
+                        if (state != Player.CLOSED && state != Player.UNREALIZED) {
+                            mPlayer.close();
+                            Logger.DEBUG("ice.video - Player successfully closed");
+                        }
+                        mPlayer = null;
+                    }
+
+                    mController.insertThumbnail(mFieldId, VideoRecordingScreen.this.mIcon);
+                    mController.insertHiddenFilenameScript(fieldId, mVidCaptureFile);
                     Logger.DEBUG("ice.video - done");
                 }
-            } catch (Throwable e) {                
-            	Logger.ERROR("ice.video - Exception stopping recordingThread: " + e);
-            }	
+            } catch (Throwable e) {
+                Logger.ERROR("ice.video - Exception stopping recordingThread: " + e);
+            }
         }
-        
+
     }
 }
