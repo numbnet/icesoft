@@ -92,17 +92,13 @@ ice.ace.ProgressBar.prototype.fireCompleteEvent = function() {
         async: true
     };
 
-    if(this.cfg.onCompleteUpdate)
-        options.render = this.cfg.onCompleteUpdate;
-    if(this.cfg.oncomplete)
-        options.oncomplete = this.cfg.oncomplete;
-
     var params = {};
     params[this.id + '_complete'] = true;
 
     options.params = params;
 	    
     if (jQuery.isFunction(completeListener)) {
+        options.params[this.id] = this.id; // also triggers listener, if any
         completeListener(options.params);
     } else ice.ace.AjaxRequest(options);
 }
@@ -118,9 +114,6 @@ ice.ace.ProgressBar.prototype.changeListener = function(ev, ui) {
         formId: cfg.formId,
         async: true
     };
-    if(cfg.onChangeUpdate) {
-        options.render = cfg.onChangeUpdate;
-    }
 
     var params = {};
     params[id + '_change'] = true;
@@ -130,6 +123,7 @@ ice.ace.ProgressBar.prototype.changeListener = function(ev, ui) {
     options.params = params;
 
     if (jQuery.isFunction(changeListener)) {
+        options.params[this.id] = this.id; // also triggers listener, if any
         changeListener(options.params);
     } else ice.ace.AjaxRequest(options);
 };
@@ -150,16 +144,13 @@ ice.ace.ProgressBar.prototype.cancel = function() {
         }
     };
 
-    if(this.cfg.onCancelUpdate) {
-        options.render = this.cfg.onCancelUpdate;
-    }
-
     var params = {};
     params[this.id + '_cancel'] = true;
 
     options.params = params;
 
     if (jQuery.isFunction(cancelListener)) {
+        options.params[this.id] = this.id; // also triggers listener, if any
         cancelListener(options.params);
     } else ice.ace.AjaxRequest(options);
 }

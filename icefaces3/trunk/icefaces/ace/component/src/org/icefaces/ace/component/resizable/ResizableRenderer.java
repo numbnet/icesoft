@@ -113,21 +113,9 @@ public class ResizableRenderer extends CoreRenderer {
         if(resizable.isGhost()) jb.entry("ghost", true);
         if(resizable.isContainment()) jb.entry("containment", "ice.ace.escapeClientId('" + resizable.getParent().getClientId(context) +"')", true);
 
-        //Client side callbacks
-		String onStart = resizable.getOnStart();
-        if(onStart != null) jb.entry("onStart", "function(event, ui) {" + onStart + "}", true);
-		String onResize = resizable.getOnResize();
-        if(onResize != null) jb.entry("onResize", "function(event, ui) {" + onResize + "}", true);
-		String onStop = resizable.getOnStop();
-        if(onStop != null) jb.entry("onStop", "function(event, ui) {" + onStop + "}", true);
-
         //Ajax resize
         if(resizable.getResizeListener() != null) {
             jb.entry("ajaxResize", true);
-
-            String onResizeUpdate = resizable.getOnResizeUpdate();
-            if(onResizeUpdate != null)
-                jb.entry("onResizeUpdate", ComponentUtils.findClientIds(context, resizable, onResizeUpdate));
         }
 		
         encodeClientBehaviors(context, resizable, jb);

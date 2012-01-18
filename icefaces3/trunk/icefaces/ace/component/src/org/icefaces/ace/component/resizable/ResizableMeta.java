@@ -99,19 +99,7 @@ public class ResizableMeta extends UIComponentBaseMeta {
 	@Property(tlddoc="Size in pixels of the increments in which the resizable should increase/decrease its size", defaultValue="1")
 	private int grid;
 	
-	@Property(tlddoc="Component(s) to update after AJAX call caused by resizing event.")
-	private String onResizeUpdate;
-	
 	@Property(expression= Expression.METHOD_EXPRESSION, methodExpressionArgument="org.icefaces.ace.event.ResizeEvent", tlddoc="Listener for the end of resize event.")
 	private MethodExpression resizeListener;
-	
-	@Property(tlddoc="Javascript code to be executed at the start of a resize operation.")
-	private String onStart;
-	
-	@Property(tlddoc="Javascript code to be executed during the resize, on the drag of the resize handle.")
-	private String onResize;
-	
-	@Property(tlddoc="Javascript code to be executed at the end of a resize operation.")
-	private String onStop;
     
 }

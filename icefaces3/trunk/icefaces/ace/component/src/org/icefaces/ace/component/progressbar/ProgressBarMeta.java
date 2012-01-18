@@ -71,12 +71,6 @@ public class ProgressBarMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Style class of the main container element.")
     private String styleClass;
 
-    @Property(tlddoc = "JavaScript to be executed after executing complete listener(s).")
-    private String oncomplete;
-
-    @Property(tlddoc = "Specifies component(s) to update with ajax when progress is completed")
-    private String onCompleteUpdate;
-
     @Property(expression = Expression.METHOD_EXPRESSION,
               tlddoc = "A server side listener to be invoked when a progress is completed.")
     private MethodExpression completeListener;
@@ -85,13 +79,7 @@ public class ProgressBarMeta extends UIComponentBaseMeta {
             tlddoc = "A server side listener to be invoked when the value of the progress bar changes.")
     private MethodExpression changeListener;
 
-    @Property(tlddoc = "Specifies component(s) to update with ajax when progress is cancelled")
-    private String onCancelUpdate;
-
     @Property(expression = Expression.METHOD_EXPRESSION,
               tlddoc = "A server side listener to be invoked when a progress is cancelled.")
     private MethodExpression cancelListener;
-
-    @Property(tlddoc = "Specifies component(s) to update with ajax when progress is changed")
-    private String onChangeUpdate;
 }

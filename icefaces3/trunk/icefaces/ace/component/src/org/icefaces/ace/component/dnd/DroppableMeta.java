@@ -72,11 +72,6 @@ public class DroppableMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Allows you to set the ID of an ACE UIData component and that will provide a Java object as input for the drop event. That object is defined by matching the sibling index of the droppable to an object at that index in the UIData component backing.")
     String datasource;
 
-    @Property(tlddoc = "ID of DOM node to re-render following drop events.")
-    String onDropUpdate;
-    @Property(tlddoc = "Javascript to execute when a drop event occurs.")
-    String onDrop;
-
     @Property(tlddoc = "If enabled, no draggables will activate this droppable.")
     boolean disabled;
 
