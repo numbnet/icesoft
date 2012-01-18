@@ -82,8 +82,7 @@ public class DraggableMeta extends UIComponentBaseMeta {
     boolean revert;
 
     // Intended to take function as well, should look at extending this.
-    @Property(tlddoc = "Specifies which element to move during the dragging event
-	. Possible values are 'original' or 'clone'.")
+    @Property(tlddoc = "Specifies which element to move during the dragging event. Possible values are 'original' or 'clone'.")
     String helper;
     @Property(tlddoc = "The z-index to set for the helper object.")
     int zindex;
