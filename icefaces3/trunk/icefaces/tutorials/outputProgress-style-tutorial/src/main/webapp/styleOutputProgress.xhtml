@@ -20,9 +20,9 @@
         <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
         <!-- The stylesheet with the overriding classes -->
         <link href="override.css" rel="stylesheet" type="text/css" />
-        </h:head>    <h:body>        <ice:form>
-            <ice:outputProgress value="#{style.percent}"></ice:outputProgress>
+        </h:head>    <h:body>        <ice:form id="frm">
+            <ice:outputProgress id="progress" value="#{style.percent}"></ice:outputProgress>
             
-            <ice:commandButton value="Start" action="#{style.startProgress}" rendered="#{!style.isRunning}"></ice:commandButton>
-            <ice:commandButton value="Stop" action="#{style.stopProgress}" rendered="#{style.isRunning}"></ice:commandButton>
+            <ice:commandButton id="start" value="Start" action="#{style.startProgress}" rendered="#{!style.isRunning}"></ice:commandButton>
+            <ice:commandButton id="stop" value="Stop" action="#{style.stopProgress}" rendered="#{style.isRunning}"></ice:commandButton>
         		</ice:form>	</h:body></f:view></html>

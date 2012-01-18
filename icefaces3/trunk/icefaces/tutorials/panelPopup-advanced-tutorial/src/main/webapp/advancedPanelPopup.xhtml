@@ -24,7 +24,7 @@
     </h:head>
     <h:body>
         <h2>Advanced Panel Popup Component</h2>
-        <p>Left click anywhere on the dialog to drag the panelPopup around.</p>
+        <p>Left click on the header to drag the panelPopup around.</p>
         <p>Notice that this draggable panelPopup has several advanced components inside the body.</p>
         <p>The <ice:graphicImage url="#{resource['images:close.png']}"/> button in the header closes the popup dialog.</p>
         <p>Once closed, a "Open a Popup" button will appear which can create a new dialog.</p>
@@ -48,7 +48,7 @@
                         <ice:outputLink id="link" value="">
                             <ice:outputText id="out" value="Output Link"/>
                         </ice:outputLink><br/>
-                        <ice:selectInputDate/><br/>
+                        <ice:selectInputDate id="calendar"/><br/>
                     </ice:panelGrid>
                 </f:facet>
                 
