@@ -48,19 +48,18 @@
                 </ace:tabPane>
                 
                 <ace:tabPane>
-                    <f:facet name="label">Entered Text</f:facet>
+                    <f:facet name="label">Confirmation</f:facet>
                     
                     <h:form id="proxyForm2">
                         <ace:tabSetProxy for="myTabSet" />
                         <h:panelGrid styleClass="centeredPanelGrid">
                             <h:outputText value="You entered: #{tabProxy.exampleText}"/>
                             <h:panelGroup>
+                                <h:outputText value="Would You like to save it? - "/>
                                 <h:selectOneMenu value="#{tabProxy.secondTabSelection}" validator="#{tabProxy.validateSelection}">
                                     <f:selectItem itemLabel="-choose one-" itemValue="-1"/>
                                     <f:selectItems value="#{tabProxy.options}" var="option" itemLabel="#{option.key}" itemValue="#{option.value}"/>
                                 </h:selectOneMenu>
-                                <h:outputText value=" - "/>
-                                <h:outputText value="Would You like to save it?"/>
                             </h:panelGroup>
                         </h:panelGrid>
                     </h:form>

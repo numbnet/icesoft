@@ -82,8 +82,15 @@ public class ImageSet implements Serializable
         else if(imageType.equals(ImageSelect.PAUSE))
         {
             image = new ImageInfo("/resources/css/images/player/pause.png", "Pause");
+        }
+        else if(imageType.equals(ImageSelect.LIGHTBULB_ON))
+        {
+            image = new ImageInfo("/resources/css/images/lightBulb/LightBulbOn.png", "Light bulb on");
+        }
+        else if(imageType.equals(ImageSelect.LIGHTBULB_OFF))
+        {
+            image = new ImageInfo("/resources/css/images/lightBulb/LightBulbOff.png", "Light bulb off");
         }        
-        
         return image;
     }
     
@@ -113,7 +120,9 @@ public class ImageSet implements Serializable
         BACKWARD_ARROW,
         PLAY,
         STOP,
-        PAUSE
+        PAUSE,
+        LIGHTBULB_ON,
+        LIGHTBULB_OFF,
     }
 
     public static class ImageInfo implements Serializable {

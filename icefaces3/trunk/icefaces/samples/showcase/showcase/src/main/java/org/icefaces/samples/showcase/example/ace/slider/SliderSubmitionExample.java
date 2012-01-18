@@ -25,62 +25,51 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
-import javax.faces.event.ValueChangeEvent;
 
 @ComponentExample(
         parent = SliderBean.BEAN_NAME,
-        title = "example.ace.slider.asyncinput.title",
-        description = "example.ace.slider.asyncinput.description",
-        example = "/resources/examples/ace/slider/slider-async-input.xhtml"
+        title = "example.ace.slider.submition.title",
+        description = "example.ace.slider.submition.description",
+        example = "/resources/examples/ace/slider/sliderSubmition.xhtml"
 )
 @ExampleResources(
         resources = {
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
-                        title = "slider-async-input.xhtml",
-                        resource = "/resources/examples/ace/slider/slider-async-input.xhtml"),
+                        title = "sliderSubmition.xhtml",
+                        resource = "/resources/examples/ace/slider/sliderSubmition.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
-                        title = "SliderAsyncInputBean.java",
-                        resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/slider/SliderAsyncInputBean.java")
+                        title = "SliderSubmitionExample.java",
+                        resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/slider/SliderSubmitionExample.java")
         }
 )
-@ManagedBean(name = SliderAsyncInputBean.BEAN_NAME)
+@ManagedBean(name = SliderSubmitionExample.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class SliderAsyncInputBean extends ComponentExampleImpl<SliderAsyncInputBean> implements Serializable {
-    public static final String BEAN_NAME = "sliderAsyncInput";
-    private int sliderValue = 0;
-    private boolean render = false;
+public class SliderSubmitionExample extends ComponentExampleImpl<SliderSubmitionExample> implements Serializable {
+    
+    public static final String BEAN_NAME = "sliderSubmitionExample";
+    private int autoValue;
+    private int manualValue;
+    
+    public SliderSubmitionExample() {
+        super(SliderSubmitionExample.class);
+    }
 
-    public SliderAsyncInputBean() {
-        super(SliderAsyncInputBean.class);
+    public int getAutoValue() {
+        return autoValue;
+    }
+
+    public void setAutoValue(int autoValue) {
+        this.autoValue = autoValue;
+    }
+
+    public int getManualValue() {
+        return manualValue;
+    }
+
+    public void setManualValue(int manualValue) {
+        this.manualValue = manualValue;
     }
     
-    public void sliderValueChanged(ValueChangeEvent e)
-    {
-        if((Integer)e.getNewValue() == 9)
-        {
-            render = true;
-        }
-        else
-        {
-            render = false;
-        }
-    }
-
-    public int getSliderValue() {
-        return sliderValue;
-    }
-
-    public void setSliderValue(int sliderValue) {
-        this.sliderValue = sliderValue;
-    }
-
-    public boolean isRender() {
-        return render;
-    }
-
-    public void setRender(boolean render) {
-        this.render = render;
-    }
 }

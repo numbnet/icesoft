@@ -16,10 +16,6 @@
 
 package org.icefaces.samples.showcase.example.ace.logger;
 
-import org.icefaces.samples.showcase.example.ace.slider.SliderBasicBean;
-import org.icefaces.samples.showcase.example.ace.slider.SliderAsyncBean;
-import org.icefaces.samples.showcase.example.ace.slider.SliderAsyncInputBean;
-
 import org.icefaces.samples.showcase.metadata.annotation.Menu;
 import org.icefaces.samples.showcase.metadata.annotation.MenuLink;                                                                       
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
@@ -30,7 +26,6 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 
 @ComponentExample(

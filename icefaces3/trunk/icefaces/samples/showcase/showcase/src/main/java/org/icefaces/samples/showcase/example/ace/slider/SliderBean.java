@@ -16,10 +16,6 @@
 
 package org.icefaces.samples.showcase.example.ace.slider;
 
-import org.icefaces.samples.showcase.example.ace.slider.SliderBasicBean;
-import org.icefaces.samples.showcase.example.ace.slider.SliderAsyncBean;
-import org.icefaces.samples.showcase.example.ace.slider.SliderAsyncInputBean;
-
 import org.icefaces.samples.showcase.metadata.annotation.Menu;
 import org.icefaces.samples.showcase.metadata.annotation.MenuLink;                                                                       
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
@@ -30,7 +26,6 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 
 @ComponentExample(
@@ -51,15 +46,11 @@ import java.io.Serializable;
 @Menu(
 	title = "menu.ace.slider.subMenu.title",
 	menuLinks = {
-            @MenuLink(title = "menu.ace.slider.subMenu.main",
-                    isDefault = true,
-                    exampleBeanName = SliderBean.BEAN_NAME),
-	        @MenuLink(title = "menu.ace.slider.subMenu.basic",
-                    exampleBeanName = SliderBasicBean.BEAN_NAME),
-	        @MenuLink(title = "menu.ace.slider.subMenu.async",
-                    exampleBeanName = SliderAsyncBean.BEAN_NAME),
-	        @MenuLink(title = "menu.ace.slider.subMenu.asyncinput",
-                    exampleBeanName = SliderAsyncInputBean.BEAN_NAME)
+                    @MenuLink(title = "menu.ace.slider.subMenu.main", isDefault = true, exampleBeanName = SliderBean.BEAN_NAME),
+                    @MenuLink(title = "menu.ace.slider.subMenu.asyncinput", exampleBeanName = SliderAsyncInputBean.BEAN_NAME),
+                    @MenuLink(title = "menu.ace.slider.subMenu.listener", exampleBeanName = SliderListener.BEAN_NAME),
+	    @MenuLink(title = "menu.ace.slider.subMenu.submitionExample",    exampleBeanName = SliderSubmitionExample.BEAN_NAME)
+	    
 })
 @ManagedBean(name= SliderBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
@@ -67,18 +58,84 @@ public class SliderBean extends ComponentExampleImpl<SliderBean>
         implements Serializable {
 
     public static final String BEAN_NAME = "slider";
-
-    private Double sliderValue = 0.0;
-
-    public Double getSliderValue() {
-        return sliderValue;
-    }
-
-    public void setSliderValue(Double sliderValue) {
-        this.sliderValue = sliderValue;
-    }
+    private String axis;
+    private boolean clickableRail;
+    private String length;
+    private int minValue;
+    private int maxValue;
+    private int sliderValue;
+    private float stepPercent;
+    
 
     public SliderBean() {
         super(SliderBean.class);
+        initialaziInstanceVariables();
+        this.sliderValue = 50;
+    }
+    
+    private void initialaziInstanceVariables() {
+           this.axis = "x";
+           this.clickableRail =false;
+           this.length = "100";
+           this.minValue = 0;
+           this.maxValue = 100;
+           this.sliderValue = 50;
+           this.stepPercent = 10f;
+    }
+
+    public String getAxis() {
+        return axis;
+    }
+
+    public void setAxis(String axis) {
+        this.axis = axis;
+    }
+
+    public boolean isClickableRail() {
+        return clickableRail;
+    }
+
+    public void setClickableRail(boolean clickableRail) {
+        this.clickableRail = clickableRail;
+    }
+
+    public String getLength() {
+        return length;
+    }
+
+    public void setLength(String length) {
+        this.length = length;
+    }
+
+    public int getMaxValue() {
+        return maxValue;
+    }
+
+    public void setMaxValue(int maxValue) {
+        this.maxValue = maxValue;
+    }
+
+    public int getMinValue() {
+        return minValue;
+    }
+
+    public void setMinValue(int minValue) {
+        this.minValue = minValue;
+    }
+
+    public int getSliderValue() {
+        return sliderValue;
+    }
+
+    public void setSliderValue(int sliderValue) {
+        this.sliderValue = sliderValue;
+    }
+
+    public float getStepPercent() {
+        return stepPercent;
+    }
+
+    public void setStepPercent(float stepPercent) {
+        this.stepPercent = stepPercent;
     }
 }

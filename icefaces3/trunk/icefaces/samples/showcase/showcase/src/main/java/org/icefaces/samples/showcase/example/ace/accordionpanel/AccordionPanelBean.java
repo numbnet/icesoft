@@ -16,7 +16,6 @@
 
 package org.icefaces.samples.showcase.example.ace.accordionpanel;
 
-import com.sun.org.apache.xerces.internal.impl.dv.dtd.ListDatatypeValidator;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
