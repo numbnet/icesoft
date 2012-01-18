@@ -20,7 +20,7 @@
   <parent>
      <groupId>org.icefaces.samples</groupId>
      <artifactId>compat</artifactId>
-     <version>3.0.0.RC1</version>
+     <version>3.0.0</version>
   </parent>
 
   <artifactId>compat-basic</artifactId>
