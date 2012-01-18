@@ -94,6 +94,29 @@
     margin-right: auto;
 }
 
+.centeredPanelGridWithLeftJustifiedText
+{
+    text-align: left;  
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.centeredPanelGridWithBorderSpacing
+{
+    text-align: center;  
+    margin-left: auto;
+    margin-right: auto;
+    border-spacing: 10px;
+}
+
+.centeredPanelWithBorderSpacingAndLeftJustifiedText
+{
+    text-align: left;  
+    margin-left: auto;
+    margin-right: auto;
+    border-spacing: 10px;
+}
+
 .menuLogStyle
 {
     display: inline-block;
@@ -107,13 +130,7 @@
     width: 27%;
 }
 
-.centeredPanelGridWithBorderSpacing
-{
-    text-align: center;  
-    margin-left: auto;
-    margin-right: auto;
-    border-spacing: 10px;
-}
+
 
 .infoMessage
 {
@@ -137,14 +154,6 @@
 {
     color: #cc0000;
     font-weight: bold;
-}
-
-
-.centeredPanelGridWithLeftJustifiedText
-{
-    text-align: left;  
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .selectedCheckBox
@@ -173,10 +182,10 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
 {
     width: auto;
 }
-
+/* application of custom images for ace:checkboxButton Example*/
 .ice-checkboxbutton .ui-state-hover
 {
-    background: url("#{resource['css/images/checkGrey.png']}") no-repeat;
+   background: url("#{resource['css/images/checkGrey.png']}") no-repeat;
     border: 0px;
 }
 
@@ -190,6 +199,11 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
     background: url("#{resource['css/images/check.png']}") no-repeat;
     border: 0px;
 }
+
+.ice-checkboxbutton .ui-state-active .ui-icon {
+    background: transparent;
+}
+
 
 .ice-linkbutton .yui-button a {
     border: 1px solid transparent;

@@ -23,6 +23,7 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import org.icefaces.ace.event.ResizeEvent;
+import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
 
 @ComponentExample(
         parent = ResizableBean.BEAN_NAME,
@@ -40,7 +41,12 @@ import org.icefaces.ace.event.ResizeEvent;
             @ExampleResource(type = ResourceType.java,
                     title="ResizeListener.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/resizable/ResizeListenerBean.java")
+                    "/example/ace/resizable/ResizeListenerBean.java"),
+            
+            @ExampleResource(type = ResourceType.java,
+                    title="ImageSet.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
+                    "/example/ace/accordionpanel/ImageSet.java")
         }
 )
 @ManagedBean(name= ResizeListenerBean.BEAN_NAME)
@@ -49,17 +55,33 @@ public class ResizeListenerBean extends ComponentExampleImpl<ResizeListenerBean>
 {
     public static final String BEAN_NAME = "resizeListenerBean";
     private String resizeParameters;
+    private String imageLocation;
+    private boolean showImage;
+    private final int MIN_WIDTH_TO_DISPLAY_IMAGE = 255;
+    private final int MIN_HEIGHT_TO_DISPLAY_IMAGE = 235;
     
     public ResizeListenerBean() 
     {
         super(ResizeListenerBean.class);
         resizeParameters = "Resize panel to call its listener !";
+        showImage = false;
+        imageLocation = ImageSet.getImage(ImageSet.ImageSelect.PICTURE).getPath();
     }
     
     
     public void handleResizeEvent(ResizeEvent event)
     {
-        resizeParameters = "My size changed to: "+event.getWidth() +" x "+ event.getHeight();
+        showImage = customLogic(event.getWidth(), event.getHeight());
+        if(showImage)
+            resizeParameters = "My size changed to: "+event.getWidth() +" x "+ event.getHeight()+" and I have enough space to fit an image";
+        else
+            resizeParameters = "My size changed to: "+event.getWidth() +" x "+ event.getHeight();
+    }
+    
+    private boolean customLogic(int width, int height)
+    {
+        if(width>=MIN_WIDTH_TO_DISPLAY_IMAGE && height >=MIN_HEIGHT_TO_DISPLAY_IMAGE) return true;
+        else return false;
     }
 
     public String getResizeParameters() {
@@ -68,5 +90,21 @@ public class ResizeListenerBean extends ComponentExampleImpl<ResizeListenerBean>
 
     public void setResizeParameters(String resizeParameters) {
         this.resizeParameters = resizeParameters;
+    }
+
+    public boolean isShowImage() {
+        return showImage;
+    }
+
+    public void setShowImage(boolean showImage) {
+        this.showImage = showImage;
+    }
+
+    public String getImageLocation() {
+        return imageLocation;
+    }
+
+    public void setImageLocation(String imageLocation) {
+        this.imageLocation = imageLocation;
     }
 }

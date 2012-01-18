@@ -51,32 +51,22 @@
             </ace:panel>
             
             <h:panelGrid width="100%" columns="2">
-                <h:panelGrid columns="2">
-                    <h:panelGroup>
+                <h:commandLink actionListener="#{progressBarBean.returnToPreviousImage}" style="display: block; float: left;">
+                    <h:panelGrid columns="2">
                         <h:graphicImage value="#{progressBarBean.arrowBackwardImage.path}" alt="#{progressBarBean.arrowBackwardImage.description}"/>
-                    </h:panelGroup>
-                    <h:panelGroup>
-                        <h:commandLink     value="PREVIOUS"
-                                                        style="color: #0099ff;"
-                                                        actionListener="#{progressBarBean.returnToPreviousImage}">
-                            <f:ajax execute="@this" render="progressContent"/>
-                        </h:commandLink>
-                    </h:panelGroup>
-               </h:panelGrid>
+                        <h:outputText value="PREVIOUS" style="color: #0099ff;"/>
+                    </h:panelGrid>
+                    <f:ajax execute="@this" render="progressContent"/>
+                </h:commandLink>
 
-               <h:panelGrid columns="2" style="float: right;">
-                    <h:panelGroup>
-                        <h:commandLink     value="NEXT"
-                                                        style="color: #0099ff;"
-                                                        actionListener="#{progressBarBean.proceedToNextImage}">
-                            <f:ajax execute="@this" render="progressContent"/>
-                        </h:commandLink>
-                    </h:panelGroup>
-                    <h:panelGroup>
-                        <h:graphicImage value="#{progressBarBean.arrowForwardImage.path}" alt="#{progressBarBean.arrowForwardImage.description}"/>
-                    </h:panelGroup>
-                </h:panelGrid>
-             </h:panelGrid>
+               <h:commandLink actionListener="#{progressBarBean.proceedToNextImage}" style="display: block; float: right;">
+                  <h:panelGrid columns="2">
+                      <h:outputText value="NEXT" style="color: #0099ff;"/>
+                      <h:graphicImage value="#{progressBarBean.arrowForwardImage.path}" alt="#{progressBarBean.arrowForwardImage.description}"/>
+                  </h:panelGrid>
+                  <f:ajax execute="@this" render="progressContent"/>
+               </h:commandLink>
+            </h:panelGrid>
         </h:form>
     </ui:define>
 </ui:composition>

@@ -35,10 +35,12 @@
     <ui:define name="example">
         <h:form id="form">
             <center>
-                <ace:panel id="samplePanel"
-                                  style="font-size: 10pt; width: 300px; height: 160px;">
-                    <h:outputText id="resizeOutput" value="#{resizeListenerBean.resizeParameters}"/>
-                    <ace:resizable onResizeUpdate="resizeOutput" resizeListener="#{resizeListenerBean.handleResizeEvent}"/>
+                <ace:panel id="samplePanel" style="font-size: 10pt; width: 255px; height: 235px;">
+                    <h:panelGrid id="resizeOutput" style="margin-left: auto; margin-right: auto; text-align: center;">
+                        <h:outputText  id="boxSize" value="#{resizeListenerBean.resizeParameters}"/>
+                        <h:graphicImage id="sampleImage" value="#{resizeListenerBean.imageLocation}" alt="Picture of the day" rendered="#{resizeListenerBean.showImage}"/>
+                    </h:panelGrid>
+                    <ace:resizable onResizeUpdate="resizeOutput" resizeListener="#{resizeListenerBean.handleResizeEvent}" minHeight="150" minWidth="100" maxHeight="400" maxWidth="650"/>
                 </ace:panel>
             </center>
         </h:form>
