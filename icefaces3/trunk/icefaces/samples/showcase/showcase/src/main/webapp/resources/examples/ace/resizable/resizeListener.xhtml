@@ -40,7 +40,9 @@
                         <h:outputText  id="boxSize" value="#{resizeListenerBean.resizeParameters}"/>
                         <h:graphicImage id="sampleImage" value="#{resizeListenerBean.imageLocation}" alt="Picture of the day" rendered="#{resizeListenerBean.showImage}"/>
                     </h:panelGrid>
-                    <ace:resizable onResizeUpdate="resizeOutput" resizeListener="#{resizeListenerBean.handleResizeEvent}" minHeight="150" minWidth="100" maxHeight="400" maxWidth="650"/>
+                    <ace:resizable resizeListener="#{resizeListenerBean.handleResizeEvent}" minHeight="150" minWidth="100" maxHeight="400" maxWidth="650">
+					<ace:ajax execute="@this" render="resizeOutput" />
+				</ace:resizable>
                 </ace:panel>
             </center>
         </h:form>
