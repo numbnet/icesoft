@@ -35,7 +35,8 @@
     <ui:define name="example">
         <h:form id="form">
                 
-                    <ace:accordion id="panel" paneChangeListener="#{accordionPanelDynamicBean.onPaneChange}" onPaneChangeUpdate="feedbackHolder">
+                    <ace:accordion id="panel" paneChangeListener="#{accordionPanelDynamicBean.onPaneChange}">
+					<ace:ajax execute="@this" render="feedbackHolder" />
                         <ace:accordionPane title="Electronic Devices" id="electronicDevices">
                             <ace:panel>
                                 <h:panelGrid columns="#{accordionPanelDynamicBean.imagesOfElectronicDevicesSize}" width="100%">
