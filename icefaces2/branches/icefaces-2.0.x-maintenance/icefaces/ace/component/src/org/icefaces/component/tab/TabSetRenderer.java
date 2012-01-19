@@ -127,7 +127,7 @@ public class TabSetRenderer extends Renderer{
                 if (EnvUtils.isAriaEnabled(facesContext)) {
                     writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABLIST_ROLE, ARIA.ROLE_ATTR);  
                 }
-                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null, null);
+                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null, null, null);
             writer.endElement(HTML.UL_ELEM);
                 
         } else {
@@ -137,7 +137,7 @@ public class TabSetRenderer extends Renderer{
                 if (EnvUtils.isAriaEnabled(facesContext)) {
                     writer.writeAttribute(ARIA.ROLE_ATTR, ARIA.TABLIST_ROLE, ARIA.ROLE_ATTR);  
                 }                
-                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null, null);
+                doTabs(facesContext, uiComponent, Do.RENDER_LABEL, null, null, null);
             writer.endElement(HTML.UL_ELEM);
             
             
@@ -181,9 +181,10 @@ public class TabSetRenderer extends Renderer{
 
         // The tabs that are depicted as clickable by the user
         List<String> clickableTabs = new ArrayList<String>();
+        ArrayList<Integer> disabledTabs = new ArrayList<Integer>();
         Set<String> cacheOnClient = new HashSet<String>();
         doTabs(facesContext, uiComponent, Do.GET_CLIENT_IDS, clickableTabs,
-                cacheOnClient);
+                cacheOnClient, disabledTabs);
 
         // The tabs whose contents we need to render. Subset of clickableTabs,
         // where the order has a different meaning: [safeIndex] -> tabClientId
@@ -261,17 +262,24 @@ public class TabSetRenderer extends Renderer{
 	        JSONBuilder.create().beginMap()
 	        .entry("orientation", orientation)
 	        .endMap().toString())
-        .append(", ")
-        .append(
-	        JSONBuilder.create().beginMap()
-	        .entry("isSingleSubmit", singleSubmit)
-	        .entry("isClientSide", isClientSide)
-	        .entry("aria", EnvUtils.isAriaEnabled(facesContext))
-	        .entry("selectedIndex", selectedIndex)
-            .entry("safeIds", safeIds)
-            .entry("overrideSelectedIndex",
-                    (unexpected ? System.currentTimeMillis() : 0))
-            .endMap().toString())
+        .append(", ");
+
+        JSONBuilder jb = JSONBuilder.create();
+        jb.beginMap()
+        .entry("isSingleSubmit", singleSubmit)
+        .entry("isClientSide", isClientSide)
+        .entry("aria", EnvUtils.isAriaEnabled(facesContext))
+        .entry("selectedIndex", selectedIndex)
+        .entry("safeIds", safeIds)
+        .beginArray("disabledTabs");
+        for (Integer i : disabledTabs)
+            jb.item(i.toString());
+        jb.endArray()
+        .entry("overrideSelectedIndex",
+                (unexpected ? System.currentTimeMillis() : 0))
+        .endMap();
+
+        call.append(jb.toString())
         .append(");");
        
 ////        //Initialize client side tab as soon as they inserted to the DOM
@@ -310,7 +318,7 @@ public class TabSetRenderer extends Renderer{
         String tabClientId = (String) visitedTabClientIds.get(index);
         if (tabClientId != null) {
             doTabs(facesContext, tabSet, Do.RENDER_CONTENTS_BY_CLIENT_ID,
-                    visitedTabClientIds.subList(index, index+1), null);
+                    visitedTabClientIds.subList(index, index+1), null, null);
         }
         writer.endElement(HTML.DIV_ELEM);
 
@@ -362,7 +370,7 @@ public class TabSetRenderer extends Renderer{
 ////	            writer.writeAttribute(HTML.CLASS_ATTR, "selected", HTML.CLASS_ATTR);
 ////	        }
 ////        }
-        if (tabSet.isDisabled() || ((TabPane) tab).isDisabled()) {
+        if (tabSet.isDisabled()) {
             writer.writeAttribute(HTML.CLASS_ATTR, "disabled", HTML.CLASS_ATTR);
         }
         writer.startElement(HTML.DIV_ELEM, tab);  
@@ -444,7 +452,7 @@ public class TabSetRenderer extends Renderer{
      * Render children of tabset component
      */
     private void doTabs(FacesContext facesContext, UIComponent uiComponent,
-            Do d, List<String> clickableTabs, Set<String> cacheOnClient) throws IOException{
+            Do d, List<String> clickableTabs, Set<String> cacheOnClient, ArrayList<Integer> disabledTabs) throws IOException{
     	TabSet tabSet = (TabSet) uiComponent;
         Iterator children = tabSet.getChildren().iterator();
         int index = -1;
@@ -461,6 +469,7 @@ public class TabSetRenderer extends Renderer{
                     } else if(Do.GET_CLIENT_IDS.equals(d)) {
                         String clientId = child.getClientId(facesContext);
                         clickableTabs.add(clientId);
+                        if (((TabPane) child).isDisabled()) disabledTabs.add(index);
                         if (((TabPane) child).isCacheOnClient()) {
                             cacheOnClient.add(clientId);
                         }

@@ -18,6 +18,15 @@
  *
  * Contributor(s): _____________________.
  */
+Array.prototype.diff = function(a) {
+    return this.filter(function(i) {return !(a.indexOf(i) > -1);});
+};
+
+Array.prototype.hasValue = function(value) {
+  var i;
+  for (i=0; i<this.length; i++) { if (this[i] === value) return true; }
+  return false;
+}
 
 ice.component.tabset = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
@@ -468,10 +477,23 @@ ice.component.tabset = {
                        tabviewObj.selectTab(index);
                    }
                    rootElem.removeAttribute('suppressTabChange');
-                   //tabviewObj.addListener('activeTabChange', tabChange);
-               }
+                   //tabvice
            }
        }
+
+       ice.component.getInstance(clientId, function(yuiComp) {
+           var oldDisabledTabIndexes = oldJSFProps ? oldJSFProps['disabledTabs'] : [];
+           var disabledTabDiff = oldDisabledTabIndexes.diff(jsfProps['disabledTabs']).concat(jsfProps['disabledTabs'].diff(oldDisabledTabIndexes));
+           if (disabledTabDiff.length > 0) {
+               var component = yuiComp,
+                   tabs = component.get('tabs');
+
+               for (var i = 0; i < disabledTabDiff.length; i++) {
+                   tabs[disabledTabDiff[i]].set('disabled', jsfProps['disabledTabs'].hasValue(disabledTabDiff[i]));
+               }
+           }
+       }, lib, jsProps, jsfProps);
+
        ice.yui3.updateProperties(clientId, jsProps, jsfProps, events, lib);
        });
        });
@@ -527,7 +549,7 @@ ice.component.tabset = {
         }
 
         var appendNewContent = new Array();
-        // [ [oldContent, newIndex where it should go or -1 for delete], É ]
+        // [ [oldContent, newIndex where it should go or -1 for delete], ï¿½ ]
         var moveOldContent = new Array();
         var skipNewIndexes = new Array();
         var oldSafeIndex = 0;
