@@ -136,6 +136,9 @@
                     <exclude name="client/"/>
                     <exclude name="components/"/>
                     <exclude name="lib/generator/"/>
+                    <!-- trim component build script for binary bundle -->
+                    <exclude name="build.xml" />
+                    <exclude name="build.properties" />
                 </zipfileset>
 
                 <add.zip.elements/>
