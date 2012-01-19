@@ -16,7 +16,7 @@
 
 package org.icefaces.tutorials.ace.faces.listeners;
 
-import org.icefaces.component.fileentry.*;
+import org.icefaces.ace.component.fileentry.*;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
