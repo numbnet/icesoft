@@ -14,7 +14,7 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="autocomplete-tutorial" default="war.basic">
+<project name="file-callback-tutorial" default="war.basic">
     <property file="./build.properties"/>
     <import file="../common.xml"/>
 </project>
