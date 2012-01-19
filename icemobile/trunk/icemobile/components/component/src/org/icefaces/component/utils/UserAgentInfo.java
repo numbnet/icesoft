@@ -38,6 +38,7 @@ public class UserAgentInfo {
     public static final String deviceIpod = "ipod";
     public static final String deviceMac = "macintosh"; //test laptop
     public static final String deviceAndroid = "android";
+    public static final String deviceHoneyComb = "android 3.";
     public static final String deviceBlackB = "blackberry";
     public static final String deviceBBCurve = "blackberry89"; //curve2
     public static final String deviceBBTorch = "blackberry 98"; //torch
@@ -101,8 +102,8 @@ public class UserAgentInfo {
     }
 
     public boolean sniffAndroidTablet() {
-        boolean result = userAgentString.contains(deviceAndroid) &&
-                !userAgentString.contains("mobile safari");
+        boolean result = userAgentString.contains(deviceHoneyComb) ||
+                (userAgentString.contains(deviceAndroid) && !userAgentString.contains("mobile safari"));
         // android tablet won't have the "mobile" on the agent at least for 3.x
         logSniff(result, "Android Tablet", userAgentString);
         return result;
