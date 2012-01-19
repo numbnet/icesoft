@@ -188,10 +188,12 @@ div.ui-widget.ui-widget-content.wijmo-wijmenu.ui-corner-all.ui-helper-clearfix.w
    background: url("#{resource['css/images/checkGrey.png']}") no-repeat;
     border: 0px;
 }
-
+/* hack with borders to display checkbox properly in IE7. If border property is changed to: 0px the bottom border of the checkbox is never rendered in IE7; */
 .ice-checkboxbutton .ui-state-default{
     background: url("#{resource['css/images/uncheck.png']}") no-repeat;
-    border: 0px;
+    border: 1px;
+    border-bottom: 2px;
+    border-color: #000000;
     
 }
 

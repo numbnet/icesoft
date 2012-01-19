@@ -38,15 +38,14 @@
         <h:form>
             
             <ace:panel id="examplePanel">
-                <h:panelGrid styleClass="centeredPanelGrid">
-                    <ace:checkboxButton id="checkBox" value="#{checkboxButton.selected}">
-                        <ace:ajax execute="@this" event="activate" render="valueDescription"/>
-                   </ace:checkboxButton>
-                    
-                    <h:panelGroup>
+                <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing">
+                        <ace:checkboxButton id="checkBox" value="#{checkboxButton.selected}">
+                            <ace:ajax execute="@this" event="activate" render="valueDescription"/>
+                        </ace:checkboxButton>
+                    <h:panelGrid columns="2">
                         <h:outputText value="The checkbox is "/>
                         <h:outputText id="valueDescription" value="#{checkboxButton.boxValueDescription}" style="font-weight: bold;"/>
-                    </h:panelGroup>
+                    </h:panelGrid>
                 </h:panelGrid>
             </ace:panel>
             
