@@ -75,10 +75,10 @@ public class ConfirmationDialogMeta extends UIPanelMeta {
 	@Property(tlddoc="Style class of the dialog container.")
 	private String styleClass;
 	
-	@Property(tlddoc="Effect to use when showing the dialog. Standard jQuery effects like \"slide\".")
+	@Property(tlddoc="Effect to use when showing the dialog. Standard jQuery effects are supported (see wiki page for exceptions).")
 	private String showEffect;
 	
-	@Property(tlddoc="Effect to use when hiding the dialog. Standard jQuery effects like \"slide\".")
+	@Property(tlddoc="Effect to use when hiding the dialog. Standard jQuery effects are supported (see wiki page for exceptions).")
 	private String hideEffect;
 	
 	@Property(tlddoc="Specifies where the dialog should be displayed. Possible values: \n1) a single string representing position within viewport: 'center', 'left', 'right', 'top', 'bottom'.\n2) an array containing an x,y coordinate pair in pixel offset from left, top corner of viewport (e.g. [350,100])\n3) an array containing x,y position string values (e.g. ['right','top'] for top right corner).")
