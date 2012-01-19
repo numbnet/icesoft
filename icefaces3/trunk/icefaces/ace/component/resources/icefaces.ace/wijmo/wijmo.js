@@ -3557,7 +3557,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
             ele.show();
             $("ul", self.rootMenu).each(function () {
                 $(this).addClass(menuCss + "-list ui-widget-content ui-corner-all " +
-					"ui-helper-clearfix " + menuCss + "-child ui-helper-reset");
+					"ui-helper-clearfix " + menuCss + "-child"); // ICE-7668 removed ui-helper-reset
                 $(this).hide();
             });
             this[o.mode === "flyout" ? "_flyout" : "_drilldown"]();
