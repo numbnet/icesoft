@@ -59,8 +59,7 @@ public class ContextMenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "zindex property to control overlapping with other elements.", defaultValue = "1")
     private int zindex;
 
-    @Property(tlddoc = "Sets the effect for the menu display, default value is FADE. Possible values are" +
-            " \"FADE\", \"SLIDE\", \"NONE\". Use \"NONE\" to disable animation at all. Note: in the 3.0 release, this attribute is not applicable to IE browsers; the \"SLIDE\" effect will always be applied by default.", defaultValue = "fade")
+    @Property(tlddoc = "Sets the effect for the menu display. Standard jQuery effects are supported (see wiki page for exceptions).", defaultValue = "fade")
     private String effect;
 
     @Property(tlddoc = "Sets the effect duration in milliseconds.", defaultValue = "400")
