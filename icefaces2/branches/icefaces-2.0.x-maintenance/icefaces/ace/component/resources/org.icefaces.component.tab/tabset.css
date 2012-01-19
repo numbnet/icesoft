@@ -33,3 +33,13 @@ vertical-align:text-top;
 .yui-navset .yui-nav li div.yui-navdiv em, .yui-navset-top .yui-nav li div.yui-navdiv em, .yui-navset-bottom .yui-nav li div.yui-navdiv em {
 display:block;
 }
+
+/* disable tabs */
+.yui-navset .yui-nav li.disabled {
+    opacity: .5;
+    -moz-opacity:.50;
+    filter:alpha(opacity=50);
+}
+.yui-navset .yui-nav li.disabled a, .yui-navset .yui-nav li.disabled a:hover {
+    cursor: default;
+}
