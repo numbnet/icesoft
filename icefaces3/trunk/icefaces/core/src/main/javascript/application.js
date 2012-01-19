@@ -557,7 +557,10 @@ if (!window.ice.icefaces) {
                     } else {
                         //find all the forms in the update's markup, just in case the executed javascript moved forms
                         //around after the update was applied
-                        var formStartTags = update.firstChild.data.match(/\<form[^\<]*\>/g);
+                        var markup = join(collect(update.childNodes, function(cdata) {
+                            return cdata.data;
+                        }), '');
+                        var formStartTags = markup.match(/\<form[^\<]*\>/g);
                         if (formStartTags) {
                             each(formStartTags, function(formStartTag) {
                                 //find 'id' attribute in the form start tag
