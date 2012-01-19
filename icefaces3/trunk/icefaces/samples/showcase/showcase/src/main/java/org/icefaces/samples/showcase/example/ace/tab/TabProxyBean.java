@@ -97,7 +97,7 @@ public class TabProxyBean extends ComponentExampleImpl<TabProxyBean>
         super(TabProxyBean.class);
         options = new HashMap<String, Integer>();
         options.put("yes", 1);
-        options.put("no", 1);
+        options.put("no", 0);
     }
 
     public HashMap<String, Integer> getOptions() {
@@ -107,6 +107,4 @@ public class TabProxyBean extends ComponentExampleImpl<TabProxyBean>
     public void setOptions(HashMap<String, Integer> options) {
         this.options = options;
     }
-    
-    
 }
