@@ -477,7 +477,7 @@ ice.component.tabset = {
                        tabviewObj.selectTab(index);
                    }
                    rootElem.removeAttribute('suppressTabChange');
-                   //tabvice
+               }
            }
        }
 
