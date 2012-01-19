@@ -38,12 +38,13 @@ ice.ace.ConfirmDialog = function(id, cfg) {
     this.cfg.resizable = false;
     this.cfg.autoOpen = false;
 
-	// disable unsupported effects in IE
+	// disable unsupported effects
+	if (this.cfg.hide == 'pulsate') this.cfg.hide = null;
 	var browser = ice.ace.ConfirmDialog.browser();
 	if (browser == 'ie7' || browser == 'ie8') {
 		var hide = this.cfg.hide;
 		if (hide) {
-			if (hide == 'highlight' || hide == 'bounce' || hide == 'pulsate')
+			if (hide == 'highlight' || hide == 'bounce')
 				this.cfg.hide = null;
 			if (browser == 'ie7')
 				if (hide == 'puff')
