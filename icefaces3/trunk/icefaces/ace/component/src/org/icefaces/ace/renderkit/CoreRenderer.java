@@ -244,6 +244,7 @@ public class CoreRenderer extends Renderer {
                 ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
 				for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                     ClientBehavior behavior = behaviorIter.next();
+					if (behavior instanceof javax.faces.component.behavior.AjaxBehavior) continue; // ignore f:ajax
                     script = behavior.getScript(cbc);    //could be null if disabled
 
                     if(script == null) {
@@ -289,6 +290,7 @@ public class CoreRenderer extends Renderer {
                 ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
                 for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
                     ClientBehavior behavior = behaviorIter.next();
+					if (behavior instanceof javax.faces.component.behavior.AjaxBehavior) continue; // ignore f:ajax
                     String script = behavior.getScript(cbc);    //could be null if disabled
 
                     if(script != null) {
