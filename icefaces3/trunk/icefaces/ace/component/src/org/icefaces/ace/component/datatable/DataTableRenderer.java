@@ -1393,7 +1393,11 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content " + DataTableConstants.UNSELECTABLE_ROW_CLASS , null);
 
         writer.startElement(HTML.TD_ELEM, null);
-        writer.writeAttribute(HTML.COLSPAN_ATTR, table.getColumns().size(), null);
+
+        int enabledColumns = 0;
+        for (Column c : table.getColumns()) if (c.isRendered()) enabledColumns++;
+
+        writer.writeAttribute(HTML.COLSPAN_ATTR, enabledColumns, null);
         table.getPanelExpansion().encodeAll(context);
 
         writer.endElement(HTML.TD_ELEM);
