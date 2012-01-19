@@ -185,10 +185,96 @@ function html5getViewState(form) {
     return qString.join("");
 };
 
+function html5handleResponse(context, data)  {
+    if (null == context.sourceid)  {
+        //was not a jsf upload
+        return;
+    }
+
+    var jsfResponse = {};
+    var parser = new DOMParser();
+    var xmlDoc = parser.parseFromString(unescape(data), "text/xml");
+
+    jsfResponse.responseXML = xmlDoc;
+    jsf.ajax.response(jsfResponse, context);
+
+}
+
+
+function html5submitFunction(element, event, options) {
+    var source = event ? event.target : element;
+    var form = element;
+    while ((null != form) && ("form" != form.tagName.toLowerCase()))  {
+        form = form.parentNode;
+    }
+    var formData = new FormData(form);
+    var formId = form.id;
+    var sourceId = element ? element.id : event.target.id;
+
+    if ("@this" === options.execute)  {
+        options.execute = sourceId;
+    } else if ("@form" === options.execute)  {
+        options.execute = formId;
+    }
+    if ("@this" === options.render)  {
+        options.render = sourceId;
+    } else if ("@form" === options.render)  {
+        options.render = formId;
+    }
+    if (!options.execute)  {
+        options.execute = "@all";
+    }
+    if (!options.render)  {
+        options.render = "@all";
+    }
+
+    formData.append("javax.faces.source", sourceId);
+    formData.append(source.name, source.value);
+    formData.append("javax.faces.partial.execute", options.execute);
+    formData.append("javax.faces.partial.render", options.render);
+    formData.append("javax.faces.partial.ajax", "true");
+
+    if (event) {
+        formData.append("javax.faces.partial.event", event.type);
+    }
+
+    if (options) {
+        for (var p in options) {
+            if ("function" != typeof(options[p]))  {
+                formData.append(p, options[p]);
+            }
+        }
+    }
+
+    var context = {
+        sourceid: sourceId,
+        formid: formId,
+        onevent: null,
+        onerror: function(param)  {
+            alert("JSF error " + param.source + " " + param.description);
+        }
+    }
+
+    var xhr = new XMLHttpRequest();  
+    xhr.open("POST", form.getAttribute("action"));
+    xhr.setRequestHeader("Faces-Request", "partial/ajax");
+    xhr.onreadystatechange = function() {
+        if ( (4 == xhr.readyState) && (200 == xhr.status) )  {
+            html5handleResponse(context, xhr.responseText);
+        }
+    };
+    xhr.send(formData);
+}
+
 if (window.addEventListener)  {
     window.addEventListener( "load",
-    function() {jsf.getViewState = html5getViewState}
-        , false );
+    function() {
+        jsf.getViewState = html5getViewState;
+        if ( (undefined !== window.FormData) && 
+             (undefined === window.ice.mobile) )  {
+            ice.submitFunction = html5submitFunction;
+        }
+    }, false );
 
     window.addEventListener("pagehide", function() { 
         ice.push.connection.pauseConnection(); 
