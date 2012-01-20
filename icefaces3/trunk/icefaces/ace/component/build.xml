@@ -112,6 +112,7 @@
     <path id="javadoc.classpath">
         <fileset dir="${jsf.lib.dir}" includes="*.jar" erroronmissingdir="false"/>
         <fileset dir="${lib.dir}" includes="*.jar"/>
+        <fileset dir="${lib.dir}/ace" includes="*.jar"/>
         <pathelement path="../component/src"/>
         <pathelement path="../generator/build"/>
         <pathelement path="../component/build/meta"/>
@@ -457,12 +458,18 @@
 
     <target name="javadoc" depends="compile" description="Generate the component JavaDoc Documentation in HTML format.">
         <delete dir="${javadocs.dir}"/>
-        <javadoc sourcepath="${src}"
+        <javadoc 
                  destdir="${java.doc}"
                  classpathref="javadoc.classpath"
-                 excludepackagenames="org.icefaces.apache.*"
                  windowtitle="${javadoc.title}" failonerror="true"
                  bottom="Copyright ${year} ${copyright}">
+            <fileset dir="." defaultexcludes="yes">
+                <include name="src/**/*.java"/>
+                <include name="build/generated/support/**/*.java"/>
+                <include name="build/generated/base/**/*.java"/>
+                <exclude name="**/*Meta.java"/>
+                <exclude name="src/org/icefaces/apache/**" />
+            </fileset>
             <header><![CDATA[${javadoc.header}]]></header>
             <footer><![CDATA[${javadoc.header}]]></footer>
             <doctitle><![CDATA[<h2>${javadoc.title}</h2>]]></doctitle>
