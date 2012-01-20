@@ -27,9 +27,9 @@ package org.icefaces.ace.component.datatable;
 import org.icefaces.ace.component.ajax.AjaxBehavior;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
+import org.icefaces.ace.component.panelexpansion.PanelExpansion;
 import org.icefaces.ace.component.row.Row;
-import org.icefaces.ace.component.rowexpander.RowExpander;
-import org.icefaces.ace.component.rowpanelexpander.RowPanelExpander;
+import org.icefaces.ace.component.rowexpansion.RowExpansion;
 import org.icefaces.ace.component.tableconfigpanel.TableConfigPanel;
 import org.icefaces.ace.event.*;
 import org.icefaces.ace.model.MultipleExpressionComparator;
@@ -315,26 +315,26 @@ public class DataTable extends DataTableBase {
     }
 
     /**
-     * If a RowPanelExpander component is a child of this table, return it.
+     * If a PanelExpansion component is a child of this table, return it.
      * This is intended for table sub-components to vary their behavior varied
-     * on the presence of RowPanelExpanders and/or RowExpanders.
-     * @return RowPanelExpander child of the table, or null
+     * on the presence of PanelExpansion and/or RowExpansion.
+     * @return PanelExpansion child of the table, or null
      */
-    public RowPanelExpander getPanelExpansion() {
+    public PanelExpansion getPanelExpansion() {
         for (UIComponent kid : getChildren())
-            if (kid instanceof RowPanelExpander) return (RowPanelExpander) kid;
+            if (kid instanceof PanelExpansion) return (PanelExpansion) kid;
         return null;
     }
 
     /**
-     * If a RowExpander component is a child of this table, return it.
+     * If a RowExpansion component is a child of this table, return it.
      * This is intended for table sub-components to vary their behavior varied
-     * on the presence of RowPanelExpanders and/or RowExpanders.
-     * @return RowExpander child of the table, or null
+     * on the presence of PanelExpansion and/or RowExpansion.
+     * @return RowExpansion  child of the table, or null
      */
-    public RowExpander getRowExpansion() {
+    public RowExpansion getRowExpansion() {
         for (UIComponent kid : getChildren())
-            if (kid instanceof RowExpander) return (RowExpander) kid;
+            if (kid instanceof RowExpansion) return (RowExpansion) kid;
         return null;
     }
 
@@ -855,7 +855,7 @@ public class DataTable extends DataTableBase {
         if (visitRows) setRowIndex(-1);
         if (getChildCount() > 0) {
             for (UIComponent column : getChildren()) {
-                if (column instanceof Column || column instanceof RowPanelExpander) {
+                if (column instanceof Column || column instanceof PanelExpansion) {
                     VisitResult result = context.invokeVisitCallback(column, callback); // visit the column directly
                     if (result == VisitResult.COMPLETE) return true;
                     if (column.getFacetCount() > 0) {
@@ -901,10 +901,10 @@ public class DataTable extends DataTableBase {
 
         // Get / Regenerate cached data model.
         Object model = getDataModel();
-        RowPanelExpander panelExpander = getPanelExpansion();
-        RowExpander rowExpander = getRowExpansion();
-        boolean hasPanelExpansion = (panelExpander != null);
-        boolean hasRowExpansion = (rowExpander != null);
+        PanelExpansion panelExpansion = getPanelExpansion();
+        RowExpansion rowExpansion = getRowExpansion();
+        boolean hasPanelExpansion = (panelExpansion != null);
+        boolean hasRowExpansion = (rowExpansion != null);
 
         RowStateMap stateMap = null;
 
@@ -937,7 +937,7 @@ public class DataTable extends DataTableBase {
                             // Visit row in tree case.
                             if (getChildCount() > 0) {
                                 for (UIComponent kid : getChildren()) {
-                                    if (!(kid instanceof UIColumn) && !(kid instanceof RowPanelExpander)) {
+                                    if (!(kid instanceof UIColumn) && !(kid instanceof PanelExpansion)) {
                                         continue;
                                     }
                                     if (kid.getChildCount() > 0) {
@@ -972,7 +972,7 @@ public class DataTable extends DataTableBase {
                     // Visit row in plain model case.
                     if (getChildCount() > 0) {
                         for (UIComponent kid : getChildren()) {
-                            if (!(kid instanceof UIColumn) && !(kid instanceof RowPanelExpander)) {
+                            if (!(kid instanceof UIColumn) && !(kid instanceof PanelExpansion)) {
                                 continue;
                             }
                             if (kid.getChildCount() > 0) {
@@ -1398,7 +1398,7 @@ public class DataTable extends DataTableBase {
         int rowIndex = getFirst() - 1;
         int rows = getRows();
         boolean inSubrows = false;
-        RowPanelExpander panelExpander = getPanelExpansion();
+        PanelExpansion panelExpansion = getPanelExpansion();
         RowStateMap map = getStateMap();
         RowState rowState;
         Boolean expanded;
@@ -1433,11 +1433,11 @@ public class DataTable extends DataTableBase {
             // been done a single time with rowIndex=-1 already)
             if (getChildCount() > 0) {
                 for (UIComponent kid : getChildren()) {
-                    if ((!(kid instanceof UIColumn) && !(kid instanceof RowPanelExpander))
+                    if ((!(kid instanceof UIColumn) && !(kid instanceof PanelExpansion))
                             || !kid.isRendered()) {
                         continue;
                     }
-                    if ((kid instanceof RowPanelExpander) && !expanded) {
+                    if ((kid instanceof PanelExpansion) && !expanded) {
                         continue;
                     }
                     if (kid.getChildCount() > 0) {
@@ -1459,7 +1459,7 @@ public class DataTable extends DataTableBase {
                 }
             }
 
-            if (expanded && hasTreeDataModel() && (panelExpander == null || rowState.getExpansionType() == RowState.ExpansionType.ROW)) {
+            if (expanded && hasTreeDataModel() && (panelExpansion == null || rowState.getExpansionType() == RowState.ExpansionType.ROW)) {
                 treeDataModel = (TreeDataModel)model;
                 if (treeDataModel.getCurrentRowChildCount() > 0) {
                     inSubrows = true;
