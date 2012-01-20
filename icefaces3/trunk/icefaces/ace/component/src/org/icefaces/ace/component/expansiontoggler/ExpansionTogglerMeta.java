@@ -33,8 +33,8 @@ import javax.el.MethodExpression;
     rendererType = "org.icefaces.ace.component.ExpansionTogglerRenderer",
     componentFamily = "org.icefaces.ace.ExpansionToggler",
     tlddoc = "<p>Renders a control to toggle the expanded state of this row. " +
-            "If this table only contains either RowPanelExpander or " +
-            "RowExpander, that type of expansion will occur. If both are " +
+            "If this table only contains either PanelExpansion or " +
+            "RowExpansion, that type of expansion will occur. If both are " +
             "children of the table, the 'expansion type' for each row is " +
             "configurable via the RowState.</p>" +
             "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/ExpansionToggler\">Expansion Toggler Wiki Documentation</a>.</p>"

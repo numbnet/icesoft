@@ -29,9 +29,9 @@ package org.icefaces.ace.component.datatable;
 import org.icefaces.ace.component.celleditor.CellEditor;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
+import org.icefaces.ace.component.panelexpansion.PanelExpansion;
 import org.icefaces.ace.component.row.Row;
-import org.icefaces.ace.component.rowexpander.RowExpander;
-import org.icefaces.ace.component.rowpanelexpander.RowPanelExpander;
+import org.icefaces.ace.component.rowexpansion.RowExpansion;
 import org.icefaces.ace.component.tableconfigpanel.TableConfigPanel;
 import org.icefaces.ace.context.RequestContext;
 import org.icefaces.ace.event.SelectEvent;
@@ -48,8 +48,6 @@ import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
-import org.icefaces.ace.component.ajax.AjaxBehavior;
-import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
@@ -1329,10 +1327,10 @@ public class DataTableRenderer extends CoreRenderer {
                     int rowIndex = rootModel.getRowIndex();
                     context.getExternalContext().getRequestMap().put(clientId + "_expandedRowId", expandedRowId+"."+rowIndex);
 
-                    RowPanelExpander panelExpander = table.getPanelExpansion();
-                    RowExpander rowExpander = table.getRowExpansion();
-                    boolean isPanel = panelExpander != null;
-                    boolean isRow = rowExpander != null;
+                    PanelExpansion panelExpansion = table.getPanelExpansion();
+                    RowExpansion rowExpansion = table.getRowExpansion();
+                    boolean isPanel = panelExpansion != null;
+                    boolean isRow = rowExpansion != null;
 
                     // Ensure that table.getTableId returns correctly for request map look
                     table.setRowIndex(-1);
