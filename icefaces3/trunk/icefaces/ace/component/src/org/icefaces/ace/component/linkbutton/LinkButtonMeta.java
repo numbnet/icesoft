@@ -74,6 +74,6 @@ public class LinkButtonMeta extends UICommandMeta {
     @Property(tlddoc="The inline style of the component, rendered on the root div of the component.")
     private String style;
 
-    @Property(tlddoc="If the link is a traditional anchor, this is the traditional target attribute")
+    @Property(tlddoc="If the link is a traditional anchor then this is the traditional target attribute.")
     private String target; 
 }
