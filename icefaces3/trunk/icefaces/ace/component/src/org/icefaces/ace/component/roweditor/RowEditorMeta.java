@@ -32,7 +32,8 @@ import javax.el.MethodExpression;
         componentType = "org.icefaces.ace.component.RowEditor",
         rendererType = "org.icefaces.ace.component.RowEditorRenderer",
         componentFamily = "org.icefaces.ace.RowEditor",
-        tlddoc = ""
+        tlddoc = "<p>Renders a set of controls that reveal, submit and hide the hidden input facet of a  ace:cellEditor.</p>" +
+                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/RowEditor\">Row Editor Wiki Documentation</a>.</p>"
 )
 public class RowEditorMeta extends UIComponentBaseMeta {
     @Property(expression = Expression.METHOD_EXPRESSION,

@@ -31,6 +31,7 @@ import javax.el.MethodExpression;
         extendsClass = "javax.faces.component.UIComponentBase",
         componentType = "org.icefaces.ace.component.RowExpander",
         componentFamily = "org.icefaces.ace.RowExpander",
-        tlddoc = ""
+        tlddoc = "<p>Renders a set of rows located underneath the row where ace:expansionToggler was activated. These subrows are defined by a tree relationship modeled in the List bound to the 'value' attribute of the parent DataTable. The List must be of the type List<java.util.Map.Entry<Object, List>> where the entries are mappings from row data objects to lists of sub-entries.</p>" +
+                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/RowExpansion\">Row Expander Wiki Documentation</a>.</p>"
 )
 public class RowExpanderMeta extends UIComponentBaseMeta {}

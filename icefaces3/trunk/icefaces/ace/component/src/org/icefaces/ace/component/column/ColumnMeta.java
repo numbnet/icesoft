@@ -37,7 +37,8 @@ import java.util.Comparator;
         componentType   = "org.icefaces.ace.component.Column",
         rendererType    = "",
 		componentFamily = "org.icefaces.ace.component",
-		tlddoc = "Component that represents a column in a table. Configurable regarding sorting, filterting and column selection.")
+		tlddoc = "<p>Component that represents a column in an ace:dataTable.</p>" +
+                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Column\">Column Wiki Documentation</a>.</p>")
 @ResourceDependencies({
 
 })

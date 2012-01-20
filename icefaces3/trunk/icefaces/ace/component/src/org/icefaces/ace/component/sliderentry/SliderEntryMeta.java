@@ -50,8 +50,8 @@ import javax.el.MethodExpression;
         tlddoc="<p>The Slider Entry is a component that enables the user to adjust values in a finite range along a " +
                 "horizontal or vertical axis via dragging the slider control along the slider bar, or pressing the " +
                 "arrow-keys. It can be used as a visual replacement for an input box that takes a " +
-                "number as input.<p>For more information, see the " +
-                "<a href=\"http://wiki.icefaces.org/display/ICE/SliderEntry\">SliderEntry Wiki Documentation</a>."
+                "number as input.</p><p>For more information, see the " +
+                "<a href=\"htp://wiki.icefaces.org/display/ICE/SliderEntry\">SliderEntry Wiki Documentation</a>.</p>"
         )
 
 @ResourceDependencies({

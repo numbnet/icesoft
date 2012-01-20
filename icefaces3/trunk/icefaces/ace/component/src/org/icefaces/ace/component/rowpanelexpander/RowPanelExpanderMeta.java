@@ -30,6 +30,7 @@ import javax.el.MethodExpression;
         extendsClass = "javax.faces.component.UIColumn",
         componentType = "org.icefaces.ace.component.RowPanelExpander",
         componentFamily = "org.icefaces.ace.RowPanelExpander",
-        tlddoc = ""
+        tlddoc = "<p>Renders a table-width panel filled with its children components, located underneath the row where ace:expansionToggler was activated.</p>" +
+                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/RowPanelExpander\">Row Panel Expander Wiki Documentation</a>.</p>"
 )
 public class RowPanelExpanderMeta extends UIColumnMeta {}

@@ -40,10 +40,11 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
         componentType = "org.icefaces.ace.component.DataTable",
         rendererType = "org.icefaces.ace.component.DataTableRenderer",
         componentFamily = "org.icefaces.ace.DataTable",
-        tlddoc = "Renders an HTML table element. Rows are created from the List" +
-                " or DataModel object bound by the value property. The " +
-                "header/footer is rendered by the header/footer facet of Column" +
-                " component children or a child ColumnGroup component definition."
+        tlddoc = "Renders an HTML table element. This table and its associated " +
+                "components offers support for features like: scrolling, " +
+                "sorting, filtering, row selection, row editing, lazy loading " +
+                "and expandable subrows and subpanels." +
+                "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/DataTable\">DataTable Wiki Documentation</a>.</p>"
 )
 @ResourceDependencies({
 		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),

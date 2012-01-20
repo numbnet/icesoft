@@ -33,7 +33,8 @@ import javax.faces.application.ResourceDependency;
     componentType = "org.icefaces.ace.component.TableConfigPanel",
     componentClass = "org.icefaces.ace.component.tableconfigpanel.TableConfigPanel",
     componentFamily = "org.icefaces.ace.TableConfigPanel",
-    tlddoc = "")
+    tlddoc = "<p>Renders a hidden panel with controls to configure column features. The table whose columns are to be configured is targeted with the 'for' attribute. The location of the button to reveal this panel is configured via the 'type' attribute.</p>" +
+             "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/TableConfigPanel\">TableConfigPanel Wiki Documentation</a>.</p>")
 @ResourceDependencies({
 	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
