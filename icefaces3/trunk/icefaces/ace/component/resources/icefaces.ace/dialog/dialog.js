@@ -54,6 +54,20 @@ ice.ace.Dialog = function(id, cfg) {
         this.cfg.closeOnEscape = false;
     }
 
+	// disable unsupported effects
+	if (this.cfg.hide == 'pulsate') {
+		this.cfg.hide = null;
+	} else {
+		var browser = ice.ace.Dialog.browser();
+		if (browser == 'ie7' || browser == 'ie8') {
+			var hide = this.cfg.hide;
+			if (hide) {
+				if (hide == 'highlight' || hide == 'bounce')
+					this.cfg.hide = null;
+			}
+		}
+	}
+
     //Remove scripts to prevent duplicate widget issues
     this.jq.find("script").remove();
     
@@ -86,17 +100,17 @@ ice.ace.Dialog = function(id, cfg) {
         this.focusFirstInput();
     }
     callee[id] = this;
-}
+};
 
 ice.ace.Dialog.prototype.show = function() {
     this.jq.dialog('open');
 
     this.focusFirstInput();
-}
+};
 
 ice.ace.Dialog.prototype.hide = function() {
     this.jq.dialog('close');
-}
+};
 
 /**
  * Invokes user provided callback
@@ -105,7 +119,7 @@ ice.ace.Dialog.prototype.onShow = function(event, ui) {
     if(this.cfg.onShow) {
         this.cfg.onShow.call(this, event, ui);
     }
-}
+};
 
 /**
  * Fires an ajax request to invoke a closeListener passing a CloseEvent
@@ -128,8 +142,20 @@ ice.ace.Dialog.prototype.onHide = function(event, ui) {
             closeBehavior.call(this);
         }
     }
-}
+};
 
 ice.ace.Dialog.prototype.focusFirstInput = function() {
     this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').focus();
-}
+};
+
+ice.ace.Dialog.browser = function() {
+	if (ice.ace.jq.browser.msie) 
+		if (ice.ace.jq.browser.version < 8) {
+			if (navigator.userAgent.indexOf("Trident/5") < 0) // detects IE9, regardless of compatibility mode
+				return 'ie7';
+		} else {
+			if (ice.ace.jq.browser.version < 9)
+				return 'ie8';
+		}
+	return '';
+};
