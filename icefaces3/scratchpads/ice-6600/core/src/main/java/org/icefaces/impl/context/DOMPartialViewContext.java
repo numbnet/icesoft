@@ -66,10 +66,15 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
     protected FacesContext facesContext;
     private PartialResponseWriter partialWriter;
     private Boolean isAjaxRequest;
+    private DOMUtils.DiffConfig diffConfig = null;
 
     public DOMPartialViewContext(PartialViewContext partialViewContext, FacesContext facesContext) {
         this.wrapped = partialViewContext;
         this.facesContext = facesContext;
+        String diffConfigString = EnvUtils.getDiffConfig(facesContext);
+        if (null != diffConfigString)  {
+            diffConfig = new DOMUtils.DiffConfig(diffConfigString);
+        }
     }
 
     @Override
@@ -263,13 +268,13 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         }
     }
 
-    private static List<DOMUtils.EditOperation> domDiff(Document oldDOM, Document newDOM) {
+    private List<DOMUtils.EditOperation> domDiff(Document oldDOM, Document newDOM) {
         final Runnable oldHeadRollback = setHeadID(oldDOM);
         final Runnable oldBodyRollback = setBodyID(oldDOM);
         final Runnable newHeadRollback = setHeadID(newDOM);
         final Runnable newBodyRollback = setBodyID(newDOM);
         try {
-            return DOMUtils.domDiff(oldDOM, newDOM);
+            return DOMUtils.domDiff(diffConfig, oldDOM, newDOM);
         } finally {
             oldHeadRollback.run();
             oldBodyRollback.run();
@@ -332,7 +337,7 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
         VisitContext visitContext =
                 VisitContext.createVisitContext(facesContext, renderIds, hints);
         DOMPartialRenderCallback renderCallback =
-                new DOMPartialRenderCallback(facesContext);
+                new DOMPartialRenderCallback(diffConfig, facesContext);
         viewRoot.visitTree(visitContext, renderCallback);
         //if subtree diffs fail, consider throwing an exception to trigger
         //a full page diff.  This may depend on development vs production
@@ -504,13 +509,16 @@ class DOMPartialRenderCallback implements VisitCallback {
     private FacesContext facesContext;
     //keep track of all diffs
     private ArrayList<DOMUtils.EditOperation> diffs;
+    private DOMUtils.DiffConfig diffConfig = null;
     private boolean exception;
 
 
-    public DOMPartialRenderCallback(FacesContext facesContext) {
+    public DOMPartialRenderCallback(DOMUtils.DiffConfig diffConfig, 
+            FacesContext facesContext) {
         this.facesContext = facesContext;
         this.diffs = new ArrayList<DOMUtils.EditOperation>();
         this.exception = false;
+        this.diffConfig = diffConfig;
     }
 
     public VisitResult visit(VisitContext visitContext, UIComponent component) {
@@ -569,7 +577,8 @@ class DOMPartialRenderCallback implements VisitCallback {
             } else {
                 if (null != newSubtree)  {
                     //typical case
-                    diffs.addAll((DOMUtils.nodeDiff(oldSubtree, newSubtree)));
+                    diffs.addAll((DOMUtils.nodeDiff(diffConfig, 
+                            oldSubtree, newSubtree)));
                 } else {
                     //delete component no longer rendered, but there is now
                     //no way to add it again
