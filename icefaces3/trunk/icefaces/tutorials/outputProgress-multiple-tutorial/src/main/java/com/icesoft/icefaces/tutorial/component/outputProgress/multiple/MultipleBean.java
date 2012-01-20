@@ -73,7 +73,7 @@ public class MultipleBean
 	PortableRenderer renderer;
     private void startUpdateThread() {
 		PushRenderer.addCurrentSession("all");   
-   	 	renderer = PushRenderer.getPortableRenderer(FacesContext.getCurrentInstance());
+   	 	renderer = PushRenderer.getPortableRenderer();
 	
         updateThread = new Thread(new Runnable() {
             public void run() {
