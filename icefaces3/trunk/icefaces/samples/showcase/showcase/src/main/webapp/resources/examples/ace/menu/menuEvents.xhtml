@@ -34,7 +34,7 @@
 
     <ui:define name="example">
         <h:form>
-            <h:panelGrid  styleClass="menuStyle">
+            <h:panelGrid columns="2" columnClasses="menuStyle, menuLogStyle">
                 <ace:menu type="plain">
                     <ace:submenu label="Actions">
                         <ace:menuItem value="Basic Action" 
@@ -61,15 +61,16 @@
                         </ace:menuItem>
                     </ace:submenu>                
                 </ace:menu>
+                
+                <ace:panel>
+                    <h:panelGrid>
+                        <h:outputText id="message" value="Current Status: #{menuEvents.message}"/>
+                        <h:outputText id="color"
+                                      value="Color: #{menuEvents.currentColor}"
+                                      style="color: #{menuEvents.currentColor};"/>
+                    </h:panelGrid>
+                </ace:panel>            
             </h:panelGrid>
-            
-            <ace:panel styleClass="menuLogStyle">
-                <h:panelGrid>
-                    <h:outputText id="message" value="Current Status: #{menuEvents.message}"/>
-                    <h:outputText id="color" value="Color: #{menuEvents.currentColor}"
-                          style="color: #{menuEvents.currentColor};"/>
-                </h:panelGrid>
-            </ace:panel>            
         </h:form>
     </ui:define>
 </ui:composition>

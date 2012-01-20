@@ -34,23 +34,23 @@
 
     <ui:define name="example">
         <h:form>
-            
-            <h:panelGrid  styleClass="menuStyle">
-                <ace:panel>
-                    <h:panelGrid styleClass="centeredPanelGrid" columns="2">
-                        <h:outputLabel value="Layout: " for="layout"/>
-                        <h:selectOneMenu id="layout"
-                                         value="#{menuType.type}"
-                                         valueChangeListener="#{menuType.changeMenuType}">
-                            <f:selectItems value="#{menuType.availableTypes}" var="type"
-                                                       itemValue="#{type.value}"
-                                                       itemLabel="#{type.key}"/>
-                            <f:ajax execute="@this" render="@form" event="change"/>
-                        </h:selectOneMenu>
-                    </h:panelGrid>
-                </ace:panel>
-                <ace:menu id="exampleMenu" type="#{menuType.type}" >
-                    <ace:submenu label="File" id="file">
+            <h:panelGrid columns="2" columnClasses="menuStyle, menuLogStyle">
+                <h:panelGrid>
+                    <ace:panel>
+                        <h:panelGrid styleClass="centeredPanelGrid" columns="2">
+                            <h:outputLabel value="Layout: " for="layout"/>
+                            <h:selectOneMenu id="layout"
+                                             value="#{menuType.type}"
+                                             valueChangeListener="#{menuType.changeMenuType}">
+                                <f:selectItems value="#{menuType.availableTypes}" var="type"
+                                                           itemValue="#{type.value}"
+                                                           itemLabel="#{type.key}"/>
+                                <f:ajax execute="@this" render="@form" event="change"/>
+                            </h:selectOneMenu>
+                        </h:panelGrid>
+                    </ace:panel>
+                    <ace:menu id="exampleMenu" type="#{menuType.type}" >
+                        <ace:submenu label="File" id="file">
                             <ace:menuItem id="new"
                                           value="New" 
                                           actionListener="#{menuType.fireAction}"
@@ -98,15 +98,16 @@
                             </ace:menuItem>
                         </ace:submenu>
                     </ace:menu>
-            </h:panelGrid>
-            
-            <ace:panel  header="Menu Selections Log" styleClass="menuLogStyle">
+                </h:panelGrid>
+                
+                <ace:panel  header="Menu Selections Log">
                     <h:dataTable id="message" value="#{menuType.list}" var="message">
                         <h:column>
                             <h:outputText value="#{message}"/>
                         </h:column>
                     </h:dataTable>
-           </ace:panel>
+                </ace:panel>
+            </h:panelGrid>
         </h:form>
     </ui:define>
 </ui:composition>

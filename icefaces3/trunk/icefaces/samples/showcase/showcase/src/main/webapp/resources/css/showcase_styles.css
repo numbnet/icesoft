@@ -119,18 +119,14 @@
 
 .menuLogStyle
 {
-    display: inline-block;
     vertical-align: top;
     width: 70%;
     text-align: left;
 }
 .menuStyle
 {
-    display: inline-block;
     width: 27%;
 }
-
-
 
 .infoMessage
 {
