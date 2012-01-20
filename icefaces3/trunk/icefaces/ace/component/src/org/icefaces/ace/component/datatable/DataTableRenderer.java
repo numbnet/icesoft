@@ -407,16 +407,17 @@ public class DataTableRenderer extends CoreRenderer {
             if (column.isConfigurable()) {
                 boolean disableVisibilityControl = (firstCol && i == 0) || ((lastCol && i == columns.size() - 1));
 
-                if (visibility && !disableVisibilityControl) decodeColumnVisibility(params, column, i, panel.getClientId());
-                if (sizing) decodeColumnSizing(params, column, i, clientId);
-                if (name) decodeColumnName(params, column, i, clientId);
+                String panelId = panel.getClientId();
+                if (visibility && !disableVisibilityControl) decodeColumnVisibility(params, column, i, panelId);
+                if (sizing) decodeColumnSizing(params, column, i, panelId);
+                if (name) decodeColumnName(params, column, i, panelId);
             }
         }
 
         if (ordering) decodeColumnOrdering(params, table, clientId);
         if (sorting) {
             decodeSortRequest(context, table, clientId,
-                    processConfigPanelSortKeys(clientId, params, table));
+                processConfigPanelSortKeys(clientId, params, table));
         }
     }
 
