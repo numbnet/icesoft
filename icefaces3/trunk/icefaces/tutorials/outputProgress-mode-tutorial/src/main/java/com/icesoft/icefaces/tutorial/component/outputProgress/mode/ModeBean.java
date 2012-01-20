@@ -144,7 +144,7 @@ public class ModeBean
      */
     public String startProgress() {
     	PushRenderer.addCurrentSession(PUSH_GROUP);   
-   		renderer = PushRenderer.getPortableRenderer(FacesContext.getCurrentInstance());
+   		renderer = PushRenderer.getPortableRenderer();
 		start();
         
         return "startProgress";
