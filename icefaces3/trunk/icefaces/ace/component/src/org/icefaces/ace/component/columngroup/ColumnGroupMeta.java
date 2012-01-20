@@ -28,7 +28,8 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
     extendsClass = "javax.faces.component.UIComponentBase",
     componentType = "org.icefaces.ace.component.ColumnGroup",
     componentFamily = "org.icefaces.ace.ColumnGroup",
-    tlddoc = "A grouping of column and row components to furnish table segments specified by the 'type' attribute."
+    tlddoc = "<p>A grouping of column and row components to furnish table segments specified by the 'type' attribute.</p>" +
+             "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/ColumnGroup\">ColumnGroup Wiki Documentation</a>.</p>"
 )
 public class ColumnGroupMeta extends UIComponentBaseMeta {
     @Property(tlddoc= "Defines which segment of the table this component and its child columns will be used to render. Valid values are 'header' and 'footer'.")

@@ -26,6 +26,7 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
         extendsClass = "javax.faces.component.UIComponentBase",
         componentType = "org.icefaces.ace.component.Row",
         componentFamily = "org.icefaces.ace.Row",
-        tlddoc = ""
+        tlddoc = "<p>Renders a set of ace:column components as one row of the header or footer segment of an ace:dataTable via an ace:columnGroup.</p>" +
+                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Row\">Row Wiki Documentation</a>.</p>"
 )
 public class RowMeta extends UIComponentBaseMeta {}

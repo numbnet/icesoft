@@ -28,7 +28,8 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
         componentType = "org.icefaces.ace.component.CellEditor",
         rendererType = "org.icefaces.ace.component.CellEditorRenderer",
         componentFamily = "org.icefaces.ace.CellEditor",
-        tlddoc = ""
+        tlddoc = "<p>Renders a hidden input and visible display facet to be toggled between and submitted via the ace:rowEditor.</p>" +
+                 "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/CellEditor\">CellEditor Wiki Documentation</a>.</p>"
 )
 public class CellEditorMeta  extends UIComponentBaseMeta {
 }
