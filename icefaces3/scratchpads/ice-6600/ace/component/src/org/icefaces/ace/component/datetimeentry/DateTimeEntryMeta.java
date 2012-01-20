@@ -1,0 +1,162 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+package org.icefaces.ace.component.datetimeentry;
+
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.baseMeta.UIInputMeta;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
+
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+
+@Component(
+        tagName = "dateTimeEntry",
+        componentClass = "org.icefaces.ace.component.datetimeentry.DateTimeEntry",
+        generatedClass = "org.icefaces.ace.component.datetimeentry.DateTimeEntryBase",
+        extendsClass = "javax.faces.component.UIInput",
+        rendererClass = "org.icefaces.ace.component.datetimeentry.DateTimeEntryRenderer",
+        componentFamily = "org.icefaces.ace.component.DateTimeEntry",
+        componentType = "org.icefaces.ace.component.DateTimeEntry",
+        rendererType = "org.icefaces.ace.component.DateTimeEntryRenderer",
+        tlddoc = "The DateTime Entry is a component that allows the user to configure and input a date and/or time in various ways." +
+                 "<p>For more information, see the " +
+                "<a href=\"http://wiki.icefaces.org/display/ICE/DateTimeEntry\">DateTimeEntry Wiki Documentation</a>.")
+@ResourceDependencies({
+		@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
+        @ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
+        @ResourceDependency(library = "icefaces.ace", name = "util/ace-components.js")
+})
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="dateSelect", javadoc="Fired when a date is selected from the calendar (default event).", tlddoc="Fired when a date is selected from the calendar (default event).", defaultRender="@all", defaultExecute="@all")
+}, defaultEvent="dateSelect")
+public class DateTimeEntryMeta extends UIInputMeta {
+    @Property(tlddoc = "Name of the client side widget.")
+    private String widgetVar;
+
+    @Property(tlddoc = "Set a minimum selectable date. Date string or java.util.Date object. Default is no limit.")
+    private Object mindate;
+
+    @Property(tlddoc = "Set a maximum selectable date. Date string or java.util.Date object. Default is no limit.")
+    private Object maxdate;
+
+    @Property(defaultValue = "1", tlddoc = "Enables multiple page rendering.")
+    private int pages;
+
+    @Property(defaultValue = "false", tlddoc = "Whether to render the calendar inline or as a popup.")
+    private boolean renderAsPopup;
+
+    @Property(defaultValue = "MM/dd/yyyy", tlddoc = "DateFormat pattern for localization")
+    private String pattern;
+
+    @Property(tlddoc = "Locale to be used for labels and conversion. Locale string or java.util.Locale object. Default is locale of view root.")
+    private Object locale;
+
+    @Property(tlddoc = "Icon of the popup button.")
+    private String popupIcon;
+
+    @Property(tlddoc = "When enabled, popup icon is rendered without the button.")
+    private boolean popupIconOnly;
+
+    @Property(tlddoc = "Enables month/year navigator.")
+    private boolean navigator;
+
+    @Property(tlddoc = "String or a java.util.TimeZone instance to specify the timezone used for date " +
+            "conversion, defaults to TimeZone.getDefault()")
+    private Object timeZone;
+
+    @Property(tlddoc = "Makes input text of a popup calendar readonly.")
+    private boolean readOnlyInputText;
+
+    @Property(tlddoc = "Whether to show the panel containing today button and close button for popup. " +
+            "Default is false without time component and true with time component.")
+    private Boolean showButtonPanel;
+
+    @Property(tlddoc = "Name of the animation used to show/hide the calendar. Use \"show\", \"slideDown\", \"fadeIn\", any of the show/hide " +
+            "<a href=\"http://docs.jquery.com/UI/Effects\">jQuery UI effects</a>, or \"\" for no animation.", defaultValue = "show")
+    private String effect;
+
+    @Property(defaultValue = "normal", tlddoc = "Control the speed at which the calendar appears, it may be a time in milliseconds or a string representing one of the three predefined speeds (\"slow\", \"normal\", \"fast\").")
+    private String effectDuration;
+
+    @Property(defaultValue = "focus", tlddoc = "Client side event that displays the popup calendar.")
+    private String showOn;
+
+    @Property(tlddoc = "Displays the week number next to each week.")
+    private boolean showWeek;
+
+    @Property(tlddoc = "Displays days belonging to other months.")
+    private boolean showOtherMonths;
+
+    @Property(tlddoc = "Enables selection of days belonging to other months.")
+    private boolean selectOtherMonths;
+
+    @Property(tlddoc = "Control the range of years displayed in the year drop-down: either relative to today's year (-nn:+nn)," +
+            " relative to the currently selected year (c-nn:c+nn), absolute (nnnn:nnnn), or combinations of these formats (nnnn:-nn).",
+            defaultValue = "c-10:c+10")
+    private String yearRange;
+
+    @Property(tlddoc = "Specifies whether to display/input time only.", defaultValue = "false")
+    private boolean timeOnly;
+
+    @Property(defaultValue = "1", tlddoc = "Increment/decrement steps when hour slider is dragged.")
+    private int stepHour;
+
+    @Property(defaultValue = "1", tlddoc = "Increment/decrement steps when minute slider is dragged.")
+    private int stepMinute;
+
+    @Property(defaultValue = "1", tlddoc = "Increment/decrement steps when second slider is dragged.")
+    private int stepSecond;
+
+    @Property(defaultValue = "0", tlddoc = "Set the hour range.")
+    private int minHour;
+
+    @Property(defaultValue = "23", tlddoc = "Set the hour range.")
+    private int maxHour;
+
+    @Property(defaultValue = "0", tlddoc = "Set the minute range.")
+    private int minMinute;
+
+    @Property(defaultValue = "59", tlddoc = "Set the minute range.")
+    private int maxMinute;
+
+    @Property(defaultValue = "0", tlddoc = "Set the second range.")
+    private int minSecond;
+
+    @Property(defaultValue = "59", tlddoc = "Set the second range.")
+    private int maxSecond;
+
+    @Property(tlddoc = "style will be rendered on a root element of this component")
+    private String style;
+
+    @Property(tlddoc = "style class will be rendered on a root element of this component")
+    private String styleClass;
+
+    @Property(tlddoc = "If true then this date time entry will be disabled and can not be entered.", defaultValue = "false")
+    private boolean disabled;
+
+    @Property(tlddoc = "If true then this date time entry will be read-only and can not be entered.")
+    private boolean readonly;
+
+    @Property(tlddoc = "Set to true to disable hover styling to improve performance.", defaultValue = "false")
+    private boolean disableHoverStyling;
+
+    @Property(defaultValue = "0", tlddoc = "Zero-based offset indicating which month should be displayed in the leftmost position.")
+    private int leftMonthOffset;
+}
