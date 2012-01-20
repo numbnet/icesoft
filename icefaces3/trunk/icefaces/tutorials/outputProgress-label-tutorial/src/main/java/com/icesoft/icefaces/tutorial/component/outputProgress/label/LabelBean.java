@@ -78,7 +78,7 @@ public class LabelBean extends ProgressBar
      */
     public String startProgress() {
 		PushRenderer.addCurrentSession("all");   
-   		PortableRenderer renderer = PushRenderer.getPortableRenderer(FacesContext.getCurrentInstance());
+   		PortableRenderer renderer = PushRenderer.getPortableRenderer();
         start(renderer);
         
         return "startProgress";
