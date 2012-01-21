@@ -35,7 +35,7 @@ import java.util.List;
     componentType   = "org.icefaces.ace.component.TabSet",
     rendererType    = "org.icefaces.ace.component.TabSetRenderer",
     componentFamily = "org.icefaces.ace.TabSet",
-    tlddoc = "The TabSet component is a container for its TabPane children, " +
+    tlddoc = "<p>The TabSet component is a container for its TabPane children, " +
         "each of which may contain any arbitrary components. Only one " +
         "TabPane component is currently active, and its contents shown, " +
         "at any given time. The TabSet may operate in a server-side mode, " +
@@ -56,76 +56,110 @@ import java.util.List;
         "TabSet may use application configurable animations to accentuate " +
         "the transition from the previously selected TabPane to the newly " +
         "selected TabPane. The label portion of the TabPanes may be shown " +
-        "on the bottom, top, left, or right of the TabSet."
+        "on the bottom, top, left, or right of the TabSet.<p>For more " +
+        "information, see the <a href=\"http://wiki.icefaces.org/display/ICE/TabSet\">TabSet Wiki Documentation</a>."
 )
 @ResourceDependencies({
-    @ResourceDependency(name="util/combined.css",library="icefaces.ace"),
+    @ResourceDependency(library = "icefaces.ace", name = "util/combined.css"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-jquery.js"),
 	@ResourceDependency(library = "icefaces.ace", name = "util/ace-yui.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="clientSideTabChange", defaultExecute="@none", defaultRender="@none",
-            tlddoc="When the tabSet has clientSide=true, and a tab change occurs"),
-	@ClientEvent(name="serverSideTabChange", defaultExecute="@all", defaultRender="@all",
-            tlddoc="When the tabSet has clientSide=false, and a tab change occurs")
+    @ClientEvent(name="clientSideTabChange",
+        javadoc="Fired when the tabSet has clientSide=true, and a tab " +
+            "change occurs. Use onstart=\"return false;\" to limit " +
+            "javascript execution.",
+        tlddoc="Fired when the tabSet has clientSide=true, and a tab " +
+            "change occurs. Use onstart=\"return false;\" to limit " +
+            "javascript execution.",
+        defaultExecute="@none", defaultRender="@none"),
+    @ClientEvent(name="serverSideTabChange",
+        javadoc="Fired when the tabSet has clientSide=false, and a tab " +
+            "change occurs (default event).",
+        tlddoc="Fired when the tabSet has clientSide=false, and a tab " +
+            "change occurs (default event).",
+        defaultExecute="@all", defaultRender="@all")
 }, defaultEvent="serverSideTabChange")
 public class TabSetMeta extends UIComponentBaseMeta {
 
-    @Property(defaultValue="false", tlddoc="The default value of this " +
-            "attribute is false. If true then tab change event will happen " +
-            "in APPLY_REQUEST_VALUES phase and if the value of this " +
-            "attribute is false then event change will happen in " +
-            "INVOKE_APPLICATION phase")
+    @Property(tlddoc="If true (and/or cancelOnInvalid is false) then " +
+        "tabChangeListener will be invoked in APPLY_REQUEST_VALUES phase, " +
+        "otherwise INVOKE_APPLICATION phase.",
+        defaultValue="false")
     private boolean immediate;
 
-    @Property(defaultValue="0", tlddoc="This attribute represents index of " +
-            "the current selected tab")
+    @Property(tlddoc="The index of the current selected tab.",
+        defaultValue="0")
     private int selectedIndex;
 
-    @Property(defaultValue="top", tlddoc="This attribute represents " +
-            "orientation of tabs. Valid values are bottom, top, left and right")
+    @Property(tlddoc="Where the clickable TabPane labels are shown. " +
+        "Valid values are bottom, top, left and right.",
+        defaultValue="top")
     private String orientation;
 
-    @Property(defaultValue="false", tlddoc="This component supports both " +
-            "client and server side tab change modal. When this attribute " +
-            "is set to true, then contents of all tabs gets rendered on " +
-            "client and tabchange would also occur on client. If this " +
-            "attribute is set to false which is default then only current " +
-            "selected tab will get rendered to the client and tab change " +
-            "request will goto server to render requested tab, which allows " +
-            "to send dynamic contents back.")
+    @Property(tlddoc="This component supports both client and server side " +
+        "tab change models. When clientSide is true, then the contents of " +
+        "all TabPanes get rendered on the client and clientSideTabChange " +
+        "will fire when changing the selected TabPane. Otherwise, in " +
+        "server side mode, typically only the selected TabPane contents " +
+        "will get rendered to the client, depending on the TabPane cache " +
+        "property, and serverSideTabChange will fire or the form will be " +
+        "submitted, so that the tabChangeListener will be invoked, and the " +
+        "newly selected TabPane contents may be sent to the browser.",
+        defaultValue="false")
     private boolean clientSide;
 
-    @Property(defaultValue="true", tlddoc="This attribute comes into " +
-            "effect when there is a validation error. By default it is set " +
-            "to true, which means that if on a tab change there is a " +
-            "validation error, that error will be ignored and the tab will " +
-            "be changed successfully. And if this attribute is set to " +
-            "false, then on a validation error the tab will not be changed " +
-            "until the validation error is gone.")
+    @Property(tlddoc="<p>Controls how input component validation affects " +
+        "changing the selected TabPane. When false, then irrespective of " +
+        "immediate, selectedIndex will be set and tabChangeListener will be " +
+        "invoked in APPLY_REQUEST_VALUES phase. PROCESS_VALIDATIONS phase " +
+        "will still execute and create any FacesMessage(s), but won't " +
+        "interfere with the changing TabPane selection. " +
+        "<p>Otherwise, when true, then it depends on immediate. When " +
+        "immediate is true, selectedIndex will be set and tabChangeListener " +
+        "will be invoked in APPLY_REQUEST_VALUES phase, but " +
+        "PROCESS_VALIDATIONS phase will not execute, so no FacesMessage(s) " +
+        "can be created. When immediate is false, then selectedIndex will " +
+        "be set in UPDATE_MODEL and tabChangeListener will be invoked in " +
+        "INVOKE_APPLICATION, and so any validation error in " +
+        "PROCESS_VALIDATIONS will stop the changing of the selected TabPane.",
+        defaultValue="true")
     private boolean cancelOnInvalid;
 
-    @Property (tlddoc="style class will be rendered on a root element of " +
-            "this component")
+    @Property(tlddoc="Custom CSS style class(es) to use for this " +
+        "component. These style classes can be defined in your page or in " +
+        "a theme CSS file.")
     private String styleClass;
 
-    @Property (tlddoc="style will be rendered on a root element of this component")
+    @Property(tlddoc="Custom inline CSS styles to use for this component. " +
+        "These styles are generally applied to the root DOM element of the " +
+        "component. This is intended for per-component basic style " +
+        "customizations. Note that due to browser CSS precedence rules, CSS " +
+        "rendered on a DOM element will take precedence over the external " +
+        "stylesheets used to provide the ThemeRoller theme on this " +
+        "component. If the CSS properties applied with this attribute do " +
+        "not affect the DOM element you want to style, you may need to " +
+        "create a custom theme styleClass for the theme CSS class that " +
+        "targets the particular DOM elements you wish to customize.")
     private String style;
 
-    @Property(expression= Expression.METHOD_EXPRESSION,
-            methodExpressionArgument="javax.faces.event.ValueChangeEvent",
-            tlddoc="on tabchange value change event can be captured using this listener")
+    @Property(tlddoc="MethodExpression representing a method that will be " +
+        "invoked when the selected TabPane has changed. The expression " +
+        "must evaluate to a public method that takes a ValueChangeEvent " +
+        "parameter, with a return type of void.",
+        expression= Expression.METHOD_EXPRESSION,
+        methodExpressionArgument="javax.faces.event.ValueChangeEvent")
     private MethodExpression tabChangeListener;
 
     @Property(tlddoc = "If true then all tabs except the active one will " +
-            "be disabled and can not be selected.")
+        "be disabled and can not be selected.")
     private boolean disabled;
 
 	@Property(tlddoc="The effect when showing the contents of a tab after selecting it.")
 	private String showEffect;
 
-	@Property(tlddoc="The duration of the show effect in milliseconds. The " +
-            "default value varies depending on the effect.")
+    @Property(tlddoc="The duration of the show effect in milliseconds. The " +
+        "default value varies depending on the effect.")
 	private int showEffectLength;
 
 
@@ -133,18 +167,8 @@ public class TabSetMeta extends UIComponentBaseMeta {
     private List visitedTabClientIds;
 
     @Field(javadoc="This retains the selectedIndex from the beginning of " +
-            "the lifecycle, so that when in server mode, only this tabPane's " +
-            "contents will execute.")
+        "the lifecycle, so that when in server mode, only this tabPane's " +
+        "contents will execute.")
     private Integer preDecodeSelectedIndex;
-
-    @Facets
-    class FacetsMeta{
-        @Facet
-        UIComponent header;
-        @Facet
-        UIComponent body;
-        @Facet
-        UIComponent footer;
-    }
 
 }
