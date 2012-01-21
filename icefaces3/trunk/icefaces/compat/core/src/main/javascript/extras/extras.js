@@ -2280,9 +2280,11 @@ Autocompleter.Base.prototype = {
         this.element.setAttribute('autocomplete', 'off');
         Element.hide(this.update);
         Event.observe(this.element, "blur", this.onBlur.bindAsEventListener(this));
-        Event.observe(this.element, "keypress", this.onKeyPress.bindAsEventListener(this));
-        if (Prototype.Browser.IE || Prototype.Browser.WebKit)
-            Event.observe(this.element, "keydown", this.onKeyDown.bindAsEventListener(this));
+        var keyEvent = "keypress";
+        if (Prototype.Browser.IE ||  Prototype.Browser.WebKit ) {
+        	keyEvent = "keyup";	
+        }
+        Event.observe(this.element, keyEvent, this.onKeyPress.bindAsEventListener(this));
         // ICE-3830
         if (Prototype.Browser.IE || Prototype.Browser.WebKit)
             Event.observe(this.element, "paste", this.onPaste.bindAsEventListener(this));
@@ -2371,24 +2373,17 @@ Autocompleter.Base.prototype = {
                 case Event.KEY_RIGHT:
                     return;
                 case Event.KEY_UP:
-                    //ICE-4549 (the KEY_UP and KEY_DOWN would be handled by the onkeydown event for IE and WebKit)
-                    if (!(Prototype.Browser.IE || Prototype.Browser.WebKit)) {
-                        this.markPrevious();
-                        this.render();
-                        //if(navigator.appVersion.indexOf('AppleWebKit')>0)
-                        Event.stop(event);
-                        return;
-                    }
+					this.markPrevious();
+					this.render();
+					//if(navigator.appVersion.indexOf('AppleWebKit')>0)
+					Event.stop(event);
+					return;
                 case Event.KEY_DOWN:
-                    //ICE-4549 
-                    if (!(Prototype.Browser.IE || Prototype.Browser.WebKit)) {
                         this.markNext();
                         this.render();
                         //if(navigator.appVersion.indexOf('AppleWebKit')>0)
                         Event.stop(event);
                         return;
-                    }
-
             }
         }
         else {
