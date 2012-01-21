@@ -112,8 +112,12 @@ public class FacesMessagesPhaseListener implements PhaseListener {
             (Map<String, List<FacesMessage>>)
                 facesContext.getViewRoot().getAttributes().remove(SAVED_COMPONENT_FACES_MESSAGES_KEY);
         
+//System.out.println("restoreFacesMessages    isExecuteAll     : " + facesContext.getPartialViewContext().isExecuteAll());
+//System.out.println("restoreFacesMessages    isRenderAll      : " + facesContext.getPartialViewContext().isRenderAll());
+//System.out.println("restoreFacesMessages    isAjaxRequest    : " + facesContext.getPartialViewContext().isAjaxRequest());
+//System.out.println("restoreFacesMessages    isPartialRequest : " + facesContext.getPartialViewContext().isPartialRequest());
         if (globals != null && globals.size() > 0) {
-            if (!facesContext.getPartialViewContext().isExecuteAll()) {
+            if (!fullExecute(facesContext)) {
                 List<FacesMessage> newGlobals = facesContext.getMessageList(null);
                 for (FacesMessage fm : globals) {
                     //TODO Check that this actually eliminated redundant additions
@@ -137,7 +141,7 @@ public class FacesMessagesPhaseListener implements PhaseListener {
         
         if (components != null && components.size() > 0) {
             //TODO Handle the case where it is a full execute, but another form was submitted
-            if (facesContext.getPartialViewContext().isExecuteAll()) {
+            if (fullExecute(facesContext)) {
             } else {
                 /*
                 char sep = UINamingContainer.getSeparatorChar(facesContext);
@@ -192,7 +196,12 @@ public class FacesMessagesPhaseListener implements PhaseListener {
     public PhaseId getPhaseId() {
         return PhaseId.RENDER_RESPONSE;
     }
-    
+
+    private static boolean fullExecute(FacesContext facesContext) {
+        return !facesContext.getPartialViewContext().isPartialRequest() ||
+                facesContext.getPartialViewContext().isExecuteAll();
+    }
+
     private static boolean stringEquals(String s1, String s2) {
         if (s1 == s2) {
             return true;
