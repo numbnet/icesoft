@@ -29,10 +29,11 @@ import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
         extendsClass    = "javax.faces.component.UIPanel", 
         componentType   = "org.icefaces.ace.component.TabSetProxy",
         componentFamily = "org.icefaces.ace.component",
-        tlddoc = "The TabSetProxy component is used in conjunction with a " +
+        tlddoc = "<p>The TabSetProxy component is used in conjunction with a " +
             "server-side TabSet component that is not inside of a form. " +
             "The TabSetProxy will then instead be placed inside of a form, " +
-            "to handle the server communication on behalf of the TabSet.")
+            "to handle the server communication on behalf of the TabSet. <p>" +
+            "For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/TabSetProxy\">TabSetProxy Wiki Documentation</a>.")
 public class TabSetProxyMeta extends UIPanelMeta {
     @Property(tlddoc="clientId of the tabSet component", name="for", required=Required.yes)
     private String For;
