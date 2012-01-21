@@ -36,7 +36,7 @@ import org.icefaces.ace.meta.annotation.Property;
     componentType   = "org.icefaces.ace.component.FileEntry",
     rendererType    = "org.icefaces.ace.component.FileEntryRenderer",
     componentFamily = "org.icefaces.ace.FileEntry",
-    tlddoc = "The FileEntry component allows for uploading files to the " +
+    tlddoc = "<p>The FileEntry component allows for uploading files to the " +
         "server within a form submit POST. The actual POST is non-AJAX, " +
         "but leverages ICEfaces to return incremental page updates. " +
         "The upload occurs within as single JSF lifecycle, along with " +
@@ -51,48 +51,59 @@ import org.icefaces.ace.meta.annotation.Property;
         "the indicator will automatically switch to display the incremental" +
         "progress bar. The progress pushes are rate limited to be no more " +
         "frequent than once every 2 seconds, and are only sent at 1% " +
-        "progress increments.")
+        "progress increments. <p>For more information, see the " +
+        "<a href=\"http://wiki.icefaces.org/display/ICE/FileEntry\">FileEntry Wiki Documentation</a>.")
 @ResourceDependencies({
-	@ResourceDependency(library="icefaces.ace", name="util/combined.css"),
-@ResourceDependency(name="util/ace-components.js",library="icefaces.ace")
+    @ResourceDependency(library="icefaces.ace", name="util/combined.css"),
+    @ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
 })
 public class FileEntryMeta extends UIComponentBaseMeta {
-    /*
-    @Property(defaultValue="false")
-    private boolean singleSubmit;
-    */
 
-    @Property(defaultValue="false",
-        tlddoc="When disabled, files are not selectable for upload.")
+    @Property(tlddoc="Defines whether or not the component is disabled. " +
+        "When disabled='true', this component is unable to receive focus " +
+        "and cannot be interacted with by the user.",
+        defaultValue="false")
     private boolean disabled;
     
     @Property(tlddoc="tabindex of the component")
     private Integer tabindex;
     
-    @Property(tlddoc="style will be rendered on the root element of this " +
-        "component.")
+    @Property(tlddoc="Custom inline CSS styles to use for this component. " +
+        "These styles are generally applied to the root DOM element of the " +
+        "component. This is intended for per-component basic style " +
+        "customizations. Note that due to browser CSS precedence rules, CSS " +
+        "rendered on a DOM element will take precedence over the external " +
+        "stylesheets used to provide the ThemeRoller theme on this " +
+        "component. If the CSS properties applied with this attribute do " +
+        "not affect the DOM element you want to style, you may need to " +
+        "create a custom theme styleClass for the theme CSS class that " +
+        "targets the particular DOM elements you wish to customize.")
     private String style;
     
-    @Property(tlddoc="style class will be rendered on the root element of " +
-        "this component.")
+    @Property(tlddoc="Custom CSS style class(es) to use for this " +
+        "component. These style classes can be defined in your page or in " +
+        "a theme CSS file.")
     private String styleClass;
-    
-    @Property(defaultValue="false", tlddoc="When immediate is true, the " +
-        "fileEntryListener will be invoked at the end of the " +
-        "ApplyRequestValues phase. Otherwise, it will be invoked just " +
-        "before rendering, so that the application will receive the event, " +
-        "regardless of whether the form has passed validation or not.")
+
+    @Property(tlddoc="When true, the fileEntryListener will be invoked at " +
+        "the end of the APPLY_REQUEST_VALUES phase. Otherwise, it will be " +
+        "invoked just before rendering, so that the application will " +
+        "receive the event, regardless of whether the form has passed " +
+        "validation or not.",
+        defaultValue="false")
     private boolean immediate;
 
-    @Property(tlddoc="A MethodExpression, which evaluates to a method in a " +
-    	"bean, which takes an FileEntryEvent as a parameter. Invoked after " +
-    	"file(s) have been uploaded, during a lifecycle phase that is " +
-    	"determined by the immediate property. It can be used to retrieve the " +
-    	"FileEntryResults object from the results property of the FileEntry " +
-    	"component, giving access to the status information of the " +
-    	"successfully, and unsuccessfully, uploaded files.",
-    	expression=Expression.METHOD_EXPRESSION, methodExpressionArgument=
-        "org.icefaces.ace.component.fileentry.FileEntryEvent")
+    @Property(tlddoc="MethodExpression, which must evaluate to a public " +
+        "method that takes an FileEntryEvent as a parameter, with a return " +
+        "type of void. Invoked after file(s) have been uploaded, during " +
+        "a lifecycle phase that is determined by the immediate property. " +
+        "It can be used to retrieve the FileEntryResults object from the " +
+        "results property of the FileEntry component, giving access to the " +
+        "status information of the successfully, and unsuccessfully, " +
+        "uploaded files.",
+        expression=Expression.METHOD_EXPRESSION,
+        methodExpressionArgument=
+            "org.icefaces.ace.component.fileentry.FileEntryEvent")
     private MethodExpression fileEntryListener;
 
 
@@ -109,30 +120,30 @@ public class FileEntryMeta extends UIComponentBaseMeta {
     	"root directory.")
     private String relativePath;
 
-    @Property(defaultValue="true", tlddoc="When constructing the path in " +
-        "which to save the files, whether it be in the directory specified " +
-        "by the absolutePath property, or inside of the web application " +
-    	"deployment root directory, or inside a sub-directory of that, as " +
-    	"specified by the relativePath property, when useSessionSubdir is " +
-    	"true, then an additional sub-directory, will be used, that is the " +
-    	"session id, to separate file uploads from different sessions, from " +
-    	"each other.")
+    @Property(tlddoc="When constructing the path in which to save the " +
+        "files, whether it be in the directory specified by the " +
+        "absolutePath property, or inside of the web application deployment " +
+        "root directory, or inside a sub-directory of that, as specified by " +
+        "the relativePath property, when useSessionSubdir is true, then an " +
+        "additional sub-directory, will be used, that is the session id, to " +
+        "separate file uploads from different sessions, from each other.",
+        defaultValue="true")
     private boolean useSessionSubdir;
 
-    @Property(defaultValue="false", tlddoc="Uploaded files' names, as they " +
-        "were on the user's file-system, are always provided to the " +
-        "application, via the FileEntryResults.FileInfo.fileName property. " +
-        "By default, the fileEntry component will store the " +
-        "uploaded files on the server's file-system using a unique naming " +
-        "convention, to ensure that new files do not over-write older files, " +
-        "and that the names do not create security issues. The application " +
-        "may then implement its own policy of maintaining old files or " +
-        "over-writing them, as well as vetting file names based on any " +
-        "particular rules specific to their deployment operating system. " +
-        "Alternatively, they application may simply set this property to " +
-        "true, so that uploaded files will be saved using the user's file " +
-        "name, which will cause any pre-existing file using that name to be " +
-        "over-written.")
+    @Property(tlddoc="Uploaded files' names, as they were on the user's " +
+        "file-system, are always provided to the application, via the " +
+        "FileEntryResults.FileInfo.fileName property. By default, the " +
+        "fileEntry component will store the uploaded files on the server's " +
+        "file-system using a unique naming convention, to ensure that new " +
+        "files do not over-write older files, and that the names do not " +
+        "create security issues. The application may then implement its own " +
+        "policy of maintaining old files or over-writing them, as well as " +
+        "vetting file names based on any particular rules specific to their " +
+        "deployment operating system. Alternatively, they application may " +
+        "simply set this property to true, so that uploaded files will be " +
+        "saved using the user's file name, which will cause any " +
+        "pre-existing file using that name to be over-written.",
+        defaultValue="false")
     private boolean useOriginalFilename;
 
     @Property(tlddoc="Maintains the results of the most recent file upload " +
@@ -159,31 +170,31 @@ public class FileEntryMeta extends UIComponentBaseMeta {
         implementation= Implementation.EXISTS_IN_SUPERCLASS)
     private FileEntryCallback callback;
 
-    @Property(defaultValue="Long.MAX_VALUE", tlddoc="The maximum amount of " +
-        "bytes allowed, in total, for all of the files uploaded, together. " +
-        "If, for example, three files are uploaded, and the second one " +
-        "exceeds maxTotalSize, then the second and third files will be " +
-        "discarded.")
+    @Property(tlddoc="The maximum amount of bytes allowed, in total, for " +
+        "all of the files uploaded, together. If, for example, three files " +
+        "are uploaded, and the second one exceeds maxTotalSize, then the " +
+        "second and third files will be discarded.",
+        defaultValue="Long.MAX_VALUE")
     private long maxTotalSize;
 
-    @Property(defaultValue="Long.MAX_VALUE", tlddoc="The maximum amount of " +
-        "bytes allowed, that each individual file may have. If a file " +
-        "exceeds both maxFileSize and maxTotalSize, then maxFileSize will " +
-        "be the reported error. If a file size exceeds maxFileSize, it is " +
-        "completely discarded.")
+    @Property(tlddoc="The maximum amount of bytes allowed, that each " +
+        "individual file may have. If a file exceeds both maxFileSize and " +
+        "maxTotalSize, then maxFileSize will be the reported error. If a " +
+        "file size exceeds maxFileSize, it is completely discarded.",
+        defaultValue="Long.MAX_VALUE")
     private long maxFileSize;
 
-    @Property(defaultValue="10", tlddoc="The maximum number of files that " +
-        "may be uploaded, per form submit upload operation, by this one " +
-        "component. Any files uploaded, beyond this count, will be " +
-        "discarded. Any subsequent form submit which uploads files will " +
-        "restart the counting at zero.")
+    @Property(tlddoc="The maximum number of files that may be uploaded, per " +
+        "form submit upload operation, by this one component. Any files " +
+        "uploaded, beyond this count, will be discarded. Any subsequent " +
+        "form submit which uploads files will restart the counting at zero.",
+        defaultValue="10")
     private int maxFileCount;
 
-    @Property(defaultValue="false", tlddoc="Similar to required property on " +
-        "input components, when true, this states that at least one file " +
-        "must be selected, and uploaded, by this component, when the form " +
-        "is submitted.")
+    @Property(tlddoc="Similar to required property on input components, " +
+        "when true, this states that at least one file must be selected, " +
+        "and uploaded, by this component, when the form is submitted.",
+        defaultValue="false")
     private boolean required;
 
     //TODO
