@@ -33,9 +33,18 @@
 package com.icesoft.faces.component.ext;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.datapaginator.DataPaginator;
+import com.icesoft.faces.component.datapaginator.DataPaginatorGroup;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.panelseries.UISeries;
+import com.icesoft.faces.context.effects.Effect;
+import com.icesoft.faces.context.effects.EffectQueue;
+import com.icesoft.faces.context.effects.Highlight;
+import com.icesoft.faces.context.effects.JavascriptContext;
 
+import javax.el.ELContext;
+import javax.el.ELResolver;
+import javax.faces.application.Application;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
@@ -44,8 +53,10 @@ import javax.faces.el.ValueBinding;
 import javax.faces.event.PhaseId;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UnknownFormatConversionException;
 
 /**
  * This is an extension of javax.faces.component.html.HtmlDataTable, which
@@ -572,6 +583,108 @@ public class HtmlDataTable
     public void setResizableColumnWidths(String columnWidths) {
         resizableTblColumnsWidth = columnWidths.split(",");
         isResizableColumnWidthsSet = true;
+    }
+
+    public int findRow(String query, String[] fields, int startRow, String searchType, boolean caseSensitive) {
+        int savedRowIndex = getRowIndex();
+        FacesContext context = FacesContext.getCurrentInstance();
+        Application app = context.getApplication();
+        String rowVar = getVar();
+
+        if (!caseSensitive) query = query.toLowerCase();
+
+        setRowIndex(startRow);
+
+        try {
+            // Contains
+            if (searchType.equals("contains"))
+                while (isRowAvailable()) {
+                    for (int i = 0; i < fields.length; i++) {
+                        ValueBinding rowFieldBinding = app.createValueBinding("#{"+ rowVar +"."+ fields[i] +"}");
+                        String rowFieldString = rowFieldBinding.getValue(context).toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (rowFieldString.contains(query))
+                            return getRowIndex();
+                    }
+                    setRowIndex(getRowIndex()+1);
+                }
+
+            // Ends with
+            else if (searchType.equals("endsWith"))
+                while (isRowAvailable()) {
+                    for (int i = 0; i < fields.length; i++) {
+                        ValueBinding rowFieldBinding = app.createValueBinding("#{"+ rowVar +"."+ fields[i] +"}");
+                        String rowFieldString = rowFieldBinding.getValue(context).toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (rowFieldString.endsWith(query))
+                            return getRowIndex();
+                    }
+                    setRowIndex(getRowIndex()+1);
+                }
+
+            // Starts with
+            else if (searchType.equals("startsWith"))
+                while (isRowAvailable()) {
+                    for (int i = 0; i < fields.length; i++) {
+                        ValueBinding rowFieldBinding = app.createValueBinding("#{"+ rowVar +"."+ fields[i] +"}");
+                        String rowFieldString = rowFieldBinding.getValue(context).toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (rowFieldString.startsWith(query))
+                            return getRowIndex();
+                    }
+                    setRowIndex(getRowIndex()+1);
+                }
+
+            // Exact
+            else if (searchType.equals("exact"))
+                while (isRowAvailable()) {
+                    for (int i = 0; i < fields.length; i++) {
+                        ValueBinding rowFieldBinding = app.createValueBinding("#{"+ rowVar +"."+ fields[i] +"}");
+                        String rowFieldString = rowFieldBinding.getValue(context).toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (rowFieldString.equals(query))
+                            return getRowIndex();
+                    }
+                    setRowIndex(getRowIndex()+1);
+                }
+
+            // Falls through if not found, or searchType is invalid.
+            return -1;
+        } finally {
+            setRowIndex(savedRowIndex);
+        }
+    }
+
+    public int findRow(String query, String[] fields, int startRow, String searchType) {
+        return findRow(query, fields, startRow, searchType, true);
+    }
+
+    public int findRow(String query, String[] fields, int startRow) {
+        return findRow(query, fields, startRow, "contains", true);
+    }
+
+    public void navigateToRow(int row, Effect effect) {
+        if (row >= getRowCount())
+            throw new IndexOutOfBoundsException();
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        String id = getClientId(context) + ":" + row;
+
+        int rowsPerPage = getRows();
+        final int page = row / rowsPerPage;
+
+        if (scrollable != null && scrollable.booleanValue()) {
+        
+        } else {
+            setFirst(page * rowsPerPage);
+        }
+
+        if (effect != null)
+            JavascriptContext.fireEffect(effect, id, context);
+    }
+
+    public void navigateToRow(int row) {
+        navigateToRow(row, new Highlight("#fda505"));
     }
 }
    
