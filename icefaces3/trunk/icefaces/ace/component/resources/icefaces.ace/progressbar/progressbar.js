@@ -152,5 +152,6 @@ ice.ace.ProgressBar.prototype.cancel = function() {
     if (jQuery.isFunction(cancelListener)) {
         options.params[this.id] = this.id; // also triggers listener, if any
         cancelListener(options.params);
+        this.setValue(0);
     } else ice.ace.AjaxRequest(options);
 }
