@@ -262,6 +262,7 @@ ice.ace.InputMask = function(id, cfg) {
     if (this.cfg.mask) // only add functionality if mask was provided, otherwise degrade to simple text input
 	this.jq.mask(this.cfg.mask, this.cfg);
 
+    this.jq.change(function() { setFocus(''); });
     //Client behaviors
     if(this.cfg.behaviors) {
         ice.ace.attachBehaviors(this.jq, this.cfg.behaviors);
