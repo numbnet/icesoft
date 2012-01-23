@@ -77,7 +77,7 @@ public class FileEntryValidationOptionsBean extends ComponentExampleImpl<FileEnt
     }
 
     public String getMaxFileSizeMessage() {
-        return "File size can not exeed "+(maxFileSize/102400)*100+" KB";
+        return "File size cannot exceed "+(maxFileSize/102400)*100+" KB";
     }
 
     public FileEntryValidationOptionsBean() {
