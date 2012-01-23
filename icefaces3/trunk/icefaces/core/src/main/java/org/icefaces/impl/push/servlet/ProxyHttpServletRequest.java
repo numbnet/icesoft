@@ -77,8 +77,7 @@ public class ProxyHttpServletRequest implements HttpServletRequest {
     }
 
     public  boolean isAsyncSupported(){
-        log.severe("ProxyHttpServletRequest unsupported operation");
-        if (true) throw new UnsupportedOperationException();
+        log.fine("Asynchronous servlet API not currently supported in portlets");
         return false;
     }
 
