@@ -671,13 +671,12 @@ public class HtmlDataTable
         String id = getClientId(context) + ":" + row;
 
         int rowsPerPage = getRows();
-        final int page = row / rowsPerPage;
-
-        if (scrollable != null && scrollable.booleanValue()) {
-        
-        } else {
+        if (rowsPerPage > 0) {
+            int page = row / rowsPerPage;
             setFirst(page * rowsPerPage);
         }
+
+        JavascriptContext.applicationFocus(context, id);
 
         if (effect != null)
             JavascriptContext.fireEffect(effect, id, context);
