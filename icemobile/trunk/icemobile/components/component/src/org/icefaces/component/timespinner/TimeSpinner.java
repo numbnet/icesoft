@@ -40,7 +40,8 @@ public class TimeSpinner extends TimeSpinnerBase {
     public static final String BUTTON_DEC_CLASS = "mobi-time-btn mobi-time-btn-decr";
 
     private Attribute[] commonAttributeNames = {
-            new Attribute("style", null)
+            new Attribute("style", null),
+            new Attribute("size", null)
     };
 
     private int hourInt;
