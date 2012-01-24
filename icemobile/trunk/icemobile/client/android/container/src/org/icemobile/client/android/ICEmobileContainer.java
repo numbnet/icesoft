@@ -179,7 +179,7 @@ public class ICEmobileContainer extends Activity
 	if (INCLUDE_CAMERA) includeCamera();
 	if (INCLUDE_AUDIO) includeAudio();
 	if (INCLUDE_VIDEO) includeVideo();
-	if (prefs.getBoolean("c2dm",false)) {
+	if (prefs.getBoolean("c2dm",true)) {
 	    includeC2dm();
 	}
 
@@ -335,7 +335,7 @@ public class ICEmobileContainer extends Activity
 	} else if (key.equals("gallery")) {
 	    setGallery(prefs.getBoolean(key,false));
 	} else if (key.equals("c2dm")) {
-	    if (prefs.getBoolean(key,false)) {
+	    if (prefs.getBoolean(key,true)) {
 		// Turn on C2DM
 		includeC2dm();
 	    } else {
@@ -359,7 +359,7 @@ public class ICEmobileContainer extends Activity
     }
 
     protected void setCloudNotificationId() {
-	Log.e("ICEmobile", "Setting cloud push: " + getCloudNotificationId());
+	//Log.e("ICEmobile", "Setting cloud push: " + getCloudNotificationId());
 	utilInterface.loadURL("javascript:ice.push.parkInactivePushIds('" + 
 			      getCloudNotificationId() + "');");
     }
