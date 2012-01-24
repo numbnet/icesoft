@@ -47,6 +47,7 @@ public class EnvUtils {
     public static String COMPRESS_DOM = "org.icefaces.compressDOM";
     public static String COMPRESS_RESOURCES = "org.icefaces.compressResources";
     public static String DELTA_SUBMT = "org.icefaces.deltaSubmit";
+    public static String DIFF_CONFIG = "org.icefaces.diffConfig";
     public static String LAZY_PUSH = "org.icefaces.lazyPush";
     public static String STANDARD_FORM_SERIALIZATION = "org.icefaces.standardFormSerialization";
     public static String STRICT_SESSION_TIMEOUT = "org.icefaces.strictSessionTimeout";
@@ -244,6 +245,16 @@ public class EnvUtils {
      */
     public static String getConnectionLostRedirectURI(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).connectionLostRedirectURI;
+    }
+
+    /**
+     * Returns the value for org.icefaces.diffConfig. This is configured 
+     * as a space separated name=value string.
+     * @param facesContext The current FacesContext instance used to access the application map.
+     * @return Returns the current setting of org.icefaces.diffConfig.  The default is null.
+     */
+    public static String getDiffConfig(FacesContext facesContext) {
+        return EnvConfig.getEnvConfig(facesContext).diffConfig;
     }
 
     /**
@@ -615,6 +626,7 @@ class EnvConfig {
     boolean compressDOM;
     boolean compressResources;
     String connectionLostRedirectURI;
+    String diffConfig;
     boolean deltaSubmit;
     boolean lazyPush;
     boolean pushActive;
@@ -644,6 +656,7 @@ class EnvConfig {
         compressDOM = decodeBoolean(initMap, EnvUtils.COMPRESS_DOM, false, info);
         compressResources = decodeBoolean(initMap, EnvUtils.COMPRESS_RESOURCES, true, info);
         connectionLostRedirectURI = decodeString(initMap, EnvUtils.CONNECTION_LOST_REDIRECT_URI, null, info);
+        diffConfig = decodeString(initMap, EnvUtils.DIFF_CONFIG, null, info);
         deltaSubmit = decodeBoolean(initMap, EnvUtils.DELTA_SUBMT, false, info);
         lazyPush = decodeBoolean(initMap, EnvUtils.LAZY_PUSH, true, info);
         sessionExpiredRedirectURI = decodeString(initMap, EnvUtils.SESSION_EXPIRED_REDIRECT_URI, null, info);
