@@ -322,7 +322,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", "mobi-button mobi-button-default", null);
         writer.writeAttribute ("type", "button", "type");
         writer.writeAttribute("value", "Cancel", null);
-        writer.writeAttribute(eventStr, "mobi.datespinner.close('"+clientId+"_bg');", null);
+        writer.writeAttribute(eventStr, "mobi.datespinner.close('"+clientId+"');", null);
         writer.endElement("input");
         writer.endElement("div");                                        //end of button container
 
