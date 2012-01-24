@@ -5,6 +5,10 @@ mobi.datespinner = {
       pattern: {}, //supported formats are dd/MM/yyyy, MM-dd-yyyy, dd-MM-yyyy, yyyy-MM-dd, yyyy-dd-MM
       opened: {},
 	  init: function(clientId, yrSel, mSel, dSel, format ){
+          var idPanel = clientId+"_bg";
+          if (!document.getElementById(idPanel).className ){
+             document.getElementById(idPanel).className = 'mobi-date-bg-inv';
+          }
           var intDt = parseInt(dSel);
           var intMth = parseInt(mSel);
           var intYr= parseInt(yrSel);
@@ -226,12 +230,12 @@ mobi.datespinner = {
             this.opened[clientId]= true;
         },
         close: function(clientId){
-            document.getElementById(clientId+"_bg").className = "mobi-date";
+            var idPanel = clientId+"_bg" ;
+            document.getElementById(idPanel).className = "mobi-date";
             document.getElementById(clientId+"_popup").className = "mobi-date-container-hide";
             this.opened[clientId]= false;
         },
         unload: function(clientId){
-            alert("unloading for clientId");
            /* var titleEl = document.getElementById(clientId+'_title');
             titleEl.innerHTML = "";  */
             this.pattern[clientId] = null;

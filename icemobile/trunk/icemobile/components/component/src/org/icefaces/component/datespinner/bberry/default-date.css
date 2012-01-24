@@ -47,6 +47,10 @@
     display:none;
 }
 
+.mobi-date-bg-inv {
+    display:none;
+}
+
 .mobi-date-container {
     opacity: 1;
     background-color: #ccc;
