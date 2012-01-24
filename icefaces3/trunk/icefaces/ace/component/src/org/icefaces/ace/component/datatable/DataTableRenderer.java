@@ -1071,9 +1071,11 @@ public class DataTableRenderer extends CoreRenderer {
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_row_" + parentIndex + rowIndex, null);
             writer.writeAttribute(HTML.CLASS_ATTR, rowStyleClass + " " + expandedClass + " " + unselectableClass, null);
 
+            boolean innerTdDivRequired = (table.isScrollable() || table.isResizableColumns()) & topRow;
+
             for (Column kid : columns) {
                 if (kid.isRendered()) {
-                    encodeRegularCell(context, table, columns, kid, clientId, selected, topRow & table.isScrollable());
+                    encodeRegularCell(context, table, columns, kid, clientId, selected, innerTdDivRequired);
                 }
             }
 
