@@ -43,6 +43,8 @@ public class TimeSpinnerMeta extends UIInputMeta {
     @Property(defaultValue = "hh:mm a", tlddoc = "TimeFormat pattern for localization")
     private String pattern;
 
+    @Property(defaultValue = "15", tlddoc="width of the input text field in characters, where the value of the date will reside")
+    private String size;
 
     @Property(tlddoc = "Locale to be used for labels and conversion.")
     private Object locale;
