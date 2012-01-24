@@ -36,6 +36,11 @@
     z-index: 1000;
     opacity: 0.5;
 }
+
+.mobi-date-bg-inv {
+    display:none;
+}
+
 .mobi-date {
     opacity:1;
 }

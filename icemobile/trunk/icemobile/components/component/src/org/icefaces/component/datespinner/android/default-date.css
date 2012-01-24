@@ -42,6 +42,10 @@
     opacity:1;
 }
 
+.mobi-date-bg-inv {
+    display:none;
+}
+
 .mobi-date-container-hide{
     opacity:0;
     display:none;

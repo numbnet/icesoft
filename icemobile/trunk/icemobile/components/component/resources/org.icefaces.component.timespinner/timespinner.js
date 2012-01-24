@@ -5,6 +5,10 @@ mobi.timespinner = {
       pattern: {}, //only supports 'hh:mm a' at this time.
       opened: {},
 	  init: function(clientId, hrSel, mSel, aSel, format ){
+          var idPanel = clientId+"_bg";
+          if (!document.getElementById(idPanel).className ){
+             document.getElementById(idPanel).className = 'mobi-date-bg-inv';
+          }
           var intAmPm = parseInt(aSel);
           var intMinute = parseInt(mSel);
           var intHr= parseInt(hrSel);
