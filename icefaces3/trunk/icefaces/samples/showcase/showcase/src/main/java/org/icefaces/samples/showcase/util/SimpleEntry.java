@@ -36,8 +36,7 @@ import java.util.Map;
  * @see Collection
  * @since 1.2
  */
-public class SimpleEntry<K,V>
-        implements Map.Entry<K,V>, java.io.Serializable
+public class SimpleEntry<K,V> implements Map.Entry<K,V>, java.io.Serializable
 {
     private static final long serialVersionUID = -8499721149061103585L;
 

@@ -18,9 +18,6 @@ package org.icefaces.samples.showcase.metadata.context;
 
 import java.util.ArrayList;
 
-/**
- *
- */
 public interface ExampleResources {
 
     public ArrayList<ExampleResource> getJavaResources();

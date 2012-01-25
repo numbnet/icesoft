@@ -17,7 +17,6 @@
 package org.icefaces.samples.showcase.view.navigation;
 
 import org.icefaces.samples.showcase.example.ace.slider.SliderBean;
-import org.icefaces.samples.showcase.example.ace.tab.TabClientSideBean;
 import org.icefaces.samples.showcase.metadata.annotation.Menu;
 import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 

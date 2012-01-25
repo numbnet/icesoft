@@ -20,9 +20,6 @@ import java.io.Serializable;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
@@ -72,18 +69,18 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class RichTextBean extends ComponentExampleImpl<RichTextBean> implements Serializable {
 	
-	public static final String BEAN_NAME = "richtext";
-	private static final String DEFAULT_HEIGHT = "300";
-	
-	private String text;
-	
-	public RichTextBean() {
-		super(RichTextBean.class);
-	}
-	
-	public String getDefaultHeight() { return DEFAULT_HEIGHT; }
-	
-	public String getText() { return text; }
-	
-	public void setText(String text) { this.text = text; }
+    public static final String BEAN_NAME = "richtext";
+    private static final String DEFAULT_HEIGHT = "300";
+
+    private String text;
+
+    public RichTextBean() {
+            super(RichTextBean.class);
+    }
+
+    public String getDefaultHeight() { return DEFAULT_HEIGHT; }
+
+    public String getText() { return text; }
+
+    public void setText(String text) { this.text = text; }
 }
