@@ -20,7 +20,6 @@ package org.icefaces.component.video;
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
 import org.icefaces.impl.application.AuxUploadResourceHandler;
-import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.renderkit.BaseInputResourceRenderer;
 
@@ -29,7 +28,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ValueChangeEvent;
 
-import java.net.URLEncoder;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
@@ -149,16 +147,7 @@ public class VideoCaptureRenderer extends BaseInputResourceRenderer {
 
         String script;
         if (isAuxUpload)  {
-            AuxUploadSetup auxUpload = AuxUploadSetup.getInstance();
-            
-            String sessionID = EnvUtils.getSafeSession(facesContext).getId();
-            String uploadURL = auxUpload.getUploadURL();
-            String command = "camcorder?id=" + clientId;
-            script = "window.location='icemobile://c=" +
-                    URLEncoder.encode(command) + 
-                    "&r='+escape(window.location)+'&" +
-                    "JSESSIONID=" + sessionID + "&u=" + 
-                    URLEncoder.encode(uploadURL) + "';";
+            script = Utils.getICEmobileSXScript("camcorder", clientId);
         } else {
             //default value of unset in params is Integer.MIN_VALUE
             String params = "'" + clientId + "'";

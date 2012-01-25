@@ -19,7 +19,6 @@ package org.icefaces.component.scan;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
-import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.util.EnvUtils;
 import org.icefaces.renderkit.BaseInputRenderer;
@@ -27,7 +26,6 @@ import org.icefaces.renderkit.BaseInputRenderer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.net.URLEncoder;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -94,16 +92,7 @@ public class ScanRenderer extends BaseInputRenderer {
         }
         String script;
         if (isAuxUpload)  {
-            AuxUploadSetup auxUpload = AuxUploadSetup.getInstance();
-            
-            String sessionID = EnvUtils.getSafeSession(facesContext).getId();
-            String uploadURL = auxUpload.getUploadURL();
-            String command = "scan?id=" + clientId;
-            script = "window.location='icemobile://c=" +
-                    URLEncoder.encode(command) + 
-                    "&r='+escape(window.location)+'&" +
-                    "JSESSIONID=" + sessionID + "&u=" + 
-                    URLEncoder.encode(uploadURL) + "';";
+            script = Utils.getICEmobileSXScript("scan", clientId);
         } else {
             script = "ice.scan('" + clientId + "');";
         }

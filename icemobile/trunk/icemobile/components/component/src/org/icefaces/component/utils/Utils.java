@@ -18,7 +18,9 @@ package org.icefaces.component.utils;
 
 import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.impl.util.DOMUtils;
+import org.icefaces.util.EnvUtils;
 import org.icemobile.component.impl.SessionContext;
+import org.icefaces.impl.application.AuxUploadSetup;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -33,6 +35,7 @@ import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -471,4 +474,28 @@ public class Utils {
         return builder.toString();
     }
 
+    /**
+     * Return a script suitable for launching ICEmobile-SX
+     * @param command ICEmobile-SX command
+     * @param id component id
+     * @return script to invoke ICEmobile-SX
+     */
+    public static String getICEmobileSXScript(String command, String id) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        AuxUploadSetup auxUpload = AuxUploadSetup.getInstance();
+        
+        String sessionID = EnvUtils.getSafeSession(facesContext).getId();
+        String uploadURL = auxUpload.getUploadURL();
+        String fullCommand = command + "?id=" + id;
+        String script = "window.location=('icemobile://c=" +
+            URLEncoder.encode(fullCommand) + 
+            "&r='+escape(window.location)+'&" +
+            "JSESSIONID=" + sessionID + "&u=" + 
+            URLEncoder.encode(uploadURL) + 
+            "').replace(/ /g,String.fromCharCode(37));";
+        //extra escaping step to guard URL encoded values from
+        //unescaping during ajax page update
+        script = script.replace("%"," ");
+        return script;
+    }
 }
