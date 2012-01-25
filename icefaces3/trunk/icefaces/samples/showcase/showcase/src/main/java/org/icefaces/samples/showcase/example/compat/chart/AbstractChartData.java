@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.chart;
 
 import com.icesoft.faces.component.outputchart.OutputChart;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -34,7 +35,7 @@ import java.util.ArrayList;
  * @see org.icefaces.application.showcase.view.bean.examples.component.outputChart.ChartModelCustom
  * @since 1.7
  */
-public abstract class AbstractChartData {
+public abstract class AbstractChartData implements Serializable {
 
     // axial chart data can be displayed horizontally or vertically
     public static final boolean DATA_ORIENTATION_HORIZONTAL = true;

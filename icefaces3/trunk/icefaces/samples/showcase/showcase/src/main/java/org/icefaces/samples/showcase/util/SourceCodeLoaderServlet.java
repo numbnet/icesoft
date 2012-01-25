@@ -17,7 +17,6 @@
 package org.icefaces.samples.showcase.util;
 
 import com.uwyn.jhighlight.renderer.XhtmlRendererFactory;
-import com.uwyn.jhighlight.tools.FileUtils;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +32,7 @@ import java.util.regex.Pattern;
  * @since 0.3.0
  */      
 
-public class SourceCodeLoaderServlet extends HttpServlet {
+public class SourceCodeLoaderServlet extends HttpServlet implements Serializable{
 
     private static final Pattern JSPX_PATTERN =
             Pattern.compile("<!--.*?-->", Pattern.DOTALL);

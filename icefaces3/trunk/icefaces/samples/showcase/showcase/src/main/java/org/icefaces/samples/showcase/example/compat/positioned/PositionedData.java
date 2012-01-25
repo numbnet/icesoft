@@ -23,9 +23,6 @@ import java.util.Collections;
 
 import javax.faces.bean.ViewScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
 @ManagedBean(name= PositionedData.BEAN_NAME)
 @ViewScoped

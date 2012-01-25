@@ -19,9 +19,8 @@ package org.icefaces.samples.showcase.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.lang.Integer;
-import java.lang.StringBuilder;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -34,7 +33,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.OrderedBidiMap;
@@ -58,7 +56,7 @@ import org.apache.commons.collections.bidimap.TreeBidiMap;
  * @author Nils Lundquist 
  * @since 2.1
  */
-public class SourceCodeLoaderConnection implements Map {
+public class SourceCodeLoaderConnection implements Map, Serializable{
     // The max size of the cache of source code to hold. 
     // Doesn't include overhead of data structures.
     private static Integer MAX_CACHE_SIZE;

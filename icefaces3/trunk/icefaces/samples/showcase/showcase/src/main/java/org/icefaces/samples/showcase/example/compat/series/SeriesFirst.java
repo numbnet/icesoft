@@ -51,15 +51,15 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class SeriesFirst extends ComponentExampleImpl<SeriesFirst> implements Serializable {
 	
-	public static final String BEAN_NAME = "seriesFirst";
-	
-	private int first = 0;
-	
-	public SeriesFirst() {
-		super(SeriesFirst.class);
-	}
-	
-	public int getFirst() { return first; }
-	
-	public void setFirst(int first) { this.first = first; }
+    public static final String BEAN_NAME = "seriesFirst";
+
+    private int first = 0;
+
+    public SeriesFirst() {
+            super(SeriesFirst.class);
+    }
+
+    public int getFirst() { return first; }
+
+    public void setFirst(int first) { this.first = first; }
 }

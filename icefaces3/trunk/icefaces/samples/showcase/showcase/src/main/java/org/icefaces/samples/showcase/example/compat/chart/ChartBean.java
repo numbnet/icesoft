@@ -21,8 +21,6 @@ import java.io.Serializable;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
 import com.icesoft.faces.component.outputchart.OutputChart;
 

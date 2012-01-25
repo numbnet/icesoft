@@ -19,7 +19,6 @@ package org.icefaces.samples.showcase.view.names;
 import java.io.Serializable;
 
 /**
- * Created by IntelliJ IDEA.
  * User: pcorless
  * Date: 31/01/11
  * Time: 3:40 PM

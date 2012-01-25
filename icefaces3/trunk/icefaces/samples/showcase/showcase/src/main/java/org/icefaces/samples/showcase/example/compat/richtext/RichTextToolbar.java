@@ -20,15 +20,11 @@ import java.io.Serializable;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
-import org.icefaces.samples.showcase.metadata.annotation.Menu;
-import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -56,23 +52,23 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class RichTextToolbar extends ComponentExampleImpl<RichTextToolbar> implements Serializable {
 	
-	public static final String BEAN_NAME = "richtextToolbar";
-	
-	private String text;
-	private SelectItem[] availableToolbars = new SelectItem[] {
-	    new SelectItem("Basic", "Basic"),
-	    new SelectItem("Default", "Rich")
-	};
-	private String toolbar = availableToolbars[0].getValue().toString();
-	
-	public RichTextToolbar() {
-		super(RichTextToolbar.class);
-	}
-	
-	public String getText() { return text; }
-	public String getToolbar() { return toolbar; }
-	public SelectItem[] getAvailableToolbars() { return availableToolbars; }
-	
-	public void setText(String text) { this.text = text; }
-	public void setToolbar(String toolbar) { this.toolbar = toolbar; }
+    public static final String BEAN_NAME = "richtextToolbar";
+
+    private String text;
+    private SelectItem[] availableToolbars = new SelectItem[] {
+        new SelectItem("Basic", "Basic"),
+        new SelectItem("Default", "Rich")
+    };
+    private String toolbar = availableToolbars[0].getValue().toString();
+
+    public RichTextToolbar() {
+            super(RichTextToolbar.class);
+    }
+
+    public String getText() { return text; }
+    public String getToolbar() { return toolbar; }
+    public SelectItem[] getAvailableToolbars() { return availableToolbars; }
+
+    public void setText(String text) { this.text = text; }
+    public void setToolbar(String toolbar) { this.toolbar = toolbar; }
 }

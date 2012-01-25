@@ -21,15 +21,11 @@ import java.io.Serializable;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.util.FacesUtils;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
-import org.icefaces.samples.showcase.metadata.annotation.Menu;
-import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -57,44 +53,44 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class SeriesDynamic extends ComponentExampleImpl<SeriesDynamic> implements Serializable {
 	
-	public static final String BEAN_NAME = "seriesDynamic";
+    public static final String BEAN_NAME = "seriesDynamic";
+
+    private Employee toAdd = new Employee();
+    private String toRemove;
+
+    public SeriesDynamic() {
+            super(SeriesDynamic.class);
+    }
+
+    public Employee getToAdd() { return toAdd; }
+    public String getToRemove() { return toRemove; }
 	
-	private Employee toAdd = new Employee();
-	private String toRemove;
-	
-	public SeriesDynamic() {
-		super(SeriesDynamic.class);
-	}
-	
-	public Employee getToAdd() { return toAdd; }
-	public String getToRemove() { return toRemove; }
-	
-	public void setToAdd(Employee toAdd) { this.toAdd = toAdd; }
-	public void setToRemove(String toRemove) { this.toRemove = toRemove; }
-	
-	public void addItem(ActionEvent event) {
-	    SeriesData.addEmployee(toAdd);
-	    
-	    // Reset the employee after adding
-	    toAdd = new Employee();
-	}
-	
-	public String removeItem() {
-	    // Check if we have a valid item index to remove
-	    if (!FacesUtils.isBlank(toRemove)) {
-	        // Attempt to remove the item
-	        SeriesData.removeEmployee(Integer.parseInt(toRemove));
-	        
-	        // If we have no items left then restore the original list
-	        if (SeriesData.empty()) {
-	            SeriesData.defaultEmployees();
-	        }
-	    }
-	    
-	    return null;
-	}
-	
-	public void restoreDefault(ActionEvent event) {
-	    SeriesData.defaultEmployees();
-	}
+    public void setToAdd(Employee toAdd) { this.toAdd = toAdd; }
+    public void setToRemove(String toRemove) { this.toRemove = toRemove; }
+
+    public void addItem(ActionEvent event) {
+        SeriesData.addEmployee(toAdd);
+
+        // Reset the employee after adding
+        toAdd = new Employee();
+    }
+
+    public String removeItem() {
+        // Check if we have a valid item index to remove
+        if (!FacesUtils.isBlank(toRemove)) {
+            // Attempt to remove the item
+            SeriesData.removeEmployee(Integer.parseInt(toRemove));
+
+            // If we have no items left then restore the original list
+            if (SeriesData.empty()) {
+                SeriesData.defaultEmployees();
+            }
+        }
+
+        return null;
+    }
+
+    public void restoreDefault(ActionEvent event) {
+        SeriesData.defaultEmployees();
+    }
 }

@@ -17,8 +17,6 @@
 package org.icefaces.samples.showcase.example.compat.chart;
 
 import com.icesoft.faces.component.outputchart.OutputChart;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.krysalis.jcharts.axisChart.AxisChart;
 import org.krysalis.jcharts.chartData.AxisChartDataSet;
 import org.krysalis.jcharts.chartData.ChartDataException;

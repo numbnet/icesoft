@@ -22,16 +22,9 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.component.UIComponent;
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
-import javax.faces.model.SelectItem;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Date;
 
 import org.icefaces.ace.model.MenuModel;
 import org.icefaces.ace.model.DefaultMenuModel;

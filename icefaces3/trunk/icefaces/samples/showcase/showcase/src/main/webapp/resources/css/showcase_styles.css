@@ -159,7 +159,7 @@
 }
 
 span#examplePanel_menu.ui-icon.ui-icon-gear{
-    background: url("#{resource['css/images/informationIcon.png']}") no-repeat;
+    background: url("#{resource['css/images/infoIcon.png']}") no-repeat;
 }
 
 a.ui-panel-titlebar-icon.ui-corner-all.ui-state-default
