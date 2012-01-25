@@ -66,7 +66,11 @@
 
 - (void)completePost:(NSString *)value forComponent:(NSString *)componentID withName:(NSString *)componentName   {
     NSMutableDictionary *params = [nativeInterface parseQuery:currentParameters];
-    [params setValue:value forKey:componentName];
+    if (nil != componentName)  {
+        [params setValue:value forKey:componentName];
+    } else {
+        NSLog(@"Warning: upload without componentName");
+    }
     [nativeInterface multipartPost:params toURL:self.currentURL];
 }
 

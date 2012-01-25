@@ -90,14 +90,14 @@ NSLog(@"ICEmobile-SX launched via notification %@", [launchOptions objectForKey:
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation  {
-    NSLog(@"ICEmobileHitch handleOpenURL %@ %@", sourceApplication, url);
+    NSLog(@"handleOpenURL %@ %@", sourceApplication, url);
     NSString *reqString = [url absoluteString];
     NSString *body = [reqString substringFromIndex:[@"icemobile://" length]];
     NSDictionary *params = 
             [self.viewController.nativeInterface parseQuery:body];
 
-NSLog(@"ICEmobileHitch found command %@", [params objectForKey:@"c"]);
-NSLog(@"ICEmobileHitch found url %@", [params objectForKey:@"u"]);
+NSLog(@"found command %@", [params objectForKey:@"c"]);
+NSLog(@"found url %@", [params objectForKey:@"u"]);
     //if the URL to POST to and the URL to reload in Safari are different,
     //specify u to POST and r to return
     self.viewController.currentURL = [params objectForKey:@"u"];
@@ -105,7 +105,7 @@ NSLog(@"ICEmobileHitch found url %@", [params objectForKey:@"u"]);
     self.viewController.currentParameters = [params objectForKey:@"p"];
     self.viewController.currentCommand = [params objectForKey:@"c"];
     self.viewController.currentSessionId = [params objectForKey:@"JSESSIONID"];
-NSLog(@"ICEmobileHitch found JSESSIONID %@", [params objectForKey:@"JSESSIONID"]);
+NSLog(@"found JSESSIONID %@", [params objectForKey:@"JSESSIONID"]);
     [self.viewController dispatchCurrentCommand];
 
     return YES;
