@@ -23,7 +23,6 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
 import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.CustomScoped;

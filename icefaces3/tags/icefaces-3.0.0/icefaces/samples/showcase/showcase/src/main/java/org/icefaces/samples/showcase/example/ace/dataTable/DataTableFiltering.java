@@ -18,23 +18,10 @@ package org.icefaces.samples.showcase.example.ace.dataTable;
 
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
-import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
-import javax.faces.model.SelectItem;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
-
-import org.icefaces.ace.event.SelectEvent;
-import org.icefaces.ace.event.UnselectEvent;
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,

@@ -39,22 +39,34 @@
     </ui:define>
 
     <ui:define name="suite-select-menu">
-        <li class="first">
-                <h:link title="ACE Components Suite Showcase"
-                    class="#{navigationModel.componentGroup == aceMenu.beanName ? 'selected' : '' }"
-                    outcome="showcase">
-                <f:param name="grp" value="#{aceMenu.beanName}"/>
-                #{msgs[aceMenu.title]}
-                </h:link>
-        </li>
-        <li>
-            <h:link title="ICE Components Suite Showcase"
-                    class="#{navigationModel.componentGroup == compatMenu.beanName ? 'selected' : '' }"
-                    outcome="showcase">
-                <f:param name="grp" value="#{compatMenu.beanName}"/>
-                #{msgs[compatMenu.title]}
-            </h:link>
-        </li>
+        <div id="headerCenter">
+            <div id="headerLogo">
+                <h:graphicImage value="/resources/css/images/topBannerImages/title.png" alt="ICEfaces Logo"/>
+            </div>
+            <div id="headerTabs">
+                <h:panelGrid id="suiteLinks" styleClass="linkTableStyle">
+                    <h:panelGroup styleClass="linksHolder">
+                        <h:link id="iceSuiteLink"
+                                outcome="showcase">
+                            <f:param name="grp" value="#{compatMenu.beanName}"/>
+                            <h:graphicImage value="#{navigationModel.componentGroup == compatMenu.beanName ? '/resources/css/images/topBannerImages/ice-on.png' : '/resources/css/images/topBannerImages/ice-off.png' }"
+                                            alt="ICE Suite Link"
+                                            styleClass="suiteLinkImageStyle"
+                                            title="ICE Components Suite Showcase"/>
+                        </h:link>
+                        <h:link id="aceSuiteLink"
+                                outcome="showcase">
+                                <f:param name="grp" value="#{aceMenu.beanName}"/>
+                                <h:graphicImage value="#{navigationModel.componentGroup == aceMenu.beanName ? '/resources/css/images/topBannerImages/ace-on.png' : '/resources/css/images/topBannerImages/ace-off.png' }"
+                                                alt="ACE Suite Link"
+                                                styleClass="suiteLinkImageStyle"
+                                                title="ACE Components Suite Showcase"/>
+                        </h:link>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </div>
+        </div>
+        
         <!--
         ~ Temporary ui:remove tag hide link to the EE suite showcase. (to be removed once ee components will be available)
          -->
