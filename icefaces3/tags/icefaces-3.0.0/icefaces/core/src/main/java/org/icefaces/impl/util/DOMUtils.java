@@ -136,6 +136,36 @@ public class DOMUtils {
         }
     }
 
+    public static class DiffConfig  {
+
+        public int maxDiffs = Integer.MAX_VALUE;
+        private static String MAXDIFFS = "maxDiffs";
+        private static Pattern SPACE_PATTERN = Pattern.compile(" ");
+
+        public DiffConfig(String config)  {
+            try {
+                HashMap<String, String> params = new HashMap();
+
+                String[] paramPairs = SPACE_PATTERN.split(config);
+                for (String pair: paramPairs)  {
+                    int center = pair.indexOf("=");
+                    String key = pair.substring(0,center);
+                    String value = pair.substring(center + 1);
+                    params.put(key, value);
+                }
+                
+                String maxDiffsParam = (String) params.get(MAXDIFFS);
+                if (null != maxDiffsParam)  {
+                    maxDiffs = Integer.parseInt(maxDiffsParam);
+                }
+
+            } catch (Exception e)  {
+                log.log(Level.SEVERE, "Malformed DiffConfig " + config, e);
+            }
+        }
+
+    }
+
     static {
         try {
             DOCUMENT_BUILDER = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -362,13 +392,22 @@ public class DOMUtils {
      * method will return an empty array. This method should not be called if one
      * of the DOMs is null.
      *
+     * @param config optional diff configuration
      * @param oldDOM original dom Document
      * @param newDOM changed dom Document
      * @return array of top-level nodes in newDOM that differ from oldDOM, an
      *         empty array if no nodes are different
      */
+    public static List<EditOperation> domDiff(DiffConfig config,
+            Document oldDOM, Document newDOM) {
+        return nodeDiff(config, oldDOM.getDocumentElement(), newDOM.getDocumentElement());
+    }
+
+    /**
+     * Variant of domDiff with default (null) DiffConfig
+     */
     public static List<EditOperation> domDiff(Document oldDOM, Document newDOM) {
-        return nodeDiff(oldDOM.getDocumentElement(), newDOM.getDocumentElement());
+        return domDiff(null, oldDOM, newDOM);
     }
 
     /**
@@ -377,16 +416,18 @@ public class DOMUtils {
      * method will return an empty array. This method should not be called if one
      * of the subtrees is null.
      *
+     * @param config optional diff configuration
      * @param oldNode original DOM subtree
      * @param newNode changed DOM subtree
      * @return array of top-level nodes in newNode subtree that differ from
      *         oldNode subtree, an empty array if no nodes are different
      */
-    public static List<EditOperation> nodeDiff(Node oldNode, Node newNode) {
+    public static List<EditOperation> nodeDiff(DiffConfig config, 
+            Node oldNode, Node newNode) {
         CursorList nodeDiffs = new CursorList();
         try {
             boolean success;
-            success = compareNodes(nodeDiffs, oldNode, newNode);
+            success = compareNodes(config, nodeDiffs, oldNode, newNode);
             if (!success)  {
                 log.severe("Diff propagated to root but no ID set " + newNode);
             }
@@ -400,6 +441,14 @@ public class DOMUtils {
     }
 
     /**
+     * Variant of nodeDiff with default (null) DiffConfig
+     */
+
+    public static List<EditOperation> nodeDiff(Node oldNode, Node newNode) {
+        return nodeDiff(null, oldNode, newNode);
+    }
+
+    /**
      * Nodes are equivalent if they have the same names, attributes, and
      * children
      *
@@ -408,7 +457,7 @@ public class DOMUtils {
      * @param newNode
      * @return true if diff was handled fully
      */
-    public static boolean compareNodes(CursorList nodeDiffs, 
+    private static boolean compareNodes(DiffConfig config, CursorList nodeDiffs, 
             Node oldNode, Node newNode) {
 
         if (!oldNode.getNodeName().equals(newNode.getNodeName())) {
@@ -458,7 +507,7 @@ public class DOMUtils {
             int startCursor = nodeDiffs.cursor;
 
             for (int i = 0; i < newChildLength; i++) {
-                if (!compareNodes(nodeDiffs, oldChildNodes.item(i),
+                if (!compareNodes(config, nodeDiffs, oldChildNodes.item(i),
                         newChildNodes.item(i))) {
                     String id = getNodeId(newNode);
                     if (null != id)  {
@@ -470,13 +519,29 @@ public class DOMUtils {
                     return false;
                 }
             }
-
+            if (null != config)  {
+                int numDiffs = nodeDiffs.cursor - startCursor;
+                if (numDiffs > config.maxDiffs)  {
+                    String id = getNodeId(newNode);
+                    if (null != id)  {
+                        if (log.isLoggable(Level.FINE)) {
+                            log.fine("DOM diff coalescing " + 
+                                (nodeDiffs.cursor - startCursor) + 
+                                " diffs for " + id);
+                        }
+                        //subtree generated a diff that was too large
+                        nodeDiffs.cursor = startCursor;
+                        nodeDiffs.add(new ReplaceOperation(newNode));
+                        return true;
+                    }
+                }
+            }
             return true;
         }
 
         //searching for insert/delete is enabled
         
-        return findChildOps(nodeDiffs, oldNode, newNode);
+        return findChildOps(config, nodeDiffs, oldNode, newNode);
     }
 
     private static String PAD = "not_an_id_of_any_element";
@@ -490,7 +555,7 @@ public class DOMUtils {
      * @param newNode
      * @return true if oldNode and newNode are equivalent
      */
-    private static boolean findChildOps(CursorList nodeDiffs, 
+    private static boolean findChildOps(DiffConfig config, CursorList nodeDiffs, 
             Node oldNode, Node newNode) {
 
         NodeList oldChildNodes = oldNode.getChildNodes();
@@ -641,7 +706,7 @@ public class DOMUtils {
             int newChildLength = newDirectCompare.size();
             boolean allChildrenMatch = true;
             for (int i = 0; i < newChildLength; i++) {
-                if (!compareNodes(nodeDiffs, oldDirectCompare.get(i),
+                if (!compareNodes(config, nodeDiffs, oldDirectCompare.get(i),
                         newDirectCompare.get(i))) {
                     allChildrenMatch = false;
                 }
