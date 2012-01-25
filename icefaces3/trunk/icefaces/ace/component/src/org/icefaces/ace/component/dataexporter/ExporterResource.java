@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.net.URL;
 import javax.faces.context.FacesContext;
 	
-public class ExporterResource extends Resource {
+public class ExporterResource extends Resource implements java.io.Serializable {
 
 	private InputStream in;
 	private String path = "";
