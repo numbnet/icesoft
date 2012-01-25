@@ -16,6 +16,7 @@
 
 package org.icefaces.application;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -196,6 +197,18 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
             path = externalContext.getRequestPathInfo();
             markerStart = path.indexOf(RESOURCE_PREFIX);
         }
+
+        //With Liferay, the reference to javax.faces.resource gets set to a parameter rather than
+        //part of the URL so we need a slightly different algorithm.
+        if (-1 == markerStart)  {
+            Iterator names = externalContext.getRequestParameterNames();
+            while (names.hasNext()) {
+                String name =  (String)names.next();
+                if( name.trim().equalsIgnoreCase("javax.faces.resource")){
+                    return externalContext.getRequestParameterMap().get(name);
+                }
+            }
+        }
         if (-1 == markerStart)  {
             return null;
         }
@@ -207,6 +220,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
                     path.length() - EnvUtils.getPathTemplate()[1].length());
             return key;
         } catch (Exception e)  {
+            System.out.println("ResourceRegistry.extractResourceId: " + e);
             return null;
         }
     }
