@@ -90,7 +90,8 @@ ice.ace.DataTable = function(id, cfg) {
             this.reorderEnd = 0;
             this.setupReorderableColumns();
         }
-    } else this.setupDisabledStyling();
+    } else
+        this.setupDisabledStyling();
 }
 
 
@@ -234,8 +235,35 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                 // submit sort info
                 _self.sort(_self.sortOrder);
                 return false;
+            })
+            .unbind('mousemove').bind('mousemove', function(event) {
+                var $this = ice.ace.jq(this),
+                    topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
+                    bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]),
+                    controlOffset = $this.offset(),
+                    controlHeight = !_self.cfg.singleSort ? $this.outerHeight() : 22;
+
+                if (event.pageY > (controlOffset.top + (controlHeight / 2)+3)) {
+                    if (!bottomCarat.hasClass('ui-toggled'))
+                        bottomCarat.fadeTo(0, .66);
+                    if (!topCarat.hasClass('ui-toggled'))
+                        topCarat.fadeTo(0, .33);
+                } else {
+                    if (!topCarat.hasClass('ui-toggled'))
+                        topCarat.fadeTo(0, .66);
+                    if (!bottomCarat.hasClass('ui-toggled'))
+                        bottomCarat.fadeTo(0, .33);
+                }
+            })
+            .unbind('mouseleave').bind('mouseleave', function(event) {
+                var $this = ice.ace.jq(this),
+                    topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
+                    bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]);
+                if (!bottomCarat.hasClass('ui-toggled')) bottomCarat.fadeTo(100, .33);
+                if (!topCarat.hasClass('ui-toggled')) topCarat.fadeTo(100, .33);
             });
-    // Pre-fade and bind keypress to kb-navigable sort icons
+
+    // Pre-fade and bind keypress & hover to kb-navigable sort icons
     ice.ace.jq(this.jqId + ' th > div.ui-sortable-column .ui-sortable-control')
             .find('.ui-icon-triangle-1-n')
             .die('keypress').live('keypress',function(event) {
@@ -244,7 +272,9 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                     $currentTarget.closest('.ui-sortable-control')
                             .trigger('click', [$currentTarget.offset().top, event.metaKey]);
                     return false;
-                }}).not('.ui-toggled').fadeTo(0, 0.2);
+                }})
+            .not('.ui-toggled').fadeTo(0, 0.33);
+
     ice.ace.jq(this.jqId + ' th > div.ui-sortable-column .ui-sortable-control')
             .find('.ui-icon-triangle-1-s')
             .die('keypress').live('keypress',function(event) {
@@ -253,7 +283,8 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                     $currentTarget.closest('.ui-sortable-control')
                             .trigger('click', [$currentTarget.offset().top + 6, event.metaKey]);
                     return false;
-                }}).not('.ui-toggled').fadeTo(0, 0.2);
+                }})
+            .not('.ui-toggled').fadeTo(0, 0.33);
 }
 
 ice.ace.DataTable.prototype.setupSelectionEvents = function() {
