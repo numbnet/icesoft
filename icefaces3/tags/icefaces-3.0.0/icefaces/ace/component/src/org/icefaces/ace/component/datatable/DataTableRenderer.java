@@ -1071,9 +1071,11 @@ public class DataTableRenderer extends CoreRenderer {
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_row_" + parentIndex + rowIndex, null);
             writer.writeAttribute(HTML.CLASS_ATTR, rowStyleClass + " " + expandedClass + " " + unselectableClass, null);
 
+            boolean innerTdDivRequired = (table.isScrollable() || table.isResizableColumns()) & topRow;
+
             for (Column kid : columns) {
                 if (kid.isRendered()) {
-                    encodeRegularCell(context, table, columns, kid, clientId, selected, topRow);
+                    encodeRegularCell(context, table, columns, kid, clientId, selected, innerTdDivRequired);
                 }
             }
 
@@ -1116,18 +1118,21 @@ public class DataTableRenderer extends CoreRenderer {
 
         if (!isCurrStacked) {
             writer.startElement(HTML.TD_ELEM, null);
-            if (resizable) writer.startElement(HTML.DIV_ELEM, null);
+
             if (column.getStyle() != null) writer.writeAttribute(HTML.STYLE_ELEM, column.getStyle(), null);
+
+            CellEditor editor = column.getCellEditor();
+            String columnStyleClass = column.getStyleClass();
+            if (editor != null) columnStyleClass = columnStyleClass == null ? DataTableConstants.EDITABLE_COLUMN_CLASS : DataTableConstants.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
+            if (columnStyleClass != null) writer.writeAttribute(HTML.CLASS_ATTR, columnStyleClass, null);
+            
+            if (resizable) writer.startElement(HTML.DIV_ELEM, null);
         }
         else {
             writer.startElement("hr", null);
             writer.endElement("hr");
         }
 
-        CellEditor editor = column.getCellEditor();
-        String columnStyleClass = column.getStyleClass();
-        if (editor != null) columnStyleClass = columnStyleClass == null ? DataTableConstants.EDITABLE_COLUMN_CLASS : DataTableConstants.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
-        if (columnStyleClass != null) writer.writeAttribute(HTML.CLASS_ATTR, columnStyleClass, null);
         column.encodeAll(context);
 
         if (!isNextStacked) {
