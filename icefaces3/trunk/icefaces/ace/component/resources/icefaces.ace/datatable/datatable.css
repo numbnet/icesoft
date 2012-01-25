@@ -111,11 +111,11 @@
     /* IE 5-7 */
     filter: alpha(opacity=20);
     /* Netscape */
-    -moz-opacity: 0.2;
+    -moz-opacity: 0.33;
     /* Safari 1.x */
-    -khtml-opacity: 0.2;
+    -khtml-opacity: 0.33;
     /* Good browsers */
-    opacity: 0.2;
+    opacity: 0.33;
 }
 .ui-sortable-column-icon .ui-icon-triangle-1-n.ui-toggled {
     position:relative;
@@ -133,9 +133,9 @@
     bottom:5px;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
     filter: alpha(opacity=20);
-    -moz-opacity: 0.2;
-    -khtml-opacity: 0.2;
-    opacity: 0.2;
+    -moz-opacity: 0.33;
+    -khtml-opacity: 0.33;
+    opacity: 0.33;
 }
 .ui-sortable-column-icon .ui-icon-triangle-1-s.ui-toggled {
     position:relative;

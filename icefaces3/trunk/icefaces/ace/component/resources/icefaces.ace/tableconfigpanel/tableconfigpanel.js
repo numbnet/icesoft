@@ -89,7 +89,7 @@ ice.ace.TableConf = function (id, cfg) {
                          _self.sortOrder = [];
                          controlRow.siblings()
                                  .find('.ui-icon-triangle-1-n, .ui-icon-triangle-1-s')
-                                 .animate({opacity : .2}, 200)
+                                 .animate({opacity : .33}, 200)
                                  .removeClass('ui-toggled');
 
                          if (!_self.cfg.singleSort) controlRow.siblings()
@@ -110,8 +110,8 @@ ice.ace.TableConf = function (id, cfg) {
                             (ice.ace.getOpacity(bottomCarat) == 1 && descending)) {
                              // Remove from sort order
                              _self.sortOrder.splice(controlCell.find('.ui-sortable-column-order').html()-1,1);
-                             ice.ace.jq(bottomCarat).animate({opacity : .2},  200).removeClass('ui-toggled');
-                             ice.ace.jq(topCarat).animate({opacity : .2},  200).removeClass('ui-toggled');
+                             ice.ace.jq(bottomCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
+                             ice.ace.jq(topCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
                              if (!_self.cfg.singleSort) {
                                  controlCell.find('.ui-sortable-column-order').html('&#160;');
                                  var i = 0;
@@ -123,10 +123,10 @@ ice.ace.TableConf = function (id, cfg) {
                             // Not a deselect, just meta toggle
                             if (descending) {
                                 ice.ace.jq(bottomCarat).animate({opacity : 1},  200).addClass('ui-toggled');
-                                ice.ace.jq(topCarat).animate({opacity : .2},  200).removeClass('ui-toggled');
+                                ice.ace.jq(topCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
                             } else {
                                 ice.ace.jq(topCarat).animate({opacity : 1},  200).addClass('ui-toggled');
-                                ice.ace.jq(bottomCarat).animate({opacity : .2},  200).removeClass('ui-toggled');
+                                ice.ace.jq(bottomCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
                             }
                         }
                     // if not a deselect
@@ -135,10 +135,10 @@ ice.ace.TableConf = function (id, cfg) {
                          //headerCell.addClass('ui-state-active');
                          if (descending) {
                              ice.ace.jq(bottomCarat).animate({opacity : 1},  200).addClass('ui-toggled');
-                             ice.ace.jq(topCarat).animate({opacity : .2},  200).removeClass('ui-toggled');
+                             ice.ace.jq(topCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
                          } else {
                              ice.ace.jq(topCarat).animate({opacity : 1},  200).addClass('ui-toggled');
-                             ice.ace.jq(bottomCarat).animate({opacity : .2},  200).removeClass('ui-toggled');
+                             ice.ace.jq(bottomCarat).animate({opacity : .33},  200).removeClass('ui-toggled');
                          }
 
                          // add to sort order
@@ -161,7 +161,7 @@ ice.ace.TableConf = function (id, cfg) {
                         var $currentTarget = ice.ace.jq(event.currentTarget);
                         $currentTarget.closest('.ui-sortable-control')
                                 .trigger('click', [$currentTarget.offset().top, event.metaKey]);
-                }}).not('.ui-toggled').fadeTo(0, 0.2);
+                }}).not('.ui-toggled').fadeTo(0, 0.33);
 
         this.$this.find('.ui-tableconf-body tr:not(.ui-disabled) .ui-sortable-control')
                 .find('.ui-icon-triangle-1-s')
@@ -170,7 +170,7 @@ ice.ace.TableConf = function (id, cfg) {
                         var $currentTarget = ice.ace.jq(event.currentTarget);
                         $currentTarget.closest('.ui-sortable-control')
                                 .trigger('click', [$currentTarget.offset().top + 6, event.metaKey]);
-                }}).not('.ui-toggled').fadeTo(0, 0.2);
+                }}).not('.ui-toggled').fadeTo(0, 0.33);
     }
 }
 
