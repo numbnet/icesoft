@@ -120,7 +120,6 @@ public class BridgeSetup implements SystemEventListener {
         //always add ICEfaces bridge code
         root.addComponentResource(context, new JavascriptResourceOutput(resourceHandler, "bridge.js", null, version), "head");
         //add custom scripts added by different component renderers
-        addCustomScripts(context);
 
         List<UIComponent> bodyResources = getBodyResources(context);
         for (UIComponent bodyResource : bodyResources) {
