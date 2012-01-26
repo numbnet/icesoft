@@ -67,7 +67,7 @@ public class TableConfigPanelMeta extends UIComponentBaseMeta {
               defaultValue = "false",
               defaultValueType = DefaultValueType.EXPRESSION)
     boolean hideDisabledRows;
-    @Property(tlddoc = "Defines the display mode for the 'open' control panel button. Available modes: paginator-button, first-col, last-col, plain",
+    @Property(tlddoc = "Defines the display mode for the 'open' control panel button. Available modes: first-col, last-col",
               defaultValue = "first-col")
     String type;
 }
