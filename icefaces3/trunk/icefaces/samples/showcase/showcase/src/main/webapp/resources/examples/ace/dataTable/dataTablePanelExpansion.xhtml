@@ -43,35 +43,35 @@
                 <ace:column>
                     <ace:expansionToggler />
                 </ace:column>
-
+                
                 <ace:column headerText="ID">
-                    #{car.id}
+                    <h:outputText value="#{car.id}"/>
                 </ace:column>
                 <ace:column headerText="Name">
-                    #{car.name}
+                    <h:outputText value="#{car.name}"/>
                 </ace:column>
                 <ace:column headerText="Chassis">
-                    #{car.chassis}
+                    <h:outputText value="#{car.chassis}"/>
                 </ace:column>
-                <ace:column headerText="Weight">
-                    #{car.weight}lbs.
+                <ace:column headerText="Weight (lbs)">
+                    <h:outputText value="#{car.weight}"/>
                 </ace:column>
                 <ace:column headerText="Accel">
-                    #{car.acceleration}
+                    <h:outputText value="#{car.acceleration}"/>
                 </ace:column>
                 <ace:column headerText="MPG">
-                    #{car.mpg}
+                    <h:outputText value="#{car.mpg}"/>
                 </ace:column>
                 <ace:column headerText="Cost">
-                    <ice:outputText value="#{car.cost}">
-                    <f:convertNumber    type="currency"
-                                        currencySymbol="$"
-                                        groupingUsed="true"
-                                        minFractionDigits="2"
-                                        maxFractionDigits="2"/>
-            </ice:outputText>
+                    <h:outputText value="#{car.cost}">
+                        <f:convertNumber type="currency"
+                                         currencySymbol="$"
+                                         groupingUsed="true"
+                                         minFractionDigits="2"
+                                         maxFractionDigits="2"/>
+                    </h:outputText>
                 </ace:column>
-
+                
                 <ace:panelExpansion>
                     <h:outputText value="Cost Per Pound: " />
                     <h:outputText value="#{car.cost /  car.weight}">

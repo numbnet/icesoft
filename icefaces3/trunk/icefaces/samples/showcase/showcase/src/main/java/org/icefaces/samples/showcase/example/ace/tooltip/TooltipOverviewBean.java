@@ -23,6 +23,8 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
+import java.util.ArrayList;
+import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet.ImageInfo;
 
 @ComponentExample(
         title = "example.ace.tooltip.title",
@@ -39,7 +41,11 @@ import java.io.Serializable;
             @ExampleResource(type = ResourceType.java,
                     title="TooltipOverview.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/tooltip/TooltipOverviewBean.java")
+                    "/example/ace/tooltip/TooltipOverviewBean.java"),
+            @ExampleResource(type = ResourceType.java,
+                    title="ImageSet.java",
+                    resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
+                    "/example/ace/accordionpanel/ImageSet.java")
         }
 )
 @Menu(
@@ -55,31 +61,29 @@ public class TooltipOverviewBean extends ComponentExampleImpl<TooltipOverviewBea
     
     public static final String BEAN_NAME = "tooltipOverviewBean";
     private String tooltipEffect = "slide";
-    private Integer tooltipShowDelay = 1000;
-    private Integer tooltipHideDelay = 2000;
-    private ImageSet.ImageInfo image;
-    private String tooltipTargetPosition = "topRight";
-    private String tooltipPosition = "bottomRight";
-    private Integer showEffectLength = 2000;
-    private Integer hideEffectLength = 1000;
+    private Integer tooltipShowDelay = 500;
+    private Integer tooltipHideDelay = 500;
+    private ArrayList<ImageInfo> carSet;
+    private String tooltipTargetPosition = "bottomLeft";
+    private String tooltipPosition = "topRight";
+    private Integer showEffectLength = 500;
+    private Integer hideEffectLength = 500;
     
     
     public TooltipOverviewBean() 
     {
         super(TooltipOverviewBean.class);
-        image = ImageSet.getImage(ImageSet.ImageSelect.PICTURE);
+        carSet = ImageSet.getImages(ImageSet.ImagesSelect.CARS);
     }
 
     public String getTooltipEffect() {
         return tooltipEffect;
     }
+    
     public void setTooltipEffect(String tooltipEffect) {
         this.tooltipEffect = tooltipEffect;
     }
-    public ImageSet.ImageInfo getImage() {
-        return image;
-    }
-
+    
     public Integer getTooltipHideDelay() {
         return tooltipHideDelay;
     }
@@ -126,5 +130,9 @@ public class TooltipOverviewBean extends ComponentExampleImpl<TooltipOverviewBea
 
     public void setShowEffectLength(Integer showEffectLength) {
         this.showEffectLength = showEffectLength;
+    }
+
+    public ArrayList<ImageInfo> getCarSet() {
+        return carSet;
     }
 }

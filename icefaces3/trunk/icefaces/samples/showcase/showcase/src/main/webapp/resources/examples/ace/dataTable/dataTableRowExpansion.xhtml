@@ -41,54 +41,34 @@
                    <ace:column>
                        <ace:expansionToggler />
                    </ace:column>
-                    <ace:column>
-                        <f:facet name="header">
-                           ID
-                        </f:facet>
-                        #{car.id}
-                    </ace:column>
-                    <ace:column>
-                        <f:facet name="header">
-                           Name
-                        </f:facet>
-                        #{car.name}
-                    </ace:column>
-                    <ace:column>
-                        <f:facet name="header">
-                           Chassis
-                        </f:facet>
-                        #{car.chassis}
-                    </ace:column>
-                    <ace:column>
-                        <f:facet name="header">
-                           Weight
-                        </f:facet>
-                        #{car.weight}lbs.
-                    </ace:column>
-                    <ace:column>
-                        <f:facet name="header">
-                           Accel
-                        </f:facet>
-                        #{car.acceleration}
-                    </ace:column>
-                    <ace:column>
-                        <f:facet name="header">
-                           MPG
-                        </f:facet>
-                        #{car.mpg}
-                    </ace:column>
-                    <ace:column>
-                        <f:facet name="header">
-                           Cost
-                        </f:facet>
-                        <ice:outputText value="#{car.cost}">
-                            <f:convertNumber type="currency"
-                                             currencySymbol="$"
-                                             groupingUsed="true"
-                                             minFractionDigits="2"
-                                             maxFractionDigits="2"/>
-                        </ice:outputText>
-                    </ace:column>
+                   
+               <ace:column headerText="ID">
+                    <h:outputText value="#{car.id}"/>
+                </ace:column>
+                <ace:column headerText="Name">
+                    <h:outputText value="#{car.name}"/>
+                </ace:column>
+                <ace:column headerText="Chassis">
+                    <h:outputText value="#{car.chassis}"/>
+                </ace:column>
+                <ace:column headerText="Weight (lbs)">
+                    <h:outputText value="#{car.weight}"/>
+                </ace:column>
+                <ace:column headerText="Accel">
+                    <h:outputText value="#{car.acceleration}"/>
+                </ace:column>
+                <ace:column headerText="MPG">
+                    <h:outputText value="#{car.mpg}"/>
+                </ace:column>
+                <ace:column headerText="Cost">
+                    <h:outputText value="#{car.cost}">
+                        <f:convertNumber type="currency"
+                                         currencySymbol="$"
+                                         groupingUsed="true"
+                                         minFractionDigits="2"
+                                         maxFractionDigits="2"/>
+                    </h:outputText>
+                </ace:column>
                 <ace:rowExpansion />
             </ace:dataTable>
         </h:form>
