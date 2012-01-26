@@ -39,8 +39,7 @@
                     <h:panelGrid columns="2" styleClass="centeredPanelGrid">
                         <h:outputLabel value="Effect Type: " for="effectType"/>
                         <h:selectOneMenu    id="effectType"
-                                            value="#{menuBarEffect.effectName}"
-                                            valueChangeListener="#{menuBarEffect.changemenuBarEffect}">
+                                            value="#{menuBarEffect.effectName}">
                             <f:selectItems value="#{menuBarEffect.availableEffects}"
                                            var="type"
                                            itemValue="#{type.value}"
