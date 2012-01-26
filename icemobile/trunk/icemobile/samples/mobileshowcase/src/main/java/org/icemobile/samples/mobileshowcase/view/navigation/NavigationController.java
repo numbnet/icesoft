@@ -33,7 +33,7 @@ import java.io.Serializable;
  * <p/>
  * tree dynamic insertion.
  */
-@ManagedBean(name="mobiNavigationModel")
+@ManagedBean(name="mobiNavigationController")
 @ApplicationScoped
 public class NavigationController implements Serializable {
 

@@ -26,8 +26,8 @@
                 <h:commandLink type="back"
                                value="#{msgs[mobiNavigationModel.backDestination.titleBack]}"
                                styleClass="mobi-button mobi-button-back"
-                               action="#{navigationController.navigateBack}"
-                               rendered="#{navigationController.canGoBack}"/>
+                               action="#{mobiNavigationController.navigateBack}"
+                               rendered="#{mobiNavigationController.canGoBack}"/>
 
                 #{msgs[mobiNavigationModel.currentSmallViewDestination.title]}
 
@@ -72,7 +72,7 @@
             <h:panelGroup
                     style="float:right;display:inline-block;margin: 5px 15px 0 0;">
                 <h:form>
-                    <h:commandLink action="#{navigationController.navigateToPage}">
+                    <h:commandLink action="#{mobiNavigationController.navigateToPage}">
                         <f:param name="navigateTo"
                                  value="#{mobiNavigationModel.destinationHome}"/>
                         <h:graphicImage library="images" name="icemobile_thumb.png"

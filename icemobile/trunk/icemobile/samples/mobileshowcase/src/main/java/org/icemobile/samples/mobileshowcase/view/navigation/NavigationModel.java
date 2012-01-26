@@ -34,7 +34,7 @@ import java.util.Stack;
         contentPath = "/WEB-INF/includes/navigation/menu.xhtml"
 )
 
-@ManagedBean
+@ManagedBean(name="mobiNavigationModel")
 @SessionScoped
 public class NavigationModel implements Serializable {
 
