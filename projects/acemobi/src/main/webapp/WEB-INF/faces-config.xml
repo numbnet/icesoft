@@ -29,6 +29,14 @@
             <base-name>org.icefaces.samples.showcase.view.resources.messages</base-name>
             <var>msgs</var>
         </resource-bundle>
+        
+        <resource-bundle>
+            <base-name>
+                org.icemobile.samples.mobileshowcase.view.resources.messages
+            </base-name>
+            <var>mmsgs</var>
+        </resource-bundle>
+
     </application>
 
     <!-- Navigation Rule For ACE:LinkButton Example -->
@@ -43,4 +51,14 @@
           <to-view-id>/showcase.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>refresh-redirect</from-outcome>
+            <to-view-id>/handheld.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
 </faces-config>
