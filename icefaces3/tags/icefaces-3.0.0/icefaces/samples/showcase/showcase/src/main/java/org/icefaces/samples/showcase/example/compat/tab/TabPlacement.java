@@ -20,15 +20,10 @@ import java.io.Serializable;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
-import org.icefaces.samples.showcase.metadata.annotation.Menu;
-import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -56,20 +51,20 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class TabPlacement extends ComponentExampleImpl<TabPlacement> implements Serializable {
 	
-	public static final String BEAN_NAME = "tabPlacement";
-	
-	private String[] availablePlacements = new String[] {
-	    "Bottom",
-	    "Top"
-	};
-	private String placement = availablePlacements[0];
-	
-	public TabPlacement() {
-		super(TabPlacement.class);
-	}
-	
-	public String[] getAvailablePlacements() { return availablePlacements; }
-	public String getPlacement() { return placement; }
-	
-	public void setPlacement(String placement) { this.placement = placement; }
+    public static final String BEAN_NAME = "tabPlacement";
+
+    private String[] availablePlacements = new String[] {
+        "Bottom",
+        "Top"
+    };
+    private String placement = availablePlacements[0];
+
+    public TabPlacement() {
+            super(TabPlacement.class);
+    }
+
+    public String[] getAvailablePlacements() { return availablePlacements; }
+    public String getPlacement() { return placement; }
+
+    public void setPlacement(String placement) { this.placement = placement; }
 }

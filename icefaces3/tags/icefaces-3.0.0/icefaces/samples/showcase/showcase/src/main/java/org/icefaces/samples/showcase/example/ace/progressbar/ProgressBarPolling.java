@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
-import org.icefaces.ace.component.animation.Drop;
-import org.icefaces.ace.component.animation.Effect;
 
 @ComponentExample(
         parent = ProgressBarBean.BEAN_NAME,

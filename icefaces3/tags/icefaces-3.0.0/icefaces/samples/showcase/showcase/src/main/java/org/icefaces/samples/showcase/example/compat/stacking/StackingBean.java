@@ -20,8 +20,6 @@ import java.io.Serializable;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
@@ -62,35 +60,35 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class StackingBean extends ComponentExampleImpl<StackingBean> implements Serializable {
 	
-	public static final String BEAN_NAME = "stacking";
-	
-	private SelectItem[] availableDemos = new SelectItem[] {
-	    new SelectItem("address", "Address Form"),
-	    new SelectItem("auction", "Auction Monitor"),
-	    new SelectItem("memory",  "Memory Game"),
-	    new SelectItem("mobile", "Mobile Ajax"),
-	    new SelectItem("webmc", "WebMC Presenter")
-	};
-	private String selectedDemo = availableDemos[0].getValue().toString();
+    public static final String BEAN_NAME = "stacking";
+
+    private SelectItem[] availableDemos = new SelectItem[] {
+        new SelectItem("address", "Address Form"),
+        new SelectItem("auction", "Auction Monitor"),
+        new SelectItem("memory",  "Memory Game"),
+        new SelectItem("mobile", "Mobile Ajax"),
+        new SelectItem("webmc", "WebMC Presenter")
+    };
+    private String selectedDemo = availableDemos[0].getValue().toString();
     private String selectedDescription = availableDemos[0].getLabel();
-	
-	public StackingBean() {
-		super(StackingBean.class);
-	}
-	
-	public SelectItem[] getAvailableDemos() { return availableDemos; }
-	public String getSelectedDemo() { return selectedDemo; }
-	
-	public void setSelectedDemo(String selectedDemo) {
-        this.selectedDemo = selectedDemo;
-        for (SelectItem si : availableDemos) {
-            if (si.getValue().equals(selectedDemo)) {
-                selectedDescription = si.getLabel();
-                return;
-            }
-        }
-        selectedDescription = selectedDemo;
+
+    public StackingBean() {
+            super(StackingBean.class);
     }
+
+    public SelectItem[] getAvailableDemos() { return availableDemos; }
+    public String getSelectedDemo() { return selectedDemo; }
+
+    public void setSelectedDemo(String selectedDemo) {
+    this.selectedDemo = selectedDemo;
+    for (SelectItem si : availableDemos) {
+        if (si.getValue().equals(selectedDemo)) {
+            selectedDescription = si.getLabel();
+            return;
+        }
+    }
+    selectedDescription = selectedDemo;
+}
 
     public String getSelectedDescription() { return selectedDescription; }
 }

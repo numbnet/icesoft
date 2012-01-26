@@ -54,8 +54,7 @@ import java.io.Serializable;
 })
 @ManagedBean(name= LoggerBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class LoggerBean extends ComponentExampleImpl<LoggerBean>
-        implements Serializable {
+public class LoggerBean extends ComponentExampleImpl<LoggerBean> implements Serializable {
 
     public static final String BEAN_NAME = "logger";
 

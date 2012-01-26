@@ -19,10 +19,7 @@ package org.icefaces.samples.showcase.metadata.context;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- *
- */
-    public class Menu<T> implements ContextBase, Serializable {
+public class Menu<T> implements ContextBase, Serializable {
 
     private Class<T> parentClass;
 

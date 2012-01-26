@@ -23,7 +23,6 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
-import javax.faces.model.SelectItem;
 
 @ComponentExample(
         parent = MenuBarBean.BEAN_NAME,
