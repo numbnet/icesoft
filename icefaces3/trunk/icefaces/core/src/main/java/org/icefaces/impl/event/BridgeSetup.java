@@ -22,7 +22,6 @@ import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
 import org.icefaces.impl.renderkit.DOMRenderKit;
-import org.icefaces.render.ExternalResourceDependency;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
 
@@ -191,23 +190,6 @@ public class BridgeSetup implements SystemEventListener {
                     ResourceDependency resourceDependency = compClass.getAnnotation(ResourceDependency.class);
                     if (resourceDependency != null) {
                         addMandatoryResourceDependency(context, root, compClassName, addedResourceDependencies, resourceDependency, version, collectedResourceComponents);
-                    }
-                    ExternalResourceDependency externalResourceDependency = compClass.getAnnotation(ExternalResourceDependency.class);
-                    if (externalResourceDependency != null) {
-                        String contextParamName = externalResourceDependency.contextParameter();
-                        boolean insertHere = true;
-                        // If present, the context param must be true for rendering
-                        // but if not present, always insert the script. Annotation default is "Null"
-                        String value = "";
-                        if (!contextParamName.equals("Null")) {
-                            value = externalContext.getInitParameter(contextParamName);
-                            insertHere = (value != null && !value.equalsIgnoreCase(""));
-                        }
-                        if (insertHere) {
-                            //todo: replace unique context parameter with an EL expression, implement ELResolver that can lookup context parameters
-                            UIOutput externalScript = new ReferencedScriptWriter(externalResourceDependency.url() + value, true);
-                            root.addComponentResource(context, externalScript, "head");
-                        }
                     }
                 } catch (Exception e) {
                     if (log.isLoggable(Level.WARNING)) {

@@ -19,17 +19,15 @@ package com.icesoft.faces.component.gmap;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.effects.JavascriptContext;
-import org.icefaces.render.ExternalResourceDependency;
 
-import javax.faces.component.UIOutput;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.el.ValueBinding;
 import java.io.IOException;
 import java.util.Map;
 
-@ExternalResourceDependency(url = "http://maps.google.com/maps?file=api&v=2&key=", contextParameter = "com.icesoft.faces.gmapKey")
+@ResourceDependency(name = "gmap/gmap.js")
 public class GMap extends UIPanel {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.GMap";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.GMapRenderer";
@@ -47,10 +45,6 @@ public class GMap extends UIPanel {
     private String style = null;
     private String styleClass = null;
     private String renderedOnUserRole = null;
-
-    public GMap() {
-        //loadJsLibrary(FacesContext.getCurrentInstance());
-    }
 
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
@@ -157,23 +151,6 @@ public class GMap extends UIPanel {
         JavascriptContext.addJavascriptCall(context,
                 "Ice.GoogleMap.setMapType('" + getClientId(context) + "', '" +
                         getType() + "');");
-    }
-
-    private void loadJsLibrary(FacesContext context) {
-        final String key = context.getExternalContext().getInitParameter("com.icesoft.faces.gmapKey");
-        if (key != null) {
-            context.getViewRoot().addComponentResource(context, new UIOutput() {
-                public void encodeBegin(FacesContext context) throws IOException {
-                    ResponseWriter writer = context.getResponseWriter();
-                    writer.startElement("script", this);
-                    writer.writeAttribute("type", "text/javascript", null);
-                    writer.writeAttribute("src", "http://maps.google.com/maps?file=api&v=2&key=" + key, null);
-                    writer.endElement("script");
-                }
-            }, "head");
-        } else {
-            //log you must need to define googlemap key in web.xml
-        }
     }
 
     public int getZoomLevel() {
