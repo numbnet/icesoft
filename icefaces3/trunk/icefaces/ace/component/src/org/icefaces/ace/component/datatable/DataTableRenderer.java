@@ -638,7 +638,7 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.STYLE_ELEM, (first) ? "left:0;" : "right:0;", null);
         writer.startElement(HTML.ANCHOR_ELEM, null);
 
-        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:2px 5px 0px 5px; text-align:left; vertical-align:middle;";
+        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:3px 5px 0px 5px; text-align:left; vertical-align:middle;";
         writer.writeAttribute(HTML.STYLE_ELEM, style, null);
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
         writer.writeAttribute(HTML.HREF_ATTR, "#", null);
@@ -701,12 +701,12 @@ public class DataTableRenderer extends CoreRenderer {
         writer.startElement(HTML.DIV_ELEM, null);
 
         //Configurable first-col controls
-        boolean shouldWriteConPanelLaunchPanel = false;
+        boolean writeConfigPanelLaunchOnLeft = false;
         if (first) {
             TableConfigPanel panel = table.findTableConfigPanel(context);
             if (panel != null && panel.getType().equals("first-col")) {
                 leftHeaderPadding += 45;
-                shouldWriteConPanelLaunchPanel = true;
+                writeConfigPanelLaunchOnLeft = true;
             }
         }
 
@@ -724,7 +724,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (leftHeaderPadding > 0) paddingStyle += "padding-left:" + leftHeaderPadding + "px;";
         if (!paddingStyle.equals("")) writer.writeAttribute(HTML.STYLE_ATTR, paddingStyle, null);
 
-        if (shouldWriteConPanelLaunchPanel) {
+        if (writeConfigPanelLaunchOnLeft) {
             writeConfigPanelLaunchButton(writer, table, first);
         }
 
@@ -1224,6 +1224,12 @@ public class DataTableRenderer extends CoreRenderer {
         writer.startElement(HTML.DIV_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_paginator" + position, null);
         writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+
+        TableConfigPanel panel = table.findTableConfigPanel(context);
+        if (panel != null && panel.getType().equals("paginator-button")) {
+            writeConfigPanelLaunchButton(writer, table, false);
+        }
+
         writer.endElement(HTML.DIV_ELEM);
     }
 
