@@ -25,7 +25,7 @@
             <mobi:outputListItem
                     group="true">#{msgs['menu.source.xhtml.title']}</mobi:outputListItem>
             <ui:repeat
-                    value="#{navigationModel.currentExampleBean.xhtmlResources}"
+                    value="#{mobiNavigationModel.currentExampleBean.xhtmlResources}"
                     var="xhtmlResource">
                 <mobi:outputListItem>
                     <a href="/mobileshowcase/sourcecodeStream.html?path=#{xhtmlResource.resource}">
@@ -36,7 +36,7 @@
             <mobi:outputListItem
                     group="true">#{msgs['menu.source.bean.title']}</mobi:outputListItem>
             <ui:repeat
-                    value="#{navigationModel.currentExampleBean.javaResources}"
+                    value="#{mobiNavigationModel.currentExampleBean.javaResources}"
                     var="beanResource">
                 <mobi:outputListItem>
                     <a href="/mobileshowcase/sourcecodeStream.html?path=#{beanResource.resource}">

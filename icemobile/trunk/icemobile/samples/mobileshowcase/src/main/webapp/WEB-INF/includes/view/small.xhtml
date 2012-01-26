@@ -24,12 +24,12 @@
         <ui:insert name="toolbar">
             <h:form id="toolbar" prependId="false">
                 <h:commandLink type="back"
-                               value="#{msgs[navigationModel.backDestination.titleBack]}"
+                               value="#{msgs[mobiNavigationModel.backDestination.titleBack]}"
                                styleClass="mobi-button mobi-button-back"
                                action="#{navigationController.navigateBack}"
                                rendered="#{navigationController.canGoBack}"/>
 
-                #{msgs[navigationModel.currentSmallViewDestination.title]}
+                #{msgs[mobiNavigationModel.currentSmallViewDestination.title]}
 
                 <ui:insert name="toolBarContent"/>
             </h:form>
@@ -40,7 +40,7 @@
         <div id="content" class="mobi-panel-scrollable">
             <!-- main content include of page content -->
             <ui:insert name="panelContent">
-                <ui:include src="#{navigationModel.currentSmallViewDestination.contentPath}"/>
+                <ui:include src="#{mobiNavigationModel.currentSmallViewDestination.contentPath}"/>
             </ui:insert>
         </div>
     </div>
@@ -74,7 +74,7 @@
                 <h:form>
                     <h:commandLink action="#{navigationController.navigateToPage}">
                         <f:param name="navigateTo"
-                                 value="#{navigationModel.destinationHome}"/>
+                                 value="#{mobiNavigationModel.destinationHome}"/>
                         <h:graphicImage library="images" name="icemobile_thumb.png"
                                         style="width:30px;height:30px;"/>
                     </h:commandLink>
