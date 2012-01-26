@@ -41,6 +41,7 @@ import javax.faces.context.FacesContext;
 
 import org.icefaces.ace.component.datatable.DataTable;
 
+/*
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Font;
@@ -48,6 +49,8 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+*/
+import java.lang.reflect.*;
 
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
@@ -57,38 +60,89 @@ import org.icefaces.application.ResourceRegistry;
 import java.io.ByteArrayInputStream;
 import java.util.Map;
 
+import java.util.logging.Logger;
+
 public class PDFExporter extends Exporter {
 
+	private final static Logger logger = Logger.getLogger(PDFExporter.class.getName());
+	
+	private Class documentClass;
+	private Class fontClass;
+	private Class fontFactoryClass;
+	private Class paragraphClass;
+	private Class phraseClass;
+	private Class pdfPTableClass;
+	private Class elementClass;
+	private Class pdfWriterClass;
+	
+	private Method addCellMethod;
+	private Constructor paragraphConstructor;
+	
+	private void loadClasses() throws ClassNotFoundException {
+		documentClass = Class.forName("com.lowagie.text.Document");
+		fontClass = Class.forName("com.lowagie.text.Font");
+		fontFactoryClass = Class.forName("com.lowagie.text.FontFactory");
+		paragraphClass = Class.forName("com.lowagie.text.Paragraph");
+		phraseClass = Class.forName("com.lowagie.text.Phrase");
+		pdfPTableClass = Class.forName("com.lowagie.text.pdf.PdfPTable");
+		elementClass = Class.forName("com.lowagie.text.Element");
+		pdfWriterClass = Class.forName("com.lowagie.text.pdf.PdfWriter");
+	}
+	
+	private void loadMethods() throws NoSuchMethodException {
+		addCellMethod = pdfPTableClass.getMethod("addCell", new Class[] { phraseClass });
+		paragraphConstructor = paragraphClass.getConstructor(new Class[] { String.class, fontClass });
+	}
+	
 	@Override
 	public String export(FacesContext facesContext, DataTable table, String filename, boolean pageOnly, int[] excludeColumns, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, boolean includeHeaders, boolean includeFooters, boolean selectedRowsOnly) throws IOException { 
 		try {
-	        Document document = new Document();
+			loadClasses();
+			loadMethods();
+			//Document document = new Document();
+			Object document = documentClass.newInstance();
 	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	        PdfWriter.getInstance(document, baos);
+			//PdfWriter.getInstance(document, baos);
+	        pdfWriterClass.getMethod("getInstance", new Class[] { documentClass, OutputStream.class }).invoke(null, new Object[] { document, baos });
 	        
 	        if (preProcessor != null) {
 	    		preProcessor.invoke(facesContext.getELContext(), new Object[]{document});
 	    	}
 
-            if (!document.isOpen()) {
-                document.open();
+            //if (!document.isOpen()) {
+            //    document.open();
+            //}
+			Boolean isOpen = (Boolean) documentClass.getMethod("isOpen").invoke(document);
+            if (!isOpen) {
+                documentClass.getMethod("open").invoke(document);
             }
 	        
+			Constructor pdfPTableConstructor = pdfPTableClass.getConstructor(new Class[] { int.class });
+			Method add = documentClass.getMethod("add", elementClass);
+			
 			List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
 			if (columns.size() > 0) {
-				PdfPTable pdfTable = exportPDFTable(table, pageOnly,excludeColumns, encodingType, includeHeaders, includeFooters, selectedRowsOnly);
-				document.add(pdfTable);
+				//PdfPTable pdfTable = exportPDFTable(table, pageOnly,excludeColumns, encodingType, includeHeaders, includeFooters, selectedRowsOnly);
+				Object pdfTable = pdfPTableConstructor.newInstance(new Object[] { new Integer(columns.size()) });
+				exportPDFTable(pdfTable, table, pageOnly,excludeColumns, encodingType, includeHeaders, includeFooters, selectedRowsOnly);
+				//document.add(pdfTable);
+				add.invoke(document, new Object[] { pdfTable });
 			} else {
-				PdfPTable pdfTable = new PdfPTable(1);
-				pdfTable.addCell(new Paragraph(""));
-				document.add(pdfTable);
+				//PdfPTable pdfTable = new PdfPTable(1);
+				Object pdfTable = pdfPTableConstructor.newInstance(new Object[] { new Integer(1) });
+				//pdfTable.addCell(new Paragraph(""));
+				Object paragraph = paragraphClass.getConstructor(new Class[] { String.class }).newInstance(new Object[] { "" });
+				addCellMethod.invoke(pdfTable, new Object[] { paragraph });
+				//document.add(pdfTable);
+				add.invoke(document, new Object[] { pdfTable });
 			}
-	    	
+			
 	    	if (postProcessor != null) {
 	    		postProcessor.invoke(facesContext.getELContext(), new Object[]{document});
 	    	}
 	    	
-	        document.close();
+	        //document.close();
+			documentClass.getMethod("close").invoke(document);
 			
 			byte[] bytes = baos.toByteArray();
 			//ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
@@ -104,17 +158,25 @@ public class PDFExporter extends Exporter {
 			
 			return path;
 	        
-		} catch (DocumentException e) {
+		} catch (ClassNotFoundException e) {
+			logger.severe("Exporting data to PDF format was attempted by a user, but the iText library was not found.");
+			return "unsupported format";
+		} catch (Exception e) {
 			throw new IOException(e.getMessage());
 		}
 	}
 	
-	private PdfPTable exportPDFTable(DataTable table, boolean pageOnly, int[] excludeColumns, String encoding, boolean includeHeaders, boolean includeFooters, boolean selectedRowsOnly) {
+	private void exportPDFTable(Object pdfTable, DataTable table, boolean pageOnly, int[] excludeColumns, String encoding, boolean includeHeaders, boolean includeFooters, boolean selectedRowsOnly) 
+		throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
     	int numberOfColumns = columns.size();
-    	PdfPTable pdfTable = new PdfPTable(numberOfColumns);
-    	Font font = FontFactory.getFont(FontFactory.TIMES, encoding);
-    	Font headerFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);
+    	//PdfPTable pdfTable = new PdfPTable(numberOfColumns);
+    	//Font font = FontFactory.getFont(FontFactory.TIMES, encoding);
+		
+		Object font = fontFactoryClass.getMethod("getFont", new Class[] { String.class, String.class }).invoke(null, new Object[] { "Times", encoding });
+    	//Font headerFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);
+		
+		Object headerFont = fontFactoryClass.getMethod("getFont", new Class[] { String.class, String.class, float.class, int.class }).invoke(null, new Object[] { "Times", encoding, new Integer(12), new Integer(1) });
     	
 		int rowCount = table.getRowCount();
     	int first = pageOnly ? table.getFirst() : 0;
@@ -133,7 +195,7 @@ public class PDFExporter extends Exporter {
 				addFacetColumns(pdfTable, columns, headerFont, ColumnType.HEADER);
 			}
 		}
-		
+
 		Object originalData = null;
 		if (selectedRowsOnly) {
 			originalData = table.getValue();
@@ -159,11 +221,10 @@ public class PDFExporter extends Exporter {
         }
     	
     	table.setRowIndex(-1);
-    	
-    	return pdfTable;
 	}
 	
-	private void addFacetColumns(PdfPTable pdfTable, List<UIColumn> columns, Font font, ColumnType columnType) {
+	private void addFacetColumns(Object pdfTable, List<UIColumn> columns, Object font, ColumnType columnType) 
+		throws IllegalAccessException, InvocationTargetException, InstantiationException {
         for (int i = 0; i < columns.size(); i++) {
             UIColumn uiColumn = (UIColumn) columns.get(i);
 			UIComponent facet = uiColumn.getFacet(columnType.facet());
@@ -182,18 +243,24 @@ public class PDFExporter extends Exporter {
 						value = footerText != null ? footerText : "";
 					}
 				}
-				pdfTable.addCell(new Paragraph(value, font));
+				//pdfTable.addCell(new Paragraph(value, font));
+				Object paragraph = paragraphConstructor.newInstance(new Object[] { value, font });
+				addCellMethod.invoke(pdfTable, new Object[] { paragraph });
 			}
         }
 	}
 	
-    private void addColumnValue(PdfPTable pdfTable, UIComponent component, Font font) {
+    private void addColumnValue(Object pdfTable, UIComponent component, Object font)
+		throws IllegalAccessException, InvocationTargetException, InstantiationException {
     	String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
             
-        pdfTable.addCell(new Paragraph(value, font));
+        //pdfTable.addCell(new Paragraph(value, font));
+		Object paragraph = paragraphConstructor.newInstance(new Object[] { value, font });
+		addCellMethod.invoke(pdfTable, new Object[] { paragraph });
     }
     
-    private void addColumnValue(PdfPTable pdfTable, List<UIComponent> components, int index, Font font) {
+    private void addColumnValue(Object pdfTable, List<UIComponent> components, int index, Object font)
+		throws IllegalAccessException, InvocationTargetException, InstantiationException {
         StringBuilder builder = new StringBuilder();
         
         for (UIComponent component : components) {
@@ -205,6 +272,8 @@ public class PDFExporter extends Exporter {
             }
 		}  
         
-        pdfTable.addCell(new Paragraph(builder.toString(), font));
+        //pdfTable.addCell(new Paragraph(builder.toString(), font));
+		Object paragraph = paragraphConstructor.newInstance(new Object[] { builder.toString(), font });
+		addCellMethod.invoke(pdfTable, new Object[] { paragraph });
     }
 }
