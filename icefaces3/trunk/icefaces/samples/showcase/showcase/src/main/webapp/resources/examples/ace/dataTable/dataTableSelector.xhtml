@@ -55,6 +55,66 @@
         </h:form>
         
         <h:form id="selectForm">
+           <ace:dataTable id="instantCarTableSingleRow"
+                          value="#{dataTableSort.carsData}"
+                          var="car"
+                          rows="7"
+                          stateMap="${dataTableSelector.stateMap}"
+                          selectionMode="single"
+                          doubleClickSelect="#{dataTableSelector.dblClick}"
+                          rendered="#{dataTableSelector.selectionMode eq 'single' and dataTableSelector.instantUpdate}">
+                <ace:ajax event="select" render="@this selectForm:status" execute="@this" />
+
+                <ace:column>
+                    <f:facet name="header">
+                       ID
+                    </f:facet>
+                    #{car.id}
+                </ace:column>
+                <ace:column>
+                    <f:facet name="header">
+                       Name
+                    </f:facet>
+                    #{car.name}
+                </ace:column>
+                <ace:column>
+                    <f:facet name="header">
+                       Chassis
+                    </f:facet>
+                    #{car.chassis}
+                </ace:column>
+                <ace:column>
+                    <f:facet name="header">
+                       Weight
+                    </f:facet>
+                    #{car.weight}lbs.
+                </ace:column>
+                <ace:column>
+                    <f:facet name="header">
+                       Accel
+                    </f:facet>
+                    #{car.acceleration}
+                </ace:column>
+                <ace:column>
+                    <f:facet name="header">
+                       MPG
+                    </f:facet>
+                    #{car.mpg}
+                </ace:column>
+                <ace:column>
+                    <f:facet name="header">
+                       Cost
+                    </f:facet>
+                    <h:outputText value="#{car.cost}">
+                        <f:convertNumber type="currency"
+                                         currencySymbol="$"
+                                         groupingUsed="true"
+                                         minFractionDigits="2"
+                                         maxFractionDigits="2"/>
+                    </h:outputText>
+                </ace:column>
+            </ace:dataTable>
+
            <ace:dataTable id="carTableSingleRow"
                           value="#{dataTableSort.carsData}"
                           var="car"
@@ -62,69 +122,107 @@
                           stateMap="${dataTableSelector.stateMap}"
                           selectionMode="single"
                           doubleClickSelect="#{dataTableSelector.dblClick}"
-                          rendered="#{dataTableSelector.selectionMode eq 'single'}">
-                <ace:ajax event="select" render="@this selectForm:status" execute="@this"
-                        disabled="#{!dataTableSelector.instantUpdate}"/>
-               
-                <ace:column headerText="ID">
-                    <h:outputText value="#{car.id}"/>
-                </ace:column>
-                <ace:column headerText="Name">
-                    <h:outputText value="#{car.name}"/>
-                </ace:column>
-                <ace:column headerText="Chassis">
-                    <h:outputText value="#{car.chassis}"/>
-                </ace:column>
-                <ace:column headerText="Weight (lbs)">
-                    <h:outputText value="#{car.weight}"/>
-                </ace:column>
-                <ace:column headerText="Accel">
-                    <h:outputText value="#{car.acceleration}"/>
-                </ace:column>
-                <ace:column headerText="MPG">
-                    <h:outputText value="#{car.mpg}"/>
-                </ace:column>
-                <ace:column headerText="Cost">
-                    <h:outputText value="#{car.cost}">
-                        <f:convertNumber type="currency"
-                                         currencySymbol="$"
-                                         groupingUsed="true"
-                                         minFractionDigits="2"
-                                         maxFractionDigits="2"/>
-                    </h:outputText>
-                </ace:column>
-            </ace:dataTable>
-            
-            <ace:dataTable id="carTableMultiRow"
+                          rendered="#{dataTableSelector.selectionMode eq 'single' and !dataTableSelector.instantUpdate}">
+               <ace:column>
+                   <f:facet name="header">
+                       ID
+                   </f:facet>
+                   #{car.id}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Name
+                   </f:facet>
+                   #{car.name}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Chassis
+                   </f:facet>
+                   #{car.chassis}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Weight
+                   </f:facet>
+                   #{car.weight}lbs.
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Accel
+                   </f:facet>
+                   #{car.acceleration}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       MPG
+                   </f:facet>
+                   #{car.mpg}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Cost
+                   </f:facet>
+                   <h:outputText value="#{car.cost}">
+                       <f:convertNumber type="currency"
+                                        currencySymbol="$"
+                                        groupingUsed="true"
+                                        minFractionDigits="2"
+                                        maxFractionDigits="2"/>
+                   </h:outputText>
+               </ace:column>
+           </ace:dataTable>
+
+            <ace:dataTable id="instantCarTableMultiRow"
                           value="#{dataTableSort.carsData}"
                           var="car"
                           rows="7"
                           stateMap="#{dataTableSelector.stateMap}"
                           selectionMode="multiple"
                           doubleClickSelect="#{dataTableSelector.dblClick}"
-                          rendered="#{dataTableSelector.selectionMode eq 'multiple'}">
-                <ace:ajax event="select" render="@this selectForm:status" execute="@this"
-                        disabled="#{!dataTableSelector.instantUpdate}"/>
+                          rendered="#{dataTableSelector.selectionMode eq 'multiple' and dataTableSelector.instantUpdate}">
+                <ace:ajax event="select" render="@this selectForm:status" execute="@this" />
 
-                <ace:column headerText="ID">
-                    <h:outputText value="#{car.id}"/>
+                <ace:column>
+                    <f:facet name="header">
+                       ID
+                    </f:facet>
+                    #{car.id}
                 </ace:column>
-                <ace:column headerText="Name">
-                    <h:outputText value="#{car.name}"/>
+                <ace:column>
+                    <f:facet name="header">
+                       Name
+                    </f:facet>
+                    #{car.name}
                 </ace:column>
-                <ace:column headerText="Chassis">
-                    <h:outputText value="#{car.chassis}"/>
+                <ace:column>
+                    <f:facet name="header">
+                       Chassis
+                    </f:facet>
+                    #{car.chassis}
                 </ace:column>
-                <ace:column headerText="Weight (lbs)">
-                    <h:outputText value="#{car.weight}"/>
+                <ace:column>
+                    <f:facet name="header">
+                       Weight
+                    </f:facet>
+                    #{car.weight}lbs.
                 </ace:column>
-                <ace:column headerText="Accel">
-                    <h:outputText value="#{car.acceleration}"/>
+                <ace:column>
+                    <f:facet name="header">
+                       Accel
+                    </f:facet>
+                    #{car.acceleration}
                 </ace:column>
-                <ace:column headerText="MPG">
-                    <h:outputText value="#{car.mpg}"/>
+                <ace:column>
+                    <f:facet name="header">
+                       MPG
+                    </f:facet>
+                    #{car.mpg}
                 </ace:column>
-                <ace:column headerText="Cost">
+                <ace:column>
+                    <f:facet name="header">
+                       Cost
+                    </f:facet>
                     <h:outputText value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
@@ -134,37 +232,115 @@
                     </h:outputText>
                 </ace:column>
             </ace:dataTable>
-            
-            <ace:dataTable id="carTableSingleCell"
+
+           <ace:dataTable id="carTableMultiRow"
+                          value="#{dataTableSort.carsData}"
+                          var="car"
+                          rows="7"
+                          stateMap="#{dataTableSelector.stateMap}"
+                          selectionMode="multiple"
+                          doubleClickSelect="#{dataTableSelector.dblClick}"
+                          rendered="#{dataTableSelector.selectionMode eq 'multiple' and !dataTableSelector.instantUpdate}">
+               <ace:column>
+                   <f:facet name="header">
+                       ID
+                   </f:facet>
+                   #{car.id}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Name
+                   </f:facet>
+                   #{car.name}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Chassis
+                   </f:facet>
+                   #{car.chassis}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Weight
+                   </f:facet>
+                   #{car.weight}lbs.
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Accel
+                   </f:facet>
+                   #{car.acceleration}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       MPG
+                   </f:facet>
+                   #{car.mpg}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Cost
+                   </f:facet>
+                   <h:outputText value="#{car.cost}">
+                       <f:convertNumber type="currency"
+                                        currencySymbol="$"
+                                        groupingUsed="true"
+                                        minFractionDigits="2"
+                                        maxFractionDigits="2"/>
+                   </h:outputText>
+               </ace:column>
+           </ace:dataTable>
+
+            <ace:dataTable id="instantCarTableSingleCell"
                           value="#{dataTableSort.carsData}"
                           var="car"
                           rows="7"
                           cellSelection="#{dataTableSelector.singleCell}"
                           selectionMode="singlecell"
                           doubleClickSelect="#{dataTableSelector.dblClick}"
-                          rendered="#{dataTableSelector.selectionMode eq 'singlecell'}">
-                <ace:ajax event="select" render="@this selectForm:status" execute="@this"
-                        disabled="#{!dataTableSelector.instantUpdate}"/>
+                          rendered="#{dataTableSelector.selectionMode eq 'singlecell' and dataTableSelector.instantUpdate}">
+                <ace:ajax event="select" render="@this selectForm:status" execute="@this" />
 
-                <ace:column headerText="ID">
-                    <h:outputText value="#{car.id}"/>
+                <ace:column>
+                    <f:facet name="header">
+                       ID
+                    </f:facet>
+                    #{car.id}
                 </ace:column>
-                <ace:column headerText="Name">
-                    <h:outputText value="#{car.name}"/>
+                <ace:column>
+                    <f:facet name="header">
+                       Name
+                    </f:facet>
+                    #{car.name}
                 </ace:column>
-                <ace:column headerText="Chassis">
-                    <h:outputText value="#{car.chassis}"/>
+                <ace:column>
+                    <f:facet name="header">
+                       Chassis
+                    </f:facet>
+                    #{car.chassis}
                 </ace:column>
-                <ace:column headerText="Weight (lbs)">
-                    <h:outputText value="#{car.weight}"/>
+                <ace:column>
+                    <f:facet name="header">
+                       Weight
+                    </f:facet>
+                    #{car.weight}lbs.
                 </ace:column>
-                <ace:column headerText="Accel">
-                    <h:outputText value="#{car.acceleration}"/>
+                <ace:column>
+                    <f:facet name="header">
+                       Accel
+                    </f:facet>
+                    #{car.acceleration}
                 </ace:column>
-                <ace:column headerText="MPG">
-                    <h:outputText value="#{car.mpg}"/>
+                <ace:column>
+                    <f:facet name="header">
+                       MPG
+                    </f:facet>
+                    #{car.mpg}
                 </ace:column>
-                <ace:column headerText="Cost">
+                <ace:column>
+                    <f:facet name="header">
+                       Cost
+                    </f:facet>
                     <h:outputText value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
@@ -174,73 +350,92 @@
                     </h:outputText>
                 </ace:column>
             </ace:dataTable>
-            
-            <ace:dataTable id="carTableMultiCell"
+
+           <ace:dataTable id="carTableSingleCell"
                           value="#{dataTableSort.carsData}"
                           var="car"
                           rows="7"
-                          cellSelection="#{dataTableSelector.multiCell}"
-                          selectionMode="#{dataTableSelector.selectionMode}"
+                          cellSelection="#{dataTableSelector.singleCell}"
+                          selectionMode="singlecell"
                           doubleClickSelect="#{dataTableSelector.dblClick}"
-                          rendered="#{dataTableSelector.selectionMode eq 'multiplecell'}">
-                <ace:ajax event="select" render="@this selectForm:status" execute="@this"
-                        disabled="#{!dataTableSelector.instantUpdate}"/>
+                          rendered="#{dataTableSelector.selectionMode eq 'singlecell' and !dataTableSelector.instantUpdate}">
 
-                <ace:column headerText="ID">
-                    <h:outputText value="#{car.id}"/>
-                </ace:column>
-                <ace:column headerText="Name">
-                    <h:outputText value="#{car.name}"/>
-                </ace:column>
-                <ace:column headerText="Chassis">
-                    <h:outputText value="#{car.chassis}"/>
-                </ace:column>
-                <ace:column headerText="Weight (lbs)">
-                    <h:outputText value="#{car.weight}"/>
-                </ace:column>
-                <ace:column headerText="Accel">
-                    <h:outputText value="#{car.acceleration}"/>
-                </ace:column>
-                <ace:column headerText="MPG">
-                    <h:outputText value="#{car.mpg}"/>
-                </ace:column>
-                <ace:column headerText="Cost">
-                    <h:outputText value="#{car.cost}">
-                        <f:convertNumber type="currency"
-                                         currencySymbol="$"
-                                         groupingUsed="true"
-                                         minFractionDigits="2"
-                                         maxFractionDigits="2"/>
-                    </h:outputText>
-                </ace:column>
-            </ace:dataTable>
-            
-            <h:panelGrid id="status" columns="2">
-                <f:facet name="header">
-                    Selection Status
-                </f:facet>
-                
-                <h:outputLabel for="multiRowOut" value="Selected Rows:"/>
-                <ui:repeat id="multiRowOut"
-                           value="#{dataTableSelector.multiRow}" var="selCar">
-                    #{selCar.name}
-                </ui:repeat>
-                
-                <h:outputLabel for="singleCellOut" value="Single Cell:"/>
-                <h:outputText id="singleCellOut" value="#{dataTableSelector.singleCell.rowData.name}"/>
-                
-                <ui:remove>
-                    <h:outputLabel for="multiCellOut" value="Multiple Cell:"/>
-                    <ui:repeat id="multiCellOut"
-                               value="#{dataTableSelector.multiCell}" var="selCell">
-                        #{selCell.rowData.name}
-                    </ui:repeat>
-                </ui:remove>
+               <ace:column>
+                   <f:facet name="header">
+                       ID
+                   </f:facet>
+                   #{car.id}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Name
+                   </f:facet>
+                   #{car.name}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Chassis
+                   </f:facet>
+                   #{car.chassis}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Weight
+                   </f:facet>
+                   #{car.weight}lbs.
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Accel
+                   </f:facet>
+                   #{car.acceleration}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       MPG
+                   </f:facet>
+                   #{car.mpg}
+               </ace:column>
+               <ace:column>
+                   <f:facet name="header">
+                       Cost
+                   </f:facet>
+                   <h:outputText value="#{car.cost}">
+                       <f:convertNumber type="currency"
+                                        currencySymbol="$"
+                                        groupingUsed="true"
+                                        minFractionDigits="2"
+                                        maxFractionDigits="2"/>
+                   </h:outputText>
+               </ace:column>
+           </ace:dataTable>
 
-                <f:facet name="footer">
-                    <h:commandButton value="Refresh Status" rendered="#{!dataTableSelector.instantUpdate}"/>
-                </f:facet>
-            </h:panelGrid>
+           <h:panelGrid id="status" columns="2">
+               <f:facet name="header">
+                   Selection Status
+               </f:facet>
+
+               <h:outputLabel for="multiRowOut" value="Selected Rows:"/>
+               <ui:repeat id="multiRowOut"
+                          value="#{dataTableSelector.multiRow}" var="selCar">
+                   #{selCar.name}
+               </ui:repeat>
+
+               <h:outputLabel for="singleCellOut" value="Single Cell:"/>
+               <h:outputText id="singleCellOut" value="#{dataTableSelector.singleCell.rowData.name}"/>
+
+               <ui:remove>
+                   <h:outputLabel for="multiCellOut" value="Multiple Cell:"/>
+                   <ui:repeat id="multiCellOut"
+                              value="#{dataTableSelector.multiCell}" var="selCell">
+                       #{selCell.rowData.name}
+                   </ui:repeat>
+               </ui:remove>
+
+               <f:facet name="footer">
+                   <h:commandButton value="Refresh Status" rendered="#{!dataTableSelector.instantUpdate}"/>
+               </f:facet>
+           </h:panelGrid>
         </h:form>
     </ui:define>
 </ui:composition>
