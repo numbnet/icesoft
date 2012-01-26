@@ -19,6 +19,7 @@ package com.icesoft.faces.component.gmap;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import org.icefaces.render.ExternalResourceDependency;
 
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIPanel;
@@ -28,6 +29,7 @@ import javax.faces.el.ValueBinding;
 import java.io.IOException;
 import java.util.Map;
 
+@ExternalResourceDependency(url = "http://maps.google.com/maps?file=api&v=2&key=", contextParameter = "com.icesoft.faces.gmapKey")
 public class GMap extends UIPanel {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.GMap";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.GMapRenderer";

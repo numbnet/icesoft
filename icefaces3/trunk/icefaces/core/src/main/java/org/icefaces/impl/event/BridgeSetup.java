@@ -22,7 +22,7 @@ import org.icefaces.impl.application.WindowScopeManager;
 import org.icefaces.impl.push.SessionViewManager;
 import org.icefaces.impl.push.servlet.ICEpushResourceHandler;
 import org.icefaces.impl.renderkit.DOMRenderKit;
-import org.icefaces.render.ExternalScript;
+import org.icefaces.render.ExternalResourceDependency;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.util.EnvUtils;
 
@@ -78,7 +78,7 @@ public class BridgeSetup implements SystemEventListener {
             // are not available, we cannot process it but we log the reason.
             if (log.isLoggable(Level.WARNING)) {
                 log.log(Level.WARNING, "ICEfaces configured for view " + facesContext.getViewRoot().getViewId() +
-                                               " but h:head and h:body components are required");
+                        " but h:head and h:body components are required");
             }
             return false;
         }
@@ -138,7 +138,7 @@ public class BridgeSetup implements SystemEventListener {
             for (String compClassName : specialResourceComponents) {
                 try {
                     Class<UIComponent> compClass = (Class<UIComponent>)
-                                                           Class.forName(compClassName);
+                            Class.forName(compClassName);
                     UIComponent component = compClass.newInstance();
                     if (component != null) {
                         root.addComponentResource(context, component, "head");
@@ -146,8 +146,8 @@ public class BridgeSetup implements SystemEventListener {
                 } catch (Exception e) {
                     if (log.isLoggable(Level.WARNING)) {
                         log.log(Level.WARNING, "When processing special " +
-                                                       "resource components, could not create instance " +
-                                                       "of '" + compClassName + "'");
+                                "resource components, could not create instance " +
+                                "of '" + compClassName + "'");
                     }
                 }
             }
@@ -172,8 +172,8 @@ public class BridgeSetup implements SystemEventListener {
                 if (!"all".equalsIgnoreCase(resourceConfig)) {
                     String tagName = mrc.tagName();
                     if (!resourceConfigPad.contains(" " + compClassName + " ") &&
-                                (tagName != null && tagName.length() > 0 &&
-                                         !resourceConfigPad.contains(" " + tagName + " "))) {
+                            (tagName != null && tagName.length() > 0 &&
+                                    !resourceConfigPad.contains(" " + tagName + " "))) {
                         continue;
                     }
                 }
@@ -193,11 +193,28 @@ public class BridgeSetup implements SystemEventListener {
                     if (resourceDependency != null) {
                         addMandatoryResourceDependency(context, root, compClassName, addedResourceDependencies, resourceDependency, version, collectedResourceComponents);
                     }
+                    ExternalResourceDependency externalResourceDependency = compClass.getAnnotation(ExternalResourceDependency.class);
+                    if (externalResourceDependency != null) {
+                        String contextParamName = externalResourceDependency.contextParameter();
+                        boolean insertHere = true;
+                        // If present, the context param must be true for rendering
+                        // but if not present, always insert the script. Annotation default is "Null"
+                        String value = "";
+                        if (!contextParamName.equals("Null")) {
+                            value = externalContext.getInitParameter(contextParamName);
+                            insertHere = (value != null && !value.equalsIgnoreCase(""));
+                        }
+                        if (insertHere) {
+                            //todo: replace unique context parameter with an EL expression, implement ELResolver that can lookup context parameters
+                            UIOutput externalScript = new ReferencedScriptWriter(externalResourceDependency.url() + value, true);
+                            root.addComponentResource(context, externalScript, "head");
+                        }
+                    }
                 } catch (Exception e) {
                     if (log.isLoggable(Level.WARNING)) {
                         log.log(Level.WARNING, "When processing mandatory " +
-                                                       "resource components, could not create instance " +
-                                                       "of '" + compClassName + "'");
+                                "resource components, could not create instance " +
+                                "of '" + compClassName + "'");
                     }
                 }
             }
@@ -207,38 +224,6 @@ public class BridgeSetup implements SystemEventListener {
             //the components registered directly by it
             replaceCollectedResourceComponents(context, "head", collectedResourceComponents);
             replaceCollectedResourceComponents(context, "body", collectedResourceComponents);
-        }
-    }
-
-    private void addCustomScripts(FacesContext context) {
-        RenderKit rk = context.getRenderKit();
-        if (rk instanceof DOMRenderKit) {
-            UIViewRoot root = context.getViewRoot();
-            ExternalContext externalContext = context.getExternalContext();
-            DOMRenderKit drk = (DOMRenderKit) rk;
-            List<ExternalScript> scriptRenderers = drk.getCustomRenderScripts();
-            String contextParamName;
-            String value = "";
-            int i = 0;
-            for (ExternalScript es : scriptRenderers) {
-                i++;
-                contextParamName = es.contextParam();
-                boolean insertHere = true;
-                // If present, the context param must be true for rendering
-                // but if not present, always insert the script. Annotation default is "Null"
-                if (!contextParamName.equals("Null")) {
-                    value = externalContext.getInitParameter(contextParamName);
-                    insertHere = (value != null && !value.equalsIgnoreCase(""));
-                }
-                if (insertHere) {
-                    UIOutput externalScript = new ReferencedScriptWriter(es.scriptURL() + value, true);
-                    externalScript.setTransient(true);
-                    String externalScriptId = "external-script-" + i;
-                    externalScript.setId(externalScriptId);
-                    externalScript.getAttributes().put("name", externalScriptId);
-                    root.addComponentResource(context, externalScript, "head");
-                }
-            }
         }
     }
 
@@ -293,7 +278,7 @@ public class BridgeSetup implements SystemEventListener {
      */
     public static BridgeSetup getBridgeSetup(FacesContext facesContext) {
         return (BridgeSetup) facesContext.getExternalContext().
-                                                                      getApplicationMap().get(BRIDGE_SETUP);
+                getApplicationMap().get(BRIDGE_SETUP);
     }
 
     public List<UIComponent> getBodyResources(FacesContext context) {
@@ -308,14 +293,14 @@ public class BridgeSetup implements SystemEventListener {
                 tempWindowID = windowScope.getId();
             } else {
                 log.log(Level.WARNING, "Unable to find WindowScope for view " +
-                                               context.getViewRoot().getViewId());
+                        context.getViewRoot().getViewId());
             }
             final String windowID = tempWindowID;
             final String viewID = getViewID(externalContext);
 
             final Map viewScope = root.getViewMap();
             final boolean sendDisposeWindow = !EnvUtils.isLazyWindowScope(context) ||
-                                                      (windowScope != null && EnvUtils.containsBeans(windowScope)) || (viewScope != null && EnvUtils.containsBeans(viewScope));
+                    (windowScope != null && EnvUtils.containsBeans(windowScope)) || (viewScope != null && EnvUtils.containsBeans(viewScope));
             UIOutput icefacesSetup = new UIOutputWriter() {
                 public void encode(ResponseWriter writer,
                                    FacesContext context) throws IOException {
@@ -397,8 +382,8 @@ public class BridgeSetup implements SystemEventListener {
                             String cloudPushId = auxUpload.getCloudPushId();
                             if (null != cloudPushId) {
                                 writer.write(
-                                                    "window.addEventListener('load', function() { ice.push.parkInactivePushIds('"
-                                                            + cloudPushId + "'); }, false);");
+                                        "window.addEventListener('load', function() { ice.push.parkInactivePushIds('"
+                                                + cloudPushId + "'); }, false);");
                             }
                         }
                         writer.endElement("script");
@@ -429,19 +414,19 @@ public class BridgeSetup implements SystemEventListener {
     }
 
     private static void addMandatoryResourceDependency(
-                                                              FacesContext facesContext,
-                                                              UIViewRoot root,
-                                                              String compClassName,
-                                                              Set<ResourceDependency> addedResDeps,
-                                                              ResourceDependency resDep,
-                                                              String version,
-                                                              Map collectedResourceComponents) {
+            FacesContext facesContext,
+            UIViewRoot root,
+            String compClassName,
+            Set<ResourceDependency> addedResDeps,
+            ResourceDependency resDep,
+            String version,
+            Map collectedResourceComponents) {
         if (addedResDeps.contains(resDep)) {
             return;
         }
         addedResDeps.add(resDep);
         addMandatoryResource(facesContext, root, compClassName, resDep.name(),
-                                    resDep.library(), version, resDep.target(), collectedResourceComponents);
+                resDep.library(), version, resDep.target(), collectedResourceComponents);
     }
 
     private static void addMandatoryResource(FacesContext facesContext,
@@ -459,8 +444,8 @@ public class BridgeSetup implements SystemEventListener {
         if (rendererType == null || rendererType.length() == 0) {
             if (log.isLoggable(Level.WARNING)) {
                 log.log(Level.WARNING, "Could not determine renderer type " +
-                                               "for mandatory resource, for component: " + compClassName +
-                                               ". Resource name: " + name + ", library: " + library);
+                        "for mandatory resource, for component: " + compClassName +
+                        ". Resource name: " + name + ", library: " + library);
             }
         } else {
             UIComponent component = newResourceOutput(resourceHandler, rendererType, name, library, version);
