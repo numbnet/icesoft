@@ -271,7 +271,8 @@ if (window.addEventListener)  {
     function() {
         jsf.getViewState = html5getViewState;
         if ( (undefined !== window.FormData) && 
-             (undefined === window.ice.mobile) )  {
+             (undefined === window.ice.mobile) &&
+             (undefined !== window.Worker) )  {
             ice.submitFunction = html5submitFunction;
         }
     }, false );
