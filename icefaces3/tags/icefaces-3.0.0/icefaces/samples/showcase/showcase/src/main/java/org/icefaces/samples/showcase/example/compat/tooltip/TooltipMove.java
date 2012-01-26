@@ -20,15 +20,10 @@ import java.io.Serializable;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
-import org.icefaces.samples.showcase.metadata.annotation.Menu;
-import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -56,15 +51,15 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class TooltipMove extends ComponentExampleImpl<TooltipMove> implements Serializable {
 	
-	public static final String BEAN_NAME = "tooltipMove";
-	
-	private boolean move = true;
-	
-	public TooltipMove() {
-		super(TooltipMove.class);
-	}
-	
-	public boolean getMove() { return move; }
-	
-	public void setMove(boolean move) { this.move = move; }
+    public static final String BEAN_NAME = "tooltipMove";
+
+    private boolean move = true;
+
+    public TooltipMove() {
+            super(TooltipMove.class);
+    }
+
+    public boolean getMove() { return move; }
+
+    public void setMove(boolean move) { this.move = move; }
 }

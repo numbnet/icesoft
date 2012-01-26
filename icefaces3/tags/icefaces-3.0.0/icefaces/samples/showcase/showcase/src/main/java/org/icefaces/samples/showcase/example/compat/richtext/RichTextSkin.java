@@ -20,15 +20,11 @@ import java.io.Serializable;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
-import org.icefaces.samples.showcase.metadata.annotation.Menu;
-import org.icefaces.samples.showcase.metadata.annotation.MenuLink;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -56,24 +52,24 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class RichTextSkin extends ComponentExampleImpl<RichTextSkin> implements Serializable {
 	
-	public static final String BEAN_NAME = "richtextSkin";
-	
-	private String text;
-	private SelectItem[] availableSkins = new SelectItem[] {
-	    new SelectItem("default", "Tan"),
-	    new SelectItem("silver", "Silver"),
-	    new SelectItem("office2003", "Office")
-	};
-	private String skin = availableSkins[0].getValue().toString();
-	
-	public RichTextSkin() {
-		super(RichTextSkin.class);
-	}
-	
-	public String getText() { return text; }
-	public String getSkin() { return skin; }
-	public SelectItem[] getAvailableSkins() { return availableSkins; }
-	
-	public void setText(String text) { this.text = text; }
-	public void setSkin(String skin) { this.skin = skin; }
+    public static final String BEAN_NAME = "richtextSkin";
+
+    private String text;
+    private SelectItem[] availableSkins = new SelectItem[] {
+        new SelectItem("default", "Tan"),
+        new SelectItem("silver", "Silver"),
+        new SelectItem("office2003", "Office")
+    };
+    private String skin = availableSkins[0].getValue().toString();
+
+    public RichTextSkin() {
+            super(RichTextSkin.class);
+    }
+
+    public String getText() { return text; }
+    public String getSkin() { return skin; }
+    public SelectItem[] getAvailableSkins() { return availableSkins; }
+
+    public void setText(String text) { this.text = text; }
+    public void setSkin(String skin) { this.skin = skin; }
 }

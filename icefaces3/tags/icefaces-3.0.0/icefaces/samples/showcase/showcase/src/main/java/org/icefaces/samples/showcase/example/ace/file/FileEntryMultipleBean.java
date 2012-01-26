@@ -50,8 +50,7 @@ resources ={
 )
 @ManagedBean(name= FileEntryMultipleBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class FileEntryMultipleBean extends ComponentExampleImpl<FileEntryMultipleBean>
-        implements Serializable {
+public class FileEntryMultipleBean extends ComponentExampleImpl<FileEntryMultipleBean> implements Serializable {
 
     public static final String BEAN_NAME = "fileEntryMultiple";
 

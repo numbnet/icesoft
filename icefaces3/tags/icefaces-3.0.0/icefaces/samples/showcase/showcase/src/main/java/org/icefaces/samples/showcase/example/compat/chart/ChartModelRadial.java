@@ -16,12 +16,9 @@
 
 package org.icefaces.samples.showcase.example.compat.chart;
 
-import com.icesoft.faces.component.outputchart.OutputChart;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Random;
 import java.io.Serializable;
 

@@ -22,9 +22,6 @@ import java.util.ArrayList;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
@@ -76,30 +73,30 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class TooltipBean extends ComponentExampleImpl<TooltipBean> implements Serializable {
 	
-	public static final String BEAN_NAME = "tooltip";
-	
-	public static final List<PeriodicElement> ELEMENTS = generateElements();
-	
-	public TooltipBean() {
-		super(TooltipBean.class);
-	}
-	
-	public List<PeriodicElement> getElements() { return ELEMENTS; }
-	
-	private static List<PeriodicElement> generateElements() {
-	    List<PeriodicElement> toReturn = new ArrayList<PeriodicElement>(5);
-	    
-	    toReturn.add(new PeriodicElement(2, "He", "Helium",
-	                                     -272.05, -458.0));
-	    toReturn.add(new PeriodicElement(8, "O", "Oxygen",
-	                                     -222.65, -368.77));
-	    toReturn.add(new PeriodicElement(50, "Sn", "Tin",
-	                                     232.06, 449.71));
-	    toReturn.add(new PeriodicElement(92, "U", "Uranium",
-	                                     1132.0, 2070.0));
-	    toReturn.add(new PeriodicElement(6, "C", "Carbon",
-	                                     3500.0, 6332.0));
-	    
-	    return toReturn;
-	}
+    public static final String BEAN_NAME = "tooltip";
+
+    public static final List<PeriodicElement> ELEMENTS = generateElements();
+
+    public TooltipBean() {
+            super(TooltipBean.class);
+    }
+
+    public List<PeriodicElement> getElements() { return ELEMENTS; }
+
+    private static List<PeriodicElement> generateElements() {
+        List<PeriodicElement> toReturn = new ArrayList<PeriodicElement>(5);
+
+        toReturn.add(new PeriodicElement(2, "He", "Helium",
+                                         -272.05, -458.0));
+        toReturn.add(new PeriodicElement(8, "O", "Oxygen",
+                                         -222.65, -368.77));
+        toReturn.add(new PeriodicElement(50, "Sn", "Tin",
+                                         232.06, 449.71));
+        toReturn.add(new PeriodicElement(92, "U", "Uranium",
+                                         1132.0, 2070.0));
+        toReturn.add(new PeriodicElement(6, "C", "Carbon",
+                                         3500.0, 6332.0));
+
+        return toReturn;
+    }
 }

@@ -62,7 +62,7 @@ import org.icefaces.samples.showcase.example.ace.printer.PrinterBean;
                 @MenuLink(title = "menu.ace.dialog.title", exampleBeanName = DialogBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.dragDrop.title", exampleBeanName = DragDropOverviewBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.fileentry.title", exampleBeanName = FileEntryBean.BEAN_NAME),
-                        //                @MenuLink(title = "menu.ace.logger.title", exampleBeanName = LoggerBean.BEAN_NAME),
+//@MenuLink(title = "menu.ace.logger.title", exampleBeanName = LoggerBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.linkButton.title", exampleBeanName = LinkButtonBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.maskedEntry.title", exampleBeanName = MaskedEntryBean.BEAN_NAME),
                 @MenuLink(title = "menu.ace.menu.title", exampleBeanName = MenuBean.BEAN_NAME),

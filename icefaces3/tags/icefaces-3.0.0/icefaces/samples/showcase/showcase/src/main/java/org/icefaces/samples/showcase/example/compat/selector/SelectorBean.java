@@ -22,9 +22,6 @@ import java.util.List;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 
 import org.icefaces.samples.showcase.example.compat.dataTable.*;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
@@ -73,25 +70,25 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class SelectorBean extends ComponentExampleImpl<SelectorBean> implements Serializable {
 	
-	public static final String BEAN_NAME = "selector";
-	
-	private List<SelectableCar> data = wrapList(DataTableData.CARS);
-	
-	public SelectorBean() {
-		super(SelectorBean.class);
-	}
-	
-	public List<SelectableCar> getData() { return data; }
-	
-	public void setData(List<SelectableCar> data) { this.data = data; }
-	
-	private List<SelectableCar> wrapList(List<Car> toWrap) {
-	    List<SelectableCar> toReturn = new ArrayList<SelectableCar>(toWrap.size());
-	    
-	    for (Car currentItem : toWrap) {
-	        toReturn.add(new SelectableCar(currentItem));
-	    }
-	    
-	    return toReturn;
-	}
+    public static final String BEAN_NAME = "selector";
+
+    private List<SelectableCar> data = wrapList(DataTableData.CARS);
+
+    public SelectorBean() {
+            super(SelectorBean.class);
+    }
+
+    public List<SelectableCar> getData() { return data; }
+
+    public void setData(List<SelectableCar> data) { this.data = data; }
+
+    private List<SelectableCar> wrapList(List<Car> toWrap) {
+        List<SelectableCar> toReturn = new ArrayList<SelectableCar>(toWrap.size());
+
+        for (Car currentItem : toWrap) {
+            toReturn.add(new SelectableCar(currentItem));
+        }
+
+        return toReturn;
+    }
 }

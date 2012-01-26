@@ -41,8 +41,6 @@ public class VehicleGenerator implements Serializable
         this.numberFormatter = makeFormatter();
     }
     
-    
-    
     public Car getRandomCar()
     {
         

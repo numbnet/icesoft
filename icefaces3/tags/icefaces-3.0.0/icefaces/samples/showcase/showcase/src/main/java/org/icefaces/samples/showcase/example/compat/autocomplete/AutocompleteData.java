@@ -17,10 +17,7 @@
 package org.icefaces.samples.showcase.example.compat.autocomplete;
 
 import java.io.Serializable;
-import java.io.File;
-import java.io.FileReader;
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -28,8 +25,6 @@ import java.util.ArrayList;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
