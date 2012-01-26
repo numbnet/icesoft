@@ -29,7 +29,7 @@
             <base-name>
                 org.icemobile.samples.mobileshowcase.view.resources.messages
             </base-name>
-            <var>msgs</var>
+            <var>mmsgs</var>
         </resource-bundle>
 
     </application>

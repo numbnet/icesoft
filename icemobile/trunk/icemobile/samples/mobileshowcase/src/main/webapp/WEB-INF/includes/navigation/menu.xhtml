@@ -24,12 +24,12 @@
         <mobi:outputList inset="false" style="">
             <!-- output media components  example links. -->
             <mobi:outputListItem
-                    group="true">#{msgs[layoutAndNavigationMenu.title]}</mobi:outputListItem>
+                    group="true">#{mmsgs[layoutAndNavigationMenu.title]}</mobi:outputListItem>
             <ui:repeat value="#{layoutAndNavigationMenu.menuLinks}"
                        var="menuLinks">
                 <mobi:outputListItem>
                     <h:commandLink
-                            value="#{msgs[menuLinks.title]}"
+                            value="#{mmsgs[menuLinks.title]}"
                             action="#{mobiNavigationController.navigateToExample}">
                         <f:param name="#{mobiNavigationController.navDestination}"
                                  value="#{menuLinks.exampleBeanName}"/>
@@ -39,12 +39,12 @@
 
             <!-- input and selection components example links. -->
             <mobi:outputListItem
-                    group="true">#{msgs[inputAndSelectionMenu.title]}</mobi:outputListItem>
+                    group="true">#{mmsgs[inputAndSelectionMenu.title]}</mobi:outputListItem>
             <ui:repeat value="#{inputAndSelectionMenu.menuLinks}"
                        var="menuLinks">
                 <mobi:outputListItem>
                     <h:commandLink
-                            value="#{msgs[menuLinks.title]}"
+                            value="#{mmsgs[menuLinks.title]}"
                             action="#{mobiNavigationController.navigateToExample}">
                         <f:param name="#{mobiNavigationController.navDestination}"
                                  value="#{menuLinks.exampleBeanName}"/>
@@ -54,11 +54,11 @@
 
             <!-- output media components  example links. -->
             <mobi:outputListItem
-                    group="true">#{msgs[mediaPlaybackMenu.title]}</mobi:outputListItem>
+                    group="true">#{mmsgs[mediaPlaybackMenu.title]}</mobi:outputListItem>
             <ui:repeat value="#{mediaPlaybackMenu.menuLinks}" var="menuLinks">
                 <mobi:outputListItem>
                     <h:commandLink
-                            value="#{msgs[menuLinks.title]}"
+                            value="#{mmsgs[menuLinks.title]}"
                             action="#{mobiNavigationController.navigateToExample}">
                         <f:param name="#{mobiNavigationController.navDestination}"
                                  value="#{menuLinks.exampleBeanName}"/>
@@ -68,11 +68,11 @@
 
             <!-- native components menu links. -->
             <mobi:outputListItem
-                    group="true">#{msgs[nativeCompsMenu.title]}</mobi:outputListItem>
+                    group="true">#{mmsgs[nativeCompsMenu.title]}</mobi:outputListItem>
             <ui:repeat value="#{nativeCompsMenu.menuLinks}" var="menuLinks">
                 <mobi:outputListItem>
                     <h:commandLink
-                            value="#{msgs[menuLinks.title]}"
+                            value="#{mmsgs[menuLinks.title]}"
                             action="#{mobiNavigationController.navigateToExample}">
                         <f:param name="#{mobiNavigationController.navDestination}"
                                  value="#{menuLinks.exampleBeanName}"/>
