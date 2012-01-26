@@ -29,11 +29,11 @@
                 <div style="float:left;padding-left:10px;">
                     <h:commandLink action="#{navigationController.navigateToPage}">
                         <f:param name="navigateTo"
-                                 value="#{navigationModel.destinationHome}"/>
+                                 value="#{mobiNavigationModel.destinationHome}"/>
                         <h:graphicImage library="images" name="icemobile_thumb.png"
                                         styleClass="branding"/>
                     </h:commandLink>
-                    <span>#{msgs[navigationModel.currentSmallViewDestination.title]}</span>
+                    <span>#{msgs[mobiNavigationModel.currentSmallViewDestination.title]}</span>
                 </div>
                 <!-- theme selector -->
                 <div style="float:right;padding-right: 35px;vertical-align: middle" >
@@ -72,7 +72,7 @@
                             style="">
             <!-- main content include of page content -->
             <ui:insert name="panelContent">
-                <ui:include src="#{navigationModel.currentLargeViewDestination.contentPath}" />
+                <ui:include src="#{mobiNavigationModel.currentLargeViewDestination.contentPath}" />
             </ui:insert>
         </util:panelScroller>
     </div>
