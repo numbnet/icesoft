@@ -135,7 +135,7 @@ public class NavigationController implements Serializable {
     }
 
     protected NavigationModel getNavigationModel() {
-        return (NavigationModel) FacesUtils.getManagedBean("navigationModel");
+        return (NavigationModel) FacesUtils.getManagedBean("mobiNavigationModel");
     }
 
     public String getNavDestination() {
