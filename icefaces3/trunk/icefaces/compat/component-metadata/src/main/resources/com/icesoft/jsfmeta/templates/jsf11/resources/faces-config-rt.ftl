@@ -31,6 +31,7 @@
     </lifecycle>
     <application>
         <resource-handler>com.icesoft.faces.component.inputrichtext.InputRichTextResourceHandler</resource-handler>
+        <resource-handler>com.icesoft.faces.component.gmap.GMapResourceHandler</resource-handler>
         <system-event-listener>
             <system-event-listener-class>com.icesoft.faces.application.ExtrasSetup</system-event-listener-class>
             <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
