@@ -28,12 +28,12 @@ import org.icefaces.samples.showcase.metadata.context.ResourceRootPath;
         resources ={
                 // WIKI Resources
                 @ExampleResource(type = ResourceType.wiki,
-                    title="General Link",
+                    title="ICE Suite WIKI",
                     resource = ResourceRootPath.FOR_WIKI + "ICEfaces+Components"),
 
                 // TLD Resources
                 @ExampleResource(type = ResourceType.tld,
-                    title="General Link",
+                    title="ICE Suite TLD",
                     resource = ResourceRootPath.FOR_ICE_TLD)
         }
 )

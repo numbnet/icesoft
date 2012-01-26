@@ -20,6 +20,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
+import org.icefaces.samples.showcase.metadata.context.ResourceRootPath;
 
 @ComponentExample(
         title = "example.ace.aceSuiteOverview.title",
@@ -36,7 +37,15 @@ import java.io.Serializable;
             @ExampleResource(type = ResourceType.java,
                     title="AceSuiteOverview.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/overview/AceSuiteOverviewBean.java")
+                    "/example/ace/overview/AceSuiteOverviewBean.java"),
+            //WIKI documentation
+            @ExampleResource(type = ResourceType.wiki,
+                    title="ACE Suite WIKI",
+                    resource = ResourceRootPath.FOR_WIKI+"ICEfaces+Advanced+Components"),
+            //TLD Documentation
+            @ExampleResource(type = ResourceType.tld,
+                    title="ACE Suite TLD",
+                    resource = ResourceRootPath.FOR_ACE_TLD + "tld-summary.html")
         }
 )
 @Menu(

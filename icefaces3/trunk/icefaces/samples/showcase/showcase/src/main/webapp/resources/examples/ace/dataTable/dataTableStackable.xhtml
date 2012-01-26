@@ -38,53 +38,33 @@
                                     value="#{dataTableSort.carsData}"
                                     rows="8"
                                     var="car">
-                <ace:column sortBy="#{car.id}">
-                    <f:facet name="header">
-                       ID
-                    </f:facet>
-                    #{car.id}
+               
+               <ace:column headerText="ID" sortBy="#{car.id}">
+                    <h:outputText value="#{car.id}"/>
                 </ace:column>
-                <ace:column sortBy="#{car.name}" stacked="true">
-                    <f:facet name="header">
-                       Name
-                    </f:facet>
-                    #{car.name}
+                <ace:column headerText="Name" sortBy="#{car.name}" stacked="true">
+                    <h:outputText value="#{car.name}"/>
                 </ace:column>
-                <ace:column sortBy="#{car.chassis}">
-                    <f:facet name="header">
-                       Chassis
-                    </f:facet>
-                    #{car.chassis}
+                <ace:column headerText="Chassis" sortBy="#{car.chassis}">
+                    <h:outputText value="#{car.chassis}"/>
                 </ace:column>
-                <ace:column sortBy="#{car.weight}" stacked="true">
-                    <f:facet name="header">
-                       Weight
-                    </f:facet>
-                    #{car.weight}lbs.
+                <ace:column headerText="Weight (lbs)" sortBy="#{car.weight}" stacked="true">
+                    <h:outputText value="#{car.weight}"/>
                 </ace:column>
-                <ace:column sortBy="#{car.acceleration}">
-                    <f:facet name="header">
-                       Accel
-                    </f:facet>
-                    #{car.acceleration}
+                <ace:column headerText="Accel" sortBy="#{car.acceleration}">
+                    <h:outputText value="#{car.acceleration}"/>
                 </ace:column>
-                <ace:column sortBy="#{car.mpg}" stacked="true">
-                    <f:facet name="header">
-                       MPG
-                    </f:facet>
-                    #{car.mpg}
+                <ace:column headerText="MPG" sortBy="#{car.mpg}" stacked="true">
+                    <h:outputText value="#{car.mpg}"/>
                 </ace:column>
-                <ace:column sortBy="#{car.cost}">
-                    <f:facet name="header">
-                       Cost
-                    </f:facet>
-                    <ice:outputText value="#{car.cost}">
+                <ace:column headerText="Cost" sortBy="#{car.cost}">
+                    <h:outputText value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
                                          groupingUsed="true"
                                          minFractionDigits="2"
                                          maxFractionDigits="2"/>
-                    </ice:outputText>
+                    </h:outputText>
                 </ace:column>
             </ace:dataTable>
         </h:form>
