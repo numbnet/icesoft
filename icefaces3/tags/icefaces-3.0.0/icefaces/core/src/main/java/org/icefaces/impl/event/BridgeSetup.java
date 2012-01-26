@@ -78,14 +78,15 @@ public class BridgeSetup implements SystemEventListener {
             // are not available, we cannot process it but we log the reason.
             if (log.isLoggable(Level.WARNING)) {
                 log.log(Level.WARNING, "ICEfaces configured for view " + facesContext.getViewRoot().getViewId() +
-                        " but h:head and h:body components are required");
+                                               " but h:head and h:body components are required");
             }
             return false;
         }
         return true;
     }
 
-    public void processEvent(SystemEvent event) throws AbortProcessingException {
+    public void processEvent(SystemEvent event) throws
+            AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         UIViewRoot root = context.getViewRoot();
         ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
@@ -130,14 +131,14 @@ public class BridgeSetup implements SystemEventListener {
     private void addSpecialResources(FacesContext context) {
         UIViewRoot root = context.getViewRoot();
         RenderKit rk = context.getRenderKit();
-        DOMRenderKit drk = (DOMRenderKit) rk;
 
         if (rk instanceof DOMRenderKit) {
+            DOMRenderKit drk = (DOMRenderKit) rk;
             List<String> specialResourceComponents = drk.getSpecialResourceComponents();
             for (String compClassName : specialResourceComponents) {
                 try {
                     Class<UIComponent> compClass = (Class<UIComponent>)
-                            Class.forName(compClassName);
+                                                           Class.forName(compClassName);
                     UIComponent component = compClass.newInstance();
                     if (component != null) {
                         root.addComponentResource(context, component, "head");
@@ -145,15 +146,17 @@ public class BridgeSetup implements SystemEventListener {
                 } catch (Exception e) {
                     if (log.isLoggable(Level.WARNING)) {
                         log.log(Level.WARNING, "When processing special " +
-                                "resource components, could not create instance " +
-                                "of '" + compClassName + "'");
+                                                       "resource components, could not create instance " +
+                                                       "of '" + compClassName + "'");
                     }
                 }
             }
         }
     }
 
-    private void addMandatoryResources(FacesContext context, Map collectedResourceComponents, String version) {
+    private void addMandatoryResources(FacesContext context,
+                                       Map collectedResourceComponents,
+                                       String version) {
         UIViewRoot root = context.getViewRoot();
         RenderKit rk = context.getRenderKit();
         if (rk instanceof DOMRenderKit) {
@@ -169,8 +172,8 @@ public class BridgeSetup implements SystemEventListener {
                 if (!"all".equalsIgnoreCase(resourceConfig)) {
                     String tagName = mrc.tagName();
                     if (!resourceConfigPad.contains(" " + compClassName + " ") &&
-                            (tagName != null && tagName.length() > 0 &&
-                                    !resourceConfigPad.contains(" " + tagName + " "))) {
+                                (tagName != null && tagName.length() > 0 &&
+                                         !resourceConfigPad.contains(" " + tagName + " "))) {
                         continue;
                     }
                 }
@@ -193,8 +196,8 @@ public class BridgeSetup implements SystemEventListener {
                 } catch (Exception e) {
                     if (log.isLoggable(Level.WARNING)) {
                         log.log(Level.WARNING, "When processing mandatory " +
-                                "resource components, could not create instance " +
-                                "of '" + compClassName + "'");
+                                                       "resource components, could not create instance " +
+                                                       "of '" + compClassName + "'");
                     }
                 }
             }
@@ -239,7 +242,9 @@ public class BridgeSetup implements SystemEventListener {
         }
     }
 
-    private void replaceCollectedResourceComponents(FacesContext context, String target, Map collectedResourceComponents) {
+    private void replaceCollectedResourceComponents(FacesContext context,
+                                                    String target,
+                                                    Map collectedResourceComponents) {
         UIViewRoot root = context.getViewRoot();
         List<UIComponent> components = new ArrayList<UIComponent>(root.getComponentResources(context, target));
         for (UIComponent next : components) {
@@ -288,7 +293,7 @@ public class BridgeSetup implements SystemEventListener {
      */
     public static BridgeSetup getBridgeSetup(FacesContext facesContext) {
         return (BridgeSetup) facesContext.getExternalContext().
-                getApplicationMap().get(BRIDGE_SETUP);
+                                                                      getApplicationMap().get(BRIDGE_SETUP);
     }
 
     public List<UIComponent> getBodyResources(FacesContext context) {
@@ -303,16 +308,17 @@ public class BridgeSetup implements SystemEventListener {
                 tempWindowID = windowScope.getId();
             } else {
                 log.log(Level.WARNING, "Unable to find WindowScope for view " +
-                        context.getViewRoot().getViewId());
+                                               context.getViewRoot().getViewId());
             }
             final String windowID = tempWindowID;
             final String viewID = getViewID(externalContext);
 
             final Map viewScope = root.getViewMap();
             final boolean sendDisposeWindow = !EnvUtils.isLazyWindowScope(context) ||
-                    (windowScope != null && EnvUtils.containsBeans(windowScope)) || (viewScope != null && EnvUtils.containsBeans(viewScope));
+                                                      (windowScope != null && EnvUtils.containsBeans(windowScope)) || (viewScope != null && EnvUtils.containsBeans(viewScope));
             UIOutput icefacesSetup = new UIOutputWriter() {
-                public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+                public void encode(ResponseWriter writer,
+                                   FacesContext context) throws IOException {
                     String clientID = getClientId(context);
                     writer.startElement("span", this);
                     writer.writeAttribute("id", clientID, null);
@@ -358,7 +364,9 @@ public class BridgeSetup implements SystemEventListener {
 
             if (EnvUtils.isICEpushPresent()) {
                 UIOutputWriter icepushSetup = new UIOutputWriter() {
-                    public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+                    public void encode(ResponseWriter writer,
+                                       FacesContext context) throws
+                            IOException {
                         SessionViewManager.addView(context, viewID);
                         //need a span to make sure JSF bridge evaluates included script properly
                         writer.startElement("span", this);
@@ -389,8 +397,8 @@ public class BridgeSetup implements SystemEventListener {
                             String cloudPushId = auxUpload.getCloudPushId();
                             if (null != cloudPushId) {
                                 writer.write(
-                                        "window.addEventListener('load', function() { ice.push.parkInactivePushIds('"
-                                                + cloudPushId + "'); }, false);");
+                                                    "window.addEventListener('load', function() { ice.push.parkInactivePushIds('"
+                                                            + cloudPushId + "'); }, false);");
                             }
                         }
                         writer.endElement("script");
@@ -421,19 +429,27 @@ public class BridgeSetup implements SystemEventListener {
     }
 
     private static void addMandatoryResourceDependency(
-            FacesContext facesContext, UIViewRoot root, String compClassName,
-            Set<ResourceDependency> addedResDeps, ResourceDependency resDep, String version, Map collectedResourceComponents) {
+                                                              FacesContext facesContext,
+                                                              UIViewRoot root,
+                                                              String compClassName,
+                                                              Set<ResourceDependency> addedResDeps,
+                                                              ResourceDependency resDep,
+                                                              String version,
+                                                              Map collectedResourceComponents) {
         if (addedResDeps.contains(resDep)) {
             return;
         }
         addedResDeps.add(resDep);
         addMandatoryResource(facesContext, root, compClassName, resDep.name(),
-                resDep.library(), version, resDep.target(), collectedResourceComponents);
+                                    resDep.library(), version, resDep.target(), collectedResourceComponents);
     }
 
     private static void addMandatoryResource(FacesContext facesContext,
-                                             UIViewRoot root, String compClassName, String name,
-                                             String library, String version, String target, Map collectedResourceComponents) {
+                                             UIViewRoot root,
+                                             String compClassName, String name,
+                                             String library, String version,
+                                             String target,
+                                             Map collectedResourceComponents) {
         if (target == null || target.length() == 0) {
             target = "head";
         }
@@ -443,8 +459,8 @@ public class BridgeSetup implements SystemEventListener {
         if (rendererType == null || rendererType.length() == 0) {
             if (log.isLoggable(Level.WARNING)) {
                 log.log(Level.WARNING, "Could not determine renderer type " +
-                        "for mandatory resource, for component: " + compClassName +
-                        ". Resource name: " + name + ", library: " + library);
+                                               "for mandatory resource, for component: " + compClassName +
+                                               ". Resource name: " + name + ", library: " + library);
             }
         } else {
             UIComponent component = newResourceOutput(resourceHandler, rendererType, name, library, version);
@@ -452,7 +468,12 @@ public class BridgeSetup implements SystemEventListener {
         }
     }
 
-    public static void addOrCollectReplacingResource(FacesContext context, String name, String library, String target, UIComponent component, Map collectedResourceComponents) {
+    public static void addOrCollectReplacingResource(FacesContext context,
+                                                     String name,
+                                                     String library,
+                                                     String target,
+                                                     UIComponent component,
+                                                     Map collectedResourceComponents) {
         UIViewRoot viewRoot = context.getViewRoot();
         List<UIComponent> componentResources = viewRoot.getComponentResources(context, target);
         int position = -1;
@@ -475,11 +496,15 @@ public class BridgeSetup implements SystemEventListener {
         }
     }
 
-    private static String calculateKey(String name, String library, String target) {
+    private static String calculateKey(String name, String library,
+                                       String target) {
         return name + ":" + library + ":" + target;
     }
 
-    private static UIComponent newResourceOutput(ResourceHandler resourceHandler, String rendererType, String name, String library, String version) {
+    private static UIComponent newResourceOutput(ResourceHandler resourceHandler,
+                                                 String rendererType,
+                                                 String name, String library,
+                                                 String version) {
         if (JAVAX_FACES_RESOURCE_SCRIPT.endsWith(rendererType)) {
             //use non transient components to match the behaviour of the replaced components
             return new NonTransientJavascriptResourceOutput(resourceHandler, name, library, version);
@@ -492,7 +517,8 @@ public class BridgeSetup implements SystemEventListener {
         public ResourceOutput() {
         }
 
-        public ResourceOutput(String rendererType, String name, String library) {
+        public ResourceOutput(String rendererType, String name,
+                              String library) {
             setRendererType(rendererType);
             if (name != null && name.length() > 0) {
                 getAttributes().put("name", name);
@@ -519,7 +545,8 @@ public class BridgeSetup implements SystemEventListener {
             this.setTransient(true);
         }
 
-        public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+        public void encode(ResponseWriter writer, FacesContext context) throws
+                IOException {
             writer.startElement("script", this);
             if (outputClientID) {
                 writer.writeAttribute("id", getClientId(context), null);
@@ -542,11 +569,14 @@ public class BridgeSetup implements SystemEventListener {
         return value == null || "".equals(value) ? null : value;
     }
 
-    public static class JavascriptResourceOutput extends ReferencedScriptWriter {
+    public static class JavascriptResourceOutput extends
+            ReferencedScriptWriter {
         public JavascriptResourceOutput() {
         }
 
-        public JavascriptResourceOutput(ResourceHandler resourceHandler, String name, String library, String version) {
+        public JavascriptResourceOutput(ResourceHandler resourceHandler,
+                                        String name, String library,
+                                        String version) {
             Resource r = resourceHandler.createResource(name, fixResourceParameter(library));
             String path = r.getRequestPath();
             if (version == null) {
@@ -572,11 +602,15 @@ public class BridgeSetup implements SystemEventListener {
         }
     }
 
-    public static class NonTransientJavascriptResourceOutput extends JavascriptResourceOutput {
+    public static class NonTransientJavascriptResourceOutput extends
+            JavascriptResourceOutput {
         public NonTransientJavascriptResourceOutput() {
         }
 
-        private NonTransientJavascriptResourceOutput(ResourceHandler resourceHandler, String name, String library, String version) {
+        private NonTransientJavascriptResourceOutput(ResourceHandler resourceHandler,
+                                                     String name,
+                                                     String library,
+                                                     String version) {
             super(resourceHandler, name, library, version);
             setTransient(false);
         }
