@@ -24,12 +24,12 @@
         <ui:insert name="toolbar">
             <h:form id="toolbar" prependId="false">
                 <h:commandLink type="back"
-                               value="#{msgs[mobiNavigationModel.backDestination.titleBack]}"
+                               value="#{mmsgs[mobiNavigationModel.backDestination.titleBack]}"
                                styleClass="mobi-button mobi-button-back"
                                action="#{mobiNavigationController.navigateBack}"
                                rendered="#{mobiNavigationController.canGoBack}"/>
 
-                #{msgs[mobiNavigationModel.currentSmallViewDestination.title]}
+                #{mmsgs[mobiNavigationModel.currentSmallViewDestination.title]}
 
                 <ui:insert name="toolBarContent"/>
             </h:form>

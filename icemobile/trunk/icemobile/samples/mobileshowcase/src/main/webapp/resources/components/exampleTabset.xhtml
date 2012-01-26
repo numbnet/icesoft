@@ -55,7 +55,7 @@
                         style="width:30%"
                         rendered="#{cc.attrs.renderDescription}"
                         selected="#{cc.attrs.exampleBean.selectedExamplePath eq cc.attrs.exampleBean.descriptionPath}"
-                        value="#{msgs['example.description.label']}">
+                        value="#{mmsgs['example.description.label']}">
                    <f:setPropertyActionListener value="#{cc.attrs.exampleBean.descriptionPath}"
                                                 target="#{cc.attrs.exampleBean.selectedExamplePath}" />
                 </mobi:commandButton>
@@ -64,7 +64,7 @@
                         style="width:30%"
                         rendered="#{cc.attrs.renderExample}"
                         selected="#{cc.attrs.exampleBean.selectedExamplePath eq cc.attrs.exampleBean.examplePath}"
-                        value="#{msgs['example.example.label']}">
+                        value="#{mmsgs['example.example.label']}">
                     <f:setPropertyActionListener value="#{cc.attrs.exampleBean.examplePath}"
                                                 target="#{cc.attrs.exampleBean.selectedExamplePath}" />
                 </mobi:commandButton>
@@ -72,7 +72,7 @@
                 <mobi:commandButton style="width:30%"
                        rendered="#{cc.attrs.renderSource}"
                        selected="#{cc.attrs.exampleBean.selectedExamplePath eq cc.attrs.exampleBean.resourcesPath}"
-                       value="#{msgs['example.resources.label']}">
+                       value="#{mmsgs['example.resources.label']}">
                      <f:setPropertyActionListener value="#{cc.attrs.exampleBean.resourcesPath}"
                                                 target="#{cc.attrs.exampleBean.selectedExamplePath}" />
                 </mobi:commandButton>
