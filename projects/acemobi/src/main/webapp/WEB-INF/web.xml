@@ -66,6 +66,7 @@
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <multipart-config/>
     </servlet>
 
     <servlet>
