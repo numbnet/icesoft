@@ -297,17 +297,30 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function() {
     ice.ace.jq(selector)
             .css('cursor', 'pointer')
             .die()
-            .live('mouseover', function() {
+            .live('mouseenter', function() {
                 var element = ice.ace.jq(this);
                 if (!element.hasClass('ui-selected')) element.addClass('ui-state-hover');
-            })
-            .live('mouseout', function() {
-                var element = ice.ace.jq(this);
-                if (!element.hasClass('ui-selected')) element.removeClass('ui-state-hover');
+                else element.addClass('ui-state-highlight');
+
+                element.siblings('.ui-state-highlight, .ui-state-hover')
+                       .removeClass('ui-state-highlight ui-state-hover');
+                if (_self.isCellSelectionEnabled()) {
+                    element.parent().siblings().children('.ui-state-highlight, .ui-state-hover')
+                           .removeClass('ui-state-highlight ui-state-hover');
+                }
             })
             .live(selectEvent, function(event) {
                 if (this.nodeName == 'TR') _self.onRowClick(event, this);
                 else _self.onCellClick(event, this);
+            })
+            .closest('table').bind('mouseleave',function() {
+                var element = (_self.isCellSelectionEnabled() ? 'td' : 'tr');
+                ice.ace.jq(this).find('tbody ' + element + ".ui-state-hover" + ", " + 'tbody ' + element + ".ui-state-highlight")
+                    .removeClass('ui-state-highlight ui-state-hover');
+            }).find('thead').bind('mouseenter', function() {
+                var element = (_self.isCellSelectionEnabled() ? 'td' : 'tr');
+                ice.ace.jq(this).siblings().find(element + ".ui-state-hover" + ", " + element + ".ui-state-highlight")
+                    .removeClass('ui-state-highlight ui-state-hover');
             });
 }
 
@@ -704,27 +717,27 @@ ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, eleme
         if (this.isSingleSelection()) {
             // If single selection unselect previous selection
             if (type == 'row') {
-                element.siblings('.ui-selected').removeClass('ui-selected ui-state-highlight ui-state-hover');
+                element.siblings('.ui-selected').removeClass('ui-selected ui-state-active ui-state-highlight');
                 this.deselection = [];
                 deselectedId = this.selection[0];
                 this.deselection.push(deselectedId);
             }
             else if (type == 'cell') {
-                ice.ace.jq(this.jqId + ' tbody.ui-datatable-data td').removeClass('ui-selected ui-state-highlight ui-state-hover');
+                ice.ace.jq(this.jqId + ' tbody.ui-datatable-data td').removeClass('ui-selected ui-state-active ui-state-highlight');
             }
             // This selection will be the only member of the delta
             this.selection = [];
         }
 
         // Add selected styling
-        element.addClass('ui-state-highlight ui-selected');
+        element.addClass('ui-state-active ui-state-highlight ui-selected');
         // Filter id from deselection delta
         this.deselection = ice.ace.jq.grep(this.deselection, function(r) { return r != targetId; });
         // Add filter id to selection delta
         this.selection.push(targetId);
     } else {
         // Remove selected styling
-        element.removeClass('ui-selected ui-state-highlight ui-state-hover');
+        element.removeClass('ui-selected ui-state-active ui-state-highlight');
         // Remove from selection
         this.selection = ice.ace.jq.grep(this.selection, function(r) { return r != targetId; });
         // Add to deselection

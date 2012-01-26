@@ -1063,7 +1063,7 @@ public class DataTableRenderer extends CoreRenderer {
             String unselectableClass = unselectable ? DataTableConstants.UNSELECTABLE_ROW_CLASS : "";
             String rowStyleClass = rowIndex % 2 == 0 ? DataTableConstants.ROW_CLASS + " " + DataTableConstants.EVEN_ROW_CLASS : DataTableConstants.ROW_CLASS + " " + DataTableConstants.ODD_ROW_CLASS;
 
-            if (selected && table.getSelectionMode() != null) rowStyleClass = rowStyleClass + " ui-selected ui-state-highlight";
+            if (selected && table.getSelectionMode() != null) rowStyleClass = rowStyleClass + " ui-selected ui-state-active";
             if (userRowStyleClass != null) rowStyleClass = rowStyleClass + " " + userRowStyleClass;
 
             writer.startElement(HTML.TR_ELEM, null);
@@ -1319,7 +1319,7 @@ public class DataTableRenderer extends CoreRenderer {
 
             String expandedClass = expanded ? DataTableConstants.EXPANDED_ROW_CLASS : "";
             String alternatingClass = (rootModel.getRowIndex() % 2 == 0) ? DataTableConstants.EVEN_ROW_CLASS : DataTableConstants.ODD_ROW_CLASS;
-            String selectionClass = (selected && table.getSelectionMode() != null) ? "ui-selected ui-state-highlight" : "";
+            String selectionClass = (selected && table.getSelectionMode() != null) ? "ui-selected ui-state-active" : "";
             String unselectableClass = unselectable ? DataTableConstants.UNSELECTABLE_ROW_CLASS : "";
 
             if (visible) {
