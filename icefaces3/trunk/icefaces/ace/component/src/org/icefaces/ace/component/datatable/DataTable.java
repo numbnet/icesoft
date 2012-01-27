@@ -38,11 +38,15 @@ import org.icefaces.ace.model.table.LazyDataModel;
 import org.icefaces.ace.model.table.*;
 import org.icefaces.ace.model.table.SortCriteria;
 import org.icefaces.ace.util.ComponentUtils;
+import org.icefaces.ace.util.ScriptWriter;
 import org.icefaces.ace.util.collections.AllPredicate;
 import org.icefaces.ace.util.collections.AnyPredicate;
 import org.icefaces.ace.util.collections.Predicate;
 import org.icefaces.ace.util.collections.PropertyConstraintPredicate;
+import org.icefaces.util.JavaScriptRunner;
 
+import javax.el.ELContext;
+import javax.el.ELResolver;
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
@@ -54,6 +58,7 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PostValidateEvent;
@@ -122,7 +127,9 @@ public class DataTable extends DataTableBase {
         if (getValueHashCode() == null || superValueHash != getValueHashCode()) {
             setValueHashCode(superValueHash);
             applySorting();
-            if (getFilteredData() != null) applyFilters();
+            if (getFilteredData() != null) {
+                applyFilters();
+            }
             if (superValue != null && superValue instanceof List) {
                 List list = (List)superValue;
             }
@@ -490,6 +497,136 @@ public class DataTable extends DataTableBase {
         return (isConstantRefilter()) ? true : super.isFilterValueChanged();
     }
 
+    public enum SearchType {
+        CONTAINS, ENDS_WITH, STARTS_WITH, EXACT
+    }
+
+    public int findRow(String query, String[] fields, int startRow, SearchType searchType, boolean caseSensitive) {
+        int savedRowIndex = getRowIndex();
+        FacesContext context = FacesContext.getCurrentInstance();
+        ELContext elContext = context.getELContext();
+        ELResolver resolver = elContext.getELResolver();
+        Application app = context.getApplication();
+        String rowVar = getVar();
+
+        if (!caseSensitive) query = query.toLowerCase();
+
+        setRowIndex(startRow);
+
+        try {
+            // Contains
+            if (searchType.equals(SearchType.CONTAINS))
+                while (isRowAvailable()) {
+                    for (int i = 0; i < fields.length; i++) {
+                        String rowFieldString = resolver.getValue(elContext, getRowData(), fields[i]).toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (rowFieldString.contains(query))
+                            return getRowIndex();
+                    }
+                    setRowIndex(getRowIndex()+1);
+                }
+
+                // Ends with
+            else if (searchType.equals(SearchType.ENDS_WITH))
+                while (isRowAvailable()) {
+                    for (int i = 0; i < fields.length; i++) {
+                        String rowFieldString = resolver.getValue(elContext, getRowData(), fields[i]).toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (rowFieldString.endsWith(query))
+                            return getRowIndex();
+                    }
+                    setRowIndex(getRowIndex()+1);
+                }
+
+                // Starts with
+            else if (searchType.equals(SearchType.STARTS_WITH))
+                while (isRowAvailable()) {
+                    for (int i = 0; i < fields.length; i++) {
+                        String rowFieldString = resolver.getValue(elContext, getRowData(), fields[i]).toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (rowFieldString.startsWith(query))
+                            return getRowIndex();
+                    }
+                    setRowIndex(getRowIndex()+1);
+                }
+
+                // Exact
+            else if (searchType.equals(SearchType.EXACT))
+                while (isRowAvailable()) {
+                    for (int i = 0; i < fields.length; i++) {
+                        String rowFieldString = resolver.getValue(elContext, getRowData(), fields[i]).toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (rowFieldString.equals(query))
+                            return getRowIndex();
+                    }
+                    setRowIndex(getRowIndex()+1);
+                }
+
+            // Falls through if not found, or searchType is invalid.
+            return -1;
+        } finally {
+            setRowIndex(savedRowIndex);
+        }
+    }
+
+    public int findRow(String query, String[] fields, int startRow, SearchType searchType) {
+        return findRow(query, fields, startRow, searchType, true);
+    }
+
+    public int findRow(String query, String[] fields, int startRow) {
+        return findRow(query, fields, startRow, SearchType.CONTAINS, true);
+    }
+
+    public enum SearchEffect {
+        HIGHLIGHT, PULSATE
+    }
+
+    private void doNavigate(int row) {
+        if (row >= getRowCount())
+            throw new IndexOutOfBoundsException();
+
+        int rowsPerPage = getRows();
+        if (rowsPerPage > 0) {
+            int page = row / rowsPerPage;
+            setFirst(page * rowsPerPage);
+        }
+    }
+
+    public void navigateToRow(int row, String effect, Integer durationMillis) {
+        doNavigate(row);
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        String id = getClientId(context) + "_row_" + row;
+
+        if (effect != null)
+            JavaScriptRunner.runScript(context,
+                    "ice.ace.jq(ice.ace.escapeClientId('" + id + "'))." +
+                            "toggleClass('" + effect + "', " + durationMillis / 2+ ")." +
+                            "delay(" + durationMillis / 2 + ")." +
+                            "toggleClass('" + effect + "', " + durationMillis / 2 + ")." +
+                            "focus();");
+    }
+
+
+    public void navigateToRow(int row, SearchEffect effect) {
+        doNavigate(row);
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        String id = getClientId(context) + "_row_" + row;
+
+        if (effect != null)
+            if (effect.equals(SearchEffect.HIGHLIGHT))
+                JavaScriptRunner.runScript(context,
+                        "ice.ace.jq(ice.ace.escapeClientId('" + id + "')).effect('highlight'),focus();");
+            else if (effect.equals(SearchEffect.PULSATE))
+                JavaScriptRunner.runScript(context,
+                        "ice.ace.jq(ice.ace.escapeClientId('" + id + "')).effect('pulsate').focus();");
+    }
+
+    public void navigateToRow(int row) {
+        navigateToRow(row, SearchEffect.HIGHLIGHT);
+    }
+
 
     /*#######################################################################*/
     /*###################### Protected API ##################################*/
@@ -593,7 +730,7 @@ public class DataTable extends DataTableBase {
         for (ClientBehavior b : selectBehaviors)
             if (b instanceof AjaxBehavior) {
                 if (!((AjaxBehavior) b).isDisabled())
-                    return true;
+                    return  true;
             }
 
         List<ClientBehavior> deselectBehaviors = getClientBehaviors().get("deselect");
