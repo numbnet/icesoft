@@ -302,11 +302,18 @@ if (!window.ice.icefaces) {
                 try {
                     var source = e.source;
                     var form = formOf(source);
+                    var foundForm = form;
                     //test if form still exists -- could have been removed by the update, this element being detached from document
                     if (form && form.id) {
-                        form = document.getElementById(form.id);
+                        foundForm = document.getElementById(form.id);
                     }
-                    isICEfacesEvent = form['ice.view'] || form['ice.window'];
+                    try {
+                        isICEfacesEvent = foundForm['ice.view'] || foundForm['ice.window'];
+                    } catch (x)  {
+                    }
+                    if (!isICEfacesEvent)  {
+                        isICEfacesEvent = form['ice.view'] || form['ice.window'];
+                    }
                 } catch (ex) {
                     //ignore failure to find forms since that usually occurs after the update is applied
                 }
