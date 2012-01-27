@@ -68,8 +68,12 @@
     color: black;
 }
 
-.iceMnuPopVrt {
+.iceMnuPopVrt, .iceMnuPopVrtTopSubMenu, .iceMnuPopVrtSubMenu {
     z-index: 1005;
+}
+
+.iceMnuPopVrtTopSubMenu, .iceMnuPopVrtItem {
+    width: 200px;
 }
 
 .icePnlClpsblColpsdHdr h2 {
