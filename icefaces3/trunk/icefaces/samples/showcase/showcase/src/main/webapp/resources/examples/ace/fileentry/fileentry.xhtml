@@ -57,7 +57,7 @@
                                                     required="true" 
                                                     requiredMessage="The file is required to submit this form." 
                                                     useOriginalFilename="true" 
-                                                    useSessionSubdir="false"/>
+                                                    useSessionSubdir="true"/>
                         </ace:panel>
                     </h:panelGrid>
                     
@@ -76,6 +76,14 @@
                 </h:panelGrid>
                 <hr/>
                 <br/>
+                <h:dataTable value="#{fileEntry.fileData}" var="fileDataVal">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Upload results"/>
+                        </f:facet>
+                        <h:outputText value="#{fileDataVal}"/>
+                    </h:column>
+                </h:dataTable>
                 <h:messages layout="table" for="example-form:file-entry"/>
             </ace:panel>
         </h:form>
