@@ -17,13 +17,12 @@
 package org.icefaces.samples.showcase.example.compat.selector;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
-import org.icefaces.samples.showcase.example.compat.dataTable.*;
+import org.icefaces.samples.showcase.example.ace.dataTable.utilityClasses.VehicleGenerator;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -72,23 +71,19 @@ public class SelectorBean extends ComponentExampleImpl<SelectorBean> implements 
 	
     public static final String BEAN_NAME = "selector";
 
-    private List<SelectableCar> data = wrapList(DataTableData.CARS);
+    private List<SelectableCar> data;
 
     public SelectorBean() {
-            super(SelectorBean.class);
+        super(SelectorBean.class);
+        initializeInstanceVariables();
     }
 
     public List<SelectableCar> getData() { return data; }
-
     public void setData(List<SelectableCar> data) { this.data = data; }
-
-    private List<SelectableCar> wrapList(List<Car> toWrap) {
-        List<SelectableCar> toReturn = new ArrayList<SelectableCar>(toWrap.size());
-
-        for (Car currentItem : toWrap) {
-            toReturn.add(new SelectableCar(currentItem));
-        }
-
-        return toReturn;
+    
+    private void initializeInstanceVariables()
+    {
+        VehicleGenerator generator = new VehicleGenerator();
+        this.data = generator.getRandomSelectableCars(10);
     }
 }

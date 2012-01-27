@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.*;
 import org.icefaces.samples.showcase.example.compat.dataTable.Car;
+import org.icefaces.samples.showcase.example.compat.selector.SelectableCar;
 
 
 public class VehicleGenerator implements Serializable
@@ -54,6 +55,25 @@ public class VehicleGenerator implements Serializable
         
         return randomCar;
     }
+    
+    public SelectableCar getRandomSelectableCar()
+    {
+        SelectableCar randomSelectableCar = new SelectableCar(getRandomCar());
+        return randomSelectableCar;
+    }
+    
+    public ArrayList<SelectableCar> getRandomSelectableCars(int quantity)
+    {
+        ArrayList<SelectableCar> listWithRandomCars = new ArrayList<SelectableCar>(quantity);
+        for (int i = 0; i < quantity; i++) 
+        {
+            SelectableCar randomCar = getRandomSelectableCar();
+            listWithRandomCars.add(randomCar);
+        }
+        return listWithRandomCars;
+    }
+    
+    
     
     public ArrayList<Car> getRandomCars(int quantity)
     {

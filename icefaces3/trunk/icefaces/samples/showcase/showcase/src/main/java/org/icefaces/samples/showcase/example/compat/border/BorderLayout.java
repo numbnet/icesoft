@@ -18,6 +18,7 @@ package org.icefaces.samples.showcase.example.compat.border;
 
 import java.io.Serializable;
 
+import java.util.LinkedHashMap;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -51,22 +52,42 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class BorderLayout extends ComponentExampleImpl<BorderLayout> implements Serializable {
 	
-	public static final String BEAN_NAME = "borderLayout";
-	
-	private String[] availableLayouts = new String[] {
-	    "Default",
-	    "Center Only",
-	    "Horizontal Reverse", "Vertical Reverse",
-	    "Hide North", "Hide South", "Hide East", "Hide West"
-	};
-	private String layout = availableLayouts[0];
-	
-	public BorderLayout() {
-		super(BorderLayout.class);
-	}
-	
-	public String[] getAvailableLayouts() { return availableLayouts; }
-	public String getLayout() { return layout; }
-	
-	public void setLayout(String layout) { this.layout = layout; }
+    public static final String BEAN_NAME = "borderLayout";
+    private LinkedHashMap <String, String> availableLayouts;
+    private String layout;
+
+    public BorderLayout() {
+                super(BorderLayout.class);
+                initializeDefaultInstanceVariables();
+    }
+
+    private void initializeDefaultInstanceVariables() {
+        this.availableLayouts = new LinkedHashMap <String, String>();
+        
+        availableLayouts.put("Default","default");
+        availableLayouts.put("Center Only", "center only");
+        availableLayouts.put("Horizontal Reverse","horizontal reverse");
+        availableLayouts.put("Vertical Reverse", "vertical reverse");
+        availableLayouts.put("Hide North", "hide north");
+        availableLayouts.put("Hide South", "hide south");
+        availableLayouts.put("Hide East", "hide east");
+        availableLayouts.put("Hide West","hide west");
+        layout = availableLayouts.get("Default");
+    }
+
+    public LinkedHashMap<String, String> getAvailableLayouts() {
+        return availableLayouts;
+    }
+
+    public void setAvailableLayouts(LinkedHashMap<String, String> availableLayouts) {
+        this.availableLayouts = availableLayouts;
+    }
+
+    public String getLayout() {
+        return layout;
+    }
+
+    public void setLayout(String layout) {
+        this.layout = layout;
+    }
 }
