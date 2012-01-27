@@ -158,6 +158,28 @@
     color:#009933;
 }
 
+.tooltipBoxStyle
+{
+    text-align: center;
+    font-weight: bold;
+    height: 50px;
+    width: 120px;
+}
+
+.tooltipTargetStyle
+{
+    border-collapse: collapse;
+    font-weight: bold;
+    border-style: solid;
+    border-color: #000000;
+    border-width: 2px;
+}
+
+.tooltipTargetStyle:hover
+{
+    border-color: #009933;
+}
+
 span#examplePanel_menu.ui-icon.ui-icon-gear{
     background: url("#{resource['css/images/infoIcon.png']}") no-repeat;
 }

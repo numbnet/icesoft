@@ -115,7 +115,7 @@ public class SourceCodeLoaderConnection implements Map, Serializable{
         }
         SOURCE_SERVLET_URL += "sourcecodeStream.html?path=";
         
-        logger.info("Reading source code from url [" + SOURCE_SERVLET_URL + "].");
+        //logger.info("Reading source code from url [" + SOURCE_SERVLET_URL + "].");
     }
 
     /**

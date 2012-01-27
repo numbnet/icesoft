@@ -66,13 +66,13 @@
                             #{car.mpg}
                         </ace:column>
                         <ace:column headerText="Cost" sortBy="#{car.cost}">
-                            <ice:outputText value="#{car.cost}">
+                            <h:outputText value="#{car.cost}">
                                 <f:convertNumber type="currency"
                                                  currencySymbol="$"
                                                  groupingUsed="true"
                                                  minFractionDigits="2"
                                                  maxFractionDigits="2"/>
-                            </ice:outputText>
+                            </h:outputText>
                         </ace:column>
             </ace:dataTable>
             

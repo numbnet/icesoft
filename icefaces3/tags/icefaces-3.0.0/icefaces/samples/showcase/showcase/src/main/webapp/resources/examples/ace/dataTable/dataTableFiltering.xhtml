@@ -56,16 +56,13 @@
                     <h:outputText value="#{car.mpg}"/>
                 </ace:column>
                 <ace:column headerText="Cost" filterBy="#{car.cost}" filterMatchMode="contains">
-                    <f:facet name="header">
-                       Cost
-                    </f:facet>
-                    <ice:outputText value="#{car.cost}">
+                    <h:outputText value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
                                          groupingUsed="true"
                                          minFractionDigits="2"
                                          maxFractionDigits="2"/>
-                    </ice:outputText>
+                    </h:outputText>
                 </ace:column>
             </ace:dataTable>
         </h:form>
