@@ -18,10 +18,12 @@ package org.icefaces.impl.renderkit;
 
 import org.icefaces.application.ProductInfo;
 import org.icefaces.impl.context.DOMResponseWriter;
-import org.icefaces.impl.event.MainEventListener;
-import org.icefaces.util.EnvUtils;
-import org.icefaces.impl.util.FormEndRendering;
 import org.icefaces.impl.event.BridgeSetup;
+import org.icefaces.impl.event.MainEventListener;
+import org.icefaces.impl.util.FormEndRendering;
+import org.icefaces.render.MandatoryResourceComponent;
+import org.icefaces.render.SpecialResourceComponent;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -31,15 +33,10 @@ import javax.faces.render.RenderKitWrapper;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.icefaces.render.ExternalScript;
-import org.icefaces.render.MandatoryResourceComponent;
-import org.icefaces.render.SpecialResourceComponent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DOMRenderKit extends RenderKitWrapper {
     private static Logger log = Logger.getLogger(DOMRenderKit.class.getName());
@@ -48,15 +45,14 @@ public class DOMRenderKit extends RenderKitWrapper {
     private boolean deltaSubmit;
     private Renderer modifiedMessageRenderer = null;
     private static final String MESSAGE = "javax.faces.Message";
-    private static final String MESSAGE_CLASS = 
+    private static final String MESSAGE_CLASS =
             "org.icefaces.impl.renderkit.html_basic.MessageRenderer";
     private Renderer modifiedMessagesRenderer = null;
     private static final String MESSAGES = "javax.faces.Messages";
-    private static final String MESSAGES_CLASS = 
+    private static final String MESSAGES_CLASS =
             "org.icefaces.impl.renderkit.html_basic.MessagesRenderer";
-    private ArrayList<ExternalScript> customScriptRenderers = new ArrayList<ExternalScript>();
     private ArrayList<MandatoryResourceComponent> mandatoryResourceComponents = new ArrayList<MandatoryResourceComponent>();
-	private ArrayList<String> specialResourceComponents = new ArrayList<String>();
+    private ArrayList<String> specialResourceComponents = new ArrayList<String>();
 
     //Announce ICEfaces
     static {
@@ -90,21 +86,16 @@ public class DOMRenderKit extends RenderKitWrapper {
     }
 
     /**
-     * Check if renderer has an annotation for adding custom scripts 
+     * Check if renderer has an annotation for adding custom scripts
+     *
      * @param family
      * @param rendererType
      * @param r
      */
     public void addRenderer(String family, String rendererType, Renderer r) {
         Class clazz = r.getClass();
-        ExternalScript ec = (ExternalScript) clazz.getAnnotation(ExternalScript.class);
-        if (ec != null) {
-            if (ec.scriptURL() != null) {
-                customScriptRenderers.add(ec);
-            }
-        }
         MandatoryResourceComponent mrc = (MandatoryResourceComponent)
-            clazz.getAnnotation(MandatoryResourceComponent.class);
+                clazz.getAnnotation(MandatoryResourceComponent.class);
         if (mrc != null) {
             String compClassName = mrc.value();
             if (compClassName != null && compClassName.length() > 0) {
@@ -113,9 +104,9 @@ public class DOMRenderKit extends RenderKitWrapper {
                 }
             }
         }
-		
+
         SpecialResourceComponent srd = (SpecialResourceComponent)
-            clazz.getAnnotation(SpecialResourceComponent.class);
+                clazz.getAnnotation(SpecialResourceComponent.class);
         if (srd != null) {
             String compClassName = srd.value();
             if (compClassName != null && compClassName.length() > 0) {
@@ -124,10 +115,6 @@ public class DOMRenderKit extends RenderKitWrapper {
                 }
             }
         }
-		
-//        if (!property.methodExpressionArgument().equals(Property.Null)) {
-//					propertyValues.methodExpressionArgument = property.methodExpressionArgument();
-//				}
 
         Renderer renderer = "javax.faces.Form".equals(family) ? new FormBoost(r) : r;
         if ("javax.faces.Message".equals(family) && "javax.faces.Message".equals(rendererType)) {
@@ -138,7 +125,7 @@ public class DOMRenderKit extends RenderKitWrapper {
         super.addRenderer(family, rendererType, renderer);
     }
 
-    public Renderer getRenderer(String family, String type)  {
+    public Renderer getRenderer(String family, String type) {
         Renderer renderer = delegate.getRenderer(family, type);
         if (renderer == null) {
             return renderer;
@@ -158,7 +145,7 @@ public class DOMRenderKit extends RenderKitWrapper {
     public ResponseWriter createResponseWriter(Writer writer, String contentTypeList, String encoding) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ResponseWriter parentWriter = delegate.createResponseWriter(writer, contentTypeList, encoding);
-        if (facesContext.getPartialViewContext().isPartialRequest())  {
+        if (facesContext.getPartialViewContext().isPartialRequest()) {
             return parentWriter;
         }
         if (!EnvUtils.isICEfacesView(facesContext)) {
@@ -168,14 +155,10 @@ public class DOMRenderKit extends RenderKitWrapper {
         return new DOMResponseWriter(parentWriter, parentWriter.getCharacterEncoding(), parentWriter.getContentType());
     }
 
-    public List<ExternalScript> getCustomRenderScripts() {
-        return customScriptRenderers;
-    }
-    
     public List<MandatoryResourceComponent> getMandatoryResourceComponents() {
         return mandatoryResourceComponents;
     }
-	
+
     public List<String> getSpecialResourceComponents() {
         return specialResourceComponents;
     }
@@ -186,8 +169,8 @@ public class DOMRenderKit extends RenderKitWrapper {
         }
 
         public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        
-            if (component instanceof BridgeSetup.ShortIdForm)  {
+
+            if (component instanceof BridgeSetup.ShortIdForm) {
                 //do not augment BridgeSetup form
                 super.encodeEnd(context, component);
                 return;
@@ -213,12 +196,12 @@ public class DOMRenderKit extends RenderKitWrapper {
                 if (!EnvUtils.hasHeadAndBodyComponents(context)) {
                     BridgeSetup bridgeSetup = BridgeSetup.getBridgeSetup(context);
                     List<UIComponent> bodyResources = bridgeSetup.getBodyResources(context);
-                    for (UIComponent bodyResource : bodyResources)  {
+                    for (UIComponent bodyResource : bodyResources) {
                         bodyResource.encodeBegin(context);
                         bodyResource.encodeEnd(context);
                     }
                 }
-    
+
             } else {
                 super.encodeEnd(context, component);
             }
