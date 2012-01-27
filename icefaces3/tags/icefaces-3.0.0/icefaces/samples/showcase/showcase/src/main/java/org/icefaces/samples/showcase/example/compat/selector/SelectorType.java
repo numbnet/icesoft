@@ -18,11 +18,13 @@ package org.icefaces.samples.showcase.example.compat.selector;
 
 import java.io.Serializable;
 
+import java.util.List;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
+import org.icefaces.samples.showcase.example.ace.dataTable.utilityClasses.VehicleGenerator;
 import org.icefaces.samples.showcase.util.FacesUtils;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
@@ -59,25 +61,14 @@ public class SelectorType extends ComponentExampleImpl<SelectorType> implements 
     private static final String TYPE_SINGLE = "single";
     private static final String TYPE_MULTIPLE = "multiple";
     private static final String TYPE_ENHMULTIPLE = "enhmultiple";
-
-    private SelectItem[] availableTypes = new SelectItem[] {
-        new SelectItem(TYPE_SINGLE, "Single Only"),
-        new SelectItem(TYPE_MULTIPLE, "Multiple Allowed"),
-        new SelectItem(TYPE_ENHMULTIPLE, "Enhanced Multiple")
-    };
-    private String type = TYPE_MULTIPLE;
+    private List<SelectableCar> data;
+    private SelectItem[] availableTypes;
+    private String type;
 
     public SelectorType() {
             super(SelectorType.class);
+            initializeInstanceVariables();
     }
-
-    public SelectItem[] getAvailableTypes() { return availableTypes; }
-    public String getType() { return type; }
-    public boolean isSingle() { return TYPE_SINGLE.equals(type); }
-    public boolean isMultiple() { return TYPE_MULTIPLE.equals(type); }
-    public boolean isEnhMultiple() { return TYPE_ENHMULTIPLE.equals(type); }
-
-    public void setType(String type) { this.type = type; }
 
     public void typeChanged(ValueChangeEvent event) {
         SelectorBean dataBean =
@@ -89,4 +80,28 @@ public class SelectorType extends ComponentExampleImpl<SelectorType> implements 
             currentItem.setSelected(false);
         }
     }
+    
+    private void initializeInstanceVariables()
+    {
+        VehicleGenerator generator = new VehicleGenerator();
+        this.data = generator.getRandomSelectableCars(10);
+        
+        this.availableTypes = new SelectItem[] 
+        {
+            new SelectItem(TYPE_SINGLE, "Single Only"),
+            new SelectItem(TYPE_MULTIPLE, "Multiple Allowed"),
+            new SelectItem(TYPE_ENHMULTIPLE, "Enhanced Multiple")
+        };
+        
+        this.type = TYPE_MULTIPLE;
+    }
+    
+    public SelectItem[] getAvailableTypes() { return availableTypes; }
+    public String getType() { return type; }
+    public boolean isSingle() { return TYPE_SINGLE.equals(type); }
+    public boolean isMultiple() { return TYPE_MULTIPLE.equals(type); }
+    public boolean isEnhMultiple() { return TYPE_ENHMULTIPLE.equals(type); }
+    public void setType(String type) { this.type = type; }
+    public List<SelectableCar> getData() { return data; }
+    public void setData(List<SelectableCar> data) { this.data = data; }
 }

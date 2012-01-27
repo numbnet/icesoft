@@ -341,14 +341,16 @@ public class FacesUtils implements Serializable{
                     toReturn.append(delimiter);
                 }
             }
-            
-            
-            
             return toReturn.toString();
         }
-        
-        // Otherwise return a single item without any delimiters
-        return base[0];
+        //return a single item without any delimiters
+        else if(base.length == 1)
+            return  base[0];
+        //if base is empty - return empty string
+        else
+        {
+            return "";
+        }
     }
     
 	/**

@@ -59,9 +59,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 public class DragDropEvents extends ComponentExampleImpl<DragDropEvents> implements Serializable {
 	
 	public static final String BEAN_NAME = "dragdropEvents";
-	
 	private static final int ROW_SIZE = 10;
-	
 	private String[] availableMasks = new String[] {
 	    "dragging",
 	    "drag_cancel",
@@ -69,7 +67,6 @@ public class DragDropEvents extends ComponentExampleImpl<DragDropEvents> impleme
 	    "hover_start",
 	    "hover_end"
 	};
-	
 	private List<String> eventLog = new ArrayList<String>(ROW_SIZE);
 	private String[] dragMaskFrom = new String[] {
 	    "dragging",
@@ -97,28 +94,11 @@ public class DragDropEvents extends ComponentExampleImpl<DragDropEvents> impleme
 	};
 	
 	public DragDropEvents() {
-		super(DragDropEvents.class);
+                        super(DragDropEvents.class);
 	}
 	
-	public int getRowSize() { return ROW_SIZE; }
-	public String[] getAvailableMasks() { return availableMasks; }
-	public List<String> getEventLog() { return eventLog; }
-	public String[] getDragMaskFrom() { return dragMaskFrom; }
-	public String[] getDropMaskFrom() { return dropMaskFrom; }
-	public String[] getDragMaskTo() { return dragMaskTo; }
-	public String[] getDropMaskTo() { return dropMaskTo; }
-	public String getDragMaskFromString() { return FacesUtils.join(dragMaskFrom); }
-	public String getDropMaskFromString() { return FacesUtils.join(dropMaskFrom); }
-	public String getDragMaskToString() { return FacesUtils.join(dragMaskTo); }
-	public String getDropMaskToString() { return FacesUtils.join(dropMaskTo); }
-	
-	public void setEventLog(List<String> eventLog) { this.eventLog = eventLog; }
-	public void setDragMaskFrom(String[] dragMaskFrom) { this.dragMaskFrom = dragMaskFrom; }
-	public void setDropMaskFrom(String[] dropMaskFrom) { this.dropMaskFrom = dropMaskFrom; }
-	public void setDragMaskTo(String[] dragMaskTo) { this.dragMaskTo = dragMaskTo; }
-	public void setDropMaskTo(String[] dropMaskTo) { this.dropMaskTo = dragMaskTo; }
-	
-	private void addEvent(DndEvent event, String from) {
+	private void addEvent(DndEvent event, String from) 
+                {
 	    StringBuilder sb = new StringBuilder(40);
 	    sb.append("Fired event \"");
 	    sb.append(DndEvent.getEventName(event.getEventType()));
@@ -143,8 +123,25 @@ public class DragDropEvents extends ComponentExampleImpl<DragDropEvents> impleme
 	    addEvent(event, "Drop");
 	    
 	    // Propogate the event to the bean, since we may need to act upon the event
-        DragDropBean bean =
-            (DragDropBean)FacesUtils.getManagedBean(DragDropBean.BEAN_NAME);
-        bean.dropListener(event);
+                    DragDropBean bean = (DragDropBean)FacesUtils.getManagedBean(DragDropBean.BEAN_NAME);
+                    bean.dropListener(event);
 	}
+        
+                public int getRowSize() { return ROW_SIZE; }
+	public String[] getAvailableMasks() { return availableMasks; }
+	public List<String> getEventLog() { return eventLog; }
+	public String[] getDragMaskFrom() { return dragMaskFrom; }
+	public String[] getDropMaskFrom() { return dropMaskFrom; }
+	public String[] getDragMaskTo() { return dragMaskTo; }
+	public String[] getDropMaskTo() { return dropMaskTo; }
+	public String getDragMaskFromString() { return FacesUtils.join(dragMaskFrom); }
+	public String getDropMaskFromString() { return FacesUtils.join(dropMaskFrom); }
+	public String getDragMaskToString() { return FacesUtils.join(dragMaskTo); }
+	public String getDropMaskToString() { return FacesUtils.join(dropMaskTo); }
+	
+	public void setEventLog(List<String> eventLog) { this.eventLog = eventLog; }
+	public void setDragMaskFrom(String[] dragMaskFrom) { this.dragMaskFrom = dragMaskFrom; }
+	public void setDropMaskFrom(String[] dropMaskFrom) { this.dropMaskFrom = dropMaskFrom; }
+	public void setDragMaskTo(String[] dragMaskTo) { this.dragMaskTo = dragMaskTo; }
+	public void setDropMaskTo(String[] dropMaskTo) { this.dropMaskTo = dragMaskTo; }
 }
