@@ -31,7 +31,7 @@ public class GMapResourceHandler extends ResourceHandlerWrapper {
     }
 
     public Resource createResource(String resourceName, String libraryName, String contentType) {
-        if ("gmap/gmap.js".equals(resourceName)) {
+        if ("gmap/gmap.js".equals(resourceName) && gmapKey != null) {
             Resource resource = super.createResource(resourceName, libraryName, contentType);
             //change returned resource to point to a different URI
             return new URIResource(resource, "http://maps.google.com/maps?file=api&v=2&key=" + gmapKey);
