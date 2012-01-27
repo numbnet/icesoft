@@ -40,12 +40,12 @@ import org.icefaces.samples.showcase.metadata.context.ResourceRootPath;
                     "/example/ace/overview/AceSuiteOverviewBean.java"),
             //WIKI documentation
             @ExampleResource(type = ResourceType.wiki,
-                    title="ACE Suite WIKI",
+                    title="ACE Components WIKI",
                     resource = ResourceRootPath.FOR_WIKI+"ICEfaces+Advanced+Components"),
             //TLD Documentation
             @ExampleResource(type = ResourceType.tld,
-                    title="ACE Suite TLD",
-                    resource = ResourceRootPath.FOR_ACE_TLD + "tld-summary.html")
+                    title="ACE Components TLD",
+                    resource = ResourceRootPath.FOR_ACE_TLD)
         }
 )
 @Menu(
