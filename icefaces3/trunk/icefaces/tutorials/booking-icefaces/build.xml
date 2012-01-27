@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright 2004-2012 ICEsoft Technologies Canada Corp.
   ~
@@ -15,22 +14,19 @@
   ~ governing permissions and limitations under the License.
   -->
 
-<project name="swf-booking-faces">
+<project name="swf-booking-icefaces" default="servlet-profile">
 
-	<property name="source.version" value="1.5"/>
-	         
-	
-	<property name="ivy.cache.dir" value="${basedir}/../../ivy-cache"/>
-	<property name="integration.repo.dir" value="${basedir}/../../integration-repo"/>
-	<property name="ivy.settings.file" value="${basedir}/../../build-spring-webflow/ivysettings.xml"/>
-
-	<property file="${basedir}/../../build.properties"/>
-	<import file="${basedir}/../../spring-build/war/default.xml"/>
-
-	<target name="publish"/>
-
-	<target name="publish-maven-central"/>
-
-	<target name="install-maven-central"/>
-
+    <property name="lib.compile.compat.includes" value="commons-beanutils.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
+    <property name="lib.distribute.compat.includes" value="commons-beanutils.jar jxl.jar krysalis-jCharts-1.0.0-alpha-1.jar"/>
+    <property name="lib.compile.application.includes" value="*.jar"/>
+    <property name="lib.distribute.application.includes" value="*.jar"/>
+    
+    <property name="compat" value="true" />
+    <property name="ace" value="true" />
+    <property name="includeSrc" value="true" />
+    
+    <property file="../build/build.properties"/>
+    <property file="./build.properties"/>
+    
+    <import file="./common.xml" />
 </project>
