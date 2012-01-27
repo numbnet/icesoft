@@ -24,6 +24,8 @@
 	<var name="hotelModel" class="org.springframework.webflow.samples.booking.HotelModelBean" />
 	<var name="currentUser" class="org.springframework.webflow.samples.booking.User" />
     <var name="selectedHotel" class="org.springframework.webflow.samples.booking.Hotel" />
+
+
 	
 	<view-state id="enterSearchCriteria" >
 		<on-render>
@@ -35,7 +37,7 @@
 		</transition>
 	</view-state>
 	
-	<view-state id="reviewHotels" redirect="true">
+	<view-state id="reviewHotels" >
 		<on-entry>
 			<set name="viewScope.hotels" value="hotelModel.getHotels(searchCriteria,bookingService)" />
 		</on-entry>
@@ -45,12 +47,12 @@
 		<transition on="changeSearch" to="enterSearchCriteria" />
 	</view-state>
 	
-	<view-state id="reviewHotel" redirect="true">
+	<view-state id="reviewHotel">
 		<transition on="book" to="bookHotel" />
 		<transition on="cancel" to="reviewHotels" />
 	</view-state>
 
-	<subflow-state id="bookHotel" subflow="booking">
+	<subflow-state id="bookHotel" subflow="booking" >
 		<input name="hotelId" value="hotel.id" />
 		<transition on="bookingConfirmed" to="finish" />
 		<transition on="bookingCancelled" to="enterSearchCriteria" />
