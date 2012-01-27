@@ -339,6 +339,15 @@ public class Utils {
     }
 
     /**
+     * Test for Internet Explorerer
+     * @return true if client is Internet Explorer
+     */
+    public static boolean isIE() {
+        String userAgent = SessionContext.getSessionContext().getUserAgent();
+        return userAgent.contains("MSIE");
+    }
+
+    /**
      * Test for iOS
      * @return true if client is iOS
      */
