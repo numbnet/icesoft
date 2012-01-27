@@ -45,7 +45,7 @@ import org.icefaces.samples.showcase.metadata.context.ResourceRootPath;
             //TLD Documentation
             @ExampleResource(type = ResourceType.tld,
                     title="ACE Components TLD",
-                    resource = ResourceRootPath.FOR_ACE_TLD)
+                    resource = ResourceRootPath.FOR_ACE_TLD + "tld-summary.html")
         }
 )
 @Menu(
