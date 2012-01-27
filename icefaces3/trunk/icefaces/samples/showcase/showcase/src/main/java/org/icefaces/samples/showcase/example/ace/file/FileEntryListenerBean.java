@@ -16,19 +16,22 @@
 
 package org.icefaces.samples.showcase.example.ace.file;
 
+import org.icefaces.ace.component.fileentry.FileEntryStatus;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import org.icefaces.ace.component.fileentry.FileEntry;
 import org.icefaces.ace.component.fileentry.FileEntryEvent;
 import org.icefaces.ace.component.fileentry.FileEntryResults;
-import org.icefaces.samples.showcase.util.FacesUtils;
 
 @ComponentExample(
         parent = FileEntryBean.BEAN_NAME,
@@ -61,19 +64,24 @@ public class FileEntryListenerBean extends ComponentExampleImpl<FileEntryListene
     }
     
     // Invalidate and delete any files not named test.txt
-    public void customValidator(FileEntryEvent entryEvent)
-    {
+    public void customValidator(FileEntryEvent entryEvent) {
         FileEntryResults results = ((FileEntry)entryEvent.getComponent()).getResults();
-        for (FileEntryResults.FileInfo file : results.getFiles()) 
-        {
-            if(!file.getContentType().equals("application/pdf"))
-            {
-                file.updateStatus(file.getStatus(), true, true);
-                FacesUtils.addErrorMessage("example-form:fileEntry","Only PDF files can be uploaded. Your upload has been cancelled.");
-            }
-            else
-            {
-                FacesUtils.addInfoMessage("example-form:fileEntry", "Your file has been uploaded");
+        for (FileEntryResults.FileInfo file : results.getFiles()) {
+            if (file.isSaved()) {
+                if (!file.getContentType().equals("application/pdf")){
+                    file.updateStatus(new FileEntryStatus() {
+                            public boolean isSuccess() {
+                                return false;
+                            }
+                            public FacesMessage getFacesMessage(
+                                    FacesContext facesContext, UIComponent fileEntry, FileEntryResults.FileInfo fi) {
+                                return new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                    "Only PDF files can be uploaded. Your upload has been cancelled.",
+                                    "Only PDF files can be uploaded. Your upload has been cancelled.");
+                            }
+                        },
+                        true, true);
+                }
             }
         }
     }
