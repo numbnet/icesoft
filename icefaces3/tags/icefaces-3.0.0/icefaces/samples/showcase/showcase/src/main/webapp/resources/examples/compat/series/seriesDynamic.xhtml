@@ -33,47 +33,6 @@
     
     <ui:define name="example">
         <h:form>
-            <h:commandButton value="Restore Base Employees"
-                             actionListener="#{seriesDynamic.restoreDefault}"
-                             immediate="true"/>
-            <br/>
-        
-            <ice:panelSeries value="#{seriesData.employees}"
-                             var="employee"
-                             varStatus="status">
-                 <h:panelGrid columns="2" cellspacing="0" cellpadding="3"
-                              columnClasses="col25,col75"
-                              styleClass="employeeTable"
-                              style="float: left;">
-                    <f:facet name="header">
-                        Employee Record
-                    </f:facet>
-                    <h:outputLabel for="id" value="ID:"/>
-                    <h:outputText id="id" value="#{employee.id}"/>
-                    
-                    <h:outputLabel for="name" value="Name:"/>
-                    <h:outputText id="name" value="#{employee.firstName} #{employee.lastName}"/>
-                    
-                    <h:outputLabel for="address" value="Address:"/>
-                    <h:outputText id="address" value="#{employee.address}"/>
-                    
-                    <h:outputLabel for="salary" value="Salary:"/>
-                    <h:outputText id="salary" value="#{employee.salary}">
-                        <f:convertNumber type="currency" currencySymbol="$"/>
-                    </h:outputText>
-                    
-                    <h:outputLabel for="control" value="Manage:"/>
-                    <h:commandButton id="control" value="Delete"
-                                     action="#{seriesDynamic.removeItem}"
-                                     immediate="true">
-                         <f:setPropertyActionListener target="#{seriesDynamic.toRemove}"
-                                                      value="#{status.index}"/>
-                    </h:commandButton>
-                 </h:panelGrid>
-            </ice:panelSeries>
-        </h:form>
-        <br/>
-        <h:form>
              <h:panelGrid columns="3" cellspacing="0" cellpadding="3"
                           columnClasses="col25,col50,col25"
                           styleClass="employeeTable"
@@ -127,5 +86,48 @@
             </h:panelGrid>
         </h:form>
         
+        <h:form>
+            <br/>
+            <h:commandButton value="Restore Base Employees"
+                             actionListener="#{seriesDynamic.restoreDefault}"
+                             immediate="true"/>
+            <br/>
+            <br/>
+        
+            <ice:panelSeries value="#{seriesData.employees}"
+                             var="employee"
+                             varStatus="status" 
+                             style="display: inline-table;">
+                 <h:panelGrid columns="2" cellspacing="0" cellpadding="3"
+                              columnClasses="col25,col75"
+                              styleClass="employeeTable"
+                              style="float: left; display: inline-table; width: 315px;">
+                    <f:facet name="header">
+                        Employee Record
+                    </f:facet>
+                    <h:outputLabel for="id" value="ID:"/>
+                    <h:outputText id="id" value="#{employee.id}"/>
+                    
+                    <h:outputLabel for="name" value="Name:"/>
+                    <h:outputText id="name" value="#{employee.firstName} #{employee.lastName}"/>
+                    
+                    <h:outputLabel for="address" value="Address:"/>
+                    <h:outputText id="address" value="#{employee.address}"/>
+                    
+                    <h:outputLabel for="salary" value="Salary:"/>
+                    <h:outputText id="salary" value="#{employee.salary}">
+                        <f:convertNumber type="currency" currencySymbol="$"/>
+                    </h:outputText>
+                    
+                    <h:outputLabel for="control" value="Manage:"/>
+                    <h:commandButton id="control" value="Delete"
+                                     action="#{seriesDynamic.removeItem}"
+                                     immediate="true">
+                         <f:setPropertyActionListener target="#{seriesDynamic.toRemove}"
+                                                      value="#{status.index}"/>
+                    </h:commandButton>
+                 </h:panelGrid>
+            </ice:panelSeries>
+        </h:form>
     </ui:define>
 </ui:composition>

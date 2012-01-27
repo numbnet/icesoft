@@ -53,27 +53,34 @@ public class DividerContent extends ComponentExampleImpl<DividerContent> impleme
 	
 	public static final String BEAN_NAME = "dividerContent";
 	
-	private String[] availableUrls = new String[] {
-	    "http://www.icefaces.org/",
-	    "http://wiki.icefaces.org/",
-	    "http://auctionmonitor.icefaces.org/",
-	    "http://memorygame.icefaces.org/",
-	    "http://www.google.com/",
-	    "http://www.yahoo.com/",
-	    "http://www.bing.com/",
-	    "http://www.ask.com/"
-	};
-	private String leftUrl = availableUrls[4];
-	private String rightUrl = availableUrls[7];
+	private String[] availableUrls;
+	private String leftUrl;
+	private String rightUrl;
 	
 	public DividerContent() {
-		super(DividerContent.class);
+                    super(DividerContent.class);
+                    initializeInstanceVariables();
 	}
 	
+        
 	public String[] getAvailableUrls() { return availableUrls; }
 	public String getLeftUrl() { return leftUrl; }
 	public String getRightUrl() { return rightUrl; }
 	
 	public void setLeftUrl(String leftUrl) { this.leftUrl = leftUrl; }
 	public void setRightUrl(String rightUrl) { this.rightUrl = rightUrl; }
+
+    private void initializeInstanceVariables() {
+        this.availableUrls = new String[] {
+	    "http://www.icefaces.org/",
+	    "http://wiki.icefaces.org/",
+	    "http://auctionmonitor.icefaces.org/",
+	    "http://memorygame.icefaces.org/",
+	    "http://www.bing.com/",
+	    "http://www.ask.com/"
+	};
+        this.leftUrl = availableUrls[6];
+        this.rightUrl = availableUrls[7];
+        
+    }
 }

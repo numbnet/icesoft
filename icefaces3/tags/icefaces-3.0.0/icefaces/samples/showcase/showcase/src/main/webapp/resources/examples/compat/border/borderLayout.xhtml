@@ -37,9 +37,11 @@
             <icecore:singleSubmit/>
             <h:panelGrid columns="2">
                 <h:outputLabel for="layoutIn" value="Value of Layout Attribute:"/>
-                <h:selectOneMenu id="layoutIn" value="#{borderLayout.layout}"
-                                 required="true">
-                     <f:selectItems value="#{borderLayout.availableLayouts}"/>
+                <h:selectOneMenu id="layoutIn" value="#{borderLayout.layout}" required="true">
+                    <f:selectItems value="#{borderLayout.availableLayouts}"
+                                           var="option"
+                                           itemValue="#{option.value}"
+                                           itemLabel="#{option.key}"/>
                 </h:selectOneMenu>
             </h:panelGrid>
         </h:form>
