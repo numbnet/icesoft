@@ -496,15 +496,11 @@ public class Utils {
         String sessionID = EnvUtils.getSafeSession(facesContext).getId();
         String uploadURL = auxUpload.getUploadURL();
         String fullCommand = command + "?id=" + id;
-        String script = "window.location=('icemobile://c=" +
+        String script = "window.location='icemobile://c=" +
             URLEncoder.encode(fullCommand) + 
             "&r='+escape(window.location)+'&" +
             "JSESSIONID=" + sessionID + "&u=" + 
-            URLEncoder.encode(uploadURL) + 
-            "').replace(/ /g,String.fromCharCode(37));";
-        //extra escaping step to guard URL encoded values from
-        //unescaping during ajax page update
-        script = script.replace("%"," ");
+            URLEncoder.encode(uploadURL) + "'";
         return script;
     }
 }
