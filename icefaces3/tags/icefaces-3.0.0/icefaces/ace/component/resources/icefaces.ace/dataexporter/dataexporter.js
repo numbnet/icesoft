@@ -47,14 +47,20 @@ ice.ace.DataExporter.prototype.openWindow = function() {
 };
 ice.ace.DataExporter.prototype.url = function(url) {
 	if (ice.ace.DataExporter.shouldOpenPopUp()) {
-		this.body.innerHTML = '<p>Click link below to download file.</p>'
-			+ '<a href="' + url + '">Download</a>';
+		if (url == 'unsupported format') {
+			this.body.innerHTML = '<p>The format you selected is not supported at this time. Contact your System Administrator.</p>';		
+		} else {
+			this.body.innerHTML = '<p>Click link below to download file.</p>'
+				+ '<a href="' + url + '">Download</a>';
+		}
 		this.window.focus();
 	} else {
-		var iframe = document.createElement('iframe');
-		iframe.setAttribute('src', url);
-		iframe.style.display = 'none';
-		document.body.appendChild(iframe);
+		if (url != 'unsupported format') {
+			var iframe = document.createElement('iframe');
+			iframe.setAttribute('src', url);
+			iframe.style.display = 'none';
+			document.body.appendChild(iframe);
+		}
 		ice.ace.DataExporters[this.id] = null;
 	}
 };
