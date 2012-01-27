@@ -91,9 +91,11 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
         if (null != auxRequestMap)  {
             //once the auxiliary upload is used, it is only valid
             //for the current request to allow cleanup
-            requestMap.put(AUX_REQ_MAP_KEY, auxRequestMap);
             sessionMap.put(AUX_REQ_MAP_KEY, new HashMap());
+        } else {
+            auxRequestMap = new HashMap();
         }
+        requestMap.put(AUX_REQ_MAP_KEY, auxRequestMap);
         return auxRequestMap;
     }
 
