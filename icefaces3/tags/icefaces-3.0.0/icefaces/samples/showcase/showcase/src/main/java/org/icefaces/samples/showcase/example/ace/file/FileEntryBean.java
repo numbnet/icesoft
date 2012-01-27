@@ -24,9 +24,12 @@ import org.icefaces.samples.showcase.util.FacesUtils;
 import org.icefaces.ace.component.fileentry.*;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import java.io.File;
 import java.io.Serializable;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
 
 @ComponentExample(
@@ -60,7 +63,7 @@ import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
 public class FileEntryBean extends ComponentExampleImpl<FileEntryBean> implements Serializable {
 
     public static final String BEAN_NAME = "fileEntry";
-    private LinkedHashMap <String, String> fileData;
+    private List<String> fileData;
     private ImageSet.ImageInfo arrowImage;
 
     public FileEntryBean()  
@@ -74,44 +77,44 @@ public class FileEntryBean extends ComponentExampleImpl<FileEntryBean> implement
         FileEntry fe = (FileEntry)e.getComponent();
         FileEntryResults results = fe.getResults();
         File parent = null;
-        StringBuilder m = null;
-        
+
+        fileData = new ArrayList<String>();
+
     //get data About File
     
         for (FileEntryResults.FileInfo i : results.getFiles()) 
         {
-            parent = i.getFile().getParentFile();
-            m = new StringBuilder(512);
+            fileData.add("File Name: " + i.getFileName());
 
-            m.append("File Name: ");
-            m.append(i.getFileName());
-            FacesUtils.addInfoMessage(fe.getClientId(), m.toString());
-            m = new StringBuilder(512);
-            m.append("File Size: ");
-            m.append(i.getSize());
-            m.append(" bytes");
-            FacesUtils.addInfoMessage(fe.getClientId(), m.toString());
-        }                                                          
+            if (i.isSaved()) {
+                fileData.add("File Size: " + i.getSize() + " bytes");
 
-        if (parent != null) 
-        {
-            m = new StringBuilder(128);
+                File file = i.getFile();
+                if (file != null) {
+                    parent = file.getParentFile();
+                }
+            } else {
+                fileData.add("File was not saved because: " +
+                    i.getStatus().getFacesMessage(
+                        FacesContext.getCurrentInstance(),
+                        fe, i).getSummary());
+            }
+        }
+
+        if (parent != null) {
             long dirSize = 0;
             int fileCount = 0;
-            for (File file : parent.listFiles()) 
-            {
+            for (File file : parent.listFiles()) {
                 fileCount++;
                 dirSize += file.length();
             }
-            m.append("Total Files In Upload Directory: ");
-            m.append(fileCount);
-            FacesUtils.addInfoMessage(fe.getClientId(), m.toString());
-            m = new StringBuilder(128);
-            m.append("Total Size of Files In Directory: ");
-            m.append(dirSize);
-            m.append(" bytes");
-            FacesUtils.addInfoMessage(fe.getClientId(), m.toString());
+            fileData.add("Total Files In Upload Directory: " + fileCount);
+            fileData.add("Total Size of Files In Directory: " + dirSize + " bytes");
         }
+    }
+
+    public List getFileData() {
+        return fileData;
     }
 
     public ImageInfo getArrowImage() {
