@@ -36,8 +36,8 @@ Available ui:params to pass:
                 <ui:insert name="example"/>
             </h:panelGroup>
         </div>
-            <f:facet name="options" >  
-                <ace:menu rendered="#{navigationModel.renderAsExample}">
+            <f:facet name="options">  
+                <ace:menu >
                     <ace:submenu label="WIKI Documentation">
                         <c:forEach items="#{wikiResources}" var="wiki">
                            <ace:menuItem value="#{wiki.title}" url="#{wiki.resource}" target="_blank"/>

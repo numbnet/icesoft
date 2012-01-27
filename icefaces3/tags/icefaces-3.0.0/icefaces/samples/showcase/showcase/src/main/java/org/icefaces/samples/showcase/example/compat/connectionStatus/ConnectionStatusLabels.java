@@ -20,6 +20,9 @@ import java.io.Serializable;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.event.ActionEvent;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
@@ -59,6 +62,29 @@ public class ConnectionStatusLabels extends ComponentExampleImpl<ConnectionStatu
 	
 	public ConnectionStatusLabels() {
 		super(ConnectionStatusLabels.class);
+	}
+        
+        /**
+	 * Method to simulate a long running task
+	 * We'll just hold the thread for a certain length of time
+	 * The client browser will react as "active" the entire time, so
+	 *  the user can see the connection status in action
+	 */
+	public void longEvent(ActionEvent event) {
+	    try{
+	        Thread.sleep(1500);
+	    }catch (Exception ignored) { }
+	}
+	
+	/**
+	 * Method to force a disconnect for the client
+	 * This is achieved by expiring their session
+	 * The user can therefore see the disconnected state of the connection status
+	 */
+	public void disconnectEvent(ActionEvent event) {
+	    FacesContext context = FacesContext.getCurrentInstance();
+	    HttpSession session = (HttpSession)context.getExternalContext().getSession(false);
+	    session.invalidate();
 	}
 	
 	public String getActiveLabel() { return activeLabel; }

@@ -61,8 +61,8 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
     private static final String SELECT_BLOCK_CELL = "cellblock";
     private static final SelectItem[] AVAILABLE_MODES = { new SelectItem("single", "Single Row"),
                                                           new SelectItem("multiple", "Multiple Rows"),
-                                                          new SelectItem("singlecell", "Single Cell"),
-                                                          new SelectItem("multiplecell", "Multiple Cell") };
+                                                          new SelectItem("singlecell", "Single Cell")};
+                                                          /*new SelectItem("multiplecell", "Multiple Cell")*/
 
 
     private RowStateMap stateMap = new RowStateMap();
