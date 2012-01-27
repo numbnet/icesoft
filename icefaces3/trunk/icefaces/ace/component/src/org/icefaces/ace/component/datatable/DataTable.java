@@ -588,7 +588,7 @@ public class DataTable extends DataTableBase {
         int rowsPerPage = getRows();
         if (rowsPerPage > 0) {
             int page = row / rowsPerPage;
-            setFirst(page * rowsPerPage);
+            setPage((row / rowsPerPage) + 1);
         }
     }
 
