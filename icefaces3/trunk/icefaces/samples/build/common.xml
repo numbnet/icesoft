@@ -84,17 +84,22 @@
         <exclude name="*.jar"                   unless="ace"/>
     </patternset>
 
-    <patternset id="lib.compile.compat" includes="commons-logging.jar ${lib.compile.compat.includes}">
+    <patternset id="lib.compile.compat" includes="commons-beanutils.jar commons-collections.jar commons-logging.jar ${lib.compile.compat.includes}">
         <exclude name="*.jar"                   unless="compat"/>
+        <exclude name="commons-beanutils.jar"   if="myfaces"/>
+        <exclude name="commons-collections.jar" if="myfaces"/>
+        <exclude name="commons-logging.jar"     if="myfaces"/>
     </patternset>
 
-    <patternset id="lib.distribute.compat" includes="commons-logging.jar ${lib.distribute.compat.includes}">
+    <patternset id="lib.distribute.compat" includes="commons-beanutils.jar commons-collections.jar commons-logging.jar ${lib.distribute.compat.includes}">
         <exclude name="*.jar"                   unless="compat"/>
+        <exclude name="commons-beanutils.jar"   if="myfaces"/>
+        <exclude name="commons-collections.jar" if="myfaces"/>
+        <exclude name="commons-logging.jar"     if="myfaces"/>
     </patternset>
 
     <patternset id="lib.distribute.portlet">
-        <include name="portletfaces*.jar"/>
-        <include name="icefaces*.jar"/>
+        <include name="*.jar"/>
         <exclude name="*.jar" unless="portlet"/>
     </patternset>
 
