@@ -68,7 +68,7 @@
     color: black;
 }
 
-.iceMnuPopVrt {
+.iceMnuPopVrt, .iceMnuPopVrtTopSubMenu, .iceMnuPopVrtSubMenu {
     z-index: 1005;
 }
 
