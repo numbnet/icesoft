@@ -72,6 +72,10 @@
     z-index: 1005;
 }
 
+.iceMnuPopVrtTopSubMenu, .iceMnuPopVrtItem {
+    width: 200px;
+}
+
 .icePnlClpsblColpsdHdr h2 {
     background: url("#{resource['css/images/collapsible-off.gif']}") no-repeat scroll 3px 2px transparent;
     margin: -2px 0 0 -2px;
