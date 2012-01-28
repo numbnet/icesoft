@@ -591,7 +591,7 @@ public class HtmlDataTable
         ELContext elContext = FacesContext.getCurrentInstance().getELContext();
         ELResolver resolver = elContext.getELResolver();
 
-        setRowIndex(0);
+        setRowIndex(startRow);
 
         if (!caseSensitive) query.toLowerCase();
 
