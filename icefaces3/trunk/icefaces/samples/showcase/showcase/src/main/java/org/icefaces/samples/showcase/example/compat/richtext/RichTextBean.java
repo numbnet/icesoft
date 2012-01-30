@@ -51,19 +51,12 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @Menu(
 	title = "menu.compat.richtext.subMenu.title",
 	menuLinks = {
-            @MenuLink(title = "menu.compat.richtext.subMenu.main",
-                    isDefault = true,
-                    exampleBeanName = RichTextBean.BEAN_NAME),
-            @MenuLink(title = "menu.compat.richtext.subMenu.save",
-                    exampleBeanName = RichTextSave.BEAN_NAME),
-            @MenuLink(title = "menu.compat.richtext.subMenu.language",
-                    exampleBeanName = RichTextLanguage.BEAN_NAME),
-            @MenuLink(title = "menu.compat.richtext.subMenu.skin",
-                    exampleBeanName = RichTextSkin.BEAN_NAME),
-            @MenuLink(title = "menu.compat.richtext.subMenu.toolbar",
-                    exampleBeanName = RichTextToolbar.BEAN_NAME),
-            @MenuLink(title = "menu.compat.richtext.subMenu.disable",
-                    exampleBeanName = RichTextDisable.BEAN_NAME)
+            @MenuLink(title = "menu.compat.richtext.subMenu.main", isDefault = true, exampleBeanName = RichTextBean.BEAN_NAME),
+            @MenuLink(title = "menu.compat.richtext.subMenu.save", exampleBeanName = RichTextSave.BEAN_NAME),
+            @MenuLink(title = "menu.compat.richtext.subMenu.language", exampleBeanName = RichTextLanguage.BEAN_NAME),
+            @MenuLink(title = "menu.compat.richtext.subMenu.skin", exampleBeanName = RichTextSkin.BEAN_NAME),
+            @MenuLink(title = "menu.compat.richtext.subMenu.toolbar", exampleBeanName = RichTextToolbar.BEAN_NAME)
+            //@MenuLink(title = "menu.compat.richtext.subMenu.disable",  exampleBeanName = RichTextDisable.BEAN_NAME)
 })
 @ManagedBean(name= RichTextBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")

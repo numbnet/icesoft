@@ -35,12 +35,7 @@
     <ui:define name="example">
         <h:form id="example-form">
             <icecore:singleSubmit/>
-            <h:panelGrid columns="2">
-                <h:outputLabel for="display" value="Selected Date:"/>
-                <h:outputText id="display" value="#{calendarHighlight.date}">
-                    <f:convertDateTime pattern="#{calendarHighlight.pattern}"/>
-                </h:outputText>
-                
+            <h:panelGrid styleClass="centeredPanelWithBorderSpacingAndLeftJustifiedText" columns="2">
                 <h:outputLabel for="highlightType" value="Highlight Type:"/>
                 <h:selectOneRadio id="highlightType"
                                   value="#{calendarHighlight.highlightUnit}"
@@ -62,15 +57,22 @@
                     <f:selectItems value="#{calendarHighlight.classItems}"/>
                 </h:selectOneRadio>
             </h:panelGrid>
-        </h:form>
             
-        <h:form>
-            <ice:selectInputDate value="#{calendarHighlight.date}" renderAsPopup="false"
+            <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing" columns="2">
+                <h:outputLabel for="display" value="Selected Date:"/>
+                <h:outputText id="display" value="#{calendarHighlight.date}">
+                    <f:convertDateTime pattern="#{calendarHighlight.pattern}"/>
+                </h:outputText>
+            </h:panelGrid>
+            
+            <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing">
+                <ice:selectInputDate value="#{calendarHighlight.date}" renderAsPopup="false"
                                  highlightClass="#{calendarHighlight.highlightClass}"
                                  highlightUnit="#{calendarHighlight.highlightUnit}"
                                  highlightValue="#{calendarHighlight.highlightValue}">
-                <f:convertDateTime pattern="#{calendarHighlight.pattern}"/>
-            </ice:selectInputDate>
+                    <f:convertDateTime pattern="#{calendarHighlight.pattern}"/>
+                </ice:selectInputDate>
+            </h:panelGrid>
         </h:form>
     </ui:define>       
 </ui:composition>
