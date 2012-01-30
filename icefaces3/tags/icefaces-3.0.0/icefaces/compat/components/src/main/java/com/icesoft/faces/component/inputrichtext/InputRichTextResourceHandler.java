@@ -147,7 +147,7 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
                     code.append(",");
                 }
             }
-            code.append("]; if (r.indexOf('http://') == 0) { var i = document.location.href.lastIndexOf('/'); r = r.substring(i + 1); }; for (var i = 0, l = mappings.length; i < l; i++) { var m = mappings[i]; if (m.i == r) { return m.o;} } return false; };");
+            code.append("]; if (r.indexOf('://') > -1) { var i = document.location.href.lastIndexOf('/'); r = r.substring(i + 1); }; for (var i = 0, l = mappings.length; i < l; i++) { var m = mappings[i]; if (m.i == r) { return m.o;} } return false; };");
 
             value = code.toString();
             applicationMap.put(InputRichTextResourceHandler.class.getName(), value);
