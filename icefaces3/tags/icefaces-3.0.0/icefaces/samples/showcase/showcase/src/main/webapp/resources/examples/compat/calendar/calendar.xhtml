@@ -33,22 +33,24 @@
     
     <ui:define name="example">
         <h:form id="example-form">
-            <h:panelGrid columns="2">
-                <h:outputLabel for="display" value="Selected Date:"/>
-                <h:outputText id="display" value="#{calendar.date}">
-                    <f:convertDateTime pattern="#{calendar.pattern}"/>
-                </h:outputText>
-            </h:panelGrid>
+            <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing">
+                <h:panelGroup>
+                    <h:outputLabel for="display" value="Selected Date:"/>
+                    <h:outputText id="display" value="#{calendar.date}">
+                        <f:convertDateTime pattern="#{calendar.pattern}"/>
+                    </h:outputText>
+                </h:panelGroup>
             
-            <ice:selectInputDate value="#{calendar.date}"
-                                 renderAsPopup="false"
-                                 highlightClass="dateHighlightGray"
-                                 highlightUnit="DAY_OF_WEEK"
-                                 highlightValue="1"
-                                 renderMonthAsDropdown="true"
-                                 renderYearAsDropdown="true">
-                <f:convertDateTime pattern="#{calendar.pattern}"/>
-            </ice:selectInputDate>
+                <ice:selectInputDate value="#{calendar.date}"
+                                     renderAsPopup="false"
+                                     highlightClass="dateHighlightGray"
+                                     highlightUnit="DAY_OF_WEEK"
+                                     highlightValue="1"
+                                     renderMonthAsDropdown="true"
+                                     renderYearAsDropdown="true">
+                    <f:convertDateTime pattern="#{calendar.pattern}"/>
+                </ice:selectInputDate>
+            </h:panelGrid>
         </h:form>
     </ui:define>
 </ui:composition>
