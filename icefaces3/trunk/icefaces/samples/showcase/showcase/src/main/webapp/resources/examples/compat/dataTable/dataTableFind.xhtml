@@ -38,28 +38,37 @@
                             xmlns:h="http://java.sun.com/jsf/html"
                             xmlns:f="http://java.sun.com/jsf/core"
                             xmlns:ice="http://www.icesoft.com/icefaces/component">
-                <h:panelGroup style="border: 1px solid #CDCDCD;" layout="block" >
-                    Search Query: <h:inputText value="#{dataTableFind.searchQuery}" />
-                    <br/><br/>
-                    Case Sensitive: <h:selectBooleanCheckbox value="#{dataTableFind.caseSensitive}" />
-                    <br/><br/>
-                        Columns To Search:
-                        <h:selectManyCheckbox value="#{dataTableFind.selectedColumns}">
-                            <f:selectItems value="#{dataTableFind.COLUMNS}"/>
-                        </h:selectManyCheckbox>
-                    <br/>
-                        Search Type:
-                        <h:selectOneRadio value="#{dataTableFind.selectedSearchMode}">
-                            <f:selectItems value="#{dataTableFind.SEARCH_MODES}"/>
-                        </h:selectOneRadio>
-                    <br/>
-                        Effect To Use:
-                        <h:selectOneRadio value="#{dataTableFind.selectedEffectType}">
-                            <f:selectItems value="#{dataTableFind.EFFECT_TYPES}"/>
-                        </h:selectOneRadio>
-                    <br/>
-                    <h:commandButton value="Find Next" actionListener="#{dataTableFind.find}" />
-                    <h:commandButton value="Reset" actionListener="#{dataTableFind.reset}" />
+                <h:panelGroup layout="block" >
+                    <h:panelGrid columns="2" border="1" style="border-color: #CDCDCD; border-collapse: collapse; border-style: none; width:100%;">
+                        <h:panelGrid columns="2" border="1" style="border-color: #CDCDCD; border-collapse: collapse; border-style:hidden; width:100%;">
+                            <h:outputText value="Search Query:" />
+                            <h:inputText value="#{dataTableFind.searchQuery}" />
+
+                            <h:outputText value="Case Sensitive:" />
+                            <h:selectBooleanCheckbox value="#{dataTableFind.caseSensitive}" />
+
+                            <h:outputText value="Columns To Search:" />
+                            <h:selectManyCheckbox value="#{dataTableFind.selectedColumns}">
+                                <f:selectItems value="#{dataTableFind.COLUMNS}"/>
+                            </h:selectManyCheckbox>
+
+                            <h:outputText value="Search Type:" />
+                            <h:selectOneRadio value="#{dataTableFind.selectedSearchMode}">
+                                <f:selectItems value="#{dataTableFind.SEARCH_MODES}"/>
+                            </h:selectOneRadio>
+
+                            <h:outputText value="Effect To Use:" />
+                            <h:selectOneRadio value="#{dataTableFind.selectedEffectType}">
+                                <f:selectItems value="#{dataTableFind.EFFECT_TYPES}"/>
+                            </h:selectOneRadio>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1" style="width:100%;">
+                            <h:commandButton value="Find Next" actionListener="#{dataTableFind.find}"
+                                    style="float:right;"/>
+                            <h:commandButton value="Reset" actionListener="#{dataTableFind.reset}"
+                                    style="float:right;"/>
+                        </h:panelGrid>
+                    </h:panelGrid>
                 </h:panelGroup>
 
                 <h:panelGroup styleClass="exampleBox dataScrollingContainer" style="display: block;"  >
@@ -67,7 +76,7 @@
                     <ice:dataTable id="data"
                                    var="car"
                                    value="#{tableData.cars}"
-                                   rows="4"
+                                   rows="6"
                                    styleClass="dataPaginatorDataTable"
                                    cellpadding="0"
                                    binding="#{dataTableFind.iceTable}"
