@@ -79,9 +79,10 @@ ToolTipPanelPopup = Class.create({
 
     showPopup: function() {
         if (this.isTooltipVisible()) return;
+        var tooltip = this.getTooltip();
+        if (!tooltip) return;//tooltip removed by a DOM update
         if (this.dynamic) {
             //its a dynamic tooltip, so remove all its childres
-            var tooltip = this.getTooltip();
             if (tooltip) {
                 tooltip.style.visibility = "hidden";
                 var table = tooltip.childNodes[0];
@@ -97,7 +98,6 @@ ToolTipPanelPopup = Class.create({
             }
         } else {
             //static? just set the visibility= true
-            var tooltip = this.getTooltip();
             tooltip.style.visibility = "visible";
             tooltip.style.position = "absolute";
             tooltip.style.display = "";
@@ -120,7 +120,9 @@ ToolTipPanelPopup = Class.create({
         if (!this.isTooltipVisible()) return;
         var x = Event.pointerX(event);
         var y = Event.pointerY(event);
-        if (Position.within($(this.tooltipCompId), x, y)) return; //ICE-3521
+        var tooltipCompElement = $(this.tooltipCompId);
+        if (!tooltipCompElement) return;//return if element is no more present
+        if (Position.within(tooltipCompElement, x, y)) return; //ICE-3521
         if (Position.within(this.src, x, y)) return; //ICE-6285
         this.hidePopup(event);
         this.state = "hide";
@@ -159,6 +161,7 @@ ToolTipPanelPopup = Class.create({
         } else {
             //static? set visibility = false;
             tooltip = this.getTooltip();
+            if (!tooltip) return;
             tooltip.style.visibility = "hidden";
             tooltip.style.display = "none";
         }

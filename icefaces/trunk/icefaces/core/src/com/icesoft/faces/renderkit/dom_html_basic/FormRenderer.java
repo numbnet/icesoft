@@ -39,16 +39,15 @@ import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.util.SeamUtilities;
 import com.icesoft.util.pooling.ClientIdPool;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import javax.faces.FacesException;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
-import javax.faces.component.NamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -65,9 +64,9 @@ public class FormRenderer extends DomBasicRenderer {
     private static final Log log = LogFactory.getLog(FormRenderer.class);
 
     public static final String STATE_SAVING_MARKER = "stateSavingMarker";
-    
+
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_FORMFORM);
-    
+
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         validateParameters(facesContext, uiComponent, UIForm.class);
         UIForm uiForm = (UIForm) uiComponent;
@@ -113,7 +112,7 @@ public class FormRenderer extends DomBasicRenderer {
             Element scriptElement = (Element) root.appendChild(domContext.createElement("script"));
             scriptElement.setAttribute("type", "text/javascript");
             scriptElement.setAttribute("id", ClientIdPool.get(formClientId + "script"));
-            scriptElement.appendChild(domContext.createTextNode(redirectScript));
+            scriptElement.appendChild(domContext.createTextNodeUnescaped(redirectScript));
             root.appendChild(scriptElement);
 
             // this hidden field will be checked in the decode method to
@@ -156,7 +155,7 @@ public class FormRenderer extends DomBasicRenderer {
 
             conversationIDElement.setAttribute(HTML.VALUE_ATTR, conversationId);
             // # 4581 put id into hidden field for dom diffing.
-            conversationIDElement.setAttribute(HTML.ID_ATTR, "cid:" + formClientId );
+            conversationIDElement.setAttribute(HTML.ID_ATTR, "cid:" + formClientId);
             root.appendChild(conversationIDElement);
 
         }
@@ -190,11 +189,11 @@ public class FormRenderer extends DomBasicRenderer {
         //root.setAttribute("context_type", contextClass);
 
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
-        String autoComplete = (String)uiComponent.getAttributes().get(HTML.AUTOCOMPLETE_ATTR);
-        if(autoComplete != null && "off".equalsIgnoreCase(autoComplete)){
+        String autoComplete = (String) uiComponent.getAttributes().get(HTML.AUTOCOMPLETE_ATTR);
+        if (autoComplete != null && "off".equalsIgnoreCase(autoComplete)) {
             root.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
         }
-                
+
         // don't override user-defined value
         String userDefinedValue = root.getAttribute("onsubmit");
         if (userDefinedValue == null || userDefinedValue.equalsIgnoreCase("")) {
@@ -212,12 +211,12 @@ public class FormRenderer extends DomBasicRenderer {
             Node n = domContext.createElement("div");
 
             String id = formClientId +
-                        NamingContainer.SEPARATOR_CHAR +STATE_SAVING_MARKER;
+                    NamingContainer.SEPARATOR_CHAR + STATE_SAVING_MARKER;
 
-            root.appendChild( n );
-            ((Element) n).setAttribute( "id", id );
+            root.appendChild(n);
+            ((Element) n).setAttribute("id", id);
             ((Element) n).setAttribute(HTML.STYLE_ATTR, "width:0px;height:0px;");
-            domWriter.trackMarkerNode( n );
+            domWriter.trackMarkerNode(n);
         }
 
         domContext.stepInto(uiComponent);
@@ -238,16 +237,16 @@ public class FormRenderer extends DomBasicRenderer {
                 DOMContext.getDOMContext(facesContext, uiComponent);
         // set static class variable for support of myfaces command link
         renderCommandLinkHiddenFields(facesContext, uiComponent);
-        
+
         //check if the messages renderer asked to be rendered later,
         //if yes, then re-render it
-        if (uiComponent.getAttributes().get("$ice-msgs$") != null)  {
-            UIComponent messages = (UIComponent)uiComponent.getAttributes().get("$ice-msgs$");
+        if (uiComponent.getAttributes().get("$ice-msgs$") != null) {
+            UIComponent messages = (UIComponent) uiComponent.getAttributes().get("$ice-msgs$");
             messages.encodeBegin(facesContext);
             messages.encodeChildren(facesContext);
             messages.encodeEnd(facesContext);
         }
-        
+
         domContext.stepOver();
     }
 
@@ -305,7 +304,7 @@ public class FormRenderer extends DomBasicRenderer {
         hiddenFieldsDiv.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "hdnFldsDiv");
         hiddenFieldsDiv.setAttribute(HTML.STYLE_ATTR, "display:none;");
         root.appendChild(hiddenFieldsDiv);
-        
+
         Iterator commandLinkFields = map.entrySet().iterator();
         while (commandLinkFields.hasNext()) {
             Map.Entry nextField = (Map.Entry) commandLinkFields.next();
