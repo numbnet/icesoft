@@ -18,30 +18,30 @@
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
         <title>OutputChart Component Tutorial</title>
         <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
-        </h:head>    <h:body>        <ice:form>
+        </h:head>    <h:body>        <ice:form id="frm">
         <ice:panelGrid columns="2">        
             <ice:outputChart id="pieOutputChart" type="pie2D" chartTitle="Pie2D Chart" width="350" height="350" labels="#{pieChartBean.labels}" colors="#{pieChartBean.paints}" data="#{pieChartBean.data}" actionListener="#{pieChartBean.imageClicked}" renderOnSubmit="#{pieChartBean.newChart}"></ice:outputChart>
                              
             <ice:panelGroup>
                 <ice:outputText value="Year Specific Data:"></ice:outputText>
-                <ice:dataTable var="sale" value="#{pieChartBean.sales}">
+                <ice:dataTable id="sales" var="sale" value="#{pieChartBean.sales}">
                     <ice:column>
                         <f:facet name="header">
                             <ice:outputText value="Product Name"></ice:outputText>
                         </f:facet>
-                        <ice:outputText value="#{sale.product}"></ice:outputText>
+                        <ice:outputText id="product" value="#{sale.product}"></ice:outputText>
                     </ice:column>
                     <ice:column>
                         <f:facet name="header">
                             <ice:outputText value="Price"></ice:outputText>
                         </f:facet>
-                        <ice:outputText value="#{sale.price}"></ice:outputText>
+                        <ice:outputText id="price" value="#{sale.price}"></ice:outputText>
                     </ice:column>
                     <ice:column>
                         <f:facet name="header">
                             <ice:outputText value="Year"></ice:outputText>
                         </f:facet>
-                        <ice:outputText value="#{sale.year}"></ice:outputText>
+                        <ice:outputText id="year" value="#{sale.year}"></ice:outputText>
                     </ice:column>
                 </ice:dataTable>
             </ice:panelGroup>
