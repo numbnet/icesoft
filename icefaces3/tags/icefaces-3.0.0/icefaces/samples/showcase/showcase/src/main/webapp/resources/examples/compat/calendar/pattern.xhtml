@@ -33,7 +33,37 @@
     
     <ui:define name="example">
         <h:form id="example-form">
-            <h:panelGrid columns="2">
+            
+            <h:panelGrid columns="4" styleClass="centeredPanelWithBorderSpacingAndLeftJustifiedText">
+                <h:outputLabel for="patternType" value="Format Types:"/>
+                <h:selectOneMenu id="patternType"
+                                  value="#{calendarPattern.patternType}"
+                                  required="true">
+                    <f:selectItems value="#{calendarPattern.patternTypes}"/>
+                    <f:ajax execute="@this" render="example-form:radios" event="change"/>
+                </h:selectOneMenu>
+
+                <h:outputLabel for="radios" value="Format Options:"/>
+                <h:panelGroup id="radios">
+                        <h:selectOneMenu id="optionPattern"
+                                          value="#{calendarPattern.optionPattern}"
+                                          valueChangeListener="#{calendarPattern.reloadChanges}"
+                                          rendered="#{calendarPattern.typePattern}"
+                                          required="true">
+                            <f:selectItems value="#{calendarPattern.patternOptions}"/>
+                        </h:selectOneMenu>
+
+                        <h:selectOneMenu id="optionDateStyle"
+                                          value="#{calendarPattern.optionDateStyle}"
+                                          valueChangeListener="#{calendarPattern.reloadChanges}"
+                                          rendered="#{calendarPattern.typeDateStyle}"
+                                          required="true">
+                            <f:selectItems value="#{calendarPattern.styleOptions}"/>
+                        </h:selectOneMenu>
+                </h:panelGroup>
+            </h:panelGrid>
+            
+            <h:panelGrid columns="2" styleClass="centeredPanelGridWithBorderSpacing">
                 <h:outputLabel for="display" value="Selected Date:"/>
                 <h:panelGroup id="display">
                     <h:outputText value="#{calendarPattern.date}"
@@ -41,65 +71,28 @@
                         <f:convertDateTime pattern="#{calendarPattern.optionPattern}"/>
                     </h:outputText>
                     <h:outputText value="#{calendarPattern.date}"
-                                  rendered="#{calendarPattern.typeDateStyle or calendarPattern.typeTimeStyle}">
+                                  rendered="#{calendarPattern.typeDateStyle}">
                         <f:convertDateTime type="both"
-                                           dateStyle="#{calendarPattern.optionDateStyle}"
-                                           timeStyle="#{calendarPattern.optionTimeStyle}"/>
+                                           dateStyle="#{calendarPattern.optionDateStyle}"/>
                     </h:outputText>
-                </h:panelGroup>
-                
-                <h:outputLabel for="patternType" value="Format Types:"/>
-                <h:selectOneRadio id="patternType"
-                                  value="#{calendarPattern.patternType}"
-                                  layout="pageDirection"
-                                  required="true">
-                    <f:selectItems value="#{calendarPattern.patternTypes}"/>
-                </h:selectOneRadio>
-            
-                <h:outputLabel for="radios" value="Format Options:"/>
-                <h:panelGroup id="radios">
-                    <h:selectOneRadio id="optionPattern"
-                                      value="#{calendarPattern.optionPattern}"
-                                      valueChangeListener="#{calendarPattern.reloadChanges}"
-                                      layout="pageDirection"
-                                      rendered="#{calendarPattern.typePattern}"
-                                      required="true">
-                        <f:selectItems value="#{calendarPattern.patternOptions}"/>
-                    </h:selectOneRadio>
-    
-                    <h:selectOneRadio id="optionDateStyle"
-                                      value="#{calendarPattern.optionDateStyle}"
-                                      valueChangeListener="#{calendarPattern.reloadChanges}"
-                                      layout="pageDirection"
-                                      rendered="#{calendarPattern.typeDateStyle}"
-                                      required="true">
-                        <f:selectItems value="#{calendarPattern.styleOptions}"/>
-                    </h:selectOneRadio>
-    
-                    <h:selectOneRadio id="optionTimeStyle"
-                                      value="#{calendarPattern.optionTimeStyle}"
-                                      valueChangeListener="#{calendarPattern.reloadChanges}"
-                                      layout="pageDirection"
-                                      rendered="#{calendarPattern.typeTimeStyle}"
-                                      required="true">
-                        <f:selectItems value="#{calendarPattern.styleOptions}"/>
-                    </h:selectOneRadio>
                 </h:panelGroup>
             </h:panelGrid>
             
-            <h:commandButton value="Apply Changes"
+            <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing">
+                <h:commandButton value="Apply Changes"
                              actionListener="#{calendarPattern.applyChanges}"/>
-            
-            <ice:selectInputDate value="#{calendarPattern.date}" renderAsPopup="false"
+                
+                <ice:selectInputDate value="#{calendarPattern.date}" renderAsPopup="false"
                                  rendered="#{calendarPattern.typePattern}">
-                <f:convertDateTime pattern="#{calendarPattern.optionPattern}"/>
-            </ice:selectInputDate>
-            <ice:selectInputDate value="#{calendarPattern.date}" renderAsPopup="false"
-                                 rendered="#{calendarPattern.typeDateStyle or calendarPattern.typeTimeStyle}">
-                <f:convertDateTime type="both"
-                                   dateStyle="#{calendarPattern.optionDateStyle}"
-                                   timeStyle="#{calendarPattern.optionTimeStyle}"/>
-            </ice:selectInputDate>
+                    <f:convertDateTime pattern="#{calendarPattern.optionPattern}"/>
+                </ice:selectInputDate>
+            
+                <ice:selectInputDate value="#{calendarPattern.date}" renderAsPopup="false"
+                                 rendered="#{calendarPattern.typeDateStyle}">
+                    <f:convertDateTime type="both"
+                                       dateStyle="#{calendarPattern.optionDateStyle}"/>
+                </ice:selectInputDate>
+            </h:panelGrid>
         </h:form>
     </ui:define>
 </ui:composition>

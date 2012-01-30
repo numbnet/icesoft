@@ -35,30 +35,33 @@
     <ui:define name="example">
         <h:form id="example-form">
             <icecore:singleSubmit/>
-            <h:panelGrid columns="2">
-                <h:outputLabel for="display" value="Selected Date:"/>
-                <h:outputText id="display" value="#{calendarPopup.date}">
-                    <f:convertDateTime pattern="#{calendarPopup.pattern}"/>
-                </h:outputText>
-                
-                <h:outputLabel for="asPopup" value="Render as Popup:"/>
-                <h:selectBooleanCheckbox id="asPopup" value="#{calendarPopup.renderAsPopup}"/>
-                
-                <h:outputLabel for="monthDrop" value="Render Month as Dropdown:"/>
-                <h:selectBooleanCheckbox id="monthDrop" value="#{calendarPopup.renderMonthAsDropdown}"/>
-
-                <h:outputLabel for="yearDrop" value="Render Year as Dropdown:"/>
-                <h:selectBooleanCheckbox id="yearDrop" value="#{calendarPopup.renderYearAsDropdown}"/>
+            <h:panelGrid columns="6" styleClass="centeredPanelGridWithBorderSpacing">
+                    <h:outputLabel for="asPopup" value="Render as Popup:"/>
+                    <h:selectBooleanCheckbox id="asPopup" value="#{calendarPopup.renderAsPopup}"/>
+                    <h:outputLabel for="monthDrop" value="Render Month as Dropdown:"/>
+                    <h:selectBooleanCheckbox id="monthDrop" value="#{calendarPopup.renderMonthAsDropdown}"/>
+                    <h:outputLabel for="yearDrop" value="Render Year as Dropdown:"/>
+                    <h:selectBooleanCheckbox id="yearDrop" value="#{calendarPopup.renderYearAsDropdown}"/>
             </h:panelGrid>
-        </h:form>
             
-        <h:form>
-            <ice:selectInputDate value="#{calendarPopup.date}"
+            <h:panelGrid columns="2" styleClass="centeredPanelGridWithBorderSpacing">
+                <h:panelGroup>
+                    <h:outputLabel for="display" value="Selected Date:"/>
+                    <h:outputText id="display" value="#{calendarPopup.date}">
+                        <f:convertDateTime pattern="#{calendarPopup.pattern}"/>
+                    </h:outputText>
+                </h:panelGroup>
+            </h:panelGrid>
+            
+            <h:panelGrid columns="2" styleClass="centeredPanelGrid">
+                <ice:selectInputDate id="popupCalendar"
+                                 value="#{calendarPopup.date}"
                                  renderAsPopup="#{calendarPopup.renderAsPopup}"
                                  renderMonthAsDropdown="#{calendarPopup.renderMonthAsDropdown}"
                                  renderYearAsDropdown="#{calendarPopup.renderYearAsDropdown}">
-                <f:convertDateTime pattern="#{calendarPopup.pattern}"/>
-            </ice:selectInputDate>
+                    <f:convertDateTime pattern="#{calendarPopup.pattern}"/>
+                </ice:selectInputDate>
+            </h:panelGrid>
         </h:form>
     </ui:define>
 </ui:composition>
