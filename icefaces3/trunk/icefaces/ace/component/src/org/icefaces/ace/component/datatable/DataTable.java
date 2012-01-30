@@ -519,7 +519,7 @@ public class DataTable extends DataTableBase {
                 while (isRowAvailable()) {
                     for (int i = 0; i < fields.length; i++) {
                         String rowFieldString = resolver.getValue(elContext, getRowData(), fields[i]).toString();
-                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toLowerCase();
                         if (rowFieldString.contains(query))
                             return getRowIndex();
                     }
@@ -531,7 +531,7 @@ public class DataTable extends DataTableBase {
                 while (isRowAvailable()) {
                     for (int i = 0; i < fields.length; i++) {
                         String rowFieldString = resolver.getValue(elContext, getRowData(), fields[i]).toString();
-                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toLowerCase();
                         if (rowFieldString.endsWith(query))
                             return getRowIndex();
                     }
@@ -543,7 +543,7 @@ public class DataTable extends DataTableBase {
                 while (isRowAvailable()) {
                     for (int i = 0; i < fields.length; i++) {
                         String rowFieldString = resolver.getValue(elContext, getRowData(), fields[i]).toString();
-                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toLowerCase();
                         if (rowFieldString.startsWith(query))
                             return getRowIndex();
                     }
@@ -555,7 +555,7 @@ public class DataTable extends DataTableBase {
                 while (isRowAvailable()) {
                     for (int i = 0; i < fields.length; i++) {
                         String rowFieldString = resolver.getValue(elContext, getRowData(), fields[i]).toString();
-                        if (!caseSensitive) rowFieldString = rowFieldString.toString();
+                        if (!caseSensitive) rowFieldString = rowFieldString.toLowerCase();
                         if (rowFieldString.equals(query))
                             return getRowIndex();
                     }
