@@ -35,28 +35,36 @@
     <ui:define name="example">
         <h:form>
             <h:panelGroup styleClass="componentBox">
-                <h:panelGroup style="border: 1px solid #CDCDCD;" layout="block" >
-                    Search Query: <h:inputText value="#{aceDataTableFind.searchQuery}" />
-                    <br/><br/>
-                    Case Sensitive: <h:selectBooleanCheckbox value="#{aceDataTableFind.caseSensitive}" />
-                    <br/><br/>
-                        Columns To Search:
-                        <h:selectManyCheckbox value="#{aceDataTableFind.selectedColumns}">
-                            <f:selectItems value="#{aceDataTableFind.COLUMNS}"/>
-                        </h:selectManyCheckbox>
-                    <br/>
-                        Search Type:
-                        <h:selectOneRadio value="#{aceDataTableFind.selectedSearchMode}">
-                            <f:selectItems value="#{aceDataTableFind.SEARCH_MODES}"/>
-                        </h:selectOneRadio>
-                    <br/>
-                        Effect To Use:
-                        <h:selectOneRadio value="#{aceDataTableFind.selectedEffectType}">
-                            <f:selectItems value="#{aceDataTableFind.EFFECT_TYPES}"/>
-                        </h:selectOneRadio>
-                    <br/>
-                    <h:commandButton value="Find Next" actionListener="#{aceDataTableFind.find}" />
-                    <h:commandButton value="Reset" actionListener="#{aceDataTableFind.reset}" />
+                <h:panelGroup style="border: 1px solid #CDCDCD;" >
+                    <h:panelGrid columns="2" style="width:100%;">
+                            <h:panelGrid columns="2">
+                                <h:outputText value="Search Query:" />
+                                <h:inputText value="#{aceDataTableFind.searchQuery}" />
+
+                                <h:outputText value="Case Sensitive:" />
+                                <h:selectBooleanCheckbox value="#{aceDataTableFind.caseSensitive}" />
+
+                                <h:outputText value="Columns To Search:" />
+                                <h:selectManyCheckbox value="#{aceDataTableFind.selectedColumns}" >
+                                    <f:selectItems value="#{aceDataTableFind.COLUMNS}"/>
+                                </h:selectManyCheckbox>
+
+                                <h:outputText value="Search Type:" />
+                                <h:selectOneRadio value="#{aceDataTableFind.selectedSearchMode}">
+                                    <f:selectItems value="#{aceDataTableFind.SEARCH_MODES}"/>
+                                </h:selectOneRadio>
+
+                                <h:outputText value="Effect To Use:" />
+                                <h:selectOneRadio value="#{aceDataTableFind.selectedEffectType}">
+                                    <f:selectItems value="#{aceDataTableFind.EFFECT_TYPES}"/>
+                                </h:selectOneRadio>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1">
+                                <h:commandButton value="Find Next" actionListener="#{aceDataTableFind.find}" style="float:right;" />
+                                <h:commandButton value="Reset" actionListener="#{aceDataTableFind.reset}" style="float:right;" />
+                            </h:panelGrid>
+                            <h:messages />
+                    </h:panelGrid>
                 </h:panelGroup>
 
                 <h:panelGroup styleClass="exampleBox dataScrollingContainer" style="display: block;"  >
@@ -64,7 +72,7 @@
                     <ace:dataTable id="data"
                                    var="car"
                                    value="#{tableData.cars}"
-                                   rows="4"
+                                   rows="6"
                                    paginator="true"
                                    binding="#{aceDataTableFind.iceTable}"
                                    style="width:100%">

@@ -7,8 +7,10 @@ import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
 import org.icefaces.samples.showcase.metadata.annotation.ResourceType;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 
@@ -125,19 +127,26 @@ public class DataTableFind extends ComponentExampleImpl<DataTableFind> implement
 
     public void find(javax.faces.event.ActionEvent e) {
         DataTable.SearchType type = null;
-        if (selectedSearchMode == "contains")
+        if (selectedSearchMode.equals("contains"))
             type = DataTable.SearchType.CONTAINS;
-        else if (selectedSearchMode == "startsWith")
+        else if (selectedSearchMode.equals("startsWith"))
             type = DataTable.SearchType.STARTS_WITH;
-        else if (selectedSearchMode == "endsWith")
+        else if (selectedSearchMode.equals("endsWith"))
             type = DataTable.SearchType.ENDS_WITH;
-        else if (selectedSearchMode == "exact")
+        else if (selectedSearchMode.equals("exact"))
             type = DataTable.SearchType.EXACT;
         else type = DataTable.SearchType.CONTAINS;
 
-        lastFoundIndex = iceTable.findRow(searchQuery, selectedColumns, lastFoundIndex + 1, type, caseSensitive);
+        int newFoundIndex = iceTable.findRow(searchQuery, selectedColumns, lastFoundIndex + 1, type, caseSensitive);
 
-        System.out.println(lastFoundIndex);
+        if (newFoundIndex < 0) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(iceTable.getClientId(context),
+                    new FacesMessage("Search starting at index " + (lastFoundIndex + 1) + " for \"" + searchQuery + "\" did not return a result."));
+            return;
+        }
+
+        lastFoundIndex = newFoundIndex;
 
         if (selectedEffectType.equals("default"))
             iceTable.navigateToRow(lastFoundIndex);
