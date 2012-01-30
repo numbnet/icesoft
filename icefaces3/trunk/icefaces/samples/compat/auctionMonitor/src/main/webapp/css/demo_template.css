@@ -32,7 +32,7 @@ body {
     font-size: 0.8em;
     color: #5f5f5f;
     background-color: #ffffff;
-    background-image: url( './images/banner_bg.gif' );
+    /*background-image: url( './images/banner_bg.gif' );*/
     background-repeat: repeat-x;
     background-position: right top;
 }
@@ -58,6 +58,19 @@ div.clearer {
 }
 
 /* header begin */
+div.auction-header {
+    background: url("./images/demo-header-bacground.png") no-repeat;
+    width: 100%;
+    height: 123px;
+}
+
+div.auction-logo {
+    background: url("./images/icefaces-auction-monitor.png") no-repeat;
+    width: 600px;
+    height: 116px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 div.header_container {
     width: 100%;
