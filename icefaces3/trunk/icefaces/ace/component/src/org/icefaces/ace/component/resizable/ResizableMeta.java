@@ -66,7 +66,7 @@ public class ResizableMeta extends UIComponentBaseMeta {
 	@Property(tlddoc="If set to true, the CSS class \"ui-resizable-proxy\" will be added to the helper element used to outline the resize.", defaultValue="false")
 	private boolean proxy;
 	
-	@Property(tlddoc="Handles to use, any combination of 't', 'b', 'r', 'l', 'bl', 'br', 'tl', 'tr' is valid, shortcut \"all\" enables all handles.")
+	@Property(tlddoc="Specifies the handles to use. Possible values are 'n', 'e', 's', 'w', 'ne', 'se', 'sw', and 'sw' (without the quotes and separated by commas). Shortcut \"all\" enables all handles.")
 	private String handles;
 	
 	@Property(tlddoc="If set to true, a semi-transparent helper element is shown for resizing.", defaultValue="false")
@@ -81,16 +81,16 @@ public class ResizableMeta extends UIComponentBaseMeta {
 	@Property(tlddoc="Duration time for animating, in milliseconds. Other possible values: \"slow\", \"normal\", \"fast\".", defaultValue="normal")
 	private String effectDuration;
 	
-	@Property(tlddoc="Maximum width of the resizable", defaultValue="Integer.MAX_VALUE")
+	@Property(tlddoc="Maximum width of the resizable in pixels.", defaultValue="Integer.MAX_VALUE")
 	private int maxWidth;
 	
-	@Property(tlddoc="Maximum height of the resizable", defaultValue="Integer.MAX_VALUE")
+	@Property(tlddoc="Maximum height of the resizable in pixels.", defaultValue="Integer.MAX_VALUE")
 	private int maxHeight;
 	
-	@Property(tlddoc="Minimum width of the resizable", defaultValue="Integer.MIN_VALUE")
+	@Property(tlddoc="Minimum width of the resizable in pixels.", defaultValue="Integer.MIN_VALUE")
 	private int minWidth;
 	
-	@Property(tlddoc="Minimum height of the resizable", defaultValue="Integer.MIN_VALUE")
+	@Property(tlddoc="Minimum height of the resizable in pixels.", defaultValue="Integer.MIN_VALUE")
 	private int minHeight;
 	
 	@Property(tlddoc="Boolean value that specifies whether the resizable should be restricted to its parent's boundaries.", defaultValue="false")
