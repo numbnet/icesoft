@@ -193,7 +193,7 @@ function html5handleResponse(context, data)  {
 
     var jsfResponse = {};
     var parser = new DOMParser();
-    var xmlDoc = parser.parseFromString(unescape(data), "text/xml");
+    var xmlDoc = parser.parseFromString(data, "text/xml");
 
     jsfResponse.responseXML = xmlDoc;
     jsf.ajax.response(jsfResponse, context);

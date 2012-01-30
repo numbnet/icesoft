@@ -18,6 +18,7 @@ package org.icefaces.component.uploadhelper;
 
 import org.icefaces.impl.event.FormSubmit;
 import org.icefaces.util.EnvUtils;
+import org.icefaces.component.utils.Utils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -37,6 +38,9 @@ public class UploadHelper extends UploadHelperBase {
         boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
         boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
         if (isEnhanced || isAuxUpload) {
+            return;
+        }
+        if (!Utils.isIE())  {
             return;
         }
         //the desktop case becomes non-ajax and multipart

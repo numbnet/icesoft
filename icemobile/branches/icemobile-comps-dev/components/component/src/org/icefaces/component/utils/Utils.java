@@ -357,6 +357,26 @@ public class Utils {
         return (new UserAgentInfo(userAgent)).sniffIOS5();
     }
 
+    public static boolean isIOS4() {
+        if (Utils.isIOS5()){
+            return false;
+        }
+        UserAgentInfo uai = new UserAgentInfo(SessionContext.getSessionContext().getUserAgent());
+        return (uai.sniffIphone() || uai.sniffIpad() || uai.sniffIpod());
+    }
+
+   /**
+     * Test to see if we should show activation for ICEmobile-SX.
+     *
+     * @return true if ICEmobile-SX activation should be displayed.
+     */
+    public static boolean showSX() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
+        return (Utils.isIOS() && !isEnhanced & !isAuxUpload);
+    }
+
     private static DeviceType checkUserAgentInfo(UserAgentInfo uai) {
         if (uai.sniffIphone() || uai.sniffIpod()) return DeviceType.iphone;
         if (uai.sniffAndroidTablet()) return DeviceType.honeycomb;
@@ -487,15 +507,23 @@ public class Utils {
         String sessionID = EnvUtils.getSafeSession(facesContext).getId();
         String uploadURL = auxUpload.getUploadURL();
         String fullCommand = command + "?id=" + id;
-        String script = "window.location=('icemobile://c=" +
-            URLEncoder.encode(fullCommand) + 
-            "&r='+escape(window.location)+'&" +
-            "JSESSIONID=" + sessionID + "&u=" + 
-            URLEncoder.encode(uploadURL) + 
-            "').replace(/ /g,String.fromCharCode(37));";
-        //extra escaping step to guard URL encoded values from
-        //unescaping during ajax page update
-        script = script.replace("%"," ");
+        //Update for MOBI-110 as per rev 27478 trunk
+        String script = "window.location='icemobile://c=" +
+             URLEncoder.encode(fullCommand) +
+             "&r='+escape(window.location)+'&" +
+             "JSESSIONID=" + sessionID + "&u=" +
+             URLEncoder.encode(uploadURL) + "'";
+
         return script;
     }
+    /**
+     * Test for Internet Explorerer
+     * @return true if client is Internet Explorer
+     */
+    public static boolean isIE() {
+        String userAgent = SessionContext.getSessionContext().getUserAgent();
+        return userAgent.contains("MSIE");
+    }
+
+
 }
