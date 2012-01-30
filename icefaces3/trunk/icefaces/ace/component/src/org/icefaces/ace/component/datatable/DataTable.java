@@ -501,6 +501,15 @@ public class DataTable extends DataTableBase {
         CONTAINS, ENDS_WITH, STARTS_WITH, EXACT
     }
 
+    /**
+     * Find the index of a row object in the current DataModel.
+     * @param query The string to be searched for in the row object fields.
+     * @param fields The fields of the row object to search the String representations of.
+     * @param startRow The index to begin searching, inclusive.
+     * @param searchType A enumeration representing where to search for a match.
+     * @param caseSensitive A boolean representing the case sensitive.
+     * @return Index of the row found or -1
+     */
     public int findRow(String query, String[] fields, int startRow, SearchType searchType, boolean caseSensitive) {
         int savedRowIndex = getRowIndex();
         FacesContext context = FacesContext.getCurrentInstance();
@@ -569,10 +578,25 @@ public class DataTable extends DataTableBase {
         }
     }
 
+    /**
+     * Find the index of a row object in the current DataModel.
+     * @param query The string to be searched for in the row object fields.
+     * @param fields The fields of the row object to search the String representations of.
+     * @param startRow The index to begin searching, inclusive.
+     * @param searchType A enumeration representing where to search for a match.
+     * @return Index of the row found or -1
+     */
     public int findRow(String query, String[] fields, int startRow, SearchType searchType) {
         return findRow(query, fields, startRow, searchType, true);
     }
 
+    /**
+     * Find the index of a row object in the current DataModel.
+     * @param query The string to be searched for in the row object fields.
+     * @param fields The fields of the row object to search the String representations of.
+     * @param startRow The index to begin searching, inclusive.
+     * @return Index of the row found or -1
+     */
     public int findRow(String query, String[] fields, int startRow) {
         return findRow(query, fields, startRow, SearchType.CONTAINS, true);
     }
@@ -592,6 +616,12 @@ public class DataTable extends DataTableBase {
         }
     }
 
+    /**
+     * Navigate the client to a row in the table indicating the target row with css tween to a given class and back.
+     * @param row Index of the row to be navigated to.
+     * @param effect Name of css class to add to the target and than remove.
+     * @param durationMillis Duration of wax and wane of css animation.
+     */
     public void navigateToRow(int row, String effect, Integer durationMillis) {
         doNavigate(row);
 
@@ -608,6 +638,11 @@ public class DataTable extends DataTableBase {
     }
 
 
+    /**
+     * Navigate the client to a row in the table, indicate the target row with the indicated effect, either pulsate or highlight.
+     * @param row Index of the row to be navigated to.
+     * @param effect SearchEffect enum indicating pulsate or highlight.
+     */
     public void navigateToRow(int row, SearchEffect effect) {
         doNavigate(row);
 
@@ -623,6 +658,10 @@ public class DataTable extends DataTableBase {
                         "ice.ace.jq(ice.ace.escapeClientId('" + id + "')).effect('pulsate').focus();");
     }
 
+    /**
+     * Navigate the client to a row in the table, indicate the target row with a default highlight effect.
+     * @param row Index of the row to be navigated to.
+     */
     public void navigateToRow(int row) {
         navigateToRow(row, SearchEffect.HIGHLIGHT);
     }
