@@ -31,6 +31,7 @@ public class IceMobileSXRenderer extends Renderer {
             }
             writer.writeAttribute(HTML.CLASS_ATTR, baseClass.toString(), null);
             String style = sx.getStyle();
+
             if (style != null && style.trim().length() > 0) {
                writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
             }
@@ -40,10 +41,12 @@ public class IceMobileSXRenderer extends Renderer {
                 value = oVal.toString();
             }
             writer.writeAttribute(HTML.VALUE_ATTR, value, HTML.VALUE_ATTR);
-            StringBuilder sb = new StringBuilder("mobi.registerAuxUpload('#{auxUpload.uploadURL}')");
+            StringBuilder sb = new StringBuilder("alert('before register upload call'); mobi.registerAuxUpload('#{session.id}','#{auxUpload.uploadURL}');alert('after call');");
+            logger.info("  script call = "+sb.toString());
             writer.writeAttribute(HTML.ONCLICK_ATTR, sb.toString(), HTML.ONCLICK_ATTR);
+            writer.endElement(HTML.INPUT_ELEM);
         } else  {
-            logger.info("not SX enabled"); //no rendering of it
+            logger.info("NOT SX enabled"); //no rendering of it
         }
 
     }
