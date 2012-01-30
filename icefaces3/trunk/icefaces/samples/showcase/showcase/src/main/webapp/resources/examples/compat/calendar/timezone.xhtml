@@ -33,28 +33,32 @@
     
     <ui:define name="example">
         <h:form id="example-form">
-            <h:panelGrid columns="2">
-                <h:outputLabel for="display" value="Selected Date:"/>
-                <h:outputText id="display" value="#{calendarTimezone.date}">
-                    <f:convertDateTime pattern="#{calendarTimezone.pattern}"
-                                       timezone="#{calendarTimezone.timezoneObject}"/>
-                </h:outputText>
-                
+            <h:panelGrid columns="2" styleClass="centeredPanelWithBorderSpacingAndLeftJustifiedText">
                 <h:outputLabel for="timezones" value="Timezones:"/>
                 <h:selectOneMenu id="timezones"
                                  value="#{calendarTimezone.timezoneId}"
                                  valueChangeListener="#{calendarTimezone.timezoneChanged}">
                     <f:selectItems value="#{calendarTimezone.availableZones}"/>
                 </h:selectOneMenu>
+                
+                <h:outputLabel for="display" value="Selected Date:"/>
+                <h:outputText id="display" value="#{calendarTimezone.date}">
+                    <f:convertDateTime pattern="#{calendarTimezone.pattern}"
+                                       timeZone="#{calendarTimezone.timezoneObject}"/>
+                </h:outputText>
             </h:panelGrid>
             
-            <h:commandButton value="Apply Changes"
+            <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing">
+                <h:commandButton value="Apply Changes"
                              actionListener="#{calendarTimezone.applyChanges}"/>
             
-            <ice:selectInputDate value="#{calendarTimezone.date}" renderAsPopup="false">
-                <f:convertDateTime pattern="#{calendarTimezone.pattern}"
-                                   timezone="#{calendarTimezone.timezoneObject}"/>
-            </ice:selectInputDate>
+                <ice:selectInputDate value="#{calendarTimezone.date}" renderAsPopup="false">
+                    <f:convertDateTime pattern="#{calendarTimezone.pattern}"
+                                       timeZone="#{calendarTimezone.timezoneObject}"/>
+                </ice:selectInputDate>
+            </h:panelGrid>
+            
+            
         </h:form>
     </ui:define>       
 </ui:composition>

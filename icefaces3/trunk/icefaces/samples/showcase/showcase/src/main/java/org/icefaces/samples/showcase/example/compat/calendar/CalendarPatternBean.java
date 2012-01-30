@@ -59,63 +59,32 @@ public class CalendarPatternBean extends ComponentExampleImpl<CalendarPatternBea
 	
 	private static final String TYPE_PATTERN = "Pattern";
 	private static final String TYPE_DATESTYLE = "Date Style";
-	private static final String TYPE_TIMESTYLE = "Time Style";
 	
-	private Date date = CalendarBean.getDefaultDate();
-	private boolean reloadRequired = false;
-	private String patternType = TYPE_PATTERN;
+	private Date date;
+	private boolean reloadRequired;
+	private String patternType;
 	
 	// Selected backings for the radio buttons
-	private String optionPattern = CalendarBean.DEFAULT_PATTERN;
-	private String optionDateStyle = "default";
-	private String optionTimeStyle = "default";
+	private String optionPattern;
+	private String optionDateStyle;
 	
 	// Available radio button options 
-	private String[] patternTypes = new String[] { TYPE_PATTERN,
-	                                               TYPE_DATESTYLE,
-	                                               TYPE_TIMESTYLE };
-	private String[] patternOptions = new String[] { "MM/dd/yyyy",
-                                                     "dd/MM/yyyy",
-	                                                 "MMMM/dd/yy",
-	                                                 "E, MMMM yyyy",
-	                                                 "MM/dd/yy hh:mma",
-	                                                 "kk:mm:ss:SS" };
-    private String[] styleOptions = new String[] { "default",
-                                                   "short",
-                                                   "medium",
-                                                   "long",
-                                                   "full" };
-
-	public CalendarPatternBean() {
-		super(CalendarPatternBean.class);
-	}
-	
-	public Date getDate() { return date; }
-	
-	public String getOptionPattern() { return optionPattern; }
-	public String getOptionDateStyle() { return optionDateStyle; }
-	public String getOptionTimeStyle() { return optionTimeStyle; }
-	public String getPatternType() { return patternType; }
-	
-	public String[] getPatternTypes() { return patternTypes; }
-	public String[] getPatternOptions() { return patternOptions; }
-	public String[] getStyleOptions() { return styleOptions; }
-	
-	public boolean getTypePattern() { return TYPE_PATTERN.equals(patternType); }
-	public boolean getTypeDateStyle() { return TYPE_DATESTYLE.equals(patternType); }
-	public boolean getTypeTimeStyle() { return TYPE_TIMESTYLE.equals(patternType); }
-	
-	public void setDate(Date date) { this.date = date; }
-	public void setOptionPattern(String optionPattern) { this.optionPattern = optionPattern; }
-	public void setOptionDateStyle(String optionDateStyle) { this.optionDateStyle = optionDateStyle; }
-	public void setOptionTimeStyle(String optionTimeStyle) { this.optionTimeStyle = optionTimeStyle; }
-	public void setPatternType(String patternType) { this.patternType = patternType; }
-	
-	/**
+	private String[] patternTypes;
+	private String[] patternOptions;
+                private String[] styleOptions;
+                
+	public CalendarPatternBean() 
+                {
+                    super(CalendarPatternBean.class);
+                    setDefaultValues();
+                }
+        
+                /**
 	 * Method called when a reload is required
 	 * This happens if the converter is modified by the radio buttons in the page
 	 */
-	public void reloadChanges(ValueChangeEvent event) {
+	public void reloadChanges(ValueChangeEvent event)
+                {
 	    reloadRequired = true;
 	}
 	
@@ -125,10 +94,47 @@ public class CalendarPatternBean extends ComponentExampleImpl<CalendarPatternBea
 	 *  to achieve that
 	 * This is because the f:converter cannot be dynamically updated and requires a full refresh
 	 */
-	public void applyChanges(ActionEvent event) {
+	public void applyChanges(ActionEvent event) 
+                {
 	    if (reloadRequired) {
 	        NavigationController.refreshPage();
 	    }
 	    reloadRequired = false;
 	}
+        
+        
+                private void setDefaultValues() {
+                    
+                    this.date = CalendarBean.getDefaultDate();
+                    this.reloadRequired = false;
+                    this.patternType = TYPE_PATTERN;
+                    this.optionPattern = CalendarBean.DEFAULT_PATTERN;
+                    this.optionDateStyle = "default";
+                    // Available radio button options 
+                    this.patternTypes = new String[] { TYPE_PATTERN, TYPE_DATESTYLE};
+                    this.patternOptions = new String[] { "MM/dd/yyyy", "dd/MM/yyyy",
+	                                                 "MMMM/dd/yy", "E, MMMM yyyy",
+	                                                 "MM/dd/yy hh:mma", "kk:mm:ss:SS" };
+                    this.styleOptions = new String[] { "default", "short", "medium", "long", "full" };
+                }
+        
+                
+	
+	public Date getDate() { return date; }
+	
+	public String getOptionPattern() { return optionPattern; }
+	public String getOptionDateStyle() { return optionDateStyle; }
+	public String getPatternType() { return patternType; }
+	
+	public String[] getPatternTypes() { return patternTypes; }
+	public String[] getPatternOptions() { return patternOptions; }
+	public String[] getStyleOptions() { return styleOptions; }
+	
+	public boolean getTypePattern() { return TYPE_PATTERN.equals(patternType); }
+	public boolean getTypeDateStyle() { return TYPE_DATESTYLE.equals(patternType); }
+	
+	public void setDate(Date date) { this.date = date; }
+	public void setOptionPattern(String optionPattern) { this.optionPattern = optionPattern; }
+	public void setOptionDateStyle(String optionDateStyle) { this.optionDateStyle = optionDateStyle; }
+	public void setPatternType(String patternType) { this.patternType = patternType; }    
 }

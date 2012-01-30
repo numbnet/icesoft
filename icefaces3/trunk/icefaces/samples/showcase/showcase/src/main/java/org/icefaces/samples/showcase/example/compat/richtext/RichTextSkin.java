@@ -57,7 +57,7 @@ public class RichTextSkin extends ComponentExampleImpl<RichTextSkin> implements 
     private String text;
     private SelectItem[] availableSkins = new SelectItem[] {
         new SelectItem("default", "Tan"),
-        new SelectItem("silver", "Silver"),
+        //new SelectItem("silver", "Silver"),
         new SelectItem("office2003", "Office")
     };
     private String skin = availableSkins[0].getValue().toString();
