@@ -161,11 +161,11 @@
                       label="node.resizable.label"
                       leaf="true" link="true"
                       contentRef="resizableContentDesc"/>
-                <node id="commandSortHeaderNode"
-                      label="node.commandSortHeader.label"
+
+                <node id="findNode"
+                      label="node.find.label"
                       leaf="true" link="true"
-                      contentRef="commandSortHeaderContentDesc"/>
-                
+                      contentRef="findDesc"/>                
             </node>
         </node>
         <node id="layoutPanelsNode"
@@ -1512,6 +1512,49 @@
                 </tutorials>
             </documentation>
         </content-descriptor>
+        
+        <content-descriptor
+                id="findDesc"
+                title="node.find.title"
+                templateRef="tabbedContainer">
+            <example>
+                <resource-reference
+                        resourceRef="findExplResc"/>
+            </example>
+            <source-code templateRef="documentationContainer">
+                 <jspx-pages>
+                    <resource-reference
+                            label="dataTable-find.jspx"
+                            resourceRef="findExplResc"/>
+                </jspx-pages>
+                <beans>
+                    <resource-reference
+                            label="DataTableBase.java"
+                            resourceRef="org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase"/>
+                    <resource-reference
+                            label="DataTableFind.java"
+                            resourceRef="org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableFind"/>
+                </beans>
+            </source-code>
+            <documentation templateRef="documentationContainer">
+                <documents>
+                    <resource-reference
+                            label="Data Table"
+                            resourceRef="dataTableDoc"/>
+                </documents>
+                <tlds>
+                    <resource-reference
+                            label="dataTable"
+                            resourceRef="dataTableTld"/>
+                </tlds>
+                <tutorials>
+                    <resource-reference
+                            label="Data Table"
+                            resourceRef="dataTableTutorial"/>
+                </tutorials>
+            </documentation>
+        </content-descriptor>
+                
         <content-descriptor
                 id="rowSelectorContentDesc" title="node.rowSelector.title"
                 templateRef="tabbedContainer">
@@ -1929,6 +1972,8 @@
                       path="/WEB-INF/includes/examples/custom/dataTable-dataScrolling.jspx"/>
             <resource id="commandSortHeaderExplResc"
                       path="/WEB-INF/includes/examples/custom/dataTable-commandSortHeader.jspx"/>
+            <resource id="findExplResc"
+                      path="/WEB-INF/includes/examples/custom/dataTable-find.jspx"/>
             <resource id="rowSelectorExplResc"
                       path="/WEB-INF/includes/examples/custom/dataTable-rowSelection.jspx"/>
             <resource id="expandableDataTableExplResc"
@@ -2058,6 +2103,8 @@
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/dataPaginator/DataScrollingModel.java"/>
             <resource id="org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase"
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/dataTable/DataTableBase.java"/>
+            <resource id="org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableFind"
+                      path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/dataTable/DataTableFind.java"/>
             <!-- DataTable sortable header-->
             <resource id="org.icefaces.application.showcase.view.bean.examples.component.commandSortHeader.SortHeaderModel"
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/commandSortHeader/SortHeaderModel.java"/>

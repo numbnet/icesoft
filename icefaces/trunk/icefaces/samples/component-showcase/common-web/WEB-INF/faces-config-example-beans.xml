@@ -248,6 +248,14 @@
             <value>#{employeeServiceImpl}</value>
         </managed-property>
     </managed-bean>
+    <!-- Table Find -->
+    <managed-bean>
+        <managed-bean-name>dataTableFind</managed-bean-name>
+        <managed-bean-class>
+            org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableFind
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
     <!-- Columns backing bean -->
     <managed-bean>
         <managed-bean-name>columnsBean</managed-bean-name>
