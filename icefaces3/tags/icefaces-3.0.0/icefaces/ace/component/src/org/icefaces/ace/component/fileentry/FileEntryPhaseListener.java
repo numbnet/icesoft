@@ -25,6 +25,7 @@ import org.icefaces.apache.commons.fileupload.util.Streams;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.application.ProjectStage;
+import javax.faces.context.ExternalContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
@@ -40,6 +41,7 @@ import javax.faces.application.FacesMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.io.InputStream;
 import java.io.File;
@@ -105,7 +107,7 @@ public class FileEntryPhaseListener implements PhaseListener {
         
         if (!phaseEvent.getPhaseId().equals(PhaseId.RESTORE_VIEW))
             return;
-            
+
         Object requestObject = phaseEvent.getFacesContext().getExternalContext().getRequest();
         HttpServletRequest request = EnvUtils.getSafeRequest(phaseEvent.getFacesContext());
         boolean isPortlet = EnvUtils.instanceofPortletRequest(requestObject);
@@ -176,6 +178,7 @@ public class FileEntryPhaseListener implements PhaseListener {
                 Object wrapper = null;
                 if (isPortlet) {
                     wrapper = getPortletRequestWrapper(requestObject, parameterMap);
+                    setPortletRequestWrapper(wrapper);
                 } else {
                     wrapper = new FileUploadRequestWrapper((HttpServletRequest) requestObject, parameterMap);
                 }
@@ -220,7 +223,7 @@ public class FileEntryPhaseListener implements PhaseListener {
 //            System.out.println("FileEntryPhaseListener.beforePhase()  wrapper: " + wrapper);
 //            System.out.println("FileEntryPhaseListener.beforePhase()  set    : " + phaseEvent.getFacesContext().getExternalContext().getRequest());
         }
-        
+
 //        request = (HttpServletRequest) phaseEvent.getFacesContext().getExternalContext().getRequest();
         
         /*
@@ -267,6 +270,24 @@ public class FileEntryPhaseListener implements PhaseListener {
         return wrapper;
     }
     
+    private static void setPortletRequestWrapper(Object wrappedRequest){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        Map requestMap = ec.getRequestMap();
+        try {
+            Object bridgeContext = requestMap.get("javax.portlet.faces.bridgeContext");
+            Class requestClass = Class.forName("javax.portlet.PortletRequest");
+            Class paramClasses[] = new Class[1];
+            paramClasses[0] = requestClass;
+            Method setPortletRequestMethod = bridgeContext.getClass().getMethod("setPortletRequest", paramClasses);
+            Object paramObj[] = new Object[1];
+            paramObj[0] = wrappedRequest;
+            setPortletRequestMethod.invoke(bridgeContext,paramObj);
+        } catch (Exception e) {
+            throw new RuntimeException("problem setting FileUploadPortletRequestWrapper", e);
+        }
+    }
+
     private static void uploadFile(
             FacesContext facesContext,
             FileItemStream item,
