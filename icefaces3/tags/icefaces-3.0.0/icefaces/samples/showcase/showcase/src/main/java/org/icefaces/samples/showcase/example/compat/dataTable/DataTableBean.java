@@ -71,7 +71,9 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
             @MenuLink(title = "menu.compat.dataTable.subMenu.scroll",
                     exampleBeanName = DataTableScroll.BEAN_NAME),
             @MenuLink(title = "menu.compat.dataTable.subMenu.dynamic",
-                    exampleBeanName = DataTableDynamic.BEAN_NAME)
+                    exampleBeanName = DataTableDynamic.BEAN_NAME),
+            @MenuLink(title = "menu.compat.dataTable.subMenu.find",
+                    exampleBeanName = DataTableFind.BEAN_NAME)
 })
 @ManagedBean(name= DataTableBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
