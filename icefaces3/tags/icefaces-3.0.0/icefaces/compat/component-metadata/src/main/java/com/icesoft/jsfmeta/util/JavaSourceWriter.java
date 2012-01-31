@@ -170,39 +170,22 @@ public class JavaSourceWriter extends Writer {
 		emitNewline();
 	}
 
-        //TODO: pick up from file
 	public void emitLicense() throws IOException{
             
 		String LICENSE_STRING = "/*\n" +
-            " * Version: MPL 1.1/GPL 2.0/LGPL 2.1\n" +
+			" * Copyright 2004-2012 ICEsoft Technologies Canada Corp.\n" +
             " *\n" +
-            " * \"The contents of this file are subject to the Mozilla Public License\n" +
-            " * Version 1.1 (the \"License\"); you may not use this file except in\n" +
-            " * compliance with the License. You may obtain a copy of the License at\n" +
-            " * http://www.mozilla.org/MPL/\n" +
-            " *\n" +
-            " * Software distributed under the License is distributed on an \"AS IS\"\n" +
-            " * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the\n" +
-            " * License for the specific language governing rights and limitations under\n" +
-            " * the License.\n" +
-            " *\n" +
-            " * The Original Code is ICEfaces 1.5 open source software code, released\n" +
-            " * November 5, 2006. The Initial Developer of the Original Code is ICEsoft\n" +
-            " * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)\n" +
-            " * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.\n" +
-            " *\n" +
-            " * Contributor(s): _____________________.\n" +
-            " *\n" +
-            " * Alternatively, the contents of this file may be used under the terms of\n" +
-            " * the GNU Lesser General Public License Version 2.1 or later (the \"LGPL\"\n" +
-            " * License), in which case the provisions of the LGPL License are\n" +
-            " * applicable instead of those above. If you wish to allow use of your\n" +
-            " * version of this file only under the terms of the LGPL License and not to\n" +
-            " * allow others to use your version of this file under the MPL, indicate\n" +
-            " * your decision by deleting the provisions above and replace them with\n" +
-            " * the notice and other provisions required by the LGPL License. If you do\n" +
-            " * not delete the provisions above, a recipient may use your version of\n" +
-            " * this file under either the MPL or the LGPL License.\"\n" +
+			" * Licensed under the Apache License, Version 2.0 (the 'License');\n" +
+			" * you may not use this file except in compliance with the\n" +
+			" * License. You may obtain a copy of the License at\n" +
+			" *\n" +
+ 			" * http://www.apache.org/licenses/LICENSE-2.0\n" +
+ 			" *\n" +
+ 			" * Unless required by applicable law or agreed to in writing,\n" +
+			" * software distributed under the License is distributed on an 'AS\n" +
+			" * IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either\n" +
+			" * express or implied. See the License for the specific language\n" +
+			" * governing permissions and limitations under the License.\n" +
             " *\n" +
             " */";
 

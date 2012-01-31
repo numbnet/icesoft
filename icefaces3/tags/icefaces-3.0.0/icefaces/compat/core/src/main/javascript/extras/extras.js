@@ -349,38 +349,6 @@ Ice.isEventSourceInputElement = function(event) {
         return false;
     }
 }
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
 
 Ice.util = Class.create();
 Ice.util = {
@@ -448,39 +416,6 @@ var IE = (Try.these(
     }
 
 ) || false);
-
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
 
 //related class com.icesoft.faces.component.util.DelimitedProperties 
 Ice.delimitedProperties = Class.create({
@@ -788,38 +723,6 @@ Ice.AutocompleterMonitor.prototype = Object.extend(new Ice.MonitorBase, {
         return new Ice.Autocompleter(this.id, this.update.id, this.createOptions, this.rowClass, this.selectedRowClass);
     }
 });
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
 
 Ice.DnD.StyleReader = Class.create();
 Ice.DnD.StyleReader = {
@@ -1261,38 +1164,6 @@ Ice.DnD.adjustPosition = function(id) {
         element.style.top = positionedOffset.top + heightDiff + "px";
     }
 }
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
 
 Ice.Initializer = Class.create();
 Ice.Initializer = {
@@ -1323,39 +1194,6 @@ Ice.Initializer = {
         Ice.DnD.logger.debug("Run Queued Calls");
     }
 };
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
-
 
 // Used to improve drag perofmance when many drop targets are present
 var DropRegions = {
@@ -1755,38 +1593,7 @@ Draggable.prototype.finishDrag = function(D, E) {
         }
     }
 };
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
+
 // Original license and copyright:
 // Copyright (c) 2005 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
 //           (c) 2005 Sammi Williams (http://www.oriontransfer.co.nz, sammi@oriontransfer.co.nz)
@@ -1863,38 +1670,7 @@ Droppables.add = function(ele, options) {
         Ice.StateMon.add(monitor);
     }
 }
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
+
 // Original license and copyright:
 // Copyright (c) 2005 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
 //           (c) 2005 Sammi Williams (http://www.oriontransfer.co.nz, sammi@oriontransfer.co.nz)
@@ -2152,38 +1928,7 @@ var Sortable = {
             }).join(";");
     }
 }
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
+
 // Original license and copyright:
 // Copyright (c) 2005 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
 //           (c) 2005 Ivan Krstic (http://blogs.law.harvard.edu/ivan)
@@ -2709,39 +2454,6 @@ Object.extend(Object.extend(Ajax.Autocompleter.prototype, Autocompleter.Base.pro
     }
 });
 
-
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
 // Original license and copyright:
 // Copyright (c) 2005 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
 //           (c) 2005 Ivan Krstic (http://blogs.law.harvard.edu/ivan)
@@ -2839,38 +2551,7 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
         this.render();
     }
 });
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
+
 // Original copyright and license
 // Copyright (c) 2005 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
 // Contributors:
@@ -2981,38 +2662,6 @@ Effect.Grow = function(element) {
         }
     });
 }
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
 
 try {
     Ice.DnD.init();
@@ -3032,38 +2681,6 @@ window.onUnload(function() {
     }
 });
 
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
 var GMapRepository = new Array();
 
 var GMapWrapper = Class.create();
@@ -3336,38 +2953,6 @@ Ice.GoogleMap = {
     }//setMapType    
 }
 
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
 var JSObjects = new Array();
 Ice.Repository = Class.create();
 Ice.Repository = {
@@ -3412,38 +2997,6 @@ Ice.Repository = {
     }
 }
 
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
 var visibleTooltipList = new Array();
 
 ToolTipPanelPopup = Class.create({
@@ -3753,39 +3306,6 @@ ToolTipPanelPopupUtil = {
     }
 };
 
-
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
 Ice.Resizable = Class.create({
     initialize: function(event, horizontal) {
 
@@ -4286,38 +3806,6 @@ Ice.PanelDivider.getParentHeight = function(element) {
     }
     return sHeight;
 }
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
 
 Ice.KeyNavigator = Class.create({
     initialize: function(componentId) {
@@ -4642,39 +4130,6 @@ Ice.MenuBarKeyNavigator.addMethods({
 
 });
 
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
-
 Ice.dataTable = {};
 
 Ice.dataTable.DataTable = Class.create({
@@ -4887,39 +4342,6 @@ Ice.Calendar.CloseListener = Class.create({
         return $(this.buttonId);
     }
 });
-
-/*
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * "The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations under
- * the License.
- *
- * The Original Code is ICEfaces 1.5 open source software code, released
- * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
- * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
- * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
- *
- * Contributor(s): _____________________.
- *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
- * License), in which case the provisions of the LGPL License are
- * applicable instead of those above. If you wish to allow use of your
- * version of this file only under the terms of the LGPL License and not to
- * allow others to use your version of this file under the MPL, indicate
- * your decision by deleting the provisions above and replace them with
- * the notice and other provisions required by the LGPL License. If you do
- * not delete the provisions above, a recipient may use your version of
- * this file under either the MPL or the LGPL License."
- *
- */
 
 Ice.Menu = Class.create();
 Ice.Menu = {
