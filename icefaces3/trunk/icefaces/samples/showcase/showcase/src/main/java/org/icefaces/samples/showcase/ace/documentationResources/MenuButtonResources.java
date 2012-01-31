@@ -41,7 +41,7 @@ import org.icefaces.samples.showcase.metadata.context.ResourceRootPath;
                     resource = ResourceRootPath.FOR_ACE_TLD + "menuButton.html"),
                 @ExampleResource(type = ResourceType.tld,
                     title="ace:menuItem",
-                    resource = ResourceRootPath.FOR_ACE_TLD + "menuitem.html")
+                    resource = ResourceRootPath.FOR_ACE_TLD + "menuItem.html")
         }
 )
 @ManagedBean(name= MenuButtonResources.BEAN_NAME)
