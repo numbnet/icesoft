@@ -31,8 +31,7 @@
     <h3>Camera Component</h3>
     <div style="border-radius: 15px; border: 1px dotted silver; max-width: 500px;">
         <h:form prependId="false" class="centered" enctype="multipart/form-data" >
-            <h:commandButton rendered="#{!auxUpload.enabled}"
-                onclick="mobi.registerAuxUpload('#{session.id}','#{auxUpload.uploadURL}');" value="Enable ICEmobile-SX" />
+            <mobi:icemobilesx/>
             <mobi:camera id="camera" value="#{cameraBean.imagePush}"
                     valueChangeListener="#{cameraBean.methodOne}"/>
             <mobi:thumbnail for="camera"/>
