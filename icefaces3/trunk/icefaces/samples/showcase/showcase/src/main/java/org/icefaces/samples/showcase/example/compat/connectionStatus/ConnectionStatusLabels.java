@@ -64,7 +64,7 @@ public class ConnectionStatusLabels extends ComponentExampleImpl<ConnectionStatu
 		super(ConnectionStatusLabels.class);
 	}
         
-        /**
+                /**
 	 * Method to simulate a long running task
 	 * We'll just hold the thread for a certain length of time
 	 * The client browser will react as "active" the entire time, so

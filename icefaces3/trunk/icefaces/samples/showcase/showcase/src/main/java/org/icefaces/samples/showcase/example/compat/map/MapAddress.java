@@ -51,52 +51,49 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 )
 @ManagedBean(name= MapAddress.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class MapAddress extends ComponentExampleImpl<MapAddress> implements Serializable {
-	
-	public static final String BEAN_NAME = "mapAddress";
-	private String from;
-	private String to;
-	private boolean showTextDirections = true;
-	private boolean locateAddress = false;
-	private boolean showDirections = false;
+public class MapAddress extends ComponentExampleImpl<MapAddress> implements Serializable 
+{
+    public static final String BEAN_NAME = "mapAddress";
+    private String from;
+    private String to;
+    private boolean locateAddress = false;
+    private boolean showDirections = false;
 
-	public MapAddress() {
-		super(MapAddress.class);
-	}
-	
-	public String getFrom() { return from; }
-	public String getTo() { return to; }
-	public boolean getShowTextDirections() { return showTextDirections; }
-	public boolean getLocateAddress() {
-	    if (locateAddress) {
-	        locateAddress = false;
-	        
-	        return true;
-	    }
-	    
-	    return locateAddress;
-	}
-	public boolean getShowDirections() { return showDirections; }
-	
-	public void setFrom(String from) { this.from = from; }
-	public void setTo(String to) { this.to = to; }
-	public void setShowTextDirections(boolean showTextDirections) { this.showTextDirections = showTextDirections; }
-	public void setLocateAddress(boolean locateAddress) { this.locateAddress = locateAddress; }
-	public void setShowDirections(boolean showDirections) { this.showDirections = showDirections; }
-	
-	public void lookup(ActionEvent event) {
-	    if (FacesUtils.isBlank(from)) {
-	        if (!FacesUtils.isBlank(to)) {
-                from = new String(to);
-                to = null;
-            }
-            else {
-                from = MapBean.DEFAULT_ADDRESS;
-                to = null;
-            }
-	    }
-	    
-	    locateAddress = true;
-	    showDirections = !FacesUtils.isBlank(to);
-	}
+    public MapAddress() {
+            super(MapAddress.class);
+    }
+    
+    public void lookup(ActionEvent event) {
+                if (FacesUtils.isBlank(from)) 
+                {
+                    if (!FacesUtils.isBlank(to)) {
+                        from = new String(to);
+                        to = null;
+                    }
+                    else 
+                    {
+                        from = MapBean.DEFAULT_ADDRESS;
+                        to = null;
+                    }
+        }
+        locateAddress = true;
+        showDirections = !FacesUtils.isBlank(to);
+    }
+    
+    public String getFrom() { return from; }
+    public String getTo() { return to; }
+    public boolean getLocateAddress() {
+        if (locateAddress) {
+            locateAddress = false;
+
+            return true;
+        }
+
+        return locateAddress;
+    }
+    public boolean getShowDirections() { return showDirections; }
+    public void setFrom(String from) { this.from = from; }
+    public void setTo(String to) { this.to = to; }
+    public void setLocateAddress(boolean locateAddress) { this.locateAddress = locateAddress; }
+    public void setShowDirections(boolean showDirections) { this.showDirections = showDirections; }
 }
