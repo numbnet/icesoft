@@ -2,6 +2,8 @@ package org.icefaces.component.mobisx;
 
 import org.icefaces.component.utils.HTML;
 import org.icefaces.component.utils.Utils;
+import org.icefaces.impl.application.AuxUploadSetup;
+import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -20,7 +22,6 @@ public class IceMobileSXRenderer extends Renderer {
         String clientId = uiComponent.getClientId(facesContext);
         IceMobileSX sx = (IceMobileSX) uiComponent;
         if (Utils.showSX()){
-            logger.info("RENDERING SX BUTTON");
             writer.startElement(HTML.INPUT_ELEM, uiComponent);
             writer.writeAttribute(HTML.TYPE_ATTR, "button", HTML.TYPE_ATTR);
             writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
@@ -41,12 +42,13 @@ public class IceMobileSXRenderer extends Renderer {
                 value = oVal.toString();
             }
             writer.writeAttribute(HTML.VALUE_ATTR, value, HTML.VALUE_ATTR);
-            StringBuilder sb = new StringBuilder("alert('before register upload call'); mobi.registerAuxUpload('#{session.id}','#{auxUpload.uploadURL}');alert('after call');");
-            logger.info("  script call = "+sb.toString());
+            String sessionIdParam = EnvUtils.getSafeSession(facesContext).getId();
+            String uploadURL = AuxUploadSetup.getInstance().getUploadURL();
+            StringBuilder sb = new StringBuilder("mobi.registerAuxUpload('");
+            sb.append(sessionIdParam).append("','").append(uploadURL).append("');");
+        //    logger.info("  script call = "+sb.toString());
             writer.writeAttribute(HTML.ONCLICK_ATTR, sb.toString(), HTML.ONCLICK_ATTR);
             writer.endElement(HTML.INPUT_ELEM);
-        } else  {
-            logger.info("NOT SX enabled"); //no rendering of it
         }
 
     }
