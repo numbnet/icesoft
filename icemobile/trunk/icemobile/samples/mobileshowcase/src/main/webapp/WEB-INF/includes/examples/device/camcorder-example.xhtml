@@ -52,11 +52,8 @@
                         value="#{mmsgs['example.device.disclaimer']}" />
 
                  <ui:fragment rendered="#{camcorderBean.showSX}">
-                    <br /><span>
-                    <h:commandButton 
-                       styleClass="mobi-button mobi-button-important"
-                       onclick="mobi.registerAuxUpload('#{session.id}','#{auxUpload.uploadURL}');" value="Enable" />
-     ICEmobile-SX Surf Expander.</span>
+                    <br />
+                    <mobi:icemobilesx/>
                 </ui:fragment>
             </mobi:fieldsetRow>
 
