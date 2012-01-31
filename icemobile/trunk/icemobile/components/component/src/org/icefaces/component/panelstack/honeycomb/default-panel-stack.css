@@ -28,8 +28,10 @@
 .mobi-panel-stack-header {
     height: 43px;
     line-height: 43px;
-    background: -moz-linear-gradient(top, #7f7f7f, #575757) repeat scroll 0 0 #a8acb9;
+    background: -moz-linear-gradient(top, #7f7f7f, #575757) repeat scroll 0 0 #575757;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #7f7f7f), color-stop(1, #575757));
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#7f7f7f', EndColorStr='#575757');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#7f7f7f', EndColorStr='#575757')";
     border-top: 1px solid #7b7b7b;
     border-bottom: 1px solid #020202;
     padding: 0;
@@ -58,6 +60,7 @@
     width: 30px;
     height: 30px;
     margin: 0 3px 0 0;
+    border:0;
 }
 
 .mobi-panel-stack-body-menu {

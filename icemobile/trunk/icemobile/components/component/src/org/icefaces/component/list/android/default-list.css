@@ -84,7 +84,7 @@
 }
 
 /* link/button child styling specific  */
-.mobi-list > .mobi-list-item > .mobi-list-item-default > a:not(.mobi-list-item-custom) {
+.mobi-list > .mobi-list-item > .mobi-list-item-default > a {
     text-decoration: none;
     color: #fff;
     display: block;

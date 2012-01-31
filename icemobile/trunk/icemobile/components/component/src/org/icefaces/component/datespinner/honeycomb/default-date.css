@@ -37,6 +37,7 @@
     left: 0;
     z-index: 1000;
     opacity: 0.5;
+    filter:alpha(opacity=50);
 }
 
 .mobi-date-bg-inv {
@@ -122,6 +123,8 @@
     border-top: 1px solid #505054;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #424246), color-stop(1, #3f3f42));
     background: -moz-linear-gradient(top, #424246, #3f3f42);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#424246', EndColorStr='#3f3f42');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#424246', EndColorStr='#3f3f42')";
 }
 
 .mobi-date-btn-cont-decr {
@@ -129,6 +132,8 @@
     border-top: 1px solid #505054;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #424246), color-stop(1, #3f3f42));
     background: -moz-linear-gradient(top, #424246, #3f3f42);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#424246', EndColorStr='#3f3f42');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#424246', EndColorStr='#3f3f42')";
 }
 
 .mobi-date-btn {

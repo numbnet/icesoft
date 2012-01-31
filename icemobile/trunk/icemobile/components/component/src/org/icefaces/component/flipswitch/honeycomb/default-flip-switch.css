@@ -23,8 +23,33 @@
     background-color: #454545;
 }
 
-.mobi-flip-switch-on span:first-child,
-    .mobi-flip-switch-off span:last-child {
+.mobi-flip-switch-off{
+    color:white;
+
+    background-color: #A5A2A5;
+}
+.mobi-flip-switch-off span{
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.mobi-flip-switch-off span:first-child{
+    color:transparent;
+    border-bottom: none;
+    background-color: #454545;
+}
+
+.mobi-flip-switch-off span:last-child {
+    border-bottom: 1px solid #CCCCCC;
+    background-color: #A5A2A5;
+    text-shadow: none;
+    color: white;
+}
+
+.mobi-flip-switch-on span{
+    color:transparent;
+}
+
+.mobi-flip-switch-on span:first-child {
     border-bottom: 1px solid #CCCCCC;
     background-color: #A5A2A5;
     text-shadow: none;

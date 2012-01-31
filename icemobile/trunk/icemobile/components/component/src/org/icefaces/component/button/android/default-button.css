@@ -30,6 +30,9 @@
     display: block;
     margin: 0 0 -1px 0;
     width: 100%;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
 
 .mobi-button-group-hor .mobi-button {
@@ -45,6 +48,8 @@
     -webkit-border-top-left-radius: 10px;
     -moz-border-radius-topright: 10px;
     -moz-border-radius-topleft: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .mobi-button-group-vert .mobi-button:last-child {
@@ -52,6 +57,8 @@
     -webkit-border-bottom-left-radius: 10px;
     -moz-border-radius-bottomright: 10px;
     -moz-border-radius-bottomleft: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .mobi-button-group-hor .mobi-button:first-child {
@@ -59,6 +66,10 @@
     -webkit-border-bottom-left-radius: 10px;
     -moz-border-radius-topleft: 10px;
     -moz-border-radius-bottomleft: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-origin:padding;
+    background-clip: border-box;
 }
 
 .mobi-button-group-hor .mobi-button:last-child {
@@ -66,6 +77,10 @@
     -webkit-border-bottom-right-radius: 10px;
     -moz-border-radius-topright: 10px;
     -moz-border-radius-bottomright: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-origin:padding;
+    background-clip: border-box;
 }
 
 .mobi-button-group .mobi-button-selected {

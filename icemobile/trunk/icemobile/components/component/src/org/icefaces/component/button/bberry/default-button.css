@@ -30,6 +30,9 @@
     display: block;
     margin: 0 0 -1px 0;
     width: 100%;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
 
 .mobi-button-group-hor .mobi-button {
@@ -45,6 +48,8 @@
     -webkit-border-top-left-radius: 10px;
     -moz-border-radius-topright: 10px;
     -moz-border-radius-topleft: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .mobi-button-group-vert .mobi-button:last-child {
@@ -52,6 +57,8 @@
     -webkit-border-bottom-left-radius: 10px;
     -moz-border-radius-bottomright: 10px;
     -moz-border-radius-bottomleft: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .mobi-button-group-hor .mobi-button:first-child {
@@ -59,6 +66,10 @@
     -webkit-border-bottom-left-radius: 10px;
     -moz-border-radius-topleft: 10px;
     -moz-border-radius-bottomleft: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-origin:padding;
+    background-clip: border-box;
 }
 
 .mobi-button-group-hor .mobi-button:last-child {
@@ -66,11 +77,16 @@
     -webkit-border-bottom-right-radius: 10px;
     -moz-border-radius-topright: 10px;
     -moz-border-radius-bottomright: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-origin:padding;
+    background-clip: border-box;
 }
 
 .mobi-button-group .mobi-button-selected {
     background: -moz-linear-gradient(top, #6792E8, #2463DE) repeat scroll 0 0 #6792E8;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #6792E8), color-stop(1, #2463DE));
+    background-color: #6792E8;
     border: 1px solid #155678;
     text-shadow: 0 -1px 1px #145072;
     color: #FFFFFF;
@@ -81,6 +97,7 @@
     border: 1px solid #999;
     background: -moz-linear-gradient(top, #E7EBE7, #ccc) repeat scroll 0 0 #ccc;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #E7EBE7), color-stop(1, #ccc));
+    background-color: #ccc;
     font-size: 12px;
     color: black;
     font-weight: bold;
