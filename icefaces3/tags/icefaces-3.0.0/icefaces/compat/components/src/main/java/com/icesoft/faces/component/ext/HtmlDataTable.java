@@ -586,6 +586,15 @@ public class HtmlDataTable
         STARTS_WITH, ENDS_WITH, EXACT, CONTAINS
     }
 
+    /**
+     * Find the index of a row object in the current DataModel.
+     * @param query The string to be searched for in the row object fields.
+     * @param fields The fields of the row object to search the String representations of.
+     * @param startRow The index to begin searching, inclusive.
+     * @param searchType A enumeration representing where to search for a match.
+     * @param caseSensitive A boolean representing the case sensitive.
+     * @return Index of the row found or -1
+     */
     public int findRow(String query, String[] fields, int startRow, SearchType searchType, boolean caseSensitive) {
         int savedRowIndex = getRowIndex();
         ELContext elContext = FacesContext.getCurrentInstance().getELContext();
@@ -655,14 +664,34 @@ public class HtmlDataTable
         }
     }
 
+    /**
+     * Find the index of a row object in the current DataModel.
+     * @param query The string to be searched for in the row object fields.
+     * @param fields The fields of the row object to search the String representations of.
+     * @param startRow The index to begin searching, inclusive.
+     * @param searchType A enumeration representing where to search for a match.
+     * @return Index of the row found or -1
+     */
     public int findRow(String query, String[] fields, int startRow, SearchType searchType) {
         return findRow(query, fields, startRow, searchType, true);
     }
 
+    /**
+     * Find the index of a row object in the current DataModel.
+     * @param query The string to be searched for in the row object fields.
+     * @param fields The fields of the row object to search the String representations of.
+     * @param startRow The index to begin searching, inclusive.
+     * @return Index of the row found or -1
+     */
     public int findRow(String query, String[] fields, int startRow) {
         return findRow(query, fields, startRow, SearchType.CONTAINS, true);
     }
 
+    /**
+     * Navigate the client to a row in the table indicating the target row with the given effect.
+     * @param row Index of the row to be navigated to.
+     * @param effect Effect object to trigger on the given row
+     */
     public void navigateToRow(int row, Effect effect) {
         if (row >= getRowCount())
             throw new IndexOutOfBoundsException();
@@ -682,6 +711,10 @@ public class HtmlDataTable
             JavascriptContext.fireEffect(effect, id, context);
     }
 
+    /**
+     * Navigate the client to a row in the table indicating the target row with a default highlight effect.
+     * @param row Index of the row to be navigated to.
+     */
     public void navigateToRow(int row) {
         navigateToRow(row, new Highlight("#fda505"));
     }
