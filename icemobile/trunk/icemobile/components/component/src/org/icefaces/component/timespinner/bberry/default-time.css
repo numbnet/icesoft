@@ -119,6 +119,8 @@
     -moz-border-radius:  3px 3px 0 0;
     background: -moz-linear-gradient(top, #f7f7f7, #bdbebd) center no-repeat;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f7f7f7), color-stop(1, #bdbebd));
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#f7f7f7', EndColorStr='#bdbebd');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f7f7f7', EndColorStr='#bdbebd')";
 }
 
 .mobi-time-btn-cont-decr {
@@ -127,6 +129,8 @@
     -moz-border-radius:  0 0 3px 3px;
     background: -moz-linear-gradient(top, #bdbebd, #f7f7f7) center no-repeat;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #f7f7f7));
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#bdbebd', EndColorStr='#f7f7f7');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#bdbebd', EndColorStr='#f7f7f7')";
 }
 
 .mobi-time-btn {

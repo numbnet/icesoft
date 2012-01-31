@@ -30,6 +30,9 @@
     display: block;
     margin: 0 0 -1px 0;
     width: 100%;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
 
 .mobi-button-group-hor .mobi-button {
@@ -45,6 +48,8 @@
     -webkit-border-top-left-radius: 10px;
     -moz-border-radius-topright: 10px;
     -moz-border-radius-topleft: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .mobi-button-group-vert .mobi-button:last-child {
@@ -52,6 +57,8 @@
     -webkit-border-bottom-left-radius: 10px;
     -moz-border-radius-bottomright: 10px;
     -moz-border-radius-bottomleft: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .mobi-button-group-hor .mobi-button:first-child {
@@ -59,6 +66,10 @@
     -webkit-border-bottom-left-radius: 10px;
     -moz-border-radius-topleft: 10px;
     -moz-border-radius-bottomleft: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-origin:padding;
+    background-clip: border-box;
 }
 
 .mobi-button-group-hor .mobi-button:last-child {
@@ -66,11 +77,16 @@
     -webkit-border-bottom-right-radius: 10px;
     -moz-border-radius-topright: 10px;
     -moz-border-radius-bottomright: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-origin:padding;
+    background-clip: border-box;
 }
 
 .mobi-button-group .mobi-button-selected {
     background: -moz-linear-gradient(top, #6792E8, #376FE0, #1F57C6, #2463DE) repeat scroll 0 0 #6792E8;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #6792E8), color-stop(.45, #376FE0), color-stop(.5, #1F57C6), color-stop(1, #2463DE));
+    background-color: #2463DE;
     border: 1px solid #155678;
     text-shadow: 0 -1px 1px #145072;
     color: #FFFFFF;
@@ -80,6 +96,7 @@
     -webkit-appearance: none;
     background: -moz-linear-gradient(center top, #FEFEFE, #EEEEEE) repeat scroll 0 0 #EEEEEE;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #FEFEFE), color-stop(1, #EEEEEE));
+    background-color:#f5f5f5;
     border: 1px solid #BEBEBE;
     font-size: 12px;
     color: #444444;
@@ -110,15 +127,17 @@
 .mobi-button-default {
     background: -moz-linear-gradient(top, #8EA4C1, #5877A2, #476999, #4A6C9B) repeat scroll 0 0 #4A6C9B;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #8EA4C1), color-stop(.45, #5877A2), color-stop(.5, #476999), color-stop(1, #4A6C9B));
+    background-color:#4A6C9B;
 }
 
 .mobi-button-back {
     -moz-border-image: url('back-button-border.png') 0 8 0 14;
     -webkit-border-image: url('back-button-border.png') 0 8 0 14;
     border-image: url('back-button-border.png') 0 8 0 14;
-     border-radius: 0;
+    border-radius: 0;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
+    border-color: transparent;
     background: url('back-button-bg.png') repeat-x scroll 0;
     margin: 0;
     padding: 0;
@@ -135,11 +154,13 @@
 .mobi-button-important {
     background: -moz-linear-gradient(top, #6792E8, #376FE0, #1F57C6, #2463DE) repeat scroll 0 0 #6792E8;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #6792E8), color-stop(.45, #376FE0), color-stop(.5, #1F57C6), color-stop(1, #2463DE));
+    background-color:#2463DE;
 }
 
 .mobi-button-attention {
     background: -moz-linear-gradient(top, #DF9F9F, #B62728, #AA0102, #BC3839) repeat scroll 0 0 #6792E8;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #DF9F9F), color-stop(.45, #B62728), color-stop(.5, #AA0102), color-stop(1, #BC3839));
+    background-color:#BC3839;
 }
 
 .mobi-button-icon {
