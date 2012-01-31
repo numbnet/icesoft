@@ -30,7 +30,7 @@
                        style="border-top: 1px solid #999999;">
                 <h:column>
                     <div style="overflow:hidden;width:175px;height:98px;">
-                        <mobi:graphicImage
+                        <mobi:graphicImage style="border:none;"
                                 title="#{mediaMessage.comment}"
                                 width="#{mediaMessage.mediumPhoto.width}"
                                 height="#{mediaMessage.mediumPhoto.height}"
@@ -42,7 +42,7 @@
                         <f:setPropertyActionListener
                                 target="#{uploadModel.selectedPhoto}"
                                 value="#{mediaMessage}"/>
-                        <h:graphicImage library="images"
+                        <h:graphicImage library="images" style="border:none;"
                                         name="view-icon.png"/>
                     </h:commandLink>
                 </h:column>
