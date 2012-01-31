@@ -41,10 +41,10 @@ import org.icefaces.samples.showcase.metadata.context.ResourceRootPath;
                 // TLD Resources
                 @ExampleResource(type = ResourceType.tld,
                     title="ace:menuBar",
-                    resource = ResourceRootPath.FOR_ACE_TLD + "menubar.html"),
+                    resource = ResourceRootPath.FOR_ACE_TLD + "menuBar.html"),
                 @ExampleResource(type = ResourceType.tld,
                     title="ace:menuItem",
-                    resource = ResourceRootPath.FOR_ACE_TLD + "menuitem.html"),
+                    resource = ResourceRootPath.FOR_ACE_TLD + "menuItem.html"),
                 @ExampleResource(type = ResourceType.tld,
                     title="ace:subMenu",
                     resource = ResourceRootPath.FOR_ACE_TLD +"submenu.html")

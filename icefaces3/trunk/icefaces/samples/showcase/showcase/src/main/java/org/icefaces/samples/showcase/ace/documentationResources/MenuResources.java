@@ -44,7 +44,7 @@ import org.icefaces.samples.showcase.metadata.context.ResourceRootPath;
                     resource = ResourceRootPath.FOR_ACE_TLD + "menu.html"),
                 @ExampleResource(type = ResourceType.tld,
                     title="ace:menuItem",
-                    resource = ResourceRootPath.FOR_ACE_TLD + "menuitem.html"),
+                    resource = ResourceRootPath.FOR_ACE_TLD + "menuItem.html"),
                 @ExampleResource(type = ResourceType.tld,
                     title="ace:subMenu",
                     resource = ResourceRootPath.FOR_ACE_TLD +"submenu.html")
