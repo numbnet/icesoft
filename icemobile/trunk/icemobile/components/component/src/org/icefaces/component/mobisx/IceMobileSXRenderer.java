@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 
 public class IceMobileSXRenderer extends Renderer {
     private static Logger logger = Logger.getLogger(IceMobileSXRenderer.class.getName());
+    private static String ITUNES_LINK = 
+            "http://itunes.apple.com/us/app/icemobile-sx/id485908934?mt=8";
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -22,6 +24,7 @@ public class IceMobileSXRenderer extends Renderer {
         String clientId = uiComponent.getClientId(facesContext);
         IceMobileSX sx = (IceMobileSX) uiComponent;
         if (Utils.showSX()){
+            writer.startElement(HTML.SPAN_ELEM, uiComponent);
             writer.startElement(HTML.INPUT_ELEM, uiComponent);
             writer.writeAttribute(HTML.TYPE_ATTR, "button", HTML.TYPE_ATTR);
             writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
@@ -36,19 +39,31 @@ public class IceMobileSXRenderer extends Renderer {
             if (style != null && style.trim().length() > 0) {
                writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
             }
-            String value = "ICEmobile-SX Surf Expander";
+            String value = "Enable";
             Object oVal = sx.getValue();
             if (null != oVal) {
                 value = oVal.toString();
             }
             writer.writeAttribute(HTML.VALUE_ATTR, value, HTML.VALUE_ATTR);
+
             String sessionIdParam = EnvUtils.getSafeSession(facesContext).getId();
             String uploadURL = AuxUploadSetup.getInstance().getUploadURL();
             StringBuilder sb = new StringBuilder("mobi.registerAuxUpload('");
             sb.append(sessionIdParam).append("','").append(uploadURL).append("');");
-        //    logger.info("  script call = "+sb.toString());
             writer.writeAttribute(HTML.ONCLICK_ATTR, sb.toString(), HTML.ONCLICK_ATTR);
+
             writer.endElement(HTML.INPUT_ELEM);
+
+            //write default text if component has no children
+            if (0 == uiComponent.getChildCount())  {
+                writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
+                writer.writeAttribute(HTML.HREF_ATTR, ITUNES_LINK, null);
+                writer.writeText("ICEmobile-SX", null);
+                writer.endElement(HTML.ANCHOR_ELEM);
+                writer.writeText(" Surf Expander.", null);
+            }
+
+            writer.endElement(HTML.SPAN_ELEM);
         }
 
     }
