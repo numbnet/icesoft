@@ -366,6 +366,18 @@ public class Utils {
         return (new UserAgentInfo(userAgent)).sniffIOS5();
     }
 
+      /**
+     * Test to see if we should show activation for ICEmobile-SX.
+     *
+     * @return true if ICEmobile-SX activation should be displayed.
+     */
+    public static boolean showSX() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
+        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
+        return (Utils.isIOS() && !isEnhanced & !isAuxUpload);
+    }
+
     private static DeviceType checkUserAgentInfo(UserAgentInfo uai) {
         if (uai.sniffIphone() || uai.sniffIpod()) return DeviceType.iphone;
         if (uai.sniffAndroidTablet()) return DeviceType.honeycomb;
