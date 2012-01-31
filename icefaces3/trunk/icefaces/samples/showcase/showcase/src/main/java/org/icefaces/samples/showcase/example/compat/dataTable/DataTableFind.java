@@ -74,7 +74,7 @@ public class DataTableFind extends ComponentExampleImpl<DataTableFind> implement
     public final SelectItem[] SEARCH_MODES = {new SelectItem("startsWith", "Starts With"),
             new SelectItem("endsWith", "Ends With"),
             new SelectItem("contains", "Contains"),
-            new SelectItem("exactMatch", "Exact Match")};
+            new SelectItem("exact", "Exact Match")};
 
     public final SelectItem[] COLUMNS = {new SelectItem("id", "Id"),
             new SelectItem("name", "Name"),
