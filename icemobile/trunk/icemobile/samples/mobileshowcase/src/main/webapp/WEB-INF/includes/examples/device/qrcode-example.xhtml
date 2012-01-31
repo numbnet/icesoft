@@ -42,10 +42,8 @@
                 <h:outputText styleClass="ehancedBrowserDisclaimer"
                         rendered="#{not qrCodeBean.enhancedBrowser}"
                         value="#{mmsgs['example.device.disclaimer']}" />
-                 <ui:fragment rendered="#{qrCodeBean.showSX}">
                     <br />
                     <mobi:icemobilesx/>
-                </ui:fragment>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
                 <h:outputLabel value="QR Code: "/>
