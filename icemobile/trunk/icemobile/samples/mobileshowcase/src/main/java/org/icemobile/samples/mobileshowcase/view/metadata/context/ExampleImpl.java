@@ -146,19 +146,6 @@ public class ExampleImpl<T> implements Example, ExampleResources, ContextBase {
         return isEnhanced || isAuxUpload;
     }
 
-    /**
-     * Test to see if we should show activation for ICEmobile-SX.
-     *
-     * @return true if ICEmobile-SX activation should be displayed.
-     */
-    public boolean isShowSX() {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        boolean isEnhanced = EnvUtils.isEnhancedBrowser(facesContext);
-        boolean isAuxUpload = EnvUtils.isAuxUploadBrowser(facesContext);
-        boolean isIOS = Utils.isIOS();
-        return (isIOS && !isEnhanced & !isAuxUpload);
-    }
-
     public String getDescriptionPath() {
         return descriptionPath;
     }
