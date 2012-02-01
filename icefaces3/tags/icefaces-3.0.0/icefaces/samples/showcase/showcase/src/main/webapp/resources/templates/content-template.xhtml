@@ -27,7 +27,7 @@ Available ui:params to pass:
  resourceValue
 -->
     <div class="example">
-        <ace:panel header="#{title}" id="examplePanel">
+        <ace:panel header="#{title}" id="examplePanel" styleClass="containerPanelStyle">
         <div class="content">
             <div class="desc">
                 <ice:outputText value="#{description}" escape="false" nospan="true"/>
@@ -54,9 +54,7 @@ Available ui:params to pass:
         
         <h:form id="sourceCodeForm" rendered="#{navigationModel.renderAsExample}">
                 
-                <hr style="margin-top: 10px; margin-bottom: 10px;"/>
-                
-                <ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" toggleable="true" header="Source Code">
+            <ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" toggleable="true" header="Source Code" styleClass="containerPanelStyle">
                     <div class="resources">
                     <ace:ajax event="toggle" execute="@this"/>
                     
@@ -64,7 +62,7 @@ Available ui:params to pass:
                                 rendered="#{not empty resourceValue}">
                         <c:forEach items="#{resourceValue}"
                                    var="exRes">
-                            <ace:tabPane label="#{exRes.title}" styleClass="scrollx">
+                            <ace:tabPane label="#{exRes.title}">
                                 <h:outputText escape="false" value="#{sourceCodeLoaderConnection[exRes.resource]}" />
                             </ace:tabPane>
                         </c:forEach>

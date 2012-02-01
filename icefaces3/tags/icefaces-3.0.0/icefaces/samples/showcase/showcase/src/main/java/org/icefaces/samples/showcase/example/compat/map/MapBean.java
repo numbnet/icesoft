@@ -52,21 +52,13 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @Menu(
 	title = "menu.compat.map.subMenu.title",
 	menuLinks = {
-            @MenuLink(title = "menu.compat.map.subMenu.main",
-                    isDefault = true,
-                    exampleBeanName = MapBean.BEAN_NAME),
-            @MenuLink(title = "menu.compat.map.subMenu.address",
-                    exampleBeanName = MapAddress.BEAN_NAME),
-            @MenuLink(title = "menu.compat.map.subMenu.latlong",
-                    exampleBeanName = MapLatLong.BEAN_NAME),
-            @MenuLink(title = "menu.compat.map.subMenu.controls",
-                    exampleBeanName = MapControls.BEAN_NAME),
-            @MenuLink(title = "menu.compat.map.subMenu.zoom",
-                    exampleBeanName = MapZoom.BEAN_NAME),
-            @MenuLink(title = "menu.compat.map.subMenu.type",
-                    exampleBeanName = MapType.BEAN_NAME),
-            @MenuLink(title = "menu.compat.map.subMenu.load",
-                    exampleBeanName = MapLoad.BEAN_NAME)
+            @MenuLink(title = "menu.compat.map.subMenu.main", isDefault = true, exampleBeanName = MapBean.BEAN_NAME),
+            @MenuLink(title = "menu.compat.map.subMenu.address", exampleBeanName = MapAddress.BEAN_NAME),
+            @MenuLink(title = "menu.compat.map.subMenu.latlong", exampleBeanName = MapLatLong.BEAN_NAME),
+            @MenuLink(title = "menu.compat.map.subMenu.controls", exampleBeanName = MapControls.BEAN_NAME),
+            @MenuLink(title = "menu.compat.map.subMenu.zoom", exampleBeanName = MapZoom.BEAN_NAME),
+            //@MenuLink(title = "menu.compat.map.subMenu.type", exampleBeanName = MapType.BEAN_NAME),
+            @MenuLink(title = "menu.compat.map.subMenu.load", exampleBeanName = MapLoad.BEAN_NAME)
 })
 @ManagedBean(name= MapBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")

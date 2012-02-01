@@ -50,10 +50,6 @@
                 </h:inputText>
                 <h:message for="addressTo"/>
                 
-                <h:outputLabel for="textDir" value="Show Text Directions"/>
-                <h:selectBooleanCheckbox id="textDir"
-                                         value="#{mapAddress.showTextDirections}"/>
-                <h:message for="textDir"/>
             </h:panelGrid>
             
             <h:commandButton value="Perform Lookup"
@@ -72,8 +68,7 @@
             </ice:gMap>
             
             <!-- Space for text directions if needed -->
-            <ice:panelGroup id="textDiv"
-                            rendered="#{mapAddress.showTextDirections}"/>
+            <ice:panelGroup id="textDiv"/>
         </h:form>
     </ui:define>
 </ui:composition>
