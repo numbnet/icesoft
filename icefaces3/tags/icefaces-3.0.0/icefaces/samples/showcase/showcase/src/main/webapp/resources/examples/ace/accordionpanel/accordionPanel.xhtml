@@ -38,7 +38,7 @@
         <h:form>
             <ace:accordion collapsible="true">
                 <ace:accordionPane title="My To Do List">
-                        <h:selectManyCheckbox layout="pageDirection" selectedClass="selectedCheckBox" onchange="submit();">
+                        <h:selectManyCheckbox layout="pageDirection" selectedClass="selectedCheckBox" onclick="submit();">
                                 <f:selectItems value="#{accordionPanelBean.toDoList}"
                                                     var="listItem"
                                                     itemValue="#{listItem.value}"
