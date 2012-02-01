@@ -39,9 +39,9 @@ Ice.DnD.StyleReader = {
         //Ice.DnD.logger.debug("Building Style");
         var result = '';
         Ice.DnD.StyleReader.styles.split(',').each(
-                function(style) {
-                    result += style + ':' + Ice.DnD.StyleReader.getStyle(ele, style) + ';';
-                });
+            function(style) {
+                result += style + ':' + Ice.DnD.StyleReader.getStyle(ele, style) + ';';
+            });
         return result;
     },
     getStyle: function(x, styleProp) {
@@ -223,41 +223,52 @@ Ice.modal = {
 
         //disable event handlers only once (in case multiple modal popups are rendered)
         if (!Ice.modal.rollbacks) {
-            var rollbacks = Ice.modal.rollbacks = [];
+            function disableElementCallbacks(e) {
+                if (e.hasCallbacksDisabled) {
+                    //return No-Op rollback function when the callbacks are already disabled
+                    return Function.NOOP;
+                } else {
+                    e.hasCallbacksDisabled = true;
 
-            ['input', 'select', 'textarea', 'button', 'a'].each(function(type) {
+                    var onkeypress = e.onkeypress;
+                    var onkeyup = e.onkeyup;
+                    var onkeydown = e.onkeydown;
+                    var onclick = e.onclick;
+                    e.onkeypress = none;
+                    e.onkeyup = none;
+                    e.onkeydown = none;
+                    e.onclick = none;
+
+                    rollbacks.push(function() {
+                        try {
+                            e.onkeypress = onkeypress;
+                            e.onkeyup = onkeyup;
+                            e.onkeydown = onkeydown;
+                            e.onclick = onclick;
+
+                            e.hasCallbacksDisabled = null;
+                        } catch (ex) {
+                            logger.error('failed to restore callbacks on ' + e, ex);
+                        }
+                    });
+                }
+            }
+
+            var rollbacks = Ice.modal.rollbacks = [];
+            var inputElementTypes = ['input', 'select', 'textarea', 'button', 'a'];
+
+            inputElementTypes.each(function(type) {
                 $enumerate(document.body.getElementsByTagName(type)).each(function(e) {
                     if (!childOfTarget(e)) {
-                        if (e.hasCallbacksDisabled) {
-                            //return No-Op rollback function when the callbacks are already disabled
-                            return Function.NOOP;
-                        } else {
-                            e.hasCallbacksDisabled = true;
-
-                            var onkeypress = e.onkeypress;
-                            var onkeyup = e.onkeyup;
-                            var onkeydown = e.onkeydown;
-                            var onclick = e.onclick;
-                            e.onkeypress = none;
-                            e.onkeyup = none;
-                            e.onkeydown = none;
-                            e.onclick = none;
-
-                            rollbacks.push(function() {
-                                try {
-                                    e.onkeypress = onkeypress;
-                                    e.onkeyup = onkeyup;
-                                    e.onkeydown = onkeydown;
-                                    e.onclick = onclick;
-
-                                    e.hasCallbacksDisabled = null;
-                                } catch (ex) {
-                                    logger.error('failed to restore callbacks on ' + e, ex);
-                                }
-                            });
-                        }
+                        disableElementCallbacks(e);
                     }
                 });
+            });
+            $enumerate(document.body.getElementsByTagName('iframe')).each(function(f) {
+                if (!childOfTarget(f)) {
+                    disableElementCallbacks(f.contentWindow);
+                    disableElementCallbacks(f.contentDocument || f.contentWindow.document);
+                }
             });
         }
     },
