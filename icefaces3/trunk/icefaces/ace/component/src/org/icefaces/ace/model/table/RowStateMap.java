@@ -143,7 +143,7 @@ public class RowStateMap implements Map<Object, RowState>, Serializable {
 
     /**
      * This method will remove all entries from the map but those with keys in this data model.
-     * @param data the data model to keep states for
+     * @param model The data model to keep states for
      */
     public void filterStates(DataModel model) {
         Set keys = map.keySet();
