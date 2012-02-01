@@ -41,7 +41,7 @@ import org.icefaces.samples.showcase.metadata.context.ResourceRootPath;
             //WIKI documentation
             @ExampleResource(type = ResourceType.wiki,
                     title="ACE Components WIKI",
-                    resource = ResourceRootPath.FOR_WIKI+"ICEfaces+Advanced+Components"),
+                    resource = ResourceRootPath.FOR_WIKI+"ACE+Components"),
             //TLD Documentation
             @ExampleResource(type = ResourceType.tld,
                     title="ACE Components TLD",
