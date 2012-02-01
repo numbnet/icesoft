@@ -278,10 +278,14 @@ if (window.addEventListener)  {
     }, false );
 
     window.addEventListener("pagehide", function() { 
-        ice.push.connection.pauseConnection(); 
+        if (ice.push)  {
+            ice.push.connection.pauseConnection(); 
+        }
     }, false); 
     
     window.addEventListener("pageshow", function() { 
-        ice.push.connection.resumeConnection(); 
+        if (ice.push)  {
+            ice.push.connection.resumeConnection(); 
+        }
     }, false); 
 }
