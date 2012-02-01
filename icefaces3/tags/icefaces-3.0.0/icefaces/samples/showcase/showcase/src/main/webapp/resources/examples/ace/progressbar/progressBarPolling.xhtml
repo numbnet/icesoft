@@ -78,7 +78,9 @@
                              </ace:column>
 
                              <ace:column footerText="Action">
-                                 <h:commandButton value="upload" type="button" onclick="#{upload.widgetVarName}.start();" rendered="#{not upload.active}"/>
+                                 <h:commandButton value="upload" type="button" onclick="#{upload.widgetVarName}.start();" rendered="#{upload.ready}" actionListener="#{progressBarPolling.startUpload}">
+                                     <f:ajax execute="@this" render="@form"/>
+                                 </h:commandButton>
                              </ace:column>
                 </ace:dataTable>
             </ace:panel>
