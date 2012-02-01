@@ -23,9 +23,9 @@
   <artifactId>icefaces-ace</artifactId>
   <version>3.0.0</version>
   <packaging>jar</packaging>
-  <name>ICEfaces Advanced Components</name>
+  <name>ICEfaces ACE Components</name>
   <url>http://www.icefaces.org</url> 
-  <description>ICEfaces Advanced Components Environment (ACE) library.</description> 
+  <description>ICEfaces ACE (Advanced Components Environment) Components library.</description> 
   <licenses>
     <license>
       <name>Apache License Version 2.0</name>
