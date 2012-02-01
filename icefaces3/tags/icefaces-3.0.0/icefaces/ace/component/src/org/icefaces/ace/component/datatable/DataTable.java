@@ -303,8 +303,6 @@ public class DataTable extends DataTableBase {
     /**
      * A public proxy to the getDataModel() method, intended for use in situations
      * where a sub-component needs to null a cached DataModel to force regeneration.
-     *
-     * @return java.faces.model.DataModel instance currently used by this table
      */
     public void setModel(DataModel m) {
         try { setDataModel(null); }
@@ -415,7 +413,7 @@ public class DataTable extends DataTableBase {
      * Associates this table with a particular TableConfigPanel component. That
      * table will render the launch controls, and be configured by the specified
      * panel.
-     * @param TableConfigPanel component that will configure this table.
+     * @param panel TableConfigPanel component that will configure this table.
      */
     public void setTableConfigPanel(TableConfigPanel panel) {
         this.panel = panel;
