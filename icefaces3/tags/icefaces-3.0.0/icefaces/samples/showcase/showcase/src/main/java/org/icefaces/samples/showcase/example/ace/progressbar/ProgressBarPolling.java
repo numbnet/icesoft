@@ -54,6 +54,7 @@ public class ProgressBarPolling extends ComponentExampleImpl<ProgressBarPolling>
     private ArrayList<UploadObject> uploads;
     private String selection;
     private boolean selectorIsDisabled;
+    private UploadObject currentSelection; //pointer to the selected UploadObject
     
     public ProgressBarPolling() {
         super(ProgressBarPolling.class);
@@ -70,7 +71,16 @@ public class ProgressBarPolling extends ComponentExampleImpl<ProgressBarPolling>
             selectorIsDisabled = true;
             //add to the upload manager list
             uploads.add(selectedItem);
+            //save current selection
+            currentSelection = selectedItem;
         }
+    }
+    
+    public void startUpload()
+    {
+        currentSelection.setReady(false);
+        currentSelection.setActive(true);
+        currentSelection.setProgressValue(0);
     }
     
     public void processFormReset(ActionEvent event)
@@ -103,6 +113,7 @@ public class ProgressBarPolling extends ComponentExampleImpl<ProgressBarPolling>
         pendingUploads = populatePendingUploads();
         selectorIsDisabled = false;
         selection = "none";
+        currentSelection = null;
     }
     private ArrayList<UploadObject> populatePendingUploads() {
         //note: UploadObject.widgetVarName MUST BE UNIQUE
@@ -146,7 +157,7 @@ public class ProgressBarPolling extends ComponentExampleImpl<ProgressBarPolling>
         private String imageDescription;
         private String imagePath;
         private String widgetVarName;
-        private boolean ready;
+        private boolean ready; // is true when upload has been selected, but not started
         private boolean active; // is true when upload is in progress
         private boolean completed; // is true when upload has been completed
 
@@ -161,22 +172,12 @@ public class ProgressBarPolling extends ComponentExampleImpl<ProgressBarPolling>
         }
         //////////////////////////////MODIFIED GETTER OF THE INNER CLASS BEGIN////////////////////////////////////////
         public int getProgressValue() {
-             //once object has been selected in UI -  getProgressValue() is called for the first time (after valueChange listener). Statements in if() are executed
-             if(ready) {
-                 progressValue = 0;    
-                 ready = false;
-             }
-             //when polling is activated via UI, getProgressValue() is called every X seconds at the end of the JSF lifecycle. Statements which belong to one of the below  "else ifs" are executed
-             else if(!ready) {
-                 active = true;
-             }
              if(active && progressValue >=0 && progressValue <100) {
                 progressValue += 20;
              }
              else if(active && progressValue >= 100) {
                 progressValue = 100;
             }
-             
             return progressValue;
         }
         ///////////////REGULAR GETTERS AND SETTERS OF THE INNER CLASS BEGIN///////////////////////////////////
