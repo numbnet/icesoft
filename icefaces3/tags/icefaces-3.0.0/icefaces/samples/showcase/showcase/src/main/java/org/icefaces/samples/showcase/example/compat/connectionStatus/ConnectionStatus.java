@@ -54,13 +54,9 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @Menu(
 	title = "menu.compat.connectionStatus.subMenu.title",
 	menuLinks = {
-            @MenuLink(title = "menu.compat.connectionStatus.subMenu.main",
-                    isDefault = true,
-                    exampleBeanName = ConnectionStatus.BEAN_NAME),
-            @MenuLink(title = "menu.compat.connectionStatus.subMenu.labels",
-                    exampleBeanName = ConnectionStatusLabels.BEAN_NAME),
-            @MenuLink(title = "menu.compat.connectionStatus.subMenu.style",
-                    exampleBeanName = ConnectionStatusStyle.BEAN_NAME)
+            @MenuLink(title = "menu.compat.connectionStatus.subMenu.main", isDefault = true, exampleBeanName = ConnectionStatus.BEAN_NAME),
+            //@MenuLink(title = "menu.compat.connectionStatus.subMenu.labels", exampleBeanName = ConnectionStatusLabels.BEAN_NAME),
+            @MenuLink(title = "menu.compat.connectionStatus.subMenu.style", exampleBeanName = ConnectionStatusStyle.BEAN_NAME)
 })
 @ManagedBean(name= ConnectionStatus.BEAN_NAME)
 @CustomScoped(value = "#{window}")
