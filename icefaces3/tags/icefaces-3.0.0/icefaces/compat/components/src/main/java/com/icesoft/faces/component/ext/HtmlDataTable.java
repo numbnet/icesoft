@@ -602,7 +602,7 @@ public class HtmlDataTable
 
         setRowIndex(startRow);
 
-        if (!caseSensitive) query.toLowerCase();
+        if (!caseSensitive) query = query.toLowerCase();
 
         try {
             // Contains
