@@ -56,7 +56,7 @@ public class ComponentUtils {
      * <p/>
      * - If the component is not a value holder, toString of component is used to support Facelets UIInstructions.
      *
-     * @param context   FacesContext instance
+     * @param facesContext   FacesContext instance
      * @param component UIComponent instance whose value will be returned
      * @return End text
      */
@@ -111,7 +111,7 @@ public class ComponentUtils {
      * Attempts to return the property accessed in a simple EL expression of the form
      * ${someObject.property}.
      *
-     * @param An EL expression to parse the property from.
+     * @param expression An EL expression to parse the property from.
      * @return The property name of the EL expression.
      */
     public static String resolveField(ValueExpression expression) {
@@ -122,7 +122,7 @@ public class ComponentUtils {
     /**
      * Resolves the end text to render by using a specified value
      *
-     * @param context   FacesContext instance
+     * @param facesContext   FacesContext instance
      * @param component UIComponent instance whose value will be returned
      * @return End text
      */
