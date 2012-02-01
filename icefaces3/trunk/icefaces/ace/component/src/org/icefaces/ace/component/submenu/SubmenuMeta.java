@@ -35,7 +35,7 @@ public class SubmenuMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Label of the submenu header.")
     private String label;
 
-    @Property(tlddoc = "Path of the submenu image.")
+    @Property(tlddoc = "CSS class name(s) containing the styling to display an icon.")
     private String icon;
 
     @Property(tlddoc = "Style of the submenu label.")
