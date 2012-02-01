@@ -379,7 +379,7 @@ public class TLDGenerator extends AbstractGenerator {
         writer.println("  <jsp-version>1.2</jsp-version>");
         writer.println("  <short-name>" + getPrefix() + "</short-name>");        
         writer.println("  <uri>" + getURI() + "</uri>");        
-        writer.println("  <display-name>" + "ICEfaces Components" + "</display-name>");
+        writer.println("  <display-name>" + "ICE Components" + "</display-name>");
         writer.println();
     }
     
