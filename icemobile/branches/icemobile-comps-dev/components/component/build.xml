@@ -433,6 +433,9 @@
                           name="button" skin="honeycomb"/>
         <includeresources dir="src/org/icefaces/component/button/bberry"
                           name="button" skin="bberry"/>
+        <!-- menuButton - menuButton  -->
+        <includeresources dir="src/org/icefaces/component/menubutton/ipad"
+                          name="menubutton" skin="ipad"/>
         <!-- datespinner- style definition -->
         <includeresources dir="src/org/icefaces/component/datespinner/ipad"
                           name="datespinner" skin="ipad"/>
