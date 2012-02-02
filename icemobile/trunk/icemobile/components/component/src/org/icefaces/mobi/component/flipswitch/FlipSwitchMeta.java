@@ -23,7 +23,8 @@ import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.meta.baseMeta.UISelectBooleanMeta;
 
 import javax.el.MethodExpression;
-
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 // Each Meta class requires a @Component annotation
 @Component(
@@ -46,6 +47,11 @@ import javax.el.MethodExpression;
         componentFamily = "org.icefaces.component.FlipSwitch",
         tlddoc = "The FlipSwitch is a component that enables the user to turn a feature on or off "                
 )
+
+
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
 }, defaultEvent="activate")

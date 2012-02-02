@@ -22,6 +22,7 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
 import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 
 @Component(
@@ -37,7 +38,9 @@ import javax.faces.application.ResourceDependencies;
 )
 
 @ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
+
 public class AudioMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue = "auto", tlddoc = "whether to preload the file accepted values are auto,none or metadata,  " +

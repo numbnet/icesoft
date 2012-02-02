@@ -21,6 +21,8 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 
 @Component(
@@ -34,6 +36,10 @@ import org.icefaces.ace.meta.annotation.ClientEvent;
         rendererType = "org.icefaces.component.TimeSpinnerRenderer",
         tlddoc = "TimeSpinner is an input component to provide a time input for mobile components. ")
 
+
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
 }, defaultEvent="change")

@@ -18,6 +18,8 @@ package org.icefaces.mobi.component.graphicimage;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 
 @Component(
@@ -34,7 +36,9 @@ import org.icefaces.ace.meta.annotation.Property;
                 "based on the compat graphicImage component"
 )
 
-
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 public class GraphicImageMeta {
     @Property(tlddoc = "alternate to display if image is unavailable")
     private String alt;

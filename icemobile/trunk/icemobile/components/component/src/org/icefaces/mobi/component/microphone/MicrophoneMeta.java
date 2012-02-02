@@ -22,6 +22,8 @@ import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import javax.el.MethodExpression;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 import java.util.Map;
 
@@ -38,6 +40,9 @@ import java.util.Map;
                 " and stores this file on the server. "
 )
 
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 public class MicrophoneMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "maximun allowed length of audio clip in seconds")

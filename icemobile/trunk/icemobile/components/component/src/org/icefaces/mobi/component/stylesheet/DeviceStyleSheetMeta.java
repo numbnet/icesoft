@@ -18,6 +18,8 @@ package org.icefaces.mobi.component.stylesheet;
 
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 
 @Component(
@@ -35,6 +37,9 @@ import org.icefaces.ace.meta.annotation.Property;
 )
 
 
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 public class DeviceStyleSheetMeta {
 
     @Property(tlddoc = "href for css file to be loaded.  The default for iPhone will be default_iPhone")

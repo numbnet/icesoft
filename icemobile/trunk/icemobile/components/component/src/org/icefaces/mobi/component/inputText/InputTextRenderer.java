@@ -31,8 +31,8 @@ import java.util.Map;
 
 
 import java.util.logging.Logger;
-
-@MandatoryResourceComponent("org.icefaces.mobi.component.inputText.InputText")
+/* remove mandatory resource annotation so can be used with ace components  in an app MOBI-164
+@MandatoryResourceComponent("org.icefaces.mobi.component.inputText.InputText") */
 public class InputTextRenderer extends BaseInputRenderer {
     private final static Logger logger = Logger.getLogger(InputTextRenderer.class.getName());
 

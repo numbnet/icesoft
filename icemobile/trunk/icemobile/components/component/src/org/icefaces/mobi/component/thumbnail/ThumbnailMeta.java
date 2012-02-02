@@ -21,6 +21,8 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.Required;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 
 @Component(
@@ -36,6 +38,9 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
                 "ICEfaces camera component. "
 )
 
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 public class ThumbnailMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue = "0", tlddoc = "tabindex of the component")

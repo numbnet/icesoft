@@ -22,6 +22,10 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.annotation.Expression;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 import javax.el.MethodExpression;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 import java.util.Map;
 
@@ -39,7 +43,9 @@ import java.util.Map;
                 " valueChangeListener support"
 )
 
-
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 public class CameraMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue = "Integer.MIN_VALUE", tlddoc = "maxium allowed width of image")

@@ -20,6 +20,8 @@ package org.icefaces.mobi.component.fieldset;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 
 @Component(
@@ -36,6 +38,9 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
                 "of this component should only be fieldsetRow. "
 )
 
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 public class FieldSetGroupMeta extends UIComponentBaseMeta {
 	
     @Property(defaultValue="true",
