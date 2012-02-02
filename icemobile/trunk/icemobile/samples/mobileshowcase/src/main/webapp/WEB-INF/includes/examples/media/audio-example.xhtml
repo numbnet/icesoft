@@ -26,6 +26,7 @@
             <h4>Resource Backed Audio</h4>
             <h:panelGroup styleClass="center">
                 <mobi:audio value="#{audioBean.audioResourceData}"
+                            linkLabel="Play"
                             controls="true" preload="auto"/>
             </h:panelGroup>
         </mobi:fieldsetRow>
@@ -35,6 +36,7 @@
             <h:panelGroup styleClass="center">
                 <mobi:audio value="#{audioBean.audioByteData}"
                             mimeType="audio/mpeg"
+                            linkLabel="Play"
                             name="audioByteArray.mp3" controls="true"
                             preload="auto"/>
             </h:panelGroup>
@@ -44,6 +46,7 @@
             <h4>Fixed URL Audio</h4>
             <h:panelGroup styleClass="center">
                 <mobi:audio value="./resources/audio/audio_clip.mp3"
+                            linkLabel="Play"
                             controls="true" preload="auto"/>
             </h:panelGroup>
         </mobi:fieldsetRow>
