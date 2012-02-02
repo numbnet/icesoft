@@ -53,7 +53,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
             return;
         }
         String inputField = clientId+"_input";
-        if (timeSpinner.isUseNative() && Utils.isIOS5()) {
+        if (shouldUseNative(timeSpinner)) {
             String inputValue = context.getExternalContext().getRequestParameterMap().get(clientId);
             String twelveHrString = convertToTwelve(inputValue);
                 if (null != twelveHrString){
@@ -77,7 +77,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
         boolean singleSubmit = spinner.isSingleSubmit();
         String initialValue = getStringValueToRender(context, component);
-        if (spinner.isUseNative() && Utils.isIOS5()){
+        if (shouldUseNative(spinner)){
             writer.startElement("input", component);
             writer.writeAttribute("type", "time", "type");
             writer.writeAttribute("id", clientId, "id");
@@ -437,5 +437,11 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         }
         return retVal;
     }
+
+    private boolean shouldUseNative(TimeSpinner component)  {
+        return (component.isUseNative() && 
+            (Utils.isIOS5() || Utils.isBlackBerry()));
+    }
+
 }
 

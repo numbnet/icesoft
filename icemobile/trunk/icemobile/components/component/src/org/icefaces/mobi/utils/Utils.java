@@ -339,6 +339,16 @@ public class Utils {
     }
 
     /**
+     * Test for BlackBerry
+     * @return true if client is BlackBerry
+     */
+    public static boolean isBlackBerry() {
+        String userAgent = SessionContext.getSessionContext().getUserAgent();
+        UserAgentInfo uai = new UserAgentInfo(userAgent);
+        return (new UserAgentInfo(userAgent)).sniffBlackberry();
+    }
+
+    /**
      * Test for Internet Explorerer
      * @return true if client is Internet Explorer
      */
