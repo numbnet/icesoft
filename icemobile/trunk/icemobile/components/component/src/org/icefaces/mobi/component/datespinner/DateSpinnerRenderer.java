@@ -55,7 +55,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
             return;
         }
         String inputField = clientId+"_input";
-        if (dateSpinner.isUseNative() && Utils.isIOS5()) {
+        if (shouldUseNative(dateSpinner)) {
             inputField=clientId;
         }
         String inputValue = context.getExternalContext().getRequestParameterMap().get(inputField);
@@ -78,7 +78,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
         boolean singleSubmit = spinner.isSingleSubmit();
         String initialValue = getStringValueToRender(context, component);
-        if (spinner.isUseNative() && Utils.isIOS5()){
+        if (shouldUseNative(spinner)){
             writer.startElement("input", component);
             writer.writeAttribute("type", "date", "type");
             writer.writeAttribute("id", clientId, "id");
@@ -427,6 +427,10 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
          return sdf.parse(inStr, new ParsePosition(0)) != null;
     }
 
+    private boolean shouldUseNative(DateSpinner component)  {
+        return (component.isUseNative() && 
+            (Utils.isIOS5() || Utils.isBlackBerry()));
+    }
 
 }
 
