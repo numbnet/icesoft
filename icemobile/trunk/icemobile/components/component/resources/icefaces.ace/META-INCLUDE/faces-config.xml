@@ -20,7 +20,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
  <application>
-    <resource-handler>org.icefaces.component.qrcode.generator.QRCodeResourceHandler</resource-handler>
+    <resource-handler>org.icefaces.mobi.component.qrcode.generator.QRCodeResourceHandler</resource-handler>
  </application>
 
 </faces-config>
