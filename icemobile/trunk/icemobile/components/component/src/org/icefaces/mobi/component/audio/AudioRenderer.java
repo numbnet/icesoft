@@ -15,9 +15,11 @@
  */
 package org.icefaces.mobi.component.audio;
 
+import org.icefaces.mobi.component.video.VideoPlayer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.renderkit.BaseResourceRenderer;
+import org.icefaces.mobi.utils.Utils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -45,16 +47,26 @@ public class AudioRenderer extends BaseResourceRenderer {
 
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        // apply style class
+        PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent,
+                audio.getSpanPassThruAttributes());
+        // apply component style class and append any user defined classes.
+        StringBuilder styleClass = new StringBuilder(VideoPlayer.VIDEO_CLASS);
+        if (audio.getStyleClass() != null){
+            styleClass.append(" ").append(audio.getStyleClass());
+        }
+        writer.writeAttribute("class", styleClass.toString(), null);
+        String srcAttribute;
         if (!deviceType.equals("bberry")) {
             writer.startElement("audio", uiComponent);
             if (disabled) {
                 writer.writeAttribute("disabled", "disabled", null);
             }
-            writeCommonAttributes(writer, audio, facesContext, clientId);
+            srcAttribute = writeCommonAttributes(writer, audio, facesContext, clientId);
             writer.endElement("audio");
         } else {
             writer.startElement("video", uiComponent);
-            writeCommonAttributes(writer, audio, facesContext, clientId);
+            srcAttribute = writeCommonAttributes(writer, audio, facesContext, clientId);
             writer.writeAttribute("autoplay", "true", null);
             if (disabled) {
                 writer.writeAttribute("disabled", "disabled", null);
@@ -63,13 +75,23 @@ public class AudioRenderer extends BaseResourceRenderer {
             writer.writeAttribute("width", "100", null);
             writer.endElement("video");
         }
+        // write inline image link
+        if (!Utils.isIOS() && audio.getLinkLabel() != null)  {
+            writer.startElement("br", uiComponent);
+            writer.endElement("br");
+            writer.startElement("a", uiComponent);
+            writer.writeAttribute("href", srcAttribute, null);
+            writer.writeText(audio.getLinkLabel(), null);
+            writer.endElement("a");
+        }
     }
 
 
-    private void writeCommonAttributes(ResponseWriter writer, Audio audio, FacesContext facesContext,
+    private String writeCommonAttributes(ResponseWriter writer, Audio audio, FacesContext facesContext,
                                        String clientId)
             throws IOException {
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, audio, audio.getAttributesNames());
+
         if (audio.isControls())
             writer.writeAttribute("controls", "controls", null);
         String mimeType = audio.getType();
@@ -89,6 +111,7 @@ public class AudioRenderer extends BaseResourceRenderer {
             srcAttribute = processSrcAttribute(facesContext, audioObject, name, mimeType, scope, audio.getUrl());
         }
         writer.writeAttribute("src", srcAttribute, null);
+        return srcAttribute;
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)

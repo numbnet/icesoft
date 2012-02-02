@@ -83,7 +83,7 @@ public class VideoPlayerRenderer extends BaseResourceRenderer {
         }
         writer.writeAttribute("src", srcAttribute, null);
         writer.endElement("video");
-        if (!Utils.isIOS())  {
+        if (!Utils.isIOS() && video.getLinkLabel() != null)  {
             writer.startElement("br", uiComponent);
             writer.endElement("br");
             writer.startElement("a", uiComponent);

@@ -67,6 +67,10 @@ public class AudioMeta extends UIComponentBaseMeta {
             "component.")
     private String style;
 
+    @Property(tlddoc = "style class will be rendered on the root element of " +
+            "this component.")
+    private String styleClass;
+
     @Property(defaultValue = "session")
     private String scope;
 
@@ -80,5 +84,8 @@ public class AudioMeta extends UIComponentBaseMeta {
 
     @Property(tlddoc = "mimeType of audio file")
     private String type;
+
+    @Property( tlddoc = "Label for link that launches a system audio player")
+    private String linkLabel;
 
 }
