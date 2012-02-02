@@ -60,8 +60,8 @@
     color: #000000;
     padding: 0;
     z-index: 1001;
-    position: fixed;
-    top:20px;
+    position: absolute;
+    top:15%;
     left:15%;
 }
 
