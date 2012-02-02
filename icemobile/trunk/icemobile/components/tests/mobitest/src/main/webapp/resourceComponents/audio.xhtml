@@ -32,26 +32,32 @@
     <h3>fixed URL audio</h3>
        <h:panelGroup id="mp3panelId" >
             <h:outputText value="generic mp3 file:-"/>
-            <mobi:audio id="genericmp3" value="../audio/audio_clip.mp3"
-                            controls="true" preload="auto"/>
+            <mobi:audioPlayer id="genericmp3" value="../audio/audio_clip.mp3"
+                               styleClass="imageViewer"
+                               linkLabel="Play"
+                               style="margin-bottom:10px;"/>
        </h:panelGroup>
        <br />
        <h:panelGroup id="ipadpanel">
             <h:outputText value="iPadSample file:-"/>
-            <mobi:audio id="ipadSample" value="../audio/sampleIPad.mp4"
-                            controls="true" preload="auto"/>
+            <mobi:audioPlayer id="ipadSample" value="../audio/sampleIPad.mp4"
+                               styleClass="imageViewer"
+                    linkLabel="Play"
+                    style="margin-bottom:10px;"/>
        </h:panelGroup> 
        <br />    
        <h:panelGroup id="androidPanel">
             <h:outputText value="android recorded audio file:-"/>
-            <mobi:audio id="androidSample" value="../audio/sampleAndroid.mp4"
-                            controls="true" preload="auto"/>
+            <mobi:audioPlayer id="androidSample" value="../audio/sampleAndroid.mp4"
+                                linkLabel="Play"
+                               style="margin-bottom:10px;"/>
        </h:panelGroup> 
        <br />  
        <h:panelGroup id="bberryPanel">
             <h:outputText value="bberry audio file:-"/>
-            <mobi:audio id="bberrySample" value="../audio/sampleBberry.amr"
-                            controls="true" preload="auto"/>
+            <mobi:audioPlayer id="bberrySample" value="../audio/sampleBberry.amr"
+                               linkLabel="Play"
+                               style="margin-bottom:10px;"/>
        </h:panelGroup>                 
        
   </h:panelGroup>

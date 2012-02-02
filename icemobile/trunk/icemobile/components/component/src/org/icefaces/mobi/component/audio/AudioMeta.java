@@ -26,7 +26,7 @@ import javax.faces.application.ResourceDependency;
 
 
 @Component(
-        tagName = "audio",
+        tagName = "audioPlayer",
         componentClass = "org.icefaces.mobi.component.audio.Audio",
         rendererClass = "org.icefaces.mobi.component.audio.AudioRenderer",
         generatedClass = "org.icefaces.mobi.component.audio.AudioBase",

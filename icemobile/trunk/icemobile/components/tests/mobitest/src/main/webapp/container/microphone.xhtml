@@ -39,7 +39,7 @@
 		<h:commandButton id="submitBtn"  value="upload"/>
 	</h:form>
 	<h5>audio controls will appear if soundClipIsAvailable</h5>
-		<mobi:audio id="play"  controls="true" value="#{micBean.pathToFile}" 
+		<mobi:audioPlayer id="play"  controls="true" value="#{micBean.pathToFile}"
 				preload="auto" type="#{micBean.audioContentType}"/>
 	
 	<br />
