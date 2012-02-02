@@ -16,7 +16,7 @@
 
 package org.icemobile.samples.mobileshowcase.view.examples.device;
 
-import org.icefaces.component.utils.IceOutputResource;
+import org.icefaces.mobi.utils.IceOutputResource;
 
 import javax.faces.application.Resource;
 import java.io.*;

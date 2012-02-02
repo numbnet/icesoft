@@ -15,10 +15,9 @@
  */
 package org.icefaces.component.datespinner;
 
-import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.PassThruAttributeWriter;
-import org.icefaces.component.utils.Utils;
-import org.icefaces.renderkit.BaseInputRenderer;
+import org.icefaces.mobi.utils.PassThruAttributeWriter;
+import org.icefaces.mobi.utils.Utils;
+import org.icefaces.mobi.renderkit.BaseInputRenderer;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;

@@ -15,9 +15,10 @@
  */
 package org.icefaces.component.button;
 
-import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.Utils;
-import org.icefaces.renderkit.CoreRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.Utils;
+import org.icefaces.mobi.renderkit.CoreRenderer;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
@@ -120,7 +121,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         boolean singleSubmit = commandButton.isSingleSubmit();
         String params = "'"+clientId+"'";
         if (uiParamChildren != null) {
-             params += ","+Utils.asParameterString(uiParamChildren);
+             params += ","+ Utils.asParameterString(uiParamChildren);
         }
         ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();

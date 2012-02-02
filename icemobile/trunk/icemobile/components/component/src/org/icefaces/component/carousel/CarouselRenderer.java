@@ -17,8 +17,8 @@
 package org.icefaces.component.carousel;
 
 
-import org.icefaces.component.utils.HTML;
-import org.icefaces.renderkit.BaseLayoutRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;

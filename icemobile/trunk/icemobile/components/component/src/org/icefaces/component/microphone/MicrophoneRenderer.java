@@ -17,8 +17,8 @@
 package org.icefaces.component.microphone;
 
 
-import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.Utils;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.Utils;
 import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.util.EnvUtils;
 
@@ -32,7 +32,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -151,7 +150,7 @@ public class MicrophoneRenderer extends Renderer {
         }
         String script;
         if (isAuxUpload)  {
-            script = Utils.getICEmobileSXScript("microphone", 
+            script = Utils.getICEmobileSXScript("microphone",
                     clientId + "_mic");
         } else {
             script = writeJSCall(clientId, maxtime).toString();

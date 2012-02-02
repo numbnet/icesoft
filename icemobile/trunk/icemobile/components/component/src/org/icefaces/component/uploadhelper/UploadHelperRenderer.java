@@ -17,8 +17,6 @@
 package org.icefaces.component.uploadhelper;
 
 
-import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.Utils;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
@@ -29,9 +27,6 @@ import javax.faces.render.Renderer;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 

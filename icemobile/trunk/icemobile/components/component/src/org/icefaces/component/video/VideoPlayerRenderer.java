@@ -17,10 +17,10 @@
 
 package org.icefaces.component.video;
 
-import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.Utils;
-import org.icefaces.component.utils.PassThruAttributeWriter;
-import org.icefaces.renderkit.BaseResourceRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.PassThruAttributeWriter;
+import org.icefaces.mobi.renderkit.BaseResourceRenderer;
+import org.icefaces.mobi.utils.Utils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

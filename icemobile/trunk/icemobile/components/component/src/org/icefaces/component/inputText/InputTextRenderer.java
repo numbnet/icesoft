@@ -15,9 +15,9 @@
  */
 package org.icefaces.component.inputText;
 
-import org.icefaces.renderkit.BaseInputRenderer;
-import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.PassThruAttributeWriter;
+import org.icefaces.mobi.renderkit.BaseInputRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import java.util.Date;

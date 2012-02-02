@@ -17,8 +17,8 @@ package org.icefaces.component.graphicimage;
 
 
 import org.icefaces.application.ResourceRegistry;
-import org.icefaces.component.utils.Attribute;
-import org.icefaces.component.utils.IceOutputResource;
+import org.icefaces.mobi.utils.Attribute;
+import org.icefaces.mobi.utils.IceOutputResource;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ProjectStage;

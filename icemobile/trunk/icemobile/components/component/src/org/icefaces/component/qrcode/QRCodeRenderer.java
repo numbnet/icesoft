@@ -18,7 +18,7 @@ package org.icefaces.component.qrcode;
 
 
 import org.icefaces.component.qrcode.generator.QRCodeResourceHandler;
-import org.icefaces.component.utils.HTML;
+import org.icefaces.mobi.utils.HTML;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

@@ -17,8 +17,8 @@
 package org.icefaces.component.uploadhelper;
 
 import org.icefaces.impl.event.FormSubmit;
+import org.icefaces.mobi.utils.Utils;
 import org.icefaces.util.EnvUtils;
-import org.icefaces.component.utils.Utils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;

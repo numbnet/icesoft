@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.icefaces.component.utils;
+package org.icefaces.mobi.utils;
 
 import org.icefaces.impl.util.CoreUtils;
 import org.icefaces.impl.util.DOMUtils;

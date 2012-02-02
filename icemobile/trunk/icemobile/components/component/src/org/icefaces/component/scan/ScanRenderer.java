@@ -17,11 +17,11 @@
 package org.icefaces.component.scan;
 
 
-import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.Utils;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.Utils;
 import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.util.EnvUtils;
-import org.icefaces.renderkit.BaseInputRenderer;
+import org.icefaces.mobi.renderkit.BaseInputRenderer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

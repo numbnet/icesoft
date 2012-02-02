@@ -1,7 +1,7 @@
 package org.icefaces.component.mobisx;
 
-import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.Utils;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.Utils;
 import org.icefaces.impl.application.AuxUploadSetup;
 import org.icefaces.util.EnvUtils;
 

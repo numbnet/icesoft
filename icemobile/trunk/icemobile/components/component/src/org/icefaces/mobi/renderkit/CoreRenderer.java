@@ -25,7 +25,7 @@
  * Contributors: ______________________ 
  * Contributors: ______________________
  */
-package org.icefaces.renderkit;
+package org.icefaces.mobi.renderkit;
 
 
 

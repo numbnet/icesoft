@@ -20,15 +20,13 @@ package org.icemobile.samples.mobileshowcase.view.components;
  * The View selector component test for small/large view detection.
  */
 
-import org.icefaces.component.utils.Utils;
-import org.icemobile.samples.mobileshowcase.util.FacesUtils;
+import org.icefaces.mobi.utils.Utils;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.util.Map;
 
 @ManagedBean
 @ViewScoped

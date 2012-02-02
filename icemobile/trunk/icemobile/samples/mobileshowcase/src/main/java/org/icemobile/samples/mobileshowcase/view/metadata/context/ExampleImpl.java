@@ -17,7 +17,6 @@
 package org.icemobile.samples.mobileshowcase.view.metadata.context;
 
 import org.icefaces.util.EnvUtils;
-import org.icefaces.component.utils.Utils;
 import org.icemobile.samples.mobileshowcase.util.FacesUtils;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.Destination;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.ResourceType;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.icefaces.component.utils;
+package org.icefaces.mobi.utils;
 
 /**
  * Constant declarations for HTML rendering.

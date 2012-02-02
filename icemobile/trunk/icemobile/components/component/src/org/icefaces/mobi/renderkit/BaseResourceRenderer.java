@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.icefaces.renderkit;
+package org.icefaces.mobi.renderkit;
 
 
 import org.icefaces.application.ResourceRegistry;
-import org.icefaces.component.utils.IceOutputResource;
-import org.icefaces.component.utils.Utils;
+import org.icefaces.mobi.utils.IceOutputResource;
+import org.icefaces.mobi.utils.Utils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
