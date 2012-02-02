@@ -17,11 +17,11 @@
 package org.icefaces.component.video;
 
 
-import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.Utils;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.Utils;
 import org.icefaces.impl.application.AuxUploadResourceHandler;
 import org.icefaces.util.EnvUtils;
-import org.icefaces.renderkit.BaseInputResourceRenderer;
+import org.icefaces.mobi.renderkit.BaseInputResourceRenderer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

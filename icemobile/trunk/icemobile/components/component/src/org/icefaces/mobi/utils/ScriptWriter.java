@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions an
  * limitations under the License.
  */
-package org.icefaces.component.utils;
+package org.icefaces.mobi.utils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

@@ -16,9 +16,9 @@
 
 package org.icefaces.component.flipswitch;
 
-import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.PassThruAttributeWriter;
-import org.icefaces.renderkit.CoreRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.PassThruAttributeWriter;
+import org.icefaces.mobi.renderkit.CoreRenderer;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;

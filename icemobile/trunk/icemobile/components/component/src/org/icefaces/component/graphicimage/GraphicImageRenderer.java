@@ -15,7 +15,7 @@
  */
 package org.icefaces.component.graphicimage;
 
-import org.icefaces.component.utils.PassThruAttributeWriter;
+import org.icefaces.mobi.utils.PassThruAttributeWriter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

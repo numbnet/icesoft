@@ -16,7 +16,8 @@
 package org.icefaces.component.timespinner;
 
 
-import org.icefaces.component.utils.Attribute;
+import org.icefaces.mobi.utils.Attribute;
+import org.icefaces.mobi.utils.Utils;
 
 import javax.faces.context.FacesContext;
 import java.util.Locale;
@@ -130,7 +131,7 @@ public class TimeSpinner extends TimeSpinnerBase {
     }
 
     public String getDefaultEventName(FacesContext facesContext){
-         if (org.icefaces.component.utils.Utils.isTouchEventEnabled(facesContext)) {
+         if (Utils.isTouchEventEnabled(facesContext)) {
              return "onblur";
          }
         else return "onchange";

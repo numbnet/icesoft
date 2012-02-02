@@ -16,7 +16,7 @@
 
 package org.icefaces.component.button;
 
-import org.icefaces.component.utils.HTML;
+import org.icefaces.mobi.utils.HTML;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

@@ -16,7 +16,7 @@
 
 package org.icemobile.samples.mediacast;
 
-import org.icefaces.component.utils.IceOutputResource;
+import org.icefaces.mobi.utils.IceOutputResource;
 
 import javax.faces.application.Resource;
 import java.io.ByteArrayInputStream;

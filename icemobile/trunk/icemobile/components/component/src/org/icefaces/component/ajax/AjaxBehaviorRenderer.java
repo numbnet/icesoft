@@ -37,7 +37,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.render.ClientBehaviorRenderer;
 import javax.faces.render.FacesBehaviorRenderer;
 
-import org.icefaces.component.utils.Utils;
+import org.icefaces.mobi.utils.Utils;
 import org.icefaces.ace.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;

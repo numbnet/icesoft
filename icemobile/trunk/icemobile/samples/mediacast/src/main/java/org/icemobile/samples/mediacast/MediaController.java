@@ -20,7 +20,6 @@ import org.icefaces.application.PushMessage;
 import org.icefaces.application.PushRenderer;
 import org.icefaces.application.PortableRenderer;
 import org.icefaces.util.EnvUtils;
-import org.icefaces.component.utils.Utils;
 import org.icemobile.samples.mediacast.navigation.NavigationModel;
 import org.icemobile.samples.util.FacesUtils;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.icefaces.component.utils;
+package org.icefaces.mobi.utils;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;

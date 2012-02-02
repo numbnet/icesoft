@@ -16,9 +16,9 @@
 
 package org.icefaces.component.stylesheet;
 
-import org.icefaces.component.utils.HTML;
-import org.icefaces.component.utils.PassThruAttributeWriter;
-import org.icefaces.component.utils.Utils;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.PassThruAttributeWriter;
+import org.icefaces.mobi.utils.Utils;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;

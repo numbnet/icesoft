@@ -16,8 +16,7 @@
 
 package org.icefaces.component.flipswitch;
 
-import org.icefaces.component.utils.Attribute;
-import org.icefaces.component.utils.Utils;
+import org.icefaces.mobi.utils.Attribute;
 import org.icefaces.impl.util.Util;
 
 
@@ -26,9 +25,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
-import java.io.IOException;
 
- 
 
 public class FlipSwitch extends FlipSwitchBase {
     //src is NOT part of the pass through attributes

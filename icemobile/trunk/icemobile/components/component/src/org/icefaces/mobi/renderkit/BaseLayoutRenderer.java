@@ -1,8 +1,7 @@
-package org.icefaces.renderkit;
+package org.icefaces.mobi.renderkit;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import org.icefaces.renderkit.CoreRenderer;
 import java.io.IOException;
 
 

@@ -16,7 +16,7 @@
 
 package org.icefaces.component.video;
 
-import org.icefaces.component.utils.Attribute;
+import org.icefaces.mobi.utils.Attribute;
 
 import java.util.logging.Logger;
 

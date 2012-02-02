@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.icefaces.component.utils;
+package org.icefaces.mobi.utils;
 
 /**
  * copied over from ace and not used in alpha

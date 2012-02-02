@@ -16,8 +16,8 @@
 
 package org.icefaces.component.geolocation;
 
-import org.icefaces.component.utils.HTML;
-import org.icefaces.renderkit.CoreRenderer;
+import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.renderkit.CoreRenderer;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
