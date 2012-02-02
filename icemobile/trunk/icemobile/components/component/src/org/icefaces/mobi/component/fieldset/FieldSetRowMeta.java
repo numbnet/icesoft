@@ -22,6 +22,7 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
 import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 
 @Component(
@@ -36,6 +37,10 @@ import javax.faces.application.ResourceDependencies;
         tlddoc = "This mobility component is used within a fieldsetGroup tag to group unordered items."
 )
 
+
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 public class FieldSetRowMeta extends UIComponentBaseMeta {
         	
 

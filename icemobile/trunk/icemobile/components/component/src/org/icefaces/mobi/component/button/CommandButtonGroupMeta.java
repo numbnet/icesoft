@@ -20,6 +20,8 @@ package org.icefaces.mobi.component.button;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 @Component(
         tagName = "commandButtonGroup",
@@ -35,6 +37,9 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
                 "vertical plain.  The 'selected' attribute on a command button " +
                 "can but used to set the selected button in the group."
 )
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 
 public class CommandButtonGroupMeta extends UIComponentBaseMeta {
 

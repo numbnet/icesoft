@@ -20,6 +20,8 @@ package org.icefaces.mobi.component.qrcode;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 @Component(
         tagName = "qrcode",
@@ -33,6 +35,9 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
         tlddoc = "This mobility component displays a QR code value."
 )
 
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 public class QRCodeMeta extends UIComponentBaseMeta {
 
     @Property(defaultValue = "false",

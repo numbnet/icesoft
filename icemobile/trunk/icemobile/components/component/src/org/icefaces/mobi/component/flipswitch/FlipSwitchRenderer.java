@@ -40,7 +40,7 @@ import java.util.logging.Logger;
  * In addition to the rendering the renderer performs decode as well. This component
  * doesn't use a hidden field for it value instead takes advantage of param support of JSF2
  */
-//@MandatoryResourceComponent("org.icefaces.mobi.component.flipswitch.FlipSwitch")
+
 public class FlipSwitchRenderer extends CoreRenderer {
 
     private final static Logger logger = Logger.getLogger(FlipSwitchRenderer.class.getName());

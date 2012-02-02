@@ -43,13 +43,12 @@ import javax.faces.application.ResourceDependency;
                 "represents a grouping of a grouping of <li> tags that make up a scrollable " +
                 "array of pictures, touch enabled. "
 )
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
 })
-/**@ResourceDependencies({
-        @ResourceDependency(library = "org.icefaces.component.util", name = "iscroll-min.js"),
-        @ResourceDependency(library = "org.icefaces.component.carousel", name = "carousel.js")
-})  */
 public class CarouselMeta extends UISeriesBaseMeta {
 
     @Property(defaultValue = "false",

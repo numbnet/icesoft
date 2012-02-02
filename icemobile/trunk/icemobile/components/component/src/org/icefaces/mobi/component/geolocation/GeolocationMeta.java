@@ -24,6 +24,7 @@ import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
 import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 @Component(
         tagName = "geolocation",
@@ -38,6 +39,9 @@ import javax.faces.application.ResourceDependencies;
                 " of longitude and latitude, heading, speed and altitude via" +
                 " html5 navigator api"
 )
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="activate", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
 }, defaultEvent="activate")

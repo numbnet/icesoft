@@ -21,6 +21,8 @@ import org.icefaces.ace.meta.baseMeta.UICommandMeta;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
 import org.icefaces.ace.api.IceClientBehaviorHolder;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 
 @Component(
         tagName = "commandButton",
@@ -37,6 +39,9 @@ import org.icefaces.ace.api.IceClientBehaviorHolder;
                 "to be true or false"
 )
 
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="click", javadoc="...", tlddoc="...", defaultRender="@all", defaultExecute="@all")
 })
