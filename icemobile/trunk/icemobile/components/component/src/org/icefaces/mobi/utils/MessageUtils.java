@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
  * <p/>
  * This class has been designed, so the components can get FacesMessages
  * either from their own ResourceBundle or an application's ResourceBundle.
- * The component's ResourceBundle package is: org.icefaces.component.resources
+ * The component's ResourceBundle package is: org.icefaces.mobi.component.resources
  */
 
 public class MessageUtils {
@@ -38,7 +38,7 @@ public class MessageUtils {
     private static int SUMMARY = 0;
     private static int DETAIL = 1;
     private static String ICE_MESSAGES_BUNDLE =
-            "org.icefaces.component.resources.messages";
+            "org.icefaces.mobi.component.resources.messages";
 
     public static FacesMessage getMessage(FacesContext facesContext,
                                           FacesMessage.Severity sev, String messageId, Object[] params) {

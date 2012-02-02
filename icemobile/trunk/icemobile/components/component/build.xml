@@ -89,6 +89,7 @@
         <fileset dir="${lib.dir}" includes="*.jar"/>
         <fileset dir="${lib.dir}/generator" includes="*.jar"/>
         <pathelement path="../component/src"/>
+        <pathelement path="../component/src/org/icefaces/ace/api/"/>
         <pathelement path="../component/build/meta"/>
 
     </path>
@@ -323,148 +324,148 @@
               under a directory with this name -->
         <!-- 'skin' is the name of the skin these resources will be part of -->
 
-        <includeresources dir="src/org/icefaces/component/stylesheet/iphone"
+        <includeresources dir="src/org/icefaces/mobi/component/stylesheet/iphone"
                           name="stylesheet" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/stylesheet/ipad"
+        <includeresources dir="src/org/icefaces/mobi/component/stylesheet/ipad"
                           name="stylesheet" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/stylesheet/android"
+        <includeresources dir="src/org/icefaces/mobi/component/stylesheet/android"
                           name="stylesheet" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/stylesheet/honeycomb"
+        <includeresources dir="src/org/icefaces/mobi/component/stylesheet/honeycomb"
                           name="stylesheet" skin="honeycomb"/>
-        <includeresources dir="src/org/icefaces/component/stylesheet/bberry"
+        <includeresources dir="src/org/icefaces/mobi/component/stylesheet/bberry"
                           name="stylesheet" skin="bberry"/>
 
         <!-- inputText html5 component -->
-        <includeresources dir="src/org/icefaces/component/inputText/iphone"
+        <includeresources dir="src/org/icefaces/mobi/component/inputText/iphone"
                           name="input" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/inputText/ipad"
+        <includeresources dir="src/org/icefaces/mobi/component/inputText/ipad"
                           name="input" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/inputText/android"
+        <includeresources dir="src/org/icefaces/mobi/component/inputText/android"
                           name="input" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/inputText/honeycomb"
+        <includeresources dir="src/org/icefaces/mobi/component/inputText/honeycomb"
                           name="input" skin="honeycomb"/>
-        <includeresources dir="src/org/icefaces/component/inputText/bberry"
+        <includeresources dir="src/org/icefaces/mobi/component/inputText/bberry"
                           name="input" skin="bberry"/>
         <!-- microphone - device integration microphone component -->
-        <includeresources dir="src/org/icefaces/component/microphone/iphone"
+        <includeresources dir="src/org/icefaces/mobi/component/microphone/iphone"
                           name="microphone" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/microphone/ipad"
+        <includeresources dir="src/org/icefaces/mobi/component/microphone/ipad"
                           name="microphone" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/microphone/android"
+        <includeresources dir="src/org/icefaces/mobi/component/microphone/android"
                           name="microphone" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/microphone/honeycomb"
+        <includeresources dir="src/org/icefaces/mobi/component/microphone/honeycomb"
                           name="microphone" skin="honeycomb"/>
-        <includeresources dir="src/org/icefaces/component/microphone/bberry"
+        <includeresources dir="src/org/icefaces/mobi/component/microphone/bberry"
                           name="microphone" skin="bberry"/>
         <!-- thumbnail - device integration thumbnail preview for camera and video components -->
-        <includeresources dir="src/org/icefaces/component/thumbnail/iphone"
+        <includeresources dir="src/org/icefaces/mobi/component/thumbnail/iphone"
                           name="thumbnail" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/thumbnail/ipad"
+        <includeresources dir="src/org/icefaces/mobi/component/thumbnail/ipad"
                           name="thumbnail" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/thumbnail/android"
+        <includeresources dir="src/org/icefaces/mobi/component/thumbnail/android"
                           name="thumbnail" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/thumbnail/honeycomb"
+        <includeresources dir="src/org/icefaces/mobi/component/thumbnail/honeycomb"
                           name="thumbnail" skin="honeycomb"/>
-        <includeresources dir="src/org/icefaces/component/thumbnail/bberry"
+        <includeresources dir="src/org/icefaces/mobi/component/thumbnail/bberry"
                           name="thumbnail" skin="bberry"/>
         <!-- panelStack - composite panelStack style definition -->
-        <includeresources dir="src/org/icefaces/component/panelstack/iphone"
+        <includeresources dir="src/org/icefaces/mobi/component/panelstack/iphone"
                           name="panelstack" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/panelstack/ipad"
+        <includeresources dir="src/org/icefaces/mobi/component/panelstack/ipad"
                           name="panelstack" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/panelstack/android"
+        <includeresources dir="src/org/icefaces/mobi/component/panelstack/android"
                           name="panelstack" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/panelstack/honeycomb"
+        <includeresources dir="src/org/icefaces/mobi/component/panelstack/honeycomb"
                           name="panelstack" skin="honeycomb"/>
-        <includeresources dir="src/org/icefaces/component/panelstack/bberry"
+        <includeresources dir="src/org/icefaces/mobi/component/panelstack/bberry"
                           name="panelstack" skin="bberry"/>
         <!-- carousel - composite carousel style definition -->
-        <includeresources dir="src/org/icefaces/component/carousel/iphone"
+        <includeresources dir="src/org/icefaces/mobi/component/carousel/iphone"
                           name="carousel" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/carousel/ipad"
+        <includeresources dir="src/org/icefaces/mobi/component/carousel/ipad"
                           name="carousel" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/carousel/android"
+        <includeresources dir="src/org/icefaces/mobi/component/carousel/android"
                           name="carousel" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/carousel/honeycomb"
+        <includeresources dir="src/org/icefaces/mobi/component/carousel/honeycomb"
                           name="carousel" skin="honeycomb"/>
-        <includeresources dir="src/org/icefaces/component/carousel/bberry"
+        <includeresources dir="src/org/icefaces/mobi/component/carousel/bberry"
                           name="carousel" skin="bberry"/>
         <!-- fieldset - composite fieldsetGroup and fieldsetRow style definition -->
-        <includeresources dir="src/org/icefaces/component/fieldset/iphone"
+        <includeresources dir="src/org/icefaces/mobi/component/fieldset/iphone"
                           name="fieldset" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/fieldset/ipad"
+        <includeresources dir="src/org/icefaces/mobi/component/fieldset/ipad"
                           name="fieldset" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/fieldset/android"
+        <includeresources dir="src/org/icefaces/mobi/component/fieldset/android"
                           name="fieldset" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/fieldset/honeycomb"
+        <includeresources dir="src/org/icefaces/mobi/component/fieldset/honeycomb"
                           name="fieldset" skin="honeycomb"/>
-        <includeresources dir="src/org/icefaces/component/fieldset/bberry"
+        <includeresources dir="src/org/icefaces/mobi/component/fieldset/bberry"
                           name="fieldset" skin="bberry"/>
         <!-- list - composite outputList and outputListItem and  style definition -->
-        <includeresources dir="src/org/icefaces/component/list/ipad"
+        <includeresources dir="src/org/icefaces/mobi/component/list/ipad"
                           name="list" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/list/iphone"
+        <includeresources dir="src/org/icefaces/mobi/component/list/iphone"
                           name="list" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/list/android"
+        <includeresources dir="src/org/icefaces/mobi/component/list/android"
                           name="list" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/list/honeycomb"
+        <includeresources dir="src/org/icefaces/mobi/component/list/honeycomb"
                           name="list" skin="honeycomb"/>
-        <includeresources dir="src/org/icefaces/component/list/bberry"
+        <includeresources dir="src/org/icefaces/mobi/component/list/bberry"
                           name="list" skin="bberry"/>
         <!-- flipswitch - composite flipSwitch style definition -->
-        <includeresources dir="src/org/icefaces/component/flipswitch/iphone"
+        <includeresources dir="src/org/icefaces/mobi/component/flipswitch/iphone"
                           name="flipswitch" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/flipswitch/ipad"
+        <includeresources dir="src/org/icefaces/mobi/component/flipswitch/ipad"
                           name="flipswitch" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/flipswitch/android"
+        <includeresources dir="src/org/icefaces/mobi/component/flipswitch/android"
                           name="flipswitch" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/flipswitch/honeycomb"
+        <includeresources dir="src/org/icefaces/mobi/component/flipswitch/honeycomb"
                           name="flipswitch" skin="honeycomb"/>
-        <includeresources dir="src/org/icefaces/component/flipswitch/bberry"
+        <includeresources dir="src/org/icefaces/mobi/component/flipswitch/bberry"
                           name="flipswitch" skin="bberry"/>
         <!-- button - composite button and button group style definition -->
-        <includeresources dir="src/org/icefaces/component/button/iphone"
+        <includeresources dir="src/org/icefaces/mobi/component/button/iphone"
                           name="button" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/button/ipad"
+        <includeresources dir="src/org/icefaces/mobi/component/button/ipad"
                           name="button" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/button/android"
+        <includeresources dir="src/org/icefaces/mobi/component/button/android"
                           name="button" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/button/honeycomb"
+        <includeresources dir="src/org/icefaces/mobi/component/button/honeycomb"
                           name="button" skin="honeycomb"/>
-        <includeresources dir="src/org/icefaces/component/button/bberry"
+        <includeresources dir="src/org/icefaces/mobi/component/button/bberry"
                           name="button" skin="bberry"/>
         <!-- datespinner- style definition -->
-        <includeresources dir="src/org/icefaces/component/datespinner/ipad"
+        <includeresources dir="src/org/icefaces/mobi/component/datespinner/ipad"
                           name="datespinner" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/datespinner/iphone"
+        <includeresources dir="src/org/icefaces/mobi/component/datespinner/iphone"
                           name="datespinner" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/datespinner/android"
+        <includeresources dir="src/org/icefaces/mobi/component/datespinner/android"
                           name="datespinner" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/datespinner/honeycomb"
+        <includeresources dir="src/org/icefaces/mobi/component/datespinner/honeycomb"
                           name="datespinner" skin="honeycomb"/>
-        <includeresources dir="src/org/icefaces/component/datespinner/bberry"
+        <includeresources dir="src/org/icefaces/mobi/component/datespinner/bberry"
                           name="datespinner" skin="bberry"/>
         <!-- timespinner- style definition -->
-        <includeresources dir="src/org/icefaces/component/timespinner/ipad"
+        <includeresources dir="src/org/icefaces/mobi/component/timespinner/ipad"
                           name="timespinner" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/timespinner/iphone"
+        <includeresources dir="src/org/icefaces/mobi/component/timespinner/iphone"
                           name="timespinner" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/timespinner/android"
+        <includeresources dir="src/org/icefaces/mobi/component/timespinner/android"
                           name="timespinner" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/timespinner/honeycomb"
+        <includeresources dir="src/org/icefaces/mobi/component/timespinner/honeycomb"
                           name="timespinner" skin="honeycomb"/>
-        <includeresources dir="src/org/icefaces/component/timespinner/bberry"
+        <includeresources dir="src/org/icefaces/mobi/component/timespinner/bberry"
                           name="timespinner" skin="bberry"/>
         <!-- video- style definition -->
-        <includeresources dir="src/org/icefaces/component/video/ipad"
+        <includeresources dir="src/org/icefaces/mobi/component/video/ipad"
                           name="video" skin="ipad"/>
-        <includeresources dir="src/org/icefaces/component/video/iphone"
+        <includeresources dir="src/org/icefaces/mobi/component/video/iphone"
                           name="video" skin="iphone"/>
-        <includeresources dir="src/org/icefaces/component/video/android"
+        <includeresources dir="src/org/icefaces/mobi/component/video/android"
                           name="video" skin="android"/>
-        <includeresources dir="src/org/icefaces/component/video/honeycomb"
+        <includeresources dir="src/org/icefaces/mobi/component/video/honeycomb"
                           name="video" skin="honeycomb"/>
-        <includeresources dir="src/org/icefaces/component/video/bberry"
+        <includeresources dir="src/org/icefaces/mobi/component/video/bberry"
                           name="video" skin="bberry"/>
         <!-- Process sprites, if use.sprites is set -->
         <antcall target="sprites"/>
