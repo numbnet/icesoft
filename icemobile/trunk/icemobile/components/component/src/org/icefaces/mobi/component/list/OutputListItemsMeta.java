@@ -8,7 +8,7 @@ import org.icefaces.ace.meta.baseMeta.UISeriesBaseMeta;
 
 @Component(
         tagName = "outputListItems",
-        componentClass = "org.icefaces.component.list.OutputListItems",
+        componentClass = "org.icefaces.mobi.component.list.OutputListItems",
         rendererClass = "org.icefaces.mobi.component.list.OutputListItemsRenderer",
         generatedClass = "org.icefaces.mobi.component.list.OutputListItemsBase",
         componentType = "org.icefaces.OutputListItems",
