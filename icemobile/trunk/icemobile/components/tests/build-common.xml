@@ -25,7 +25,6 @@
 	<property name="build.dir" location="./build"/>
     <property name="classes.dir" location="${build.dir}/classes"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
-	<property name="tomcat.home" location="/Users/jguglielmin/icefaces/servers/apache-tomcat-7.0.11"/>
    
 	<target name="clean">
         <delete dir="${build.dir}"/>
@@ -63,27 +62,39 @@
              </fileset>
          </copy>
     </target>
-	
-	<target name="war" depends="compile">
+	<target name="web-profile" depends="compile">
+        <war basedir="${web.dir}"
+             destfile="${dist.dir}/${ant.project.name}.war"
+             webxml="${web.dir}/WEB-INF/web.xml">
+            <lib dir="${lib.dir}"  erroronmissingdir="false">
+	            	 <include name="icefaces.jar"/>
+	            	 <include name="icefaces-mobi.jar"/>
+                    <include name="icepush.jar"/>
+                    <include name="mobi.jar"/>
+                    <include name="jstl-1.1.2.jar"/>
+	        </lib>
+	         <classes dir="${classes.dir}"/>
+        </war>
+        <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
+	</target>
+	<target name="servlet-profile" depends="compile">
 	        <war basedir="${web.dir}" 
 	             destfile="${dist.dir}/${ant.project.name}.war" 
 	             webxml="${web.dir}/WEB-INF/web.xml">
 	            <lib dir="${lib.dir}"  erroronmissingdir="false">
 	            	 <include name="icefaces.jar"/>
 	            	 <include name="icefaces-mobi.jar"/>
-	                 <include name="javax.faces.jar"/>          	                            <include name="icepush.jar"/>
+	                 <include name="javax.faces.jar"/>
+                    <include name="icepush.jar"/>
                     <include name="mobi.jar"/>
                     <include name="mail.jar"/>
                     <include name="jstl-1.1.2.jar"/>
-
 	            </lib>
 	     
 	            <classes dir="${classes.dir}"/>
 	        </war>
 	        <unzip src="${dist.dir}/${ant.project.name}.war" dest="${dist.dir}/exploded"/>
 	 </target>
-	<target name="tomcat7" depends="war">
-		<copy file="${dist.dir}/${ant.project.name}.war" todir="${tomcat.home}/webapps" />
-	</target>
+
     
 </project>
