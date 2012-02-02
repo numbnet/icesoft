@@ -24,10 +24,16 @@ import java.util.logging.Logger;
 public class Audio extends AudioBase {
     private static final Logger logger =
             Logger.getLogger(Audio.class.toString());
+
+    public static final String AUDIO_CLASS = "mobi-audio";
+
+    // string pass through attributes for wrapping span
+    private Attribute[] spanPassThruAttributes = {
+            new Attribute("style", null)};
+
     private Attribute[] attributesNames = {new Attribute("url", null),
             new Attribute("controls", null),
             new Attribute("autoplay", null),
-            new Attribute("style", null),
             new Attribute("loops", null),
             new Attribute("tabindex", null),
             new Attribute("name", null),
@@ -45,7 +51,11 @@ public class Audio extends AudioBase {
         this.attributesNames = attributesNames;
     }
 
-//	public Attribute[] getBooleanAttNames() {
+    public Attribute[] getSpanPassThruAttributes() {
+        return spanPassThruAttributes;
+    }
+
+    //	public Attribute[] getBooleanAttNames() {
 //		return booleanAttNames;
 //	}
 //
