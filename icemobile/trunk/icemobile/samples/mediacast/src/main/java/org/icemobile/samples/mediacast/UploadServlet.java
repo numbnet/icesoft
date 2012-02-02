@@ -32,7 +32,6 @@ import java.util.HashMap;
 
 @WebServlet(urlPatterns = {"/upload/*"})
 @MultipartConfig
-@WebListener
 public class UploadServlet extends HttpServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response)
