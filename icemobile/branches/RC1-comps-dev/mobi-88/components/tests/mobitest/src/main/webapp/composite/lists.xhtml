@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+      xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <title>MOBI-29 Tests</title>
+    <h:outputScript library="js" name="iscroll-min.js"/>
+
+    <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
+
+</h:head>
+
+<h:body>
+
+    <p><a href="http://jira.icefaces.org/browse/MOBI-29" > MOBI-29 Test Case</a></p>
+
+    <a href="../index.html">index page</a>
+
+    <!-- theme switcher -->
+    <ui:include src="/WEB-INF/includes/composite/theme-switcher.xhtml"/>
+
+    <mobic:outputList inset="false">
+        <mobic:outputListItem group="true">
+            Testing simple links
+        </mobic:outputListItem>
+        <mobic:outputListItem >
+            <h:link>Testing some content  1</h:link>
+        </mobic:outputListItem>
+        <mobic:outputListItem type="default" >
+            <h:link  >
+                <p class="mobi-list-item-aside"><strong>6:24</strong>PM</p>
+                <h3>Stephen Weber</h3>
+                <p ><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
+                <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
+            </h:link>
+        </mobic:outputListItem>
+        <mobic:outputListItem group="true">
+            Testing thumbnail
+        </mobic:outputListItem>
+        <mobic:outputListItem type="thumb" >
+            <h:link >
+                <img alt="" src="../images/album-af.jpg" />
+                <h3 >Broken Bells</h3>
+                <p >Broken Bells</p>
+            </h:link>
+        </mobic:outputListItem>
+    </mobic:outputList>
+
+     <mobic:outputList inset="true">
+        <mobic:outputListItem group="true">
+            Inset Testing simple links
+        </mobic:outputListItem>
+        <mobic:outputListItem >
+            <a href="#">Testing some content  1</a>
+        </mobic:outputListItem>
+        <mobic:outputListItem group="true">
+            Testing default layout flexibility
+        </mobic:outputListItem>
+        <mobic:outputListItem type="default" >
+            <h:link >
+                <p class="mobi-list-item-aside"><strong>6:24</strong>PM</p>
+                <h3>Stephen Weber</h3>
+                <p ><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
+                <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
+            </h:link>
+        </mobic:outputListItem>
+        <mobic:outputListItem group="true">
+            Testing thumbnail
+        </mobic:outputListItem>
+        <mobic:outputListItem type="thumb" >
+            <!--<mobic:outputListNavigation type="default|thumbNail|"-->
+                    <!--style="" styleClass="" -->
+                    <!--actionMethod=""-->
+                    <!--actionListenerMethod="" />-->
+            <h:link >
+                <img alt="" src="../images/album-af.jpg" />
+                <h3 >Broken Bells</h3>
+                <p>Broken Bells</p>
+            </h:link>
+        </mobic:outputListItem>
+    </mobic:outputList>
+
+     <mobic:outputList inset="false" rendered="true">
+        <mobic:outputListItem >
+            testing some content  1
+        </mobic:outputListItem>
+        <mobic:outputListItem >
+            testing some content  2
+        </mobic:outputListItem>
+        <mobic:outputListItem >
+            testing some content  3
+        </mobic:outputListItem>
+    </mobic:outputList>
+
+  <a href="../compositeComponents.html">index page</a>
+
+</h:body>
+</html>

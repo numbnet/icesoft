@@ -1,0 +1,131 @@
+/*
+ * Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions an
+ * limitations under the License.
+ */
+
+.mobi-checkbox-button {
+    margin: 1px;
+    padding: 0.4em 0.8em;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.mobi-checkbox-button input {
+}
+
+.mobi-checkbox-button-active, .mobi-checkbox-button-inactive {
+    border: 1px solid #ccc;
+    background: #fdfdfd;
+    color: #101010;
+    text-shadow: 0 1px 1px #ffffff;
+    background: -moz-linear-gradient(center top, #FEFEFE, #EEEEEE) repeat scroll 0 0 #EEEEEE;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #FEFEFE), color-stop(1, #EEEEEE));;
+    border-radius: 0.6em 0.6em 0.6em 0.6em;
+    -webkit-border-radius: 0.6em;
+    -moz-border-radius: 0.6em;
+}
+
+.mobi-checkbox-button-active {
+    border: 1px solid #155678;
+    background: -moz-linear-gradient(top, #6792E8, #376FE0, #1F57C6, #2463DE) repeat scroll 0 0 #6792E8;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #6792E8), color-stop(.45, #376FE0), color-stop(.5, #1F57C6), color-stop(1, #2463DE));
+    border: 1px solid #155678;
+    text-shadow: 0 -1px 1px #145072;
+    color: #FFFFFF;
+}
+
+.mobi-checkbox-button-inactive {
+
+}
+
+.mobi-radio input[type="checkbox"], .mobi-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+.mobi-checkbox input[type="checkbox"] {
+
+}
+
+.mobi-radio input[type="checkbox"] {
+
+}
+
+.mobi-select-many-menu {
+
+}
+
+.mobi-select-one-menu {
+
+}
+
+.mobi-select-one-listbox {
+
+}
+
+.mobi-select-many-listbox {
+
+}
+
+.mobi-select-one-button {
+    font-size: 12px;
+    display: inline-block;
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    margin: 0 5px;
+    padding: 0;
+    border: 1px solid #BEBEBE;
+    background: -moz-linear-gradient(center top, #FEFEFE, #EEEEEE) repeat scroll 0 0 #EEEEEE;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #FEFEFE), color-stop(1, #EEEEEE));
+    font-weight: bold;
+    color: #444;
+    text-shadow: 0 1px 1px #F6F6F6;
+    -moz-border-radius: 1em;
+    -webkit-border-radius: 1em;
+    border-radius: 1em;
+}
+
+.mobi-select-one-button > span {
+    margin: 3px 10px;
+    min-width: 100px;
+    display: inline-block;
+}
+
+.mobi-select-one-button select {
+    opacity: 0;
+    filter: alpha(opacity = 0);
+    left: 0;
+    top: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.mobi-select-one-button .mobi-select-one-button-arrow {
+    background: #666;
+    background: rgba(0, 0, 0, .4);
+    background-image: url(#{resource[ 'images:icons-18-white.png' ]});
+    background-repeat: no-repeat;
+    -moz-border-radius: 9px;
+    -webkit-border-radius: 9px;
+    border-radius: 9px;
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+}

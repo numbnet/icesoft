@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ice="http://www.icefaces.org/icefaces/components">
+<h:head>
+    <meta charset="UTF-8"></meta>
+    <title>Blackberry Notifications</title>
+    <script type="text/javascript">
+        function toggleConnection(element) {
+            var pauseConnectionMessage = 'pause';
+            var resumeConnectionMessage = 'resume';
+            if (element.value == pauseConnectionMessage) {
+                try {
+                ice.push.parkInactivePushIds('bpns:26DCA268');
+                ice.push.connection.pauseConnection();
+                element.value = resumeConnectionMessage;
+                } catch (e) {
+                    alert(e);
+                }
+            } else {
+                ice.push.connection.resumeConnection();
+                element.value = pauseConnectionMessage;
+            }
+
+        }
+    </script>
+</h:head>
+<h:body>
+    <h3>pause/resume connection</h3>
+    <table style="border: 1px dotted silver; margin: 1em; padding: 1em;">
+        <tr>
+            <th>Email:</th>
+            <td><input type="input" name="email" value="" id="email"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="button"
+                       onclick="toggleConnection(this);"
+                       name="pauseresume"
+                       value="pause"/></td>
+        </tr>
+    </table>
+   <h3>Send Notification</h3>
+    <h:form>
+        <div style="position: relative; border: 1px dotted silver; max-width: 500px;">
+          <div>
+            <h:inputText style="width:50%;" value="#{notificationBean.subject}" placeholder="subject" />
+            <h:commandButton style="float: right;" action="#{notificationBean.sendNotification}"
+                                     value="Send"/>
+          </div>
+          <div >
+            <h:inputText style="width:50%;" value="#{notificationBean.message}" placeholder="message" />
+            <h:commandButton style="position:absolute; right:1px;" action="#{notificationBean.sendImportantNotification}"
+                                     value="!Send!"/>
+          </div>
+        </div>
+    </h:form>
+    <h3>received notification</h3>
+    <div style="border: 1px dotted silver; margin: 1em; padding: 1em; float: left;">
+        <h:outputText value="#{messagingHub.message}"/>
+    </div>
+    <li><a href="../index.html">index page</a>
+	</li>
+</h:body>
+</html>
