@@ -38,7 +38,7 @@
         <h:form>
             <ace:tabSet id="sampleTabSet" clientSide="false">
                 <ace:tabPane label="To Do List">
-                    <h:selectManyCheckbox layout="pageDirection" selectedClass="selectedCheckBox"  onchange="submit();">
+                    <h:selectManyCheckbox layout="pageDirection" selectedClass="selectedCheckBox"  onclick="submit();">
                                 <f:selectItems value="#{tabSet.toDoList}"
                                                     var="listItem"
                                                     itemValue="#{listItem.value}"
