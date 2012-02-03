@@ -56,7 +56,7 @@
     <form>
 		<h5>audio controls will appear if soundClipIsAvailable</h5>
         <h:panelGroup rendered="#{mixedBean.soundClipAvailable}"> 
-           <mobi:audio id="play"  controls="true" value="#{mixedBean.pathToAudioFile}" 
+           <mobi:audioPlayer id="play"  controls="true" value="#{mixedBean.pathToAudioFile}" 
                 preload="auto" type="#{mixedBean.audioContentType}"/>
         </h:panelGroup>
         <h:panelGroup>
