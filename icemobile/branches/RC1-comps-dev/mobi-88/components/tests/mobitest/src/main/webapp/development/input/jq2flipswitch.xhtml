@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+	<title id="title">inputComponent Tests</title>
+	<meta http-equiv="Co ntent-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport"
+		content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <h:outputStylesheet library="jquery.mobile-1.0b2" name="jquery.mobile-1.0b2.css" target="head"/> 
+    <h:outputScript library="jquery.mobile" name="jquery-1.6.1.js" target="head"/> 
+    <h:outputScript library="jquery.mobile-1.0b2" name="jquery.mobile-1.0b2.js" target="head"/> 
+	<h:outputScript library="org.icefaces.component.util" name="component.js" target="head"/> 
+  <!--  deviceStylesheet tag with no properties will load default styles for mobile device based on useragent info -->
+    <mobi:deviceStylesheet />
+
+</h:head>
+
+<h:body>
+<f:view contentType="text/html">
+ <div data-role="page" id="home" class="type-home"> 
+    <div data-role="content" id="flipswitchContentId"> 
+        <div class="content-primary"> 
+            <p>The flip toggle switch is displayed like this:</p> 
+            <div data-role="fieldcontain"> 
+                <label for="slider">Flip switch:</label> 
+                <select name="slider" id="mySlider" data-role="slider"> 
+                    <option value="off">Off</option> 
+                    <option value="on">On</option> 
+                </select> 
+            </div> 
+            <div id="show-me" class="hidden">
+                <p>
+                    Bacon ipsum dolor sit amet bresaola velit laboris bacon eiusmod. Id ex short ribs, dolor dolore rump pork belly beef ad ullamco salami labore aute ut. Jowl et in do, fatback jerky salami reprehenderit irure laboris pork loin commodo qui eu. Chuck tri-tip cupidatat, turkey sunt in anim jerky pork belly exercitation bacon. Eu corned beef qui adipisicing, ground round veniam turkey chicken incididunt deserunt. Proident t-bone chuck, non excepteur biltong elit in anim minim swine short loin magna do. Sint enim nisi, minim nulla tongue ut incididunt ground round.
+                </p>  
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<li><a href="../index.html">index page</a>
+    </li>
+</f:view>
+	
+</h:body>
+ 
+ <script type="text/javascript">
+ $('#mySlider').live('change',(function(event) {
+	    console.log(event.type);
+	    var myswitch = $(this);
+	    var value  = myswitch[0].selectedIndex == 1 ? 'true':'false';
+	    mobi.flipjq.init('mySlider', event, value, true);	  
+	}));
+     
+ </script> 
+   
+
+<!-- from http://jsfiddle.net/KCQ4Z/7/ -->
+<!--$('#toggleMe').change(mobi.flipjq.init(this, 'toggleMe', true));
+</script>  -->
+</html>
+

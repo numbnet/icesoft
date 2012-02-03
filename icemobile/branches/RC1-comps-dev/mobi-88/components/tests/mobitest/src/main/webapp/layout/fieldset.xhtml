@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <title>Fieldset mobility component</title>
+
+    <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
+
+</h:head>
+
+<h:body>
+    <p><a href="http://jira.icefaces.org/browse/MOBI-63"> MOBI-63 fielset Test Case</a>
+    </p>
+
+    <h:form>
+         <h2>Inset=true test with rows. </h2>
+        <mobi:fieldsetGroup>
+            <mobi:fieldsetRow group="true" >
+                Testing 1
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow >
+                Testing 2
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+        <mobi:fieldsetGroup inset="false">
+            <mobi:fieldsetRow >
+                <h:outputLabel value="Input label:" />
+                <h:inputText value="#{input.someText2}"/>
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow >
+                <h:outputLabel value="Select label:" />
+                <h:selectOneMenu value="#{input.someText}" >
+                    <f:selectItem itemValue="red" itemLabel="red"/>
+                    <f:selectItem itemValue="blue" itemLabel="blue"/>
+                </h:selectOneMenu>
+            </mobi:fieldsetRow>
+        </mobi:fieldsetGroup>
+
+    </h:form>
+     <br />
+     <a href="../layoutComponents.html">index page</a>
+</h:body>
+</html>
