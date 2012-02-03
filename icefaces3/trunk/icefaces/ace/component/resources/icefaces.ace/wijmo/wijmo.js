@@ -3674,7 +3674,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
                     }, o.hideDelay);
                 });
                 if (triggerEvent !== "default" &&
-				o.triggerEvent !== "mouseenter") {
+				o.triggerEvent !== "mouseenter" && o.triggerEvent !== "rtclick") { // ICE-7638
                     li.removeClass(parentItemCss)
 					.addClass(parentItemCss);
                     link = $(this).find("." + linkCss + ":eq(0)");
