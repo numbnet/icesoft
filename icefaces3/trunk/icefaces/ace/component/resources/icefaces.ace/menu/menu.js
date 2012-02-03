@@ -149,24 +149,31 @@ ice.ace.ContextMenu = function(id, cfg) {
     this.cfg.triggerEvent = 'rtclick';
     this.cfg.trigger = typeof this.cfg.target == 'string' ? ice.ace.escapeClientId(this.cfg.target) : this.cfg.target;
 
+    var _self = this;
     this.cfg.position = {
-            my: 'left top'
-            ,using: function(to) {
-/*
-                jQuery(this).css({
-                    top: ice.ace.ContextMenu.pageY,
-                    left: ice.ace.ContextMenu.pageX
-                });
-*/
-                jQuery(this).position({
-                    my: "left top",
-                    of: ice.ace.ContextMenu.event,
-                    collision: "flip"
-                });
+            my: 'left top',
+            using: function(to) {
+
+			var _this = jQuery(this);
+			if (_this.parent().get(0).id == _self.id) { // root menu
+				_this.position({
+					my: "left top",
+					of: ice.ace.ContextMenu.event,
+					collision: "flip"
+				});
+			} else { // submenus
+				_this.css('list-style-type', 'none');
+				var _item = _this.parents('li:first').get(0);
+				_this.position({
+					my: "left top",
+					at: "right top",
+					of: _item,
+					collision: "flip"
+				});
+			}
             }
         }
 
-    var _self = this;
     this.cfg.select = function(event, ui) {
         _self.jq.wijmenu('deactivate');
     };
