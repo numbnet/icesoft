@@ -190,12 +190,16 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
     private static String extractResourceId(FacesContext facesContext)  {
         ExternalContext externalContext = facesContext.getExternalContext();
 
-        int markerStart;
+        int markerStart = -1;
         String path = externalContext.getRequestServletPath();
-        markerStart = path.indexOf(RESOURCE_PREFIX);
+        if( path != null ){
+            markerStart = path.indexOf(RESOURCE_PREFIX);
+        }
         if (-1 == markerStart)  {
             path = externalContext.getRequestPathInfo();
-            markerStart = path.indexOf(RESOURCE_PREFIX);
+            if( path != null ){
+                markerStart = path.indexOf(RESOURCE_PREFIX);
+            }
         }
 
         //With Liferay, the reference to javax.faces.resource gets set to a parameter rather than
