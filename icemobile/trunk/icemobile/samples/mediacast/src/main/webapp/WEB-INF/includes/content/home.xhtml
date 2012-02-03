@@ -81,7 +81,7 @@
                     <mobi:camera id="camera" value="#{uploadModel.mediaMap}"/>
                     <h:panelGroup 
                             style="display:inline-block;" >
-                        <mobi:thumbnail for="camera" style="width:65px;height:65px;" />
+                        <mobi:thumbnail for="camera" />
                     </h:panelGroup>
                 </mobi:fieldsetRow>
             </ui:fragment>
@@ -94,7 +94,7 @@
                 <mobi:fieldsetRow styleClass="vcentered" >
                     <mobi:camcorder id="camcorder"
                                     value="#{uploadModel.video}"/>
-                    <mobi:thumbnail style="width:65px;height:65px;" for="camcorder"/>
+                    <mobi:thumbnail for="camcorder"/>
                 </mobi:fieldsetRow>
             </ui:fragment>
             <!-- upload/caputre for sound. -->
