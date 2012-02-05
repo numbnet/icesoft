@@ -75,11 +75,6 @@ public class ComponentExampleImpl<T> implements ComponentExample, ExampleResourc
             processExampleResourcesAnnotation();
         }
         processMenuAnnotation(parentClass.isAnnotationPresent( org.icefaces.samples.showcase.metadata.annotation.Menu.class));
-        
-        // Create the effect used when this item is expanded
-        effect = new SlideDown();
-        effect.setDuration(0.8f);
-        effect.setFired(true);
     }
     
     private void processComponentExampleAnnotation()
