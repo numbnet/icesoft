@@ -2026,8 +2026,8 @@ Autocompleter.Base.prototype = {
         Element.hide(this.update);
         Event.observe(this.element, "blur", this.onBlur.bindAsEventListener(this));
         var keyEvent = "keypress";
-        if (Prototype.Browser.IE ||  Prototype.Browser.WebKit ) {
-        	keyEvent = "keyup";	
+        if (Prototype.Browser.IE || Prototype.Browser.WebKit) {
+            keyEvent = "keyup";
         }
         Event.observe(this.element, keyEvent, this.onKeyPress.bindAsEventListener(this));
         // ICE-3830
@@ -2118,17 +2118,17 @@ Autocompleter.Base.prototype = {
                 case Event.KEY_RIGHT:
                     return;
                 case Event.KEY_UP:
-					this.markPrevious();
-					this.render();
-					//if(navigator.appVersion.indexOf('AppleWebKit')>0)
-					Event.stop(event);
-					return;
+                    this.markPrevious();
+                    this.render();
+                    //if(navigator.appVersion.indexOf('AppleWebKit')>0)
+                    Event.stop(event);
+                    return;
                 case Event.KEY_DOWN:
-                        this.markNext();
-                        this.render();
-                        //if(navigator.appVersion.indexOf('AppleWebKit')>0)
-                        Event.stop(event);
-                        return;
+                    this.markNext();
+                    this.render();
+                    //if(navigator.appVersion.indexOf('AppleWebKit')>0)
+                    Event.stop(event);
+                    return;
             }
         }
         else {
@@ -3090,14 +3090,14 @@ ToolTipPanelPopup = Class.create({
         var y = Event.pointerY(event);
         var includeScrollOffsets = Position.includeScrollOffsets;
         Position.includeScrollOffsets = false;
-        if (Position.within(this.src, x, y))  {
-        	Position.includeScrollOffsets = includeScrollOffsets;
-        	return; //ICE-6285
+        if (Position.within(this.src, x, y)) {
+            Position.includeScrollOffsets = includeScrollOffsets;
+            return; //ICE-6285
         }
         if (tooltip) {
             if (Position.within(tooltip, x, y)) {
-            	Position.includeScrollOffsets = includeScrollOffsets;
-            	return; //ICE-3521
+                Position.includeScrollOffsets = includeScrollOffsets;
+                return; //ICE-3521
             }
             this.hidePopup(event);
         }
@@ -4399,13 +4399,7 @@ Ice.Menu = {
             //menu is already visible, don't do anything
             if (menu && menu.style.display == '') return;
             Ice.Menu.showMenuWithId(submenu);
-            var supmVPO = supermenu.viewportOffset(),
-                submVPO = submenu.viewportOffset(),
-                viewport = document.viewport,
-                supmOW = supermenu.offsetWidth,
-                submOW = submenu.offsetWidth,
-                submOH = submenu.offsetHeight,
-                supmOH = supermenu.offsetHeight;
+            var supmVPO = supermenu.viewportOffset(), submVPO = submenu.viewportOffset(), viewport = document.viewport, supmOW = supermenu.offsetWidth, submOW = submenu.offsetWidth, submOH = submenu.offsetHeight, supmOH = supermenu.offsetHeight;
             submenuDiv = $(submenuDiv);
             if (submenuDiv) {
                 var subdOH = submenuDiv.offsetHeight;
@@ -5014,22 +5008,22 @@ Ice.simulateBlur = function(ele, anc) {
 
 Ice.DataExporters = {};
 Ice.DataExporter = function(id) {
-	this.id = id;
-	if (!Ice.DataExporters[this.id]) {
-		Ice.DataExporters[this.id] = this;
-		if (Ice.DataExporter.shouldOpenPopUp()) {
-			if (!this.window) {
-				this.openWindow();
-			}
-		}
-	} else {
-		if (Ice.DataExporter.shouldOpenPopUp()) {
-			var instance = Ice.DataExporters[this.id];
-			if (instance.window.closed) {
-				instance.openWindow();
-			}
-			instance.body.innerHTML = '<p>Please wait while your file is generated...</p>';
-			instance.window.focus();
+    this.id = id;
+    if (!Ice.DataExporters[this.id]) {
+        Ice.DataExporters[this.id] = this;
+        if (Ice.DataExporter.shouldOpenPopUp()) {
+            if (!this.window) {
+                this.openWindow();
+            }
+        }
+    } else {
+        if (Ice.DataExporter.shouldOpenPopUp()) {
+            var instance = Ice.DataExporters[this.id];
+            if (instance.window.closed) {
+                instance.openWindow();
+            }
+            instance.body.innerHTML = '<p>Please wait while your file is generated...</p>';
+            instance.window.focus();
 		}
 	}
 };
