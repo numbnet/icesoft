@@ -26,13 +26,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Map;
 import java.util.HashMap;
 
 @WebServlet(urlPatterns = {"/upload/*"})
 @MultipartConfig
 public class UploadServlet extends HttpServlet {
+    static String TEMP_DIR = "javax.servlet.context.tmpdir";
 
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -50,7 +54,7 @@ public class UploadServlet extends HttpServlet {
                         dirFile.mkdir();
                     }
                     String fullPath = dirPath + fileName;
-                    part.write(fullPath);
+                    writePart(part, fullPath);
                     UploadModel uploadModel = new UploadModel();
                     Map uploadAttributes = new HashMap();
                     uploadAttributes.put("file", new File(fullPath));
@@ -100,4 +104,26 @@ public class UploadServlet extends HttpServlet {
         }
         return null;
     }
+
+    void writePart(Part part, String path) throws IOException {
+        File tempDir = (File) ( getServletContext().getAttribute(TEMP_DIR) );
+        File tempFile = File.createTempFile("ice", ".tmp", tempDir);
+        FileOutputStream tempStream = new FileOutputStream(tempFile);
+
+        InputStream partStream = part.getInputStream();
+        copyStream(partStream, tempStream);
+        tempFile.renameTo(new File(path));
+    }
+
+    public static void copyStream(InputStream in, OutputStream out) throws IOException {
+        byte[] buf = new byte[1000];
+        int l = 1;
+        while (l > 0) {
+            l = in.read(buf);
+            if (l > 0) {
+                out.write(buf, 0, l);
+            }
+        }
+    }
+
 }
