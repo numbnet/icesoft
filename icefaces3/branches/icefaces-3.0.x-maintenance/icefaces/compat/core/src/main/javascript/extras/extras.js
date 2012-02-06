@@ -917,29 +917,25 @@ Ice.modal = {
         }
 
         function disableCallbacks(e) {
-            if (!childOfTarget(e)) {
-                var onkeypress = e.onkeypress;
-                var onkeyup = e.onkeyup;
-                var onkeydown = e.onkeydown;
-                var onclick = e.onclick;
-                e.onkeypress = none;
-                e.onkeyup = none;
-                e.onkeydown = none;
-                e.onclick = none;
+            var onkeypress = e.onkeypress;
+            var onkeyup = e.onkeyup;
+            var onkeydown = e.onkeydown;
+            var onclick = e.onclick;
+            e.onkeypress = none;
+            e.onkeyup = none;
+            e.onkeydown = none;
+            e.onclick = none;
 
-                return function() {
-                    try {
-                        e.onkeypress = onkeypress;
-                        e.onkeyup = onkeyup;
-                        e.onkeydown = onkeydown;
-                        e.onclick = onclick;
-                    } catch (ex) {
-                        logger.error('failed to restore callbacks on ' + e, ex);
-                    }
-                };
-            } else {
-                return none;
-            }
+            return function() {
+                try {
+                    e.onkeypress = onkeypress;
+                    e.onkeyup = onkeyup;
+                    e.onkeydown = onkeydown;
+                    e.onclick = onclick;
+                } catch (ex) {
+                    logger.error('failed to restore callbacks on ' + e, ex);
+                }
+            };
         }
 
         //disable event handlers only once (in case multiple modal popups are rendered)
@@ -949,9 +945,21 @@ Ice.modal = {
             ['input', 'select', 'textarea', 'button', 'a'].each(function(type) {
                 var elements = document.body.getElementsByTagName(type);
                 for (var i = 0, l = elements.length; i < l; i++) {
-                    rollbacks.push(disableCallbacks(elements[i]));
+                    var e = elements[i];
+                    if (!childOfTarget(e)) {
+                        rollbacks.push(disableCallbacks(e));
+                    }
                 }
             });
+
+            var iframes = document.body.getElementsByTagName('iframe');
+            for (var i = 0, l = iframes.length; i < l; i++) {
+                var f = iframes[i];
+                if (!childOfTarget(f)) {
+                    disableCallbacks(f.contentWindow);
+                    disableCallbacks(f.contentDocument || f.contentWindow.document);
+                }
+            }
         }
     },
     stop:function(target) {
