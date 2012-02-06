@@ -35,6 +35,8 @@ import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +50,7 @@ import java.util.logging.Logger;
  * 
  */
 public class Utils {
+    static String TEMP_DIR = "javax.servlet.context.tmpdir";
 
     public enum DeviceType {
         android,
@@ -417,12 +420,20 @@ public class Utils {
         }
         File dirFile = new File(folder);
         File newFile = new File(dirFile, fileName);
+
+        File tempDir = (File) ( request.getServletContext()
+                .getAttribute(TEMP_DIR) );
+        File tempFile = File.createTempFile("ice", ".tmp", tempDir);
+        FileOutputStream tempStream = new FileOutputStream(tempFile);
+
         boolean success = false;
         if (!dirFile.exists()) {
             success = dirFile.mkdirs();
         }
         try {
-            part.write(newFile.getAbsolutePath());
+            InputStream partStream = part.getInputStream();
+            copyStream(partStream, tempStream);
+            tempFile.renameTo(newFile);
         } catch (IOException e) {
             logger.log(Level.WARNING, "Error writing uploaded file to disk ", e);
         }
@@ -524,5 +535,22 @@ public class Utils {
             "JSESSIONID=" + sessionID + "&u=" + 
             URLEncoder.encode(uploadURL) + "'";
         return script;
+    }
+
+
+    /**
+     * Copy an InputStream to an OutputStream
+     * @param in InputStream
+     * @param out OutputStream
+     */
+    public static void copyStream(InputStream in, OutputStream out) throws IOException {
+        byte[] buf = new byte[1000];
+        int l = 1;
+        while (l > 0) {
+            l = in.read(buf);
+            if (l > 0) {
+                out.write(buf, 0, l);
+            }
+        }
     }
 }
