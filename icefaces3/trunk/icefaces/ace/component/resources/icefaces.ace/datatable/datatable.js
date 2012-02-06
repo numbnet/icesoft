@@ -358,7 +358,25 @@ ice.ace.DataTable.prototype.setupPanelExpansionEvents = function() {
 }
 
 ice.ace.DataTable.prototype.setupScrolling = function() {
+    var delayedCleanUpResizeToken,
+        delayedCleanUpResize = function() {
+            var headerTable = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header table'),
+                bodyTable = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body table');
+
+            _self.resizeScrolling();
+            if (headerTable.width() != (bodyTable.width() - 1)) {
+                setTimeout(delayedCleanUpResize ,150);
+            }
+         };
+
     this.resizeScrolling();
+    _self = this;
+
+    ice.ace.jq(window).bind('resize', function() {
+        _self.resizeScrolling();
+        if (delayedCleanUpResizeToken) clearTimeout(delayedCleanUpResizeToken);
+        delayedCleanUpResizeToken = setTimeout(delayedCleanUpResize ,150);
+    });
 
     //live scroll
     if (this.cfg.liveScroll) {
@@ -418,53 +436,49 @@ ice.ace.DataTable.prototype.setupResizableColumns = function() {
 }
 
 ice.ace.DataTable.prototype.resizeScrolling = function() {
-    // get table body column widths
-    var i = 0;
-    var bodyElems = new Array();
-    var widths = new Array();
-    ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body .ui-datatable-data tr:first-child td > div:first-child').each(function(){
-        bodyElems[i] = ice.ace.jq(this).parent();
-        widths[i] = ice.ace.jq(this).width();
-        i++;
-    });
-    bodyElems = bodyElems.reverse();
-    widths = widths.reverse();
+    var dupeHead = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body thead'), i;
 
-    // set table head & foot column widths
-    var headerSingleCols = ice.ace.jq(ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header thead th:not([colspan])').find('.ui-header-column:first').get().reverse());
-    if (headerSingleCols.size() == 0) headerSingleCols = ice.ace.jq(ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header thead th[colspan="1"]').find('.ui-header-column:first').get().reverse());
-    var footerSingleCols = ice.ace.jq(ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer td:not([colspan])').find('.ui-footer-column:first').get().reverse());
-    if (footerSingleCols.size() == 0) footerSingleCols = ice.ace.jq(ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer td[colspan="1"]').find('.ui-footer-column:first').get().reverse());
+    var dupeHeadSingleCols = dupeHead.find('th:not([colspan]) .ui-header-column:first-child').get().reverse();
+    if (dupeHeadSingleCols.size() == 0)
+        dupeHeadSingleCols = dupeHead.find('th[colspan="1"] .ui-header-column:first-child').get().reverse();
 
-    var i  = 0;
-    headerSingleCols.each(function() {
-        var headWidth = ice.ace.jq(this).width();
-        if (bodyElems[i] != undefined) {
-            if ((parseInt(headWidth) < parseInt(widths[i])) || ((bodyElems[i].children().attr('style') != null) &&
-                    (bodyElems[i].children().attr('style').indexOf("width") != -1))) ice.ace.jq(this).width(widths[i]);
-            else bodyElems[i].width(headWidth); // if custom column styling has been set always resize head/foot
-        }
-        i++;
-    });
+    var realHeadSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header th:not([colspan]) .ui-header-column:first-child').get().reverse();
+    if (realHeadSingleCols.size() == 0)
+        realHeadSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header th[colspan="1"] .ui-header-column:first-child').get().reverse();
 
-    i = 0;
-    if (footerSingleCols.length > 0)
-        footerSingleCols.each(function() {
-            var footWidth = ice.ace.jq(this).width();
-            if ((parseInt(footWidth) < parseInt(widths[i])) || ((bodyElems[i].children().attr('style') != null) &&
-                    (bodyElems[i].children().attr('style').indexOf("width") != -1))) ice.ace.jq(this).width(widths[i]);
-            else if (bodyElems[i] != undefined) bodyElems[i].width(footWidth); // 19 is table cell x padding with 1 px diff for internal border
-            i++;
-        });
+    var bodySingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body tbody tr:first td div:first-child').get().reverse();
 
-    var bodyContainer = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body'),
-            bodyContainerEl = bodyContainer.get(0),
-            tbodyElement = ice.ace.jq(this.tbody).get(0),
-            theadElement = ice.ace.jq('.ui-datatable-scrollable-header thead')[0];
+    
+    // Reset fixed sizing if set by previous sizing.
+    for (i = 0; i < bodySingleCols.length; i++)
+        ice.ace.jq(bodySingleCols[i]).css('width', 'auto');
 
-    var maxWidth = isNaN(theadElement.parentNode.clientWidth) ? tbodyElement.parentNode.clientWidth : theadElement.parentNode.clientWidth;
-    var containerWidth = (bodyContainerEl.scrollHeight > bodyContainerEl.clientHeight) ? (maxWidth + 18) + "px" : "auto";
-    ice.ace.jq(this.jqId).css('width', containerWidth);
+    // Show Duplicate Header
+    dupeHead.css('display', 'table-header-group');
+
+    // Get Duplicate Header Sizing   
+    // Set Duplicate Header Sizing to True Header Columns
+    // Set Duplicate Header Sizing to Body Columns
+    var dupeHeadColumn, realHeadColumn, bodyColumn;
+    for (i = 0; i < bodySingleCols.length; i++) {
+        dupeHeadColumn = ice.ace.jq(dupeHeadSingleCols[i]);
+        realHeadColumn = ice.ace.jq(realHeadSingleCols[i]);
+        bodyColumn = ice.ace.jq(bodySingleCols[i]);
+
+        realHeadColumn.width(dupeHeadColumn.width());
+        // Apply same max width to stacked sibling columns
+        realHeadColumn.siblings('.ui-header-column').width(dupeHeadColumn.width());
+
+        // Equiv of max width
+        bodyColumn.parent().width(dupeHeadColumn.width());
+        // Equiv of min width
+        var dupeHeadColumnWidth = i == (bodySingleCols.length - 1) ?
+            dupeHeadColumn.width() - 1 : dupeHeadColumn.width();
+        bodyColumn.width(dupeHeadColumnWidth);
+    }
+
+    // Hide Duplicate Header
+    dupeHead.css('display', 'none');
 }
 
 ice.ace.DataTable.prototype.setupDisabledStyling = function() {

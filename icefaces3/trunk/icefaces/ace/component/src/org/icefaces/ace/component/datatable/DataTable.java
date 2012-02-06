@@ -24,6 +24,7 @@
 
 package org.icefaces.ace.component.datatable;
 
+import com.sun.java.swing.plaf.windows.WindowsGraphicsUtils;
 import org.icefaces.ace.component.ajax.AjaxBehavior;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
@@ -350,10 +351,12 @@ public class DataTable extends DataTableBase {
      * @return List of ACE Column Components.
      */
     public List<Column> getColumns(boolean headColumns) {
-        if (headColumns) {
+        UIComponent columnGroup = getColumnGroup("header");
+
+        if (headColumns && columnGroup != null) {
             ArrayList<Column> columns = new ArrayList<Column>();
 
-            for (UIComponent child : getColumnGroup("header").getChildren()) {
+            for (UIComponent child : columnGroup.getChildren()) {
                 if (child instanceof Row) {
                     for (UIComponent gchild : child.getChildren()) {
                         if (gchild instanceof Column) {
@@ -678,6 +681,23 @@ public class DataTable extends DataTableBase {
     protected boolean isScrollingRequest(FacesContext x)          { return isIdPrefixedParamSet("_scrolling", x); }
     protected boolean isTableFeatureRequest(FacesContext x)       { return isColumnReorderRequest(x) || isScrollingRequest(x) || isInstantUnselectionRequest(x) || isInstantSelectionRequest(x) || isPaginationRequest(x) || isFilterRequest(x) || isSortRequest(x) || isTableConfigurationRequest(x); }
 
+    protected Boolean isInFakeHeader() {
+        return isInFakeHeader;
+    }
+
+    protected void setInFakeHeader(Boolean inFakeHeader) {
+        Stack<UIComponent> compsToIdReinit = new Stack<UIComponent>() {{
+            for (UIComponent c : getColumns(true)) push(c);            
+        }};
+
+        while (!compsToIdReinit.empty()) {
+            UIComponent c = compsToIdReinit.pop();
+            c.setId(c.getId());
+            for (UIComponent cc : c.getChildren()) compsToIdReinit.push(cc);
+        }
+
+        isInFakeHeader = inFakeHeader;
+    }
 
     protected Map<String,Column> getFilterMap() {
         if (filterMap == null) {
@@ -1184,6 +1204,9 @@ public class DataTable extends DataTableBase {
     private int baseClientIdLength;
     private StringBuilder clientIdBuilder = null;
     private Boolean isNested = null;
+    // Used to toggle generating alternate clientIds for a duplicate header used
+    // for scrollable table sizing reasons.
+    private Boolean isInFakeHeader = false;
     public String getBaseClientId(FacesContext context) {
         if (baseClientId == null && clientIdBuilder == null) {
             if (!isNestedWithinUIData()) {
@@ -1273,16 +1296,20 @@ public class DataTable extends DataTableBase {
 
                 clientIdBuilder.setLength(0);
                 }
-            return (cid);
+
+            return isInFakeHeader ? (cid) + UINamingContainer.getSeparatorChar(context) + "sizingHeader"
+                                  : (cid);
         } else {
             if (!isNestedWithinUIData()) {
                 // Not nested and no row available, so just return our baseClientId
-                return (baseClientId);
+                return isInFakeHeader ? (baseClientId) + UINamingContainer.getSeparatorChar(context) + "sizingHeader"
+                                      : (baseClientId);
             } else {
                 // nested and no row available, return the result of getClientId().
                 // this is necessary as the client ID will reflect the row that
                 // this table represents
-                return UIData_getContainerClientId(context);
+                return isInFakeHeader ? UIData_getContainerClientId(context) + UINamingContainer.getSeparatorChar(context) + "sizingHeader"
+                                      : UIData_getContainerClientId(context);
             }
         }
     }
