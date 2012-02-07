@@ -434,11 +434,11 @@
                           name="button" skin="honeycomb"/>
         <includeresources dir="src/org/icefaces/mobi/component/button/bberry"
                           name="button" skin="bberry"/>
-         <!-- menuButton - menuButton  -->
+         <!-- menuButton - menuButton
         <includeresources dir="src/org/icefaces/mobi/component/menubutton/ipad"
                           name="menubutton" skin="ipad"/>
         <includeresources dir="src/org/icefaces/mobi/component/menubutton/honeycomb"
-                          name="menubutton" skin="honeycomb"/>
+                          name="menubutton" skin="honeycomb"/>     -->
         <!-- datespinner- style definition -->
         <includeresources dir="src/org/icefaces/mobi/component/datespinner/ipad"
                           name="datespinner" skin="ipad"/>
@@ -597,7 +597,7 @@
                  <include name="org.icefaces.component.datespinner/datespinner.js"/>
                  <include name="org.icefaces.component.timespinner/timespinner.js"/>
                  <include name="org.icefaces.component.carousel/carousel.js"/>
-
+                 <include name="org.icefaces.component.panelconfirmation/panelconfirmation.js"/>
              </fileset>
          </concat>
      </target>
@@ -634,6 +634,7 @@
          <compressjs comp="datespinner" path="${resources}/org.icefaces.component.datespinner"/>
          <compressjs comp="timespinner" path="${resources}/org.icefaces.component.timespinner"/>
          <compressjs comp="flipswitch" path="${resources}/org.icefaces.component.flipswitch"/>
+         <compressjs comp="panelconfirmation" path="${resources}/org.icefaces.component.panelconfirmation"/>
      </target>
 
      <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
@@ -645,32 +646,6 @@
              </filterchain>
          </move>
      </target>
-
-<!--     <target name="res-css-combine">
-         <delete file="${resources}/icefaces.ace/util/combined.css"
-                 verbose="true"/>
-         <concat destfile="${resources}/icefaces.ace/util/combined.css"
-                 force="true" fixlastline="true">
-             <fileset dir="${resources}">
-                 <include name="icefaces.ace/*/*.css"/>
-                 <exclude name="icefaces.ace/util/*.css"/>
-                 <exclude name="${skins.lib}/*.css"/>
-             </fileset>
-         </concat>
-     </target>
-
-     <target name="res-copy"
-             description="Copy the resources into the exploded dir ">
-         <copy todir="${exploded}/META-INF">
-             <fileset dir="${meta-include}">
-                 <exclude name="primefaces-p.taglib.xml"/>
-             </fileset>
-         </copy>
-         <copy todir="${exploded}/META-INF/resources">
-             <fileset dir="${resources}"/>
-         </copy>
-         <delete dir="${exploded}/META-INF/resources/icefaces.ace/META-INCLUDE"/>
-     </target>   -->
 
 
 </project>
