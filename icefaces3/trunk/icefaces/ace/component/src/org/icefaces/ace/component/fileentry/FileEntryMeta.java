@@ -54,9 +54,8 @@ import org.icefaces.ace.meta.annotation.Property;
         "progress increments. <p>For more information, see the " +
         "<a href=\"http://wiki.icefaces.org/display/ICE/FileEntry\">FileEntry Wiki Documentation</a>.")
 @ResourceDependencies({
-    @ResourceDependency(library="icefaces.ace", name="util/combined.css"),
-	@ResourceDependency(library="icefaces.ace", name="util/ace-jquery.js"),
-    @ResourceDependency(library="icefaces.ace", name="util/ace-components.js")
+    @ResourceDependency(library="icefaces.ace", name="fileentry/fileEntry.css"),
+    @ResourceDependency(library="icefaces.ace", name="fileentry/fileEntry.js")
 })
 public class FileEntryMeta extends UIComponentBaseMeta {
 
