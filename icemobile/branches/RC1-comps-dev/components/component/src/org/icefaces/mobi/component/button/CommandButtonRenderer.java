@@ -133,7 +133,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         } else {
             StringBuilder builder = new StringBuilder(255);
             String panelConfId=commandButton.getPanelConfirmation();
-            if (!panelConfId.equals(null)){
+            if (null != panelConfId){
                 ///would never use this with singleSubmit so always false when using with panelConfirmation
                builder.append("{ event: event, singleSubmit: false");
                if (hasBehaviors){
@@ -154,7 +154,7 @@ public class CommandButtonRenderer extends CoreRenderer {
                 }
             }else { //no panelconfirmation
                 StringBuilder pcBuilder = getCall(facesContext, commandButton, singleSubmit, params, cbh);
-                writer.writeAttribute(HTML.ONCLICK_ATTR, builder.toString(), null);
+                writer.writeAttribute(HTML.ONCLICK_ATTR, pcBuilder.toString(), null);
             }
         }
         writer.endElement(HTML.INPUT_ELEM);
