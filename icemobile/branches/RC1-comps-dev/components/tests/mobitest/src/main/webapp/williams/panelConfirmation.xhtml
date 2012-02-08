@@ -54,16 +54,83 @@
        <h4>this button is standard submit with no mobi ajax tag. </h4>
        <h5>SingleSubmit will not be
             available with panelConfirmation</h5>
-       <mobi:commandButton id="defaultOne" buttonType="default" value="defaultSStrue"
+       <mobi:commandButton id="defaultOne" buttonType="default" value="StandardSubmit"
                            panelConfirmation="pc1"
                            actionListener="#{input.defaultEvent}"/>
        <mobi:panelConfirmation id="pc1" message="working"/>
+        <br />
+       <h4>this button is standard submit with no mobi ajax tag and incorrect reference to panelConfirmation </h4>
+       <h5>Should just do standard submit if panelConfirmation not found</h5>
+       <mobi:commandButton id="defaultTwo" buttonType="default" value="Incorrect"
+                           panelConfirmation="pc2"
+                           actionListener="#{input.defaultEvent}"/>
+        <br />
+       <h4>mobi ajax test </h4>
+       <h5> Will only update area A rather than entire sheet</h5>
+       <mobi:commandButton id="default3" buttonType="default" value="StandardSubmit"
+                           panelConfirmation="pc1"
+                           actionListener="#{input.defaultEvent}">
+              <mobi:ajax event="click" execute="#{ajaxTest.execute}" render="#{ajaxTest.render}" />
+       </mobi:commandButton>
+       <mobi:panelConfirmation id="pc3" message="working"/>
+        <br />
+        <h3>mobi ajax responses</h3>
+                    <br/>
+                    <span>Value A: </span><h:inputText id="valueA" value="#{input.someText}" />
+                    <br />
+                    <span>Value B: </span><h:inputText id="valueB" value="#{input.someText}" />
+                    <br />
+                    <h:commandButton actionListener="#{input.clear}" value="Reset values" />
     </h:form>
 
     <h3>RESULTS</h3>
     <h:outputText id="out1" value="#{input.someText}">
             <h:outputLabel for="out1" value="A. text SS False:-"/>
     </h:outputText>
+    <br/>
+  	<h:panelGroup style="padding:30px;">
+			<h:form id="form2">
+				<h3>Form 2</h3>
+				<span>Execute: </span>
+				<h:selectOneRadio id="execute" value="#{ajaxTest.execute}">
+					<f:ajax execute="@this" render="@all" />
+					<f:selectItem itemValue="@all" itemLabel="@all" />
+					<f:selectItem itemValue="@form" itemLabel="@form" />
+					<f:selectItem itemValue="@this" itemLabel="@this" />
+					<f:selectItem itemValue="@none" itemLabel="@none" />
+					<f:selectItem itemValue="valueA" itemLabel="valueA" />
+					<f:selectItem itemValue="valueB" itemLabel="valueB" />
+					<f:selectItem itemValue="valueA valueB" itemLabel="valueA valueB" />
+				</h:selectOneRadio>
+				<span>Other: </span>
+				<h:inputText id="executeOther" value="#{ajaxTest.execute}">
+					<f:ajax execute="@this" render="@all" />
+				</h:inputText>
+				<br /><br />
+				<span>Render: </span>
+				<h:selectOneRadio id="render" value="#{ajaxTest.render}">
+					<f:ajax execute="@this" render="@all" />
+					<f:selectItem itemValue="@all" itemLabel="@all" />
+					<f:selectItem itemValue="@form" itemLabel="@form" />
+					<f:selectItem itemValue="@this" itemLabel="@this" />
+					<f:selectItem itemValue="@none" itemLabel="@none" />
+					<f:selectItem itemValue="valueA" itemLabel="valueA" />
+					<f:selectItem itemValue="valueB" itemLabel="valueB" />
+					<f:selectItem itemValue="valueA valueB" itemLabel="valueA valueB" />
+				</h:selectOneRadio>
+				<span>Other: </span>
+				<h:inputText id="renderOther" value="#{ajaxTest.render}">
+					<f:ajax execute="@this" render="@all" />
+				</h:inputText>
+				<br />
+				<h:commandButton value="Submit">
+					<f:ajax execute="@form" render="@all" />
+				</h:commandButton>
+			</h:form>
+		</h:panelGroup>
 
+    <br />
+	<li><a href="../williamsComponents.html">index page</a>
+	</li>
 </h:body>
 </html>

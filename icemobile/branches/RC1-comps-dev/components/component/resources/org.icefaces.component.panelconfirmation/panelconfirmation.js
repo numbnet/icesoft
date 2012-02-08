@@ -24,8 +24,8 @@ mobi.panelConf = {
                 hasBehaviors = true;
             }
             if (hasBehaviors){
-                if (behaviors.accept){
-                    behaviors.accept();
+                if (behaviors.click){
+                    behaviors.click();
                 }
             }
             if (!hasBehaviors){

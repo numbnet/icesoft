@@ -15,6 +15,7 @@
  */
 package org.icefaces.mobi.component.button;
 
+import org.icefaces.mobi.component.panelconfirmation.PanelConfirmationRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
 import org.icefaces.mobi.renderkit.CoreRenderer;
@@ -130,15 +131,34 @@ public class CommandButtonRenderer extends CoreRenderer {
             writer.writeAttribute("disabled", "disabled", null);
         } else {
             StringBuilder builder = new StringBuilder(255);
-            if (hasBehaviors){
-                String cbhCall = this.buildAjaxRequest(facesContext, cbh, commandButton.getDefaultEventName());
-                builder.append(cbhCall);
-            } else if (singleSubmit) {
-                builder.append("ice.se(event, ").append(params).append(");");
-            } else {//default is standard submit
-                builder.append("ice.s(event, ").append(params).append(");");
+            String panelConfId=commandButton.getPanelConfirmation();
+            if (!panelConfId.equals(null)){
+                ///would never use this with singleSubmit so always false when using with panelConfirmation
+                builder.append("{ event: event, singleSubmit: false");
+               if (hasBehaviors){
+                   String behaviors = this.encodeClientBehaviors(facesContext, cbh, "accept").toString();
+                   behaviors = behaviors.replace("\"", "\'");
+                   builder.append(behaviors);
+                }
+                StringBuilder pcBuilder = PanelConfirmationRenderer.renderOnClickString(uiComponent, builder );
+                if (!pcBuilder.toString().startsWith("mobi.panelConf.init")) {
+                    logger.warning("panelConfirmation Not found:- resorting to standard ajax form submit");
+                    String cbhCall = this.buildAjaxRequest(facesContext, cbh, commandButton.getDefaultEventName());
+                    writer.writeAttribute(HTML.ONCLICK_ATTR, cbhCall, HTML.ONCLICK_ATTR);
+                } else {
+                    writer.writeAttribute(HTML.ONCLICK_ATTR, pcBuilder.toString(),  HTML.ONCLICK_ATTR);
+                }
+            }else {
+                if (hasBehaviors){
+                    String cbhCall = this.buildAjaxRequest(facesContext, cbh, commandButton.getDefaultEventName());
+                    builder.append(cbhCall);
+                } else if (singleSubmit) {
+                    builder.append("ice.se(event, ").append(params).append(");");
+                } else {//default is standard submit
+                    builder.append("ice.s(event, ").append(params).append(");");
+                }
+                writer.writeAttribute(HTML.ONCLICK_ATTR, builder.toString(), null);
             }
-            writer.writeAttribute(HTML.ONCLICK_ATTR, builder.toString(), null);
         }
 
         writer.endElement(HTML.INPUT_ELEM);
