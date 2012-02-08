@@ -37,7 +37,7 @@
 <h:body>
  
     <h3>panelConfirmation with commandButton</h3>
-
+  <fieldset title="form1">
     <h:form id="inputForm">
     
        <h5>commandButton to submit form</h5>
@@ -45,13 +45,8 @@
         <h:outputText value="A. mobi comp singleSubmit is false "/>
         <mobi:inputText id="textSSFalse" value="#{input.someText}" type="text" placeholder="#{input.placeholder}" title="basic text input"/>
        </p>
-
-
           <h5>ActionListener for buttons will change following field to reflect which button was pressed</h5>
           <h:outputText value="#{input.eventString}"/>
-          
-
-       <h4>this button is standard submit with no mobi ajax tag. </h4>
        <h5>SingleSubmit will not be
             available with panelConfirmation</h5>
        <mobi:commandButton id="defaultOne" buttonType="default" value="StandardSubmit"
@@ -59,33 +54,60 @@
                            actionListener="#{input.defaultEvent}"/>
        <mobi:panelConfirmation id="pc1" message="working"/>
         <br />
+    </h:form>
+ </fieldset>
+ <fieldset title="form2">
+    <h:form id="inputform2">
+       <h4>this button is standard submit with no mobi ajax tag. </h4>
+       <p>
+        <h:outputText value="A. mobi comp singleSubmit is false "/>
+        <mobi:inputText id="inp3" value="#{input.someText2}" type="text" placeholder="#{input.placeholder}" title="basic text input"/>
+       </p>
+
        <h4>this button is standard submit with no mobi ajax tag and incorrect reference to panelConfirmation </h4>
        <h5>Should just do standard submit if panelConfirmation not found</h5>
        <mobi:commandButton id="defaultTwo" buttonType="default" value="Incorrect"
                            panelConfirmation="pc2"
                            actionListener="#{input.defaultEvent}"/>
         <br />
+     </h:form>
+ </fieldset>
+ <fieldset title="form3">
+
+     <h:form id="inputForm3">
        <h4>mobi ajax test </h4>
+       <p>
+        <h:outputText value="A. mobi comp singleSubmit is false "/>
+        <mobi:inputText id="inp4" value="#{input.name}" type="text" placeholder="#{input.placeholder}" title="basic text input"/>
+       </p>
        <h5> Will only update area A rather than entire sheet</h5>
-       <mobi:commandButton id="default3" buttonType="default" value="StandardSubmit"
-                           panelConfirmation="pc1"
+       <mobi:commandButton id="default3" buttonType="default" value="mobiAjax"
+                           panelConfirmation="pc3"
                            actionListener="#{input.defaultEvent}">
               <mobi:ajax event="click" execute="#{ajaxTest.execute}" render="#{ajaxTest.render}" />
        </mobi:commandButton>
        <mobi:panelConfirmation id="pc3" message="working"/>
         <br />
-        <h3>mobi ajax responses</h3>
+     <h3>mobi ajax responses</h3>
                     <br/>
-                    <span>Value A: </span><h:inputText id="valueA" value="#{input.someText}" />
+                    <span>Value A: </span><h:inputText id="valueA" value="#{input.name}" />
                     <br />
-                    <span>Value B: </span><h:inputText id="valueB" value="#{input.someText}" />
+                    <span>Value B: </span><h:inputText id="valueB" value="#{input.name}" />
                     <br />
                     <h:commandButton actionListener="#{input.clear}" value="Reset values" />
     </h:form>
 
+ </fieldset>
+
     <h3>RESULTS</h3>
     <h:outputText id="out1" value="#{input.someText}">
-            <h:outputLabel for="out1" value="A. text SS False:-"/>
+            <h:outputLabel for="out1" value="A. simple:-"/>
+    </h:outputText>
+    <h:outputText id="out2" value="#{input.someText2}">
+            <h:outputLabel for="out2" value="B. invalid panelConf:-"/>
+    </h:outputText>
+   <h:outputText id="out3" value="#{input.name}">
+            <h:outputLabel for="out3" value="C. mobi ajax:-"/>
     </h:outputText>
     <br/>
   	<h:panelGroup style="padding:30px;">
