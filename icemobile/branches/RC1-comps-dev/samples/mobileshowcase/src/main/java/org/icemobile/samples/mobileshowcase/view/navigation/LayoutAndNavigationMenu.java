@@ -19,6 +19,7 @@ package org.icemobile.samples.mobileshowcase.view.navigation;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.carousel.CarouselBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.fieldset.FieldsetBean;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.list.ListBean;
+import org.icemobile.samples.mobileshowcase.view.examples.layout.panelconfirmation.PanelConfirmation;
 import org.icemobile.samples.mobileshowcase.view.examples.layout.theme.SkinBean;
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.MenuLink;
 
@@ -40,7 +41,9 @@ import java.io.Serializable;
                 @MenuLink(title = "menu.layout.fieldset.title",
                         exampleBeanName = FieldsetBean.BEAN_NAME),
                 @MenuLink(title = "menu.layout.list.title",
-                        exampleBeanName = ListBean.BEAN_NAME)
+                        exampleBeanName = ListBean.BEAN_NAME),
+                @MenuLink(title = "menu.layout.panelConfirmation.title",
+                        exampleBeanName = PanelConfirmation.BEAN_NAME)
         })
 @ManagedBean(name = LayoutAndNavigationMenu.BEAN_NAME)
 @ApplicationScoped
