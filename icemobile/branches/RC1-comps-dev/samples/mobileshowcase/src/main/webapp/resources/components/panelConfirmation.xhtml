@@ -1,0 +1,86 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+<head><title>(For validation only)</title></head>
+<body>
+
+<!--
+    Contruct to allow users to use a selectone menu as a menu button.
+-->
+<composite:interface
+        displayName="Example menuButton control"
+        shortDescription="Single selection of a menu list item will fire the assoicated action event.">
+
+    <composite:attribute name="title" required="false"
+                         displayName="The text of the popup header."/>
+
+    <composite:attribute name="message" required="false"
+                         displayName="The text to appear in the body of the popup."/>
+
+    <composite:attribute name="acceptLabel" required="false" default="Accept"
+                         displayName="The text to appear on the acceptance button (default value is 'Accept')."/>
+    <composite:attribute name="cancelLabel" required="false" default="Cancel"
+                         displayName="The text to appear on the cancellation button (default value is 'Cancel'). "/>
+
+    <composite:attribute name="type" required="false" default="normal"
+                         displayName="See TLD notes. acceptOnly,cancelOnly, normal  "/>
+
+    <composite:attribute name="rendered" required="false"
+                         displayName="Flag indicating whether or not this component should be rendered (during Render Response Phase), or processed on any subsequent form submit."/>
+
+    <composite:attribute name="styleClass" required="false"
+                         displayName="Space-separated list of CSS style class(es) to be applied when this element is rendered. This value must be passed through as the 'class' attribute on generated markup. "/>
+    <composite:attribute name="styleC" required="false"
+                         displayName="CSS style(s) to be applied when this component is rendered."/>
+
+    <!-- tmp action setup -->
+    <!-- Event mapping when a users clicks on the sort column. -->
+    <composite:actionSource name="acceptEvent"/>
+    <composite:actionSource name="cancelEvent"/>
+
+</composite:interface>
+
+<composite:implementation >
+
+    <ui:fragment rendered="#{cc.attrs.rendered}">
+        <!-- gray out background panel -->
+        <div class="mobi-date-bg"></div>
+        <!-- main button which hides the select one selected state. -->
+        <div class="mobi-panelconf-container">
+            <div class="mobi-panelconf-title-container">#{cc.attrs.title}</div>
+            <div class="mobi-panelconf-body-container">#{cc.attrs.message}</div>
+            <div class="mobi-panelconf-submit-container">
+                <mobi:commandButton id="acceptEvent"
+                        buttonType="attention"
+                        rendered="#{cc.attrs.type eq 'normal' or cc.attrs.type eq 'acceptOnly' }"
+                        value="#{cc.attrs.acceptLabel}"/>
+                <mobi:commandButton id="cancelEvent"
+                        buttonType="important"
+                        rendered="#{cc.attrs.type eq 'normal' or cc.attrs.type eq 'cancelOnly' }"
+                        value="#{cc.attrs.cancelLabel}"/>
+            </div>
+        </div>
+    </ui:fragment>
+</composite:implementation>
+</body>
+</html>
