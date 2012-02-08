@@ -127,7 +127,7 @@ public class PanelConfirmationRenderer extends Renderer {
             panelConfirmationId = panelConfirmation.getClientId(facesContext);
             String autoCenter = panelConfirmation.isAutoCenter() ? "true" : "false";
             StringBuilder sb = new StringBuilder("mobi.panelConf.init('").append(panelConfirmationId).append("','");
-            sb.append(callCompId).append("',").append(origOnClickCall);
+            sb.append(callCompId).append("',").append(autoCenter).append(",").append(origOnClickCall);
             sb.append("});");
             return sb;
         } else {
