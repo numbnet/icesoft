@@ -18,10 +18,10 @@ import org.icefaces.ace.meta.annotation.ClientEvent;
         tlddoc = "This mobility component " +
                 "renders a confirmation panel to be used with any mobi commandButton or menuButton"
 )
-
+/*
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="accept", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
-}, defaultEvent="accept")
+	@ClientEvent(name="click", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
+}, defaultEvent="click") */
 
 public class PanelConfirmationMeta extends UIPanelMeta{
 
