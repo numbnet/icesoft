@@ -15,16 +15,14 @@
 }
 
 .mobi-menu-btn-btn{
-    border: 1px solid #175f9d;
-    background: -moz-linear-gradient(top, #5caaf4, #2c7fc8, #2c7fc8, #3993e1) repeat scroll 0 0 #2c7fc8;
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #5caaf4), color-stop(.45, #2c7fc8), color-stop(.5, #2c7fc8), color-stop(1, #3993e1));
-    background-color: #5caaf4;
+    border: 1px solid #38383b;
+    border-top: 1px solid #505054;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #424246), color-stop(1, #3f3f42));
+    background: -moz-linear-gradient(top, #424246, #3f3f42);
+    background-color: #3f3f42;
     color: #FFFFFF;
     overflow: hidden;
-    padding: 0 24px 0 8px;
-    border-radius: 0.3em 0.3em 0.3em 0.3em;
-    -webkit-border-radius: 0.3em;
-    -moz-border-radius: 0.3em;
+    padding: 3px 24px 3px 8px;
 }
 
 .mobi-menu-btn-menu {
@@ -33,7 +31,8 @@
     -webkit-opacity: 0;
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     position: relative;
-    width: 190px;
+    width: 175px;
+    padding:4px;
     z-index: 5;
 }
 
