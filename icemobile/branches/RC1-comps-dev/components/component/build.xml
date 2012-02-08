@@ -434,11 +434,28 @@
                           name="button" skin="honeycomb"/>
         <includeresources dir="src/org/icefaces/mobi/component/button/bberry"
                           name="button" skin="bberry"/>
-         <!-- menuButton - menuButton
+        <!-- menuButton - menuButton  -->
         <includeresources dir="src/org/icefaces/mobi/component/menubutton/ipad"
                           name="menubutton" skin="ipad"/>
         <includeresources dir="src/org/icefaces/mobi/component/menubutton/honeycomb"
-                          name="menubutton" skin="honeycomb"/>     -->
+                          name="menubutton" skin="honeycomb"/>
+        <includeresources dir="src/org/icefaces/mobi/component/menubutton/iphone"
+                          name="menubutton" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/mobi/component/menubutton/android"
+                          name="menubutton" skin="android"/>
+        <includeresources dir="src/org/icefaces/mobi/component/menubutton/bberry"
+                          name="menubutton" skin="bberry"/>
+        <!-- panelConfirmation - confirmation panel  -->
+        <includeresources dir="src/org/icefaces/mobi/component/panelconfirmation/ipad"
+                          name="panelconfirmation" skin="ipad"/>
+        <includeresources dir="src/org/icefaces/mobi/component/panelconfirmation/iphone"
+                          name="panelconfirmation" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/mobi/component/panelconfirmation/honeycomb"
+                          name="panelconfirmation" skin="honeycomb"/>
+        <includeresources dir="src/org/icefaces/mobi/component/panelconfirmation/android"
+                          name="panelconfirmation" skin="android"/>
+        <includeresources dir="src/org/icefaces/mobi/component/panelconfirmation/bberry"
+                          name="panelconfirmation" skin="bberry"/>
         <!-- datespinner- style definition -->
         <includeresources dir="src/org/icefaces/mobi/component/datespinner/ipad"
                           name="datespinner" skin="ipad"/>
@@ -450,7 +467,7 @@
                           name="datespinner" skin="honeycomb"/>
         <includeresources dir="src/org/icefaces/mobi/component/datespinner/bberry"
                           name="datespinner" skin="bberry"/>
-        <!-- timespinner- style definition -->
+        <!-- timespinner - style definition -->
         <includeresources dir="src/org/icefaces/mobi/component/timespinner/ipad"
                           name="timespinner" skin="ipad"/>
         <includeresources dir="src/org/icefaces/mobi/component/timespinner/iphone"
@@ -461,7 +478,7 @@
                           name="timespinner" skin="honeycomb"/>
         <includeresources dir="src/org/icefaces/mobi/component/timespinner/bberry"
                           name="timespinner" skin="bberry"/>
-        <!-- video- style definition -->
+        <!-- video - style definition -->
         <includeresources dir="src/org/icefaces/mobi/component/video/ipad"
                           name="video" skin="ipad"/>
         <includeresources dir="src/org/icefaces/mobi/component/video/iphone"
@@ -597,7 +614,7 @@
                  <include name="org.icefaces.component.datespinner/datespinner.js"/>
                  <include name="org.icefaces.component.timespinner/timespinner.js"/>
                  <include name="org.icefaces.component.carousel/carousel.js"/>
-                 <include name="org.icefaces.component.panelconfirmation/panelconfirmation.js"/>
+
              </fileset>
          </concat>
      </target>
@@ -634,7 +651,6 @@
          <compressjs comp="datespinner" path="${resources}/org.icefaces.component.datespinner"/>
          <compressjs comp="timespinner" path="${resources}/org.icefaces.component.timespinner"/>
          <compressjs comp="flipswitch" path="${resources}/org.icefaces.component.flipswitch"/>
-         <compressjs comp="panelconfirmation" path="${resources}/org.icefaces.component.panelconfirmation"/>
      </target>
 
      <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
@@ -646,6 +662,32 @@
              </filterchain>
          </move>
      </target>
+
+<!--     <target name="res-css-combine">
+         <delete file="${resources}/icefaces.ace/util/combined.css"
+                 verbose="true"/>
+         <concat destfile="${resources}/icefaces.ace/util/combined.css"
+                 force="true" fixlastline="true">
+             <fileset dir="${resources}">
+                 <include name="icefaces.ace/*/*.css"/>
+                 <exclude name="icefaces.ace/util/*.css"/>
+                 <exclude name="${skins.lib}/*.css"/>
+             </fileset>
+         </concat>
+     </target>
+
+     <target name="res-copy"
+             description="Copy the resources into the exploded dir ">
+         <copy todir="${exploded}/META-INF">
+             <fileset dir="${meta-include}">
+                 <exclude name="primefaces-p.taglib.xml"/>
+             </fileset>
+         </copy>
+         <copy todir="${exploded}/META-INF/resources">
+             <fileset dir="${resources}"/>
+         </copy>
+         <delete dir="${exploded}/META-INF/resources/icefaces.ace/META-INCLUDE"/>
+     </target>   -->
 
 
 </project>
