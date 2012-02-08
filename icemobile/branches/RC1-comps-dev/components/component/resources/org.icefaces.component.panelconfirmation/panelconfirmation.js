@@ -5,9 +5,11 @@ mobi.panelConf = {
       opened: {},
       cfg: {},
       caller: {},
-	  init: function(clientId, callerId, cfgIn ){
+      autocenter: false,
+	  init: function(clientId, callerId, center, cfgIn ){
           this.cfg[clientId] = cfgIn;
           this.caller[clientId] = callerId;
+          this.autocenter = center;
           var idPanel = clientId+"_bg";
           if (!document.getElementById(idPanel).className ){
              document.getElementById(idPanel).className = 'mobi-date-bg-inv';
@@ -45,6 +47,19 @@ mobi.panelConf = {
         },
         open: function(clientId){
             var idPanel = clientId+"_bg";
+            var containerId = clientId+"_popup";
+            if (this.autocenter){
+               var w=window, d=document, e= d.documentElement, g=d.getElementsByTagName('body')[0];
+               x = w.innerWidth||e.clientWidth||g.clientWidth, y=w.innerHeight||e.clientHeight||g.clientHeight;
+               var iPanelHeight = 122;
+               var iPaneWidth=138;
+               var iWidth = (x/2) - (iPanelHeight);
+               var iHeight = (y/2) - (iPaneWidth);
+               var contDiv = document.getElementById(containerId);
+               contDiv.style.position = 'absolute';  //use fixed if want panel to stay in same place while scrolling
+               contDiv.style.left = iWidth+'px';
+               contDiv.style.top = (g.scrollTop + iHeight)+'px';
+            }
             document.getElementById(idPanel).className = "mobi-date-bg";
             document.getElementById(clientId+"_popup").className = "mobi-date-container";
             this.opened[clientId]= true;
