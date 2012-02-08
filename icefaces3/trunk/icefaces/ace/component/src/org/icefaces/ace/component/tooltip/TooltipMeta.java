@@ -96,4 +96,10 @@ public class TooltipMeta extends UIOutputMeta {
     @Property(expression = Expression.METHOD_EXPRESSION,
               tlddoc = "A server side listener to be invoked when the tooltip is about to be shown in the client.")
     private MethodExpression displayListener;
+	
+	@Property(tlddoc="Specifies whether the tooltip should be stylized as a speech bubble (i.e. with a speech bubble arrow tip pointing to the triggerer element).", defaultValue="false")
+	private boolean speechBubble;
+	
+	@Property(tlddoc="Specifies a pre-defined skin for the tooltip instead of using the current theme styling. Possible values are \"cream\", \"light\", \"dark\", \"red\", \"green\", \"blue\", and \"theme\". If the value is \"theme\", the empty string or null, the tooltip will simply follow the current theme styling.", defaultValue="theme")
+	private String skinName;
 }
