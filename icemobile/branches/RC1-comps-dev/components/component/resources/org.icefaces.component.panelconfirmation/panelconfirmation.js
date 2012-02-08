@@ -19,7 +19,7 @@ mobi.panelConf = {
         confirm: function(clientId){
             var event = this.cfg.event;
             var hasBehaviors = false;
-            var behaviors = this.cfg.behaviors;
+            var behaviors = this.cfg[clientId].behaviors;
             if (behaviors){
                 hasBehaviors = true;
             }

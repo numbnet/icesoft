@@ -126,7 +126,8 @@ public class CommandButtonRenderer extends CoreRenderer {
         }
         ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
-
+        StringBuilder seCall = new StringBuilder("ice.se(event, ").append(params).append(");");
+        StringBuilder sCall = new StringBuilder("ice.s(event, ").append(params).append(");");
         if (commandButton.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         } else {
@@ -134,33 +135,40 @@ public class CommandButtonRenderer extends CoreRenderer {
             String panelConfId=commandButton.getPanelConfirmation();
             if (!panelConfId.equals(null)){
                 ///would never use this with singleSubmit so always false when using with panelConfirmation
-                builder.append("{ event: event, singleSubmit: false");
+               builder.append("{ event: event, singleSubmit: false");
                if (hasBehaviors){
                    String behaviors = this.encodeClientBehaviors(facesContext, cbh, "accept").toString();
                    behaviors = behaviors.replace("\"", "\'");
                    builder.append(behaviors);
                 }
                 StringBuilder pcBuilder = PanelConfirmationRenderer.renderOnClickString(uiComponent, builder );
-                if (!pcBuilder.toString().startsWith("mobi.panelConf.init")) {
-                    logger.warning("panelConfirmation Not found:- resorting to standard ajax form submit");
-                    String cbhCall = this.buildAjaxRequest(facesContext, cbh, commandButton.getDefaultEventName());
-                    writer.writeAttribute(HTML.ONCLICK_ATTR, cbhCall, HTML.ONCLICK_ATTR);
-                } else {
+                if (pcBuilder.toString().startsWith("mobi.panelConf.init")) {
+                    //has panelConfirmation and it is found
                     writer.writeAttribute(HTML.ONCLICK_ATTR, pcBuilder.toString(),  HTML.ONCLICK_ATTR);
+                } else if (hasBehaviors){ //no panelConfirmation found but has behaviors
+                    logger.warning("panelConfirmation of "+panelConfId+" NOT FOUND:- resorting to standard ajax form submit");
+                    StringBuilder cbhCall = getCall(facesContext, commandButton, singleSubmit, params, cbh);
+                    writer.writeAttribute(HTML.ONCLICK_ATTR, cbhCall.toString(), HTML.ONCLICK_ATTR);
+                } else {  //no behaviors and panelConfirmation not found
+                     writer.writeAttribute(HTML.ONCLICK_ATTR, sCall.toString(), HTML.ONCLICK_ATTR);
                 }
-            }else {
-                if (hasBehaviors){
-                    String cbhCall = this.buildAjaxRequest(facesContext, cbh, commandButton.getDefaultEventName());
-                    builder.append(cbhCall);
-                } else if (singleSubmit) {
-                    builder.append("ice.se(event, ").append(params).append(");");
-                } else {//default is standard submit
-                    builder.append("ice.s(event, ").append(params).append(");");
-                }
+            }else { //no panelconfirmation
+                StringBuilder pcBuilder = getCall(facesContext, commandButton, singleSubmit, params, cbh);
                 writer.writeAttribute(HTML.ONCLICK_ATTR, builder.toString(), null);
             }
         }
-
         writer.endElement(HTML.INPUT_ELEM);
+    }
+
+    private StringBuilder getCall(FacesContext facesContext, CommandButton commandButton, boolean singleSubmit, String params, ClientBehaviorHolder cbh) {
+        StringBuilder builder = new StringBuilder();
+        if (!cbh.getClientBehaviors().isEmpty()){
+            builder.append(this.buildAjaxRequest(facesContext, cbh, commandButton.getDefaultEventName()));
+        } else if (singleSubmit) {
+            builder.append("ice.se(event, ").append(params).append(");");
+        } else {//default is standard submit
+            builder.append("ice.s(event, ").append(params).append(");");
+        }
+        return builder;
     }
 }
