@@ -104,8 +104,6 @@ public class TooltipRenderer extends CoreRenderer {
 				.entry("id", clientId)
 				.entry("displayListener", (tooltip.getDisplayListener() != null));
 		if (tooltip.isSpeechBubble()) jb.entry("speechBubble", true);
-		String skinName = tooltip.getSkinName();
-		if (skinName != null && !"".equals(skinName) && !"theme".equalsIgnoreCase(skinName)) jb.entry("skinName", skinName.toLowerCase());
 
 		if(!global) {
 			jb.entry("forComponent", owner);

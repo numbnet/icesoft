@@ -41,12 +41,6 @@ ice.ace.Tooltip = function(cfg) {
         this.cfg.style.border = { width: 5, radius: 10 };
         this.cfg.style.tip = true;
     }
-    var skin = this.cfg.skinName;
-    if (skin) {
-        if (skin == 'cream' || skin == 'dark' || skin == 'light' 
-		|| skin == 'red' || skin == 'green' || skin == 'blue')
-        this.cfg.style.name = skin;
-    }
 	/*
 	var offset = jQuery(target).offset();
 	var adjustY = offset.top * -1;
