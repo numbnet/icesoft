@@ -40,7 +40,7 @@ public class UploadHelper extends UploadHelperBase {
         if (isEnhanced || isAuxUpload) {
             return;
         }
-        if (!Utils.isIE())  {
+        if (!browserRequiresFullSubmit())  {
             return;
         }
         //the desktop case becomes non-ajax and multipart
@@ -74,5 +74,8 @@ public class UploadHelper extends UploadHelperBase {
         return null;
     }
 
+    boolean browserRequiresFullSubmit()  {
+        return (Utils.isIE() || Utils.isAndroid() || Utils.isBlackBerry());
+    }
 
 }
