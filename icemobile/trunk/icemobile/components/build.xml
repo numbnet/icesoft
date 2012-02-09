@@ -43,6 +43,19 @@
             </fileset>
         </subant>
     </target>
+    
+    <target name="docs">
+        <subant target="tlddoc" >
+            <fileset dir="."
+                     includes="component/build.xml">
+            </fileset>
+        </subant>
+        <subant target="javadoc" >
+            <fileset dir="."
+                     includes="component/build.xml">
+            </fileset>
+        </subant>
+    </target>
 
 
 </project>

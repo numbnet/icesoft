@@ -20,6 +20,7 @@
 
     <property name="build.dir" location="build"/>
     <property name="dist.dir" location="dist"/>
+    <property name="docs.dir" location="docs"/>
 
     <condition property="release.type.suffix" value="-${release.type}" else="">
         <not>
@@ -106,6 +107,7 @@
     <target name="clean">
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
+        <delete dir="${docs.dir}"/>
         <ice:subant target="clean">
             <filelist dir="." files="components, samples"/>
         </ice:subant>
@@ -138,7 +140,6 @@
                     <exclude name="lib/generator/"/>
                     <!-- trim component build script for binary bundle -->
                     <exclude name="build.xml" />
-                    <exclude name="build.properties" />
                 </zipfileset>
 
                 <add.zip.elements/>
@@ -179,6 +180,19 @@
             </ice:subant>
 
             <add.ant.elements/>
+         
+            <!-- Create the component JavaDocs and TLD documentation -->
+            <subant target="docs">
+                <fileset dir="./components" includes="build.xml"/>
+            </subant> 
+            
+            <mkdir dir="${docs.dir}/mobi/tld/"/>
+            <mkdir dir="${docs.dir}/mobi/api/"/>
+            <move file="./components/component/build/doc/tld" 
+                tofile="${docs.dir}mobi/tld/"/>
+            <move file="./components/component/build/doc/javadoc" 
+                tofile="${docs.dir}/mobi/api/"/>
+   
 
         </sequential>
     </macrodef>
