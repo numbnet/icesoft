@@ -290,6 +290,7 @@
 
     <target name="javadoc" depends="compile">
         <delete dir="${javadocs.dir}"/>
+        <echo message="Path to javadoc src is ${src}"/>
         <javadoc sourcepath="${src}" destdir="${java.doc}"
                  classpathref="javadoc.classpath"
                  excludepackagenames="org.icefaces.apache.*"
