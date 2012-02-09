@@ -53,11 +53,9 @@ Available ui:params to pass:
         </ace:panel>
         
         <h:form id="sourceCodeForm" rendered="#{navigationModel.renderAsExample}">
-                
             <ace:panel id="sourceCodePanel" collapsed="#{navigationModel.sourceCodeToggleStatus}" toggleable="true" header="Source Code" styleClass="containerPanelStyle">
-                    <div class="resources">
+                <div class="resources">
                     <ace:ajax event="toggle" execute="@this"/>
-                    
                     <ace:tabSet clientSide="true" selectedIndex="0"
                                 rendered="#{not empty resourceValue}">
                         <c:forEach items="#{resourceValue}"
@@ -67,8 +65,8 @@ Available ui:params to pass:
                             </ace:tabPane>
                         </c:forEach>
                     </ace:tabSet>
-                    </div>
-                </ace:panel>
-            </h:form>	
+                </div>
+            </ace:panel>
+        </h:form>
     </div>
 </ui:composition>

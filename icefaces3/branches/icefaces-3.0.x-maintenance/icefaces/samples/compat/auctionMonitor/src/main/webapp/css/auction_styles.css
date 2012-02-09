@@ -34,13 +34,20 @@ div#auction_content, div#readme_content, div#chat_content{
 }
 
 div#readme_content{
-
+   margin-top: 50px;
+   margin-left: 75px;
+   margin-right: 50px;
 }
 div#auction_content{
-   margin-top: 40px;
+   margin-top: 50px;
+   margin-left: 75px;
+   margin-right: 50px;
+   
 }
 div#chat_content{
-
+    margin-top: 50px;
+    margin-left: 75px;
+    margin-right: 50px;
 }
 
 
@@ -99,7 +106,7 @@ CSS for the hidden sections of the page
 CSS for the Readme section
 */
 #readmeDiv {
-	width:98%;
+	width:100%;
 	border:1px solid #DEDEDE;
 	background-color: #FFFFFF;
 	color:#000000;
@@ -112,7 +119,7 @@ CSS for the Readme section
 CSS for the section of the page that holds the search results
 */
 #resultsDiv {
-	width:98%;
+	width:100%;
 	/*float:left;*/
 	background-color:#FFFFFF;
 	border:1px solid #717171;
@@ -123,7 +130,7 @@ CSS for the section of the page that holds the search results
 CSS for the Chat section
 */
 #chatDiv {
-	width:98%;
+	width:100%;
 	/*float:left;*/
 	background-color:#FFFFFF;
 	border:1px solid #717171;
