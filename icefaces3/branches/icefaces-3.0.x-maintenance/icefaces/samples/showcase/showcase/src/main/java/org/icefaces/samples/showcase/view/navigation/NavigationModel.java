@@ -49,8 +49,8 @@ public class NavigationModel implements Serializable {
     private String componentGroup;
     private String componentExample;
     
-    //if set to true Source code panel in UI will stay expanded
-    private boolean sourceCodeToggleStatus = false;
+    //if set to true Source code panel in UI will stay collapsed
+    private boolean sourceCodeToggleStatus = true;
     //if set to false page will be displayed as Suite Overview Page (only description will be shown in the example area)
     private boolean renderAsExample = true;
     //saves selected tab number between redirects (if selected tab number is not saved, accordion menu will reset itself to the default index of 0)

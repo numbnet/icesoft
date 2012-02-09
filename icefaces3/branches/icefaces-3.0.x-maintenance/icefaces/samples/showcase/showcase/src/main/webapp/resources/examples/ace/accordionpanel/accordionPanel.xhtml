@@ -36,7 +36,7 @@
 
     <ui:define name="example">
         <h:form>
-            <ace:accordion collapsible="true">
+            <ace:accordion collapsible="true" autoHeight="false">
                 <ace:accordionPane title="My To Do List">
                         <h:selectManyCheckbox layout="pageDirection" selectedClass="selectedCheckBox" onclick="submit();">
                                 <f:selectItems value="#{accordionPanelBean.toDoList}"
