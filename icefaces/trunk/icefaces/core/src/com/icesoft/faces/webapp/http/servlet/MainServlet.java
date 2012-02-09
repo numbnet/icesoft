@@ -103,6 +103,7 @@ public class MainServlet extends HttpServlet {
 
     private PathDispatcher dispatcher = new PathDispatcher();
     private ServletContext context;
+    private Configuration configuration;
     private MonitorRunner monitorRunner;
     private CoreMessageService coreMessageService;
     private String localAddress;
@@ -119,7 +120,7 @@ public class MainServlet extends HttpServlet {
         disposableExecutor.shutdownNow();
         //end of (ICE-5155) preload
         try {
-            final Configuration configuration = new ServletContextConfiguration("com.icesoft.faces", context);
+            configuration = new ServletContextConfiguration("com.icesoft.faces", context);
             NotFound = new BasicAdaptingServlet(new ResponseHandlerServer(new NotFoundHandler("")), configuration);
             ThreadFactory _threadFactory = new ThreadFactory();
             _threadFactory.setPrefix("Core Thread");
@@ -206,27 +207,34 @@ public class MainServlet extends HttpServlet {
                 throw new ServletException(e);
             }
         } catch (RuntimeException e) {
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("An error occurred while trying to service request: " + e.getMessage(), e);
+            } else if (LOG.isDebugEnabled()) {
+                LOG.debug("An error occurred while trying to service request: " + e.getMessage());
+            }
             //ICE-4261: We cannot wrap RuntimeExceptions as ServletExceptions because of support for Jetty
             //Continuations.  However, if the message of a RuntimeException is null, Tomcat won't
             //properly redirect to the configured error-page.  So we need a new RuntimeException
             //that actually includes a message.
             if (e.getMessage() != null) {
-                throw e;
+                if (!configuration.getAttributeAsBoolean("errorReturnsNotFound", false)) {
+                    throw e;
+                } else {
+                    returnNotFound(response);
+                    return;
+                }
             }
             // ICE-4507 let Jetty continuation messages get through untouched
             String errorClassname = e.getClass().getName();
             if (errorClassname.startsWith("org.mortbay.jetty")) {
                 throw e;
-            }
-            response.setStatus(404);
-            response.setHeader("Content-Type", "text/plain; charset=UTF-8");
-            Writer writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
-            writer.write("");
-            writer.flush();
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("An error occurred while trying to respond: " + e.getMessage(), e);
-            } else if (LOG.isDebugEnabled()) {
-                LOG.debug("An error occurred while trying to respond: " + e.getMessage());
+            } else {
+                if (!configuration.getAttributeAsBoolean("errorReturnsNotFound", false)) {
+                    throw new RuntimeException("wrapped Exception: " + errorClassname, e);
+                } else {
+                    returnNotFound(response);
+                    return;
+                }
             }
         } catch (Exception e) {
             throw new ServletException(e);
@@ -234,6 +242,15 @@ public class MainServlet extends HttpServlet {
             removeOriginalRequestResponse(request, response);
             currentContextPath.detach();
         }
+    }
+
+    private void returnNotFound(final HttpServletResponse response)
+    throws IOException {
+        response.setStatus(404);
+        response.setHeader("Content-Type", "text/plain; charset=UTF-8");
+        Writer writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
+        writer.write("");
+        writer.flush();
     }
 
     private void storeOriginalRequestAndResponse(HttpServletRequest req, HttpServletResponse res){
