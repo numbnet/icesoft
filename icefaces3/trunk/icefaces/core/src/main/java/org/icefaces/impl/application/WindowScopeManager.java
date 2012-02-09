@@ -85,73 +85,76 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         return state == null ? null : (ScopeMap) state.windowScopedMaps.get(id);
     }
 
-    public static synchronized String determineWindowID(FacesContext context) {
-        State state = getState(context);
-        ExternalContext externalContext = context.getExternalContext();
-        String id = externalContext.getRequestParameterMap().get("ice.window");
-        try {
-            for (Object scopeMap : new ArrayList(state.windowScopedMaps.values())) {
-                ScopeMap map = (ScopeMap) scopeMap;
-                if (!map.getId().equals(id)) {
-                    map.disactivateIfUnused(context);
-                }
-            }
-        } catch (Throwable e) {
-            log.log(Level.FINE, "Failed to remove window scope map", e);
-        }
-        try {
-            for (Object scopeMap : new ArrayList(state.disposedWindowScopedMaps)) {
-                ScopeMap map = (ScopeMap) scopeMap;
-                if (!map.getId().equals(id)) {
-                    map.discardIfExpired(context);
-                }
-            }
-        } catch (Throwable e) {
-            log.log(Level.FINE, "Failed to remove window scope map", e);
-        }
-
-        Map requestMap = externalContext.getRequestMap();
-        if (id == null) {
-            ScopeMap scopeMap = sharedMapLookupStrategy.lookup(context);
-
-            if (scopeMap == null) {
-                if (state.disposedWindowScopedMaps.isEmpty()) {
-                    scopeMap = new ScopeMap(context);
-                } else {
-                    scopeMap = (ScopeMap) state.disposedWindowScopedMaps.removeFirst();
-                }
-                scopeMap.activate(state);
-            }
-
-            associateWindowID(scopeMap.id, requestMap);
-            return scopeMap.id;
-        } else {
-            if (state.windowScopedMaps.containsKey(id)) {
-                associateWindowID(id, requestMap);
-                return id;
-            } else {
-                //this must be a postback request while the window is reloading or redirecting
-                for (Object disposedScopeMap : new ArrayList(state.disposedWindowScopedMaps)) {
-                    ScopeMap scopeMap = (ScopeMap) disposedScopeMap;
-                    if (scopeMap.getId().equals(id)) {
-                        scopeMap.activate(state);
-                        associateWindowID(id, requestMap);
-                        return id;
+    public static String determineWindowID(FacesContext context) {
+        Object session = context.getExternalContext().getSession(false);
+        synchronized (session) {
+            State state = getState(context);
+            ExternalContext externalContext = context.getExternalContext();
+            String id = externalContext.getRequestParameterMap().get("ice.window");
+            try {
+                for (Object scopeMap : new ArrayList(state.windowScopedMaps.values())) {
+                    ScopeMap map = (ScopeMap) scopeMap;
+                    if (!map.getId().equals(id)) {
+                        map.disactivateIfUnused(context);
                     }
                 }
-
-                //unknown window scope, corresponding ScopeMap might have been erased when not used (no beans stored in it)
-                //use No-Op ScopeMap to avoid throwing exceptions
-                UnusedScopeMap = UnusedScopeMap == null ? new ScopeMap(context) : UnusedScopeMap;
-                id = UnusedScopeMap.getId();
-                //put something into the map to avoid beeing discarded
-                if (UnusedScopeMap.isEmpty()) {
-                    UnusedScopeMap.put("dummy-bean", new Serializable() {
-                    });
+            } catch (Throwable e) {
+                log.log(Level.FINE, "Failed to remove window scope map", e);
+            }
+            try {
+                for (Object scopeMap : new ArrayList(state.disposedWindowScopedMaps)) {
+                    ScopeMap map = (ScopeMap) scopeMap;
+                    if (!map.getId().equals(id)) {
+                        map.discardIfExpired(context);
+                    }
                 }
-                UnusedScopeMap.activate(state);
-                associateWindowID(id, requestMap);
-                return id;
+            } catch (Throwable e) {
+                log.log(Level.FINE, "Failed to remove window scope map", e);
+            }
+
+            Map requestMap = externalContext.getRequestMap();
+            if (id == null) {
+                ScopeMap scopeMap = sharedMapLookupStrategy.lookup(context);
+
+                if (scopeMap == null) {
+                    if (state.disposedWindowScopedMaps.isEmpty()) {
+                        scopeMap = new ScopeMap(context);
+                    } else {
+                        scopeMap = (ScopeMap) state.disposedWindowScopedMaps.removeFirst();
+                    }
+                    scopeMap.activate(state);
+                }
+
+                associateWindowID(scopeMap.id, requestMap);
+                return scopeMap.id;
+            } else {
+                if (state.windowScopedMaps.containsKey(id)) {
+                    associateWindowID(id, requestMap);
+                    return id;
+                } else {
+                    //this must be a postback request while the window is reloading or redirecting
+                    for (Object disposedScopeMap : new ArrayList(state.disposedWindowScopedMaps)) {
+                        ScopeMap scopeMap = (ScopeMap) disposedScopeMap;
+                        if (scopeMap.getId().equals(id)) {
+                            scopeMap.activate(state);
+                            associateWindowID(id, requestMap);
+                            return id;
+                        }
+                    }
+
+                    //unknown window scope, corresponding ScopeMap might have been erased when not used (no beans stored in it)
+                    //use No-Op ScopeMap to avoid throwing exceptions
+                    UnusedScopeMap = UnusedScopeMap == null ? new ScopeMap(context) : UnusedScopeMap;
+                    id = UnusedScopeMap.getId();
+                    //put something into the map to avoid beeing discarded
+                    if (UnusedScopeMap.isEmpty()) {
+                        UnusedScopeMap.put("dummy-bean", new Serializable() {
+                        });
+                    }
+                    UnusedScopeMap.activate(state);
+                    associateWindowID(id, requestMap);
+                    return id;
+                }
             }
         }
     }
