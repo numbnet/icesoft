@@ -13,6 +13,6 @@ public class CancelAction implements ActionListener {
     public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
         PanelConfirmation panelConfirmation = (PanelConfirmation)
                 FacesUtils.getManagedBean(PanelConfirmation.BEAN_NAME);
-        panelConfirmation.toggleVisibility();
+        panelConfirmation.toggleVisibility(actionEvent);
     }
 }

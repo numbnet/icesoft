@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.icemobile.samples.mobileshowcase.view.examples.layout.panelconfirmation;
-
+package org.icemobile.samples.mobileshowcase.view.examples.layout.panelPopup;
 
 import org.icemobile.samples.mobileshowcase.view.metadata.annotation.*;
 import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
@@ -26,14 +24,14 @@ import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 
 @Destination(
-        title = "example.layout.panelconfirmation.destination.title.short",
-        titleExt = "example.layout.panelconfirmation.destination.title.long",
-        titleBack = "example.layout.panelconfirmation.destination.title.back",
-        contentPath = "/WEB-INF/includes/examples/layout/panelconfirmation.xhtml"
+        title = "example.layout.panelpopup.destination.title.short",
+        titleExt = "example.layout.panelpopup.destination.title.long",
+        titleBack = "example.layout.panelpopup.destination.title.back",
+        contentPath = "/WEB-INF/includes/examples/layout/panelpopup.xhtml"
 )
 @Example(
-        descriptionPath = "/WEB-INF/includes/examples/layout/panelconfirmation-desc.xhtml",
-        examplePath = "/WEB-INF/includes/examples/layout/panelconfirmation-example.xhtml",
+        descriptionPath = "/WEB-INF/includes/examples/layout/panelpopup-desc.xhtml",
+        examplePath = "/WEB-INF/includes/examples/layout/panelpopup-example.xhtml",
         resourcesPath = "/WEB-INF/includes/examples/example-resources.xhtml"
 )
 @ExampleResources(
@@ -41,33 +39,33 @@ import java.io.Serializable;
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
                         title = "panelconfirmation-example.xhtml",
-                        resource = "/WEB-INF/includes/examples/layout/panelconfirmation-example.xhtml"),
+                        resource = "/WEB-INF/includes/examples/layout/panelpopup-example.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
-                        title = "PanelConfirmation.java",
+                        title = "PanelPopupBean.java",
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
-                                "/view/examples/layout/panelconfirmation/PanelConfirmation.java")
+                                "/view/examples/layout/panelpopup/PanelPopupBean.java")
         }
 )
 
-@ManagedBean(name = PanelConfirmation.BEAN_NAME)
+@ManagedBean(name = PanelPopupBean.BEAN_NAME)
 @SessionScoped
-public class PanelConfirmation extends ExampleImpl<PanelConfirmation> implements
+public class PanelPopupBean extends ExampleImpl<PanelPopupBean> implements
         Serializable {
 
-    public static final String BEAN_NAME = "panelConfirmationBean";
+    public static final String BEAN_NAME = "panelPopupBean";
 
     public boolean rendered;
 
-    public PanelConfirmation() {
-        super(PanelConfirmation.class);
-    }
-
-    public void toggleVisibility(ActionEvent event) {
-        rendered = !rendered;
+    public PanelPopupBean() {
+        super(PanelPopupBean.class);
     }
 
     public boolean isRendered() {
         return rendered;
+    }
+
+    public void toggleRendered(ActionEvent actionEvent) {
+        rendered = !rendered;
     }
 }
