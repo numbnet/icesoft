@@ -289,11 +289,11 @@
     </target>
 
     <target name="javadoc" depends="compile">
-        <delete dir="${javadocs.dir}"/>
+        <delete dir="${javadocs.dir}"/>             
         <echo message="Path to javadoc src is ${src}"/>
+        <echo message="Path to javadoc dest is ${java.doc}"/>
         <javadoc sourcepath="${src}" destdir="${java.doc}"
                  classpathref="javadoc.classpath"
-                 excludepackagenames="org.icefaces.apache.*"
                  windowtitle="${javadoc.title}" failonerror="true"
                  bottom="Copyright ${year} ${copyright}">
             <header><![CDATA[${javadoc.header}]]></header>
