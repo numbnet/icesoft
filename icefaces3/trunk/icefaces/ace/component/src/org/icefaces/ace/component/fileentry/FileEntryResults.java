@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.fileentry;
 
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import java.util.ArrayList;
 import java.io.Serializable;
 import java.io.File;
@@ -192,7 +193,9 @@ public class FileEntryResults implements Serializable, Cloneable {
             if (invalidate) {
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.validationFailed();
-                context.renderResponse();
+                if (!PhaseId.RESTORE_VIEW.equals(context.getCurrentPhaseId())) {
+                    context.renderResponse();
+                }
             }
         }
 
