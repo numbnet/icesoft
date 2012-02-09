@@ -6,15 +6,15 @@ if (!window.ice.mobile) {
     (function(namespace) {
         namespace.mobile = true;
 
-        namespace.native = function(command)  {
-            getIPCIframe().src ='js-api:' + command;
+        namespace.native = function(command) {
+            getIPCIframe().src = 'js-api:' + command;
         }
 
-        namespace.progress = function(amount)  {
+        namespace.progress = function(amount) {
             var canvas = document.getElementById('progMeterCanvas');
-            if (canvas.getContext){
+            if (canvas.getContext) {
                 var ctx = canvas.getContext('2d');
-                ctx.clearRect(0,0,200, 200);
+                ctx.clearRect(0, 0, 200, 200);
                 ctx.beginPath();
                 var theta = ((Math.PI * 2) * amount) / 100;
                 ctx.moveTo(15, 15);
@@ -29,9 +29,9 @@ if (!window.ice.mobile) {
             }
         }
 
-        namespace.setThumbnail = function(id, value)  {
+        namespace.setThumbnail = function(id, value) {
             var imageTag = document.getElementById(id);
-            if (!imageTag)  {
+            if (!imageTag) {
                 return;
             }
             imageTag.setAttribute("src", value);
@@ -41,57 +41,57 @@ if (!window.ice.mobile) {
 
         // TakePhoto function is asynchronous so we cannot add hidden field on return
         // that method is invoked instead from javascript extension
-        namespace.camera = function(id, attr)  {
+        namespace.camera = function(id, attr) {
             try {
                 var result = icefaces.shootPhoto(id, attr);
                 return result;
             } catch (e) {
-                alert ("Exception in camera:" + e);
+                alert("Exception in camera:" + e);
             }
         }
 
         // video capture is asynchronous so addHiddenField is called from script extension
-        namespace.camcorder = function( id , attr ) {
-            var result = icefaces.shootVideo( id, attr );  
+        namespace.camcorder = function(id, attr) {
+            var result = icefaces.shootVideo(id, attr);
         }
 
-        namespace.microphone = function(id, attr)  {
+        namespace.microphone = function(id, attr) {
 
             try {
                 var result = icefaces.toggleMic(id, attr);
             } catch (e) {
-                alert ('Exception in microphone: ' + e);
+                alert('Exception in microphone: ' + e);
             }
         }
 
         namespace.play = function(id, attr) {
             var result = icefaces.playUrl(id, "autorelease=true");
         }
-        
-        namespace.currentScanId = ""; 
-        namespace.scan = function(id, attr) { 
-            var result = icefaces.scan(id, attr); 
-            ice.currentScanId = id; 
-        } 
-        
+
+        namespace.currentScanId = "";
+        namespace.scan = function(id, attr) {
+            var result = icefaces.scan(id, attr);
+            ice.currentScanId = id;
+        }
+
         namespace.test = function(obj) {
             try {
-                
-                icefaces.logInContainer( "Starting test..."); 
-                if (namespace.push && namespace.push.pauseBlockingConnection ) {                     
-                     icefaces.logInContainer("pauseConnection present"); 
-                } else {                  
-                	 icefaces.logInContainer("pauseConnection missing"); 
-                } 
-                                     
-                if (icefaces.shootPhoto) {  
-                   icefaces.logInContainer("shootPhoto present"); 
-                } else { 
-                   icefaces.logInContainer("shootPhoto missing"); 
-                } 
-                
+
+                icefaces.logInContainer("Starting test...");
+                if (namespace.push && namespace.push.pauseBlockingConnection) {
+                    icefaces.logInContainer("pauseConnection present");
+                } else {
+                    icefaces.logInContainer("pauseConnection missing");
+                }
+
+                if (icefaces.shootPhoto) {
+                    icefaces.logInContainer("shootPhoto present");
+                } else {
+                    icefaces.logInContainer("shootPhoto missing");
+                }
+
             } catch (e) {
-                icefaces.logInContainer("Exception testing namespace: " + e );
+                icefaces.logInContainer("Exception testing namespace: " + e);
             }
         }
 
@@ -104,48 +104,48 @@ if (!window.ice.mobile) {
         //assume single threaded access with this context object spanning request/response
         var context = {
             onevent: null,
-            onerror: function(param)  {
+            onerror: function(param) {
 //                alert("JSF error " + param.source + " " + param.description);
             }
         }
         var tempInputs = [];
 
-         //override primitive submit function
+        //override primitive submit function
         namespace.submitFunction = function(element, event, options) {
             var source = event ? event.target : element;
             var form = ice.formOf(element);
             var formId = form.id;
             var sourceId = element ? element.id : event.target.id;
 
-            if ("@this" === options.execute)  {
+            if ("@this" === options.execute) {
                 options.execute = sourceId;
-            } else if ("@form" === options.execute)  {
+            } else if ("@form" === options.execute) {
                 options.execute = formId;
             }
-            if ("@this" === options.render)  {
+            if ("@this" === options.render) {
                 options.render = sourceId;
-            } else if ("@form" === options.render)  {
+            } else if ("@form" === options.render) {
                 options.render = formId;
             }
-            if (!options.execute)  {
+            if (!options.execute) {
                 options.execute = "@all";
             }
-            if (!options.render)  {
+            if (!options.render) {
                 options.render = "@all";
             }
 
             tempInputs = [];
-            tempInputs.push(ice.addHiddenFormField(formId, 
+            tempInputs.push(ice.addHiddenFormField(formId,
                     "javax.faces.source", sourceId));
-            tempInputs.push(ice.addHiddenFormField(formId, 
+            tempInputs.push(ice.addHiddenFormField(formId,
                     "javax.faces.partial.execute", options.execute));
-            tempInputs.push(ice.addHiddenFormField(formId, 
+            tempInputs.push(ice.addHiddenFormField(formId,
                     "javax.faces.partial.render", options.render));
-            tempInputs.push(ice.addHiddenFormField(formId, 
+            tempInputs.push(ice.addHiddenFormField(formId,
                     "javax.faces.partial.ajax", "true"));
             if (event) {
                 tempInputs.push(ice.addHiddenFormField(formId,
-                    "javax.faces.partial.event", event.type));
+                        "javax.faces.partial.event", event.type));
             }
 
             if (options) {
@@ -161,58 +161,74 @@ if (!window.ice.mobile) {
 
         };
 
-        namespace.handleResponse = function(data)  {
-        try { 
-            if (null == context.sourceid)  {
-                //was not a jsf upload
-                return;
+
+        namespace.handleResponse = function(data, isSimulator) {
+
+            if (isSimulator) {
+                icefaces.logInContainer("handleResponse - is Simulator");
             }
-            var jsfResponse = {};
-            var parser = new DOMParser();
-            var xmlDoc = parser.parseFromString(unescape(data), "text/xml");
-
-            jsfResponse.responseXML = xmlDoc;
-            jsf.ajax.response(jsfResponse, context);
-
-            var form = document.getElementById(context.formid);
-
-		    if (form!= null) { 
-                for (var i in tempInputs)  {
-                    form.removeChild(tempInputs[i]);
+            try {
+                if (null == context.sourceid) {
+                    //was not a jsf upload
+                    return;
                 }
-            } 
-            context.sourceid = "";
-            context.formid = "";
-            context.serialized = "";
-            } catch (e) { 
-             //alert ("Exception in handleResponse: " + e); 
-            } 
+                var jsfResponse = {};
+                var parser = new DOMParser();
+                var xmlDoc = parser.parseFromString(unescape(data), "text/xml");
+
+                if (isSimulator) {
+                    icefaces.logInContainer("handleResponse - response Parsed");
+                }
+                jsfResponse.responseXML = xmlDoc;
+                if (isSimulator) {
+                    icefaces.logInContainer("handleResponse - Response set in jsfResponse");
+                }
+                jsf.ajax.response(jsfResponse, context);
+                if (!isSimulator) {
+                    icefaces.logInContainer("handleResponse - Response processed!");
+                }
+                var form = document.getElementById(context.formid);
+
+                if (form != null) {
+                    for (var i in tempInputs) {
+                        icefaces.logInContainer("handleResponse - Clearing input " + tempInputs[i]);
+                        form.removeChild(tempInputs[i]);
+                    }
+                }
+                if (!isSimulator) {
+                    icefaces.logInContainer("Done inputs, clearing locals");
+                }
+                context.sourceid = "";
+                context.formid = "";
+                context.serialized = "";
+            } catch (e) {
+                icefaces.logInContainer("Exception in handleResponse: " + e);
+            }
         }
 
 
-
-         namespace.formOf = function(element)  {
+        namespace.formOf = function(element) {
             var parent = element;
-            while (null != parent)  {
-                if ("form" == parent.nodeName.toLowerCase())  {
+            while (null != parent) {
+                if ("form" == parent.nodeName.toLowerCase()) {
                     return parent;
                 }
                 parent = parent.parentNode;
             }
         }
 
-        namespace.upload = function(id)  {
+        namespace.upload = function(id) {
             try {
-                var result = icefaces.ajaxUpload( context.serialized );
+                var result = icefaces.ajaxUpload(context.serialized);
 
             } catch (e) {
-                alert ('Exception in ajaxUpload: ' + e);
+                alert('Exception in ajaxUpload: ' + e);
             }
         }
 
         namespace.deviceToken = "blackberrybeef";
 
-        namespace.addHidden = function(target, name, value)  {
+        namespace.addHidden = function(target, name, value) {
 
             var existing = document.getElementById(name);
             if (existing) {
@@ -221,13 +237,13 @@ if (!window.ice.mobile) {
             var targetElm = document.getElementById(target);
             var hidden = document.createElement("input");
             hidden.setAttribute("type", "hidden");
-            hidden.setAttribute("id", name); 
+            hidden.setAttribute("id", name);
             hidden.setAttribute("name", name);
             hidden.setAttribute("value", value);
             targetElm.parentNode.insertBefore(hidden, targetElm);
         }
 
-        namespace.addHiddenFormField = function(target, name, value)  {
+        namespace.addHiddenFormField = function(target, name, value) {
             var targetElm = document.getElementById(target);
             var hidden = document.createElement("input");
             hidden.setAttribute("type", "hidden");
@@ -237,7 +253,7 @@ if (!window.ice.mobile) {
             return hidden;
         }
 
-        namespace.serialize = function(formId)  {
+        namespace.serialize = function(formId) {
             var form = document.getElementById(formId);
             var els = form.elements;
             var len = els.length;
@@ -254,8 +270,8 @@ if (!window.ice.mobile) {
                 var el = els[i];
                 if (!el.disabled) {
                     switch (el.type) {
-                    	case 'submit': 
-                    		break;
+                        case 'submit':
+                            break;
                         case 'text':
                         case 'password':
                         case 'hidden':
@@ -280,16 +296,16 @@ if (!window.ice.mobile) {
                                 addField(el.name, el.value);
                             }
                             break;
-                        default: 
+                        default:
                             addField(el.name, el.value);
                     }
                 }
             }
             // concatenate the array
             return qString.join("");
-            
+
         }
-        
+
     })(window.ice)
 
     function addConnectionStatus() {
@@ -304,9 +320,9 @@ if (!window.ice.mobile) {
 
     }
 
-    function getIPCIframe()  {
+    function getIPCIframe() {
         var ipciframe = document.getElementById('ipciframe');
-        if (null != ipciframe)  {
+        if (null != ipciframe) {
             return ipciframe;
         }
         ipciframe = document.createElement('iframe');
@@ -316,11 +332,13 @@ if (!window.ice.mobile) {
         return ipciframe;
     }
 
-     function init()  {
+    function init() {
         // getIPCIframe();
         // document.body.appendChild(document.createTextNode("ice.mobile functions enabled."));
         addConnectionStatus();
+
     }
+
     //use below if loaded over network vs embedded use to eval this file
     // document.addEventListener("DOMContentLoaded", init, false);
     init();
