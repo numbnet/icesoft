@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-.mobi-panelPopup-bg {
+.mobi-panelpopup-bg {
     width: 100%;
     height:100%;
     background: #000;
@@ -25,17 +25,15 @@
     opacity: 0.5;
     filter:alpha(opacity=50);
 }
-.mobi-panelPopup-container {
+.mobi-panelpopup-container {
     opacity: 1;
+    color:black;
     background-color: white;
-    border-radius: 3px 3px 3px 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -moz-box-shadow: 3px 3px 5px black;
-    -webkit-box-shadow: 3px 3px 5px black;
-    box-shadow: 3px 3px 5px black;
-    border: 1px solid white;
-    color: #000000;
+    border-radius: 1px 1px 1px 1px;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border: 1px solid #5c5c5c;
+    color: #fff;
     padding: 0;
     z-index: 1001;
     position: absolute;
@@ -43,3 +41,6 @@
     left:10%;
     right:10%;
 }
+
+
+
