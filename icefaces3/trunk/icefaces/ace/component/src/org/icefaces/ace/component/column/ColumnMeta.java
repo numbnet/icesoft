@@ -50,10 +50,21 @@ public class ColumnMeta extends UIColumnMeta {
 
     @Property(tlddoc = "Custom CSS style class(es) to use for this component. These style classes can be defined in your page or in a theme CSS file.")
 	private String styleClass;
-	
+
+//    @Property(expression = Expression.VALUE_EXPRESSION,
+//            tlddoc = "Defines a value expression representing the value of the column per row, " +
+//            "optionally superseded by the more specific value definitions like sortBy, filterBy etc.")
+//    private Object value;
+
+    @Property(expression = Expression.VALUE_EXPRESSION,
+            tlddoc="Defines a value expression representing the value of this column per row when using " +
+                    "cell selection. Defining this attribute, or the \"value\" attribute, enables cell " +
+                    "selection for this column when also enabled at the table level.")
+    private Object selectBy;
+
 	@Property(expression = Expression.VALUE_EXPRESSION,
             tlddoc="Defines a value expression representing the value of this column per row when sorting. " +
-                   "Setting this variable for a column enables sorting.")
+                   "Setting this attribute, or the \"value\" attribute for a column enables sorting.")
 	private Object sortBy;
 	
 	@Property(expression = Expression.VALUE_EXPRESSION,
@@ -63,7 +74,7 @@ public class ColumnMeta extends UIColumnMeta {
 
 	@Property(expression = Expression.VALUE_EXPRESSION,
             tlddoc="Defines a ValueExpression of the value of this row to use when filtering this column. " +
-                   "Setting this variable for a column enables filtering.")
+                   "Setting this attribute, or the \"value\" attribute for a column enables filtering.")
 	private Object filterBy;
 
     @Property(tlddoc="Defines the string input filtering this column, coming from the client, or from " +
@@ -124,4 +135,19 @@ public class ColumnMeta extends UIColumnMeta {
             "attribute (\"reorderableColumns\") is true at the table level.",
             defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean reorderable;
+
+    @Property(tlddoc="Enables per-column control of column sorting when either the " +
+            "attribute (\"sortBy\") or (\"value\") are set.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    private boolean sortable;
+
+    @Property(tlddoc="Enables per-column control of column filtering when either the " +
+            "attribute (\"filterBy\") or (\"value\") are set.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    private boolean filterable;
+
+    @Property(tlddoc="Enables per-column control of Cell selection when either the " +
+            "attribute (\"selectBy\") or (\"value\") are set.",
+            defaultValue = "true", defaultValueType = DefaultValueType.EXPRESSION)
+    private boolean selectable;
 }

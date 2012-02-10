@@ -36,18 +36,16 @@ import org.icefaces.ace.component.tableconfigpanel.TableConfigPanel;
 import org.icefaces.ace.context.RequestContext;
 import org.icefaces.ace.event.SelectEvent;
 import org.icefaces.ace.event.UnselectEvent;
-import org.icefaces.ace.model.legacy.Cell;
 import org.icefaces.ace.model.table.*;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.HTML;
 import org.icefaces.render.MandatoryResourceComponent;
 
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
@@ -290,7 +288,12 @@ public class DataTableRenderer extends CoreRenderer {
             // Deselect all previous
             if (!deselection.equals("")) stateMap.setAllSelected(false);
         }
-        else if (table.isCellSelection()) table.setCellSelection(buildCell(table, selection));
+        else if (table.isCellSelection()) {
+            table.clearCellSelection();
+            table.addSelectedCell(selection);
+            if (deselection != null && deselection.length() > 0)
+                table.removeSelectedCell(deselection);
+        }
         else {
             TreeDataModel treeModel = null;
             Object model = (Object) table.getDataModel();
@@ -324,17 +327,10 @@ public class DataTableRenderer extends CoreRenderer {
         if (table.hasTreeDataModel()) model = (TreeDataModel) value;
         RowStateMap stateMap = table.getStateMap();
 
+        // Process selections
 		if (isValueBlank(selection)) {}
         else if (table.isCellSelection()) {
-            String[] cellInfos = selection.split(",");
-            Cell[] cells = new Cell[cellInfos.length];
-
-            for (int i = 0; i < cellInfos.length; i++) {
-                cells[i] = buildCell(table, cellInfos[i]);
-                table.setRowIndex(-1);	//clean
-            }
-
-            table.setCellSelection(cells);
+            table.addSelectedCell(selection.split(","));
         } else {
             String[] rowSelectValues = selection.split(",");
 
@@ -357,28 +353,35 @@ public class DataTableRenderer extends CoreRenderer {
             table.setRowIndex(-1);
 
         }
-        String[] rowDeselectValues = new String[0];
-        if (deselection != null && !deselection.equals(""))
-            rowDeselectValues = deselection.split(",");
 
-        int x = 0;
-        for (String s : rowDeselectValues) {
-            // Handle tree case indexes
-            if (s.indexOf(".") != -1 && model != null) {
-                int lastSepIndex = s.lastIndexOf('.');
-                model.setRootIndex(s.substring(0, lastSepIndex));
-                s = s.substring(lastSepIndex+1);
+        // Process deselections
+        if (table.isCellSelection()) {
+            if (deselection != null && deselection.length() > 0)
+                table.removeSelectedCell(deselection.split(","));
+        } else {
+            String[] rowDeselectValues = new String[0];
+            if (deselection != null && !deselection.equals(""))
+                rowDeselectValues = deselection.split(",");
+
+            int x = 0;
+            for (String s : rowDeselectValues) {
+                // Handle tree case indexes
+                if (s.indexOf(".") != -1 && model != null) {
+                    int lastSepIndex = s.lastIndexOf('.');
+                    model.setRootIndex(s.substring(0, lastSepIndex));
+                    s = s.substring(lastSepIndex+1);
+                }
+
+                table.setRowIndex(Integer.parseInt(s));
+
+                RowState state = stateMap.get(table.getRowData());
+                if (state.isSelected())
+                    state.setSelected(false);
+
+                if (model != null) model.setRootIndex(null);
             }
-
-            table.setRowIndex(Integer.parseInt(s));
-
-            RowState state = stateMap.get(table.getRowData());
-            if (state.isSelected())
-                state.setSelected(false);
-
-            if (model != null) model.setRootIndex(null);
+            table.setRowIndex(-1);
         }
-        table.setRowIndex(-1);
 	}
 
     void decodeTableConfigurationRequest(FacesContext context, DataTable table) {
@@ -1028,9 +1031,11 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_data", null);
         writer.writeAttribute(HTML.CLASS_ATTR, tbodyClass, null);
 
+        Map<Object, List<String>> rowToSelectedFieldsMap = table.getRowToSelectedFieldsMap();
+        
         if (hasData)
             for (int i = first; i < (first + rowCountToRender); i++)
-                encodeRow(context, table, columns, clientId, i, null, rowIndexVar, (page - 1) * rows == i);
+                encodeRow(context, table, columns, rowToSelectedFieldsMap, clientId, i, null, rowIndexVar, (page - 1) * rows == i);
         else encodeEmptyMessage(table, writer, columns);
 
         writer.endElement(HTML.TBODY_ELEM);
@@ -1053,7 +1058,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeRow(FacesContext context, DataTable table, List<Column> columns, String clientId, int rowIndex, String parentIndex, String rowIndexVar, boolean topRow) throws IOException {
+    protected void encodeRow(FacesContext context, DataTable table, List<Column> columns, Map<Object, List<String>> rowToSelectedFieldsMap, String clientId, int rowIndex, String parentIndex, String rowIndexVar, boolean topRow) throws IOException {
         //System.out.println(clientId + ": " + rowIndex);
         table.setRowIndex(rowIndex);
         if (!table.isRowAvailable()) return;
@@ -1064,6 +1069,11 @@ public class DataTableRenderer extends CoreRenderer {
         boolean unselectable = !rowState.isSelectable();
         boolean expanded = rowState.isExpanded();
         boolean visible = rowState.isVisible();
+
+        List<String> selectedCellExpressions = (rowToSelectedFieldsMap != null)
+            ? (List<String>)(rowToSelectedFieldsMap.get(table.getRowData()))
+            : null;
+
         context.getExternalContext().getRequestMap().put(table.getRowStateVar(), rowState);
         
         if (visible) {
@@ -1086,7 +1096,14 @@ public class DataTableRenderer extends CoreRenderer {
 
             for (Column kid : columns) {
                 if (kid.isRendered()) {
-                    encodeRegularCell(context, table, columns, kid, clientId, selected, innerTdDivRequired);
+                    boolean cellSelected = false;
+                    if (selectedCellExpressions != null) {
+                        ValueExpression ve = kid.getValueExpression("selectBy") != null ? kid.getValueExpression("selectBy") : kid.getValueExpression("value");
+                        if (ve != null)
+                            cellSelected = selectedCellExpressions.contains(ve.getExpressionString());
+                    }
+                    
+                    encodeRegularCell(context, table, columns, kid, clientId, cellSelected, innerTdDivRequired);
                 }
             }
 
@@ -1135,6 +1152,7 @@ public class DataTableRenderer extends CoreRenderer {
             CellEditor editor = column.getCellEditor();
             String columnStyleClass = column.getStyleClass();
             if (editor != null) columnStyleClass = columnStyleClass == null ? DataTableConstants.EDITABLE_COLUMN_CLASS : DataTableConstants.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
+            if (selected) columnStyleClass = columnStyleClass == null ? "ui-state-active ui-selected" : columnStyleClass + " ui-state-active ui-selected";
             if (columnStyleClass != null) writer.writeAttribute(HTML.CLASS_ATTR, columnStyleClass, null);
             
             if (resizable) writer.startElement(HTML.DIV_ELEM, null);
@@ -1326,6 +1344,10 @@ public class DataTableRenderer extends CoreRenderer {
             boolean expanded = rowState.isExpanded();
             boolean unselectable = !rowState.isSelectable();
             boolean visible = rowState.isVisible();
+            Map<Object, List<String>> rowToSelectedFieldsMap = table.getRowToSelectedFieldsMap();
+            List<String> selectedCellExpressions = null;
+            if (rowToSelectedFieldsMap != null)
+                selectedCellExpressions = (List<String>)(rowToSelectedFieldsMap.get(table.getRowData()));
             context.getExternalContext().getRequestMap().put(table.getRowStateVar(), rowState);
 
             String expandedClass = expanded ? DataTableConstants.EXPANDED_ROW_CLASS : "";
@@ -1340,7 +1362,14 @@ public class DataTableRenderer extends CoreRenderer {
 
                 for (Column kid : columns) {
                     if (kid.isRendered()) {
-                        encodeRegularCell(context, table, columns, kid, clientId, selected, false);
+                        boolean cellSelected = false;
+                        if (selectedCellExpressions != null) {
+                            ValueExpression ve = kid.getValueExpression("selectBy") != null ? kid.getValueExpression("selectBy") : kid.getValueExpression("value");
+                            if (ve != null)
+                                cellSelected = selectedCellExpressions.contains(ve.getExpressionString());
+                        }
+                        
+                        encodeRegularCell(context, table, columns, kid, clientId, cellSelected, false);
                     }
                 }
                 writer.endElement(HTML.TR_ELEM);
@@ -1433,8 +1462,10 @@ public class DataTableRenderer extends CoreRenderer {
         String clientId = table.getClientId(context);
         String rowIndexVar = table.getRowIndexVar();
 
+        Map<Object, List<String>> rowToSelectedFieldsMap = table.getRowToSelectedFieldsMap();
+        
         for (int i = scrollOffset; i < (scrollOffset + table.getRows()); i++)
-            encodeRow(context, table, table.getColumns(), clientId, i, null, rowIndexVar, i == 0);
+            encodeRow(context, table, table.getColumns(), rowToSelectedFieldsMap, clientId, i, null, rowIndexVar, i == 0);
     }
 
     private boolean isCurrColumnStacked(List comps, Column currCol) {
@@ -1446,20 +1477,4 @@ public class DataTableRenderer extends CoreRenderer {
         }
         return currCol.isStacked();
     }
-
-    // Get instance of cell data model
-    private Cell buildCell(DataTable dataTable, String value) {
-		String[] cellInfo = value.split("#");
-
-        int rowIndex = Integer.parseInt(cellInfo[0]);
-		UIColumn column = dataTable.getColumns().get(Integer.parseInt(cellInfo[1]));
-
-		dataTable.setRowIndex(rowIndex);
-		Object rowData = dataTable.getRowData();
-
-		Object cellValue = null;
-		UIComponent columnChild = column.getChildren().get(0);
-		if (columnChild instanceof ValueHolder) cellValue = ((ValueHolder) columnChild).getValue();
-		return new Cell(rowData, column.getId(), cellValue);
-	}
 }

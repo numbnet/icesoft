@@ -110,7 +110,11 @@ public class FaceletTagLibBuilder extends XMLBuilder{
 
         boolean isPrimitive = field.getType().isPrimitive() ||
                               GeneratorContext.SpecialReturnSignatures.containsKey( field.getName().toString().trim() );
-        String returnAndArgumentType = field.getType().getName();
+
+        boolean isArray = field.getType().isArray();
+
+        String returnAndArgumentType = isArray ? field.getType().getComponentType().getName() + "[]"
+                                               : field.getType().getName();
 
         if (isPrimitive) {
             if (GeneratorContext.WrapperTypes.containsKey( field.getType().getName() )) {
