@@ -352,11 +352,21 @@ public class JSONBuilder {
      * @return a reference to this object.
      */
     public JSONBuilder item(String value) {
+        return item(value, true);
+    }
+
+    /**
+     * Adds a String to an array or function call.
+     * @param value value of the item.
+     * @return a reference to this object.
+     */
+    public JSONBuilder item(String value, boolean escaped) {
         conditionallyAppendComma();
-        value = escapeString(value);
-        params.append('"').append(value).append('"');
+        if (escaped) params.append('"').append(escapeString(value)).append('"');
+        else params.append(value);
         return this;
     }
+
 
 
     public static String escapeString(String value) {

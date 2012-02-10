@@ -61,7 +61,7 @@ ice.ace.DataExporter.prototype.url = function(url) {
 			iframe.style.display = 'none';
 			document.body.appendChild(iframe);
 		}
-		ice.ace.DataExporters[this.id] = null;
+		//ice.ace.DataExporters[this.id] = null;
 	}
 };
 ice.ace.DataExporter.shouldOpenPopUp = function() {

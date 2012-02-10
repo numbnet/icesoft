@@ -78,8 +78,8 @@ ice.ace.Panel.prototype.toggle = function() {
         function(e) {
             if(_self.cfg.behaviors) {
                 var toggleBehavior = _self.cfg.behaviors['toggle'];
-                if(toggleBehavior) {
-                    toggleBehavior.call(this, e);
+                if (toggleBehavior) {
+                    ice.ace.ab(toggleBehavior);
                 }
             }
         });
@@ -94,8 +94,8 @@ ice.ace.Panel.prototype.close = function() {
         function(e) {
             if(_self.cfg.behaviors) {
                 var closeBehavior = _self.cfg.behaviors['close'];
-                if(closeBehavior) {
-                    closeBehavior.call(this, e);
+                if (closeBehavior) {
+                    ice.ace.ab(closeBehavior)
                 }
             }
         }

@@ -114,7 +114,7 @@ ice.ace.linkButton = {
             // Convert core style params into ace style params
             var p = {};
             params(function(name, value) { p[name] = value; });
-            behaviors.activate(p);
+            ice.ace.ab(ice.ace.extendAjaxArguments(behaviors.activate,{params:p}));
         } else if (doAction) {
            ice.s(e, divRoot, params);
         } else if(!hrefAttr) {
@@ -152,7 +152,7 @@ ice.ace.linkButton = {
             // Convert core style params into ace style params
             var p = {};
             params(function(name, value) { p[name] = value; });
-            behaviors.activate(p);
+            ice.ace.ab(ice.ace.extendAjaxArguments(behaviors.activate,{params:p}));
         } else if (doAction) {
             ice.s(e, divRoot, params);
         } else {

@@ -60,7 +60,7 @@ ice.ace.Slider = function(id, cfg) {
     }
 	if (this.cfg.behaviors) {
 		if (this.cfg.behaviors.slideStart) {
-			this.jq.bind('slidestart', function(event, ui) { _self.cfg.behaviors.slideStart(); });
+			this.jq.bind('slidestart', function(event, ui) { ice.ace.ab(_self.cfg.behaviors.slideStart); });
 		}
 	}
 
@@ -92,7 +92,7 @@ ice.ace.Slider.prototype.onSlide = function(event, ui) {
 	
 	if (this.cfg.behaviors) {
 		if (this.cfg.behaviors.slide) {
-			this.cfg.behaviors.slide();
+			ice.ace.ab(this.cfg.behaviors.slide);
 		}
 	}
 }
@@ -105,7 +105,7 @@ ice.ace.Slider.prototype.onSlideEnd = function(event, ui) {
 	
 	if (this.cfg.behaviors) {
 		if (this.cfg.behaviors.slideEnd) {
-			this.cfg.behaviors.slideEnd();
+			ice.ace.ab(this.cfg.behaviors.slideEnd);
 		}
 	}
 }

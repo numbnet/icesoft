@@ -52,9 +52,8 @@ ice.ace.submit = function(formId) {
 };
 
 ice.ace.attachBehaviors = function(element, behaviors) {
-    for(var event in behaviors)
-        element
-            .bind(event, function(e) { behaviors[event].call(element, e); });
+    for (var event in behaviors)
+        element.bind(event, function() { ice.ace.ab.call(element, behaviors[event]); });
 };
 
 ice.ace.getCookie = function(name) {
@@ -103,6 +102,102 @@ ice.ace.selectCustomUpdates = function(responseXML, iterator) {
         }
     });
 };
+
+ice.ace.removeExecuteRenderOptions = function(options) {
+    options['execute'] = undefined;
+    options['render'] = undefined;
+    return options;
+}
+
+ice.ace.extendAjaxArguments = function(callArguments, options) {
+    // Return a modified copy of the original arguments instead of modifying the original.
+    // The cb arguments, being a configured property of the component will live past this request.
+    callArguments = ice.ace.jq(callArguments).extend(true, {}, callArguments);
+
+    var params     = options.params,
+        execute    = options.execute,
+        render     = options.render,
+        node       = options.node,
+        onstart    = options.onstart,
+        onerror    = options.onerror,
+        onsuccess  = options.onsuccess,
+        oncomplete = options.oncomplete;
+
+    if (params) {
+        if (callArguments['params'])
+            ice.ace.jq.extend(callArguments['params'], params);
+        else
+            callArguments['params'] = params;
+    }
+
+    if (execute) {
+        if (callArguments['execute'])
+            callArguments['execute'] = callArguments['execute'] + " " + execute;
+        else
+            callArguments['execute'] = execute;
+    }
+
+    if (render) {
+        if (callArguments['render'])
+            callArguments['render'] = callArguments['render'] + " " + render;
+        else
+            callArguments['render'] = render;
+    }
+
+    if (node) {
+        callArguments['node'] = node;
+    }
+
+    if (onstart) {
+        if (callArguments['onstart']) {
+            var existingStartCall = callArguments['onstart'];
+            callArguments['onstart'] = function(xhr) {
+                existingStartCall(xhr);
+                onstart(xhr);
+            }
+        } else {
+            callArguments['onstart'] = onstart;
+        }
+    }
+
+    if (onerror) {
+        if (callArguments['onerror']) {
+            var existingErrorCall = callArguments['onerror'];
+            callArguments['onerror'] = function(xhr, status, error) {
+                existingErrorCall(xhr, status, error);
+                onerror(xhr, status, error);
+            }
+        } else {
+            callArguments['onerror'] = onerror;
+        }
+    }
+
+    if (onsuccess) {
+        if (callArguments['onsuccess']) {
+            var existingSuccessCall = callArguments['onsuccess'];
+            callArguments['onsuccess'] = function(data, status, xhr, args) {
+                existingSuccessCall(data, status, xhr, args);
+                onerror(data, status, xhr, args);
+            }
+        } else {
+            callArguments['onsuccess'] = onsuccess;
+        }
+    }
+
+    if (oncomplete) {
+        if (callArguments['oncomplete']) {
+            var existingCompleteCall = callArguments['oncomplete'];
+            callArguments['oncomplete'] = function(xhr, status, args) {
+                existingCompleteCall(xhr, status, args);
+                oncomplete(xhr, status, args);
+            }
+        } else {
+            callArguments['oncomplete'] = oncomplete;
+        }
+    }
+    
+    return callArguments;
+}
 
 ice.ace.ab = function(cfg) { ice.ace.AjaxRequest(cfg); };
 ice.ace.locales = {};

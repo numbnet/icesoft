@@ -49,7 +49,7 @@ ice.ace.Droppable.prototype.setupDropHandler = function() {
     var _self = this;
     
     this.cfg.drop = function(event, ui) {
-        var dropListener = _self.cfg && _self.cfg.behaviors && _self.cfg.behaviors.drop;
+        var dropBehaviour = _self.cfg && _self.cfg.behaviors && _self.cfg.behaviors.drop;
 
         var options = {
             source: _self.id,
@@ -64,9 +64,14 @@ ice.ace.Droppable.prototype.setupDropHandler = function() {
 
         options.params = params;
 
-        if (jQuery.isFunction(dropListener)) {
+        if (dropBehaviour) {
             options.params[_self.id] = _self.id; // also triggers drop listener, if any
-            dropListener(options.params);
+            ice.ace.ab(
+                ice.ace.extendAjaxArguments(
+                    dropBehaviour,
+                    ice.ace.removeExecuteRenderOptions(options)
+                )
+            );
         } else ice.ace.AjaxRequest(options);
     };
 }

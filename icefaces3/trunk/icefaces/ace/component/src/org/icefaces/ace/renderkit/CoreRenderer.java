@@ -33,6 +33,7 @@ import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.behavior.AjaxBehavior;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -248,10 +249,10 @@ public class CoreRenderer extends Renderer {
                     script = behavior.getScript(cbc);    //could be null if disabled
 
                     if(script == null) {
-                        script = "";
+                        script = "undefined";
                     }
                 }
-                jb.entry(domEvent, "function() {" + script + "}", true);
+                jb.entry(domEvent, script, true);
             }
 
             jb.endMap();
@@ -283,21 +284,30 @@ public class CoreRenderer extends Renderer {
                 else if(event.equalsIgnoreCase("action"))       //commands
                     domEvent = "click";
 
-                writer.write(domEvent + ":");
-
-                writer.write("function() {");
+                //writer.write(domEvent + ":");
 
                 ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, event, clientId, params);
-                for(Iterator<ClientBehavior> behaviorIter = behaviorEvents.get(event).iterator(); behaviorIter.hasNext();) {
-                    ClientBehavior behavior = behaviorIter.next();
-					if (behavior instanceof javax.faces.component.behavior.AjaxBehavior) continue; // ignore f:ajax
-                    String script = behavior.getScript(cbc);    //could be null if disabled
+                //JSONBuilder jb = new JSONBuilder();
+                //boolean wroteBehavior = false;
 
-                    if(script != null) {
-                        writer.write(script);
-                    }
+                //jb.beginArray(domEvent);
+                String script = null;
+                for (ClientBehavior behavior : behaviorEvents.get(event)) {
+                    if (behavior instanceof AjaxBehavior) continue; // ignore f:ajax
+                    script = behavior.getScript(cbc);
+                    break; // Currently only render 1 behaviour
+                //    if (script != null) jb.item(script, false);
+
+                //    wroteBehavior = true;
                 }
-                writer.write("}");
+                //jb.endArray();
+
+                //if(wroteBehavior) {
+                if(script != null) {
+                    //writer.write(jb.toString());
+                    writer.write(domEvent + " : ");
+                    writer.write(script);
+                }
 
                 if(eventIterator.hasNext()) {
                     writer.write(",");

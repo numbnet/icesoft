@@ -91,7 +91,7 @@ ice.ace.checkboxbutton = {
 			var behaviors = context.getJSProps().behaviors;
 			if (behaviors) {
 				if (behaviors.activate) {
-					behaviors.activate();
+					ice.ace.ab(behaviors.activate);
 				}
 			}
 		};

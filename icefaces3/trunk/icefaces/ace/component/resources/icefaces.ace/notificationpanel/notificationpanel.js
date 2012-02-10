@@ -52,9 +52,9 @@ ice.ace.NotificationBar.prototype.show = function() {
     else if (this.cfg.effect === "none")
         jQuery(this.jq).show();
     this.cfg.visible = true;
-    var listener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.display;
-    if (jQuery.isFunction(listener)) {
-        listener();
+    var behaviour = this.cfg && this.cfg.behaviors && this.cfg.behaviors.display;
+    if (behaviour) {
+        ice.ace.ab(behaviour);
     }
 };
 
@@ -66,8 +66,8 @@ ice.ace.NotificationBar.prototype.hide = function() {
     else if (this.cfg.effect === "none")
         jQuery(this.jq).hide();
     this.cfg.visible = false;
-    var listener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.close;
-    if (jQuery.isFunction(listener)) {
-        listener();
+    var behaviour = this.cfg && this.cfg.behaviors && this.cfg.behaviors.close;
+    if (behaviour) {
+        ice.ace.ab(behaviour);
     }
 };
