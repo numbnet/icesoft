@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+
+        /* test styles,  menuButton style for the ipad has already been checked in */
+        select.styled {
+            opacity: 0;
+            position: relative;
+            width: 190px;
+            z-index: 5;
+        }
+        span.select {
+            background-color:blue;
+            color: #FFFFFF;
+            font: 12px/21px arial,sans-serif;
+            height: 21px;
+            overflow: hidden;
+            padding: 0 24px 0 8px;
+            position: absolute;
+            width: 158px;
+        }
+
+    </style>
+    <script type="text/javascript">
+        // debug click count.
+        var count = 0;
+
+        function assignSelected( selectedValue){
+            count++;
+            // update the hidden field value
+            document.getElementById('buttonValue').value = selectedValue.value;
+            // log the click, for test purposes only, need to assure that the same item can be selected twice
+            // resulting in a new onChange event being fired.
+            document.getElementById('selectedLang').innerHTML = selectedValue.value + ' ' + count;
+            // if all went correctly then the full form or single submit would occure.
+        }
+
+        // make sure no option element is given the selected state.
+        function uncheckAll(selectedValue) {
+            for (var loop=0; loop < selectedValue.options.length; loop++) {
+                selectedValue.options[loop].selected = false;
+            }
+        }
+
+    </script>
+</head>
+<body>
+<form method="POST" action="">
+    <span class="select">Action Menu</span>
+    <select class="styled" id="test"
+            onchange="assignSelected(this);uncheckAll(this);">
+        <!--  first item will never generate an onchange event and thus must be a placeholder for now. -->
+        <option >Actions</option>
+        <option value="delete"> &#160; Delete Record</option>
+        <option value="submit"> &#160; Submit Record</option>
+        <option value="create"> &#160; Create Record</option>
+        <option value="update"> &#160; Update Record</option>
+        <option value="deleteAll"> &#160; Delete All</option>
+    </select>
+    <!-- submitted value so component decode can assign the correct/mathcing action and or action listeners to fire -->
+    <input type="hidden" id="buttonValue" name="buttonValue"  />
+    <br />
+    <br />
+    <!-- debug output for showing how many clicks have been registered with the onchange event. -->
+    Executed Action:
+    <div id="selectedLang"></div>
+
+
+</form>
+
+</body>
+</html>

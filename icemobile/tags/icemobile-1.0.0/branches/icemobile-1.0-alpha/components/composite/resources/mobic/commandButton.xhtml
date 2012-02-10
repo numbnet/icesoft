@@ -1,0 +1,77 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<head><title>(For validation only)</title></head>
+<body>
+
+<!--
+    commandButton represents a set of common platform button types.  The colour
+    of a button infers meaning.
+-->
+<composite:interface
+        displayName="commandButton"
+        shortDescription="Command button that wraps standard jsf h:commandLink. Each type represent a specific look and feel. ">
+
+    <composite:attribute name="type"
+                         required="false"
+                         default="white"
+                         displayName="Button Type"
+                         shortDescription="Button type, default, important, back, attention"/>
+    <composite:attribute name="selected" required="false" default="#{false}"
+                         displayName="Selected"/>
+    <composite:attribute name="action" targets="commandButton"/>
+    <composite:attribute name="onclick"/>
+    <composite:attribute name="disabled"/>
+    <!--<composite:attribute name="actionListener" method-signature="void action(javax.faces.event.ActionEvent)"/>-->
+    <composite:attribute name="immediate" required="false" default="#{false}"
+                         displayName="Immediate"/>
+    <composite:attribute name="styleClass" required="false"
+                         displayName="Style Class"
+                         shortDescription="CSS class names to over-ride current style"/>
+    <composite:attribute name="style" required="false"
+                         displayName="Style"
+                         shortDescription="CSS attributes to over-ride current style"/>
+    <composite:actionSource name="commandButton"/>
+</composite:interface>
+
+<composite:implementation>
+
+
+    <ui:fragment rendered="#{cc.rendered}">
+        <!-- todo need to give this a closer look to get the graphic inside the commandlink
+             so that when selected by user the whole button is highlight, currently the
+             back graphic isnot.
+        -->
+        <h:commandLink id="commandButton"
+                       onclick="#{cc.attrs.onclick}"
+                       disabled="#{cc.attrs.disabled}"
+                       class="mobi-button #{cc.attrs.type eq 'default'? 'mobi-button-default':(cc.attrs.type eq 'important')?'mobi-button-important':(cc.attrs.type eq 'back')?'mobi-button-back':(cc.attrs.type eq 'attention')?'mobi-button-attention':''} #{cc.attrs.selected?'mobi-button-selected':''}#{cc.attrs.styleClass}"
+                       style="#{cc.attrs.style}"
+                       immediate="#{cc.attrs.immediate}">
+            <composite:insertChildren/>
+        </h:commandLink>
+    </ui:fragment>
+
+</composite:implementation>
+</body>
+</html>

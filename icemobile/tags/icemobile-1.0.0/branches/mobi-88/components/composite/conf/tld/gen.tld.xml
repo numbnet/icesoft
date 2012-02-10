@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+<project name="ICEfaces Composite Components TLD" basedir=".">
+    <description>ICEfaces Composite Components TLD</description>
+
+    <macrodef name="gen.tld">
+        <attribute name="tld.file"/>
+        <attribute name="tld.dir"/>
+        <attribute name="build.dir"/>
+
+        <!-- file to do search and replace on -->
+
+        <sequential>
+
+            <property name="tld.replace.file" value="@{build.dir}/@{tld.file}"/>
+
+            <copy todir="@{build.dir}" file="@{tld.dir}/@{tld.file}"
+                  overwrite="true"/>
+
+            <replace token="@ID_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	<attribute> 
+		<name>id</name>
+		<required>true</required>
+		<description>@CDATA_START
+	        A unique id for the component.
+		@CDATA_END</description>
+	</attribute>
+				
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@STYLE_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	<attribute> 
+		<name>style</name>
+		<required>false</required>
+		<description>@CDATA_START
+	        CSS style(s) to be applied when this component is rendered
+		@CDATA_END</description>
+	</attribute>				
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@STYLECLASS_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	<attribute> 
+		<name>styleClass</name>
+		<required>false</required>
+		<description>@CDATA_START
+	        Space-separated list of CSS style class(es) to be applied when this element is rendered.
+		@CDATA_END</description>
+	</attribute>				
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@COLUMN_TITLE_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	<attribute> 
+		<name>title</name>
+		<required>false</required>
+		<description>Sets the header title for the column</description>
+	</attribute>				
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@COLUMN_PROPERTY_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	<attribute> 
+		<name>property</name>
+		<required>true</required>
+		<description>The bean property for the column. eg. with Person.birthDate, birthDate is the property, where the Person class has associated getBirthDate and setBirthDate methods</description>
+	</attribute>				
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@WIDTH_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	<attribute> 
+		<name>width</name>
+		<required>false</required>
+		<description>Sets the width of the displayed area for the Component</description>
+	</attribute>				
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@DISABLED_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	<attribute>
+		<name>disabled</name>
+		<type>java.lang.boolean</type>
+		<required>false</required>
+		<description>Pass through attribute</description>
+	</attribute>
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@ROWS_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	<attribute>
+		<name>rows</name>
+		<required>false</required>
+		<description>Passed through to the ice:dataTable</description>
+	</attribute>
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@SHOWDATAPAGER_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	<attribute> 
+		<name>showDataPager</name>
+		<type>java.lang.boolean</type>
+		<required>false</required>
+		<description>Flag indicating whether or not the dataPaginator in the dataTable footer should be rendered (default true).</description>
+	</attribute>
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@DATAPAGERPASSTHROUGH_ATTR"
+                     file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	<attribute>
+		<name>fastStep</name>
+		<required>false</required>
+		<description>Passed through to ice:dataPaginator</description>
+	</attribute>
+	<attribute>
+		<name>imageFirst</name>
+		<required>false</required>
+		<description>Passed through to ice:dataPaginator</description>
+	</attribute>
+	<attribute>
+		<name>imageLast</name>
+		<required>false</required>
+		<description>Passed through to ice:dataPaginator</description>
+	</attribute>
+	<attribute>
+		<name>imagePrevious</name>
+		<required>false</required>
+		<description>Passed through to ice:dataPaginator</description>
+	</attribute>
+	<attribute>
+		<name>imageNext</name>
+		<required>false</required>
+		<description>Passed through to ice:dataPaginator</description>
+	</attribute>
+	<attribute>
+		<name>imageFastNext</name>
+		<required>false</required>
+		<description>Passed through to ice:dataPaginator</description>
+	</attribute>
+	<attribute>
+		<name>imageFastPrev</name>
+		<required>false</required>
+		<description>Passed through to ice:dataPaginator</description>
+	</attribute>
+	<attribute>
+		<name>paginatorMaxPages</name>
+		<required>false</required>
+		<description>Passed through to ice:dataPaginator</description>
+	</attribute>
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@ROWSELECTOR_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	<attribute>
+		<name>multiple</name>
+		<type>java.lang.boolean</type>
+		<required>false</required>
+		<description>Pass through attribute to ice:rowSelector component</description>
+	</attribute>
+	<attribute>
+		<name>preStyleOnSelection</name>
+		<type>java.lang.boolean</type>
+		<required>false</required>
+		<description>Pass through attribute to ice:rowSelector component</description>
+	</attribute>
+	<attribute>
+		<name>toggleOnInput</name>
+		<type>java.lang.boolean</type>
+		<required>false</required>
+		<description>Pass through attribute to ice:rowSelector component</description>
+	</attribute>
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@SHOWDATAPAGERINFO_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+     <attribute>
+     	<name>showDataPagerInfo</name>
+        <type>java.lang.boolean</type>
+     	<required>false</required>
+     	<description>Flag indicating whether or not the info dataPaginator in the header above the dataTable should be rendered (default true).</description>
+     </attribute>
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@SHOWROWCONTROLS_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	<attribute> 
+		<name>showRowControls</name>
+		<type>java.lang.boolean</type>
+		<required>false</required>
+		<description>Flag indicating whether or not the row controls in the dataTable footer should be rendered (default true).</description>
+	</attribute>				
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@PANELSTYLE_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	<attribute>
+		<name>panelStyle</name>
+		<required>false</required>
+		<description>Passed through to the style attribute on the footer ice:panelGroup containing the dataPaginator and row controls.</description>
+	</attribute>
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@COLUMNWIDTHS_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	<attribute> 
+		<name>columnWidths</name>
+		<required>false</required>
+		<description>A comma-delimited list of px-based widths for each column in the table</description>
+	</attribute>				
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@FOR_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+    <attribute>
+      <name>for</name>
+      <required>true</required>
+      <description>The id of the dataTable to bind to</description>
+    </attribute>
+]]>
+                </replacevalue>
+            </replace>
+            <replace token="@REQUIRED_ATTR" file="${tld.replace.file}">
+                <replacevalue>
+                    <![CDATA[
+	    <attribute>
+	      <name>required</name>
+	      <required>false</required>
+	      <description>Sets whether the input value is required</description>
+	    </attribute>
+	]]>
+                </replacevalue>
+            </replace>
+
+
+            <replace file="${tld.replace.file}" token="@CDATA_START"
+                     value="&lt;![CDATA["/>
+            <replace file="${tld.replace.file}" token="@CDATA_END"
+                     value="]]&gt;"/>
+
+        </sequential>
+    </macrodef>
+
+
+</project>

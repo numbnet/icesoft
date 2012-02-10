@@ -1,0 +1,60 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+    <h:form>
+
+        <h:panelGroup style="text-align:center;">
+            <mobic:buttonGroup style="margin:0.2em 0;">
+
+                <mobic:commandButton
+                        style="width:23%"
+                        selected="#{geolocationBean.selectedExamplePath eq geolocationBean.descriptionPath}"
+                        action="#{geolocationBean.loadExampleResource}">
+                    <f:param name="resourceName"
+                             value="#{geolocationBean.descriptionPath}"/>
+                    #{msgs['example.description.label']}
+                </mobic:commandButton>
+
+                <mobic:commandButton
+                        style="width:23%"
+                        selected="#{geolocationBean.selectedExamplePath eq geolocationBean.examplePath}"
+                        action="#{geolocationBean.loadExampleResource}">
+                    <f:param name="resourceName"
+                             value="#{geolocationBean.examplePath}"/>
+                    #{msgs['example.example.label']}
+                </mobic:commandButton>
+
+                <mobic:commandButton style="width:23%"
+                                     selected="#{geolocationBean.selectedExamplePath eq geolocationBean.resourcesPath}"
+                                     action="#{geolocationBean.loadExampleResource}">
+                    <f:param name="resourceName"
+                             value="#{geolocationBean.resourcesPath}"/>
+                    #{msgs['example.resources.label']}
+                </mobic:commandButton>
+
+            </mobic:buttonGroup>
+        </h:panelGroup>
+    </h:form>
+
+    <ui:include src="#{geolocationBean.selectedExamplePath}"/>
+
+
+</ui:fragment>

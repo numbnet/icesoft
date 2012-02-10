@@ -1,0 +1,54 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:f="http://java.sun.com/jsf/core"
+             xmlns:ui="http://java.sun.com/jsf/facelets"   
+             xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+
+    <mobi:fieldsetGroup styleClass="exampleDescription">
+
+        <p>Device notification is a server to client mechanism used to alert a
+            device-resident application that some external state change has
+            occurred. In the case of a web application that is ICEpush-enabled,
+            device notification will typically be used when the application is
+            not active (and ICEpush is idle)</p>
+
+        <p>
+            Usert Notification is a native device capability to indicate to the
+            user that something has happened in an application. User notification
+            can occur when the application is idle or actively in use. Typically,
+            device UIs include a notification or status bar where notification
+            icons can be placed.
+        </p>
+
+        <p>Developers familiar with ICEpush will fine notification initiation
+            quite simple. Notification can be sent to a group of devices with the
+            following line of code:</p>
+
+<pre>
+PushRenderer.render(group, message);
+</pre>
+
+        <p>
+            ICEfaces device notification supports Android C2DM, Apple APNS and
+            general email notification.
+        </p>
+
+    </mobi:fieldsetGroup>
+
+</ui:fragment>
