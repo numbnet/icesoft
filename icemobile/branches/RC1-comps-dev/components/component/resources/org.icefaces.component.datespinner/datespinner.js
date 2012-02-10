@@ -231,7 +231,7 @@ mobi.datespinner = {
         },
         close: function(clientId){
             var idPanel = clientId+"_bg" ;
-            document.getElementById(idPanel).className = "mobi-date";
+            document.getElementById(idPanel).className = "mobi-date-bg-inv";
             document.getElementById(clientId+"_popup").className = "mobi-date-container-hide";
             this.opened[clientId]= false;
         },

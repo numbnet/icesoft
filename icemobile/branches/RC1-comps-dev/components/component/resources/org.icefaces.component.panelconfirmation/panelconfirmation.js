@@ -12,7 +12,7 @@ mobi.panelConf = {
           this.autocenter = center;
           var idPanel = clientId+"_bg";
           if (!document.getElementById(idPanel).className ){
-             document.getElementById(idPanel).className = 'mobi-date-bg-inv';
+             document.getElementById(idPanel).className = 'mobi-panelconf-bg-hide';
           }
           this.open(clientId);
           this.opened[clientId]=true;
@@ -60,14 +60,14 @@ mobi.panelConf = {
                contDiv.style.left = iWidth+'px';
                contDiv.style.top = (g.scrollTop + iHeight)+'px';
             }
-            document.getElementById(idPanel).className = "mobi-date-bg";
-            document.getElementById(clientId+"_popup").className = "mobi-date-container";
+            document.getElementById(idPanel).className = "mobi-panelconf-bg";
+            document.getElementById(clientId+"_popup").className = "mobi-panelconf-container";
             this.opened[clientId]= true;
         },
         close: function(clientId){
             var idPanel = clientId+"_bg" ;
-            document.getElementById(idPanel).className = "mobi-date";
-            document.getElementById(clientId+"_popup").className = "mobi-date-container-hide";
+            document.getElementById(idPanel).className = "mobi-panelconf-bg-hide";
+            document.getElementById(clientId+"_popup").className = "mobi-panelconf-container-hide";
             this.opened[clientId]= false;
         },
         unload: function(clientId){
