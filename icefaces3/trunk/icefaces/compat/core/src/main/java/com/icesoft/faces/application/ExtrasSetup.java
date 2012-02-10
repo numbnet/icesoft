@@ -49,8 +49,10 @@ public class ExtrasSetup implements SystemEventListener {
         }
     };
     private static final FormEndRenderer FormHiddenInputFields = new FormHiddenInputFieldsRenderer();
+    private boolean fastBusyIndicator;
 
     public ExtrasSetup() {
+        fastBusyIndicator = EnvUtils.isFastBusyIndicator(FacesContext.getCurrentInstance());
     }
 
     public boolean isListenerForSource(Object source) {
@@ -68,6 +70,7 @@ public class ExtrasSetup implements SystemEventListener {
 
             UIOutput output = new UIOutputWriter() {
                 public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+
                     ResourceBundle localizedBundle = defaultBridgeMessages;
                     try {
                         localizedBundle = ResourceBundle.getBundle("bridge-messages", context.getViewRoot().getLocale());
@@ -98,6 +101,9 @@ public class ExtrasSetup implements SystemEventListener {
                     writer.startElement("script", this);
                     writer.writeAttribute("type", "text/javascript", null);
                     writer.write("ice.DefaultIndicators({");
+                    writer.write("fastBusyIndicator: ");
+                    writer.write(Boolean.toString(fastBusyIndicator));
+                    writer.write(",");
                     writer.write("connectionLostRedirectURI: ");
                     writer.write(connectionLostRedirectURI);
                     writer.write(",");
