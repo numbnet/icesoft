@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.microedition.io.InputConnection;
 import javax.microedition.io.file.FileSystemRegistry;
@@ -56,7 +54,6 @@ import net.rim.device.api.browser.field2.BrowserFieldRequest;
 import net.rim.device.api.io.IOUtilities;
 import net.rim.device.api.io.http.HttpHeaders;
 import net.rim.device.api.script.ScriptEngine;
-import net.rim.device.api.script.Scriptable;
 import net.rim.device.api.system.ApplicationManager;
 import net.rim.device.api.system.CoverageInfo;
 import net.rim.device.api.system.DeviceInfo;
