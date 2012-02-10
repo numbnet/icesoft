@@ -41,6 +41,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.ActionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.DefaultTreeModel;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -160,6 +161,8 @@ public class Tree extends UICommand implements NamingContainer {
     transient private DefaultMutableTreeNode currentNode;
     private String nodePath;
     private String title;
+	
+	private TreeModel dummyModel = null;
 
     /**
      * default no args constructor
@@ -271,8 +274,21 @@ public class Tree extends UICommand implements NamingContainer {
      */
     public TreeModel getModel() {
         ValueBinding vb = getValueBinding("value");
-        return (TreeModel) vb.getValue(getFacesContext());
+		TreeModel model = (TreeModel) vb.getValue(getFacesContext());
+		if (model == null) {
+			return getDummyModel();
+		}
+        return model;
     }
+	
+	public TreeModel getDummyModel() {
+		if (dummyModel == null) {
+			DefaultMutableTreeNode defaultMutableTreeNode = new DefaultMutableTreeNode();
+			IceUserObject iceUserObject = new IceUserObject(defaultMutableTreeNode);
+			dummyModel = new DefaultTreeModel(new DefaultMutableTreeNode(iceUserObject));		
+		}
+		return dummyModel;
+	}
 
     /**
      * @return TreeNode template
@@ -1369,6 +1385,8 @@ public class Tree extends UICommand implements NamingContainer {
     @Override
     public boolean visitTree(VisitContext context, 
                              VisitCallback callback) {
+        if (!isRendered())
+            return false;
         if (!isVisitable(context))
             return false;
 
