@@ -85,11 +85,11 @@
 
         <br />
 
+        <h:form id="panelForm">
 
-
-       <mobi:panelPopup id="panelPopClient" header="Popup Panel Client Side" clientSide="true"
+           <mobi:panelPopup id="panelPopClient" header="Popup Panel Client Side" clientSide="true"
                                 visible="#{popup.visibleClient}">
-             <h:form id="panelForm">
+
                             <mobi:fieldsetGroup>
                             <!-- Text input -->
                             <mobi:fieldsetRow>
@@ -107,7 +107,6 @@
                                      value="Hide Popup Server-side"
                                      actionListener="#{popup.closeClient}"/>
 
-                </h:form>
                 <mobi:outputList id="imgList2" type="thumb" inset="false">
                            <mobi:outputListItem type="group">Image List</mobi:outputListItem>
                            <mobi:outputListItems value="#{carousel.imageList}" var="item" type="thumb">
@@ -118,8 +117,8 @@
                                 </h:link>
                            </mobi:outputListItems>
                       </mobi:outputList>
-       </mobi:panelPopup>
-
+           </mobi:panelPopup>
+       </h:form>
        <br />
 
 
