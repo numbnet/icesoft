@@ -207,7 +207,7 @@ if (!window.ice.mobile) {
 
                 if (form != null) {
                     for (var i in tempInputs) {
-                        icefaces.logInContainer("handleResponse - Clearing input " + tempInputs[i]);
+                        //icefaces.logInContainer("handleResponse - Clearing input " + tempInputs[i]);
                         form.removeChild(tempInputs[i]);
                     }
                 }
