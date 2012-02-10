@@ -269,7 +269,11 @@ public class ComponentArtifact extends Artifact{
         boolean isPrimitive = field.getType().isPrimitive() ||
                 GeneratorContext.SpecialReturnSignatures.containsKey( field.getName().toString().trim() );
 
-        String returnAndArgumentType = field.getType().getName();
+        boolean isArray = field.getType().isArray();
+
+        String returnAndArgumentType = isArray ? field.getType().getComponentType().getName() + "[]"
+                                               : field.getType().getName();
+
 
         // If primitive property, get the primitive return type
         // otherwise leave it as is.
@@ -577,7 +581,10 @@ public class ComponentArtifact extends Artifact{
         boolean isPrimitive = field.getType().isPrimitive() ||
                 GeneratorContext.SpecialReturnSignatures.containsKey( field.getName().toString().trim() );
 
-        String returnAndArgumentType = field.getType().getName();
+        boolean isArray = field.getType().isArray();
+
+        String returnAndArgumentType = isArray ? field.getType().getComponentType().getName()  + "[]"
+                                               : field.getType().getName();
 
         // If primitive property, get the primitive return type
         // otherwise leave it as is.

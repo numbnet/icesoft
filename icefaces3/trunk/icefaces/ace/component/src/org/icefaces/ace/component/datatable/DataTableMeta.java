@@ -18,6 +18,7 @@ package org.icefaces.ace.component.datatable;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIDataMeta;
+import org.icefaces.ace.model.table.CellSelection;
 import org.icefaces.ace.model.table.RowStateMap;
 import org.icefaces.ace.model.table.TreeDataModel;
 
@@ -28,6 +29,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.model.DataModel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 
@@ -134,6 +137,9 @@ public class DataTableMeta extends UIDataMeta {
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private Boolean alwaysExecuteContents;
 
+    // Map from row data to field names (cells) that are selected
+    @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
+    protected Map<Object, List<String>> rowToSelectedFieldsMap;
     // ID of the configPanel that has been associated with this table, used for
     // component lookups during decodes.
     @Field(defaultValue = "null", defaultValueIsStringLiteral = false)
@@ -149,6 +155,7 @@ public class DataTableMeta extends UIDataMeta {
     // Used to force update of entire table container when using forceTableUpdate
     @Field(defaultValue = "0", defaultValueIsStringLiteral = false)
     protected Integer forcedUpdateCounter;
+
 
 
 
@@ -270,13 +277,9 @@ public class DataTableMeta extends UIDataMeta {
     @Property(tlddoc = "Enable to require a double-click to fire row/cell selection events.")
     private boolean doubleClickSelect;
 
-    @Property(tlddoc = "Defines an object to be populated with the backing object " +
-            "representing selected table cells. In the case of multiple " +
-            "element selection, it's expected that this object will be an implementer" +
-            " of the List interface.")
-    private Object cellSelection;
-
-
+    @Property(tlddoc = "Defines an array to be populated with objects " +
+            "referencing selected table cells and the rows they originate from." )
+    private CellSelection[] selectedCells;
 
 
 

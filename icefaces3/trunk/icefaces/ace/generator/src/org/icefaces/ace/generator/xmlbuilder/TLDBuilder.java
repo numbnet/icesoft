@@ -111,7 +111,11 @@ public class TLDBuilder extends XMLBuilder{
         addNode(attribute, "name", propertyName);
         addNode(attribute, "required", String.valueOf(propertyValues.required));
         addNode(attribute, "rtexprvalue", "false");
-        addNode(attribute, "type", field.getType().getName());
+
+        if (field.getType().isArray())
+            addNode(attribute, "type", field.getType().getComponentType().getName()+"[]");
+        else
+            addNode(attribute, "type", field.getType().getName());
 
     }       
 	
