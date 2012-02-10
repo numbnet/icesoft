@@ -129,7 +129,7 @@ ice.ace.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
         source: this.id,
         execute: formId
     },
-    listener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.panechange;
+    behaviourArgs = this.cfg && this.cfg.behaviors && this.cfg.behaviors.panechange;
 
     var params = {};
     params[this.id + '_tabChange'] = true;
@@ -138,23 +138,26 @@ ice.ace.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
 
     options.params = params;
 
-    if (jQuery.isFunction(listener)) {
-        listener(options.params);
+    if (behaviourArgs) {
+        ice.ace.ab(ice.ace.extendAjaxArguments(
+                behaviourArgs,
+                ice.ace.removeExecuteRenderOptions(options)
+        ));
     } else ice.ace.AjaxRequest(options);
-}
+};
 
 ice.ace.AccordionPanel.prototype.markAsLoaded = function(panel) {
     jQuery(panel).data('loaded', true);
-}
+};
 
 ice.ace.AccordionPanel.prototype.isLoaded = function(panel) {
     return jQuery(panel).data('loaded') == true;
-}
+};
 
 ice.ace.AccordionPanel.prototype.select = function(index) {
     this.jq.accordion('activate', index);
-}
+};
 
 ice.ace.AccordionPanel.prototype.collapseAll = function() {
     this.jq.accordion('activate', false);
-}
+};

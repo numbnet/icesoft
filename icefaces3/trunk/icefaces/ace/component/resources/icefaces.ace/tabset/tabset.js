@@ -123,7 +123,7 @@ ice.ace.tabset = {
             	ice.ace.clientState.set(clientId, currentIndex);
                 if (sJSFProps.behaviors) {
                     if (sJSFProps.behaviors.clientSideTabChange) {
-                        sJSFProps.behaviors.clientSideTabChange();
+                        ice.ace.ab(sJSFProps.behaviors.clientSideTabChange);
                     }
                 }
                 ice.ace.jq(tabview._contentParent).css({opacity:1});
@@ -147,7 +147,7 @@ ice.ace.tabset = {
                             //replace id with the id of tabset component, so the "execute" property can be set to tabset id
                             targetElement.id = clientId;
                             var otherParams = {};
-                            sJSFProps.behaviors.serverSideTabChange(otherParams);
+                            ice.ace.ab(ice.ace.extendAjaxArguments(sJSFProps.behaviors.serverSideTabChange,{params: otherParams}));
                             //restore id
                             targetElement.id = elementId;
                         }

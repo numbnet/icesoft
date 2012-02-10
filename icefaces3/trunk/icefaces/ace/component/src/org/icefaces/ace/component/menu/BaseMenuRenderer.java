@@ -92,7 +92,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 				boolean hasAjaxBehavior = false;
 				
 				StringBuilder command = new StringBuilder();
-				command.append("var self = this; setTimeout(function() { var f = function(){"); // dynamically set the id to the node so that it can be handled by the submit functions 
+				command.append("var self = this; setTimeout(function() { var f = function(opt){"); // dynamically set the id to the node so that it can be handled by the submit functions
 				// ClientBehaviors
 				Map<String,List<ClientBehavior>> behaviorEvents = menuItem.getClientBehaviors();
 				if(!behaviorEvents.isEmpty()) {
@@ -105,8 +105,9 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 						String script = behavior.getScript(cbc);    //could be null if disabled
 
 						if(script != null) {
+                            command.append("ice.ace.ab(ice.ace.extendAjaxArguments(");
 							command.append(script);
-							command.append(";");
+							command.append(", opt));");
 						}
 					}
 				}
@@ -132,7 +133,7 @@ public abstract class BaseMenuRenderer extends CoreRenderer {
 					
 					command.append(parameters.toString());
                 } else {
-					command.append("f(null, null, null, self);"); // call behaviors function
+					command.append("f({node:self});"); // call behaviors function
 				}
 				
 				command.append("}, 10);"); // close timeout

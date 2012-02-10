@@ -21,7 +21,7 @@ ice.ace.Tooltips = {};
 ice.ace.Tooltip = function(cfg) {
     var callee = arguments.callee, id = cfg.id, prevTooltip = callee[id];
     if (prevTooltip) {
-        prevTooltip.jq.qtip("destroy");
+         prevTooltip.jq.qtip("destroy");
     }
 	this.cfg = cfg;
 	this.target = "";
@@ -41,12 +41,8 @@ ice.ace.Tooltip = function(cfg) {
         this.cfg.style.border = { width: 5, radius: 10 };
         this.cfg.style.tip = true;
     }
-	/*
-	var offset = jQuery(target).offset();
-	var adjustY = offset.top * -1;
-	this.cfg.position.adjust = { y: adjustY, x: 0 };*/
-	
-	this.jq = jQuery(this.target);
+
+    this.jq = ice.ace.jq(this.target);
     if (this.jq.length <= 0) {
         return;
     }
@@ -72,9 +68,12 @@ ice.ace.Tooltip.prototype.triggerDisplayListener = function() {
 
 	options.params = params;
 
-    var listener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.display;
-    if (jQuery.isFunction(listener)) {
-        listener(options.params);
+    var behavior = this.cfg && this.cfg.behaviors && this.cfg.behaviors.display;
+    if (behavior) {
+        ice.ace.ab(ice.ace.extendAjaxArguments(
+                behavior,
+                ice.ace.removeExecuteRenderOptions(options)
+        ));
     } else ice.ace.AjaxRequest(options);
 };
 

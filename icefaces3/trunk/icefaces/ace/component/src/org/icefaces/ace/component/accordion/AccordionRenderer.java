@@ -36,6 +36,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 
 //import org.icefaces.ace.component.tabview.Tab;
+import org.icefaces.ace.component.ajax.AjaxBehavior;
 import org.icefaces.ace.event.AccordionPaneChangeEvent;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
@@ -114,7 +115,7 @@ public class AccordionRenderer extends CoreRenderer {
 
         boolean hasTabChangeListener = acco.getPaneChangeListener() != null;
         for (String eventId : acco.getClientBehaviors().keySet()) {
-            if (eventId.equals("panechange")) {
+            if (eventId.equals("panechange") && !((AjaxBehavior)(acco.getClientBehaviors().get(eventId).get(0))).isDisabled()) {
                 hasTabChangeListener = true;
             }
         }

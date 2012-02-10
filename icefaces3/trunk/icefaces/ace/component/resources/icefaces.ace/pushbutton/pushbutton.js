@@ -91,7 +91,7 @@ ice.ace.pushbutton = {
                 // Convert core style params into ace style params
                 var p = {};
                 params(function(name, value) { p[name] = value; });
-                behaviors.activate(p);
+                ice.ace.ab(ice.ace.extendAjaxArguments(behaviors.activate, {params:p}));
             } else if (fullSubmit) {
                 ice.s(e, divRoot, params);
             } else {

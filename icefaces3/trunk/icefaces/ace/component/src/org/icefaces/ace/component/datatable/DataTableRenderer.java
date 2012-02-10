@@ -237,7 +237,7 @@ public class DataTableRenderer extends CoreRenderer {
 	}
 
     void queueInstantSelectionEvent(FacesContext context, DataTable table, String clientId, Map<String,String> params) {
-		if (table.isInstantSelectionRequest(context)) {
+        if (table.isInstantSelectionRequest(context)) {
             Object model = table.getDataModel();
             TreeDataModel treeModel = null;
             String selection = params.get(clientId + "_instantSelectedRowIndex");

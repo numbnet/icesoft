@@ -1154,9 +1154,8 @@ ice.ace.Calendar.prototype.bindDateSelectListener = function() {
         this.cfg.onSelect = function(dateText, input) {
             var dateSelectBehavior = _self.cfg.behaviors['dateSelect'];
 
-            if(dateSelectBehavior) {
-                dateSelectBehavior.call(_self);
-            }
+            if (dateSelectBehavior)
+                ice.ace.ab.call(_self, dateSelectBehavior);
         };
     }
     

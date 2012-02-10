@@ -77,8 +77,9 @@ public class PrinterRenderer extends CoreRenderer {
 				String script = behavior.getScript(cbc);    //could be null if disabled
 
 				if(script != null) {
+                    writer.write("ice.ace.ab(");
 					writer.write(script);
-					writer.write(";\n");
+					writer.write(");\n");
 				}
 			}
 		}

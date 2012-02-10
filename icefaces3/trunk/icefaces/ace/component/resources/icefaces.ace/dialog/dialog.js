@@ -138,8 +138,8 @@ ice.ace.Dialog.prototype.onHide = function(event, ui) {
     if(this.cfg.behaviors) {
         var closeBehavior = this.cfg.behaviors['close'];
 
-        if(closeBehavior) {
-            closeBehavior.call(this);
+        if (closeBehavior) {
+            ice.ace.ab(closeBehavior);
         }
     }
 };

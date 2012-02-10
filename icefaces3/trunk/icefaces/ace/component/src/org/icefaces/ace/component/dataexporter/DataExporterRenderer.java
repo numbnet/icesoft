@@ -72,15 +72,18 @@ public class DataExporterRenderer extends CoreRenderer {
 				String script = behavior.getScript(cbc);    //could be null if disabled
 
 				if(script != null) {
-					onclick.append(script);
-					onclick.append(";");
+					onclick.append("ice.ace.ab(ice.ace.extendAjaxArguments(");
+                    onclick.append(script);
+					onclick.append(", {'event':event, node:this}));");
 				}
 			}
-		}
-		onclick.append(" });");
-		onclick.append("ice.s(event,this);return false;");
+            onclick.append(" });");
+		} else {
+		    onclick.append("ice.s(event,this);");
+        }
+        onclick.append("return false;");
 		writer.writeAttribute("onclick", onclick.toString(), null);
-		
+
 		String styleClass = exporter.getStyleClass();
 		if (styleClass != null) writer.writeAttribute("class", styleClass, null);
 		String style = exporter.getStyle();

@@ -33,7 +33,7 @@ ice.ace.Resizable = function(id, cfg) {
     this.cfg = cfg;
     this.target = ice.ace.escapeClientId(this.cfg.target);
 
-    if (jQuery.isFunction(listener)) {
+    if (listener) {
         this.cfg.ajaxResize = true;
     }
     if(this.cfg.ajaxResize) {
@@ -43,7 +43,6 @@ ice.ace.Resizable = function(id, cfg) {
     var _self = this;
 
     this.cfg.stop = function(event, ui) {
-
         if(_self.cfg.ajaxResize) {
             _self.fireAjaxResizeEvent(event, ui);
         }
@@ -54,7 +53,7 @@ ice.ace.Resizable = function(id, cfg) {
 };
 
 ice.ace.Resizable.prototype.fireAjaxResizeEvent = function(event, ui) {
-    var listener = this.cfg && this.cfg.behaviors && this.cfg.behaviors.resize;
+    var behaviour = this.cfg && this.cfg.behaviors && this.cfg.behaviors.resize;
     var options = {
         source: this.id,
         execute: this.id,
@@ -69,7 +68,10 @@ ice.ace.Resizable.prototype.fireAjaxResizeEvent = function(event, ui) {
 
     options.params = params;
 
-    if (jQuery.isFunction(listener)) {
-        listener(options.params);
+    if (behaviour) {
+        ice.ace.ab(ice.ace.extendAjaxArguments(
+                behaviour,
+                ice.ace.extendAjaxArguments(options))
+        );
     } else ice.ace.AjaxRequest(options);
 };
