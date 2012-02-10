@@ -200,7 +200,7 @@ if (!window.ice.mobile) {
                     icefaces.logInContainer("handleResponse - Response set in jsfResponse");
                 }
                 jsf.ajax.response(jsfResponse, context);
-                if (!isSimulator) {
+                if (isSimulator) {
                     icefaces.logInContainer("handleResponse - Response processed!");
                 }
                 var form = document.getElementById(context.formid);
@@ -211,7 +211,7 @@ if (!window.ice.mobile) {
                         form.removeChild(tempInputs[i]);
                     }
                 }
-                if (!isSimulator) {
+                if (isSimulator) {
                     icefaces.logInContainer("Done inputs, clearing locals");
                 }
                 context.sourceid = "";
