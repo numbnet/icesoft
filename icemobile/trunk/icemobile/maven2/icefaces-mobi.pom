@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.icefaces</groupId>
     <artifactId>icefaces-mobi</artifactId>
-    <version>1.0.0.RC1</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>ICEmobile component library</name>
     <url>http://www.icefaces.org</url>
