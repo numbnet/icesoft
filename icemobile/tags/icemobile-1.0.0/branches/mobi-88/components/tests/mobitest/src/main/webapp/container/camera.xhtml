@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component">
+<h:head>
+  <meta charset="UTF-8"></meta>
+  <meta name = "viewport" content = "width = device-width"></meta>
+  <title>Camera Component</title>
+  <style>.centered * {vertical-align:middle;padding-left:2px;padding-right:2px;}</style>
+</h:head>
+<h:body style="font-family:sans-serif">
+    <h3>Camera Component</h3>
+    <div style="border-radius: 15px; border: 1px dotted silver; max-width: 500px;">
+        <h:form prependId="false" class="centered" enctype="multipart/form-data" >
+            <mobi:camera id="camera" value="#{cameraBean.cameraImage}"/>
+            <mobi:thumbnail for="camera"/>
+            <h:commandButton value="upload" rendered="#{cameraBean.enhancedBrowser}" />
+            <h:commandButton value="upload" rendered="#{!cameraBean.enhancedBrowser}">
+              <f:ajax disabled="true" />
+            </h:commandButton>
+        </h:form>
+    </div>
+    <br/>
+    <div align="center" style="border-radius: 15px; border: 1px dotted silver;max-width: 500px;">
+         <h:graphicImage id="gi1"
+                value="#{cameraBean.pathToFile}"
+                alt="camera image"
+                style="max-width:80%;padding-left:1px;padding-right:1px;" />
+		<div>
+		   <h:outputText value="#{cameraBean.numberImages}"/> images uploaded.
+		</div>
+    </div>
+
+    <br />
+    <li><a href="../index.html">index page</a>
+    </li>
+
+		
+
+</h:body>
+</html>

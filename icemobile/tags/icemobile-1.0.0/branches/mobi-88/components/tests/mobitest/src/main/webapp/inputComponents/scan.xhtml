@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+      xmlns:icecore="http://www.icefaces.org/icefaces/core">
+<h:head>
+    <title id="title">MOBI-31 Tests</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+
+    <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
+</h:head>
+
+<h:body>
+
+    <p><a href="http://jira.icefaces.org/browse/MOBI-31" >ICEmobile QR code scanner</a></p>
+
+ <br />
+    <li><a href="../inputComponents.html">index page</a>
+    </li>
+
+    <br />
+    <h:form id="testForm">
+            <mobi:scan value="#{valueHolder.string1}" id="scanOne" singleSubmit="true" />
+            <br />
+            <h:commandButton value="submit"/>
+    </h:form>
+    <h3>Input Values</h3>
+    <label>Scanned: </label><h:outputText style="font-style: italic" id="out1" value="#{valueHolder.string1}"/>
+    <br/>
+    <mobi:qrcode value="ICEmobile" />
+</h:body>
+</html>

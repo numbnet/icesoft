@@ -1,0 +1,75 @@
+<!--
+  ~ Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions an
+  ~ limitations under the License.
+  -->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<head><title>(For validation only)</title></head>
+<body>
+
+<!--
+    inputText represents a field to enter text
+-->
+<composite:interface
+        displayName="inputText"
+        shortDescription="Styled input text that wraps standard jsf h:inputText, with standard pass through attributes.">
+    <composite:attribute name="immediate" required="false" default="#{false}"
+                         type="java.lang.Boolean"/>
+    <composite:attribute name="rendered" required="false" default="#{true}"
+                         type="java.lang.Boolean"/>
+    <composite:attribute name="required" required="false" default="#{false}"
+                         type="java.lang.Boolean"/>
+    <composite:attribute name="value" required="false"/>
+    <composite:attribute name="autocomplete" required="false" default="on"/>
+    <composite:attribute name="disabled" required="false" default="#{false}"
+                         type="java.lang.Boolean"/>
+    <composite:attribute name="maxlength" required="false" default="10000"
+                         type="java.lang.Integer"/>
+    <composite:attribute name="readonly" required="false" default="#{false}"
+                         type="java.lang.Boolean"/>
+    <composite:attribute name="style" required="false"/>
+    <composite:attribute name="styleClass" required="false"/>
+    <composite:attribute name="tabindex" required="false"
+                         type="java.lang.Integer"/>
+    <composite:attribute name="title" required="false"/>
+</composite:interface>
+
+<composite:implementation>
+
+    <ui:fragment rendered="#{cc.rendered}">
+        <h:inputText id="#{cc.id}"
+                     immediate="#{cc.attrs.immediate}"
+                     required="#{cc.attrs.required}"
+                     value="#{cc.attrs.value}"
+                     autocomplete="#{cc.attrs.autocomplete}"
+                     disabled="#{cc.attrs.disabled}"
+                     maxlength="#{cc.attrs.maxlength}"
+                     readonly="#{cc.attrs.readonly}"
+                     style="#{cc.attrs.style}"
+                     styleClass="mobi-input-text #{cc.attrs.styleClass}"
+                     tabindex="#{cc.attrs.tabindex}"
+                     title="#{cc.attrs.title}">
+            <composite:insertChildren/>
+        </h:inputText>
+    </ui:fragment>
+
+</composite:implementation>
+</body>
+</html>

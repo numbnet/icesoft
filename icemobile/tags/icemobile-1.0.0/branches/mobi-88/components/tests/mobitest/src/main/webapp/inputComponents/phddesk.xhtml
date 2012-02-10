@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+      xmlns:icecore="http://www.icefaces.org/icefaces/core">
+<h:head>
+    <title id="title">Photo Drop Desktop</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+
+    <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
+    <style>
+div.room {
+  background: gainsboro;
+  width:45%;
+  text-align: center;
+  margin: 10px;
+  padding: 5px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+    </style>
+</h:head>
+
+<h:body>
+    <h:form>
+        <icecore:singleSubmit />
+        <div class="room" style="float:left;">
+            <h:inputText value="#{photoDropBean.room1Code}"/><br/>
+            <mobi:qrcode value="#{photoDropBean.room1Code}" />
+            <br/>
+            <h:graphicImage height="20%" value="#{photoDropBean.room1Path}" />
+        </div>
+        <div class="room" style="float:right;">
+            <h:inputText value="#{photoDropBean.room2Code}"/><br/>
+            <mobi:qrcode value="#{photoDropBean.room2Code}" />
+            <br/>
+            <h:graphicImage height="20%" value="#{photoDropBean.room2Path}" />
+        </div>
+        <div class="room" style="float:left;">
+            <h:inputText value="#{photoDropBean.room3Code}"/><br/>
+            <mobi:qrcode value="#{photoDropBean.room3Code}" />
+            <br/>
+            <h:graphicImage height="20%" value="#{photoDropBean.room3Path}" />
+        </div>
+        <div class="room" style="float:right;">
+            <h:inputText value="#{photoDropBean.room4Code}"/><br/>
+            <mobi:qrcode value="#{photoDropBean.room4Code}" />
+            <br/>
+            <h:graphicImage height="20%" value="#{photoDropBean.room4Path}" />
+        </div>
+    </h:form>
+
+    <div style="position:absolute; bottom:0;">
+    <a href="../inputComponents.html">index page</a>
+    </div>
+</h:body>
+</html>

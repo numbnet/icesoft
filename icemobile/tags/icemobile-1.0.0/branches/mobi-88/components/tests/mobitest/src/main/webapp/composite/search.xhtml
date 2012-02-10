@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:mobi="http://www.icesoft.com/icefaces/mobile/component"
+      xmlns:mobic="http://www.icesoft.com/icefaces/mobile/composite">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <title>Input Search</title>
+    <h:outputScript library="js" name="iscroll-min.js"/>
+
+    <mobi:deviceStylesheet
+            name="#{themeSwitcher.theme}" media="screen" />
+
+</h:head>
+
+<h:body>
+    <p><a href="http://jira.icefaces.org/browse/MOBI-32"> MOBI-32 Test Case</a>
+    </p>
+
+    <a href="../index.html">index page</a>
+
+    <!-- theme switcher -->
+    <ui:include src="/WEB-INF/includes/composite/theme-switcher.xhtml"/>
+
+    <h:form>
+
+        <mobic:inputSearch value=""
+                           typeListener="#{valueHolder.filterChanged}"
+                           style="">
+            <mobic:commandButton
+                    styleClass="mobi-button mobi-search-toobar-cancel mobi-round-all">
+                Cancel
+            </mobic:commandButton>
+        </mobic:inputSearch>
+    </h:form>
+    <a href="../compositeComponents.html">index page</a>
+</h:body>
+</html>
