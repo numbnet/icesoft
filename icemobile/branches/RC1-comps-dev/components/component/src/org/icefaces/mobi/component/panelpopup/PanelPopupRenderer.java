@@ -118,8 +118,14 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
 
        /**   writer.startElement(HTML.DIV_ELEM, uiComponent);
           writer.writeAttribute("class", PanelPopup.INTERIOR_CONT_CLASS, null); **/
-
         renderChildren(facesContext, panelPopup);
+        if (clientSide){
+            writer.startElement(HTML.INPUT_ELEM, uiComponent);
+            writer.writeAttribute(HTML.TYPE_ATTR, "hidden", HTML.TYPE_ATTR);
+            writer.writeAttribute(HTML.ID_ATTR, clientId+"_hidden", HTML.ID_ATTR);
+            writer.writeAttribute(HTML.NAME_ATTR, clientId+"_hidden", HTML.NAME_ATTR);
+            writer.endElement(HTML.INPUT_ELEM);
+        }
         writer.endElement(HTML.DIV_ELEM);
         encodeScript(facesContext, uiComponent);
     }
@@ -147,9 +153,9 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         StringBuilder builder = new StringBuilder(255);
         builder.append("mobi.panelpopup.init('").append(clientId).append("', {visible: ") ;
         builder.append(panelPopup.isVisible()).append(",autocenter: ").append(panelPopup.isAutoCenter()).append("});\n");
-        writer.write("ice.onUnload(function(){" +
+  /*      writer.write("ice.onUnload(function(){" +
                 "mobi.panelpopup.unloaded('" + clientId + "');" +
-                "});\n");
+                "});\n"); */
         writer.write(builder.toString());
         writer.endElement("script");
         writer.endElement(HTML.SPAN_ELEM);

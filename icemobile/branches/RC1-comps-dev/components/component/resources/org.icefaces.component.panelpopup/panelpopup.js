@@ -7,6 +7,17 @@ mobi.panelpopup = {
 	  init: function(clientId, cfgIn){
           this.cfg[clientId] = cfgIn;
           var visible = this.cfg[clientId].visible;
+          if (visible[clientId]) {   //if nothing already in client saved state, then we use the server passed value
+              visible=visible[clientId];
+          }
+          var hidden = clientId+"_hidden";
+          var check = "false";
+          if (hidden && hidden.value){
+             check = hidden.value;
+          }
+          if (check=="true"){
+            visible=true;
+          }
           this.visible[clientId]  = visible;
    //       var idPanel = clientId+"_bg";
  /*         if (!document.getElementById(idPanel).className ){
@@ -14,7 +25,6 @@ mobi.panelpopup = {
           }  */
           if (this.visible[clientId]){
              this.open(clientId);
-             this.visible[clientId]=true;
           }
 	   },
 
@@ -48,13 +58,16 @@ mobi.panelpopup = {
             this.updateHidden(clientId, false);
         },
         updateHidden: function(clientId, visible){
-            var hiddenId = clientId+"hidden";
+            var hiddenId = clientId+"_hidden";
+            var parentId = clientId+"_popup";
             var hidden=document.getElementById(hiddenId);
             if (hidden){
                 hidden.value = visible;
                 return;
-            } //otherwise, have to add the hidden element to an available form
-            var form = mobi.findForm(clientId);
+            } //otherwise, have to add the hidden element to the parent form
+            // currently the only way to synchronize client and server is to have parent form of panelPopup
+            var parent = document.getElementById(parentId);
+            var form = mobi.findForm(parent);
             if (form){
                 var el = document.createElement("input");
                 el.type="hidden";
