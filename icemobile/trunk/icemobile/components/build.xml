@@ -50,11 +50,11 @@
                      includes="component/build.xml">
             </fileset>
         </subant>
-        <subant target="javadoc" >
+        <!-- subant target="javadoc" >
             <fileset dir="."
                      includes="component/build.xml">
             </fileset>
-        </subant>
+        </subant -->
     </target>
 
 
