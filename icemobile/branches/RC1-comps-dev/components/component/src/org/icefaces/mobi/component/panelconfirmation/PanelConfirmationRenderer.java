@@ -1,18 +1,16 @@
 package org.icefaces.mobi.component.panelconfirmation;
 
+import org.icefaces.mobi.utils.HTML;
+
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import org.icefaces.mobi.utils.Utils;
-import org.icefaces.mobi.utils.HTML;
 
 /**
  * for now the css for this class is just reused from the dateSpinner popup container classes
@@ -52,10 +50,11 @@ public class PanelConfirmationRenderer extends Renderer {
 
     private void encodePanel(ResponseWriter writer, String clientId, UIComponent uiComponent) throws IOException{
         PanelConfirmation panel = (PanelConfirmation) uiComponent;
-        StringBuilder popupBaseClass = new StringBuilder(PanelConfirmation.CONTAINER_CLASS);
+        StringBuilder popupBaseClass = new StringBuilder(PanelConfirmation.CONTAINER_HIDE_CLASS);
         // div that is use to hide/show the popup screen black out--will manipulate using js
         writer.startElement(HTML.DIV_ELEM,uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_bg", HTML.ID_ATTR);
+        writer.writeAttribute(HTML.CLASS_ATTR, PanelConfirmation.BLACKOUT_PNL_HIDE_CLASS, HTML.CLASS_ATTR);
         writer.endElement(HTML.DIV_ELEM);
        //panel
         writer.startElement(HTML.DIV_ELEM, uiComponent);
@@ -100,7 +99,7 @@ public class PanelConfirmationRenderer extends Renderer {
 
     private void renderAcceptButton(ResponseWriter writer, UIComponent uiComponent, String value, String id) throws IOException{
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", PanelConfirmation.BUTTON_CLASS, null);
+        writer.writeAttribute("class", PanelConfirmation.BUTTON_ACCEPT_CLASS, null);
         writer.writeAttribute(HTML.ID_ATTR,id+"_accept", HTML.ID_ATTR);
         writer.writeAttribute ("type", "button", "type");
         writer.writeAttribute("value", value, null);
@@ -110,7 +109,7 @@ public class PanelConfirmationRenderer extends Renderer {
 
     private void renderCancelButton(ResponseWriter writer, UIComponent uiComponent, String value, String id) throws IOException{
         writer.startElement("input", uiComponent);
-        writer.writeAttribute("class", PanelConfirmation.BUTTON_CLASS, null);
+        writer.writeAttribute("class", PanelConfirmation.BUTTON_CANCEL_CLASS, null);
         writer.writeAttribute(HTML.ID_ATTR, id+"_cancel", HTML.ID_ATTR);
         writer.writeAttribute ("type", "button", "type");
         writer.writeAttribute("value", value, null);

@@ -662,6 +662,7 @@
          <compressjs comp="datespinner" path="${resources}/org.icefaces.component.datespinner"/>
          <compressjs comp="timespinner" path="${resources}/org.icefaces.component.timespinner"/>
          <compressjs comp="flipswitch" path="${resources}/org.icefaces.component.flipswitch"/>
+         <compressjs comp="panelconfirmation" path="${resources}/org.icefaces.component.panelconfirmation"/>
      </target>
 
      <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
