@@ -616,6 +616,13 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.CLASS_ATTR, scrollClass, null);
         writer.writeAttribute(HTML.STYLE_ELEM, "height:" + table.getHeight() + "px", null);
         writer.startElement(HTML.TABLE_ELEM, null);
+
+        if (table.hasHeaders()) {
+            table.setInFakeHeader(true);
+            encodeTableHead(context, table, columns);
+            table.setInFakeHeader(false);
+        }
+
         encodeTableBody(context, table, columns);
         writer.endElement(HTML.TABLE_ELEM);
         writer.endElement(HTML.DIV_ELEM);
@@ -953,6 +960,9 @@ public class DataTableRenderer extends CoreRenderer {
         if (group != null) headContainer = group.getChildren();
 
         writer.startElement(HTML.THEAD_ELEM, null);
+
+        if (table.isInFakeHeader()) writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
+
         writer.startElement(HTML.TR_ELEM, null);
 
         // For each row of a col group, or child of a datatable
