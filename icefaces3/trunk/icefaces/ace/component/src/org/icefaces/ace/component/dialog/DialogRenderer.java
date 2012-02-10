@@ -33,6 +33,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.HTML;
 import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
@@ -56,7 +57,10 @@ public class DialogRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dialog.getClientId(context);
 
-        writer.startElement("script", null);
+        writer.startElement(HTML.SPAN_ELEM, null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId+"_script", null);
+
+        writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute("type", "text/javascript", null);
 
         writer.write("ice.ace.jq(function() {");
@@ -115,7 +119,8 @@ public class DialogRenderer extends CoreRenderer {
 		writer.write(jb.toString());
 		writer.write("});");
 
-        writer.endElement("script");
+        writer.endElement(HTML.SCRIPT_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
     }
 
     protected void encodeMarkup(FacesContext facesContext, Dialog dialog) throws IOException {
