@@ -456,19 +456,21 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
     // Show Duplicate Header
     dupeHead.css('display', 'table-header-group');
 
-    // Get Duplicate Header Sizing   
-    // Set Duplicate Header Sizing to True Header Columns
-    // Set Duplicate Header Sizing to Body Columns
+    // Get Duplicate Header Sizing
     var dupeHeadColumn, realHeadColumn, bodyColumn;
     for (i = 0; i < bodySingleCols.length; i++) {
         dupeHeadColumn = ice.ace.jq(dupeHeadSingleCols[i]);
         realHeadColumn = ice.ace.jq(realHeadSingleCols[i]);
         bodyColumn = ice.ace.jq(bodySingleCols[i]);
 
+        // Set Duplicate Header Sizing to True Header Columns
         realHeadColumn.width(dupeHeadColumn.width());
-        // Apply same max width to stacked sibling columns
+        // Apply same width to stacked sibling columns
         realHeadColumn.siblings('.ui-header-column').width(dupeHeadColumn.width());
+        // Equiv of max width
+        realHeadColumn.parent().width(dupeHeadColumn.width());
 
+        // Set Duplicate Header Sizing to Body Columns
         // Equiv of max width
         bodyColumn.parent().width(dupeHeadColumn.width());
         // Equiv of min width
@@ -730,16 +732,17 @@ ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, eleme
     if (!deselection) {
         if (this.isSingleSelection()) {
             // If single selection unselect previous selection
-            if (type == 'row') {
+            if (type == 'row')
                 element.siblings('.ui-selected').removeClass('ui-selected ui-state-active ui-state-highlight');
-                this.deselection = [];
-                deselectedId = this.selection[0];
-                this.deselection.push(deselectedId);
-            }
-            else if (type == 'cell') {
+            else if (type == 'cell')
                 ice.ace.jq(this.jqId + ' tbody.ui-datatable-data td').removeClass('ui-selected ui-state-active ui-state-highlight');
-            }
-            // This selection will be the only member of the delta
+
+            // Add current selection to deselection delta
+            this.deselection = [];
+            deselectedId = this.selection[0];
+            this.deselection.push(deselectedId);
+
+            // The new selection will be the only member of the delta
             this.selection = [];
         }
 
