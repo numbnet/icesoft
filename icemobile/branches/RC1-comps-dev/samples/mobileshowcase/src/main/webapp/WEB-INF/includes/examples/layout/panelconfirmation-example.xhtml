@@ -24,19 +24,19 @@
 
         <mobi:fieldsetGroup inset="true">
             <mobi:fieldsetRow>
+                <!-- panel confirmation component -->
                 The panelConfirmation component.
                 <mobi:commandButton value="Exec Command"
-                        actionListener="#{panelConfirmationBean.toggleVisibility}" />
-                <util:panelConfirmation id="panelConfirmation"
-                        title="Panel Confirmation Confrmation"
-                        message="Format Hard Drive?"
-                        acceptLabel="Yes"
-                        rendered="#{panelConfirmationBean.rendered}">
-                    <f:actionListener for="acceptEvent"
-                          type="org.icemobile.samples.mobileshowcase.view.examples.layout.panelconfirmation.AcceptAction"/>
-                    <f:actionListener for="cancelEvent"
-                          type="org.icemobile.samples.mobileshowcase.view.examples.layout.panelconfirmation.CancelAction"/>
-                </util:panelConfirmation>
+                                    panelConfirmation="panelConfirmation"
+                                    actionListener="#{panelConfirmationBean.execute}" />
+                <mobi:panelConfirmation id="panelConfirmation"
+                                        autoCenter="false"
+                                        title="Panel Confirmation Confrmation"
+                                        message="Format Hard Drive?"
+                                        acceptLabel="Yes" />
+            </mobi:fieldsetRow>
+            <mobi:fieldsetRow>
+                <h:outputText value="Command Executed: #{panelConfirmationBean.count}" />
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 

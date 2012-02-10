@@ -58,6 +58,7 @@ public class PanelConfirmation extends ExampleImpl<PanelConfirmation> implements
     public static final String BEAN_NAME = "panelConfirmationBean";
 
     public boolean rendered;
+    private int count;
 
     public PanelConfirmation() {
         super(PanelConfirmation.class);
@@ -69,5 +70,13 @@ public class PanelConfirmation extends ExampleImpl<PanelConfirmation> implements
 
     public boolean isRendered() {
         return rendered;
+    }
+
+    public void execute(ActionEvent event) {
+        count++;
+    }
+
+    public int getCount() {
+        return count;
     }
 }
