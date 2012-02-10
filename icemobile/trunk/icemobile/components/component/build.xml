@@ -291,8 +291,6 @@
     <target name="javadoc" depends="compile">
         <delete dir="${javadocs.dir}"/>     
         <mkdir dir="${java.doc}"/>       
-        <echo message="Path to javadoc src is ${src}"/>
-        <echo message="Path to javadoc dest is ${java.doc}"/>
         <javadoc sourcepath="${src}" destdir="${java.doc}"
                  classpathref="javadoc.classpath"
                  windowtitle="${javadoc.title}" failonerror="true"

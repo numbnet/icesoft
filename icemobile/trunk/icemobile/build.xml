@@ -191,8 +191,8 @@
             <mkdir dir="${docs.dir}/mobi/api/"/>
             <move file="./components/component/build/doc/tld" 
                 tofile="${docs.dir}/mobi/tld/"/>
-            <!-- move file="./components/component/build/doc/javadoc" 
-                tofile="${docs.dir}/mobi/api/"/ -->
+            <move file="./components/component/build/doc/javadoc" 
+                tofile="${docs.dir}/mobi/api/"/>
                 
            
 
