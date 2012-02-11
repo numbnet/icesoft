@@ -45,15 +45,15 @@ mobi.panelpopup = {
                contDiv.style.left = iWidth+'px';
                contDiv.style.top = (g.scrollTop + iHeight)+'px';
             }
-            document.getElementById(idPanel).className = "mobi-date-bg";
-            document.getElementById(clientId+"_popup").className = "mobi-date-container";
+            document.getElementById(idPanel).className = "mobi-panelpopup-bg ";
+            document.getElementById(clientId+"_popup").className = "mobi-panelpopup-container ";
             this.visible[clientId]= true;
             this.updateHidden(clientId, true);
         },
         close: function(clientId){
             var idPanel = clientId+"_bg" ;
-            document.getElementById(idPanel).className = "mobi-date";
-            document.getElementById(clientId+"_popup").className = "mobi-date-container-hide";
+            document.getElementById(idPanel).className = "mobi-panelpopup-bg-hide ";
+            document.getElementById(clientId+"_popup").className = "mobi-panelpopup-container-hide ";
             this.visible[clientId]= false;
             this.updateHidden(clientId, false);
         },
