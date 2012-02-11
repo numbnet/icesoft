@@ -1,20 +1,16 @@
 package org.icefaces.mobi.component.panelpopup;
 
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
-
-import java.io.IOException;
-import java.util.Map;
-import java.util.logging.Logger;
+import org.icefaces.mobi.utils.HTML;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.icefaces.mobi.utils.HTML;
-import org.icefaces.mobi.utils.Utils;
-
-import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
+import java.io.IOException;
+import java.util.Map;
+import java.util.logging.Logger;
 
 
 public class PanelPopupRenderer extends BaseLayoutRenderer {
@@ -93,6 +89,7 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
 
         writer.startElement(HTML.DIV_ELEM,uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + "_bg", HTML.ID_ATTR);
+        writer.writeAttribute(HTML.CLASS_ATTR, PanelPopup.BLACKOUT_PNL_CLASS, HTML.CLASS_ATTR);
         writer.endElement(HTML.DIV_ELEM);
          //panel
 

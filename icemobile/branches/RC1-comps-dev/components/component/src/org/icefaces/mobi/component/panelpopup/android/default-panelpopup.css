@@ -13,7 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+.mobi-panelpopup-bg-hide{
+    display: none;
+}
+.mobi-panelpopup-container-hide {
+    display: none;
+    opacity: 0;
+}
 .mobi-panelpopup-bg {
     width: 100%;
     height:100%;
@@ -27,8 +33,8 @@
 }
 .mobi-panelpopup-container {
     opacity: 1;
-    color:black;
-    background-color: white;
+    color:white;
+    background-color: #2B2A2F;
     border-radius: 1px 1px 1px 1px;
     -webkit-border-radius: 1px;
     -moz-border-radius: 1px;
