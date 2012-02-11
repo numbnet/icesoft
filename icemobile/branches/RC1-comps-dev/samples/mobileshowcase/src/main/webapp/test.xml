@@ -1,0 +1,489 @@
+<cruisecontrol>
+
+    <property environment="env"/>
+    <property name="ant165.home" value="${env.HOME}/apache-ant-1.6.5"/>
+    <property name="svn.repo.root" value="http://server.ice:8888/svn/repo"/>
+    <property name="svn.ossrepo.root" value="http://server.ice:8888/svn/ossrepo"/>
+    <property name="svn.username" value="builder"/>
+    <property name="svn.password" value="builder"/>
+
+    <system>
+        <configuration>
+            <threads count="1"/>
+        </configuration>
+    </system>
+
+    <plugin name="currentbuildstatuslistener" file="logs/${project.name}/status.txt"/>
+
+    <plugin name="ant165"  classname="net.sourceforge.cruisecontrol.builders.AntBuilder"
+            anthome="${ant165.home}"
+            buildfile="scripts/${project.name}/build.xml"
+            savelogdir="logs/${project.name}"
+            uselogger="true"
+            >
+        <!--property name="ant.XmlLogger.stylesheet.uri" value="../../../log.xsl"/-->
+    </plugin>
+
+    <plugin name="ant171"  classname="net.sourceforge.cruisecontrol.builders.AntBuilder"
+            anthome="${env.HOME}/apache-ant-1.7.1/"
+            buildfile="scripts/${project.name}/build.xml"
+            savelogdir="logs/${project.name}"
+            uselogger="true"
+            >
+        <!--property name="ant.XmlLogger.stylesheet.uri" value="../../../log.xsl"/-->
+    </plugin>
+
+    <plugin name="log">
+        <delete every="1" unit="MONTH" ignoreSuffix="true"/>
+    </plugin>
+
+    <plugin name="antpublisher" anthome="${ant165.home}"/>
+
+    <plugin name="artifactspublisher" dest="artifacts/${project.name}"/>
+
+    <plugin name="email"
+            buildresultsurl="http://server.ice:8088/cruisecontrol/buildresults/${project.name}"
+            defaultsuffix="@icesoft.com"
+            mailhost="127.0.0.1"
+            mailport="25"
+            username="builder"
+            password="G1085ozPsrTv"
+            returnaddress="${env.USER}@${env.HOSTNAME}"
+            >
+        <!--
+        <plugin name="email"
+            buildresultsurl="http://server.ice:8088/cruisecontrol/buildresults/${project.name}"
+            defaultsuffix="@icesoft.com"
+            mailhost="mail.icesoft.com"
+            mailport="25"
+            username="builder"
+            password="G1085ozPsrTv"
+            returnaddress="${env.USER}@${env.HOSTNAME}"
+        >
+
+        -->
+
+        <!--always address="yng"/-->
+    </plugin>
+
+    <plugin name="htmlemail"
+            buildresultsurl="http://server.ice:8088/cruisecontrol/buildresults/${project.name}"
+            defaultsuffix="@icesoft.com"
+            mailhost="127.0.0.1"
+            mailport="25"
+            username="builder"
+            password="G1085ozPsrTv"
+            returnaddress="${env.USER}@${env.HOSTNAME}">
+
+    </plugin>
+    <!--
+    <plugin name="htmlemail"
+        buildresultsurl="http://server.ice:8088/cruisecontrol/buildresults/${project.name}"
+        defaultsuffix=""
+        mailhost="mail.icesoft.com"
+        mailport="25"
+        username="builder"
+        password="G1085ozPsrTv"
+        returnaddress="${env.USER}@${env.HOSTNAME}">
+
+    </plugin>
+    -->
+
+    <plugin name="onsuccess">
+        <artifactspublisher file="logs/${project.name}/log.xml"/>
+        <artifactspublisher file="${ant165.home}/etc/log.xsl"/>
+        <artifactspublisher dir="checkout/${project.name}/dist"/>
+        <!--antpublisher buildfile="scripts/clean.xml"/-->
+    </plugin>
+
+    <plugin name="onfailure">
+        <artifactspublisher file="logs/${project.name}/log.xml"/>
+        <artifactspublisher file="${ant165.home}/etc/log.xsl"/>
+        <artifactspublisher dir="checkout/${project.name}/dist"/>
+    </plugin>
+
+    <!-- project1 is for ICEpdf, ICEfaces 1 builds that use ant 165 -->
+    <plugin name="project1" classname="net.sourceforge.cruisecontrol.ProjectConfig">
+        <dateformat format="yyyy-MM-dd HH:mm:ss"/>
+        <listeners>
+            <currentbuildstatuslistener/>
+        </listeners>
+        <modificationset>
+            <forceonly/>
+        </modificationset>
+        <!--schedule interval="86400">
+            <ant/>
+        </schedule-->
+        <schedule>
+            <ant165 time="0"/>
+        </schedule>
+        <log/>
+        <publishers>
+            <onsuccess/>
+            <onfailure/>
+            <!--email/-->
+        </publishers>
+    </plugin>
+
+    <!-- project2 is for ICEfaces 2 that uses ant 171 -->
+    <plugin name="project2" classname="net.sourceforge.cruisecontrol.ProjectConfig">
+        <dateformat format="yyyy-MM-dd HH:mm:ss"/>
+        <listeners>
+            <currentbuildstatuslistener/>
+        </listeners>
+        <modificationset>
+            <forceonly/>
+        </modificationset>
+        <!--schedule interval="86400">
+            <ant/>
+        </schedule-->
+        <schedule>
+            <ant171 time="0"/>
+        </schedule>
+        <log/>
+        <publishers>
+            <onsuccess/>
+            <onfailure/>
+            <!--email/-->
+        </publishers>
+    </plugin>
+
+    <project1 name="ICEfaces-Nightly">
+        <modificationset requiremodification="true">
+            <svn repositorylocation="${svn.repo.root}" username="${svn.username}" password="${svn.password}"/>
+            <svn repositorylocation="${svn.ossrepo.root}" username="${svn.username}" password="${svn.password}"/>
+        </modificationset>
+
+        <publishers>
+            <onsuccess>
+                <artifactspublisher dir="checkout/${project.name}/ce-bin-bundle/icefaces/dist" subdirectory="ce-bundles"/>
+                <artifactspublisher dir="checkout/${project.name}/ce-src-bundle/icefaces/dist" subdirectory="ce-bundles"/>
+                <!--artifactspublisher dir="checkout/${project.name}/ee-bin-bundle/icefaces-ee/dist" subdirectory="eps-bundles"/-->
+                <!--artifactspublisher dir="checkout/${project.name}/ide-tools-bundles/repo/tools/dist" subdirectory="ide-tools-bundles"/-->
+            </onsuccess>
+            <onfailure/>
+            <email>
+                <propertiesmapper file="email.properties"/>
+                <failure address="faces.dev" reportwhenfixed="true"/>
+            </email>
+
+        </publishers>
+    </project1>
+
+    <project1 name="ICEfaces-Continuous">
+        <modificationset quietperiod="0">
+            <svn repositorylocation="${svn.ossrepo.root}/icefaces/trunk/icefaces" username="${svn.username}" password="${svn.password}"/>
+        </modificationset>
+
+        <schedule interval="1800">
+            <ant165/>
+            <pause starttime="0000" endtime="0800"/>
+            <pause starttime="2000" endtime="2359"/>
+            <pause day="Saturday"/>
+            <pause day="Sunday"/>
+        </schedule>
+
+        <publishers>
+
+            <onsuccess/>
+            <onfailure/>
+            <email spamwhilebroken="false">
+                <propertiesmapper file="email.properties"/>
+                <failure address="faces.dev" reportwhenfixed="true"/>
+            </email>
+
+        </publishers>
+    </project1>
+
+    <!--
+    <project1 name="ICEfacesEE-1.8.2.GA_P03">
+        <publishers>
+            <onsuccess>
+                <artifactspublisher dir="checkout/${project.name}/ce-bin-bundle/icefaces/dist"/>
+                <artifactspublisher dir="checkout/${project.name}/ce-src-bundle/icefaces/dist"/>
+
+                <antpublisher buildfile="scripts/archive.xml">
+                    <property name="archive.dir" value="/mnt/public/BuildnBundle/ICEfaces/${project.name}"/>
+                </antpublisher>
+            </onsuccess>
+
+            <onfailure/>
+
+            <email>
+                <propertiesmapper file="email.properties"/>
+                <always address="faces.dev" />
+            </email>
+
+        </publishers>
+    </project1>
+
+    -->
+
+    <!-- ICEmobile Nighly Build -->
+    <project1 name="ICEmobile-Nightly">
+
+        <modificationset requiremodification="true">
+            <svn repositorylocation="${svn.ossrepo.root}/icemobile/trunk/" username="${svn.username}" password="${svn.password}"/>
+        </modificationset>
+
+        <schedule>
+            <ant171 time="0"/>
+        </schedule>
+
+        <publishers>
+            <onsuccess>
+                <artifactspublisher dir="checkout/${project.name}/os-src-bundle/icemobile/dist" />
+                <artifactspublisher dir="checkout/${project.name}/os-bin-bundle/icemobile/dist" />
+            </onsuccess>
+            <onfailure/>
+            <!-- htmlemail>
+               <propertiesmapper file="email.properties"/>
+               <failure address="smaryka" reportwhenfixed="true"/>
+               <always address="faces-mobile" />
+           </htmlemail -->
+        </publishers>
+    </project1>
+
+    <!-- ICEmobile Continuous Build -->
+    <project1 name="ICEmobile-Continuous">
+
+        <modificationset requiremodification="true">
+            <svn repositorylocation="${svn.ossrepo.root}/icemobile/trunk/" username="${svn.username}" password="${svn.password}"/>
+        </modificationset>
+
+        <schedule interval="1800">
+            <ant171 />
+            <pause starttime="0000" endtime="0800"/>
+            <pause starttime="2000" endtime="2359"/>
+            <pause day="Saturday"/>
+            <pause day="Sunday"/>
+        </schedule>
+
+        <publishers>
+            <onsuccess/>
+            <onfailure/>
+            <!-- htmlemail>
+               <propertiesmapper file="email.properties"/>
+               <failure address="faces-mobile" reportwhenfixed="true"/>
+           </htmlemail -->
+        </publishers>
+    </project1>
+
+
+    <!-- ICEmobile 1.0.0 Build -->
+    <project1 name="ICEmobile-1.0.0">
+        <schedule>
+            <ant171 time="0"/>
+        </schedule>
+
+        <publishers>
+            <onsuccess>
+                <artifactspublisher dir="checkout/${project.name}/os-src-bundle/icemobile/dist" />
+                <artifactspublisher dir="checkout/${project.name}/os-bin-bundle/icemobile/dist" />
+            </onsuccess>
+            <onfailure/>
+            <htmlemail>
+                <propertiesmapper file="email.properties"/>
+                <failure address="smaryka" reportwhenfixed="true"/>
+                <always address="faces-mobile" />
+            </htmlemail>
+        </publishers>
+    </project1>
+
+
+    <!-- ICEpdf Nighly Build -->
+    <project1 name="ICEpdf-Nightly">
+
+        <modificationset requiremodification="true">
+            <svn repositorylocation="${svn.ossrepo.root}/icepdf/trunk/" username="${svn.username}" password="${svn.password}"/>
+        </modificationset>
+
+        <publishers>
+            <onsuccess>
+                <artifactspublisher dir="checkout/${project.name}/os-src-bundle/icepdf/dist" />
+                <artifactspublisher dir="checkout/${project.name}/os-bin-bundle/icepdf/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-src-bundle/icepdf-pro/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-bin-bundle/icepdf-pro/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-bin-extra-bundle/icepdf-pro/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-bin-trial-bundle/icepdf-pro/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-bin-jws-bundle/icepdf-pro/demo/dist" />
+            </onsuccess>
+            <onfailure/>
+            <htmlemail>
+                <propertiesmapper file="email.properties"/>
+                <failure address="pcorless" reportwhenfixed="true"/>
+                <always address="pdf-dev" />
+            </htmlemail>
+        </publishers>
+    </project1>
+
+    <!-- ICEpdf continuous Build -->
+    <!--
+    <project1 name="ICEpdf-Continuous">
+        <modificationset requiremodification="false">
+            <svn repositorylocation="${svn.ossrepo.root}/icepdf/trunk/" username="${svn.username}" password="${svn.password}"/>
+        </modificationset>
+
+        <schedule interval="1800">
+            <ant/>
+            <pause starttime="0000" endtime="0800"/>
+            <pause starttime="2000" endtime="2359"/>
+            <pause day="Saturday"/>
+            <pause day="Sunday"/>
+        </schedule>
+
+        <publishers>
+            <onsuccess>
+                <artifactspublisher dir="checkout/${project.name}/os-src-bundle/icepdf/dist" />
+             <artifactspublisher dir="checkout/${project.name}/os-bin-bundle/icepdf/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-src-bundle/icepdf-pro/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-bin-bundle/icepdf-pro/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-bin-extra-bundle/icepdf-pro/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-bin-trial-bundle/icepdf-pro/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-bin-jws-bundle/icepdf-pro/demo/dist" />
+            </onsuccess>
+            <onfailure/>
+            <htmlemail>
+                <propertiesmapper file="email.properties"/>
+                <failure address="pcorless" reportwhenfixed="true"/>
+                <always address="pdf-dev" />
+            </htmlemail>
+        </publishers>
+    </project1>
+    -->
+
+    <!-- ICEpdf 4.3.1 Build -->
+    <project1 name="ICEpdf-4.3.1">
+
+        <publishers>
+            <onsuccess>
+                <artifactspublisher dir="checkout/${project.name}/os-src-bundle/icepdf/dist" />
+                <artifactspublisher dir="checkout/${project.name}/os-bin-bundle/icepdf/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-src-bundle/icepdf-pro/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-all-src-bundle/icepdf-pro/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-bin-bundle/icepdf-pro/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-bin-extra-bundle/icepdf-pro/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-bin-trial-bundle/icepdf-pro/dist" />
+                <artifactspublisher dir="checkout/${project.name}/pro-bin-jws-bundle/icepdf-pro/demo/dist" />
+            </onsuccess>
+            <onfailure/>
+            <htmlemail>
+                <propertiesmapper file="email.properties"/>
+                <failure address="pcorless" reportwhenfixed="true"/>
+                <always address="pdf-dev" />
+            </htmlemail>
+
+        </publishers>
+    </project1>
+
+    <!-- ICEfaces 3 Projects -->
+    <project2 name="ICEfaces3-Nightly">
+        <modificationset requiremodification="true">
+            <svn repositorylocation="${svn.ossrepo.root}" username="${svn.username}" password="${svn.password}"/>
+        </modificationset>
+        <publishers>
+            <onsuccess>
+                <artifactspublisher dir="checkout/${project.name}"/>
+            </onsuccess>
+            <onfailure/>
+
+            <email>
+                <propertiesmapper file="email.properties"/>
+                <failure address="faces.dev" reportwhenfixed="true"/>
+            </email>
+        </publishers>
+    </project2>
+
+    <project2 name="ICEfaces3-Continuous">
+        <modificationset quietperiod="0">
+            <svn repositorylocation="${svn.ossrepo.root}/icefaces3/trunk" username="${svn.username}" password="${svn.password}"/>
+        </modificationset>
+        <schedule interval="1800">
+            <ant171 />
+            <pause starttime="0000" endtime="0800"/>
+            <pause starttime="2000" endtime="2359"/>
+            <pause day="Saturday"/>
+            <pause day="Sunday"/>
+        </schedule>
+        <publishers>
+            <onsuccess/>
+            <onfailure/>
+            <email spamwhilebroken="false">
+                <propertiesmapper file="email.properties"/>
+                <failure address="faces.dev" reportwhenfixed="true"/>
+            </email>
+        </publishers>
+    </project2>
+
+    <project2 name="ICEfaces-3.0.0">
+        <publishers>
+            <onsuccess>
+                <artifactspublisher dir="checkout/${project.name}"/>
+            </onsuccess>
+            <onfailure/>
+
+            <email>
+                <propertiesmapper file="email.properties"/>
+                <failure address="faces.dev" reportwhenfixed="true"/>
+            </email>
+        </publishers>
+    </project2>
+
+    <!--
+    <project2 name="ICEfaces-EE-3.0.0.GA">
+        <publishers>
+            <onsuccess>
+                <artifactspublisher dir="checkout/${project.name}"/>
+            </onsuccess>
+            <onfailure/>
+            <email>
+                <propertiesmapper file="email.properties"/>
+                <failure address="faces.dev" reportwhenfixed="true"/>
+            </email>
+        </publishers>
+    </project2>
+    -->
+
+    <project2 name="ICEpush-Continuous">
+        <modificationset quietperiod="0">
+            <svn repositorylocation="${svn.ossrepo.root}/icepush/trunk" username="${svn.username}" password="${svn.password}"/>
+        </modificationset>
+
+        <schedule interval="1800">
+            <ant171 />
+            <pause starttime="0000" endtime="0800"/>
+            <pause starttime="2000" endtime="2359"/>
+            <pause day="Saturday"/>
+            <pause day="Sunday"/>
+        </schedule>
+
+        <publishers>
+
+            <onsuccess/>
+            <onfailure/>
+            <email spamwhilebroken="false">
+                <propertiesmapper file="email.properties"/>
+                <failure address="faces.dev" reportwhenfixed="true"/>
+            </email>
+
+        </publishers>
+    </project2>
+
+    <project2 name="ICEpush-Core-3.0.0">
+
+        <publishers>
+            <onsuccess>
+                <artifactspublisher dir="checkout/${project.name}"/>
+            </onsuccess>
+            <onfailure/>
+
+            <email>
+                <propertiesmapper file="email.properties"/>
+                <failure address="faces.dev" reportwhenfixed="true"/>
+            </email>
+
+        </publishers>
+    </project2>
+
+
+</cruisecontrol>

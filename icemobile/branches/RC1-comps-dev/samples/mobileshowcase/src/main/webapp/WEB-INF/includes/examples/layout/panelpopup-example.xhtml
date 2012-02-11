@@ -29,36 +29,35 @@
                         value="#{panelPopupBean.rendered?'Hide':'Show'} Popup"
                         actionListener="#{panelPopupBean.toggleRendered}"/>
 
-                <util:panelPopup id="panelConfirmation"
-                                 rendered="#{panelPopupBean.rendered}">
+                <mobi:panelPopup id="panelConfirmation"
+                                 autoCenter="false" style="overflow:hidden;width:300px;height:400px;"
+                                 visible="#{panelPopupBean.rendered}">
                     <mobi:outputList inset="false">
                         <mobi:outputListItem group="true" >
                             Thumbnail display
-                            <mobi:commandButton style=";"
-                                    actionListener="#{panelPopupBean.toggleRendered}" value="Close"/>
                         </mobi:outputListItem>
                         <mobi:outputListItem>
-                            <h:outputLink value="#">
+                            <h:commandLink actionListener="#{panelPopupBean.toggleRendered}">
                                 <h:graphicImage library="images/auction"
                                                 name="icesailor.png"/>
 
                                 <h3>ICEsoft Ice Sailer</h3>
 
                                 <p>Put him on the ice and watch him go!</p>
-                            </h:outputLink>
+                            </h:commandLink>
                         </mobi:outputListItem>
                         <mobi:outputListItem>
-                            <h:outputLink value="#">
+                            <h:commandLink actionListener="#{panelPopupBean.toggleRendered}">
                                 <h:graphicImage library="images/auction"
                                                 name="icebreaker.png"/>
 
                                 <h3>ICEsoft Icebreaker</h3>
 
                                 <p>Used icebreaker with very few dents.</p>
-                            </h:outputLink>
+                            </h:commandLink>
                         </mobi:outputListItem>
                         <mobi:outputListItem>
-                            <h:outputLink value="#">
+                            <h:commandLink actionListener="#{panelPopupBean.toggleRendered}">
                                 <h:graphicImage library="images/auction"
                                                 styleClass="list"
                                                 name="iceskate.png"/>
@@ -66,20 +65,20 @@
                                 <h3>ICEsoft Ice Skate</h3>
 
                                 <p>A single sharpened ice skate, size 7.</p>
-                            </h:outputLink>
+                            </h:commandLink>
                         </mobi:outputListItem>
                         <mobi:outputListItem>
-                            <h:outputLink value="#">
+                            <h:commandLink actionListener="#{panelPopupBean.toggleRendered}">
                                 <h:graphicImage library="images/auction"
                                                 name="icecar.png"/>
 
                                 <h3>ICEsoft Ice Car</h3>
 
                                 <p>Beautiful ice car with metal car filling.</p>
-                            </h:outputLink>
+                            </h:commandLink>
                         </mobi:outputListItem>
                     </mobi:outputList>
-                </util:panelPopup>
+                </mobi:panelPopup>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
