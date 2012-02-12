@@ -3,13 +3,10 @@ package org.icefaces.mobi.component.submitnotification;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
 
-import javax.faces.application.ProjectStage;
-import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.Map;
 import java.util.logging.Logger;
 
 
@@ -44,7 +41,10 @@ public class SubmitNotificationRenderer extends BaseLayoutRenderer {
           writer.startElement(HTML.DIV_ELEM, uiComponent);
           writer.writeAttribute(HTML.ID_ATTR, clientId+"_popup", HTML.ID_ATTR);
           writer.writeAttribute("class", popupBaseClass.toString(), "class");
+          writer.startElement(HTML.DIV_ELEM, uiComponent);
+          writer.writeAttribute(HTML.ID_ATTR, clientId+"_popup_inner", HTML.ID_ATTR);
           renderChildren(facesContext, panelNotify);
+          writer.endElement(HTML.DIV_ELEM);
           writer.endElement(HTML.DIV_ELEM);
       }
 

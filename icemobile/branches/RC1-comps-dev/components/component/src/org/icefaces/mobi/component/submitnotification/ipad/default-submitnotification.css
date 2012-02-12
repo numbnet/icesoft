@@ -41,12 +41,16 @@
     box-shadow: 3px 3px 5px black;
     border: 1px solid #e4e4e4;
     color: #000000;
-    padding: 0;
+    background: white;
     z-index: 1001;
     position: fixed;
     top:25%;
-    left:25%;
-    right:25%;
-    background-color: white
+    left:30%;
+    right:30%;
+    padding: 10px
 }
-
+.mobi-submitnotific-container > div {
+    padding: 7px 7px 7px 40px;
+    background: url('spinner.gif') no-repeat left;
+    display: inline-block;
+}
