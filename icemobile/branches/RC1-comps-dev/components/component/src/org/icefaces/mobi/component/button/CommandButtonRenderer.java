@@ -16,6 +16,8 @@
 package org.icefaces.mobi.component.button;
 
 import org.icefaces.mobi.component.panelconfirmation.PanelConfirmationRenderer;
+import org.icefaces.mobi.component.submitnotification.SubmitNotification;
+import org.icefaces.mobi.component.submitnotification.SubmitNotificationRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
 import org.icefaces.mobi.renderkit.CoreRenderer;
@@ -34,8 +36,11 @@ import java.util.logging.Logger;
 import java.util.List;
 
 
-public class CommandButtonRenderer extends CoreRenderer {
+public class  CommandButtonRenderer extends CoreRenderer {
     private static Logger logger = Logger.getLogger(CommandButtonRenderer.class.getName());
+    private static final String JS_NAME = "button.js";
+    private static final String JS_MIN_NAME = "button-min.js";
+    private static final String JS_LIBRARY = "org.icefaces.component.button";
     List <UIParameter> uiParamChildren;
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -59,8 +64,8 @@ public class CommandButtonRenderer extends CoreRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         CommandButton commandButton = (CommandButton) uiComponent;
-        uiParamChildren = Utils.captureParameters( commandButton );
         // root element
+        writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
 
@@ -119,56 +124,85 @@ public class CommandButtonRenderer extends CoreRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         CommandButton commandButton = (CommandButton) uiComponent;
+        uiParamChildren = Utils.captureParameters( commandButton );
+        if (commandButton.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", null);
+            writer.endElement(HTML.INPUT_ELEM);
+            return;
+        }
         boolean singleSubmit = commandButton.isSingleSubmit();
-        String params = "'"+clientId+"'";
+        String idAndparams = "'"+clientId+"'";
+        String params="";
         if (uiParamChildren != null) {
-             params += ","+ Utils.asParameterString(uiParamChildren);
+            params =  Utils.asParameterString(uiParamChildren);
+            idAndparams += ","+ params;
         }
         ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
-        StringBuilder seCall = new StringBuilder("ice.se(event, ").append(params).append(");");
-        StringBuilder sCall = new StringBuilder("ice.s(event, ").append(params).append(");");
-        if (commandButton.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", null);
-        } else {
-            StringBuilder builder = new StringBuilder(255);
-            String panelConfId=commandButton.getPanelConfirmation();
-            if (null != panelConfId){
-                ///would never use this with singleSubmit so always false when using with panelConfirmation
-               builder.append("{ event: event, singleSubmit: false");
-               if (hasBehaviors){
-                   String behaviors = this.encodeClientBehaviors(facesContext, cbh, "accept").toString();
-                   behaviors = behaviors.replace("\"", "\'");
-                   builder.append(behaviors);
-                }
-                StringBuilder pcBuilder = PanelConfirmationRenderer.renderOnClickString(uiComponent, builder );
-                if (pcBuilder.toString().startsWith("mobi.panelConf.init")) {
-                    //has panelConfirmation and it is found
-                    writer.writeAttribute(HTML.ONCLICK_ATTR, pcBuilder.toString(),  HTML.ONCLICK_ATTR);
-                } else if (hasBehaviors){ //no panelConfirmation found but has behaviors
-                    logger.warning("panelConfirmation of "+panelConfId+" NOT FOUND:- resorting to standard ajax form submit");
-                    StringBuilder cbhCall = getCall(facesContext, commandButton, singleSubmit, params, cbh);
-                    writer.writeAttribute(HTML.ONCLICK_ATTR, cbhCall.toString(), HTML.ONCLICK_ATTR);
-                } else {  //no behaviors and panelConfirmation not found
-                     writer.writeAttribute(HTML.ONCLICK_ATTR, sCall.toString(), HTML.ONCLICK_ATTR);
-                }
-            }else { //no panelconfirmation
-                StringBuilder pcBuilder = getCall(facesContext, commandButton, singleSubmit, params, cbh);
-                writer.writeAttribute(HTML.ONCLICK_ATTR, pcBuilder.toString(), null);
+        StringBuilder seCall = new StringBuilder("ice.se(event, ").append(idAndparams).append(");");
+        StringBuilder sCall = new StringBuilder("ice.s(event, ").append(idAndparams).append(");");
+
+        /**
+             *  panelConfirmation?  Then no singleSubmit
+             *     then add the confirmation panel ID.  panelConfrmation confirm will
+             *  submitNotification?
+             *     if no panelConfirmation then just display it when commandButton does submit
+             *         have behaviors? , ice.se or ice.s doesn't matter.
+             *
+             *
+             *
+        */
+        StringBuilder builder = new StringBuilder(255);
+        String panelConfId=commandButton.getPanelConfirmation();
+        String subNotId = commandButton.getSubmitNofification();
+        String submitNotificationId = null;
+
+        builder.append("{ elVal: this");
+        if (singleSubmit){
+            builder.append(", singleSubmit:").append(singleSubmit);
+        }
+        if (null != subNotId) {
+            submitNotificationId = SubmitNotificationRenderer.findSubmitNotificationId(uiComponent,subNotId);
+            if (null != submitNotificationId ){
+                builder.append(",snId: '").append(submitNotificationId).append("'");
+            } else {
+                logger.warning("no submitNotification id found for commandButton id="+clientId);
             }
+        }
+        if (uiParamChildren != null){
+           //include params for button
+            builder.append(",params: ").append(params);
+        }
+        if (null != panelConfId){
+            ///would never use this with singleSubmit so always false when using with panelConfirmation
+            //panelConf either has ajax request behaviors or regular ice.submit.
+            if (hasBehaviors){
+                String behaviors = this.encodeClientBehaviors(facesContext, cbh, "change").toString();
+                behaviors = behaviors.replace("\"", "\'");
+                builder.append(behaviors);
+            }
+            StringBuilder pcBuilder = PanelConfirmationRenderer.renderOnClickString(uiComponent, builder );
+            if (null != pcBuilder){
+                //has panelConfirmation and it is found
+                logger.info("has panelConf call="+pcBuilder.toString());
+                writer.writeAttribute(HTML.ONCLICK_ATTR, pcBuilder.toString(),HTML.ONCLICK_ATTR);
+            } else { //no panelConfirmation found so commandButton does the job
+                logger.warning("panelConfirmation of "+panelConfId+" NOT FOUND:- resorting to standard ajax form submit");
+                StringBuilder noPanelConf = this.getCall(clientId, builder.toString());
+                noPanelConf.append("});");     ///this is the cfg if commandButton does the submit
+                writer.writeAttribute(HTML.ONCLICK_ATTR, noPanelConf.toString(), HTML.ONCLICK_ATTR);
+            }
+        } else {  //no panelConfirmation requested so button does job
+            StringBuilder noPanelConf = this.getCall(clientId, builder.toString());
+            noPanelConf.append("});");
+            writer.writeAttribute(HTML.ONCLICK_ATTR, noPanelConf.toString(), HTML.ONCLICK_ATTR);
         }
         writer.endElement(HTML.INPUT_ELEM);
     }
 
-    private StringBuilder getCall(FacesContext facesContext, CommandButton commandButton, boolean singleSubmit, String params, ClientBehaviorHolder cbh) {
-        StringBuilder builder = new StringBuilder();
-        if (!cbh.getClientBehaviors().isEmpty()){
-            builder.append(this.buildAjaxRequest(facesContext, cbh, commandButton.getDefaultEventName()));
-        } else if (singleSubmit) {
-            builder.append("ice.se(event, ").append(params).append(");");
-        } else {//default is standard submit
-            builder.append("ice.s(event, ").append(params).append(");");
-        }
-        return builder;
+    private StringBuilder getCall(String clientId, String builder ) {
+        StringBuilder noPanelConf = new StringBuilder("mobi.button.select('").append(clientId).append("',");
+        noPanelConf.append(builder);
+        return noPanelConf;
     }
 }

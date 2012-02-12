@@ -5,19 +5,17 @@ mobi.panelConf = {
       opened: {},
       cfg: {},
       caller: {},
-      autocenter: false,
+      autocenter: {},
 	  init: function(clientId, callerId, center, cfgIn ){
           this.cfg[clientId] = cfgIn;
           this.caller[clientId] = callerId;
-          this.autocenter = center;
+          this.autocenter[clientId] = center;
           var idPanel = clientId+"_bg";
           if (!document.getElementById(idPanel).className ){
              document.getElementById(idPanel).className = 'mobi-panelconf-bg-hide';
           }
           this.open(clientId);
-          this.opened[clientId]=true;
 	   },
-
         confirm: function(clientId){
             var event = this.cfg.event;
             var hasBehaviors = false;
@@ -38,17 +36,9 @@ mobi.panelConf = {
             }
             this.close(clientId);
         },
-        toggle: function(clientId){
-            if (this.opened[clientId]==false){
-                this.open(clientId);
-            }  else {
-                this.close(clientId);
-            }
-        },
         open: function(clientId){
-            var idPanel = clientId+"_bg";
             var containerId = clientId+"_popup";
-            if (this.autocenter){
+            if (this.autocenter[clientId]){
                var w=window, d=document, e= d.documentElement, g=d.getElementsByTagName('body')[0];
                x = w.innerWidth||e.clientWidth||g.clientWidth, y=w.innerHeight||e.clientHeight||g.clientHeight;
                var iPanelHeight = 122;
@@ -60,8 +50,9 @@ mobi.panelConf = {
                contDiv.style.left = iWidth+'px';
                contDiv.style.top = (g.scrollTop + iHeight)+'px';
             }
+            var idPanel = clientId+"_bg";
             document.getElementById(idPanel).className = "mobi-panelconf-bg";
-            document.getElementById(clientId+"_popup").className = "mobi-panelconf-container";
+            document.getElementById(containerId).className = "mobi-panelconf-container";
             this.opened[clientId]= true;
         },
         close: function(clientId){
