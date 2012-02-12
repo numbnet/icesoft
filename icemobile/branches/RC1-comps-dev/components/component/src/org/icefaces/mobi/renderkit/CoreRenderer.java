@@ -187,7 +187,7 @@ public class CoreRenderer extends Renderer {
         }
     }
 
-        protected void writeJavascriptFile(FacesContext facesContext, UIComponent component, String JS_NAME,
+    protected void writeJavascriptFile(FacesContext facesContext, UIComponent component, String JS_NAME,
                                      String JS_MIN_NAME, String JS_LIBRARY) throws IOException {
         Map viewContextMap = facesContext.getViewRoot().getViewMap();
         ResponseWriter writer = facesContext.getResponseWriter();
@@ -209,5 +209,13 @@ public class CoreRenderer extends Renderer {
             viewContextMap.put(JS_NAME, "true");
             writer.endElement(HTML.SPAN_ELEM);
         }
+    }
+
+    protected boolean scriptIsLoaded(FacesContext facesContext, String JS_NAME, String JS_MIN_NAME) {
+        Map viewContextMap = facesContext.getViewRoot().getViewMap();
+        if (viewContextMap.containsKey(JS_NAME) || viewContextMap.containsKey(JS_MIN_NAME)) {
+             return true;
+        }
+        return false;
     }
 }

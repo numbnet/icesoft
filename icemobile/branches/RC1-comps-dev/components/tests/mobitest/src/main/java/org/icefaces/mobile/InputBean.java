@@ -154,6 +154,7 @@ public class InputBean implements Serializable {
     public void testSubmitNotification(ActionEvent ae){
         try{
             Thread.sleep(3000);
+            this.name="updateprocesscomplete";
         }  catch (Exception e){
 
         }
