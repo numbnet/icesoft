@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  * Created for mobility project for Audio and video playback
  * components. Should be also used for GraphicImage (yet to be refactored)
  */
-public class BaseResourceRenderer extends Renderer {
+public class BaseResourceRenderer extends CoreRenderer {
     private static Logger logger = Logger.getLogger(BaseResourceRenderer.class.getName());
 
 

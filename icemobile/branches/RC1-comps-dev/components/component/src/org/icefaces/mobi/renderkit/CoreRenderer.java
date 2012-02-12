@@ -30,6 +30,10 @@ package org.icefaces.mobi.renderkit;
 
 
 
+import org.icefaces.mobi.utils.HTML;
+
+import javax.faces.application.ProjectStage;
+import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 
 import javax.faces.component.behavior.ClientBehavior;
@@ -51,11 +55,8 @@ public class CoreRenderer extends Renderer {
      * @return
      */
     protected String buildAjaxRequest(FacesContext context, ClientBehaviorHolder component, String inEvent) {
-      //ClientBehaviors
- //       System.out.println("building Ajax Request");
         Map<String,List<ClientBehavior>> behaviorEvents = component.getClientBehaviors();
         if (behaviorEvents.isEmpty()){
-     //       System.out.println("why is behaviorEvents list empty????");
             return null;
         }
 
@@ -183,6 +184,30 @@ public class CoreRenderer extends Renderer {
                    }
                }
             }
+        }
+    }
+
+        protected void writeJavascriptFile(FacesContext facesContext, UIComponent component, String JS_NAME,
+                                     String JS_MIN_NAME, String JS_LIBRARY) throws IOException {
+        Map viewContextMap = facesContext.getViewRoot().getViewMap();
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = component.getClientId(facesContext);
+        if (!viewContextMap.containsKey(JS_NAME)) {
+            String jsFname = JS_NAME;
+            if (facesContext.isProjectStage(ProjectStage.Production)){
+                jsFname = JS_MIN_NAME;
+            }
+            //set jsFname to min if development stage
+            Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, JS_LIBRARY);
+            String src = jsFile.getRequestPath();
+            writer.startElement(HTML.SPAN_ELEM, component);
+            writer.writeAttribute(HTML.ID_ATTR, clientId+"_libJS", HTML.ID_ATTR);
+            writer.startElement("script", component);
+            writer.writeAttribute("text", "text/javascript", null);
+            writer.writeAttribute("src", src, null);
+            writer.endElement("script");
+            viewContextMap.put(JS_NAME, "true");
+            writer.endElement(HTML.SPAN_ELEM);
         }
     }
 }

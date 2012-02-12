@@ -130,7 +130,7 @@ public class PanelConfirmationRenderer extends Renderer {
             sb.append("});");
             return sb;
         } else {
-            return new StringBuilder(origOnClickCall);
+            return null;
         }
     }
 

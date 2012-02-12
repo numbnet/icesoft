@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  * tested validation support for resource container components for beta
  * still must test converter support
  */
-public class BaseInputResourceRenderer extends Renderer {
+public class BaseInputResourceRenderer extends CoreRenderer {
     private static Logger logger = Logger.getLogger(BaseInputResourceRenderer.class.getName());
 
 
