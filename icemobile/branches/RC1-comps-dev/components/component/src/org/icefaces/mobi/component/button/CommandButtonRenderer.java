@@ -184,7 +184,6 @@ public class  CommandButtonRenderer extends CoreRenderer {
             StringBuilder pcBuilder = PanelConfirmationRenderer.renderOnClickString(uiComponent, builder );
             if (null != pcBuilder){
                 //has panelConfirmation and it is found
-                logger.info("has panelConf call="+pcBuilder.toString());
                 writer.writeAttribute(HTML.ONCLICK_ATTR, pcBuilder.toString(),HTML.ONCLICK_ATTR);
             } else { //no panelConfirmation found so commandButton does the job
                 logger.warning("panelConfirmation of "+panelConfId+" NOT FOUND:- resorting to standard ajax form submit");

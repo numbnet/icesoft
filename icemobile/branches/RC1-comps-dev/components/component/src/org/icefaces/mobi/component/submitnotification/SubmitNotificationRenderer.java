@@ -25,9 +25,9 @@ public class SubmitNotificationRenderer extends BaseLayoutRenderer {
           SubmitNotification popup = (SubmitNotification) component;
           ResponseWriter writer = facesContext.getResponseWriter();
           String clientId = component.getClientId(facesContext);
-      //    boolean clientSide= panelNotify.isClientSide();
           writeJavascriptFile(facesContext, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
           encodeMarkup(facesContext, component);
+          encodeScript(facesContext, component);
       }
 
     protected void encodeMarkup(FacesContext facesContext, UIComponent uiComponent) throws IOException {
@@ -63,16 +63,20 @@ public class SubmitNotificationRenderer extends BaseLayoutRenderer {
           ResponseWriter writer = facesContext.getResponseWriter();
           SubmitNotification panelNotify = (SubmitNotification) component;
           String clientId = panelNotify.getClientId(facesContext);
-          writer.startElement(HTML.SPAN_ELEM, component);
-          writer.writeAttribute(HTML.ID_ATTR, clientId+"_scrSpan", HTML.ID_ATTR);
-          writer.startElement("script", null);
-          writer.writeAttribute("id", clientId+"_script", "id");
-          writer.writeAttribute("text", "text/javascript", null);
-          StringBuilder builder = new StringBuilder(255);
-          builder.append("mobi.submitnotify.init('").append(clientId).append("');") ;
-          writer.write(builder.toString());
-          writer.endElement("script");
-          writer.endElement(HTML.SPAN_ELEM);
+          //only put this tag in if the script is available to do so
+          if (this.scriptIsLoaded(facesContext, JS_NAME, JS_MIN_NAME)) {
+              writer.startElement(HTML.SPAN_ELEM, component);
+              writer.writeAttribute(HTML.ID_ATTR, clientId+"_scrSpan", HTML.ID_ATTR);
+              writer.startElement("script", null);
+              writer.writeAttribute("id", clientId+"_script", "id");
+              writer.writeAttribute("text", "text/javascript", null);
+              StringBuilder builder = new StringBuilder(255);
+              builder.append("ice.onAfterUpdate(function(){").append("mobi.submitnotify.close('").append(clientId).append("');") ;
+              builder.append("});") ;
+              writer.write(builder.toString());
+              writer.endElement("script");
+              writer.endElement(HTML.SPAN_ELEM);
+          }
       }
       public static String findSubmitNotificationId(UIComponent uiComponent, String subNotId){
         SubmitNotification panelNotification = (SubmitNotification) uiComponent.findComponent(subNotId);
