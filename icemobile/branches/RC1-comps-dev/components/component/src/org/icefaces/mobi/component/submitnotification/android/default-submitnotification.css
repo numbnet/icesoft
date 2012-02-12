@@ -34,16 +34,18 @@
 .mobi-submitnotific-container {
     opacity: 1;
     background-color: #666;
-    border-radius: 1px 1px 1px 1px;
-    -webkit-border-radius: 1px;
-    -moz-border-radius: 1px;
     border: 1px solid #5c5c5c;
     color: #fff;
-    padding: 0;
     z-index: 1001;
     position: absolute;
     top:15%;
     left:10%;
     right:10%;
+    padding: 10px
+}
+.mobi-submitnotific-container > div {
+    padding: 7px 7px 7px 40px;
+    background: url('spinner.gif') no-repeat left;
+    display: inline-block;
 }
 

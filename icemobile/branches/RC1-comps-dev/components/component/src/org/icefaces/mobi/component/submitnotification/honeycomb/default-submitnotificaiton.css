@@ -34,6 +34,7 @@
 .mobi-submitnotific-container {
     opacity: 1;
     background-color: black;
+    color: white;
     border: 1px solid #6595F9;
     border-radius: 3px 3px 3px 3px;
     -webkit-border-radius: 3px;
@@ -41,11 +42,16 @@
     -moz-box-shadow: 3px 3px 5px #3399FF,-3px -3px 5px #3399FF;
     -webkit-box-shadow: 3px 3px 10px #3399FF,-3px -3px 10px #3399FF;
     box-shadow: 3px 3px 10px #3399FF,-3px -3px 10px #3399FF;
-    color: white;
-    padding: 0;
     z-index: 1001;
     position: fixed;
     top:25%;
-    left:25%;
-    right:25%;
+    left:30%;
+    right:30%;
+    padding: 10px;
 }
+.mobi-submitnotific-container > div {
+    padding: 7px 7px 7px 40px;
+    background: url('spinner.gif') no-repeat left;
+    display: inline-block;
+}
+
