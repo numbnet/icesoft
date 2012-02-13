@@ -33,23 +33,21 @@ public class JavaScriptRunnerSetup implements SystemEventListener {
     }
 
     public boolean isListenerForSource(Object source) {
-        return true;
+        return EnvUtils.isICEfacesView(FacesContext.getCurrentInstance()) && source instanceof UIViewRoot;
     }
 
     public void processEvent(SystemEvent event) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        if (!EnvUtils.isICEfacesView(facesContext)) {
-            return;
-        }
 
         UIOutput jsOutput = new UIOutputWriter() {
             public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+                String scripts = JavaScriptRunner.collateScripts(context);
                 writer.startElement("span", this);
                 writer.writeAttribute("id", "dynamic-code", null);
-                if (!context.getPartialViewContext().isPartialRequest()) {
+                if (!context.getPartialViewContext().isPartialRequest() && scripts.length() > 0) {
                     writer.startElement("script", this);
                     writer.writeAttribute("type", "text/javascript", null);
-                    writer.write(JavaScriptRunner.collateScripts(context));
+                    writer.write(scripts);
                     writer.endElement("script");
                 }
                 writer.endElement("span");
