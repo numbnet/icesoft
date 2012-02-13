@@ -35,10 +35,10 @@
     <ui:param name="tldResources" value="#{accordionPanelResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
-            <ace:accordion collapsible="true" autoHeight="false">
-                <ace:accordionPane title="My To Do List">
-                        <h:selectManyCheckbox layout="pageDirection" selectedClass="selectedCheckBox" onclick="submit();">
+        <h:form id="form">
+            <ace:accordion id="accordion" collapsible="true" autoHeight="false">
+                <ace:accordionPane id="toDoList" title="My To Do List">
+                        <h:selectManyCheckbox id="list" layout="pageDirection" selectedClass="selectedCheckBox" onclick="submit();">
                                 <f:selectItems value="#{accordionPanelBean.toDoList}"
                                                     var="listItem"
                                                     itemValue="#{listItem.value}"
@@ -46,8 +46,8 @@
                         </h:selectManyCheckbox>
                 </ace:accordionPane>
 
-                <ace:accordionPane title="My Shopping List">
-                     <ace:dataTable   value="#{accordionPanelBean.items}"
+                <ace:accordionPane id="shoppingList" title="My Shopping List">
+                     <ace:dataTable id="table" value="#{accordionPanelBean.items}"
                                                 var="item">
                             <ace:column headerText="Picture">
                                 <h:graphicImage id="itemImg" value="#{item.image}" alt="#{item.name}"/>
@@ -67,7 +67,7 @@
                     </ace:dataTable>
                 </ace:accordionPane>  
 
-                <ace:accordionPane title="Picture of the day">  
+                <ace:accordionPane id="picOfDay" title="Picture of the day">  
                     <h:panelGrid style="text-align: center; width: 100%">
                         <h:graphicImage id="sampleImage" value="#{accordionPanelBean.imageLocation}" alt="Picture of the day"/>
                     </h:panelGrid>
