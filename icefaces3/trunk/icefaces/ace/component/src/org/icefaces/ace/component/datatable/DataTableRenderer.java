@@ -1034,8 +1034,10 @@ public class DataTableRenderer extends CoreRenderer {
         Map<Object, List<String>> rowToSelectedFieldsMap = table.getRowToSelectedFieldsMap();
         
         if (hasData)
-            for (int i = first; i < (first + rowCountToRender); i++)
-                encodeRow(context, table, columns, rowToSelectedFieldsMap, clientId, i, null, rowIndexVar, (page - 1) * rows == i);
+            for (int i = first; i < (first + rowCountToRender); i++) {
+                encodeRow(context, table, columns, rowToSelectedFieldsMap, clientId, i,
+                        null, rowIndexVar, (page == 0 && i == 0) || (page - 1) * rows == i);
+            }
         else encodeEmptyMessage(table, writer, columns);
 
         writer.endElement(HTML.TBODY_ELEM);
@@ -1059,7 +1061,6 @@ public class DataTableRenderer extends CoreRenderer {
     }
 
     protected void encodeRow(FacesContext context, DataTable table, List<Column> columns, Map<Object, List<String>> rowToSelectedFieldsMap, String clientId, int rowIndex, String parentIndex, String rowIndexVar, boolean topRow) throws IOException {
-        //System.out.println(clientId + ": " + rowIndex);
         table.setRowIndex(rowIndex);
         if (!table.isRowAvailable()) return;
         if (rowIndexVar != null) context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
