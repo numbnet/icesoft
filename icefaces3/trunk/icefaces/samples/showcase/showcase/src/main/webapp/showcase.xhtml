@@ -141,12 +141,12 @@
                    <!--
                     ~  <ui:repeat var="menuLink" ... > is used below to create links dynamically from the array navigationModel.currentComponentGroup.menuLinks
                     -->      
-                    <h:link 	id="link"
-								title="#{msgs[menuLink.title]}"
-                                outcome="showcase"
-                                disabled="#{menuLink.disabled}"
-                                class="#{mainSelected}"
-                                includeViewParams="true">
+					<h:link id="link"
+							title="#{msgs[menuLink.title]}"
+							outcome="showcase"
+							disabled="#{menuLink.disabled}"
+							class="#{mainSelected}"
+							includeViewParams="true">
                         <f:param name="grp" value="#{navigationModel.currentComponentGroup.beanName}"/>
                         <f:param name="exp" value="#{menuLink.exampleBeanName}"/>
                         #{msgs[menuLink.title]}
@@ -155,11 +155,13 @@
                     <ice:panelGroup effect="#{navigationModel.currentComponentExample.effect}"
                                     rendered="#{'selected' eq mainSelected}">
                         <ul>
-                        <ui:repeat var="subMenuLink"
+                        <ui:repeat id="subMenuLinks" 
+								   var="subMenuLink"
                                    value="#{navigationModel.currentComponentExample.subMenuLinks}">
                                 <li style="padding-left: 15px;">
                                     <ui:param name="beanName" value="#{subMenuLink.exampleBeanName}.title"/>
-                                    <h:commandLink actionListener="#{navigationController.navigate}"
+                                    <h:commandLink id="subLink"
+												   actionListener="#{navigationController.navigate}"
                                                    title="#{msgs[subMenuLink.title]}"
                                                    disabled="#{subMenuLink.disabled}"
                                                    class="#{(subMenuLink.exampleBeanName eq navigationModel.componentExample) ||
