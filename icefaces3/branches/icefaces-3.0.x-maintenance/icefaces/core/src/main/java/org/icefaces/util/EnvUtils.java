@@ -57,6 +57,7 @@ public class EnvUtils {
     public static String UNIQUE_RESOURCE_URLS = "org.icefaces.uniqueResourceURLs";
     public static String LAZY_WINDOW_SCOPE = "org.icefaces.lazyWindowScope";
     public static String DISABLE_DEFAULT_ERROR_POPUPS = "org.icefaces.disableDefaultErrorPopups";
+    public static String FAST_BUSY_INDICATOR = "org.icefaces.fastBusyIndicator";
     public static String REPLAY_NAVIGATION_ON_RELOAD = "org.icefaces.replayNavigationOnReload";
 
     //Parameters configurable using context parameters but only in compatibility mode
@@ -248,8 +249,9 @@ public class EnvUtils {
     }
 
     /**
-     * Returns the value for org.icefaces.diffConfig. This is configured 
+     * Returns the value for org.icefaces.diffConfig. This is configured
      * as a space separated name=value string.
+     *
      * @param facesContext The current FacesContext instance used to access the application map.
      * @return Returns the current setting of org.icefaces.diffConfig.  The default is null.
      */
@@ -572,6 +574,10 @@ public class EnvUtils {
         return EnvConfig.getEnvConfig(facesContext).disableDefaultErrorPopups;
     }
 
+    public static boolean isFastBusyIndicator(FacesContext facesContext) {
+        return EnvConfig.getEnvConfig(facesContext).fastBusyIndicator;
+    }
+
     public static boolean isReplayNavigationOnReload(FacesContext facesContext) {
         return EnvConfig.getEnvConfig(facesContext).replayNavigationOnReload;
     }
@@ -640,6 +646,7 @@ class EnvConfig {
     boolean lazyWindowScope;
     boolean messagePersistence;
     public boolean disableDefaultErrorPopups;
+    public boolean fastBusyIndicator;
     boolean replayNavigationOnReload;
 
     public EnvConfig(Map initMap) {
@@ -669,6 +676,7 @@ class EnvConfig {
         lazyWindowScope = decodeBoolean(initMap, EnvUtils.LAZY_WINDOW_SCOPE, true, info);
         messagePersistence = decodeBoolean(initMap, EnvUtils.MESSAGE_PERSISTENCE, true, info);
         disableDefaultErrorPopups = decodeBoolean(initMap, EnvUtils.DISABLE_DEFAULT_ERROR_POPUPS, false, info);
+        fastBusyIndicator = decodeBoolean(initMap, EnvUtils.FAST_BUSY_INDICATOR, false, info);
         replayNavigationOnReload = decodeBoolean(initMap, EnvUtils.REPLAY_NAVIGATION_ON_RELOAD, false, info);
 
         log.info("ICEfaces Configuration: \n" + info);
