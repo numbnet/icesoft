@@ -34,32 +34,35 @@
     <ui:param name="tldResources" value="#{linkButtonResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
-            <ace:tabSet>
-                <ace:tabPane label="Action / Static Navigation">
+        <h:form id="form">
+            <ace:tabSet id="tabSet">
+                <ace:tabPane id="pane1" label="Action / Static Navigation">
                     <ace:panel>
                         <h:panelGrid styleClass="centeredPanelGrid">
-                            <ace:linkButton value="go to push button example via action" 
+                            <ace:linkButton id="linkBttnAction"
+											value="go to push button example via action" 
                                             action="#{linkButton.executeAction}"
                                             style="text-decoration: underline;">
                                 <f:param name="grp" value="aceMenu"/>
                                 <f:param name="exp" value="pushButton" />
                             </ace:linkButton>
                             
-                            <ace:linkButton value="go to push button example statically"
+                            <ace:linkButton id="linkBttnStatic"
+											value="go to push button example statically"
                                             href="#{linkButton.staticNavigation}" 
                                             style="text-decoration: underline;"/>
                             
                         </h:panelGrid>
                     </ace:panel>
                 </ace:tabPane>
-                <ace:tabPane label="Action Listener">
+                <ace:tabPane id="pane2" label="Action Listener">
                     <ace:panel>
                         <h:panelGrid styleClass="centeredPanelGrid">
                             <h:panelGrid  style="height: 110px; width: 300px;">
-                                <h:graphicImage value="#{linkButton.currentImage.path}" alt="#{linkButton.currentImage.description}"/>
+                                <h:graphicImage id="img" value="#{linkButton.currentImage.path}" alt="#{linkButton.currentImage.description}"/>
                             </h:panelGrid>
-                            <ace:linkButton value="change image" 
+                            <ace:linkButton id="linkBttnActionList"
+											value="change image" 
                                             actionListener="#{linkButton.executeListener}"
                                             style="text-decoration: underline;"/>
                         </h:panelGrid>
