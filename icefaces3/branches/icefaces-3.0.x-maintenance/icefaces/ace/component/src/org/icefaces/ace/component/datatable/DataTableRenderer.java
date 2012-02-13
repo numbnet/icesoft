@@ -1,4 +1,4 @@
-/*
+    /*
  * Original Code developed and contributed by Prime Technology.
  * Subsequent Code Modifications Copyright 2011-2012 ICEsoft Technologies Canada Corp. (c)
  *
@@ -1029,8 +1029,9 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.CLASS_ATTR, tbodyClass, null);
 
         if (hasData)
-            for (int i = first; i < (first + rowCountToRender); i++)
-                encodeRow(context, table, columns, clientId, i, null, rowIndexVar, (page - 1) * rows == i);
+            for (int i = first; i < (first + rowCountToRender); i++) {
+                encodeRow(context, table, columns, clientId, i, null, rowIndexVar, (page == 0 && i == 0) || (page - 1) * rows == i);
+            }
         else encodeEmptyMessage(table, writer, columns);
 
         writer.endElement(HTML.TBODY_ELEM);
@@ -1054,7 +1055,6 @@ public class DataTableRenderer extends CoreRenderer {
     }
 
     protected void encodeRow(FacesContext context, DataTable table, List<Column> columns, String clientId, int rowIndex, String parentIndex, String rowIndexVar, boolean topRow) throws IOException {
-        //System.out.println(clientId + ": " + rowIndex);
         table.setRowIndex(rowIndex);
         if (!table.isRowAvailable()) return;
         if (rowIndexVar != null) context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
