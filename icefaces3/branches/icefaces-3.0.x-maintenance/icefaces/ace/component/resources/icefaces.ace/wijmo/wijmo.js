@@ -3171,7 +3171,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
             }
             active.children(":first")
 			.removeClass("ui-state-focus")
-			.removeAttr("id");
+			.attr("id", ""); // ICE-7762
             self._trigger("blur");
             self.activeItem = null;
         },
