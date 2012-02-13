@@ -34,25 +34,25 @@
     <ui:param name="tldResources" value="#{pushButtonResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
-            <ace:tabSet>
-                <ace:tabPane label="Action Navigation" >
+        <h:form id="form">
+            <ace:tabSet id="tabSet">
+                <ace:tabPane id="pane1" label="Action Navigation" >
                     <ace:panel>
                         <h:panelGrid styleClass="centeredPanelGrid">
-                            <ace:pushButton value="go to link button example" action="#{pushButton.executeAction}">
+                            <ace:pushButton id="pushBttnAction" value="go to link button example" action="#{pushButton.executeAction}">
                                 <f:param name="grp" value="aceMenu"/>
                                 <f:param name="exp" value="linkButton" />
                             </ace:pushButton>
                         </h:panelGrid>
                     </ace:panel>
                 </ace:tabPane>
-                <ace:tabPane label="Action Listener">
+                <ace:tabPane id="pane2" label="Action Listener">
                     <ace:panel>
                         <h:panelGrid styleClass="centeredPanelGrid">
                             <h:panelGrid  style="height: 110px; width: 300px;">
-                                <h:graphicImage value="#{pushButton.currentImage.path}" alt="#{pushButton.currentImage.description}"/>
+                                <h:graphicImage id="img" value="#{pushButton.currentImage.path}" alt="#{pushButton.currentImage.description}"/>
                             </h:panelGrid>
-                            <ace:pushButton value="change image" actionListener="#{pushButton.executeListener}"/>
+                            <ace:pushButton id="pushBttnActionList" value="change image" actionListener="#{pushButton.executeListener}"/>
                         </h:panelGrid>
                     </ace:panel>
                 </ace:tabPane>
