@@ -358,24 +358,28 @@ ice.ace.DataTable.prototype.setupPanelExpansionEvents = function() {
 }
 
 ice.ace.DataTable.prototype.setupScrolling = function() {
+    _self = this;
+
     var delayedCleanUpResizeToken,
+        delayedCleanUpResizeCount,
         delayedCleanUpResize = function() {
-            var headerTable = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header table'),
-                bodyTable = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body table');
+            var headerTable = ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-header table'),
+                bodyTable = ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-body table');
 
             _self.resizeScrolling();
-            if (headerTable.width() != (bodyTable.width() - 1)) {
-                setTimeout(delayedCleanUpResize ,150);
+            if (headerTable.width() != bodyTable.width() || delayedCleanUpResizeCount < 100) {
+                delayedCleanUpResizeCount++;
+                setTimeout(delayedCleanUpResize , 50);
+            } else if (delayedCleanUpResizeCount >= 100) {
+                delayedCleanUpResize = 0;
             }
          };
 
     this.resizeScrolling();
-    _self = this;
 
     ice.ace.jq(window).bind('resize', function() {
-        _self.resizeScrolling();
-        if (delayedCleanUpResizeToken) clearTimeout(delayedCleanUpResizeToken);
-        delayedCleanUpResizeToken = setTimeout(delayedCleanUpResize ,150);
+        clearTimeout(delayedCleanUpResizeToken);
+        delayedCleanUpResizeToken = setTimeout(delayedCleanUpResize , 500);
     });
 
     //live scroll
