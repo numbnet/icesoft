@@ -16,35 +16,32 @@
 
 package com.icesoft.faces.component.ext.renderkit;
 
-import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.component.IceExtended;
 import com.icesoft.faces.component.ext.HtmlInputSecret;
 import com.icesoft.faces.component.ext.KeyEvent;
 import com.icesoft.faces.component.ext.taglib.Util;
-
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
-import java.io.IOException;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-
+import java.io.IOException;
 import java.util.Map;
-import javax.faces.component.UIInput;
 
 public class SecretRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.SecretRenderer {
 
     //private static final String[] passThruAttributes = ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_INPUTSECRET);
     //handled onkeypress onfocus onblur onmousedown
-    private final static String[] passThruAttributes = 
-               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ALT_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.MAXLENGTH_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.SIZE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };    
-    
+    private final static String[] passThruAttributes =
+            new String[]{HTML.ACCESSKEY_ATTR, HTML.ALT_ATTR, HTML.DIR_ATTR, HTML.LANG_ATTR, HTML.MAXLENGTH_ATTR, HTML.ONCHANGE_ATTR, HTML.ONCLICK_ATTR, HTML.ONDBLCLICK_ATTR, HTML.ONKEYDOWN_ATTR, HTML.ONKEYUP_ATTR, HTML.ONMOUSEMOVE_ATTR, HTML.ONMOUSEOUT_ATTR, HTML.ONMOUSEOVER_ATTR, HTML.ONMOUSEUP_ATTR, HTML.ONSELECT_ATTR, HTML.SIZE_ATTR, HTML.STYLE_ATTR, HTML.TABINDEX_ATTR, HTML.TITLE_ATTR};
+
     protected void renderEnd(FacesContext facesContext, UIComponent uiComponent,
-            String currentValue) throws IOException {
+                             String currentValue) throws IOException {
 
         validateParameters(facesContext, uiComponent, UIInput.class);
 
@@ -90,27 +87,26 @@ public class SecretRenderer
         } else {
             root.setAttribute("value", "");
         }
-        
+
         HtmlInputSecret secret = (HtmlInputSecret) uiComponent;
         //Add the enter key behavior by default
-        root.setAttribute("onkeypress", combinedPassThru(secret.getOnkeypress(), this.ICESUBMIT));
+        root.setAttribute("onkeyup", combinedPassThru(secret.getOnkeyup(), this.ICESUBMIT));
         // set the focus id
         root.setAttribute("onfocus", combinedPassThru(secret.getOnfocus(), "setFocus(this.id);"));
         // clear focus id
-        String applicationOnblur = secret.getOnblur();  
+        String applicationOnblur = secret.getOnblur();
         String rendererOnblur = null;
         if (((IceExtended) uiComponent).getPartialSubmit()) {
             rendererOnblur = "setFocus('');iceSubmitPartial(form,this,event); return false;";
-        }
-        else {
+        } else {
             rendererOnblur = "setFocus('');";
         }
         root.setAttribute("onblur", combinedPassThru(applicationOnblur, rendererOnblur));
 
         //fix for ICE-2514
-        String mousedownScript = (String)uiComponent.getAttributes().get(HTML.ONMOUSEDOWN_ATTR);
+        String mousedownScript = (String) uiComponent.getAttributes().get(HTML.ONMOUSEDOWN_ATTR);
         root.setAttribute(HTML.ONMOUSEDOWN_ATTR, combinedPassThru(mousedownScript, "this.focus();"));
-    }  
+    }
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         HtmlInputSecret inputSecret = (HtmlInputSecret) uiComponent;
@@ -135,7 +131,7 @@ public class SecretRenderer
     }
 
     public void queueEventIfEnterKeyPressed(FacesContext facesContext,
-            UIComponent uiComponent) {
+                                            UIComponent uiComponent) {
         try {
             KeyEvent keyEvent =
                     new KeyEvent(uiComponent, facesContext.getExternalContext().getRequestParameterMap());
