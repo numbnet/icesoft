@@ -155,6 +155,37 @@ var ComponentIndicators;
         });
     }
 
+    function FastPointerIndicator(element) {
+        var privateOff = noop;
+
+        function toggle() {
+            //block any other action from triggering the indicator before being in 'off' state again
+            privateOn = noop;
+            //prepare cursor shape rollback
+            var elementStyle = element.style;
+            var previousCursor = elementStyle.cursor;
+            elementStyle.cursor = 'wait';
+
+            privateOff = function() {
+                elementStyle.cursor = previousCursor;
+                privateOn = toggle;
+                privateOff = noop;
+            };
+        }
+
+        var privateOn = toggle;
+
+        return object(function (method) {
+            method(on, /Safari/.test(navigator.userAgent) ? noop : function(self) {
+                privateOn();
+            });
+
+            method(off, function(self) {
+                privateOff();
+            });
+        });
+    }
+
     function OverlayIndicator() {
         return object(function(method) {
             var isIEBrowser = /MSIE/.test(navigator.userAgent);
@@ -310,7 +341,7 @@ var ComponentIndicators;
             var messages = configuration.messages;
             var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
             var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
-            var busyIndicator = PointerIndicator(container);
+            var busyIndicator = configuration.fastBusyIndicator ? FastPointerIndicator(container) : PointerIndicator(container);
             var overlay = object(function(method) {
                 method(on, function(self) {
                     var overlay = container.ownerDocument.createElement('iframe');
