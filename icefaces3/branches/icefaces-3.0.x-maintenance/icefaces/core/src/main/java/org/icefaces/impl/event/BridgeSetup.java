@@ -570,6 +570,8 @@ public class BridgeSetup implements SystemEventListener {
 
     public static class NonTransientJavascriptResourceOutput extends
             JavascriptResourceOutput {
+        private static String ScriptURL = "ScriptURL";
+
         public NonTransientJavascriptResourceOutput() {
         }
 
@@ -578,6 +580,10 @@ public class BridgeSetup implements SystemEventListener {
                                                      String library,
                                                      String version) {
             super(resourceHandler, name, library, version);
+            //save the calculated URL so that it can be restored
+            Map attributes = getAttributes();
+            attributes.put(ScriptURL, script);
+
             setTransient(false);
         }
 
@@ -585,22 +591,7 @@ public class BridgeSetup implements SystemEventListener {
             //call method from super-class to restore the component attributes first
             super.restoreState(context, state);
             Map attributes = getAttributes();
-            String name = (String) attributes.get("name");
-            String library = (String) attributes.get("library");
-            String version = (String) attributes.get("version");
-
-            ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-            Resource r = resourceHandler.createResource(name, fixResourceParameter(library));
-            String path = r.getRequestPath();
-            if (version == null) {
-                script = path;
-            } else {
-                if (path.contains("?")) {
-                    script = path + "&v=" + version;
-                } else {
-                    script = path + "?v=" + version;
-                }
-            }
+            script = (String) attributes.get(ScriptURL);
         }
     }
 
