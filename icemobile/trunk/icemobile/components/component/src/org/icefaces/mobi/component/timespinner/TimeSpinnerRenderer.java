@@ -366,9 +366,12 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
     private void setIntValues(TimeSpinner spinner, Date aDate) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(aDate);
-        spinner.setHourInt(cal.get(Calendar.HOUR));
-        spinner.setMinuteInt(cal.get(Calendar.MINUTE)+1);  //month is 0-indexed 0 = jan, 1=feb, etc
-    //    logger.info(" getampm is equal to "+Calendar.AM_PM);
+        int hourInt = cal.get(Calendar.HOUR);
+        if (0 == hourInt)  {
+            hourInt = 12;
+        }
+        spinner.setHourInt(hourInt);
+        spinner.setMinuteInt(cal.get(Calendar.MINUTE));
         spinner.setAmpm(cal.get(Calendar.AM_PM));
     }
 
