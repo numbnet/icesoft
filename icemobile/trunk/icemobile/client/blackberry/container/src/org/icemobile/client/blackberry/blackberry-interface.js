@@ -218,7 +218,8 @@ if (!window.ice.mobile) {
                 context.formid = "";
                 context.serialized = "";
             } catch (e) {
-                icefaces.logInContainer("Exception in handleResponse: " + e);
+
+                //icefaces.logInContainer("Exception in handleResponse: " + e);
             }
         }
 
