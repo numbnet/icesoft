@@ -44,7 +44,7 @@ import java.io.Serializable;
                 @ExampleResource(type = ResourceType.java,
                         title = "SubmitNotificationBean.java",
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
-                                "/view/examples/input/submitnotification/MenuButton.java")
+                                "/view/examples/input/submitnotification/SumbitNotificationBean.java")
         }
 )
 
