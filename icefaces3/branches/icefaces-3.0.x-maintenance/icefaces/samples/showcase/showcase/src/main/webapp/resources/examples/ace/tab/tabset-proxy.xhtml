@@ -34,27 +34,27 @@
     <ui:define name="example">
             
             <ace:tabSet id="myTabSet" cancelOnInvalid="#{not tabProxy.invalidSwitch}" clientSide="false">
-                <ace:tabPane>
+                <ace:tabPane id="txtEntry">
                     <f:facet name="label">Text Entry</f:facet>
-                    <h:form>
+                    <h:form id="proxyForm">
                         <ace:tabSetProxy for="myTabSet"/>
                         <h:panelGrid columns="2" styleClass="centeredPanelGrid">
                             <h:outputLabel value="Some Text:" />
-                            <h:inputText required="true" value="#{tabProxy.exampleText}" requiredMessage="You must enter some text before selecting any other tab"/>   
+                            <h:inputText id="txt" required="true" value="#{tabProxy.exampleText}" requiredMessage="You must enter some text before selecting any other tab"/>   
                         </h:panelGrid>
                     </h:form>
                 </ace:tabPane>
                 
-                <ace:tabPane>
+                <ace:tabPane id="confirm">
                     <f:facet name="label">Confirmation</f:facet>
                     
                     <h:form id="proxyForm2">
                         <ace:tabSetProxy for="myTabSet" />
                         <h:panelGrid styleClass="centeredPanelGrid">
-                            <h:outputText value="You entered: #{tabProxy.exampleText}"/>
+                            <h:outputText id="entered" value="You entered: #{tabProxy.exampleText}"/>
                             <h:panelGroup>
                                 <h:outputText value="Would You like to save it? - "/>
-                                <h:selectOneMenu value="#{tabProxy.secondTabSelection}" validator="#{tabProxy.validateSelection}">
+                                <h:selectOneMenu id="choice" value="#{tabProxy.secondTabSelection}" validator="#{tabProxy.validateSelection}">
                                     <f:selectItem itemLabel="-choose one-" itemValue="-1"/>
                                     <f:selectItems value="#{tabProxy.options}" var="option" itemLabel="#{option.key}" itemValue="#{option.value}"/>
                                 </h:selectOneMenu>
@@ -63,21 +63,23 @@
                     </h:form>
                 </ace:tabPane>
                 
-                <ace:tabPane>
+                <ace:tabPane id="outcome">
                     <f:facet name="label">Outcome</f:facet>
                     
                      <h:form id="proxyForm3" >
                         <ace:tabSetProxy id="tsProxyThree" for="myTabSet" />
-                        <h:outputText rendered="#{tabProxy.secondTabSelection eq 1}"
-                                                value="You successfully saved: #{tabProxy.exampleText}"/>
-                        <h:outputText rendered="#{tabProxy.secondTabSelection eq 0}"
-                                            value="Your entry has not been saved"/>
+                        <h:outputText id="saved"
+								      rendered="#{tabProxy.secondTabSelection eq 1}"
+                                      value="You successfully saved: #{tabProxy.exampleText}"/>
+                        <h:outputText id="notSaved"
+									  rendered="#{tabProxy.secondTabSelection eq 0}"
+                                      value="Your entry has not been saved"/>
                     </h:form>
                 </ace:tabPane>
             </ace:tabSet>
         
         <h:panelGrid styleClass="centeredPanelGrid">
-            <h:messages style="color: #ff3333; font-weight: bold;"/>
+            <h:messages id="msgs" style="color: #ff3333; font-weight: bold;"/>
         </h:panelGrid>
     </ui:define>
 </ui:composition>
