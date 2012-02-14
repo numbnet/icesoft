@@ -22,17 +22,17 @@
 
     <mobi:fieldsetGroup styleClass="exampleDescription">
 
-        <p>TODO - submitNotification description</p>
-
+        <p> The submitNotification panel provides the user with visual feed
+            back that a submit has taken place by presenting a customizable modal
+            popup.  Once the response has been rescieved by the client the
+            notification panel will be hidden automatically. </p>
 
 <pre>
-   &lt;mobi:fieldsetGroup
-       inset="true" &gt;
-      &lt;mobi:fieldsetRow&gt;
-         &lt;h:outputLabel /&gt;
-         &lt;mobi:inputText /&gt;
-      &lt;/mobi:fieldsetRow&gt;
-   &lt;/mobi:fieldsetGroup&gt;
+   &lt;mobi:submitNotification
+       id="subNotif" &gt;
+      &lt;h:outputText
+         value="Processing" /&gt;
+   &lt;/mobi:submitNotification&gt;
 </pre>
 
 
