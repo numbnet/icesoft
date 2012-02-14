@@ -32,19 +32,20 @@
     <ui:param name="tldResources" value="#{tabSetResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
-            <ace:tabSet clientSide="true" style="clear:both;">
-                <ace:tabPane label="Calendar">
+        <h:form id="form">
+            <ace:tabSet id="tabSet" clientSide="true" style="clear:both;">
+                <ace:tabPane id="calendar" label="Calendar">
                     <h:panelGrid styleClass="centeredPanelGrid" >
                         <ace:dateTimeEntry id="cal"
                                            timeZone="Canada/Mountain"
                                            pattern="MMM/dd/yyyy" />
                     </h:panelGrid>
                 </ace:tabPane>
-                <ace:tabPane label="Pre-loaded Data Table">
-                    <ace:dataTable   value="#{tabSet.items}"
-                                               var="item"
-                                               style="width: 100%;">
+                <ace:tabPane id="dataTable" label="Pre-loaded Data Table">
+                    <ace:dataTable id="tbl"
+								   value="#{tabSet.items}"
+                                   var="item"
+                                   style="width: 100%;">
                             <ace:column headerText="Picture">
                                 <h:graphicImage value="#{item.image}" alt="#{item.name}"/>
                             </ace:column>
@@ -53,7 +54,7 @@
                           </ace:column>
                     </ace:dataTable>
                 </ace:tabPane>
-                <ace:tabPane label="Pre-loaded Image">
+                <ace:tabPane id="image" label="Pre-loaded Image">
                     <h:panelGrid style="text-align: center; width: 100%">
                         <h:graphicImage id="sampleImage" value="#{tabSet.image.path}" alt="#{tabSet.image.description}"/>
                     </h:panelGrid>

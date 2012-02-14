@@ -32,33 +32,33 @@
     <ui:param name="tldResources" value="#{tabSetResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
-            <ace:tabSet clientSide="false" style="clear:both;">
-                <ace:tabPane>
+        <h:form id="form">
+            <ace:tabSet id="tabSet" clientSide="false" style="clear:both;">
+                <ace:tabPane id="pane1">
                     <f:facet name="label">My First Server Tab</f:facet>
-                    <h:outputText value="First Tab Body" />
+                    <h:outputText id="pane1Body" value="First Tab Body" />
                     <h:outputText value="#{tabServerSide.slowDownTab}"
                                   rendered="#{not tabServerSide.fastTabs}" />
                 </ace:tabPane>
-                <ace:tabPane>
+                <ace:tabPane id="pane2">
                     <f:facet name="label">My Second Server Tab</f:facet>
-                    <h:outputText value="Second Body" />
+                    <h:outputText id="pane2Body" value="Second Body" />
                     <h:outputText value="#{tabServerSide.slowDownTab}"
                                   rendered="#{not tabServerSide.fastTabs}" />
                 </ace:tabPane>
-                <ace:tabPane>
+                <ace:tabPane id="pane3">
                     <f:facet name="label">My Third Server Tab</f:facet>
-                    <h:outputText value="Third Body" />
+                    <h:outputText id="pane3Body" value="Third Body" />
                     <h:outputText value="#{tabServerSide.slowDownTab}"
                                   rendered="#{not tabServerSide.fastTabs}" />
                 </ace:tabPane>
             </ace:tabSet>
             </h:form>
-            <h:form>
+            <h:form id="form2">
                 <h:panelGrid columns="3" style="border-spacing: 10px;">
-                    <h:selectBooleanCheckbox value="#{tabServerSide.fastTabs}"/>
+                    <h:selectBooleanCheckbox id="fastTabs" value="#{tabServerSide.fastTabs}"/>
                     <h:outputText value="Use Fast Loading Tabs"/>
-                    <h:commandButton value="Set" type="submit"/>
+                    <h:commandButton id="set" value="Set" type="submit"/>
                 </h:panelGrid>
             </h:form>
     </ui:define>
