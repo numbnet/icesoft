@@ -63,7 +63,7 @@ public class PrinterRenderer extends CoreRenderer {
 		writer.startElement("script", printer);
 		writer.writeAttribute("type", "text/javascript", null);
 			
-		writer.write("jQuery(ice.ace.escapeClientId('" + parentClientId + "')).click(function(e) {\n");
+		writer.write("ice.ace.jq(ice.ace.escapeClientId('" + parentClientId + "')).click(function(e) {\n");
 		writer.write("e.preventDefault();\n");
 
         // ClientBehaviors
@@ -83,7 +83,7 @@ public class PrinterRenderer extends CoreRenderer {
 				}
 			}
 		}
-		writer.write("jQuery(ice.ace.escapeClientId('" + forValue.getClientId(facesContext) + "')).jqprint();\n");
+		writer.write("ice.ace.jq(ice.ace.escapeClientId('" + forValue.getClientId(facesContext) + "')).jqprint();\n");
 		writer.write("});");
 
 		writer.endElement("script");
