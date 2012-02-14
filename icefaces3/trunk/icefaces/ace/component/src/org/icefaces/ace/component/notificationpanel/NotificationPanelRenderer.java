@@ -81,7 +81,7 @@ public class NotificationPanelRenderer extends CoreRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 		
         JSONBuilder json = JSONBuilder.create();
-		writer.write("jQuery(document).ready(function(){");
+		writer.write("ice.ace.jq(document).ready(function(){");
 
 		writer.write(this.resolveWidgetVar(bar) + " = new ");
         json.beginFunction("ice.ace.NotificationBar").

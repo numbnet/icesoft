@@ -130,7 +130,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
         StringBuilder script = new StringBuilder();
         JSONBuilder json = JSONBuilder.create();
 
-        script.append("jQuery(function(){").append(resolveWidgetVar(dateTimeEntry)).append(" = new ");
+        script.append("ice.ace.jq(function(){").append(resolveWidgetVar(dateTimeEntry)).append(" = new ");
         json.beginFunction("ice.ace.Calendar").
             item(clientId).
             beginMap().
