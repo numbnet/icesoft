@@ -38,7 +38,7 @@ import java.io.Serializable;
         resources = {
                 // xhtml
                 @ExampleResource(type = ResourceType.xhtml,
-                        title = "panelconfirmation-example.xhtml",
+                        title = "panelpopup-example.xhtml",
                         resource = "/WEB-INF/includes/examples/layout/panelpopup-example.xhtml"),
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
