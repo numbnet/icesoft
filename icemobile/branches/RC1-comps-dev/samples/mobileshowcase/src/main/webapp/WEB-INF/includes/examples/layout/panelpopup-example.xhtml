@@ -24,60 +24,49 @@
 
         <mobi:fieldsetGroup inset="true">
             <mobi:fieldsetRow>
-                The panelPopup component.
-                <mobi:commandButton
-                        value="#{panelPopupBean.rendered?'Hide':'Show'} Popup"
+                The panelPopup is a container component that renders a popup panel
+                that hovers on top of a web page.  Click the "Show Popup" button
+                to display a popup.<br />
+                <mobi:commandButton style="margin-top:5px;float:left;"
+                        value="Show Popup"
                         actionListener="#{panelPopupBean.toggleRendered}"/>
 
                 <mobi:panelPopup id="panelConfirmation"
-                                 autoCenter="false" style="overflow:hidden;width:300px;height:400px;"
+                                 autoCenter="false" style=""
                                  visible="#{panelPopupBean.rendered}">
                     <mobi:outputList inset="false">
                         <mobi:outputListItem group="true" >
-                            Thumbnail display
+                            Panel Popup
                         </mobi:outputListItem>
                         <mobi:outputListItem>
                             <h:commandLink actionListener="#{panelPopupBean.toggleRendered}">
-                                <h:graphicImage library="images/auction"
-                                                name="icesailor.png"/>
-
-                                <h3>ICEsoft Ice Sailer</h3>
-
-                                <p>Put him on the ice and watch him go!</p>
+                                System Update
                             </h:commandLink>
                         </mobi:outputListItem>
                         <mobi:outputListItem>
                             <h:commandLink actionListener="#{panelPopupBean.toggleRendered}">
-                                <h:graphicImage library="images/auction"
-                                                name="icebreaker.png"/>
-
-                                <h3>ICEsoft Icebreaker</h3>
-
-                                <p>Used icebreaker with very few dents.</p>
+                                Status
                             </h:commandLink>
                         </mobi:outputListItem>
                         <mobi:outputListItem>
                             <h:commandLink actionListener="#{panelPopupBean.toggleRendered}">
-                                <h:graphicImage library="images/auction"
-                                                styleClass="list"
-                                                name="iceskate.png"/>
-
-                                <h3>ICEsoft Ice Skate</h3>
-
-                                <p>A single sharpened ice skate, size 7.</p>
+                                Battery use
                             </h:commandLink>
                         </mobi:outputListItem>
                         <mobi:outputListItem>
                             <h:commandLink actionListener="#{panelPopupBean.toggleRendered}">
-                                <h:graphicImage library="images/auction"
-                                                name="icecar.png"/>
-
-                                <h3>ICEsoft Ice Car</h3>
-
-                                <p>Beautiful ice car with metal car filling.</p>
+                                Device Information
+                            </h:commandLink>
+                        </mobi:outputListItem>
+                        <mobi:outputListItem>
+                            <h:commandLink actionListener="#{panelPopupBean.toggleRendered}">
+                                Model Number
                             </h:commandLink>
                         </mobi:outputListItem>
                     </mobi:outputList>
+                    <mobi:commandButton actionListener="#{panelPopupBean.toggleRendered}"
+                                        buttonType="important"
+                                        value="Hide Popup"/>
                 </mobi:panelPopup>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
