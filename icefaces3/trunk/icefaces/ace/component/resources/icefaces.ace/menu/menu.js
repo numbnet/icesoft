@@ -34,7 +34,7 @@ ice.ace.Menubar = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId + " > ul");
+    this.jq = ice.ace.jq(this.jqId + " > ul");
 
     if(!this.cfg.autoSubmenuDisplay) {
         this.cfg.trigger = this.jqId + ' li';
@@ -61,7 +61,7 @@ ice.ace.Menu = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId + '_menu');
+    this.jq = ice.ace.jq(this.jqId + '_menu');
 
     this.cfg.orientation = 'vertical';
 
@@ -97,8 +97,8 @@ ice.ace.MenuButton = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
 	this.jqId = ice.ace.escapeClientId(id);
-    this.jqbutton = jQuery(this.jqId + '_button');
-    this.jqMenu = jQuery(this.jqId + '_menu');
+    this.jqbutton = ice.ace.jq(this.jqId + '_button');
+    this.jqMenu = ice.ace.jq(this.jqId + '_menu');
 
     //menu options
     this.cfg.trigger = this.jqId + '_button';
@@ -131,13 +131,13 @@ ice.ace.ContextMenu = function(id, cfg) {
 	this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(this.id);
-    this.jq = jQuery(this.jqId + '_menu');
+    this.jq = ice.ace.jq(this.jqId + '_menu');
 
     //mouse tracking
     if(!ice.ace.ContextMenu.mouseTracking) {
         ice.ace.ContextMenu.mouseTracking = true;
 
-        jQuery(document).mousemove(function(e){
+        ice.ace.jq(document).mousemove(function(e){
             ice.ace.ContextMenu.pageX = e.pageX;
             ice.ace.ContextMenu.pageY = e.pageY;
             ice.ace.ContextMenu.event = e;
@@ -154,7 +154,7 @@ ice.ace.ContextMenu = function(id, cfg) {
             my: 'left top',
             using: function(to) {
 
-			var _this = jQuery(this);
+			var _this = ice.ace.jq(this);
 			if (_this.parent().get(0).id == _self.id) { // root menu
 				_this.position({
 					my: "left top",

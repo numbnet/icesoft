@@ -8,7 +8,7 @@
     $.fn.jqprint = function (options) {
         opt = $.extend({}, $.fn.jqprint.defaults, options);
 
-        var $element = (this instanceof jQuery) ? this : $(this);
+        var $element = (this instanceof ice.ace.jq) ? this : $(this);
 
         if (opt.operaSupport && $.browser.opera)
         {
@@ -60,7 +60,7 @@
 	};
 
     // Thanks to 9__, found at http://users.livejournal.com/9__/380664.html
-    jQuery.fn.outer = function() {
+    ice.ace.jq.fn.outer = function() {
       return $($('<div></div>').html(this.clone())).html();
     }
-})(jQuery);
+})(ice.ace.jq);

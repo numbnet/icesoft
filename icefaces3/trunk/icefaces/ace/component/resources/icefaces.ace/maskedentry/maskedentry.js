@@ -248,7 +248,7 @@
 			});
 		}
 	});
-})(jQuery);
+})(ice.ace.jq);
 
 /*
  *  InputMask Widget
@@ -257,7 +257,7 @@ ice.ace.InputMask = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id);
-    this.jq = jQuery(this.jqId);
+    this.jq = ice.ace.jq(this.jqId);
 
     if (this.cfg.mask) // only add functionality if mask was provided, otherwise degrade to simple text input
 	this.jq.mask(this.cfg.mask, this.cfg);

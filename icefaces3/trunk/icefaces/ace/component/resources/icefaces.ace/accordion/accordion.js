@@ -35,8 +35,8 @@ ice.ace.AccordionPanel = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id);
-    this.jq = jQuery(this.jqId + '_acco');
-    this.stateHolder = jQuery(this.jqId + '_active');
+    this.jq = ice.ace.jq(this.jqId + '_acco');
+    this.stateHolder = ice.ace.jq(this.jqId + '_active');
     var _self = this;
 
     //Create accordion
@@ -88,7 +88,7 @@ ice.ace.AccordionPanel.prototype.loadDynamicTab = function(panel) {
         ice.ace.selectCustomUpdates(responseXML, function(id, content) {
             if(id == _self.id){
 			if (panel) {
-				jQuery(panel).children('div').html(content);
+				ice.ace.jq(panel).children('div').html(content);
 
 				if(_self.cfg.cache) {
 					_self.markAsLoaded(panel);
@@ -147,11 +147,11 @@ ice.ace.AccordionPanel.prototype.fireAjaxTabChangeEvent = function(panel) {
 };
 
 ice.ace.AccordionPanel.prototype.markAsLoaded = function(panel) {
-    jQuery(panel).data('loaded', true);
+    ice.ace.jq(panel).data('loaded', true);
 };
 
 ice.ace.AccordionPanel.prototype.isLoaded = function(panel) {
-    return jQuery(panel).data('loaded') == true;
+    return ice.ace.jq(panel).data('loaded') == true;
 };
 
 ice.ace.AccordionPanel.prototype.select = function(index) {

@@ -48,7 +48,7 @@ ice.ace.Resizable = function(id, cfg) {
         }
     };
 
-    jQuery(this.target).resizable(this.cfg);
+    ice.ace.jq(this.target).resizable(this.cfg);
     
 };
 

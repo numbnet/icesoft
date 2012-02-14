@@ -36,7 +36,7 @@ ice.ace.Tooltip = function(cfg) {
 	}
 
     this.cfg.style = {};
-    jQuery.extend(this.cfg.style, this.ThemeRoller);
+    ice.ace.jq.extend(this.cfg.style, this.ThemeRoller);
     if (this.cfg.speechBubble) {
         this.cfg.style.border = { width: 5, radius: 10 };
         this.cfg.style.tip = true;
@@ -80,12 +80,12 @@ ice.ace.Tooltip.prototype.triggerDisplayListener = function() {
 /*
  * ThemeRoller integration for qtip
  */
-jQuery.fn.qtip.styles['defaults'].background=undefined;
-jQuery.fn.qtip.styles['defaults'].color=undefined;
-jQuery.fn.qtip.styles['defaults'].tip.background=undefined;
-jQuery.fn.qtip.styles['defaults'].title.background=undefined;
-jQuery.fn.qtip.styles['defaults'].title.fontWeight = undefined;
-jQuery.fn.qtip.styles['defaults'].width.max = Number.MAX_VALUE;
+ice.ace.jq.fn.qtip.styles['defaults'].background=undefined;
+ice.ace.jq.fn.qtip.styles['defaults'].color=undefined;
+ice.ace.jq.fn.qtip.styles['defaults'].tip.background=undefined;
+ice.ace.jq.fn.qtip.styles['defaults'].title.background=undefined;
+ice.ace.jq.fn.qtip.styles['defaults'].title.fontWeight = undefined;
+ice.ace.jq.fn.qtip.styles['defaults'].width.max = Number.MAX_VALUE;
 
 ice.ace.Tooltip.prototype.ThemeRoller = {
     border: {

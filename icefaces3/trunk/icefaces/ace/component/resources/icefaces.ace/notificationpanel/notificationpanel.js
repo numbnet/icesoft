@@ -32,25 +32,25 @@ ice.ace.NotificationBar = function(id, cfg) {
     this.cfg = cfg;
     this.jq = ice.ace.escapeClientId(this.id);
 
-    jQuery(this.jq).css(this.cfg.position, '0');
-    jQuery(this.jq).css("left", '0');
+    ice.ace.jq(this.jq).css(this.cfg.position, '0');
+    ice.ace.jq(this.jq).css("left", '0');
 
 //	jQuery(this.jq).appendTo(jQuery('body'));
 
     if (this.cfg.visible) {
-        jQuery(this.jq).css({'display':'block'});
+        ice.ace.jq(this.jq).css({'display':'block'});
     } else {
-        jQuery(this.jq).css({'display':'none'});
+        ice.ace.jq(this.jq).css({'display':'none'});
     }
 };
 
 ice.ace.NotificationBar.prototype.show = function() {
     if (this.cfg.effect === "slide")
-        jQuery(this.jq).slideDown(this.cfg.effect);
+        ice.ace.jq(this.jq).slideDown(this.cfg.effect);
     else if (this.cfg.effect === "fade")
-        jQuery(this.jq).fadeIn(this.cfg.effect);
+        ice.ace.jq(this.jq).fadeIn(this.cfg.effect);
     else if (this.cfg.effect === "none")
-        jQuery(this.jq).show();
+        ice.ace.jq(this.jq).show();
     this.cfg.visible = true;
     var behaviour = this.cfg && this.cfg.behaviors && this.cfg.behaviors.display;
     if (behaviour) {
@@ -60,11 +60,11 @@ ice.ace.NotificationBar.prototype.show = function() {
 
 ice.ace.NotificationBar.prototype.hide = function() {
     if (this.cfg.effect === "slide")
-        jQuery(this.jq).slideUp(this.cfg.effect);
+        ice.ace.jq(this.jq).slideUp(this.cfg.effect);
     else if (this.cfg.effect === "fade")
-        jQuery(this.jq).fadeOut(this.cfg.effect);
+        ice.ace.jq(this.jq).fadeOut(this.cfg.effect);
     else if (this.cfg.effect === "none")
-        jQuery(this.jq).hide();
+        ice.ace.jq(this.jq).hide();
     this.cfg.visible = false;
     var behaviour = this.cfg && this.cfg.behaviors && this.cfg.behaviors.close;
     if (behaviour) {
