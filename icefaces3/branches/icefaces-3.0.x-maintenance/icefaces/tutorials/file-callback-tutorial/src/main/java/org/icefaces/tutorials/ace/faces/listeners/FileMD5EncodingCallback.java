@@ -18,6 +18,7 @@ package org.icefaces.tutorials.ace.faces.listeners;
 
 import org.icefaces.ace.component.fileentry.*;
 
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import org.apache.commons.codec.binary.Hex;
@@ -37,55 +38,82 @@ import javax.faces.context.FacesContext;
  */
 @RequestScoped
 @ManagedBean
-public class FileMD5EncodingCallback implements FileEntryCallback {
-    private MessageDigest digest;
+public class FileMD5EncodingCallback implements FileEntryCallback, Serializable {
+    private transient MessageDigest digest;
     private boolean md5NotFound = false;
 
     // Set up a instance of a MD5 block-encoder
     public void begin(FileEntryResults.FileInfo fileInfo) {
-        try { digest = MessageDigest.getInstance("MD5"); }
+        try {
+            digest = MessageDigest.getInstance("MD5");
+        }
         catch (NoSuchAlgorithmException e) {
             md5NotFound = true;
         }
     }
     // Hash a block of bytes
     public void write(byte[] bytes, int offset, int length) {
-       if (!md5NotFound) digest.update(bytes, offset, length);
+       if (!md5NotFound) {
+           digest.update(bytes, offset, length);
+       }
     }
     // Hash a single byte
     public void write(int i) {
-        if (!md5NotFound) digest.update((byte) i);
+        if (!md5NotFound) {
+            digest.update((byte) i);
+        }
     }
     // When FileEntryCallback ends for a file:
     public void end(FileEntryResults.FileInfo fileEntryInfo) {
         // If the file upload was completed properly
-        if (md5NotFound) fileEntryInfo.updateStatus(new EncodingNotFoundUploadStatus(), true, true);
-
-        if (fileEntryInfo.getStatus().isSuccess()) {
-            fileEntryInfo.updateStatus(new EncodingSuccessStatus(), false);
+        if (md5NotFound) {
+            // Work-around for ICEfaces 3.0.0 issue ICE-7712, where setting
+            // invalidate=true will mess up the lifecycle. Instead, manually
+            // invalidate the form ourselves
+            fileEntryInfo.updateStatus(new EncodingNotFoundUploadStatus(), false);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.validationFailed();
         }
+        else if (fileEntryInfo.getStatus().isSuccess()) {
+            fileEntryInfo.updateStatus(new EncodingSuccessStatus(getHash()), false);
+        }
+        digest = null;
     }
 
     // Assistance method to convert digested bytes to hex string
-    public String getHash() { return String.valueOf(Hex.encodeHex(digest.digest())); }
+    protected String getHash() {
+        return String.valueOf(Hex.encodeHex(digest.digest()));
+    }
 
-    private class EncodingNotFoundUploadStatus implements FileEntryStatus {
+    private static class EncodingNotFoundUploadStatus implements FileEntryStatus {
         public boolean isSuccess() {
             return false;
         }
 
-        public FacesMessage getFacesMessage(FacesContext facesContext, UIComponent uiComponent, FileEntryResults.FileInfo fileInfo) {
-            return new FacesMessage(FacesMessage.SEVERITY_ERROR, TutorialMessageUtils.getMessage("content.callback.encode.fail.message"), TutorialMessageUtils.getMessage("content.callback.encode.fail.detail"));
+        public FacesMessage getFacesMessage(
+                FacesContext facesContext, UIComponent uiComponent, FileEntryResults.FileInfo fileInfo) {
+            return new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                TutorialMessageUtils.getMessage("content.callback.encode.fail.message"),
+                TutorialMessageUtils.getMessage("content.callback.encode.fail.detail"));
         }
     }
 
-    private class EncodingSuccessStatus implements FileEntryStatus {
+    private static class EncodingSuccessStatus implements FileEntryStatus {
+        private String hash;
+
+        EncodingSuccessStatus(String hash) {
+            this.hash = hash;
+        }
+
         public boolean isSuccess() {
             return true;
         }
 
-        public FacesMessage getFacesMessage(FacesContext facesContext, UIComponent uiComponent, FileEntryResults.FileInfo fileInfo) {
-            return new FacesMessage(FacesMessage.SEVERITY_INFO, TutorialMessageUtils.getMessage("content.callback.result.message"), getHash());
+        public FacesMessage getFacesMessage(
+                FacesContext facesContext, UIComponent uiComponent, FileEntryResults.FileInfo fileInfo) {
+            return new FacesMessage(FacesMessage.SEVERITY_INFO,
+                TutorialMessageUtils.getMessage("content.callback.result.message"),
+                hash);
         }
     }
 }
