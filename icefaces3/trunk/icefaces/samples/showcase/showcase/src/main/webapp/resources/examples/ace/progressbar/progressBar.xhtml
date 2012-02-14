@@ -38,24 +38,26 @@
         <!--preload dataTable resources so that the other pages using the dataTable component will work as expected-->
         <icecore:config mandatoryResource="dataTable"/>
 
-        <h:form>
+        <h:form id="form">
             <ace:panel id="progressContent">
                 <h:panelGrid width="100%" style="text-align: center;">
-                    <ace:progressBar value="#{progressBarBean.progressValue}"/>
+                    <ace:progressBar id="progressBar" value="#{progressBarBean.progressValue}"/>
                     <h:panelGrid style="font-weight: bold;" width="100%">
-                        <h:outputText value="#{progressBarBean.message}"/>
+                        <h:outputText id="msg" value="#{progressBarBean.message}"/>
                         <h:panelGrid style="margin-left: auto; margin-right: auto; height: 100px; width: 100%">
-                            <h:graphicImage value="#{progressBarBean.currentImage.path}"
+                            <h:graphicImage id="img"
+											value="#{progressBarBean.currentImage.path}"
                                             alt="#{progressBarBean.currentImage.description}"/>
                         </h:panelGrid>
 
-                        <h:outputText value="#{progressBarBean.currentImage.description}"/>
+                        <h:outputText id="desc" value="#{progressBarBean.currentImage.description}"/>
                     </h:panelGrid>
                 </h:panelGrid>
             </ace:panel>
 
             <h:panelGrid width="100%" columns="2">
-                <h:commandLink actionListener="#{progressBarBean.returnToPreviousImage}"
+                <h:commandLink id="previous"
+							   actionListener="#{progressBarBean.returnToPreviousImage}"
                                style="display: block; float: left;">
                     <h:panelGrid columns="2">
                         <h:graphicImage value="#{progressBarBean.arrowBackwardImage.path}"
@@ -65,7 +67,8 @@
                     <f:ajax execute="@this" render="progressContent"/>
                 </h:commandLink>
 
-                <h:commandLink actionListener="#{progressBarBean.proceedToNextImage}"
+                <h:commandLink id="next"
+							   actionListener="#{progressBarBean.proceedToNextImage}"
                                style="display: block; float: right;">
                     <h:panelGrid columns="2">
                         <h:outputText value="NEXT" style="color: #0099ff;"/>

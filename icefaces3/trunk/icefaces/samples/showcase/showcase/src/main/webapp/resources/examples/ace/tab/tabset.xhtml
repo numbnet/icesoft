@@ -35,19 +35,18 @@
     <ui:param name="tldResources" value="#{tabSetResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <ace:tabSet id="sampleTabSet" clientSide="false">
-                <ace:tabPane label="To Do List">
-                    <h:selectManyCheckbox layout="pageDirection" selectedClass="selectedCheckBox"  onclick="submit();">
+                <ace:tabPane id="toDoList" label="To Do List">
+                    <h:selectManyCheckbox id="list" layout="pageDirection" selectedClass="selectedCheckBox"  onclick="submit();">
                                 <f:selectItems value="#{tabSet.toDoList}"
                                                     var="listItem"
                                                     itemValue="#{listItem.value}"
                                                     itemLabel="#{listItem.key}"/>
                     </h:selectManyCheckbox>
                 </ace:tabPane>
-                <ace:tabPane label="Shopping List">
-                    <ace:dataTable   value="#{tabSet.items}"
-                                               var="item">
+                <ace:tabPane id="shoppingList" label="Shopping List">
+                    <ace:dataTable id="tbl" value="#{tabSet.items}" var="item">
                             <ace:column headerText="Picture">
                                 <h:graphicImage value="#{item.image}" alt="#{item.name}"/>
                             </ace:column>
@@ -65,12 +64,12 @@
                          </ace:column>
                     </ace:dataTable>
                 </ace:tabPane>
-                <ace:tabPane label="Picture Of The Day">
+                <ace:tabPane id="picOfDay" label="Picture Of The Day">
                     <h:panelGrid style="text-align: center; width: 100%">
                         <h:graphicImage id="sampleImage" value="#{tabSet.image.path}" alt="#{tabSet.image.description}"/>
                     </h:panelGrid>
                 </ace:tabPane>
-                <ace:tabPane label="Calendar">
+                <ace:tabPane id="calendar" label="Calendar">
                     <h:panelGrid styleClass="centeredPanelGrid" >
                         <ace:dateTimeEntry id="cal"
                                            timeZone="Canada/Mountain"
