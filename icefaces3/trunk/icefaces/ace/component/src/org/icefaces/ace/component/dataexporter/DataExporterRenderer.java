@@ -79,6 +79,7 @@ public class DataExporterRenderer extends CoreRenderer {
 			}
             onclick.append(" });");
 		} else {
+            onclick.append(" });");
 		    onclick.append("ice.s(event,this);");
         }
         onclick.append("return false;");
