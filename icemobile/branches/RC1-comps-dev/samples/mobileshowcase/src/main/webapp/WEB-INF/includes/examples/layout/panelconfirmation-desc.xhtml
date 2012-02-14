@@ -22,17 +22,24 @@
 
     <mobi:fieldsetGroup styleClass="exampleDescription">
 
-        <p>TODO - panelConfirmation description</p>
+        <p>The confirmation panel component pops up a modal confirmation
+            dialog when a commandButton has be pressed.  If the 'Accept' button
+            is selected, the commandButton execution will proceed; if the
+            'Cancel' button is selected, no action will take place. </p>
 
 
 <pre>
-   &lt;mobi:fieldsetGroup
-       inset="true" &gt;
-      &lt;mobi:fieldsetRow&gt;
-         &lt;h:outputLabel /&gt;
-         &lt;mobi:inputText /&gt;
-      &lt;/mobi:fieldsetRow&gt;
-   &lt;/mobi:fieldsetGroup&gt;
+&lt;mobi:commandButton
+   panelConfirmation="cnfPnl"
+   value="..."
+   actionListener="..."/&gt;
+......
+&lt;mobi:panelConfirmation
+   id="cnfPnl"
+   title="..."
+   message="..."
+   acceptLabel="Yes"
+   cancelLabel="No"/&gt;
 </pre>
 
 

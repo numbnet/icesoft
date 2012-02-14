@@ -25,18 +25,20 @@
         <mobi:fieldsetGroup inset="true">
             <mobi:fieldsetRow>
                 <!-- panel confirmation component -->
-                The panelConfirmation component.
-                <mobi:commandButton value="Exec Command"
+                The panelConfirmation component will be dipsplayed when the
+                execute button is pressed.  The user then has the choice to
+                veto execution or let it proceed. <br />
+                <mobi:commandButton value="Execute" style="padding-top:5px;"
                                     panelConfirmation="panelConfirmation"
                                     actionListener="#{panelConfirmationBean.execute}" />
                 <mobi:panelConfirmation id="panelConfirmation"
                                         autoCenter="false"
-                                        title="Panel Confirmation Confrmation"
-                                        message="Format Hard Drive?"
+                                        title="Confirm"
+                                        message="Are you sure you want to execute?"
                                         acceptLabel="Yes" />
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputText value="Command Executed: #{panelConfirmationBean.count}" />
+                <h:outputText value="Execution count: #{panelConfirmationBean.count}" />
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
