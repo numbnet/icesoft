@@ -95,12 +95,14 @@ public class FacesMessagesPhaseListener implements PhaseListener {
         //    A partial execute, not a full execute
 ////if(!phaseEvent.getPhaseId().equals(PhaseId.RENDER_RESPONSE))return;
         FacesContext facesContext = phaseEvent.getFacesContext();
-        Map viewMap = facesContext.getViewRoot().getViewMap();
-        if ((viewMap.containsKey(EnvUtils.MESSAGE_PERSISTENCE) && ((Boolean)viewMap.get(EnvUtils.MESSAGE_PERSISTENCE))) ||
-            (!viewMap.containsKey(EnvUtils.MESSAGE_PERSISTENCE) && EnvUtils.isMessagePersistence(facesContext))) {
+        if (facesContext.getViewRoot() != null) {
+            Map viewMap = facesContext.getViewRoot().getViewMap();
+            if ((viewMap.containsKey(EnvUtils.MESSAGE_PERSISTENCE) && ((Boolean)viewMap.get(EnvUtils.MESSAGE_PERSISTENCE))) ||
+                (!viewMap.containsKey(EnvUtils.MESSAGE_PERSISTENCE) && EnvUtils.isMessagePersistence(facesContext))) {
 
-            restoreFacesMessages(facesContext);
-            saveFacesMessages(facesContext);
+                restoreFacesMessages(facesContext);
+                saveFacesMessages(facesContext);
+            }
         }
     }
     
