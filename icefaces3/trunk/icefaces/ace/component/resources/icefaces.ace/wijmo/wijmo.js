@@ -75,7 +75,7 @@ function handler(event) {
     return $.event.handle.apply(this, args);
 }
 
-})(jQuery);
+})(ice.ace.jq);
 
 /*
  *
@@ -365,7 +365,7 @@ function handler(event) {
 		});
 	};
 
-})(jQuery);
+})(ice.ace.jq);
 
 __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 	// handle option events
@@ -2727,7 +2727,7 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
 			style.display = "";
 		}
 	});
-} (jQuery));
+} (ice.ace.jq));
 
 /*globals window,document,jQuery,clearTimeout,setTimeout*/
 
@@ -4397,4 +4397,4 @@ __wijReadOptionEvents = function (eventsArr, widgetInstance) {
             }
         }
     });
-} (jQuery));
+} (ice.ace.jq));

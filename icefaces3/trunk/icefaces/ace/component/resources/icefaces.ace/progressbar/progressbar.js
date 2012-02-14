@@ -44,11 +44,11 @@ ice.ace.ProgressBar = function(id, cfg) {
 }
 
 ice.ace.ProgressBar.prototype.setValue = function(value) {
-    jQuery(this.jqId).progressbar('value', value);
+    ice.ace.jq(this.jqId).progressbar('value', value);
 }
 
 ice.ace.ProgressBar.prototype.getValue  = function() {
-    return jQuery(this.jqId).progressbar('value');
+    return ice.ace.jq(this.jqId).progressbar('value');
 }
 
 ice.ace.ProgressBar.prototype.start = function() {

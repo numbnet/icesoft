@@ -16,7 +16,7 @@
 
 if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
-ice.ace.jq = jQuery.noConflict();
+ice.ace.jq = jQuery.noConflict(true);
 // After core is loaded after / as part of combined.js core will need to have
 // this object pulled apart so as no to overwrite existing members of ice.ace that
 // may come before it. Alternatively the generator could explictly add core.js earlier
@@ -475,13 +475,13 @@ new function($) {
         return this;
     }
     $.fn.setCaretToEnd = function() { $(this).setCaretPosition(-1); }
-}(jQuery);
+}(ice.ace.jq);
 
-jQuery.cookie = function (key, value, options) {
+ice.ace.jq.cookie = function (key, value, options) {
 
     // key and value given, set cookie...
     if (arguments.length > 1 && (value === null || typeof value !== "object")) {
-        options = jQuery.extend({}, options);
+        options = ice.ace.jq.extend({}, options);
 
         if (value === null) {
             options.expires = -1;

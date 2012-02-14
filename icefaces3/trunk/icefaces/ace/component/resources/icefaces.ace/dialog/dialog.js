@@ -46,7 +46,7 @@ ice.ace.Dialog = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id);
-    this.jq = jQuery(this.jqId);
+    this.jq = ice.ace.jq(this.jqId);
     var _self = this,
     closable = this.cfg.closable;
 
