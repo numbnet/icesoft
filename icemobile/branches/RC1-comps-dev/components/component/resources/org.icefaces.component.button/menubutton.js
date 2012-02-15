@@ -31,6 +31,7 @@ mobi.menubutton = {
          } else {
              ice.s(null, optId);
          }
+        myselect.options[index].selected=false;
         myselect.options.index =0;
 
     }
