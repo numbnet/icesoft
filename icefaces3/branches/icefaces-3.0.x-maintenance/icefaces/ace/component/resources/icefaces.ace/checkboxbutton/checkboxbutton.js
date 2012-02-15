@@ -29,33 +29,33 @@ ice.ace.checkboxbutton = {
 	   
 	button.addStateCSSClasses = function(state) {
 	
-		var node = jQuery(this._button);
+		var node = ice.ace.jq(this._button);
 		// add span for icon
 		if (!node.find('.ui-icon').get(0)) {
-			node.prepend(jQuery('<span />').addClass('ui-icon').addClass('ui-icon-unchecked'));
+			node.prepend(ice.ace.jq('<span />').addClass('ui-icon').addClass('ui-icon-unchecked'));
 		}
 	
 		if (state == 'hover') {
-			jQuery(this._button).addClass('ui-state-hover');
+			ice.ace.jq(this._button).addClass('ui-state-hover');
 		} else if (state == 'checked') {
-			var node = jQuery(this._button);
+			var node = ice.ace.jq(this._button);
 			node.addClass('ui-state-active');
 			node.find('.ui-icon').removeClass('ui-icon-unchecked').addClass('ui-icon-check');
 		} else if (state == 'disabled') {
-			jQuery(this._button).addClass('ui-state-disabled');
+			ice.ace.jq(this._button).addClass('ui-state-disabled');
 		}
 	};
 	
 	button.removeStateCSSClasses = function(state) {
 	
 		if (state == 'hover') {
-			jQuery(this._button).removeClass('ui-state-hover');
+			ice.ace.jq(this._button).removeClass('ui-state-hover');
 		} else if (state == 'checked') {
-			var node = jQuery(this._button);
+			var node = ice.ace.jq(this._button);
 			node.removeClass('ui-state-active');
 			node.find('.ui-icon').removeClass('ui-icon-check').addClass('ui-icon-unchecked');
 		} else if (state == 'disabled') {
-			jQuery(this._button).removeClass('ui-state-disabled');
+			ice.ace.jq(this._button).removeClass('ui-state-disabled');
 		}
 	};
 

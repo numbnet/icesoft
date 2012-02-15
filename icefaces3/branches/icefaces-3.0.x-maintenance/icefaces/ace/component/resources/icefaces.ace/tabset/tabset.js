@@ -279,7 +279,7 @@ ice.ace.tabset = {
 		// effect
 		if (jsfProps.isClientSide && jsProps.showEffect) {
 			var content = newTab.get('contentEl').childNodes[0];
-			if (jsProps.showEffect == 'fade') jQuery(content).hide();
+			if (jsProps.showEffect == 'fade') ice.ace.jq(content).hide();
 			if (content) ice.ace.animation.run({node: content, name: jsProps.showEffect}, {mode: 'show'}, jsProps.showEffectLength);
 		}
 	}
@@ -391,7 +391,7 @@ ice.ace.tabset = {
                }
                if (jsProps.showEffect) {
                    var node = tabviewObj.getTab(index).get('contentEl').childNodes[0];
-                   if (jsProps.showEffect == 'fade') jQuery(node).hide();
+                   if (jsProps.showEffect == 'fade') ice.ace.jq(node).hide();
                    if (node) ice.ace.animation.run({node: node, name: jsProps.showEffect}, {mode: 'show'}, jsProps.showEffectLength);
                }
            }

@@ -2151,4 +2151,4 @@
          classes: { tooltip: 'qtip-blue' }
       }
    };
-})(jQuery);
+})(ice.ace.jq);

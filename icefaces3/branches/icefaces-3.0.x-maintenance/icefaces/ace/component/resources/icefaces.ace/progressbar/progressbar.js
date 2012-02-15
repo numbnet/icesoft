@@ -44,11 +44,11 @@ ice.ace.ProgressBar = function(id, cfg) {
 }
 
 ice.ace.ProgressBar.prototype.setValue = function(value) {
-    jQuery(this.jqId).progressbar('value', value);
+    ice.ace.jq(this.jqId).progressbar('value', value);
 }
 
 ice.ace.ProgressBar.prototype.getValue  = function() {
-    return jQuery(this.jqId).progressbar('value');
+    return ice.ace.jq(this.jqId).progressbar('value');
 }
 
 ice.ace.ProgressBar.prototype.start = function() {
@@ -97,7 +97,7 @@ ice.ace.ProgressBar.prototype.fireCompleteEvent = function() {
 
     options.params = params;
 	    
-    if (jQuery.isFunction(completeListener)) {
+    if (ice.ace.jq.isFunction(completeListener)) {
         options.params[this.id] = this.id; // also triggers listener, if any
         completeListener(options.params);
     } else ice.ace.AjaxRequest(options);
@@ -122,7 +122,7 @@ ice.ace.ProgressBar.prototype.changeListener = function(ev, ui) {
 
     options.params = params;
 
-    if (jQuery.isFunction(changeListener)) {
+    if (ice.ace.jq.isFunction(changeListener)) {
         options.params[this.id] = this.id; // also triggers listener, if any
         changeListener(options.params);
     } else ice.ace.AjaxRequest(options);
@@ -149,7 +149,7 @@ ice.ace.ProgressBar.prototype.cancel = function() {
 
     options.params = params;
 
-    if (jQuery.isFunction(cancelListener)) {
+    if (ice.ace.jq.isFunction(cancelListener)) {
         options.params[this.id] = this.id; // also triggers listener, if any
         cancelListener(options.params);
         this.setValue(0);

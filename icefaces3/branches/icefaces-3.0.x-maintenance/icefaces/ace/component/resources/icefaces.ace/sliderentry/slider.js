@@ -33,10 +33,10 @@
 ice.ace.Slider = function(id, cfg) {
 	this.id = id;
 	this.cfg = cfg;
-    this.jq = jQuery(ice.ace.escapeClientId(this.id));
-	this.input = jQuery(ice.ace.escapeClientId(this.cfg.input));
+    this.jq = ice.ace.jq(ice.ace.escapeClientId(this.id));
+	this.input = ice.ace.jq(ice.ace.escapeClientId(this.cfg.input));
 	if(this.cfg.output) {
-		this.output = jQuery(ice.ace.escapeClientId(this.cfg.output));
+		this.output = ice.ace.jq(ice.ace.escapeClientId(this.cfg.output));
 	}
     var _self = this;
     
@@ -46,7 +46,7 @@ ice.ace.Slider = function(id, cfg) {
 	} else {
 		this.jq.slider(this.cfg);
 	}
-	var handle = jQuery(ice.ace.escapeClientId(this.id) + " > a");
+	var handle = ice.ace.jq(ice.ace.escapeClientId(this.id) + " > a");
 	if (this.cfg.tabindex) handle.attr('tabindex', this.cfg.tabindex);
 
     //Slide handler

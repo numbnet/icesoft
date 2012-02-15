@@ -31,7 +31,7 @@ ice.ace.Draggable = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
 	
-    jQuery(ice.ace.escapeClientId(this.cfg.target)).draggable(this.cfg);
+    ice.ace.jq(ice.ace.escapeClientId(this.cfg.target)).draggable(this.cfg);
 }
 
 ice.ace.Droppable = function(id, cfg) {
@@ -40,7 +40,7 @@ ice.ace.Droppable = function(id, cfg) {
 	
     this.setupDropHandler();
 	
-    jQuery(ice.ace.escapeClientId(this.cfg.target)).droppable(this.cfg);
+    ice.ace.jq(ice.ace.escapeClientId(this.cfg.target)).droppable(this.cfg);
 }
 
 ice.ace.Droppable.prototype.setupDropHandler = function() {
@@ -64,7 +64,7 @@ ice.ace.Droppable.prototype.setupDropHandler = function() {
 
         options.params = params;
 
-        if (jQuery.isFunction(dropListener)) {
+        if (ice.ace.jq.isFunction(dropListener)) {
             options.params[_self.id] = _self.id; // also triggers drop listener, if any
             dropListener(options.params);
         } else ice.ace.AjaxRequest(options);

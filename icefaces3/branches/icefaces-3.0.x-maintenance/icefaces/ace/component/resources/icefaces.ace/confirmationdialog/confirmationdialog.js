@@ -34,7 +34,7 @@ ice.ace.ConfirmDialog = function(id, cfg) {
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id);
-    this.jq = jQuery(this.jqId);
+    this.jq = ice.ace.jq(this.jqId);
     this.cfg.resizable = false;
     this.cfg.autoOpen = false;
 
@@ -64,13 +64,13 @@ ice.ace.ConfirmDialog = function(id, cfg) {
     this.jq.dialog(this.cfg);
 
     //Setup button pane
-    var buttons = jQuery(this.jqId + '_buttons');
+    var buttons = ice.ace.jq(this.jqId + '_buttons');
     buttons.addClass('ui-dialog-buttonpane ui-widget-content ui-helper-clearfix');
 //    buttons.appendTo(buttons.parent().parent()).addClass('ui-dialog-buttonpane ui-widget-content ui-helper-clearfix');
 
     //Close icon
     if(this.cfg.closable == false) {
-        jQuery(this.jqId).parent().find('.ui-dialog-titlebar-close').hide();
+        ice.ace.jq(this.jqId).parent().find('.ui-dialog-titlebar-close').hide();
     }
 
 //    if(this.cfg.appendToBody) {
