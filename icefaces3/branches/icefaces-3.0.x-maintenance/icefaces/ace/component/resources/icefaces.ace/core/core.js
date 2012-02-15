@@ -16,7 +16,8 @@
 
 if (!window['ice']) window.ice = {};
 if (!window.ice['ace']) window.ice.ace = {};
-if (!window.ice.ace['jq']) ice.ace.jq = jQuery.noConflict(true);
+if (!window.ice.ace['jq']) ice.ace.jq = jQuery;
+jQuery.noConflict(true);
 // After core is loaded after / as part of combined.js core will need to have
 // this object pulled apart so as no to overwrite existing members of ice.ace that
 // may come before it. Alternatively the generator could explictly add core.js earlier
