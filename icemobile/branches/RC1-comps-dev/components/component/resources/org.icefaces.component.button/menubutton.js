@@ -25,11 +25,16 @@ mobi.menubutton = {
              singleSubmit = this.cfg[clientId].singleSubmit;
              disabled = this.cfg[clientId].disabled;
          }
+         if (index ==0)return;
          if (singleSubmit){
              ice.se(null, optId);
          } else {
              ice.s(null, optId);
          }
+        myselect.options.index =0;
 
     }
+  /*  around: function(clientId){
+        this.options[this.selectedIndex].onclick();
+    }  */
 };

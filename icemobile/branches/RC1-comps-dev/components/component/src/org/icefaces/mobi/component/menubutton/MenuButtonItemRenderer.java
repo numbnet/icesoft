@@ -86,7 +86,6 @@ public class MenuButtonItemRenderer extends BaseLayoutRenderer{
          writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
          if (mbi.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
-            return;
          }
          writer.writeAttribute(HTML.VALUE_ATTR, mbi.getValue(), HTML.VALUE_ATTR);
          writer.write( mbi.getLabel());
