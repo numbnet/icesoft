@@ -246,9 +246,12 @@ public class DataTableMeta extends UIDataMeta {
     /* ##################################################################### */
     /* ########################## Scrolling Prop. ########################## */
     /* ##################################################################### */
-    @Property(tlddoc = "Defines a fixed height for the table in pixels. Must be set to " +
-            "use vertical scrolling.")
+    @Property(tlddoc = "Defines a fixed height for the scrollable table in pixels. Deprecated; superseded by scrollHeight.")
     private Integer height;
+
+    @Property(tlddoc = "Defines a fixed height for the scrollable table in pixels.",
+            defaultValue = "100", defaultValueType = DefaultValueType.EXPRESSION)
+    private Integer scrollHeight;
 
     @Property(tlddoc = "Enabling renders a table that overflows the fixed height and adds " +
             "a scrollbar. Note, used in combination with multi-row headers defined by a ColumnGroup" +

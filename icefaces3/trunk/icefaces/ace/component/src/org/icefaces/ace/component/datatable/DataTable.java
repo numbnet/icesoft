@@ -106,6 +106,18 @@ public class DataTable extends DataTableBase {
     }
 
     @Override
+    public Integer getScrollHeight() {
+        Integer height = super.getHeight();
+        Map clientValues = (Map) getStateHelper().get("scrollHeight_rowValues");
+
+        // If height is not null and scrollHeight only has a default value to return.
+        if (height != null && (clientValues == null || !clientValues.containsKey(getClientId())))
+            return height;
+        // Else return the value of scrollHeight
+        return super.getScrollHeight();
+    }
+    
+    @Override
     public void setSelectedCells(CellSelection[] cellSelection) {
         Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
         map.clear();
@@ -115,7 +127,6 @@ public class DataTable extends DataTableBase {
         }
         super.setSelectedCells(cellSelection);
     }
-
 
     @Override
     public RowStateMap getStateMap() {

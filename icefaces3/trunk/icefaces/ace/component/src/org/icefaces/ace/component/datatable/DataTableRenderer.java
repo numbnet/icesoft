@@ -512,7 +512,7 @@ public class DataTableRenderer extends CoreRenderer {
             writer.write(",scrollStep:" + table.getRows());
             writer.write(",scrollLimit:" + table.getRowCount());
 
-            if (table.getHeight() != Integer.MIN_VALUE) writer.write(",height:" + table.getHeight());
+            if (table.getScrollHeight() != Integer.MIN_VALUE) writer.write(",height:" + table.getScrollHeight());
         }
 
         //if (table.getOnRowEditUpdate() != null) writer.write(",onRowEditUpdate:'" + ComponentUtils.findClientIds(context, form, table.getOnRowEditUpdate()) + "'");
@@ -617,7 +617,7 @@ public class DataTableRenderer extends CoreRenderer {
         writer.startElement(HTML.DIV_ELEM, null);
         String scrollClass = DataTableConstants.SCROLLABLE_X_CLASS + " " + DataTableConstants.SCROLLABLE_BODY_CLASS;
         writer.writeAttribute(HTML.CLASS_ATTR, scrollClass, null);
-        writer.writeAttribute(HTML.STYLE_ELEM, "height:" + table.getHeight() + "px", null);
+        writer.writeAttribute(HTML.STYLE_ELEM, "height:" + table.getScrollHeight() + "px", null);
         writer.startElement(HTML.TABLE_ELEM, null);
 
         if (table.hasHeaders()) {
