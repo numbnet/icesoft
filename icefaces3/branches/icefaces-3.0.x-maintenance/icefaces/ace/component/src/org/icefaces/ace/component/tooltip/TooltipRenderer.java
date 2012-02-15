@@ -93,7 +93,7 @@ public class TooltipRenderer extends CoreRenderer {
 		writer.startElement("script", null);
 		writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write("jQuery(function() {");
+        writer.write("ice.ace.jq(function() {");
 
 		writer.write(this.resolveWidgetVar(tooltip) + " = new ");
 
@@ -149,7 +149,7 @@ public class TooltipRenderer extends CoreRenderer {
 
 		//Position
 		jb.beginMap("position");
-        String container = owner == null ? "document.body" : "jQuery(ice.ace.escapeClientId('" + owner +"')).parent()";
+        String container = owner == null ? "document.body" : "ice.ace.jq(ice.ace.escapeClientId('" + owner +"')).parent()";
         jb.entry("container", container, true)
 			.beginMap("corner")
 				.entry("target", tooltip.getTargetPosition())

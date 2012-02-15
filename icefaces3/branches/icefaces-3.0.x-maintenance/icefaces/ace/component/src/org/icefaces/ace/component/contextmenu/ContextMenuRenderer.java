@@ -57,7 +57,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
 		writer.writeAttribute("type", "text/javascript", null);
 
         JSONBuilder json = JSONBuilder.create();
-        writer.write("jQuery(function() {");
+        writer.write("ice.ace.jq(function() {");
         
 		writer.write(widgetVar + " = new ");
         json.beginFunction("ice.ace.ContextMenu").
