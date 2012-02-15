@@ -69,7 +69,7 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
 
          // should be auto base though
          writer.startElement(HTML.SPAN_ELEM, uiComponent);
-         writer.writeAttribute(HTML.CLASS_ATTR, selectClass.toString(), HTML.CLASS_ATTR);
+         writer.writeAttribute(HTML.CLASS_ATTR, buttonClass.toString(), HTML.CLASS_ATTR);
          writer.writeAttribute(HTML.ID_ATTR, clientId+"_btn", HTML.ID_ATTR);
          writer.startElement(HTML.SPAN_ELEM, uiComponent);
          String selectLabel = menu.getButtonLabel();
