@@ -51,16 +51,16 @@
             }
         </script>
 
-        <h:form>
+        <h:form id="form">
             
             <ace:panel>
-                <ace:progressBar widgetVar="clientSideBar" />
+                <ace:progressBar id="progressBar" widgetVar="clientSideBar" />
             </ace:panel>
             
             <h:panelGrid width="100%">
                     <h:panelGroup>
-                        <h:commandButton value="Start" onclick="begin();" type="button" style="float: left;"/>
-                        <h:commandButton value="Cancel" onclick="stop();" type="button" style="float: right;"/>
+                        <h:commandButton id="start" value="Start" onclick="begin();" type="button" style="float: left;"/>
+                        <h:commandButton id="cancel" value="Cancel" onclick="stop();" type="button" style="float: right;"/>
                     </h:panelGroup>
             </h:panelGrid>
             

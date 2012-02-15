@@ -35,13 +35,14 @@
     <ui:param name="tldResources" value="#{panelResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
-            <ace:panel header="ICEfaces Header"
+        <h:form id="form">
+            <ace:panel id="panel"
+					   header="ICEfaces Header"
                        closable="true"
                        toggleable="true"
                        collapsed="#{panelBean.collapsed}">
                 <f:facet name="options">
-                    <ace:menu>
+                    <ace:menu id="menu">
                         <ace:submenu label="File">
                             <ace:menuItem value="New" icon="ui-icon"/>
                             <ace:menuItem value="Open" icon="ui-icon"/>
@@ -55,7 +56,8 @@
                 <p>Adhering closely to the standard JSF 2 extension points allows ICEfaces to work transparently with the stock JSF framework, simplifying integration and fostering 3rd party compatibility with other JSF 2-compliant libraries.</p>
             </ace:panel>
             <center>
-            <h:commandButton value="#{panelBean.collapsed ? 'Expand' : 'Collapse'}"
+            <h:commandButton id="toggle"
+							 value="#{panelBean.collapsed ? 'Expand' : 'Collapse'}"
                              actionListener="#{panelBean.toggleCollapsed}"/>
             </center>
         </h:form>

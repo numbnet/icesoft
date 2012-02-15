@@ -34,7 +34,7 @@
 
     <ui:define name="example">
 
-        <h:form>
+        <h:form id="form">
             
             <ace:panel>
                 <ace:progressBar id="clientAndServerProgressBar"
@@ -58,8 +58,8 @@
             <h:panelGrid width="100%">
                     <h:panelGroup>
                         <f:ajax event="click" render="message">
-                            <h:commandButton value="Add 10%" onclick="increase();" type="button" style="float: left;"/>
-                            <h:commandButton value="Remove 10%" onclick="decrease();" type="button" style="float: right;"/>
+                            <h:commandButton id="add" value="Add 10%" onclick="increase();" type="button" style="float: left;"/>
+                            <h:commandButton id="remove" value="Remove 10%" onclick="decrease();" type="button" style="float: right;"/>
                         </f:ajax>
                     </h:panelGroup>
             </h:panelGrid>

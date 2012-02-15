@@ -33,10 +33,11 @@
     <ui:param name="tldResources" value="#{panelResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <h2><h:outputText id="status" value="Listener Status: #{panelListener.statusMessage}"/></h2>
         
-            <ace:panel header="ICEfaces Header With Listeners"
+            <ace:panel id="panel"
+					   header="ICEfaces Header With Listeners"
                        closable="true"
                        toggleable="true">
                 <ace:ajax event="close" listener="#{panelListener.close}" render="status" />
