@@ -434,6 +434,17 @@
                           name="button" skin="honeycomb"/>
         <includeresources dir="src/org/icefaces/mobi/component/button/bberry"
                           name="button" skin="bberry"/>
+        <!-- panelConfirmation - confirmation panel  -->
+        <includeresources dir="src/org/icefaces/mobi/component/panelconfirmation/ipad"
+                          name="panelconfirmation" skin="ipad"/>
+        <includeresources dir="src/org/icefaces/mobi/component/panelconfirmation/iphone"
+                          name="panelconfirmation" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/mobi/component/panelconfirmation/honeycomb"
+                          name="panelconfirmation" skin="honeycomb"/>
+        <includeresources dir="src/org/icefaces/mobi/component/panelconfirmation/android"
+                          name="panelconfirmation" skin="android"/>
+        <includeresources dir="src/org/icefaces/mobi/component/panelconfirmation/bberry"
+                          name="panelconfirmation" skin="bberry"/>
         <!-- datespinner- style definition -->
         <includeresources dir="src/org/icefaces/mobi/component/datespinner/ipad"
                           name="datespinner" skin="ipad"/>
