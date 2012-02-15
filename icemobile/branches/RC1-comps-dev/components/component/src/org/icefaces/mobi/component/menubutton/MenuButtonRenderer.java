@@ -3,20 +3,13 @@ package org.icefaces.mobi.component.menubutton;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
-import sun.tools.tree.ThisExpression;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.Map;
-import java.util.List;
-import javax.el.MethodExpression;
-import javax.faces.application.Application;
-import javax.el.ExpressionFactory;
-import javax.el.ELContext;
-import javax.faces.FacesException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
