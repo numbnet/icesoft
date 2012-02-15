@@ -445,6 +445,17 @@
                           name="panelconfirmation" skin="android"/>
         <includeresources dir="src/org/icefaces/mobi/component/panelconfirmation/bberry"
                           name="panelconfirmation" skin="bberry"/>
+        <!-- panelPopup- popup panel  -->
+        <includeresources dir="src/org/icefaces/mobi/component/panelpopup/ipad"
+                          name="panelpopup" skin="ipad"/>
+        <includeresources dir="src/org/icefaces/mobi/component/panelpopup/iphone"
+                          name="panelpopup" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/mobi/component/panelpopup/honeycomb"
+                          name="panelpopup" skin="honeycomb"/>
+        <includeresources dir="src/org/icefaces/mobi/component/panelpopup/android"
+                          name="panelpopup" skin="android"/>
+        <includeresources dir="src/org/icefaces/mobi/component/panelpopup/bberry"
+                          name="panelpopup" skin="bberry"/>
         <!-- datespinner- style definition -->
         <includeresources dir="src/org/icefaces/mobi/component/datespinner/ipad"
                           name="datespinner" skin="ipad"/>
@@ -640,6 +651,8 @@
          <compressjs comp="datespinner" path="${resources}/org.icefaces.component.datespinner"/>
          <compressjs comp="timespinner" path="${resources}/org.icefaces.component.timespinner"/>
          <compressjs comp="flipswitch" path="${resources}/org.icefaces.component.flipswitch"/>
+         <compressjs comp="panelconfirmation" path="${resources}/org.icefaces.component.panelconfirmation"/>
+         <compressjs comp="panelpopup" path="${resources}/org.icefaces.component.panelpopup"/>
      </target>
 
      <target name="res-js-no-compress" depends="res-js-combine" if="no-compress">
