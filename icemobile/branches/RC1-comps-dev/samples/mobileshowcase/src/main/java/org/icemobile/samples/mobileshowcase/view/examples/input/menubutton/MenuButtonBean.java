@@ -21,8 +21,8 @@ import org.icemobile.samples.mobileshowcase.view.metadata.context.ExampleImpl;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.event.ActionEvent;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 @Destination(
         title = "example.input.menuButton.destination.title.short",
@@ -49,42 +49,43 @@ import java.io.Serializable;
         }
 )
 
-@ManagedBean(name = MenuButton.BEAN_NAME)
+@ManagedBean(name = MenuButtonBean.BEAN_NAME)
 @SessionScoped
-public class MenuButton extends ExampleImpl<MenuButton> implements
+public class MenuButtonBean extends ExampleImpl<MenuButtonBean> implements
         Serializable {
 
     public static final String BEAN_NAME = "menuButton";
 
-
-    public MenuButton() {
-        super(MenuButton.class);
-    }
+    private ArrayList<MenuButtonItemModel> dynamicMenuButton;
     
-    public String redirectOnCommand(){
-        return null;
+    private String executedCommand;
+
+    public MenuButtonBean() {
+        super(MenuButtonBean.class);
+        initDynamicMenuButton();
     }
 
-    
-    public void deleteRecord(ActionEvent event){
-        
+    private void initDynamicMenuButton(){
+        // build out the menu commands and fill in the MenuButtonItemModel.
+        dynamicMenuButton = new ArrayList<MenuButtonItemModel>(4);
+        dynamicMenuButton.add(new MenuButtonItemModel("Record Actions",null));
+        dynamicMenuButton.add(new MenuButtonItemModel(" Create Record",
+                new CreateCommand()));
+        dynamicMenuButton.add(new MenuButtonItemModel(" Update Record",
+                new UpdateCommand()));
+        dynamicMenuButton.add(new MenuButtonItemModel("Delete Record",
+                new DeleteCommand()));
     }
 
-    public void submitRecord(ActionEvent event){
-
-    }
-    
-    public void createRecord(ActionEvent event){
-
-    }
-    
-    public void updateRecord(ActionEvent event){
-
+    public ArrayList<MenuButtonItemModel> getDynamicMenuButton() {
+        return dynamicMenuButton;
     }
 
-    public void deleteAll(ActionEvent event){
-
+    public void setExecutedCommand(String executedCommand) {
+        this.executedCommand = executedCommand;
     }
 
-    
+    public String getExecutedCommand() {
+        return executedCommand;
+    }
 }
