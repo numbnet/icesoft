@@ -434,6 +434,17 @@
                           name="button" skin="honeycomb"/>
         <includeresources dir="src/org/icefaces/mobi/component/button/bberry"
                           name="button" skin="bberry"/>
+        <!-- menuButton - menuButton  -->
+        <includeresources dir="src/org/icefaces/mobi/component/menubutton/ipad"
+                          name="menubutton" skin="ipad"/>
+        <includeresources dir="src/org/icefaces/mobi/component/menubutton/honeycomb"
+                          name="menubutton" skin="honeycomb"/>
+        <includeresources dir="src/org/icefaces/mobi/component/menubutton/iphone"
+                          name="menubutton" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/mobi/component/menubutton/android"
+                          name="menubutton" skin="android"/>
+        <includeresources dir="src/org/icefaces/mobi/component/menubutton/bberry"
+                          name="menubutton" skin="bberry"/>
         <!-- panelConfirmation - confirmation panel  -->
         <includeresources dir="src/org/icefaces/mobi/component/panelconfirmation/ipad"
                           name="panelconfirmation" skin="ipad"/>

@@ -1,0 +1,34 @@
+
+.mobi-menu-btn {
+    display: inline-block;
+}
+
+.mobi-menu-btn-btn span, .mobi-menu-btn-btn{
+    width: 125px;
+    height: 20px;
+    position: absolute;
+}
+
+.mobi-menu-btn-btn span{
+    background: url('down-arrow.png') no-repeat right;
+    padding-right: 15px;
+}
+
+.mobi-menu-btn-btn {
+    border: 1px solid #737173;
+    background-color: #E7EBE7;
+    color: #000000;
+    overflow: hidden;
+    padding: 5px 24px 3px 8px
+}
+
+.mobi-menu-btn-menu {
+    opacity: 0;
+    -moz-opacity: 0;
+    -webkit-opacity: 0;
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    position: relative;
+    width: 190px;
+    z-index: 5;
+}
+
