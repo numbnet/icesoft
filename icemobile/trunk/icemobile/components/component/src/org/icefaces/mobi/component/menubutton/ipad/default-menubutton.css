@@ -1,0 +1,40 @@
+
+.mobi-menu-btn {
+    display: inline-block;
+}
+
+.mobi-menu-btn-btn span, .mobi-menu-btn-btn{
+    width: 125px;
+    height: 20px;
+    position: absolute;
+}
+
+.mobi-menu-btn-btn span{
+    background: url('down-arrow.png') no-repeat right;
+    padding-right: 15px;
+}
+
+.mobi-menu-btn-btn{
+    border: 1px solid #175f9d;
+    background: -moz-linear-gradient(top, #8EA4C1, #5877A2, #476999, #4A6C9B) repeat scroll 0 0 #4A6C9B;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #8EA4C1), color-stop(.45, #5877A2), color-stop(.5, #476999), color-stop(1, #4A6C9B));
+    background-color:#4A6C9B;
+    color: #FFFFFF;
+    overflow: hidden;
+    padding: 1px 24px 1px 8px;
+    border-radius: 0.3em 0.3em 0.3em 0.3em;
+    -webkit-border-radius: 0.3em;
+    -moz-border-radius: 0.3em;
+}
+
+.mobi-menu-btn-menu {
+    opacity: 0;
+    -moz-opacity: 0;
+    -webkit-opacity: 0;
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    position: relative;
+    width: 175px;
+    padding: 3px;
+    z-index: 5;
+}
+
