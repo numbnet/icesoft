@@ -37,7 +37,7 @@
     <ui:define name="example">
         
             <center>
-                <h:commandButton value="Show Dialog" onclick="sampleDialog.show();" type="button"/>
+                <h:commandButton id="show" value="Show Dialog" onclick="sampleDialog.show();" type="button"/>
             </center>
             
             <ace:dialog id="dialog"
@@ -60,7 +60,7 @@
                     </h:panelGrid>
 
                     <h:panelGrid width="100%" style="text-align: center;">
-                        <h:commandButton value="Click me once done with input" onclick="sampleDialog.hide();"/>
+                        <h:commandButton id="submit" value="Click me once done with input" onclick="sampleDialog.hide();"/>
                     </h:panelGrid>
                 </h:form>
                 
