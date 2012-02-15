@@ -22,18 +22,20 @@
 
     <mobi:fieldsetGroup styleClass="exampleDescription">
 
-        <p>The menuButton provides a sudo select one menut that uses an action listener
-            instead of value change listener.  The component is stateless.</p>
+        <p> The menuButton allows a user to select and execute an menu
+            item.  ActionListener methods can be assinged for each item
+            in the menu. The menuButton component can also be combined with
+            panelConfirmation and submitNotification.</p>
 
 <pre>
-&lt;mobi:menuButton &gt;
-   &lt;mobi:menuItem
-    actionListener="#{bean.actionListener}" &gt;
-      menu item 1&lt;/mobi:menuItem&gt;
-   &lt;mobi:menuItem
-    actionListener="#{bean.actionListener}" &gt;
-      menu item 1&lt;/mobi:menuItem&gt;
-&lt;/mobi:menuButton>
+&lt;mobi:menuButton
+        buttonLabel="Action"
+        value="#{bean.menu}"
+                 var="item"&gt;
+  &lt;mobi:menuButtonItem
+    label="#{item.label}"
+    actionListener="#{item.execute}"/&gt;
+&lt;/mobi:menuButton&gt;
 </pre>
 
 

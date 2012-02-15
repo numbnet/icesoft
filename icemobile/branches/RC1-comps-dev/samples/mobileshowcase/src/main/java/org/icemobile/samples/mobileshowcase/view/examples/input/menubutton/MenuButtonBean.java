@@ -45,7 +45,7 @@ import java.util.ArrayList;
                 @ExampleResource(type = ResourceType.java,
                         title = "ButtonBean.java",
                         resource = "/WEB-INF/classes/org/icemobile/samples/mobileshowcase" +
-                                "/view/examples/input/menubutton/MenuButton.java")
+                                "/view/examples/input/menubutton/MenuButtonBean.java")
         }
 )
 
@@ -68,12 +68,12 @@ public class MenuButtonBean extends ExampleImpl<MenuButtonBean> implements
     private void initDynamicMenuButton(){
         // build out the menu commands and fill in the MenuButtonItemModel.
         dynamicMenuButton = new ArrayList<MenuButtonItemModel>(4);
-        dynamicMenuButton.add(new MenuButtonItemModel("Record Actions",null));
-        dynamicMenuButton.add(new MenuButtonItemModel(" Create Record",
+        dynamicMenuButton.add(new MenuButtonItemModel("Action Menu",null));
+        dynamicMenuButton.add(new MenuButtonItemModel(" &#160; Create Record",
                 new CreateCommand()));
-        dynamicMenuButton.add(new MenuButtonItemModel(" Update Record",
+        dynamicMenuButton.add(new MenuButtonItemModel(" &#160; Update Record",
                 new UpdateCommand()));
-        dynamicMenuButton.add(new MenuButtonItemModel("Delete Record",
+        dynamicMenuButton.add(new MenuButtonItemModel(" &#160; Delete Record",
                 new DeleteCommand()));
     }
 
