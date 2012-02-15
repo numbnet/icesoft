@@ -52,9 +52,6 @@ public class MenuButtonItemMeta extends UICommandMeta {
         @Property(tlddoc="label of menutButtonItem")
         private String label;
 
-        @Property(defaultValue="false", tlddoc="true if this item has been selected")
-        private boolean selected;
-
         @Property(tlddoc = "style class of the component, rendered on the div root of the component")
         private String styleClass;
 

@@ -35,12 +35,14 @@ public class MenuBean implements Serializable {
     }
 
     private void fillModelData(){
-        this.data.add(new ModelData("File", "file item", "#{\"#{menu.fileListener}\"", "none", "none" ));
-        this.data.add(new ModelData("Add", "add item", "#{\"#{menu.addListener}\"", "none", "n" ));
-        this.data.add(new ModelData("Delete", "delete item", "#{\"#{menu.deleteListener}\"", "none", "n" ));
-        this.data.add(new ModelData("Cancel", "cancel item", "#{\"#{menu.cancelListener}\"", "none", "n" ));
+        this.data.add(new ModelData("", "select one","none", "none"));
+        this.data.add(new ModelData("File", "file item", "none", "none" ));
+        this.data.add(new ModelData("Add", "add item", "none", "n" ));
+        this.data.add(new ModelData("Delete", "delete item", "none", "n" ));
+        this.data.add(new ModelData("Cancel", "cancel item", "none", "n" ));
     }
     private void fillSelItems(){
+  //      this.selItems.add(new SelectItem("", "select an option"));
         this.selItems.add(new SelectItem("edit", "edit option"));
         this.selItems.add(new SelectItem("file", "file option"));
         this.selItems.add(new SelectItem("delete", "delete option"));
@@ -90,19 +92,29 @@ public class MenuBean implements Serializable {
         private String eventTriggered = "none";
         private String value;
         private String label;
-        private String actionListener;
         private String panelConfId;
         private String submitNotif;
+        private String disabled= "false";
 
-        public ModelData (String val, String label, String actionListener, String pcId, String snId){
+        public ModelData (String val, String label, String pcId, String snId){
             this.value = val;
             this.label = label;
-            this.actionListener = actionListener;
             this.submitNotif = snId;
             this.panelConfId = pcId;
+            if (this.label.startsWith("select")){
+                this.disabled = "true";
+            }
         }
 
-         public String getValue() {
+        public String getDisabled() {
+            return disabled;
+        }
+
+        public void setDisabled(String disabled) {
+            this.disabled = disabled;
+        }
+
+        public String getValue() {
              return value;
          }
 

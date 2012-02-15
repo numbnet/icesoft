@@ -84,6 +84,7 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
          //setup config object
          writer.startElement(HTML.SELECT_ELEM, uiComponent);
          writer.writeAttribute(HTML.ID_ATTR, clientId+"_sel", HTML.ID_ATTR);
+         writer.writeAttribute(HTML.NAME_ATTR, clientId+"_sel", HTML.NAME_ATTR);
          writer.writeAttribute(HTML.CLASS_ATTR, selectClass, HTML.CLASS_ATTR);
          writer.writeAttribute(HTML.ONCHANGE_ATTR, "mobi.menubutton.select('"+clientId+"');", HTML.ONCHANGE_ATTR);
          if (null!=menu.getStyle()){
@@ -94,6 +95,13 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
          }
          if (menu.getVar() != null) {
             menu.setRowIndex(-1);
+      /*      MenuButtonItem mbi = new MenuButtonItem();
+            mbi.setValue("select");
+            mbi.setDisabled(true);
+            mbi.setLabel("Select one"); //should internationalize??
+            mbi.setParent(uiComponent);
+            menu.setRowIndex(0);
+            mbi.encodeAll(facesContext);  */
             for (int i = 0; i < menu.getRowCount(); i++) {
                 //assume that if it's a list of items then it's grouped
                 menu.setRowIndex(i);

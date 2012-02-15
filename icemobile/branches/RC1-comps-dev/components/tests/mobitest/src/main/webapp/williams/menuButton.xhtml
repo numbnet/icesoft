@@ -40,7 +40,8 @@
 
       <h:form id="menuForm">
         <mobi:menuButton id="mnu1" value="#{menu.data}" var="item">
-                <mobi:menuButtonItem value="#{item.value}" label="#{item.label}" actionListener="#{item.actionMethod}"/>
+                <mobi:menuButtonItem value="#{item.value}" label="#{item.label}"
+                                     disabled="#{item.disabled}" actionListener="#{item.actionMethod}"/>
         </mobi:menuButton>
 
       </h:form>
