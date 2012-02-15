@@ -22,9 +22,9 @@ ice.ace.animation.run = function(args, options, speed, callback) {
 
 	var node;
 	if (typeof args.node == 'string') {
-		node = jQuery(ice.ace.escapeClientId(args.node));
+		node = ice.ace.jq(ice.ace.escapeClientId(args.node));
 	} else {
-		node = jQuery(args.node);
+		node = ice.ace.jq(args.node);
 	}
 	var effectName = args.name.toLowerCase();
 	var easing = args.easing || 'easeOutQuad';

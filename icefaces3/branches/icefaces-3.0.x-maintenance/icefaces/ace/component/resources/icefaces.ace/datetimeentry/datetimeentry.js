@@ -1073,7 +1073,7 @@ function extendRemove(target, props) {
 $.timepicker = new Timepicker(); // singleton instance
 $.timepicker.version = "0.9.6";
 
-})(jQuery);
+})(ice.ace.jq);
 
 
 /**

@@ -1090,17 +1090,17 @@ Paginator.prototype = {
     
     applyTheme : function() {
         	
-    	 jQuery('.ui-paginator-page, a.ui-paginator-next, a.ui-paginator-last, a.ui-paginator-previous, a.ui-paginator-first').hover(
+    	 ice.ace.jq('.ui-paginator-page, a.ui-paginator-next, a.ui-paginator-last, a.ui-paginator-previous, a.ui-paginator-first').hover(
  				function() {
- 					jQuery(this).addClass('ui-state-hover');
+ 					ice.ace.jq(this).addClass('ui-state-hover');
  				}, function(){
- 					jQuery(this).removeClass('ui-state-hover');
+ 					ice.ace.jq(this).removeClass('ui-state-hover');
  				});
 
- 		jQuery('.ui-paginator-page').click(
+ 		ice.ace.jq('.ui-paginator-page').click(
  			function() {
- 				jQuery(this).parent().children('.ui-state-active').removeClass('ui-state-active');
- 				jQuery(this).addClass('ui-state-active');
+ 				ice.ace.jq(this).parent().children('.ui-state-active').removeClass('ui-state-active');
+ 				ice.ace.jq(this).addClass('ui-state-active');
  			});
     }
 };
@@ -1667,7 +1667,7 @@ Paginator.ui.FirstPageLink.prototype = {
         if (this.paginator.getCurrentPage() > 1) {
             if (par && this.current === this.span) {
                 par.replaceChild(this.link,this.current);
-                jQuery(this.link).removeClass('ui-state-hover');
+                ice.ace.jq(this.link).removeClass('ui-state-hover');
                 this.current = this.link;
             }
         } else {
@@ -1850,7 +1850,7 @@ Paginator.ui.LastPageLink.prototype = {
         var par   = this.current ? this.current.parentNode : null,
             after = this.link;
 
-        jQuery(this.link).removeClass('ui-state-hover');
+        ice.ace.jq(this.link).removeClass('ui-state-hover');
 
         if (par) {
             switch (this.paginator.getTotalPages()) {
@@ -2022,7 +2022,7 @@ Paginator.ui.NextPageLink.prototype = {
         if (this.paginator.getCurrentPage() !== last) {
             if (par && this.current === this.span) {
                 par.replaceChild(this.link,this.current);
-                jQuery(this.link).removeClass('ui-state-hover');
+                ice.ace.jq(this.link).removeClass('ui-state-hover');
                 this.current = this.link;
             }
         } else if (this.current === this.link) {
@@ -2184,7 +2184,7 @@ Paginator.ui.PreviousPageLink.prototype = {
         if (this.paginator.getCurrentPage() > 1) {
             if (par && this.current === this.span) {
                 par.replaceChild(this.link,this.current);
-                jQuery(this.link).removeClass('ui-state-hover');
+                ice.ace.jq(this.link).removeClass('ui-state-hover');
                 this.current = this.link;
             }
         } else {
