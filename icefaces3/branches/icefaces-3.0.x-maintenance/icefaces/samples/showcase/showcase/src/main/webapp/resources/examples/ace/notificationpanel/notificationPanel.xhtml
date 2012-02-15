@@ -38,7 +38,7 @@
         <h:form id="form">
             <script>
                 function notePanelToggle(button) {
-                    jQuery(button).attr("disabled", "disabled");
+                    ice.ace.jq(button).attr("disabled", "disabled");
                     if (this.cfg.visible) {
                         this.hide();
                     } else {
