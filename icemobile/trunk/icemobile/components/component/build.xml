@@ -456,6 +456,17 @@
                           name="panelpopup" skin="android"/>
         <includeresources dir="src/org/icefaces/mobi/component/panelpopup/bberry"
                           name="panelpopup" skin="bberry"/>
+        <!-- submit notification-  -->
+        <includeresources dir="src/org/icefaces/mobi/component/submitnotification/ipad"
+                          name="submitnotification" skin="ipad"/>
+        <includeresources dir="src/org/icefaces/mobi/component/submitnotification/iphone"
+                          name="submitnotification" skin="iphone"/>
+        <includeresources dir="src/org/icefaces/mobi/component/submitnotification/honeycomb"
+                          name="submitnotification" skin="honeycomb"/>
+        <includeresources dir="src/org/icefaces/mobi/component/submitnotification/android"
+                          name="submitnotification" skin="android"/>
+        <includeresources dir="src/org/icefaces/mobi/component/submitnotification/bberry"
+                          name="submitnotification" skin="bberry"/>
         <!-- datespinner- style definition -->
         <includeresources dir="src/org/icefaces/mobi/component/datespinner/ipad"
                           name="datespinner" skin="ipad"/>
