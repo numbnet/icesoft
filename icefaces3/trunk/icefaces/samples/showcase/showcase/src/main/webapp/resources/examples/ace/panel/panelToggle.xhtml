@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{panelResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <icecore:singleSubmit/>
             
             <h:panelGrid columns="3">
@@ -51,8 +51,9 @@
             </h:panelGrid>
         </h:form>
         
-        <h:form>
-            <ace:panel header="ICEfaces Toggleable Header"
+        <h:form id="form2">
+            <ace:panel id="panel"
+					   header="ICEfaces Toggleable Header"
                        toggleable="#{panelToggle.toggleable}"
                        toggleSpeed="#{panelToggle.speed}">
                 <p>ICEfaces 2 is an open-source Rich Internet Application (RIA) development framework based on the JavaServer Faces (JSF) 2 standard. Like its predecessor, ICEfaces 1.8, ICEfaces 2 extends JSF to simplify development and enhance the standard JSF feature set - simultaneously improving developer efficiency and expanding the spectrum of RIA capabilities that can be included in any JSF-based web application.</p>
