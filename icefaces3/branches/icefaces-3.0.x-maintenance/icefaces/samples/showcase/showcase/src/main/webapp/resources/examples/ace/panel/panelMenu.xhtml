@@ -33,10 +33,10 @@
     <ui:param name="tldResources" value="#{panelResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <ace:panel header="ICEfaces Header With Menu">
                 <f:facet name="options">
-                    <ace:menu>
+                    <ace:menu id="menu">
                         <ace:submenu label="File">
                             <ace:menuItem value="New" icon="ui-icon"/>
                             <ace:menuItem value="Open" icon="ui-icon"/>
