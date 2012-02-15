@@ -33,8 +33,7 @@ public class ProxyHttpServletResponse implements HttpServletResponse {
     }
 
     public java.lang.String getCharacterEncoding() {
-        log.severe("ProxyHttpServletResponse unsupported operation");
-        throw new UnsupportedOperationException();
+        return facesContext.getExternalContext().getResponseCharacterEncoding();
     }
 
     public java.lang.String getContentType() {
@@ -52,8 +51,7 @@ public class ProxyHttpServletResponse implements HttpServletResponse {
     }
 
     public void setCharacterEncoding(java.lang.String encoding) {
-        log.severe("ProxyHttpServletResponse unsupported operation");
-        throw new UnsupportedOperationException();
+        facesContext.getExternalContext().setResponseCharacterEncoding(encoding);
     }
 
     public void setContentLength(int length) {
