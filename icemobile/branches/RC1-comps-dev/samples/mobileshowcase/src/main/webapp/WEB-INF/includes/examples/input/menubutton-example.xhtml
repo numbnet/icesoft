@@ -25,9 +25,7 @@
         <mobi:fieldsetGroup>
             <mobi:fieldsetRow style="padding-bottom:10px;">
                 The menuButton allows a user to select and execute an menu
-                item.  ActionListener methods can be assinged for each item
-                in the menu. The menuButton component can also be combined with
-                panelConfirmation and submitNotification.
+                item.
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
         <h4>MenuButton Example</h4>
@@ -43,7 +41,10 @@
                 </mobi:menuButton>
             </mobi:fieldsetRow>
             <mobi:fieldsetRow>
-                <h:outputText value="Selected Command: #{menuButton.executedCommand}" />
+                <h:outputText value="Selected Command: " />
+                <h:outputText
+                        style="font-style: italic;"
+                        value="#{menuButton.executedCommand}" />
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
 
