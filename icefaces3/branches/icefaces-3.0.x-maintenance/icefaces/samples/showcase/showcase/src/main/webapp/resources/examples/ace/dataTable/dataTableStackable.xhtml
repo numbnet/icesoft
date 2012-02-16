@@ -33,32 +33,32 @@
     <ui:param name="tldResources" value="#{dataTableResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
            <ace:dataTable id="carTable"
                                     value="#{dataTableSort.carsData}"
                                     rows="8"
                                     var="car">
                
-               <ace:column headerText="ID" sortBy="#{car.id}">
-                    <h:outputText value="#{car.id}"/>
+               <ace:column id="id" headerText="ID" sortBy="#{car.id}">
+                    <h:outputText id="idCell" value="#{car.id}"/>
                 </ace:column>
-                <ace:column headerText="Name" sortBy="#{car.name}" stacked="true">
-                    <h:outputText value="#{car.name}"/>
+                <ace:column id="name" headerText="Name" sortBy="#{car.name}" stacked="true">
+                    <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
-                <ace:column headerText="Chassis" sortBy="#{car.chassis}">
-                    <h:outputText value="#{car.chassis}"/>
+                <ace:column id="chassis" headerText="Chassis" sortBy="#{car.chassis}">
+                    <h:outputText id="chassisCell" value="#{car.chassis}"/>
                 </ace:column>
-                <ace:column headerText="Weight (lbs)" sortBy="#{car.weight}" stacked="true">
-                    <h:outputText value="#{car.weight}"/>
+                <ace:column id="weight" headerText="Weight (lbs)" sortBy="#{car.weight}" stacked="true">
+                    <h:outputText id="weightCell" value="#{car.weight}"/>
                 </ace:column>
-                <ace:column headerText="Accel" sortBy="#{car.acceleration}">
-                    <h:outputText value="#{car.acceleration}"/>
+                <ace:column id="acceleration" headerText="Accel" sortBy="#{car.acceleration}">
+                    <h:outputText id="accelerationCell" value="#{car.acceleration}"/>
                 </ace:column>
-                <ace:column headerText="MPG" sortBy="#{car.mpg}" stacked="true">
-                    <h:outputText value="#{car.mpg}"/>
+                <ace:column id="mpg" headerText="MPG" sortBy="#{car.mpg}" stacked="true">
+                    <h:outputText id="mpgCell" value="#{car.mpg}"/>
                 </ace:column>
-                <ace:column headerText="Cost" sortBy="#{car.cost}">
-                    <h:outputText value="#{car.cost}">
+                <ace:column id="cost" headerText="Cost" sortBy="#{car.cost}">
+                    <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
                                          groupingUsed="true"

@@ -35,7 +35,7 @@
     <ui:param name="tldResources" value="#{dataTableResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <style type="text/css">
                 /* Important required because row */
                 .ui-datatable-odd {background-color:lightgray !important;}
@@ -46,36 +46,36 @@
                           paginator="true"
                           paginatorPosition="bottom"
                           rows="10">
-                <ace:column headerText="ID" sortBy="#{car.id}"
+                <ace:column id="id" headerText="ID" sortBy="#{car.id}"
                             filterBy="#{car.id}" filterMatchMode="contains">
-                    <h:outputText value="#{car.id}"/>
+                    <h:outputText id="idCell" value="#{car.id}"/>
                 </ace:column>
-                <ace:column headerText="Name" sortBy="#{car.name}"
+                <ace:column id="name" headerText="Name" sortBy="#{car.name}"
                             filterBy="#{car.name}" filterMatchMode="contains">
-                    <h:outputText value="#{car.name}"/>
+                    <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
-                <ace:column headerText="Chassis" sortBy="#{car.chassis}"
+                <ace:column id="chassis" headerText="Chassis" sortBy="#{car.chassis}"
                             filterBy="#{car.chassis}" filterMatchMode="contains">
-                    <h:outputText value="#{car.chassis}"/>
+                    <h:outputText id="chassisCell" value="#{car.chassis}"/>
                 </ace:column>
-                <ace:column headerText="Weight" sortBy="#{car.weight}"
+                <ace:column id="weight" headerText="Weight" sortBy="#{car.weight}"
                             filterBy="#{car.weight}" filterMatchMode="contains">
-                    <h:outputText value="#{car.weight}lbs."/>
+                    <h:outputText id="weightCell" value="#{car.weight}lbs."/>
                 </ace:column>
-                <ace:column headerText="Accel" sortBy="#{car.acceleration}"
+                <ace:column id="accel" headerText="Accel" sortBy="#{car.acceleration}"
                             filterBy="#{car.acceleration}" filterMatchMode="contains">
-                    <h:outputText value="#{car.acceleration}"/>
+                    <h:outputText id="accelerationCell" value="#{car.acceleration}"/>
                 </ace:column>
-                <ace:column headerText="MPG" sortBy="#{car.mpg}"
+                <ace:column id="mpg" headerText="MPG" sortBy="#{car.mpg}"
                             filterBy="#{car.mpg}" filterMatchMode="contains">
-                    <h:outputText value="#{car.mpg}"/>
+                    <h:outputText id="mpgCell" value="#{car.mpg}"/>
                 </ace:column>
-                <ace:column headerText="Cost" sortBy="#{car.cost}"
+                <ace:column id="cost" headerText="Cost" sortBy="#{car.cost}"
                             filterBy="#{car.cost}" filterMatchMode="contains">
                     <f:facet name="header">
                        Cost
                     </f:facet>
-                    <h:outputText value="#{car.cost}">
+                    <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
                                          groupingUsed="true"

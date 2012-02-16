@@ -33,9 +33,9 @@
     <ui:param name="tldResources" value="#{contextMenuResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             
-            <ace:panel footer="#{contextMenuComponent.actionDescription}">
+            <ace:panel id="panel" footer="#{contextMenuComponent.actionDescription}">
                 <h:panelGrid>
                     <h:panelGroup>
                         <h:outputText id="intro" value=" Right click on this sentence to display a component specific menu"/>
@@ -47,7 +47,7 @@
                 </h:panelGrid>
             </ace:panel>
             
-            <ace:contextMenu for="intro">
+            <ace:contextMenu id="contextMenuTxt" for="intro">
                 <ace:menuItem value="Copy" icon="ui-icon ui-icon-disk" style="font-size: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Text Copy" />
@@ -58,7 +58,7 @@
                 </ace:menuItem>
             </ace:contextMenu>
             
-            <ace:contextMenu for="button">
+            <ace:contextMenu id="contextMenuBttn" for="button">
                 <ace:menuItem value="Click" icon="ui-icon ui-icon-disk" style="font-size: small;"
                               action="#{contextMenuComponent.performAction}">
                     <f:param name="actionType" value="Click" />
