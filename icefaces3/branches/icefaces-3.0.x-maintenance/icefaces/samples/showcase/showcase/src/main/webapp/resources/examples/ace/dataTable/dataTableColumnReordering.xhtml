@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{dataTableResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
 
            <ace:dataTable id="carTable"
                                   value="#{dataTableColumnReordering.cars}"
@@ -41,23 +41,23 @@
                                   columnOrdering="#{dataTableColumnReordering.ordering}"
                                   reorderableColumns="true">
             
-                <ace:column headerText="Name">
-                    <h:outputText value="#{car.name}"/>
+                <ace:column id="name" headerText="Name">
+                    <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
-               <ace:column headerText="Chassis">
-                    <h:outputText value="#{car.chassis}"/>
+               <ace:column id="chassis" headerText="Chassis">
+                    <h:outputText id="chassisCell" value="#{car.chassis}"/>
                 </ace:column>
-               <ace:column headerText="Weight (lbs)">
+               <ace:column id="weight" headerText="Weight (lbs)">
                    <h:outputText value="#{car.weight}"/>
                 </ace:column>
-               <ace:column headerText="Accel">
-                   <h:outputText value="#{car.acceleration}"/>
+               <ace:column id="acceleration" headerText="Accel">
+                   <h:outputText id="accelerationCell" value="#{car.acceleration}"/>
                 </ace:column>
-               <ace:column headerText="MPG">
-                   <h:outputText value="#{car.mpg}"/>
+               <ace:column id="mpg" headerText="MPG">
+                   <h:outputText id="mpgCell" value="#{car.mpg}"/>
                 </ace:column>
-               <ace:column headerText="Cost">
-                   <h:outputText value="#{car.cost}">
+               <ace:column id="cost" headerText="Cost">
+                   <h:outputText id="costCell" value="#{car.cost}">
                    <f:convertNumber type="currency"
                                          currencySymbol="$"
                                          groupingUsed="true"

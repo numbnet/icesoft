@@ -36,12 +36,12 @@
 
     <ui:define name="example">
         <icecore:config mandatoryResource="dataTable" />
-        <h:form>
+        <h:form id="form">
             <ace:panel style="text-align: center;">
-                <h:outputText value="Right-click anywhere on this page to display the global menu"/>
+                <h:outputText id="txt" value="Right-click anywhere on this page to display the global menu"/>
             </ace:panel>
         
-            <ace:contextMenu effect="puff" effectDuration="200">
+            <ace:contextMenu id="contextMenu" effect="puff" effectDuration="200">
                 <ace:menuItem value="Save" icon="ui-icon ui-icon-disk"/>  
                 <ace:menuItem value="Update" icon="ui-icon ui-icon-arrowrefresh-1-w"/>  
                 <ace:menuItem value="Delete" icon="ui-icon ui-icon-close"/>
