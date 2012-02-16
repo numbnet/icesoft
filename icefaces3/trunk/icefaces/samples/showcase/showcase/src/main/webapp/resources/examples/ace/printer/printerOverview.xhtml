@@ -35,7 +35,7 @@
     <ui:param name="tldResources" value="#{printerResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             
             <ace:panel id="panel">
                 <h:panelGrid columns="2" width="100%">
@@ -75,25 +75,25 @@
             <ace:panel>
                 <h:panelGrid style="text-align: center; margin-left: auto; margin-right: auto;" columns="3" width="50%">
                     <h:panelGrid>
-                        <h:commandLink>
-                            <h:graphicImage value="#{printerBean.printerIcon.path}" alt="#{printerBean.printerIcon.description}"/>
-                            <h:outputText value="print image"/>
+                        <h:commandLink id="printImgLnk">
+                            <h:graphicImage id="printerImg" value="#{printerBean.printerIcon.path}" alt="#{printerBean.printerIcon.description}"/>
+                            <h:outputText id="printImg" value="print image"/>
                             <ace:printer for="image"/>
                         </h:commandLink>
                     </h:panelGrid>
                     <h:panelGrid>
-                        <h:commandLink>
-                            <h:graphicImage value="#{printerBean.printerIcon.path}" alt="#{printerBean.printerIcon.description}"/>
-                            <h:outputText value="print table"/>
+                        <h:commandLink id="printTblLnk">
+                            <h:graphicImage id="printerImg2" value="#{printerBean.printerIcon.path}" alt="#{printerBean.printerIcon.description}"/>
+                            <h:outputText id="printTbl" value="print table"/>
                             <ace:printer for="carTable"/>
                         </h:commandLink>
                     </h:panelGrid>
                     
                     <h:panelGrid>
                         
-                        <h:commandLink>
-                            <h:graphicImage value="#{printerBean.printerIcon.path}" alt="#{printerBean.printerIcon.description}"/>
-                            <h:outputText value="print both"/>
+                        <h:commandLink id="printBothLnk">
+                            <h:graphicImage id="printerImg3" value="#{printerBean.printerIcon.path}" alt="#{printerBean.printerIcon.description}"/>
+                            <h:outputText id="printBoth" value="print both"/>
                             <ace:printer for="panel"/>
                         </h:commandLink>
                     </h:panelGrid>

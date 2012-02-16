@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{contextMenuResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <icecore:singleSubmit/>
             
             <ace:panel>
@@ -49,17 +49,17 @@
                                  required="true" size="4" maxlength="4">
                          <f:validateLongRange minimum="50" maximum="2000"/>
                     </h:inputText>
-                    <h:message for="durationIn"/>
+                    <h:message id="msg" for="durationIn"/>
                 </h:panelGrid>
             </ace:panel>
         </h:form>
         
-        <h:form>
+        <h:form id="form2">
             <h:panelGrid columns="1" style="text-align: center;" width="100%">
                 <h:graphicImage id="image" library="css/images/" name="header.png" alt="Header"/>
             </h:panelGrid>
         
-            <ace:contextMenu for="image"
+            <ace:contextMenu id="contextMenu" for="image"
                                          effect="#{contextMenuEffect.effectName}"
                                          effectDuration="#{contextMenuEffect.effectDuration}">
                 <ace:menuItem value="Save" icon="ui-icon ui-icon-disk"/>  

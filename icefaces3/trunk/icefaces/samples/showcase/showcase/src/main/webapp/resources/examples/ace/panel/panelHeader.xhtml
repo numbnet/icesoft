@@ -45,7 +45,7 @@
                 <h:inputText id="headerIn" value="#{panelHeader.headerText}"
                              required="true" maxlength="255"
                              disabled="#{!panelHeader.headerEnable}"/>
-                <h:message for="headerIn"/>
+                <h:message id="headerInMsg" for="headerIn"/>
                 
                 <h:outputLabel for="footerOn" value="Enable Footer:"/>
                 <h:selectBooleanCheckbox id="footerOn" value="#{panelHeader.footerEnable}"/>
@@ -55,7 +55,7 @@
                 <h:inputText id="footerIn" value="#{panelHeader.footerText}"
                              required="true" maxlength="255"
                              disabled="#{!panelHeader.footerEnable}"/>
-                <h:message for="footerIn"/>                
+                <h:message id="footerInMsg" for="footerIn"/>                
             </h:panelGrid>
         </h:form>
     
