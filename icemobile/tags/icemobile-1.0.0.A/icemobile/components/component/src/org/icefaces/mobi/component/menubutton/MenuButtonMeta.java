@@ -1,0 +1,91 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+package org.icefaces.mobi.component.menubutton;
+
+
+
+import org.icefaces.ace.meta.annotation.*;
+import org.icefaces.ace.meta.baseMeta.UICommandMeta;
+import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
+import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.api.IceClientBehaviorHolder;
+import org.icefaces.ace.meta.baseMeta.UISeriesBaseMeta;
+
+import javax.el.MethodExpression;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+import javax.faces.model.SelectItem;
+import javax.el.MethodExpression;
+import java.util.List;
+
+@ClientBehaviorHolder(events = {
+	@ClientEvent(name="click", javadoc="Fired when a menubutton is clicked",
+            tlddoc="Fired when commandButton is clicked", defaultRender="@all",
+            defaultExecute="@all")}, defaultEvent="close")
+@Component(
+        tagName = "menuButton",
+        componentClass = "org.icefaces.mobi.component.menubutton.MenuButton",
+        rendererClass = "org.icefaces.mobi.component.menubutton.MenuButtonRenderer",
+        generatedClass = "org.icefaces.mobi.component.menubutton.MenuButtonBase",
+        extendsClass = "org.icefaces.impl.component.UISeriesBase",
+        componentType = "org.icefaces.component.MenuButton",
+        rendererType = "org.icefaces.component.MenuButtonRenderer",
+        componentFamily = "org.icefaces.MenuButton",
+        tlddoc = "This component renders a select menu button with a collection of menuButtonItems " +
+                "upon selection of a menuButtonItem, and actionListener will be queued. "
+)
+
+@ResourceDependencies({
+        @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
+})
+
+public class MenuButtonMeta extends UISeriesBaseMeta{
+   /* @Property(defaultValue = "false",
+            tlddoc = "When singleSubmit is true, triggering an action on this component will submit" +
+                    " and execute this component only. Equivalent to <f:ajax execute='@this' render='@all'>." +
+                    " When singleSubmit is false, triggering an action on this component will submit and execute " +
+                    " the full form that this component is contained within." +
+                    " The default value is false.")
+    private boolean singleSubmit; */
+
+    @Property(tlddoc = "style will be rendered on the root element of this " +
+            "component.")
+    private String style;
+
+    @Property(tlddoc = "style class will be rendered on the root element of " +
+            "this component.")
+    private String styleClass;
+
+    @Property(defaultValue = "false",
+            tlddoc = "disabled property. If true no input may be submitted via this" +
+                    "component.  Is required by aria specs")
+    private boolean disabled;
+
+    @Property(defaultValue="Menu", tlddoc="Label of the menu button")
+    private String buttonLabel;
+
+  /*  @Property(tlddoc="list of actionListeners which must be same length as the list of values for this component. " +
+            "The actionListener fired will correspond to the value item row in the list selected")
+    private List<String> actionListeners;  */
+
+  /*  @Property(tlddoc="list of panelConfirmation id's which must be same length as list of values for this component")
+    private List<String> panelConfirmations;     */
+
+
+    @Property(defaultValue = "false", tlddoc = "The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
+    private boolean immediate;
+    /** other possible attributes include vertical, scroll increment, circular, numbershown, currentIndex */
+}
