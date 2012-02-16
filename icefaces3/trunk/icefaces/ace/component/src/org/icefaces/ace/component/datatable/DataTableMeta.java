@@ -321,4 +321,8 @@ public class DataTableMeta extends UIDataMeta {
     @Property(tlddoc = "Defines a list of integers representing a rendering order for " +
             "the Column children of the table.")
     private List<Integer> columnOrdering;
+
+    @Property(tlddoc = "Enabling makes the entire header container the clickable region for sort events.",
+            defaultValue =  "true", defaultValueType = DefaultValueType.EXPRESSION)
+    private boolean clickableHeaderSorting;
 }
