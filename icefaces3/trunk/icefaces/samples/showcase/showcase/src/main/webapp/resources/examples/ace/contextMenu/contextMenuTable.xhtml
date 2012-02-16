@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{contextMenuResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             
            <ace:dataTable id="carTable"
                           value="#{dataTableDynamic.carsData}"
@@ -88,7 +88,7 @@
                 </ace:column>
             </ace:dataTable>
             
-            <ace:contextMenu for="carTable">
+            <ace:contextMenu id="contextMenu" for="carTable">
                 <ace:menuItem value="Undo All" icon="ui-icon ui-icon-arrowrefresh-1-w"
                               actionListener="#{dataTableDynamic.restoreDefault}"/>
                 <ace:menuItem value="Add Cars" icon="ui-icon ui-icon-disk"
