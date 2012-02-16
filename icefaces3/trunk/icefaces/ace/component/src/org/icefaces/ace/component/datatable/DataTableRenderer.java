@@ -504,6 +504,9 @@ public class DataTableRenderer extends CoreRenderer {
             writer.write(",rowExpansion:true");
         }
 
+        if (table.isClickableHeaderSorting()) {
+            writer.write(",clickableHeaderSorting:true");
+        }
 
         //Scrolling
         if (table.isScrollable()) {
@@ -706,6 +709,8 @@ public class DataTableRenderer extends CoreRenderer {
 
         String columnClass = DataTableConstants.COLUMN_HEADER_CONTAINER_CLASS;
         columnClass = isSortable ? columnClass + " " + DataTableConstants.SORTABLE_COLUMN_CLASS : columnClass;
+        columnClass = table.isClickableHeaderSorting() ? columnClass + " clickable" : columnClass;
+        columnClass = (column.getSortPriority() != null) ? columnClass + " ui-state-active" : columnClass;
 
         writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
         writer.startElement(HTML.DIV_ELEM, null);
@@ -715,7 +720,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (first) {
             TableConfigPanel panel = table.findTableConfigPanel(context);
             if (panel != null && panel.getType().equals("first-col")) {
-                leftHeaderPadding += 45;
+                leftHeaderPadding += 35;
                 writeConfigPanelLaunchOnLeft = true;
             }
         }
@@ -724,10 +729,10 @@ public class DataTableRenderer extends CoreRenderer {
         if (last) {
             TableConfigPanel panel = table.findTableConfigPanel(context);
             if (panel != null && panel.getType().equals("last-col"))
-                rightHeaderPadding += 45;
+                rightHeaderPadding += 35;
         }
 
-        if (isSortable) rightHeaderPadding += 35;
+        if (isSortable) rightHeaderPadding += 25;
 
         String paddingStyle = "";
         if (rightHeaderPadding > 0) paddingStyle += "padding-right:" + rightHeaderPadding + "px;";
