@@ -116,6 +116,10 @@ public class DataTableMeta extends UIDataMeta {
             "is enabled by the use of sortBy on ace:column components.",
             defaultValue = "false", defaultValueType = DefaultValueType.EXPRESSION)
     private boolean singleSort;
+    
+    @Property(tlddoc = "Enabling makes the entire header container the clickable region for sort events.",
+            defaultValue =  "true", defaultValueType = DefaultValueType.EXPRESSION)
+    private boolean clickableHeaderSorting;    
 
     @Property(tlddoc = "Defines a map of your row data objects to UI states. Row-level " +
             "features (selection, expansion, etc.) are manipulable through this repository.")

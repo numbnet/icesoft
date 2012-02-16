@@ -127,144 +127,263 @@ ice.ace.DataTable.prototype.setupPaginator = function() {
     paginator.render();
 }
 
+ice.ace.DataTable.prototype.setupSortRequest = function(_self, $this, event, headerClick, altY, altMeta) {
+    var topCarat = $this.find(".ui-icon-triangle-1-n")[0],
+        bottomCarat = $this.find(".ui-icon-triangle-1-s")[0],
+        headerCell = (headerClick) ? $this : $this.parent().parent(),
+        controlOffset = $this.offset(),
+        controlHeight = !_self.cfg.singleSort ? $this.outerHeight() : 22,
+        descending = false,
+        metaKey = (altMeta == undefined) ? event.metaKey : altMeta;
+    // altY and altMeta allow these event parameters to be optionally passed in
+    // from an event triggering this event artificially
+    var eventY = (altY == undefined) ? event.pageY : altY;
+    if (eventY > (controlOffset.top + (controlHeight / 2)+3))
+        descending = true;
+
+    if (headerClick) {
+        if (ice.ace.jq(topCarat).hasClass('ui-toggled')) {
+            descending = true;
+        } else {
+            descending = false;
+        }
+    }
+
+    // If we are looking a freshly rendered DT initalize our JS sort state
+    // from the state of the rendered controls
+    if (_self.sortOrder.length == 0) {
+        ice.ace.jq(_self.jqId + ' th > div.ui-sortable-column .ui-sortable-control').each(function() {
+            var $this = ice.ace.jq(this);
+            if (ice.ace.getOpacity($this.find('.ui-icon-triangle-1-n')[0]) == 1 ||
+                    ice.ace.getOpacity($this.find('.ui-icon-triangle-1-s')[0]) == 1 )
+                _self.sortOrder.splice(
+                        parseInt($this.find('.ui-sortable-column-order').html())-1,
+                        0,
+                        $this.closest('.ui-header-column')
+                );
+        });
+    }
+
+    if (!metaKey || _self.cfg.singleSort) {
+        // Remake sort criteria
+        // Reset all other arrows
+        _self.sortOrder = [];
+        $this.closest('.ui-header-column').siblings().find('.ui-icon-triangle-1-n, .ui-icon-triangle-1-s').css('opacity', .2).removeClass('ui-toggled');
+        headerCell.parent().siblings().find('.ui-icon-triangle-1-n, .ui-icon-triangle-1-s').css('opacity', .2).removeClass('ui-toggled');
+        if (!_self.cfg.singleSort) {
+            // Handle stacked cell case
+            $this.closest('.ui-header-column').siblings().find('.ui-sortable-column-order').html('&#160;');
+            // Handle sibling cell case
+            headerCell.parent().siblings().find('.ui-sortable-column-order').html('&#160;');
+        }
+
+        // remove previous gradients
+        //headerCell.siblings().removeClass('ui-state-active').find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
+    }
+
+    var cellFound = false, index = 0;
+    ice.ace.jq(_self.sortOrder).each(function() {
+        if (headerCell.attr('id') === this.attr('id')) {
+            cellFound = true;
+            // If the cell already exists in our list, update the reference
+            _self.sortOrder.splice(index, 1, headerCell);
+        }
+        index++;
+    });
+
+    if (metaKey && cellFound) {
+        if ((ice.ace.getOpacity(topCarat) == 1 && !descending) ||
+                (ice.ace.getOpacity(bottomCarat) == 1 && descending)) {
+            // Remove from sort order
+            _self.sortOrder.splice(headerCell.find('.ui-sortable-column-order').html()-1,1);
+            ice.ace.jq(bottomCarat).css('opacity', .2).removeClass('ui-toggled');
+            ice.ace.jq(topCarat).css('opacity', .2).removeClass('ui-toggled');
+            if (!_self.cfg.singleSort) {
+                headerCell.find('.ui-sortable-column-order').html('&#160;');
+                var i = 0;
+                ice.ace.jq(_self.sortOrder).each(function(){
+                    this.find('.ui-sortable-column-order').html(parseInt(i++)+1);
+                });
+            }
+        } else {
+            // Not a deselect, just a meta-toggle
+            if (descending) {
+                ice.ace.jq(bottomCarat).css('opacity', 1).addClass('ui-toggled');
+                ice.ace.jq(topCarat).css('opacity', .2).removeClass('ui-toggled');
+            } else {
+                ice.ace.jq(topCarat).css('opacity', 1).addClass('ui-toggled');
+                ice.ace.jq(bottomCarat).css('opacity', .2).removeClass('ui-toggled');
+            }
+        }
+    } else {
+        // add header gradient
+        //headerCell.addClass('ui-state-active');
+
+        if (descending) {
+            ice.ace.jq(bottomCarat).css('opacity', 1).addClass('ui-toggled');
+            ice.ace.jq(topCarat).css('opacity', .2).removeClass('ui-toggled');
+        } else {
+            ice.ace.jq(topCarat).css('opacity', 1).addClass('ui-toggled');
+            ice.ace.jq(bottomCarat).css('opacity', .2).removeClass('ui-toggled');
+        }
+
+        // add to sort order
+        var cellFound = false;
+        ice.ace.jq(_self.sortOrder).each(function() { if (headerCell.attr('id') === this.attr('id')) { cellFound = true; } });
+        if (cellFound == false) {
+            var order = _self.sortOrder.push(headerCell);
+            // write control display value
+            if (!_self.cfg.singleSort) $this.find('.ui-sortable-column-order').html(order);
+        }
+    }
+    // submit sort info
+    _self.sort(_self.sortOrder);
+    return false;
+}
+
 ice.ace.DataTable.prototype.setupSortEvents = function() {
     var _self = this;
-    ice.ace.jq(this.jqId + ' th > div.ui-sortable-column .ui-sortable-control')
-            .die('click').live("click",function(event, altY, altMeta) {
+
+    // Bind clickable header events
+    if (_self.cfg.clickableHeaderSorting) {
+        ice.ace.jq(this.jqId + ' th > div.ui-sortable-column')
+            .unbind('click').bind("click",function(event) {
+                var target = ice.ace.jq(event.target);
+
                 var $this = ice.ace.jq(this),
-                        topCarat = $this.find(".ui-icon-triangle-1-n")[0],
-                        bottomCarat = $this.find(".ui-icon-triangle-1-s")[0],
-                        headerCell =  $this.parent().parent(),
-                        controlOffset = $this.offset(),
-                        controlHeight = !_self.cfg.singleSort ? $this.outerHeight() : 22,
-                        descending = false,
-                        metaKey = (altMeta == undefined) ? event.metaKey : altMeta;
-                // altY and altMeta allow these event parameters to be optionally passed in
-                // from an event triggering this event artificially
-                var eventY = (altY == undefined) ? event.pageY : altY;
-                if (eventY > (controlOffset.top + (controlHeight / 2)+3))
-                    descending = true;
+                    topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
+                    bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]);
+                    selectionMade = bottomCarat.hasClass('ui-toggled') || topCarat.hasClass('ui-toggled');
 
-                // If we are looking a freshly rendered DT initalize our JS sort state
-                // from the state of the rendered controls
-                if (_self.sortOrder.length == 0) {
-                    ice.ace.jq(_self.jqId + ' th > div.ui-sortable-column .ui-sortable-control').each(function() {
-                        var $this = ice.ace.jq(this);
-                        if (ice.ace.getOpacity($this.find('.ui-icon-triangle-1-n')[0]) == 1 ||
-                                ice.ace.getOpacity($this.find('.ui-icon-triangle-1-s')[0]) == 1 )
-                            _self.sortOrder.splice(
-                                    parseInt($this.find('.ui-sortable-column-order').html())-1,
-                                    0,
-                                    $this.closest('.ui-header-column')
-                            );
-                    });
-                }
+                // If the target of the event is not a layout element or
+                // the target is a child of a sortable-control do not process event.
+                if ((!(event.target.nodeName == 'SPAN') && !(event.target.nodeName == 'DIV') && !(event.target.nodeName == 'A')) ||
+                    ((target.closest('.ui-sortable-control').length > 0) && !selectionMade))
+                    return;
 
-                if (!metaKey || _self.cfg.singleSort) {
-                    // Remake sort criteria
-                    // Reset all other arrows
-                    _self.sortOrder = [];
-                    $this.closest('.ui-header-column').siblings().find('.ui-icon-triangle-1-n, .ui-icon-triangle-1-s').css('opacity', .2).removeClass('ui-toggled');
-                    headerCell.parent().siblings().find('.ui-icon-triangle-1-n, .ui-icon-triangle-1-s').css('opacity', .2).removeClass('ui-toggled');
-                    if (!_self.cfg.singleSort) {
-                        // Handle stacked cell case
-                        $this.closest('.ui-header-column').siblings().find('.ui-sortable-column-order').html('&#160;');
-                        // Handle sibling cell case
-                        headerCell.parent().siblings().find('.ui-sortable-column-order').html('&#160;');
-                    }
-
-                    // remove previous gradients
-                    //headerCell.siblings().removeClass('ui-state-active').find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
-                }
-
-                var cellFound = false, index = 0;
-                ice.ace.jq(_self.sortOrder).each(function() {
-                    if (headerCell.attr('id') === this.attr('id')) {
-                        cellFound = true;
-                        // If the cell already exists in our list, update the reference
-                        _self.sortOrder.splice(index, 1, headerCell);
-                    }
-                    index++;
-                });
-
-                if (metaKey && cellFound) {
-                    if ((ice.ace.getOpacity(topCarat) == 1 && !descending) ||
-                            (ice.ace.getOpacity(bottomCarat) == 1 && descending)) {
-                        // Remove from sort order
-                        _self.sortOrder.splice(headerCell.find('.ui-sortable-column-order').html()-1,1);
-                        ice.ace.jq(bottomCarat).css('opacity', .2).removeClass('ui-toggled');
-                        ice.ace.jq(topCarat).css('opacity', .2).removeClass('ui-toggled');
-                        if (!_self.cfg.singleSort) {
-                            headerCell.find('.ui-sortable-column-order').html('&#160;');
-                            var i = 0;
-                            ice.ace.jq(_self.sortOrder).each(function(){
-                                this.find('.ui-sortable-column-order').html(parseInt(i++)+1);
-                            });
-                        }
-                    } else {
-                        // Not a deselect, just a meta-toggle
-                        if (descending) {
-                            ice.ace.jq(bottomCarat).css('opacity', 1).addClass('ui-toggled');
-                            ice.ace.jq(topCarat).css('opacity', .2).removeClass('ui-toggled');
-                        } else {
-                            ice.ace.jq(topCarat).css('opacity', 1).addClass('ui-toggled');
-                            ice.ace.jq(bottomCarat).css('opacity', .2).removeClass('ui-toggled');
-                        }
-                    }
-                } else {
-                    // add header gradient
-                    //headerCell.addClass('ui-state-active');
-
-                    if (descending) {
-                        ice.ace.jq(bottomCarat).css('opacity', 1).addClass('ui-toggled');
-                        ice.ace.jq(topCarat).css('opacity', .2).removeClass('ui-toggled');
-                    } else {
-                        ice.ace.jq(topCarat).css('opacity', 1).addClass('ui-toggled');
-                        ice.ace.jq(bottomCarat).css('opacity', .2).removeClass('ui-toggled');
-                    }
-
-                    // add to sort order
-                    var cellFound = false;
-                    ice.ace.jq(_self.sortOrder).each(function() { if (headerCell.attr('id') === this.attr('id')) { cellFound = true; } });
-                    if (cellFound == false) {
-                        var order = _self.sortOrder.push(headerCell);
-                        // write control display value
-                        if (!_self.cfg.singleSort) $this.find('.ui-sortable-column-order').html(order);
-                    }
-                }
-                // submit sort info
-                _self.sort(_self.sortOrder);
-                return false;
+                _self.setupSortRequest(_self, ice.ace.jq(this), event, true);
             })
             .unbind('mousemove').bind('mousemove', function(event) {
+                var target = ice.ace.jq(event.target);
+
+                // If the target of the event is not a layout element do not process event.
+                if ((!(event.target.nodeName == 'SPAN') && !(event.target.nodeName == 'DIV')
+                        && !(event.target.nodeName == 'A'))) {
+                    target.mouseleave();
+                    return;
+                }
+
+                // if the target is a child of a sortable-control do not process the event
+                if (target.closest('.ui-sortable-control').length > 0) return;
+
+                var $this = ice.ace.jq(this),
+                    topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
+                    bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]);
+                    selectionMade = bottomCarat.hasClass('ui-toggled') || topCarat.hasClass('ui-toggled');
+
+                if (_self.cfg.clickableHeaderSorting && !selectionMade) {
+                    topCarat.fadeTo(0, .66);
+                } else if (!_self.cfg.clickableHeaderSorting) {
+                    if (!topCarat.hasClass('ui-toggled')) topCarat.fadeTo(0, .66);
+                    else bottomCarat.fadeTo(0, .66);
+                }
+
+                $this.addClass('ui-state-hover');
+            })
+            .unbind('mouseleave').bind('mouseleave', function(event) {
+                var $this = ice.ace.jq(this),
+                    topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
+                    bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]);
+
+                if (!bottomCarat.hasClass('ui-toggled'))
+                    if (topCarat.hasClass('ui-toggled') & _self.cfg.clickableHeaderSorting)
+                        bottomCarat.fadeTo(0, 0);
+                    else bottomCarat.fadeTo(0, .33);
+
+                if (!topCarat.hasClass('ui-toggled'))
+                    if (bottomCarat.hasClass('ui-toggled') & _self.cfg.clickableHeaderSorting)
+                        topCarat.fadeTo(0, 0);
+                    else topCarat.fadeTo(0, .33);
+
+                $this.removeClass('ui-state-hover');
+            });
+    }
+
+    // Bind clickable control events
+    ice.ace.jq(this.jqId + ' th > div.ui-sortable-column .ui-sortable-control')
+            .unbind('click').bind("click",function(event, altY, altMeta) {
+                var $this = ice.ace.jq(this),
+                    topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
+                    bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]),
+                    selectionMade = bottomCarat.hasClass('ui-toggled') || topCarat.hasClass('ui-toggled');
+
+                if ((_self.cfg.clickableHeaderSorting && !selectionMade) || (!_self.cfg.clickableHeaderSorting)) {
+                    _self.setupSortRequest(_self, ice.ace.jq(this), event, false, altY, altMeta);
+                    event.stopPropagation();
+                }
+            })
+            .unbind('mousemove').bind('mousemove', function(event) {
+                var target = ice.ace.jq(event.target);
+
                 var $this = ice.ace.jq(this),
                     topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
                     bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]),
                     controlOffset = $this.offset(),
                     controlHeight = !_self.cfg.singleSort ? $this.outerHeight() : 22;
 
-                if (event.pageY > (controlOffset.top + (controlHeight / 2)+3)) {
-                    if (!bottomCarat.hasClass('ui-toggled'))
-                        bottomCarat.fadeTo(0, .66);
-                    if (!topCarat.hasClass('ui-toggled'))
-                        topCarat.fadeTo(0, .33);
-                } else {
-                    if (!topCarat.hasClass('ui-toggled'))
-                        topCarat.fadeTo(0, .66);
-                    if (!bottomCarat.hasClass('ui-toggled'))
-                        bottomCarat.fadeTo(0, .33);
+                if (!(_self.cfg.clickableHeaderSorting) || (!bottomCarat.hasClass('ui-toggled') && !topCarat.hasClass('ui-toggled'))) {
+                    if (event.pageY > (controlOffset.top + (controlHeight / 2)+3)) {
+                        if (!bottomCarat.hasClass('ui-toggled'))
+                            bottomCarat.fadeTo(0, .66);
+                        if (!topCarat.hasClass('ui-toggled'))
+                            topCarat.fadeTo(0, .33);
+                    } else {
+                        if (!topCarat.hasClass('ui-toggled'))
+                            topCarat.fadeTo(0, .66);
+                        if (!bottomCarat.hasClass('ui-toggled'))
+                            bottomCarat.fadeTo(0, .33);
+                    }
                 }
+
+                if (_self.cfg.clickableHeaderSorting)
+                    $this.parent().parent().addClass('ui-state-hover');
             })
             .unbind('mouseleave').bind('mouseleave', function(event) {
                 var $this = ice.ace.jq(this),
                     topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
                     bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]);
-                if (!bottomCarat.hasClass('ui-toggled')) bottomCarat.fadeTo(100, .33);
-                if (!topCarat.hasClass('ui-toggled')) topCarat.fadeTo(100, .33);
+
+                if (!bottomCarat.hasClass('ui-toggled'))
+                    if (topCarat.hasClass('ui-toggled') & _self.cfg.clickableHeaderSorting)
+                        bottomCarat.fadeTo(0, 0);
+                    else bottomCarat.fadeTo(0, .33);
+
+                if (!topCarat.hasClass('ui-toggled'))
+                    if (bottomCarat.hasClass('ui-toggled') & _self.cfg.clickableHeaderSorting)
+                        topCarat.fadeTo(0, 0);
+                    else topCarat.fadeTo(0, .33);
+
+                $this.parent().parent().removeClass('ui-state-hover');
+            }).each(function () {
+                // Prefade sort controls
+                var $this = ice.ace.jq(this),
+                    topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
+                    bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]);
+                    selectionMade = bottomCarat.hasClass('ui-toggled') || topCarat.hasClass('ui-toggled');
+
+                if (_self.cfg.clickableHeaderSorting && selectionMade) {
+                    if (!topCarat.hasClass('ui-toggled')) topCarat.fadeTo(0, 0);
+                    else bottomCarat.fadeTo(0, 0);
+                } else {
+                    if (!topCarat.hasClass('ui-toggled')) topCarat.fadeTo(0, .33);
+                    if (!bottomCarat.hasClass('ui-toggled')) bottomCarat.fadeTo(0, .33);
+                }
             });
 
-    // Pre-fade and bind keypress & hover to kb-navigable sort icons
-    ice.ace.jq(this.jqId + ' th > div.ui-sortable-column .ui-sortable-control')
+    // Bind keypress kb-navigable sort icons
+    var sortableControls = ice.ace.jq(this.jqId + ' th > div.ui-sortable-column .ui-sortable-control');
+
+    sortableControls
             .find('.ui-icon-triangle-1-n')
             .die('keypress').live('keypress',function(event) {
                 if (event.which == 32 || event.which == 13) {
@@ -272,10 +391,9 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                     $currentTarget.closest('.ui-sortable-control')
                             .trigger('click', [$currentTarget.offset().top, event.metaKey]);
                     return false;
-                }})
-            .not('.ui-toggled').fadeTo(0, 0.33);
+                }});
 
-    ice.ace.jq(this.jqId + ' th > div.ui-sortable-column .ui-sortable-control')
+    sortableControls
             .find('.ui-icon-triangle-1-s')
             .die('keypress').live('keypress',function(event) {
                 if (event.which == 32 || event.which == 13) {
@@ -283,8 +401,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                     $currentTarget.closest('.ui-sortable-control')
                             .trigger('click', [$currentTarget.offset().top + 6, event.metaKey]);
                     return false;
-                }})
-            .not('.ui-toggled').fadeTo(0, 0.33);
+                }});
 }
 
 ice.ace.DataTable.prototype.setupSelectionEvents = function() {
@@ -371,7 +488,7 @@ ice.ace.DataTable.prototype.setupScrolling = function() {
                 delayedCleanUpResizeCount++;
                 setTimeout(delayedCleanUpResize , 50);
             } else if (delayedCleanUpResizeCount >= 100) {
-                delayedCleanUpResize = 0;
+                delayedCleanUpResizeCount = 0;
             }
          };
 
