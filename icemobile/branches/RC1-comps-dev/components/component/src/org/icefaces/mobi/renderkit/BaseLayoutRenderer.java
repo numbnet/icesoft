@@ -8,7 +8,6 @@ import java.util.Map;
 
 
 public class BaseLayoutRenderer extends CoreRenderer {
-    protected static Map<String, StringBuilder> menuItemCfg = new HashMap<String, StringBuilder>() ;
     /*
         in order to use these must have empty encodeChildren method in Renderer.
      */
@@ -30,10 +29,6 @@ public class BaseLayoutRenderer extends CoreRenderer {
             renderChildren(facesContext, child);
         }
         child.encodeEnd(facesContext);
-    }
-
-    protected static void addMenuItemCfg(String clientId,StringBuilder sb){
-        BaseLayoutRenderer.menuItemCfg.put(clientId, sb);
     }
 
 }

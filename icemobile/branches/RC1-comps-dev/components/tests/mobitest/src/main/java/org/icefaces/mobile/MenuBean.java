@@ -16,8 +16,6 @@ public class MenuBean implements Serializable {
     private static final Logger logger =
     Logger.getLogger(ListBean.class.toString());
     private List<String> simpleList = new ArrayList<String>() ;
-    private List<SelectItem> selItems = new ArrayList<SelectItem>();
-    private List<String> actionListeners = new ArrayList<String>();
     private String outputString = "none";
 
  //   private List<MenuAction> itemList = new ArrayList<MenuAction>();
@@ -26,7 +24,6 @@ public class MenuBean implements Serializable {
     private String style="display:inline-block;position:relative;top:-25px;left:0;color:white;";
 
     public MenuBean(){
-        fillSelItems();
         this.simpleList.add("Edit");
         this.simpleList.add("File");
         this.simpleList.add("Delete");
@@ -35,18 +32,11 @@ public class MenuBean implements Serializable {
     }
 
     private void fillModelData(){
-        this.data.add(new ModelData("", "select one","none", "none"));
-        this.data.add(new ModelData("File", "file item", "none", "none" ));
-        this.data.add(new ModelData("Add", "add item", "none", "n" ));
-        this.data.add(new ModelData("Delete", "delete item", "none", "n" ));
+  //      this.data.add(new ModelData("options", "select one","none", "none"));
+        this.data.add(new ModelData("File", "file item","pc1" , "none" ));
+        this.data.add(new ModelData("Add", "add item", "pcAdd", "n" ));
+        this.data.add(new ModelData("Delete", "delete item", "pcDel", "n" ));
         this.data.add(new ModelData("Cancel", "cancel item", "none", "n" ));
-    }
-    private void fillSelItems(){
-  //      this.selItems.add(new SelectItem("", "select an option"));
-        this.selItems.add(new SelectItem("edit", "edit option"));
-        this.selItems.add(new SelectItem("file", "file option"));
-        this.selItems.add(new SelectItem("delete", "delete option"));
-        this.selItems.add(new SelectItem("cancel", "cancel option"));
     }
 
     public List<ModelData> getData() {
@@ -79,6 +69,7 @@ public class MenuBean implements Serializable {
         return style;
     }
 
+
     public void setStyle(String style) {
         this.style = style;
     }
@@ -95,15 +86,16 @@ public class MenuBean implements Serializable {
         private String panelConfId;
         private String submitNotif;
         private String disabled= "false";
+        private String singleSubmit = "false";
 
         public ModelData (String val, String label, String pcId, String snId){
             this.value = val;
             this.label = label;
             this.submitNotif = snId;
             this.panelConfId = pcId;
-            if (this.label.startsWith("select")){
+          /*  if (this.label.startsWith("select")){
                 this.disabled = "true";
-            }
+            }   */
         }
 
         public String getDisabled() {
@@ -150,5 +142,12 @@ public class MenuBean implements Serializable {
              this.submitNotif = submitNotif;
          }
 
-     }
+        public String getSingleSubmit() {
+            return singleSubmit;
+        }
+
+        public void setSingleSubmit(String singleSubmit) {
+            this.singleSubmit = singleSubmit;
+        }
+    }
 }

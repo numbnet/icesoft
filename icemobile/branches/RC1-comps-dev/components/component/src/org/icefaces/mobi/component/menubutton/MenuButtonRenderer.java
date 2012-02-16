@@ -116,7 +116,7 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
              renderChildren(facesContext, menu);
          }
          writer.endElement(HTML.DIV_ELEM);
-
+         encodeScript(facesContext, uiComponent);
      }
 
     @Override
@@ -134,17 +134,21 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
          ResponseWriter writer = context.getResponseWriter();
          MenuButton menu = (MenuButton) uiComponent;
          String clientId = menu.getClientId(context);
-         if (BaseLayoutRenderer.menuItemCfg.containsKey(clientId)){
-             writer.startElement("span", uiComponent);
-             writer.writeAttribute("id", clientId+"_initScr", "id");
-             writer.startElement("script", null);
-             writer.writeAttribute("text", "text/javascript", null);
-             for (Map.Entry<String, StringBuilder> entry: BaseLayoutRenderer.menuItemCfg.entrySet()){
-                  writer.write(entry.toString());
+         writer.startElement("span", uiComponent);
+         writer.writeAttribute("id", clientId+"_initScr", "id");
+         writer.startElement("script", uiComponent);
+         writer.writeAttribute("text", "text/javascript", null);
+         writer.write("mobi.menubutton.initmenu('"+clientId+"');");
+         if (!menu.getMenuItemCfg().isEmpty()){
+             for (Map.Entry<String, StringBuilder> entry: menu.getMenuItemCfg().entrySet()){
+              //    logger.info(" item cfg prints="+entry.getValue().toString());
+                 StringBuilder jsCall = new StringBuilder("mobi.menubutton.initCfg('").append(clientId).append("',");
+                 jsCall.append(entry.getValue());
+                  writer.write(jsCall.toString());
              }
-             writer.endElement("script");
-             writer.endElement("span");
          }
+         writer.endElement("script");
+         writer.endElement("span");
      }
 
 }

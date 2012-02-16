@@ -35,18 +35,45 @@
 </h:head>
 
 <h:body>
-    
-       <h5>Menu Button</h5>
+      <ui:debug/>
+       <h3>Menu Button</h3>
+      <h:form id="inputForm">
+          <h5>Input Form</h5>
+         <p>change the menu model properties for testing</p>
+       <fieldset>
+       <legend>singleSubmit</legend>
+         <ui:repeat value="#{menu.data}" var="inputIt">
 
-      <h:form id="menuForm">
-        <mobi:menuButton id="mnu1" value="#{menu.data}" var="item">
+             <h:outputLabel for="selectSingle" value="#{inputIt.label}"/>
+             <h:selectBooleanCheckbox id="selectSingle" title="singleSubmit" value="#{inputIt.singleSubmit}">
+             <f:ajax execute="@this" render="@all"/>
+              </h:selectBooleanCheckbox>
+          </ui:repeat>
+         </fieldset>
+      </h:form>
+
+      <h:form id="menuBasic">
+        <mobi:menuButton id="menu1" value="#{menu.data}" var="item">
                 <mobi:menuButtonItem value="#{item.value}" label="#{item.label}"
+                                     singleSubmit="#{item.singleSubmit}"
                                      disabled="#{item.disabled}" actionListener="#{item.actionMethod}"/>
         </mobi:menuButton>
 
       </h:form>
         <br />
-
+       <h:form id="menuForm">
+    <fieldset>
+        <legend>With panelConfirmation</legend>
+        <mobi:menuButton id="mnu2" value="#{menu.data}" var="item">
+                <mobi:menuButtonItem value="#{item.value}" label="#{item.label}"
+                                     panelConfirmation="#{item.panelConfId}"
+                                     disabled="#{item.disabled}" actionListener="#{item.actionMethod}"/>
+        </mobi:menuButton>
+        <mobi:panelConfirmation id="pc1" message="working..."/>
+        <mobi:panelConfirmation id="pcAdd" message="adding record.."/>
+        <mobi:panelConfirmation id="pcDel" message="Are you sure you want to delete?"/>
+    </fieldset>
+      </h:form>
     <h3>RESULTS</h3>
      <h:outputLabel for="out1" value="A. simple:-"/>
       <h:outputText id="out1" value="#{menu.outputString}">
