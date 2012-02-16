@@ -95,7 +95,13 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
             String path = resource.getRequestPath();
 
             int extensionPosition = path.indexOf(".js");
-            extensionMapping = extensionPosition < 0 ? "" : path.substring(extensionPosition + 3/*".js".length()*/);
+            int queryPosition = path.indexOf("?");
+            if (queryPosition > 0 && queryPosition < extensionPosition) {
+                //there is no exception mapping used, most probably we're running as a portlet with URLs seriously mangled
+                extensionMapping = "";
+            } else {
+                extensionMapping = extensionPosition < 0 ? "" : path.substring(extensionPosition + 3/*".js".length()*/);
+            }
 
             int prefixPosition = path.indexOf(ResourceHandler.RESOURCE_IDENTIFIER + "/" + INPUTRICHTEXT_CKEDITOR_DIR);
             prefixMapping = prefixPosition < 0 ? "" : path.substring(0, prefixPosition);
@@ -103,7 +109,8 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
     }
 
     private void calculateMappings(FacesContext context, ArrayList allResources, HashMap cssResources, ArrayList imageResources) throws UnsupportedEncodingException {
-        Map applicationMap = context.getExternalContext().getApplicationMap();
+        ExternalContext externalContext = context.getExternalContext();
+        Map applicationMap = externalContext.getApplicationMap();
 
         String value = (String) applicationMap.get(InputRichTextResourceHandler.class.getName());
         if (value == null) {
@@ -120,7 +127,7 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
                     String path = toRelativeLocalPath(entry);
                     if (path.startsWith(dir)) {
                         String relativePath = path.substring(dir.length() + 1);
-                        String requestPath = toRequestPath(context, entry);
+                        String requestPath = externalContext.encodeResourceURL(toRequestPath(context, entry));
                         content = content.replaceAll(relativePath, requestPath);
                     }
                 }
@@ -141,7 +148,7 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
                 code.append("{i: '");
                 code.append(toRelativeLocalPath(next));
                 code.append("', o: '");
-                code.append(toRequestPath(context, next));
+                code.append(externalContext.encodeResourceURL(toRequestPath(context, next)));
                 code.append("'}");
                 if (entries.hasNext()) {
                     code.append(",");
@@ -201,7 +208,7 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
     }
 
     public String toRequestPath(FacesContext context, String localPath) {
-        return prefixMapping + "/" + ResourceHandler.RESOURCE_IDENTIFIER + "/" + localPath + extensionMapping;
+        return prefixMapping + ResourceHandler.RESOURCE_IDENTIFIER + "/" + localPath + extensionMapping;
     }
 
     private String toRelativeLocalDir(String localPath) {
@@ -210,13 +217,17 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
     }
 
     private class ResourceEntry extends Resource {
-        Date lastModified = new Date();
-        String localPath;
-        byte[] content;
+        private Date lastModified = new Date();
+        private String localPath;
+        private byte[] content;
+        private String mimeType;
 
         private ResourceEntry(String localPath, byte[] content) {
             this.localPath = localPath;
             this.content = content;
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = facesContext.getExternalContext();
+            this.mimeType = externalContext.getMimeType(localPath);
         }
 
         public InputStream getInputStream() throws IOException {
@@ -224,17 +235,19 @@ public class InputRichTextResourceHandler extends ResourceHandlerWrapper {
         }
 
         public Map<String, String> getResponseHeaders() {
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            ExternalContext externalContext = facesContext.getExternalContext();
 
             HashMap headers = new HashMap();
             headers.put("ETag", eTag());
             headers.put("Cache-Control", "public");
-            headers.put("Content-Type", externalContext.getMimeType(localPath));
+            headers.put("Content-Type", mimeType);
             headers.put("Date", Util.HTTP_DATE.format(new Date()));
             headers.put("Last-Modified", Util.HTTP_DATE.format(lastModified));
 
             return headers;
+        }
+
+        public String getContentType() {
+            return mimeType;
         }
 
         public String getRequestPath() {
