@@ -52,6 +52,11 @@
     </context-param>
     
     <context-param>
+        <param-name>org.apache.myfaces.STRICT_JSF_2_ALLOW_SLASH_LIBRARY_NAME</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <context-param>
         <param-name>org.icefaces.render.auto</param-name>
         <param-value>true</param-value>
     </context-param>
