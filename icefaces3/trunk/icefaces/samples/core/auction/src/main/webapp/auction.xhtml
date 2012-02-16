@@ -29,7 +29,7 @@
 
 <!-- Sample template graphic for auction monitor. -->
 <ui:define name="sampleGraphic">
-    <h:graphicImage library="css/images"
+    <h:graphicImage library="images"
                     name="banner_hdr_auction.jpg"
                     width="463" height="100"
                     title="#{msgs['auction.template.graphic.title']}"
@@ -113,7 +113,7 @@
                                     actionListener="#{auctionController.toggleExtendedDescription}"
                                     immediate="true">
                                 <h:graphicImage width="15" height="15"
-                                                library="css/images"
+                                                library="images"
                                                 title="#{msgs['auction.item.details']}"
                                                 alt="#{msgs['auction.item.details']}"
                                                 name="expanded_#{auctionItem.showExtendedDescription}.gif"/>
@@ -137,7 +137,7 @@
                         <td id="row_#{status.index}_td5" valign="top">
                             <h:graphicImage id="ltime" style="margin-right:5px;"
                                             width="15" height="15"
-                                            library="css/images"
+                                            library="images"
                                             name="time_left_#{auctionItem.timeLeftType}.gif"
                                             title="#{msgs['auction.item.timeLeft']}"
                                             alt="#{msgs['auction.item.timeLeft']}"/>
@@ -154,7 +154,7 @@
                                     actionListener="#{auctionController.toggleBidInput}"
                                     immediate="true">
                                 <h:graphicImage id="bidImg" width="60" height="21"
-                                                library="css/images"
+                                                library="images"
                                                 name="button_bid.gif"
                                                 alt="#{msgs['auction.bid.showBid']}"
                                                 title="#{msgs['auction.bid.showBid']}"/>
@@ -172,7 +172,7 @@
                                 <h:commandLink id="bidSub"
                                         actionListener="#{auctionController.placeBid}">
                                     <h:graphicImage id="subImg" width="15" height="15"
-                                                    library="css/images"
+                                                    library="images"
                                                     name="button_bid_accept.gif"
                                                     alt="#{msgs['auction.bid.makeBid']}"
                                                     title="#{msgs['auction.bid.makeBid']}"/>
@@ -181,7 +181,7 @@
                                 <h:commandLink id="bidCncl" immediate="true"
                                                actionListener="#{auctionController.toggleBidInput}">
                                     <h:graphicImage id="cnclImg" width="15" height="15"
-                                                    library="css/images"
+                                                    library="images"
                                                     name="button_bid_decline.gif"
                                                     alt="#{msgs['auction.bid.hideBid']}"
                                                     title="#{msgs['auction.bid.hideBid']}"/>
@@ -198,7 +198,7 @@
                             <td></td>
                             <td colspan="3">
                                 <h:graphicImage width="100" height="75"
-                                                library="css/images"
+                                                library="images"
                                                 style="float:left;margin-right:3px;"
                                                 alt="#{auctionItem.auctionItem.name}"
                                                 title="#{auctionItem.auctionItem.name}"
