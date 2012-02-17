@@ -125,7 +125,9 @@
             var updatedElement = lookupElementById(id);
             if (updatedElement) {
                 each(updatedElement.getElementsByTagName('iframe'), function(iframe) {
-                    iframe.parentNode.removeChild(iframe);
+                    if( iframe && iframe.parentNode ) {
+                    	iframe.parentNode.removeChild(iframe);
+                    }
                 });
             }
         });
