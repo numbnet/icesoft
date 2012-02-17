@@ -1752,13 +1752,18 @@ public class DataTable extends DataTableBase {
             // Expose the current row in the specified request attribute
             setRowIndex(++rowIndex);
 
+            // Row unavailable, see if we can pop to a parent row in a tree case
             if (!isRowAvailable()) {
                 if (model instanceof TreeDataModel) {
                     treeDataModel = (TreeDataModel)model;
                     if (treeDataModel.isRootIndexSet()) {
                         rowIndex = treeDataModel.pop()+1;
                         setRowIndex(rowIndex);
-                        if (!treeDataModel.isRootIndexSet()) inSubrows = false;
+                        if (!treeDataModel.isRootIndexSet()) {
+                            inSubrows = false;
+                            // Scrolled past the last row
+                            if (!isRowAvailable()) break;
+                        }
                     } else break;
                 } else break; // Scrolled past the last row
             }
