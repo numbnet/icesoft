@@ -24,7 +24,7 @@
 	<title>Easy Ajax Push - Color</title>
 </h:head>
 <h:body>
-	<h:dataTable id="dTable" value="#{messageBean.textList}" var="current">
+	<h:dataTable id="dTable" value="#{colorBean.textList}" var="current">
 		<h:column>
 			<h:outputText id="current" value="#{current.text}"
 						  style="color: #{current.color};"/>

@@ -17,6 +17,7 @@
 package org.icefaces.tutorial.easyajaxpush.beans;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -25,6 +26,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import org.icefaces.application.PushRenderer;
+
+import org.icefaces.tutorial.easyajaxpush.model.TextModel;
 
 @ManagedBean(name="colorBean")
 @ViewScoped
@@ -47,6 +50,10 @@ public class ColorBean implements Serializable {
 	public void setMessageBean(MessageBean messageBean) {
 		this.messageBean = messageBean;
 	}
+
+        public List<TextModel> getTextList() {
+                return messageBean.getTextList();
+        }
 	
 	public String getColor() {
 		return color;
