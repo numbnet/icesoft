@@ -13,6 +13,7 @@ mobi.menubutton = {
          } catch(e) {
              myselect.add(new Option("Select", "0"), 0);
          }
+        myselect.options[0].selected=true;
         myselect.render;
     },
     select: function(clientId){
@@ -33,18 +34,28 @@ mobi.menubutton = {
              disabled = this.cfg[optId].disabled;
          }
          if (index ==0)return;
+         var snId;
+         if (this.cfg[optId].snId){
+             snId = this.cfg[optId].snId;
+         }
          if (this.cfg[optId].pcId){
             var pcId= this.cfg[optId].pcId;
             mobi.panelConf.init(pcId, optId, true, this.cfg[optId] ) ;
-            reset(myselect,index);
-            return;
          }
-         if (singleSubmit){
+         else if (singleSubmit){
              ice.se(null, optId);
+             if (snId){
+                 mobi.submitnotify.init(snId);
+             }
+            // this.reset(myselect, index);
          } else {
              ice.s(null, optId);
+             if (snId){
+                 mobi.submitnotify.init(snId);
+             }
+            // this.reset(myselect, index);
          }
-        this.reset(myselect, index);
+
     },
     reset: function reset(myselect, index) {
             myselect.options[index].selected = false;

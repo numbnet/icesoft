@@ -2,6 +2,7 @@ package org.icefaces.mobi.component.menubutton;
 
 import org.icefaces.mobi.component.panelconfirmation.PanelConfirmation;
 import org.icefaces.mobi.component.submitnotification.SubmitNotificationRenderer;
+import org.icefaces.mobi.component.submitnotification.SubmitNotification;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
 
@@ -53,14 +54,19 @@ public class MenuButtonItemRenderer extends BaseLayoutRenderer{
              return;
          }
          MenuButton parentMenu = (MenuButton)parent;
-         String subNotId = mbi.getSubmitNofification();
+         String subNotId = mbi.getSubmitNotification();
          String panelConfId = mbi.getPanelConfirmation();
          String submitNotificationId = null;
   //       StringBuilder builder = new StringBuilder("mobi.menubutton.initCfg('").append(parentId).append("','").append(clientId).append("',{singleSubmit: ");
         StringBuilder builder = new StringBuilder(",{singleSubmit: ").append(singleSubmit);
         builder.append(",disabled: ").append(disabled);
+        UIComponent uiForm = Utils.findParentForm(parent);
          if (null != subNotId) {
             submitNotificationId = SubmitNotificationRenderer.findSubmitNotificationId(uiComponent, subNotId);
+            if (null == submitNotificationId){
+                //try another way as this above one is limited for some reason menuButtonItems don't find it otherwise
+                submitNotificationId = (String)((uiForm.findComponent(subNotId)).getClientId());
+            }
             if (null != submitNotificationId ){
                 builder.append(",snId: '").append(submitNotificationId).append("'");
             } else {
@@ -75,7 +81,6 @@ public class MenuButtonItemRenderer extends BaseLayoutRenderer{
                 behaviors = behaviors.replace("\"", "\'");
                 builder.append(behaviors);
             }
-            UIComponent uiForm = Utils.findParentForm(parent);
             PanelConfirmation panelConfirmation = (PanelConfirmation) (parent.findComponent(panelConfId));
             if (null==panelConfirmation){
                 panelConfirmation = (PanelConfirmation)(uiForm.findComponent(panelConfId));

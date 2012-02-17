@@ -128,7 +128,14 @@ public class MenuBean implements Serializable {
 
          public void actionMethod(ActionEvent ae){
              MenuBean.EVENT_TRIGGERED="item "+this.value+" was selected";
+             if (this.value.equals("Add")){
+                try{
+                   Thread.sleep(5000);
+                   this.label="Added";
+                }  catch (Exception e){
 
+                }
+             }
          }
          public void setPanelConfId(String panelConfId) {
              this.panelConfId = panelConfId;
