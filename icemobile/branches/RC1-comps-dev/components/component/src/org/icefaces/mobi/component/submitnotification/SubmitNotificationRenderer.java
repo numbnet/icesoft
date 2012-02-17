@@ -2,6 +2,7 @@ package org.icefaces.mobi.component.submitnotification;
 
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.Utils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

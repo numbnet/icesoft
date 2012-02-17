@@ -60,25 +60,28 @@
         </mobi:menuButton>
 
       </h:form>
-        <br />
-       <h:form id="menuForm">
-    <fieldset>
-        <legend>With panelConfirmation</legend>
-        <mobi:menuButton id="mnu2" value="#{menu.data}" var="item">
+      <br />
+    <h:form id="subNotForm">
+      <fieldset>
+        <legend>With panelConfirmation and submitNotification</legend>
+        <mobi:menuButton id="mnu3" value="#{menu.data}" var="item">
                 <mobi:menuButtonItem value="#{item.value}" label="#{item.label}"
                                      panelConfirmation="#{item.panelConfId}"
+                                     submitNotification="sn1"
                                      disabled="#{item.disabled}" actionListener="#{item.actionMethod}"/>
         </mobi:menuButton>
         <mobi:panelConfirmation id="pc1" message="working..."/>
         <mobi:panelConfirmation id="pcAdd" message="adding record.."/>
         <mobi:panelConfirmation id="pcDel" message="Are you sure you want to delete?"/>
-    </fieldset>
-      </h:form>
+        <mobi:submitNotification id="sn1">
+            <h:outputText value="...working"/>
+        </mobi:submitNotification>
+      </fieldset>
+     </h:form>
     <h3>RESULTS</h3>
      <h:outputLabel for="out1" value="A. simple:-"/>
       <h:outputText id="out1" value="#{menu.outputString}">
     </h:outputText>
-
 
     <br />
 	<li><a href="../williamsComponents.html">index page</a>

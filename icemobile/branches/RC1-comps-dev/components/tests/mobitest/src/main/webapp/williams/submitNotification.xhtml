@@ -46,7 +46,7 @@
            <mobi:inputText id="text1" value="#{input.name}" type="text" placeholder="name" />
        </p>
         <h5>have submitNotification on here</h5>
-        <mobi:commandButton id="subNotEx1" value="submitBlockPopup" submitNofification="sn1"
+        <mobi:commandButton id="subNotEx1" value="submitBlockPopup" submitNotification="sn1"
                             actionListener="#{input.defaultEvent}"/>
         <mobi:submitNotification id="sn1">
             <h:outputText value="WORKING..."/>
@@ -54,8 +54,9 @@
 
     </h:form>
    </fieldset>
-   <fieldset title="formtest2">
-      <h:form id="form1a">
+   <fieldset >
+      <legend>example with panelConfirmation and submitNotification</legend>
+      <h:form id="form2">
        <p>
         <h:outputText value="B. mobi comp singleSubmit is false "/>
         <mobi:inputText id="textSSFalse" value="#{input.someText}" type="text" placeholder="#{input.placeholder}" title="basic text input"/>
@@ -64,7 +65,7 @@
           <h:outputText value="#{input.eventString}"/>
        <h5>SingleSubmit will not be
             available with panelConfirmation</h5>
-       <mobi:commandButton id="defaultOne" buttonType="default" value="StandardSubmit"
+       <mobi:commandButton id="ex2" buttonType="default" value="StandardSubmit"
                            panelConfirmation="pc1" submitNotification="sn2"
                            actionListener="#{input.defaultEvent}"/>
        <mobi:panelConfirmation id="pc1" message="working"/>

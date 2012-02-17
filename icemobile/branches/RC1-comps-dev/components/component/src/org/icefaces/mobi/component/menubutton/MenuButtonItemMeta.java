@@ -65,6 +65,6 @@ public class MenuButtonItemMeta extends UICommandMeta {
         private String panelConfirmation;
 
         @Property(tlddoc="id of blocking submitNotification panel which blocks any further access to page until process is complete")
-        private String submitNofification;
+        private String submitNotification;
 
 }
