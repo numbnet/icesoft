@@ -151,7 +151,15 @@ public class InputBean implements Serializable {
     public void setSliderVal3(int sliderVal3) {
         this.sliderVal3 = sliderVal3;
     }
+    public void testSubmitNotification(ActionEvent ae){
+        try{
+            Thread.sleep(3000);
+            this.name="updateprocesscomplete";
+        }  catch (Exception e){
 
+        }
+        this.setEventString("thread Timer finished");
+    }
     public void defaultEvent(ActionEvent ae){
         String val = "DefaultEvent:";
         val+=checkTestParam("testParam");
