@@ -50,6 +50,10 @@ mobi.panelConf = {
                 }
             }
             this.close(clientId);
+            if (this.cfg[clientId].snId){
+                var snId = this.cfg[clientId].snId;
+                mobi.submitnotify.open(snId);
+            }
         },
         open: function(clientId){
             var containerId = clientId+"_popup";
