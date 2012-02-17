@@ -448,7 +448,8 @@ public class BridgeSetup implements SystemEventListener {
             Map<String, Object> attributes = c.getAttributes();
             String resourceName = (String) attributes.get("name");
             String resourceLibrary = (String) attributes.get("library");
-            if (name.equals(resourceName) && library.equals(resourceLibrary)) {
+            String normalizedLibrary = fixResourceParameter(library);
+            if (name.equals(resourceName) && (normalizedLibrary == resourceLibrary/*both null*/ || normalizedLibrary.equals(resourceLibrary))) {
                 position = i;
                 break;
             }
