@@ -16,71 +16,71 @@
 
 package com.icesoft.faces.component.ext.renderkit;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.HashMap;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionEvent;
-
 import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.component.IceExtended;
 import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.component.ext.KeyEvent;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
+import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeWriter;
-import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.event.ActionEvent;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basic.InputTextRenderer {
     // LocalEffectEncoder takes ownership of any passthrough attributes
     private static final String[] jsEvents = LocalEffectEncoder.maskEvents(
-        ExtendedAttributeConstants.getAttributes(
-            ExtendedAttributeConstants.ICE_INPUTTEXT));
+            ExtendedAttributeConstants.getAttributes(
+                    ExtendedAttributeConstants.ICE_INPUTTEXT));
     private static final String[] passThruAttributes =
-        ExtendedAttributeConstants.getAttributes(
-            ExtendedAttributeConstants.ICE_INPUTTEXT,
-            jsEvents);
+            ExtendedAttributeConstants.getAttributes(
+                    ExtendedAttributeConstants.ICE_INPUTTEXT,
+                    jsEvents);
     private static Map rendererJavascript;
     private static Map rendererJavascriptPartialSubmit;
+
     static {
         rendererJavascript = new HashMap();
-        rendererJavascript.put(HTML.ONKEYPRESS_ATTR,
-            DomBasicRenderer.ICESUBMIT);
+        rendererJavascript.put(HTML.ONKEYUP_ATTR,
+                DomBasicRenderer.ICESUBMIT);
         rendererJavascript.put(HTML.ONFOCUS_ATTR,
-            "setFocus(this.id);");
+                "setFocus(this.id);");
         rendererJavascript.put(HTML.ONBLUR_ATTR,
-            "setFocus('');");
+                "setFocus('');");
         rendererJavascript.put(HTML.ONMOUSEDOWN_ATTR, "this.focus();");
         rendererJavascriptPartialSubmit = new HashMap();
-        rendererJavascriptPartialSubmit.put(HTML.ONKEYPRESS_ATTR,
-            DomBasicRenderer.ICESUBMIT);
+        rendererJavascriptPartialSubmit.put(HTML.ONKEYUP_ATTR,
+                DomBasicRenderer.ICESUBMIT);
         rendererJavascriptPartialSubmit.put(HTML.ONFOCUS_ATTR,
-            "setFocus(this.id);");
+                "setFocus(this.id);");
         rendererJavascriptPartialSubmit.put(HTML.ONBLUR_ATTR,
-            "setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL);
-        rendererJavascriptPartialSubmit.put(HTML.ONMOUSEDOWN_ATTR, "this.focus();");        
+                "setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL);
+        rendererJavascriptPartialSubmit.put(HTML.ONMOUSEDOWN_ATTR, "this.focus();");
     }
-    
+
     protected void renderHtmlAttributes(FacesContext facesContext, ResponseWriter writer, UIComponent uiComponent)
-            throws IOException{
+            throws IOException {
         PassThruAttributeWriter.renderHtmlAttributes(
-            writer, uiComponent, passThruAttributes);
+                writer, uiComponent, passThruAttributes);
         //renderer is responsible to write the autocomplete attribute
-        Object autoComplete = ((HtmlInputText)uiComponent).getAutocomplete();
+        Object autoComplete = ((HtmlInputText) uiComponent).getAutocomplete();
         if (autoComplete != null) {
             writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, autoComplete, null);
         }
         Map rendererJS = ((IceExtended) uiComponent).getPartialSubmit()
-            ? rendererJavascriptPartialSubmit : rendererJavascript;
+                ? rendererJavascriptPartialSubmit : rendererJavascript;
 
         LocalEffectEncoder.encode(
-            facesContext, uiComponent, jsEvents, rendererJS, null, writer);
+                facesContext, uiComponent, jsEvents, rendererJS, null, writer);
     }
-    
+
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         super.decode(facesContext, uiComponent);
         Object focusId = facesContext.getExternalContext()
@@ -105,12 +105,12 @@ public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basi
         try {
             KeyEvent keyEvent =
                     new KeyEvent(uiComponent, facesContext.getExternalContext()
-                .getRequestParameterMap());
+                            .getRequestParameterMap());
             if (keyEvent.getKeyCode() == KeyEvent.CARRIAGE_RETURN) {
                 uiComponent.queueEvent(new ActionEvent(uiComponent));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }    
+    }
 }
