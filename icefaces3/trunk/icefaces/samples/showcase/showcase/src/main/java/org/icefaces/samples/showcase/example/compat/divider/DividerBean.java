@@ -53,7 +53,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
             @MenuLink(title = "menu.compat.divider.subMenu.main", isDefault = true, exampleBeanName = DividerBean.BEAN_NAME),
             @MenuLink(title = "menu.compat.divider.subMenu.orientation", exampleBeanName = DividerOrientation.BEAN_NAME),
             @MenuLink(title = "menu.compat.divider.subMenu.position", exampleBeanName = DividerPosition.BEAN_NAME),
-            //@MenuLink(title = "menu.compat.divider.subMenu.content", exampleBeanName = DividerContent.BEAN_NAME), - temp disabled due to issues with showcase
+            @MenuLink(title = "menu.compat.divider.subMenu.content", exampleBeanName = DividerContent.BEAN_NAME),
             @MenuLink(title = "menu.compat.divider.subMenu.embedded", exampleBeanName = DividerEmbedded.BEAN_NAME)
 })
 @ManagedBean(name= DividerBean.BEAN_NAME)
