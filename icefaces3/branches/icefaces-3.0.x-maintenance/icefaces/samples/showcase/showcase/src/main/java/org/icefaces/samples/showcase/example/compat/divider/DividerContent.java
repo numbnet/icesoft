@@ -72,15 +72,14 @@ public class DividerContent extends ComponentExampleImpl<DividerContent> impleme
 
     private void initializeInstanceVariables() {
         this.availableUrls = new String[] {
-	    "http://www.icefaces.org/",
-	    "http://wiki.icefaces.org/",
-	    "http://auctionmonitor.icefaces.org/",
-	    "http://memorygame.icefaces.org/",
-	    "http://www.bing.com/",
-	    "http://www.ask.com/"
-	};
-        this.leftUrl = availableUrls[6];
-        this.rightUrl = availableUrls[7];
-        
+            "http://www.icefaces.org/",
+            "http://wiki.icefaces.org/",
+            "http://auctionmonitor.icefaces.org/",
+            "http://memorygame.icefaces.org/",
+            "http://www.bing.com/",
+            "http://www.ask.com/"
+        };
+        this.leftUrl = availableUrls[0];
+        this.rightUrl = availableUrls[4];
     }
 }
