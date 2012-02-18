@@ -494,6 +494,13 @@ ice.ace.DataTable.prototype.setupScrolling = function() {
 
     this.resizeScrolling();
 
+    ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-body').bind('scroll', function() {
+        var $this = ice.ace.jq(this),
+            $header = ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-header');
+
+       $header.scrollLeft($this.scrollLeft());
+    });
+
     ice.ace.jq(window).bind('resize', function() {
         clearTimeout(delayedCleanUpResizeToken);
         delayedCleanUpResizeToken = setTimeout(delayedCleanUpResize , 500);
