@@ -186,6 +186,14 @@
     margin-top:-1px; /* Easy fix for double border in scrollable mode */
 }
 
+.ui-datatable-scrollable .ui-datatable-scrollable-header {
+    overflow:hidden;
+}
+
+.ui-datatable-scrollable .ui-datatable-scrollable-header th.ui-widget-header:last-child {
+    padding-right:17px;
+}
+
 .ui-datatable-scrollable .ui-datatable-scrollable-header table,.ui-datatable-scrollable .ui-datatable-scrollable-footer table {
     width:auto;
 }
