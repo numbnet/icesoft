@@ -18,6 +18,9 @@ package org.icefaces.mobi.component.panelpopup;
 import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIPanelMeta;
+import org.icefaces.ace.meta.annotation.Facet;
+import org.icefaces.ace.meta.annotation.Facets;
+import javax.faces.component.UIComponent;
 
 @Component(
         tagName = "panelPopup",
@@ -70,5 +73,11 @@ public class PanelPopupMeta extends UIPanelMeta {
 
 	@Property(tlddoc="Minimum height of resizable dialog", defaultValue="0")
 	private int minHeight;
+
+    @Facets
+    class FacetsMeta{
+        @Facet
+        UIComponent label;
+    }
 
 }

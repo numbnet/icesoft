@@ -16,6 +16,7 @@
 package org.icefaces.mobi.component.panelpopup;
 
 import javax.faces.context.FacesContext;
+import javax.faces.component.UIComponent;
 
 public class PanelPopup extends PanelPopupBase {
 
@@ -23,9 +24,10 @@ public class PanelPopup extends PanelPopupBase {
     public static final String BLACKOUT_PNL_HIDDEN_CLASS = "mobi-panelpopup-bg-hide ";
     public static final String BLACKOUT_PNL_CLASS = "mobi-panelpopup-bg ";
     public static final String CONTAINER_CLASS = "mobi-panelpopup-container ";
-    public static final String CLIENT_CONTAINER_CLASS = "mobi-panelpopup-container-hide ";
-    // TODO refine or remove
-    public static final String TITLE_CLASS = "mobi-panelpopup-title-container ";
+    public static final String HIDDEN_CONTAINER_CLASS = "mobi-panelpopup-container-hide ";
+    // TODO refine or remove.- even if we use a facet still need to define a style
+ //   public static final String TITLE_CLASS = "mobi-panelpopup-title-container ";
+    public static final String TITLE_CLASS = "mobi-date-title-container ";
 
     protected FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
