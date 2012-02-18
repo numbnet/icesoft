@@ -52,6 +52,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
             try {
                 if (!commandButton.isDisabled()) {
                     uiComponent.queueEvent(new ActionEvent(uiComponent));
+                    decodeBehaviors(facesContext, uiComponent);
                 }
             } catch (Exception e) {
                 logger.warning("Error queuing CommandButton event");
