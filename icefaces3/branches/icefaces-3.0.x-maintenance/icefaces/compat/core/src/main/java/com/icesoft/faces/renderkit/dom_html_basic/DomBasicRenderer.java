@@ -175,7 +175,7 @@ public abstract class DomBasicRenderer extends Renderer {
      * @return
      * @throws ConverterException
      */
-    String formatComponentValue(FacesContext facesContext,
+    protected String formatComponentValue(FacesContext facesContext,
                                 UIComponent uiComponent, Object currentValue)
             throws ConverterException {
         return converterGetAsString(facesContext, uiComponent, currentValue);
@@ -428,7 +428,7 @@ public abstract class DomBasicRenderer extends Renderer {
      * @param uiComponent
      * @return Map the parameterMap
      */
-    static Map getParameterMap(UIComponent uiComponent) {
+    protected static Map getParameterMap(UIComponent uiComponent) {
         Map parameterMap = new HashMap();
         if (uiComponent.getChildCount() > 0) {
             Iterator children = uiComponent.getChildren().iterator();
