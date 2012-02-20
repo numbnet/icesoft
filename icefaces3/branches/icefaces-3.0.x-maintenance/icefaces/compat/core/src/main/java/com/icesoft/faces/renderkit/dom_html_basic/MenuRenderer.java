@@ -544,7 +544,7 @@ public class MenuRenderer extends DomBasicInputRenderer {
         return "";
     }
 
-    Object[] getSubmittedSelectedValues(UIComponent uiComponent) {
+    protected Object[] getSubmittedSelectedValues(UIComponent uiComponent) {
         if (uiComponent instanceof UISelectMany) {
             UISelectMany uiSelectMany = (UISelectMany) uiComponent;
             return (Object[]) uiSelectMany.getSubmittedValue();
@@ -560,7 +560,7 @@ public class MenuRenderer extends DomBasicInputRenderer {
     }
 
 
-    Object getCurrentSelectedValues(UIComponent uiComponent) {
+    protected Object getCurrentSelectedValues(UIComponent uiComponent) {
         Object currentSelectedValues = null;
         if (uiComponent instanceof UISelectMany) {
             UISelectMany uiSelectMany = (UISelectMany) uiComponent;
