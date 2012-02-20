@@ -92,10 +92,16 @@ public class BridgeSetup implements SystemEventListener {
         Map collectedResourceComponents = new HashMap();
         String version = EnvUtils.isUniqueResourceURLs(context) ? String.valueOf(hashCode()) : null;
 
-        // add special resources first (e.g. themes)
+        // temporarily remove custom resource components on the page
+        List<UIComponent> customResources = new ArrayList<UIComponent>(root.getComponentResources(context, "head"));
+        for (UIComponent next : customResources) {
+            root.removeComponentResource(context, next, "head");
+        }
+		
+		// add special resources first (e.g. themes)
         List<UIComponent> specialResources = getSpecialResources(context);
 
-        for (UIComponent child : root.getChildren()) {
+        for (UIComponent child : root.getChildren()) { // place special resources before plain HTML tags
             if ("javax.faces.Head".equals(child.getRendererType())) {
                 List<UIComponent> headChildren = child.getChildren();
                 List<UIComponent> headChildrenBackup = new ArrayList<UIComponent>(headChildren);
@@ -104,6 +110,11 @@ public class BridgeSetup implements SystemEventListener {
                 headChildren.addAll(headChildrenBackup);
                 break;
             }
+        }
+		
+        // re-add custom resource components
+        for (UIComponent next : customResources) {
+            root.addComponentResource(context, next, "head");
         }
 
         //add mandatory resources, replace any resources previously added by JSF
