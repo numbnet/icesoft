@@ -95,16 +95,16 @@ public class BridgeSetup implements SystemEventListener {
         // add special resources first (e.g. themes)
         List<UIComponent> specialResources = getSpecialResources(context);
 
-		for (UIComponent child : root.getChildren()) {
-			if ("javax.faces.Head".equals(child.getRendererType())) {
-				List<UIComponent> headChildren = child.getChildren();
-				List<UIComponent> headChildrenBackup = new ArrayList<UIComponent>(headChildren);
-				headChildren.clear();
-				headChildren.addAll(specialResources);
-				headChildren.addAll(headChildrenBackup);
-				break;
-			}
-		}
+        for (UIComponent child : root.getChildren()) {
+            if ("javax.faces.Head".equals(child.getRendererType())) {
+                List<UIComponent> headChildren = child.getChildren();
+                List<UIComponent> headChildrenBackup = new ArrayList<UIComponent>(headChildren);
+                headChildren.clear();
+                headChildren.addAll(specialResources);
+                headChildren.addAll(headChildrenBackup);
+                break;
+            }
+        }
 
         //add mandatory resources, replace any resources previously added by JSF
         addMandatoryResources(context, collectedResourceComponents, version);
@@ -127,7 +127,7 @@ public class BridgeSetup implements SystemEventListener {
     }
 
     private List<UIComponent> getSpecialResources(FacesContext context) {
-		List<UIComponent> resources = new ArrayList<UIComponent>();
+        List<UIComponent> resources = new ArrayList<UIComponent>();
         RenderKit rk = context.getRenderKit();
 
         if (rk instanceof DOMRenderKit) {
@@ -150,7 +150,7 @@ public class BridgeSetup implements SystemEventListener {
                 }
             }
         }
-		return resources;
+        return resources;
     }
 
     private void addMandatoryResources(FacesContext context,
@@ -281,11 +281,13 @@ public class BridgeSetup implements SystemEventListener {
             final String viewID = getViewID(externalContext);
 
             final Map viewScope = root.getViewMap();
-            final boolean sendDisposeWindow = !EnvUtils.isLazyWindowScope(context) ||
-                    (windowScope != null && EnvUtils.containsBeans(windowScope)) || (viewScope != null && EnvUtils.containsBeans(viewScope));
             UIOutput icefacesSetup = new UIOutputWriter() {
-                public void encode(ResponseWriter writer,
-                                   FacesContext context) throws IOException {
+                public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+                    //determine if windowScope map contains any beans during render phase -- this is when is certain
+                    //that the beans were already instantiated
+                    boolean sendDisposeWindow = !EnvUtils.isLazyWindowScope(context) ||
+                            (windowScope != null && EnvUtils.containsBeans(windowScope)) || (viewScope != null && EnvUtils.containsBeans(viewScope));
+
                     String clientID = getClientId(context);
                     writer.startElement("span", this);
                     writer.writeAttribute("id", clientID, null);
