@@ -155,6 +155,7 @@ ice.ace.ContextMenu = function(id, cfg) {
             using: function(to) {
 
 			var _this = ice.ace.jq(this);
+			if (!_this.parent().get(0)) return;
 			if (_this.parent().get(0).id == _self.id) { // root menu
 				_this.position({
 					my: "left top",
