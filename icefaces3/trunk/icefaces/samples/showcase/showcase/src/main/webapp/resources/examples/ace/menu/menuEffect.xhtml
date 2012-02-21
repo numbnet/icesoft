@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{menuResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <h:panelGrid columns="2" columnClasses="menuLogStyle, menuStyle">
                <ace:panel>
                     <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing" columns="2"> 
@@ -46,7 +46,7 @@
                                                itemLabel="#{type.key}"/>
                                 <f:ajax execute="@this" render="@form" event="change"/>
                             </h:selectOneMenu>
-                            <h:outputLabel value="Effect Duration (#{menuEffect.effectDuration} ms):" for="effectDuration"/>
+                            <h:outputLabel id="effectDur" value="Effect Duration (#{menuEffect.effectDuration} ms):" for="effectDuration"/>
                             <h:panelGroup>
                             <ace:sliderEntry id="effectDuration"
                                              clickableRail="true"
@@ -61,7 +61,7 @@
                     </h:panelGrid>
                 </ace:panel>
                 
-                <ace:menu type="tiered"
+                <ace:menu id="menu" type="tiered"
                       effect="#{menuEffect.effectName}"
                       effectDuration="#{menuEffect.effectDuration}">
 

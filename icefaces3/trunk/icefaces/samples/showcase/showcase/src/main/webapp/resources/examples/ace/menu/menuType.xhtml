@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{menuResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <h:panelGrid columns="2" columnClasses="menuStyle, menuLogStyle">
                 <h:panelGrid>
                     <ace:panel>
@@ -103,7 +103,7 @@
                 <ace:panel  header="Menu Selections Log">
                     <h:dataTable id="message" value="#{menuType.list}" var="message">
                         <h:column>
-                            <h:outputText value="#{message}"/>
+                            <h:outputText id="msg" value="#{message}"/>
                         </h:column>
                     </h:dataTable>
                 </ace:panel>
