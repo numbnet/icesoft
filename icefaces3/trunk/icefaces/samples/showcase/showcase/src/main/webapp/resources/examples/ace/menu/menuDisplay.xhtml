@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{menuResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <ace:panel>
                 <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing">
                     <h:outputText id="mouseOver"
@@ -41,7 +41,7 @@
                 </h:panelGrid>
             </ace:panel>
             
-            <ace:menu position="dynamic" trigger="mouseOver" my="left top" at="left bottom" triggerEvent="mouseenter">
+            <ace:menu id="menu" position="dynamic" trigger="mouseOver" my="left top" at="left bottom" triggerEvent="mouseenter">
                 <ace:submenu label="Items">
                     <ace:menuItem value="Item 1" icon="ui-icon"/>
                     <ace:menuItem value="Item 2" icon="ui-icon"/>
