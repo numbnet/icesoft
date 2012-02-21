@@ -31,7 +31,6 @@
 .ui-datatable th,.ui-datatable tfoot td {
     position:relative;
     text-align:center;
-    white-space:nowrap;
     margin:0;
     padding:0;
 }
@@ -188,10 +187,6 @@
 
 .ui-datatable-scrollable .ui-datatable-scrollable-header {
     overflow:hidden;
-}
-
-.ui-datatable-scrollable .ui-datatable-scrollable-header th.ui-widget-header:last-child {
-    padding-right:17px;
 }
 
 .ui-datatable-scrollable .ui-datatable-scrollable-header table,.ui-datatable-scrollable .ui-datatable-scrollable-footer table {
