@@ -33,9 +33,9 @@
     <ui:param name="tldResources" value="#{menuResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <h:panelGrid columns="2" columnClasses="menuStyle, menuLogStyle">
-                <ace:menu type="plain">
+                <ace:menu id="menu" type="plain">
                     <ace:submenu label="Actions">
                         <ace:menuItem value="Basic Action" 
                                       action="#{menuEvents.ourAction}" icon="ui-icon">
