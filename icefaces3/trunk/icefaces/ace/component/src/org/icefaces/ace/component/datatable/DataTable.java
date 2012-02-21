@@ -1780,7 +1780,8 @@ public class DataTable extends DataTableBase {
                             || !kid.isRendered()) {
                         continue;
                     }
-                    if ((kid instanceof PanelExpansion) && !expanded) {
+                    // Skip expandable panels if unexpanded or
+                    if ((kid instanceof PanelExpansion) && (!expanded || (expanded && isIdPrefixedParamSet("_rowExpansion", context)))) {
                         continue;
                     }
                     if (kid.getChildCount() > 0) {
