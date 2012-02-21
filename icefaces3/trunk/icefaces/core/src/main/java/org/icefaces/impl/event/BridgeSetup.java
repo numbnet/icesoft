@@ -92,31 +92,6 @@ public class BridgeSetup implements SystemEventListener {
         Map collectedResourceComponents = new HashMap();
         String version = EnvUtils.isUniqueResourceURLs(context) ? String.valueOf(hashCode()) : null;
 
-        // temporarily remove custom resource components on the page
-        List<UIComponent> customResources = new ArrayList<UIComponent>(root.getComponentResources(context, "head"));
-        for (UIComponent next : customResources) {
-            root.removeComponentResource(context, next, "head");
-        }
-		
-		// add special resources first (e.g. themes)
-        List<UIComponent> specialResources = getSpecialResources(context);
-
-        for (UIComponent child : root.getChildren()) { // place special resources before plain HTML tags
-            if ("javax.faces.Head".equals(child.getRendererType())) {
-                List<UIComponent> headChildren = child.getChildren();
-                List<UIComponent> headChildrenBackup = new ArrayList<UIComponent>(headChildren);
-                headChildren.clear();
-                headChildren.addAll(specialResources);
-                headChildren.addAll(headChildrenBackup);
-                break;
-            }
-        }
-		
-        // re-add custom resource components
-        for (UIComponent next : customResources) {
-            root.addComponentResource(context, next, "head");
-        }
-
         //add mandatory resources, replace any resources previously added by JSF
         addMandatoryResources(context, collectedResourceComponents, version);
         //jsf.js might be added already by a page or component
@@ -135,33 +110,6 @@ public class BridgeSetup implements SystemEventListener {
         for (UIComponent bodyResource : bodyResources) {
             root.addComponentResource(context, bodyResource, "body");
         }
-    }
-
-    private List<UIComponent> getSpecialResources(FacesContext context) {
-        List<UIComponent> resources = new ArrayList<UIComponent>();
-        RenderKit rk = context.getRenderKit();
-
-        if (rk instanceof DOMRenderKit) {
-            DOMRenderKit drk = (DOMRenderKit) rk;
-            List<String> specialResourceComponents = drk.getSpecialResourceComponents();
-            for (String compClassName : specialResourceComponents) {
-                try {
-                    Class<UIComponent> compClass = (Class<UIComponent>)
-                            Class.forName(compClassName);
-                    UIComponent component = compClass.newInstance();
-                    if (component != null) {
-                        resources.add(component);
-                    }
-                } catch (Exception e) {
-                    if (log.isLoggable(Level.WARNING)) {
-                        log.log(Level.WARNING, "When processing special " +
-                                "resource components, could not create instance " +
-                                "of '" + compClassName + "'");
-                    }
-                }
-            }
-        }
-        return resources;
     }
 
     private void addMandatoryResources(FacesContext context,
