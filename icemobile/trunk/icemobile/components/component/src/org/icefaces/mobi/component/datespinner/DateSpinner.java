@@ -28,8 +28,11 @@ import java.util.logging.Logger;
 public class DateSpinner extends DateSpinnerBase {
 
     private static Logger logger = Logger.getLogger(DateSpinner.class.getName());
+
     public static final String BLACKOUT_PNL_CLASS = "mobi-date-bg";
+    public static final String BLACKOUT_PNL_INVISIBLE_CLASS = "mobi-date-bg-inv";
     public static final String CONTAINER_CLASS = "mobi-date-container";
+    public static final String CONTAINER_INVISIBLE_CLASS = "mobi-date-container-inv";
     public static final String INPUT_CLASS = "mobi-input-text";
     public static final String POP_UP_CLASS = "mobi-date-popup-btn";
     public static final String TITLE_CLASS = "mobi-date-title-container";
@@ -46,6 +49,9 @@ public class DateSpinner extends DateSpinnerBase {
             new Attribute("size", null)
     };
 
+    private Locale appropriateLocale;
+    private TimeZone appropriateTimeZone;
+
     private int monthInt;
     private int yearInt;
     private int dayInt;
@@ -53,10 +59,6 @@ public class DateSpinner extends DateSpinnerBase {
     public DateSpinner() {
         super();
     }
-
-
-    private Locale appropriateLocale;
-    private TimeZone appropriateTimeZone;
 
     public Locale calculateLocale(FacesContext facesContext) {
         if (appropriateLocale == null) {
@@ -71,7 +73,9 @@ public class DateSpinner extends DateSpinnerBase {
                 } else if (userLocale instanceof Locale)
                     appropriateLocale = (Locale) userLocale;
                 else
-                    throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for calendar:" + this.getClientId(facesContext));
+                    throw new IllegalArgumentException("Type:" +
+                            userLocale.getClass() + " is not a valid locale type for calendar:" +
+                            this.getClientId(facesContext));
             } else {
                 appropriateLocale = facesContext.getViewRoot().getLocale();
             }
@@ -82,15 +86,16 @@ public class DateSpinner extends DateSpinnerBase {
 
     public TimeZone calculateTimeZone() {
         if (appropriateTimeZone == null) {
-           //default to GMT
-            Object usertimeZone =   TimeZone.getDefault(); //TimeZone.getTimeZone("GMT");
+            //default to GMT
+            Object usertimeZone = TimeZone.getDefault(); //TimeZone.getTimeZone("GMT");
             if (usertimeZone != null) {
                 if (usertimeZone instanceof String)
                     appropriateTimeZone = TimeZone.getTimeZone((String) usertimeZone);
                 else if (usertimeZone instanceof TimeZone)
                     appropriateTimeZone = (TimeZone) usertimeZone;
                 else
-                    throw new IllegalArgumentException("TimeZone could be either String or java.util.TimeZone");
+                    throw new IllegalArgumentException(
+                            "TimeZone could be either String or java.util.TimeZone");
             } else {
                 appropriateTimeZone = TimeZone.getDefault();
             }
@@ -100,11 +105,11 @@ public class DateSpinner extends DateSpinnerBase {
     }
 
 
- /*   public boolean hasTime() {
-        String pattern = getPattern();
+    /*   public boolean hasTime() {
+     String pattern = getPattern();
 
-        return (pattern != null && pattern.indexOf(":") != -1);
-    }   */
+     return (pattern != null && pattern.indexOf(":") != -1);
+ }   */
 
     public int getMonthInt() {
         return monthInt;
@@ -138,10 +143,9 @@ public class DateSpinner extends DateSpinnerBase {
         return FacesContext.getCurrentInstance();
     }
 
-    public String getDefaultEventName(FacesContext facesContext){
-         if (Utils.isTouchEventEnabled(facesContext)) {
-             return "onblur";
-         }
-        else return "onchange";
+    public String getDefaultEventName(FacesContext facesContext) {
+        if (Utils.isTouchEventEnabled(facesContext)) {
+            return "onblur";
+        } else return "onchange";
     }
 }
