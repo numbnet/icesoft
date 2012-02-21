@@ -621,12 +621,17 @@ public class DataTableRenderer extends CoreRenderer {
         writer.startElement(HTML.TABLE_ELEM, null);
 
         if (table.hasHeaders()) {
-            table.setInFakeHeader(true);
+            table.setInDuplicateSegment(true);
             encodeTableHead(context, table, columns);
-            table.setInFakeHeader(false);
+            table.setInDuplicateSegment(false);
         }
 
         encodeTableBody(context, table, columns);
+
+        table.setInDuplicateSegment(true);
+        encodeTableFoot(context, table, columns);
+        table.setInDuplicateSegment(false);
+
         writer.endElement(HTML.TABLE_ELEM);
         writer.endElement(HTML.DIV_ELEM);
 
@@ -966,7 +971,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         writer.startElement(HTML.THEAD_ELEM, null);
 
-        if (table.isInFakeHeader()) writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
+        if (table.isInDuplicateSegment()) writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
 
         writer.startElement(HTML.TR_ELEM, null);
 
@@ -1165,6 +1170,8 @@ public class DataTableRenderer extends CoreRenderer {
         if (!shouldRender) return;
 
         writer.startElement(HTML.TFOOT_ELEM, null);
+
+        if (table.isInDuplicateSegment()) writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
 
         if (group != null) {
             for (UIComponent child : group.getChildren()) {
