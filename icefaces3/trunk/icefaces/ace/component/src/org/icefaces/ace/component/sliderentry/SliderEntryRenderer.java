@@ -1,5 +1,5 @@
 /*
- * Original Code developed and contributed by Prime Technology.
+ * Original Code Copyright Prime Technology.
  * Subsequent Code Modifications Copyright 2011-2012 ICEsoft Technologies Canada Corp. (c)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
