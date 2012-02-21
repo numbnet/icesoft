@@ -22,7 +22,6 @@ import org.icefaces.impl.event.BridgeSetup;
 import org.icefaces.impl.event.MainEventListener;
 import org.icefaces.impl.util.FormEndRendering;
 import org.icefaces.render.MandatoryResourceComponent;
-import org.icefaces.render.SpecialResourceComponent;
 import org.icefaces.util.EnvUtils;
 
 import javax.faces.component.UIComponent;
@@ -52,7 +51,6 @@ public class DOMRenderKit extends RenderKitWrapper {
     private static final String MESSAGES_CLASS =
             "org.icefaces.impl.renderkit.html_basic.MessagesRenderer";
     private ArrayList<MandatoryResourceComponent> mandatoryResourceComponents = new ArrayList<MandatoryResourceComponent>();
-    private ArrayList<String> specialResourceComponents = new ArrayList<String>();
 
     //Announce ICEfaces
     static {
@@ -105,17 +103,6 @@ public class DOMRenderKit extends RenderKitWrapper {
             }
         }
 
-        SpecialResourceComponent srd = (SpecialResourceComponent)
-                clazz.getAnnotation(SpecialResourceComponent.class);
-        if (srd != null) {
-            String compClassName = srd.value();
-            if (compClassName != null && compClassName.length() > 0) {
-                if (!specialResourceComponents.contains(compClassName)) {
-                    specialResourceComponents.add(compClassName);
-                }
-            }
-        }
-
         Renderer renderer = "javax.faces.Form".equals(family) ? new FormBoost(r) : r;
         if ("javax.faces.Message".equals(family) && "javax.faces.Message".equals(rendererType)) {
             renderer = new MessageRenderer(r);
@@ -157,10 +144,6 @@ public class DOMRenderKit extends RenderKitWrapper {
 
     public List<MandatoryResourceComponent> getMandatoryResourceComponents() {
         return mandatoryResourceComponents;
-    }
-
-    public List<String> getSpecialResourceComponents() {
-        return specialResourceComponents;
     }
 
     private class FormBoost extends RendererWrapper {
