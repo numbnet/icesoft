@@ -493,7 +493,9 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                                     break;
                                 }
                             } catch(Exception e) {
-                                System.out.println("Problem parsing select's option children from text: " + e);
+                                log.log(Level.SEVERE, 
+                                    "Unable to update select options for " 
+                                            + id, e);
                             }
                         }
                     }
