@@ -31,7 +31,6 @@
 .ui-datatable th,.ui-datatable tfoot td {
     position:relative;
     text-align:center;
-    white-space:nowrap;
     margin:0;
     padding:0;
 }
@@ -184,6 +183,10 @@
 
 .ui-datatable-scrollable-footer {
     margin-top:-1px; /* Easy fix for double border in scrollable mode */
+}
+
+.ui-datatable-scrollable .ui-datatable-scrollable-header {
+    overflow:hidden;
 }
 
 .ui-datatable-scrollable .ui-datatable-scrollable-header table,.ui-datatable-scrollable .ui-datatable-scrollable-footer table {
