@@ -818,11 +818,11 @@ public class DataTable extends DataTableBase {
     protected boolean isScrollingRequest(FacesContext x)          { return isIdPrefixedParamSet("_scrolling", x); }
     protected boolean isTableFeatureRequest(FacesContext x)       { return isColumnReorderRequest(x) || isScrollingRequest(x) || isInstantUnselectionRequest(x) || isInstantSelectionRequest(x) || isPaginationRequest(x) || isFilterRequest(x) || isSortRequest(x) || isTableConfigurationRequest(x); }
 
-    protected Boolean isInFakeHeader() {
-        return isInFakeHeader;
+    protected Boolean isInDuplicateSegment() {
+        return isInDuplicateSegment;
     }
 
-    protected void setInFakeHeader(Boolean inFakeHeader) {
+    protected void setInDuplicateSegment(Boolean inFakeHeader) {
         Stack<UIComponent> compsToIdReinit = new Stack<UIComponent>() {{
             for (UIComponent c : getColumns(true)) push(c);            
         }};
@@ -833,7 +833,7 @@ public class DataTable extends DataTableBase {
             for (UIComponent cc : c.getChildren()) compsToIdReinit.push(cc);
         }
 
-        isInFakeHeader = inFakeHeader;
+        isInDuplicateSegment = inFakeHeader;
     }
 
     protected Map<String,Column> getFilterMap() {
@@ -1343,7 +1343,7 @@ public class DataTable extends DataTableBase {
     private Boolean isNested = null;
     // Used to toggle generating alternate clientIds for a duplicate header used
     // for scrollable table sizing reasons.
-    private Boolean isInFakeHeader = false;
+    private Boolean isInDuplicateSegment = false;
     public String getBaseClientId(FacesContext context) {
         if (baseClientId == null && clientIdBuilder == null) {
             if (!isNestedWithinUIData()) {
@@ -1434,18 +1434,18 @@ public class DataTable extends DataTableBase {
                 clientIdBuilder.setLength(0);
                 }
 
-            return isInFakeHeader ? (cid) + UINamingContainer.getSeparatorChar(context) + "sizingHeader"
+            return isInDuplicateSegment ? (cid) + UINamingContainer.getSeparatorChar(context) + "dupeSeg"
                                   : (cid);
         } else {
             if (!isNestedWithinUIData()) {
                 // Not nested and no row available, so just return our baseClientId
-                return isInFakeHeader ? (baseClientId) + UINamingContainer.getSeparatorChar(context) + "sizingHeader"
+                return isInDuplicateSegment ? (baseClientId) + UINamingContainer.getSeparatorChar(context) + "dupeSeg"
                                       : (baseClientId);
             } else {
                 // nested and no row available, return the result of getClientId().
                 // this is necessary as the client ID will reflect the row that
                 // this table represents
-                return isInFakeHeader ? UIData_getContainerClientId(context) + UINamingContainer.getSeparatorChar(context) + "sizingHeader"
+                return isInDuplicateSegment ? UIData_getContainerClientId(context) + UINamingContainer.getSeparatorChar(context) + "dupeSeg"
                                       : UIData_getContainerClientId(context);
             }
         }
