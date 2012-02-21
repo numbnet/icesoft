@@ -485,9 +485,12 @@ ice.ace.DataTable.prototype.setupScrolling = function() {
 
     ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-body').bind('scroll', function() {
         var $this = ice.ace.jq(this),
-            $header = ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-header');
+            $header = ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-header'),
+            $footer = ice.ace.jq(_self.jqId + ' .ui-datatable-scrollable-footer'),
+            scrollLeftVal = $this.scrollLeft();
 
-       $header.scrollLeft($this.scrollLeft());
+       $header.scrollLeft(scrollLeftVal);
+       $footer.scrollLeft(scrollLeftVal);
     });
 
     ice.ace.jq(window).bind('resize', function() {
