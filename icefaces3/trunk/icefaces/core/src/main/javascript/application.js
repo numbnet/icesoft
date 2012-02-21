@@ -309,9 +309,9 @@ if (!window.ice.icefaces) {
                     }
                     try {
                         isICEfacesEvent = foundForm['ice.view'] || foundForm['ice.window'];
-                    } catch (x)  {
+                    } catch (x) {
                     }
-                    if (!isICEfacesEvent)  {
+                    if (!isICEfacesEvent) {
                         isICEfacesEvent = form['ice.view'] || form['ice.window'];
                     }
                 } catch (ex) {
@@ -363,16 +363,17 @@ if (!window.ice.icefaces) {
         namespace.setupBridge = function(setupID, viewID, windowID, configuration) {
             var container = document.getElementById(setupID).parentNode;
             container.setupCount = container.setupCount ? (container.setupCount + 1) : 1;
-            container.configuration = configuration;
-            container.configuration.viewID = viewID;
-            namespace.window = windowID;
-            if (configuration.sendDisposeWindow) {
-                onBeforeUnload(window, disposeWindow(viewID));
-            }
-
-            setupDefaultIndicators(container, configuration);
 
             if (container.setupCount == 1) {
+                container.configuration = configuration;
+                container.configuration.viewID = viewID;
+                namespace.window = windowID;
+                if (configuration.sendDisposeWindow) {
+                    onBeforeUnload(window, disposeWindow(viewID));
+                }
+
+                setupDefaultIndicators(container, configuration);
+
                 //recalculate delta submit previous parameters for the updated forms, if necessary
                 namespace.onAfterUpdate(function(updates) {
                     var formsWithUpdatedInputElements = select(collect(updates.getElementsByTagName('update'), function(update) {
