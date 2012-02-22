@@ -48,14 +48,13 @@ public class IntervalPushRenderer {
 
     public static final String INTERVAL_RENDER_GROUP = "auctionInterval";
 
-    private static int POLLING_INTERVAL = 1000;
-
-    static {
+    private int pollingInterval = 1000;
+    {
         String interval = FacesUtils.getFacesParameter(
                 "org.icefaces.sample.auction.interval");
         if (interval != null) {
             try {
-                POLLING_INTERVAL = Integer.parseInt(interval);
+                pollingInterval = Integer.parseInt(interval);
             } catch (NumberFormatException e) {
                 log.log(Level.WARNING, "Error applying org.icefaces.demo.auction.interval, " +
                         "must be valid integer.", e);
@@ -103,7 +102,7 @@ public class IntervalPushRenderer {
             intervalTimer.cancel();
         }
         intervalTimer = new Timer(true);
-        intervalTimer.schedule(renderTask, 0, POLLING_INTERVAL);
+        intervalTimer.schedule(renderTask, 0, pollingInterval);
     }
 
     /**
