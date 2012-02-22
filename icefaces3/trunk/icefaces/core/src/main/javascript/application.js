@@ -116,6 +116,16 @@ if (!window.ice.icefaces) {
             return e;
         }
 
+        //function used to safely retrieve ViewState key -- form['javax.faces.ViewState'] sometimes fails in IE
+        function lookupViewState(element) {
+            var viewStateElement = detect(element.getElementsByTagName('input'), function(input) {
+                return input.name && input.name == 'javax.faces.ViewState';
+            }, function() {
+                throw 'cannot find javax.faces.ViewState element';
+            });
+            return viewStateElement.value;
+        }
+
         //include functional.js
         //include oo.js
         //include collection.js
@@ -211,7 +221,7 @@ if (!window.ice.icefaces) {
                         postSynchronously(client, form.action, function(query) {
                             addNameValue(query, 'ice.submit.type', 'ice.dispose.window');
                             addNameValue(query, 'ice.window', namespace.window);
-                            addNameValue(query, 'javax.faces.ViewState', form['javax.faces.ViewState'].value);
+                            addNameValue(query, 'javax.faces.ViewState', lookupViewState(form));
                             each(viewIDs, curry(addNameValue, query, 'ice.view'));
                         }, FormPost, noop);
                     } catch (e) {
