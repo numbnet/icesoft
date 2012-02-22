@@ -191,8 +191,12 @@ public class BridgeSetup implements SystemEventListener {
 
     private static boolean containsBeans(Map<String, Object> scopeMap) {
         //skip the objects saved in the map by ICEfaces framework while testing for the existence of beans
-        for (String value : scopeMap.keySet()) {
-            if (!value.startsWith("org.icefaces")) {
+        for (Map.Entry entry : scopeMap.entrySet()) {
+            String key = (String) entry.getKey();
+            Object value = entry.getValue();
+            if (!key.startsWith("org.icefaces.impl") & !(
+                    (value instanceof String) || (value instanceof Character) ||
+                            (value instanceof Boolean) || (value instanceof Number))) {
                 return true;
             }
         }
@@ -250,10 +254,13 @@ public class BridgeSetup implements SystemEventListener {
             final String viewID = getViewID(externalContext);
 
             final Map viewScope = root.getViewMap();
-            final boolean sendDisposeWindow = !EnvUtils.isLazyWindowScope(context) ||
-                    (windowScope != null && containsBeans(windowScope)) || (viewScope != null && containsBeans(viewScope));
             UIOutput icefacesSetup = new UIOutputWriter() {
                 public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+                    //determine if windowScope map contains any beans during render phase -- this is when is certain
+                    //that the beans were already instantiated
+                    boolean sendDisposeWindow = !EnvUtils.isLazyWindowScope(context) ||
+                            (windowScope != null && containsBeans(windowScope)) || (viewScope != null && containsBeans(viewScope));
+
                     String clientID = getClientId(context);
                     writer.startElement("span", this);
                     writer.writeAttribute("id", clientID, null);
