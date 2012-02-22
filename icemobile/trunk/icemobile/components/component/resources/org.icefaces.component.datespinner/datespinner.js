@@ -205,20 +205,28 @@ mobi.datespinner = {
             if (mInt < 10){
                mStr = '0'+mInt;
             }
-            //default pattern
-            var dateStr = dStr +'/'+mStr+'/'+yInt;
+            // default to american MM/dd/yyyy, pattern
+            var dateStr = mStr +'/'+dStr+'/'+yInt;
             var myPattern = this.pattern[clientId];
+            // compare '-' dash delimiter
             if (myPattern=='MM-dd-yyyy'){
                dateStr= mStr+'-'+dStr+'-'+yInt;
-            }
-            if (myPattern == 'yyyy-MM-dd'){
+            }else if (myPattern == 'yyyy-MM-dd'){
                 dateStr = yInt + "-" + mStr + "-" + dStr;
-            }
-            if (myPattern == 'yyyy-dd-MM'){
+            }else if (myPattern == 'yyyy-dd-MM'){
                 dateStr = yInt + "-" + dStr + "-" + mStr;
-            }
-            if (myPattern == 'dd-MM-yyyy'){
+            }else if (myPattern == 'dd-MM-yyyy'){
                 dateStr = dStr+'-'+mStr+'-'+yInt;
+            }
+            // compare '-' dash delimiter
+            else if (myPattern=='MM/dd/yyyy'){
+                dateStr= mStr+'/'+dStr+'/'+yInt;
+            }else if (myPattern == 'yyyy/MM/dd'){
+                dateStr = yInt + "/" + mStr + "/" + dStr;
+            }else if (myPattern == 'yyyy/dd/MM'){
+                dateStr = yInt + "/" + dStr + "/" + mStr;
+            }else if (myPattern == 'dd/MM/yyyy'){
+                dateStr = dStr+'/'+mStr+'/'+yInt;
             }
             hiddenEl.value = dateStr;
             inputEl.value = dateStr;
@@ -247,8 +255,8 @@ mobi.datespinner = {
         },
         close: function(clientId){
             var idPanel = clientId+"_bg" ;
-            document.getElementById(idPanel).className = "mobi-date";
-            document.getElementById(clientId+"_popup").className = "mobi-date-container-hide";
+            document.getElementById(idPanel).className = "mobi-date-bg-inv";
+            document.getElementById(clientId+"_popup").className = "mobi-date-container-inv";
             this.opened[clientId]= false;
         },
         unload: function(clientId){
