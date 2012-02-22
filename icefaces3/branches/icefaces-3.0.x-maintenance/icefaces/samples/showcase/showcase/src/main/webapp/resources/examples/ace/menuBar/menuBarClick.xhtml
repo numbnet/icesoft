@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{menuBarResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <h:panelGrid columns="2" width="100%">
                 <ace:panel>
                     <h:panelGrid columns="2">
@@ -47,7 +47,7 @@
                     </h:panelGrid>
                 </ace:panel>
                 
-                <ace:menuBar autoSubmenuDisplay="#{aceMenuBarClick.clickToDisplay}">
+                <ace:menuBar id="menuBar" autoSubmenuDisplay="#{aceMenuBarClick.clickToDisplay}">
                     <ace:submenu label="File" icon="ui-icon ui-icon-document">  
                      <ace:submenu label="New" icon="ui-icon ui-icon-contact">  
                          <ace:menuItem value="Window"/>  
