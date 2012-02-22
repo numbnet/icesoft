@@ -35,7 +35,7 @@
     <ui:param name="tldResources" value="#{dataExporterResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form1">
             <ace:panel>
                 <h:panelGrid columns="2" styleClass="centeredPanelGrid">
                         <h:outputLabel for="typeIn" value="Export As:"/>
@@ -48,12 +48,12 @@
                         </h:selectOneRadio>
                 </h:panelGrid>
                 <h:panelGrid styleClass="centeredPanelGrid">
-                    <ace:dataExporter label="Export File" type="#{dataExporterBean.type}" target="carTable" fileName="cars"/>
+                    <ace:dataExporter id="dataExporter" label="Export File" type="#{dataExporterBean.type}" target="carTable" fileName="cars"/>
                 </h:panelGrid>
             </ace:panel>
         </h:form>
         <br/>
-        <h:form>
+        <h:form id="form2">
            <ace:dataTable id="carTable"
                                     value="#{dataTableSort.carsData}"
                                     var="car" >
