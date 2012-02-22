@@ -40,11 +40,15 @@
     opacity: 0.5;
     filter:alpha(opacity=50);
 }
+.mobi-time-bg-inv{
+    opacity:0;
+    display:none;
+}
 .mobi-date {
     opacity:1;
 }
 
-.mobi-time-container-hide{
+.mobi-time-container-inv{
     opacity:0;
     display:none;
 }
