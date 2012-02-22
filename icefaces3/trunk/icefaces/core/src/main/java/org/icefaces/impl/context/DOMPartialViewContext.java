@@ -24,8 +24,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.InputSource;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -42,10 +40,7 @@ import javax.faces.context.PartialViewContextWrapper;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import javax.faces.application.ProjectStage;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.Writer;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -453,54 +448,6 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 NodeList optionElements =
                         selectElement.getElementsByTagName("option");
                 int optionElementsLength = optionElements.getLength();
-
-                // ICE-7714 : With h:selectOneMenu rendering in Mojarra, it
-                // can render out a text node with all it's child option
-                // elements, or there could simply be no option children for
-                // this particular select.
-                if (optionElementsLength == 0) {
-                    NodeList nonOptionElements = selectElement.getChildNodes();
-                    int nonOptionElementsLength = nonOptionElements.getLength();
-                    for (int j = 0; j < nonOptionElementsLength; j++) {
-                        Node hopefullyTextNode = nonOptionElements.item(j);
-                        if (hopefullyTextNode instanceof Text) {
-                            Text textNode = (Text) hopefullyTextNode;
-                            String wholeText = textNode.getNodeValue();
-                            if (wholeText.trim().length() ==0) {
-                                break;
-                            }
-                            try {
-                                DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-                                Document doc = db.parse(new InputSource(new StringReader("<select>"+wholeText+"</select>")));
-                                NodeList parsedOptionElements = doc.getElementsByTagName("option");
-                                int parsedOptionElementsLength = parsedOptionElements.getLength();
-                                if (parsedOptionElementsLength > 0) {
-                                    for (int po = 0; po < parsedOptionElementsLength; po++) {
-                                        Element parsedOptionNode = (Element) parsedOptionElements.item(po);
-                                        if (values.contains(parsedOptionNode.getAttribute("value"))) {
-                                            parsedOptionNode.setAttribute("selected", "selected");
-                                        } else {
-                                            parsedOptionNode.removeAttribute("selected");
-                                        }
-                                    }
-                                    Node parsedSelect = doc.getElementsByTagName("select").item(0);
-                                    StringWriter sw = new StringWriter();
-                                    DOMUtils.printChildNodes(parsedSelect, sw);
-                                    String newText = sw.toString();
-                                    if (!wholeText.equals(newText)) {
-                                        textNode.setNodeValue(newText);
-                                    }
-                                    break;
-                                }
-                            } catch(Exception e) {
-                                log.log(Level.SEVERE, 
-                                    "Unable to update select options for " 
-                                            + id, e);
-                            }
-                        }
-                    }
-                }
-
                 for (int j = 0; j < optionElementsLength; j++) {
                     Element optionElement = (Element) optionElements.item(j);
                     if (values.contains(optionElement.getAttribute("value"))) {
