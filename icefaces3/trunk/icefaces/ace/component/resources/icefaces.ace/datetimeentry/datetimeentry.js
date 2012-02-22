@@ -34,7 +34,7 @@
 */
 
 (function($) {
-
+if ($.timepicker) return; // avoid setting up plug-in again in portlet environments
 $.extend($.ui, { timepicker: { version: "0.9.6" } });
 
 /* Time picker manager.
