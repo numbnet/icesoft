@@ -44,8 +44,6 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
     private static final String JS_MIN_NAME = "timespinner-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.timespinner";
 
-
-
     @Override
     public void decode(FacesContext context, UIComponent component) {
         TimeSpinner timeSpinner = (TimeSpinner) component;
@@ -110,7 +108,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
             writer.endElement("input");
         }
         else {
-            Map viewContextMap = context.getViewRoot().getViewMap();
+            Map<String, Object> viewContextMap = context.getViewRoot().getViewMap();
             if (!viewContextMap.containsKey(JS_NAME)) {
                 String jsFname = JS_NAME;
                 if ( context.isProjectStage(ProjectStage.Production)){
@@ -141,13 +139,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         if (Utils.isTouchEventEnabled(context)){
             eventStr="ontouchstart";
         }
-        //for now assume always a popuop
-        boolean popup = true;
-        StringBuilder popupBaseClass = new StringBuilder(TimeSpinner.CONTAINER_CLASS);
-        //should any component entered styleclass be applied to all base classes?
-        if (popup) {
-            popupBaseClass.append("-hide");
-        }
+
         //first do the input field and the button
         // build out first input field
         writer.startElement("span", uiComponent);
@@ -185,12 +177,12 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
         // div that is use to hide/show the popup screen black out.
         writer.startElement("div",uiComponent);
         writer.writeAttribute("id", clientId + "_bg", "id");
-    //    writer.writeAttribute("class", "mobi-date", "class");
+        writer.writeAttribute("class", TimeSpinner.BLACKOUT_PNL_INVISIBLE_CLASS, "class");
         writer.endElement("div");
         // actual popup code.
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", clientId+"_popup", "id");
-        writer.writeAttribute("class", popupBaseClass.toString(), null);
+        writer.writeAttribute("class", TimeSpinner.CONTAINER_INVISIBLE_CLASS, null);
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", clientId+"_title", "id");
         writer.writeAttribute("class", TimeSpinner.TITLE_CLASS, null);
@@ -341,7 +333,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
     public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
         TimeSpinner spinner = (TimeSpinner) component;
         String submittedValue = String.valueOf(value);
-        Object objVal = null;
+        Object objVal;
         Converter converter = spinner.getConverter();
 
         //Delegate to user supplied converter if defined

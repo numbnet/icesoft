@@ -29,7 +29,9 @@ public class TimeSpinner extends TimeSpinnerBase {
 
     private static Logger logger = Logger.getLogger(TimeSpinner.class.getName());
     public static final String BLACKOUT_PNL_CLASS = "mobi-time-bg";
+    public static final String BLACKOUT_PNL_INVISIBLE_CLASS = "mobi-time-bg-inv";
     public static final String CONTAINER_CLASS = "mobi-time-container";
+    public static final String CONTAINER_INVISIBLE_CLASS = "mobi-time-container-inv";
     public static final String INPUT_CLASS = "mobi-input-text";
     public static final String POP_UP_CLASS = "mobi-time-popup-btn";
     public static final String TITLE_CLASS = "mobi-time-title-container";
@@ -71,7 +73,10 @@ public class TimeSpinner extends TimeSpinnerBase {
                 } else if (userLocale instanceof Locale)
                     appropriateLocale = (Locale) userLocale;
                 else
-                    throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for calendar:" + this.getClientId(facesContext));
+                    throw new IllegalArgumentException("Type:" +
+                            userLocale.getClass() +
+                            " is not a valid locale type for calendar:" +
+                            this.getClientId(facesContext));
             } else {
                 appropriateLocale = facesContext.getViewRoot().getLocale();
             }
