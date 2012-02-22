@@ -40,6 +40,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
+    public static final String SessionSynchronizationMonitor = WindowScopeManager.class.getName() + "$SessionSynchronizationMonitor";
     public static final String ScopeName = "window";
     private static final Logger log = Logger.getLogger(WindowScopeManager.class.getName());
     private static final String seed = Integer.toString(new Random().nextInt(1000), 36);
@@ -86,8 +87,9 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
     }
 
     public static String determineWindowID(FacesContext context) {
-        Object session = context.getExternalContext().getSession(false);
-        synchronized (session) {
+        Map session = context.getExternalContext().getSessionMap();
+        Object synchronizationMonitor = session.get(SessionSynchronizationMonitor);
+        synchronized (synchronizationMonitor) {
             State state = getState(context);
             ExternalContext externalContext = context.getExternalContext();
             String id = externalContext.getRequestParameterMap().get("ice.window");
@@ -261,6 +263,10 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
         } catch (Exception e) {
             log.log(Level.WARNING, "Failed to invoke" + annotation + " on " + theClass, e);
         }
+    }
+
+    public static void sessionCreated(HttpSession session) {
+        session.setAttribute(SessionSynchronizationMonitor, new Object());
     }
 
     public static class ScopeMap extends HashMap {

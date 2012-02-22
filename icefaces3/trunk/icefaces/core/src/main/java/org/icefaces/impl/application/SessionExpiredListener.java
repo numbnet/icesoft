@@ -38,6 +38,7 @@ public class SessionExpiredListener implements HttpSessionListener {
     private static Logger LOGGER = Logger.getLogger(SessionExpiredListener.class.getName());
 
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
+        WindowScopeManager.sessionCreated(httpSessionEvent.getSession());
     }
 
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
