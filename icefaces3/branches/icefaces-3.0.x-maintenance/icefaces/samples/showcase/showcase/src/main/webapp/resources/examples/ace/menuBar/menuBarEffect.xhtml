@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{menuBarResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <ace:panel>
                 <h:panelGrid style="width: 100%" columns="2"> 
                     <h:panelGrid columns="2" styleClass="centeredPanelGrid">
@@ -49,7 +49,7 @@
                     </h:panelGrid>
                     
                     <h:panelGrid columns="2" styleClass="centeredPanelGrid">
-                        <h:outputLabel value="Effect Duration (#{menuBarEffect.effectDuration} ms): " for="effectDuration"/>
+                        <h:outputLabel id="effectDurLbl" value="Effect Duration (#{menuBarEffect.effectDuration} ms): " for="effectDuration"/>
                         <h:panelGroup>
                             <ace:sliderEntry id="effectDuration"
                                                  clickableRail="true"
@@ -67,9 +67,10 @@
             
             <br/>
             
-           <ace:menuBar autoSubmenuDisplay="true"
-                          effect="#{menuBarEffect.effectName}"
-                          effectDuration="#{menuBarEffect.effectDuration}">
+           <ace:menuBar id="menuBar"
+						autoSubmenuDisplay="true"
+					    effect="#{menuBarEffect.effectName}"
+					    effectDuration="#{menuBarEffect.effectDuration}">
                  
                  <ace:menuItem value="Home" url="http://www.icefaces.org" target="_blank" icon="ui-icon ui-icon-home" />
                  <ace:submenu label="File" icon="ui-icon ui-icon-document">  

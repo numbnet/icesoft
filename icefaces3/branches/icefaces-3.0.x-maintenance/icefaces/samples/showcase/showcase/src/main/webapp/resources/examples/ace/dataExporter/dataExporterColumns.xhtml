@@ -36,7 +36,7 @@
         
             <ace:panel>
                 <h:panelGrid styleClass="centeredPanelGridWithLeftJustifiedText">
-                <h:form>
+                <h:form id="form1">
                     <h:panelGrid columns="2">
                             <h:outputLabel for="typeIn" value="Export As:"/>
                             <h:selectOneRadio id="typeIn" value="#{dataExporterColumns.type}" required="true">
@@ -49,7 +49,7 @@
                     </h:panelGrid>
                 </h:form>
                 
-                <h:form>
+                <h:form id="form2">
                 <icecore:singleSubmit/>
                 <h:panelGrid columns="2">
                 <h:outputLabel for="exportIn" value="With Columns:"/>
@@ -61,9 +61,9 @@
                 </h:selectManyCheckbox>
                 </h:panelGrid>
                 </h:form>
-                <h:form>
+                <h:form id="form3">
                 <h:panelGrid styleClass="centeredPanelGrid">
-                    <ace:dataExporter label="Export File" type="#{dataExporterColumns.type}" target="carTable" fileName="cars" excludeColumns="#{dataExporterColumns.chosenColumnsString}"/>
+                    <ace:dataExporter id="dataExporter" label="Export File" type="#{dataExporterColumns.type}" target="carTable" fileName="cars" excludeColumns="#{dataExporterColumns.chosenColumnsString}"/>
                 </h:panelGrid>
                 </h:form>
                 </h:panelGrid>
