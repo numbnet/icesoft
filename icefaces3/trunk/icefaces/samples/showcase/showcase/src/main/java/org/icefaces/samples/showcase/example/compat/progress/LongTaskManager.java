@@ -56,9 +56,6 @@ public class LongTaskManager implements Serializable {
     private void deinit() {
         // Ensure our task is stopped
         setTaskRunning(false);
-        // Clean up the renderer
-        // Not strictly necessary, but nice to do
-        PushRenderer.removeCurrentSession(PUSH_GROUP);
     }
 
     public void stopTask(ActionEvent event) {
