@@ -240,11 +240,13 @@ public class BridgeSetup implements SystemEventListener {
             final String viewID = getViewID(externalContext);
 
             final Map viewScope = root.getViewMap();
-            final boolean sendDisposeWindow = !EnvUtils.isLazyWindowScope(context) ||
-                    (windowScope != null && EnvUtils.containsBeans(windowScope)) || (viewScope != null && EnvUtils.containsBeans(viewScope));
             UIOutput icefacesSetup = new UIOutputWriter() {
-                public void encode(ResponseWriter writer,
-                                   FacesContext context) throws IOException {
+                public void encode(ResponseWriter writer, FacesContext context) throws IOException {
+                    //determine if windowScope map contains any beans during render phase -- this is when is certain
+                    //that the beans were already instantiated
+                    boolean sendDisposeWindow = !EnvUtils.isLazyWindowScope(context) ||
+                            (windowScope != null && EnvUtils.containsBeans(windowScope)) || (viewScope != null && EnvUtils.containsBeans(viewScope));
+
                     String clientID = getClientId(context);
                     writer.startElement("span", this);
                     writer.writeAttribute("id", clientID, null);

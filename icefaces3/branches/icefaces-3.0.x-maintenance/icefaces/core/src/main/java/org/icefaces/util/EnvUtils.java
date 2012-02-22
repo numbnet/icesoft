@@ -612,7 +612,7 @@ public class EnvUtils {
         for (Map.Entry entry : scopeMap.entrySet()) {
             String key = (String) entry.getKey();
             Object value = entry.getValue();
-            if (!key.startsWith("org.icefaces.impl") & !(
+            if (!value.getClass().getName().startsWith("org.icefaces.impl") & !(
                     (value instanceof String) || (value instanceof Character) ||
                             (value instanceof Boolean) || (value instanceof Number))) {
                 return true;
