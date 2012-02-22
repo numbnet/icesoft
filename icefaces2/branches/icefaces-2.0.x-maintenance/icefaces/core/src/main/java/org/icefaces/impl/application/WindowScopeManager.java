@@ -447,14 +447,18 @@ public class WindowScopeManager extends ResourceHandlerWrapper {
     }
 
     private static class TimeBasedHeuristicWindowScopeSharing implements SharedMapLookupStrategy {
-        private static final int SameWindowMaxDelay = 500;
+        private long sameWindowMaxDelay = -1;
 
         public ScopeMap lookup(FacesContext context) {
+            if (sameWindowMaxDelay == -1) {
+                sameWindowMaxDelay = EnvUtils.getWindowScopeExpiration(context);
+            }
+
             State state = getState(context);
             Iterator i = state.windowScopedMaps.values().iterator();
             while (i.hasNext()) {
                 ScopeMap sm = (ScopeMap) i.next();
-                if (sm.activateTimestamp + SameWindowMaxDelay > System.currentTimeMillis()) {
+                if (sm.activateTimestamp + sameWindowMaxDelay > System.currentTimeMillis()) {
                     return sm;
                 }
             }
