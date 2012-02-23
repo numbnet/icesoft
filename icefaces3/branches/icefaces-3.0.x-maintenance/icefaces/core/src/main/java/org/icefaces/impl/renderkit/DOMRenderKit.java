@@ -51,8 +51,8 @@ public class DOMRenderKit extends RenderKitWrapper {
     private static final String MESSAGES_CLASS =
             "org.icefaces.impl.renderkit.html_basic.MessagesRenderer";
     private ArrayList<MandatoryResourceComponent> mandatoryResourceComponents = new ArrayList<MandatoryResourceComponent>();
-	private String headRendererClass = null;
-	public static final String HEAD_RENDERER_PARAM = "org.icefaces.HEAD_RENDERER";
+	public static final String ACE_THEME_PARAM = "org.icefaces.ace.theme";
+	public static final String ACE_HEAD_RENDERER_CLASSNAME = "org.icefaces.ace.renderkit.HeadRenderer";
 
     //Announce ICEfaces
     static {
@@ -65,7 +65,6 @@ public class DOMRenderKit extends RenderKitWrapper {
         this.delegate = delegate;
         FacesContext facesContext = FacesContext.getCurrentInstance();
         deltaSubmit = EnvUtils.isDeltaSubmit(facesContext);
-		setHeadRendererClass();
 /*
         try {
             modifiedMessageRenderer = 
@@ -86,15 +85,14 @@ public class DOMRenderKit extends RenderKitWrapper {
         return delegate;
     }
 	
-	private void setHeadRendererClass() {
+	private boolean useAceHeadRenderer() {
 	
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		String headRendererParam = facesContext.getExternalContext().getInitParameter(HEAD_RENDERER_PARAM);
-		if (headRendererParam != null) {
-			headRendererClass = headRendererParam.trim();
-		} else {
-			headRendererClass = "";
+		String aceThemeParam = facesContext.getExternalContext().getInitParameter(ACE_THEME_PARAM);
+		if (aceThemeParam != null) {
+			if (aceThemeParam.trim().equalsIgnoreCase("none")) return false;
 		}
+		return true;
 	}
 
     /**
@@ -107,8 +105,8 @@ public class DOMRenderKit extends RenderKitWrapper {
     public void addRenderer(String family, String rendererType, Renderer r) {
         Class clazz = r.getClass();
 		
-		if ("javax.faces.Head".equals(rendererType) && !"".equals(headRendererClass)) {
-			if (!clazz.getName().equals(headRendererClass)) return;
+		if (ACE_HEAD_RENDERER_CLASSNAME.equals(clazz.getName())) {
+			if (!useAceHeadRenderer()) return; // see if org.icefaces.ace.theme context param is set to none
 		}
 		
         MandatoryResourceComponent mrc = (MandatoryResourceComponent)
