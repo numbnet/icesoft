@@ -51,6 +51,8 @@ public class DOMRenderKit extends RenderKitWrapper {
     private static final String MESSAGES_CLASS =
             "org.icefaces.impl.renderkit.html_basic.MessagesRenderer";
     private ArrayList<MandatoryResourceComponent> mandatoryResourceComponents = new ArrayList<MandatoryResourceComponent>();
+	private String headRendererClass = null;
+	public static final String HEAD_RENDERER_PARAM = "org.icefaces.HEAD_RENDERER";
 
     //Announce ICEfaces
     static {
@@ -63,6 +65,7 @@ public class DOMRenderKit extends RenderKitWrapper {
         this.delegate = delegate;
         FacesContext facesContext = FacesContext.getCurrentInstance();
         deltaSubmit = EnvUtils.isDeltaSubmit(facesContext);
+		setHeadRendererClass();
 /*
         try {
             modifiedMessageRenderer = 
@@ -82,6 +85,17 @@ public class DOMRenderKit extends RenderKitWrapper {
     public RenderKit getWrapped() {
         return delegate;
     }
+	
+	private void setHeadRendererClass() {
+	
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		String headRendererParam = facesContext.getExternalContext().getInitParameter(HEAD_RENDERER_PARAM);
+		if (headRendererParam != null) {
+			headRendererClass = headRendererParam.trim();
+		} else {
+			headRendererClass = "";
+		}
+	}
 
     /**
      * Check if renderer has an annotation for adding custom scripts
@@ -92,6 +106,11 @@ public class DOMRenderKit extends RenderKitWrapper {
      */
     public void addRenderer(String family, String rendererType, Renderer r) {
         Class clazz = r.getClass();
+		
+		if ("javax.faces.Head".equals(rendererType) && !"".equals(headRendererClass)) {
+			if (!clazz.getName().equals(headRendererClass)) return;
+		}
+		
         MandatoryResourceComponent mrc = (MandatoryResourceComponent)
                 clazz.getAnnotation(MandatoryResourceComponent.class);
         if (mrc != null) {
