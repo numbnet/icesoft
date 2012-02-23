@@ -16,8 +16,6 @@
 
 package org.icefaces.ace.model.table;
 
-import org.icefaces.ace.component.celleditor.CellEditor;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,13 +108,5 @@ public class RowState implements Serializable{
 
     public void setActiveCellEditorIds(List<String> activeCellEditorIds) {
         this.activeCellEditorIds = activeCellEditorIds;
-    }
-
-    public void addActiveCellEditor(CellEditor editor) {
-        if (editor != null) activeCellEditorIds.add(editor.getId());
-    }
-
-    public void removeActiveCellEditor(CellEditor editor) {
-        if (editor != null) activeCellEditorIds.remove(editor.getId());
     }
 }

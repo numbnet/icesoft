@@ -42,6 +42,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @MandatoryResourceComponent(tagName="rowEditor", value="org.icefaces.ace.component.roweditor.RowEditor")
@@ -59,23 +60,24 @@ public class RowEditorRenderer extends CoreRenderer {
             RowState state = (RowState)(context.getExternalContext().getRequestMap().get(table.getRowStateVar()));
             String tableId = table.getClientId(context);
             tableId = tableId.substring(0, tableId.lastIndexOf(NamingContainer.SEPARATOR_CHAR));
+            List<String> activeCellEditors = state.getActiveCellEditorIds();
 
             if (params.containsKey(tableId + "_editSubmit")) {
                 component.queueEvent(new RowEditEvent(component, table.getRowData()));
                 for (Column c : table.getColumns()) {
-                    state.removeActiveCellEditor(c.getCellEditor());
+                    activeCellEditors.remove(c.getCellEditor().getId());
                 }
             }
             else if (params.containsKey(tableId + "_editCancel")) {
                 component.queueEvent(new RowEditCancelEvent(component, table.getRowData()));
                 for (Column c : table.getColumns()) {
-                    state.removeActiveCellEditor(c.getCellEditor());
+                    activeCellEditors.remove(c.getCellEditor().getId());
                 }
             }
             else if (params.containsKey(tableId + "_editShow")) {
                 //component.queueEvent(new RowEditCancelEvent(component, table.getRowData()));
                for (Column c : table.getColumns()) {
-                   state.addActiveCellEditor(c.getCellEditor());
+                   activeCellEditors.add(c.getCellEditor().getId());
                }
             }               
         }
