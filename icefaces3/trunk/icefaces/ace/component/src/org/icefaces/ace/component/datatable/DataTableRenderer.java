@@ -1115,7 +1115,7 @@ public class DataTableRenderer extends CoreRenderer {
                             cellSelected = selectedCellExpressions.contains(ve.getExpressionString());
                     }
                     
-                    encodeRegularCell(context, table, columns, kid, clientId, rowState.getActiveCellEditorIds(), cellSelected, innerTdDivRequired);
+                    encodeRegularCell(context, columns, kid, cellSelected, innerTdDivRequired);
                 }
             }
 
@@ -1149,7 +1149,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeRegularCell(FacesContext context, DataTable table, List columnSiblings, Column column, String clientId, List<String> selectedEditorIds,  boolean selected, boolean resizable) throws IOException {
+    protected void encodeRegularCell(FacesContext context, List columnSiblings, Column column, boolean selected, boolean resizable) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         Column nextColumn = getNextColumn(column, columnSiblings);
@@ -1386,7 +1386,7 @@ public class DataTableRenderer extends CoreRenderer {
                                 cellSelected = selectedCellExpressions.contains(ve.getExpressionString());
                         }
                         
-                        encodeRegularCell(context, table, columns, kid, clientId, rowState.getActiveCellEditorIds(), cellSelected, false);
+                        encodeRegularCell(context, columns, kid, cellSelected, false);
                     }
                 }
                 writer.endElement(HTML.TR_ELEM);
