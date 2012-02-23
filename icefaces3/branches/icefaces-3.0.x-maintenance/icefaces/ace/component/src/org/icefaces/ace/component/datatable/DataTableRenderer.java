@@ -1,4 +1,4 @@
-    /*
+/*
  * Original Code Copyright Prime Technology.
  * Subsequent Code Modifications Copyright 2011-2012 ICEsoft Technologies Canada Corp. (c)
  *
@@ -1070,6 +1070,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (rowIndexVar != null) context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
 
         RowState rowState = table.getStateMap().get(table.getRowData());
+        
         boolean selected = rowState.isSelected();
         boolean unselectable = !rowState.isSelectable();
         boolean expanded = rowState.isExpanded();
@@ -1096,7 +1097,7 @@ public class DataTableRenderer extends CoreRenderer {
 
             for (Column kid : columns) {
                 if (kid.isRendered()) {
-                    encodeRegularCell(context, table, columns, kid, clientId, selected, innerTdDivRequired);
+                    encodeRegularCell(context, columns, kid, innerTdDivRequired);
                 }
             }
 
@@ -1130,7 +1131,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeRegularCell(FacesContext context, DataTable table, List columnSiblings, Column column, String clientId, boolean selected, boolean resizable) throws IOException {
+    protected void encodeRegularCell(FacesContext context, List columnSiblings, Column column, boolean resizable) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         Column nextColumn = getNextColumn(column, columnSiblings);
@@ -1143,8 +1144,11 @@ public class DataTableRenderer extends CoreRenderer {
             if (column.getStyle() != null) writer.writeAttribute(HTML.STYLE_ELEM, column.getStyle(), null);
 
             CellEditor editor = column.getCellEditor();
+            
             String columnStyleClass = column.getStyleClass();
-            if (editor != null) columnStyleClass = columnStyleClass == null ? DataTableConstants.EDITABLE_COLUMN_CLASS : DataTableConstants.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
+            if (editor != null) {
+                columnStyleClass = columnStyleClass == null ? DataTableConstants.EDITABLE_COLUMN_CLASS : DataTableConstants.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
+            }
             if (columnStyleClass != null) writer.writeAttribute(HTML.CLASS_ATTR, columnStyleClass, null);
             
             if (resizable) writer.startElement(HTML.DIV_ELEM, null);
@@ -1352,7 +1356,7 @@ public class DataTableRenderer extends CoreRenderer {
 
                 for (Column kid : columns) {
                     if (kid.isRendered()) {
-                        encodeRegularCell(context, table, columns, kid, clientId, selected, false);
+                        encodeRegularCell(context, columns, kid, false);
                     }
                 }
                 writer.endElement(HTML.TR_ELEM);

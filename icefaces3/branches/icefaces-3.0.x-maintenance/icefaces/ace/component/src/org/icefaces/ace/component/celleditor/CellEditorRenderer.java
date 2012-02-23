@@ -28,12 +28,15 @@
 package org.icefaces.ace.component.celleditor;
 
 import java.io.IOException;
+import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.icefaces.ace.component.datatable.DataTableConstants;
+import org.icefaces.ace.model.table.RowState;
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.HTML;
 import org.icefaces.render.MandatoryResourceComponent;
 
 @MandatoryResourceComponent(tagName="cellEditor", value="org.icefaces.ace.component.celleditor.CellEditor")
@@ -43,22 +46,29 @@ public class CellEditorRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         CellEditor editor = (CellEditor) component;
-        
-        writer.startElement("span", null);
-        writer.writeAttribute("id", component.getClientId(context), null);
-        writer.writeAttribute("class", DataTableConstants.CELL_EDITOR_CLASS, null);
+        RowState rowState = (RowState) context.getExternalContext().getRequestMap().get("rowState");
+        List<String> selectedEditorIds = rowState.getActiveCellEditorIds();
 
-        writer.startElement("span", null);
-        writer.writeAttribute("class", DataTableConstants.CELL_EDITOR_OUTPUT_CLASS, null);
-        editor.getFacet("output").encodeAll(context);
-        writer.endElement("span");
+        writer.startElement(HTML.DIV_ELEM, null);
+        writer.writeAttribute(HTML.ID_ATTR, component.getClientId(context), null);
+        if (selectedEditorIds.contains(editor.getId()))
+            writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-highlight " + DataTableConstants.CELL_EDITOR_CLASS, null);
+        else
+            writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.CELL_EDITOR_CLASS, null);
 
-        writer.startElement("span", null);
-        writer.writeAttribute("class", DataTableConstants.CELL_EDITOR_INPUT_CLASS, null);
-        editor.getFacet("input").encodeAll(context);
-        writer.endElement("span");
+        if (!selectedEditorIds.contains(editor.getId())) {
+            writer.startElement(HTML.SPAN_ELEM, null);
+            editor.getFacet("output").encodeAll(context);
+            writer.endElement(HTML.SPAN_ELEM);
+        }
 
-        writer.endElement("span");
+        if (selectedEditorIds.contains(editor.getId())) {
+            writer.startElement(HTML.SPAN_ELEM, null);
+            editor.getFacet("input").encodeAll(context);
+            writer.endElement(HTML.SPAN_ELEM);
+        }
+
+        writer.endElement(HTML.DIV_ELEM);
     }
 
     @Override

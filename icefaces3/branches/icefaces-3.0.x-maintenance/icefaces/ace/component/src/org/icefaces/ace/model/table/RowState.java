@@ -33,9 +33,9 @@ public class RowState implements Serializable{
     boolean expandable = true;
     boolean editable = true;
     boolean visible = true;
+    List<String> activeCellEditorIds = new ArrayList<String>();
 
 
-    
     public RowState() {}
 
     public ExpansionType getExpansionType() {
@@ -100,5 +100,13 @@ public class RowState implements Serializable{
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public List<String> getActiveCellEditorIds() {
+        return activeCellEditorIds;
+    }
+
+    public void setActiveCellEditorIds(List<String> activeCellEditorIds) {
+        this.activeCellEditorIds = activeCellEditorIds;
     }
 }
