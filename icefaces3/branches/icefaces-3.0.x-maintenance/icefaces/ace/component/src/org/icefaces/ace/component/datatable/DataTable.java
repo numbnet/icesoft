@@ -26,6 +26,7 @@ package org.icefaces.ace.component.datatable;
 
 import com.sun.java.swing.plaf.windows.WindowsGraphicsUtils;
 import org.icefaces.ace.component.ajax.AjaxBehavior;
+import org.icefaces.ace.component.celleditor.CellEditor;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
 import org.icefaces.ace.component.panelexpansion.PanelExpansion;
@@ -319,7 +320,7 @@ public class DataTable extends DataTableBase {
     public Boolean hasTreeDataModel() {
         return (model instanceof TreeDataModel);
     }
-
+      
     /**
      * If a PanelExpansion component is a child of this table, return it.
      * This is intended for table sub-components to vary their behavior varied
@@ -498,6 +499,26 @@ public class DataTable extends DataTableBase {
         return (isConstantRefilter()) ? true : super.isFilterValueChanged();
     }
 
+    /**
+     * Convenience method to take the id of the CellEditor component and add it to the list of active editors
+     * in the row state for a given row object.
+     * @param rowObject
+     * @param editor
+     */
+    public void addActiveCellEditor(Object rowObject, CellEditor editor) {
+        if (editor != null) getStateMap().get(rowObject).getActiveCellEditorIds().add(editor.getId());
+    }
+
+    /**
+     * Convenience method to take the id of the CellEditor component and remove it from the list of active editors
+     * in the row state for a given row object.
+     * @param rowObject
+     * @param editor
+     */
+    public void removeActiveCellEditor(Object rowObject, CellEditor editor) {
+        if (editor != null) getStateMap().get(rowObject).getActiveCellEditorIds().remove(editor.getId());
+    }
+
     public enum SearchType {
         CONTAINS, ENDS_WITH, STARTS_WITH, EXACT
     }
@@ -578,7 +599,7 @@ public class DataTable extends DataTableBase {
             setRowIndex(savedRowIndex);
         }
     }
-
+    
     /**
      * Find the index of a row object in the current DataModel.
      * @param query The string to be searched for in the row object fields.
