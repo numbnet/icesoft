@@ -266,7 +266,7 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
     }
 
     public static void sessionCreated(HttpSession session) {
-        session.setAttribute(SessionSynchronizationMonitor, new Object());
+        session.setAttribute(SessionSynchronizationMonitor, new SynchronizationMonitorObject());
     }
 
     public static class ScopeMap extends HashMap {
@@ -601,5 +601,8 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
                 }
             }
         }
+    }
+
+    private static class SynchronizationMonitorObject implements Serializable {
     }
 }
