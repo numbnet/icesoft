@@ -298,8 +298,7 @@
                           selectedCells="#{dataTableSelector.singleCell}"
                           selectionMode="singlecell"
                           doubleClickSelect="#{dataTableSelector.dblClick}"
-                          rendered="#{dataTableSelector.selectionMode eq 'singlecell' and dataTableSelector.instantUpdate}"
-                          binding="#{dataTableSelector.iceTable}">
+                          rendered="#{dataTableSelector.selectionMode eq 'singlecell' and dataTableSelector.instantUpdate}">
                 <ace:ajax event="select" render="@this selectForm:status" execute="@this" />
 
                 <ace:column selectBy="#{car.id}">
@@ -458,6 +457,9 @@
                    #{car.mpg}
                </ace:column>
                <ace:column selectBy="#{car.cost}">
+                   <f:facet name="header">
+                       Cost
+                   </f:facet>
                    <h:outputText value="#{car.cost}">
                        <f:convertNumber type="currency"
                                         currencySymbol="$"
@@ -513,6 +515,9 @@
                    #{car.mpg}
                </ace:column>
                <ace:column selectBy="#{car.cost}">
+                   <f:facet name="header">
+                       Cost
+                   </f:facet>
                    <h:outputText value="#{car.cost}">
                        <f:convertNumber type="currency"
                                         currencySymbol="$"
