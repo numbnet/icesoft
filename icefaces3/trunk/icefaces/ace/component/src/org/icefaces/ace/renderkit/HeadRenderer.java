@@ -61,8 +61,11 @@ public class HeadRenderer extends Renderer {
 
             theme = (String) ve.getValue(elContext);
         }
+		
+		if (theme == null) theme = "";
+		else theme = theme.trim();
 
-        if (theme == null || theme.equalsIgnoreCase("sam")) {
+        if ("".equals(theme) || theme.equalsIgnoreCase("sam")) {
             encodeTheme(context, "icefaces.ace", "themes/sam/theme.css");
         } else if(theme.equalsIgnoreCase("rime")) {
             encodeTheme(context, "icefaces.ace", "themes/rime/theme.css");
