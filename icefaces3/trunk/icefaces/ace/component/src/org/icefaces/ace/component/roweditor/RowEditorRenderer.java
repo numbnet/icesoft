@@ -27,6 +27,7 @@
  */
 package org.icefaces.ace.component.roweditor;
 
+import org.icefaces.ace.component.celleditor.CellEditor;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.component.datatable.DataTableConstants;
@@ -65,19 +66,22 @@ public class RowEditorRenderer extends CoreRenderer {
             if (params.containsKey(tableId + "_editSubmit")) {
                 component.queueEvent(new RowEditEvent(component, table.getRowData()));
                 for (Column c : table.getColumns()) {
-                    activeCellEditors.remove(c.getCellEditor().getId());
+                    CellEditor cellEditor = c.getCellEditor();
+                    if (cellEditor != null) activeCellEditors.remove(cellEditor.getId());
                 }
             }
             else if (params.containsKey(tableId + "_editCancel")) {
                 component.queueEvent(new RowEditCancelEvent(component, table.getRowData()));
                 for (Column c : table.getColumns()) {
-                    activeCellEditors.remove(c.getCellEditor().getId());
+                    CellEditor cellEditor = c.getCellEditor();
+                    if (cellEditor != null) activeCellEditors.remove(cellEditor.getId());
                 }
             }
             else if (params.containsKey(tableId + "_editShow")) {
                 //component.queueEvent(new RowEditCancelEvent(component, table.getRowData()));
                for (Column c : table.getColumns()) {
-                   activeCellEditors.add(c.getCellEditor().getId());
+                   CellEditor cellEditor = c.getCellEditor();
+                   if (cellEditor != null) activeCellEditors.add(cellEditor.getId());
                }
             }               
         }
