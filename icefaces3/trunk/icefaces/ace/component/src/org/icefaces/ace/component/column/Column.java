@@ -44,14 +44,16 @@ public class Column extends ColumnBase {
 
 
     public CellEditor getCellEditor() {
-        if(cellEditor == null) {
-            for(UIComponent child : getChildren()) {
-                if(child instanceof CellEditor)
-                    cellEditor = (CellEditor) child;
+        if (cellEditor != null) return cellEditor;
+
+        for (UIComponent child : getChildren()) {
+            if (child instanceof CellEditor) {
+                cellEditor = (CellEditor)child;
+                return cellEditor;
             }
         }
 
-        return cellEditor;
+        return null;
     }
 
     private FilterConstraint filterConstraint = null;

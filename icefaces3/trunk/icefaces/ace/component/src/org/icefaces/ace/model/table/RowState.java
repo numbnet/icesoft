@@ -16,6 +16,8 @@
 
 package org.icefaces.ace.model.table;
 
+import org.icefaces.ace.component.celleditor.CellEditor;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +35,9 @@ public class RowState implements Serializable{
     boolean expandable = true;
     boolean editable = true;
     boolean visible = true;
+    List<String> activeCellEditorIds = new ArrayList<String>();
 
 
-    
     public RowState() {}
 
     public ExpansionType getExpansionType() {
@@ -100,5 +102,21 @@ public class RowState implements Serializable{
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public List<String> getActiveCellEditorIds() {
+        return activeCellEditorIds;
+    }
+
+    public void setActiveCellEditorIds(List<String> activeCellEditorIds) {
+        this.activeCellEditorIds = activeCellEditorIds;
+    }
+
+    public void addActiveCellEditor(CellEditor editor) {
+        if (editor != null) activeCellEditorIds.add(editor.getId());
+    }
+
+    public void removeActiveCellEditor(CellEditor editor) {
+        if (editor != null) activeCellEditorIds.remove(editor.getId());
     }
 }

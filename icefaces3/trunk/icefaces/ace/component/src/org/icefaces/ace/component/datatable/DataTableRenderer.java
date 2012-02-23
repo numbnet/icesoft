@@ -1076,6 +1076,7 @@ public class DataTableRenderer extends CoreRenderer {
         if (rowIndexVar != null) context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
 
         RowState rowState = table.getStateMap().get(table.getRowData());
+        
         boolean selected = rowState.isSelected();
         boolean unselectable = !rowState.isSelectable();
         boolean expanded = rowState.isExpanded();
@@ -1114,7 +1115,7 @@ public class DataTableRenderer extends CoreRenderer {
                             cellSelected = selectedCellExpressions.contains(ve.getExpressionString());
                     }
                     
-                    encodeRegularCell(context, table, columns, kid, clientId, cellSelected, innerTdDivRequired);
+                    encodeRegularCell(context, table, columns, kid, clientId, rowState.getActiveCellEditorIds(), cellSelected, innerTdDivRequired);
                 }
             }
 
@@ -1148,7 +1149,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeRegularCell(FacesContext context, DataTable table, List columnSiblings, Column column, String clientId, boolean selected, boolean resizable) throws IOException {
+    protected void encodeRegularCell(FacesContext context, DataTable table, List columnSiblings, Column column, String clientId, List<String> selectedEditorIds,  boolean selected, boolean resizable) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         Column nextColumn = getNextColumn(column, columnSiblings);
@@ -1161,8 +1162,11 @@ public class DataTableRenderer extends CoreRenderer {
             if (column.getStyle() != null) writer.writeAttribute(HTML.STYLE_ELEM, column.getStyle(), null);
 
             CellEditor editor = column.getCellEditor();
+            
             String columnStyleClass = column.getStyleClass();
-            if (editor != null) columnStyleClass = columnStyleClass == null ? DataTableConstants.EDITABLE_COLUMN_CLASS : DataTableConstants.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
+            if (editor != null) {
+                columnStyleClass = columnStyleClass == null ? DataTableConstants.EDITABLE_COLUMN_CLASS : DataTableConstants.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
+            }
             if (selected) columnStyleClass = columnStyleClass == null ? "ui-state-active ui-selected" : columnStyleClass + " ui-state-active ui-selected";
             if (columnStyleClass != null) writer.writeAttribute(HTML.CLASS_ATTR, columnStyleClass, null);
             
@@ -1382,7 +1386,7 @@ public class DataTableRenderer extends CoreRenderer {
                                 cellSelected = selectedCellExpressions.contains(ve.getExpressionString());
                         }
                         
-                        encodeRegularCell(context, table, columns, kid, clientId, cellSelected, false);
+                        encodeRegularCell(context, table, columns, kid, clientId, rowState.getActiveCellEditorIds(), cellSelected, false);
                     }
                 }
                 writer.endElement(HTML.TR_ELEM);
