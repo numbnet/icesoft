@@ -528,26 +528,6 @@ public class DataTable extends DataTableBase {
     public Boolean isFilterValueChanged() {
         return (isConstantRefilter()) ? true : super.isFilterValueChanged();
     }
-
-    /**
-     * Convenience method to take the id of the CellEditor component and add it to the list of active editors
-     * in the row state for a given row object.
-     * @param rowObject
-     * @param editor
-     */
-    public void addActiveCellEditor(Object rowObject, CellEditor editor) {
-        if (editor != null) getStateMap().get(rowObject).getActiveCellEditorIds().add(editor.getId());
-    }
-
-    /**
-     * Convenience method to take the id of the CellEditor component and remove it from the list of active editors
-     * in the row state for a given row object.
-     * @param rowObject
-     * @param editor
-     */
-    public void removeActiveCellEditor(Object rowObject, CellEditor editor) {
-        if (editor != null) getStateMap().get(rowObject).getActiveCellEditorIds().remove(editor.getId());
-    }
     
     public void removeSelectedCell(String deselection) {
         removeSelectedCell(deselection, false);

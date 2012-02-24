@@ -16,6 +16,9 @@
 
 package org.icefaces.samples.showcase.example.ace.dataTable;
 
+import org.icefaces.ace.component.celleditor.CellEditor;
+import org.icefaces.ace.component.column.Column;
+import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.model.table.RowState;
 import org.icefaces.ace.model.table.RowStateMap;
 import org.icefaces.samples.showcase.example.compat.dataTable.Car;
@@ -29,6 +32,7 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @ComponentExample(
@@ -56,6 +60,7 @@ public class DataTableRowState extends ComponentExampleImpl<DataTableRowState> i
     public static final String BEAN_NAME = "dataTableRowState";
 
     private RowStateMap stateMap = new RowStateMap();
+    private DataTable table;
     private List<Car> selection;
 
     public DataTableRowState() {
@@ -75,6 +80,14 @@ public class DataTableRowState extends ComponentExampleImpl<DataTableRowState> i
     }
 
     public void setSelection(List<Car> selection) {}
+
+    public DataTable getTable() {
+        return table;
+    }
+
+    public void setTable(DataTable table) {
+        this.table = table;
+    }
 
     public void enableAllSelection(ActionEvent e) {
         stateMap.setAllSelectable(true);
@@ -121,7 +134,38 @@ public class DataTableRowState extends ComponentExampleImpl<DataTableRowState> i
             s.setSelected(false);
         }
     }
+
     public void disableAllEditing(ActionEvent e) {
         stateMap.setAllEditable(false);
+    }
+
+    public void startAllEditing(ActionEvent e) {
+        for (Column c : table.getColumns())
+            if (c.getCellEditor() != null)
+                stateMap.setAllEditing(c.getCellEditor(), true);
+    }
+    public void startEditing(ActionEvent e) {
+        System.out.println("Editing");
+        List<Column> columns = table.getColumns();
+        for (Object rowData : stateMap.getSelected()) {
+            System.out.println("Editing Row");
+            RowState s = stateMap.get(rowData);
+            for (Column c : columns)
+                s.addActiveCellEditor(c.getCellEditor());
+        }
+    }
+    public void stopEditing(ActionEvent e) {
+        List<Column> columns = table.getColumns();
+        for (Object rowData : stateMap.getSelected()) {
+            RowState s = stateMap.get(rowData);
+            
+            for (Column c : columns)
+               s.removeActiveCellEditor(c.getCellEditor());
+        }
+    }
+    public void stopAllEditing(ActionEvent e) {
+        for (Column c : table.getColumns())
+            if (c.getCellEditor() != null)
+                stateMap.setAllEditing(c.getCellEditor(), false);
     }
 }
