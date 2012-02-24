@@ -61,28 +61,21 @@ public class RowEditorRenderer extends CoreRenderer {
             RowState state = (RowState)(context.getExternalContext().getRequestMap().get(table.getRowStateVar()));
             String tableId = table.getClientId(context);
             tableId = tableId.substring(0, tableId.lastIndexOf(NamingContainer.SEPARATOR_CHAR));
-            List<String> activeCellEditors = state.getActiveCellEditorIds();
 
             if (params.containsKey(tableId + "_editSubmit")) {
                 component.queueEvent(new RowEditEvent(component, table.getRowData()));
-                for (Column c : table.getColumns()) {
-                    CellEditor cellEditor = c.getCellEditor();
-                    if (cellEditor != null) activeCellEditors.remove(cellEditor.getId());
-                }
+                for (Column c : table.getColumns())
+                    state.removeActiveCellEditor(c.getCellEditor());
             }
             else if (params.containsKey(tableId + "_editCancel")) {
                 component.queueEvent(new RowEditCancelEvent(component, table.getRowData()));
-                for (Column c : table.getColumns()) {
-                    CellEditor cellEditor = c.getCellEditor();
-                    if (cellEditor != null) activeCellEditors.remove(cellEditor.getId());
-                }
+                for (Column c : table.getColumns())
+                    state.removeActiveCellEditor(c.getCellEditor());
             }
             else if (params.containsKey(tableId + "_editShow")) {
                 //component.queueEvent(new RowEditCancelEvent(component, table.getRowData()));
-               for (Column c : table.getColumns()) {
-                   CellEditor cellEditor = c.getCellEditor();
-                   if (cellEditor != null) activeCellEditors.add(cellEditor.getId());
-               }
+               for (Column c : table.getColumns())
+                   state.addActiveCellEditor(c.getCellEditor());
             }               
         }
     }

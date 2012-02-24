@@ -51,6 +51,7 @@
     border-width:1px;
     padding:4px 10px;
     text-align: center;
+    overflow: hidden;
 }
 
 .ui-datatable .ui-paginator {
@@ -169,9 +170,8 @@
     margin-top:.2em;
 }
 
-.ui-datatable .ui-cell-editor-input {
-    display:none;
-}
+.ui-datatable .ui-cell-editor.ui-state-highlight { padding: 10px; }
+.ui-datatable .ui-row-editor.ui-state-highlight { padding: 4px; }
 
 .ui-datatable .ui-selection-column {
     width:20px;
@@ -192,6 +192,14 @@
 .ui-datatable-scrollable .ui-datatable-scrollable-header table,.ui-datatable-scrollable .ui-datatable-scrollable-footer table {
     width:auto;
 }
+
+<!--[if IE 7]>
+*:first-child+html .ui-datatable-scrollable .ui-datatable-scrollable-header table,
+*:first-child+html .ui-datatable-scrollable .ui-datatable-scrollable-footer table,
+*:first-child+html .ui-datatable-scrollable .ui-datatable-scrollable-body table {
+    table-layout: fixed;
+}
+<![endif]-->
 
 .ui-datatable .ui-column-resizer {
     width:2px;

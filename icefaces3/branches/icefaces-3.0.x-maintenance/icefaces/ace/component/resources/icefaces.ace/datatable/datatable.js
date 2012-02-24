@@ -52,6 +52,7 @@ ice.ace.DataTable = function(id, cfg) {
     this.delayedFilterCall = null;
     this.filterSource = null;
     this.behaviors = cfg.behaviors;
+    this.parentSize = 0;
     var rowEditors = this.getRowEditors();
 
     if (this.cfg.paginator) this.setupPaginator();
@@ -494,8 +495,11 @@ ice.ace.DataTable.prototype.setupScrolling = function() {
     });
 
     ice.ace.jq(window).bind('resize', function() {
-        clearTimeout(delayedCleanUpResizeToken);
-        delayedCleanUpResizeToken = setTimeout(delayedCleanUpResize , 500);
+        if (_self.parentSize != ice.ace.jq(_self.jqId).parent().width()) {
+            _self.parentSize = ice.ace.jq(_self.jqId).parent().width();
+            clearTimeout(delayedCleanUpResizeToken);
+            setTimeout(delayedCleanUpResize, 100);
+        }
     });
 
     //live scroll
@@ -592,14 +596,17 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         dupeFoot.css('display', 'table-footer-group');
 
         // Change table rendering algorithm to get more accurate sizing
-        bodyTable.css('table-layout','auto');
+        if (!ie7) bodyTable.css('table-layout','auto');
+        else bodyTable.css('table-layout','fixed');
 
         // Get Duplicate Header/Footer Sizing
         var dupeHeadColumn, dupeHeadColumnWidths = [], realHeadColumn, bodyColumn,
-                webkit = (ice.ace.jq.browser.webkit);
+                webkit = (ice.ace.jq.browser.webkit),
+                ie7 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7;
         for (i = 0; i < bodySingleCols.length; i++) {
             dupeHeadColumn = ice.ace.jq(dupeHeadSingleCols[i]);
-            dupeHeadColumnWidths[i] = dupeHeadColumn.width();
+            if (!ie7) dupeHeadColumnWidths[i] = dupeHeadColumn.width();
+            else dupeHeadColumnWidths[i] = dupeHeadColumn.parent().width();
         }
 
         // Change table rendering algorithm so fixed sizes are strictly followed
@@ -625,28 +632,29 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
                     : dupeHeadColumnWidths[i];
 
             // Set Duplicate Header Sizing to True Header Columns
-            realHeadColumn.width(realHeadColumnWidth);
+            if (!ie7) realHeadColumn.width(realHeadColumnWidth);
             // Apply same width to stacked sibling columns
-            realHeadColumn.siblings('.ui-header-column').width(realHeadColumnWidth);
+            if (!ie7) realHeadColumn.siblings('.ui-header-column').width(realHeadColumnWidth);
             // Equiv of max width
             realHeadColumn.parent().width(realHeadColumnWidth);
-            if (i == 0 && !webkit) realHeadColumn.parent().css('padding-right', '17px');
+            if (i == 0 && (!webkit && !ie7)) realHeadColumn.parent().css('padding-right', '17px');
 
             // Set Duplicate Header Sizing to Body Columns
             // Equiv of max width
             if (!webkit) bodyColumnWidth = i == 0 ? bodyColumnWidth - 1 : bodyColumnWidth;
             bodyColumn.parent().width(bodyColumnWidth);
             // Equiv of min width
-            bodyColumnWidth = i == 0 ? dupeHeadColumnWidths[i] - 1 : dupeHeadColumnWidths[i];
-            bodyColumn.width(bodyColumnWidth);
-
+            if (!ie7) {
+                bodyColumnWidth = i == 0 ? dupeHeadColumnWidths[i] - 1 : dupeHeadColumnWidths[i];
+                bodyColumn.width(bodyColumnWidth);
+            }
 
             // Set Duplicate Header Sizing to True Header Columns
             realFootColumn.parent().width(realFootColumnWidth);
-            realFootColumn.width(dupeHeadColumnWidths[i]);
+            if (!ie7) realFootColumn.width(dupeHeadColumnWidths[i]);
             // Apply same width to stacked sibling columns
-            realFootColumn.siblings('.ui-footer-column').width(dupeHeadColumnWidths[i]);
-            if (i == 0 && !webkit) realFootColumn.parent().css('padding-right', '17px');
+            if (!ie7) realFootColumn.siblings('.ui-footer-column').width(dupeHeadColumnWidths[i]);
+            if (i == 0 && (!webkit && !ie7)) realFootColumn.parent().css('padding-right', '17px');
         }
 
         // Hide Duplicate Segments
@@ -660,7 +668,7 @@ ice.ace.DataTable.prototype.setupDisabledStyling = function() {
     ice.ace.jq(this.jqId + ' > table > tbody.ui-datatable-data > tr > td a.ui-row-toggler, ' +
                this.jqId + ' > table > thead th .ui-column-filter, ' +
                this.jqId + ' > table > thead > th > div.ui-sortable-column .ui-sortable-control, ' +
-               this.jqId + ' > table > tbody.ui-datatable-data tr td span.ui-row-editor .ui-icon'
+               this.jqId + ' > table > tbody.ui-datatable-data tr td div.ui-row-editor .ui-icon'
                ).css({opacity:0.4});
 
     // Add pagination disabled style
@@ -1030,7 +1038,7 @@ ice.ace.DataTable.prototype.sendPanelContractionRequest = function(row) {
         render: this.id,
         formId: this.cfg.formId
     },
-            rowId = row.attr('id').split('_row_')[1];
+    rowId = row.attr('id').split('_row_')[1];
     _self = this;
 
     var params = {};
@@ -1154,60 +1162,31 @@ ice.ace.DataTable.prototype.loadExpandedPanelContent = function(row) {
  ########################### Row Editing #################################
  ######################################################################### */
 ice.ace.DataTable.prototype.showEditors = function(element) {
-    ice.ace.jq(element).closest('tr').addClass('ui-state-focus').find('.ui-editable-column').each(function() {
-        var column = ice.ace.jq(this);
-
-        column.find('span.ui-cell-editor-output').hide();
-        column.find('span.ui-cell-editor-input').show();
-
-        ice.ace.jq(element).hide();
-        ice.ace.jq(element).siblings().show();
-    });
-
-    if (this.behaviors)
-        if (this.behaviors.editStart) {
-            this.behaviors.editStart();
-            return;
-        }
+    this.doRowEditShowRequest(element);
 }
 
 ice.ace.DataTable.prototype.saveRowEdit = function(element) {
-    this.doRowEditRequest(element);
+    this.doRowEditSaveRequest(element);
 }
 
 ice.ace.DataTable.prototype.cancelRowEdit = function(element) {
-    var row = ice.ace.jq(element).parents('tr:first');
-
-    row.removeClass('ui-state-focus').find('.ui-editable-column').each(function() {
-        var column = ice.ace.jq(this);
-        column.find('span.ui-cell-editor-output').show();
-        column.find('span.ui-cell-editor-input').hide();
-    });
-
-    ice.ace.jq(element).hide();
-    ice.ace.jq(element).siblings().hide();
-    ice.ace.jq(element).siblings('.ui-icon-pencil').show();
-
     this.doRowEditCancelRequest(element);
 }
 
-ice.ace.DataTable.prototype.doRowEditCancelRequest = function(element) {
-    var row = ice.ace.jq(element).parents('tr:first'),
-            rowEditorId = row.find('span.ui-row-editor').attr('id'),
-            options = {
-                source: rowEditorId,
-                execute: '@this',
-                formId: this.cfg.formId
-            },
-            _self = this,
-            expanded = row.hasClass('ui-expanded-row'),
-            editorsToProcess = new Array();
+ice.ace.DataTable.prototype.doRowEditShowRequest = function(element) {
+    var row = ice.ace.jq(element).closest('tr'),
+        rowEditorId = row.find('div.ui-row-editor').attr('id'),
+        options = {
+            source: rowEditorId,
+            execute: '@this',
+            formId: this.cfg.formId
+        },
+        _self = this,
+        cellsToRender = new Array();
 
-    row.find('span.ui-cell-editor').each(function() { editorsToProcess.push(ice.ace.jq(this).attr('id')); });
-    options.render = editorsToProcess.join(' ');
-
-    //Additional components to update after row edit request
-    if (this.cfg.onRowEditUpdate) { options.render += (" " + this.cfg.onRowEditUpdate); }
+    row.find('div.ui-cell-editor').each(function() { cellsToRender.push(ice.ace.jq(this).attr('id')); });
+    options.render = cellsToRender.join(' ');
+    options.render = options.render + " @this";
 
     options.onsuccess = function(responseXML) {
         var xmlDoc = responseXML.documentElement;
@@ -1215,7 +1194,7 @@ ice.ace.DataTable.prototype.doRowEditCancelRequest = function(element) {
         _self.args = {};
 
         if (_self.cfg.scrollable)
-            _self.setupScrolling();
+            _self.resizeScrolling();
 
         ice.ace.selectCustomUpdates(responseXML, function(id, content) {
             ice.ace.AjaxUtils.updateElement(id, content);
@@ -1226,6 +1205,54 @@ ice.ace.DataTable.prototype.doRowEditCancelRequest = function(element) {
 
     var params = {};
     params[rowEditorId] = rowEditorId;
+    params[this.id + '_editShow'] = row.attr('id').split('_row_')[1];
+    options.params = params;
+
+    if (this.behaviors)
+        if (this.behaviors.editShow) {
+            ice.ace.ab(ice.ace.extendAjaxArguments(
+                    this.behaviors.editShow,
+                    options
+            ));
+            return;
+        }
+
+    ice.ace.AjaxRequest(options);
+}
+
+ice.ace.DataTable.prototype.doRowEditCancelRequest = function(element) {
+    var row = ice.ace.jq(element).parents('tr:first'),
+        rowEditorId = row.find('div.ui-row-editor').attr('id'),
+        options = {
+            source: rowEditorId,
+            execute: '@this',
+            formId: this.cfg.formId
+        },
+        _self = this,
+        editorsToProcess = new Array();
+
+    row.find('div.ui-cell-editor').each(function() { editorsToProcess.push(ice.ace.jq(this).attr('id')); });
+    options.render = editorsToProcess.join(' ');
+    options.render = options.render + " @this";
+
+    options.onsuccess = function(responseXML) {
+        var xmlDoc = responseXML.documentElement;
+
+        _self.args = {};
+
+        if (_self.cfg.scrollable)
+            _self.resizeScrolling();
+
+        ice.ace.selectCustomUpdates(responseXML, function(id, content) {
+            ice.ace.AjaxUtils.updateElement(id, content);
+        });
+
+        return false;
+    };
+
+    var params = {};
+    params[rowEditorId] = rowEditorId;
+    params[this.id + '_editCancel'] = row.attr('id').split('_row_')[1];
     options.params = params;
 
     if (this.behaviors)
@@ -1237,23 +1264,20 @@ ice.ace.DataTable.prototype.doRowEditCancelRequest = function(element) {
     ice.ace.AjaxRequest(options);
 }
 
-ice.ace.DataTable.prototype.doRowEditRequest = function(element) {
+ice.ace.DataTable.prototype.doRowEditSaveRequest = function(element) {
     var row = ice.ace.jq(element).parents('tr:first'),
-            rowEditorId = row.find('span.ui-row-editor').attr('id'),
-            options = {
-                source: rowEditorId,
-                formId: this.cfg.formId
-            },
-            _self = this,
-            expanded = row.hasClass('ui-expanded-row'),
-            editorsToProcess = new Array();
+        rowEditorId = row.find('div.ui-row-editor').attr('id'),
+        options = {
+            source: rowEditorId,
+            formId: this.cfg.formId
+        },
+        _self = this,
+        editorsToProcess = new Array();
 
-    row.find('span.ui-cell-editor').each(function() { editorsToProcess.push(ice.ace.jq(this).attr('id')); });
+    row.find('div.ui-cell-editor').each(function() { editorsToProcess.push(ice.ace.jq(this).attr('id')); });
     options.execute = editorsToProcess.join(' ');
+    options.execute = options.execute + " @this";
     options.render = options.execute;
-
-    //Additional components to update after row edit request
-    if (this.cfg.onRowEditUpdate) { options.render += (" " + this.cfg.onRowEditUpdate); }
 
     options.onsuccess = function(responseXML) {
         var xmlDoc = responseXML.documentElement,
@@ -1271,7 +1295,7 @@ ice.ace.DataTable.prototype.doRowEditRequest = function(element) {
         }
 
         if (!_self.args.validationFailed) {
-            if (_self.cfg.scrollable) _self.setupScrolling();
+            if (_self.cfg.scrollable) _self.resizeScrolling();
 
             row.removeClass('ui-state-focus').find('.ui-editable-column').each(function() {
                 var column = ice.ace.jq(this);
@@ -1293,8 +1317,7 @@ ice.ace.DataTable.prototype.doRowEditRequest = function(element) {
 
     var params = {};
     params[rowEditorId] = rowEditorId;
-    params[this.id + '_rowEdit'] = true;
-    params[this.id + '_editedRowId'] = row.attr('id').split('_row_')[1];
+    params[this.id + '_editSubmit'] = row.attr('id').split('_row_')[1];
 
     options.params = params;
 
@@ -1308,7 +1331,7 @@ ice.ace.DataTable.prototype.doRowEditRequest = function(element) {
 }
 
 ice.ace.DataTable.prototype.getRowEditors = function() {
-    return ice.ace.jq(this.jqId + ' tbody.ui-datatable-data tr td span.ui-row-editor');
+    return ice.ace.jq(this.jqId + ' tbody.ui-datatable-data tr td div.ui-row-editor');
 }
 
 ice.ace.DataTable.prototype.setupCellEditorEvents = function(rowEditors) {
