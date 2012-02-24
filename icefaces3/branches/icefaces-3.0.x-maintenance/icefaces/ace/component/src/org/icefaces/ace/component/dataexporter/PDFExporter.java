@@ -124,7 +124,7 @@ public class PDFExporter extends Exporter {
 			if (columns.size() > 0) {
 				//PdfPTable pdfTable = exportPDFTable(table, pageOnly,excludeColumns, encodingType, includeHeaders, includeFooters, selectedRowsOnly);
 				Object pdfTable = pdfPTableConstructor.newInstance(new Object[] { new Integer(columns.size()) });
-				exportPDFTable(pdfTable, table, pageOnly,excludeColumns, encodingType, includeHeaders, includeFooters, selectedRowsOnly);
+				exportPDFTable(facesContext, pdfTable, table, pageOnly,excludeColumns, encodingType, includeHeaders, includeFooters, selectedRowsOnly);
 				//document.add(pdfTable);
 				add.invoke(document, new Object[] { pdfTable });
 			} else {
@@ -166,7 +166,7 @@ public class PDFExporter extends Exporter {
 		}
 	}
 	
-	private void exportPDFTable(Object pdfTable, DataTable table, boolean pageOnly, int[] excludeColumns, String encoding, boolean includeHeaders, boolean includeFooters, boolean selectedRowsOnly) 
+	private void exportPDFTable(FacesContext facesContext, Object pdfTable, DataTable table, boolean pageOnly, int[] excludeColumns, String encoding, boolean includeHeaders, boolean includeFooters, boolean selectedRowsOnly) 
 		throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
     	int numberOfColumns = columns.size();
@@ -203,10 +203,14 @@ public class PDFExporter extends Exporter {
 			first = 0;
 			size = table.getRowCount();
 		}
-        
+
+		String rowIndexVar = table.getRowIndexVar();
+		rowIndexVar = rowIndexVar == null ? "" : rowIndexVar;
     	for (int i = first; i < size; i++) {
     		table.setRowIndex(i);
-
+			if (!"".equals(rowIndexVar)) {
+				facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
+			}
 			for (int j = 0; j < numberOfColumns; j++) {
                 addColumnValue(pdfTable, columns.get(j).getChildren(), j, font);
 			}

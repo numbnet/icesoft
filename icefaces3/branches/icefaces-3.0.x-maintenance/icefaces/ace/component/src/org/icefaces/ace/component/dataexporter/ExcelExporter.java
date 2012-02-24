@@ -91,8 +91,13 @@ public class ExcelExporter extends Exporter {
 			rowsToExport = table.getRowCount();
 		}
     	
+		String rowIndexVar = table.getRowIndexVar();
+		rowIndexVar = rowIndexVar == null ? "" : rowIndexVar;
     	for (int i = first; i < rowsToExport; i++) {
     		table.setRowIndex(i);
+			if (!"".equals(rowIndexVar)) {
+				facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
+			}
 			Row row = sheet.createRow(sheetRowIndex++);
 			
 			for (int j = 0; j < numberOfColumns; j++) {
