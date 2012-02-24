@@ -49,6 +49,7 @@ import org.icefaces.ace.component.columngroup.ColumnGroup;
 import org.icefaces.ace.component.row.Row;
 import org.icefaces.ace.component.expansiontoggler.ExpansionToggler;
 import org.icefaces.ace.component.excludefromexport.ExcludeFromExport;
+import org.icefaces.ace.component.celleditor.CellEditor;
 
 public abstract class Exporter {
     public abstract String export(FacesContext facesContext, DataTable table,
@@ -186,7 +187,18 @@ public abstract class Exporter {
 
     protected String exportValue(FacesContext context, UIComponent component) {
 		if (shouldExcludeFromExport(component)) return "";
-        if (component instanceof HtmlCommandLink) {
+		if (component instanceof CellEditor) {
+			UIComponent facet = component.getFacet("output");
+			if (facet != null) {
+				component = facet;
+			} else {
+				facet = component.getFacet("input");
+				if (facet != null) {
+					component = facet;
+				}				
+			}
+        }
+		if (component instanceof HtmlCommandLink) {
             HtmlCommandLink link = (HtmlCommandLink) component;
             Object value = link.getValue();
 
