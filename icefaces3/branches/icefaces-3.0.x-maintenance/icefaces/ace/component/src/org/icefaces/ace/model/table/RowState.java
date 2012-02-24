@@ -16,6 +16,7 @@
 
 package org.icefaces.ace.model.table;
 
+import javax.faces.component.UIComponent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,5 +109,23 @@ public class RowState implements Serializable{
 
     public void setActiveCellEditorIds(List<String> activeCellEditorIds) {
         this.activeCellEditorIds = activeCellEditorIds;
+    }
+
+    /**
+     * Convenience method to take the id of the CellEditor component and add it to the list of active editors
+     * in the row state for a given row object.
+     * @param editor
+     */
+    public void addActiveCellEditor(UIComponent editor) {
+        if (editor != null) getActiveCellEditorIds().add(editor.getId());
+    }
+
+    /**
+     * Convenience method to take the id of the CellEditor component and remove it from the list of active editors
+     * in the row state for a given row object.
+     * @param editor
+     */
+    public void removeActiveCellEditor(UIComponent editor) {
+        if (editor != null) getActiveCellEditorIds().remove(editor.getId());
     }
 }

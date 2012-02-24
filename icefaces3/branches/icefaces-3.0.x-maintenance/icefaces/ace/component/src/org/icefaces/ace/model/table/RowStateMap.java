@@ -20,6 +20,7 @@ import org.icefaces.ace.util.CollectionUtils;
 import org.icefaces.ace.util.collections.EntrySetToKeyListTransformer;
 import org.icefaces.ace.util.collections.Predicate;
 
+import javax.faces.component.UIComponent;
 import javax.faces.model.DataModel;
 import java.io.Serializable;
 import java.util.*;
@@ -33,6 +34,8 @@ public class RowStateMap implements Map<Object, RowState>, Serializable {
     private static Predicate expandablePredicate = new ExpandablePredicate();
     private static Predicate expandedPredicate = new ExpandedPredicate();
     private static Predicate visiblePredicate = new VisiblePredicate();
+    private static Predicate rowExpansionPredicate = new RowExpansionPredicate();
+    private static Predicate panelExpansionPredicate = new PanelExpansionPredicate();
 
 
     public RowState put(Object o, RowState s) {
@@ -228,12 +231,17 @@ public class RowStateMap implements Map<Object, RowState>, Serializable {
     public List getVisible() {
         return EntrySetToKeyListTransformer.transform(CollectionUtils.select(map.entrySet(), visiblePredicate));
     }
-    public List getRowExpanders() { return null; }
-    public List getPanelExpanders() { return null; }
-    public List getType(String type) { return null; }
+    public List getEditing(UIComponent editor) {
+        return EntrySetToKeyListTransformer.transform(CollectionUtils.select(map.entrySet(), new EditingPredicate(editor)));
+    }
+    public List getRowExpanders() {
+        return EntrySetToKeyListTransformer.transform(CollectionUtils.select(map.entrySet(), rowExpansionPredicate));
+    }
+    public List getPanelExpanders() {
+        return EntrySetToKeyListTransformer.transform(CollectionUtils.select(map.entrySet(), panelExpansionPredicate));
+    }
 
 
-    
     public void setAllSelected(boolean value) {
         for (RowState s : map.values()) s.setSelected(value);
     }
@@ -261,6 +269,11 @@ public class RowStateMap implements Map<Object, RowState>, Serializable {
     for (RowState s : map.values()) {
             s.setExpansionType(RowState.ExpansionType.PANEL);
         }
+    }
+    public void setAllEditing(UIComponent editor, boolean add) {
+        for (RowState s : map.values())
+            if (add) s.addActiveCellEditor(editor);
+            else s.removeActiveCellEditor(editor);
     }
 
 
@@ -304,6 +317,38 @@ public class RowStateMap implements Map<Object, RowState>, Serializable {
         public boolean evaluate(Object o) {
             if (o instanceof Entry)
                 if (((RowState)((Entry)o).getValue()).isVisible()) return true;
+            return false;
+        }
+    }
+    static class RowExpansionPredicate implements Predicate {
+        public boolean evaluate(Object o) {
+            if (o instanceof Entry)
+                if (((RowState)((Entry)o).getValue()).getExpansionType().equals(RowState.ExpansionType.ROW))
+                    return true;
+            return false;
+        }
+    }
+    static class PanelExpansionPredicate implements Predicate {
+        public boolean evaluate(Object o) {
+            if (o instanceof Entry)
+                if (((RowState)((Entry)o).getValue()).getExpansionType().equals(RowState.ExpansionType.PANEL))
+                    return true;
+            return false;
+        }
+    }
+
+    private class EditingPredicate implements Predicate {
+        String id;
+        
+        public EditingPredicate(UIComponent editor) {
+            id = editor.getId();
+        }
+
+        public boolean evaluate(Object object) {
+            if (object instanceof Entry)
+                if (((RowState)((Entry)object).getValue()).activeCellEditorIds.contains(object))
+                    return true;
+
             return false;
         }
     }
