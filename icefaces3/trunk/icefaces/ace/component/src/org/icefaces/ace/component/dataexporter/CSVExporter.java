@@ -79,8 +79,13 @@ public class CSVExporter extends Exporter {
 			size = table.getRowCount();
 		}
     	
+		String rowIndexVar = table.getRowIndexVar();
+		rowIndexVar = rowIndexVar == null ? "" : rowIndexVar;
     	for (int i = first; i < size; i++) {
     		table.setRowIndex(i);
+			if (!"".equals(rowIndexVar)) {
+				facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
+			}
     		addColumnValues(builder, columns);
 			builder.append("\n");
 		}

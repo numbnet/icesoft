@@ -51,6 +51,8 @@ import org.icefaces.application.ResourceRegistry;
 import java.io.ByteArrayInputStream;
 import java.util.Map;
 
+import org.icefaces.ace.util.XMLChar;
+
 public class XMLExporter extends Exporter {
 
     @Override
@@ -85,9 +87,13 @@ public class XMLExporter extends Exporter {
 			size = table.getRowCount();
 		}
 		
+		String rowIndexVar = table.getRowIndexVar();
+		rowIndexVar = rowIndexVar == null ? "" : rowIndexVar;
     	for (int i = first; i < size; i++) {
     		table.setRowIndex(i);
-    		
+			if (!"".equals(rowIndexVar)) {
+				facesContext.getExternalContext().getRequestMap().put(rowIndexVar, i);
+			}
     		builder.append("\t<" + var + ">\n");
     		addColumnValues(builder, columns, headers);
     		builder.append("\t</" + var + ">\n");
@@ -144,7 +150,8 @@ public class XMLExporter extends Exporter {
 			UIColumn uiColumn = iterator.next();
 			UIComponent facet = uiColumn.getFacet(columnType.facet());
 			if (facet != null) {
-				facets.add(exportValue(FacesContext.getCurrentInstance(), facet));
+				String value = exportValue(FacesContext.getCurrentInstance(), facet);
+				facets.add(sanitizeXMLTagName(value));
 			} else {
 				String value = "";
 				if (uiColumn instanceof Column) {
@@ -157,7 +164,7 @@ public class XMLExporter extends Exporter {
 						value = footerText != null ? footerText : "";
 					}
 				}
-				facets.add(value);
+				facets.add(sanitizeXMLTagName(value));
 			}
 		}
         return facets;
@@ -195,7 +202,7 @@ public class XMLExporter extends Exporter {
 			List<String> values = new ArrayList<String>();
 			for (UIColumn column : rowColumns) {
 				String value = extractValueToDisplay(column, ColumnType.HEADER);
-				values.add(value);
+				values.add(sanitizeXMLTagName(value));
 			}
 			return values;
 		} else {
@@ -230,4 +237,20 @@ public class XMLExporter extends Exporter {
 		builder.append("</" + tag + ">\n");
 	}
 	
+	private String sanitizeXMLTagName(String tag) {
+		StringBuilder sb = new StringBuilder();
+		
+		int length = tag.length();
+		for (int i = 0; i < length; i++) {
+			if (XMLChar.isName(tag.codePointAt(i)))
+				sb.appendCodePoint(tag.codePointAt(i));
+		}
+		
+		String sanitized = sb.toString();
+		if ("".equals(sanitized)) // case where all characters are invalid
+			return "_";
+		else if (!XMLChar.isNameStart(sanitized.codePointAt(0))) // case where tag has invalid start character
+			return ("_" + sanitized);
+		else return sanitized;
+	}
 }
