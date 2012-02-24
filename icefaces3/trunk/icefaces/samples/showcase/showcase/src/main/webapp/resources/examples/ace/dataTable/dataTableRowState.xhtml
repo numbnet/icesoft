@@ -65,6 +65,17 @@
                         actionListener="#{dataTableRowState.disableEditing}" /><br/>
             </h:panelGroup>
             <h:panelGroup style="display:inline-block; vertical-align: top; margin: .5em .25em;">
+                Editing<br/>
+                <h:commandButton value="Start Editing For All"
+                                 actionListener="#{dataTableRowState.startAllEditing}" /><br/>
+                <h:commandButton value="Start Editing For Selected"
+                                 actionListener="#{dataTableRowState.startEditing}" /><br/>
+                <h:commandButton value="Stop Editing For All"
+                                 actionListener="#{dataTableRowState.stopAllEditing}" /><br/>
+                <h:commandButton value="Stop Editing For Selected"
+                                 actionListener="#{dataTableRowState.stopEditing}" /><br/>
+            </h:panelGroup>
+            <h:panelGroup style="display:inline-block; vertical-align: top; margin: .5em .25em;">
                 Currently Selected Rows<br/>
                 <ui:repeat id="multiRowOut"
                            value="#{dataTableRowState.selection}" var="selCar">
@@ -75,6 +86,7 @@
 
         <h:form>
            <ace:dataTable id="carTableRowExpansion"
+                          binding="${dataTableRowState.table}"
                           stateMap="${dataTableRowState.stateMap}"
                           value="#{dataTableSort.carsData}"
                           selectionMode="multiple"
@@ -99,7 +111,7 @@
                             <h:outputText value="#{car.name}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <h:inputText value="#{car.name}" style="width:100%"/>
+                            <h:inputText value="#{car.name}" style="width:90%"/>
                         </f:facet>
                     </ace:cellEditor>
                 </ace:column>
@@ -112,7 +124,7 @@
                             <h:outputText value="#{car.weight}"/>lbs.
                         </f:facet>
                         <f:facet name="input">
-                            <h:inputText value="#{car.weight}" style="width:100%"/>lbs.
+                            <h:inputText value="#{car.weight}" style="width:90%"/>
                         </f:facet>
                     </ace:cellEditor>
                 </ace:column>
@@ -125,7 +137,7 @@
                             <h:outputText value="#{car.acceleration}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <h:inputText value="#{car.acceleration}" style="width:100%"/>
+                            <h:inputText value="#{car.acceleration}" style="width:90%"/>
                         </f:facet>
                     </ace:cellEditor>
                 </ace:column>
@@ -138,7 +150,7 @@
                             <h:outputText value="#{car.mpg}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <h:inputText value="#{car.mpg}" style="width:100%"/>
+                            <h:inputText value="#{car.mpg}" style="width:90%"/>
                         </f:facet>
                     </ace:cellEditor>
                 </ace:column>
@@ -157,7 +169,7 @@
                             </h:outputText>
                         </f:facet>
                         <f:facet name="input">
-                            <h:inputText value="#{car.cost}" style="width:100%">
+                            <h:inputText value="#{car.cost}" style="width:90%">
                                 <f:convertNumber type="currency"
                                                  currencySymbol="$"
                                                  groupingUsed="true"
