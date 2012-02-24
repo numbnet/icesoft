@@ -65,6 +65,7 @@ public class ContextMenuRenderer extends BaseMenuRenderer {
             beginMap().
                 entry("target", trigger, true).
                 entry("zindex", menu.getZindex()).
+				entry("direction", menu.getDirection()).
 
                 beginMap("animation").
                     entry("animated", menu.getEffect()).

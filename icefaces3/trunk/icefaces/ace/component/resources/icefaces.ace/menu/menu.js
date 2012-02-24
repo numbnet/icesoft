@@ -154,22 +154,33 @@ ice.ace.ContextMenu = function(id, cfg) {
             my: 'left top',
             using: function(to) {
 
+			var _my = 'left top';
+			var _at = 'right top';
+			var _collision = 'flip';
+			if (_self.cfg.direction == 'up') {
+				_my = 'left bottom';
+				_at = 'right bottom';
+				_collision = 'flip none';
+			} else if (_self.cfg.direction == 'down') {
+				_collision = 'flip none';
+			}
+			
 			var _this = ice.ace.jq(this);
 			if (!_this.parent().get(0)) return;
 			if (_this.parent().get(0).id == _self.id) { // root menu
 				_this.position({
-					my: "left top",
+					my: _my,
 					of: ice.ace.ContextMenu.event,
-					collision: "flip"
+					collision: _collision
 				});
 			} else { // submenus
 				_this.css('list-style-type', 'none');
 				var _item = _this.parents('li:first').get(0);
 				_this.position({
-					my: "left top",
-					at: "right top",
+					my: _my,
+					at: _at,
 					of: _item,
-					collision: "flip"
+					collision: _collision
 				});
 			}
             }
