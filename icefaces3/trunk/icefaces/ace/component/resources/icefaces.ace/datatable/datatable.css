@@ -187,19 +187,12 @@
 
 .ui-datatable-scrollable .ui-datatable-scrollable-header, .ui-datatable-scrollable .ui-datatable-scrollable-footer {
     overflow:hidden;
+    position: relative;
 }
 
 .ui-datatable-scrollable .ui-datatable-scrollable-header table,.ui-datatable-scrollable .ui-datatable-scrollable-footer table {
     width:auto;
 }
-
-<!--[if IE 7]>
-*:first-child+html .ui-datatable-scrollable .ui-datatable-scrollable-header table,
-*:first-child+html .ui-datatable-scrollable .ui-datatable-scrollable-footer table,
-*:first-child+html .ui-datatable-scrollable .ui-datatable-scrollable-body table {
-    table-layout: fixed;
-}
-<![endif]-->
 
 .ui-datatable .ui-column-resizer {
     width:2px;

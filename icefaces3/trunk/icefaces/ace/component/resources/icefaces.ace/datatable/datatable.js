@@ -596,8 +596,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         dupeFoot.css('display', 'table-footer-group');
 
         // Change table rendering algorithm to get more accurate sizing
-        if (!ie7) bodyTable.css('table-layout','auto');
-        else bodyTable.css('table-layout','fixed');
+        if (ie7) bodyTable.css('width','auto');
+        bodyTable.css('table-layout','auto');
 
         // Get Duplicate Header/Footer Sizing
         var dupeHeadColumn, dupeHeadColumnWidths = [], realHeadColumn, bodyColumn,
@@ -611,7 +611,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
 
         // Change table rendering algorithm so fixed sizes are strictly followed
         headerTable.css('table-layout','fixed');
-        bodyTable.css('table-layout','fixed');
+        if (!ie7) bodyTable.css('table-layout','fixed');
+        else bodyTable.css('width','auto');
         footerTable.css('table-layout','fixed');
 
         // Set Duplicate Header Sizing
