@@ -145,10 +145,8 @@ public class DataTableRowState extends ComponentExampleImpl<DataTableRowState> i
                 stateMap.setAllEditing(c.getCellEditor(), true);
     }
     public void startEditing(ActionEvent e) {
-        System.out.println("Editing");
         List<Column> columns = table.getColumns();
         for (Object rowData : stateMap.getSelected()) {
-            System.out.println("Editing Row");
             RowState s = stateMap.get(rowData);
             for (Column c : columns)
                 s.addActiveCellEditor(c.getCellEditor());
