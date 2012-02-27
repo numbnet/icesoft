@@ -42,6 +42,52 @@ if (!window.ice['ace']) {
 }
 
 
+(function($) {
+    var OSDetect = {
+        init: function () {
+            this.OS = this.searchString(this.dataOS) || "an unknown OS";
+        },
+
+        searchString: function (data) {
+            for (var i=0;i<data.length;i++) {
+                var dataString = data[i].string;
+                var dataProp = data[i].prop;
+                if (dataString) {
+                    if (dataString.indexOf(data[i].subString) != -1)
+                        return data[i].identity;
+                }
+                else if (dataProp)
+                    return data[i].identity;
+            }
+        },
+
+        dataOS : [
+            {   string: navigator.platform,
+                subString: "Win",
+                identity: "win"
+            },
+            {   string: navigator.platform,
+                subString: "Mac",
+                identity: "mac"
+            },
+            {   string: navigator.userAgent,
+                subString: "iPhone",
+                identity: "ios"
+            },
+            {   string: navigator.platform,
+                subString: "Linux",
+                identity: "linux"
+            }
+        ]
+    };
+
+    OSDetect.init();
+
+   $.browser['os'] = OSDetect.OS;
+})(ice.ace.jq);
+
+
+
 // Constructor
 ice.ace.DataTable = function(id, cfg) {
     this.id = id;
@@ -595,14 +641,23 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         dupeHead.css('display', 'table-header-group');
         dupeFoot.css('display', 'table-footer-group');
 
-        // Change table rendering algorithm to get more accurate sizing
-        if (ie7) bodyTable.css('width','auto');
-        bodyTable.css('table-layout','auto');
-
         // Get Duplicate Header/Footer Sizing
-        var dupeHeadColumn, dupeHeadColumnWidths = [], realHeadColumn, bodyColumn,
+        var dupeHeadColumn, dupeHeadColumnWidths = [], realHeadColumn, realFootColumn, bodyColumn,
                 webkit = (ice.ace.jq.browser.webkit),
-                ie7 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7;
+                mac = ice.ace.jq.browser.os == 'mac',
+                ie7 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 7,
+                ie8 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 8,
+                ie9 = ice.ace.jq.browser.msie && ice.ace.jq.browser.version == 9,
+                firefox = ice.ace.jq.browser.mozilla;
+
+        // Change table rendering algorithm to get more accurate sizing
+        if (!ie7) bodyTable.css('table-layout','auto');
+
+        // IE7 Fixes
+        if (ie7) {
+            bodyTable.parent().css('overflow-x','hidden');
+        }
+
         for (i = 0; i < bodySingleCols.length; i++) {
             dupeHeadColumn = ice.ace.jq(dupeHeadSingleCols[i]);
             if (!ie7) dupeHeadColumnWidths[i] = dupeHeadColumn.width();
@@ -611,8 +666,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
 
         // Change table rendering algorithm so fixed sizes are strictly followed
         headerTable.css('table-layout','fixed');
-        if (!ie7) bodyTable.css('table-layout','fixed');
-        else bodyTable.css('width','auto');
+        bodyTable.css('table-layout','fixed');
+        //else bodyTable.css('width','auto');
         footerTable.css('table-layout','fixed');
 
         // Set Duplicate Header Sizing
@@ -638,9 +693,8 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             if (!ie7) realHeadColumn.siblings('.ui-header-column').width(realHeadColumnWidth);
             // Equiv of max width
             realHeadColumn.parent().width(realHeadColumnWidth);
-            if (i == 0 && (!webkit && !ie7)) realHeadColumn.parent().css('padding-right', '17px');
 
-            // Set Duplicate Header Sizing to Body Columns
+           // Set Duplicate Header Sizing to Body Columns
             // Equiv of max width
             if (!webkit) bodyColumnWidth = i == 0 ? bodyColumnWidth - 1 : bodyColumnWidth;
             bodyColumn.parent().width(bodyColumnWidth);
@@ -655,7 +709,20 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             if (!ie7) realFootColumn.width(dupeHeadColumnWidths[i]);
             // Apply same width to stacked sibling columns
             if (!ie7) realFootColumn.siblings('.ui-footer-column').width(dupeHeadColumnWidths[i]);
-            if (i == 0 && (!webkit && !ie7)) realFootColumn.parent().css('padding-right', '17px');
+        }
+
+
+        // Browser / Platform specific scrollbar fixes
+        // Fix body scrollbar overlapping content
+        if (ie7)
+            bodyTable.parent().css('padding-right', '17px');
+        else if ((webkit && !mac) || (ie9 || ie8)) {
+            headerTable.parent().css('margin-right', '17px');
+            footerTable.parent().css('margin-right', '17px');
+        }
+        else if (firefox) {
+            headerTable.find('tr th:last').css('padding-right','27px');
+            footerTable.find('tr td:last').css('padding-right','27px');
         }
 
         // Hide Duplicate Segments
