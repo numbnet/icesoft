@@ -185,6 +185,10 @@
     margin-top:-1px; /* Easy fix for double border in scrollable mode */
 }
 
+.ui-datatable-scrollable .ui-datatable-scrollable-body table {
+    table-layout: fixed;
+}
+
 .ui-datatable-scrollable .ui-datatable-scrollable-header, .ui-datatable-scrollable .ui-datatable-scrollable-footer {
     overflow:hidden;
     position: relative;
