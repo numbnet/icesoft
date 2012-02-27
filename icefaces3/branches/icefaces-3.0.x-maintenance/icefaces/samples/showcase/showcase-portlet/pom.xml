@@ -21,14 +21,14 @@
     <parent>
         <groupId>org.icefaces.samples</groupId>
         <artifactId>showcase</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
     </parent>
 
     <artifactId>showcase-portlet</artifactId>
     <packaging>war</packaging>
     <name>ICEfaces 3 Showcase Portlets</name>
     <url>http://www.icefaces.org/</url>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
     <properties>
         <private.demo>true</private.demo>
         <parent.root>../showcase</parent.root>

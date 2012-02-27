@@ -22,17 +22,17 @@
     <parent>
         <groupId>org.icefaces.samples</groupId>
         <artifactId>showcase</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
     </parent>
 
     <artifactId>icefaces-showcase</artifactId>
     <packaging>war</packaging>
     <name>ICEfaces 3 Showcase</name>
     <url>http://www.icefaces.org/</url>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
     <properties>
         <private.demo>true</private.demo>
-        <jsf.version>2.1.4</jsf.version>
+        <jsf.version>2.1.6</jsf.version>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
 	<build>
