@@ -37,6 +37,7 @@ import java.util.HashMap;
 @MultipartConfig
 public class UploadServlet extends HttpServlet {
     static String TEMP_DIR = "javax.servlet.context.tmpdir";
+    static String COMMENT = "comment";
 
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,6 +57,7 @@ public class UploadServlet extends HttpServlet {
                     String fullPath = dirPath + fileName;
                     writePart(part, fullPath);
                     UploadModel uploadModel = new UploadModel();
+                    uploadModel.setComment(request.getParameter(COMMENT));
                     Map uploadAttributes = new HashMap();
                     uploadAttributes.put("file", new File(fullPath));
                     uploadAttributes.put("contentType", partType);
@@ -79,6 +81,9 @@ public class UploadServlet extends HttpServlet {
     }
 
     static String getAppropriateMediaType(String contentType)  {
+        if (null == contentType)  {
+            return null;
+        }
         if (contentType.startsWith("image")) {
             return MediaMessage.MEDIA_TYPE_PHOTO;
         }
@@ -92,6 +97,9 @@ public class UploadServlet extends HttpServlet {
     }
 
     static String getAppropriateFileName(String contentType)  {
+        if (null == contentType)  {
+            return null;
+        }
         String baseName = String.valueOf(System.currentTimeMillis());
         if (contentType.startsWith("image")) {
             return baseName + ".jpg";
