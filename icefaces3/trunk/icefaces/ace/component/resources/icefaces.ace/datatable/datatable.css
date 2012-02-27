@@ -170,8 +170,7 @@
     margin-top:.2em;
 }
 
-.ui-datatable .ui-cell-editor.ui-state-highlight { padding: 10px; }
-.ui-datatable .ui-row-editor.ui-state-highlight { padding: 4px; }
+.ui-datatable .ui-cell-editor.ui-state-highlight { padding: 6px; }
 
 .ui-datatable .ui-selection-column {
     width:20px;
