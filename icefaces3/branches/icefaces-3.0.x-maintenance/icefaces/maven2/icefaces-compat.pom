@@ -21,10 +21,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.icefaces</groupId>
   <artifactId>icefaces-compat</artifactId>
-  <version>3.0.0</version>
+  <version>3.0.1</version>
   <packaging>jar</packaging>
   <name>ICEfaces 1.x Compatibility Library</name>
-  <url>http://www.icefaces.org</url> 
+  <url>http://www.icesoft.org</url> 
   <description>ICE Components and ICEfaces 1.8.x Compatibility APIs.</description> 
   <licenses>
     <license>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>org.icefaces</groupId>
       <artifactId>icefaces</artifactId>
-      <version>3.0.0</version>
+      <version>3.0.1</version>
     </dependency>       
 
     <dependency>
