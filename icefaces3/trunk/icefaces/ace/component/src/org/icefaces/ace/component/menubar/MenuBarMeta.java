@@ -69,5 +69,8 @@ public class MenuBarMeta extends UIComponentBaseMeta {
     @Property(tlddoc = "Style class of the main container element.")
     private String styleClass;
 
+    @Property(tlddoc="Forces the direction in which the submenus will be displayed, regardless of the position of the menu in the viewport. Possible values are combinations of \"up\" and \"down\" with \"left\" and \"right\", separated by a space, and \"auto\" can also be used in place of any of those values (e.g. \"up\", \"up right\", \"left\", \"left auto\").", defaultValue = "auto")
+    private String direction;
+	
     private AbstractMenu am; // need this for resolving dependence on AbstractMenu when compiling Base class
 }

@@ -74,6 +74,7 @@ public class MenuBarRenderer extends BaseMenuRenderer {
             beginMap().
 
                 entry("autoSubmenuDisplay", menubar.isAutoSubmenuDisplay()).
+				entry("direction", menubar.getDirection()).
 
                 beginMap("animation").
                     entry("animated", menubar.getEffect()).
