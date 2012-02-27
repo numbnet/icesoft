@@ -65,6 +65,17 @@
                         actionListener="#{dataTableRowState.disableEditing}" /><br/>
             </h:panelGroup>
             <h:panelGroup style="display:inline-block; vertical-align: top; margin: .5em .25em;">
+                Editing<br/>
+                <h:commandButton value="Start Editing For All"
+                                 actionListener="#{dataTableRowState.startAllEditing}" /><br/>
+                <h:commandButton value="Start Editing For Selected"
+                                 actionListener="#{dataTableRowState.startEditing}" /><br/>
+                <h:commandButton value="Stop Editing For All"
+                                 actionListener="#{dataTableRowState.stopAllEditing}" /><br/>
+                <h:commandButton value="Stop Editing For Selected"
+                                 actionListener="#{dataTableRowState.stopEditing}" /><br/>
+            </h:panelGroup>
+            <h:panelGroup style="display:inline-block; vertical-align: top; margin: .5em .25em;">
                 Currently Selected Rows<br/>
                 <ui:repeat id="multiRowOut"
                            value="#{dataTableRowState.selection}" var="selCar">
@@ -75,6 +86,7 @@
 
         <h:form>
            <ace:dataTable id="carTableRowExpansion"
+                          binding="${dataTableRowState.table}"
                           stateMap="${dataTableRowState.stateMap}"
                           value="#{dataTableSort.carsData}"
                           selectionMode="multiple"
