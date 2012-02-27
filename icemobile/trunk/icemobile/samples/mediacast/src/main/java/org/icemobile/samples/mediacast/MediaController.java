@@ -163,6 +163,7 @@ public class MediaController implements Serializable {
             if (mediaFile != null) {
                 mediaStore.addMedia(photoMessage);
                 try {
+                    subject = photoMessage.getComment();
                     String body = photoMessage.getComment();
                     portableRenderer.render(RENDER_GROUP,
                             new PushMessage(subject, body));
