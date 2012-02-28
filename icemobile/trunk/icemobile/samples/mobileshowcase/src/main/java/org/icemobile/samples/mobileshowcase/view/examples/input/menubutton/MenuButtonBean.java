@@ -57,7 +57,7 @@ public class MenuButtonBean extends ExampleImpl<MenuButtonBean> implements
     public static final String BEAN_NAME = "menuButton";
 
     private ArrayList<MenuButtonItemModel> dynamicMenuButton;
-    
+
     private String executedCommand;
 
     public MenuButtonBean() {
@@ -65,10 +65,10 @@ public class MenuButtonBean extends ExampleImpl<MenuButtonBean> implements
         initDynamicMenuButton();
     }
 
-    private void initDynamicMenuButton(){
+    private void initDynamicMenuButton() {
         // build out the menu commands and fill in the MenuButtonItemModel.
         dynamicMenuButton = new ArrayList<MenuButtonItemModel>(4);
-        dynamicMenuButton.add(new MenuButtonItemModel("Action Menu",null));
+//        dynamicMenuButton.add(new MenuButtonItemModel("Action Menu",null));
         dynamicMenuButton.add(new MenuButtonItemModel(" &#160; Create Record",
                 new CreateCommand()));
         dynamicMenuButton.add(new MenuButtonItemModel(" &#160; Update Record",
