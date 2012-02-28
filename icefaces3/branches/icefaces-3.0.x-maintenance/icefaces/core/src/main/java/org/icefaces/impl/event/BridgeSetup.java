@@ -282,13 +282,12 @@ public class BridgeSetup implements SystemEventListener {
             icefacesSetup.setId(viewID + "_icefaces_config");
             bodyResources.add(icefacesSetup);
 
-            //make sure there's always a form so that ice.singleSubmit and ice.retrieveUpdate can do their job
-            UIForm retrieveUpdateSetup = new ShortIdForm();
-            retrieveUpdateSetup.setTransient(true);
-            //use viewID as element ID so that ice.singleSubmit and ice.receiveUpdate can easily lookup
-            //the corresponding view state key (javax.faces.ViewState) 
-            retrieveUpdateSetup.setId(viewID);
-            bodyResources.add(retrieveUpdateSetup);
+            //add the form used by ice.retrieveUpdate function to retrieve the updates
+            //use viewID and '-retrieve-update' suffix as element ID
+            addNewTransientForm(viewID + "-retrieve-update", bodyResources);
+            //add the form used by ice.singleSubmit function for submitting event data
+            //use viewID and '-single-submit' suffix as element ID
+            addNewTransientForm(viewID + "-single-submit", bodyResources);
 
             if (EnvUtils.isICEpushPresent()) {
                 UIOutputWriter icepushSetup = new UIOutputWriter() {
@@ -354,6 +353,13 @@ public class BridgeSetup implements SystemEventListener {
     public static String getViewID(ExternalContext externalContext) {
         Map requestMap = externalContext.getRequestMap();
         return (String) requestMap.get(BridgeSetup.ViewState);
+    }
+
+    private static void addNewTransientForm(String id, List<UIComponent> parent) {
+        UIForm uiForm = new ShortIdForm();
+        uiForm.setTransient(true);
+        uiForm.setId(id);
+        parent.add(uiForm);
     }
 
     private static void addMandatoryResourceDependency(
