@@ -45,7 +45,7 @@ import javax.faces.application.ResourceDependency;
 @ClientBehaviorHolder(events = {
 	@ClientEvent(name="click", javadoc="Fired when a command button is clicked",
             tlddoc="Fired when commandButton is clicked", defaultRender="@all",
-            defaultExecute="@all")}, defaultEvent="close")
+            defaultExecute="@all")}, defaultEvent="click")
 public class CommandButtonMeta extends UICommandMeta {
 
     @Property(defaultValue = "false",
@@ -84,7 +84,7 @@ public class CommandButtonMeta extends UICommandMeta {
     private String panelConfirmation;
 
     @Property(tlddoc="id of blocking submitNotification panel which blocks any further access to page until process is complete")
-    private String submitNofification;
+    private String submitNotification;
 
     @Property(defaultValue = "false", tlddoc = "Selected state of button, normally activated when parent component is a button group.")
     // todo move selected state out into CommandButtonGroup model. Would be nice if this was transparent.
