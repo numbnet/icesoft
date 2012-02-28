@@ -59,7 +59,7 @@
                             </mobi:fieldsetRow>
                             </mobi:fieldsetGroup>
                             <mobi:commandButton
-                                     value="Hide Popup Server-side"
+                                     value="Hide Popup Client-side"
                                      actionListener="#{popup.closeClient}"/>
 
                 <mobi:outputList id="imgList2" type="thumb" inset="false">
@@ -81,6 +81,8 @@
     <h:outputText id="out1" value="#{input.someText}">
             <h:outputLabel for="out1" value="A. simple:-"/>
     </h:outputText>
+    <br />
+    <h:outputText id="visId" value="VisibleClient val is #{popup.visibleClient}"/>
 
 
     <br />

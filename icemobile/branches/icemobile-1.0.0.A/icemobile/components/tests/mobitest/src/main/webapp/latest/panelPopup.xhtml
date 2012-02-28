@@ -45,9 +45,18 @@
                actionListener="#{popup.toggleVisible}"/>
 
        </h:form>
-        <mobi:panelPopup id="panelPopServer" header="Popup Panel"
+        <mobi:panelPopup id="panelPopServer"
                         visible="#{popup.visible}">
+               <f:facet name="label">
+                  <h:panelGrid columns="2">
+                       <h:outputText value="Facet Title"/>
+                       <mobi:graphicImage value="../images/album-af.jpg" />
+                  </h:panelGrid>
+               </f:facet>
                        <h:form id="panelForm2">
+                             <mobi:commandButton
+                                 value="Hide Popup Server-side"
+                                 actionListener="#{popup.close}"/>
                             <mobi:fieldsetGroup>
                             <!-- Text input -->
                             <mobi:fieldsetRow>
@@ -61,9 +70,6 @@
                                                 value="#{input.someText}"/>
                             </mobi:fieldsetRow>
                             </mobi:fieldsetGroup>
-                            <mobi:commandButton
-                                     value="Hide Popup Server-side"
-                                     actionListener="#{popup.close}"/>
 
                        </h:form>
                        <mobi:outputList id="imgList" type="thumb" inset="false">
