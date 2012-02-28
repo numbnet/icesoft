@@ -182,7 +182,7 @@ mobi.timespinner = {
         },
         close: function(clientId){
             document.getElementById(clientId+'_bg').className = "mobi-time";
-            document.getElementById(clientId+"_popup").className = "mobi-time-container-hide";
+            document.getElementById(clientId+"_popup").className = "mobi-time-container-inv";
             this.opened[clientId]= false;
         },
         unload: function(clientId){
