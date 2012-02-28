@@ -26,15 +26,15 @@
             <mobi:fieldsetRow>
                 <!-- panel confirmation component -->
                 The submitNotification panel provides the user with visual feed
-                back that a submit has taken place.  Once the response has been
-                rescieved the notification panel will be hidden. <br />
+                back that a submit has taken place. Once the response has been
+                rescieved the notification panel will be hidden. <br/>
 
                 <mobi:commandButton value="Execute Long Task"
                                     style="float:left;"
-                                    submitNofification="submitNotification"
-                                    actionListener="#{submitNotificationBean.longRunningTask}" />
+                                    submitNotification="submitNotification"
+                                    actionListener="#{submitNotificationBean.longRunningTask}"/>
                 <mobi:submitNotification id="submitNotification">
-                    <h:outputText value="Processing Request" />
+                    <h:outputText value="Processing Request"/>
                 </mobi:submitNotification>
             </mobi:fieldsetRow>
         </mobi:fieldsetGroup>
