@@ -38,11 +38,15 @@
     z-index: 1000;
     opacity: 0.5;
 }
+.mobi-time-bg-inv{
+    opacity:0;
+    display:none;
+}
 .mobi-time {
     opacity:1;
 }
 
-.mobi-time-container-hide{
+.mobi-time-container-inv{
     opacity:0;
     display:none;
 }
