@@ -154,7 +154,7 @@ public class  CommandButtonRenderer extends CoreRenderer {
         */
         StringBuilder builder = new StringBuilder(255);
         String panelConfId=commandButton.getPanelConfirmation();
-        String subNotId = commandButton.getSubmitNofification();
+        String subNotId = commandButton.getSubmitNotification();
         String submitNotificationId = null;
 
         builder.append("{ elVal: this");

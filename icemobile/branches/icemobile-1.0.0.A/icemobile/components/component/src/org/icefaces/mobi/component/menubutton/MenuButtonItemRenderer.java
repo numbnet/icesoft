@@ -15,9 +15,11 @@
  */
 package org.icefaces.mobi.component.menubutton;
 
-import org.icefaces.mobi.component.panelconfirmation.PanelConfirmationRenderer;
+import org.icefaces.mobi.component.panelconfirmation.PanelConfirmation;
 import org.icefaces.mobi.component.submitnotification.SubmitNotificationRenderer;
+import org.icefaces.mobi.component.submitnotification.SubmitNotification;
 import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.Utils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -60,13 +62,25 @@ public class MenuButtonItemRenderer extends BaseLayoutRenderer{
          ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
          boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
          String parentId = uiComponent.getParent().getClientId();
-         String subNotId = mbi.getSubmitNofification();
+         UIComponent parent = uiComponent.getParent();
+         if (!(parent instanceof MenuButton)){
+             logger.warning("MenuButtonItem must have parent of MenuButton");
+             return;
+         }
+         MenuButton parentMenu = (MenuButton)parent;
+         String subNotId = mbi.getSubmitNotification();
          String panelConfId = mbi.getPanelConfirmation();
          String submitNotificationId = null;
-         StringBuilder builder = new StringBuilder("mobi.menubutton.init('").append(clientId).append("'),{singleSubmit: ");
-         builder.append(singleSubmit).append(",disabled: ").append(disabled);
+  //       StringBuilder builder = new StringBuilder("mobi.menubutton.initCfg('").append(parentId).append("','").append(clientId).append("',{singleSubmit: ");
+        StringBuilder builder = new StringBuilder(",{singleSubmit: ").append(singleSubmit);
+        builder.append(",disabled: ").append(disabled);
+        UIComponent uiForm = Utils.findParentForm(parent);
          if (null != subNotId) {
             submitNotificationId = SubmitNotificationRenderer.findSubmitNotificationId(uiComponent, subNotId);
+            if (null == submitNotificationId){
+                //try another way as this above one is limited for some reason menuButtonItems don't find it otherwise
+                submitNotificationId = (String)((uiForm.findComponent(subNotId)).getClientId());
+            }
             if (null != submitNotificationId ){
                 builder.append(",snId: '").append(submitNotificationId).append("'");
             } else {
@@ -81,20 +95,28 @@ public class MenuButtonItemRenderer extends BaseLayoutRenderer{
                 behaviors = behaviors.replace("\"", "\'");
                 builder.append(behaviors);
             }
-            StringBuilder pcBuilder = PanelConfirmationRenderer.renderOnClickString(uiComponent, builder);
-            if (null != pcBuilder){
+            PanelConfirmation panelConfirmation = (PanelConfirmation) (parent.findComponent(panelConfId));
+            if (null==panelConfirmation){
+                panelConfirmation = (PanelConfirmation)(uiForm.findComponent(panelConfId));
+               // panelConfirmation = (PanelConfirmation)(uiForm.findComponent(panelConfId+"_popup"));
+            }
+         //   StringBuilder pcBuilder = PanelConfirmationRenderer.renderOnClickString(uiComponent, builder);
+            if (null != panelConfirmation){
                 //has panelConfirmation and it is found
-                BaseLayoutRenderer.addMenuItemCfg(parentId, pcBuilder);
+                String panelConfirmationId = panelConfirmation.getClientId(facesContext);
+                builder.append(",pcId: '").append(panelConfirmationId).append("'");
+                StringBuilder noPanelConf = this.getCall(clientId, builder.toString());
+                noPanelConf.append("});");
+                parentMenu.addMenuItem(clientId, noPanelConf);
             } else { //no panelConfirmation found so commandButton does the job
                 logger.warning("panelConfirmation of "+panelConfId+" NOT FOUND:- resorting to standard ajax form submit");
                 StringBuilder noPanelConf = this.getCall(clientId, builder.toString());
                 noPanelConf.append("});");
-                BaseLayoutRenderer.addMenuItemCfg(parentId, noPanelConf);
+                parentMenu.addMenuItem(clientId, noPanelConf);
             }
         } else {  //no panelConfirmation requested so button does job
-            StringBuilder noPanelConf = this.getCall(clientId, builder.toString());
-            noPanelConf.append("});");
-            BaseLayoutRenderer.addMenuItemCfg(parentId, noPanelConf);
+            StringBuilder noPanelConf = getCall(clientId, builder.toString()).append("});");
+            parentMenu.addMenuItem(clientId, noPanelConf);
         }
          writer.startElement(HTML.OPTION_ELEM, uiComponent);
          writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
@@ -107,7 +129,7 @@ public class MenuButtonItemRenderer extends BaseLayoutRenderer{
          writer.endElement(HTML.OPTION_ELEM);
     }
     private StringBuilder getCall(String clientId, String builder ) {
-        StringBuilder noPanelConf = new StringBuilder("mobi.menubutton.init('").append(clientId).append("',");
+        StringBuilder noPanelConf = new StringBuilder("'").append(clientId).append("'");
         noPanelConf.append(builder);
         return noPanelConf;
     }

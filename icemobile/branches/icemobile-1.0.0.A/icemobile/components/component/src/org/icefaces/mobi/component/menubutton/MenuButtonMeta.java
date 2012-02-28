@@ -53,13 +53,6 @@ import java.util.List;
 })
 
 public class MenuButtonMeta extends UISeriesBaseMeta{
-   /* @Property(defaultValue = "false",
-            tlddoc = "When singleSubmit is true, triggering an action on this component will submit" +
-                    " and execute this component only. Equivalent to <f:ajax execute='@this' render='@all'>." +
-                    " When singleSubmit is false, triggering an action on this component will submit and execute " +
-                    " the full form that this component is contained within." +
-                    " The default value is false.")
-    private boolean singleSubmit; */
 
     @Property(tlddoc = "style will be rendered on the root element of this " +
             "component.")
@@ -76,14 +69,6 @@ public class MenuButtonMeta extends UISeriesBaseMeta{
 
     @Property(defaultValue="Menu", tlddoc="Label of the menu button")
     private String buttonLabel;
-
-  /*  @Property(tlddoc="list of actionListeners which must be same length as the list of values for this component. " +
-            "The actionListener fired will correspond to the value item row in the list selected")
-    private List<String> actionListeners;  */
-
-  /*  @Property(tlddoc="list of panelConfirmation id's which must be same length as list of values for this component")
-    private List<String> panelConfirmations;     */
-
 
     @Property(defaultValue = "false", tlddoc = "The default value of this attribute is false. If true then value change event will happen in APPLY_REQUEST_VALUES phase and if the value of this attribute is false then event change will happen in INVOKE_APPLICATION phase")
     private boolean immediate;
