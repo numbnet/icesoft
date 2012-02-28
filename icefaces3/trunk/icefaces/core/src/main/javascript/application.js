@@ -126,6 +126,14 @@ if (!window.ice.icefaces) {
             return viewStateElement.value;
         }
 
+        function retrieveUpdateFormID(viewID) {
+            return viewID + '-retrieve-update';
+        }
+
+        function singleSubmitFormID(viewID) {
+            return viewID + '-single-submit';
+        }
+
         //include functional.js
         //include oo.js
         //include collection.js
@@ -179,22 +187,20 @@ if (!window.ice.icefaces) {
             }
         }
 
-        //marker for push initiated requests
-        var pushInitiatedRequest = false;
         var viewIDs = [];
 
         function retrieveUpdate(viewID) {
             append(viewIDs, viewID);
-            var form = lookupElementById(viewID);
+            var formID = retrieveUpdateFormID(viewID);
+            var form = lookupElementById(formID);
             appendOrReplaceHiddenInputElement(form, 'ice.view', viewID);
             appendOrReplaceHiddenInputElement(form, 'ice.window', namespace.window);
 
             return function() {
-                var form = lookupElementById(viewID);
+                var form = lookupElementById(formID);
                 //form is missing after navigating to a non-icefaces page
                 if (form) {
                     try {
-                        pushInitiatedRequest = true;
                         debug(logger, 'picking updates for view ' + viewID);
                         jsf.ajax.request(form, null, {'ice.submit.type': 'ice.push', render: '@all'});
                     } catch (e) {
@@ -208,7 +214,7 @@ if (!window.ice.icefaces) {
 
         function disposeWindow(viewID) {
             return function() {
-                var form = lookupElementById(viewID);
+                var form = lookupElementById(singleSubmitFormID(viewID));
                 //form is missing after navigating to a non-icefaces page
                 if (form) {
                     try {
@@ -257,7 +263,7 @@ if (!window.ice.icefaces) {
                 switch (e.status) {
                     case 'begin':
                         //trigger notification only when submit is user-initiated
-                        if (!pushInitiatedRequest) {
+                        if (source.id != retrieveUpdateFormID(viewIDOf(source))) {
                             broadcast(perRequestOnBeforeSubmitListeners, [ source ]);
                         }
                         break;
@@ -272,7 +278,6 @@ if (!window.ice.icefaces) {
                     case 'success':
                         var xmlContent = e.responseXML;
                         broadcast(perRequestOnAfterUpdateListeners, [ xmlContent, source ]);
-                        pushInitiatedRequest = false;
                         break;
                 }
             };
@@ -385,7 +390,7 @@ if (!window.ice.icefaces) {
                 setupDefaultIndicators(container, configuration);
 
                 //recalculate delta submit previous parameters for the updated forms, if necessary
-                namespace.onAfterUpdate(function(updates) {
+                namespace.onAfterUpdate(function(updates, source) {
                     var formsWithUpdatedInputElements = select(collect(updates.getElementsByTagName('update'), function(update) {
                         var id = update.getAttribute('id');
                         return lookupElementById(id);
@@ -395,7 +400,7 @@ if (!window.ice.icefaces) {
 
                     each(container.getElementsByTagName('form'), function(form) {
                         try {
-                            if (deltaSubmit(form) && (contains(formsWithUpdatedInputElements, form) || !pushInitiatedRequest)) {
+                            if (deltaSubmit(form) && (contains(formsWithUpdatedInputElements, form) || source.id != retrieveUpdateFormID(viewID))) {
                                 debug(logger, 'recalculate initial parameters for updated form["' + form.id + '"]');
                                 form.previousParameters = HashSet(jsf.getViewState(form).split('&'));
                             }
