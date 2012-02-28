@@ -255,19 +255,65 @@ ice.ace.ContextMenu = function(id, cfg) {
     this.cfg.trigger = typeof this.cfg.target == 'string' ? ice.ace.escapeClientId(this.cfg.target) : this.cfg.target;
 
     var _self = this;
+	
+	// determine X and Y directions
+	var direction = this.cfg.direction;
+	var left = direction.search(/left/i);
+	var right = direction.search(/right/i);
+	if (left >= 0 && right >= 0) {
+		if (left < right) this.cfg.directionX = 'left';
+	} else if (left >= 0) this.cfg.directionX = 'left';
+	else if (right >= 0) this.cfg.directionX = 'right';
+	else this.cfg.directionX = 'auto';
+
+	var up = direction.search(/up/i);
+	var down = direction.search(/down/i);
+	if (up >= 0 && down >= 0) {
+		if (up < down) this.cfg.directionY = 'up';
+	} else if (up >= 0) this.cfg.directionY = 'up';
+	else if (down >= 0) this.cfg.directionY = 'down';
+	else this.cfg.directionY = 'auto';
+	
     this.cfg.position = {
             my: 'left top',
             using: function(to) {
 
+			// default values
 			var _my = 'left top';
 			var _at = 'right top';
 			var _collision = 'flip';
-			if (_self.cfg.direction == 'up') {
-				_my = 'left bottom';
-				_at = 'right bottom';
-				_collision = 'flip none';
-			} else if (_self.cfg.direction == 'down') {
-				_collision = 'flip none';
+			
+			if (_self.cfg.directionX == 'auto' && _self.cfg.directionY == 'auto') { // use default values
+				// do nothing
+			} else { // construct new value strings
+				// process horizontal direction
+				if (_self.cfg.directionX == 'left') {
+					_my = 'right ';
+					_at = 'left ';
+					_collision = 'none ';
+				} else if (_self.cfg.directionX == 'right') {
+					_my = 'left ';
+					_at = 'right ';
+					_collision = 'none ';
+				} else {
+					_my = 'left ';
+					_at = 'right ';
+					_collision = 'flip ';				
+				}
+				// process vertical direction
+				if (_self.cfg.directionY == 'up') {
+					_my += 'bottom';
+					_at += 'bottom';
+					_collision += 'none';
+				} else if (_self.cfg.directionY == 'down') {
+					_my += 'top';
+					_at += 'top';
+					_collision += 'none';
+				} else {
+					_my += 'top';
+					_at += 'top';
+					_collision += 'flip';
+				}
 			}
 			
 			var _this = ice.ace.jq(this);

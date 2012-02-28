@@ -71,7 +71,7 @@ public class ContextMenuMeta extends UIComponentBaseMeta {
             "as it will be called multiple times, in every lifecycle.")
     private MenuModel model;
 	
-    @Property(tlddoc="Forces the direction in which the context menu will be displayed, regardless of the position of the mouse pointer in the viewport. Possible values are \"up\", \"down\", and \"auto\".", defaultValue = "auto")
+    @Property(tlddoc="Forces the direction in which the context menu will be displayed, regardless of the position of the mouse pointer in the viewport. Possible values are combinations of \"up\" and \"down\" with \"left\" and \"right\", separated by a space, and \"auto\" can also be used in place of any of those values (e.g. \"up\", \"up right\", \"left\", \"left auto\").", defaultValue = "auto")
     private String direction;
 
     private AbstractMenu am; // need this to resolve dependence on AbstractMenu when compiling Base class
