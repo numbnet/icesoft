@@ -980,12 +980,12 @@ public class DataTableRenderer extends CoreRenderer {
 
         // For each row of a col group, or child of a datatable
         boolean firstHeadElement = true;
+        boolean subRows = false;
         Iterator<UIComponent> headElementIterator = headContainer.iterator();
         do {
             UIComponent headerElem = headElementIterator.next();
             List<UIComponent> headerRowChildren = new ArrayList<UIComponent>();
             int i = 0;
-            boolean subRows = false;
 
             // If its a row, get the row children, else add the column as a pseduo child, if not column, break.
             if (headerElem.isRendered())
@@ -997,7 +997,7 @@ public class DataTableRenderer extends CoreRenderer {
             if (headerRowChildren.size() > 1) subRows = true;
 
             // If the element was a row of a col-group render another row for a subrow of the header
-            if (subRows) writer.startElement(HTML.TR_ELEM, null);
+            if (subRows && !firstHeadElement) writer.startElement(HTML.TR_ELEM, null);
 
             // Either loop through row children or render the single column/columns
             Iterator<UIComponent> componentIterator = headerRowChildren.iterator();
@@ -1017,7 +1017,7 @@ public class DataTableRenderer extends CoreRenderer {
             if (subRows) writer.endElement(HTML.TR_ELEM);
             firstHeadElement = false;
         } while (headElementIterator.hasNext());
-        writer.endElement(HTML.TR_ELEM);
+        if (!subRows) writer.endElement(HTML.TR_ELEM);
         writer.endElement(HTML.THEAD_ELEM);
     }
 
