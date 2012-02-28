@@ -653,9 +653,12 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         // Change table rendering algorithm to get more accurate sizing
         if (!ie7) bodyTable.css('table-layout','auto');
 
-        // IE7 Fixes
-        if (ie7) {
-            bodyTable.parent().css('overflow-x','hidden');
+        // IE7 scrollbar fix
+        if (ie7 && bodyTable.parent().get()[0].scrollWidth <= bodyTable.parent().get()[0].offsetWidth) {
+            bodyTable.parent().css('overflow-x', 'hidden');
+            bodyTable.parent().css('padding-right', '17px');
+            headerTable.parent().css('padding-right', '17px');
+            footerTable.parent().css('padding-right', '17px');
         }
 
         for (i = 0; i < bodySingleCols.length; i++) {
@@ -667,7 +670,6 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         // Change table rendering algorithm so fixed sizes are strictly followed
         headerTable.css('table-layout','fixed');
         bodyTable.css('table-layout','fixed');
-        //else bodyTable.css('width','auto');
         footerTable.css('table-layout','fixed');
 
         // Set Duplicate Header Sizing
@@ -694,10 +696,10 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             // Equiv of max width
             realHeadColumn.parent().width(realHeadColumnWidth);
 
-           // Set Duplicate Header Sizing to Body Columns
+            // Set Duplicate Header Sizing to Body Columns
             // Equiv of max width
             if (!webkit) bodyColumnWidth = i == 0 ? bodyColumnWidth - 1 : bodyColumnWidth;
-            bodyColumn.parent().width(bodyColumnWidth);
+            if (!ie7) bodyColumn.parent().width(bodyColumnWidth);
             // Equiv of min width
             if (!ie7) {
                 bodyColumnWidth = i == 0 ? dupeHeadColumnWidths[i] - 1 : dupeHeadColumnWidths[i];
@@ -714,9 +716,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
 
         // Browser / Platform specific scrollbar fixes
         // Fix body scrollbar overlapping content
-        if (ie7)
-            bodyTable.parent().css('padding-right', '17px');
-        else if ((webkit && !mac) || (ie9 || ie8)) {
+        if ((webkit && !mac) || (ie9 || ie8)) {
             headerTable.parent().css('margin-right', '17px');
             footerTable.parent().css('margin-right', '17px');
         }
