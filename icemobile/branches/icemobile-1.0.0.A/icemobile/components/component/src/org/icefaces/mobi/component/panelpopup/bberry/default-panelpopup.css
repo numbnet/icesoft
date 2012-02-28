@@ -13,28 +13,31 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-.mobi-panelpopup-bg-hide{
+.mobi-panelpopup-bg-hide {
     display: none;
 }
+
 .mobi-panelpopup-container-hide {
     display: none;
     opacity: 0;
 }
+
 .mobi-panelpopup-bg {
     width: 100%;
-    height:100%;
+    height: 100%;
     background: #000;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
     opacity: 0.5;
-    filter:alpha(opacity=50);
+    filter: alpha(opacity = 50);
 }
+
 .mobi-panelpopup-container {
     opacity: 1;
     opacity: 1;
-    color:black;
+    color: black;
     background-color: white;
     border-radius: 3px 3px 3px 3px;
     -webkit-border-radius: 3px;
@@ -46,7 +49,6 @@
     padding: 0;
     z-index: 1001;
     position: absolute;
-    top:15%;
-    left:10%;
-    right:10%;
+    top: 0;
+    left: 0;
 }
