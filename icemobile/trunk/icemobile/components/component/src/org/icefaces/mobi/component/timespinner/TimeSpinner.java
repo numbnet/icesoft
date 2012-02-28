@@ -52,13 +52,14 @@ public class TimeSpinner extends TimeSpinnerBase {
     private int minuteInt;
     private int ampm;
 
+    private Locale appropriateLocale;
+    private TimeZone appropriateTimeZone;
+
+    private boolean touchEnabled;
+
     public TimeSpinner() {
         super();
     }
-
-
-    private Locale appropriateLocale;
-    private TimeZone appropriateTimeZone;
 
     public Locale calculateLocale(FacesContext facesContext) {
         if (appropriateLocale == null) {
@@ -87,8 +88,8 @@ public class TimeSpinner extends TimeSpinnerBase {
 
     public TimeZone calculateTimeZone() {
         if (appropriateTimeZone == null) {
-           //default to GMT
-            Object usertimeZone =   TimeZone.getDefault(); //TimeZone.getTimeZone("GMT");
+            //default to GMT
+            Object usertimeZone = TimeZone.getDefault(); //TimeZone.getTimeZone("GMT");
             if (usertimeZone != null) {
                 if (usertimeZone instanceof String)
                     appropriateTimeZone = TimeZone.getTimeZone((String) usertimeZone);
@@ -136,10 +137,17 @@ public class TimeSpinner extends TimeSpinnerBase {
         return commonAttributeNames;
     }
 
-    public String getDefaultEventName(FacesContext facesContext){
-         if (Utils.isTouchEventEnabled(facesContext)) {
-             return "onblur";
-         }
-        else return "onchange";
+    public String getDefaultEventName(FacesContext facesContext) {
+        if (Utils.isTouchEventEnabled(facesContext)) {
+            return "onblur";
+        } else return "onchange";
+    }
+
+    public boolean isTouchEnabled() {
+        return touchEnabled;
+    }
+
+    public void setTouchEnabled(boolean touchEnabled) {
+        this.touchEnabled = touchEnabled;
     }
 }
