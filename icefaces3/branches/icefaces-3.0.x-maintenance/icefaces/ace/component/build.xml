@@ -427,24 +427,6 @@
                 <include name="META-INF/*"/>
                 <include name="META-INF/resources/org*/**"/>
                 <include name="META-INF/resources/icefaces.ace/**"/>
-                <!--
-                <include unless="exclude.unused.yui"
-                         name="META-INF/resources/yui/**"/>
-
-                <include if="exclude.unused.yui"
-                         name="META-INF/resources/yui/2_8_2/yahoo-dom-event/**"/>
-                <include if="exclude.unused.yui"
-                         name="META-INF/resources/yui/2_8_2/element/**"/>
-                <include if="exclude.unused.yui"
-                         name="META-INF/resources/yui/2_8_2/button/**"/>
-                <include if="exclude.unused.yui"
-                         name="META-INF/resources/yui/2_8_2/tabview/**"/>
-                -->
-                <!-- Instead of building the include list, we could build an exclude list, but that'd be even longer
-                <exclude if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/paginator/**"/>
-                <exclude if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/profiler/**"/>
-                <exclude if="exclude.unused.yui" name="META-INF/resources/yui/2_8_1/profilerviewer/**"/>
-                -->
             </fileset>
             <fileset dir="${src}" includes="org/icefaces/ace/resources/"/>
         </jar>
