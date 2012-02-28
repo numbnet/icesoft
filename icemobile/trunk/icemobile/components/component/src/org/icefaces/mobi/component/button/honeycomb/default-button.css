@@ -68,7 +68,7 @@
 
 .mobi-button-dis {
     opacity: 0.5;
-	filter: alpha(opacity=50);
+    filter: alpha(opacity = 50);
 }
 
 .mobi-button {
@@ -89,7 +89,6 @@
     display: inline;
     margin: 0;
     padding: 8px 15px;
-    position: relative;
     text-align: center;
     text-decoration: none;
     text-shadow: none;
