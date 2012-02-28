@@ -19,7 +19,6 @@
     border: 1px solid #999999;
     font-size: 15px;
     padding: 0;
-    position: relative;
     border-radius: 0.6em 0.6em 0.6em 0.6em;
     -webkit-border-radius: 0.6em;
     -moz-border-radius: 0.6em;
@@ -32,7 +31,6 @@
 .mobi-fieldset-row {
     border-bottom: 1px solid #999999;
     min-height: 30px;
-    position: relative;
     padding: 10px 10px 0;
 }
 
