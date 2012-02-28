@@ -65,6 +65,10 @@ public class PanelPopupBean extends ExampleImpl<PanelPopupBean> implements
         return rendered;
     }
 
+    public void setRendered(boolean rendered) {
+        this.rendered = rendered;
+    }
+
     public void toggleRendered(ActionEvent actionEvent) {
         rendered = !rendered;
     }
