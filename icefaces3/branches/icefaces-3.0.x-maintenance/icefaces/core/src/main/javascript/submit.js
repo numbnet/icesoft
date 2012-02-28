@@ -78,7 +78,7 @@ var fullSubmit;
 
     function singleSubmit(execute, render, event, element, additionalParameters, callbacks) {
         var viewID = viewIDOf(element);
-        var form = document.getElementById(viewID);
+        var form = document.getElementById(singleSubmitFormID(viewID));
         var clonedElements = [];
         try {
             var clonedElement = form.appendChild(element.cloneNode(true));
@@ -323,7 +323,7 @@ var fullSubmit;
                     };
                 }
 
-                var deltaSubmitForm = document.getElementById(viewID);
+                var deltaSubmitForm = document.getElementById(singleSubmitFormID(viewID));
                 var clonedElement = element.cloneNode(true);
                 var appendedElements = [];
 
