@@ -48,6 +48,9 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
     private static final String JS_MIN_NAME = "datespinner-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.datespinner";
 
+    public static final String TOUCH_START_EVENT = "ontouchstart";
+    public static final String CLICK_EVENT = "onclick";
+
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -80,6 +83,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         ClientBehaviorHolder cbh = (ClientBehaviorHolder) component;
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
         boolean singleSubmit = spinner.isSingleSubmit();
+        spinner.setTouchEnabled(Utils.isTouchEventEnabled(context));
         String initialValue = getStringValueToRender(context, component);
         // detect if an iOS device
         if (shouldUseNative(spinner)) {
@@ -144,10 +148,8 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         ClientBehaviorHolder cbh = (ClientBehaviorHolder) uiComponent;
 
         // check for a touch enable device and setup events accordingly
-        String eventStr = "onclick";
-        if (Utils.isTouchEventEnabled(context)) {
-            eventStr = "ontouchstart";
-        }
+        String eventStr = dateSpinner.isTouchEnabled() ?
+                TOUCH_START_EVENT : CLICK_EVENT;
 
         //first do the input field and the button
         // build out first input field
@@ -194,7 +196,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         if (dateSpinner.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         } else {
-            writer.writeAttribute("onclick", "mobi.datespinner.toggle('" + clientId + "');", null);
+            writer.writeAttribute(eventStr, "mobi.datespinner.toggle('" + clientId + "');", null);
         }
         writer.endElement("input");
 
@@ -260,6 +262,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         }
 
         writer.endElement("div");                                         //end of selection container
+
         writer.startElement("div", uiComponent);                          //button container for set or cancel
         writer.writeAttribute("class", "mobi-date-submit-container", null);
         writer.startElement("input", uiComponent);
@@ -279,15 +282,17 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         builder.append("});");
         String jsCall = builder.toString();
         if (!dateSpinner.isDisabled() && !dateSpinner.isReadonly()) {
-            writer.writeAttribute("onclick", jsCall, null);
+            writer.writeAttribute(eventStr, jsCall, null);
         }
         writer.endElement("input");
+
         writer.startElement("input", uiComponent);
         writer.writeAttribute("class", "mobi-button mobi-button-default", null);
         writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("value", "Cancel", null);
         writer.writeAttribute(eventStr, "mobi.datespinner.close('" + clientId + "');", null);
         writer.endElement("input");
+
         writer.endElement("div");                                        //end of button container
 
         writer.endElement("div");                                         //end of entire container
@@ -309,9 +314,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("text", "text/javascript", null);
         writer.write("mobi.datespinner.init('" + clientId + "'," + yrInt + ","
                 + mnthInt + "," + dateInt + ",'" + findPattern(spinner) + "');");
-        /*    writer.write("ice.onUnload(function(){" +
-  "mobi.datespinner.unload('" + clientId + "');" +
-  "});\n");      */
         writer.endElement("script");
         writer.endElement("span");
     }
@@ -520,11 +522,12 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
      * using a dateTimeConverter.  Patter works well enough but when combined with
      * a dateTimeConverter confusion can arise. If the pattern is different then
      * the converter then the converter wins trumping the pattern attribute.
-     * @param dateSpinner dateSpinner component to check pattern  value as well 
-     *                    as a child converter. 
-     * @return pattern string for dateSpinner, can be null in some cases. 
+     *
+     * @param dateSpinner dateSpinner component to check pattern  value as well
+     *                    as a child converter.
+     * @return pattern string for dateSpinner, can be null in some cases.
      */
-    private String findPattern(DateSpinner dateSpinner){
+    private String findPattern(DateSpinner dateSpinner) {
         String pattern = dateSpinner.getPattern();
         Converter converter = dateSpinner.getConverter();
         // converter always wins over the pattern attribute

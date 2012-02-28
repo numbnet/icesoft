@@ -56,6 +56,8 @@ public class DateSpinner extends DateSpinnerBase {
     private int yearInt;
     private int dayInt;
 
+    private boolean touchEnabled;
+
     public DateSpinner() {
         super();
     }
@@ -66,16 +68,18 @@ public class DateSpinner extends DateSpinnerBase {
             if (userLocale != null) {
                 if (userLocale instanceof String) {
                     String[] tokens = ((String) userLocale).split("_");
-                    if (tokens.length == 1)
+                    if (tokens.length == 1) {
                         appropriateLocale = new Locale(tokens[0], "");
-                    else
+                    } else {
                         appropriateLocale = new Locale(tokens[0], tokens[1]);
-                } else if (userLocale instanceof Locale)
+                    }
+                } else if (userLocale instanceof Locale) {
                     appropriateLocale = (Locale) userLocale;
-                else
+                } else {
                     throw new IllegalArgumentException("Type:" +
                             userLocale.getClass() + " is not a valid locale type for calendar:" +
                             this.getClientId(facesContext));
+                }
             } else {
                 appropriateLocale = facesContext.getViewRoot().getLocale();
             }
@@ -103,13 +107,6 @@ public class DateSpinner extends DateSpinnerBase {
 
         return appropriateTimeZone;
     }
-
-
-    /*   public boolean hasTime() {
-     String pattern = getPattern();
-
-     return (pattern != null && pattern.indexOf(":") != -1);
- }   */
 
     public int getMonthInt() {
         return monthInt;
@@ -147,5 +144,13 @@ public class DateSpinner extends DateSpinnerBase {
         if (Utils.isTouchEventEnabled(facesContext)) {
             return "onblur";
         } else return "onchange";
+    }
+
+    public boolean isTouchEnabled() {
+        return touchEnabled;
+    }
+
+    public void setTouchEnabled(boolean touchEnabled) {
+        this.touchEnabled = touchEnabled;
     }
 }
