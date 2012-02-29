@@ -32,7 +32,7 @@
     <ui:param name="tldResources" value="#{sliderEntryResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <ace:panel>
                 <h:panelGrid id="exampleHolder" styleClass="centeredPanelGridWithBorderSpacing">
                     <ace:sliderEntry id="slideEntry"
@@ -47,7 +47,7 @@
                     
                     <h:panelGrid columns="2" styleClass="centeredPanelGridWithLeftJustifiedText">
                         <h:outputText value="Value:" />
-                        <h:inputText value="#{sliderAsyncInput.sliderValue}" maxlength="2" size="2">
+                        <h:inputText id="sliderValue" value="#{sliderAsyncInput.sliderValue}" maxlength="2" size="2">
                             <f:ajax execute="@this" render="exampleHolder"/>
                         </h:inputText>
                    </h:panelGrid>

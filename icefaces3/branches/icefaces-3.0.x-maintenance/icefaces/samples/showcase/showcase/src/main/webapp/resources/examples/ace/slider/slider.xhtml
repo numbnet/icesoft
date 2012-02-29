@@ -34,7 +34,7 @@
     <ui:param name="tldResources" value="#{sliderEntryResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <h:panelGrid columns="2" style="width: 100%;">
                 <ace:panel id="sliderConfigPanel" header="Slider Configuration Panel" style="height: 230px;">
                     <f:ajax execute="@this" render="@form">
@@ -95,14 +95,14 @@
                                              value="#{slider.sliderValue}">
                                 <ace:ajax event="slideEnd" execute="@this" render="@form" />
                             </ace:sliderEntry>
-                            <h:outputText value="#{slider.sliderValue}"/>
+                            <h:outputText id="sliderValue" value="#{slider.sliderValue}"/>
                         </h:panelGrid>
                     </h:panelGrid>
                 </ace:panel>
             </h:panelGrid>
             <h:panelGrid width="100%" columns="2">
                 <h:outputLabel value="Selected Options: " style="font-weight: bold;"/>
-                <h:outputLabel value=" axis = #{slider.axis}, clickableRail = #{slider.clickableRail}, length = #{slider.length} px, min = #{slider.minValue}, max = #{slider.maxValue}, stepPercent = #{slider.stepPercent}%"/>
+                <h:outputLabel id="selectedOptions" value=" axis = #{slider.axis}, clickableRail = #{slider.clickableRail}, length = #{slider.length} px, min = #{slider.minValue}, max = #{slider.maxValue}, stepPercent = #{slider.stepPercent}%"/>
             </h:panelGrid>
         </h:form>
     </ui:define>
