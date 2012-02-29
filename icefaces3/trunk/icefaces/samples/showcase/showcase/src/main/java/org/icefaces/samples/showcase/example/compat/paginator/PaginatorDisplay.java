@@ -21,7 +21,7 @@ import java.io.Serializable;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
-import org.icefaces.samples.showcase.example.compat.dataTable.DataTableData;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -54,11 +54,11 @@ public class PaginatorDisplay extends ComponentExampleImpl<PaginatorDisplay> imp
 	
 	public static final String BEAN_NAME = "paginatorDisplay";
 	
-	private int rows = DataTableData.CARS.size();
+	private int rows = DataTableData.getDefaultData().size();
 	private boolean enable = false;
 	
 	public PaginatorDisplay() {
-		super(PaginatorDisplay.class);
+                    super(PaginatorDisplay.class);
 	}
 	
 	public int getRows() { return rows; }

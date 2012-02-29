@@ -16,8 +16,10 @@
 
 package org.icefaces.samples.showcase.example.compat.dataTable;
 
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -51,15 +53,23 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class DataTableClient extends ComponentExampleImpl<DataTableClient> implements Serializable {
 	
-	public static final String BEAN_NAME = "dataTableClient";
-	
-	private boolean enable = true;
-	
-	public DataTableClient() {
-		super(DataTableClient.class);
-	}
-	
-	public boolean getEnable() { return enable; }
-	
-	public void setEnable(boolean enable) { this.enable = enable; }
+    public static final String BEAN_NAME = "dataTableClient";
+
+    private boolean enable = true;
+    private int defaultRows;
+    private ArrayList<Car> cars;
+
+
+    public DataTableClient() {
+        super(DataTableClient.class);
+        defaultRows = DataTableData.DEFAULT_ROWS;
+        cars = new ArrayList<Car>(DataTableData.getDefaultData());
+    }
+
+    public boolean getEnable() { return enable; }
+    public void setEnable(boolean enable) { this.enable = enable; }
+    public ArrayList<Car> getCars() { return cars; }
+    public void setCars(ArrayList<Car> cars) { this.cars = cars; }
+    public int getDefaultRows() { return defaultRows; }
+    public void setDefaultRows(int defaultRows) { this.defaultRows = defaultRows; }
 }

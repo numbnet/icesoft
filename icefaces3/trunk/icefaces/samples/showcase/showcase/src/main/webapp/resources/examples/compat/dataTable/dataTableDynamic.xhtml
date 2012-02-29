@@ -55,7 +55,7 @@
                 <h:selectOneMenu id="chassisIn" value="#{dataTableDynamic.toModify.chassis}"
                                  required="true">
                      <f:selectItem itemValue="" itemLabel="-- Select --"/>
-                     <f:selectItems value="#{tableData.chassisAll}"/>
+                     <f:selectItems value="#{dataTableDynamic.chasisOptions}"/>
                 </h:selectOneMenu>
                 <h:message for="chassisIn"/>
                 

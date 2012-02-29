@@ -16,7 +16,7 @@
 
 package org.icefaces.samples.showcase.example.ace.progressbar; 
 
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet.ImageInfo;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -25,7 +25,7 @@ import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import javax.faces.event.ActionEvent;
 
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet;
 import org.icefaces.samples.showcase.example.compat.progress.LongTaskManager;
 import org.icefaces.samples.showcase.util.FacesUtils;
 

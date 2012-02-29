@@ -23,7 +23,7 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import org.icefaces.ace.event.ResizeEvent;
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet;
 
 @ComponentExample(
         parent = ResizableBean.BEAN_NAME,

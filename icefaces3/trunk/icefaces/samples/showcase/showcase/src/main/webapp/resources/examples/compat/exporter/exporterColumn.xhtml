@@ -56,9 +56,9 @@
                               popupBlockerLabel="Popup Blocker detected - click here to resume download..."/>
                               
             <ice:dataTable id="carData"
-                           value="#{tableData.cars}"
+                           value="#{exporter.cars}"
                            var="car"
-                           rows="#{tableData.defaultRows}"
+                           rows="#{exporter.defaultRows}"
                            width="100%" cellspacing="1" cellpadding="5"
                            columnClasses="tableIdCol,tableNameCol,tableChassisCol,
                                           tableWeightCol,tableAccelCol,tableMpgCol,tableCostCol">

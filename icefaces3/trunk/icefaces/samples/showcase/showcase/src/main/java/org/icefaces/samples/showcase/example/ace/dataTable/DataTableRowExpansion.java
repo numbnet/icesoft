@@ -17,7 +17,6 @@
 package org.icefaces.samples.showcase.example.ace.dataTable;
 
 import org.icefaces.samples.showcase.example.compat.dataTable.Car;
-import org.icefaces.samples.showcase.example.compat.dataTable.DataTableData;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -29,6 +28,7 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.*;
+import org.icefaces.samples.showcase.dataGenerators.VehicleGenerator;
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,
@@ -64,7 +64,8 @@ public class DataTableRowExpansion extends ComponentExampleImpl<DataTableRowExpa
 
     private void generateCarsData() {
         carsData = new ArrayList<Map.Entry<Car, List>>();
-        for (Car c : DataTableData.CARS) {
+        VehicleGenerator generator = new VehicleGenerator();
+        for (Car c : generator.getRandomCars(30)) {
             ArrayList<Map.Entry<Car, List>> detailData = new ArrayList<Map.Entry<Car, List>>();
             detailData.add(new SimpleEntry(new Car(c.getId()+1000, c.getName()+" Custom Spec", c.getChassis(), c.getWeight(), c.getAcceleration()*2, c.getMpg()/2, c.getCost()*3), null));
             carsData.add(new SimpleEntry(c, detailData));

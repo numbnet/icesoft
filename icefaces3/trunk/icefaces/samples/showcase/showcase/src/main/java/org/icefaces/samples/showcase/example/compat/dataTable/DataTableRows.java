@@ -16,8 +16,9 @@
 
 package org.icefaces.samples.showcase.example.compat.dataTable;
 
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import java.io.Serializable;
-
+import java.util.ArrayList;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -51,15 +52,17 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class DataTableRows extends ComponentExampleImpl<DataTableRows> implements Serializable {
 	
-	public static final String BEAN_NAME = "dataTableRows";
-	
-	private int rows = DataTableData.DEFAULT_ROWS;
-	
-	public DataTableRows() {
-		super(DataTableRows.class);
-	}
-	
-	public int getRows() { return rows; }
-	
-	public void setRows(int rows) { this.rows = rows; }
+    public static final String BEAN_NAME = "dataTableRows";
+    private int rows = DataTableData.DEFAULT_ROWS;
+    private ArrayList<Car> cars;
+
+    public DataTableRows() {
+        super(DataTableRows.class);
+        rows = DataTableData.DEFAULT_ROWS;
+        cars = new ArrayList<Car>(DataTableData.getDefaultData());
+    }
+
+    public int getRows() { return rows; }
+    public void setRows(int rows) { this.rows = rows; }
+    public ArrayList<Car> getCars() {return cars;}
 }

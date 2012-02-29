@@ -17,12 +17,13 @@
 package org.icefaces.samples.showcase.example.compat.selector;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
-import org.icefaces.samples.showcase.example.ace.dataTable.utilityClasses.VehicleGenerator;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -70,20 +71,16 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 public class SelectorBean extends ComponentExampleImpl<SelectorBean> implements Serializable {
 	
     public static final String BEAN_NAME = "selector";
-
     private List<SelectableCar> data;
+    private int rows;
 
     public SelectorBean() {
         super(SelectorBean.class);
-        initializeInstanceVariables();
+        data = new ArrayList<SelectableCar>(DataTableData.getDefaultSelectableData());
+        rows = DataTableData.DEFAULT_ROWS;
     }
 
     public List<SelectableCar> getData() { return data; }
-    public void setData(List<SelectableCar> data) { this.data = data; }
-    
-    private void initializeInstanceVariables()
-    {
-        VehicleGenerator generator = new VehicleGenerator();
-        this.data = generator.getRandomSelectableCars(10);
-    }
+    public int getRows() {return rows;}
+    public void setRows(int rows) {this.rows = rows;}
 }

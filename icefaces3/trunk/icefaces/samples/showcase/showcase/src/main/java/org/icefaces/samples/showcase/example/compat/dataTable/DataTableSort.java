@@ -16,6 +16,7 @@
 
 package org.icefaces.samples.showcase.example.compat.dataTable;
 
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
 
 import com.icesoft.faces.component.commandsortheader.CommandSortHeader;
-
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -58,7 +58,7 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class DataTableSort extends ComponentExampleImpl<DataTableSort> implements Serializable {
 	
-	public static final String BEAN_NAME = "dataTableSort";
+     public static final String BEAN_NAME = "dataTableSort";
 	
     public static final String SORT_COLUMN_ID = "id";
     public static final String SORT_COLUMN_NAME = "name";
@@ -68,47 +68,19 @@ public class DataTableSort extends ComponentExampleImpl<DataTableSort> implement
     public static final String SORT_COLUMN_MPG = "mpg";
     public static final String SORT_COLUMN_COST = "cost";
     
-    private List<Car> carsData = new ArrayList<Car>(DataTableData.CARS);
+    private List<Car> carsData;
+    private int defaultRows;
     private String columnName = SORT_COLUMN_ID;
     private boolean ascending = true;
 	
-	public DataTableSort() {
-		super(DataTableSort.class);
-	}
+    public DataTableSort() {
+        super(DataTableSort.class);
+        carsData = new ArrayList<Car>(DataTableData.getDefaultData());
+        defaultRows = DataTableData.DEFAULT_ROWS;
+    }
 	
-    public String getSortColumnId() { return SORT_COLUMN_ID; }
-    public String getSortColumnName() { return SORT_COLUMN_NAME; }
-    public String getSortColumnChassis() { return SORT_COLUMN_CHASSIS; }
-    public String getSortColumnWeight() { return SORT_COLUMN_WEIGHT; }
-    public String getSortColumnAcceleration() { return SORT_COLUMN_ACCELERATION; }
-    public String getSortColumnMpg() { return SORT_COLUMN_MPG; }
-    public String getSortColumnCost() { return SORT_COLUMN_COST; }
-    
-    public List<Car> getCarsData() {
-        return carsData;
-    }
-    
-    public void setCarsData(List<Car> carsData) {
-        this.carsData = carsData;
-    }
-    
-    public String getColumnName() {
-        return columnName;
-    }
-    
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
-    }
-    
-    public boolean getAscending() {
-        return ascending;
-    }
-    
-    public void setAscending(boolean ascending) {
-        this.ascending = ascending;
-    }
-    
-    public void columnSort(ActionEvent event) {
+    public void columnSort(ActionEvent event) 
+    {
         // Ensure we have valid items, a valid column to sort on, and a valid event to work with
         if ((carsData != null) && (carsData.size() > 0) &&
             (columnName != null) &&
@@ -168,5 +140,21 @@ public class DataTableSort extends ComponentExampleImpl<DataTableSort> implement
         };
     
         Collections.sort(data, sortComparator);
-    }	
+    }
+    
+    public String getSortColumnId() { return SORT_COLUMN_ID; }
+    public String getSortColumnName() { return SORT_COLUMN_NAME; }
+    public String getSortColumnChassis() { return SORT_COLUMN_CHASSIS; }
+    public String getSortColumnWeight() { return SORT_COLUMN_WEIGHT; }
+    public String getSortColumnAcceleration() { return SORT_COLUMN_ACCELERATION; }
+    public String getSortColumnMpg() { return SORT_COLUMN_MPG; }
+    public String getSortColumnCost() { return SORT_COLUMN_COST; }
+    public String getColumnName() { return columnName;}
+    public List<Car> getCarsData() { return carsData;}
+    public boolean getAscending() {return ascending;}
+    public int getDefaultRows() {return defaultRows;}
+        
+    public void setCarsData(List<Car> carsData) {this.carsData = carsData;}
+    public void setColumnName(String columnName) {this.columnName = columnName;}
+    public void setAscending(boolean ascending) { this.ascending = ascending; }
 }
