@@ -70,21 +70,21 @@
                             <h:outputText value="Step 2" styleClass="headerFontStyle"/>
                         </h:panelGrid>
                         <ace:panel style="width: 100px; height: 30px; border: 0px;"> 
-                            <h:commandButton type="submit" value="Send File"/>
+                            <h:commandButton id="submit" type="submit" value="Send File"/>
                         </ace:panel>
                     </h:panelGrid>
                 </h:panelGrid>
                 <hr/>
                 <br/>
-                <h:dataTable value="#{fileEntry.fileData}" var="fileDataVal">
+                <h:dataTable id="tbl" value="#{fileEntry.fileData}" var="fileDataVal">
                     <h:column>
                         <f:facet name="header">
                             <h:outputText value="Upload results"/>
                         </f:facet>
-                        <h:outputText value="#{fileDataVal}"/>
+                        <h:outputText id="fileData" value="#{fileDataVal}"/>
                     </h:column>
                 </h:dataTable>
-                <h:messages layout="table" for="example-form:file-entry"/>
+                <h:messages id="msgs" layout="table" for="example-form:file-entry"/>
             </ace:panel>
         </h:form>
     </ui:define>       

@@ -34,23 +34,23 @@
     <ui:define name="example">
         <h:panelGrid columns="2" styleClass="centeredPanelGrid">
             <ace:panel header="Basic Slider" style="height: 150px;">
-                <h:form>
+                <h:form id="form">
                     <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing">
-                        <h:outputText value="Value: #{sliderSubmitionExample.manualValue}"/>
+                        <h:outputText id="manualValue" value="Value: #{sliderSubmitionExample.manualValue}"/>
                         <ace:sliderEntry id="regularSlideEntry"
                                          length="200px"
                                          min="0"
                                          max="99"
                                          value="#{sliderSubmitionExample.manualValue}"/>
-                        <h:commandButton style="width:200px;" type="submit" value="Set Slider Value"/>
+                        <h:commandButton id="submit" style="width:200px;" type="submit" value="Set Slider Value"/>
                     </h:panelGrid>
                 </h:form>
             </ace:panel>
             
             <ace:panel header="AJAX Slider" style="height: 150px;">
-                <h:form>
+                <h:form id="form2">
                     <h:panelGrid styleClass="centeredPanelGridWithBorderSpacing">
-                        <h:outputText value="Value: #{sliderSubmitionExample.autoValue}"/>
+                        <h:outputText id="autoValue" value="Value: #{sliderSubmitionExample.autoValue}"/>
                         <ace:sliderEntry   id="ajaxSliderEntry"
                                            length="200px"
                                            min="0"

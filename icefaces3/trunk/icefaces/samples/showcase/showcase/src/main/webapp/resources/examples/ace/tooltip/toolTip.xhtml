@@ -35,7 +35,7 @@
     <ui:param name="tldResources" value="#{tooltipResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             
             <icecore:singleSubmit/>
             
@@ -121,7 +121,8 @@
                    </h:panelGrid>
                </h:panelGrid>
                
-               <ace:tooltip for="bmw"
+               <ace:tooltip id="tooltipBMW"
+							for="bmw"
                             showEffect="#{tooltipOverviewBean.tooltipEffect}"
                             hideEffect="#{tooltipOverviewBean.tooltipEffect}"
                             showDelay="#{tooltipOverviewBean.tooltipShowDelay}"
@@ -132,28 +133,30 @@
                             hideEffectLength="#{tooltipOverviewBean.hideEffectLength}">
                                        
                     <h:panelGrid styleClass="tooltipBoxStyle"> 
-                       <h:graphicImage  value="#{tooltipOverviewBean.carSet[0].path}" alt="#{tooltipOverviewBean.carSet[0].description}"/>
-                       <h:outputText value="#{tooltipOverviewBean.carSet[0].description}"/>
+                       <h:graphicImage  id="img0" value="#{tooltipOverviewBean.carSet[0].path}" alt="#{tooltipOverviewBean.carSet[0].description}"/>
+                       <h:outputText id="desc0" value="#{tooltipOverviewBean.carSet[0].description}"/>
                    </h:panelGrid>
                 </ace:tooltip>
                    
-               <ace:tooltip for="camaro"
-                             showEffect="#{tooltipOverviewBean.tooltipEffect}"
-                             hideEffect="#{tooltipOverviewBean.tooltipEffect}"
-                             showDelay="#{tooltipOverviewBean.tooltipShowDelay}"
-                             hideDelay="#{tooltipOverviewBean.tooltipHideDelay}"
-                             position="#{tooltipOverviewBean.tooltipPosition}"
-                             targetPosition="#{tooltipOverviewBean.tooltipTargetPosition}"
-                             showEffectLength="#{tooltipOverviewBean.showEffectLength}"
-                             hideEffectLength="#{tooltipOverviewBean.hideEffectLength}">
+               <ace:tooltip id="tooltipCamaro"
+							for="camaro"
+							showEffect="#{tooltipOverviewBean.tooltipEffect}"
+							hideEffect="#{tooltipOverviewBean.tooltipEffect}"
+							showDelay="#{tooltipOverviewBean.tooltipShowDelay}"
+							hideDelay="#{tooltipOverviewBean.tooltipHideDelay}"
+							position="#{tooltipOverviewBean.tooltipPosition}"
+							targetPosition="#{tooltipOverviewBean.tooltipTargetPosition}"
+							showEffectLength="#{tooltipOverviewBean.showEffectLength}"
+							hideEffectLength="#{tooltipOverviewBean.hideEffectLength}">
 
                     <h:panelGrid styleClass="tooltipBoxStyle"> 
-                       <h:graphicImage  value="#{tooltipOverviewBean.carSet[1].path}" alt="#{tooltipOverviewBean.carSet[1].description}"/>
-                       <h:outputText value="#{tooltipOverviewBean.carSet[1].description}"/>
+                       <h:graphicImage  id="img1" value="#{tooltipOverviewBean.carSet[1].path}" alt="#{tooltipOverviewBean.carSet[1].description}"/>
+                       <h:outputText id="desc1" value="#{tooltipOverviewBean.carSet[1].description}"/>
                    </h:panelGrid>
                 </ace:tooltip>
                
-               <ace:tooltip for="chevrolet"
+               <ace:tooltip id="tooltipChevrolet"
+							for="chevrolet"
                             showEffect="#{tooltipOverviewBean.tooltipEffect}"
                             hideEffect="#{tooltipOverviewBean.tooltipEffect}"
                             showDelay="#{tooltipOverviewBean.tooltipShowDelay}"
@@ -164,12 +167,13 @@
                             hideEffectLength="#{tooltipOverviewBean.hideEffectLength}">
                                        
                         <h:panelGrid styleClass="tooltipBoxStyle"> 
-                           <h:graphicImage  value="#{tooltipOverviewBean.carSet[2].path}" alt="#{tooltipOverviewBean.carSet[2].description}"/>
-                           <h:outputText value="#{tooltipOverviewBean.carSet[2].description}"/>
+                           <h:graphicImage  id="img2" value="#{tooltipOverviewBean.carSet[2].path}" alt="#{tooltipOverviewBean.carSet[2].description}"/>
+                           <h:outputText id="desc2" value="#{tooltipOverviewBean.carSet[2].description}"/>
                        </h:panelGrid>
                 </ace:tooltip>
                
-               <ace:tooltip for="truck"
+               <ace:tooltip id="tooltipTruck"
+							for="truck"
                             showEffect="#{tooltipOverviewBean.tooltipEffect}"
                             hideEffect="#{tooltipOverviewBean.tooltipEffect}"
                             showDelay="#{tooltipOverviewBean.tooltipShowDelay}"
@@ -180,12 +184,13 @@
                             hideEffectLength="#{tooltipOverviewBean.hideEffectLength}">
                                        
                     <h:panelGrid styleClass="tooltipBoxStyle"> 
-                       <h:graphicImage  value="#{tooltipOverviewBean.carSet[3].path}" alt="#{tooltipOverviewBean.carSet[3].description}"/>
-                       <h:outputText value="#{tooltipOverviewBean.carSet[3].description}"/>
+                       <h:graphicImage  id="img3" value="#{tooltipOverviewBean.carSet[3].path}" alt="#{tooltipOverviewBean.carSet[3].description}"/>
+                       <h:outputText id="desc3" value="#{tooltipOverviewBean.carSet[3].description}"/>
                    </h:panelGrid>
                 </ace:tooltip>
                
-               <ace:tooltip for="vw"
+               <ace:tooltip id="tooltipVW"
+							for="vw"
                             showEffect="#{tooltipOverviewBean.tooltipEffect}"
                             hideEffect="#{tooltipOverviewBean.tooltipEffect}"
                             showDelay="#{tooltipOverviewBean.tooltipShowDelay}"
@@ -196,8 +201,8 @@
                             hideEffectLength="#{tooltipOverviewBean.hideEffectLength}">
                                        
                     <h:panelGrid styleClass="tooltipBoxStyle"> 
-                       <h:graphicImage  value="#{tooltipOverviewBean.carSet[4].path}" alt="#{tooltipOverviewBean.carSet[4].description}"/>
-                       <h:outputText value="#{tooltipOverviewBean.carSet[4].description}"/>
+                       <h:graphicImage  id="img4" value="#{tooltipOverviewBean.carSet[4].path}" alt="#{tooltipOverviewBean.carSet[4].description}"/>
+                       <h:outputText id="desc4" value="#{tooltipOverviewBean.carSet[4].description}"/>
                    </h:panelGrid>
                 </ace:tooltip>
            </ace:panel>
