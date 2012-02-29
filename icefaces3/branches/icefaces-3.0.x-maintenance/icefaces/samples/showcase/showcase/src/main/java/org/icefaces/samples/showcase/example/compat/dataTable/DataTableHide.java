@@ -16,8 +16,11 @@
 
 package org.icefaces.samples.showcase.example.compat.dataTable;
 
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import java.io.Serializable;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -52,82 +55,77 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class DataTableHide extends ComponentExampleImpl<DataTableHide> implements Serializable {
 	
-	public static final String BEAN_NAME = "dataTableHide";
-	
-    private boolean renderId = false;
-	private boolean renderName = true;
-	private boolean renderChassis = true;
-	private boolean renderWeight = true;
-	private boolean renderAcceleration = false;
-	private boolean renderMpg = false;
-	private boolean renderCost = true;
-	
-	public DataTableHide() {
-		super(DataTableHide.class);
-	}
+    public static final String BEAN_NAME = "dataTableHide";
 
-	public boolean isRenderId() {
-		return renderId;
-	}
-	public void setRenderId(boolean renderId) {
-		this.renderId = renderId;
-	}
-	public boolean isRenderName() {
-		return renderName;
-	}
-	public void setRenderName(boolean renderName) {
-		this.renderName = renderName;
-	}
-	public boolean isRenderChassis() {
-		return renderChassis;
-	}
-	public void setRenderChassis(boolean renderChassis) {
-		this.renderChassis = renderChassis;
-	}
-	public boolean isRenderWeight() {
-		return renderWeight;
-	}
-	public void setRenderWeight(boolean renderWeight) {
-		this.renderWeight = renderWeight;
-	}
-	public boolean isRenderAcceleration() {
-		return renderAcceleration;
-	}
-	public void setRenderAcceleration(boolean renderAcceleration) {
-		this.renderAcceleration = renderAcceleration;
-	}
-	public boolean isRenderMpg() {
-		return renderMpg;
-	}
-	public void setRenderMpg(boolean renderMpg) {
-		this.renderMpg = renderMpg;
-	}
-	public boolean isRenderCost() {
-		return renderCost;
-	}
-	public void setRenderCost(boolean renderCost) {
-		this.renderCost = renderCost;
-	}
-	
-	public String toggleColumn() {
-	    return null;
-	}
-	
-	public void showAll(ActionEvent event) {
-	    applyAll(true);
-	}
-	
-	public void hideAll(ActionEvent event) {
-	    applyAll(false);
-	}
-	
-	private void applyAll(boolean set) {
-	    renderId = set;
-	    renderName = set;
-	    renderChassis = set;
-	    renderWeight = set;
-	    renderAcceleration = set;
-	    renderMpg = set;
-	    renderCost = set;
-	}
+    private boolean renderId;
+    private boolean renderName;
+    private boolean renderChassis;
+    private boolean renderWeight;
+    private boolean renderAcceleration;
+    private boolean renderMpg;
+    private boolean renderCost;
+    private int rows;
+    private List<Car> cars;
+
+    public DataTableHide() {
+        super(DataTableHide.class);
+        initializeDefaults();
+    }
+    
+    public void showAll(ActionEvent event)
+    {
+        applyAll(true);
+    }
+
+    public void hideAll(ActionEvent event) 
+    {
+        applyAll(false);
+    }
+    
+    public String toggleColumn() {
+        return null;
+    }
+    
+    private void initializeDefaults()
+    {
+        renderId = false;
+        renderName = true;
+        renderChassis = true;
+        renderWeight = true;
+        renderAcceleration = false;
+        renderMpg = false;
+        renderCost = true;
+        rows = DataTableData.DEFAULT_ROWS;
+        cars = new ArrayList<Car>(DataTableData.getDefaultData());
+    }
+
+    private void applyAll(boolean set) {
+        renderId = set;
+        renderName = set;
+        renderChassis = set;
+        renderWeight = set;
+        renderAcceleration = set;
+        renderMpg = set;
+        renderCost = set;
+    }
+
+    public boolean isRenderId() {return renderId;}
+    public boolean isRenderName() {return renderName;}
+    public boolean isRenderChassis() {return renderChassis;}
+    public boolean isRenderWeight() {return renderWeight;}
+    public boolean isRenderAcceleration() {return renderAcceleration;}
+    public boolean isRenderMpg() {return renderMpg;}
+    public boolean isRenderCost() {return renderCost;}
+    public List<Car> getCars() {return cars;}
+    public int getRows() {return rows;}
+    
+    public void setRenderId(boolean renderId) {this.renderId = renderId;}
+    public void setRenderName(boolean renderName) {this.renderName = renderName;}
+    public void setRenderChassis(boolean renderChassis) {this.renderChassis = renderChassis;}
+    public void setRenderWeight(boolean renderWeight) {this.renderWeight = renderWeight;}
+    public void setRenderAcceleration(boolean renderAcceleration) {this.renderAcceleration = renderAcceleration;}
+    public void setRenderMpg(boolean renderMpg) {this.renderMpg = renderMpg;}
+    public void setRenderCost(boolean renderCost) {this.renderCost = renderCost;}
+    public void setCars(List<Car> cars) {this.cars = cars;}
+    public void setRows(int rows) {this.rows = rows;}
 }

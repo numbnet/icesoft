@@ -16,7 +16,7 @@
 
 package org.icefaces.samples.showcase.example.ace.tab;
 
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet.ImageInfo;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet;
 import org.icefaces.samples.showcase.example.ace.accordionpanel.Item;
 
 @ComponentExample(

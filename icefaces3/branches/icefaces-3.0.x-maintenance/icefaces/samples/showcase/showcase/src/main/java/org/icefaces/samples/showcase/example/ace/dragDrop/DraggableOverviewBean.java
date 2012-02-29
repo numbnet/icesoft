@@ -17,7 +17,7 @@
 package org.icefaces.samples.showcase.example.ace.dragDrop;
 
 
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 

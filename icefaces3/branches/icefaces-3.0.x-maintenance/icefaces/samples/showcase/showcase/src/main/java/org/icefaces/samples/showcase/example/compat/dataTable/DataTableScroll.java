@@ -16,8 +16,9 @@
 
 package org.icefaces.samples.showcase.example.compat.dataTable;
 
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import java.io.Serializable;
-
+import java.util.ArrayList;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -52,16 +53,18 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 public class DataTableScroll extends ComponentExampleImpl<DataTableScroll> implements Serializable {
 	
 	public static final String BEAN_NAME = "dataTableScroll";
-	
 	private static final int DEFAULT_HEIGHT = 100;
-	
-	private int height = DEFAULT_HEIGHT;
-	
+        
+	private int height;
+	private ArrayList<Car> cars;
+        
 	public DataTableScroll() {
-		super(DataTableScroll.class);
+                    super(DataTableScroll.class);
+                    height = DEFAULT_HEIGHT;
+                    cars = new ArrayList<Car>(DataTableData.getDefaultData());
 	}
 	
 	public int getHeight() { return height; }
-	
 	public void setHeight(int height) { this.height = height; }
+                public ArrayList<Car> getCars() {return cars;}
 }

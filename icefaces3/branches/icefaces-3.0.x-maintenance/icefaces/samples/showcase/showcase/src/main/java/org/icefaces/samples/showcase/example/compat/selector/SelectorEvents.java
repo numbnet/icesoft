@@ -25,8 +25,7 @@ import javax.faces.bean.ManagedBean;
 
 import com.icesoft.faces.component.ext.ClickActionEvent;
 import com.icesoft.faces.component.ext.RowSelectorEvent;
-
-import org.icefaces.samples.showcase.example.ace.dataTable.utilityClasses.VehicleGenerator;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -60,16 +59,15 @@ public class SelectorEvents extends ComponentExampleImpl<SelectorEvents> impleme
     public static final String BEAN_NAME = "selectorEvents";
 
     private static final int ROW_SIZE = 10;
-    private List<SelectableCar> data;
     private List<String> eventLog;
+    private List<SelectableCar> data;
 
     public SelectorEvents() {
             super(SelectorEvents.class);
-            initializeInstanceVariables();
+            eventLog = new ArrayList<String>(ROW_SIZE);
+            data = new ArrayList<SelectableCar>(DataTableData.getDefaultSelectableData());
     }
-
-
-
+    
     private void addEvent(String toLog) {
         eventLog.add(0, toLog);
 
@@ -77,13 +75,6 @@ public class SelectorEvents extends ComponentExampleImpl<SelectorEvents> impleme
         if (eventLog.size() > ROW_SIZE) {
             eventLog = eventLog.subList(0, ROW_SIZE);
         }
-    }
-    
-    private void initializeInstanceVariables()
-    {
-        VehicleGenerator generator = new VehicleGenerator();
-        this.data = generator.getRandomSelectableCars(10);
-        eventLog = new ArrayList<String>(ROW_SIZE);
     }
 
     public void clickListener(ClickActionEvent event) {
@@ -110,5 +101,4 @@ public class SelectorEvents extends ComponentExampleImpl<SelectorEvents> impleme
     public List<String> getEventLog() { return eventLog; }
     public void setEventLog(List<String> eventLog) { this.eventLog = eventLog; }
     public List<SelectableCar> getData() { return data; }
-    public void setData(List<SelectableCar> data) { this.data = data; }
 }

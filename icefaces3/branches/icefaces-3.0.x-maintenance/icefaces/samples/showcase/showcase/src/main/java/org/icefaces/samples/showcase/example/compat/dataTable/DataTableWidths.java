@@ -17,12 +17,11 @@
 package org.icefaces.samples.showcase.example.compat.dataTable;
 
 import java.io.Serializable;
-import java.util.Random;
-
+import java.util.ArrayList;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
-
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import org.icefaces.samples.showcase.view.navigation.NavigationController;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
@@ -56,23 +55,35 @@ public class DataTableWidths extends ComponentExampleImpl<DataTableWidths> imple
 	
 	public static final String BEAN_NAME = "dataTableWidths";
 	
-	private static final int NUM_COLS = 8;
-	private static final int DEFAULT_WIDTH = 55;
-	private static final int WIDTH_INCREMENT = 10;
-	private static final int MIN_WIDTH = 25;
-	private static final int MAX_WIDTH = 300;
-	
-	private Random randomizer = new Random(System.nanoTime());
+	private static final int NUM_COLS;
+	private static final int DEFAULT_WIDTH;
+	private static final int WIDTH_INCREMENT;
+	private static final int MIN_WIDTH;
+	private static final int MAX_WIDTH;
+                private static final int[] RANDOM_WIDTHS;
+                private int pointer;
+	private ArrayList<Car> cars;
+                private int defaultRows;
 	private int currentWidth = DEFAULT_WIDTH;
-	private String widthString = buildWidthString(currentWidth);
+	private String widthString;
+        
+                static
+                {
+                    NUM_COLS = 8;
+                    DEFAULT_WIDTH = 55;
+                    WIDTH_INCREMENT = 10;
+                    MIN_WIDTH = 25;
+                    MAX_WIDTH = 300;
+                    RANDOM_WIDTHS = new int [] {37, 68, 45, 81, 53, 77,  29, 76, 32, 71, 54};
+                }
 	
 	public DataTableWidths() {
-		super(DataTableWidths.class);
+                    super(DataTableWidths.class);
+                    cars = new ArrayList<Car>(DataTableData.getDefaultData());
+                    defaultRows = DataTableData.DEFAULT_ROWS;
+                    widthString = buildWidthString(currentWidth);
+                    pointer = 0;
 	}
-	
-	public String getWidthString() { return widthString; }
-	
-	public void setWidthString(String widthString) { this.widthString = widthString; }
 	
 	private void rebuildWidthString() {
 	    widthString = buildWidthString(currentWidth);
@@ -116,8 +127,7 @@ public class DataTableWidths extends ComponentExampleImpl<DataTableWidths> imple
 	}
 	
 	public void randomWidth(ActionEvent event) {
-	    currentWidth = MIN_WIDTH+randomizer.nextInt((MAX_WIDTH-MIN_WIDTH));
-	    
+	    currentWidth = getRandomWidth();
 	    rebuildWidthString();
 	}
 	
@@ -126,4 +136,20 @@ public class DataTableWidths extends ComponentExampleImpl<DataTableWidths> imple
 	    
 	    rebuildWidthString();
 	}
+        
+                private int getRandomWidth() 
+                {
+                     if(pointer == RANDOM_WIDTHS.length)
+                        pointer = 0;
+                     
+                    int value = RANDOM_WIDTHS[pointer];
+                    pointer++; 
+                    return value;
+                }
+        
+        	public String getWidthString() { return widthString; }
+                public ArrayList<Car> getCars() { return cars; }
+                public int getDefaultRows() { return defaultRows; }
+                
+	public void setWidthString(String widthString) { this.widthString = widthString; }
 }

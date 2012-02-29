@@ -27,7 +27,7 @@ import java.util.List;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
-import org.icefaces.samples.showcase.example.ace.dataTable.utilityClasses.VehicleGenerator;
+import org.icefaces.samples.showcase.dataGenerators.VehicleGenerator;
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,

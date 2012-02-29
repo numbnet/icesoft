@@ -16,7 +16,7 @@
 
 package org.icefaces.samples.showcase.example.ace.tooltip;
 
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 
@@ -24,7 +24,7 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.ArrayList;
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet.ImageInfo;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
 
 @ComponentExample(
         title = "example.ace.tooltip.title",
