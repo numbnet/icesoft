@@ -507,7 +507,7 @@ ice.ace.DataTable.prototype.setupReorderableColumns = function() {
 
 ice.ace.DataTable.prototype.setupRowExpansionEvents = function() {
     var table = this;
-    ice.ace.jq(this.jqId + ' tbody.ui-datatable-data tr td a.ui-row-toggler')
+    ice.ace.jq(this.jqId + ' tbody.ui-datatable-data:first tr td a.ui-row-toggler')
             .die()
             .live('keyup', function(event) { if (event.which == 32 || event.which == 13) { table.toggleExpansion(this); }})
             .live('click', function(event) { event.stopPropagation(); table.toggleExpansion(this); });
@@ -515,7 +515,7 @@ ice.ace.DataTable.prototype.setupRowExpansionEvents = function() {
 
 ice.ace.DataTable.prototype.setupPanelExpansionEvents = function() {
     var table = this;
-    ice.ace.jq(this.jqId + ' > table > tbody.ui-datatable-data > tr:not(.ui-expanded-row-content) td a.ui-row-panel-toggler')
+    ice.ace.jq(this.jqId + ' tbody.ui-datatable-data:first > tr:not(.ui-expanded-row-content) td a.ui-row-panel-toggler')
             .die()
             .live('keyup', function(event) { if (event.which == 32 || event.which == 13) { table.toggleExpansion(this); }})
             .live('click', function(event) { event.stopPropagation(); table.toggleExpansion(this); });
