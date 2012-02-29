@@ -46,8 +46,7 @@ public interface MessageServiceAdapter {
      *                 MessageHandler.
      * @see        #removeMessageHandler(MessageHandler, String)
      */
-    public void addMessageHandler(
-        final MessageHandler messageHandler, final String topicName);
+    void addMessageHandler(final MessageHandler messageHandler, final String topicName);
 
     /**
      * <p>
@@ -60,12 +59,12 @@ public interface MessageServiceAdapter {
      *                 to some internal error.
      * @see        #stop()
      */
-    public void close()
+    void close()
     throws MessageServiceException;
 
-    public MessageServiceClient getMessageServiceClient();
+    MessageServiceClient getMessageServiceClient();
 
-    public MessageServiceConfiguration getMessageServiceConfiguration();
+    MessageServiceConfiguration getMessageServiceConfiguration();
 
     /**
      * <p>
@@ -76,7 +75,7 @@ public interface MessageServiceAdapter {
      * @return     the topic names.
      * @see        #getSubscriberTopicNames()
      */
-    public String[] getPublisherTopicNames();
+    String[] getPublisherTopicNames();
 
     /**
      * <p>
@@ -87,7 +86,10 @@ public interface MessageServiceAdapter {
      * @return     the topic names.
      * @see        #getPublisherTopicNames()
      */
-    public String[] getSubscriberTopicNames();
+    String[] getSubscriberTopicNames();
+
+    void initialize()
+    throws MessageServiceException;
 
     /**
      * <p>
@@ -101,7 +103,7 @@ public interface MessageServiceAdapter {
      *             specified <code>topicName</code>, <code>false</code> if not.
      * @see        #isSubscribedTo(String)
      */
-    public boolean isPublishingOn(final String topicName);
+    boolean isPublishingOn(final String topicName);
 
     /**
      * <p>
@@ -115,7 +117,7 @@ public interface MessageServiceAdapter {
      *             specified <code>topicName</code>, <code>false</code> if not.
      * @see        #isPublishingOn(String)
      */
-    public boolean isSubscribedTo(final String topicName);
+    boolean isSubscribedTo(final String topicName);
 
     /**
      * <p>
@@ -134,7 +136,7 @@ public interface MessageServiceAdapter {
      *                 the topic name of the topic to publish on.
      * @throws     MessageServiceException
      */
-    public void publish(final Message message, final String topicName)
+    void publish(final Message message, final String topicName)
     throws MessageServiceException;
 
     /**
@@ -151,11 +153,9 @@ public interface MessageServiceAdapter {
      *                 MessageHandler.
      * @see        #addMessageHandler(MessageHandler, String)
      */
-    public void removeMessageHandler(
-        final MessageHandler messageHandler, final String topicName);
+    void removeMessageHandler(final MessageHandler messageHandler, final String topicName);
 
-    public void setMessageServiceClient(
-        final MessageServiceClient messageServiceClient);
+    void setMessageServiceClient(final MessageServiceClient messageServiceClient);
     
     /**
      * <p>
@@ -167,7 +167,7 @@ public interface MessageServiceAdapter {
      *                 due to some internal error.
      * @see        #stop()
      */
-    public void start()
+    void start()
     throws MessageServiceException;
 
     /**
@@ -186,7 +186,7 @@ public interface MessageServiceAdapter {
      * @see        #start()
      * @see        #close()
      */
-    public void stop()
+    void stop()
     throws MessageServiceException;
 
     /**
@@ -209,9 +209,7 @@ public interface MessageServiceAdapter {
      *                 internal error.
      * @see        #unsubscribe(String)
      */
-    public void subscribe(
-        final String topicName, final MessageSelector messageSelector,
-        final boolean noLocal)
+    void subscribe(final String topicName, final MessageSelector messageSelector, final boolean noLocal)
     throws MessageServiceException;
 
     /**
@@ -227,6 +225,6 @@ public interface MessageServiceAdapter {
      *                 internal error.
      * @see        #subscribe(String, MessageSelector, boolean)
      */
-    public void unsubscribe(final String topicName)
+    void unsubscribe(final String topicName)
     throws MessageServiceException;
 }

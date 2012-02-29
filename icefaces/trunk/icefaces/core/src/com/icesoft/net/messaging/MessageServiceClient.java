@@ -31,8 +31,6 @@
  */
 package com.icesoft.net.messaging;
 
-import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
 import com.icesoft.util.ServerUtility;
 import com.icesoft.util.ThreadFactory;
 
@@ -55,17 +53,11 @@ public class MessageServiceClient {
     private static final Log LOG =
         LogFactory.getLog(MessageServiceClient.class);
 
-    private static final int DEFAULT_MESSAGE_MAX_LENGTH = 4 * 1024;
-    private static final int DEFAULT_THREAD_POOL_SIZE = 15;
-    private static final int DEFAULT_MESSAGE_MAX_DELAY = 100;
-
     private final Map messageHandlerMap = new HashMap();
     private final Map messagePipelineMap = new HashMap();
 
     private Administrator administrator;
     private Properties baseMessageProperties = new Properties();
-    private String defaultTopicName;
-    private MessageServiceConfiguration messageServiceConfiguration;
     private MessageServiceAdapter messageServiceAdapter;
     private String name;
     private ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
@@ -104,35 +96,11 @@ public class MessageServiceClient {
         this.name = name;
         this.messageServiceAdapter = messageServiceAdapter;
         this.messageServiceAdapter.setMessageServiceClient(this);
-        Configuration _servletContextConfiguration =
-            new ServletContextConfiguration(
-                "com.icesoft.net.messaging", servletContext);
-        messageServiceConfiguration =
-            new MessageServiceConfigurationProperties();
-        messageServiceConfiguration.setMessageMaxDelay(
-            _servletContextConfiguration.getAttributeAsInteger(
-                "messageMaxDelay", DEFAULT_MESSAGE_MAX_DELAY));
-        messageServiceConfiguration.setMessageMaxLength(
-            _servletContextConfiguration.getAttributeAsInteger(
-                "messageMaxLength", DEFAULT_MESSAGE_MAX_LENGTH));
         if (servletContextPath != null) {
             setBaseMessageProperties(servletContextPath);
         } else {
             setBaseMessageProperties(servletContext);
         }
-        ThreadFactory _threadFactory = new ThreadFactory();
-        _threadFactory.setPrefix("MSC Thread");
-        scheduledThreadPoolExecutor =
-            new ScheduledThreadPoolExecutor(
-                _servletContextConfiguration.getAttributeAsInteger(
-                    "threadPoolSize", DEFAULT_THREAD_POOL_SIZE),
-                _threadFactory);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Message Service Client - Thread Pool: " + scheduledThreadPoolExecutor.getCorePoolSize());
-        }
-        defaultTopicName =
-            _servletContextConfiguration.getAttribute(
-                "defaultTopicName", "icefacesPush");
     }
 
     /**
@@ -234,7 +202,7 @@ public class MessageServiceClient {
      * @return     the MessageServiceConfiguration.
      */
     public MessageServiceConfiguration getMessageServiceConfiguration() {
-        return messageServiceConfiguration;
+        return messageServiceAdapter.getMessageServiceConfiguration();
     }
 
     public Administrator getAdministrator() {
@@ -242,7 +210,7 @@ public class MessageServiceClient {
     }
 
     public String getDefaultTopicName() {
-        return defaultTopicName;
+        return getMessageServiceConfiguration().getDefaultTopicName();
     }
 
     /**
@@ -286,6 +254,19 @@ public class MessageServiceClient {
      */
     public String[] getSubscriberTopicNames() {
         return messageServiceAdapter.getSubscriberTopicNames();
+    }
+
+    public void initialize()
+    throws MessageServiceException {
+        // throws MessageServiceException
+        messageServiceAdapter.initialize();
+        ThreadFactory _threadFactory = new ThreadFactory();
+        _threadFactory.setPrefix("MSC Thread");
+        scheduledThreadPoolExecutor =
+            new ScheduledThreadPoolExecutor(getMessageServiceConfiguration().getThreadPoolSize(), _threadFactory);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Message Service Client - Thread Pool: " + scheduledThreadPoolExecutor.getCorePoolSize());
+        }
     }
 
     /**

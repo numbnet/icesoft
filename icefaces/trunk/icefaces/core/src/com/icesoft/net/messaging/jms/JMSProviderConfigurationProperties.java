@@ -31,6 +31,7 @@
  */
 package com.icesoft.net.messaging.jms;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.net.messaging.MessageServiceConfiguration;
 import com.icesoft.net.messaging.MessageServiceConfigurationProperties;
 
@@ -40,69 +41,61 @@ import java.io.IOException;
 public class JMSProviderConfigurationProperties
 extends MessageServiceConfigurationProperties
 implements JMSProviderConfiguration, MessageServiceConfiguration {
-    public JMSProviderConfigurationProperties() {
-        super();
+    public JMSProviderConfigurationProperties(final Configuration configuration) {
+        super(configuration);
     }
 
-    public JMSProviderConfigurationProperties(final InputStream inputStream)
+    public JMSProviderConfigurationProperties(final InputStream inputStream, final Configuration configuration)
     throws IOException {
-        super(inputStream);
+        super(inputStream, configuration);
     }
 
     public String getInitialContextFactory() {
         return
-            messageServiceConfigurationProperties.getProperty(
-                INITIAL_CONTEXT_FACTORY, null);
+            configuration.getAttribute(
+                INITIAL_CONTEXT_FACTORY,
+                messageServiceConfigurationProperties.getProperty(INITIAL_CONTEXT_FACTORY, null));
+    }
+
+    public String getPassword() {
+        return
+            configuration.getAttribute(
+                PASSWORD,
+                messageServiceConfigurationProperties.getProperty(PASSWORD, null));
     }
 
     public String getProviderURL() {
         return
-            messageServiceConfigurationProperties.getProperty(
-                PROVIDER_URL, null);
+            configuration.getAttribute(
+                PROVIDER_URL,
+                messageServiceConfigurationProperties.getProperty(PROVIDER_URL, null));
     }
 
     public String getTopicConnectionFactoryName() {
         return
-            messageServiceConfigurationProperties.getProperty(
-                TOPIC_CONNECTION_FACTORY_NAME, "ConnectionFactory");
+            configuration.getAttribute(
+                TOPIC_CONNECTION_FACTORY_NAME,
+                messageServiceConfigurationProperties.getProperty(TOPIC_CONNECTION_FACTORY_NAME, "ConnectionFactory"));
     }
 
     public String getTopicNamePrefix() {
         return
-            messageServiceConfigurationProperties.getProperty(
-                TOPIC_NAME_PREFIX, null);
+            configuration.getAttribute(
+                TOPIC_NAME_PREFIX,
+                messageServiceConfigurationProperties.getProperty(TOPIC_NAME_PREFIX, null));
     }
 
     public String getURLPackagePrefixes() {
         return
-            messageServiceConfigurationProperties.getProperty(
-                URL_PACKAGE_PREFIXES, null);
+            configuration.getAttribute(
+                URL_PACKAGE_PREFIXES,
+                messageServiceConfigurationProperties.getProperty(URL_PACKAGE_PREFIXES, null));
     }
 
-    public void setInitialContextFactory(final String initialContextFactory) {
-        messageServiceConfigurationProperties.setProperty(
-            INITIAL_CONTEXT_FACTORY, initialContextFactory);
-    }
-
-    public void setProviderURL(final String providerUrl) {
-        messageServiceConfigurationProperties.setProperty(
-            PROVIDER_URL, providerUrl);
-    }
-
-    public void setTopicConnectionFactoryName(
-        final String topicConnectionFactoryName) {
-
-        messageServiceConfigurationProperties.setProperty(
-            TOPIC_CONNECTION_FACTORY_NAME, topicConnectionFactoryName);
-    }
-
-    public void setTopicNamePrefix(final String topicNamePrefix) {
-        messageServiceConfigurationProperties.setProperty(
-            TOPIC_NAME_PREFIX, topicNamePrefix);
-    }
-
-    public void setURLPackagePrefixes(final String urlPackagePrefixes) {
-        messageServiceConfigurationProperties.setProperty(
-            URL_PACKAGE_PREFIXES, urlPackagePrefixes);
+    public String getUserName() {
+        return
+            configuration.getAttribute(
+                USER_NAME,
+                messageServiceConfigurationProperties.getProperty(USER_NAME, null));
     }
 }

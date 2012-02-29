@@ -32,20 +32,18 @@
 package com.icesoft.net.messaging;
 
 public interface MessageServiceConfiguration {
-    public static final String MESSAGE_MAX_DELAY =
-        "com.icesoft.net.messaging.messageMaxDelay";
-    public static final String MESSAGE_MAX_LENGTH =
-        "com.icesoft.net.messaging.messageMaxLength";
+    public static final String DEFAULT_TOPIC_NAME = "com.icesoft.net.messaging.defaultTopicName";
+    public static final String MESSAGE_MAX_DELAY = "com.icesoft.net.messaging.messageMaxDelay";
+    public static final String MESSAGE_MAX_LENGTH = "com.icesoft.net.messaging.messageMaxLength";
+    public static final String THREAD_POOL_SIZE = "com.icesoft.net.messaging.threadPoolSize";
 
-    public String get(final String name);
+    String get(final String name);
 
-    public long getMessageMaxDelay();
+    String getDefaultTopicName();
 
-    public int getMessageMaxLength();
+    long getMessageMaxDelay();
 
-    public void set(final String name, final String value);
+    int getMessageMaxLength();
 
-    public void setMessageMaxDelay(final long messageMaxDelay);
-
-    public void setMessageMaxLength(final int messageMaxLength);
+    int getThreadPoolSize();
 }
