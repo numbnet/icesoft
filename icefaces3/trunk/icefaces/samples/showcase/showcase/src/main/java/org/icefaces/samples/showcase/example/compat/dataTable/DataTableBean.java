@@ -16,6 +16,7 @@
 
 package org.icefaces.samples.showcase.example.compat.dataTable;
 
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import java.io.Serializable;
 
 import javax.faces.bean.CustomScoped;
@@ -79,9 +80,19 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class DataTableBean extends ComponentExampleImpl<DataTableBean> implements Serializable {
 	
-	public static final String BEAN_NAME = "dataTable";
-	
-	public DataTableBean() {
-		super(DataTableBean.class);
-	}
+        public static final String BEAN_NAME = "dataTable";
+        private int defaultRows;
+
+        public DataTableBean() {
+            super(DataTableBean.class);
+            defaultRows = DataTableData.DEFAULT_ROWS;
+        }
+
+        public int getDefaultRows() {
+            return defaultRows;
+        }
+
+        public void setDefaultRows(int defaultRows) {
+            this.defaultRows = defaultRows;
+        }
 }

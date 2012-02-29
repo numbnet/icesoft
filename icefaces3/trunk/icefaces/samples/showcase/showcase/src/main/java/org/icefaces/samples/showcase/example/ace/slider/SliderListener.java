@@ -16,7 +16,7 @@
 
 package org.icefaces.samples.showcase.example.ace.slider;
 
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet.ImageInfo;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -27,7 +27,7 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import javax.faces.event.ValueChangeEvent;
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet;
 
 @ComponentExample(
         parent = SliderBean.BEAN_NAME,

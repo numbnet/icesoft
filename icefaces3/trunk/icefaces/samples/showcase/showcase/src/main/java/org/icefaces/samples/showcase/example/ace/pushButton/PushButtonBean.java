@@ -16,7 +16,7 @@
 
 package org.icefaces.samples.showcase.example.ace.pushButton;
 
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet.ImageInfo;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
 import org.icefaces.samples.showcase.metadata.annotation.Menu;
 import org.icefaces.samples.showcase.metadata.annotation.MenuLink;                                                                       
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
@@ -29,7 +29,7 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet;
 
 
 @ComponentExample(
@@ -67,7 +67,7 @@ public class PushButtonBean extends ComponentExampleImpl<PushButtonBean> impleme
     
     public PushButtonBean() {
         super(PushButtonBean.class);
-         currentImage = ImageSet.getRandomImage();
+        currentImage = ImageSet.getNextImage(currentImage);
     }
     
     public String executeAction() {
@@ -77,7 +77,7 @@ public class PushButtonBean extends ComponentExampleImpl<PushButtonBean> impleme
     
     public void executeListener(ActionEvent event) 
     {
-        currentImage = ImageSet.getRandomImage();
+        currentImage = ImageSet.getNextImage(currentImage);
     }
     
     public ImageInfo getCurrentImage() {

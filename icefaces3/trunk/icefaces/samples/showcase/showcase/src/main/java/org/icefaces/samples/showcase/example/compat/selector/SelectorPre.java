@@ -18,11 +18,12 @@ package org.icefaces.samples.showcase.example.compat.selector;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
-import org.icefaces.samples.showcase.example.ace.dataTable.utilityClasses.VehicleGenerator;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -59,13 +60,8 @@ public class SelectorPre extends ComponentExampleImpl<SelectorPre> implements Se
 
     public SelectorPre() {
         super(SelectorPre.class);
-        initializeInstanceVariables();
-    }
-    
-    private void initializeInstanceVariables()
-    {
-        VehicleGenerator generator = new VehicleGenerator();
-        this.data = generator.getRandomSelectableCars(10);
+        enable = false;
+        data = new ArrayList<SelectableCar>(DataTableData.getDefaultSelectableData());
     }
 
     public boolean getEnable() { return enable; }

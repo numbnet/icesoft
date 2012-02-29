@@ -16,7 +16,6 @@
 
 package org.icefaces.samples.showcase.example.ace.dataTable;
 
-import org.icefaces.ace.component.celleditor.CellEditor;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.datatable.DataTable;
 import org.icefaces.ace.model.table.RowState;
@@ -32,7 +31,6 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @ComponentExample(

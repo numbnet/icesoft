@@ -26,7 +26,7 @@ import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.List;
 import org.icefaces.ace.model.table.LazyDataModel;
-import org.icefaces.samples.showcase.example.ace.dataTable.utilityClasses.VehicleGenerator;
+import org.icefaces.samples.showcase.dataGenerators.VehicleGenerator;
 import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 
 @ComponentExample(
@@ -81,7 +81,4 @@ public class DataTableLazyLoading extends ComponentExampleImpl<DataTableLazyLoad
     public void setCarsData(LazyDataModel<Car> carsData) {
         this.carsData = carsData;
     }
-    
-    
-
 }

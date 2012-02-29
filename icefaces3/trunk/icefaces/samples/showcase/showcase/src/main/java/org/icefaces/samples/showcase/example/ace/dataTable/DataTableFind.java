@@ -13,6 +13,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import org.icefaces.samples.showcase.example.compat.dataTable.Car;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 
 /**
  * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
@@ -58,10 +62,6 @@ import java.io.Serializable;
 public class DataTableFind extends ComponentExampleImpl<DataTableFind> implements Serializable {
     public static final String BEAN_NAME = "aceDataTableFind";
 
-    public DataTableFind() {
-        super(DataTableFind.class);
-    }
-
     public String selectedEffectType = "default";
     public String selectedSearchMode = "contains";
     public String searchQuery = "";
@@ -69,7 +69,8 @@ public class DataTableFind extends ComponentExampleImpl<DataTableFind> implement
     public String[] selectedColumns = new String[]{"name", "id", "chassis", "weight", "acceleration", "mpg", "cost"};
     public int lastFoundIndex = -1;
     private boolean caseSensitive;
-
+    private List<Car> cars;
+    
     public final SelectItem[] SEARCH_MODES = {new SelectItem("startsWith", "Starts With"),
             new SelectItem("endsWith", "Ends With"),
             new SelectItem("contains", "Contains"),
@@ -86,8 +87,47 @@ public class DataTableFind extends ComponentExampleImpl<DataTableFind> implement
     public final SelectItem[] EFFECT_TYPES = {new SelectItem("none", "None"),
             new SelectItem("default", "Default (Highlight)"),
             new SelectItem("pulsate", "Pulsate")};
+    
+    public DataTableFind() {
+        super(DataTableFind.class);
+        cars = new ArrayList<Car>(DataTableData.getDefaultData());
+    }
 
+    public void find(javax.faces.event.ActionEvent e) {
+        DataTable.SearchType type = null;
+        if (selectedSearchMode.equals("contains"))
+            type = DataTable.SearchType.CONTAINS;
+        else if (selectedSearchMode.equals("startsWith"))
+            type = DataTable.SearchType.STARTS_WITH;
+        else if (selectedSearchMode.equals("endsWith"))
+            type = DataTable.SearchType.ENDS_WITH;
+        else if (selectedSearchMode.equals("exact"))
+            type = DataTable.SearchType.EXACT;
+        else type = DataTable.SearchType.CONTAINS;
 
+        int newFoundIndex = iceTable.findRow(searchQuery, selectedColumns, lastFoundIndex + 1, type, caseSensitive);
+
+        if (newFoundIndex < 0) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(iceTable.getClientId(context),
+                    new FacesMessage("Search starting at index " + (lastFoundIndex + 1) + " for \"" + searchQuery + "\" did not return a result."));
+            return;
+        }
+
+        lastFoundIndex = newFoundIndex;
+
+        if (selectedEffectType.equals("default"))
+            iceTable.navigateToRow(lastFoundIndex);
+        else if (selectedEffectType.equals("pulsate"))
+            iceTable.navigateToRow(lastFoundIndex, DataTable.SearchEffect.PULSATE);
+        else if (selectedEffectType.equals("none"))
+            iceTable.navigateToRow(lastFoundIndex, null);
+    }
+
+    public void reset(javax.faces.event.ActionEvent e) {
+        lastFoundIndex = -1;
+    }
+    
     public SelectItem[] getSEARCH_MODES() {
         return SEARCH_MODES;
     }
@@ -124,42 +164,6 @@ public class DataTableFind extends ComponentExampleImpl<DataTableFind> implement
         this.selectedEffectType = selectedEffectType;
     }
 
-
-    public void find(javax.faces.event.ActionEvent e) {
-        DataTable.SearchType type = null;
-        if (selectedSearchMode.equals("contains"))
-            type = DataTable.SearchType.CONTAINS;
-        else if (selectedSearchMode.equals("startsWith"))
-            type = DataTable.SearchType.STARTS_WITH;
-        else if (selectedSearchMode.equals("endsWith"))
-            type = DataTable.SearchType.ENDS_WITH;
-        else if (selectedSearchMode.equals("exact"))
-            type = DataTable.SearchType.EXACT;
-        else type = DataTable.SearchType.CONTAINS;
-
-        int newFoundIndex = iceTable.findRow(searchQuery, selectedColumns, lastFoundIndex + 1, type, caseSensitive);
-
-        if (newFoundIndex < 0) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(iceTable.getClientId(context),
-                    new FacesMessage("Search starting at index " + (lastFoundIndex + 1) + " for \"" + searchQuery + "\" did not return a result."));
-            return;
-        }
-
-        lastFoundIndex = newFoundIndex;
-
-        if (selectedEffectType.equals("default"))
-            iceTable.navigateToRow(lastFoundIndex);
-        else if (selectedEffectType.equals("pulsate"))
-            iceTable.navigateToRow(lastFoundIndex, DataTable.SearchEffect.PULSATE);
-        else if (selectedEffectType.equals("none"))
-            iceTable.navigateToRow(lastFoundIndex, null);
-    }
-
-    public void reset(javax.faces.event.ActionEvent e) {
-        lastFoundIndex = -1;
-    }
-
     public String getSearchQuery() {
         return searchQuery;
     }
@@ -182,5 +186,13 @@ public class DataTableFind extends ComponentExampleImpl<DataTableFind> implement
 
     public void setCaseSensitive(boolean caseSensitive) {
         this.caseSensitive = caseSensitive;
+    }
+
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
     }
 }

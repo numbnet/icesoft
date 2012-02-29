@@ -18,9 +18,9 @@ package org.icefaces.samples.showcase.example.compat.dataTable;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.ArrayList;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
+import org.icefaces.samples.showcase.dataGenerators.VehicleGenerator;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResources;
@@ -58,11 +58,8 @@ public class DataTableGroup extends ComponentExampleImpl<DataTableGroup> impleme
     public DataTableGroup() 
     {
         super(DataTableGroup.class);
-        init();
-    }
-
-    private void init() {
-        carsData = new ArrayList<Car>(DataTableData.CARS.subList(0, 20));
+        VehicleGenerator generator = new VehicleGenerator();
+        carsData = generator.getRandomCars(20);
         DataTableSort.sort(DataTableSort.SORT_COLUMN_CHASSIS, carsData);
     }
 

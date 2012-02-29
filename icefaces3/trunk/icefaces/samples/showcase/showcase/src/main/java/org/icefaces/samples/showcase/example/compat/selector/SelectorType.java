@@ -18,13 +18,13 @@ package org.icefaces.samples.showcase.example.compat.selector;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
-
-import org.icefaces.samples.showcase.example.ace.dataTable.utilityClasses.VehicleGenerator;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import org.icefaces.samples.showcase.util.FacesUtils;
 import org.icefaces.samples.showcase.metadata.annotation.ComponentExample;
 import org.icefaces.samples.showcase.metadata.annotation.ExampleResource;
@@ -58,12 +58,19 @@ public class SelectorType extends ComponentExampleImpl<SelectorType> implements 
 	
     public static final String BEAN_NAME = "selectorType";
 
-    private static final String TYPE_SINGLE = "single";
-    private static final String TYPE_MULTIPLE = "multiple";
-    private static final String TYPE_ENHMULTIPLE = "enhmultiple";
+    private static final String TYPE_SINGLE;
+    private static final String TYPE_MULTIPLE;
+    private static final String TYPE_ENHMULTIPLE;
     private List<SelectableCar> data;
     private SelectItem[] availableTypes;
     private String type;
+    
+    static
+    {
+        TYPE_SINGLE = "single";
+        TYPE_MULTIPLE = "multiple";
+        TYPE_ENHMULTIPLE = "enhmultiple";
+    }
 
     public SelectorType() {
             super(SelectorType.class);
@@ -83,8 +90,7 @@ public class SelectorType extends ComponentExampleImpl<SelectorType> implements 
     
     private void initializeInstanceVariables()
     {
-        VehicleGenerator generator = new VehicleGenerator();
-        this.data = generator.getRandomSelectableCars(10);
+        data = new ArrayList<SelectableCar>(DataTableData.getDefaultSelectableData());
         
         this.availableTypes = new SelectItem[] 
         {

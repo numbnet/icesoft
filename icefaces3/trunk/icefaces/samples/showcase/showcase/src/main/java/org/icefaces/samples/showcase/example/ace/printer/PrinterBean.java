@@ -21,8 +21,8 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.List;
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
-import org.icefaces.samples.showcase.example.ace.dataTable.utilityClasses.VehicleGenerator;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet;
+import org.icefaces.samples.showcase.dataGenerators.VehicleGenerator;
 import org.icefaces.samples.showcase.example.compat.dataTable.Car;
 
 @ComponentExample(
