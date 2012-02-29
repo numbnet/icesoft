@@ -32,6 +32,7 @@
 
 package com.icesoft.net.messaging.http;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.Response;
@@ -45,6 +46,7 @@ import com.icesoft.net.messaging.Message;
 import com.icesoft.net.messaging.MessageHandler;
 import com.icesoft.net.messaging.MessageSelector;
 import com.icesoft.net.messaging.MessageServiceAdapter;
+import com.icesoft.net.messaging.MessageServiceConfigurationProperties;
 import com.icesoft.net.messaging.MessageServiceException;
 import com.icesoft.net.messaging.TextMessage;
 import com.icesoft.net.messaging.expression.Container;
@@ -75,6 +77,7 @@ extends AbstractMessageServiceAdapter
 implements MessageServiceAdapter {
     private static final Log LOG = LogFactory.getLog(HttpAdapter.class);
 
+    private final Configuration configuration;
     private final Map messageHandlerMap = new HashMap();
     private final Map subscriberMap = new HashMap();
 
@@ -94,6 +97,7 @@ implements MessageServiceAdapter {
         super(servletContext);
         this.localAddress = localAddress;
         this.localPort = localPort;
+        this.configuration = new ServletContextConfiguration(servletContext);
         httpMessagingDispatcher =
             new EnvironmentAdaptingServlet(
                 new Server() {
@@ -248,6 +252,11 @@ implements MessageServiceAdapter {
 
     public PseudoServlet getHttpMessagingDispatcher() {
         return httpMessagingDispatcher;
+    }
+
+    public void initialize()
+    throws MessageServiceException {
+        messageServiceConfiguration = new MessageServiceConfigurationProperties(configuration);
     }
 
     public void publish(final Message message, final String targetName)

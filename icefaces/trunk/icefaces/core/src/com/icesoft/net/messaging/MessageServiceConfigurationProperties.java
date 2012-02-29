@@ -31,6 +31,7 @@
  */
 package com.icesoft.net.messaging;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.util.Properties;
 
 import java.io.InputStream;
@@ -43,51 +44,55 @@ import org.apache.commons.logging.LogFactory;
 
 public class MessageServiceConfigurationProperties
 implements MessageServiceConfiguration {
-    private static final String PROPERTIES =
-        "com.icesoft.net.messaging.properties";
-    private static final Log LOG =
-        LogFactory.getLog(MessageServiceConfigurationProperties.class);
+    private static final Log LOG = LogFactory.getLog(MessageServiceConfigurationProperties.class);
 
-    protected Properties messageServiceConfigurationProperties =
-        new Properties();
+    private static final String DEFAULT_DEFAULT_TOPIC_NAME = "icefacesPush";
+    private static final long DEFAULT_MESSAGE_MAX_DELAY = 100;
+    private static final int DEFAULT_MESSAGE_MAX_LENGTH = 4 * 1024;
+    private static final int DEFAULT_THREAD_POOL_SIZE = 15;
 
-    public MessageServiceConfigurationProperties() {
-        // do nothing.
+    protected Properties messageServiceConfigurationProperties = new Properties();
+    protected Configuration configuration;
+
+    public MessageServiceConfigurationProperties(final Configuration configuration) {
+        this.configuration = configuration;
     }
 
-    public MessageServiceConfigurationProperties(final InputStream inputStream)
+    public MessageServiceConfigurationProperties(final InputStream inputStream, final Configuration configuration)
     throws IOException {
         messageServiceConfigurationProperties.load(inputStream);
+        this.configuration = configuration;
     }
 
     public String get(final String name) {
         return messageServiceConfigurationProperties.getProperty(name, null);
     }
 
+    public String getDefaultTopicName() {
+        return
+            configuration.getAttribute(
+                DEFAULT_TOPIC_NAME,
+                messageServiceConfigurationProperties.getProperty(DEFAULT_TOPIC_NAME, DEFAULT_DEFAULT_TOPIC_NAME));
+    }
+
     public long getMessageMaxDelay() {
         return
-            messageServiceConfigurationProperties.getLongProperty(
-                MESSAGE_MAX_DELAY);
+            configuration.getAttributeAsLong(
+                MESSAGE_MAX_DELAY,
+                messageServiceConfigurationProperties.getLongProperty(MESSAGE_MAX_DELAY, DEFAULT_MESSAGE_MAX_DELAY));
     }
 
     public int getMessageMaxLength() {
         return
-            messageServiceConfigurationProperties.getIntProperty(
-                MESSAGE_MAX_LENGTH);
+            configuration.getAttributeAsInteger(
+                MESSAGE_MAX_LENGTH,
+                messageServiceConfigurationProperties.getIntProperty(MESSAGE_MAX_LENGTH, DEFAULT_MESSAGE_MAX_LENGTH));
     }
 
-    public void set(final String name, final String value) {
-        messageServiceConfigurationProperties.setProperty(
-            name, value);
-    }
-
-    public void setMessageMaxDelay(final long messageMaxDelay) {
-        messageServiceConfigurationProperties.setLongProperty(
-            MESSAGE_MAX_DELAY, messageMaxDelay);
-    }
-
-    public void setMessageMaxLength(final int messageMaxLength) {
-        messageServiceConfigurationProperties.setIntProperty(
-            MESSAGE_MAX_LENGTH, messageMaxLength);
+    public int getThreadPoolSize() {
+        return
+            configuration.getAttributeAsInteger(
+                THREAD_POOL_SIZE,
+                messageServiceConfigurationProperties.getIntProperty(THREAD_POOL_SIZE, DEFAULT_THREAD_POOL_SIZE));
     }
 }

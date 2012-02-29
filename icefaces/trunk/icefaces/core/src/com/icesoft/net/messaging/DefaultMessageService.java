@@ -326,6 +326,11 @@ implements MessageServiceClient.Administrator {
 
     }
 
+    private void initialize()
+    throws MessageServiceException {
+        messageServiceClient.initialize();
+    }
+
     private void setUp(final int interval, final int maxRetries) {
         LOG.debug("Setting up... (interval: [" + interval + "], maxRetries: [" + maxRetries + "])");
         if (scheduledThreadPoolExecutor == null) {
@@ -539,6 +544,8 @@ implements MessageServiceClient.Administrator {
                     }
                 }
                 try {
+                    // throws MessageServiceException
+                    initialize();
                     // throws InvalidDestinationException, JMSException, NamingException
                     setUpMessageServiceClient();
                     cancel(false);

@@ -43,16 +43,15 @@ extends MessageServiceConfiguration {
      *   <code>java.naming.factory.initial</code>.
      * </p>
      */
-    public static final String INITIAL_CONTEXT_FACTORY =
-        Context.INITIAL_CONTEXT_FACTORY;
+    public static final String INITIAL_CONTEXT_FACTORY = Context.INITIAL_CONTEXT_FACTORY;
+    public static final String PASSWORD = "com.icesoft.net.messaging.jms.password";
     /**
      * <p>
      *   The environment property name for the URL to the service provider to
      *   use: <code>java.naming.provider.url</code>.
      * </p>
      */
-    public static final String PROVIDER_URL =
-        Context.PROVIDER_URL;
+    public static final String PROVIDER_URL = Context.PROVIDER_URL;
     /**
      * <p>
      *   The environment property name for the topic connection factory name to
@@ -69,8 +68,7 @@ extends MessageServiceConfiguration {
      *   <code>com.icesoft.net.messaging.jms.topicNamePrefix</code>.
      * </p>
      */
-    public static final String TOPIC_NAME_PREFIX =
-        "com.icesoft.net.messaging.jms.topicNamePrefix";
+    public static final String TOPIC_NAME_PREFIX = "com.icesoft.net.messaging.jms.topicNamePrefix";
     /**
      * <p>
      *   The environment property name for the list of package prefixes to use
@@ -78,8 +76,8 @@ extends MessageServiceConfiguration {
      *   <code>java.naming.factory.url.pkgs</code>.
      * </p>
      */
-    public static final String URL_PACKAGE_PREFIXES =
-        Context.URL_PKG_PREFIXES;
+    public static final String URL_PACKAGE_PREFIXES = Context.URL_PKG_PREFIXES;
+    public static final String USER_NAME = "com.icesoft.net.messaging.jms.userName";
 
     /**
      * <p>
@@ -90,9 +88,10 @@ extends MessageServiceConfiguration {
      *
      * @return     the property value containing the initial context factory to
      *             use.
-     * @see        #setInitialContextFactory(String)
      */
-    public String getInitialContextFactory();
+    String getInitialContextFactory();
+
+    String getPassword();
 
     /**
      * <p>
@@ -103,9 +102,8 @@ extends MessageServiceConfiguration {
      *
      * @return     the property value containing the URL to the service provider
      *             to use.
-     * @see        #setProviderURL(String)
      */
-    public String getProviderURL();
+    String getProviderURL();
 
     /**
      * <p>
@@ -116,9 +114,8 @@ extends MessageServiceConfiguration {
      *
      * @return     the property value containing the topic connection factory
      *             name to use.
-     * @see        #setTopicConnectionFactoryName(String)
      */
-    public String getTopicConnectionFactoryName();
+    String getTopicConnectionFactoryName();
 
     /**
      * <p>
@@ -128,9 +125,8 @@ extends MessageServiceConfiguration {
      * </p>
      *
      * @return     the property value containing the topic name prefix to use.
-     * @see        #setTopicNamePrefix(String)
      */
-    public String getTopicNamePrefix();
+    String getTopicNamePrefix();
 
     /**
      * <p>
@@ -141,80 +137,8 @@ extends MessageServiceConfiguration {
      *
      * @return     the property value containing the URL to the list of package
      *             prefixes to use.
-     * @see        #setURLPackagePrefixes(String)
      */
-    public String getURLPackagePrefixes();
+    String getURLPackagePrefixes();
 
-    /**
-     * <p>
-     *   Convenience method for setting the property value containing the
-     *   initial context factory to use to the specified
-     *   <code>initialContextFactory</code>. Invoking this method is the same as
-     *   invoking
-     *   <code>set(INITIAL_CONTEXT_FACTORY, initialContextFactory)</code>.
-     * </p>
-     *
-     * @param      initialContextFactory
-     *                 the new initial context factory to use.
-     * @see        #getInitialContextFactory()
-     */
-    public void setInitialContextFactory(final String initialContextFactory);
-
-    /**
-     * <p>
-     *   Convenience method for setting the property value containing the URL to
-     *   the service provider to use to the specified <code>providerUrl</code>.
-     *   Invoking this method is the same as invoking
-     *   <code>set(PROVIDER_URL, providerUrl)</code>.
-     * </p>
-     *
-     * @param      providerUrl
-     *                 the new URL to the service provider to use.
-     * @see        #getProviderURL()
-     */
-    public void setProviderURL(final String providerUrl);
-
-    /**
-     * <p>
-     *   Convenience method for setting the property value containing the topic
-     *   connection factory name to use to the specified
-     *   <code>topicConnectionFactoryName</code>. Invoking this method is the
-     *   same as invoking
-     *   <code>set(TOPIC_CONNECTION_FACTORY_NAME, topicConnectionFactoryName)</code>.
-     * </p>
-     *
-     * @param      topicConnectionFactoryName
-     *                 the new topic connection factory name to use.
-     * @see        #getTopicConnectionFactoryName()
-     */
-    public void setTopicConnectionFactoryName(
-        final String topicConnectionFactoryName);
-
-    /**
-     * <p>
-     *   Convenience method for setting the property value containing the topic
-     *   name prefix to use to the specified <code>topicNamePrefix</code>.
-     *   Invoking this method is the same as invoking
-     *   <code>set(TOPIC_NAME_PREFIX, topicNamePrefix)</code>.
-     * </p>
-     *
-     * @param      topicNamePrefix
-     *                 the new topic name prefix to use.
-     * @see        #getTopicNamePrefix()
-     */
-    public void setTopicNamePrefix(final String topicNamePrefix);
-
-    /**
-     * <p>
-     *   Convenience method for setting the property value containing the URL to
-     *   the list of package prefixes to use to the specified
-     *   <code>urlPackagePrefixes</code>. Invoking this method is the same as
-     *   invoking <code>set(URL_PACKAGE_PREFIXES, urlPackagePrefixes)</code>.
-     * </p>
-     *
-     * @param      urlPackagePrefixes
-     *                 the new URL to the list of package prefixes to use.
-     * @see        #getURLPackagePrefixes()
-     */
-    public void setURLPackagePrefixes(final String urlPackagePrefixes);
+    String getUserName();
 }

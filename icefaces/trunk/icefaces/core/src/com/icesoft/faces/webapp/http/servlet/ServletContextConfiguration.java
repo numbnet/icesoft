@@ -41,7 +41,11 @@ public class ServletContextConfiguration extends Configuration {
     private final String name;
     private ServletContext context;
 
-    public ServletContextConfiguration(String prefix, ServletContext context) {
+    public ServletContextConfiguration(final ServletContext context) {
+        this(null, context);
+    }
+
+    public ServletContextConfiguration(final String prefix, final ServletContext context) {
         this.name = prefix;
         this.context = context;
     }
@@ -84,6 +88,6 @@ public class ServletContextConfiguration extends Configuration {
     }
 
     private String postfixWith(String child) {
-        return name + '.' + child;
+        return (name == null || name.trim().length() == 0) ? child : name + '.' + child;
     }
 }
