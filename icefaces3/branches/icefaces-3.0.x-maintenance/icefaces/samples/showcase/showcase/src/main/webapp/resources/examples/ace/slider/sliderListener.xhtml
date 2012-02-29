@@ -32,11 +32,11 @@
     <ui:param name="tldResources" value="#{sliderEntryResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <ace:panel>
                 <h:panelGrid id="exampleHolder" styleClass="centeredPanelGridWithBorderSpacing">
                     <h:panelGrid  style="margin-left: auto; margin-right: auto; height: 150px; width: 150px;">
-                        <h:graphicImage value="#{sliderListener.image.path}" alt="#{sliderListener.image.description}"/>
+                        <h:graphicImage id="img" value="#{sliderListener.image.path}" alt="#{sliderListener.image.description}"/>
                    </h:panelGrid>
                     <h:panelGrid  styleClass="centeredPanelGridWithBorderSpacing" columns="3">
                         <h:outputText value="OFF" style="font-weight: bolder;"/>
