@@ -46,10 +46,17 @@ public class DialogRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         Dialog dialog = (Dialog) component;
+        String clientId = dialog.getClientId(context);
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId + "_container", null);
 
         encodeMarkup(context, dialog);
         encodeScript(context, dialog);
+
+        writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, Dialog dialog) throws IOException {
