@@ -56,4 +56,4 @@ public class AnimationBean extends ComponentExampleImpl<AnimationBean> implement
         super(AnimationBean.class);
     }
     
-}
+    }

@@ -42,9 +42,9 @@
         </h:form>
     
         <h:form>
-            <ice:dataTable value="#{tableData.cars}"
+            <ice:dataTable value="#{dataTableClient.cars}"
                            var="car"
-                           rows="#{tableData.defaultRows}"
+                           rows="#{dataTableClient.defaultRows}"
                            resizable="true"
                            clientOnly="#{dataTableClient.enable}"
                            width="100%" cellspacing="1" cellpadding="5"

@@ -14,6 +14,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
+import java.util.ArrayList;
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 
 /**
  * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
@@ -58,9 +60,11 @@ import java.io.Serializable;
 @CustomScoped(value = "#{window}")
 public class DataTableFind extends ComponentExampleImpl<DataTableFind> implements Serializable {
     public static final String BEAN_NAME = "dataTableFind";
+    private ArrayList<Car> cars;
 
     public DataTableFind() {
         super(DataTableFind.class);
+        cars = new ArrayList<Car>(DataTableData.getDefaultData());
     }
 
     public String selectedEffectType = "default";
@@ -87,44 +91,6 @@ public class DataTableFind extends ComponentExampleImpl<DataTableFind> implement
     public final SelectItem[] EFFECT_TYPES = {new SelectItem("none", "None"),
             new SelectItem("default", "Default (Highlight)"),
             new SelectItem("pulsate", "Pulsate")};
-
-
-    public SelectItem[] getSEARCH_MODES() {
-        return SEARCH_MODES;
-    }
-
-    public String getSelectedSearchMode() {
-        return selectedSearchMode;
-    }
-
-    public void setSelectedSearchMode(String selectedSearchMode) {
-        this.selectedSearchMode = selectedSearchMode;
-    }
-
-    public String[] getSelectedColumns() {
-        return selectedColumns;
-    }
-
-    public void setSelectedColumns(String[] selectedColumns) {
-        this.selectedColumns = selectedColumns;
-    }
-
-    public SelectItem[] getCOLUMNS() {
-        return COLUMNS;
-    }
-
-    public SelectItem[] getEFFECT_TYPES() {
-        return EFFECT_TYPES;
-    }
-
-    public String getSelectedEffectType() {
-        return selectedEffectType;
-    }
-
-    public void setSelectedEffectType(String selectedEffectType) {
-        this.selectedEffectType = selectedEffectType;
-    }
-
 
     public void find(javax.faces.event.ActionEvent e) {
         HtmlDataTable.SearchType type = null;
@@ -161,27 +127,22 @@ public class DataTableFind extends ComponentExampleImpl<DataTableFind> implement
         lastFoundIndex = -1;
     }
 
-    public String getSearchQuery() {
-        return searchQuery;
-    }
-
-    public void setSearchQuery(String searchQuery) {
-        this.searchQuery = searchQuery;
-    }
-
-    public HtmlDataTable getIceTable() {
-        return iceTable;
-    }
-
-    public void setIceTable(HtmlDataTable iceTable) {
-        this.iceTable = iceTable;
-    }
-
-    public boolean isCaseSensitive() {
-        return caseSensitive;
-    }
-
-    public void setCaseSensitive(boolean caseSensitive) {
-        this.caseSensitive = caseSensitive;
-    }
+    public String getSearchQuery() {return searchQuery;}
+    public HtmlDataTable getIceTable() {return iceTable;}
+    public boolean isCaseSensitive() {return caseSensitive;}
+    public SelectItem[] getSEARCH_MODES() {return SEARCH_MODES;}
+    public String getSelectedSearchMode() {return selectedSearchMode;}
+    public String[] getSelectedColumns() {return selectedColumns;}
+    public SelectItem[] getCOLUMNS() {return COLUMNS;}
+    public SelectItem[] getEFFECT_TYPES() {return EFFECT_TYPES;}
+    public String getSelectedEffectType() {return selectedEffectType;}
+    public ArrayList<Car> getCars() {return cars; }
+    
+    
+    public void setSelectedSearchMode(String selectedSearchMode) {this.selectedSearchMode = selectedSearchMode;}
+    public void setSelectedColumns(String[] selectedColumns) {this.selectedColumns = selectedColumns;}
+    public void setSelectedEffectType(String selectedEffectType) {this.selectedEffectType = selectedEffectType;}
+    public void setIceTable(HtmlDataTable iceTable) {this.iceTable = iceTable;}
+    public void setCaseSensitive(boolean caseSensitive) {this.caseSensitive = caseSensitive;}
+    public void setSearchQuery(String searchQuery) {this.searchQuery = searchQuery;}
 }

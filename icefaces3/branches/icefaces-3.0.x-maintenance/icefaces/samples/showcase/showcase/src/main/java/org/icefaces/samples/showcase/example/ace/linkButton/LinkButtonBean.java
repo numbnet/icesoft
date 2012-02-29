@@ -29,8 +29,8 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet.ImageInfo;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
 
 @ComponentExample(
         title = "example.ace.linkButton.title",
@@ -70,7 +70,7 @@ public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean> impleme
     public LinkButtonBean() {
         super(LinkButtonBean.class);
         staticNavigation  = "showcase.jsf?grp=aceMenu&exp=pushButton";
-        currentImage = ImageSet.getRandomImage();
+        currentImage = ImageSet.getNextImage(currentImage);
     }
     
     public String executeAction() {
@@ -80,7 +80,7 @@ public class LinkButtonBean extends ComponentExampleImpl<LinkButtonBean> impleme
     
     public void executeListener(ActionEvent event) 
     {
-        currentImage = ImageSet.getRandomImage();
+        currentImage = ImageSet.getNextImage(currentImage);
     }
     
     public ImageInfo getCurrentImage() {

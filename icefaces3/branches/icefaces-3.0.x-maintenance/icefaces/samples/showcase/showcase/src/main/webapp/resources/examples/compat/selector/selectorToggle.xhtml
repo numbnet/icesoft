@@ -44,9 +44,10 @@
         </h:form>
         
         <h:form>
-            <ice:dataTable value="#{selectorToggle.data}"
+            <ice:dataTable id="dataTable"
+                           value="#{selectorToggle.data}"
                            var="car"
-                           rows="#{tableData.defaultRows}"
+                           rows="#{selector.rows}"
                            width="100%" cellspacing="1" cellpadding="5">
                 <ice:column>
                     <ice:rowSelector value="#{car.selected}"
@@ -55,7 +56,7 @@
                     <f:facet name="header">
                         <ice:outputText value="ID"/>
                     </f:facet>
-                    <ice:outputText value="#{car.id}"/>
+                    <ice:outputText/>
                 </ice:column>
                 <ice:column>
                     <f:facet name="header">

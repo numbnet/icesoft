@@ -44,7 +44,7 @@
         <h:form>
             <ice:dataTable value="#{selectorPre.data}"
                            var="car"
-                           rows="#{tableData.defaultRows}"
+                           rows="#{selector.rows}"
                            width="100%" cellspacing="1" cellpadding="5">
                 <ice:column>
                     <ice:rowSelector value="#{car.selected}"

@@ -16,11 +16,9 @@
 
 package org.icefaces.samples.showcase.example.ace.file;
 
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet.ImageInfo;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
-import org.icefaces.samples.showcase.util.FacesUtils;
-
 import org.icefaces.ace.component.fileentry.*;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
@@ -30,7 +28,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.icefaces.samples.showcase.example.ace.accordionpanel.ImageSet;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet;
 
 @ComponentExample(
         title = "example.ace.fileentry.title",
@@ -124,6 +122,4 @@ public class FileEntryBean extends ComponentExampleImpl<FileEntryBean> implement
     public void setArrowImage(ImageInfo arrowImage) {
         this.arrowImage = arrowImage;
     }
-    
-    
 }

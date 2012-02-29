@@ -16,8 +16,10 @@
 
 package org.icefaces.samples.showcase.example.compat.dataTable;
 
+import org.icefaces.samples.showcase.dataGenerators.utilityClasses.DataTableData;
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -51,15 +53,21 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 @CustomScoped(value = "#{window}")
 public class DataTableResize extends ComponentExampleImpl<DataTableResize> implements Serializable {
 	
-	public static final String BEAN_NAME = "dataTableResize";
+    public static final String BEAN_NAME = "dataTableResize";
+    private boolean resizable = true;
+    private int rows = DataTableData.DEFAULT_ROWS;
+    private ArrayList<Car> cars;
 	
-	private boolean resizable = true;
+    public DataTableResize() {
+        super(DataTableResize.class);
+        rows = DataTableData.DEFAULT_ROWS;
+        cars = new ArrayList<Car>(DataTableData.getDefaultData());
+    }
 	
-	public DataTableResize() {
-		super(DataTableResize.class);
-	}
-	
-	public boolean getResizable() { return resizable; }
-	
-	public void setResizable(boolean resizable) { this.resizable = resizable; }
+    public boolean getResizable() { return resizable; }
+    public void setResizable(boolean resizable) { this.resizable = resizable; }
+    public ArrayList<Car> getCars() { return cars; }
+    public void setCars(ArrayList<Car> cars) { this.cars = cars;}
+    public int getRows() {return rows;}
+    public void setRows(int rows) {this.rows = rows;}
 }
