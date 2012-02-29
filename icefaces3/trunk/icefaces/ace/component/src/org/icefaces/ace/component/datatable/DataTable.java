@@ -865,28 +865,41 @@ public class DataTable extends DataTableBase {
 
     protected SortCriteria[] getSortCriteria() {
         ArrayList<Column> sortableColumns = new ArrayList<Column>();
-
-        ColumnGroup group = getColumnGroup("header");
-        if (group != null) {
-            for (UIComponent child : group.getChildren()) { // child is a Row
-                for (UIComponent headerRowChild : child.getChildren()) {
-                    if (headerRowChild instanceof Column) {
-                        Column c = (Column)headerRowChild;
-                        if (c.getSortPriority() != null) {
-                            sortableColumns.add(c);
-                        }
-                    }
-                }
+        ArrayList<Column> groupedColumns = new ArrayList<Column>();
+        int highestGroupedPriority = 0;
+        
+        for (Column c : getColumns(true)) {
+            Integer priority = c.getSortPriority();
+            if (c.getValueExpression("groupBy") != null) {
+                if (priority != null && priority > highestGroupedPriority)
+                    highestGroupedPriority = priority;
+                groupedColumns.add(c);
             }
-        } else {
-            for (Column c : getColumns()) {
-                if (c.getSortPriority() != null) {
-                    sortableColumns.add(c);
-                }
+            else if (priority != null && c.getValueExpression("groupBy") == null) {
+                sortableColumns.add(c);
             }
         }
+        
+        // Any grouped columns without priorities have arbitrary priorities following the highest grouped
+        for (Column c : groupedColumns) 
+            if (c.getSortPriority() == null)
+                c.setSortPriority(++highestGroupedPriority);                            
 
+        // Adjust sortable column priority to ensure group columns are placed together      
         Collections.sort(sortableColumns, new PriorityComparator());
+        Collections.sort(groupedColumns, new PriorityComparator());
+
+        // Give all grouped columns, now in order, the highest priorities
+        int groupedColumnSize = groupedColumns.size();
+        for (int i = 0; i < groupedColumnSize; i++)
+            groupedColumns.get(i).setSortPriority(i+1);
+
+        // Give all sortable columns, now in order, the priorities following the grouped columns
+        for (int i = 0; i < sortableColumns.size(); i++)
+            sortableColumns.get(i).setSortPriority(i+groupedColumnSize+1);
+
+        // Prepend grouped columns to sortable columns
+        sortableColumns.addAll(0,groupedColumns);
 
         SortCriteria[] criterias = new SortCriteria[sortableColumns.size()];
         int i = 0;
