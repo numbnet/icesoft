@@ -36,13 +36,13 @@ import org.icefaces.ace.component.celleditor.CellEditor;
 
 public class Column extends ColumnBase {
 	private static final String OPTIMIZED_PACKAGE = "org.icefaces.ace.component.";
+    private int currGroupLength;
 
     public Column() {
 		setRendererType(null);
 	}
 
     private CellEditor cellEditor = null;
-    private Object lastGroupValue = null;
     private FilterConstraint filterConstraint = null;
     
     private final static String STARTS_WITH_MATCH_MODE = "startsWith";
@@ -143,6 +143,6 @@ public class Column extends ColumnBase {
 
         dataTable.setRowIndex(currentRow);
         setCurrGroupLength(result);
-        return result;
+        return result;  //To change body of created methods use File | Settings | File Templates.
     }
 }
