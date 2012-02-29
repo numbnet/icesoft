@@ -26,6 +26,7 @@ import javax.el.ValueExpression;
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.application.ResourceDependencies;
+import javax.faces.model.DataModel;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -36,27 +37,14 @@ import org.icefaces.ace.component.celleditor.CellEditor;
 public class Column extends ColumnBase {
 	private static final String OPTIMIZED_PACKAGE = "org.icefaces.ace.component.";
 
-	public Column() {
+    public Column() {
 		setRendererType(null);
 	}
 
     private CellEditor cellEditor = null;
-
-
-    public CellEditor getCellEditor() {
-        if (cellEditor != null) return cellEditor;
-
-        for (UIComponent child : getChildren()) {
-            if (child instanceof CellEditor) {
-                cellEditor = (CellEditor)child;
-                return cellEditor;
-            }
-        }
-
-        return null;
-    }
-
+    private Object lastGroupValue = null;
     private FilterConstraint filterConstraint = null;
+    
     private final static String STARTS_WITH_MATCH_MODE = "startsWith";
     private final static String ENDS_WITH_MATCH_MODE = "endsWith";
     private final static String CONTAINS_MATCH_MODE = "contains";
@@ -84,6 +72,19 @@ public class Column extends ColumnBase {
 		return FacesContext.getCurrentInstance();
 	}
 
+    public CellEditor getCellEditor() {
+        if (cellEditor != null) return cellEditor;
+
+        for (UIComponent child : getChildren()) {
+            if (child instanceof CellEditor) {
+                cellEditor = (CellEditor)child;
+                return cellEditor;
+            }
+        }
+
+        return null;
+    }
+
     @Override
     public void setSortPriority(Integer i) {
         DataTable table = findParentTable(getFacesContext(), this);
@@ -99,5 +100,49 @@ public class Column extends ColumnBase {
             else parent = parent.getParent();
 
         return null;
+    }
+
+    public int getCurrGroupLength() {
+        return currGroupLength;
+    }
+
+    public void setCurrGroupLength(int currGroupLength) {
+        this.currGroupLength = currGroupLength;
+    }
+
+    public boolean isNextColumnGrouped() {
+        DataTable dataTable = findParentTable(getFacesContext(), this);
+        int currentRow = dataTable.getRowIndex();
+        Object currentValue = getGroupBy();
+
+        if (currentValue != null) {
+            dataTable.setRowIndex(currentRow + 1);
+            Object nextValue = getGroupBy();
+
+            dataTable.setRowIndex(currentRow);
+
+            return currentValue.equals(nextValue);
+        }
+
+        return false;
+    }
+
+    public int findCurrGroupLength() {
+        DataTable dataTable = findParentTable(getFacesContext(), this);
+
+        int result = 1; // isNextColumnGrouped == true is known
+        int currentRow = dataTable.getRowIndex();
+        boolean keepCounting = true;
+        Object currentValue = getGroupBy();
+
+        while (keepCounting) {
+            dataTable.setRowIndex(currentRow + result + 1);
+            if (currentValue.equals(getGroupBy())) result++;
+            else keepCounting = false;
+        }
+
+        dataTable.setRowIndex(currentRow);
+        setCurrGroupLength(result);
+        return result;
     }
 }

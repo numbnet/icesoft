@@ -57,6 +57,12 @@ public class ColumnMeta extends UIColumnMeta {
 //    private Object value;
 
     @Property(expression = Expression.VALUE_EXPRESSION,
+            tlddoc="Defines a value expression representing the value of this column per row when determining " +
+                   "if the values of this column in sibling rows are equal. If they are equal, span the rows with" +
+                   "a single column cell.")
+    private Object groupBy;
+
+    @Property(expression = Expression.VALUE_EXPRESSION,
             tlddoc="Defines a value expression representing the value of this column per row when using " +
                     "cell selection. Defining this attribute, or the \"value\" attribute, enables cell " +
                     "selection for this column when also enabled at the table level.")

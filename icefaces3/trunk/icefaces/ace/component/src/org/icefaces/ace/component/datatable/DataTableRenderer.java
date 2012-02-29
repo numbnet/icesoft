@@ -1155,33 +1155,42 @@ public class DataTableRenderer extends CoreRenderer {
         Column nextColumn = getNextColumn(column, columnSiblings);
         boolean isCurrStacked = isCurrColumnStacked(columnSiblings, column);
         boolean isNextStacked = (nextColumn != null) ? nextColumn.isStacked() : false;
+        boolean isCurrGrouped = column.getCurrGroupLength() > 0;
+        boolean isNextGrouped = isCurrGrouped ? false // No need to calculate next group if grouped 
+                    : column.isNextColumnGrouped();
 
-        if (!isCurrStacked) {
-            writer.startElement(HTML.TD_ELEM, null);
+        if (isCurrGrouped) {
+            column.setCurrGroupLength(column.getCurrGroupLength()-1);
+        } else {
+            if (!isCurrStacked) {
+                writer.startElement(HTML.TD_ELEM, null);
 
-            if (column.getStyle() != null) writer.writeAttribute(HTML.STYLE_ELEM, column.getStyle(), null);
+                if (column.getStyle() != null) writer.writeAttribute(HTML.STYLE_ELEM, column.getStyle(), null);
 
-            CellEditor editor = column.getCellEditor();
-            
-            String columnStyleClass = column.getStyleClass();
-            if (editor != null) {
-                columnStyleClass = columnStyleClass == null ? DataTableConstants.EDITABLE_COLUMN_CLASS : DataTableConstants.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
+                if (isNextGrouped) writer.writeAttribute(HTML.ROWSPAN_ATTR, column.findCurrGroupLength()+1, null);
+                
+                CellEditor editor = column.getCellEditor();
+
+                String columnStyleClass = column.getStyleClass();
+                if (editor != null) {
+                    columnStyleClass = columnStyleClass == null ? DataTableConstants.EDITABLE_COLUMN_CLASS : DataTableConstants.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
+                }
+                if (selected) columnStyleClass = columnStyleClass == null ? "ui-state-active ui-selected" : columnStyleClass + " ui-state-active ui-selected";
+                if (columnStyleClass != null) writer.writeAttribute(HTML.CLASS_ATTR, columnStyleClass, null);
+
+                if (resizable) writer.startElement(HTML.DIV_ELEM, null);
             }
-            if (selected) columnStyleClass = columnStyleClass == null ? "ui-state-active ui-selected" : columnStyleClass + " ui-state-active ui-selected";
-            if (columnStyleClass != null) writer.writeAttribute(HTML.CLASS_ATTR, columnStyleClass, null);
-            
-            if (resizable) writer.startElement(HTML.DIV_ELEM, null);
-        }
-        else {
-            writer.startElement("hr", null);
-            writer.endElement("hr");
-        }
+            else {
+                writer.startElement("hr", null);
+                writer.endElement("hr");
+            }
 
-        column.encodeAll(context);
+            column.encodeAll(context);
 
-        if (!isNextStacked) {
-            if (resizable) writer.endElement(HTML.DIV_ELEM);
-            writer.endElement(HTML.TD_ELEM);
+            if (!isNextStacked) {
+                if (resizable) writer.endElement(HTML.DIV_ELEM);
+                writer.endElement(HTML.TD_ELEM);
+            }
         }
     }
 
