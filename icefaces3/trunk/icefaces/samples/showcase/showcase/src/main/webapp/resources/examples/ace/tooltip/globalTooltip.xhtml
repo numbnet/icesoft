@@ -33,17 +33,17 @@
     <ui:param name="tldResources" value="#{tooltipResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
-            <ace:tooltip global="true"/>
+        <h:form id="form">
+            <ace:tooltip id="tooltip" global="true"/>
             
             <ace:panel footer="Mouseover each component to display its global tooltip." style="font-size: medium;">
                 <h:panelGrid styleClass="centeredPanelGridWithLeftJustifiedText">
-                <h:outputText value="ACE component library is and open-source, JSF-based component suite for Rich Internet Application (RIA) development."
+                <h:outputText id="outTxt" value="ACE component library is and open-source, JSF-based component suite for Rich Internet Application (RIA) development."
                                         title="Global tooltip applied to text"/>
-                <h:inputTextarea title="Global tooltip applied to text area"/>
-                <h:inputSecret title="Global tooltip applied to password"/>
-                <h:commandLink value="command link" title="Global tooltip applied to link"/>
-                <h:commandButton value="command button"  type="button" title="Global tooltip applied to button"/>
+                <h:inputTextarea id="txtArea" title="Global tooltip applied to text area"/>
+                <h:inputSecret id="inputSecrt" title="Global tooltip applied to password"/>
+                <h:commandLink id="cmdLnk" value="command link" title="Global tooltip applied to link"/>
+                <h:commandButton id="cmdBtn" value="command button"  type="button" title="Global tooltip applied to button"/>
                 </h:panelGrid>
             </ace:panel>
         </h:form>
