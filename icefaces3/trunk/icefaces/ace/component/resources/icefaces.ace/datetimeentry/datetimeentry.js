@@ -1079,13 +1079,14 @@ $.timepicker.version = "0.9.6";
 /**
  *  Calendar Widget
  */
-(function(jqf) {
+(function($) {
 ice.ace.Calendar = function(id, cfg) {
+    var behavior;
     this.id = id;
     this.cfg = cfg;
     this.jqId = ice.ace.escapeClientId(id);
     this.jqElId = this.cfg.popup ? this.jqId + '_input' : this.jqId + '_inline';
-    this.jq = jqf(this.jqElId);
+    this.jq = $(this.jqElId);
     this.cfg.formId = this.jq.parents('form:first').attr('id');
 
     //i18n and l7n
@@ -1101,7 +1102,7 @@ ice.ace.Calendar = function(id, cfg) {
 
     //Form field to use in inline mode
     if(!this.cfg.popup) {
-        this.cfg.altField = jqf(this.jqId + '_input');
+        this.cfg.altField = $(this.jqId + '_input');
     }
 
     var hasTimePicker = this.hasTimePicker();
@@ -1134,6 +1135,12 @@ ice.ace.Calendar = function(id, cfg) {
         if(this.cfg.popup && this.cfg.theme != false) {
             ice.ace.skinInput(this.jq);
         }
+        behavior = this.cfg && this.cfg.behaviors && this.cfg.behaviors.dateTextChange;
+        if (behavior) {
+            this.jq.change(function() {
+                ice.ace.ab(behavior);
+            });
+        }
     }
 };
 
@@ -1158,8 +1165,8 @@ ice.ace.Calendar.prototype.bindDateSelectListener = function() {
                 ice.ace.ab.call(_self, dateSelectBehavior);
         };
     }
-    
-}
+
+};
 
 ice.ace.Calendar.prototype.configureTimePicker = function() {
     var pattern = this.cfg.dateFormat,
