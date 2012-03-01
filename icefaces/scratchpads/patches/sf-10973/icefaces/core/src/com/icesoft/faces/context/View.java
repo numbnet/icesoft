@@ -18,6 +18,7 @@ import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.facelets.FaceletsUIDebug;
 import com.icesoft.util.SeamUtilities;
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -210,12 +211,16 @@ public class View implements CommandQueue {
 
     public void dispose() {
         try {
-            acquireLifecycleLock();
-            dispose.run();
-            ContextEventRepeater.viewNumberDisposed(
-                    facesContext.getExternalContext().getSession(false),
-                    sessionID,
-                    Integer.parseInt(viewIdentifier));
+            if (!lifecycleLock.isHeldByCurrentThread()) {
+                lifecycleLock.tryLock(30, TimeUnit.SECONDS);
+                dispose.run();
+                ContextEventRepeater.viewNumberDisposed(
+                        facesContext.getExternalContext().getSession(false),
+                        sessionID,
+                        Integer.parseInt(viewIdentifier));
+            }
+        } catch (InterruptedException e) {
+            //do nothing
         } finally {
             releaseLifecycleLockUnconditionally();
         }
