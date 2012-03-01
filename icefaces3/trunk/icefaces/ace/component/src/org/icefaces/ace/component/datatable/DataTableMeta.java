@@ -303,6 +303,8 @@ public class DataTableMeta extends UIDataMeta {
             "from the app via a value binding.")
     private String filterValue;
 
+    @Property(tlddoc="Enable to display all members of groups (as defined by ace:column groupBy) that contain a matching row during filtering.")
+    private boolean groupedFilterResults;
 
 
 

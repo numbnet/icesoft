@@ -36,6 +36,7 @@
         <h:form>
            <ace:dataTable id="carTable"
                           value="#{dataTableSort.carsData}"
+                          groupedFilterResults="true"
                           var="car">
                <ace:column headerText="ID" sortBy="#{car.id}">
                     <h:outputText value="#{car.id}"/>
@@ -46,7 +47,7 @@
                 <ace:column headerText="Chassis" sortBy="#{car.chassis}" groupBy="#{car.chassis}">
                     <h:outputText value="#{car.chassis}"/>
                 </ace:column>
-                <ace:column headerText="Weight (lbs)" sortBy="#{car.weight}">
+                <ace:column headerText="Weight (lbs)" sortBy="#{car.weight}" filterBy="#{car.weight}">
                     <h:outputText value="#{car.weight}"/>
                 </ace:column>
                 <ace:column headerText="Accel" sortBy="#{car.acceleration}" groupBy="#{car.acceleration}">
