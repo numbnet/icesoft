@@ -81,31 +81,14 @@ public class EnvUtils {
     private static String[] DEFAULT_TEMPLATE = new String[]{RESOURCE_PREFIX, ".jsf"};
 
     //Use reflection to identify the JSF implementation.
+    private static boolean isImplTested = false;
+
     private static boolean isMojarra = false;
-    private static Class MojarraClass;
     private static final String MOJARRA_STATE_SAVING_MARKER = "~com.sun.faces.saveStateFieldMarker~";
 
-    static {
-        try {
-            MojarraClass = Class.forName("com.sun.faces.context.FacesContextImpl");
-            isMojarra = true;
-        } catch (Throwable t) {
-            log.log(Level.FINE, "Mojarra is not available: ", t);
-        }
-    }
 
     private static boolean isMyFaces = false;
-    private static Class MyFacesClass;
     private static final String MYFACES_STATE_SAVING_MARKER = "~org.apache.myfaces.saveStateFieldMarker~";
-
-    static {
-        try {
-            MyFacesClass = Class.forName("org.apache.myfaces.context.servlet.FacesContextImpl");
-            isMyFaces = true;
-        } catch (Throwable t) {
-            log.log(Level.FINE, "MyFaces is not available: ", t);
-        }
-    }
 
     private static String stateMarker;
 
@@ -587,11 +570,27 @@ public class EnvUtils {
     }
 
     public static boolean isMojarra() {
+        testImpl();
         return isMojarra;
     }
 
     public static boolean isMyFaces() {
+        testImpl();
         return isMyFaces;
+    }
+
+    private static void testImpl()  {
+        if (!isImplTested)  {
+            String implName = FacesContext.getCurrentInstance()
+                    .getClass().getName();
+            if (implName.startsWith("com.sun"))  {
+                isMojarra = true;
+                isImplTested = true;
+            } else if (implName.startsWith("org.apache"))  {
+                isMyFaces = true;
+                isImplTested = true;
+            }
+        }
     }
 
     public static String getStateMarker() {
