@@ -83,7 +83,7 @@ public class DataTable extends DataTableBase {
     private Map<String, Column> filterMap;
     private TableConfigPanel panel;
     private RowStateMap stateMap;
-    private DataModel model;
+    private DataModel model = null;
 
     static {
         try {
@@ -1066,7 +1066,6 @@ public class DataTable extends DataTableBase {
             setModel(null);
 
             DataModel model = getDataModel();
-            TreeDataModel treeModel = hasTreeDataModel() ? (TreeDataModel)model : null;
             String rowVar = getVar();
             String rowStateVar = getRowStateVar();
 
@@ -1076,21 +1075,103 @@ public class DataTable extends DataTableBase {
             int index = 0;
 
             // UIData Iteration
-            model.setRowIndex(index);
+            setRowIndex(index);
             while (model.isRowAvailable()) {
-
                 Object rowData = model.getRowData();
                 RowState rowState = getStateMap().get(rowData);
 
                 if (rowVar != null) context.getExternalContext().getRequestMap().put(rowVar, rowData);
                 context.getExternalContext().getRequestMap().put(rowStateVar, rowState);
 
-                if  (filterSet.evaluate(rowData)) {
-                    if (treeModel != null) filteredData.add(treeModel.getRowEntry());
-                    else filteredData.add(model.getRowData());
+                if  (filterSet.evaluate(rowData)) {                    
+                    // If grouped filter results enabled
+                    if (isGroupedFilterResults()) {
+                        int currentIndex = index;
+                        int searchIndex;
+                        List<Column> columns = getColumns();
+                        List<Object> groupMembers = new ArrayList<Object>();
+                        List<Object> previousGroupMembers = new ArrayList<Object>();
+                        List<Object> followingGroupMembers = new ArrayList<Object>();
+                        Object[] currentValues = new Object[columns.size()];
+                        
+                        // Gather current groupBy vals
+                        for (int i = 0; i < columns.size(); i++) {
+                            currentValues[i] = columns.get(i).getGroupBy();
+                        }
+                        
+                        // Get all previous members of group, stopping if previously
+                        // added to result set by a previous, different group match
+                        int filteredDataSize = filteredData.size();
+                        Object lastFoundRow = filteredDataSize > 1 ? filteredData.get(filteredDataSize - 1) : null;
+                        boolean searching = true;
+                        searchIndex = index - 1;                    
+                        search : while (searching == true) {
+                            boolean matchFound = false;
+    
+                            setRowIndex(searchIndex);
+                            
+                            if (model.isRowAvailable())
+                            for (int i = 0; i < columns.size(); i++) {
+                                Column column = columns.get(i);    
+                                if (column.getValueExpression("groupBy") != null) {
+                                    Object searchValue = column.getGroupBy();
+                                    if (searchValue == currentValues[i]) {
+                                        matchFound = true;
+                                        Object searchObject = model.getRowData();
+                                        if (!searchObject.equals(lastFoundRow))
+                                            previousGroupMembers.add(searchObject);
+                                        else break search;
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            if (matchFound == false) break;
+                            searchIndex--;
+                        }
+    
+                        // Append current row to previous group members
+                        Collections.reverse(previousGroupMembers);
+                        groupMembers.addAll(previousGroupMembers);
+                        groupMembers.add(rowData);
+    
+                        // Get all following members of group                        
+                        searching = true;
+                        searchIndex = index + 1;
+                        while (searching == true) {
+                            boolean matchFound = false;
+
+                            setRowIndex(searchIndex);
+
+                            if (model.isRowAvailable())
+                                for (int i = 0; i < columns.size(); i++) {
+                                    Column column = columns.get(i);
+                                    if (column.getValueExpression("groupBy") != null) {
+                                        Object searchValue = column.getGroupBy();
+                                        if (searchValue == currentValues[i]) {
+                                            matchFound = true;
+                                            Object searchObject = model.getRowData();
+                                            followingGroupMembers.add(searchObject);                                            
+                                            break;
+                                        }
+                                    }
+                                }
+
+                            if (matchFound == false) break;
+                            searchIndex++;                            
+                        }
+
+                        // Append group members and add to filtered data.
+                        groupMembers.addAll(followingGroupMembers);
+                        filteredData.addAll(groupMembers);
+                        // Skip matched index to the last matched index.
+                        index = index + followingGroupMembers.size();
+                    } else {
+                        filteredData.add(rowData);
+                    }
                 }
                 index++;
-                model.setRowIndex(index);
+                setRowIndex(index);
             }
             // Iteration clean up
             setRowIndex(-1);
