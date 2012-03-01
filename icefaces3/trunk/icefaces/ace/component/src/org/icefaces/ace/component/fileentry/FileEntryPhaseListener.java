@@ -113,6 +113,7 @@ public class FileEntryPhaseListener implements PhaseListener {
         boolean isPortlet = EnvUtils.instanceofPortletRequest(requestObject);
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 //        System.out.println("FileEntryPhaseListener.beforePhase()  isMultipart: " + isMultipart);
+//        System.out.println("FileEntryPhaseListener.beforePhase()  isPortlet: " + isPortlet);
         if (isMultipart) {
             final ServletFileUpload uploader = new ServletFileUpload();
             Map<String, FileEntryResults> clientId2Results =
@@ -126,12 +127,18 @@ public class FileEntryPhaseListener implements PhaseListener {
                     new HashMap<String, List<String>>();
             byte[] buffer = new byte[16*1024];
             try {
+                String reqCharEnc = request.getCharacterEncoding();
                 FileItemIterator iter = uploader.getItemIterator(request);
                 while (iter.hasNext()) {
                     FileItemStream item = iter.next();
                     if (item.isFormField()) {
                         String name = item.getFieldName();
-                        String value = Streams.asString(item.openStream());
+                        String value;
+                        if(null != reqCharEnc){
+                            value = Streams.asString(item.openStream(), reqCharEnc);
+                        } else {
+                            value = Streams.asString(item.openStream());
+                        }
 //System.out.println("Field:  " + name + "  ->  " + value);
                         
                         List<String> parameterList = parameterListMap.get(name);
@@ -239,7 +246,7 @@ public class FileEntryPhaseListener implements PhaseListener {
             System.out.println("  RequestHeaderMap  " + key + " -> " + rhm.get(key));
         }
         */
-        
+
         /*
         System.out.println("About to list parameters");
         Enumeration<String> parameterNames = request.getParameterNames();
@@ -265,7 +272,7 @@ public class FileEntryPhaseListener implements PhaseListener {
             Constructor constructor = wrapperClass.getConstructor(paramClasses);
             wrapper = constructor.newInstance(requestObject,map);
         } catch (Exception e) {
-            throw new RuntimeException("problem getting FileUploadPortletRequestWrapper", e);
+            throw new RuntimeException("Problem getting FileUploadPortletRequestWrapper", e);
         }
         return wrapper;
     }
@@ -284,7 +291,7 @@ public class FileEntryPhaseListener implements PhaseListener {
             paramObj[0] = wrappedRequest;
             setPortletRequestMethod.invoke(bridgeContext,paramObj);
         } catch (Exception e) {
-            throw new RuntimeException("problem setting FileUploadPortletRequestWrapper", e);
+            throw new RuntimeException("Problem setting FileUploadPortletRequestWrapper", e);
         }
     }
 
