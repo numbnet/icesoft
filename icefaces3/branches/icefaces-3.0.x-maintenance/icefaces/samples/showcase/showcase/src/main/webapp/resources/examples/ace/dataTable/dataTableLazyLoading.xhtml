@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{dataTableResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
            <ace:dataTable id="carTable"
                                   value="#{dataTableLazyLoading.carsData}"
                                   var="car"
@@ -42,29 +42,29 @@
                                   rows="31"
                                   paginator="true"
                                   rowIndexVar="row">
-               <ace:column headerText="Row #" footerText="Row #">
-                    <h:outputText value="#{row}"/>
+               <ace:column id="rowNumber" headerText="Row #" footerText="Row #">
+                    <h:outputText id="rowNumberCell" value="#{row}"/>
                 </ace:column>
-                <ace:column headerText="ID" footerText="ID">
-                    <h:outputText value="#{car.id}"/>
+                <ace:column id="id" headerText="ID" footerText="ID">
+                    <h:outputText id="idCell" value="#{car.id}"/>
                 </ace:column>
-                <ace:column headerText="Name" footerText="Name">
-                    <h:outputText value="#{car.name}"/>
+                <ace:column id="name" headerText="Name" footerText="Name">
+                    <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
-                <ace:column headerText="Chassis" footerText="Chassis">
-                    <h:outputText value="#{car.chassis}"/>
+                <ace:column id="chassis" headerText="Chassis" footerText="Chassis">
+                    <h:outputText id="chassisCell" value="#{car.chassis}"/>
                 </ace:column>
-                <ace:column headerText="Weight (lbs)" footerText="Weight (lbs)">
-                    <h:outputText value="#{car.weight}"/>
+                <ace:column id="weight" headerText="Weight (lbs)" footerText="Weight (lbs)">
+                    <h:outputText id="weightCell" value="#{car.weight}"/>
                 </ace:column>
-                <ace:column headerText="Accel" footerText="Accel">
-                    <h:outputText value="#{car.acceleration}"/>
+                <ace:column id="acceleration" headerText="Accel" footerText="Accel">
+                    <h:outputText id="accelerationCell" value="#{car.acceleration}"/>
                 </ace:column>
-                <ace:column headerText="MPG" footerText="MPG">
-                    <h:outputText value="#{car.mpg}"/>
+                <ace:column id="mpg" headerText="MPG" footerText="MPG">
+                    <h:outputText id="mpgCell" value="#{car.mpg}"/>
                 </ace:column>
-                <ace:column headerText="Cost" footerText="Cost">
-                    <h:outputText value="#{car.cost}">
+                <ace:column id="cost" headerText="Cost" footerText="Cost">
+                    <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
                                          groupingUsed="true"
