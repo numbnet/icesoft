@@ -33,12 +33,12 @@
     <ui:param name="tldResources" value="#{dataTableResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <icecore:singleSubmit/>
             <h:panelGrid columns="3">
                 <h:outputLabel for="scrollingIn" value="Enable Scrolling:"/>
                 <h:selectBooleanCheckbox id="scrollingIn" value="#{dataTableScrolling.scrolling}"/>
-                <h:message for="scrollingIn"/>
+                <h:message id="scrollMsg" for="scrollingIn"/>
                 
                 <h:outputLabel for="heightIn" value="Table Height (in pixels):"/>
                 <h:inputText id="heightIn" value="#{dataTableScrolling.height}"
@@ -46,36 +46,36 @@
                              disabled="#{!dataTableScrolling.scrolling}">
                      <f:validateLongRange minimum="50" maximum="500"/>
                 </h:inputText>
-                <h:message for="heightIn"/>
+                <h:message id="heightMsg" for="heightIn"/>
             </h:panelGrid>
         </h:form>
     
-        <h:form>
+        <h:form id="form2">
            <ace:dataTable id="carTable"
                           value="#{dataTableSort.carsData}"
                           var="car"
                           scrollable="#{dataTableScrolling.scrolling}"
                           height="#{dataTableScrolling.height}">
                 <ace:column headerText="ID" footerText="ID">
-                    <h:outputText value="#{car.id}"/>
+                    <h:outputText id="idCell" value="#{car.id}"/>
                 </ace:column>
                 <ace:column headerText="Name" footerText="Name">
-                    <h:outputText value="#{car.name}"/>
+                    <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
                 <ace:column headerText="Chassis" footerText="Chassis">
-                    <h:outputText value="#{car.chassis}"/>
+                    <h:outputText id="chassisCell" value="#{car.chassis}"/>
                 </ace:column>
                 <ace:column headerText="Weight" footerText="Weight">
                     <h:outputText value="#{car.weight}lbs."/>
                 </ace:column>
                 <ace:column headerText="Accel" footerText="Accel">
-                    <h:outputText value="#{car.acceleration}"/>
+                    <h:outputText id="accelCell" value="#{car.acceleration}"/>
                 </ace:column>
                 <ace:column headerText="MPG" footerText="MPG">
-                    <h:outputText value="#{car.mpg}"/>
+                    <h:outputText id="mpgCell" value="#{car.mpg}"/>
                 </ace:column>
                 <ace:column headerText="Cost" footerText="Cost">
-                    <h:outputText value="#{car.cost}">
+                    <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
                                          groupingUsed="true"
@@ -86,7 +86,7 @@
             </ace:dataTable>
         </h:form>
 
-        <h:form style="padding-top: 1em;">
+        <h:form id="form3" style="padding-top: 1em;">
             <h:commandButton id="show" value="Show Table Popup" onclick="sampleDialog.show();" type="button"/>
 
             <ace:dialog id="dialog"
@@ -106,25 +106,25 @@
                                    scrollable="#{dataTableScrolling.scrolling}"
                                    height="#{dataTableScrolling.height}">
                         <ace:column headerText="ID" footerText="ID">
-                            <h:outputText value="#{car.id}"/>
+                            <h:outputText id="idCell" value="#{car.id}"/>
                         </ace:column>
                         <ace:column headerText="Name" footerText="Name">
-                            <h:outputText value="#{car.name}"/>
+                            <h:outputText id="nameCell" value="#{car.name}"/>
                         </ace:column>
                         <ace:column headerText="Chassis" footerText="Chassis">
-                            <h:outputText value="#{car.chassis}"/>
+                            <h:outputText id="chassisCell" value="#{car.chassis}"/>
                         </ace:column>
                         <ace:column headerText="Weight" footerText="Weight">
                             <h:outputText value="#{car.weight}lbs."/>
                         </ace:column>
                         <ace:column headerText="Accel" footerText="Accel">
-                            <h:outputText value="#{car.acceleration}"/>
+                            <h:outputText id="accelCell" value="#{car.acceleration}"/>
                         </ace:column>
                         <ace:column headerText="MPG" footerText="MPG">
-                            <h:outputText value="#{car.mpg}"/>
+                            <h:outputText id="mpgCell" value="#{car.mpg}"/>
                         </ace:column>
                         <ace:column headerText="Cost" footerText="Cost">
-                            <h:outputText value="#{car.cost}">
+                            <h:outputText id="costCell" value="#{car.cost}">
                                 <f:convertNumber type="currency"
                                                  currencySymbol="$"
                                                  groupingUsed="true"
