@@ -33,30 +33,30 @@
     <ui:param name="tldResources" value="#{dataTableResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
            <ace:dataTable id="carTableSingleRow"
                           value="#{dataTableSort.carsData}"
                           var="car">
-                <ace:column headerText="ID" filterBy="#{car.id}" filterMatchMode="contains">
-                    <h:outputText value="#{car.id}"/>
+                <ace:column id="car" headerText="ID" filterBy="#{car.id}" filterMatchMode="contains">
+                    <h:outputText id="carCell" value="#{car.id}"/>
                 </ace:column>
-                <ace:column headerText="Name" filterBy="#{car.name}" filterMatchMode="contains">
-                    <h:outputText value="#{car.name}"/>
+                <ace:column id="name" headerText="Name" filterBy="#{car.name}" filterMatchMode="contains">
+                    <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
-                <ace:column headerText="Chassis" filterBy="#{car.chassis}" filterMatchMode="contains">
-                    <h:outputText value="#{car.chassis}"/>
+                <ace:column id="chassis" headerText="Chassis" filterBy="#{car.chassis}" filterMatchMode="contains">
+                    <h:outputText id="chassisCell" value="#{car.chassis}"/>
                 </ace:column>
-                <ace:column headerText="Weight" filterBy="#{car.weight}" filterMatchMode="contains">
-                    <h:outputText value="#{car.weight}lbs."/>
+                <ace:column id="weight" headerText="Weight" filterBy="#{car.weight}" filterMatchMode="contains">
+                    <h:outputText id="weightCell" value="#{car.weight}lbs."/>
                 </ace:column>
-                <ace:column headerText="Accel" filterBy="#{car.acceleration}" filterMatchMode="contains">
-                    <h:outputText value="#{car.acceleration}"/>
+                <ace:column id="acceleration" headerText="Accel" filterBy="#{car.acceleration}" filterMatchMode="contains">
+                    <h:outputText id="accelerationCell" value="#{car.acceleration}"/>
                 </ace:column>
-                <ace:column headerText="MPG" filterBy="#{car.mpg}" filterMatchMode="contains">
-                    <h:outputText value="#{car.mpg}"/>
+                <ace:column id="mpg" headerText="MPG" filterBy="#{car.mpg}" filterMatchMode="contains">
+                    <h:outputText id="mpgCell" value="#{car.mpg}"/>
                 </ace:column>
-                <ace:column headerText="Cost" filterBy="#{car.cost}" filterMatchMode="contains">
-                    <h:outputText value="#{car.cost}">
+                <ace:column id="cost" headerText="Cost" filterBy="#{car.cost}" filterMatchMode="contains">
+                    <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
                                          groupingUsed="true"

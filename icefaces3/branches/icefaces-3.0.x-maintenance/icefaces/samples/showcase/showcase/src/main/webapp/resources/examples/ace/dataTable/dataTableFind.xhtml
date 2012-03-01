@@ -33,37 +33,37 @@
     <ui:param name="tldResources" value="#{compatComponentsResources.tldResources}"/>
     
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <h:panelGroup styleClass="componentBox">
                 <h:panelGroup style="border: 1px solid #CDCDCD;" >
                     <h:panelGrid columns="2" style="width:100%;">
                             <h:panelGrid columns="2">
                                 <h:outputText value="Search Query:" />
-                                <h:inputText value="#{aceDataTableFind.searchQuery}" />
+                                <h:inputText id="searchQuery" value="#{aceDataTableFind.searchQuery}" />
 
                                 <h:outputText value="Case Sensitive:" />
-                                <h:selectBooleanCheckbox value="#{aceDataTableFind.caseSensitive}" />
+                                <h:selectBooleanCheckbox id="caseSensitive" value="#{aceDataTableFind.caseSensitive}" />
 
                                 <h:outputText value="Columns To Search:" />
-                                <h:selectManyCheckbox value="#{aceDataTableFind.selectedColumns}" >
+                                <h:selectManyCheckbox id="selectedColumns" value="#{aceDataTableFind.selectedColumns}" >
                                     <f:selectItems value="#{aceDataTableFind.COLUMNS}"/>
                                 </h:selectManyCheckbox>
 
                                 <h:outputText value="Search Type:" />
-                                <h:selectOneRadio value="#{aceDataTableFind.selectedSearchMode}">
+                                <h:selectOneRadio id="selectedMode" value="#{aceDataTableFind.selectedSearchMode}">
                                     <f:selectItems value="#{aceDataTableFind.SEARCH_MODES}"/>
                                 </h:selectOneRadio>
 
                                 <h:outputText value="Effect To Use:" />
-                                <h:selectOneRadio value="#{aceDataTableFind.selectedEffectType}">
+                                <h:selectOneRadio id="selectedType" value="#{aceDataTableFind.selectedEffectType}">
                                     <f:selectItems value="#{aceDataTableFind.EFFECT_TYPES}"/>
                                 </h:selectOneRadio>
                             </h:panelGrid>
                             <h:panelGrid columns="1">
-                                <h:commandButton value="Find Next" actionListener="#{aceDataTableFind.find}" style="float:right;" />
-                                <h:commandButton value="Reset" actionListener="#{aceDataTableFind.reset}" style="float:right;" />
+                                <h:commandButton id="findNext" value="Find Next" actionListener="#{aceDataTableFind.find}" style="float:right;" />
+                                <h:commandButton id="reset" value="Reset" actionListener="#{aceDataTableFind.reset}" style="float:right;" />
                             </h:panelGrid>
-                            <h:messages />
+                            <h:messages id="msgs"/>
                     </h:panelGrid>
                 </h:panelGroup>
 
@@ -76,33 +76,33 @@
                                    paginator="true"
                                    binding="#{aceDataTableFind.iceTable}"
                                    style="width:100%">
-                        <ace:column>
+                        <ace:column id="id">
                             <f:facet name="header">ID</f:facet>
                             #{car.id}
                         </ace:column>
-                        <ace:column>
+                        <ace:column id="name">
                             <f:facet name="header">Name</f:facet>
                             #{car.name}
                         </ace:column>
-                        <ace:column>
+                        <ace:column id="chassis">
                             <f:facet name="header">Chassis</f:facet>
                             #{car.chassis}
                         </ace:column>
-                        <ace:column>
+                        <ace:column id="weight">
                             <f:facet name="header">Weight</f:facet>
                             #{car.weight}lbs.
                         </ace:column>
-                        <ace:column>
+                        <ace:column id="accel">
                             <f:facet name="header">Accel</f:facet>
                             #{car.acceleration}
                         </ace:column>
-                        <ace:column>
+                        <ace:column id="mpg">
                             <f:facet name="header">MPG</f:facet>
                             #{car.mpg}
                         </ace:column>
-                        <ace:column>
+                        <ace:column id="cost">
                             <f:facet name="header">Cost</f:facet>
-                            <h:outputText value="#{car.cost}">
+                            <h:outputText id="costCell" value="#{car.cost}">
                                 <f:convertNumber type="currency"
                                                  currencySymbol="$"
                                                  groupingUsed="true"
