@@ -686,7 +686,8 @@ public class DataTableRenderer extends CoreRenderer {
 
         Column nextColumn = getNextColumn(column, columnSiblings);
         boolean isCurrStacked = isCurrColumnStacked(columnSiblings, column);
-        boolean isNextStacked = (nextColumn != null) ? nextColumn.isStacked() : false;
+        boolean isNextStacked = (nextColumn == null) ? false
+                : (nextColumn.isRendered() && nextColumn.isStacked());
 
         if (!isCurrStacked) {
             String style = column.getStyle();
@@ -922,7 +923,8 @@ public class DataTableRenderer extends CoreRenderer {
 
         Column nextColumn = getNextColumn(column, columnSiblings);
         boolean isCurrStacked = isCurrColumnStacked(columnSiblings, column);
-        boolean isNextStacked = (nextColumn != null) ? nextColumn.isStacked() : false;
+        boolean isNextStacked = (nextColumn == null) ? false
+                : (nextColumn.isRendered() && nextColumn.isStacked());
 
         if (!isCurrStacked) {
             String style = column.getStyle();
@@ -1154,7 +1156,8 @@ public class DataTableRenderer extends CoreRenderer {
 
         Column nextColumn = getNextColumn(column, columnSiblings);
         boolean isCurrStacked = isCurrColumnStacked(columnSiblings, column);
-        boolean isNextStacked = (nextColumn != null) ? nextColumn.isStacked() : false;
+        boolean isNextStacked = (nextColumn == null) ? false
+                : (nextColumn.isRendered() && nextColumn.isStacked());
         boolean isCurrGrouped = column.getCurrGroupLength() > 0;
         boolean isNextGrouped = isCurrGrouped ? false // No need to calculate next group if grouped 
                     : column.isNextColumnGrouped();
