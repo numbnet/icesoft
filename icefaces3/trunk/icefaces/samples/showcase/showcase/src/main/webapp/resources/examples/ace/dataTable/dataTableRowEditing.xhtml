@@ -33,45 +33,45 @@
     <ui:param name="tldResources" value="#{dataTableResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
 
            <ace:dataTable id="carTable"
                                     value="#{dataTableRowEditing.cars}"
                                     var="car">
                
-                <ace:column headerText="Name">
+                <ace:column id="name" headerText="Name">
                     <ace:cellEditor>
                         <f:facet name="output">
-                            <h:outputText value="#{car.name}"/>
+                            <h:outputText id="nameCell" value="#{car.name}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <h:inputText value="#{car.name}"/>
+                            <h:inputText id="nameInput" value="#{car.name}"/>
                         </f:facet>
                     </ace:cellEditor>
                </ace:column>
-               <ace:column headerText="Chassis">
+               <ace:column id="chassis" headerText="Chassis">
                    <ace:cellEditor>
                         <f:facet name="output">
-                            <h:outputText value="#{car.chassis}"/>
+                            <h:outputText id="chassisCell" value="#{car.chassis}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <h:inputText value="#{car.chassis}"/>
+                            <h:inputText id="chassisInput" value="#{car.chassis}"/>
                         </f:facet>
                     </ace:cellEditor>
                </ace:column>
-               <ace:column headerText="Weight (lbs)">
+               <ace:column id="weight" headerText="Weight (lbs)">
                    <ace:cellEditor>
                         <f:facet name="output">
-                            <h:outputText value="#{car.weight}"/>
+                            <h:outputText id="weightCell" value="#{car.weight}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <h:inputText value="#{car.weight}"/>
+                            <h:inputText id="weightInput" value="#{car.weight}"/>
                         </f:facet>
                     </ace:cellEditor>
                </ace:column>
                
-               <ace:column headerText="Options">
-                   <ace:rowEditor/>
+               <ace:column id="options" headerText="Options">
+                   <ace:rowEditor id="editor"/>
                </ace:column>
             </ace:dataTable>
         </h:form>

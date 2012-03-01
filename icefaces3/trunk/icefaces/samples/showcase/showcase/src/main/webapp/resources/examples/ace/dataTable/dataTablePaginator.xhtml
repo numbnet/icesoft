@@ -33,12 +33,12 @@
     <ui:param name="tldResources" value="#{dataTableResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <icecore:singleSubmit/>
             <h:panelGrid columns="3">
                 <h:outputLabel for="paginatorIn" value="Enable Paginator:"/>
                 <h:selectBooleanCheckbox id="paginatorIn" value="#{dataTablePaginator.paginator}"/>
-                <h:message for="paginatorIn"/>
+                <h:message id="pagMsg" for="paginatorIn"/>
                 
                 <h:outputLabel for="positionIn" value="Paginator Position:"/>
                 <h:selectOneRadio id="positionIn" value="#{dataTablePaginator.position}"
@@ -46,7 +46,7 @@
                                   disabled="#{!dataTablePaginator.paginator}">
                       <f:selectItems value="#{dataTablePaginator.positionAvailable}"/>
                 </h:selectOneRadio>
-                <h:message for="positionIn"/>
+                <h:message id="posMsg" for="positionIn"/>
                 
                 <h:outputLabel for="rowsIn" value="Table Rows (1-30):"/>
                 <h:inputText id="rowsIn" value="#{dataTablePaginator.rows}"
@@ -54,7 +54,7 @@
                              disabled="#{!dataTablePaginator.paginator}">
                      <f:validateLongRange minimum="1" maximum="30"/>
                 </h:inputText>
-                <h:message for="rowsIn"/>
+                <h:message id="rowsMsg" for="rowsIn"/>
                 
                 <h:outputLabel for="pageIn" value="Selected Page (1-#{dataTablePaginator.startPageMaximum}):"
                                rendered="#{dataTablePaginator.startPageMaximum != 1}"/>
@@ -64,11 +64,11 @@
                              rendered="#{dataTablePaginator.startPageMaximum != 1}">
                      <f:validateLongRange minimum="1" maximum="#{dataTablePaginator.startPageMaximum}"/>
                 </h:inputText>
-                <h:message for="pageIn" rendered="#{dataTablePaginator.startPageMaximum != 1}"/>
+                <h:message id="pageMsg" for="pageIn" rendered="#{dataTablePaginator.startPageMaximum != 1}"/>
             </h:panelGrid>
         </h:form>
     
-        <h:form>
+        <h:form id="form2">
            <ace:dataTable id="carTable"
                           value="#{dataTableSort.carsData}"
                           var="car"
@@ -76,47 +76,47 @@
                           paginatorPosition="#{dataTablePaginator.position}"
                           page="#{dataTablePaginator.startPage}"
                           rows="#{dataTablePaginator.rows}">
-                <ace:column>
+                <ace:column id="id">
                     <f:facet name="header">
                        <h:outputText value="ID"/>
                     </f:facet>
-                    <h:outputText value="#{car.id}"/>
+                    <h:outputText id="idCell" value="#{car.id}"/>
                 </ace:column>
-                <ace:column>
+                <ace:column id="name">
                     <f:facet name="header">
                        <h:outputText value="Name"/>
                     </f:facet>
-                    <h:outputText value="#{car.name}"/>
+                    <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
-                <ace:column>
+                <ace:column id="chassis">
                     <f:facet name="header">
                        <h:outputText value="Chassis"/>
                     </f:facet>
-                    <h:outputText value="#{car.chassis}"/>
+                    <h:outputText id="chassisCell" value="#{car.chassis}"/>
                 </ace:column>
-                <ace:column>
+                <ace:column id="weight">
                     <f:facet name="header">
                        <h:outputText value="Weight"/>
                     </f:facet>
                     <h:outputText value="#{car.weight}lbs."/>
                 </ace:column>
-                <ace:column>
+                <ace:column id="accel">
                     <f:facet name="header">
                        <h:outputText value="Accel"/>
                     </f:facet>
-                    <h:outputText value="#{car.acceleration}"/>
+                    <h:outputText id="accelCell" value="#{car.acceleration}"/>
                 </ace:column>
-                <ace:column>
+                <ace:column id="mpg">
                     <f:facet name="header">
                        <h:outputText value="MPG"/>
                     </f:facet>
-                    <h:outputText value="#{car.mpg}"/>
+                    <h:outputText id="mpgCell" value="#{car.mpg}"/>
                 </ace:column>
-                <ace:column>
+                <ace:column id="cost">
                     <f:facet name="header">
                        <h:outputText value="Cost"/>
                     </f:facet>
-                    <h:outputText value="#{car.cost}">
+                    <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
                                          groupingUsed="true"

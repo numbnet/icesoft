@@ -44,26 +44,26 @@
                           rowUnselectListener="#{dataTableListener.deselectListener}">
                 <ace:ajax event="select" execute="@this listenerForm:eventLog" render="@this listenerForm:eventLog" />
                 
-                <ace:column headerText="ID">
-                    <h:outputText value="#{car.id}"/>
+                <ace:column id="id" headerText="ID">
+                    <h:outputText id="idCell" value="#{car.id}"/>
                 </ace:column>
-                <ace:column headerText="Name">
-                    <h:outputText value="#{car.name}"/>
+                <ace:column id="name" headerText="Name">
+                    <h:outputText id="nameCell" value="#{car.name}"/>
                 </ace:column>
-                <ace:column headerText="Chassis">
-                    <h:outputText value="#{car.chassis}"/>
+                <ace:column id="chassis" headerText="Chassis">
+                    <h:outputText id="chassisCell" value="#{car.chassis}"/>
                 </ace:column>
-                <ace:column headerText="Weight (lbs)">
-                    <h:outputText value="#{car.weight}"/>
+                <ace:column id="weight" headerText="Weight (lbs)">
+                    <h:outputText id="weightCell" value="#{car.weight}"/>
                 </ace:column>
-                <ace:column headerText="Accel">
-                    <h:outputText value="#{car.acceleration}"/>
+                <ace:column id="accel" headerText="Accel">
+                    <h:outputText id="accelCell" value="#{car.acceleration}"/>
                 </ace:column>
-                <ace:column headerText="MPG">
-                    <h:outputText value="#{car.mpg}"/>
+                <ace:column id="mpg" headerText="MPG">
+                    <h:outputText id="mpgCell" value="#{car.mpg}"/>
                 </ace:column>
-                <ace:column headerText="Cost">
-                    <h:outputText value="#{car.cost}">
+                <ace:column id="cost" headerText="Cost">
+                    <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
                                          groupingUsed="true"
@@ -79,7 +79,7 @@
                          style="border: 1px solid #CDCDCD; padding: 10px;"
                          width="100%" cellspacing="0" cellpadding="2"
                          rows="#{dataTableListener.eventSize}">
-                 <h:column>
+                 <h:column id="event">
                      <f:facet name="header">
                         Event Log <i>(most recent first)</i>
                      </f:facet>
