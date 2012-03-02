@@ -55,7 +55,7 @@ public class MaskedEntryMeta extends HtmlInputTextMeta {
 	@Property(tlddoc="Name of the widget variable to access client side api.")
     private String widgetVar;
 	
-	@Property(required=Required.yes, tlddoc="Masked input for separating input texts with given pattern. \nThese mask definitions can be used: \na - Represents an alpha character (A-Z,a-z) \n9 - Represents a numeric character (0-9) \n* - Represents an alphanumeric character (A-Z,a-z,0-9).")
+	@Property(required=Required.yes, tlddoc="Masked input for separating input texts with given pattern. \nThese mask definitions can be used: \na - Represents an alpha character (A-Z,a-z) \n9 - Represents a numeric character (0-9) \n* - Represents an alphanumeric character (A-Z,a-z,0-9). Anything listed after \"?\" within the mask is considered optional user input. Any character not in the definitions list will be automatically entered for the user as they type.")
 	private String mask;
 	
 	@Property(tlddoc="Separator and placeholder in input.")
@@ -78,9 +78,6 @@ public class MaskedEntryMeta extends HtmlInputTextMeta {
 
 	@Property(implementation = Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "Code describing the language used in the generated markup for this component.")
 	private String lang;
-
-	@Property(implementation = Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "The maximum number of characters that may be entered in this field.")
-	private int maxlength;
 
 	@Property(implementation = Implementation.EXISTS_IN_SUPERCLASS, tlddoc = "Javascript code executed when this element loses focus.")
 	private String onblur;
