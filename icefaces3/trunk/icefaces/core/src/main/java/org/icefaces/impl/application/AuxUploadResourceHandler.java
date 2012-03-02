@@ -32,8 +32,10 @@ import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.UUID;
+import java.util.Collection;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -111,7 +113,14 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
                 auxRequestMap = new HashMap();
             }
 
-            for (Part part : request.getParts()) {
+            Collection<Part> parts = new ArrayList();
+            try {
+                parts = request.getParts();
+            } catch (Exception e)  {
+                log.log(Level.WARNING, "Failed to get auxUpload Parts", e);
+            }
+
+            for (Part part : parts) {
                 String partType = part.getContentType();
                 String partName = part.getName();
                 if (null == partType)  {
@@ -129,7 +138,7 @@ public class AuxUploadResourceHandler extends ResourceHandlerWrapper  {
             session.setAttribute(AUX_REQ_MAP_KEY, auxRequestMap);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.log(Level.WARNING, "Failed to decode auxUpload Parts", e);
         }
     }
 
