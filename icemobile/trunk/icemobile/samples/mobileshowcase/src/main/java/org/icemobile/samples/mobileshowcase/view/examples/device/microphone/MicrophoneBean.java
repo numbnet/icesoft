@@ -81,8 +81,7 @@ public class MicrophoneBean extends ExampleImpl<MicrophoneBean> implements
     public static final String FILE_KEY = "file";
     public static final String CONTENT_TYPE_KEY = "contentType";
 
-    private static final String videoConvertCommand = FacesUtils.getFacesParameter(
-            "org.icemobile.audioConvertCommand");
+    private String videoConvertCommand; 
 
     // uploaded video will be stored as a resource.
     private Resource outputResource;
@@ -96,6 +95,8 @@ public class MicrophoneBean extends ExampleImpl<MicrophoneBean> implements
 
     public MicrophoneBean() {
         super(MicrophoneBean.class);
+        videoConvertCommand = FacesUtils.getFacesParameter(
+            "org.icemobile.audioConvertCommand");
     }
 
     public void processUploadedAudio(ActionEvent event) {

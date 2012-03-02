@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.Formatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,6 +52,7 @@ import java.util.logging.Logger;
  */
 public class Utils {
     static String TEMP_DIR = "javax.servlet.context.tmpdir";
+    static String COOKIE_FORMAT = "org.icemobile.cookieformat";
 
     public enum DeviceType {
         android,
@@ -532,11 +534,24 @@ public class Utils {
         String script = "window.location='icemobile://c=" +
             URLEncoder.encode(fullCommand) + 
             "&r='+escape(window.location)+'&" +
-            "JSESSIONID=" + sessionID + "&u=" + 
+            "JSESSIONID=" + getSessionIdCookie(facesContext) + "&u=" + 
             URLEncoder.encode(uploadURL) + "'";
         return script;
     }
 
+    public static String getSessionIdCookie(FacesContext facesContext)  {
+        String sessionID = EnvUtils.getSafeSession(facesContext).getId();
+        String cookieFormat = (String) facesContext.getExternalContext()
+            .getInitParameterMap().get(COOKIE_FORMAT);
+        if (null == cookieFormat)  {
+            //if we have more of these, implement EnvUtils for ICEmobile
+            return sessionID;
+        }
+        StringBuilder out = new StringBuilder();
+        Formatter cookieFormatter = new Formatter(out);
+        cookieFormatter.format(cookieFormat, sessionID);
+        return out.toString();
+    }
 
     /**
      * Copy an InputStream to an OutputStream
