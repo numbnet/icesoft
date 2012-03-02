@@ -15,7 +15,7 @@
   -->
 
 <project name="common">
-
+    <property file="../../build.properties"/>
     <property name="icefaces.base.dir" location="../.."/>
     <property name="samples.dist.dir" location="${icefaces.base.dir}/samples/dist"/>
     <property name="lib.dir" location="${icefaces.base.dir}/lib"/>
@@ -44,7 +44,6 @@
     <property name="classes.dir" location="${build.dir}/classes"/>
     <property name="dist.dir" location="${build.dir}/dist"/>
 
-    <property name="icepush.lib.name" value="icepush" />
     <property name="icefaces.lib.name" value="icefaces" />
     <property name="icefaces-ace.lib.name" value="icefaces-ace" />
     <property name="icefaces-compat.lib.name" value="icefaces-compat" />
