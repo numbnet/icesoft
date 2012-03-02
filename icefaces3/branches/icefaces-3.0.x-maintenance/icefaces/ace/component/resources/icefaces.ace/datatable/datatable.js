@@ -606,11 +606,11 @@ ice.ace.DataTable.prototype.setupResizableColumns = function() {
 }
 
 ice.ace.DataTable.prototype.resizeScrolling = function() {
-    var headerTable = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header table'),
-        footerTable = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer table'),
-        bodyTable = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body table'),
-        dupeHead = bodyTable.find('thead'),
-        dupeFoot = bodyTable.find('tfoot');
+    var headerTable = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header:first > table'),
+        footerTable = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer:first > table'),
+        bodyTable = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first > table'),
+        dupeHead = bodyTable.find('thead:first'),
+        dupeFoot = bodyTable.find('tfoot:first');
 
     // Reattempt resize in 300ms if a parent of mine is currently hidden,
     // sizing will not be accurate if the table is not being displayed, like at tabset load.
@@ -622,15 +622,15 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         if (dupeHeadSingleCols.size() == 0)
             dupeHeadSingleCols = dupeHead.find('th[colspan="1"] .ui-header-column:first-child').get().reverse();
 
-        var realHeadSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header th:not([colspan]) .ui-header-column:first-child').get().reverse();
+        var realHeadSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header:first th:not([colspan]) .ui-header-column:first-child').get().reverse();
         if (realHeadSingleCols.size() == 0)
-            realHeadSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header th[colspan="1"] .ui-header-column:first-child').get().reverse();
+            realHeadSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header:first th[colspan="1"] .ui-header-column:first-child').get().reverse();
 
-        var realFootSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer td:not([colspan]) .ui-footer-column:first-child').get().reverse();
+        var realFootSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer:first td:not([colspan]) .ui-footer-column:first-child').get().reverse();
         if (realFootSingleCols.size() == 0)
-            realFootSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer td[colspan="1"] .ui-footer-column:first-child').get().reverse();
+            realFootSingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer:first td[colspan="1"] .ui-footer-column:first-child').get().reverse();
 
-        var bodySingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body tbody tr:first td div:first-child').get().reverse();
+        var bodySingleCols = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first tbody tr:first td div:first-child').get().reverse();
 
 
         // Reset fixed sizing if set by previous sizing.
