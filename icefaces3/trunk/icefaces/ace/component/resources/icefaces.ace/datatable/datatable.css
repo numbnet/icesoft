@@ -231,7 +231,11 @@
     vertical-align: bottom;
 }
 
-.ui-datatable .ui-row-toggler,.ui-datatable .ui-row-panel-toggler,.ui-datatable tr.ui-state-highlight, .ui-datatable tr.ui-state-active {
+.ui-datatable .ui-row-toggler,
+.ui-datatable .ui-row-panel-toggler,
+.ui-datatable .ui-row-editor .ui-icon,
+.ui-datatable tr.ui-state-highlight,
+.ui-datatable tr.ui-state-active {
     cursor:pointer;
 }
 .ui-datatable .ui-row-toggler, .ui-datatable .ui-row-panel-toggler, .ui-datatable .ui-icon-pencil, .ui-datatable .ui-icon-check, .ui-datatable .ui-icon-close {
