@@ -97,7 +97,8 @@ public class DialogRenderer extends CoreRenderer {
 //        if(dialog.isAppendToBody()) jb.entry("appendToBody", true);
         if(!dialog.isClosable()) jb.entry("closable", false);
         if(!dialog.isShowHeader()) jb.entry("showHeader", false);
-
+        String headerText = dialog.getHeader();
+        jb.entryNonNullValue("title", headerText);
         //Position
         String position = dialog.getPosition();
         if (position != null) {
@@ -134,7 +135,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_main", null);
         writer.writeAttribute("style", "display:none", null);
         if (headerText != null) {
-            writer.writeAttribute("title", headerText, null);
+//            writer.writeAttribute("title", headerText, null);
         }
 
         renderChildren(facesContext, dialog);
