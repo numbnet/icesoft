@@ -45,7 +45,6 @@
     <property name="dist.dir" location="${build.dir}/dist"/>
 
     <property name="icepush.lib.name" value="icepush" />
-    <property name="icepush-ee.lib.name" value="icepush-ee" />
     <property name="icefaces.lib.name" value="icefaces" />
     <property name="icefaces-ace.lib.name" value="icefaces-ace" />
     <property name="icefaces-compat.lib.name" value="icefaces-compat" />
@@ -59,7 +58,7 @@
             <exclude name="javax.faces.jar"         unless="jsf"/>
         </patternset>
 
-        <patternset id="lib.distribute.ice" includes="${icefaces.lib.name}.jar ${icepush.lib.name}.jar ${icepush-ee.lib.name}.jar" >
+        <patternset id="lib.distribute.ice" includes="${icefaces.lib.name}.jar ${icepush.lib.name}.jar" >
             <exclude name="${icefaces.lib.name}.jar"        if="no-icefaces"/>
 
             <exclude name="${icefaces-ace.lib.name}.jar"    if="no-icefaces"/>
