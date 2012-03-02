@@ -51,7 +51,7 @@ public class DialogRenderer extends CoreRenderer {
         String clientId = dialog.getClientId(context);
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", clientId + "_container", null);
+        writer.writeAttribute("id", clientId, null);
 
         encodeMarkup(context, dialog);
         encodeScript(context, dialog);
@@ -71,7 +71,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.write(resolveWidgetVar(dialog) + " = new ");
 		JSONBuilder jb = JSONBuilder.create();
 		jb.beginFunction("ice.ace.Dialog")
-			.item(clientId)
+			.item(clientId + "_main")
 			.beginMap()
 				.entry("isVisible", dialog.isVisible())
 				.entry("minHeight", dialog.getMinHeight());
@@ -131,7 +131,7 @@ public class DialogRenderer extends CoreRenderer {
         String headerText = dialog.getHeader();
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("id", clientId + "_main", null);
         writer.writeAttribute("style", "display:none", null);
         if (headerText != null) {
             writer.writeAttribute("title", headerText, null);
