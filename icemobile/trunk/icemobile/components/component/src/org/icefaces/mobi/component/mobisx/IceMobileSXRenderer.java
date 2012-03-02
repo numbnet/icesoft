@@ -62,7 +62,7 @@ public class IceMobileSXRenderer extends Renderer {
             }
             writer.writeAttribute(HTML.VALUE_ATTR, value, HTML.VALUE_ATTR);
 
-            String sessionIdParam = EnvUtils.getSafeSession(facesContext).getId();
+            String sessionIdParam = Utils.getSessionIdCookie(facesContext);
             String uploadURL = AuxUploadSetup.getInstance().getUploadURL();
             StringBuilder sb = new StringBuilder("mobi.registerAuxUpload('");
             sb.append(sessionIdParam).append("','").append(uploadURL).append("');");
