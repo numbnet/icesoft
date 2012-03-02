@@ -61,6 +61,12 @@ public class ColumnMeta extends UIColumnMeta {
             "Comparator<Object> object that takes the sortBy values of this column as input.")
 	private Comparator sortFunction;
 
+    @Property(expression = Expression.VALUE_EXPRESSION,
+            tlddoc="Defines a value expression representing the value of this column per row when determining " +
+                   "if the values of this column in sibling rows are equal. If they are equal, span the rows with" +
+                   "a single column cell.")
+    private Object groupBy;
+
 	@Property(expression = Expression.VALUE_EXPRESSION,
             tlddoc="Defines a ValueExpression of the value of this row to use when filtering this column. " +
                    "Setting this variable for a column enables filtering.")
