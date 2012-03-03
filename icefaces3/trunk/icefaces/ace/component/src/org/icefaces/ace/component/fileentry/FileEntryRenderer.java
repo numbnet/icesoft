@@ -47,6 +47,10 @@ public class FileEntryRenderer extends Renderer {
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", clientId, "clientId");
         boolean disabled = fileEntry.isDisabled();
+        /* Ideally we'd add these styles, but Firefox makes the Browse button flow outside
+         * of the widget bordering.
+         * ui-widget ui-widget-content ui-corner-all
+         */
         Utils.writeConcatenatedStyleClasses(writer, "ice-file-entry",
             fileEntry.getStyleClass());
 		writer.writeAttribute("style", fileEntry.getStyle(), "style");
@@ -74,7 +78,7 @@ public class FileEntryRenderer extends Renderer {
 		writer.startElement("div", uiComponent);
 		writer.writeAttribute("class", "ui-progressbar ui-widget ui-widget-content ui-corner-all", null);
         writer.startElement("div", uiComponent);
-        writer.writeAttribute("class", "ui-progressbar-value ui-widget-header", null);
+        writer.writeAttribute("class", "ui-progressbar-value ui-widget-header ui-corner-left ui-corner-right", null);
 		writer.endElement("div");
         writer.endElement("div");
         writer.endElement("div");
