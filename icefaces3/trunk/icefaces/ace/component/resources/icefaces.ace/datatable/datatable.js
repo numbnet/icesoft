@@ -1449,7 +1449,7 @@ ice.ace.DataTable.prototype.setupCellEditorEvents = function(rowEditors) {
     rowEditors.find('a.ui-icon-pencil').die().live('click', showEditors).live('keyup', function(event) { if (event.which == 32 || event.which == 13) { showEditors(event); }} );
     rowEditors.find('a.ui-icon-check').die().live('click', saveRowEditors).live('keyup', function(event) { if (event.which == 32 || event.which == 13) { saveRowEditors(event); }} );
     rowEditors.find('a.ui-icon-close').die().live('click', cancelRowEditors).live('keyup', function(event) { if (event.which == 32 || event.which == 13) { cancelRowEditors(event); }} );
-    rowEditors.closest('td').siblings().find('span.ui-cell-editor-input input').bind('keypress', inputCellKeypress);
+    rowEditors.closest('tr').children().find('span input').bind('keypress', inputCellKeypress);
 }
 
 
