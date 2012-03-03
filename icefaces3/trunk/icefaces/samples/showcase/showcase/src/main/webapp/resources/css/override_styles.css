@@ -82,6 +82,9 @@
     padding: 5px 0 0 5px;
 }
 
+/*
+This also overrides the indeterminate progress imagery. But the themes don't support that anyway.
+*/
 .ui-progressbar-value
 {
     border: 1px solid #000000/*{borderColorHeader}*/;
