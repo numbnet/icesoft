@@ -463,7 +463,7 @@ public class UISeriesBase extends HtmlDataTable implements SeriesStateHolder {
         // Set up the correct context and fire our wrapped event
         RowEvent revent = (RowEvent) event;
         if (isNestedWithinUIData()) {
-            setDataModel(null);
+            dataModel = null;
         }
         int oldRowIndex = getRowIndex();
         setRowIndex(revent.getRowIndex());
@@ -554,6 +554,11 @@ public class UISeriesBase extends HtmlDataTable implements SeriesStateHolder {
         }
         iterate(context, PhaseId.UPDATE_MODEL_VALUES);
         popComponentFromEL(context);
+    }
+
+    // ICE-7809 MyFaces' default impl of this method throws an UnsupportedOperationException
+    protected void setDataModel(DataModel dataModel) {
+        this.dataModel = dataModel;
     }
 
     /**
