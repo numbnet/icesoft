@@ -307,7 +307,6 @@ public class HtmlDataTable
     protected void resetChildClientId(FacesContext facesContext,
                                      UIComponent component) {
         String id = component.getId();
-        System.out.println("UISeriesBase.restoreChildState()  Doer: " + getClass().getSimpleName() + "  On: " + component.getClass().getSimpleName() + "  id: " + id);
         component.setId(id);
         Iterator children = component.getFacetsAndChildren();
         while (children.hasNext()) {
