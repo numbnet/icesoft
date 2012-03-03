@@ -42,8 +42,9 @@ public class ExporterResource extends Resource implements java.io.Serializable {
 	}
 	
 	public InputStream getInputStream() {
-		//return in;
-		return new ByteArrayInputStream(bytes);
+		byte[] returnBytes = this.bytes;
+		this.bytes = null;
+		return new ByteArrayInputStream(returnBytes);
 	}
 
 	public String getRequestPath() {

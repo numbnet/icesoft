@@ -51,7 +51,7 @@ ice.ace.DataExporter.prototype.url = function(url) {
 			this.body.innerHTML = '<p>The format you selected is not supported at this time. Contact your System Administrator.</p>';		
 		} else {
 			this.body.innerHTML = '<p>Click link below to download file.</p>'
-				+ '<a href="' + url + '">Download</a>';
+				+ '<a href="' + url + '" onclick="if (window.downloaded) window.close(); else { this.innerHTML = \'Close Window\'; window.downloaded = true; }">Download</a>';
 		}
 		this.window.focus();
 	} else {
