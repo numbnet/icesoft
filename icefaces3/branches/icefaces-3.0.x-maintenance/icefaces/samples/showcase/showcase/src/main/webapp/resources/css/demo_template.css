@@ -235,8 +235,10 @@ a:link, a:visited {
     margin-bottom: 15px;
 }
 /* Example Element Containers */
+/* Don't use broad matches like span and div since components internally use those elements
 .example span, .example div { margin: 6px; font-size: 10pt;} 
 .example * span, .example * div { margin: 0;}
+*/
 div .resources { font-size: 10pt;}
 .content ul { padding:.5em 40px .5em 0; }
 .content .yui-nav { padding: 0; }
@@ -285,8 +287,10 @@ div .resources { font-size: 10pt;}
                 -moz-border-radius: 5px 5px 5px 5px;
 	border-radius:5px;
 }
+/* Don't use broad matches like span and div since components internally use those elements
 .instance .yui-content div { margin: 6px; }
 .example .instance .ice-file-entry { margin-bottom: 10px; }                                   
+*/
 .example .submenu h2, .example .resources h2 {
     font-size: 12px; 
 	border-bottom: 1px solid #ECECEC;
@@ -330,7 +334,9 @@ div .resources { font-size: 10pt;}
     margin:2px 2px;
 }
 .example .instance form .row { text-align: left; clear:both; }
+/* This keeps the indeterminate progress from showing properly for fileEntry
 .example .instance form .uploading { float: right; clear:right; }
+*/
 
 #footer {
     border-top: 1px solid #EAEAEA;

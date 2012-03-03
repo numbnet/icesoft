@@ -155,8 +155,8 @@ ice.ace.fileentry = {
             formElem.removeChild( hParAjax );
             formElem.removeChild( hIceAjax );
 
-            // Set every fileEntry component in the form into the indeterminate
-            // state, before progress notifications arrive, if icepush is present
+            // Set every fileEntry component in the form into the complete
+            // state, which hides the progress
             ice.ace.fileentry.setFormFileEntryStates(formElem, "complete");
 
             ice.ace.fileentry.iframeLoaded(context, iframeId);
@@ -227,9 +227,17 @@ ice.ace.fileentry = {
                         if (outerDiv.className != "complete") {
                             var progDiv = outerDiv.firstChild.firstChild;
                             if (progDiv) {
+                                if (percent != 100) {
+                                    ice.ace.fileentry.removeStyleClass(progDiv, 'ui-corner-right');
+                                } else {
+                                    ice.ace.fileentry.ensureStyleClass(progDiv, 'ui-corner-right');
+                                }
                                 progDiv.style.width = percentStr;
                             }
                             outerDiv.className = "progress";
+                            if (progDiv) {
+                                ice.ace.fileentry.setOpacity(progDiv, 100);
+                            }
                         }
                     }
                 }
@@ -256,11 +264,14 @@ ice.ace.fileentry = {
             if (fileDiv) {
                 var outerDiv = fileDiv.childNodes[1];
                 if (outerDiv) {
-                    var progDiv = outerDiv.firstChild;
+                    var progDiv = outerDiv.firstChild.firstChild;
                     if (progDiv) {
                         progDiv.style.width = "100%";
                     }
                     outerDiv.className = className;
+                    if (progDiv) {
+                        ice.ace.fileentry.pulseElementUntilChangedStyleClass(0, progDiv, outerDiv, className);
+                    }
                 }
             }
         }
@@ -284,6 +295,70 @@ ice.ace.fileentry = {
             }
         }
         return classElements;
+    },
+
+    removeStyleClass : function(elem, sc) {
+        var styleClasses = elem.className;
+        var idx = styleClasses.indexOf(sc);
+        if (idx != -1) {
+            var theLeft = styleClasses.substring(0, idx);
+            var theRight = styleClasses.substring(idx + sc.length, styleClasses.length);
+            styleClasses = theLeft + theRight;
+            elem.className = styleClasses;
+        }
+    },
+
+    ensureStyleClass : function(elem, sc) {
+        var styleClasses = elem.className;
+        var idx = styleClasses.indexOf(sc);
+        if (idx == -1) {
+            styleClasses = styleClasses + ' ' + sc;
+            elem.className = styleClasses;
+        }
+    },
+
+    setOpacity : function(elem, opacityLevel) {
+        var eStyle = elem.style;
+        eStyle.opacity = opacityLevel / 100;
+        eStyle.filter = 'alpha(opacity='+opacityLevel+')';
+    },
+
+    pulseElementUntilChangedStyleClass : function(pos, progDiv, outerDiv, className) {
+        // Fade in from 20% to 80%, then fade out from 80% to 20%
+        // Continue cycling the opacity on progDiv until outerDiv's className is not className anymore
+        if (outerDiv.className != className) {
+            return;
+        }
+        var minOpacity = 20;
+        var maxOpacity = 80;
+        var stepOpacity = 10;
+        var millis = 100;
+
+        var opacity;
+        if (pos == 0) {
+            opacity = minOpacity;
+            pos = 1;
+        }
+        else if (pos > 0) {
+            opacity = minOpacity + (pos * stepOpacity);
+            if (opacity >= maxOpacity) {
+                opacity = maxOpacity;
+                pos = -1;
+            } else {
+                pos = pos + 1;
+            }
+        }
+        else if (pos < 0) {
+            opacity = maxOpacity + (pos * stepOpacity);
+            if (opacity <= minOpacity) {
+                opacity = minOpacity;
+                pos = 1;
+            } else {
+                pos = pos - 1;
+            }
+        }
+        ice.ace.fileentry.setOpacity(progDiv, opacity);
+        setTimeout(function() {ice.ace.fileentry.pulseElementUntilChangedStyleClass(pos, progDiv, outerDiv, className);}, millis);
     },
 
     clearFileSelection : function(clientId) {
