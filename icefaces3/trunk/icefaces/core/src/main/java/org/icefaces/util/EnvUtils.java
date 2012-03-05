@@ -107,7 +107,7 @@ public class EnvUtils {
         }
     }
 
-    //Use reflection to identify if the Portlet classes are on a specific platform.
+    //Use reflection to identify if a Liferay specific class is available.
     private static Class LiferayClass;
 
     static {
@@ -115,6 +115,17 @@ public class EnvUtils {
             LiferayClass = Class.forName("com.liferay.portal.theme.ThemeDisplay");
         } catch (Throwable t) {
             log.log(Level.FINE, "Liferay class not available: ", t);
+        }
+    }
+
+    //Use reflection to identify if a WebSphere Portal specific class is available.
+    private static Class WebSpherePortalClass;
+
+    static {
+        try {
+            WebSpherePortalClass = Class.forName("com.ibm.ws.portletcontainer.PortletContainer");
+        } catch (Throwable t) {
+            log.log(Level.FINE, "WebSphere Portal class not available: ", t);
         }
     }
 
@@ -284,6 +295,16 @@ public class EnvUtils {
      */
     public static boolean isLiferay() {
         return LiferayClass != null;
+    }
+
+
+    /**
+     * Returns true if WebSphere Portal classes are detected via reflection.
+     *
+     * @return Returns true if WebSphere Portal classes are detected via reflection.
+     */
+    public static boolean isWebSpherePortal() {
+        return WebSpherePortalClass != null;
     }
 
 

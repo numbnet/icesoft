@@ -16,6 +16,8 @@
 
 package org.icefaces.impl.util;
 
+import org.icefaces.util.EnvUtils;
+
 import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.application.ViewHandler;
@@ -62,7 +64,11 @@ public class CharacterEncodingHandler extends ResourceHandlerWrapper {
 
     @Override
     public boolean isResourceRequest(FacesContext context) {
-        setCharacterEncoding(context);
+        //WebSphere Portal logs error messages if we attempt to set the encoding here.  Since it's
+        //really a workaround for Glassfish, it's okay to avoid it for WebSphere Portal.
+        if(!EnvUtils.isWebSpherePortal()){
+            setCharacterEncoding(context);
+        }
         return wrapped.isResourceRequest(context);
     }
 
