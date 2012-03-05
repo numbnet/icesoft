@@ -82,39 +82,42 @@ ice.ace.tabset = {
             }
             //YAHOO.log(" currentIndex="+currentIndex);
             var tabIndexInfo = clientId + '='+ currentIndex;
+            var doOnSuccess = function() {
+                if (!rootElem.suppressServerSideTransition) {
+                    // Ajax content transition. YUI content transition doesn't execute for server side cases
+                    // allowing our companonent to trigger content transition when the server call succeeds.
+                    if (event.oldValue) {
+                        event.oldValue.set('contentVisible', false);
+                        event.oldValue.set('active', false);
+                    } else if (cachedOldTabs.length > 0) {
+                        // When using caching, event.oldValue is undefined in this function
+                        // thus we use a reference to the old tab cached during the standard contentTransition.
+                        for (var i = 0; i < cachedOldTabs.length; i++) {
+                            cachedOldTabs[i].set('contentVisible', false);
+                            cachedOldTabs[i].set('active', false);
+                        }
+                        cachedOldTabs = [];
+                    }
+
+                    if (event.newValue) {
+                        event.newValue.set('contentVisible', true);
+                        event.newValue.set('active', true);
+                    }
+
+                    try {
+                        document.getElementById(event.newValue.get('element').firstChild.id).focus();
+                    } catch(e) {}
+                }
+
+                rootElem.suppressServerSideTransition = null;
+                ice.ace.jq(tabview._contentParent).css({opacity:1});
+                cachedNewTab = null;                
+            };
             var params = function(parameter) {
 							//parameter('ice.focus', event.newValue.get('element').firstChild.id);
                             parameter('onevent', function(data) {
                                 if (data.status == 'success' && event.newValue == cachedNewTab) {
-                                    if (!rootElem.suppressServerSideTransition) {
-                                        // Ajax content transition. YUI content transition doesn't execute for server side cases
-                                        // allowing our companonent to trigger content transition when the server call succeeds.
-                                        if (event.oldValue) {
-                                            event.oldValue.set('contentVisible', false);
-                                            event.oldValue.set('active', false);
-                                        } else if (cachedOldTabs.length > 0) {
-                                            // When using caching, event.oldValue is undefined in this function
-                                            // thus we use a reference to the old tab cached during the standard contentTransition.
-                                            for (var i = 0; i < cachedOldTabs.length; i++) {
-                                                cachedOldTabs[i].set('contentVisible', false);
-                                                cachedOldTabs[i].set('active', false);
-                                            }
-                                            cachedOldTabs = [];
-                                        }
-
-                                        if (event.newValue) {
-                                            event.newValue.set('contentVisible', true);
-                                            event.newValue.set('active', true);
-                                        }
-
-                                        try {
-                                            document.getElementById(event.newValue.get('element').firstChild.id).focus();
-                                        } catch(e) {}
-                                    }
-
-                                    rootElem.suppressServerSideTransition = null;
-                                    ice.ace.jq(tabview._contentParent).css({opacity:1});
-                                    cachedNewTab = null;
+                                    doOnSuccess();
                                 }
                             });
                         };
@@ -147,7 +150,7 @@ ice.ace.tabset = {
                             //replace id with the id of tabset component, so the "execute" property can be set to tabset id
                             targetElement.id = clientId;
                             var otherParams = {};
-                            ice.ace.ab(ice.ace.extendAjaxArguments(sJSFProps.behaviors.serverSideTabChange,{params: otherParams}));
+                            ice.ace.ab(ice.ace.extendAjaxArguments(sJSFProps.behaviors.serverSideTabChange,{params: otherParams, onsuccess: doOnSuccess}));
                             //restore id
                             targetElement.id = elementId;
                         }
