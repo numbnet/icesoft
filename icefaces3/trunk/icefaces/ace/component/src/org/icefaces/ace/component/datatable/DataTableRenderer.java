@@ -656,8 +656,6 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.STYLE_ELEM, (first) ? "left:0;" : "right:0;", null);
         writer.startElement(HTML.ANCHOR_ELEM, null);
 
-        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:3px 5px 0px 5px; text-align:left; vertical-align:middle;";
-        writer.writeAttribute(HTML.STYLE_ELEM, style, null);
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
         writer.writeAttribute(HTML.HREF_ATTR, "#", null);
         writer.writeAttribute(HTML.ONCLICK_ATTR, "ice.ace.jq(ice.ace.escapeClientId('"+ clientId +"')).toggle()", null);
@@ -719,7 +717,7 @@ public class DataTableRenderer extends CoreRenderer {
         columnClass = (column.getSortPriority() != null) ? columnClass + " ui-state-active" : columnClass;
 
         writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
-        writer.startElement(HTML.DIV_ELEM, null);
+        writer.startElement(HTML.SPAN_ELEM, null);
 
         //Configurable first-col controls
         boolean writeConfigPanelLaunchOnLeft = false;
@@ -737,8 +735,6 @@ public class DataTableRenderer extends CoreRenderer {
             if (panel != null && panel.getType().equals("last-col"))
                 rightHeaderPadding += 35;
         }
-
-        if (isSortable) rightHeaderPadding += 25;
 
         String paddingStyle = "";
         if (rightHeaderPadding > 0) paddingStyle += "padding-right:" + rightHeaderPadding + "px;";
@@ -761,15 +757,14 @@ public class DataTableRenderer extends CoreRenderer {
 
 
         writer.endElement(HTML.SPAN_ELEM);
-        writer.endElement(HTML.DIV_ELEM);
-
-        //Filter
-        if (hasFilter) {
-            encodeFilter(context, table, column);
-        }
+        writer.endElement(HTML.SPAN_ELEM);
 
         if (isSortable || isLastColConfPanel(context, table))
             writeHeaderRightSideControls(writer, context, table, column, isSortable, last);
+
+        //Filter
+        if (hasFilter)
+            encodeFilter(context, table, column);
 
         writer.endElement(HTML.DIV_ELEM);
         
@@ -854,8 +849,6 @@ public class DataTableRenderer extends CoreRenderer {
         writer.writeAttribute(HTML.CLASS_ATTR, DataTableConstants.SORTABLE_COLUMN_ORDER_CLASS, null);
         if (table.isSingleSort()) writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
         else if (column.getSortPriority() != null) writer.writeText(column.getSortPriority(), null);
-        else writer.write(HTML.NBSP_ENTITY);
-
         writer.endElement(HTML.SPAN_ELEM);
 
         writer.endElement(HTML.SPAN_ELEM);
