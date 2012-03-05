@@ -718,13 +718,17 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
 
         // Browser / Platform specific scrollbar fixes
         // Fix body scrollbar overlapping content
-        if ((webkit && !mac) || (ie9 || ie8)) {
-            headerTable.parent().css('margin-right', '17px');
-            footerTable.parent().css('margin-right', '17px');
-        }
-        else if (firefox) {
-            headerTable.find('tr th:last').css('padding-right','27px');
-            footerTable.find('tr td:last').css('padding-right','27px');
+        // Instance check to prevent IE7 dynamic scrolling change errors
+        var vScrollShown = bodyTable.size() > 0 && (bodyTable.parent().get()[0].scrollHeight > bodyTable.parent().get()[0].offsetHeight);
+        if (vScrollShown) {
+            if ((webkit && !mac) || (ie9 || ie8)) {
+                headerTable.parent().css('margin-right', '17px');
+                footerTable.parent().css('margin-right', '17px');
+            }
+            else if (firefox) {
+                headerTable.find('tr th:last').css('padding-right','27px');
+                footerTable.find('tr td:last').css('padding-right','27px');
+            }
         }
 
         // Hide Duplicate Segments
