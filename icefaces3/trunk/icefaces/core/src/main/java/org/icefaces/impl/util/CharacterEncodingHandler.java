@@ -64,8 +64,9 @@ public class CharacterEncodingHandler extends ResourceHandlerWrapper {
 
     @Override
     public boolean isResourceRequest(FacesContext context) {
-        //WebSphere Portal logs error messages if we attempt to set the encoding here.  Since it's
-        //really a workaround for Glassfish, it's okay to avoid it for WebSphere Portal.
+        // ICE-7791: WebSphere Portal logs error messages if we attempt to set the encoding
+        // here.  Since it's really a workaround for Glassfish, it's okay to avoid it for
+        // WebSphere Portal.
         if(!EnvUtils.isWebSpherePortal()){
             setCharacterEncoding(context);
         }
