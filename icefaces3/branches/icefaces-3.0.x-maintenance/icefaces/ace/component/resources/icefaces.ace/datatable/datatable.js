@@ -654,7 +654,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
         if (!ie7) bodyTable.css('table-layout','auto');
 
         // IE7 scrollbar fix
-        if (ie7 && bodyTable.parent().get()[0].scrollWidth <= bodyTable.parent().get()[0].offsetWidth) {
+        if (bodyTable.size() > 0 && ie7 && bodyTable.parent().get()[0].scrollWidth <= bodyTable.parent().get()[0].offsetWidth) {
             bodyTable.parent().css('overflow-x', 'hidden');
             bodyTable.parent().css('padding-right', '17px');
             headerTable.parent().css('padding-right', '17px');
