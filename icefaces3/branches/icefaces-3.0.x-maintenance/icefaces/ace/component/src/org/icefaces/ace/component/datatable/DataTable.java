@@ -432,7 +432,8 @@ public class DataTable extends DataTableBase {
         setValue(null);
     }
 
-    public void setPaginator(Boolean pagination) {
+    @Override
+    public void setPaginator(boolean pagination) {
         if (!pagination) resetPagination();
         super.setPaginator(pagination);
     } 
