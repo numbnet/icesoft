@@ -22,7 +22,7 @@ mobi.BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
 mobi.PARTIAL_EVENT_PARAM = "javax.faces.partial.event";
 mobi.findForm = function (sourceId) {
     var node = document.getElementById(sourceId);
-    while (node.nodeName != "FORM" && node.parentNode) {
+    while (node.nodeName.toLowerCase() != "form" && node.parentNode) {
         node = node.parentNode;
     }
     ice.log.debug(ice.log, 'parent form node =' + node.name);
