@@ -181,11 +181,12 @@ ice.ace.DataTable.prototype.setupSortRequest = function(_self, $this, event, hea
         controlOffset = $this.offset(),
         controlHeight = !_self.cfg.singleSort ? $this.outerHeight() : 22,
         descending = false,
-        metaKey = (altMeta == undefined) ? event.metaKey : altMeta;
+        metaKey = (altMeta == undefined) ? event.metaKey : altMeta,
+        ieOffset = ice.ace.jq.browser.msie ? 7 : 0;
     // altY and altMeta allow these event parameters to be optionally passed in
     // from an event triggering this event artificially
     var eventY = (altY == undefined) ? event.pageY : altY;
-    if (eventY > (controlOffset.top + (controlHeight / 2)+3))
+    if (eventY > (controlOffset.top + (controlHeight / 2) - ieOffset))
         descending = true;
 
     if (headerClick) {
@@ -376,10 +377,11 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                     topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
                     bottomCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-s")[0]),
                     controlOffset = $this.offset(),
-                    controlHeight = !_self.cfg.singleSort ? $this.outerHeight() : 22;
+                    controlHeight = !_self.cfg.singleSort ? $this.outerHeight() : 22,
+                    ieOffset = ice.ace.jq.browser.msie ? 4 : 0;
 
                 if (!(_self.cfg.clickableHeaderSorting) || (!bottomCarat.hasClass('ui-toggled') && !topCarat.hasClass('ui-toggled'))) {
-                    if (event.pageY > (controlOffset.top + (controlHeight / 2)+3)) {
+                    if (event.pageY > (controlOffset.top + (controlHeight / 2) - ieOffset)) {
                         if (!bottomCarat.hasClass('ui-toggled'))
                             bottomCarat.fadeTo(0, .66);
                         if (!topCarat.hasClass('ui-toggled'))
