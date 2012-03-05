@@ -433,7 +433,8 @@ public class DOMPartialViewContext extends PartialViewContextWrapper {
                 Node firstChild = textareaElement.getFirstChild();
                 if (null != firstChild) {
                     //set value on the Text node
-                    firstChild.setNodeValue(value);
+                    String escapedValue = DOMUtils.escapeAnsi(value);
+                    firstChild.setNodeValue(escapedValue);
                 } else {
                     //DOM brought back from compression may have no
                     //child for empty TextArea
