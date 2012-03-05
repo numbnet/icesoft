@@ -36,7 +36,6 @@
 }
 
 .ui-datatable th .ui-header-column {
-    border:none;
     position:relative;
 }
 
@@ -61,10 +60,8 @@
 }
 
 .ui-datatable .ui-header-right {
-    position:absolute;
-    right:0;
-    padding-right: 6px;
-    top:-4px;
+    white-space: nowrap;
+    position: relative;
 }
 
 .ui-tableconf-sort-cont {
@@ -76,40 +73,56 @@
     cursor:pointer;
 }
 
+.ui-tableconf-button a {
+    display:inline-block;
+    padding:2px 4px 4px 2px;
+    margin:0px 5px 0px 5px;
+    text-align:left;
+    vertical-align:middle;
+}
+
 .ui-sortable-column-order {
     font-family: Verdana, Arial, sans-serif;
-    display: inline-block;
+    display: inline;
     width:2em;
     line-height: 22px;
-    font-size: 8pt;
     font-weight: normal;
     margin-top: 1px;
     position:relative;
-    top:3px;
     text-align: right;
 }
 
 .ui-tableconf-sort-cont {
     position: relative;
 }
-.ui-tableconf-body * .ui-sortable-column-order {
-    top:-1px;
+.ui-tableconf-body .ui-sortable-column-order {
     text-align: left;
 }
 
-.ui-datatable .ui-sortable-column * .ui-sortable-column-icon {
-    float:right;
+.ui-datatable .ui-sortable-column .ui-sortable-column-icon {
+    vertical-align: middle;
+    /*float:right;*/
+    display: inline-block;
+    width:16px;
+    height:1.7em;
+    margin-left: 5px;
+    position:relative;
 }
-.ui-tableconf-body * .ui-sortable-column-icon {
-    position:absolute;
-    top:50%;
-    left:50%;
-    margin-left:-21px;
-    margin-top:-14px;
+.ui-tableconf-body .ui-sortable-column-icon {
+    display: inline-block;
+    height:2em;
+
+}
+.ui-tableconf-body .ui-sortable-column-icon .ui-icon-triangle-1-n {
+    top:1px;
+}
+.ui-tableconf-body .ui-sortable-column-icon .ui-icon-triangle-1-s {
+    bottom:-1px;
 }
 .ui-sortable-column-icon .ui-icon-triangle-1-n {
-    position:relative;
-    top:3px;
+    position:absolute;
+    top:-3px;
+    left:1px;
     /* IE 8 */
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
     /* IE 5-7 */
@@ -122,8 +135,6 @@
     opacity: 0.33;
 }
 .ui-sortable-column-icon .ui-icon-triangle-1-n.ui-toggled {
-    position:relative;
-    top:3px;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
     -moz-opacity: 1;
@@ -132,9 +143,9 @@
 }
 
 .ui-sortable-column-icon .ui-icon-triangle-1-s {
-    position:relative;
-    left:-1px;
-    bottom:5px;
+    position:absolute;
+    bottom:0;
+    *left:0px;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
     filter: alpha(opacity=20);
     -moz-opacity: 0.33;
@@ -142,9 +153,6 @@
     opacity: 0.33;
 }
 .ui-sortable-column-icon .ui-icon-triangle-1-s.ui-toggled {
-    position:relative;
-    left:-1px;
-    bottom:5px;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
     -moz-opacity: 1;
