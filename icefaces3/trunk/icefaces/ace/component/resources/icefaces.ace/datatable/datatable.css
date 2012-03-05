@@ -97,6 +97,7 @@
 }
 .ui-tableconf-body .ui-sortable-column-order {
     text-align: left;
+    top:-4px;
 }
 
 .ui-datatable .ui-sortable-column .ui-sortable-column-icon {
@@ -114,9 +115,11 @@
 
 }
 .ui-tableconf-body .ui-sortable-column-icon .ui-icon-triangle-1-n {
+    position:relative;
     top:1px;
 }
 .ui-tableconf-body .ui-sortable-column-icon .ui-icon-triangle-1-s {
+    position:relative;
     bottom:-1px;
 }
 .ui-sortable-column-icon .ui-icon-triangle-1-n {
