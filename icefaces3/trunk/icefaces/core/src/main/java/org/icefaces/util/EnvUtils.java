@@ -299,9 +299,9 @@ public class EnvUtils {
 
 
     /**
-     * Returns true if WebSphere Portal classes are detected via reflection.
+     * Returns true if WebSphere Portal class is detected via reflection.
      *
-     * @return Returns true if WebSphere Portal classes are detected via reflection.
+     * @return Returns true if WebSphere Portal class is detected via reflection.
      */
     public static boolean isWebSpherePortal() {
         return WebSpherePortalClass != null;
