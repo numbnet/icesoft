@@ -462,6 +462,11 @@ public class DataTable extends DataTableBase {
         setValue(null);
     }
 
+    public void setPaginator(Boolean pagination) {
+        if (!pagination) resetPagination();
+        super.setPaginator(pagination);
+    } 
+    
     /**
      * Sets the position of pagination in the table to the first page.
      */
