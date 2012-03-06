@@ -1411,8 +1411,7 @@ ice.ace.DataTable.prototype.doRowEditSaveRequest = function(element) {
             });
 
             ice.ace.jq(element).hide();
-            ice.ace.jq(element).siblings().hide();
-            ice.ace.jq(element).siblings('.ui-icon-pencil').show();
+            ice.ace.jq(element).parent().children().hide().find('.ui-icon-pencil').show();
         }
 
         ice.ace.selectCustomUpdates(responseXML, function(id, content) {
