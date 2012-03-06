@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{dragDropResources.tldResources}"/>
 
     <ui:define name="example">
-       <h:form>
+       <h:form id="form">
            
            <ace:dataTable id="shoppingList"
                                     value="#{dataTableIntegrationBean.availableItems}"
@@ -49,15 +49,15 @@
                    </ace:column>
 
                    <ace:column headerText="Description">
-                       <h:outputText value="#{availableItem.name}"/>
+                       <h:outputText id="description" value="#{availableItem.name}"/>
                    </ace:column>
 
                    <ace:column headerText="Type">
-                       <h:outputText value="#{availableItem.type}"/>
+                       <h:outputText id="type" value="#{availableItem.type}"/>
                    </ace:column>
 
                    <ace:column headerText="Price">
-                       <h:outputText value="#{availableItem.price}"/>
+                       <h:outputText id="price" value="#{availableItem.price}"/>
                    </ace:column>
                
            </ace:dataTable>
@@ -67,23 +67,23 @@
            
            <ace:panel id="shoppingCart" header="Shopping Cart" style="display: block; font-size: 12pt;">
                
-               <h:outputText value="Shop with confedence ! To begin drag any item image above to the shopping cart."
+               <h:outputText id="cartText" value="Shop with confedence ! To begin drag any item image above to the shopping cart."
                                        rendered="#{empty dataTableIntegrationBean.purchasedItems}"/>
                
-               <ace:dataTable value="#{dataTableIntegrationBean.purchasedItems}"
+               <ace:dataTable id="purchasedItems" value="#{dataTableIntegrationBean.purchasedItems}"
                                         var="item"
                                         rendered="#{not empty dataTableIntegrationBean.purchasedItems}">
                
                    <ace:column headerText="Description">
-                       <h:outputText value="#{item.name}"/>
+                       <h:outputText id="name" value="#{item.name}"/>
                    </ace:column>
 
                    <ace:column headerText="Type">
-                       <h:outputText value="#{item.type}"/>
+                       <h:outputText id="type" value="#{item.type}"/>
                    </ace:column>
                
                    <ace:column headerText="Price">
-                       <h:outputText value="#{item.price}"/>
+                       <h:outputText id="price" value="#{item.price}"/>
                    </ace:column>
                    
                </ace:dataTable>
@@ -102,7 +102,7 @@
            <br/>
                
                <h:panelGrid id="resetPanel" width="100%">
-                   <h:commandButton value="Reset Cart"
+                   <h:commandButton id="resetCart" value="Reset Cart"
                                                    actionListener="#{dataTableIntegrationBean.resetShoppingCart}"
                                                    style="width: 100%;"
                                                    rendered="#{not empty dataTableIntegrationBean.purchasedItems}">

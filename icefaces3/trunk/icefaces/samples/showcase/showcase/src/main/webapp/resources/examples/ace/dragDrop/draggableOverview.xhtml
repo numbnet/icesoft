@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{dragDropResources.tldResources}"/>
 
     <ui:define name="example">
-       <h:form>
+       <h:form id="form">
            <icecore:singleSubmit/>
            
            <ace:panel id="draggableSetupPanel" header="Draggable Component Configuration Panel">
@@ -86,7 +86,7 @@
            <br/>
            <br/>
            
-           <ace:panel>
+           <ace:panel id="draggableImagePanel">
                <h:graphicImage id="sampleImage" value="#{draggableOverviewBean.image.path}"
                                alt="#{draggableOverviewBean.image.description}">
                    <ace:draggable axis="#{draggableOverviewBean.axisMovementConstraint}"

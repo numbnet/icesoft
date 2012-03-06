@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{dataTableResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <icecore:singleSubmit/>
             <h:panelGrid columns="3">
                 <h:outputLabel for="modeIn" value="Selection Mode:"/>
@@ -42,15 +42,15 @@
                                   valueChangeListener="#{dataTableSelector.changedMode}">
                       <f:selectItems value="#{dataTableSelector.availableModes}"/>
                 </h:selectOneRadio>
-                <h:message for="modeIn"/>
+                <h:message id="modeInMsg" for="modeIn"/>
                 
                 <h:outputLabel for="clickIn" value="Double Click to Select:"/>
                 <h:selectBooleanCheckbox id="clickIn" value="#{dataTableSelector.dblClick}"/>
-                <h:message for="clickIn"/>
+                <h:message id="clickInMsg" for="clickIn"/>
                 
                 <h:outputLabel for="instantIn" value="Instant Status Update via Ajax:"/>
                 <h:selectBooleanCheckbox id="instantIn" value="#{dataTableSelector.instantUpdate}"/>
-                <h:message for="instantIn"/>
+                <h:message id="instantInMsg" for="instantIn"/>
             </h:panelGrid>
         </h:form>
         
@@ -65,47 +65,47 @@
                           rendered="#{dataTableSelector.selectionMode eq 'single' and dataTableSelector.instantUpdate}">
                 <ace:ajax event="select" render="@this selectForm:status" execute="@this" />
 
-                <ace:column>
+                <ace:column id="id">
                     <f:facet name="header">
                        ID
                     </f:facet>
                     #{car.id}
                 </ace:column>
-                <ace:column>
+                <ace:column id="name">
                     <f:facet name="header">
                        Name
                     </f:facet>
                     #{car.name}
                 </ace:column>
-                <ace:column>
+                <ace:column id="chassis">
                     <f:facet name="header">
                        Chassis
                     </f:facet>
                     #{car.chassis}
                 </ace:column>
-                <ace:column>
+                <ace:column id="weight">
                     <f:facet name="header">
                        Weight
                     </f:facet>
                     #{car.weight}lbs.
                 </ace:column>
-                <ace:column>
+                <ace:column id="accel">
                     <f:facet name="header">
                        Accel
                     </f:facet>
                     #{car.acceleration}
                 </ace:column>
-                <ace:column>
+                <ace:column id="mpg">
                     <f:facet name="header">
                        MPG
                     </f:facet>
                     #{car.mpg}
                 </ace:column>
-                <ace:column>
+                <ace:column id="cost">
                     <f:facet name="header">
                        Cost
                     </f:facet>
-                    <h:outputText value="#{car.cost}">
+                    <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
                                          groupingUsed="true"
@@ -123,47 +123,47 @@
                           selectionMode="single"
                           doubleClickSelect="#{dataTableSelector.dblClick}"
                           rendered="#{dataTableSelector.selectionMode eq 'single' and !dataTableSelector.instantUpdate}">
-               <ace:column>
+               <ace:column id="id">
                    <f:facet name="header">
                        ID
                    </f:facet>
                    #{car.id}
                </ace:column>
-               <ace:column>
+               <ace:column id="name">
                    <f:facet name="header">
                        Name
                    </f:facet>
                    #{car.name}
                </ace:column>
-               <ace:column>
+               <ace:column id="chassis">
                    <f:facet name="header">
                        Chassis
                    </f:facet>
                    #{car.chassis}
                </ace:column>
-               <ace:column>
+               <ace:column id="weight">
                    <f:facet name="header">
                        Weight
                    </f:facet>
                    #{car.weight}lbs.
                </ace:column>
-               <ace:column>
+               <ace:column id="accel">
                    <f:facet name="header">
                        Accel
                    </f:facet>
                    #{car.acceleration}
                </ace:column>
-               <ace:column>
+               <ace:column id="mpg">
                    <f:facet name="header">
                        MPG
                    </f:facet>
                    #{car.mpg}
                </ace:column>
-               <ace:column>
+               <ace:column id="cost">
                    <f:facet name="header">
                        Cost
                    </f:facet>
-                   <h:outputText value="#{car.cost}">
+                   <h:outputText id="costCell" value="#{car.cost}">
                        <f:convertNumber type="currency"
                                         currencySymbol="$"
                                         groupingUsed="true"
@@ -183,47 +183,47 @@
                           rendered="#{dataTableSelector.selectionMode eq 'multiple' and dataTableSelector.instantUpdate}">
                 <ace:ajax event="select" render="@this selectForm:status" execute="@this" />
 
-                <ace:column>
+                <ace:column id="id">
                     <f:facet name="header">
                        ID
                     </f:facet>
                     #{car.id}
                 </ace:column>
-                <ace:column>
+                <ace:column id="name">
                     <f:facet name="header">
                        Name
                     </f:facet>
                     #{car.name}
                 </ace:column>
-                <ace:column>
+                <ace:column id="chassis">
                     <f:facet name="header">
                        Chassis
                     </f:facet>
                     #{car.chassis}
                 </ace:column>
-                <ace:column>
+                <ace:column id="weight">
                     <f:facet name="header">
                        Weight
                     </f:facet>
                     #{car.weight}lbs.
                 </ace:column>
-                <ace:column>
+                <ace:column id="accel">
                     <f:facet name="header">
                        Accel
                     </f:facet>
                     #{car.acceleration}
                 </ace:column>
-                <ace:column>
+                <ace:column id="mpg">
                     <f:facet name="header">
                        MPG
                     </f:facet>
                     #{car.mpg}
                 </ace:column>
-                <ace:column>
+                <ace:column id="cost">
                     <f:facet name="header">
                        Cost
                     </f:facet>
-                    <h:outputText value="#{car.cost}">
+                    <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
                                          groupingUsed="true"
@@ -241,47 +241,47 @@
                           selectionMode="multiple"
                           doubleClickSelect="#{dataTableSelector.dblClick}"
                           rendered="#{dataTableSelector.selectionMode eq 'multiple' and !dataTableSelector.instantUpdate}">
-               <ace:column>
+               <ace:column id="id">
                    <f:facet name="header">
                        ID
                    </f:facet>
                    #{car.id}
                </ace:column>
-               <ace:column>
+               <ace:column id="name">
                    <f:facet name="header">
                        Name
                    </f:facet>
                    #{car.name}
                </ace:column>
-               <ace:column>
+               <ace:column id="chassis">
                    <f:facet name="header">
                        Chassis
                    </f:facet>
                    #{car.chassis}
                </ace:column>
-               <ace:column>
+               <ace:column id="weight">
                    <f:facet name="header">
                        Weight
                    </f:facet>
                    #{car.weight}lbs.
                </ace:column>
-               <ace:column>
+               <ace:column id="accel">
                    <f:facet name="header">
                        Accel
                    </f:facet>
                    #{car.acceleration}
                </ace:column>
-               <ace:column>
+               <ace:column id="mpg">
                    <f:facet name="header">
                        MPG
                    </f:facet>
                    #{car.mpg}
                </ace:column>
-               <ace:column>
+               <ace:column id="cost">
                    <f:facet name="header">
                        Cost
                    </f:facet>
-                   <h:outputText value="#{car.cost}">
+                   <h:outputText id="costCell" value="#{car.cost}">
                        <f:convertNumber type="currency"
                                         currencySymbol="$"
                                         groupingUsed="true"
@@ -301,47 +301,47 @@
                           rendered="#{dataTableSelector.selectionMode eq 'singlecell' and dataTableSelector.instantUpdate}">
                 <ace:ajax event="select" render="@this selectForm:status" execute="@this" />
 
-                <ace:column selectBy="#{car.id}">
+                <ace:column id="id" selectBy="#{car.id}">
                     <f:facet name="header">
                        ID
                     </f:facet>
                     #{car.id}
                 </ace:column>
-                <ace:column selectBy="#{car.name}">
+                <ace:column id="name" selectBy="#{car.name}">
                     <f:facet name="header">
                        Name
                     </f:facet>
                     #{car.name}
                 </ace:column>
-                <ace:column selectBy="#{car.chassis}">
+                <ace:column id="chassis" selectBy="#{car.chassis}">
                     <f:facet name="header">
                        Chassis
                     </f:facet>
                     #{car.chassis}
                 </ace:column>
-                <ace:column selectBy="#{car.weight}">
+                <ace:column id="weight" selectBy="#{car.weight}">
                     <f:facet name="header">
                        Weight
                     </f:facet>
                     #{car.weight}lbs.
                 </ace:column>
-                <ace:column selectBy="#{car.acceleration}">
+                <ace:column id="accel" selectBy="#{car.acceleration}">
                     <f:facet name="header">
                        Accel
                     </f:facet>
                     #{car.acceleration}
                 </ace:column>
-                <ace:column selectBy="#{car.mpg}">
+                <ace:column id="mpg" selectBy="#{car.mpg}">
                     <f:facet name="header">
                        MPG
                     </f:facet>
                     #{car.mpg}
                 </ace:column>
-                <ace:column selectBy="#{car.cost}">
+                <ace:column id="cost" selectBy="#{car.cost}">
                     <f:facet name="header">
                        Cost
                     </f:facet>
-                    <h:outputText value="#{car.cost}">
+                    <h:outputText id="costCell" value="#{car.cost}">
                         <f:convertNumber type="currency"
                                          currencySymbol="$"
                                          groupingUsed="true"
@@ -360,47 +360,47 @@
                           doubleClickSelect="#{dataTableSelector.dblClick}"
                           rendered="#{dataTableSelector.selectionMode eq 'singlecell' and !dataTableSelector.instantUpdate}">
 
-               <ace:column selectBy="#{car.id}">
+               <ace:column id="id" selectBy="#{car.id}">
                    <f:facet name="header">
                        ID
                    </f:facet>
                    #{car.id}
                </ace:column>
-               <ace:column selectBy="#{car.name}">
+               <ace:column id="name" selectBy="#{car.name}">
                    <f:facet name="header">
                        Name
                    </f:facet>
                    #{car.name}
                </ace:column>
-               <ace:column selectBy="#{car.chassis}">
+               <ace:column id="chassis" selectBy="#{car.chassis}">
                    <f:facet name="header">
                        Chassis
                    </f:facet>
                    #{car.chassis}
                </ace:column>
-               <ace:column selectBy="#{car.weight}">
+               <ace:column id="weight" selectBy="#{car.weight}">
                    <f:facet name="header">
                        Weight
                    </f:facet>
                    #{car.weight}lbs.
                </ace:column>
-               <ace:column selectBy="#{car.acceleration}">
+               <ace:column id="accel" selectBy="#{car.acceleration}">
                    <f:facet name="header">
                        Accel
                    </f:facet>
                    #{car.acceleration}
                </ace:column>
-               <ace:column selectBy="#{car.mpg}">
+               <ace:column id="mpg" selectBy="#{car.mpg}">
                    <f:facet name="header">
                        MPG
                    </f:facet>
                    #{car.mpg}
                </ace:column>
-               <ace:column selectBy="#{car.cost}">
+               <ace:column id="cost" selectBy="#{car.cost}">
                    <f:facet name="header">
                        Cost
                    </f:facet>
-                   <h:outputText value="#{car.cost}">
+                   <h:outputText id="costCell" value="#{car.cost}">
                        <f:convertNumber type="currency"
                                         currencySymbol="$"
                                         groupingUsed="true"
@@ -550,7 +550,7 @@
                </ui:repeat>
 
                <f:facet name="footer">
-                   <h:commandButton value="Refresh Status" rendered="#{!dataTableSelector.instantUpdate}"/>
+                   <h:commandButton id="refresh" value="Refresh Status" rendered="#{!dataTableSelector.instantUpdate}"/>
                </f:facet>
            </h:panelGrid>
         </h:form>
