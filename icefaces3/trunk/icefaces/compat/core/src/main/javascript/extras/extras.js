@@ -799,8 +799,10 @@ Ice.modal = {
     //caller Ice.modal.stop()
     stopRunning:function(target) {
         //de-register modal popup
-        if (this.running.last() == target) {
-            this.running.pop();
+        if (this.running.include(target)) {
+            this.running = this.running.reject(function(id) {
+                return id == target;
+            });
             //if there are more than one modal popups then this will enable the focus on
             //last opened modal popup and if there is no modal popup left then it will
             //enable the focus on the document.
@@ -963,7 +965,7 @@ Ice.modal = {
         }
     },
     stop:function(target) {
-        if (Ice.modal.getRunning() == target) {
+        if (Ice.modal.running.include(target)) {
             var iframe = document.getElementById('iceModalFrame' + target);
             if (iframe) {
                 Event.stopObserving(window, "resize", iframe.resize);
