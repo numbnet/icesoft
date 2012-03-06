@@ -1469,7 +1469,7 @@ public class DataTableRenderer extends CoreRenderer {
         writer.startElement(HTML.TD_ELEM, null);
 
         int enabledColumns = 0;
-        for (Column c : table.getColumns()) if (c.isRendered()) enabledColumns++;
+        for (Column c : table.getColumns()) if (c.isRendered() && !c.isStacked()) enabledColumns++;
 
         writer.writeAttribute(HTML.COLSPAN_ATTR, enabledColumns, null);
         table.getPanelExpansion().encodeAll(context);
