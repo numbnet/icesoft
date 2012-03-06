@@ -26,12 +26,14 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 
 public class ButtonRenderer extends DomBasicRenderer {
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_COMMANDBUTTON);
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
+//        printParams();
         validateParameters(facesContext, uiComponent, UICommand.class);
         if (isStatic(uiComponent)) {
             return;
@@ -136,6 +138,12 @@ public class ButtonRenderer extends DomBasicRenderer {
             renderOnClick(uiComponent, root);
         }
 
+        Map parameterMap = getParameterMap(uiComponent);
+        Iterator parameterKeys = parameterMap.keySet().iterator();
+        while (parameterKeys.hasNext()) {
+            String nextKey = (String) parameterKeys.next();
+            FormRenderer.addHiddenField(facesContext, nextKey);
+        }
         domContext.stepOver();
     }
 
@@ -158,5 +166,25 @@ public class ButtonRenderer extends DomBasicRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, UICommand.class);
+    }
+
+    public static void printParams() {
+        Map paramValuesMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterValuesMap();
+        Iterator it = paramValuesMap.entrySet().iterator();
+        Map.Entry entry;
+        String key;
+        String[] values;
+        while (it.hasNext()) {
+            entry = (Map.Entry) it.next();
+            key = (String) entry.getKey();
+            values = (String[]) entry.getValue();
+            System.out.print(key);
+            System.out.print(" = ");
+            for (int i = 0; i < values.length; i++) {
+                System.out.print(values[i]);
+                System.out.print(", ");
+            }
+            System.out.println();
+        }
     }
 }

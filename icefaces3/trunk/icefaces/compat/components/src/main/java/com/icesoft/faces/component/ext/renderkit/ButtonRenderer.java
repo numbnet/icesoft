@@ -22,6 +22,9 @@ import org.w3c.dom.Element;
 import javax.faces.component.UIComponent;
 import com.icesoft.faces.component.panelconfirmation.PanelConfirmationRenderer;
 
+import java.util.Iterator;
+import java.util.Map;
+
 public class ButtonRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.ButtonRenderer {
 
@@ -30,9 +33,9 @@ public class ButtonRenderer
         String onclick = (String) uiComponent.getAttributes().get("onclick");
         String submitCode;
         if (button.getPartialSubmit()) {
-            submitCode = this.ICESUBMITPARTIAL + "return false;";
+            submitCode = getJavascriptHiddenFieldSetters(uiComponent) + this.ICESUBMITPARTIAL + getJavascriptHiddenFieldReSetters(uiComponent) + "return false;";
         } else {
-            submitCode = this.ICESUBMIT + "return false;";
+            submitCode = getJavascriptHiddenFieldSetters(uiComponent) + this.ICESUBMIT + getJavascriptHiddenFieldReSetters(uiComponent) + "return false;";
         }
         
         if (null != uiComponent.getAttributes().get("panelConfirmation")) {
@@ -43,4 +46,36 @@ public class ButtonRenderer
         }
     }
 
+
+    private static String getJavascriptHiddenFieldSetters(UIComponent component) {
+        StringBuffer buffer = new StringBuffer("");
+        Map parameters = getParameterMap(component);
+        Iterator parameterKeys = parameters.keySet().iterator();
+        while (parameterKeys.hasNext()) {
+            String nextParamName = (String) parameterKeys.next();
+            Object nextParamValue = parameters.get(nextParamName);
+            buffer.append("form['");
+            buffer.append(nextParamName);
+            buffer.append("'].value='");
+            buffer.append(nextParamValue);
+            buffer.append("';");
+        }
+        return buffer.toString();
+    }
+
+    private static String getJavascriptHiddenFieldReSetters(UIComponent component) {
+        StringBuffer buffer = new StringBuffer("");
+        Map parameters = getParameterMap(component);
+        Iterator parameterKeys = parameters.keySet().iterator();
+        while (parameterKeys.hasNext()) {
+            String nextParamName = (String) parameterKeys.next();
+            Object nextParamValue = parameters.get(nextParamName);
+            buffer.append("form['");
+            buffer.append(nextParamName);
+            buffer.append("'].value='");
+//            buffer.append(nextParamValue);
+            buffer.append("';");
+        }
+        return buffer.toString();
+    }
 }
