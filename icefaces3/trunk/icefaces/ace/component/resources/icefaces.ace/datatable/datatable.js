@@ -336,7 +336,10 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                     else bottomCarat.fadeTo(0, .66);
                 }
 
-                $this.addClass('ui-state-hover');
+                if ($this.closest('th').find('> hr').size() == 0)
+                    $this.closest('th').addClass('ui-state-hover');
+                else
+                    $this.closest('.ui-sortable-column').addClass('ui-state-hover');
             })
             .unbind('mouseleave').bind('mouseleave', function(event) {
                 var $this = ice.ace.jq(this),
@@ -353,7 +356,10 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                         topCarat.fadeTo(0, 0);
                     else topCarat.fadeTo(0, .33);
 
-                $this.removeClass('ui-state-hover');
+                if ($this.closest('th').find('> hr').size() == 0)
+                    $this.closest('th').removeClass('ui-state-hover');
+                else
+                    $this.closest('.ui-sortable-column').removeClass('ui-state-hover');
             });
     }
 
@@ -395,7 +401,10 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                 }
 
                 if (_self.cfg.clickableHeaderSorting)
-                    $this.parent().parent().addClass('ui-state-hover');
+                    if ($this.closest('th').find('> hr').size() == 0)
+                        $this.closest('th').addClass('ui-state-hover');
+                    else
+                        $this.closest('.ui-sortable-column').addClass('ui-state-hover');
             })
             .unbind('mouseleave').bind('mouseleave', function(event) {
                 var $this = ice.ace.jq(this),
@@ -412,7 +421,10 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                         topCarat.fadeTo(0, 0);
                     else topCarat.fadeTo(0, .33);
 
-                $this.parent().parent().removeClass('ui-state-hover');
+                if ($this.closest('th').find('> hr').size() == 0)
+                    $this.closest('th').removeClass('ui-state-hover');
+                else
+                    $this.closest('.ui-sortable-column').removeClass('ui-state-hover');
             }).each(function () {
                 // Prefade sort controls
                 var $this = ice.ace.jq(this),
