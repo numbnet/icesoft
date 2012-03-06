@@ -741,6 +741,11 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
                 headerTable.find('tr th:last').css('padding-right','27px');
                 footerTable.find('tr td:last').css('padding-right','27px');
             }
+        } else {
+            headerTable.parent().css('margin-right', '');
+            footerTable.parent().css('margin-right', '');
+            headerTable.find('tr th:last').css('padding-right','');
+            footerTable.find('tr td:last').css('padding-right','');
         }
 
         // Hide Duplicate Segments
