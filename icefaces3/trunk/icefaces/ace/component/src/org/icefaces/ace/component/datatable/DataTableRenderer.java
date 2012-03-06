@@ -693,6 +693,7 @@ public class DataTableRenderer extends CoreRenderer {
             String columnClass = DataTableConstants.COLUMN_HEADER_CLASS;
             columnClass = (table.isReorderableColumns() && column.isReorderable()) ? columnClass + " " + DataTableConstants.REORDERABLE_COL_CLASS : columnClass;
             columnClass = styleClass != null ? columnClass + " " + styleClass : columnClass;
+            columnClass = (column.getSortPriority() != null && !isNextStacked) ? columnClass + " ui-state-active" : columnClass;
 
             writer.startElement("th", null);
             writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
@@ -714,7 +715,8 @@ public class DataTableRenderer extends CoreRenderer {
         String columnClass = DataTableConstants.COLUMN_HEADER_CONTAINER_CLASS;
         columnClass = isSortable ? columnClass + " " + DataTableConstants.SORTABLE_COLUMN_CLASS : columnClass;
         columnClass = table.isClickableHeaderSorting() ? columnClass + " clickable" : columnClass;
-        columnClass = (column.getSortPriority() != null) ? columnClass + " ui-state-active" : columnClass;
+        // Add style class to div in stacking case, else style th
+        columnClass = (column.getSortPriority() != null && (isCurrStacked || isNextStacked)) ? columnClass + " ui-state-active" : columnClass;
 
         writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
         writer.startElement(HTML.SPAN_ELEM, null);
