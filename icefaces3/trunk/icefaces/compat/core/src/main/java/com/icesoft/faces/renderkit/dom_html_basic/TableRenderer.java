@@ -27,6 +27,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.el.ValueBinding;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,6 +37,20 @@ import java.util.StringTokenizer;
 public class TableRenderer extends DomBasicRenderer {
 
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_DATATABLE);
+    private static final String SCROLL_POSITION_SUFFIX = "_scrollPosition";
+
+    @Override
+    public void decode(FacesContext facesContext, UIComponent uiComponent) {
+        super.decode(facesContext, uiComponent);
+        String scrollPositionParameter = uiComponent.getClientId(facesContext) + SCROLL_POSITION_SUFFIX;
+        String scrollPosition = facesContext.getExternalContext().getRequestParameterMap().get(scrollPositionParameter);
+        if (scrollPosition != null) {
+            ValueBinding vb = uiComponent.getValueBinding("scrollPosition");
+            if (vb != null) {
+                vb.setValue(facesContext, scrollPosition);
+            }
+        }
+    }
 
     public boolean getRendersChildren() {
         return true;
@@ -85,14 +100,33 @@ public class TableRenderer extends DomBasicRenderer {
 
             mainDiv.appendChild(headerDiv);
             Element bodyDiv = domContext.createElement("div");
-            String height =
-                    (String) uiComponent.getAttributes().get("scrollHeight");
+
+            ValueBinding vb = uiComponent.getValueBinding("scrollPosition");
+            int scrollPosition = vb == null ? 0 : (Integer) vb.getValue(facesContext);
+
+            String height = (String) uiComponent.getAttributes().get("scrollHeight");
+            String id = uiComponent.getClientId(facesContext) + "_scroll";
+            bodyDiv.setAttribute("id", id);
             bodyDiv.setAttribute("style",
                                "overflow:auto;width:100%;"+ (height!=null&&height.length()>0?"height:" + height + ";":""));
-            
+
             Element bodytable = domContext.createElement("table");
-//            bodytable.setAttribute("style","width:100%;");
             bodyDiv.appendChild(bodytable);
+
+            Element scrollState = (Element) bodyDiv.appendChild(domContext.createElement("input"));
+            String inputID = uiComponent.getClientId(facesContext) + SCROLL_POSITION_SUFFIX;
+            scrollState.setAttribute("id", inputID);
+            scrollState.setAttribute("name", inputID);
+            scrollState.setAttribute("type", "hidden");
+            scrollState.setAttribute("value", Integer.toString(scrollPosition));
+            bodyDiv.setAttribute("onscroll", "var input = document.getElementById('" + inputID + "'); clearTimeout(ice.pid); ice.pid = setTimeout(function() { input.value = document.getElementById('" + id + "').scrollTop; window.iceSubmitPartial(null, input, event); }, 400);");
+
+            Element scrollInitializeWrapper = (Element) bodyDiv.appendChild(domContext.createElement("span"));
+            scrollInitializeWrapper.setAttribute("id", id + "_initialize");
+            Element scrollInitialize = (Element)  scrollInitializeWrapper.appendChild(domContext.createElement("script"));
+            scrollInitialize.setAttribute("type", "text/javascript");
+            scrollInitialize.appendChild(domContext.createTextNodeUnescaped("document.getElementById('" + id + "').scrollTop = " + scrollPosition + ";"));
+
             mainDiv.appendChild(bodyDiv);
             Object scollFooter = uiComponent.getAttributes().get("scrollFooter");
             if (!(scollFooter != null && ((Boolean)scollFooter).booleanValue())) {
