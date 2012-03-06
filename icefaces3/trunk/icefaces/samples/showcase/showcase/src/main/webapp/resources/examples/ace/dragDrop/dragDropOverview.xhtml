@@ -35,7 +35,7 @@
     <ui:param name="tldResources" value="#{dragDropResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <h:panelGrid width="100%" columns="2"> 
                 <ace:dataTable id="sortingList"
                                          value="#{dragDropOverviewBean.items}"
@@ -56,23 +56,23 @@
 
                 <h:panelGrid>
                     
-                    <ace:panel header="Electronics">
+                    <ace:panel id="electronics" header="Electronics">
                         <h:panelGrid columns="2" width="100%">
-                            <ace:panel styleClass="droppableSlot">
+                            <ace:panel id="electronicsDrop1" styleClass="droppableSlot">
                                 <ace:droppable tolerance="fit" scope="electronicDevice" activeStyleClass="activatedSlot"/>
                             </ace:panel>
-                            <ace:panel styleClass="droppableSlot">
+                            <ace:panel id="electronicsDrop2" styleClass="droppableSlot">
                                 <ace:droppable tolerance="fit" scope="electronicDevice" activeStyleClass="activatedSlot"/>
                             </ace:panel>
                         </h:panelGrid>
                     </ace:panel>
                     
-                    <ace:panel header="Groceries">
+                    <ace:panel id="groceries" header="Groceries">
                         <h:panelGrid columns="2" width="100%">
-                            <ace:panel styleClass="droppableSlot">
+                            <ace:panel id="groceriesDrop1" styleClass="droppableSlot">
                                 <ace:droppable tolerance="fit" scope="food" activeStyleClass="activatedSlot"/>
                             </ace:panel>
-                            <ace:panel styleClass="droppableSlot">
+                            <ace:panel id="groceriesDrop2" styleClass="droppableSlot">
                                 <ace:droppable tolerance="fit" scope="food" activeStyleClass="activatedSlot"/>
                             </ace:panel>
                         </h:panelGrid>
