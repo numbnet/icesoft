@@ -95,6 +95,7 @@ ice.ace.DataTable = function(id, cfg) {
     this.jqId = ice.ace.escapeClientId(id);
     this.sortOrder = [];
     this.tbody = this.jqId + '_data';
+    this.parentResizeDelaySet = false;
     this.delayedFilterCall = null;
     this.filterSource = null;
     this.behaviors = cfg.behaviors;
@@ -620,9 +621,22 @@ ice.ace.DataTable.prototype.setupResizableColumns = function() {
 }
 
 ice.ace.DataTable.prototype.resizeScrolling = function() {
-    var headerTable = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-header:first > table'),
-        footerTable = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-footer:first > table'),
-        bodyTable = ice.ace.jq(this.jqId + ' .ui-datatable-scrollable-body:first > table'),
+    var scrollableTable = ice.ace.jq(this.jqId),
+        resizableTableParents = scrollableTable.parents('.ui-datatable-scrollable');
+
+    // If our parents are resizeable tables, allow them to resize before I resize myself
+    if (resizableTableParents.size() > 0) {
+        if (!this.parentResizeDelaySet) {
+            this.parentResizeDelaySet = true;
+            var _self = this;
+            setTimeout(function () { _self.resizeScrolling() }, resizableTableParents.size() * 5);
+            return;
+        }
+    }
+
+    var headerTable = scrollableTable.find('.ui-datatable-scrollable-header:first > table'),
+        footerTable = scrollableTable.find('.ui-datatable-scrollable-footer:first > table'),
+        bodyTable = scrollableTable.find('.ui-datatable-scrollable-body:first > table'),
         dupeHead = bodyTable.find('thead:first'),
         dupeFoot = bodyTable.find('tfoot:first');
 
@@ -722,9 +736,9 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
 
             // Set Duplicate Header Sizing to True Header Columns
             realFootColumn.parent().width(realFootColumnWidth);
-            if (!ie7) realFootColumn.width(dupeHeadColumnWidths[i]);
+            if (!ie7) realFootColumn.width(realFootColumnWidth);
             // Apply same width to stacked sibling columns
-            if (!ie7) realFootColumn.siblings('.ui-footer-column').width(dupeHeadColumnWidths[i]);
+            if (!ie7) realFootColumn.siblings('.ui-footer-column').width(realFootColumnWidth[i]);
         }
 
 
