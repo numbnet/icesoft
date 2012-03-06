@@ -87,8 +87,19 @@ public class WindowScopeManager extends SessionAwareResourceHandlerWrapper {
     }
 
     public static String determineWindowID(FacesContext context) {
-        Map session = context.getExternalContext().getSessionMap();
-        Object synchronizationMonitor = session.get(SessionSynchronizationMonitor);
+
+        // ICE-7749: By default, in portals, the ExternalContext.getSessionMap() returns a map of
+        // values that are in PortletSession.PORTLET_SCOPE.  But for the synchronization monitor we
+        // are using here, it's initially put into PortletSession.APPLICATION_SCOPE so we need to
+        // access it using our own session proxy which, with portlets, defaults to APPLICATION_SCOPE.
+        HttpSession safeSession = EnvUtils.getSafeSession(context);
+        Object synchronizationMonitor = safeSession.getAttribute(SessionSynchronizationMonitor);
+        if( synchronizationMonitor == null ){
+            log.log(Level.FINE, "synchronization monitor not set by session listener");
+            synchronizationMonitor = new SynchronizationMonitorObject();
+            safeSession.setAttribute(SessionSynchronizationMonitor, synchronizationMonitor);
+        }
+
         synchronized (synchronizationMonitor) {
             State state = getState(context);
             ExternalContext externalContext = context.getExternalContext();
