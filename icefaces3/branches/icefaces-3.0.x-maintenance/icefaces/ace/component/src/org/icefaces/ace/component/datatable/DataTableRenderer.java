@@ -1033,7 +1033,7 @@ public class DataTableRenderer extends CoreRenderer {
 
         if (hasData)
             for (int i = first; i < (first + rowCountToRender); i++) {
-                encodeRow(context, table, columns, clientId, i, null, rowIndexVar, (page == 0 && i == 0) || (page - 1) * rows == i);
+                encodeRow(context, table, columns, clientId, i, null, rowIndexVar, i == first);
             }
         else encodeEmptyMessage(table, writer, columns);
 
