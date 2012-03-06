@@ -99,7 +99,7 @@ public class Participant implements Serializable {
     }
 
     public void logout(ActionEvent event) {
-        logout(null);
+        logout();
     }
 
     @PreDestroy
