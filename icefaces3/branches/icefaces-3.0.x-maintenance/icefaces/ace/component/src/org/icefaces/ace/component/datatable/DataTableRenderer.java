@@ -1161,6 +1161,12 @@ public class DataTableRenderer extends CoreRenderer {
                 if (editor != null) {
                     columnStyleClass = columnStyleClass == null ? DataTableConstants.EDITABLE_COLUMN_CLASS : DataTableConstants.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
                 }
+                // Add alternating styling, except when last group is the same value, split by an expansion or conditional row
+                if (column.getValueExpression("groupBy") != null) {
+                    if (column.isLastGroupDifferent()) column.setOddGroup(!column.isOddGroup());
+                    if (columnStyleClass == null) columnStyleClass = "";
+                    columnStyleClass += column.isOddGroup() ? " ui-datatable-group-odd" : " ui-datatable-group-even";
+                }
                 if (columnStyleClass != null) writer.writeAttribute(HTML.CLASS_ATTR, columnStyleClass, null);
 
                 if (resizable) writer.startElement(HTML.DIV_ELEM, null);
