@@ -1205,32 +1205,6 @@ public class DataTableRenderer extends CoreRenderer {
         writer.endElement(HTML.TD_ELEM);
     }
 
-    protected void encodeConditionalRow(FacesContext context, Row r) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement(HTML.TR_ELEM, null);
-
-        List<UIComponent> children = r.getChildren();
-        List<Column> rowColumns = new ArrayList<Column>(children.size());
-        for (UIComponent kid : children)
-            if (kid instanceof Column)
-                rowColumns.add((Column)kid);
-
-        for (Column kid : rowColumns)
-            if (kid.isRendered())
-                encodeConditionalRowCell(context, kid);
-
-        writer.endElement(HTML.TR_ELEM);
-    }
-    
-    protected void encodeConditionalRowCell(FacesContext context, Column c) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-
-        writer.startElement(HTML.TD_ELEM, null);
-        writer.writeAttribute(HTML.COLSPAN_ATTR, c.getColspan(), null);
-        c.encodeAll(context);
-        writer.endElement(HTML.TD_ELEM);
-    }
-
     protected void encodeTableFoot(FacesContext context, DataTable table, List<Column> columns) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ColumnGroup group = table.getColumnGroup("footer");

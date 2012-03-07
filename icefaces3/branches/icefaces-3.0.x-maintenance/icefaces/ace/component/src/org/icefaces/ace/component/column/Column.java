@@ -155,8 +155,6 @@ public class Column extends ColumnBase {
                 }
                 else keepCounting = false;
             }
-                else keepCounting = false;
-            }
 
         dataTable.setRowIndex(currentRow);
         setCurrGroupLength(result);
