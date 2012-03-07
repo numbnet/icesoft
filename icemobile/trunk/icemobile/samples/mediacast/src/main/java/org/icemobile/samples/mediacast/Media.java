@@ -40,6 +40,10 @@ public class Media implements Serializable {
     private int height;
 
     public Media(byte[] data, int width, int height) {
+        this(data, "image/png", width, height);
+    }
+
+    public Media(byte[] data, String type, int width, int height) {
 
         this.width = width;
         this.height = height;
@@ -54,7 +58,7 @@ public class Media implements Serializable {
             synchronized (dataLock){
                 this.data = new IceOutputResource(
                         UUID.randomUUID().toString(),
-                        bos.toByteArray(), "image/png");
+                        bos.toByteArray(), type);
             }
             bos.close();
             fis.close();

@@ -317,7 +317,7 @@ public class MediaController implements Serializable {
                 converted.renameTo(newAudio);
                 audioFile = newAudio;
             }
-            audioMessage.addAudio(createMedia(audioFile));
+            audioMessage.addAudio(createMedia("audio/mp4", audioFile));
             audioMessage.addMediumPhoto(soundIcon);
             audioMessage.addSmallPhoto(soundIconSmall);
         } catch (Exception e) {
@@ -356,7 +356,7 @@ public class MediaController implements Serializable {
                 thumbImage.delete();
             }
 
-            videoMessage.addVideo(createMedia(videoFile));
+            videoMessage.addVideo(createMedia("video/mp4", videoFile));
             videoMessage.addMediumPhoto(customMovieIcon);
             videoMessage.addSmallPhoto(movieIconSmall);
         } catch (Exception e) {
@@ -428,7 +428,7 @@ public class MediaController implements Serializable {
         return new Media(fileContent, width, height);
     }
 
-    private Media createMedia(File mediaFile)
+    private Media createMedia(String contentType, File mediaFile)
             throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         InputStream in = new FileInputStream(mediaFile);
@@ -442,7 +442,7 @@ public class MediaController implements Serializable {
         }
         byte[] fileContent = baos.toByteArray();
         baos.close();
-        return new Media(fileContent, 0, 0);
+        return new Media(fileContent, contentType, 0, 0);
     }
 
 
