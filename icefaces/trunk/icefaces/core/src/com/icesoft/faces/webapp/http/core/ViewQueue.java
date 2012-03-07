@@ -33,8 +33,29 @@
 package com.icesoft.faces.webapp.http.core;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ConcurrentLinkedQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.Executor;
 
 public class ViewQueue extends ConcurrentLinkedQueue {
+    private final Runnable executeNow =
+        new Runnable() {
+            public void run() {
+                listener.run();
+            }
+        };
+    private final Runnable executor;
+
+    public ViewQueue(final Executor executor) {
+        if (executor == null) {
+            this.executor = executeNow;
+        } else {
+            this.executor =
+                new Runnable() {
+                    public void run() {
+                        executor.execute(executeNow);
+                    }
+                };
+        }
+    }
 
     private Runnable listener;
 
@@ -46,6 +67,6 @@ public class ViewQueue extends ConcurrentLinkedQueue {
         if (!contains(object)) {
             super.add(object);
         }
-        listener.run();
+        executor.run();
     }
 }
