@@ -130,16 +130,31 @@ public class Column extends ColumnBase {
     public int findCurrGroupLength() {
         DataTable dataTable = findParentTable(getFacesContext(), this);
 
-        int result = 1; // isNextColumnGrouped == true is known
+        int result = 0; // isNextColumnGrouped == true is known
         int currentRow = dataTable.getRowIndex();
         boolean keepCounting = true;
         Object currentValue = getGroupBy();
 
-        while (keepCounting) {
-            dataTable.setRowIndex(currentRow + result + 1);
-            if (currentValue.equals(getGroupBy())) result++;
-            else keepCounting = false;
-        }
+        // If this row doesn't break groups by rendering a conditional row after itself or
+        // by being expanded, span more than one row
+        boolean notExpanded  = !dataTable.getStateMap().get(dataTable.getRowData()).isExpanded();
+        boolean noTailingRows = dataTable.getConditionalRows(currentRow, false).size() == 0;
+        boolean lastExpanded = false;
+        if (notExpanded && noTailingRows)
+            while (keepCounting) {
+                dataTable.setRowIndex(currentRow + result + 1);
+
+                if (!dataTable.isRowAvailable()) break;
+
+                boolean expanded = dataTable.getStateMap().get(dataTable.getRowData()).isExpanded();
+                boolean hasConditionalRows = dataTable.getConditionalRows(currentRow + result + 1, true).size() > 0 || dataTable.getConditionalRows(currentRow + result, false).size() > 0;;
+
+                if (currentValue.equals(getGroupBy()) && !lastExpanded && !hasConditionalRows) {
+                    lastExpanded = expanded;
+                    result++;
+                }
+                else keepCounting = false;
+            }
 
         dataTable.setRowIndex(currentRow);
         setCurrGroupLength(result);

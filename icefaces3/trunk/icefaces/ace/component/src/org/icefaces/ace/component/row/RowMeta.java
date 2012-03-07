@@ -17,7 +17,13 @@
 package org.icefaces.ace.component.row;
 
 import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.DefaultValueType;
+import org.icefaces.ace.meta.annotation.Expression;
+import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
+import org.icefaces.ace.util.collections.Predicate;
+
+import javax.el.ValueExpression;
 
 @Component(
         tagName = "row",
@@ -29,4 +35,25 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
         tlddoc = "<p>Renders a set of ace:column components as one row of the header or footer segment of an ace:dataTable via an ace:columnGroup.</p>" +
                  "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/Row\">Row Wiki Documentation</a>.</p>"
 )
-public class RowMeta extends UIComponentBaseMeta {}
+public class RowMeta extends UIComponentBaseMeta {
+    @Property(tlddoc = "Defines a mode of operation that determines under what type of condition ths row will be " +
+            "rendered. Options include 'interval', 'predicate' and 'group'.")
+    private String condition;
+
+    @Property(tlddoc = "Defines an interval that determines how regularly this row will render.")
+    private Integer interval;
+    
+    @Property(tlddoc = "Defines whether a conditional row is intended to render 'before' or 'after' a group change " +
+            "in 'group' conditional mode. If in predicate mode, this setting defines if the conditional row renders " +
+            "before or after the data model position that caused the predicate to evaluate true.",
+            defaultValue = "after", defaultValueType = DefaultValueType.STRING_LITERAL)
+    private String pos;
+
+    @Property(tlddoc = "When using 'predicate' conditional mode, defines a predicate taking TableIterationContext " +
+            "as an argument, used to decide after what row objects to render the conditional row.")
+    private Predicate predicate;
+
+    @Property(expression = Expression.VALUE_EXPRESSION, tlddoc="Defines an expression used to determine when a group " +
+            "change is occurring in 'group' conditional mode.")
+    private Object groupBy;
+}
