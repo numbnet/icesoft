@@ -186,14 +186,6 @@ mobi.datespinner = {
         } else return 1;
     },
     select:function (clientId, cfg) {
-        this.cfg = cfg;
-        var singleSubmit = this.cfg.singleSubmit;
-        var event = this.cfg.event;
-        var hasBehaviors = false;
-        var behaviors = this.cfg.behaviors;
-        if (behaviors) {
-            hasBehaviors = true;
-        }
         //
         var inputEl = document.getElementById(clientId + '_input');
         var hiddenEl = document.getElementById(clientId + '_hidden');
@@ -233,15 +225,36 @@ mobi.datespinner = {
         }
         hiddenEl.value = dateStr;
         inputEl.value = dateStr;
-        if (hasBehaviors) {
-            if (behaviors.change) {
-                behaviors.change();
-            }
-        }
-        if (!hasBehaviors && singleSubmit) {
-            ice.se(event, clientId);
-        }
+
+        this.dateSubmit(cfg, clientId);
         this.close(clientId);
+    },
+    dateSubmit: function(cfg, clientId) {
+            this.cfg = cfg;
+            var singleSubmit = this.cfg.singleSubmit;
+            var event = this.cfg.event;
+            var hasBehaviors = false;
+            var behaviors = this.cfg.behaviors;
+            if (behaviors) {
+                hasBehaviors = true;
+            }
+            if (hasBehaviors) {
+                if (behaviors.change) {
+                    behaviors.change();
+                }
+            }
+            if (!hasBehaviors && singleSubmit) {
+                ice.se(event, clientId);
+            }
+    },
+    inputSubmit: function(clientId, cfg){
+        if (this.opened[clientId]==true){
+            return;
+        }
+        var hiddenEl = document.getElementById(clientId + '_hidden');
+        var inputEl = document.getElementById(clientId + '_input');
+        hiddenEl.value= inputEl.value;
+        this.dateSubmit(cfg, clientId);
     },
     toggle:function (clientId) {
         if (!this.opened[clientId]) {
