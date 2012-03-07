@@ -32,15 +32,118 @@
 
 package org.icefaces.ace.component.row;
 
-import javax.faces.component.UIComponentBase;
+import org.icefaces.ace.component.datatable.DataTable;
+import org.icefaces.ace.util.collections.Predicate;
+
+import javax.el.ELContext;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependencies;
-import java.util.List;
-import java.util.ArrayList;
 
 @ResourceDependencies({
 
 })
 public class Row extends RowBase {
+    private Predicate predicate;
+
+    /**
+     * Return true if this conditional row should render at the given index, either before it or after it.
+     * @param index the index of the row being rendered
+     * @param before a flag to indicate if this evaluation is
+     * @return True if this conditional row should render.
+     */
+    public boolean evaluateCondition(int index) {
+        String condition = this.getCondition();
+        if (condition == null) return false;
+
+        if (predicate == null) {
+            if (condition.equals("interval")) {
+                predicate = new IntervalPredicate(getInterval());
+            }
+            else if (condition.equals("group")) {
+                predicate = new GroupPredicate(getValueExpression("groupBy"), getPos() == "before");
+            }
+            else if (condition.equals("predicate"))
+                predicate = getPredicate();
+        }
+
+        return predicate.evaluate(index);
+    }
+
+    private class IntervalPredicate implements Predicate {
+        int interval;
+
+        public IntervalPredicate(int interval) {
+            if (interval < 1) throw new IllegalArgumentException();
+            this.interval = interval;
+        }
+
+        public boolean evaluate(Object index) {
+            if (index instanceof Integer) {
+                if (((Integer)index % interval) == 0) {
+                    return true;
+                }
+            }
+            return  false;
+        }
+    }
+
+    private class GroupPredicate implements Predicate {
+        ValueExpression groupBy;
+        Object lastValue;
+        boolean before;
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ELContext elContext = facesContext.getELContext();
+
+        public GroupPredicate(ValueExpression gb, boolean before) {
+            groupBy = gb;
+            this.before = before;
+        }
+
+        public boolean evaluate(Object object) {
+            findParentTable(facesContext);
+            int currentIndex = table.getRowIndex();
+            Integer index = (Integer) object;
+
+            table.setRowIndex(index);
+            Object currentValue = groupBy.getValue(elContext);
+            
+            if (lastValue == null) {
+                lastValue = currentValue;
+                if (before) return true;
+            }
+            
+            if (before) {
+                if (currentValue.equals(lastValue)) {
+                    return false;
+                } else {
+                    lastValue = currentValue;
+                    return true;
+                }
+            } else {
+                table.setRowIndex(index + 1);
+                Object nextValue = table.isRowAvailable() ? groupBy.getValue(elContext) : null;
+                table.setRowIndex(currentIndex);
+
+                if (currentValue.equals(nextValue)) return false;
+                else return true;
+            }
+        }
+    }
+
+    private DataTable table;
+    private DataTable findParentTable(FacesContext context) {
+        if (table == null) {
+            UIComponent parent = getParent();
+            while(parent != null)
+                if (parent instanceof DataTable) {
+                    table = (DataTable) parent;
+                    break;
+                }
+                else parent = parent.getParent();
+        }
+
+        return table;
+    }
 }
