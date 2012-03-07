@@ -204,4 +204,14 @@ public class ServerUtility {
             }
         }
     }
+
+    public static boolean isIPlanet(final ServletContext servletContext) {
+        /*
+         * iPlanet Web Server server info strings:
+         *
+         * - 7.0: Oracle iPlanet Web Server/7.0
+         */
+        String _serverInfo = servletContext.getServerInfo();
+        return _serverInfo.startsWith("Oracle iPlanet Web Server");
+    }
 }

@@ -72,6 +72,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import edu.emory.mathcs.backport.java.util.concurrent.Executor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -97,14 +98,15 @@ public class MainSessionBoundServlet extends PathDispatcher implements PageTest 
         }
     };
     private final Map views = Collections.synchronizedMap(new HashMap());
-    private final ViewQueue allUpdatedViews = new ViewQueue();
+    private final ViewQueue allUpdatedViews;
     private final Collection synchronouslyUpdatedViews = new HashSet();
     private final String sessionID;
     private boolean pageLoaded = false;
     private Runnable shutdown;
 
-    public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, final IdGenerator idGenerator, final MimeTypeMatcher mimeTypeMatcher, final MonitorRunner monitorRunner, final Configuration configuration, final CoreMessageService coreMessageService, final String blockingRequestHandlerContext, final Authorization authorization) {
+    public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, final IdGenerator idGenerator, final MimeTypeMatcher mimeTypeMatcher, final MonitorRunner monitorRunner, final Configuration configuration, final CoreMessageService coreMessageService, final String blockingRequestHandlerContext, final Authorization authorization, final Executor executor) {
         this.sessionID = restoreOrCreateSessionID(session, idGenerator);
+        this.allUpdatedViews = new ViewQueue(executor);
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
         final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix, mimeTypeMatcher, sessionMonitor, configuration);
         final Server viewServlet;
