@@ -79,15 +79,22 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         String rangeHeader = externalContext.getRequestHeaderMap()
                 .get(RANGE);
         if (null != rangeHeader)  {
-            if (rangeHeader.startsWith(BYTES_PREFIX))  {
-                String range = rangeHeader
-                        .substring(BYTES_PREFIX.length() );
-                int splitIndex = range.indexOf("-");
-                String startString = range.substring(0, splitIndex);
-                String endString = range.substring(splitIndex + 1);
-                useRanges = true;
-                rangeStart = Integer.parseInt(startString);
-                rangeEnd = Integer.parseInt(endString);
+            try {
+                if (rangeHeader.startsWith(BYTES_PREFIX))  {
+                    String range = rangeHeader
+                            .substring(BYTES_PREFIX.length() );
+                    int splitIndex = range.indexOf("-");
+                    String startString = range.substring(0, splitIndex);
+                    String endString = range.substring(splitIndex + 1);
+                    rangeStart = Integer.parseInt(startString);
+                    rangeEnd = Integer.parseInt(endString);
+                    useRanges = true;
+                }
+            } catch (Exception e)  {
+                useRanges = false;
+                if (log.isLoggable(Level.FINE)) {
+                    log.fine("Unable to decode range header " + rangeHeader);
+                }
             }
         }
 
