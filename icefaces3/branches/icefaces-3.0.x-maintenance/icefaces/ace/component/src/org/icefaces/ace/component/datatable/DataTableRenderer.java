@@ -691,7 +691,7 @@ public class DataTableRenderer extends CoreRenderer {
             columnClass = styleClass != null ? columnClass + " " + styleClass : columnClass;
             columnClass = (column.getSortPriority() != null && !isNextStacked) ? columnClass + " ui-state-active" : columnClass;
 
-            writer.startElement("th", null);
+            writer.startElement(HTML.TH_ELEM, null);
             writer.writeAttribute(HTML.CLASS_ATTR, columnClass, null);
 
             if (style != null) writer.writeAttribute(HTML.STYLE_ELEM, style, null);
@@ -735,7 +735,7 @@ public class DataTableRenderer extends CoreRenderer {
         }
 
         String paddingStyle = "";
-        if (rightHeaderPadding > 0) paddingStyle += "padding-right:" + rightHeaderPadding + "px;";
+        //if (rightHeaderPadding > 0) paddingStyle += "margin-right:" + rightHeaderPadding + "px;";
         if (leftHeaderPadding > 0) paddingStyle += "padding-left:" + leftHeaderPadding + "px;";
         if (!paddingStyle.equals("")) writer.writeAttribute(HTML.STYLE_ATTR, paddingStyle, null);
 
@@ -1074,6 +1074,11 @@ public class DataTableRenderer extends CoreRenderer {
         
         if (visible) {
             ResponseWriter writer = context.getResponseWriter();
+
+            // Add leading conditional row for this row object if required
+            List<Row> leadingRows = table.getConditionalRows(rowIndex, true);
+            for (Row r : leadingRows) encodeConditionalRow(context, r);
+
             String userRowStyleClass = table.getRowStyleClass();
             String expandedClass = expanded ? DataTableConstants.EXPANDED_ROW_CLASS : "";
             String unselectableClass = unselectable ? DataTableConstants.UNSELECTABLE_ROW_CLASS : "";
@@ -1123,6 +1128,10 @@ public class DataTableRenderer extends CoreRenderer {
                 // Row index will have come back different from row expansion.
                 table.setRowIndex(rowIndex);
             }
+
+            // Add tailing conditional row for this row object if required
+            List<Row> tailingRows = table.getConditionalRows(rowIndex, false);
+            for (Row r : tailingRows) encodeConditionalRow(context, r);
         }
     }
 
@@ -1168,6 +1177,58 @@ public class DataTableRenderer extends CoreRenderer {
                 writer.endElement(HTML.TD_ELEM);
             }
         }
+    }
+
+    protected void encodeConditionalRow(FacesContext context, Row r) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement(HTML.TR_ELEM, null);
+
+        List<UIComponent> children = r.getChildren();
+        List<Column> rowColumns = new ArrayList<Column>(children.size());
+        for (UIComponent kid : children)
+            if (kid instanceof Column)
+                rowColumns.add((Column)kid);
+
+        for (Column kid : rowColumns)
+            if (kid.isRendered())
+                encodeConditionalRowCell(context, kid);
+
+        writer.endElement(HTML.TR_ELEM);
+    }
+    
+    protected void encodeConditionalRowCell(FacesContext context, Column c) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement(HTML.TD_ELEM, null);
+        writer.writeAttribute(HTML.COLSPAN_ATTR, c.getColspan(), null);
+        c.encodeAll(context);
+        writer.endElement(HTML.TD_ELEM);
+    }
+
+    protected void encodeConditionalRow(FacesContext context, Row r) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement(HTML.TR_ELEM, null);
+
+        List<UIComponent> children = r.getChildren();
+        List<Column> rowColumns = new ArrayList<Column>(children.size());
+        for (UIComponent kid : children)
+            if (kid instanceof Column)
+                rowColumns.add((Column)kid);
+
+        for (Column kid : rowColumns)
+            if (kid.isRendered())
+                encodeConditionalRowCell(context, kid);
+
+        writer.endElement(HTML.TR_ELEM);
+    }
+    
+    protected void encodeConditionalRowCell(FacesContext context, Column c) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement(HTML.TD_ELEM, null);
+        writer.writeAttribute(HTML.COLSPAN_ATTR, c.getColspan(), null);
+        c.encodeAll(context);
+        writer.endElement(HTML.TD_ELEM);
     }
 
     protected void encodeTableFoot(FacesContext context, DataTable table, List<Column> columns) throws IOException {
