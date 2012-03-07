@@ -150,7 +150,23 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         // check for a touch enable device and setup events accordingly
         String eventStr = dateSpinner.isTouchEnabled() ?
                 TOUCH_START_EVENT : CLICK_EVENT;
-
+         //prep for ajax submit
+        boolean singleSubmit = dateSpinner.isSingleSubmit();
+        StringBuilder builder = new StringBuilder(255);
+        StringBuilder builder2 = new StringBuilder(255);
+        String inputCallStart = "mobi.datespinner.inputSubmit('";
+        String jsCallStart = "mobi.datespinner.select('" ;
+        builder2.append(clientId).append("',{ event: event,");
+        builder2.append("singleSubmit: ").append(singleSubmit);
+        if (hasBehaviors) {
+            String behaviors = this.encodeClientBehaviors(context, cbh, "change").toString();
+            behaviors = behaviors.replace("\"", "\'");
+            builder2.append(behaviors);
+        }
+        builder2.append("});");
+        builder.append(jsCallStart).append(builder2);
+        StringBuilder inputCall = new StringBuilder(inputCallStart).append(builder2);
+        String jsCall = builder.toString();
         //first do the input field and the button
         // build out first input field
         writer.startElement("span", uiComponent);
@@ -160,6 +176,7 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.startElement("input", uiComponent);
         writer.writeAttribute("id", clientId + "_input", "id");
         writer.writeAttribute("name", clientId + "_input", "name");
+        writer.writeAttribute("onblur", inputCall.toString(), null );
 
         // apply class attribute and pass though attributes for style.
         PassThruAttributeWriter.renderNonBooleanAttributes(writer, uiComponent,
@@ -269,18 +286,6 @@ public class DateSpinnerRenderer extends BaseInputRenderer {
         writer.writeAttribute("class", "mobi-button mobi-button-default", null);
         writer.writeAttribute("type", "button", "type");
         writer.writeAttribute("value", "Set", null);
-        //prep for singleSubmit
-        boolean singleSubmit = dateSpinner.isSingleSubmit();
-        StringBuilder builder = new StringBuilder(255);
-        builder.append("mobi.datespinner.select('").append(clientId).append("',{ event: event,");
-        builder.append("singleSubmit: ").append(singleSubmit);
-        if (hasBehaviors) {
-            String behaviors = this.encodeClientBehaviors(context, cbh, "change").toString();
-            behaviors = behaviors.replace("\"", "\'");
-            builder.append(behaviors);
-        }
-        builder.append("});");
-        String jsCall = builder.toString();
         if (!dateSpinner.isDisabled() && !dateSpinner.isReadonly()) {
             writer.writeAttribute(eventStr, jsCall, null);
         }
