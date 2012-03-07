@@ -160,7 +160,10 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
                              submittedValue, componentValue);
             }
         }
-
+		if (uiComponent.getClass().getName().equals("com.icesoft.faces.component.ext.HtmlSelectOneRadio")) {
+            rootNode.removeAttribute(HTML.TABINDEX_ATTR);
+            rootNode.removeAttribute(HTML.ONCLICK_ATTR);
+        }
         domContext.stepOver();
     }
 
