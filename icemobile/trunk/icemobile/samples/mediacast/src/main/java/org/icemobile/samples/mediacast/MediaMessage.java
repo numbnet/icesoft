@@ -38,6 +38,8 @@ public class MediaMessage implements Serializable {
     private String comment;
 
     private Media[] photos = new Media[3];
+    private Media videoMedia = null;
+    private Media audioMedia = null;
     private File mediaFile;
     private String mediaType = MEDIA_TYPE_PHOTO;
 
@@ -85,7 +87,25 @@ public class MediaMessage implements Serializable {
         this.photos = photos;
         mediaType = MEDIA_TYPE_PHOTO;
     }
+
+    public void addVideo(Media video)  {
+        this.videoMedia = video;
+        this.mediaType = MEDIA_TYPE_VIDEO;
+    }
     
+    public void addAudio(Media audio)  {
+        this.audioMedia = audio;
+        this.mediaType = MEDIA_TYPE_AUDIO;
+    }
+
+    public Media getVideo()  {
+        return videoMedia;
+    }
+
+    public Media getAudio()  {
+        return audioMedia;
+    }
+
     public void addVideo(File videoFile)  {
         this.mediaFile = videoFile;
         this.mediaType = MEDIA_TYPE_VIDEO;

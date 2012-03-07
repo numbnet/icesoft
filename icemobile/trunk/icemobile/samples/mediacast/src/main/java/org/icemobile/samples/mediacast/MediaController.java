@@ -317,13 +317,13 @@ public class MediaController implements Serializable {
                 converted.renameTo(newAudio);
                 audioFile = newAudio;
             }
+            audioMessage.addAudio(createMedia(audioFile));
+            audioMessage.addMediumPhoto(soundIcon);
+            audioMessage.addSmallPhoto(soundIconSmall);
         } catch (Exception e) {
             //conversion fails, but we may proceed with original file
             logger.log(Level.WARNING, "Error processing audio.", e);
         }
-        audioMessage.addAudio(audioFile);
-        audioMessage.addMediumPhoto(soundIcon);
-        audioMessage.addSmallPhoto(soundIconSmall);
     }
 
     private void processUploadedVideo(MediaMessage videoMessage, File videoFile) {
@@ -356,13 +356,13 @@ public class MediaController implements Serializable {
                 thumbImage.delete();
             }
 
+            videoMessage.addVideo(createMedia(videoFile));
+            videoMessage.addMediumPhoto(customMovieIcon);
+            videoMessage.addSmallPhoto(movieIconSmall);
         } catch (Exception e) {
             //conversion fails, but we may proceed with original file
             logger.log(Level.WARNING, "Error processing video.", e);
         }
-        videoMessage.addVideo(videoFile);
-        videoMessage.addMediumPhoto(customMovieIcon);
-        videoMessage.addSmallPhoto(movieIconSmall);
     }
 
     private void processUploadedImage(MediaMessage photoMessage, File cameraFile) {
@@ -426,6 +426,23 @@ public class MediaController implements Serializable {
         byte[] fileContent = baos.toByteArray();
         baos.close();
         return new Media(fileContent, width, height);
+    }
+
+    private Media createMedia(File mediaFile)
+            throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        InputStream in = new FileInputStream(mediaFile);
+        byte[] buf = new byte[1000];
+        int l = 1;
+        while (l > 0) {
+            l = in.read(buf);
+            if (l > 0) {
+                baos.write(buf, 0, l);
+            }
+        }
+        byte[] fileContent = baos.toByteArray();
+        baos.close();
+        return new Media(fileContent, 0, 0);
     }
 
 
