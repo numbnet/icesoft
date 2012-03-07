@@ -82,10 +82,16 @@ ice.ace.Menubar = function(id, cfg) {
 			} else { // construct new value strings
 				// process horizontal direction
 				if (_self.cfg.directionX == 'left') {
+					_myFirst = 'right ';
+					_atFirst = 'right ';
+					_collisionFirst = 'none ';
 					_my = 'right ';
 					_at = 'left ';
 					_collision = 'none ';
 				} else if (_self.cfg.directionX == 'right') {
+					_myFirst = 'left ';
+					_atFirst = 'left ';
+					_collisionFirst = 'none ';
 					_my = 'left ';
 					_at = 'right ';
 					_collision = 'none ';
@@ -96,16 +102,16 @@ ice.ace.Menubar = function(id, cfg) {
 				}
 				// process vertical direction
 				if (_self.cfg.directionY == 'up') {
-					_myFirst = 'left bottom';
-					_atFirst = 'left top';
-					_collisionFirst = 'none';
+					_myFirst += 'bottom';
+					_atFirst += 'top';
+					_collisionFirst += 'none';
 					_my += 'bottom';
 					_at += 'bottom';
 					_collision += 'none';
 				} else if (_self.cfg.directionY == 'down') {
-					_myFirst = 'left top';
-					_atFirst = 'left bottom';
-					_collisionFirst = 'none';
+					_myFirst += 'top';
+					_atFirst += 'bottom';
+					_collisionFirst += 'none';
 					_my += 'top';
 					_at += 'top';
 					_collision += 'none';
