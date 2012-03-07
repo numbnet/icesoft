@@ -407,7 +407,7 @@ public class DataTable extends DataTableBase {
             childStack.add(this);
             while (!childStack.empty()) {
                 for (UIComponent child : ((UIComponent)childStack.pop()).getChildren()) {
-                    if (!(child instanceof ColumnGroup) && !(child instanceof Column) && !(child instanceof DataTable)) {
+                    if (!(child instanceof ColumnGroup) && !(child instanceof Column) && !(child instanceof DataTable) && !(child instanceof Row)) {
                         if (child.getChildren().size() > 0) childStack.add(child);
                     } else if (child instanceof Column) unordered.add((Column) child);
                 }
@@ -931,7 +931,29 @@ public class DataTable extends DataTableBase {
         return false;
     }
 
-    public boolean hasSelectionClientBehaviour() {
+    private List<Row> conditionalRows;
+    public List<Row> getConditionalRows(int rowIndex, boolean before) {
+        if (conditionalRows == null) {
+            conditionalRows = new ArrayList<Row>();
+
+            for (UIComponent c : getChildren()) {
+                if (c instanceof Row) {
+                    Row r = (Row)c;
+                    if (r.getCondition() != null) conditionalRows.add(r);
+                }
+            }
+        }
+
+        ArrayList<Row> validRows = new ArrayList<Row>();
+        for (Row c : conditionalRows)
+            if (((c.getPos() == "before" && before) || (c.getPos() == "after" && !before))
+                && c.evaluateCondition(rowIndex))
+                    validRows.add(c);
+
+        return validRows;
+    }
+
+    protected boolean hasSelectionClientBehaviour() {
         List<ClientBehavior> selectBehaviors = getClientBehaviors().get("select");
 
         if (selectBehaviors != null)
