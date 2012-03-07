@@ -37,7 +37,9 @@ import org.icefaces.ace.component.celleditor.CellEditor;
 public class Column extends ColumnBase {
 	private static final String OPTIMIZED_PACKAGE = "org.icefaces.ace.component.";
     private int currGroupLength;
-
+    // Toggled to true appropriately before first group rendering
+    private boolean oddGroup = false;
+    
     public Column() {
 		setRendererType(null);
 	}
@@ -110,6 +112,14 @@ public class Column extends ColumnBase {
         this.currGroupLength = currGroupLength;
     }
 
+    public boolean isOddGroup() {
+        return oddGroup;
+    }
+
+    public void setOddGroup(boolean oddGroup) {
+        this.oddGroup = oddGroup;
+    }
+
     public boolean isNextColumnGrouped() {
         DataTable dataTable = findParentTable(getFacesContext(), this);
         int currentRow = dataTable.getRowIndex();
@@ -135,8 +145,8 @@ public class Column extends ColumnBase {
         boolean keepCounting = true;
         Object currentValue = getGroupBy();
 
-        // If this row doesn't break groups by rendering a conditional row after itself or
-        // by being expanded, span more than one row
+        // If this row doesn't break its group by rendering a conditional row after itself or
+        // by being expanded, span more than this row
         boolean notExpanded  = !dataTable.getStateMap().get(dataTable.getRowData()).isExpanded();
         boolean noTailingRows = dataTable.getConditionalRows(currentRow, false).size() == 0;
         boolean lastExpanded = false;
@@ -159,5 +169,22 @@ public class Column extends ColumnBase {
         dataTable.setRowIndex(currentRow);
         setCurrGroupLength(result);
         return result;  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    public boolean isLastGroupDifferent() {
+        DataTable dataTable = findParentTable(getFacesContext(), this);
+        int currentRow = dataTable.getRowIndex();
+        Object currentValue = getGroupBy();
+
+        if (currentValue != null) {
+            dataTable.setRowIndex(currentRow - 1);
+            Object lastValue = getGroupBy();
+
+            dataTable.setRowIndex(currentRow);
+
+            return !currentValue.equals(lastValue);
+        }
+
+        return true;
     }
 }
