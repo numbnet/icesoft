@@ -62,7 +62,7 @@ public class Row extends RowBase {
                 predicate = new IntervalPredicate(getInterval());
             }
             else if (condition.equals("group")) {
-                predicate = new GroupPredicate(getValueExpression("groupBy"), getPos() == "before");
+                predicate = new GroupPredicate(getValueExpression("groupBy"), getPos().equals("before"));
             }
             else if (condition.equals("predicate"))
                 predicate = getPredicate();
@@ -91,7 +91,6 @@ public class Row extends RowBase {
 
     private class GroupPredicate implements Predicate {
         ValueExpression groupBy;
-        Object lastValue;
         boolean before;
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ELContext elContext = facesContext.getELContext();
@@ -109,18 +108,16 @@ public class Row extends RowBase {
             table.setRowIndex(index);
             Object currentValue = groupBy.getValue(elContext);
             
-            if (lastValue == null) {
-                lastValue = currentValue;
-                if (before) return true;
-            }
+            if (index == 0 && before)
+                return true;
             
             if (before) {
-                if (currentValue.equals(lastValue)) {
-                    return false;
-                } else {
-                    lastValue = currentValue;
-                    return true;
-                }
+                table.setRowIndex(index - 1);
+                Object lastValue = table.isRowAvailable() ? groupBy.getValue(elContext) : null;
+                table.setRowIndex(currentIndex);
+
+                if (currentValue.equals(lastValue)) return false;
+                else return true;
             } else {
                 table.setRowIndex(index + 1);
                 Object nextValue = table.isRowAvailable() ? groupBy.getValue(elContext) : null;

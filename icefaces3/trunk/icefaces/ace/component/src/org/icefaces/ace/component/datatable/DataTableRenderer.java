@@ -1158,6 +1158,8 @@ public class DataTableRenderer extends CoreRenderer {
     protected void encodeConditionalRow(FacesContext context, Row r) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement(HTML.TR_ELEM, null);
+        if (r.getStyle() != null) writer.writeAttribute(HTML.STYLE_ATTR, r.getStyle(), null);
+        if (r.getStyleClass() != null) writer.writeAttribute(HTML.CLASS_ATTR, r.getStyleClass(), null);
 
         List<UIComponent> children = r.getChildren();
         List<Column> rowColumns = new ArrayList<Column>(children.size());
@@ -1177,6 +1179,9 @@ public class DataTableRenderer extends CoreRenderer {
 
         writer.startElement(HTML.TD_ELEM, null);
         writer.writeAttribute(HTML.COLSPAN_ATTR, c.getColspan(), null);
+        if (c.getStyle() != null) writer.writeAttribute(HTML.STYLE_ATTR, c.getStyle(), null);
+        if (c.getStyleClass() != null) writer.writeAttribute(HTML.CLASS_ATTR, c.getStyleClass(), null);
+
         c.encodeAll(context);
         writer.endElement(HTML.TD_ELEM);
     }

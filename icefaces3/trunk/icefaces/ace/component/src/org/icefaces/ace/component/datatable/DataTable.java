@@ -946,7 +946,7 @@ public class DataTable extends DataTableBase {
 
         ArrayList<Row> validRows = new ArrayList<Row>();
         for (Row c : conditionalRows)
-            if (((c.getPos() == "before" && before) || (c.getPos() == "after" && !before))
+            if (((c.getPos().equals("before") && before) || (c.getPos().equals("after") && !before))
                 && c.evaluateCondition(rowIndex))
                     validRows.add(c);
 
