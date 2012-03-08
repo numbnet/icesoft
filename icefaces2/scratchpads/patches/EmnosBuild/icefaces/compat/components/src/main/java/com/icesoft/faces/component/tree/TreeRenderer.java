@@ -129,8 +129,7 @@ public class TreeRenderer extends DomBasicRenderer {
         validateParameters(facesContext, uiComponent, Tree.class);
 
         Tree treeComponent = (Tree) uiComponent;
-        TreeModel treeModel = (TreeModel) uiComponent
-                .getValueBinding("value").getValue(facesContext);
+        
 
         if (treeComponent.getChildCount() != 1) {
             throw new MalformedTreeTagException(
@@ -138,9 +137,7 @@ public class TreeRenderer extends DomBasicRenderer {
                             treeComponent.getChildCount() + "]");
         }
 
-        if (treeModel == null) {
-            return;
-        }
+        
 
         // set up form fields
 
@@ -203,21 +200,20 @@ public class TreeRenderer extends DomBasicRenderer {
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
 
-        TreeModel treeModel = (TreeModel) uiComponent
-                .getValueBinding("value").getValue(facesContext);
+        if (!(uiComponent instanceof Tree)) {
+            throw new InvalidComponentTypeException("Expecting a Tree");
+        }
+        Tree tree = (Tree) uiComponent;
+        boolean hideRootNode;
+        hideRootNode = isHideRootNode(tree);
+        TreeModel treeModel = tree.getModel();
+        if (treeModel == tree.getDummyModel()) hideRootNode = true;
         DefaultMutableTreeNode treeComponentRootNode =
                 (DefaultMutableTreeNode) treeModel.getRoot();
         Element rootNode = (Element) domContext.getRootNode();
         com.icesoft.faces.component.tree.TreeNode treeNode =
                 (TreeNode) (uiComponent).getChildren().get(0);
-        boolean hideRootNode;
-        if (uiComponent instanceof Tree) {
-            hideRootNode = isHideRootNode((Tree) uiComponent);
-        } else {
-            throw new InvalidComponentTypeException("Expecting a Tree");
-        }
-
-        encodeParentAndChildNodes(facesContext, (Tree) uiComponent,
+        encodeParentAndChildNodes(facesContext, tree,
                 (DefaultMutableTreeNode) treeModel.getRoot(),
                 hideRootNode, rootNode, treeComponentRootNode,
                 treeNode);
