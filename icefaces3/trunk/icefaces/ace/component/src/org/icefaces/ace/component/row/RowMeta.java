@@ -56,4 +56,10 @@ public class RowMeta extends UIComponentBaseMeta {
     @Property(expression = Expression.VALUE_EXPRESSION, tlddoc="Defines an expression used to determine when a group " +
             "change is occurring in 'group' conditional mode.")
     private Object groupBy;
+    
+    @Property(tlddoc = "Define style classes for this row. Only applicable to conditional rows.")
+    private String styleClass;
+
+    @Property(tlddoc = "Define inline style rules for this row. Only applicable to conditional rows.")
+    private String style;
 }
