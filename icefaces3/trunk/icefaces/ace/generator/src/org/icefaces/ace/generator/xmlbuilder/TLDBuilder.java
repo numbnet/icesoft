@@ -23,6 +23,8 @@ import org.icefaces.ace.meta.annotation.Component;
 import org.icefaces.ace.meta.annotation.TagHandler;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.meta.annotation.Facet;
+import org.icefaces.ace.meta.annotation.Facets;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Element;
 
@@ -56,7 +58,7 @@ public class TLDBuilder extends XMLBuilder{
         tag = getDocument().createElement("tag");        
         root.appendChild(tag);
         Element description = getDocument().createElement("description");
-        CDATASection descriptionCDATA = getDocument().createCDATASection( component.tlddoc() + getClientEventsTlddoc(clazz));
+        CDATASection descriptionCDATA = getDocument().createCDATASection( component.tlddoc() + getFacetsTlddoc(clazz) + getClientEventsTlddoc(clazz));
         description.appendChild(descriptionCDATA);
         tag.appendChild(description);
         addNode(tag, "name", component.tagName());
@@ -138,6 +140,50 @@ public class TLDBuilder extends XMLBuilder{
 					builder.append("</td></tr>");
 				}
 				builder.append("</table><i>Client events can be used with Client Behaviors and the ace:ajax tag.</i><br>");
+
+				return builder.toString();
+			}
+		}
+		return "";
+	}
+	
+	private String getFacetsTlddoc(Class clazz) {
+
+		Class[] classes = clazz.getDeclaredClasses();
+		if (classes.length > 0) {
+			boolean hasFacets = false;
+			for (int i = 0; i < classes.length; i++) {
+				Class childClass = classes[i];
+				if (childClass.isAnnotationPresent(Facets.class)) {
+					hasFacets = true;
+					break;
+				}
+			}
+			
+			if (hasFacets) {			
+				StringBuilder builder = new StringBuilder();
+				builder.append("<hr><table border='1' cellpadding='3' cellspacing='0' width='100%'>");
+				builder.append("<tr bgcolor='#CCCCFF' class='TableHeadingColor'><td colspan='2'><font size='+2'><b>Facets</b></font></td></tr>");
+				for (int i = 0; i < classes.length; i++) {
+					Class childClass = classes[i];
+					if (childClass.isAnnotationPresent(Facets.class)) {
+						Field[] fields = childClass.getDeclaredFields();
+						for (int j = 0; j < fields.length; j++) {
+							Field field = fields[j];
+							if (field.isAnnotationPresent(Facet.class)) {
+								Facet facet = (Facet) field.getAnnotation(Facet.class);
+								String name = facet.name().trim();
+								if ("".equals(name)) name = field.getName();
+								builder.append("<tr><td>");
+								builder.append(name);
+								builder.append("</td><td>");
+								builder.append(facet.tlddoc());
+								builder.append("</td></tr>");
+							}
+						}
+					}
+				}
+				builder.append("</table><br>");
 
 				return builder.toString();
 			}

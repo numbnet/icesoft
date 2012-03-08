@@ -48,4 +48,10 @@ public @interface Facet {
      * @return setter javadoc
      */
     String javadocSet() default EMPTY;
+    
+    /**
+     * TLD documentation for the facet
+     * @return setter javadoc
+     */
+    String tlddoc() default EMPTY;
 }
