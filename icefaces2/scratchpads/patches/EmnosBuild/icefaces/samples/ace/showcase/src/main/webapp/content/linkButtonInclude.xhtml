@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Version: MPL 1.1
+  ~
+  ~ The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2011 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:ice="http://www.icefaces.org/icefaces/components">
+  <h:panelGroup id="panelContent2">
+
+      <h:panelGroup styleClass="synopsisBox linkButtonContainer" layout="block">
+        <h:outputText styleClass="iceOutTxt" value="#{msgs['page.linkButton.synopsis']}"/>
+        <h:outputText styleClass="iceOutTxt" value="#{msgs['page.linkButton.instructions']}"/>
+    </h:panelGroup>
+
+
+       <h:panelGrid columns="1" id="linkButtonGridBox"
+                   styleClass="exampleBox"
+                   rowClasses="textFieldNameRow">
+
+            <h:form id="frm1">
+                <h:panelGrid columns="2"  rowClasses="textFieldNameRow" 
+                     id="linkGridInner" columnClasses="linkButtonColumn">
+                  <h:outputLabel for="LBSimLink"
+                    value="#{msgs['page.linkButton.simpleLinkLabel']}"/>
+                  <ice:linkButton id="LBSimLink" styleClass="simpleLinkButton" href="http://www.icefaces.org/main/home/" value="#{msgs['page.linkButton.simpleLinkValue']}" />
+                </h:panelGrid>
+            </h:form>
+
+           <h:form id="frm2">
+
+               <h:panelGrid columns="2"  rowClasses="textFieldNameRow" 
+                    id="linkGridMiddle"
+                    columnClasses="linkButtonColumn linkButtonColumn">
+                   <h:outputLabel for="LBActLink"
+                    value="#{msgs['page.linkButton.actionSourceLabel']}" />
+             <ice:linkButton id="LBActLink" value="#{msgs['page.linkButton.actionSourceValue']}"
+                               actionListener="#{linkBean.actionListenerMethod}" />
+               </h:panelGrid>
+           </h:form>
+
+
+            <h:form id="frm4">
+                 <h:panelGrid id="linkgridbottom" columns="2"  rowClasses="textFieldNameRow" columnClasses="linkButtonColumn">
+                <h:outputLabel for="LBComLink"
+                    value="#{msgs['page.linkButton.comboButtonLabel']}"/>
+                <ice:linkButton id="LBComLink" href="/ace-showcase/linkButton.jsf"
+                                 value="#{msgs['page.linkButton.comboButtonValue']}"
+                               actionListener="#{linkBean.hrefAndActionMethod}" />
+                </h:panelGrid>
+            </h:form>
+
+            <h:form id="output">
+                <h:panelGroup id="imagePanel">
+                    <h:graphicImage value="images/employee.gif" id="image"
+                                    rendered="#{linkBean.rendered}" />
+                </h:panelGroup>
+
+             
+            </h:form>
+
+         </h:panelGrid>
+      
+  </h:panelGroup>
+</ui:composition>
