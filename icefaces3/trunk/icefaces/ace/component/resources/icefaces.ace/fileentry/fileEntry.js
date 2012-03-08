@@ -72,30 +72,26 @@ ice.ace.fileentry = {
         var encodedURL = f.elements['javax.faces.encodedURL'];
         if(encodedURL){
             f.action = encodedURL.value;
-        }                                                                
+        }
+
+        if (progressPushId) {
+            var regPushIds = [progressPushId];
+            window.ice.push.register(regPushIds, function(pushedIds) {
+                ice.ace.fileentry.onProgress(pushedIds, progressResourcePath);
+            });
+        }
 
         f.onsubmit = function(event) {
-            ice.ace.fileentry.formOnsubmit(event, f, iframeId, progressPushId, progressResourcePath);
+            ice.ace.fileentry.formOnsubmit(event, f, iframeId, progressPushId);
         };
     },
     
-    formOnsubmit : function(event, formElem, iframeId, progressPushId, progressResourcePath) {
+    formOnsubmit : function(event, formElem, iframeId, progressPushId) {
         //alert("formOnsubmit()  begin");
 
         // Set every fileEntry component in the form into the indeterminate
         // state, before progress notifications arrive, if icepush is present
         ice.ace.fileentry.setFormFileEntryStates(formElem, "uploading");
-
-        if (progressPushId) {
-            //alert("formOnsubmit()  progressPushId: " + progressPushId);
-
-            //POLL: Comment this section
-            var regPushIds = new Array(1);
-            regPushIds[0] = progressPushId;
-            window.ice.push.register(regPushIds, function(pushedIds) {
-                ice.ace.fileentry.onProgress(pushedIds, progressResourcePath);
-            });
-        }
 
         //TODO To get context.sourceid, use on of the following techniques
         //Firefox || Opera || IE || unsupported (No WebKit)
