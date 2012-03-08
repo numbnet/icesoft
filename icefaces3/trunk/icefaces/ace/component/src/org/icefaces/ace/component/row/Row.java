@@ -98,10 +98,10 @@ public class Row extends RowBase {
         public GroupPredicate(ValueExpression gb, boolean before) {
             groupBy = gb;
             this.before = before;
+            findParentTable(facesContext);
         }
 
         public boolean evaluate(Object object) {
-            findParentTable(facesContext);
             int currentIndex = table.getRowIndex();
             Integer index = (Integer) object;
 
@@ -142,5 +142,9 @@ public class Row extends RowBase {
         }
 
         return table;
+    }
+
+    public void resetRenderFields() {
+        predicate = null;
     }
 }
