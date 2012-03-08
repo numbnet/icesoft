@@ -39,23 +39,26 @@ public class BaseResourceRenderer extends CoreRenderer {
     private String registerAndGetPath(FacesContext facesContext,
             String scope, IceOutputResource iceResource) {
         String registeredPath = "";
-        if (scope.equals("flash"))
+        if (scope.equals("flash"))  {
             registeredPath = ResourceRegistry.addSessionResource(iceResource);
-        else if (scope.equals("application"))
+        } else if (scope.equals("application"))  {
             registeredPath = ResourceRegistry.addApplicationResource(iceResource);
-        else if (scope.equals("window"))
+        } else if (scope.equals("window")) {
             registeredPath = ResourceRegistry.addWindowResource(iceResource);
-        else if (scope.equals("view"))
+        } else if (scope.equals("view"))  {
             registeredPath = ResourceRegistry.addViewResource(iceResource);
-        else if (scope.equals("session"))
+        } else if (scope.equals("session")) {
             registeredPath = ResourceRegistry.addSessionResource(iceResource);
-        if (Utils.isAndroid())  {
-            HttpSession session  = (HttpSession) facesContext
-                    .getExternalContext().getSession(false);
-            if (null != session)  {
-                registeredPath += ";jsessionid=" + session.getId();
-            }
         }
+
+        //all but application scope may require a session for the resource
+        HttpSession session  = (HttpSession) facesContext
+                .getExternalContext().getSession(false);
+        if (null != session)  {
+            registeredPath += ";jsessionid=" + 
+                    Utils.getSessionIdCookie(facesContext);
+        }
+
         return registeredPath;
     }
 
