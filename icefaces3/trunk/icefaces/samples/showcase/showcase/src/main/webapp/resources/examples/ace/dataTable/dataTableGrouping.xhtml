@@ -37,6 +37,11 @@
             .ui-datatable-group-odd {
                 background-color: #fafad2;
             }
+
+            .group-header {
+                font-weight:bold;
+                background-color:lightgray;
+            }
         </style>
 
         <h:form id="form">
@@ -45,13 +50,13 @@
                            var="car"
                            rowIndexVar="index"
                            binding="#{dataTableGrouping.table}" >
-                <ace:row condition="group" groupBy="#{car.chassis}" pos="before" style="font-weight:bold; background-color:lightgray;">
+                <ace:row condition="group" groupBy="#{car.chassis}" pos="before" styleClass="group-header">
                     <ace:column colspan="8">
                         #{car.chassis}
                     </ace:column>
                 </ace:row>
 
-                <ace:row condition="group" groupBy="#{car.chassis}" style="font-weight:bold; background-color:lightgray;">
+                <ace:row condition="group" groupBy="#{car.chassis}" pos="after" styleClass="group-header">
                     <ace:column colspan="6" style="text-align:right;">
                         <h:outputText value="MPG &amp; Cost Totals : " />
                     </ace:column>

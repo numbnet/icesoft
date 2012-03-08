@@ -1850,7 +1850,8 @@ public class DataTable extends DataTableBase {
 
         // Iterate over our UIColumn & PanelExpansion children, once per row
         int processed = 0;
-        int rowIndex = getFirst() - 1;
+        int first = getFirst();
+        int rowIndex = first - 1;
         int rows = getRows();
         boolean inSubrows = false;
         PanelExpansion panelExpansion = getPanelExpansion();
@@ -1893,6 +1894,11 @@ public class DataTable extends DataTableBase {
             // been done a single time with rowIndex=-1 already)
             if (getChildCount() > 0) {
                 for (UIComponent kid : getChildren()) {
+                    // Reset column render time variables
+                    if (rowIndex == first && kid instanceof Row && phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+                        ((Row)kid).resetRenderFields();
+                    }
+                    
                     if ((!(kid instanceof UIColumn) && !(kid instanceof PanelExpansion))
                             || !kid.isRendered()) {
                         continue;
@@ -1901,6 +1907,12 @@ public class DataTable extends DataTableBase {
                     if ((kid instanceof PanelExpansion) && (!expanded || (expanded && isIdPrefixedParamSet("_rowExpansion", context)))) {
                         continue;
                     }
+
+                    // Reset column render time variables
+                    if (rowIndex == first && kid instanceof Column && phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+                        ((Column)kid).setOddGroup(false);
+                    }
+
                     if (kid.getChildCount() > 0) {
                         for (UIComponent grandkid : kid.getChildren()) {
                             if (!grandkid.isRendered()) {
