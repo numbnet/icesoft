@@ -811,7 +811,7 @@ public class DataTable extends DataTableBase {
 
         ArrayList<Row> validRows = new ArrayList<Row>();
         for (Row c : conditionalRows)
-            if (((c.getPos() == "before" && before) || (c.getPos() == "after" && !before))
+            if (((c.getPos().equals("before") && before) || (c.getPos().equals("after") && !before))
                 && c.evaluateCondition(rowIndex))
                     validRows.add(c);
 
@@ -1647,7 +1647,7 @@ public class DataTable extends DataTableBase {
     /*#######################################################################*/
     /*#################### UIData iterate() impl. ###########################*/
     /*#######################################################################*/
-    private void iterate(FacesContext context, PhaseId phaseId) {
+     private void iterate(FacesContext context, PhaseId phaseId) {
         // The data model that is used in myFaces may have been generated
         // from incorrect getValue() results (I assume) causing it to
         // mistakenly contain 0 rows or the data of a previous ui:repeat
@@ -1715,7 +1715,8 @@ public class DataTable extends DataTableBase {
 
         // Iterate over our UIColumn & PanelExpansion children, once per row
         int processed = 0;
-        int rowIndex = getFirst() - 1;
+        int first = getFirst();
+        int rowIndex = first - 1;
         int rows = getRows();
         boolean inSubrows = false;
         PanelExpansion panelExpansion = getPanelExpansion();
@@ -1740,7 +1741,6 @@ public class DataTable extends DataTableBase {
                     treeDataModel = (TreeDataModel)model;
                     if (treeDataModel.isRootIndexSet()) {
                         rowIndex = treeDataModel.pop()+1;
-                        // Row unavailable, see if we can pop to a parent row in a tree case
                         setRowIndex(rowIndex);
                         if (!treeDataModel.isRootIndexSet()) {
                             inSubrows = false;
@@ -1759,6 +1759,11 @@ public class DataTable extends DataTableBase {
             // been done a single time with rowIndex=-1 already)
             if (getChildCount() > 0) {
                 for (UIComponent kid : getChildren()) {
+                    // Reset column render time variables
+                    if (rowIndex == first && kid instanceof Row && phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+                        ((Row)kid).resetRenderFields();
+                    }
+
                     if ((!(kid instanceof UIColumn) && !(kid instanceof PanelExpansion))
                             || !kid.isRendered()) {
                         continue;
@@ -1767,6 +1772,12 @@ public class DataTable extends DataTableBase {
                     if ((kid instanceof PanelExpansion) && (!expanded || (expanded && isIdPrefixedParamSet("_rowExpansion", context)))) {
                         continue;
                     }
+
+                    // Reset column render time variables
+                    if (rowIndex == first && kid instanceof Column && phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+                        ((Column)kid).setOddGroup(false);
+                    }
+
                     if (kid.getChildCount() > 0) {
                         for (UIComponent grandkid : kid.getChildren()) {
                             if (!grandkid.isRendered()) {
