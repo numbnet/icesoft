@@ -31,7 +31,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -49,6 +51,7 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
+//        printParams();
         DateTimeEntry dateTimeEntry = (DateTimeEntry) component;
 
         if(dateTimeEntry.isDisabled() || dateTimeEntry.isReadonly()) {
@@ -229,6 +232,23 @@ public class DateTimeEntryRenderer extends InputRenderer {
 
         } catch (ParseException e) {
             throw new ConverterException(e);
+        }
+    }
+
+    public static void printParams() {
+        Map<String, String[]> paramValuesMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterValuesMap();
+        String key;
+        String[] values;
+        for (Map.Entry<String, String[]> entry : paramValuesMap.entrySet()) {
+            key = entry.getKey();
+            values = entry.getValue();
+            System.out.print(key);
+            System.out.print(" = ");
+            for (String value : values) {
+                System.out.print(value);
+                System.out.print(", ");
+            }
+            System.out.println();
         }
     }
 }

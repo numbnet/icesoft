@@ -33,6 +33,7 @@
 package org.icefaces.ace.component.datetimeentry;
 
 import org.icefaces.ace.event.DateSelectEvent;
+import org.icefaces.ace.event.DateTextChangeEvent;
 import org.icefaces.ace.util.Constants;
 
 import javax.faces.context.FacesContext;
@@ -106,8 +107,8 @@ public class DateTimeEntry extends DateTimeEntryBase {
         FacesContext context = FacesContext.getCurrentInstance();
         String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if (eventName != null && eventName.equals("dateSelect") && event instanceof AjaxBehaviorEvent) {
-            customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
+        if (eventName != null && event instanceof AjaxBehaviorEvent) {
+            customEvents.put(eventName, (AjaxBehaviorEvent) event);
         } else {
             super.queueEvent(event);
         }
@@ -118,15 +119,22 @@ public class DateTimeEntry extends DateTimeEntryBase {
         super.validate(context);
 
         if (isValid()) {
+            String eventName, submittedValue;
+            AjaxBehaviorEvent behaviorEvent, newEvent = null;
             for (Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext(); ) {
-                AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
-                DateSelectEvent dateSelectEvent = new DateSelectEvent(this, behaviorEvent.getBehavior(), (Date) getValue());
-
-                if (behaviorEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
-                    dateSelectEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
+                eventName = customEventIter.next();
+                behaviorEvent = customEvents.get(eventName);
+                if (eventName.equals("dateSelect")) {
+                    newEvent = new DateSelectEvent(this, behaviorEvent.getBehavior(), (Date) getValue());
+                } else if (eventName.equals("dateTextChange")) {
+                    submittedValue = context.getExternalContext().getRequestParameterMap().get(getClientId(context) + "_input");
+                    newEvent = new DateTextChangeEvent(this, behaviorEvent.getBehavior(), submittedValue, (Date) getValue());
+                }
+                if (newEvent != null && behaviorEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
+                    newEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
                 }
 
-                super.queueEvent(dateSelectEvent);
+                super.queueEvent(newEvent);
             }
         }
     }
