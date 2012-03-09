@@ -697,7 +697,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
 
         // Change table rendering algorithm so fixed sizes are strictly followed
         headerTable.css('table-layout','fixed');
-        bodyTable.css('table-layout','fixed');
+        if (!firefox) bodyTable.css('table-layout','fixed');
         footerTable.css('table-layout','fixed');
 
         // Set Duplicate Header Sizing
