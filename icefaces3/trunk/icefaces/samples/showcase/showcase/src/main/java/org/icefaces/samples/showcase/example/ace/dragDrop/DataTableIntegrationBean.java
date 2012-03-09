@@ -23,11 +23,13 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.faces.event.ActionEvent;
 import org.icefaces.ace.event.DragDropEvent;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet.ImageInfo;
 import org.icefaces.samples.showcase.example.compat.dragdrop.DragDropItem;
 
 @ComponentExample(
@@ -67,14 +69,21 @@ public class DataTableIntegrationBean extends ComponentExampleImpl<DataTableInte
    private void initializeData() 
    {
         availableItems = new ArrayList<DragDropItem>();
-        availableItems.add(new DragDropItem(1, "Laptop", "/resources/css/images/dragdrop/laptop.png", "electronic device", 999.99d, 1));
-        availableItems.add(new DragDropItem(2, "Smartphone", "/resources/css/images/dragdrop/pda.png", "electronic device", 299.99d, 1));
-        availableItems.add(new DragDropItem(3, "Monitor", "/resources/css/images/dragdrop/monitor.png", "electronic device", 259.99d, 1));
-        availableItems.add(new DragDropItem(4, "Desktop", "/resources/css/images/dragdrop/desktop.png", "electronic device", 2499.99d, 1));
-        
-        Collections.shuffle(availableItems);
-        
-        purchasedItems = new ArrayList<DragDropItem>();
+        double basePrice = 140;
+        double price;
+        DecimalFormat doubleFormater = new DecimalFormat("#.##");
+        ArrayList<ImageInfo> gadgetImages = ImageSet.getImages(ImageSet.ImagesSelect.GADGETS);
+        for(int i = 0; i<gadgetImages.size(); i++)
+        {
+            DragDropItem item = new DragDropItem(gadgetImages.get(i));
+            item.setId(i);
+            item.setQuantity(1);
+            item.setType("electronic device");
+            price = (0.33+basePrice+(i+1)*basePrice/2);
+            item.setPrice(Double.valueOf(doubleFormater.format(price+price*0.05)));
+            availableItems.add(item);
+        }
+         purchasedItems = new ArrayList<DragDropItem>();
     }
    
    
@@ -89,7 +98,6 @@ public class DataTableIntegrationBean extends ComponentExampleImpl<DataTableInte
    {
        initializeData();
    }
-   
 
     public List<DragDropItem> getAvailableItems() {
         return availableItems;

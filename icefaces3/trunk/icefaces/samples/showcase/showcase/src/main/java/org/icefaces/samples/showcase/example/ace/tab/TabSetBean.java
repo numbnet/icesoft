@@ -23,8 +23,8 @@ import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import org.icefaces.samples.showcase.dataGenerators.ImageSet;
@@ -47,7 +47,7 @@ import org.icefaces.samples.showcase.example.ace.accordionpanel.Item;
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/tab/TabSetBean.java"),
             @ExampleResource(type = ResourceType.java,
                         title = "ImageSet.java",
-                        resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/accordionpanel/ImageSet.java")
+                        resource = "/WEB-INF/classes/org/icefaces/samples/showcase/dataGenerators/ImageSet.java")
         }
 )
 @Menu(
@@ -88,11 +88,19 @@ public class TabSetBean extends ComponentExampleImpl<TabSetBean> implements Seri
     private ArrayList<Item> populateListWithItems() 
    {
         ArrayList<Item> list = new ArrayList<Item>();
-        list.add(new Item(1, "Capsicum", "/resources/css/images/dragdrop/capsicum.png", "Fruits and Vegetables", 0.99d, 4));
-        list.add(new Item(2, "Chili", "/resources/css/images/dragdrop/chilli.png", "Oriental", 3.25, 2));
-        list.add(new Item(3, "Eggs", "/resources/css/images/dragdrop/egg.png", "Dairy", 5.99, 40));
-        list.add(new Item(4, "Orange", "/resources/css/images/dragdrop/orange.png", "Fruits and Vegetables", 9.99d, 15));
-        Collections.shuffle(list);
+        ArrayList<ImageInfo> foodImages = ImageSet.getImages(ImageSet.ImagesSelect.FOOD);
+        double basePrice = 1.99;
+        double price;
+        DecimalFormat doubleFormater = new DecimalFormat("#.##");
+        for(int i = 0; i<foodImages.size(); i++)
+        {
+            Item item = new Item(foodImages.get(i));
+            item.setId(i+1);
+            price = (0.63+basePrice+(i+1)*basePrice/2);
+            item.setPrice( Double.valueOf(doubleFormater.format(price+price*0.05)) );
+            item.setQuantity(10);
+            list.add(item);
+        }
         return list;
     }
     

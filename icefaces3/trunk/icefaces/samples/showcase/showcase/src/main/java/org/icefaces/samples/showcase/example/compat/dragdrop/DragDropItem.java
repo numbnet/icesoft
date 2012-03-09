@@ -17,6 +17,7 @@
 package org.icefaces.samples.showcase.example.compat.dragdrop;
 
 import java.io.Serializable;
+import org.icefaces.samples.showcase.dataGenerators.ImageSet;
 
 public class DragDropItem implements Serializable {
     private int id;
@@ -27,9 +28,13 @@ public class DragDropItem implements Serializable {
     private int quantity;
     
     
-    public DragDropItem(int id,
-                        String name, String image,
-                        double price, int quantity) {
+    public DragDropItem(ImageSet.ImageInfo image) 
+    {
+        this.name = image.getDescription();
+        this.image = image.getPath();
+    }
+    
+    public DragDropItem(int id, String name, String image, double price, int quantity) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -43,15 +48,6 @@ public class DragDropItem implements Serializable {
         this.image = image;
         this.price = price;
         this.type = type;
-    }
-
-    public DragDropItem(int id, String name, String image, String type, double price, int quantity) {
-        this.id = id;
-        this.name = name;
-        this.image = image;
-        this.type = type;
-        this.price = price;
-        this.quantity = quantity;
     }
     
     public DragDropItem(DragDropItem clone) {
