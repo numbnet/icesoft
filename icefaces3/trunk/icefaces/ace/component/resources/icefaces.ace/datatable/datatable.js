@@ -1083,7 +1083,7 @@ ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, eleme
             }
         }
 
-        if (targetId == 0) {
+        if (targetId == 0 || deselection.indexOf(0) > -1) {
             options.onsuccess = function(responseXML) {
                 ice.ace.selectCustomUpdates(responseXML, function(id, content) {
                     ice.ace.AjaxUtils.updateElement(id, content);
