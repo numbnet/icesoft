@@ -1355,9 +1355,9 @@ ice.ace.DataTable.prototype.doRowEditShowRequest = function(element) {
     options.params = params;
 
     if (this.behaviors)
-        if (this.behaviors.editShow) {
+        if (this.behaviors.editStart) {
             ice.ace.ab(ice.ace.extendAjaxArguments(
-                    this.behaviors.editShow,
+                    this.behaviors.editStart,
                     options
             ));
             return;
