@@ -989,9 +989,8 @@ public class DataTableRenderer extends CoreRenderer {
                 if (headerElem instanceof Row) {
                     Row headerRow = (Row) headerElem;
                     headerRowChildren = headerRow.getChildren();
+                    subRows = true;
                 } else headerRowChildren.add(headerElem);
-
-            if (headerRowChildren.size() > 1) subRows = true;
 
             // If the element was a row of a col-group render another row for a subrow of the header
             if (subRows && !firstHeadElement) writer.startElement(HTML.TR_ELEM, null);
