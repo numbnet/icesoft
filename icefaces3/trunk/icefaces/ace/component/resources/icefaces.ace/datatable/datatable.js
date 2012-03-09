@@ -1083,6 +1083,17 @@ ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, eleme
             }
         }
 
+        if (targetId == 0) {
+            options.onsuccess = function(responseXML) {
+                ice.ace.selectCustomUpdates(responseXML, function(id, content) {
+                    ice.ace.AjaxUtils.updateElement(id, content);
+                });
+                if (_self.cfg.scrollable) _self.resizeScrolling();
+                return false;
+            };
+        }
+
+
         options.params = params;
 
         if (this.behaviors)
