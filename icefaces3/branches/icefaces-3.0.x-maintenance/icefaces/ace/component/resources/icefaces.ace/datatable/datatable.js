@@ -1043,7 +1043,7 @@ ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, eleme
 
     // Write State //
     this.writeSelections();
-
+    
     // Submit State //
     if (this.cfg.instantSelect) {
         var options = {
@@ -1064,6 +1064,16 @@ ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, eleme
                 // Submit deselected index
                 params[this.id + '_instantUnselectedRowIndex'] = targetId;
             }
+        }
+
+        if (targetId == 0) {
+            options.onsuccess = function(responseXML) {
+                ice.ace.selectCustomUpdates(responseXML, function(id, content) {
+                    ice.ace.AjaxUtils.updateElement(id, content);
+                });
+                if (_self.cfg.scrollable) _self.resizeScrolling();
+                return false;
+            };
         }
 
         options.params = params;
