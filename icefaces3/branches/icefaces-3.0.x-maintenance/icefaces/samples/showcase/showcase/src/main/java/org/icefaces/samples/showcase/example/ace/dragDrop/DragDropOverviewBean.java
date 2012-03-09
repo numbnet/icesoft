@@ -24,7 +24,6 @@ import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.icefaces.samples.showcase.example.compat.dragdrop.DragDropItem;
 
@@ -75,12 +74,10 @@ public class DragDropOverviewBean extends ComponentExampleImpl<DragDropOverviewB
     private void populateListWithItems() 
     {
         items = new ArrayList<DragDropItem>();
-        
         items.add(new DragDropItem(1, "Laptop", "/resources/css/images/dragdrop/laptop.png", 999.99d, "electronicDevice"));
         items.add(new DragDropItem(3, "Monitor", "/resources/css/images/dragdrop/monitor.png", 259.99d, "electronicDevice"));
         items.add(new DragDropItem(5, "Aubergine", "/resources/css/images/dragdrop/aubergine.png", 2.99d, "food"));
         items.add(new DragDropItem(6, "Capsicum", "/resources/css/images/dragdrop/capsicum.png", 3.99d, "food"));
-        Collections.shuffle(items);
     }
 
     public List<DragDropItem> getItems() {
