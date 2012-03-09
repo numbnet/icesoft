@@ -26,7 +26,6 @@ package org.icefaces.ace.component.datatable;
 
 import com.sun.java.swing.plaf.windows.WindowsGraphicsUtils;
 import org.icefaces.ace.component.ajax.AjaxBehavior;
-import org.icefaces.ace.component.celleditor.CellEditor;
 import org.icefaces.ace.component.column.Column;
 import org.icefaces.ace.component.columngroup.ColumnGroup;
 import org.icefaces.ace.component.panelexpansion.PanelExpansion;
@@ -1116,10 +1115,11 @@ public class DataTable extends DataTableBase {
     /*###################### VisitTree Impl #################################*/
     /*#######################################################################*/
     @Override
-    public boolean visitTree(VisitContext context, VisitCallback callback) {
+    public boolean visitTree(VisitContext context, VisitCallback callback) {               
         boolean ret = false;
         if (this.isVisitable(context)) {
             boolean visitRows = requiresRowIteration(context);
+            FacesContext fctx = FacesContext.getCurrentInstance();
 
             int savedIndex = -1;
             if (visitRows) {
@@ -1128,6 +1128,11 @@ public class DataTable extends DataTableBase {
             }
 
             this.pushComponentToEL(FacesContext.getCurrentInstance(), this);
+            
+            if (PhaseId.RESTORE_VIEW.equals(fctx.getCurrentPhaseId()))
+                resetChildRenderVariables();
+
+            this.pushComponentToEL(fctx, this);
             try {
                 VisitResult result = context.invokeVisitCallback(this, callback);
                 if (result.equals(VisitResult.COMPLETE)) return true;
@@ -1137,10 +1142,8 @@ public class DataTable extends DataTableBase {
                     if (visitRowsAndExpandedRows(context, callback, visitRows)) return true;
                 }
             } finally {
-                this.popComponentFromEL(FacesContext.getCurrentInstance());
-                //TODO: Fix this duplication
-                this.setRowIndex(savedIndex);
-                if (visitRows) setRowIndex(savedIndex);
+                this.popComponentFromEL(fctx);
+                setRowIndex(savedIndex);
             }
         }
         return ret;
@@ -1509,6 +1512,18 @@ public class DataTable extends DataTableBase {
         String ret = bld.append(clientId).append(UINamingContainer.getSeparatorChar(facesContext)).append(rowIndex).toString();
         return ret;
     }
+    
+    private void resetChildRenderVariables() {
+        for (UIComponent c : getChildren()) {
+            if (c instanceof Column) {
+                Column col = (Column)c;
+                col.setOddGroup(false);
+            } else if (c instanceof Row) {
+                Row row = (Row)c;
+                row.resetRenderVariables();
+            }
+        }
+    }
 
     /**
      * Logic for this method is borrowed from MyFaces
@@ -1759,11 +1774,6 @@ public class DataTable extends DataTableBase {
             // been done a single time with rowIndex=-1 already)
             if (getChildCount() > 0) {
                 for (UIComponent kid : getChildren()) {
-                    // Reset column render time variables
-                    if (rowIndex == first && kid instanceof Row && phaseId == PhaseId.UPDATE_MODEL_VALUES) {
-                        ((Row)kid).resetRenderFields();
-                    }
-
                     if ((!(kid instanceof UIColumn) && !(kid instanceof PanelExpansion))
                             || !kid.isRendered()) {
                         continue;
@@ -1771,11 +1781,6 @@ public class DataTable extends DataTableBase {
                     // Skip expandable panels if unexpanded or
                     if ((kid instanceof PanelExpansion) && (!expanded || (expanded && isIdPrefixedParamSet("_rowExpansion", context)))) {
                         continue;
-                    }
-
-                    // Reset column render time variables
-                    if (rowIndex == first && kid instanceof Column && phaseId == PhaseId.UPDATE_MODEL_VALUES) {
-                        ((Column)kid).setOddGroup(false);
                     }
 
                     if (kid.getChildCount() > 0) {
