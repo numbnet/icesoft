@@ -72,10 +72,5 @@ public class PanelBean extends ComponentExampleImpl<PanelBean> implements Serial
     }
     
     public boolean getCollapsed() { return collapsed; }
-    
     public void setCollapsed(boolean collapsed) { this.collapsed = collapsed; }
-    
-    public void toggleCollapsed(ActionEvent event) {
-        collapsed = !collapsed;
-    }
 }
