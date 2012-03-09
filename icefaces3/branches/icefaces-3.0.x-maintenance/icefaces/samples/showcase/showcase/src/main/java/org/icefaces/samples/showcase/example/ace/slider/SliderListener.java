@@ -48,7 +48,7 @@ import org.icefaces.samples.showcase.dataGenerators.ImageSet;
                 // Java Source
                 @ExampleResource(type = ResourceType.java,
                         title = "ImageSet.java",
-                        resource = "/WEB-INF/classes/org/icefaces/samples/showcase/example/ace/accordionpanel/ImageSet.java")
+                        resource = "/WEB-INF/classes/org/icefaces/samples/showcase/dataGenerators/ImageSet.java")
         }
 )
 @ManagedBean(name = SliderListener.BEAN_NAME)
