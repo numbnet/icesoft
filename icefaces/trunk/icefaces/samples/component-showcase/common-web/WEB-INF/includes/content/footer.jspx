@@ -31,7 +31,7 @@
   -->
 <div xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ice="http://www.icesoft.com/icefaces/component"><!--
         class="footer_container">
     <div class="footer_content">
         <div style="width:400px">
@@ -45,5 +45,5 @@
             <a href="http://www.icefaces.org/" target="_blank">
             <ice:outputText value="#{msgs['template.common.icefaces']}" nospan="true" escape="false" /></a></i>
         </div>
-    </div>
+    </div>-->
 </div>
