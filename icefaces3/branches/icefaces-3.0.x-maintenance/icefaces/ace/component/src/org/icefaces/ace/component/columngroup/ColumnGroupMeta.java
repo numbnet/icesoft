@@ -17,6 +17,7 @@
 package org.icefaces.ace.component.columngroup;
 
 import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.DefaultValueType;
 import org.icefaces.ace.meta.annotation.Property;
 import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
 
@@ -32,6 +33,7 @@ import org.icefaces.ace.meta.baseMeta.UIComponentBaseMeta;
              "<p>For more information, see the <a href=\"http://wiki.icefaces.org/display/ICE/ColumnGroup\">ColumnGroup Wiki Documentation</a>.</p>"
 )
 public class ColumnGroupMeta extends UIComponentBaseMeta {
-    @Property(tlddoc= "Defines which segment of the table this component and its child columns will be used to render. Valid values are 'header' and 'footer'.")
+    @Property(tlddoc= "Defines which segment of the table this component and its child columns will be used to render. Valid values are 'header' and 'footer'.",
+    defaultValueType = DefaultValueType.STRING_LITERAL, defaultValue = "header")
     private String type;
 }
