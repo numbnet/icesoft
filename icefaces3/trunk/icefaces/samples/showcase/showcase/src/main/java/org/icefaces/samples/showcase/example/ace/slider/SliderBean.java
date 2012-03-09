@@ -64,7 +64,7 @@ public class SliderBean extends ComponentExampleImpl<SliderBean>
     private int minValue;
     private int maxValue;
     private int sliderValue;
-    private float stepPercent;
+    private int stepPercent;
     
 
     public SliderBean() {
@@ -80,7 +80,7 @@ public class SliderBean extends ComponentExampleImpl<SliderBean>
            this.minValue = 0;
            this.maxValue = 100;
            this.sliderValue = 50;
-           this.stepPercent = 10f;
+           this.stepPercent = 10;
     }
 
     public String getAxis() {
@@ -131,11 +131,11 @@ public class SliderBean extends ComponentExampleImpl<SliderBean>
         this.sliderValue = sliderValue;
     }
 
-    public float getStepPercent() {
+    public int getStepPercent() {
         return stepPercent;
     }
 
-    public void setStepPercent(float stepPercent) {
+    public void setStepPercent(int stepPercent) {
         this.stepPercent = stepPercent;
     }
 }
