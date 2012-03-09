@@ -144,7 +144,7 @@ public class Row extends RowBase {
         return table;
     }
 
-    public void resetRenderFields() {
+    public void resetRenderVariables() {
         predicate = null;
     }
 }
