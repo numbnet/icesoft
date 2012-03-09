@@ -135,3 +135,29 @@
 .panelToolTipContainer{
     width:500px;
 }
+
+#header
+{
+    background: url("./images/demo-header-background.png") no-repeat;
+    background-color: white;
+    background-position: top center;
+    width: 100%;
+    height: 150px;
+}
+
+#headerCenter
+{
+    background-color: transparent;
+    width: 1020px;
+    height: 110px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+#headerLogo
+{
+    overflow: hidden;
+    float: left;
+    padding-top: 8px;
+}
+

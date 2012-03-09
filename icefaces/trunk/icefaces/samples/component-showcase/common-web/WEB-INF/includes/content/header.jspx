@@ -30,14 +30,12 @@
   ~ this file under either the MPL or the LGPL License."
   -->
 <div xmlns:h="http://java.sun.com/jsf/html"
-        xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:ice="http://www.icesoft.com/icefaces/component"
-        class="header_container">
-    <div class="header_content">
-        <ice:graphicImage width="463px" height="100px"
-                value="./css/images/banner_hdr_compsuite.jpg"
-                title="#{msgs['template.header.componentShowcase.title']}"
-                alt="#{msgs['template.header.componentShowcase.title']}"
-                style="float:left"/>
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ice="http://www.icesoft.com/icefaces/component"
+     id="header">
+    <div id="headerCenter">
+        <div id="headerLogo">
+            <ice:graphicImage value="./css/images/icefaces-1.8-component-showcase.png" alt="ICEfaces Logo"/>
+        </div>
     </div>
 </div>
