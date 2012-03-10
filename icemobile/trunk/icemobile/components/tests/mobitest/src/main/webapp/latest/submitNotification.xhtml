@@ -47,7 +47,8 @@
        </p>
         <h5>have submitNotification on here</h5>
         <mobi:commandButton id="subNotEx1" value="submitBlockPopup" submitNotification="sn1"
-                            actionListener="#{input.defaultEvent}"/>
+                            onclick="alert('commandButtonPressed');"
+                            actionListener="#{input.testSubmitNotification}"/>
         <mobi:submitNotification id="sn1">
             <h:outputText value="WORKING..."/>
         </mobi:submitNotification>
@@ -67,10 +68,10 @@
             available with panelConfirmation</h5>
        <mobi:commandButton id="ex2" buttonType="default" value="StandardSubmit"
                            panelConfirmation="pc1" submitNotification="sn2"
-                           actionListener="#{input.defaultEvent}"/>
+                           actionListener="#{input.testSubmitNotification}"/>
        <mobi:panelConfirmation id="pc1" message="working"/>
        <mobi:submitNotification id="sn2">
-            <h:outputText value="WORKING..."/>
+            <h:outputText value="WORKING...#{input.name}"/>
        </mobi:submitNotification>
         <br />
     </h:form>

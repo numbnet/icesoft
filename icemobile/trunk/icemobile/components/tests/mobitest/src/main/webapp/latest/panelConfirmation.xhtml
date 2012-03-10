@@ -70,26 +70,27 @@
                            panelConfirmation="pc2"
                            actionListener="#{input.defaultEvent}"/>
         <br />
+
      </h:form>
  </fieldset>
  <fieldset title="form3">
-
-     <h:form id="inputForm3">
-       <h4>mobi ajax test </h4>
+    <h:form id="inputform3">
+       <h4>two buttons with same conf panel </h4>
        <p>
         <h:outputText value="A. mobi comp singleSubmit is false "/>
-        <mobi:inputText id="inp4" value="#{input.name}" type="text" placeholder="#{input.placeholder}" title="basic text input"/>
+        <mobi:inputText id="inp4" value="#{input.someText2}" type="text" placeholder="#{input.placeholder}" title="basic text input"/>
        </p>
-       <h5> Will only update area A rather than entire sheet</h5>
-       <mobi:commandButton id="default3" buttonType="default" value="mobiAjax"
-                           panelConfirmation="pc3"
-                           actionListener="#{input.defaultEvent}">
-              <mobi:ajax event="click" execute="@this" render="@all" />
-       </mobi:commandButton>
-       <mobi:panelConfirmation id="pc3" message="working"/>
-        <br />
-    </h:form>
 
+       <h4>Button 1 is standard submit with no mobi ajax tag and refers to same panelConfirmation as Buttton 2</h4>
+       <mobi:commandButton id="def3" buttonType="default" value="Button1"
+                           panelConfirmation="pc1a"
+                           actionListener="#{input.defaultEvent}"/>
+       <mobi:commandButton id="def4" buttonType="default" value="Button2"
+                           panelConfirmation="pc1a"
+                           actionListener="#{input.ImportantEvent}"/>
+        <br />
+        <mobi:panelConfirmation id="pc1a" message="working"/>
+     </h:form>
  </fieldset>
 
     <h3>RESULTS</h3>

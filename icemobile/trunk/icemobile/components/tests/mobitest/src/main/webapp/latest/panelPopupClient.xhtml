@@ -38,16 +38,24 @@
  
    <h3>panelPopup Client</h3>
     
+      <h:form id="inputForm">
 
+       <h5>panelPopup example can click on button to show panel</h5>
+       <mobi:commandButton
+               value="#{popup.visibleClient?'Hide':'Show'} trigger Client popup from Server-side"
+               actionListener="#{popup.toggleVisibleClient}"/>
+
+       </h:form>
 
         <h:form id="panelForm">
 
            <mobi:panelPopup id="panelPopClient" header="Popup Panel Client Side" clientSide="true"
-                                visible="#{popup.visibleClient}">
+                            autocenter="true"
+                            visible="#{popup.visibleClient}">
 
-                            <mobi:fieldsetGroup>
+               <mobi:fieldsetGroup>
                             <!-- Text input -->
-                            <mobi:fieldsetRow>
+                     <mobi:fieldsetRow>
                                 <h:outputLabel for="textInput" value="Text:"/>
                                 <mobi:inputText id="textInput"
                                                 autocorrect="on"
@@ -56,13 +64,9 @@
                                                 style="float:right"
                                                 placeholder="Text input"
                                                 value="#{input.someText}"/>
-                            </mobi:fieldsetRow>
-                            </mobi:fieldsetGroup>
-                            <mobi:commandButton
-                                     value="Hide Popup Client-side"
-                                     actionListener="#{popup.closeClient}"/>
-
-                <mobi:outputList id="imgList2" type="thumb" inset="false">
+                     </mobi:fieldsetRow>
+                     </mobi:fieldsetGroup>
+                     <mobi:outputList id="imgList2" type="thumb" inset="false">
                            <mobi:outputListItem type="group">Image List</mobi:outputListItem>
                            <mobi:outputListItems value="#{carousel.imageList}" var="item" type="thumb">
                                <h:link >
@@ -71,7 +75,7 @@
                                    <p >picture with img link</p>
                                 </h:link>
                            </mobi:outputListItems>
-                      </mobi:outputList>
+                     </mobi:outputList>
            </mobi:panelPopup>
        </h:form>
        <br />
