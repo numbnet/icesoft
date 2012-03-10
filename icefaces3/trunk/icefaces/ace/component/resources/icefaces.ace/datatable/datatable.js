@@ -1023,7 +1023,7 @@ ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, eleme
     }
 
     // Sync State //
-    this.readSelections();
+    // this.readSelections();
 
     // Adjust State //
     if (!deselection) {
@@ -1083,7 +1083,7 @@ ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, eleme
             }
         }
 
-        if (targetId == 0 || deselection.indexOf(0) > -1) {
+        if (targetId == 0 || ice.ace.jq.inArray("0", this.deselection) > -1) {
             options.onsuccess = function(responseXML) {
                 ice.ace.selectCustomUpdates(responseXML, function(id, content) {
                     ice.ace.AjaxUtils.updateElement(id, content);
