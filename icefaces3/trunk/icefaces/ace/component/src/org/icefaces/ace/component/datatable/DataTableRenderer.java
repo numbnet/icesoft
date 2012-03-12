@@ -40,6 +40,7 @@ import org.icefaces.ace.model.table.*;
 import org.icefaces.ace.renderkit.CoreRenderer;
 import org.icefaces.ace.util.ComponentUtils;
 import org.icefaces.ace.util.HTML;
+import org.icefaces.ace.util.JSONBuilder;
 import org.icefaces.render.MandatoryResourceComponent;
 
 import javax.el.ValueExpression;
@@ -60,24 +61,25 @@ public class DataTableRenderer extends CoreRenderer {
 	public void decode(FacesContext context, UIComponent component) {
         DataTable table = (DataTable) component;
 
+        // Deferred selection may occur on any request
         if (table.isSelectionEnabled())
-            this.decodeSelection(context, table);
+            DataTableDecoder.decodeSelection(context, table);
 
-
+        // Other features will occurs as individual requests
         if (table.isFilterRequest(context))
-            this.decodeFilters(context, table);
-
-        else if (table.isTableConfigurationRequest(context))
-            this.decodeTableConfigurationRequest(context, table);
-
-        else if (table.isPaginationRequest(context))
-            this.decodePageRequest(context, table);
+            DataTableDecoder.decodeFilters(context, table);
 
         else if (table.isSortRequest(context))
-            this.decodeSortRequest(context, table, null, null);
+            DataTableDecoder.decodeSortRequest(context, table, null, null);
+
+        else if (table.isPaginationRequest(context))
+            DataTableDecoder.decodePageRequest(context, table);
 
         else if (table.isColumnReorderRequest(context))
-            this.decodeColumnReorderRequest(context, table);
+            DataTableDecoder.decodeColumnReorderRequest(context, table);
+
+        else if (table.isTableConfigurationRequest(context))
+            DataTableDecoder.decodeTableConfigurationRequest(context, table);
 
         decodeBehaviors(context, component);
 	}
@@ -110,425 +112,94 @@ public class DataTableRenderer extends CoreRenderer {
             encodeEntierty(context, table);
     }
 
-    private void decodeColumnReorderRequest(FacesContext context, DataTable table) {
-        String clientId = table.getClientId(context);
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-
-        List<Integer> ordering = table.getColumnOrdering();
-        String[] columnTargets = params.get(clientId + "_columnReorder").split("-");
-        Integer columnIndex = ordering.remove(Integer.parseInt(columnTargets[0]));
-        ordering.add(Integer.parseInt(columnTargets[1]), columnIndex);
-        // this call just to indicate a change has taken place to col order, and recalc
-        table.setColumnOrdering(ordering);
-    }
-
-    void decodePageRequest(FacesContext context, DataTable table) {
-        String clientId = table.getClientId(context);
-		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-
-		String rowsParam = params.get(clientId + "_rows");
-		String pageParam = params.get(clientId + "_page");
-
-		table.setRows(Integer.valueOf(rowsParam));
-        table.setPage(Integer.valueOf(pageParam));
-        table.setFirst((table.getPage() - 1) * table.getRows());
-	}
-
-    void decodeSortRequest(FacesContext context, DataTable table, String clientId, String sortKeysInput) {
-        List<Column> columns = new ArrayList<Column>();
-		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        ColumnGroup group = table.getColumnGroup("header");
-        Column sortColumn = null;
-
-        // ClientId null if coming from the tableConfigPanel decode.
-        if (clientId == null) clientId = table.getClientId(context);
-        String[] sortKeys = (sortKeysInput != null) ? sortKeysInput.split(",") : params.get(clientId + "_sortKeys").split(",");
-		String[] sortDirs = params.get(clientId + "_sortDirs").split(",");
-
-        // Get header columns from grouped header
-        if (group != null) {
-            for (UIComponent c : group.getChildren()) {
-                if (c instanceof Row) for (UIComponent rc : c.getChildren()) {
-                    if (rc instanceof Column) columns.add((Column)rc);
-                }
-            }
-        } else columns = table.getColumns();
-
-        // Reset all priorities, new list incoming
-        for (Column c : columns) {
-            c.setSortPriority(null);
-        }
-
-        if (sortKeys[0].equals("")) {
-            return;
-        }
-
-        int i = 0;
-        for (String sortKey : sortKeys) {
-            if (group != null) {
-                outer: for (UIComponent child : group.getChildren()) {
-                    for (UIComponent headerRowChild : ((Row)child).getChildren()) {
-                        if (headerRowChild instanceof Column)
-                            if (headerRowChild.getClientId(context).equals(sortKey)) {
-                                sortColumn = (Column) headerRowChild;
-                                break outer;
-                            }
-                    }
-                }
-            } else {
-                for (Column column : table.getColumns()) {
-                    if (column.getClientId(context).equals(sortKey)) {
-                        sortColumn = column;
-                        break;
-                    }
-                }
-            }
-
-            sortColumn.setSortPriority(i+1);
-            sortColumn.setSortAscending(Boolean.parseBoolean(sortDirs[i]));
-            i++;
-        }
-	}
-
-    void decodeFilters(FacesContext context, DataTable table) {
-        String clientId = table.getClientId(context);
-		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String filteredId = params.get(clientId + "_filteredColumn");
-        Column filteredColumn = null;
-
-        // Ensure this refiltering occurs on the original data
-        table.setFirst(0);
-        table.setPage(1);
-
-        if (table.isLazy()) {
-            // If in lazy case, just save change to filter input. Load method must account for the rest.
-            Map<String,Column> filterMap = table.getFilterMap();
-            filteredColumn = filterMap.get(filteredId);
-            if (filteredColumn != null) filteredColumn.setFilterValue(params.get(filteredId).toLowerCase());
-
-            if (table.isPaginator())
-                if (RequestContext.getCurrentInstance() != null)
-                    RequestContext.getCurrentInstance().addCallbackParam("totalRecords", table.getRowCount());
-        } else {
-            Map<String,Column> filterMap = table.getFilterMap();
-
-            // If applying a new filter, save the value to the column
-            filteredColumn = filterMap.get(filteredId);
-
-            if (filteredColumn != null)
-                filteredColumn.setFilterValue(params.get(filteredId).toLowerCase());
-
-            // Get the value of the global filter
-            String globalFilter = params.get(clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter");
-            table.setFilterValue(globalFilter);
-
-            table.applyFilters();
-        }
-	}
-
-    void decodeSelection(FacesContext context, DataTable table) {
-        String clientId = table.getClientId(context);
-		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-		String selection = params.get(clientId + "_selection");
-
-        if (table.isSingleSelectionMode()) decodeSingleSelection(table, selection, params.get(clientId + "_deselection"));
-		else decodeMultipleSelection(table, selection, params.get(clientId + "_deselection"));
-        queueInstantSelectionEvent(context, table, clientId, params);
-	}
-
-    void queueInstantSelectionEvent(FacesContext context, DataTable table, String clientId, Map<String,String> params) {
-        if (table.isInstantSelectionRequest(context)) {
-            Object model = table.getDataModel();
-            TreeDataModel treeModel = null;
-            String selection = params.get(clientId + "_instantSelectedRowIndex");
-
-            // If selection occurs with a TreeModel and non-root index
-            if (table.hasTreeDataModel() && selection.indexOf('.') > 0) {
-                treeModel = (TreeDataModel) model;
-                int lastSepIndex = selection.lastIndexOf('.');
-                treeModel.setRootIndex(selection.substring(0, lastSepIndex));
-                selection = selection.substring(lastSepIndex+1);
-            }
-
-            int selectedRowIndex = Integer.parseInt(selection);
-            table.setRowIndex(selectedRowIndex);
-            SelectEvent selectEvent = new SelectEvent(table, table.getRowData());
-            selectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            table.queueEvent(selectEvent);
-            if (treeModel != null) treeModel.setRootIndex(null);
-        }
-        else if (table.isInstantUnselectionRequest(context)) {
-            Object model = table.getDataModel();
-            TreeDataModel treeModel = null;
-            String selection = params.get(clientId + "_instantUnselectedRowIndex");
-
-            // If unselection occurs with a TreeModel and non-root index
-            if (table.hasTreeDataModel() && selection.indexOf('.') > 0) {
-                treeModel = (TreeDataModel) model;
-                int lastSepIndex = selection.lastIndexOf('.');
-                treeModel.setRootIndex(selection.substring(0, lastSepIndex));
-                selection = selection.substring(lastSepIndex+1);
-            }
-
-            int unselectedRowIndex = Integer.parseInt(selection);
-            table.setRowIndex(unselectedRowIndex);
-            UnselectEvent unselectEvent = new UnselectEvent(table, table.getRowData());
-            unselectEvent.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            table.queueEvent(unselectEvent);
-            if (treeModel != null) treeModel.setRootIndex(null);
-        }
-        table.setRowIndex(-1);
-	}
-
-    void decodeSingleSelection(DataTable table, String selection, String deselection) {
-		RowStateMap stateMap = table.getStateMap();
-
-        // Set the selection to null handling.
-        if (isValueBlank(selection)) {
-            // Deselect all previous
-            if (!deselection.equals("")) stateMap.setAllSelected(false);
-        }
-        else if (table.isCellSelection()) {
-            table.clearCellSelection();
-            table.addSelectedCell(selection);
-            if (deselection != null && deselection.length() > 0)
-                table.removeSelectedCell(deselection);
-        }
-        else {
-            TreeDataModel treeModel = null;
-            Object model = (Object) table.getDataModel();
-
-            if (table.hasTreeDataModel()) treeModel = (TreeDataModel) model;
-
-            // Tree case handling enhancement
-            if (treeModel != null & selection.indexOf('.') > 0) {
-                int lastSepIndex = selection.lastIndexOf('.');
-                treeModel.setRootIndex(selection.substring(0, lastSepIndex));
-                selection = selection.substring(lastSepIndex+1);
-            }
-
-            // Deselect all previous
-            stateMap.setAllSelected(false);
-
-            // Standard case handling
-            int selectedRowIndex = Integer.parseInt(selection);
-            table.setRowIndex(selectedRowIndex);
-            Object rowData = table.getRowData();
-            RowState state = stateMap.get(rowData);
-            if (state.isSelectable()) state.setSelected(true);
-            if (treeModel != null) treeModel.setRootIndex(null);
-            table.setRowIndex(-1);
-        }
-	}
-
-	void decodeMultipleSelection(DataTable table, String selection, String deselection) {
-        Object value = table.getDataModel();
-        TreeDataModel model = null;
-        if (table.hasTreeDataModel()) model = (TreeDataModel) value;
-        RowStateMap stateMap = table.getStateMap();
-
-        // Process selections
-		if (isValueBlank(selection)) {}
-        else if (table.isCellSelection()) {
-            table.addSelectedCell(selection.split(","));
-        } else {
-            String[] rowSelectValues = selection.split(",");
-
-            for (String s : rowSelectValues) {
-                // Handle tree case indexes
-                if (s.indexOf(".") != -1 && model != null) {
-                    int lastSepIndex = s.lastIndexOf('.');
-                    model.setRootIndex(s.substring(0, lastSepIndex));
-                    s = s.substring(lastSepIndex+1);
-                }
-                table.setRowIndex(Integer.parseInt(s));
-
-                RowState state = stateMap.get(table.getRowData());
-                if (!state.isSelected() && state.isSelectable())
-                    state.setSelected(true);
-
-                // Cleanup after tree case indexes
-                if (model != null) model.setRootIndex(null);
-            }
-            table.setRowIndex(-1);
-
-        }
-
-        // Process deselections
-        if (table.isCellSelection()) {
-            if (deselection != null && deselection.length() > 0)
-                table.removeSelectedCell(deselection.split(","));
-        } else {
-            String[] rowDeselectValues = new String[0];
-            if (deselection != null && !deselection.equals(""))
-                rowDeselectValues = deselection.split(",");
-
-            int x = 0;
-            for (String s : rowDeselectValues) {
-                // Handle tree case indexes
-                if (s.indexOf(".") != -1 && model != null) {
-                    int lastSepIndex = s.lastIndexOf('.');
-                    model.setRootIndex(s.substring(0, lastSepIndex));
-                    s = s.substring(lastSepIndex+1);
-                }
-
-                table.setRowIndex(Integer.parseInt(s));
-
-                RowState state = stateMap.get(table.getRowData());
-                if (state.isSelected())
-                    state.setSelected(false);
-
-                if (model != null) model.setRootIndex(null);
-            }
-            table.setRowIndex(-1);
-        }
-	}
-
-    void decodeTableConfigurationRequest(FacesContext context, DataTable table) {
-        TableConfigPanel tableConfigPanel = table.findTableConfigPanel(context);
-        decodeColumnConfigurations(context, table, tableConfigPanel);
-    }
-
-    private void decodeColumnConfigurations(FacesContext context, DataTable table, TableConfigPanel panel) {
-        int i;
-        String clientId = table.getClientId(context);
-        List<Column> columns = table.getColumns();
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        boolean visibility = panel.isColumnVisibilityConfigurable();
-        boolean ordering = panel.isColumnOrderingConfigurable();
-        boolean sizing = false; //panel.isColumnSizingConfigurable();
-        boolean name = panel.isColumnNameConfigurable();
-        boolean firstCol = panel.getType().equals("first-col") ;
-        boolean lastCol = panel.getType().equals("last-col");
-        boolean sorting = panel.isColumnSortingConfigurable();
-
-        for (i = 0; i < columns.size(); i++) {
-            Column column = columns.get(i);
-
-            if (column.isConfigurable()) {
-                boolean disableVisibilityControl = (firstCol && i == 0) || ((lastCol && i == columns.size() - 1));
-
-                String panelId = panel.getClientId();
-                if (visibility && !disableVisibilityControl) decodeColumnVisibility(params, column, i, panelId);
-                if (sizing) decodeColumnSizing(params, column, i, panelId);
-                if (name) decodeColumnName(params, column, i, panelId);
-            }
-        }
-
-        if (ordering) decodeColumnOrdering(params, table, clientId);
-        if (sorting) {
-            decodeSortRequest(context, table, clientId,
-                processConfigPanelSortKeys(clientId, params, table));
-        }
-    }
-
-    private String processConfigPanelSortKeys(String clientId, Map<String, String> params, DataTable table) {
-        String[] sortKeys = params.get(clientId + "_sortKeys").split(",");
-        List<Column> columns = table.getColumns();
-        String newSortKeys = "";
-
-        for (String key : sortKeys) {
-            if (key.length() > 0) {
-                if (newSortKeys.length() == 0) newSortKeys = columns.get(Integer.parseInt(key)).getClientId();
-                else newSortKeys += "," + columns.get(Integer.parseInt(key)).getClientId();
-            }
-        }
-
-        return newSortKeys;
-    }
-
-    private void decodeColumnName(Map<String, String> params, Column column, int i, String clientId) {
-        String text = params.get(clientId + "_head_" + i);
-        column.setHeaderText(text);
-    }
-
-    private void decodeColumnOrdering(Map<String, String> params, DataTable table, String clientId) {
-        String[] indexes = params.get(clientId + "_colorder").split(",");
-        table.setColumnOrdering(indexes);
-    }
-
-    private void decodeColumnSizing(Map<String, String> params, Column column, int i, String clientId) {
-
-    }
-
-    private void decodeColumnVisibility(Map<String, String> params, Column column, int i, String clientId) {
-        String code = params.get(clientId + "_colvis_" + i);
-        if (code == null) column.setRendered(false);
-        else column.setRendered(true);
-    }
-
-    public boolean isValueBlank(String value) {
-		if (value == null) return true;
-		return value.trim().equals("");
-	}
-
 	protected void encodeScript(FacesContext context, DataTable table) throws IOException{
         ResponseWriter writer = context.getResponseWriter();
 		String clientId = table.getClientId(context);
         String filterEvent = table.getFilterEvent();
+        UIComponent form = ComponentUtils.findParentForm(context, table);        
+        JSONBuilder json = new JSONBuilder();
 
+        if (form == null) 
+            throw new FacesException("DataTable : \"" + clientId + "\" must be inside a form element.");
+
+        boolean paging = table.isPaginator();
+        boolean select = table.isSelectionEnabled();
+        boolean dblSelect = select && table.isDoubleClickSelect(); 
+        boolean ajaxSelect = select && table.hasSelectionClientBehaviour() || (table.getRowSelectListener() != null) || (table.getRowUnselectListener() != null);
+        boolean rowExp = table.getRowExpansion() != null;
+        boolean pnlExp = table.getPanelExpansion() != null;
+        boolean clkHdrSrt = table.isClickableHeaderSorting();        
+        boolean resize = table.isResizableColumns();
+        boolean reorder = table.isReorderableColumns(); 
+        boolean snglSrt = table.isSingleSort(); 
+        boolean disable = table.isDisabled();
+        boolean scroll = table.isScrollable();
+        boolean height = scroll && table.getScrollHeight() != Integer.MIN_VALUE;
+
+        json.beginMap();
+        json.entry("formId", form.getClientId(context));        
+        json.entry("filterEvent", filterEvent);
+        json.entryNonNullValue("configPanel", table.getTableConfigPanel());
+        if (paging) encodePaginatorConfig(context, json, table);
+        if (pnlExp) json.entry("panelExpansion", true);
+        if (rowExp) json.entry("rowExpansion", true);
+        if (clkHdrSrt) json.entry("clickableHeaderSorting", true);        
+        if (height) json.entry("height", table.getScrollHeight());
+        if (select) json.entry("selectionMode", table.getSelectionMode());
+        if (dblSelect) json.entry("dblclickSelect", true);
+        if (ajaxSelect) json.entry("instantSelect", true);
+        if (resize) json.entry("resizableColumns", true);
+        if (resize) json.entry("reorderableColumns", true);
+        if (snglSrt) json.entry("singleSort", true);
+        if (disable) json.entry("disable", true);
+        if (scroll) {
+            json.entry("scrollable", true);
+            json.entry("liveScroll", table.isLiveScroll());
+            json.entry("scrollStep", table.getRows());
+            json.entry("scrollLimit", table.getRowCount());
+        }
+
+        encodeClientBehaviors(context, table, json);
+
+        json.endMap();
+
+        String widgetVar = this.resolveWidgetVar(table);
 		writer.startElement(HTML.SCRIPT_ELEM, table);
-		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
-        writer.write("var " + this.resolveWidgetVar(table) + " = new ice.ace.DataTable('" + clientId + "',{");
-
-        UIComponent form = ComponentUtils.findParentForm(context, table);
-        if (form == null) throw new FacesException("DataTable : \"" + clientId + "\" must be inside a form element.");
-
-        writer.write("formId:'" + form.getClientId(context) + "'");
-        writer.write(",filterEvent:'" + filterEvent + "'");
-        
-        if (table.getTableConfigPanel() != null)
-            writer.write(",configPanel:'" + table.getTableConfigPanel() + "'");
-
-        if (table.isPaginator())
-            encodePaginatorConfig(context, table);
-
-        if (table.isSelectionEnabled()) {
-            writer.write(",selectionMode:'" + table.getSelectionMode() + "'");
-
-            if (table.isDoubleClickSelect())
-                writer.write(",dblclickSelect:true");
-
-            if (table.hasSelectionClientBehaviour() || (table.getRowSelectListener() != null) || (table.getRowUnselectListener() != null))
-                writer.write(",instantSelect:true");
-        }
-
-        //Panel expansion
-        if (table.getPanelExpansion() != null) {
-            writer.write(",panelExpansion:true");
-        }
-
-
-        //Row expansion
-        if (table.getRowExpansion() != null) {
-            writer.write(",rowExpansion:true");
-        }
-
-        if (table.isClickableHeaderSorting()) {
-            writer.write(",clickableHeaderSorting:true");
-        }
-
-        //Scrolling
-        if (table.isScrollable()) {
-            writer.write(",scrollable:true");
-            writer.write(",liveScroll:" + table.isLiveScroll());
-            writer.write(",scrollStep:" + table.getRows());
-            writer.write(",scrollLimit:" + table.getRowCount());
-
-            if (table.getScrollHeight() != Integer.MIN_VALUE) writer.write(",height:" + table.getScrollHeight());
-        }
-
-        //if (table.getOnRowEditUpdate() != null) writer.write(",onRowEditUpdate:'" + ComponentUtils.findClientIds(context, form, table.getOnRowEditUpdate()) + "'");
-        if (table.isResizableColumns()) writer.write(",resizableColumns:true");
-        if (table.isReorderableColumns()) writer.write(",reorderableColumns:true");
-        if (table.isSingleSort()) writer.write(",singleSort:true");
-        if (table.isDisabled()) writer.write(",disabled:true");
-
-        encodeClientBehaviors(context, table);
-
-        writer.write("});");
+		writer.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);        
+        writer.write("var " + widgetVar + " = new ice.ace.DataTable('" + clientId + "', " + json + ");");
 		writer.endElement(HTML.SCRIPT_ELEM);
 	}
+
+    protected void encodePaginatorConfig(FacesContext context, JSONBuilder scriptJson, DataTable table) throws IOException {        
+        JSONBuilder configJson = new JSONBuilder();
+        String clientId = table.getClientId(context);
+        String paginatorPosition = table.getPaginatorPosition();
+        String paginatorContainers = paginatorPosition.equalsIgnoreCase("both")
+            ? "'" + clientId + "_paginatortop','" + clientId + "_paginatorbottom'"
+            : "'" + clientId + "_paginator" + paginatorPosition + "'";
+
+        boolean disabled = table.isDisabled();
+        String template = table.getPaginatorTemplate() ;
+        String rowTemplate = table.getRowsPerPageTemplate();
+        String currPgTemplate = table.getCurrentPageReportTemplate();
+        boolean notAlwaysVis = !table.isPaginatorAlwaysVisible();
+
+        configJson.beginMap();
+        configJson.entry("rowsPerPage", table.getRows());
+        configJson.entry("totalRecords", table.getRowCount());
+        configJson.entry("initalRecords", table.getPage());
+        configJson.entry("containers", "[" + paginatorContainers + "]", true);
+        configJson.entryNonNullValue("template", template);
+        configJson.entryNonNullValue("rowsPerPageOptions", rowTemplate);
+        configJson.entryNonNullValue("pageReportTemplate", currPgTemplate);
+        if (notAlwaysVis) configJson.entry("alwaysVisible",false);
+        if (disabled) configJson.entry("pageLinks", 1);
+        else configJson.entry("pageLinks", table.getPageCount());
+        configJson.endMap();
+
+        scriptJson.entry("paginator", "new YAHOO.widget.Paginator(" + configJson + ")", true);
+    }
+
 
 	protected void encodeEntierty(FacesContext context, DataTable table) throws IOException{
 		ResponseWriter writer = context.getResponseWriter();
@@ -1283,30 +954,6 @@ public class DataTableRenderer extends CoreRenderer {
         writer.endElement(HTML.DIV_ELEM);
     }
 
-    protected void encodePaginatorConfig(FacesContext context, DataTable table) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String clientId = table.getClientId(context);
-        String paginatorPosition = table.getPaginatorPosition();
-        String paginatorContainers = null;
-        if (paginatorPosition.equalsIgnoreCase("both"))
-             paginatorContainers = "'" + clientId + "_paginatortop','" + clientId + "_paginatorbottom'";
-        else paginatorContainers = "'" + clientId + "_paginator" + paginatorPosition + "'";
-
-        writer.write(",paginator:new YAHOO.widget.Paginator({");
-        writer.write("rowsPerPage:" + table.getRows());
-        writer.write(",totalRecords:" + table.getRowCount());
-        writer.write(",initialPage:" + table.getPage());
-        writer.write(",containers:[" + paginatorContainers + "]");
-
-        if (table.isDisabled()) writer.write(",pageLinks:" + 1);
-        else if (table.getPageCount() != 10) writer.write(",pageLinks:" + table.getPageCount());
-        if (table.getPaginatorTemplate() != null) writer.write(",template:'" + table.getPaginatorTemplate() + "'");
-        if (table.getRowsPerPageTemplate() != null) writer.write(",rowsPerPageOptions : [" + table.getRowsPerPageTemplate() + "]");
-        if (table.getCurrentPageReportTemplate() != null)writer.write(",pageReportTemplate:'" + table.getCurrentPageReportTemplate() + "'");
-        if (!table.isPaginatorAlwaysVisible()) writer.write(",alwaysVisible:false");
-
-        writer.write("})");
-    }
 
     protected void encodePaginatorMarkup(FacesContext context, DataTable table, String position) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
