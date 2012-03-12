@@ -29,6 +29,7 @@ package org.icefaces.ace.component.expansiontoggler;
 
 import java.io.IOException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.DataModel;
@@ -38,6 +39,7 @@ import org.icefaces.ace.component.datatable.DataTableConstants;
 import org.icefaces.ace.model.table.RowState;
 import org.icefaces.ace.model.table.TreeDataModel;
 import org.icefaces.ace.renderkit.CoreRenderer;
+import org.icefaces.ace.util.HTML;
 import org.icefaces.render.MandatoryResourceComponent;
 
 @MandatoryResourceComponent(tagName="expansionToggler", value="org.icefaces.ace.component.expansiontoggler.ExpansionToggler")
@@ -76,10 +78,30 @@ public class ExpansionTogglerRenderer extends CoreRenderer {
             if (expanded) togglerClass += " ui-icon-circle-triangle-s";
             else togglerClass += " ui-icon-circle-triangle-e";
 
+            int chironWidth = 0;
+            if (isRow) {
+                String clientId = table.getClientId(context);                
+                for (Character c : clientId.substring(clientId.lastIndexOf(UINamingContainer.getSeparatorChar(context))+1).toCharArray())
+                    if (c.equals('.')) chironWidth++;
+            }
+
+
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataTableConstants.ROW_TOGGLER_CONTAINER, null);
+
+            if (chironWidth > 0) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class", DataTableConstants.ROW_TOGGLER_SPAN, null);
+                writer.writeAttribute("style", "width:"+ chironWidth * 15  + "px", null);
+                writer.endElement("span");
+            }
+
             writer.startElement("a", toggler);
             writer.writeAttribute("tabindex", "0", null);
             writer.writeAttribute("class", togglerClass, null);
             writer.endElement("a");
+
+            writer.endElement("div");
         }
     }
 }

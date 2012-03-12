@@ -250,7 +250,18 @@
 .ui-datatable tr.ui-state-active {
     cursor:pointer;
 }
-.ui-datatable .ui-row-toggler, .ui-datatable .ui-row-panel-toggler, .ui-datatable .ui-icon-pencil, .ui-datatable .ui-icon-check, .ui-datatable .ui-icon-close {
+.ui-datatable .ui-row-toggler-parent {
+    text-align: left;
+}
+.ui-datatable .ui-row-toggler-span {
+    display: inline-block;
+    height:7px;
+    border-top:1px dotted #a9a9a9;
+}
+.ui-datatable .ui-row-toggler-parent > a.ui-icon {
+    display:inline-block;
+}
+.ui-datatable .ui-icon-pencil, .ui-datatable .ui-icon-check, .ui-datatable .ui-icon-close {
     margin-left:auto;
     margin-right:auto;
 }
