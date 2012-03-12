@@ -15,7 +15,9 @@
  */
 package org.icefaces.mobi.component.panelconfirmation;
 
+import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
+import org.icefaces.mobi.utils.Utils;
 
 import javax.faces.application.ProjectStage;
 import javax.faces.application.Resource;
@@ -30,7 +32,7 @@ import java.util.logging.Logger;
 /**
  * for now the css for this class is just reused from the dateSpinner popup container classes
  */
-public class PanelConfirmationRenderer extends Renderer {
+public class PanelConfirmationRenderer extends BaseLayoutRenderer {
     private static Logger logger = Logger.getLogger(PanelConfirmationRenderer.class.getName());
     private static final String JS_NAME = "panelconfirmation.js";
     private static final String JS_MIN_NAME = "panelconfirmation-min.js";
@@ -44,21 +46,7 @@ public class PanelConfirmationRenderer extends Renderer {
         PanelConfirmation panel = (PanelConfirmation) uiComponent;
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = panel.getClientId(facesContext);
-        Map viewContextMap = facesContext.getViewRoot().getViewMap();
-        if (!viewContextMap.containsKey(JS_NAME)) {
-            String jsFname = JS_NAME;
-            if (facesContext.isProjectStage(ProjectStage.Production)) {
-                jsFname = JS_MIN_NAME;
-            }
-            //set jsFname to min if development stage
-            Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, JS_LIBRARY);
-            String src = jsFile.getRequestPath();
-            writer.startElement("script", uiComponent);
-            writer.writeAttribute("text", "text/javascript", null);
-            writer.writeAttribute("src", src, null);
-            writer.endElement("script");
-            viewContextMap.put(JS_NAME, "true");
-        }
+        writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
         encodePanel(writer, clientId, uiComponent);
 
     }
@@ -136,6 +124,13 @@ public class PanelConfirmationRenderer extends Renderer {
         String panelConfirmationId = String.valueOf(uiComponent.getAttributes().get("panelConfirmation"));
         String callCompId = uiComponent.getClientId();
         PanelConfirmation panelConfirmation = (PanelConfirmation) uiComponent.findComponent(panelConfirmationId);
+        if (panelConfirmation ==null){
+            //try again incase it's within a datatable or some other naming container
+            UIComponent uiForm = Utils.findParentForm(uiComponent);
+            if (uiForm !=null){
+                panelConfirmation = (PanelConfirmation)(uiForm.findComponent(panelConfirmationId));
+            }
+        }
         if (panelConfirmation != null) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             panelConfirmationId = panelConfirmation.getClientId(facesContext);
