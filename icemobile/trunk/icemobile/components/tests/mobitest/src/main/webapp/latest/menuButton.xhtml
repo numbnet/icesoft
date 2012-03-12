@@ -67,7 +67,7 @@
         <mobi:menuButton id="mnu3" value="#{menu.data}" var="item">
                 <mobi:menuButtonItem value="#{item.value}" label="#{item.label}"
                                      panelConfirmation="#{item.panelConfId}"
-                                     submitNotification="sn1"
+                                     submitNotification="#{item.submitNotif}"
                                      disabled="#{item.disabled}" actionListener="#{item.actionMethod}"/>
         </mobi:menuButton>
         <mobi:panelConfirmation id="pc1" message="working..."/>

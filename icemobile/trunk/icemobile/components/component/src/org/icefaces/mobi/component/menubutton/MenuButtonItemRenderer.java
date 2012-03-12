@@ -79,8 +79,13 @@ public class MenuButtonItemRenderer extends BaseLayoutRenderer{
          if (null != subNotId) {
             submitNotificationId = SubmitNotificationRenderer.findSubmitNotificationId(uiComponent, subNotId);
             if (null == submitNotificationId){
-                //try another way as this above one is limited for some reason menuButtonItems don't find it otherwise
-                submitNotificationId = (String)((uiForm.findComponent(subNotId)).getClientId());
+                //try another way as this above one is limited when finding a namingcontainer
+                if (uiForm!=null){
+                    UIComponent subObj = uiForm.findComponent(subNotId);
+                    if (null!= subObj)   {
+                        submitNotificationId = subObj.getClientId();
+                    }
+                }
             }
             if (null != submitNotificationId ){
                 builder.append(",snId: '").append(submitNotificationId).append("'");
