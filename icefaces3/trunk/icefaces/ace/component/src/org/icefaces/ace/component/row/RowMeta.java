@@ -40,17 +40,17 @@ public class RowMeta extends UIComponentBaseMeta {
             "rendered. Options include 'interval', 'predicate' and 'group'.")
     private String condition;
 
-    @Property(tlddoc = "Defines an interval that determines how regularly this row will render.")
+    @Property(tlddoc = "Defines an integer that determines how regularly this row will render in interval mode.")
     private Integer interval;
     
     @Property(tlddoc = "Defines whether a conditional row is intended to render 'before' or 'after' a group change " +
-            "in 'group' conditional mode. If in predicate mode, this setting defines if the conditional row renders " +
-            "before or after the data model position that caused the predicate to evaluate true.",
+            "in 'group' conditional mode. If in predicate or interval mode, this setting defines if the conditional " +
+            "row renders before or after the data model position that caused the predicate to evaluate true.",
             defaultValue = "after", defaultValueType = DefaultValueType.STRING_LITERAL)
     private String pos;
 
-    @Property(tlddoc = "When using 'predicate' conditional mode, defines a predicate taking TableIterationContext " +
-            "as an argument, used to decide after what row objects to render the conditional row.")
+    @Property(tlddoc = "When using 'predicate' conditional mode, defines a function taking the current data model index" +
+            "as an argument, and returning a value determining weather or not to render the conditional row for this index.")
     private Predicate predicate;
 
     @Property(expression = Expression.VALUE_EXPRESSION, tlddoc="Defines an expression used to determine when a group " +
