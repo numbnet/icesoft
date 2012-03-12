@@ -43,6 +43,8 @@ public class DataTableConstants {
     public static final String EXPANDED_ROW_CONTENT_CLASS = "ui-expanded-row-content";
     public static final String ROW_PANEL_TOGGLER_CLASS = "ui-row-panel-toggler";
     public static final String ROW_TOGGLER_CLASS = "ui-row-toggler";
+    public static final String ROW_TOGGLER_SPAN = "ui-row-toggler-span";
+    public static final String ROW_TOGGLER_CONTAINER = "ui-row-toggler-parent";
     public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
     public static final String CELL_EDITOR_CLASS = "ui-cell-editor";
     public static final String CELL_EDITOR_INPUT_CLASS = "ui-cell-editor-input";
