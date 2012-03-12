@@ -49,7 +49,7 @@ public class MenuBean implements Serializable {
     private void fillModelData(){
   //      this.data.add(new ModelData("options", "select one","none", "none"));
         this.data.add(new ModelData("File", "file item","pc1" , "none" ));
-        this.data.add(new ModelData("Add", "add item", "pcAdd", "n" ));
+        this.data.add(new ModelData("Add", "add item", "pcAdd", "sn1" ));
         this.data.add(new ModelData("Delete", "delete item", "pcDel", "n" ));
         this.data.add(new ModelData("Print", "print item", "pc1", "none"));
         this.data.add(new ModelData("Cancel", "cancel item", "none", "n" ));
@@ -109,9 +109,6 @@ public class MenuBean implements Serializable {
             this.label = label;
             this.submitNotif = snId;
             this.panelConfId = pcId;
-          /*  if (this.label.startsWith("select")){
-                this.disabled = "true";
-            }   */
         }
 
         public String getDisabled() {
