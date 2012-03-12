@@ -276,7 +276,7 @@ public class PanelPopupRenderer extends GroupRenderer {
         } else {
             autoPositionJS = "Ice.autoPosition.stop('" + clientId + "');";
         }
-        scriptTextNode.appendData("; " + autoPositionJS);
+        JavascriptContext.addJavascriptCall(facesContext, "; " + autoPositionJS);
 
         // autoCentre handling
         boolean autoCentre = panelPopup.isAutoCentre();
@@ -287,8 +287,8 @@ public class PanelPopupRenderer extends GroupRenderer {
             centreJS = "Ice.autoCentre.stop('" + clientId + "');";
         }
 
-        scriptTextNode.appendData("; " + centreJS);
-        scriptTextNode.appendData("; Ice.iFrameFix.start('" + clientId + "','" +
+        JavascriptContext.addJavascriptCall(facesContext, centreJS);
+        JavascriptContext.addJavascriptCall(facesContext, "; Ice.iFrameFix.start('" + clientId + "','" +
                 CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank") + "');");
     }
 
