@@ -55,7 +55,7 @@ mobi.menubutton = {
          }
          if (this.cfg[optId].pcId){
             var pcId= this.cfg[optId].pcId;
-            mobi.panelConf.init(pcId, optId, true, this.cfg[optId] ) ;
+            mobi.panelConf.init(pcId, optId, this.cfg[optId] ) ;
          }
          else if (singleSubmit){
              ice.se(null, optId);
