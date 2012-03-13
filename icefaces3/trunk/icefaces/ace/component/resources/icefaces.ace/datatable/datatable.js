@@ -107,13 +107,14 @@ ice.ace.DataTable = function(id, cfg) {
     if (!this.cfg.disabled) {
         this.setupSortEvents();
 
-        if (this.cfg.selectionMode) {
+        if (this.isSelectionEnabled()) {
             this.selectionHolder = this.jqId + '_selection';
             this.deselectionHolder = this.jqId + '_deselection';
             this.selection = [];
             this.deselection = [];
             this.setupSelectionEvents();
-        }
+        } else // Clean up global events left over from possible pre-existing selection mode
+            this.tearDownSelectionEvents();
 
         if (this.cfg.configPanel)
             if (this.cfg.configPanel.startsWith(":"))
@@ -464,6 +465,12 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
                             .trigger('click', [$currentTarget.offset().top + 6, event.metaKey]);
                     return false;
                 }});
+}
+
+ice.ace.DataTable.prototype.tearDownSelectionEvents = function() {
+    ice.ace.jq(this.jqId + ' tbody.ui-datatable-data > tr > td, '
+             + this.jqId + ' tbody.ui-datatable-data:first > tr:not(.ui-unselectable)')
+                .die();
 }
 
 ice.ace.DataTable.prototype.setupSelectionEvents = function() {
@@ -1528,7 +1535,7 @@ ice.ace.DataTable.prototype.isSingleSelection = function() {
 };
 
 ice.ace.DataTable.prototype.isSelectionEnabled = function() {
-    return this.cfg.selectionMode != undefined;
+    return this.cfg.selectionMode == 'single' || this.cfg.selectionMode == 'multiple' || this.isCellSelectionEnabled();
 };
 
 ice.ace.DataTable.prototype.isCellSelectionEnabled = function() {
