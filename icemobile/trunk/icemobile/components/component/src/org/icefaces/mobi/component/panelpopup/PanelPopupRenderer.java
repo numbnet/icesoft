@@ -19,8 +19,6 @@ import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.Utils;
 
-import javax.faces.application.ProjectStage;
-import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -57,24 +55,7 @@ public class PanelPopupRenderer extends BaseLayoutRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = component.getClientId(facesContext);
         //    boolean clientSide= panelPopup.isClientSide();
-        Map viewContextMap = facesContext.getViewRoot().getViewMap();
-        if (!viewContextMap.containsKey(JS_NAME)) {
-            String jsFname = JS_NAME;
-            if (facesContext.isProjectStage(ProjectStage.Production)) {
-                jsFname = JS_MIN_NAME;
-            }
-            //set jsFname to min if development stage
-            Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, JS_LIBRARY);
-            String src = jsFile.getRequestPath();
-            writer.startElement(HTML.SPAN_ELEM, component);
-            writer.writeAttribute(HTML.ID_ATTR, clientId + "_libJS", HTML.ID_ATTR);
-            writer.startElement("script", component);
-            writer.writeAttribute("text", "text/javascript", null);
-            writer.writeAttribute("src", src, null);
-            writer.endElement("script");
-            viewContextMap.put(JS_NAME, "true");
-            writer.endElement(HTML.SPAN_ELEM);
-        }
+        writeJavascriptFile(facesContext, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
         encodeMarkup(facesContext, component);
         encodeScript(facesContext, component);
     }

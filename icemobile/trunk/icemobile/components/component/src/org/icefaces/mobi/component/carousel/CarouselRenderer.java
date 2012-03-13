@@ -21,7 +21,6 @@ import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
 
 import javax.faces.application.ProjectStage;
-import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
@@ -35,9 +34,11 @@ import java.util.logging.Logger;
 
 public class CarouselRenderer extends BaseLayoutRenderer {
     private static Logger logger = Logger.getLogger(CarouselRenderer.class.getName());
-    private static final String JS_NAME = "carousel";
+    private static final String JS_NAME = "carousel.js";
+    private static final String JS_MIN_NAME = "carousel-min.js";
     private static final String JS_LIBRARY = "org.icefaces.component.carousel";
-    private static final String JS_ISCROLL = "iscroll";
+    private static final String JS_ISCROLL = "iscroll.js";
+    private static final String JS_ISCROLL_MIN = "iscroll-min.js";
     private static final String LIB_ISCROLL = "org.icefaces.component.util";
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -63,21 +64,11 @@ public class CarouselRenderer extends BaseLayoutRenderer {
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+        writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
+        writeJavascriptFile(facesContext, uiComponent, JS_ISCROLL, JS_ISCROLL_MIN, LIB_ISCROLL);
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         Carousel carousel = (Carousel) uiComponent;
-        //check to ensure children are all of type OutputListItem
-
-        writer.startElement("span", uiComponent);
-        writer.writeAttribute("id", clientId+"_jscript","id");
-        Map contextMap = facesContext.getViewRoot().getViewMap();
-        if (!contextMap.containsKey(JS_ISCROLL)) {
-            writeJSResource(JS_ISCROLL, LIB_ISCROLL, facesContext, uiComponent, writer);
-        }
-        if (!contextMap.containsKey(JS_NAME)) {
-            writeJSResource(JS_NAME, JS_LIBRARY, facesContext, uiComponent, writer);
-        }
-        writer.endElement("span");
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute("id", clientId, "ui");
         writer.writeAttribute("name", clientId, "name");
@@ -98,25 +89,6 @@ public class CarouselRenderer extends BaseLayoutRenderer {
         writer.writeAttribute("class", "mobi-carousel-list", null);
 
     }
-
-    private void writeJSResource(String fname, String library, FacesContext facesContext,
-              UIComponent uiComponent, ResponseWriter writer) throws IOException{
-        Map contextMap = facesContext.getViewRoot().getViewMap();
-             //check to see if Development or Project stage
-        String jsFname = fname+".js";
-        if ( facesContext.isProjectStage(ProjectStage.Production)){
-            jsFname = fname+"-min.js";
-        }
-        Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, library);
-        String src = jsFile.getRequestPath();
-        writer.startElement("script", uiComponent);
-        writer.writeAttribute("text", "text/javascript", null);
-        writer.writeAttribute("src", src, null);
-        writer.endElement("script");
-        contextMap.put(fname, "true");
-
-    }
-
 
 
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException {

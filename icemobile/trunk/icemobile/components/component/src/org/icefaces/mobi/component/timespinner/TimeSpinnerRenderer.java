@@ -20,8 +20,6 @@ import org.icefaces.mobi.renderkit.BaseInputRenderer;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.utils.Utils;
 
-import javax.faces.application.ProjectStage;
-import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
@@ -35,7 +33,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 import java.util.logging.Logger;
 
 public class TimeSpinnerRenderer extends BaseInputRenderer {
@@ -111,23 +108,7 @@ public class TimeSpinnerRenderer extends BaseInputRenderer {
             }
             writer.endElement("input");
         } else {
-            Map<String, Object> viewContextMap = context.getViewRoot().getViewMap();
-            if (!viewContextMap.containsKey(JS_NAME)) {
-                String jsFname = JS_NAME;
-                if (context.isProjectStage(ProjectStage.Production)) {
-                    jsFname = JS_MIN_NAME;
-                }
-                //set jsFname to min if development stage
-                Resource jsFile = context.getApplication().getResourceHandler()
-                        .createResource(jsFname, JS_LIBRARY);
-                String src = jsFile.getRequestPath();
-                writer.startElement("script", component);
-                writer.writeAttribute("text", "text/javascript", null);
-                writer.writeAttribute("src", src, null);
-                writer.endElement("script");
-                viewContextMap.put(JS_NAME, "true");
-            }
-
+            writeJavascriptFile(context, component, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
             String value = this.encodeValue(spinner, initialValue);
             encodeMarkup(context, component, value, hasBehaviors);
             encodeScript(context, component);
