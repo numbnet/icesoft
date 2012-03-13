@@ -995,7 +995,7 @@ ice.ace.DataTable.prototype.filter = function(evn) {
 
 ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, element) {
     // Get Id(s) //
-    var targetId, deselectedId;
+    var targetId, deselectedId, firstRowSelected;
     if (type == 'row') {
         targetId = element.attr('id').split('_row_')[1];
     }
@@ -1005,8 +1005,10 @@ ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, eleme
         targetId = rowId + '#' + columnIndex;
     }
 
+    firstRowSelected = ice.ace.jq(element).closest('tr').parent().children(':first').hasClass('ui-selected');
+
     // Sync State //
-    // this.readSelections();
+    this.readSelections();
 
     // Adjust State //
     if (!deselection) {
@@ -1066,12 +1068,14 @@ ice.ace.DataTable.prototype.doSelectionEvent = function(type, deselection, eleme
             }
         }
 
-        if (targetId == 0 || ice.ace.jq.inArray("0", this.deselection) > -1) {
+        // If first row is in this selection, deselection, or will be implicitly deselected by singleSelection
+        // resize the scrollable table.
+        if (_self.cfg.scrollable && (ice.ace.jq.inArray("0", this.selection) > -1 || ice.ace.jq.inArray("0", this.deselection) > -1 || (firstRowSelected && this.isSingleSelection()))) {
             options.onsuccess = function(responseXML) {
                 ice.ace.selectCustomUpdates(responseXML, function(id, content) {
                     ice.ace.AjaxUtils.updateElement(id, content);
                 });
-                if (_self.cfg.scrollable) _self.resizeScrolling();
+                _self.resizeScrolling();
                 return false;
             };
         }
