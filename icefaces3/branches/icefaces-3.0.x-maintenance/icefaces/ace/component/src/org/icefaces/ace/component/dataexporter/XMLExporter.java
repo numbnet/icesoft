@@ -81,8 +81,8 @@ public class XMLExporter extends Exporter {
     	
 		Object originalData = null;
 		if (selectedRowsOnly) {
-			originalData = table.getValue();
-			table.setValue(table.getStateMap().getSelected());
+			originalData = table.getModel().getWrappedData();
+			table.getModel().setWrappedData(table.getStateMap().getSelected());
 			first = 0;
 			size = table.getRowCount();
 		}
@@ -100,7 +100,7 @@ public class XMLExporter extends Exporter {
 		}
 		
 		if (selectedRowsOnly) {
-			table.setValue(originalData);
+			table.getModel().setWrappedData(originalData);
 		}
 
         if (hasColumnFooter(columns) && includeFooters) {
