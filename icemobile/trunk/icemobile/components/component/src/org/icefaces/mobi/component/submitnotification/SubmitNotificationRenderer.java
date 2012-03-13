@@ -78,7 +78,7 @@ public class SubmitNotificationRenderer extends BaseLayoutRenderer {
         SubmitNotification panelNotify = (SubmitNotification) component;
         String clientId = panelNotify.getClientId(facesContext);
         //only put this tag in if the script is available to do so
-        if (this.scriptIsLoaded(facesContext, JS_NAME, JS_MIN_NAME)) {
+        if (isScriptLoaded(facesContext, JS_NAME)) {
             writer.startElement(HTML.SPAN_ELEM, component);
             writer.writeAttribute(HTML.ID_ATTR, clientId + "_scrSpan", HTML.ID_ATTR);
             writer.startElement("script", null);

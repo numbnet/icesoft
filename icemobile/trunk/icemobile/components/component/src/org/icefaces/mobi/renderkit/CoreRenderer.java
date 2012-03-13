@@ -177,10 +177,9 @@ public class CoreRenderer extends Renderer {
 
     protected void writeJavascriptFile(FacesContext facesContext, UIComponent component, String JS_NAME,
                                      String JS_MIN_NAME, String JS_LIBRARY) throws IOException {
-        Map viewContextMap = facesContext.getViewRoot().getViewMap();
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = component.getClientId(facesContext);
-        if (!viewContextMap.containsKey(JS_NAME)) {
+        if (!isScriptLoaded(facesContext, JS_NAME)) {
             String jsFname = JS_NAME;
             if (facesContext.isProjectStage(ProjectStage.Production)){
                 jsFname = JS_MIN_NAME;
@@ -194,16 +193,27 @@ public class CoreRenderer extends Renderer {
             writer.writeAttribute("text", "text/javascript", null);
             writer.writeAttribute("src", src, null);
             writer.endElement("script");
-            viewContextMap.put(JS_NAME, "true");
             writer.endElement(HTML.SPAN_ELEM);
-        }
+            setScriptLoaded(facesContext, JS_NAME);
+        } 
     }
 
-    protected boolean scriptIsLoaded(FacesContext facesContext, String JS_NAME, String JS_MIN_NAME) {
-        Map viewContextMap = facesContext.getViewRoot().getViewMap();
-        if (viewContextMap.containsKey(JS_NAME) || viewContextMap.containsKey(JS_MIN_NAME)) {
-             return true;
+    protected void setScriptLoaded(FacesContext facesContext, 
+            String JS_NAME) {
+        Map viewMap = facesContext.getViewRoot().getViewMap();
+        Map requestMap = facesContext.getExternalContext().getRequestMap();
+        requestMap.put(JS_NAME, "true");
+        viewMap.put(JS_NAME, "true");
+    }
+
+    protected boolean isScriptLoaded(FacesContext facesContext, String JS_NAME) {
+        Map viewMap = facesContext.getViewRoot().getViewMap();
+        Map requestMap = facesContext.getExternalContext().getRequestMap();
+        if (!facesContext.getPartialViewContext().isAjaxRequest())  {
+            if (!requestMap.containsKey(JS_NAME))  {
+                return false;
+            }
         }
-        return false;
+        return viewMap.containsKey(JS_NAME);
     }
 }
