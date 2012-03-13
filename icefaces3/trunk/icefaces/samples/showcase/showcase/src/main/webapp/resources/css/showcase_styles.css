@@ -128,6 +128,10 @@
     width: 27%;
 }
 
+.menuWrapper {
+    vertical-align: top;
+}
+
 .infoMessage
 {
     color: #009933;
