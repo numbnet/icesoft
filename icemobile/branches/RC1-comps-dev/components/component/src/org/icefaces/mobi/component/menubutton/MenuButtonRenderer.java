@@ -1,3 +1,18 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.icefaces.mobi.component.menubutton;
 
 import org.icefaces.mobi.renderkit.BaseLayoutRenderer;
@@ -39,9 +54,9 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
 
      public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
              throws IOException {
-         ResponseWriter writer = facesContext.getResponseWriter();
-         String clientId = uiComponent.getClientId(facesContext);
-         MenuButton menu = (MenuButton) uiComponent;
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = uiComponent.getClientId(facesContext);
+        MenuButton menu = (MenuButton) uiComponent;
       	UIComponent form = Utils.findParentForm(uiComponent);
    		if(form == null) {
 			throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
@@ -95,13 +110,6 @@ public class MenuButtonRenderer extends BaseLayoutRenderer {
          }
          if (menu.getVar() != null) {
             menu.setRowIndex(-1);
-      /*      MenuButtonItem mbi = new MenuButtonItem();
-            mbi.setValue("select");
-            mbi.setDisabled(true);
-            mbi.setLabel("Select one"); //should internationalize??
-            mbi.setParent(uiComponent);
-            menu.setRowIndex(0);
-            mbi.encodeAll(facesContext);  */
             for (int i = 0; i < menu.getRowCount(); i++) {
                 //assume that if it's a list of items then it's grouped
                 menu.setRowIndex(i);

@@ -1,17 +1,17 @@
 /*
- * Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions an
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 
 package org.icefaces.mobi.component.flipswitch;
@@ -20,8 +20,6 @@ import org.icefaces.mobi.utils.HTML;
 import org.icefaces.mobi.utils.PassThruAttributeWriter;
 import org.icefaces.mobi.renderkit.CoreRenderer;
 
-import javax.faces.application.ProjectStage;
-import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
@@ -80,7 +78,7 @@ public class FlipSwitchRenderer extends CoreRenderer {
         ClientBehaviorHolder cbh = (ClientBehaviorHolder)uiComponent;
         boolean hasBehaviors = !cbh.getClientBehaviors().isEmpty();
 
-        writeJavascriptResource(facesContext, uiComponent, writer);
+        writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
         writer.startElement(HTML.ANCHOR_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         writer.writeAttribute(HTML.NAME_ATTR, clientId, HTML.NAME_ATTR);
@@ -130,24 +128,6 @@ public class FlipSwitchRenderer extends CoreRenderer {
         writer.endElement(HTML.SPAN_ELEM);
         writer.endElement(HTML.ANCHOR_ELEM);
 
-    }
-
-    private void writeJavascriptResource(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer) throws IOException {
-        Map contextMap = facesContext.getViewRoot().getViewMap();
-        if (!contextMap.containsKey(JS_NAME)) {
-             //check to see if Development or Project stage
-             String jsFname = JS_NAME;
-             if ( facesContext.isProjectStage(ProjectStage.Production)){
-                    jsFname = JS_MIN_NAME;
-             }
-             Resource jsFile = facesContext.getApplication().getResourceHandler().createResource(jsFname, JS_LIBRARY);
-             String src = jsFile.getRequestPath();
-             writer.startElement("script", uiComponent);
-             writer.writeAttribute("text", "text/javascript", null);
-             writer.writeAttribute("src", src, null);
-             writer.endElement("script");
-             contextMap.put(JS_NAME, "true");
-        }
     }
 
     private void writeHiddenField(UIComponent uiComponent, String clientId,

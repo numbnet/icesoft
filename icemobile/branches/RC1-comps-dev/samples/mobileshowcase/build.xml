@@ -19,5 +19,7 @@
     <property file="./build.properties"/>
     <property file="../build/build.properties"/>
     <import file="../build/common.xml"/>
-
+    <target name="warWrap" depends="servlet-profile">
+        <echo message="mobileshowcase war"/>
+    </target>
 </project>

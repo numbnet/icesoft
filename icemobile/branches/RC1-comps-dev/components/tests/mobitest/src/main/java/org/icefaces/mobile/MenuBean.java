@@ -1,3 +1,18 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.icefaces.mobile;
 
 import javax.faces.bean.ManagedBean;
@@ -17,6 +32,9 @@ public class MenuBean implements Serializable {
     Logger.getLogger(ListBean.class.toString());
     private List<String> simpleList = new ArrayList<String>() ;
     private String outputString = "none";
+    private ArrayList<ModelData> dynamicMenuButton;
+    private String executedCommand;
+
 
  //   private List<MenuAction> itemList = new ArrayList<MenuAction>();
     private List<ModelData> data = new ArrayList<ModelData>();
@@ -29,14 +47,36 @@ public class MenuBean implements Serializable {
         this.simpleList.add("Delete");
         this.simpleList.add("Cancel");
         fillModelData();
+        initDynamicMenuButton();
+    }
+    private void initDynamicMenuButton() {
+        // build out the menu commands and fill in the MenuButtonItemModel.
+        dynamicMenuButton = new ArrayList<ModelData>(4);
+//        dynamicMenuButton.add(new MenuButtonItemModel("Action Menu",null));
+        dynamicMenuButton.add(new ModelData(" &#160; Auto",
+               ""));
+        dynamicMenuButton.add(new ModelData(" &#160; iPad", "ipad.css"));
+        dynamicMenuButton.add(new ModelData(" &#160; Android", "honeycomb.css"));
     }
 
+    public ArrayList<ModelData> getDynamicMenuButton() {
+        return dynamicMenuButton;
+    }
+
+    public void setExecutedCommand(String executedCommand) {
+        this.executedCommand = executedCommand;
+    }
+
+    public String getExecutedCommand() {
+        return executedCommand;
+    }
     private void fillModelData(){
   //      this.data.add(new ModelData("options", "select one","none", "none"));
         this.data.add(new ModelData("File", "file item","pc1" , "none" ));
-        this.data.add(new ModelData("Add", "add item", "pcAdd", "n" ));
-        this.data.add(new ModelData("Delete", "delete item", "pcDel", "n" ));
-        this.data.add(new ModelData("Cancel", "cancel item", "none", "n" ));
+        this.data.add(new ModelData("Add", "add item", "pcAdd", "sn1" ));
+        this.data.add(new ModelData("Delete", "delete item", "pcDel", "none" ));
+        this.data.add(new ModelData("Print", "print item", "pc1", "none"));
+        this.data.add(new ModelData("Cancel", "cancel item", "none", "none" ));
     }
 
     public List<ModelData> getData() {
@@ -93,9 +133,13 @@ public class MenuBean implements Serializable {
             this.label = label;
             this.submitNotif = snId;
             this.panelConfId = pcId;
-          /*  if (this.label.startsWith("select")){
-                this.disabled = "true";
-            }   */
+        }
+
+        public ModelData(String label, String val){
+            this.value=val;
+            this.label=label;
+            this.panelConfId = "none" ;
+            this.submitNotif = "none";
         }
 
         public String getDisabled() {
@@ -124,6 +168,10 @@ public class MenuBean implements Serializable {
 
          public String getPanelConfId() {
              return panelConfId;
+         }
+
+         public void setTheme(ActionEvent ae){
+
          }
 
          public void actionMethod(ActionEvent ae){

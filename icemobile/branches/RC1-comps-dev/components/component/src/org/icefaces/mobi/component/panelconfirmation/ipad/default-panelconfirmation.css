@@ -1,36 +1,39 @@
 /*
- * Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
-.mobi-panelconf-bg-hide{
+.mobi-panelconf-bg-hide {
     display: none;
 }
+
 .mobi-panelconf-container-hide {
     display: none;
     opacity: 0;
 }
+
 .mobi-panelconf-bg {
     width: 100%;
-    height:100%;
+    height: 100%;
     background: #000;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
     opacity: 0.5;
-    filter:alpha(opacity=50);
+    filter: alpha(opacity = 50);
 }
+
 .mobi-panelconf-container {
     opacity: .8;
     border-radius: 6px 6px 6px 6px;
@@ -43,10 +46,9 @@
     color: #000000;
     padding: 0;
     z-index: 1001;
-    position: fixed;
-    top:25%;
-    left:25%;
-    right:25%;
+    position: absolute;
+    top: 0;
+    left: 0;
     background: -moz-linear-gradient(top, #DEDEDE, black, black, black) repeat scroll 0 0 black;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, white), color-stop(.45, black), color-stop(.5, black), color-stop(1, #black));
     background-color: #000000
