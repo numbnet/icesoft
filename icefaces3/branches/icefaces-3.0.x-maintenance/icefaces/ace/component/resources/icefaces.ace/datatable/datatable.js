@@ -1490,7 +1490,8 @@ ice.ace.DataTable.prototype.isSingleSelection = function() {
 };
 
 ice.ace.DataTable.prototype.isSelectionEnabled = function() {
-    return this.cfg.selectionMode == 'single' || this.cfg.selectionMode == 'multiple';
+    return this.cfg.selectionMode == 'single' || this.cfg.selectionMode == 'multiple' ||
+            this.cfg.selectionMode === 'singlecell' || this.cfg.selectionMode === 'multiplecell';
 };
 
 ice.ace.DataTable.prototype.isCellSelectionEnabled = function() {
