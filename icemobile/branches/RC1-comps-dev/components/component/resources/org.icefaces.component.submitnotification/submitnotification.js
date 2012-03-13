@@ -1,26 +1,68 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 if (!window['mobi']) {
     window.mobi = {};
 }
 mobi.submitnotify = {
-      visible: {},
-      bgHideClass: "mobi-submitnotific-bg",
-      containerClass: "mobi-submitnotific-container",
-      cfg: {},
-      open: function(clientId){
-            var idPanel = clientId+"_bg";
-            var containerId = clientId+"_popup";
-            document.getElementById(idPanel).className = this.bgHideClass;
-            document.getElementById(containerId).className = this.containerClass;
-      },
-      close: function(clientId){
-            var idPanel = clientId+"_bg" ;
-            var containerId = clientId+"_popup";
-            document.getElementById(idPanel).className = this.bgbHideClass+'-hide';
-            document.getElementById(containerId).className = this.containerClass+'-hide ';
-      },
-      unload: function(clientId){
-            this.cfg[clientId] = null;
-            this.visible[clientId] = null;
-      }
+    visible:{},
+    bgClass:"mobi-submitnotific-bg",
+    containerClass:"mobi-submitnotific-container",
+    centerCalculation:{},
+    cfg:{},
+    open:function (clientId) {
+        var idPanel = clientId + "_bg";
+        var containerId = clientId + "_popup";
+        document.getElementById(idPanel).className = 'mobi-submitnotific-bg';
+        document.getElementById(containerId).className = 'mobi-submitnotific-container';
+        // apply centering code.
+        var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+        // add scroll listener
+        this.centerCalculation[clientId] = function () {
+            mobi.panelAutoCenter(containerId);
+        };
+
+        if (window.addEventListener) {
+            window.addEventListener(scrollEvent, this.centerCalculation[clientId], false);
+            window.addEventListener('resize', this.centerCalculation[clientId], false);
+        } else { // older ie event listener
+            window.attachEvent(scrollEvent, this.centerCalculation[clientId]);
+            window.attachEvent("resize", this.centerCalculation[clientId]);
+        }
+        // calculate center for first view
+        mobi.panelAutoCenter(containerId);
+    },
+    close:function (clientId) {
+        var idPanel = clientId + "_bg";
+        var containerId = clientId + "_popup";
+        document.getElementById(idPanel).className = 'mobi-submitnotific-bg-hide ';
+        document.getElementById(containerId).className = 'mobi-submitnotific-container-hide ';
+        // clean up centering listeners.
+        var scrollEvent = 'ontouchstart' in window ? "touchmove" : "scroll";
+        if (window.removeEventListener) {
+            window.removeEventListener(scrollEvent, this.centerCalculation[clientId], false);
+            window.removeEventListener('resize', this.centerCalculation[clientId], false);
+        } else { // older ie cleanup
+            window.detachEvent(scrollEvent, this.centerCalculation[clientId], false);
+            window.detachEvent('resize', this.centerCalculation[clientId], false);
+        }
+        this.centerCalculation[clientId] = undefined;
+    },
+    unload:function (clientId) {
+        this.cfg[clientId] = null;
+        this.visible[clientId] = null;
+    }
 
 }

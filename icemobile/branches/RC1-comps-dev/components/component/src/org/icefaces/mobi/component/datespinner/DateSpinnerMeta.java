@@ -1,26 +1,27 @@
 /*
- * Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 
 package org.icefaces.mobi.component.datespinner;
 
-import org.icefaces.ace.meta.annotation.*;
-
-import org.icefaces.ace.meta.baseMeta.UIInputMeta;
 import org.icefaces.ace.meta.annotation.ClientBehaviorHolder;
 import org.icefaces.ace.meta.annotation.ClientEvent;
+import org.icefaces.ace.meta.annotation.Component;
+import org.icefaces.ace.meta.annotation.Property;
+import org.icefaces.ace.meta.baseMeta.UIInputMeta;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
@@ -39,20 +40,20 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "org.icefaces.component.util", name = "component.js")
 })
 @ClientBehaviorHolder(events = {
-	@ClientEvent(name="change", javadoc="...", tlddoc="...", defaultRender="@this", defaultExecute="@all")
-}, defaultEvent="change")
+        @ClientEvent(name = "change", javadoc = "...", tlddoc = "...", defaultRender = "@this", defaultExecute = "@all")
+}, defaultEvent = "change")
 public class DateSpinnerMeta extends UIInputMeta {
 
     @Property(defaultValue = "yyyy-MM-dd", tlddoc = "DateFormat pattern for localization")
     private String pattern;
 
-    @Property(defaultValue = "1980", tlddoc="yearStart is the first year to appear in the dateScroller")
+    @Property(defaultValue = "1980", tlddoc = "yearStart is the first year to appear in the dateScroller")
     private int yearStart;
 
-    @Property(defaultValue = "2020", tlddoc="yearEbd is the last year to appear in the dateScroller")
+    @Property(defaultValue = "2020", tlddoc = "yearEbd is the last year to appear in the dateScroller")
     private int yearEnd;
 
-    @Property(defaultValue = "15", tlddoc="width of the input text field in characters, where the value of the date will reside")
+    @Property(defaultValue = "15", tlddoc = "width of the input text field in characters, where the value of the date will reside")
     private String size;
 
     @Property(tlddoc = "Locale to be used for labels and conversion.")
@@ -77,8 +78,8 @@ public class DateSpinnerMeta extends UIInputMeta {
     @Property(tlddoc = "If true then this date time entry will submit itself.")
     private boolean singleSubmit;
 
-    @Property(defaultValue = "false", tlddoc ="if useNative is true then iOS5 devices will show the iOS5 builtin html5 date selection popup"+
-            " if false then the mobi datespinner component is shown with native device styling.  This can be expanded if other device operating"+
+    @Property(defaultValue = "false", tlddoc = "if useNative is true then iOS5 devices will show the iOS5 builtin html5 date selection popup" +
+            " if false then the mobi datespinner component is shown with native device styling.  This can be expanded if other device operating" +
             " systems provide support for html5 input type of date.")
     private boolean useNative;
 

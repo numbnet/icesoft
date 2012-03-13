@@ -1,3 +1,18 @@
+/*
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 if (!window['mobi']) {
     window.mobi = {};
 }
@@ -40,7 +55,7 @@ mobi.menubutton = {
          }
          if (this.cfg[optId].pcId){
             var pcId= this.cfg[optId].pcId;
-            mobi.panelConf.init(pcId, optId, true, this.cfg[optId] ) ;
+            mobi.panelConf.init(pcId, optId, this.cfg[optId] ) ;
          }
          else if (singleSubmit){
              ice.se(null, optId);
@@ -53,7 +68,6 @@ mobi.menubutton = {
              if (snId){
                  mobi.submitnotify.init(snId);
              }
-            // this.reset(myselect, index);
          }
 
     },
@@ -65,7 +79,5 @@ mobi.menubutton = {
     initCfg: function(clientId, optionId, cfg){
         this.cfg[optionId] = cfg;
     }
-  /*  around: function(clientId){
-        this.options[this.selectedIndex].onclick();
-    }  */
+
 };

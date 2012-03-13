@@ -1,18 +1,19 @@
 /*
- * Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
+
 package org.icefaces.mobi.component.timespinner;
 
 
@@ -28,7 +29,9 @@ public class TimeSpinner extends TimeSpinnerBase {
 
     private static Logger logger = Logger.getLogger(TimeSpinner.class.getName());
     public static final String BLACKOUT_PNL_CLASS = "mobi-time-bg";
+    public static final String BLACKOUT_PNL_INVISIBLE_CLASS = "mobi-time-bg-inv";
     public static final String CONTAINER_CLASS = "mobi-time-container";
+    public static final String CONTAINER_INVISIBLE_CLASS = "mobi-time-container-inv";
     public static final String INPUT_CLASS = "mobi-input-text";
     public static final String POP_UP_CLASS = "mobi-time-popup-btn";
     public static final String TITLE_CLASS = "mobi-time-title-container";
@@ -49,13 +52,14 @@ public class TimeSpinner extends TimeSpinnerBase {
     private int minuteInt;
     private int ampm;
 
+    private Locale appropriateLocale;
+    private TimeZone appropriateTimeZone;
+
+    private boolean touchEnabled;
+
     public TimeSpinner() {
         super();
     }
-
-
-    private Locale appropriateLocale;
-    private TimeZone appropriateTimeZone;
 
     public Locale calculateLocale(FacesContext facesContext) {
         if (appropriateLocale == null) {
@@ -70,7 +74,10 @@ public class TimeSpinner extends TimeSpinnerBase {
                 } else if (userLocale instanceof Locale)
                     appropriateLocale = (Locale) userLocale;
                 else
-                    throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for calendar:" + this.getClientId(facesContext));
+                    throw new IllegalArgumentException("Type:" +
+                            userLocale.getClass() +
+                            " is not a valid locale type for calendar:" +
+                            this.getClientId(facesContext));
             } else {
                 appropriateLocale = facesContext.getViewRoot().getLocale();
             }
@@ -81,8 +88,8 @@ public class TimeSpinner extends TimeSpinnerBase {
 
     public TimeZone calculateTimeZone() {
         if (appropriateTimeZone == null) {
-           //default to GMT
-            Object usertimeZone =   TimeZone.getDefault(); //TimeZone.getTimeZone("GMT");
+            //default to GMT
+            Object usertimeZone = TimeZone.getDefault(); //TimeZone.getTimeZone("GMT");
             if (usertimeZone != null) {
                 if (usertimeZone instanceof String)
                     appropriateTimeZone = TimeZone.getTimeZone((String) usertimeZone);
@@ -130,10 +137,17 @@ public class TimeSpinner extends TimeSpinnerBase {
         return commonAttributeNames;
     }
 
-    public String getDefaultEventName(FacesContext facesContext){
-         if (Utils.isTouchEventEnabled(facesContext)) {
-             return "onblur";
-         }
-        else return "onchange";
+    public String getDefaultEventName(FacesContext facesContext) {
+        if (Utils.isTouchEventEnabled(facesContext)) {
+            return "onblur";
+        } else return "onchange";
+    }
+
+    public boolean isTouchEnabled() {
+        return touchEnabled;
+    }
+
+    public void setTouchEnabled(boolean touchEnabled) {
+        this.touchEnabled = touchEnabled;
     }
 }

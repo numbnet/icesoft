@@ -1,17 +1,17 @@
 /*
- * Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions an
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 
 package org.icefaces.mobi.utils;
@@ -35,11 +35,14 @@ import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.Formatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,6 +51,8 @@ import java.util.logging.Logger;
  * 
  */
 public class Utils {
+    static String TEMP_DIR = "javax.servlet.context.tmpdir";
+    static String COOKIE_FORMAT = "org.icemobile.cookieformat";
 
     public enum DeviceType {
         android,
@@ -417,12 +422,20 @@ public class Utils {
         }
         File dirFile = new File(folder);
         File newFile = new File(dirFile, fileName);
+
+        File tempDir = (File) ( request.getServletContext()
+                .getAttribute(TEMP_DIR) );
+        File tempFile = File.createTempFile("ice", ".tmp", tempDir);
+        FileOutputStream tempStream = new FileOutputStream(tempFile);
+
         boolean success = false;
         if (!dirFile.exists()) {
             success = dirFile.mkdirs();
         }
         try {
-            part.write(newFile.getAbsolutePath());
+            InputStream partStream = part.getInputStream();
+            copyStream(partStream, tempStream);
+            tempFile.renameTo(newFile);
         } catch (IOException e) {
             logger.log(Level.WARNING, "Error writing uploaded file to disk ", e);
         }
@@ -521,8 +534,38 @@ public class Utils {
         String script = "window.location='icemobile://c=" +
             URLEncoder.encode(fullCommand) + 
             "&r='+escape(window.location)+'&" +
-            "JSESSIONID=" + sessionID + "&u=" + 
+            "JSESSIONID=" + getSessionIdCookie(facesContext) + "&u=" + 
             URLEncoder.encode(uploadURL) + "'";
         return script;
+    }
+
+    public static String getSessionIdCookie(FacesContext facesContext)  {
+        String sessionID = EnvUtils.getSafeSession(facesContext).getId();
+        String cookieFormat = (String) facesContext.getExternalContext()
+            .getInitParameterMap().get(COOKIE_FORMAT);
+        if (null == cookieFormat)  {
+            //if we have more of these, implement EnvUtils for ICEmobile
+            return sessionID;
+        }
+        StringBuilder out = new StringBuilder();
+        Formatter cookieFormatter = new Formatter(out);
+        cookieFormatter.format(cookieFormat, sessionID);
+        return out.toString();
+    }
+
+    /**
+     * Copy an InputStream to an OutputStream
+     * @param in InputStream
+     * @param out OutputStream
+     */
+    public static void copyStream(InputStream in, OutputStream out) throws IOException {
+        byte[] buf = new byte[1000];
+        int l = 1;
+        while (l > 0) {
+            l = in.read(buf);
+            if (l > 0) {
+                out.write(buf, 0, l);
+            }
+        }
     }
 }

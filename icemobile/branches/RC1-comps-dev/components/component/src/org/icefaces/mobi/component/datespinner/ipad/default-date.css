@@ -1,34 +1,37 @@
 /*
- * Copyright 2004-2011 ICEsoft Technologies Canada Corp. (c)
+ * Copyright 2004-2012 ICEsoft Technologies Canada Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
-.mobi-time-wrapper{
+
+.mobi-time-wrapper {
     display: inline-block;
 }
-.mobi-date-popup-btn{
+
+.mobi-date-popup-btn {
     -webkit-appearance: none;
     background-image: url('btn-calendar.png'); /** sprite-ref: sprite; */
     background-repeat: no-repeat;
-    width:22px;
-    height:21px;
+    width: 22px;
+    height: 21px;
     border: none;
     margin: 0 0 0 5px;
-    cursor:pointer;
+    cursor: pointer;
 }
+
 .mobi-date-bg {
     width: 100%;
-    height:100%;
+    height: 100%;
     background: #000;
     position: fixed;
     top: 0;
@@ -38,16 +41,16 @@
 }
 
 .mobi-date-bg-inv {
-    display:none;
+    display: none;
 }
 
 .mobi-date {
-    opacity:1;
+    opacity: 1;
 }
 
-.mobi-date-container-hide{
-    opacity:0;
-    display:none;
+.mobi-date-container-inv {
+    opacity: 0;
+    display: none;
 }
 
 .mobi-date-container {
@@ -63,9 +66,9 @@
     color: #000000;
     padding: 0;
     z-index: 1001;
-    position: fixed;
-    top:100px;
-    left:35%;
+    position: absolute;
+    position: static top: 0;
+    left: 0;
 }
 
 .mobi-date-title-container, .mobi-date-select-container,
@@ -95,7 +98,7 @@
     padding: 5px 3px;
     background: -moz-linear-gradient(top, #f4f5f7, #a8acb9) repeat scroll 0 0 #a8acb9;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #f4f5f7), color-stop(1, #a8acb9));
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7', EndColorStr='#a8acb9');
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f4f5f7', EndColorStr = '#a8acb9');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f4f5f7', EndColorStr='#a8acb9')";
 }
 
@@ -125,21 +128,21 @@
 
 .mobi-date-btn-cont-incr {
     border-radius: 6px 6px 0 0;
-    -webkit-border-radius:  6px 6px 0 0;
-    -moz-border-radius:  6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+    -moz-border-radius: 6px 6px 0 0;
     background: -moz-linear-gradient(top, #f7f7f7, #bdbebd) center no-repeat;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #fff), color-stop(1, #bdbebd));
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#f7f7f7', EndColorStr='#bdbebd');
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#f7f7f7', EndColorStr = '#bdbebd');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f7f7f7', EndColorStr='#bdbebd')";
 }
 
 .mobi-date-btn-cont-decr {
     border-radius: 0 0 6px 6px;
-    -webkit-border-radius:  0 0 6px 6px;
-    -moz-border-radius:  0 0 6px 6px;
+    -webkit-border-radius: 0 0 6px 6px;
+    -moz-border-radius: 0 0 6px 6px;
     background: -moz-linear-gradient(top, #bdbebd, #f7f7f7) center no-repeat;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #bdbebd), color-stop(1, #fff));
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#bdbebd', EndColorStr='#f7f7f7');
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#bdbebd', EndColorStr = '#f7f7f7');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#bdbebd', EndColorStr='#f7f7f7')";
 }
 
@@ -151,11 +154,11 @@
 
 .mobi-date-btn-incr {
     box-shadow: 0 3px 3px #888;
-    -moz-box-shadow:  0 3px 3px #888;
-    -webkit-box-shadow:  0 3px 3px #888;
+    -moz-box-shadow: 0 3px 3px #888;
+    -webkit-box-shadow: 0 3px 3px #888;
     border-radius: 6px 6px 0 0;
-    -webkit-border-radius:  6px 6px 0 0;
-    -moz-border-radius:  6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+    -moz-border-radius: 6px 6px 0 0;
     background-image: url('increment.png');
     background-color: transparent;
     background-repeat: no-repeat;
@@ -167,8 +170,8 @@
     -moz-box-shadow: 0 -3px 3px #888;
     -webkit-box-shadow: 0 -3px 3px #888;
     border-radius: 0 0 6px 6px;
-    -webkit-border-radius:  0 0 6px 6px;
-    -moz-border-radius:  0 0 6px 6px;
+    -webkit-border-radius: 0 0 6px 6px;
+    -moz-border-radius: 0 0 6px 6px;
     background-image: url('decrement.png');
     background-color: transparent;
     background-repeat: no-repeat;
