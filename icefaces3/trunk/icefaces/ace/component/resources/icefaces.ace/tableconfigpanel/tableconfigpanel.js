@@ -235,11 +235,12 @@ ice.ace.TableConf.prototype.getColOrder = function() {
 
 ice.ace.TableConf.prototype.submitTableConfig = function (target) {
     var id = this.tableId.replace("#","").replace(/\\/g,""),
+        selfId = this.id.replace("#","").replace(/\\/g,""),
         body = ice.ace.jq(target).parents('.ui-tableconf').find('.ui-tableconf-body:first'),
         options = {
             source: id,
             execute: id,
-            render: id
+            render: id + ' ' + selfId
         };
 
     options.onsuccess = function(responseXML) {
