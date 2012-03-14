@@ -73,6 +73,8 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         String clientId = component.getClientId(fc);
         String source = behaviorContext.getSourceId();
 
+        String preamble = "var onsuccessFunc = arguments[4];";
+
         JSONBuilder jb = JSONBuilder.create();
 		jb.beginFunction("ice.ace.ab");
 
@@ -119,8 +121,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             jb.entry("onstart", "function(xhr){" + ajaxBehavior.getOnStart() + ";}", true);
         if(ajaxBehavior.getOnError() != null)
             jb.entry("onerror", "function(xhr, status, error){" + ajaxBehavior.getOnError() + ";}", true);
-        if(ajaxBehavior.getOnSuccess() != null)
-            jb.entry("onsuccess", "function(data, status, xhr, args){" + ajaxBehavior.getOnSuccess() + ";}", true);
+        jb.entry("onsuccess", "function(data, status, xhr, args){if(ice.ace.jq.isFunction(onsuccessFunc)){onsuccessFunc();} " + ((ajaxBehavior.getOnSuccess() == null) ? "" : (ajaxBehavior.getOnSuccess()+"; ")) + "return false;}", true);
         if(ajaxBehavior.getOnComplete() != null)
             jb.entry("oncomplete", "function(xhr, status, args){" + ajaxBehavior.getOnComplete() + ";}", true);
 
@@ -132,7 +133,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 		
 		jb.endMap().endFunction();
 
-        return jb.toString();
+        return preamble + jb.toString();
     }
 
     private boolean isImmediate(UIComponent component, AjaxBehavior ajaxBehavior) {
