@@ -644,8 +644,6 @@ public class DataTableRenderer extends CoreRenderer {
 
         if (table.isInDuplicateSegment()) writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
 
-        writer.startElement(HTML.TR_ELEM, null);
-
         // For each row of a col group, or child of a datatable
         boolean firstHeadElement = true;
         boolean subRows = false;
@@ -656,35 +654,38 @@ public class DataTableRenderer extends CoreRenderer {
             int i = 0;
 
             // If its a row, get the row children, else add the column as a pseduo child, if not column, break.
-            if (headerElem.isRendered())
+            if (headerElem.isRendered()) {
                 if (headerElem instanceof Row) {
                     Row headerRow = (Row) headerElem;
                     headerRowChildren = headerRow.getChildren();
                     subRows = true;
                 } else headerRowChildren.add(headerElem);
 
-            // If the element was a row of a col-group render another row for a subrow of the header
-            if (subRows && !firstHeadElement) writer.startElement(HTML.TR_ELEM, null);
+                // If the element was a row of a col-group render another row for a subrow of the header
+                if (subRows || firstHeadElement) writer.startElement(HTML.TR_ELEM, null);
 
-            // Either loop through row children or render the single column/columns
-            Iterator<UIComponent> componentIterator = headerRowChildren.iterator();
-            boolean firstComponent = true;
-            if (componentIterator.hasNext())
-            do {
-                UIComponent headerRowChild = componentIterator.next();
-                if (headerRowChild.isRendered() && headerRowChild instanceof Column)
-                    encodeColumnHeader(context, table,
-                            (subRows) ? headerRowChildren : headContainer,
-                            (Column) headerRowChild,
-                            (firstComponent && firstHeadElement),
-                            (!headElementIterator.hasNext() && !componentIterator.hasNext()),
-                            subRows);
-                firstComponent = false;
-            } while (componentIterator.hasNext());
-            if (subRows) writer.endElement(HTML.TR_ELEM);
-            firstHeadElement = false;
+                firstHeadElement = false;
+
+                // Either loop through row children or render the single column/columns
+                Iterator<UIComponent> componentIterator = headerRowChildren.iterator();
+                boolean firstComponent = true;
+                while (componentIterator.hasNext()) {
+                    UIComponent headerRowChild = componentIterator.next();
+                    if (headerRowChild.isRendered() && headerRowChild instanceof Column)
+                        encodeColumnHeader(context, table,
+                                (subRows) ? headerRowChildren : headContainer,
+                                (Column) headerRowChild,
+                                (firstComponent && firstHeadElement),
+                                (!headElementIterator.hasNext() && !componentIterator.hasNext()),
+                                subRows);
+                    firstComponent = false;
+                }
+                if (subRows) writer.endElement(HTML.TR_ELEM);
+            }
         } while (headElementIterator.hasNext());
+
         if (!subRows) writer.endElement(HTML.TR_ELEM);
+
         writer.endElement(HTML.THEAD_ELEM);
     }
 
