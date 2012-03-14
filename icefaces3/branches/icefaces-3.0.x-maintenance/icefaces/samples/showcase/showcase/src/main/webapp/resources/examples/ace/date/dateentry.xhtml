@@ -35,7 +35,7 @@
     <ui:param name="tldResources" value="#{dateTimeEntryResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <ace:panel>
                 <h:panelGrid style="text-align: center;" width="100%">
                     <h:panelGroup>
@@ -55,7 +55,7 @@
                                    value="#{dateEntry.selectedDate}"
                                    timeZone="Canada/Mountain"
                                    pattern="MMM/dd/yyyy" />
-                        <h:commandButton value="Submit Date"/>
+                        <h:commandButton id="submit" value="Submit Date"/>
             </h:panelGrid>
         </h:form>
     </ui:define>
