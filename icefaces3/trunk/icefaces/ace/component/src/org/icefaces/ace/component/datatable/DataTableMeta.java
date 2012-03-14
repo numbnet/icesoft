@@ -18,20 +18,14 @@ package org.icefaces.ace.component.datatable;
 
 import org.icefaces.ace.meta.annotation.*;
 import org.icefaces.ace.meta.baseMeta.UIDataMeta;
-import org.icefaces.ace.model.table.CellSelection;
+import org.icefaces.ace.model.table.CellSelections;
 import org.icefaces.ace.model.table.RowStateMap;
-import org.icefaces.ace.model.table.TreeDataModel;
 
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import javax.faces.component.UIComponent;
-import javax.faces.model.DataModel;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.icefaces.ace.api.IceClientBehaviorHolder;
 
 
 @Component(
@@ -282,7 +276,7 @@ public class DataTableMeta extends UIDataMeta {
 
     @Property(tlddoc = "Defines an array to be populated with objects " +
             "referencing selected table cells and the rows they originate from." )
-    private CellSelection[] selectedCells;
+    private CellSelections[] selectedCells;
 
 
 
