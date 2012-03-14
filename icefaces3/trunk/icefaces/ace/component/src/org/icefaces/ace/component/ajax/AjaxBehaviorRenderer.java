@@ -72,13 +72,23 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         UIComponent component = behaviorContext.getComponent();
         String clientId = component.getClientId(fc);
         String source = behaviorContext.getSourceId();
+        boolean nonACE = !(component instanceof IceClientBehaviorHolder);
 
         JSONBuilder jb = JSONBuilder.create();
 
+        if (nonACE) {
+            jb.beginFunction("ice.ace.ab");
+        }
+
+        jb.beginMap();
+
         //source
-		jb.beginMap()
-			.entry("source", source);
-		
+        if (source != null) {
+			jb.entry("source", source);
+        } else {
+            jb.entry("source", clientId);
+        }
+        
         //execute
 		String execute = null;
         if (ajaxBehavior.getExecute() != null) {
@@ -124,6 +134,10 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             jb.entry("oncomplete", "function(xhr, status, args){" + ajaxBehavior.getOnComplete() + ";}", true);
 
         jb.endMap();
+
+        if (nonACE) {
+            jb.endFunction();
+        }
 
         return jb.toString();
     }
