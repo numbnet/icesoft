@@ -27,6 +27,7 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.UUID;
@@ -91,20 +92,22 @@ public class ImageBean extends ExampleImpl<ImageBean> implements
 
         // load the sample image file
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        String sampleImagePath = facesContext.getExternalContext()
-                .getRealPath("/resources/images/icemobile_large.png");
-        File imageFile = new File(sampleImagePath);
+        InputStream imageStream = facesContext.getExternalContext()
+                .getResourceAsStream("/resources/images/icemobile_large.png");
 
         // create new resource object that the graphicImageComponent can use.
         try {
-            imageByteData = DeviceInput.createByteArray(imageFile);
+            imageByteData = DeviceInput.createByteArray(imageStream);
         } catch (IOException ex) {
             logger.log(Level.WARNING,
                     "Error loading graphicImage image from byte[].", ex);
         }
+        imageStream = facesContext.getExternalContext()
+                .getResourceAsStream("/resources/images/icemobile_large.png");
+
         // create a new resource object that the graphicImageComponent can use.
         try {
-            imageResourceData = DeviceInput.createResourceObject(imageFile,
+            imageResourceData = DeviceInput.createResourceObject(imageStream,
                     UUID.randomUUID().toString(), "image/png");
         } catch (IOException ex) {
             logger.log(Level.WARNING,

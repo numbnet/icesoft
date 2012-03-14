@@ -27,6 +27,7 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -85,19 +86,22 @@ public class VideoBean extends ExampleImpl<VideoBean> implements
 
         // load the sample image file
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        String sampleAudioPath = facesContext.getExternalContext()
-                .getRealPath("/resources/video/icesoft_mobile_push.mp4");
-        File videoFile = new File(sampleAudioPath);
+        InputStream videoStream = facesContext.getExternalContext()
+                .getResourceAsStream("/resources/video/icesoft_mobile_push.mp4");
 
         // create new resource object that the graphicImageComponent can use.
         try {
-            videoByteData = DeviceInput.createByteArray(videoFile);
+            videoByteData = DeviceInput.createByteArray(videoStream);
         } catch (IOException ex) {
             logger.log(Level.WARNING, "Error loading video from byte[].", ex);
         }
+
+        videoStream = facesContext.getExternalContext()
+                .getResourceAsStream("/resources/video/icesoft_mobile_push.mp4");
+
         // create a new resource object that the graphicImageComponent can use.
         try {
-            videoResourceData = DeviceInput.createResourceObject(videoFile,
+            videoResourceData = DeviceInput.createResourceObject(videoStream,
                     UUID.randomUUID().toString(), "video/mp4");
         } catch (IOException ex) {
             logger.log(Level.WARNING, "Error loading video from Resource.", ex);

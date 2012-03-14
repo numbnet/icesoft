@@ -30,6 +30,7 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -88,19 +89,22 @@ public class AudioBean extends ExampleImpl<AudioBean> implements
 
         // load the sample image file
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        String sampleAudioPath = facesContext.getExternalContext()
-                .getRealPath("/resources/audio/audio_clip.mp3");
-        File audioFile = new File(sampleAudioPath);
+        InputStream audioStream = facesContext.getExternalContext()
+                .getResourceAsStream("/resources/audio/audio_clip.mp3");
 
         // create new resource object that the graphicImageComponent can use.
         try {
-            audioByteData = DeviceInput.createByteArray(audioFile);
+            audioByteData = DeviceInput.createByteArray(audioStream);
         } catch (IOException ex) {
             logger.log(Level.WARNING, "Error loading audio from byte[].", ex);
         }
+
+        audioStream = facesContext.getExternalContext()
+                .getResourceAsStream("/resources/audio/audio_clip.mp3");
+
         // create a new resource object that the graphicImageComponent can use.
         try {
-            audioResourceData = DeviceInput.createResourceObject(audioFile,
+            audioResourceData = DeviceInput.createResourceObject(audioStream,
                     UUID.randomUUID().toString(), "audio/mpeg");
         } catch (IOException ex) {
             logger.log(Level.WARNING, "Error loading audio from Resource.", ex);
