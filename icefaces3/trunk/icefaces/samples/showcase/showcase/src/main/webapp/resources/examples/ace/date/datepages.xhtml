@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{dateTimeEntryResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <ace:panel>
                 <h:panelGrid style="text-align: center;" width="100%">
                     <h:panelGroup>
@@ -50,15 +50,15 @@
             <h:panelGrid id="calendarPanel" style="margin-left: auto; margin-right: auto; text-align: center; font-size: 9pt;" width="100">
                 
                 <ace:dateTimeEntry id="cal"
-                                               value="#{datePages.selectedDate}"
-                                               pages="#{datePages.pages}"
-                                               timeZone="Canada/Mountain"
-                                               pattern="MMM/dd/yyyy">
+								   value="#{datePages.selectedDate}"
+								   pages="#{datePages.pages}"
+								   timeZone="Canada/Mountain"
+								   pattern="MMM/dd/yyyy">
                     <ace:ajax event="dateSelect"
                                      listener="#{datePages.dateSelectListener}"
                                      render="selected"/>
                 </ace:dateTimeEntry>
-                <h:selectOneMenu value="#{datePages.pages}">
+                <h:selectOneMenu id="pages" value="#{datePages.pages}">
                     <f:selectItem itemLabel="one page" itemValue="1"/>
                     <f:selectItem itemLabel="two pages" itemValue="2"/>
                     <f:selectItem itemLabel="three pages" itemValue="3"/>
