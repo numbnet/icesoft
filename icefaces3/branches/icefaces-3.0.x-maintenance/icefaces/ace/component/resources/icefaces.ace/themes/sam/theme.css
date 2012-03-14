@@ -16,7 +16,8 @@
 }
 .ui-widget-content {
     border:1px solid #aaaaaa/*{borderColorContent}*/;
-    background:#ffffff/*{bgColorContent}*/ url("#{resource['icefaces.ace:themes/sam/images/ui-bg_flat_75_ffffff_40x100.png']}")/*{bgImgUrlContent}*/ 50%/*{bgContentXPos}*/ 50%/*{bgContentYPos}*/ repeat-x/*{bgContentRepeat}*/ padding-box;
+    background:#ffffff/*{bgColorContent}*/ url("#{resource['icefaces.ace:themes/sam/images/ui-bg_flat_75_ffffff_40x100.png']}")/*{bgImgUrlContent}*/ 50%/*{bgContentXPos}*/ 50%/*{bgContentYPos}*/ repeat-x/*{bgContentRepeat}*/;
+    background-clip: padding-box;
     color:#222222/*{fcContent}*/;
 }
 .ui-widget-content a {
@@ -24,7 +25,8 @@
 }
 .ui-widget-header {
     border:1px solid #aaaaaa/*{borderColorHeader}*/;
-    background:url("#{resource['icefaces.ace:themes/sam/images/ui-default.png']}") repeat-x scroll 0 0 #d8d8d8 padding-box;
+    background:url("#{resource['icefaces.ace:themes/sam/images/ui-default.png']}") repeat-x scroll 0 0 #d8d8d8;
+    background-clip: padding-box;
     color:#000000/*{fcHeader}*/;
     font-weight:bold;
 }
@@ -36,7 +38,8 @@
 /* Interaction states----------------------------------*/
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
     border:1px solid #d3d3d3/*{borderColorDefault}*/;
-    background:url("#{resource['icefaces.ace:themes/sam/images/ui-default.png']}") repeat-x scroll 0 0 #D8D8D8 padding-box;
+    background:url("#{resource['icefaces.ace:themes/sam/images/ui-default.png']}") repeat-x scroll 0 0 #D8D8D8;
+    background-clip: padding-box;
     font-weight:normal/*{fwDefault}*/;
     color:#000000/*{fcDefault}*/;
 }
@@ -46,7 +49,8 @@
 }
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus{
     border:1px solid #d3d3d3/*{borderColorHover}*/;
-    background:#bfdaff url("#{resource['icefaces.ace:themes/sam/images/sprite.png']}") repeat-x left -1300px padding-box;
+    background:#bfdaff url("#{resource['icefaces.ace:themes/sam/images/sprite.png']}") repeat-x left -1300px;
+    background-clip: padding-box;
     font-weight:normal/*{fwDefault}*/;
     color:#212121/*{fcHover}*/;
 }
@@ -56,7 +60,8 @@
 }
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, .ui-state-active em {
     border:1px solid #aaaaaa/*{borderColorActive}*/;
-    background:url("#{resource['icefaces.ace:themes/sam/images/sprite.png']}") repeat-x scroll left -1400px #2647A0 padding-box;
+    background:url("#{resource['icefaces.ace:themes/sam/images/sprite.png']}") repeat-x scroll left -1400px #2647A0;
+    background-clip: padding-box;
     font-weight:normal/*{fwDefault}*/;
     color:#FFFFFF/*{fcActive}*/;
 }
