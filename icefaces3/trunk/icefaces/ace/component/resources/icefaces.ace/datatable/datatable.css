@@ -27,7 +27,6 @@
 .ui-datatable .ui-header-text {
     font-weight:bold;
 }
-
 .ui-datatable th,.ui-datatable tfoot td {
     position:relative;
     text-align:center;
@@ -39,10 +38,8 @@
     position:relative;
 }
 
-.ui-datatable .ui-header-column, .ui-datatable .ui-footer-column {
-    overflow: hidden; /* Stop sort control positioned elements from overflowing bounds */
-    padding:4px 10px;
-}
+.ui-datatable .ui-header-column, .ui-datatable .ui-footer-column { padding:4px 10px; }
+.ui-datatable div.ui-header-column, .ui-datatable div.ui-footer-column { border:none; }
 
 .ui-datatable tbody.ui-datatable-data > tr > td,.ui-datatable tbody.ui-datatable-data-empty > tr > td {
     border-color:inherit;
