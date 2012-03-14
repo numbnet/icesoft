@@ -256,7 +256,13 @@ Ice.registerClick = function(elem, hdnClkRow, hdnClkCount, rowid, formId, delay,
 }
 
 Ice.registerDblClick = function(elem) {
-    if (document.selection) document.selection.empty();
+    try {
+        if (document.selection) {
+            document.selection.empty();
+        }
+    } catch (e) {
+        //ignoring "Unknown runtime error" in IE when there's nothing selected
+    }
     if (Ice.clickEvents[elem.id]) {
         Ice.clickEvents[elem.id].submit(2);
     }
