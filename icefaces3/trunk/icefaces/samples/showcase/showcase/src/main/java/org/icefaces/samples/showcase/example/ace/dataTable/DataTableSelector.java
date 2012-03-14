@@ -16,8 +16,7 @@
 
 package org.icefaces.samples.showcase.example.ace.dataTable;
 
-import org.icefaces.ace.component.datatable.DataTable;
-import org.icefaces.ace.model.table.CellSelection;
+import org.icefaces.ace.model.table.CellSelections;
 import org.icefaces.ace.model.table.RowStateMap;
 import org.icefaces.samples.showcase.metadata.annotation.*;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
@@ -29,8 +28,6 @@ import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
-
-import org.icefaces.ace.model.legacy.Cell;
 
 @ComponentExample(
         parent = DataTableBean.BEAN_NAME,
@@ -69,8 +66,8 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
 
     private RowStateMap stateMap = new RowStateMap();
     private ArrayList<Car> selectedRows;
-    private CellSelection[] singleCell;
-    private CellSelection[] multiCell;
+    private CellSelections[] singleCell;
+    private CellSelections[] multiCell;
     private String selectionMode = AVAILABLE_MODES[0].getValue().toString();
     private boolean dblClick = false;
     private boolean instantUpdate = true;
@@ -82,8 +79,8 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
 
     public RowStateMap getStateMap() { return stateMap; }
     public ArrayList<Car> getMultiRow() { return (ArrayList<Car>) stateMap.getSelected(); }
-    public CellSelection[] getSingleCell() { return singleCell; }
-    public CellSelection[] getMultiCell() { return multiCell; }
+    public CellSelections[] getSingleCell() { return singleCell; }
+    public CellSelections[] getMultiCell() { return multiCell; }
     public String getSelectionMode() { return selectionMode; }
     public boolean getDblClick() { return dblClick; }
     public boolean getInstantUpdate() { return instantUpdate; }
@@ -105,8 +102,8 @@ public class DataTableSelector extends ComponentExampleImpl<DataTableSelector> i
 
     public void setStateMap(RowStateMap stateMap) { this.stateMap = stateMap; }
     public void setMultiRow(ArrayList<Car> multiRow) { }
-    public void setSingleCell(CellSelection[] singleCell) { this.singleCell = singleCell; }
-    public void setMultiCell(CellSelection[] multiCell) { this.multiCell = multiCell; }
+    public void setSingleCell(CellSelections[] singleCell) { this.singleCell = singleCell; }
+    public void setMultiCell(CellSelections[] multiCell) { this.multiCell = multiCell; }
     public void setSelectionMode(String selectionMode) { this.selectionMode = selectionMode; }
     public void setDblClick(boolean dblClick) { this.dblClick = dblClick; }
     public void setInstantUpdate(boolean instantUpdate) { this.instantUpdate = instantUpdate; }
