@@ -287,7 +287,7 @@ public class PanelPopupRenderer extends GroupRenderer {
             centreJS = "Ice.autoCentre.stop('" + clientId + "');";
         }
 
-        JavascriptContext.addJavascriptCall(facesContext, centreJS);
+        JavascriptContext.addJavascriptCall(facesContext, "; " + centreJS);
         JavascriptContext.addJavascriptCall(facesContext, "; Ice.iFrameFix.start('" + clientId + "','" +
                 CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank") + "');");
     }
