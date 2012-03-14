@@ -140,7 +140,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
         //    writer.writeText("Sizing", null);
         //    writer.endElement(HTML.TH_ELEM);
         //}
-        
+
         if (component.isColumnVisibilityConfigurable()) {
             writer.startElement(HTML.TH_ELEM, null);
             writer.writeText("Visibility", null);
@@ -162,7 +162,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
 
         writer.startElement(HTML.ANCHOR_ELEM, null);
 
-        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:0px 10px; text-align:left;";
+        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:0px 2px; text-align:left;";
         writer.writeAttribute(HTML.STYLE_ELEM, style, null);
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
         writer.writeAttribute(HTML.HREF_ATTR, "#", null);
@@ -186,7 +186,7 @@ public class TableConfigPanelRenderer extends CoreRenderer {
 
         writer.startElement(HTML.ANCHOR_ELEM, null);
 
-        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:0px 10px; text-align:left;";
+        String style = "display:inline-block; padding:2px 4px 4px 2px; margin:0px 2px; text-align:left;";
         writer.writeAttribute(HTML.STYLE_ELEM, style, null);
         writer.writeAttribute(HTML.CLASS_ATTR, "ui-state-default ui-corner-all", null);
         writer.writeAttribute(HTML.HREF_ATTR, "#", null);
