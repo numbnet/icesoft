@@ -37,12 +37,18 @@ public class DeviceInput implements Serializable{
     private static final Logger logger =
             Logger.getLogger(DeviceInput.class.toString());
 
-    // copy the bytes into the resource object.
     public static Resource createResourceObject(File resourceFile,
                                                 String resourceName,
                                                 String contentType) throws IOException {
-        Resource outputResource = null;
         FileInputStream fis = new FileInputStream(resourceFile);
+        return createResourceObject(fis, resourceName, contentType);
+    }
+
+    // copy the bytes into the resource object.
+    public static Resource createResourceObject(InputStream fis,
+                                                String resourceName,
+                                                String contentType) throws IOException {
+        Resource outputResource = null;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] buf = new byte[4096];
         for (int readNum; (readNum = fis.read(buf)) != -1; ) {
@@ -57,8 +63,12 @@ public class DeviceInput implements Serializable{
     }
 
     public static byte[] createByteArray(File resourceFile) throws IOException {
-        Resource outputResource = null;
         FileInputStream fis = new FileInputStream(resourceFile);
+        return createByteArray(fis);
+    }
+
+    public static byte[] createByteArray(InputStream fis) throws IOException {
+        Resource outputResource = null;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] buf = new byte[4096];
         for (int readNum; (readNum = fis.read(buf)) != -1; ) {
