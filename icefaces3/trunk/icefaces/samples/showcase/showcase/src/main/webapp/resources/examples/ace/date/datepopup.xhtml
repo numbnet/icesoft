@@ -33,7 +33,7 @@
     <ui:param name="tldResources" value="#{dateTimeEntryResources.tldResources}"/>
 
     <ui:define name="example">
-        <h:form>
+        <h:form id="form">
             <icecore:singleSubmit/>
             <ace:panel>
                 <h:panelGrid style="text-align: center;" width="100%">
@@ -58,7 +58,7 @@
                                                timeZone="Canada/Mountain"
                                                pattern="MMM/dd/yyyy"
                                                renderAsPopup="#{datePopup.popup}"/>
-                <h:commandButton value="Submit Date"/>
+                <h:commandButton id="submit" value="Submit Date"/>
             </h:panelGrid>
         </h:form>
     </ui:define>
