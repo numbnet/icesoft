@@ -147,7 +147,7 @@ public class DataTableDecoder {
         // Process selections
         if (isValueBlank(selection)) {}
         else if (table.isCellSelection()) {
-            table.addSelectedCell(selection.split(","));
+            table.addSelectedCells(selection.split(","));
         } else {
             String[] rowSelectValues = selection.split(",");
 
@@ -174,7 +174,7 @@ public class DataTableDecoder {
         // Process deselections
         if (table.isCellSelection()) {
             if (deselection != null && deselection.length() > 0)
-                table.removeSelectedCell(deselection.split(","));
+                table.removeSelectedCells(deselection.split(","));
         } else {
             String[] rowDeselectValues = new String[0];
             if (deselection != null && !deselection.equals(""))

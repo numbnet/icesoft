@@ -98,9 +98,9 @@ public class DataTable extends DataTableBase {
     protected void refreshSelectedCells() {
         Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
         Object[] keySet = map.keySet().toArray();
-        CellSelection[] array = new CellSelection[keySet.length];
+        CellSelections[] array = new CellSelections[keySet.length];
         for (int i = 0; i < keySet.length; i++) {
-            array[i] = new CellSelection(keySet[i], map.get(keySet[i]));
+            array[i] = new CellSelections(keySet[i], map.get(keySet[i]));
         }
         super.setSelectedCells(array);
     }
@@ -118,10 +118,10 @@ public class DataTable extends DataTableBase {
     }
     
     @Override
-    public void setSelectedCells(CellSelection[] cellSelection) {
+    public void setSelectedCells(CellSelections[] cellSelection) {
         Map<Object, List<String>> map = ((Map<Object, List<String>>)getRowToSelectedFieldsMap());
         map.clear();
-        for (CellSelection s : cellSelection) {
+        for (CellSelections s : cellSelection) {
             map.remove(s.getRowObject());
             map.put(s.getRowObject(), s.getSelectedFieldNames());
         }
@@ -532,7 +532,7 @@ public class DataTable extends DataTableBase {
         removeSelectedCell(deselection, false);
     }
 
-    public void removeSelectedCell(String[] deselections) {
+    public void removeSelectedCells(String[] deselections) {
         for (String s : deselections) removeSelectedCell(s, true);
         refreshSelectedCells();
     }
@@ -581,7 +581,7 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    public void addSelectedCell(String[] selections) {
+    public void addSelectedCells(String[] selections) {
         for (String s : selections) addSelectedCell(s, true);
         refreshSelectedCells();
     }

@@ -24,11 +24,11 @@ import java.util.List;
  * limitations under the License.
  *
  */
-public class CellSelection {
+public class CellSelections {
     private Object rowObject;
     private List<String> selectedFieldNames;
 
-    public CellSelection(Object o, List<String> strings) {
+    public CellSelections(Object o, List<String> strings) {
         rowObject = o;
         selectedFieldNames = strings;
     }
