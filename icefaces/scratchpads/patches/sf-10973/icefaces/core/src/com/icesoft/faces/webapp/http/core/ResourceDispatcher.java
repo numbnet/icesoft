@@ -151,6 +151,7 @@ public class ResourceDispatcher implements Server {
                         "] returned a null input stream.");
             } else {
                 response.writeBodyFrom(inputStream);
+				inputStream.close();
             }
         }
 
