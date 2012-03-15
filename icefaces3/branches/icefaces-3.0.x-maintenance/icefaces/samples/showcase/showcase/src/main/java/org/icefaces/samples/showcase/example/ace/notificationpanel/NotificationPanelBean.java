@@ -46,9 +46,10 @@ import java.io.Serializable;
 @Menu(
 	title = "menu.ace.notificationpanel.subMenu.title",
 	menuLinks = {
-	        @MenuLink(title = "menu.ace.notificationpanel.subMenu.main",
-	                isDefault = true,
-                    exampleBeanName = NotificationPanelBean.BEAN_NAME)
+	        @MenuLink(title = "menu.ace.notificationpanel.subMenu.main", isDefault = true,
+                                         exampleBeanName = NotificationPanelBean.BEAN_NAME),
+                        @MenuLink(title = "menu.ace.notificationpanel.subMenu.clientSide",
+                        exampleBeanName = NotificationPanelClientBean.BEAN_NAME)
     }
 )
 @ManagedBean(name= NotificationPanelBean.BEAN_NAME)
@@ -59,7 +60,6 @@ public class NotificationPanelBean extends ComponentExampleImpl<NotificationPane
     private String imageLocation;
     private String imageAlt;
     private String imageDescription;
-    private boolean render;
     private boolean visible;
 
     public NotificationPanelBean()
@@ -71,11 +71,15 @@ public class NotificationPanelBean extends ComponentExampleImpl<NotificationPane
    public void showAppropriateButton(ActionEvent e)
    {
        visible = !visible;
-       if(render)
-       { render = false; }
-       else
-       { render = true; }
    }
+   
+   public void closeListener(AjaxBehaviorEvent event) {
+        visible = false;
+    }
+
+    public void displayListener(AjaxBehaviorEvent event) {
+        visible = true;
+    }
 
    private void initializeBeanVariables() 
     {
@@ -85,54 +89,14 @@ public class NotificationPanelBean extends ComponentExampleImpl<NotificationPane
                                 + " produced by the German auto maker Volkswagen (VW) from 1938."
                                 + " With over 21 million manufactured in an air-cooled, rear-engined, rear-wheel drive configuration,"
                                 + " the Beetle is the longest-running and most-manufactured automobile of a single design platform anywhere in the world. (source: Wikipedia)";
-        render = true;
     }
    
-    public String getImageDescription() {
-        return imageDescription;
-    }
-
-    public void setImageDescription(String imageDescription) {
-        this.imageDescription = imageDescription;
-    }
-
-    public String getImageAlt() {
-        return imageAlt;
-    }
-
-    public void setImageAlt(String imageAlt) {
-        this.imageAlt = imageAlt;
-    }
-
-    public String getImageLocation() {
-        return imageLocation;
-    }
-
-    public void setImageLocation(String imageLocation) {
-        this.imageLocation = imageLocation;
-    }
-
-    public boolean isRender() {
-        return render;
-    }
-
-    public void setRender(boolean render) {
-        this.render = render;
-    }
-
-    public void closeListener(AjaxBehaviorEvent event) {
-        visible = false;
-    }
-
-    public void displayListener(AjaxBehaviorEvent event) {
-        visible = true;
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
+    public String getImageDescription() { return imageDescription; }
+    public void setImageDescription(String imageDescription) { this.imageDescription = imageDescription; }
+    public String getImageAlt() { return imageAlt; }
+    public void setImageAlt(String imageAlt) { this.imageAlt = imageAlt; }
+    public String getImageLocation() { return imageLocation; }
+    public void setImageLocation(String imageLocation) { this.imageLocation = imageLocation; }
+    public boolean isVisible() {return visible;}
+    public void setVisible(boolean visible) {this.visible = visible;}
 }
