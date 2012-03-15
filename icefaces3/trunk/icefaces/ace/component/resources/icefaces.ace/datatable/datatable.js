@@ -728,7 +728,7 @@ ice.ace.DataTable.prototype.resizeScrolling = function() {
             realFootColumn.parent().width(realFootColumnWidth);
             if (!ie7) realFootColumn.width(realFootColumnWidth);
             // Apply same width to stacked sibling columns
-            if (!ie7) realFootColumn.siblings('.ui-footer-column').width(realFootColumnWidth[i]);
+            if (!ie7) realFootColumn.siblings('.ui-footer-column').width(realFootColumnWidth);
         }
 
 
