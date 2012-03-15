@@ -14,50 +14,39 @@
  * governing permissions and limitations under the License.
  */
 
-package org.icefaces.samples.showcase.example.ace.panel;
-
-import org.icefaces.samples.showcase.metadata.annotation.*;
+package org.icefaces.samples.showcase.example.ace.notificationpanel;
 import org.icefaces.samples.showcase.metadata.context.ComponentExampleImpl;
+import org.icefaces.samples.showcase.metadata.annotation.*;
 
 import javax.faces.bean.CustomScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 
 @ComponentExample(
-        parent = PanelBean.BEAN_NAME,
-        title = "example.ace.panel.close.title",
-        description = "example.ace.panel.close.description",
-        example = "/resources/examples/ace/panel/panelClose.xhtml"
+        parent = NotificationPanelBean.BEAN_NAME,
+        title = "example.ace.notificationpanel.client.title",
+        description = "example.ace.notificationpanel.client.description",
+        example = "/resources/examples/ace/notificationpanel/notificationPanelClient.xhtml"
 )
 @ExampleResources(
         resources ={
             // xhtml
             @ExampleResource(type = ResourceType.xhtml,
-                    title="panelClose.xhtml",
-                    resource = "/resources/examples/ace/panel/panelClose.xhtml"),
+                    title="notificationPanelClient.xhtml",
+                    resource = "/resources/examples/ace/notificationpanel/notificationPanelClient.xhtml"),
             // Java Source
             @ExampleResource(type = ResourceType.java,
-                    title="PanelClose.java",
+                    title="NotificationPanelClient.java",
                     resource = "/WEB-INF/classes/org/icefaces/samples/showcase"+
-                    "/example/ace/panel/PanelClose.java")
+                    "/example/ace/notificationpanel/NotificationPanelClientBean.java")
         }
 )
-@ManagedBean(name= PanelClose.BEAN_NAME)
+@ManagedBean(name= NotificationPanelClientBean.BEAN_NAME)
 @CustomScoped(value = "#{window}")
-public class PanelClose extends ComponentExampleImpl<PanelClose> implements Serializable {
-
-    public static final String BEAN_NAME = "panelClose";
+public class NotificationPanelClientBean extends ComponentExampleImpl<NotificationPanelClientBean> implements Serializable
+{
+    public static final String BEAN_NAME = "notificationPanelClient";
     
-    private boolean closable = true;
-    private int speed = 700;
-    
-    public PanelClose() {
-        super(PanelClose.class);
-    }
-    
-    public boolean getClosable() { return closable; }
-    public int getSpeed() { return speed; }
-    
-    public void setClosable(boolean closable) { this.closable = closable; }
-    public void setSpeed(int speed) { this.speed = speed; }
+    public NotificationPanelClientBean()
+    { super(NotificationPanelClientBean.class); }
 }
