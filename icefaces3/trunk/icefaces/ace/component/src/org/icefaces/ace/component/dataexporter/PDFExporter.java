@@ -120,8 +120,9 @@ public class PDFExporter extends Exporter {
 			Constructor pdfPTableConstructor = pdfPTableClass.getConstructor(new Class[] { int.class });
 			Method add = documentClass.getMethod("add", elementClass);
 			
+			boolean noSelectedRows = selectedRowsOnly && (table.getStateMap().getSelected().size() == 0);
 			List<UIColumn> columns = getColumnsToExport(table, excludeColumns);
-			if (columns.size() > 0) {
+			if (columns.size() > 0 && !noSelectedRows) {
 				//PdfPTable pdfTable = exportPDFTable(table, pageOnly,excludeColumns, encodingType, includeHeaders, includeFooters, selectedRowsOnly);
 				Object pdfTable = pdfPTableConstructor.newInstance(new Object[] { new Integer(columns.size()) });
 				exportPDFTable(facesContext, pdfTable, table, pageOnly,excludeColumns, encodingType, includeHeaders, includeFooters, selectedRowsOnly);
