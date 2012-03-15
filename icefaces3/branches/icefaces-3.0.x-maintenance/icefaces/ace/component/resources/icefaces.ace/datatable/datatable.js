@@ -220,15 +220,6 @@ ice.ace.DataTable.prototype.setupSortRequest = function(_self, $this, event, hea
         _self.sortOrder = [];
         $this.closest('.ui-header-column').siblings().find('.ui-icon-triangle-1-n, .ui-icon-triangle-1-s').css('opacity', .2).removeClass('ui-toggled');
         headerCell.parent().siblings().find('.ui-icon-triangle-1-n, .ui-icon-triangle-1-s').css('opacity', .2).removeClass('ui-toggled');
-        if (!_self.cfg.singleSort) {
-            // Handle stacked cell case
-            $this.closest('.ui-header-column').siblings().find('.ui-sortable-column-order').html('&#160;');
-            // Handle sibling cell case
-            headerCell.parent().siblings().find('.ui-sortable-column-order').html('&#160;');
-        }
-
-        // remove previous gradients
-        //headerCell.siblings().removeClass('ui-state-active').find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s');
     }
 
     var cellFound = false, index = 0;
@@ -266,9 +257,6 @@ ice.ace.DataTable.prototype.setupSortRequest = function(_self, $this, event, hea
             }
         }
     } else {
-        // add header gradient
-        //headerCell.addClass('ui-state-active');
-
         if (descending) {
             ice.ace.jq(bottomCarat).css('opacity', 1).addClass('ui-toggled');
             ice.ace.jq(topCarat).css('opacity', .2).removeClass('ui-toggled');
@@ -280,11 +268,7 @@ ice.ace.DataTable.prototype.setupSortRequest = function(_self, $this, event, hea
         // add to sort order
         var cellFound = false;
         ice.ace.jq(_self.sortOrder).each(function() { if (headerCell.attr('id') === this.attr('id')) { cellFound = true; } });
-        if (cellFound == false) {
-            var order = _self.sortOrder.push(headerCell);
-            // write control display value
-            if (!_self.cfg.singleSort) $this.find('.ui-sortable-column-order').html(order);
-        }
+        if (cellFound == false) _self.sortOrder.push(headerCell);
     }
     // submit sort info
     _self.sort(_self.sortOrder);
@@ -485,7 +469,7 @@ ice.ace.DataTable.prototype.setupSelectionEvents = function() {
             .die()
             .live('mouseenter', function() {
                 var element = ice.ace.jq(this);
-                if (!element.hasClass('ui-selected')) element.addClass('ui-state-hover');
+                element.addClass('ui-state-hover');
 
                 element.siblings('.ui-state-hover')
                        .removeClass('ui-state-hover');
