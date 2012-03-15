@@ -447,7 +447,13 @@ if (!window.ice.icefaces) {
                     //this is sensitive to the depth of the call stack so
                     //it may eventually be necessary to walk up rather than
                     //test a specific caller
-                    var maybeEvent = arguments.callee.caller.caller.arguments[0];
+                    //a
+                    var maybeCaller = null;
+                    maybeCaller = arguments.callee.caller.caller;
+                    if (null == maybeCaller)  {
+                        maybeCaller = arguments.callee.caller;
+                    }
+                    var maybeEvent = maybeCaller.arguments[0];
                     if (typeof(maybeEvent.target) != 'undefined') {
                         theEvent = maybeEvent;
                     }
