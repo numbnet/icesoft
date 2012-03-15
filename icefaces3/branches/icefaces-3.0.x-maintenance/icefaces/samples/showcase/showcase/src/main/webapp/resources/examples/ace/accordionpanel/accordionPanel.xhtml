@@ -36,9 +36,10 @@
 
     <ui:define name="example">
         <h:form id="form">
+            <icecore:singleSubmit />
             <ace:accordion id="accordion" collapsible="true" autoHeight="false">
                 <ace:accordionPane id="toDoList" title="My To Do List">
-                        <h:selectManyCheckbox id="list" layout="pageDirection" selectedClass="selectedCheckBox" onclick="submit();">
+                        <h:selectManyCheckbox id="list" layout="pageDirection" selectedClass="selectedCheckBox" >
                                 <f:selectItems value="#{accordionPanelBean.toDoList}"
                                                     var="listItem"
                                                     itemValue="#{listItem.value}"
