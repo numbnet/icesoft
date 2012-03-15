@@ -280,7 +280,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
 
     // Bind clickable header events
     if (_self.cfg.clickableHeaderSorting) {
-        ice.ace.jq(this.jqId + ' th > div.ui-sortable-column')
+        ice.ace.jq(this.jqId + ' thead:first th > div.ui-sortable-column')
             .unbind('click').bind("click",function(event) {
                 var target = ice.ace.jq(event.target);
 
@@ -350,7 +350,7 @@ ice.ace.DataTable.prototype.setupSortEvents = function() {
     }
 
     // Bind clickable control events
-    ice.ace.jq(this.jqId + ' th > div.ui-sortable-column .ui-sortable-control')
+    ice.ace.jq(this.jqId + ' thead:first th > div.ui-sortable-column .ui-sortable-control')
             .unbind('click').bind("click",function(event, altY, altMeta) {
                 var $this = ice.ace.jq(this),
                     topCarat = ice.ace.jq($this.find(".ui-icon-triangle-1-n")[0]),
