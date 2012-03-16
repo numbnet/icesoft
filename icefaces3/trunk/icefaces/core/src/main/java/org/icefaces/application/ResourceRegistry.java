@@ -114,6 +114,8 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         ResourceRegistryHolder holder = (ResourceRegistryHolder) elContext
             .getELResolver().getValue(elContext, null, MAP_PREFIX + key);
 
+        //For portlets it may be necessary to use a backup plan for setting and getting
+        //session based dynamic resources
         if (null == holder)  {
             holder = (ResourceRegistryHolder) EnvUtils
                 .getSafeSession(facesContext).getAttribute(MAP_PREFIX + key);
@@ -201,13 +203,11 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
                 new ResourceRegistryHolder(key, resource);
         scopeMap.put(MAP_PREFIX + key, holder);
         if ("s".equals(prefix))  {
-            EnvUtils.getSafeSession(FacesContext.getCurrentInstance())
-                    .setAttribute(MAP_PREFIX + key, holder);
+            EnvUtils.getSafeSession(FacesContext.getCurrentInstance()).setAttribute(MAP_PREFIX + key, holder);
         }
         String[] pathTemplate = EnvUtils.getPathTemplate();
         String path = pathTemplate[0] + key + pathTemplate[1];
-        path = FacesContext.getCurrentInstance().getExternalContext()
-                .encodeResourceURL(path);
+        path = FacesContext.getCurrentInstance().getExternalContext().encodeResourceURL(path);
         return path;
     }
 
@@ -226,14 +226,22 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
             }
         }
 
-        //With Liferay, the reference to javax.faces.resource gets set to a parameter rather than
-        //part of the URL so we need a slightly different algorithm.
+        // With Liferay (and likely portals in general), the reference to javax.faces.resource
+        // gets set to a parameter rather than part of the URL so we need a slightly different algorithm.
         if (-1 == markerStart)  {
             Iterator names = externalContext.getRequestParameterNames();
             while (names.hasNext()) {
                 String name =  (String)names.next();
                 if( name.trim().equalsIgnoreCase("javax.faces.resource")){
-                    return externalContext.getRequestParameterMap().get(name);
+                    String res = externalContext.getRequestParameterMap().get(name);
+                    //Need to strip the file extension (e.g. .jsf) if it's there because the original key
+                    //did not use it.
+                    String[] pathTemplate = EnvUtils.getPathTemplate();
+                    int suffixStart = res.indexOf(pathTemplate[1]);
+                    if(suffixStart >= 0){
+                        res = res.substring(0,suffixStart);
+                    }
+                    return res;
                 }
             }
         }
@@ -248,7 +256,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
                     path.length() - EnvUtils.getPathTemplate()[1].length());
             return key;
         } catch (Exception e)  {
-            System.out.println("ResourceRegistry.extractResourceId: " + e);
+            log.log(Level.FINE, "could not extract resource id", e);
             return null;
         }
     }
@@ -277,8 +285,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
     /**
      * Add the provided resource in application scope.
      *
-     * @param scopeMap the resource
-     * @param scopeMap the resource
+     * @param resource the resource
      * @return the requestPath of the resource
      */
     public static String addApplicationResource(Resource resource)  {
@@ -291,8 +298,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
      * resources should be Serializable to support cluster replication
      * and session passivation.
      *
-     * @param scopeMap the resource
-     * @param scopeMap the resource
+     * @param resource the resource
      * @return the requestPath of the resource
      */
     public static String addSessionResource(Resource resource)  {
@@ -303,8 +309,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
     /**
      * Add the provided resource in flash scope.
      *
-     * @param scopeMap the resource
-     * @param scopeMap the resource
+     * @param resource the resource
      * @return the requestPath of the resource
      */
     public static String addFlashResource(Resource resource)  {
@@ -315,8 +320,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
     /**
      * Add the provided resource in view scope.
      *
-     * @param scopeMap the resource
-     * @param scopeMap the resource
+     * @param resource the resource
      * @return the requestPath of the resource
      */
     public static String addViewResource(Resource resource)  {
@@ -327,8 +331,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
     /**
      * Add the provided resource in window scope.
      *
-     * @param scopeMap the resource
-     * @param scopeMap the resource
+     * @param resource the resource
      * @return the requestPath of the resource
      */
     public static String addWindowResource(Resource resource)  {
