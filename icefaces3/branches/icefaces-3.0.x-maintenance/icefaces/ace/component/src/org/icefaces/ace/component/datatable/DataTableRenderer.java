@@ -617,7 +617,7 @@ public class DataTableRenderer extends CoreRenderer {
         writer.startElement(HTML.DIV_ELEM, null);
         String scrollClass = DataTableConstants.SCROLLABLE_X_CLASS + " " + DataTableConstants.SCROLLABLE_BODY_CLASS;
         writer.writeAttribute(HTML.CLASS_ATTR, scrollClass, null);
-        writer.writeAttribute(HTML.STYLE_ELEM, "max-height:" + table.getHeight() + "px", null)
+        writer.writeAttribute(HTML.STYLE_ELEM, "max-height:" + table.getHeight() + "px", null);
         writer.startElement(HTML.TABLE_ELEM, null);
 
         if (table.hasHeaders()) {
