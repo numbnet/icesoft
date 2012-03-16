@@ -114,6 +114,17 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
             .getELResolver().getValue(elContext, null, MAP_PREFIX + key);
 
         if (null == holder)  {
+            holder = (ResourceRegistryHolder) EnvUtils
+                .getSafeSession(facesContext).getAttribute(MAP_PREFIX + key);
+            if (null != holder)  {
+                //workaround for ICE-7685 suspecting PFB bug
+                if (log.isLoggable(Level.FINE)) {
+                    log.fine("Resource lookup required direct sesssion access");
+                }
+            }
+        }
+
+        if (null == holder)  {
             wrapped.handleResourceRequest(facesContext);
             return;
         }
@@ -189,9 +200,15 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         ResourceRegistryHolder holder = 
                 new ResourceRegistryHolder(key, resource);
         scopeMap.put(MAP_PREFIX + key, holder);
-
+        if ("s".equals(prefix))  {
+            EnvUtils.getSafeSession(FacesContext.getCurrentInstance())
+                    .setAttribute(MAP_PREFIX + key, holder);
+        }
         String[] pathTemplate = EnvUtils.getPathTemplate();
-        return pathTemplate[0] + key + pathTemplate[1];
+        String path = pathTemplate[0] + key + pathTemplate[1];
+        path = FacesContext.getCurrentInstance().getExternalContext()
+                .encodeResourceURL(path);
+        return path;
     }
 
     private static String extractResourceId(FacesContext facesContext)  {
