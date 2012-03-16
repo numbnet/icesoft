@@ -22,6 +22,9 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -40,16 +43,17 @@ public class ProxySession implements HttpSession {
     private static Logger log = Logger.getLogger(ProxySession.class.getName());
     private FacesContext facesContext;
 
-    public final int APPLICATION_SCOPE = 1;
-    public final int PORTLET_SCOPE = 2;
+    public static final int APPLICATION_SCOPE = 1;
+    public static final int PORTLET_SCOPE = 2;
 
     private int currentScope = APPLICATION_SCOPE;
 
     private static final Class[] getAttributeParamTypes = {String.class, Integer.TYPE};
     private static final Class[] setAttributeParamTypes = {String.class, Object.class, Integer.TYPE};
+    private static final Class[] getAttributeNamesParamTypes = {Integer.TYPE};
 
     public ProxySession(FacesContext facesContext) {
-        this.facesContext = facesContext;
+        this(facesContext,APPLICATION_SCOPE);
     }
 
     public ProxySession(FacesContext facesContext, int defaultScope) {
@@ -97,14 +101,32 @@ public class ProxySession implements HttpSession {
             Method meth = clazz.getMethod("getAttribute", getAttributeParamTypes);
             val = meth.invoke(sess, key, currentScope);
         } catch (Exception e) {
-            log.warning("could not get attribute " + key + " on PortletSession " + e);
+            log.log(Level.WARNING, "could not get attribute " + key + " on PortletSession ", e);
         }
         return val;
     }
 
     public Enumeration<String> getAttributeNames() {
-        log.severe("ProxySession unsupported operation");
-        throw new UnsupportedOperationException();
+        Object sess = facesContext.getExternalContext().getSession(true);
+        Class clazz = sess.getClass();
+        Enumeration<String> val = null;
+        try {
+            Method meth = clazz.getMethod("getAttributeNames", getAttributeNamesParamTypes);
+            val = (Enumeration<String>)meth.invoke(sess, currentScope);
+        } catch (Exception e) {
+            log.log(Level.WARNING, "could not get attribute names from PortletSession ", e);
+        }
+        return val;
+    }
+
+    public Map getAttributesMap(){
+        HashMap attributeMap = new HashMap();
+        Enumeration<String> names = getAttributeNames();
+        while (names.hasMoreElements()) {
+            String name = names.nextElement();
+            attributeMap.put(name,getAttribute(name));
+        }
+        return attributeMap;
     }
 
     public long getCreationTime() {
@@ -120,7 +142,7 @@ public class ProxySession implements HttpSession {
             Method meth = clazz.getMethod("getId");
             val = (String)meth.invoke(sess);
         } catch (Exception e) {
-            log.warning("could not get id from PortletSession " + e);
+            log.log(Level.WARNING, "could not get id from PortletSession ", e);
         }
         return val;
     }
@@ -157,7 +179,7 @@ public class ProxySession implements HttpSession {
             Method meth = clazz.getMethod("setAttribute", setAttributeParamTypes);
             meth.invoke(sess, key, val, APPLICATION_SCOPE);
         } catch (Exception e) {
-            log.warning("could not set attribute " + key + " on PortletSession " + e);
+            log.log(Level.WARNING, "could not set attribute " + key + ", " + val + " on PortletSession ", e);
         }
     }
 

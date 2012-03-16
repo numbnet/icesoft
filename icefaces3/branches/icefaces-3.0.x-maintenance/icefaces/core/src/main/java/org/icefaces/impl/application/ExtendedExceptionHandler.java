@@ -23,6 +23,7 @@ import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
 import javax.faces.application.Application;
 import javax.faces.application.ApplicationFactory;
+import javax.faces.application.ProjectStage;
 import javax.faces.application.ViewExpiredException;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
@@ -34,8 +35,12 @@ import javax.faces.event.PhaseId;
 import javax.portlet.PortletSession;
 import javax.servlet.http.HttpSession;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ExtendedExceptionHandler extends ExceptionHandlerWrapper {
+
+    private final static Logger log = Logger.getLogger(ExtendedExceptionHandler.class.getName());
 
     private ExceptionHandler wrapped;
 
@@ -71,9 +76,13 @@ public class ExtendedExceptionHandler extends ExceptionHandlerWrapper {
             ExceptionQueuedEventContext queueContext = (ExceptionQueuedEventContext) event.getSource();
             Throwable ex = queueContext.getException();
 
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if(fc.isProjectStage(ProjectStage.Development)){
+                log.log(Level.FINE,"queued exception", ex);
+            }
+
             if (ex instanceof ViewExpiredException) {
                 if (PhaseId.RESTORE_VIEW.equals(queueContext.getPhaseId())) {
-                    FacesContext fc = FacesContext.getCurrentInstance();
 
 		    if (!isValidSession(fc) || true) {                        //At this point, perhaps we should remove the ViewExpiredException and add
                         //a SessionExpiredException wrapped around it then proceed with normal processing
