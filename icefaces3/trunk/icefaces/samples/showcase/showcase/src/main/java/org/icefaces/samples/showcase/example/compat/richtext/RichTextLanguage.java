@@ -59,7 +59,7 @@ public class RichTextLanguage extends ComponentExampleImpl<RichTextLanguage> imp
         new SelectItem("en", "English"),
         new SelectItem("en-au", "English (Australia)"),
         new SelectItem("en-ca", "English (Canadian)"),
-        new SelectItem("en-ek", "English (United Kingdom)"),
+        new SelectItem("en-gb", "English (United Kingdom)"),
         new SelectItem("af", "Afrikaans"),
         new SelectItem("ar", "Arabic"),
         new SelectItem("eu", "Basque"),
