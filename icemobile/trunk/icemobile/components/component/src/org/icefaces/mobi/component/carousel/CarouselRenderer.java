@@ -64,10 +64,13 @@ public class CarouselRenderer extends BaseLayoutRenderer {
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
-        writeJavascriptFile(facesContext, uiComponent, JS_ISCROLL, JS_ISCROLL_MIN, LIB_ISCROLL);
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
+        writer.startElement("span", uiComponent);
+        writer.writeAttribute("id", clientId+"_jscript","id");
+        writeJavascriptFile(facesContext, uiComponent, JS_NAME, JS_MIN_NAME, JS_LIBRARY);
+        writeJavascriptFile(facesContext, uiComponent, JS_ISCROLL, JS_ISCROLL_MIN, LIB_ISCROLL);
+        writer.endElement("span");
         Carousel carousel = (Carousel) uiComponent;
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute("id", clientId, "ui");
