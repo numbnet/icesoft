@@ -18,6 +18,7 @@ package org.icefaces.application;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -194,8 +195,7 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
         if ( (null != name) && (name.length() > 0) )  {
             key = name;
         } else {
-            int index = getNextKey();
-            key = prefix + String.valueOf(index);
+            key = prefix + UUID.randomUUID().toString();
         }
         ResourceRegistryHolder holder = 
                 new ResourceRegistryHolder(key, resource);
@@ -272,18 +272,6 @@ public class ResourceRegistry extends ResourceHandlerWrapper  {
             return null;
         }
         return holder.resource;
-    }
-
-    private synchronized static int getNextKey()  {
-        Map appMap = FacesContext.getCurrentInstance().getExternalContext()
-                .getApplicationMap();
-        Integer currentKey = (Integer) appMap.get(CURRENT_KEY);
-        if (null == currentKey)  {
-            currentKey = new Integer(1);
-        }
-        currentKey = new Integer(currentKey.intValue() + 1);
-        appMap.put(CURRENT_KEY, currentKey);
-        return currentKey.intValue();
     }
 
     /**
