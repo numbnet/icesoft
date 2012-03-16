@@ -3311,7 +3311,7 @@ ToolTipPanelPopupUtil = {
         //verify if the top edge of the tooltip is outside of the viewport
         if (y - elementDimensions.height - tooltipOffset < viewportScrollOffsets.top) {
             //align tooltip's top edge with the top edge of the view port
-            element.style.top = (y + viewportScrollOffsets.top - elementOffsets.top) + 'px';
+            element.style.top = (viewportScrollOffsets.top) + 'px';
         } else {
             //just offset the tooltip with 4px plus the height of the tooltip
             element.style.top = (y - (elementDimensions.height + tooltipOffset)) + 'px';
