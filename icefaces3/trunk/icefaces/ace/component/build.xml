@@ -64,8 +64,6 @@
 
     <property name="root.dir.path" location="${build}/skins/in"/>
     <property name="output.dir.path" location="${build}/skins/out"/>
-    <property name="taglib.merge"
-              location="${meta-include}/primefaces-p.taglib.xml"/>
     <property name="faces-config.host"
               location="${exploded}/META-INF/faces-config.xml"/>
     <property name="faces-config.merge.grimlock"
@@ -321,7 +319,6 @@
             description="Copy the resources into the exploded dir ">
         <copy todir="${exploded}/META-INF">
             <fileset dir="${meta-include}">
-                <exclude name="primefaces-p.taglib.xml"/>
             </fileset>
         </copy>
         <copy todir="${exploded}/META-INF/resources">
