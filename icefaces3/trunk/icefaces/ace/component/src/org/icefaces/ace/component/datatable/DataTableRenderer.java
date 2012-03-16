@@ -664,8 +664,6 @@ public class DataTableRenderer extends CoreRenderer {
                 // If the element was a row of a col-group render another row for a subrow of the header
                 if (subRows || firstHeadElement) writer.startElement(HTML.TR_ELEM, null);
 
-                firstHeadElement = false;
-
                 // Either loop through row children or render the single column/columns
                 Iterator<UIComponent> componentIterator = headerRowChildren.iterator();
                 boolean firstComponent = true;
@@ -680,6 +678,9 @@ public class DataTableRenderer extends CoreRenderer {
                                 subRows);
                     firstComponent = false;
                 }
+
+                firstHeadElement = false;
+
                 if (subRows) writer.endElement(HTML.TR_ELEM);
             }
         } while (headElementIterator.hasNext());
