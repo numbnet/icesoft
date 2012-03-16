@@ -512,6 +512,9 @@ public class EnvUtils {
 
     private static String[] extractPathTemplate(String path) {
         int start = path.indexOf(DUMMY_RESOURCE);
+        if( start < 0 ){
+            return null;
+        }
         String pre = path.substring(0, start);
         String post = path.substring(start + DUMMY_RESOURCE.length());
         return new String[]{pre, post};
@@ -547,13 +550,26 @@ public class EnvUtils {
         return (HttpServletResponse) rawRes;
     }
 
+    //Leave this for backwards compatibility that defaults to a PORTLET_APPLICATION scope.
     public static HttpSession getSafeSession(FacesContext fc) {
+        return getSafeApplicationScopeSession(fc);
+    }
+
+    private static HttpSession getSafeSession(FacesContext fc, int scope) {
         ExternalContext ec = fc.getExternalContext();
         Object rawSess = ec.getSession(true);
         if (instanceofPortletSession(rawSess)) {
-            return new ProxySession(fc);
+            return new ProxySession(fc, scope);
         }
         return (HttpSession) rawSess;
+    }
+
+    public static HttpSession getSafePortletScopeSession(FacesContext fc) {
+        return getSafeSession(fc,ProxySession.PORTLET_SCOPE);
+    }
+
+    public static HttpSession getSafeApplicationScopeSession(FacesContext fc) {
+        return getSafeSession(fc,ProxySession.APPLICATION_SCOPE);
     }
 
     public static boolean isPushRequest(FacesContext facesContext) {
