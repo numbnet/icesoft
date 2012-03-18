@@ -18,11 +18,6 @@ ice.ace.tabset = {
     initialize:function(clientId, jsProps, jsfProps, bindYUI) {
        //logger.info('1. tabset initialize');
 	 
-         /*
-         if (!result.success) {
-             alert("Load failure: " + result.msg);
-         }
-         */
 		 YAHOO.util.Event.onDOMReady(function () {
 		 var Dom = YAHOO.util.Dom;
 	
@@ -45,31 +40,16 @@ ice.ace.tabset = {
            if(!ice.ace.clientState.has(clientId)) {
                //alert("server side init - no context");
                tabview.set('activeIndex', jsfProps.selectedIndex);
-               /*
-                       tabview.removeListener('activeTabChange');
-                       tabview.selectTab(currentIndex);
-                       tabview.addListener('activeTabChange', tabChange);
-               */
            }
        }
        initElem.suppressTabChange = null;
        
-       /*
-        if (!ice.ace.registeredComponents[clientId]) {
-            var onupdate = ice.ace.getProperty(clientId, 'onupdate');
-            if (onupdate["new"] != null) {
-                ice.onAfterUpdate(function() {
-                    tabview = ice.ace.getInstance(clientId, ice.ace.tabset);
-                    onupdate["new"](clientId, tabview );
-                });
-            }       
-        }
-        */
-       
        //logger.info('3. tabset initialize');
        var tabChange=function(event) {
+            //alert('tabChange: ENTER');
             var rootElem = document.getElementById(clientId);
             if (rootElem.suppressTabChange) {
+                //alert('tabChange: EXIT suppressTabChange');
                 return;
             }
             var context = ice.ace.getJSContext(clientId);
@@ -78,40 +58,45 @@ ice.ace.tabset = {
             event.target = rootElem;
             var currentIndex = tabview.getTabIndex(event.newValue);
             if (currentIndex == null) {
+                //alert('tabChange: EXIT null currentIndex');
                 return;
             }
             //YAHOO.log(" currentIndex="+currentIndex);
             var tabIndexInfo = clientId + '='+ currentIndex;
             var doOnSuccess = function() {
-                if (!rootElem.suppressServerSideTransition) {
-                    // Ajax content transition. YUI content transition doesn't execute for server side cases
-                    // allowing our companonent to trigger content transition when the server call succeeds.
-                    if (event.oldValue) {
-                        event.oldValue.set('contentVisible', false);
-                        event.oldValue.set('active', false);
-                    } else if (cachedOldTabs.length > 0) {
-                        // When using caching, event.oldValue is undefined in this function
-                        // thus we use a reference to the old tab cached during the standard contentTransition.
-                        for (var i = 0; i < cachedOldTabs.length; i++) {
-                            cachedOldTabs[i].set('contentVisible', false);
-                            cachedOldTabs[i].set('active', false);
-                        }
-                        cachedOldTabs = [];
-                    }
+                if (rootElem.suppressServerSideTransition) {
+                    rootElem.suppressServerSideTransition = null;
+                    return;
+                }
+                //alert('doOnSuccess: ENTER');
 
-                    if (event.newValue) {
-                        event.newValue.set('contentVisible', true);
-                        event.newValue.set('active', true);
+                // Ajax content transition. YUI content transition doesn't execute for server side cases
+                // allowing our companonent to trigger content transition when the server call succeeds.
+                if (event.oldValue) {
+                    event.oldValue.set('contentVisible', false);
+                    event.oldValue.set('active', false);
+                } else if (cachedOldTabs.length > 0) {
+                    // When using caching, event.oldValue is undefined in this function
+                    // thus we use a reference to the old tab cached during the standard contentTransition.
+                    for (var i = 0; i < cachedOldTabs.length; i++) {
+                        cachedOldTabs[i].set('contentVisible', false);
+                        cachedOldTabs[i].set('active', false);
                     }
-
-                    try {
-                        document.getElementById(event.newValue.get('element').firstChild.id).focus();
-                    } catch(e) {}
+                    cachedOldTabs = [];
                 }
 
-                rootElem.suppressServerSideTransition = null;
+                if (event.newValue) {
+                    event.newValue.set('contentVisible', true);
+                    event.newValue.set('active', true);
+                }
+
+                try {
+                    document.getElementById(event.newValue.get('element').firstChild.id).focus();
+                } catch(e) {}
+
                 ice.ace.jq(tabview._contentParent).css({opacity:1});
-                cachedNewTab = null;                
+                cachedNewTab = null;
+                //alert('doOnSuccess: EXIT');
             };
             var params = function(parameter) {
 							//parameter('ice.focus', event.newValue.get('element').firstChild.id);
@@ -160,23 +145,11 @@ ice.ace.tabset = {
                     if (!haveBehaviour) {
                         ice.submit(event, targetElement, params);
                     }
-                    /*
-                    if (sJSFProps.isSingleSubmit) {
-                    	//backup id
-                    	var elementId = targetElement.id;
-                    	//replace id with the id of tabset component, so the "execute" property can be set to tabset id
-                    	targetElement.id = clientId;
-                    	ice.se(event, targetElement, params);
-                    	//restore id
-                    	targetElement.id = elementId;
-                    } else {
-                        ice.submit(event, targetElement, params);
-                    }
-                    */
                 } catch(e) {
                     //logger.info(e);
                 }
             }//end if
+            //alert('tabChange: EXIT end');
        };//tabchange;
        
        //Check for aria support
@@ -363,17 +336,11 @@ ice.ace.tabset = {
        // If the tab info changed sufficiently to require an initialise
        if (context) {
            if (requiresInitialise) {
-               // component.destroy() will remove all the markup fro the page
-               //var component = context.getComponent();
-               //if (component) {
-               //    component.destroy();
-               //}
                var rootToReInit = document.getElementById(clientId);
                if (rootToReInit) {
                    rootToReInit['JSContext'] = null;
                    rootToReInit.removeAttribute('JSContext');
                }
-               //document.getElementById(clientId)['JSContext'] = null;
                JSContext[clientId] = null;
            }
            else {
@@ -385,14 +352,32 @@ ice.ace.tabset = {
                    var rootElem = document.getElementById(clientId);
                    rootElem.suppressTabChange = true;
                    rootElem.suppressServerSideTransition = true;
-                   //tabviewObj.removeListener('activeTabChange');
                    if (!jsfProps.isClientSide){
+                       //alert('updateProperties: index mismatch BEFORE set activeIndex');
                        tabviewObj.set('activeIndex', index);
+                       //alert('updateProperties: index mismatch AFTER set activeIndex');
+
+                       var tabs = tabviewObj.get('tabs');
+                       var countIndex;
+                       for(countIndex = 0; countIndex < tabs.length; countIndex++) {
+                           var isCurr = (countIndex == index);
+                           tabs[countIndex].set('contentVisible', isCurr);
+                           tabs[countIndex].set('active', isCurr);
+                           if (isCurr) {
+                               try {
+                                   document.getElementById(tabs[countIndex].get('element').firstChild.id).focus();
+                               } catch(e) {}
+                           }
+                       }
+
+                       //alert('updateProperties: index mismatch BETWEEN set contentVisible/active AND opacity');
                    } else {
+                       //alert('updateProperties: index mismatch BEFORE selectTab');
                        tabviewObj.selectTab(index);
+                       //alert('updateProperties: index mismatch AFTER selectTab');
                    }
+                   ice.ace.jq(tabviewObj._contentParent).css({opacity:1});
                    rootElem.suppressTabChange = null;
-                   //tabviewObj.addListener('activeTabChange', tabChange);
                }
                if (jsProps.showEffect) {
                    var node = tabviewObj.getTab(index).get('contentEl').childNodes[0];
@@ -707,7 +692,7 @@ ice.ace.tabset = {
             while (tabContentDiv.hasChildNodes()) {
                 tabContentDiv.removeChild(tabContentDiv.firstChild);
             }
-            var contentsToMove = safeDiv.firstChild; //.getElementByTagName("div")[0];
+            var contentsToMove = safeDiv.firstChild;
             safeDiv.removeChild(contentsToMove);
             tabContentDiv.appendChild(contentsToMove);
         }
