@@ -16,6 +16,8 @@
 
 package org.icefaces.mobile;
 
+import com.sun.org.apache.xml.internal.serializer.utils.Utils;
+
 import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,10 +37,14 @@ public class DateBean implements Serializable{
     private Date date2;
     private Date time1;
     private Date time2;
+    private String dateString;
+    private String dateString2;
     private boolean singleSubmit;
     private boolean required;
   //  private boolean valid;
     private String pattern;
+    private boolean isUseNative = true;
+
     private String timePattern = "hh:mm a";
     private TimeZone zone;
     private boolean rendered;
@@ -123,6 +129,25 @@ public class DateBean implements Serializable{
     public void setTimeZone(String timeZone) {
         this.timeZone = timeZone;
     }
+    public String getTimePattern() {
+        if (this.isUseNative() && (org.icefaces.mobi.utils.Utils.isIOS5() || org.icefaces.mobi.utils.Utils.isBlackBerry())){
+            return "HH:mm";
+        } else {
+              return timePattern;
+        }
+    }
+
+    public void setTimePattern(String timePattern) {
+        this.timePattern = timePattern;
+    }
+
+    public boolean isUseNative() {
+        return isUseNative;
+    }
+
+    public void setUseNative(boolean useNative) {
+        isUseNative = useNative;
+    }
 
     public boolean isRendered() {
         return rendered;
@@ -157,6 +182,22 @@ public class DateBean implements Serializable{
 
     public void setDate2(Date date2) {
         this.date2 = date2;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
+    }
+
+    public String getDateString2() {
+        return dateString2;
+    }
+
+    public void setDateString2(String dateString2) {
+        this.dateString2 = dateString2;
     }
 
     public List<DateNtry> getDateList() {
