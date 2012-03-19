@@ -223,7 +223,7 @@ Ice.modal = {
 
         //disable event handlers only once (in case multiple modal popups are rendered)
         if (!Ice.modal.rollbacks) {
-            function disableElementCallbacks(e) {
+            function disableElementCallbacks(e, cancelEvent) {
                 if (e.hasCallbacksDisabled) {
                     //return No-Op rollback function when the callbacks are already disabled
                     return Function.NOOP;
@@ -234,10 +234,10 @@ Ice.modal = {
                     var onkeyup = e.onkeyup;
                     var onkeydown = e.onkeydown;
                     var onclick = e.onclick;
-                    e.onkeypress = none;
-                    e.onkeyup = none;
-                    e.onkeydown = none;
-                    e.onclick = none;
+                    e.onkeypress = cancelEvent;
+                    e.onkeyup = cancelEvent;
+                    e.onkeydown = cancelEvent;
+                    e.onclick = cancelEvent;
 
                     rollbacks.push(function() {
                         try {
@@ -260,14 +260,21 @@ Ice.modal = {
             inputElementTypes.each(function(type) {
                 $enumerate(document.body.getElementsByTagName(type)).each(function(e) {
                     if (!childOfTarget(e)) {
-                        disableElementCallbacks(e);
+                        disableElementCallbacks(e, none);
                     }
                 });
             });
             $enumerate(document.body.getElementsByTagName('iframe')).each(function(f) {
                 if (!childOfTarget(f)) {
-                    disableElementCallbacks(f.contentWindow);
-                    disableElementCallbacks(f.contentDocument || f.contentWindow.document);
+                    var iframeDocument = f.contentDocument || f.contentWindow.document;
+                    var iframeWindow = f.contentWindow;
+                    //cancel only the events that are not triggered within this iframe
+                    function bubbleEvent(event) {
+                        var triggeringElement = (event && event.target) || (iframeWindow.event && iframeWindow.event.srcElement);
+                        return triggeringElement && iframeDocument == triggeringElement.ownerDocument;
+                    }
+                    disableElementCallbacks(iframeWindow, bubbleEvent);
+                    disableElementCallbacks(iframeDocument, bubbleEvent);
                 }
             });
         }
