@@ -38,7 +38,7 @@ public class AjaxBehaviorHandlerMeta {
 	@Property(required=Required.no, tlddoc="Method to process in partial request.")
 	private MethodExpression listener;
 	
-	@Property(required=Required.no, tlddoc="Boolean value that determines the phaseId, when true actions are processed at apply_request_values, when false at invoke_application phase.")
+	@Property(required=Required.no, tlddoc="Boolean value that determines the phaseId, when true actions are processed at apply_request_values, when false at invoke_application phase. If not specified, the components immediate value is applied")
 	private boolean immediate;
 	
 	@Property(required=Required.no, tlddoc="Component(s) to execute in ajax request.")
@@ -47,7 +47,7 @@ public class AjaxBehaviorHandlerMeta {
 	@Property(required=Required.no, tlddoc="Component(s) to render in ajax rquest.")
 	private String render;
 	
-	@Property(required=Required.no, tlddoc="Javascript handler to execute before ajax request is begins.")
+	@Property(required=Required.no, tlddoc="Javascript handler to execute before ajax request is begins.The function has to return 'true' to continue with the ajax request; if 'false' or nothing is returned, the ajax request will be aborted.")
 	private String onStart;
 	
 	@Property(required=Required.no, tlddoc="Javascript handler to execute when ajax request is completed.")
