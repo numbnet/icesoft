@@ -924,15 +924,15 @@ Ice.modal = {
             return false;
         }
 
-        function disableCallbacks(e) {
+        function disableCallbacks(e, cancelEvent) {
             var onkeypress = e.onkeypress;
             var onkeyup = e.onkeyup;
             var onkeydown = e.onkeydown;
             var onclick = e.onclick;
-            e.onkeypress = none;
-            e.onkeyup = none;
-            e.onkeydown = none;
-            e.onclick = none;
+            e.onkeypress = cancelEvent;
+            e.onkeyup = cancelEvent;
+            e.onkeydown = cancelEvent;
+            e.onclick = cancelEvent;
 
             return function() {
                 try {
@@ -955,7 +955,7 @@ Ice.modal = {
                 for (var i = 0, l = elements.length; i < l; i++) {
                     var e = elements[i];
                     if (!childOfTarget(e)) {
-                        rollbacks.push(disableCallbacks(e));
+                        rollbacks.push(disableCallbacks(e, none));
                     }
                 }
             });
@@ -964,8 +964,15 @@ Ice.modal = {
             for (var i = 0, l = iframes.length; i < l; i++) {
                 var f = iframes[i];
                 if (!childOfTarget(f)) {
-                    disableCallbacks(f.contentWindow);
-                    disableCallbacks(f.contentDocument || f.contentWindow.document);
+                    var iframeDocument = f.contentDocument || f.contentWindow.document;
+                    var iframeWindow = f.contentWindow;
+                    //cancel only the events that are not triggered within this iframe
+                    function bubbleEvent(event) {
+                        var triggeringElement = (event && event.target) || (iframeWindow.event && iframeWindow.event.srcElement);
+                        return triggeringElement && iframeDocument == triggeringElement.ownerDocument;
+                    }
+                    disableCallbacks(iframeWindow, bubbleEvent);
+                    disableCallbacks(iframeDocument, bubbleEvent);
                 }
             }
         }
