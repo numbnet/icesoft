@@ -48,9 +48,8 @@ public class Row extends RowBase {
     private Predicate predicate;
 
     /**
-     * Return true if this conditional row should render at the given index, either before it or after it.
+     * Return true if this conditional row should render at the given index
      * @param index the index of the row being rendered
-     * @param before a flag to indicate if this evaluation is
      * @return True if this conditional row should render.
      */
     public boolean evaluateCondition(int index) {
