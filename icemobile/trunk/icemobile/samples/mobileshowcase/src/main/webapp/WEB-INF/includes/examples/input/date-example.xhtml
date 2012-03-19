@@ -41,9 +41,8 @@
                 <h:outputLabel value="Time: "/>
                 <h:panelGroup style="float:right;">
                     <mobi:timeSpinner style="width:100px;"
-                                      useNative="true"
+                                      useNative="true"  timeZone="MST"
                                      value="#{dateBean.timeInput}">
-                        <f:convertDateTime type="time" pattern="hh:mm a" timeZone="MST"/>
                     </mobi:timeSpinner>
                 </h:panelGroup>
             </mobi:fieldsetRow>
